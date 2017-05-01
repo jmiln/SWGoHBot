@@ -59,9 +59,6 @@ client.elevation = message => {
 
 
 var regToken = /[\w\d]{24}\.[\w\d]{6}\.[\w\d-_]{27}/g;
-// client.on('debug', e => {
-//   console.log(chalk.bgBlue.green(e.replace(regToken, 'that was redacted')));
-// });
 
 client.on('warn', e => {
   console.log(chalk.bgYellow(e.replace(regToken, 'that was redacted')));
