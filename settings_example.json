@@ -1,7 +1,7 @@
 {
-	"ownerid": "YOURUSERID",
-	"modrolename": "YOURMODROLENAME",
-	"adminrolename": "YOURADMINROLENAME",
-	"prefix": "YOURPREFIXGOESHERE",
-	"token": "YOURTOKENGOESHERE"
+	"ownerid": "YourUserID",
+	"modrolename": "YourModRoleName",
+	"adminrolename": "YourAdminRoleName",
+	"prefix": "YourPrefixGoesHere",
+	"token": "YourTokenGoesHere"
 }
