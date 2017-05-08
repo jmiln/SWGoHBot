@@ -6,7 +6,7 @@ exports.run = (client, message, args) => {
         command = client.aliases.get(args[0]);
     }
     if (!command) {
-        return message.channel.sendMessage(`I cannot find the command: ${args[0]}`);
+        return message.channel.send(`I cannot find the command: ${args[0]}`);
     } else {
         message.channel.sendMessage(`Reloading: ${command}`)
             .then(m => {
