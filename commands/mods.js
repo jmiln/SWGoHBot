@@ -716,11 +716,13 @@ exports.run = (client, message, args) => {
                 code: 'md'
             });
             break;
+        case 'raider':
         case 'tuskenraider':
             message.channel.send(" * Tusken Raider * \n### Sets ### \n* Offense \n* Health \n### Primaries ### \n* Square:   Offense \n* Arrow:    Speed \n* Diamond:  Defense \n* Triangle: Offense \n* Circle:   Protection \n* Cross:    Potency", {
                 code: 'md'
             });
             break;
+        case 'shaman':
         case 'tuskenshaman':
             message.channel.send(" * Tusken Shaman * \n### Sets ### \n* Speed \n* Health \n### Primaries ### \n* Square:   Offense \n* Arrow:    Speed \n* Diamond:  Defense \n* Triangle: Protection \n* Circle:   Protection \n* Cross:    Protection", {
                 code: 'md'
