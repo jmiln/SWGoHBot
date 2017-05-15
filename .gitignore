@@ -3,3 +3,6 @@
 
 # Specific Files
 settings.json
+npm-debug.log
+.DS_Store
+/*.env
