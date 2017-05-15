@@ -2,7 +2,9 @@
 /node_modules/
 
 # Specific Files
-settings.json
+# settings.json    ##### Make sure this is ignored if pushed to a public repo
+
+# For Heroku
 npm-debug.log
 .DS_Store
 /*.env
