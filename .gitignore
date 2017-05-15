@@ -2,7 +2,7 @@
 /node_modules/
 
 # Specific Files
-# settings.json    ##### Make sure this is ignored if pushed to a public repo
+settings.json
 
 # For Heroku
 npm-debug.log
