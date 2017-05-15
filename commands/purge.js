@@ -9,7 +9,7 @@ exports.run = function (client, message, args) {
         message.channel.fetchMessages({
             limit: messagecount
         }).then(messages => message.channel.bulkDelete(messages)).catch(console.error);
-        console.log(message.channel.user + "has purged " + messagecount + " messages.");
+        console.log(message.author.username + " has purged " + messagecount + " messages.");
     } else {
         console.log("You can ony delete between 2 and 100 messages, try again");
     }
