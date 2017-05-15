@@ -1,8 +1,7 @@
 exports.run = function (client, message, args) {
     let messagecount = parseInt(args.join(' '));
-    let can_manage_chans = message.channel.permissionsFor(client.user).has('MANAGE_MESSAGES');
-    if(!can_manage_chans) {
-        console.log("Bot does not have the right perms");
+    if(!message.channel.permissionsFor(client.user).has('MANAGE_MESSAGES')) {
+        console.log("Bot does not have the right permisions");
         return;
     }
     if (messagecount > 1 && messagecount <= 100) {
