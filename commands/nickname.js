@@ -4,7 +4,7 @@ exports.run = (client, message, args) => {
 
         message.guild.member(client.user).setNickname(name);
     } else {
-        message.guild.member(client.user).setNickname();
+        message.guild.member(client.user).setNickname("");
     }
 };
 
