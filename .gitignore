@@ -4,7 +4,3 @@
 # Specific Files
 settings.json
 
-# For Heroku
-npm-debug.log
-.DS_Store
-/*.env
