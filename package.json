@@ -2,10 +2,10 @@
     "name": "GohBot",
     "version": "1.0.0",
     "description": "Bot for a SWGoH Discord server",
-    "main": "app.js",
+    "main": "swgohBot.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node app.js"
+        "start": "node swgohBot.js"
     },
     "author": "Jeff",
     "license": "MIT",
