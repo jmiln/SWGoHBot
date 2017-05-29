@@ -3,7 +3,7 @@ exports.run = (client, message, args) => {
         if(!args[1]) {
             client.user.setGame("");
         } else {
-            client.user.setGame(args[1].toString());
+            client.user.setGame(args.splice(1).join(" ").toString());
         }
     } else if(args[0].toLowerCase() === "status") {
         client.user.setStatus(args[1].toString());
