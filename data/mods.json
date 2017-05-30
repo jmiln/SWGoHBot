@@ -2,6 +2,8 @@
     {
         "name":    "Aayla Secura",
         "aliases": ["Aayla", "Aayla Secura"],
+        "url": "https://swgoh.gg/characters/aayla-secura/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_aaylasecura.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Chance",
         "set3":    "Critical Chance",
@@ -14,7 +16,9 @@
     },
     {
         "name":    "Admiral Ackbar",
-        "aliases": ["Admiral Ackbar", "Ackbar"],
+        "aliases": ["Ackbar", "Admiral Ackbar"],
+        "url": "https://swgoh.gg/characters/admiral-ackbar/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ackbaradmiral.png",
         "set1":    "Speed",
         "set2":    "Tenacity",
         "set3":    "",
@@ -28,6 +32,8 @@
     {
         "name":    "Ahsoka Tano",
         "aliases": ["Ahsoka Tano", "Ahsoka"],
+        "url": "https://swgoh.gg/characters/ahsoka-tano/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ahsoka.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -40,7 +46,9 @@
     },
     {
         "name":    "Ahsoka Tano (Fulcrum)",
-        "aliases": ["Ahsoka Tano", "Ahsoka", "Fulcrum"],
+        "aliases": ["Ahsoka Tano Fulcrum", "Ahsoka Tano", "Ahsoka", "Fulcrum"],
+        "url": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ahsokaadult.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -54,6 +62,8 @@
     {
         "name":    "Asajj Ventress",
         "aliases": ["Asajj Ventress", "Asajj"],
+        "url": "https://swgoh.gg/characters/asajj-ventress/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ventress.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -67,6 +77,8 @@
     {
         "name":    "B2 (with HK-47 lead)",
         "aliases": ["B2 Super Battle Droid", "B2"],
+        "url": "https://swgoh.gg/characters/b2-super-battle-droid/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b2.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -80,6 +92,8 @@
     {
         "name":    "B2 (without HK-47)",
         "aliases": ["B2 Super Battle Droid", "B2"],
+        "url": "https://swgoh.gg/characters/b2-super-battle-droid/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b2.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -93,6 +107,8 @@
     {
         "name":    "Bariss Offee",
         "aliases": ["Barris Offee", "Barris"],
+        "url": "https://swgoh.gg/characters/barriss-offee/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_barris_light.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Health",
@@ -106,6 +122,8 @@
     {
         "name":    "Baze Malbus",
         "aliases": ["Baze Malbus", "Baze"],
+        "url": "https://swgoh.gg/characters/baze-malbus/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bazemalbus.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Health",
@@ -119,6 +137,8 @@
     {
         "name":    "Biggs Darklighter",
         "aliases": ["Biggs Darklighter", "Biggs", "Wiggs"],
+        "url": "https://swgoh.gg/characters/biggs-darklighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_biggs.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -132,6 +152,8 @@
     {
         "name":    "Bistan",
         "aliases": ["Bistan"],
+        "url": "https://swgoh.gg/characters/bistan/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bistan.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -145,6 +167,8 @@
     {
         "name":    "Boba Fett (attacker)",
         "aliases": ["Boba Fett", "Boba", "Fett"],
+        "url": "https://swgoh.gg/characters/boba-fett/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bobafett.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -158,6 +182,8 @@
     {
         "name":    "Boba Fett (leader)",
         "aliases": ["Boba Fett", "Boba", "Fett"],
+        "url": "https://swgoh.gg/characters/boba-fett/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bobafett.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -171,6 +197,8 @@
     {
         "name":    "Boba Fett (support)",
         "aliases": ["Boba Fett", "Boba", "Fett"],
+        "url": "https://swgoh.gg/characters/boba-fett/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bobafett.png",
         "set1":    "Potency",
         "set2":    "Potency",
         "set3":    "Potency",
@@ -184,6 +212,8 @@
     {
         "name":    "Bohdi Rook",
         "aliases": ["Bodhi Rook", "Bodhi"],
+        "url": "https://swgoh.gg/characters/bodhi-rook/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bodhi.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -197,6 +227,8 @@
     {
         "name":    "CC-2224 Cody (attacker)",
         "aliases": ["CC-2224 Cody", "CC-2224", "Cody"],
+        "url": "https://swgoh.gg/characters/cc-2224-cody/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_cody.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -210,6 +242,8 @@
     {
         "name":    "CC-2224 Cody (leader)",
         "aliases": ["CC-2224 Cody", "CC-2224", "Cody"],
+        "url": "https://swgoh.gg/characters/cc-2224-cody/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_cody.png",
         "set1":    "Critical Damage",
         "set2":    "Health",
         "set3":    "",
@@ -223,6 +257,8 @@
     {
         "name":    "CT-21-0408 Echo",
         "aliases": ["CT-21-0408 Echo", "CT-21-0408", "Echo"],
+        "url": "https://swgoh.gg/characters/ct-21-0408-echo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_echo.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -236,6 +272,8 @@
     {
         "name":    "CT-5555 Fives",
         "aliases": ["CT-5555 Fives", "CT-5555", "Fives"],
+        "url": "https://swgoh.gg/characters/ct-5555-fives/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_fives.png",
         "set1":    "Defense",
         "set2":    "Defense",
         "set3":    "Defense",
@@ -249,6 +287,8 @@
     {
         "name":    "CT-7567 Rex (leader)",
         "aliases": ["CT-7567 Rex", "CT-7567", "Rex"],
+        "url": "https://swgoh.gg/characters/ct-7567-rex/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_rex.png",
         "set1":    "Tenacity",
         "set2":    "Tenacity",
         "set3":    "Tenacity",
@@ -262,6 +302,8 @@
     {
         "name":    "CT-7567 Rex (support)",
         "aliases": ["CT-7567 Rex", "CT-7567", "Rex"],
+        "url": "https://swgoh.gg/characters/ct-7567-rex/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_rex.png",
         "set1":    "Speed",
         "set2":    "Tenacity",
         "set3":    "",
@@ -275,6 +317,8 @@
     {
         "name":    "Cad Bane",
         "aliases": ["Cad Bane", "Cad", "Bane"],
+        "url": "https://swgoh.gg/characters/cad-bane/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cadbane.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -288,6 +332,8 @@
     {
         "name":    "Captain Phasma",
         "aliases": ["Captain Phasma", "Phasma"],
+        "url": "https://swgoh.gg/characters/captain-phasma/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_phasma.png",
         "set1":    "Speed",
         "set2":    "Health",
         "set3":    "",
@@ -301,6 +347,8 @@
     {
         "name":    "Cassian Andor",
         "aliases": ["Cassian Andor", "Cassian"],
+        "url": "https://swgoh.gg/characters/cassian-andor/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cassian.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -314,6 +362,8 @@
     {
         "name":    "Chief Chirpa",
         "aliases": ["Chief Chirpa", "Chirpa"],
+        "url": "https://swgoh.gg/characters/chief-chirpa/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chirpa.png",
         "set1":    "Speed",
         "set2":    "Health",
         "set3":    "",
@@ -327,6 +377,8 @@
     {
         "name":    "Chief Nebit",
         "aliases": ["Chief Nebit", "Nebit"],
+        "url": "https://swgoh.gg/characters/chief-nebit/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_nebit.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Defense",
@@ -340,6 +392,8 @@
     {
         "name":    "Chirrut Imwe",
         "aliases": ["Chirrut Imwe", "Chirrut"],
+        "url": "https://swgoh.gg/characters/chirrut-imwe",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chirrut.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -353,6 +407,8 @@
     {
         "name":    "Chopper",
         "aliases": ["Chopper"],
+        "url": "https://swgoh.gg/characters/chopper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chopper.png",
         "set1":    "Speed",
         "set2":    "Defense",
         "set3":    "",
@@ -366,6 +422,8 @@
     {
         "name":    "Clone Sergeant P1",
         "aliases": ["Clone Sergeant P1", "CS1"],
+        "url": "https://swgoh.gg/characters/clone-sergeant-phase-i/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclonegreen.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -379,6 +437,8 @@
     {
         "name":    "Clone Wars Chewbacca",
         "aliases": ["Clone Wars Chewbacca", "Chewbacca", "Chewy"],
+        "url": "https://swgoh.gg/characters/clone-wars-chewbacca/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chewbacca.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Health",
@@ -392,6 +452,8 @@
     {
         "name":    "Count Dooku",
         "aliases": ["Count Dooku", "Dooku"],
+        "url": "https://swgoh.gg/characters/count-dooku/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dooku.png",
         "set1":    "Offense",
         "set2":    "Tenacity",
         "set3":    "",
@@ -405,6 +467,8 @@
     {
         "name":    "Darth Maul",
         "aliases": ["Darth Maul", "Maul"],
+        "url": "https://swgoh.gg/characters/darth-maul/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_maul.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -418,6 +482,8 @@
     {
         "name":    "Darth Nihilus",
         "aliases": ["Darth Nihilus", "Nihilus", "DN"],
+        "url": "https://swgoh.gg/characters/darth-nihilus/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nihilus.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -431,6 +497,8 @@
     {
         "name":    "Darth Nihilus (leader)",
         "aliases": ["Darth Nihilus", "Nihilus", "DN"],
+        "url": "https://swgoh.gg/characters/darth-nihilus/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nihilus.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -444,6 +512,8 @@
     {
         "name":    "Darth Sidious",
         "aliases": ["Darth Sidious", "Sidious", "Sid"],
+        "url": "https://swgoh.gg/characters/darth-sidious/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sidious.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -457,6 +527,8 @@
     {
         "name":    "Darth Vader",
         "aliases": ["Darth Vader", "Vader", "Zader"],
+        "url": "https://swgoh.gg/characters/darth-vader/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_vader.png",
         "set1":    "Potency",
         "set2":    "Potency",
         "set3":    "Potency",
@@ -470,6 +542,8 @@
     {
         "name":    "Darth Vader (EP lead)",
         "aliases": ["Darth Vader", "Vader", "Zader"],
+        "url": "https://swgoh.gg/characters/darth-vader/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_vader.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -483,6 +557,8 @@
     {
         "name":    "Datcha",
         "aliases": ["Datcha"],
+        "url": "https://swgoh.gg/characters/datcha/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_datcha.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -496,6 +572,8 @@
     {
         "name":    "Death Trooper (Krennic lead)",
         "aliases": ["Death Trooper", "DT"],
+        "url": "https://swgoh.gg/characters/death-trooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperdeath.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Damage",
         "set3":    "",
@@ -509,6 +587,8 @@
     {
         "name":    "Death Trooper (Palp lead)",
         "aliases": ["Death Trooper", "DT"],
+        "url": "https://swgoh.gg/characters/death-trooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperdeath.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Damage",
         "set3":    "",
@@ -522,6 +602,8 @@
     {
         "name":    "Death Trooper (Vader lead)",
         "aliases": ["Death Trooper", "DT"],
+        "url": "https://swgoh.gg/characters/death-trooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperdeath.png",
         "set1":    "Critical Damage",
         "set2":    "Potency",
         "set3":    "",
@@ -535,6 +617,8 @@
     {
         "name":    "Dengar",
         "aliases": ["Dengar"],
+        "url": "https://swgoh.gg/characters/dengar/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dengar.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Chance",
         "set3":    "Potency",
@@ -548,6 +632,8 @@
     {
         "name":    "Director Krennic (Palp lead)",
         "aliases": ["Director Krennic", "Krennic"],
+        "url": "https://swgoh.gg/characters/director-krennic/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_krennic.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Damage",
         "set3":    "",
@@ -561,6 +647,8 @@
     {
         "name":    "Director Krennic (Vader lead)",
         "aliases": ["Director Krennic", "Krennic"],
+        "url": "https://swgoh.gg/characters/director-krennic/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_krennic.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -574,6 +662,8 @@
     {
         "name":    "Director Krennic (leader)",
         "aliases": ["Director Krennic", "Krennic"],
+        "url": "https://swgoh.gg/characters/director-krennic/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_krennic.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Damage",
         "set3":    "",
@@ -587,6 +677,8 @@
     {
         "name":    "Eeth Koth",
         "aliases": ["Eeth Koth", "Eeth", "Koth"],
+        "url": "https://swgoh.gg/characters/eeth-koth/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_eethkoth.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -600,6 +692,8 @@
     {
         "name":    "Emperor Palpatine",
         "aliases": ["Emperor Palpatine", "Palpatine", "EP"],
+        "url": "https://swgoh.gg/characters/emperor-palpatine/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_palpatineemperor.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -613,6 +707,8 @@
     {
         "name":    "Emperor Palpatine (leader)",
         "aliases": ["Emperor Palpatine", "Palpatine", "EP"],
+        "url": "https://swgoh.gg/characters/emperor-palpatine/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_palpatineemperor.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -626,6 +722,8 @@
     {
         "name":    "Ewok Elder",
         "aliases": ["Ewok Elder", "EE"],
+        "url": "https://swgoh.gg/characters/ewok-elder/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewokchief.png",
         "set1":    "Speed",
         "set2":    "Health",
         "set3":    "",
@@ -639,6 +737,8 @@
     {
         "name":    "Ewok Scout",
         "aliases": ["Ewok Scout"],
+        "url": "https://swgoh.gg/characters/ewok-scout/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewokscout.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -652,6 +752,8 @@
     {
         "name":    "Ezra Bridger",
         "aliases": ["Ezra Bridger", "Ezra"],
+        "url": "https://swgoh.gg/characters/ezra-bridger/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ezra_s3.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -665,6 +767,8 @@
     {
         "name":    "Finn",
         "aliases": ["Finn"],
+        "url": "https://swgoh.gg/characters/finn/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_finnjakku.png",
         "set1":    "Speed",
         "set2":    "Defense",
         "set3":    "",
@@ -678,6 +782,8 @@
     {
         "name":    "First Order Officer",
         "aliases": ["First Order Officer", "FOO"],
+        "url": "https://swgoh.gg/characters/first-order-officer/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorderofficer.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -691,6 +797,8 @@
     {
         "name":    "First Order Stormtrooper",
         "aliases": ["First Order Stormtrooper", "FOST"],
+        "url": "https://swgoh.gg/characters/first-order-stormtrooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstordertrooper.png",
         "set1":    "Potency",
         "set2":    "Health",
         "set3":    "Health",
@@ -704,6 +812,8 @@
     {
         "name":    "First Order TIE Pilot",
         "aliases": ["First Order Tie Pilot", "FOTP"],
+        "url": "https://swgoh.gg/characters/first-order-tie-pilot/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstordertiepilot.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -717,6 +827,8 @@
     {
         "name":    "Gamorrean Guard",
         "aliases": ["Gamorrean Guard"],
+        "url": "https://swgoh.gg/characters/gamorrean-guard/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_gamorreanguard.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -730,6 +842,8 @@
     {
         "name":    "Gar Saxon",
         "aliases": ["Gar Saxon", "Gar"],
+        "url": "https://swgoh.gg/characters/gar-saxon",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_gar_saxon.png",
         "set1":    "Potency",
         "set2":    "Potency",
         "set3":    "Potency",
@@ -743,6 +857,8 @@
     {
         "name":    "Garazeb 'Zeb' Orrelios",
         "aliases": ["Garazeb 'Zeb' Orrelios", "Zeb"],
+        "url": "https://swgoh.gg/characters/garazeb-zeb-orrelios/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zeb_s3.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -756,6 +872,8 @@
     {
         "name":    "General Grievous",
         "aliases": ["General Grievous", "Grievous", "GG"],
+        "url": "https://swgoh.gg/characters/general-grievous/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_grievous.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -769,6 +887,8 @@
     {
         "name":    "General Grievous (HK-47 lead)",
         "aliases": ["General Grievous", "Grievous", "GG"],
+        "url": "https://swgoh.gg/characters/general-grievous/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_grievous.png",
         "set1":    "Critical Damage",
         "set2":    "Potency",
         "set3":    "",
@@ -782,6 +902,8 @@
     {
         "name":    "General Kenobi",
         "aliases": ["General Kenobi", "Kenobi", "GK"],
+        "url": "https://swgoh.gg/characters/general-kenobi/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwangeneral.png",
         "set1":    "Tenacity",
         "set2":    "Defense",
         "set3":    "Defense",
@@ -795,6 +917,8 @@
     {
         "name":    "General Veers",
         "aliases": ["General Veers", "Veers"],
+        "url": "https://swgoh.gg/characters/general-veers/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_veers.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -808,6 +932,8 @@
     {
         "name":    "General Veers (Leader)",
         "aliases": ["General Veers", "Veers"],
+        "url": "https://swgoh.gg/characters/general-veers/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_veers.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -821,6 +947,8 @@
     {
         "name":    "Geonosian Soldier",
         "aliases": ["Geonosian Soldier", "GS"],
+        "url": "https://swgoh.gg/characters/geonosian-soldier/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_soldier.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -834,6 +962,8 @@
     {
         "name":    "Geonosian Spy",
         "aliases": ["Geonosian Spy"],
+        "url": "https://swgoh.gg/characters/geonosian-spy/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_spy.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -847,6 +977,8 @@
     {
         "name":    "Grand Master Yoda",
         "aliases": ["Grand Master Yoda", "Yoda"],
+        "url": "https://swgoh.gg/characters/grand-master-yoda/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_grandmasteryoda.png",
         "set1":    "Speed",
         "set2":    "Tenacity",
         "set3":    "",
@@ -860,6 +992,8 @@
     {
         "name":    "Grand Moff Tarkin",
         "aliases": ["Grand Moff Tarkin", "Tarkin", "GMT"],
+        "url": "https://swgoh.gg/characters/grand-moff-tarkin/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tarkinadmiral.png",
         "set1":    "Speed",
         "set2":    "Tenacity",
         "set3":    "",
@@ -873,6 +1007,8 @@
     {
         "name":    "Greedo",
         "aliases": ["Greedo"],
+        "url": "https://swgoh.gg/characters/greedo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_greedo.png",
         "set1":    "Potency",
         "set2":    "Critical Chance",
         "set3":    "Critical Chance",
@@ -886,6 +1022,8 @@
     {
         "name":    "HK-47",
         "aliases": ["HK47", "HK 47", "HK"],
+        "url": "https://swgoh.gg/characters/hk-47/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hk47.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -899,6 +1037,8 @@
     {
         "name":    "Han Solo",
         "aliases": ["Han Solo", "Han"],
+        "url": "https://swgoh.gg/characters/han-solo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_han.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -912,6 +1052,8 @@
     {
         "name":    "Hera Syndulla",
         "aliases": ["Hera Syndulla", "Hera"],
+        "url": "https://swgoh.gg/characters/hera-syndulla/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hera_s3.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Tenacity",
@@ -925,6 +1067,8 @@
     {
         "name":    "Hoth Rebel Scout",
         "aliases": ["Hoth Rebel Scout"],
+        "url": "https://swgoh.gg/characters/hoth-rebel-scout/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelhothscout.png",
         "set1":    "Offense",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -938,6 +1082,8 @@
     {
         "name":    "Hoth Rebel Soldier",
         "aliases": ["Hoth Rebel Soldier"],
+        "url": "https://swgoh.gg/characters/hoth-rebel-soldier/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelhoth.png",
         "set1":    "Health",
         "set2":    "Defense",
         "set3":    "Defense",
@@ -951,6 +1097,8 @@
     {
         "name":    "IG-100 Magna Guard",
         "aliases": ["IG100 Magna Guard", "Magna Guard", "Magnaguard"],
+        "url": "https://swgoh.gg/characters/ig-100-magnaguard/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_magnaguard.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -964,6 +1112,8 @@
     {
         "name":    "IG-86 Sentinel Droid",
         "aliases": ["IG86 Sentinel Droid", "IG 86", "IG86"],
+        "url": "https://swgoh.gg/characters/ig-86-sentinel-droid/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ig86.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -977,6 +1127,8 @@
     {
         "name":    "IG-88",
         "aliases": ["IG88", "IG 88"],
+        "url": "https://swgoh.gg/characters/ig-88/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ig88.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -990,6 +1142,8 @@
     {
         "name":    "Ima-Gun Di",
         "aliases": ["Ima Gun Di", "ImaGun Di", "IGD"],
+        "url": "https://swgoh.gg/characters/ima-gun-di/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_imagundi.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -1003,6 +1157,8 @@
     {
         "name":    "Imperial Super Commando",
         "aliases": ["Imperial Super Commando"],
+        "url": "https://swgoh.gg/characters/imperial-super-commando/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_imperial_super_commando.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1016,6 +1172,8 @@
     {
         "name":    "Jawa",
         "aliases": ["Jawa"],
+        "url": "https://swgoh.gg/characters/jawa/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_jawa.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -1029,6 +1187,8 @@
     {
         "name":    "Jawa Engineer",
         "aliases": ["Jawa Engineer", "JE"],
+        "url": "https://swgoh.gg/characters/jawa-engineer/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_engineer.png",
         "set1":    "Speed",
         "set2":    "Health",
         "set3":    "",
@@ -1042,6 +1202,8 @@
     {
         "name":    "Jawa Scavenger",
         "aliases": ["Jawa Scavenger", "JS"],
+        "url": "https://swgoh.gg/characters/jawa-scavenger/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_scavenger.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Chance",
         "set3":    "Critical Chance",
@@ -1055,6 +1217,8 @@
     {
         "name":    "Jedi Consular",
         "aliases": ["Jedi Consular", "JC"],
+        "url": "https://swgoh.gg/characters/jedi-consular/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_consular.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Health",
@@ -1068,6 +1232,8 @@
     {
         "name":    "Jedi Knight Anakin",
         "aliases": ["Jedi Knight Anakin", "Anakin", "JKA"],
+        "url": "https://swgoh.gg/characters/jedi-knight-anakin/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_anakinknight.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -1081,6 +1247,8 @@
     {
         "name":    "Jedi Knight Guardian",
         "aliases": ["Jedi Knight Guardian", "JKG"],
+        "url": "https://swgoh.gg/characters/jedi-knight-guardian/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_guardian.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Health",
@@ -1094,6 +1262,8 @@
     {
         "name":    "Jyn Erso",
         "aliases": ["Jyn Erso", "Jyn"],
+        "url": "https://swgoh.gg/characters/jyn-erso/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jyn.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Chance",
         "set3":    "Critical Chance",
@@ -1107,6 +1277,8 @@
     {
         "name":    "K-2SO",
         "aliases": ["K2SO", "K2S0"],
+        "url": "https://swgoh.gg/characters/k-2so/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_k2so.png",
         "set1":    "Tenacity",
         "set2":    "Tenacity",
         "set3":    "Tenacity",
@@ -1120,6 +1292,8 @@
     {
         "name":    "Kanan Jarrus",
         "aliases": ["Kanan Jarrus", "Kanan"],
+        "url": "https://swgoh.gg/characters/kanan-jarrus/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kanan_s3.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Chance",
         "set3":    "Tenacity",
@@ -1133,6 +1307,8 @@
     {
         "name":    "Kit Fisto",
         "aliases": ["Kit Fisto", "Kit", "Fisto"],
+        "url": "https://swgoh.gg/characters/kit-fisto/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kitfisto.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -1146,6 +1322,8 @@
     {
         "name":    "Kylo Ren",
         "aliases": ["Kylo Ren", "Kylo", "Zylo", "Ren"],
+        "url": "https://swgoh.gg/characters/kylo-ren/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kyloren.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -1159,6 +1337,8 @@
     {
         "name":    "Lando Calrissian",
         "aliases": ["Lando Calrissian", "Lando"],
+        "url": "https://swgoh.gg/characters/lando-calrissian/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_landobespin.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -1172,6 +1352,8 @@
     {
         "name":    "Lobot",
         "aliases": ["Lobot"],
+        "url": "https://swgoh.gg/characters/lobot/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_lobot.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1185,6 +1367,8 @@
     {
         "name":    "Luke Skywalker",
         "aliases": ["Luke Skywalker", "Luke"],
+        "url": "https://swgoh.gg/characters/luke-skywalker/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_luke_ep4.png",
         "set1":    "Critical Chance",
         "set2":    "Critical Chance",
         "set3":    "Potency",
@@ -1198,6 +1382,8 @@
     {
         "name":    "Luminara Unduli",
         "aliases": ["Luminara Unduli", "Luminara"],
+        "url": "https://swgoh.gg/characters/luminara-unduli/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_luminara.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Health",
@@ -1211,6 +1397,8 @@
     {
         "name":    "Mace Windu",
         "aliases": ["Mace Windu", "Mace"],
+        "url": "https://swgoh.gg/characters/mace-windu/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_macewindu.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Defense",
@@ -1224,6 +1412,8 @@
     {
         "name":    "Magmatrooper",
         "aliases": ["Magamatrooper", "Magma"],
+        "url": "https://swgoh.gg/characters/magmatrooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_magma.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -1237,6 +1427,8 @@
     {
         "name":    "Nightsister Acolyte",
         "aliases": ["Nightsister Acolyte"],
+        "url": "https://swgoh.gg/characters/nightsister-acolyte/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_acolyte.png",
         "set1":    "Critical Chance",
         "set2":    "Health",
         "set3":    "Health",
@@ -1250,6 +1442,8 @@
     {
         "name":    "Nightsister Initiate",
         "aliases": ["Nightsister Initiate"],
+        "url": "https://swgoh.gg/characters/nightsister-initiate/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_initiate.png",
         "set1":    "Health",
         "set2":    "Defense",
         "set3":    "Defense",
@@ -1263,6 +1457,8 @@
     {
         "name":    "Nute Gunray",
         "aliases": ["Nute Gunray", "Nute"],
+        "url": "https://swgoh.gg/characters/nute-gunray/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nutegunray.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -1276,6 +1472,8 @@
     {
         "name":    "Obi-Wan Kenobi (Old Ben)",
         "aliases": ["ObiWan Kenobi", "Obi Wan Kenobi", "ObiWan", "Obi Wan", "Kenobi"],
+        "url": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwanep4.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1289,6 +1487,8 @@
     {
         "name":    "Old Daka",
         "aliases": ["Old Daka", "Daka"],
+        "url": "https://swgoh.gg/characters/old-daka/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_daka.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Health",
@@ -1302,6 +1502,8 @@
     {
         "name":    "Pao",
         "aliases": ["Pao"],
+        "url": "https://swgoh.gg/characters/pao/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_pao.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1315,6 +1517,8 @@
     {
         "name":    "Plo Koon",
         "aliases": ["Plo Koon", "Plo"],
+        "url": "https://swgoh.gg/characters/plo-koon/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_plokoon.png",
         "set1":    "Potency",
         "set2":    "Health",
         "set3":    "Health",
@@ -1328,6 +1532,8 @@
     {
         "name":    "Poe Dameron",
         "aliases": ["Poe Dameron", "Poe"],
+        "url": "https://swgoh.gg/characters/poe/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_poe.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1341,6 +1547,8 @@
     {
         "name":    "Poggle The Lesser",
         "aliases": ["Poggle The Lesser", "Poggle"],
+        "url": "https://swgoh.gg/characters/poggle-the-lesser/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_poggle.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1354,6 +1562,8 @@
     {
         "name":    "Princess Leia",
         "aliases": ["Princess Leia", "Leia"],
+        "url": "https://swgoh.gg/characters/princess-leia/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_leia_princess.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -1367,6 +1577,8 @@
     {
         "name":    "Qui-Gon Jinn",
         "aliases": ["QuiGon Jinn", "Qui Gon Jinn", "QGJ", "zQGJ"],
+        "url": "https://swgoh.gg/characters/qui-gon-jinn/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_quigon.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -1380,6 +1592,8 @@
     {
         "name":    "R2-D2 (burn)",
         "aliases": ["R2 D2", "R2D2", "R2"],
+        "url": "https://swgoh.gg/characters/r2-d2/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_astromech_r2d2.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1393,6 +1607,8 @@
     {
         "name":    "R2-D2 (self-dispel)",
         "aliases": ["R2 D2", "R2D2", "R2"],
+        "url": "https://swgoh.gg/characters/r2-d2/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_astromech_r2d2.png",
         "set1":    "Speed",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -1406,6 +1622,8 @@
     {
         "name":    "Resistance Pilot",
         "aliases": ["Resistance Pilot"],
+        "url": "https://swgoh.gg/characters/resistance-pilot/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_resistancepilot.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -1419,6 +1637,8 @@
     {
         "name":    "Resistance Trooper",
         "aliases": ["Resistance Trooper"],
+        "url": "https://swgoh.gg/characters/resistance-trooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_resistancetrooper.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -1432,6 +1652,8 @@
     {
         "name":    "Rey",
         "aliases": ["Rey"],
+        "url": "https://swgoh.gg/characters/rey/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_reyjakku.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -1445,6 +1667,8 @@
     {
         "name":    "Royal Guard",
         "aliases": ["Royal Guard", "RG"],
+        "url": "https://swgoh.gg/characters/royal-guard/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_royalguard.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Defense",
@@ -1458,6 +1682,8 @@
     {
         "name":    "Sabine Wren",
         "aliases": ["Sabine Wren", "Sabine"],
+        "url": "https://swgoh.gg/characters/sabine-wren/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sabine_s3.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -1471,6 +1697,8 @@
     {
         "name":    "Savage Opress",
         "aliases": ["Savage Opress", "Savage", "Zavage"],
+        "url": "https://swgoh.gg/characters/savage-opress/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_savageopress.png",
         "set1":    "Health",
         "set2":    "Critical Chance",
         "set3":    "Critical Chance",
@@ -1484,6 +1712,8 @@
     {
         "name":    "Scarif Rebel Pathfinder",
         "aliases": ["Scarif Rebel Pathfinder", "Pathfinder", "SRP"],
+        "url": "https://swgoh.gg/characters/scarif-rebel-pathfinder/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebel_scarif.png",
         "set1":    "Health",
         "set2":    "Defense",
         "set3":    "Defense",
@@ -1497,6 +1727,8 @@
     {
         "name":    "Shoretrooper (tank)",
         "aliases": ["Shoretrooper", "Shore"],
+        "url": "https://swgoh.gg/characters/shoretrooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_troopershore.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Defense",
@@ -1510,6 +1742,8 @@
     {
         "name":    "Shoretrooper (taunt)",
         "aliases": ["Shoretrooper", "Shore"],
+        "url": "https://swgoh.gg/characters/shoretrooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_troopershore.png",
         "set1":    "Tenacity",
         "set2":    "Tenacity",
         "set3":    "Tenacity",
@@ -1523,6 +1757,8 @@
     {
         "name":    "Sith Assassin",
         "aliases": ["Sith Assassin", "SA"],
+        "url": "https://swgoh.gg/characters/sith-assassin/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithassassin.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1536,6 +1772,8 @@
     {
         "name":    "Sith Trooper",
         "aliases": ["Sith Trooper", "ST"],
+        "url": "https://swgoh.gg/characters/sith-trooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithtrooper.png",
         "set1":    "Defense",
         "set2":    "Defense",
         "set3":    "Potency",
@@ -1549,6 +1787,8 @@
     {
         "name":    "Sith Trooper (Palp lead)",
         "aliases": ["Sith Trooper", "ST"],
+        "url": "https://swgoh.gg/characters/sith-trooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithtrooper.png",
         "set1":    "Defense",
         "set2":    "Defense",
         "set3":    "Defense",
@@ -1562,6 +1802,8 @@
     {
         "name":    "Snowtrooper",
         "aliases": ["Snowtrooper"],
+        "url": "https://swgoh.gg/characters/snowtrooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_troopersnow.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -1575,6 +1817,8 @@
     {
         "name":    "Stormtrooper",
         "aliases": ["Stormtrooper"],
+        "url": "https://swgoh.gg/characters/stormtrooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm.png",
         "set1":    "Defense",
         "set2":    "Defense",
         "set3":    "Defense",
@@ -1588,6 +1832,8 @@
     {
         "name":    "Stormtrooper Han",
         "aliases": ["Stormtrooper Han", "STHan"],
+        "url": "https://swgoh.gg/characters/stormtrooper-han/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm_han.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1601,6 +1847,8 @@
     {
         "name":    "Sun Fac",
         "aliases": ["Sun Fac", "Fac"],
+        "url": "https://swgoh.gg/characters/sun-fac/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_sunfac.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Defense",
@@ -1614,6 +1862,8 @@
     {
         "name":    "TIE Fighter Pilot",
         "aliases": ["Tie Fighter Pilot", "Tfp"],
+        "url": "https://swgoh.gg/characters/tie-fighter-pilot/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tiepilot.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -1627,6 +1877,8 @@
     {
         "name":    "Talia",
         "aliases": ["Talia"],
+        "url": "https://swgoh.gg/characters/talia/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_talia.png",
         "set1":    "Health",
         "set2":    "Health",
         "set3":    "Health",
@@ -1640,6 +1892,8 @@
     {
         "name":    "Teebo",
         "aliases": ["Teebo"],
+        "url": "https://swgoh.gg/characters/teebo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_teebo.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1653,6 +1907,8 @@
     {
         "name":    "Tusken Raider",
         "aliases": ["Tusken Raider"],
+        "url": "https://swgoh.gg/characters/tusken-raider/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tuskenraider.png",
         "set1":    "Offense",
         "set2":    "Health",
         "set3":    "",
@@ -1666,6 +1922,8 @@
     {
         "name":    "Tusken Shaman",
         "aliases": ["Tusken Shaman", "Shaman"],
+        "url": "https://swgoh.gg/characters/tusken-shaman/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tuskenshaman.png",
         "set1":    "Speed",
         "set2":    "Health",
         "set3":    "",
@@ -1678,7 +1936,9 @@
     },
     {
         "name":    "URoRRuR'R'R",
-        "aliases": ["URoRRuRRR"],
+        "aliases": ["URoRRuRRR", "Urorr"],
+        "url": "https://swgoh.gg/characters/ururrurrr/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_urorrurrr.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
@@ -1692,6 +1952,8 @@
     {
         "name":    "Ugnaught",
         "aliases": ["Ugnaught"],
+        "url": "https://swgoh.gg/characters/ugnaught/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ugnaught.png",
         "set1":    "Offense",
         "set2":    "Potency",
         "set3":    "",
@@ -1705,6 +1967,8 @@
     {
         "name":    "Wedge Antilles",
         "aliases": ["Wedge Antilles", "Wedge", "Wiggs"],
+        "url": "https://swgoh.gg/characters/wedge-antilles/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_wedge.png",
         "set1":    "Critical Damage",
         "set2":    "Critical Chance",
         "set3":    "",
@@ -1718,6 +1982,8 @@
     {
         "name":    "Zam Wesell",
         "aliases": ["Zam Wesell", "Zam"],
+        "url": "https://swgoh.gg/characters/zam-wesell/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zamwesell.png",
         "set1":    "Speed",
         "set2":    "Potency",
         "set3":    "",
