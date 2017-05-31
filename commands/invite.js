@@ -1,5 +1,5 @@
 exports.run = (client, message) => {
-    message.author.send("https://discordapp.com/oauth2/authorize?permissions=67624000&scope=bot&client_id=315739499932024834");
+    message.author.send("Use the link below to invite me to your server!\n" + "https://discordapp.com/oauth2/authorize?permissions=67624000&scope=bot&client_id=315739499932024834");
 };
 
 exports.conf = {
