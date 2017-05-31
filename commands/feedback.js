@@ -1,7 +1,6 @@
 exports.run = (client, message, args) => {
     const feedback = args.join(" ");
-    // client.users.get("124579977474736129").send(feedback);
-    client.channels.get("319362969374949387").send(feedback);
+    client.channels.get("319362969374949387").send(message.author + " suggests: " + feedback);
 };
 
 exports.conf = {
