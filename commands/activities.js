@@ -1,3 +1,4 @@
+const settings = require("../settings.json");
 exports.run = (client, message, args) => {
     let day = String(args[0]).toLowerCase();
 
@@ -37,6 +38,8 @@ exports.run = (client, message, args) => {
             message.channel.send(`== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy
                                  \n== After Reset == \nComplete Arena Battles \nSave Cantina Energy`, {code:'asciidoc'});
             break;
+        default: 
+            message.channel.send("Invalid date, usage is \`" + settings.prefix + "activities [day]\`");
     }
 };
 
