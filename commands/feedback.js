@@ -1,6 +1,12 @@
+const settings = require('../settings.json');
+
 exports.run = (client, message, args) => {
     const feedback = args.join(" ");
-    client.channels.get("319362969374949387").send(message.author + " suggests: " + feedback);
+    if(feedback !== "") {  // If there are args/ if they left a message
+        client.channels.get("319362969374949387").send(message.author + " suggests: " + feedback);
+    } else {    // If they left no message, grumble at em
+        message.reply("Usage is `" + settings.prefix + "feedback [message]`, and requires a message");
+    }
 };
 
 exports.conf = {
