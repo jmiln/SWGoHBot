@@ -8,7 +8,7 @@ exports.run = (client, message, params) => {
         commands = client.commands.array();
         helpString = "= Command List =\n\n[Use " + settings.prefix + "help <commandname> for details]\n";
         for(ix = 0; ix < commands.length; ix++) {
-            if(commands[ix].conf.type !== "mod" ) {  // Filer out the moderation commands for normal users
+            if(commands[ix].conf.permLevel === 0) {  // Filer out the moderation commands for normal users
                 helpString += "\n" + settings.prefix + commands[ix].help.name;
             }
         }
@@ -26,8 +26,7 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['h', 'halp'],
-    permLevel: 0,
-	type: ""
+    permLevel: 0
 };
 
 exports.help = {

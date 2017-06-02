@@ -12,8 +12,7 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['nick'],
-    permLevel: 4,
-    type: "mod"
+    permLevel: 4
 };
 
 exports.help = {
