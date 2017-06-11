@@ -13,7 +13,8 @@ exports.run = (client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['feed']
+    aliases: ['feed'],
+    permLevel: 0
 };
 
 exports.help = {
