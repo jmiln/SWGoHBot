@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = (guild, user) => {
 
-  guild.defaultChannel.sendMessage(`${user.username} was just unbanned!`);
+  guild.defaultChannel.send(`${user.username} was just unbanned!`);
   const embed = new Discord.RichEmbed()
     .setColor(0x00AE86)
     .setTimestamp()
