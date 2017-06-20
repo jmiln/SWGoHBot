@@ -1088,6 +1088,22 @@
         "cross":   "Protection / Potency"
     },
     {
+        "name":    "Grand Admiral Thrawn",
+        "aliases": ["Grand Admiral Thrawn", "Thrawn"],
+        "url": "https://swgoh.gg/characters/grand-admiral-thrawn/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_thrawn.png",
+        "side": "dark",
+        "set1":    "Speed",
+        "set2":    "Tenacity",
+        "set3":    "",
+        "square":  "Offense",
+        "arrow":   "Speed",
+        "diamond": "Defense",
+        "triangle":"Protection",
+        "circle":  "Protection",
+        "cross":   "Protection / Tenacity"
+    },
+    {
         "name":    "Greedo",
         "aliases": ["Greedo"],
         "url": "https://swgoh.gg/characters/greedo/",
