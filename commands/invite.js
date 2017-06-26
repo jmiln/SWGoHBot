@@ -6,7 +6,8 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['inv'],
-    permLevel: 0
+    permLevel: 0,
+    type: 'moderation'
 };
 
 exports.help = {
