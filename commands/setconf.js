@@ -7,6 +7,9 @@ exports.run = (client, message, args) => {
     const guildConf = guildSettings.get(message.guild.id); 
 
     if(guildConf) {
+        if(message.member.roles.has(guildConf["adminRole"] || message.author.id === message.guild.owner.id)) {
+            return message.reply(`Sorry, but either you're not an admin, or your server leader has not set up the configs`);
+        }
         const key = args[0];
         // Since we inserted an object, it comes back as an object, and we can use it with the same properties:
         if(!guildConf.hasOwnProperty(key)) return message.reply("This key is not in the configuration.");
@@ -38,7 +41,7 @@ exports.run = (client, message, args) => {
         // We can confirm everything's done to the client.
         message.channel.send(`Guild configuration item ${key} has been changed to:\n\`${value}\``);
     } else {
-        messaage.channel.send(`No guild settings found, run \`${settings.prefix}showconf\` to build them.`);
+        message.channel.send(`No guild settings found, run \`${settings.prefix}showconf\` to build them.`);
     }
 };
 
@@ -46,7 +49,7 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['setconfig'],
-    permLevel: 3,
+    permLevel: 0,
     type: 'admin'
 };
 

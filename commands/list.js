@@ -16,6 +16,8 @@ exports.run = (client, message, args) => {
             //
             message.channel.send(`Guilds: \`\`\`${guilds}\`\`\``);
             // message.channel.send(`Guilds: \`\`\`${util.inspect(guildIDs)}\`\`\``);
+        } else if(args[0].toLowerCase() === 'roles') {
+            message.channel.send(`Roles: \`\`\`${util.inspect(message.member.roles)}\`\`\``);
         }
 
         // message.channel.send(`Settings: \`\`\`${util.inspect(guildSettings.keyArray())}\`\`\``);
