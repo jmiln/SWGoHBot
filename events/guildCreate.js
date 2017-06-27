@@ -1,14 +1,6 @@
 const PersistentCollection = require("djs-collection-persistent");
 const settings = require('../settings.json');
 
-// Just setting up a default configuration object here, to have somethign to insert.
-// const defaultSettings = {
-//   adminRole: "Administrator",
-//   modRole: "Moderator",
-//   welcomeMessageOn: true,
-//   welcomeMessage: "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D"
-// }
-
 module.exports = guild => {
     let guildConf = {};
     const defaultSettings = settings.defaultSettings;

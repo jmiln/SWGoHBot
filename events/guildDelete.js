@@ -6,4 +6,6 @@ module.exports = guild => {
 
     // Removing an element uses `delete(key)`
     guildSettings.delete(guild.id);
+
+    client.user.setGame(`${settings.prefix}help ~ ${client.guilds.size} servers`).catch(console.error);
 };
