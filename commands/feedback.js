@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
             url: '',
             description: feedback
         }});
-        message.channel.send(`Thanks for your feedback ${message.author.username}`);
+        message.channel.send(`Thanks for your feedback ${message.author.username}. \nIf you're interested in seeing what's going on with the bot, you're welcome to join \`https://discord.gg/FfwGvhr\`, where I will be posting changelogs and such.`);
     } else {    // If they left no message, grumble at em
         message.reply("Usage is `" + settings.prefix + "feedback [message]`, and requires a message");
     }
