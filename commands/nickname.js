@@ -12,7 +12,8 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['nick'],
-    permLevel: 4
+    permLevel: 4,
+    type: 'owner'
 };
 
 exports.help = {

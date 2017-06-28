@@ -23,7 +23,8 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['feed'],
-    permLevel: 0
+    permLevel: 0,
+    type: 'other'
 };
 
 exports.help = {

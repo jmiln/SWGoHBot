@@ -47,7 +47,8 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['a', 'act'],
-    permLevel: 0
+    permLevel: 0,
+    type: 'starwars'
 };
 
 exports.help = {

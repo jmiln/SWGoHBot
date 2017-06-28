@@ -26,7 +26,7 @@ exports.conf = {
     guildOnly: false,
     aliases: ['r'],
     permLevel: 4,
-    type: "mod"
+    type: "owner"
 };
 
 exports.help = {
