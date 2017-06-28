@@ -112,10 +112,10 @@
         "cross":   "Potency"
     },
     {
-        "name":    "Bariss Offee",
-        "aliases": ["Barris Offee", "Barris"],
+        "name":    "Barriss Offee",
+        "aliases": ["Barriss Offee", "Barriss"],
         "url": "https://swgoh.gg/characters/barriss-offee/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_barris_light.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_barriss_light.png",
         "side": "light",
         "set1":    "Health",
         "set2":    "Health",
@@ -449,7 +449,7 @@
     },
     {
         "name":    "Clone Sergeant P1",
-        "aliases": ["Clone Sergeant P1", "CS1"],
+        "aliases": ["Clone Sergeant P1", "Clone Sergeant", "CS1"],
         "url": "https://swgoh.gg/characters/clone-sergeant-phase-i/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclonegreen.png",
         "side": "light",
@@ -608,10 +608,10 @@
         "cross":   "Protection"
     },
     {
-        "name":    "Datcha",
-        "aliases": ["Datcha"],
-        "url": "https://swgoh.gg/characters/datcha/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_datcha.png",
+        "name":    "Dathcha",
+        "aliases": ["Dathcha"],
+        "url": "https://swgoh.gg/characters/dathcha/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dathcha.png",
         "side": "light",
         "set1":    "Offense",
         "set2":    "Health",
