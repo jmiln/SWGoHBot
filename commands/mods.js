@@ -18,7 +18,7 @@ exports.run = (client, message, args) => {
             for(jx = 0; jx < character.aliases.length; jx++) {
                 if(searchName.toLowerCase() === character.aliases[jx].toLowerCase()) {
                     found = true;
-                    if((guildConf['fancyMods'] === true || guildConf['fancyMods'] === 'true')&& message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {    // Check to make sure the bot can post embeds
+                    if((guildConf['useEmbeds'] === true || guildConf['useEmbeds'] === 'true')&& message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {    // Check to make sure the bot can post embeds
                         if(character.set3 === "") { // If the character only has 2 recommended sets (one is a set of 4)
                             message.channel.send({embed:{ "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`, "author": { "name": character.name, "url": character.url, "icon_url": character.avatarURL }, "fields": [ { "name": "**### Sets ###**", "value": `* ${character.set1}\n* ${character.set2}` }, { "name": "**### Primaries ###**", "value": `**Square:**      ${character.square}\n**Arrow:**       ${character.arrow}\n**Diamond:**  ${character.diamond}\n**Triangle:**   ${character.triangle}\n**Circle:**        ${character.circle}\n**Cross:**        ${character.cross}` } ] }});
                         } else {
