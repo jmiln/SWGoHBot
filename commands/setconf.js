@@ -22,7 +22,7 @@ exports.run = (client, message, args) => {
         if(lowerKey ==="adminrole" || lowerKey === "modrole" || lowerKey === "welcomemessage") {
             // If they are trying to change any of the string based ones
             guildConf[key] = value;
-        } else if(lowerKey === "welcomemessageon" || lowerKey === "fancymods"i ||lowerKey === "useembeds") {
+        } else if(lowerKey === "welcomemessageon" || lowerKey === "fancymods" ||lowerKey === "useembeds") {
             // If they are trying to change a true/false one
             lowerValue = value.toLowerCase();
             if(lowerValue === "true" || lowerValue === "on" || lowerValue === "enable") {
