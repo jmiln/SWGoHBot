@@ -55,7 +55,7 @@ exports.conf = {
 
 exports.help = {
     name: 'setconf',
-    description: 'Used to set the bot\'s config settings',
+    description: 'Used to set the bot\'s config settings.',
     usage: 'setconf [key] [value]'
 };
 

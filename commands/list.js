@@ -39,7 +39,7 @@ exports.conf = {
 
 exports.help = {
     name: 'list',
-    description: '',
+    description: 'List stats about the bot.',
     usage: 'list [guilds]'
 };
 

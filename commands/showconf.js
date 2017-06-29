@@ -41,7 +41,7 @@ exports.conf = {
 
 exports.help = {
     name: 'showconf',
-    description: 'Shows your current configs',
+    description: 'Shows the current configs for your server.',
     usage: 'showconf'
 };
 

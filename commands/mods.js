@@ -54,6 +54,6 @@ exports.conf = {
 
 exports.help = {
     name: 'mods',
-    description: 'Shows the mods for a character',
+    description: 'Shows some suggested mods for the specified character.',
     usage: 'mods [character]'
 };

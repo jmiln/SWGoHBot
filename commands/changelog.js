@@ -11,6 +11,6 @@ exports.conf = {
 
 exports.help = {
     name: 'changelog',
-    description: 'Sends a link to join the test server where the changelog and announcements about the bot are',
+    description: 'Sends a link to join the test server where the changelog and announcements about the bot are.',
     usage: 'changelog'
 };

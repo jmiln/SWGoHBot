@@ -53,6 +53,6 @@ exports.conf = {
 
 exports.help = {
     name: 'activities',
-    description: 'Shows the daily activites',
+    description: 'Shows the daily guild activites.',
     usage: 'activities [day]'
 };

@@ -21,13 +21,13 @@ exports.run = (client, message, params) => {
 
             switch(type) {
                 case 'starwars':
-                    starwarsString += settings.prefix + command.help.name + "\n"; 
+                    starwarsString += `${settings.prefix}${pad('          ', command.help.name, false)} :: ${command.help.description}\n`; 
                     break;
                 case 'other':
-                    otherString += settings.prefix + command.help.name + "\n"; 
+                    otherString += `${settings.prefix}${pad('          ', command.help.name, false)} :: ${command.help.description}\n`; 
                     break;
                 case 'admin':
-                    adminString += settings.prefix + command.help.name + "\n"; 
+                    adminString += `${settings.prefix}${pad('          ', command.help.name, false)} :: ${command.help.description}\n`; 
                     break;
             }
         });
@@ -59,6 +59,16 @@ exports.run = (client, message, params) => {
     }
 };
 
+function pad(pad, str, padLeft) {
+  if (typeof str === 'undefined') 
+    return pad;
+  if (padLeft) {
+    return (pad + str).slice(-pad.length);
+  } else {
+    return (str + pad).substring(0, pad.length);
+  }
+}
+
 exports.conf = {
     enabled: true,
     guildOnly: false,
@@ -69,6 +79,6 @@ exports.conf = {
 
 exports.help = {
     name: 'help',
-    description: 'Displays all the available commands for your permission level.',
+    description: 'Displays info about available commands.',
     usage: 'help [command]'
 };
