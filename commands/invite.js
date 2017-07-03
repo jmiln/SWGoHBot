@@ -7,11 +7,11 @@ exports.conf = {
     guildOnly: false,
     aliases: ['inv'],
     permLevel: 0,
-    type: 'moderation'
+    type: 'other'
 };
 
 exports.help = {
     name: 'invite',
-    description: 'Sends the link to invite the boti to your server.',
+    description: 'Sends the link to invite the bot to your server.',
     usage: 'invite'
 };
