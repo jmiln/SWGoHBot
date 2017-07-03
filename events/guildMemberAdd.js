@@ -10,7 +10,7 @@ module.exports = member => {
     // This executes when a member joins, so let's welcome them!
     const guildSettings = member.client.guildSettings;
     const guildConf = guildSettings.get(member.guild.id);
-    console.log(`Member joined, name is ${member.displayName}, to the guild ${member.guild.id}`);
+    // console.log(`Member joined, name is ${member.displayName}, to the guild ${member.guild.id}`);
 
     // Our welcome message has a bit of a placeholder, let's fix
     if(guildConf.welcomeMessageOn) { // If they have it turned on

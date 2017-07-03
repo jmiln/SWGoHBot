@@ -1,5 +1,6 @@
 const PersistentCollection = require("djs-collection-persistent");
-const settings = require('../settings.json');
+// const settings = require('../settings.json');
+const defaultSettings = require('../data/defaultGuildSettings.json');
 
 
 exports.run = (client, message, args) => {
@@ -15,7 +16,7 @@ exports.run = (client, message, args) => {
         message.channel.send(`The following are the server's current configuration: \`\`\`${configKeys}\`\`\``);
     } else {
         let guildConf = {};
-        const defaultSettings = settings.defaultSettings;
+        // const defaultSettings = settings.defaultSettings;
 
         for(val in defaultSettings) {
             guildConf[val] = defaultSettings[val];

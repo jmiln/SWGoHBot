@@ -1,9 +1,10 @@
 const PersistentCollection = require("djs-collection-persistent");
 const settings = require('../settings.json');
+const defaultSettings = require('../data/defaultGuildSettings.json');
 
 module.exports = guild => {
     let guildConf = {};
-    const defaultSettings = settings.defaultSettings;
+    // const defaultSettings = settings.defaultSettings;
 
     for(val in defaultSettings) {
         guildConf[val] = defaultSettings[val];

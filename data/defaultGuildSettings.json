@@ -1,0 +1,7 @@
+{
+    "adminRole": "Administrator",
+    "modRole": "Moderator",
+    "welcomeMessageOn": false,
+    "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
+    "useEmbeds": true
+}
