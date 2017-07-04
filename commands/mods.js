@@ -15,31 +15,24 @@ exports.run = (client, message, args) => {
 
     let found = false;
 
+    embeds = false;
+    if(guildConf['useEmbeds'] === true && message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+        embeds = true;
+    }
+
     if(searchName !== "") {
         for(ix = 0; ix < charList.length; ix++) {
             var character = charList[ix];
             for(jx = 0; jx < character.aliases.length; jx++) {
                 if(searchName.toLowerCase() === character.aliases[jx].toLowerCase()) {
-
                     // Found the character, now just need to show it
-
                     found = true;
-                    embeds = false;
-                    if(guildConf['useEmbeds'] === true && message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
-                        embeds = true;
-                    }
-
-                    let fields = [];
 
                     if(embeds) {  // if Embeds are enabled
+                        let fields = [];
                         for(modSet in character.mods) {
                             let mods = character.mods[modSet];
-                            let modSetString = "";
-                            if(mods.sets.length === 3) {
-                                modSetString = "* " + mods.sets.join("\n* ");
-                            } else {
-                                modSetString = "* " + mods.sets.join("\n* ") + "\n";
-                            }
+                            let modSetString =  "* " + mods.sets.join("\n* ");
 
                             let modPrimaryString = `**Square:**      ${mods.square}\n**Arrow:**       ${mods.arrow}\n**Diamond:**  ${mods.diamond}\n`;
                             modPrimaryString +=    `**Triangle:**   ${mods.triangle}\n**Circle:**        ${mods.circle}\n**Cross:**        ${mods.cross}`;

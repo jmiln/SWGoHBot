@@ -1,15 +1,15 @@
 const PersistentCollection = require("djs-collection-persistent");
 const chalk = require('chalk');
 const settings = require("../settings.json");
+const defaultSettings = require('../data/defaultGuildSettings.json');
+
+
 module.exports = client => {
     // Get the settings to work with
     const guildSettings = client.guildSettings;
 
     // Grab a list of all the guilds the bot is in
     const guildList = client.guilds.keyArray();
-
-    // Get the default settings that each guild needs
-    defaultSettings = settings.defaultSettings;
 
     // Give the settings a place to be stored
     defaultGuildConf = {};
