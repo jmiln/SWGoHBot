@@ -54,6 +54,7 @@ client.elevation = message => {
 
     const guildSettings = client.guildSettings;
     const guildConf = guildSettings.get(message.guild.id);
+    // console.log(`message in ${message.guild.id}`);
     // Everyone
     let permlvl = 0;
 
