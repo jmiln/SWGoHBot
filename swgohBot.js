@@ -53,11 +53,11 @@ client.elevation = message => {
        is then sent to the command handler for verification*/
 
     const guildSettings = client.guildSettings;
-    const guildConf = guildSettings.get(message.guild.id);
     // Everyone
     let permlvl = 0;
 
-    if(guildConf) {
+    if(message.guild.id) {
+        const guildConf = guildSettings.get(message.guild.id);
         // The mod role set in each guild
         let mod_role = message.guild.roles.find('name', guildConf.modRole);
         if (mod_role && message.member.roles.has(mod_role.id)) permlvl = 2;
