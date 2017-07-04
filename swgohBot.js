@@ -53,6 +53,7 @@ client.elevation = message => {
        is then sent to the command handler for verification*/
 
     const guildSettings = client.guildSettings;
+    
     // Everyone
     let permlvl = 0;
 

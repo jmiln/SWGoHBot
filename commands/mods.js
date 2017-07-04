@@ -1,7 +1,10 @@
 var fs = require("fs");
-var charList = JSON.parse(fs.readFileSync("data/mods.json"));
+// var charList = JSON.parse(fs.readFileSync("data/mods.json"));
+var charList = JSON.parse(fs.readFileSync("data/characters.json"));
 var settings = require("../settings.json");
 const PersistentCollection = require("djs-collection-persistent");
+
+const util = require('util');
 
 
 exports.run = (client, message, args) => {
@@ -17,18 +20,48 @@ exports.run = (client, message, args) => {
             var character = charList[ix];
             for(jx = 0; jx < character.aliases.length; jx++) {
                 if(searchName.toLowerCase() === character.aliases[jx].toLowerCase()) {
+
+                    // Found the character, now just need to show it
+
                     found = true;
-                    if((guildConf['useEmbeds'] === true || guildConf['useEmbeds'] === 'true')&& message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {    // Check to make sure the bot can post embeds
-                        if(character.set3 === "") { // If the character only has 2 recommended sets (one is a set of 4)
-                            message.channel.send({embed:{ "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`, "author": { "name": character.name, "url": character.url, "icon_url": character.avatarURL }, "fields": [ { "name": "**### Sets ###**", "value": `* ${character.set1}\n* ${character.set2}` }, { "name": "**### Primaries ###**", "value": `**Square:**      ${character.square}\n**Arrow:**       ${character.arrow}\n**Diamond:**  ${character.diamond}\n**Triangle:**   ${character.triangle}\n**Circle:**        ${character.circle}\n**Cross:**        ${character.cross}` } ] }});
-                        } else {
-                            message.channel.send({embed:{ "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`, "author": { "name": character.name, "url": character.url, "icon_url": character.avatarURL }, "fields": [ { "name": "**### Sets ###**", "value": `* ${character.set1}\n* ${character.set2}\n* ${character.set3}` }, { "name": "**### Primaries ###**", "value": `**Square:**      ${character.square}\n**Arrow:**       ${character.arrow}\n**Diamond:**  ${character.diamond}\n**Triangle:**   ${character.triangle}\n**Circle:**        ${character.circle}\n**Cross:**        ${character.cross}` } ] }});
+                    embeds = false;
+                    if(guildConf['useEmbeds'] === true && message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+                        embeds = true;
+                    }
+
+                    let fields = [];
+
+                    if(embeds) {  // if Embeds are enabled
+                        for(modSet in character.mods) {
+                            let mods = character.mods[modSet];
+                            let modSetString = "";
+                            if(mods.sets.length === 3) {
+                                modSetString = "* " + mods.sets.join("\n* ");
+                            } else {
+                                modSetString = "* " + mods.sets.join("\n* ") + "\n";
+                            }
+
+                            let modPrimaryString = `**Square:**      ${mods.square}\n**Arrow:**       ${mods.arrow}\n**Diamond:**  ${mods.diamond}\n`;
+                            modPrimaryString +=    `**Triangle:**   ${mods.triangle}\n**Circle:**        ${mods.circle}\n**Cross:**        ${mods.cross}`;
+
+                            fields.push({
+                                "name": modSet,
+                                "value": `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
+                                "inline": true
+                            });
                         }
-                    } else {    // Else, just post it as a codeblock
-                        if(character.set3 === "") { // If the character only has 2 recommended sets (one is a set of 4)
-                            message.channel.send(` * ${character.name} * \n### Sets ### \n* ${character.set1} \n* ${character.set2}\n### Primaries ###\n* Square:   ${character.square}\n* Arrow:    ${character.arrow}\n* Diamond:  ${character.diamond}\n* Triangle: ${character.triangle}\n* Circle:   ${character.circle}\n* Cross:    ${character.cross}`, { code: 'md' });
-                        } else {
-                            message.channel.send(` * ${character.name} * \n### Sets ### \n* ${character.set1} \n* ${character.set2}\n* ${character.set3}\n### Primaries ###\n* Square:   ${character.square}\n* Arrow:    ${character.arrow}\n* Diamond:  ${character.diamond}\n* Triangle: ${character.triangle}\n* Circle:   ${character.circle}\n* Cross:    ${character.cross}`, { code: 'md' });
+                        message.channel.send({embed:{ "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`, "author": { "name": character.name, "url": character.url, "icon_url": character.avatarURL }, "fields": fields }});
+                    } else {  // Embeds are disabled
+                        for(modSet in character.mods) {
+                            let mods = character.mods[modSet];
+                            let modSetString = "";
+
+                            modSetString = "* " + mods.sets.join("\n* ");
+
+                            let modPrimaryString = `* Square:   ${mods.square}  \n* Arrow:    ${mods.arrow} \n* Diamond:  ${mods.diamond}\n`;
+                            modPrimaryString +=    `* Triangle: ${mods.triangle}\n* Circle:   ${mods.circle}\n* Cross:    ${mods.cross}`;
+
+                            message.channel.send(` * ${character.name} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`, { code: 'md' });
                         }
                     }
                 }
