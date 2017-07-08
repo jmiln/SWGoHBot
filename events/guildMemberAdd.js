@@ -16,12 +16,13 @@ module.exports = member => {
     if(guildConf.welcomeMessageOn && guildConf.welcomeMessage !== "") { // If they have it turned on, and it's not empty
         const welcomeMessage = guildConf.welcomeMessage.toString();
         console.log(`New member joined, welcome message should be "${welcomeMessage}" before the replalce.`)
-        if(welcomeMessage.includes("{{user}}")) {  // So id doesn't crash if it's not there
-            welcomeMessage = welcomeMessage.replace("{{user}}", member.user.tag);
-            console.log(`And welcome message should be "${welcomeMessage}" after the replalce.`)
-        }
+
         // We'll send to the default channel - not the best practice, but whatever
-        member.guild.defaultChannel.send(welcomeMessage).catch(console.error);
+        if(welcomeMessage.includes("{{user}}")) {  // So id doesn't crash if it's not there
+            member.guild.defaultChannel.send(welcomeMessage.replace("{{user}}", member.user.tag)).catch(console.error);
+        } else {
+            member.guild.defaultChannel.send(welcomeMessage).catch(console.error);
+        }
     }
 
 };
