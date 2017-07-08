@@ -17,7 +17,7 @@ module.exports = member => {
         const welcomeMessage = guildConf.welcomeMessage.toString();
         console.log(`New member joined, welcome message should be "${welcomeMessage}" before the replalce.`)
         if(welcomeMessage.includes("{{user}}")) {  // So id doesn't crash if it's not there
-            welcomeMessage.replace("{{user}}", member.user.tag);
+            welcomeMessage = welcomeMessage.replace("{{user}}", member.user.tag);
             console.log(`And welcome message should be "${welcomeMessage}" after the replalce.`)
         }
         // We'll send to the default channel - not the best practice, but whatever
