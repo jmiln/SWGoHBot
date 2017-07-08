@@ -57,7 +57,7 @@ client.elevation = message => {
     // Everyone
     let permlvl = 0;
 
-    if(message.guild.id) {
+    if(message.guild) {
         const guildConf = guildSettings.get(message.guild.id);
         // The mod role set in each guild
         let mod_role = message.guild.roles.find('name', guildConf.modRole);
