@@ -48,7 +48,7 @@ client.reload = command => {
     });
 };
 
-client.elevation = message => {
+client.elevation = async(message) => {
     /* This function should resolve to an ELEVATION level which
        is then sent to the command handler for verification*/
 
@@ -58,21 +58,23 @@ client.elevation = message => {
     let permlvl = 0;
 
     if(message.guild.id) {
-        const guildConf = guildSettings.get(message.guild.id);
-        // The mod role set in each guild
-        let mod_role = message.guild.roles.find('name', guildConf.modRole);
-        if (mod_role && message.member.roles.has(mod_role.id)) permlvl = 2;
-
+        const guildConf = await guildSettings.get(message.guild.id);
+        
         // The admin role set in each of the guilds
         let admin_role = message.guild.roles.find('name', guildConf.adminRole);
-        if (admin_role && message.member.roles.has(admin_role.id)) permlvl = 3;
-    } 
+        if (admin_role && message.member.roles.has(admin_role.id)) return permlvl = 3;
 
+        // The mod role set in each guild
+        let mod_role = message.guild.roles.find('name', guildConf.modRole);
+        if (mod_role && message.member.roles.has(mod_role.id)) return permlvl = 2;
+
+    }
+        
     // The owner of the guild is automatically an admin in that guild
-    if (message.author.id === message.guild.owner.id) permlvl = 3;
+    if (message.author.id === message.guild.owner.id) return permlvl = 3;
 
     // Me, the maker of the bot
-    if (message.author.id === settings.ownerid) permlvl = 4;
+    if (message.author.id === settings.ownerid) return permlvl = 4;
 
     return permlvl;
 };
