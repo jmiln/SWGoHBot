@@ -12,6 +12,6 @@ exports.conf = {
 
 exports.help = {
     name: 'modsets',
-    description: 'Shows how many of each kind of mod you need for a set',
+    description: 'Shows how many of each kind of mod you need for a set.',
     usage: 'modsets'
 };

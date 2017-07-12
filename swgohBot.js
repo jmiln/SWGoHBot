@@ -57,9 +57,13 @@ client.elevation = async(message) => {
     // Everyone
     let permlvl = 0;
 
-    if(message.guild.id) {
+    //  If it doesn't exist for some reason, don't let em work. (PMs maybe?)
+    if(!message.guild) return permlvl;
+
+    // Check again just in case
+    if(message.guild) {
         const guildConf = await guildSettings.get(message.guild.id);
-        
+
         // The admin role set in each of the guilds
         let admin_role = message.guild.roles.find('name', guildConf.adminRole);
         if (admin_role && message.member.roles.has(admin_role.id)) return permlvl = 3;
@@ -67,7 +71,6 @@ client.elevation = async(message) => {
         // The mod role set in each guild
         let mod_role = message.guild.roles.find('name', guildConf.modRole);
         if (mod_role && message.member.roles.has(mod_role.id)) return permlvl = 2;
-
     }
         
     // The owner of the guild is automatically an admin in that guild
