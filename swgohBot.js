@@ -57,6 +57,10 @@ client.elevation = message => {
     // Everyone
     let permlvl = 0;
 
+    //  If it doesn't exist for some reason, don't let em work. (PMs maybe?)
+    if(!message.guild) return permlvl;
+
+    // Check again just in case
     if(message.guild) {
         const guildConf = guildSettings.get(message.guild.id);
         // The mod role set in each guild
