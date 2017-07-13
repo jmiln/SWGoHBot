@@ -48,12 +48,12 @@ client.reload = command => {
     });
 };
 
-client.elevation = async(message) => {
+client.elevation = message => {
     /* This function should resolve to an ELEVATION level which
        is then sent to the command handler for verification*/
 
     const guildSettings = client.guildSettings;
-    
+
     // Everyone
     let permlvl = 0;
 
@@ -62,7 +62,7 @@ client.elevation = async(message) => {
 
     // Check again just in case
     if(message.guild) {
-        const guildConf = await guildSettings.get(message.guild.id);
+        const guildConf = guildSettings.get(message.guild.id);
 
         // The admin role set in each of the guilds
         let admin_role = message.guild.roles.find('name', guildConf.adminRole);
@@ -72,7 +72,7 @@ client.elevation = async(message) => {
         let mod_role = message.guild.roles.find('name', guildConf.modRole);
         if (mod_role && message.member.roles.has(mod_role.id)) return permlvl = 2;
     }
-        
+
     // The owner of the guild is automatically an admin in that guild
     if (message.author.id === message.guild.owner.id) return permlvl = 3;
 
