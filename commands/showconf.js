@@ -5,6 +5,9 @@ const defaultSettings = require('../data/defaultGuildSettings.json');
 
 exports.run = (client, message, args) => {
     const guildSettings = client.guildSettings;
+
+    if(!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
+
     const guildConf = guildSettings.get(message.guild.id);
 
     if(guildConf) {
