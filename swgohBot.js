@@ -72,7 +72,6 @@ client.elevation = message => {
         let mod_role = message.guild.roles.find('name', guildConf.modRole);
         if (mod_role && message.member.roles.has(mod_role.id)) return permlvl = 2;
     }
-
     // The owner of the guild is automatically an admin in that guild
     if (message.author.id === message.guild.owner.id) return permlvl = 3;
 
