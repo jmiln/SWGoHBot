@@ -4,11 +4,16 @@ const settings = require('../settings.json');
 
 exports.run = (client, message, args) => {
     const guildSettings = client.guildSettings;
+
+    if(!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
+
     const guildConf = guildSettings.get(message.guild.id); 
 
     if(guildConf) {
-        if(message.member.roles.has(guildConf["adminRole"] || message.author.id === message.guild.owner.id)) {
-            return message.reply(`Sorry, but either you're not an admin, or your server leader has not set up the configs`);
+        if(!message.author.id === message.guild.owner.id) {
+            if(!message.member.roles.has(guildConf["adminRole"])) {
+                return message.reply(`Sorry, but either you're not an admin, or your server leader has not set up the configs`);
+            }
         }
         const key = args[0];
         // Since we inserted an object, it comes back as an object, and we can use it with the same properties:

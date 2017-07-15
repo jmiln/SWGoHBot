@@ -9,6 +9,8 @@ const util = require('util');
 
 exports.run = (client, message, args) => {
     const guildSettings = client.guildSettings;
+
+    if(!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
     const guildConf = guildSettings.get(message.guild.id);
 
     let searchName = String(args.join(' ')).toLowerCase().replace(/[^\w\s]/gi, '');

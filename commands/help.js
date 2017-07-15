@@ -2,9 +2,6 @@ const settings = require('../settings.json');
 
 exports.run = (client, message, params) => {
 
-    guildSettings = client.guildSettings;
-    guildConf = guildSettings.get(message.guild.id);
-
     if (!params[0]) {  // Show the list of commands
         const commandNames = Array.from(client.commands.keys());
         const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
@@ -32,22 +29,7 @@ exports.run = (client, message, params) => {
             }
         });
 
-        if(guildConf) {
-            const adminRole = message.guild.roles.find("name", guildConf.adminRole);
-            if(message.author.id === message.guild.owner.id) {
-                helpString += `\n${starwarsString}\n${otherString}\n${adminString}`;
-            } else if(adminRole && message.member.has(adminRole.id)) {  // If the author does not have the admin role
-                helpString += `\n${starwarsString}\n${otherString}\n${adminString}`;
-            } else {
-                helpString += `\n${starwarsString}\n${otherString}`;
-            }
-        } else {
-            if(message.author.id === message.guild.owner.id) {
-                helpString += `\n${starwarsString}\n${otherString}\n${adminString}`;
-            } else {
-                helpString += `\n${starwarsString}\n${otherString}`;
-            }
-        }
+        helpString += `\n${starwarsString}\n${otherString}\n${adminString}`;
 
         message.channel.send(helpString, {code:'asciidoc'});
     } else {  // Show the help for a specific command
