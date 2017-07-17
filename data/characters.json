@@ -5,7 +5,7 @@
         "url": "https://swgoh.gg/characters/aayla-secura/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_aaylasecura.png",
         "side": "light",
-		"factions" : {"support", "jedi", "galactic republic"},
+        "factions" : ["support", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -28,7 +28,7 @@
         "url": "https://swgoh.gg/characters/admiral-ackbar/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ackbaradmiral.png",
         "side": "light",
-		"factions" : {"support", "rebel", "fleet commander"},
+        "factions" : ["support", "rebel", "fleet commander"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -51,7 +51,7 @@
         "url": "https://swgoh.gg/characters/ahsoka-tano/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ahsoka.png",
         "side": "light",
-		"factions" : {"attacker", "jedi", "galactic republic"},
+        "factions" : ["attacker", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -74,7 +74,7 @@
         "url": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ahsokaadult.png",
         "side": "light",
-		"factions" : {"attacker", "rebel"},
+        "factions" : ["attacker", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -97,7 +97,7 @@
         "url": "https://swgoh.gg/characters/asajj-ventress/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ventress.png",
         "side": "dark",
-		"factions" : {"support", "nightsister", "separatist"},
+        "factions" : ["support", "nightsister", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -120,7 +120,7 @@
         "url": "https://swgoh.gg/characters/b2-super-battle-droid/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b2.png",
         "side": "dark",
-		"factions" : {"tank", "droid", "separatist"},
+        "factions" : ["tank", "droid", "separatist"],
         "mods": {
             "Arena (with HK-47 lead)": {
                 "sets": [
@@ -156,7 +156,7 @@
         "url": "https://swgoh.gg/characters/barriss-offee/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_barriss_light.png",
         "side": "light",
-		"factions" : {"healer", "jedi", "galactic republic"},
+        "factions" : ["healer", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -179,7 +179,7 @@
         "url": "https://swgoh.gg/characters/baze-malbus/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bazemalbus.png",
         "side": "light",
-		"factions" : {"tank", "rebel"},
+        "factions" : ["tank", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -202,7 +202,7 @@
         "url": "https://swgoh.gg/characters/biggs-darklighter/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_biggs.png",
         "side": "light",
-		"factions" : {"support", "rebel"},
+        "factions" : ["support", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -225,7 +225,7 @@
         "url": "https://swgoh.gg/characters/bistan/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bistan.png",
         "side": "light",
-		"factions" : {"attacker", "rebel"},
+        "factions" : ["attacker", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -248,7 +248,7 @@
         "url": "https://swgoh.gg/characters/boba-fett/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bobafett.png",
         "side": "dark",
-		"factions" : {"attacker", "scoundrel", "bounty hunter"},
+        "factions" : ["attacker", "scoundrel", "bounty hunter"],
         "mods": {
             "Arena (Attacker)": {
                 "sets": [
@@ -297,7 +297,7 @@
         "url": "https://swgoh.gg/characters/bodhi-rook/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bodhi.png",
         "side": "light",
-		"factions" : {"support", "rebel"},
+        "factions" : ["support", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -320,7 +320,7 @@
         "url": "https://swgoh.gg/characters/cc-2224-cody/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_cody.png",
         "side": "light",
-		"factions" : {"attacker", "human", "clone trooper", "galactic republic"},
+        "factions" : ["attacker", "human", "clone trooper", "galactic republic"],
         "mods": {
             "Arena (Attacker)": {
                 "sets": [
@@ -356,7 +356,7 @@
         "url": "https://swgoh.gg/characters/ct-21-0408-echo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_echo.png",
         "side": "light",
-		"factions" : {"support", "human", "clone trooper", "galactic republic"},
+        "factions" : ["support", "human", "clone trooper", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -379,7 +379,7 @@
         "url": "https://swgoh.gg/characters/ct-5555-fives/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_fives.png",
         "side": "light",
-		"factions" : {"tank", "human", "clone trooper", "galactic republic"},
+        "factions" : ["tank", "human", "clone trooper", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -402,7 +402,7 @@
         "url": "https://swgoh.gg/characters/ct-7567-rex/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_rex.png",
         "side": "light",
-		"factions" : {"support", "human", "clone trooper", "galactic republic"},
+        "factions" : ["support", "human", "clone trooper", "galactic republic"],
         "mods": {
             "Arena (Leader)": {
                 "sets": [
@@ -438,7 +438,7 @@
         "url": "https://swgoh.gg/characters/cad-bane/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cadbane.png",
         "side": "dark",
-		"factions" : {"support", "scoundrel", "bounty hunter"},
+        "factions" : ["support", "scoundrel", "bounty hunter"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -461,7 +461,7 @@
         "url": "https://swgoh.gg/characters/captain-phasma/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_phasma.png",
         "side": "dark",
-		"factions" : {"support", "human", "first order"},
+        "factions" : ["support", "human", "first order"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -484,7 +484,7 @@
         "url": "https://swgoh.gg/characters/cassian-andor/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cassian.png",
         "side": "light",
-		"factions" : {"support", "rebel"},
+        "factions" : ["support", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -507,7 +507,7 @@
         "url": "https://swgoh.gg/characters/chief-chirpa/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chirpa.png",
         "side": "light",
-		"factions" : {"support", "ewok"},
+        "factions" : ["support", "ewok"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -530,7 +530,7 @@
         "url": "https://swgoh.gg/characters/chief-nebit/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_nebit.png",
         "side": "light",
-		"factions" : {"tank", "jawa"},
+        "factions" : ["tank", "jawa"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -553,7 +553,7 @@
         "url": "https://swgoh.gg/characters/chirrut-imwe",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chirrut.png",
         "side": "light",
-		"factions" : {"attacker", "rebel"},
+        "factions" : ["attacker", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -576,7 +576,7 @@
         "url": "https://swgoh.gg/characters/chopper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chopper.png",
         "side": "light",
-		"factions" : {"support", "droid", "rebel", "phoenix"},
+        "factions" : ["support", "droid", "rebel", "phoenix"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -599,7 +599,7 @@
         "url": "https://swgoh.gg/characters/clone-sergeant-phase-i/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclonegreen.png",
         "side": "light",
-		"factions" : {"attacker", "human", "clone trooper", "galactic republic"},
+        "factions" : ["attacker", "human", "clone trooper", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -622,7 +622,7 @@
         "url": "https://swgoh.gg/characters/clone-wars-chewbacca/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chewbacca.png",
         "side": "light",
-		"factions" : {"tank", "scoundrel", "galactic republic"},
+        "factions" : ["tank", "scoundrel", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -645,7 +645,7 @@
         "url": "https://swgoh.gg/characters/coruscant-underworld-police/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_coruscantpolice.png",
         "side": "light",
-		"factions" : {"support", "galactic republic"},
+        "factions" : ["support", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -668,7 +668,7 @@
         "url": "https://swgoh.gg/characters/count-dooku/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dooku.png",
         "side": "dark",
-		"factions" : {"support", "sith", "separatist"},
+        "factions" : ["support", "sith", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -691,7 +691,7 @@
         "url": "https://swgoh.gg/characters/darth-maul/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_maul.png",
         "side": "dark",
-		"factions" : {"attacker", "sith"},
+        "factions" : ["attacker", "sith"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -714,7 +714,7 @@
         "url": "https://swgoh.gg/characters/darth-nihilus/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nihilus.png",
         "side": "dark",
-		"factions" : {"support", "sith"},
+        "factions" : ["support", "sith"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -750,7 +750,7 @@
         "url": "https://swgoh.gg/characters/darth-sidious/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sidious.png",
         "side": "dark",
-		"factions" : {"attacker", "sith"},
+        "factions" : ["attacker", "sith"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -773,7 +773,7 @@
         "url": "https://swgoh.gg/characters/darth-vader/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_vader.png",
         "side": "dark",
-		"factions" : {"attacker", "human", "sith", "empire"},
+        "factions" : ["attacker", "human", "sith", "empire"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -809,7 +809,7 @@
         "url": "https://swgoh.gg/characters/dathcha/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dathcha.png",
         "side": "light",
-		"factions" : {"support", "jawa"},
+        "factions" : ["support", "jawa"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -832,7 +832,7 @@
         "url": "https://swgoh.gg/characters/death-trooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperdeath.png",
         "side": "dark",
-		"factions" : {"attacker", "empire", "imperial trooper"},
+        "factions" : ["attacker", "empire", "imperial trooper"],
         "mods": {
             "Arena (Krennic Lead)": {
                 "sets": [
@@ -881,7 +881,7 @@
         "url": "https://swgoh.gg/characters/dengar/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dengar.png",
         "side": "dark",
-		"factions" : {"attacker", "scoundrel", "bounty hunter"},
+        "factions" : ["attacker", "scoundrel", "bounty hunter"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -904,7 +904,7 @@
         "url": "https://swgoh.gg/characters/director-krennic/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_krennic.png",
         "side": "dark",
-		"factions" : {"support", "human", "empire"},
+        "factions" : ["support", "human", "empire"],
         "mods": {
             "Arena (Palp Lead)": {
                 "sets": [
@@ -953,7 +953,7 @@
         "url": "https://swgoh.gg/characters/eeth-koth/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_eethkoth.png",
         "side": "light",
-		"factions" : {"support", "jedi", "galactic republic"},
+        "factions" : ["support", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -976,7 +976,7 @@
         "url": "https://swgoh.gg/characters/emperor-palpatine/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_palpatineemperor.png",
         "side": "dark",
-		"factions" : {"support", "sith", "empire"},
+        "factions" : ["support", "sith", "empire"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1012,7 +1012,7 @@
         "url": "https://swgoh.gg/characters/ewok-elder/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewokchief.png",
         "side": "light",
-		"factions" : {"healer", "ewok"},
+        "factions" : ["healer", "ewok"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1035,7 +1035,7 @@
         "url": "https://swgoh.gg/characters/ewok-scout/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewokscout.png",
         "side": "light",
-		"factions" : {"attacker", "ewok"},
+        "factions" : ["attacker", "ewok"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1058,7 +1058,7 @@
         "url": "https://swgoh.gg/characters/ezra-bridger/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ezra_s3.png",
         "side": "light",
-		"factions" : {"attacker", "jedi", "rebel", "phoenix"},
+        "factions" : ["attacker", "jedi", "rebel", "phoenix"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1081,7 +1081,7 @@
         "url": "https://swgoh.gg/characters/finn/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_finnjakku.png",
         "side": "light",
-		"factions" : {"tank", "human", "resistance"},
+        "factions" : ["tank", "human", "resistance"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1104,7 +1104,7 @@
         "url": "https://swgoh.gg/characters/first-order-officer/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorderofficer.png",
         "side": "dark",
-		"factions" : {"support", "human", "first order"},
+        "factions" : ["support", "human", "first order"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1127,7 +1127,7 @@
         "url": "https://swgoh.gg/characters/first-order-stormtrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstordertrooper.png",
         "side": "dark",
-		"factions" : {"tank", "human", "first order"},
+        "factions" : ["tank", "human", "first order"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1150,7 +1150,7 @@
         "url": "https://swgoh.gg/characters/first-order-tie-pilot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstordertiepilot.png",
         "side": "dark",
-		"factions" : {"attacker", "human", "first order"},
+        "factions" : ["attacker", "human", "first order"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1173,7 +1173,7 @@
         "url": "https://swgoh.gg/characters/gamorrean-guard/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_gamorreanguard.png",
         "side": "dark",
-		"factions" : {"tank", "scoundrel"},
+        "factions" : ["tank", "scoundrel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1196,7 +1196,7 @@
         "url": "https://swgoh.gg/characters/gar-saxon",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_gar_saxon.png",
         "side": "dark",
-		"factions" : {"tank", "empire"},
+        "factions" : ["tank", "empire"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1219,7 +1219,7 @@
         "url": "https://swgoh.gg/characters/garazeb-zeb-orrelios/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zeb_s3.png",
         "side": "light",
-		"factions" : {"tank", "rebel", "phoenix"},
+        "factions" : ["tank", "rebel", "phoenix"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1242,7 +1242,7 @@
         "url": "https://swgoh.gg/characters/general-grievous/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_grievous.png",
         "side": "dark",
-		"factions" : {"attacker", "droid", "separatist"},
+        "factions" : ["attacker", "droid", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1278,7 +1278,7 @@
         "url": "https://swgoh.gg/characters/general-kenobi/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwangeneral.png",
         "side": "light",
-		"factions" : {"tank", "jedi", "galactic republic"},
+        "factions" : ["tank", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1301,7 +1301,7 @@
         "url": "https://swgoh.gg/characters/general-veers/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_veers.png",
         "side": "dark",
-		"factions" : {"support", "empire", "imperial trooper"},
+        "factions" : ["support", "empire", "imperial trooper"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1337,7 +1337,7 @@
         "url": "https://swgoh.gg/characters/geonosian-soldier/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_soldier.png",
         "side": "dark",
-		"factions" : {"attacker", "geonosian", "separatist"},
+        "factions" : ["attacker", "geonosian", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1360,7 +1360,7 @@
         "url": "https://swgoh.gg/characters/geonosian-spy/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_spy.png",
         "side": "dark",
-		"factions" : {"attacker", "geonosian", "separatist"},
+        "factions" : ["attacker", "geonosian", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1383,7 +1383,7 @@
         "url": "https://swgoh.gg/characters/grand-master-yoda/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_grandmasteryoda.png",
         "side": "light",
-		"factions" : {"support", "jedi", "galactic republic"},
+        "factions" : ["support", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1406,7 +1406,7 @@
         "url": "https://swgoh.gg/characters/grand-moff-tarkin/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tarkinadmiral.png",
         "side": "dark",
-		"factions" : {"support", "human", "empire", "fleet commander"},
+        "factions" : ["support", "human", "empire", "fleet commander"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1429,7 +1429,7 @@
         "url": "https://swgoh.gg/characters/grand-admiral-thrawn/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_thrawn.png",
         "side": "dark",
-		"factions" : {"support", "empire"},
+        "factions" : ["support", "empire"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1452,7 +1452,7 @@
         "url": "https://swgoh.gg/characters/greedo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_greedo.png",
         "side": "dark",
-		"factions" : {"attacker", "scoundrel", "bounty hunter"},
+        "factions" : ["attacker", "scoundrel", "bounty hunter"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1475,7 +1475,7 @@
         "url": "https://swgoh.gg/characters/hk-47/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hk47.png",
         "side": "dark",
-		"factions" : {"support", "droid"},
+        "factions" : ["support", "droid"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1498,7 +1498,7 @@
         "url": "https://swgoh.gg/characters/han-solo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_han.png",
         "side": "light",
-		"factions" : {"attacker", "scoundrel", "rebel"},
+        "factions" : ["attacker", "scoundrel", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1521,7 +1521,7 @@
         "url": "https://swgoh.gg/characters/hera-syndulla/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hera_s3.png",
         "side": "light",
-		"factions" : {"support", "rebel", "phoenix"},
+        "factions" : ["support", "rebel", "phoenix"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1544,7 +1544,7 @@
         "url": "https://swgoh.gg/characters/hoth-rebel-scout/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelhothscout.png",
         "side": "light",
-		"factions" : {"attacker", "rebel"},
+        "factions" : ["attacker", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1567,7 +1567,7 @@
         "url": "https://swgoh.gg/characters/hoth-rebel-soldier/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelhoth.png",
         "side": "light",
-		"factions" : {"support", "rebel"},
+        "factions" : ["support", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1590,7 +1590,7 @@
         "url": "https://swgoh.gg/characters/ig-100-magnaguard/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_magnaguard.png",
         "side": "dark",
-		"factions" : {"tank", "droid", "separatist"},
+        "factions" : ["tank", "droid", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1613,7 +1613,7 @@
         "url": "https://swgoh.gg/characters/ig-86-sentinel-droid/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ig86.png",
         "side": "dark",
-		"factions" : {"attacker", "droid"},
+        "factions" : ["attacker", "droid"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1636,7 +1636,7 @@
         "url": "https://swgoh.gg/characters/ig-88/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ig88.png",
         "side": "dark",
-		"factions" : {"attacker", "droid", "scoundrel", "bounty hunter"},
+        "factions" : ["attacker", "droid", "scoundrel", "bounty hunter"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1659,7 +1659,7 @@
         "url": "https://swgoh.gg/characters/ima-gun-di/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_imagundi.png",
         "side": "light",
-		"factions" : {"support", "jedi", "galactic republic"},
+        "factions" : ["support", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1682,7 +1682,7 @@
         "url": "https://swgoh.gg/characters/imperial-super-commando/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_imperial_super_commando.png",
         "side": "dark",
-		"factions" : {"attacker", "empire"},
+        "factions" : ["attacker", "empire"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1705,7 +1705,7 @@
         "url": "https://swgoh.gg/characters/jawa/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_jawa.png",
         "side": "light",
-		"factions" : {"attacker", "jawa"},
+        "factions" : ["attacker", "jawa"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1728,7 +1728,7 @@
         "url": "https://swgoh.gg/characters/jawa-engineer/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_engineer.png",
         "side": "light",
-		"factions" : {"healer", "jawa"},
+        "factions" : ["healer", "jawa"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1751,7 +1751,7 @@
         "url": "https://swgoh.gg/characters/jawa-scavenger/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_scavenger.png",
         "side": "light",
-		"factions" : {"support", "jawa"},
+        "factions" : ["support", "jawa"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1774,7 +1774,7 @@
         "url": "https://swgoh.gg/characters/jedi-consular/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_consular.png",
         "side": "light",
-		"factions" : {"healer", "jedi", "galactic republic"},
+        "factions" : ["healer", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1797,7 +1797,7 @@
         "url": "https://swgoh.gg/characters/jedi-knight-anakin/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_anakinknight.png",
         "side": "light",
-		"factions" : {"attacker", "human", "jedi", "galactic republic"},
+        "factions" : ["attacker", "human", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1820,7 +1820,7 @@
         "url": "https://swgoh.gg/characters/jedi-knight-guardian/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_guardian.png",
         "side": "light",
-		"factions" : {"tank", "jedi", "galactic republic"},
+        "factions" : ["tank", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1843,7 +1843,7 @@
         "url": "https://swgoh.gg/characters/jyn-erso/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jyn.png",
         "side": "light",
-		"factions" : {"attacker", "rebel"},
+        "factions" : ["attacker", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1866,7 +1866,7 @@
         "url": "https://swgoh.gg/characters/k-2so/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_k2so.png",
         "side": "light",
-		"factions" : {"tank", "droid", "rebel"},
+        "factions" : ["tank", "droid", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1889,7 +1889,7 @@
         "url": "https://swgoh.gg/characters/kanan-jarrus/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kanan_s3.png",
         "side": "light",
-		"factions" : {"tank", "jedi", "rebel", "phoenix"},
+        "factions" : ["tank", "jedi", "rebel", "phoenix"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1912,7 +1912,7 @@
         "url": "https://swgoh.gg/characters/kit-fisto/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kitfisto.png",
         "side": "light",
-		"factions" : {"attacker", "jedi", "galactic republic"},
+        "factions" : ["attacker", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1935,7 +1935,7 @@
         "url": "https://swgoh.gg/characters/kylo-ren/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kyloren.png",
         "side": "dark",
-		"factions" : {"attacker", "human", "first order"},
+        "factions" : ["attacker", "human", "first order"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1958,7 +1958,7 @@
         "url": "https://swgoh.gg/characters/lando-calrissian/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_landobespin.png",
         "side": "light",
-		"factions" : {"attacker", "human", "scoundrel", "rebel"},
+        "factions" : ["attacker", "human", "scoundrel", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1981,7 +1981,7 @@
         "url": "https://swgoh.gg/characters/lobot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_lobot.png",
         "side": "light",
-		"factions" : {"support", "human", "rebel"},
+        "factions" : ["support", "human", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -1998,13 +1998,13 @@
             }
         }
     },
-	{
+    {
         "name":    "Logray",
         "aliases": ["Logray"],
         "url": "https://swgoh.gg/characters/logray/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_logray.png",
         "side": "light",
-		"factions" : {"support", "ewok"},
+        "factions" : ["support", "ewok"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2027,7 +2027,7 @@
         "url": "https://swgoh.gg/characters/luke-skywalker/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_luke_ep4.png",
         "side": "light",
-		"factions" : {"attacker", "human", "rebel"},
+        "factions" : ["attacker", "human", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2050,7 +2050,7 @@
         "url": "https://swgoh.gg/characters/luminara-unduli/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_luminara.png",
         "side": "light",
-		"factions" : {"attacker", "jedi", "galactic republic"},
+        "factions" : ["attacker", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2073,7 +2073,7 @@
         "url": "https://swgoh.gg/characters/mace-windu/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_macewindu.png",
         "side": "light",
-		"factions" : {"tank", "human", "jedi", "galactic republic", "fleet commander"},
+        "factions" : ["tank", "human", "jedi", "galactic republic", "fleet commander"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2096,7 +2096,7 @@
         "url": "https://swgoh.gg/characters/magmatrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_magma.png",
         "side": "dark",
-		"factions" : {"attacker", "human", "empire", "imperial trooper"},
+        "factions" : ["attacker", "human", "empire", "imperial trooper"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2119,7 +2119,7 @@
         "url": "https://swgoh.gg/characters/mob-enforcer/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_thug_female_01.png",
         "side": "dark",
-		"factions" : {"tank", "scoundrel"},
+        "factions" : ["tank", "scoundrel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2142,7 +2142,7 @@
         "url": "https://swgoh.gg/characters/nightsister-acolyte/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_acolyte.png",
         "side": "dark",
-		"factions" : {"healer", "nightsister"},
+        "factions" : ["healer", "nightsister"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2165,7 +2165,7 @@
         "url": "https://swgoh.gg/characters/nightsister-initiate/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_initiate.png",
         "side": "dark",
-		"factions" : {"attacker", "nightsister"},
+        "factions" : ["attacker", "nightsister"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2188,7 +2188,7 @@
         "url": "https://swgoh.gg/characters/nute-gunray/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nutegunray.png",
         "side": "dark",
-		"factions" : {"attacker", "scoundrel", "separatist"},
+        "factions" : ["attacker", "scoundrel", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2211,7 +2211,7 @@
         "url": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwanep4.png",
         "side": "light",
-		"factions" : {"tank", "human", "jedi"},
+        "factions" : ["tank", "human", "jedi"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2234,7 +2234,7 @@
         "url": "https://swgoh.gg/characters/old-daka/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_daka.png",
         "side": "dark",
-		"factions" : {"healer", "nightsister"},
+        "factions" : ["healer", "nightsister"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2257,7 +2257,7 @@
         "url": "https://swgoh.gg/characters/pao/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_pao.png",
         "side": "light",
-		"factions" : {"attacker", "rebel"},
+        "factions" : ["attacker", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2274,13 +2274,13 @@
             }
         }
     },
-	{
+    {
         "name":    "Paploo",
         "aliases": ["Paploo"],
         "url": "https://swgoh.gg/characters/paploo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_paploo.png",
         "side": "light",
-		"factions" : {"tank", "ewok"},
+        "factions" : ["tank", "ewok"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2303,7 +2303,7 @@
         "url": "https://swgoh.gg/characters/plo-koon/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_plokoon.png",
         "side": "light",
-		"factions" : {"tank", "jedi", "galactic republic"},
+        "factions" : ["tank", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2326,7 +2326,7 @@
         "url": "https://swgoh.gg/characters/poe/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_poe.png",
         "side": "light",
-		"factions" : {"tank", "human", "resistance"},
+        "factions" : ["tank", "human", "resistance"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2349,7 +2349,7 @@
         "url": "https://swgoh.gg/characters/poggle-the-lesser/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_poggle.png",
         "side": "dark",
-		"factions" : {"support", "geonosian", "separatist"},
+        "factions" : ["support", "geonosian", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2372,7 +2372,7 @@
         "url": "https://swgoh.gg/characters/princess-leia/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_leia_princess.png",
         "side": "light",
-		"factions" : {"attacker", "rebel"},
+        "factions" : ["attacker", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2395,7 +2395,7 @@
         "url": "https://swgoh.gg/characters/qui-gon-jinn/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_quigon.png",
         "side": "light",
-		"factions" : {"support", "jedi", "galactic republic"},
+        "factions" : ["support", "jedi", "galactic republic"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2418,7 +2418,7 @@
         "url": "https://swgoh.gg/characters/r2-d2/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_astromech_r2d2.png",
         "side": "light",
-		"factions" : {"support", "droid", "rebel", "galactic republic", "resistance"},
+        "factions" : ["support", "droid", "rebel", "galactic republic", "resistance"],
         "mods": {
             "Arena (Burn)": {
                 "sets": [
@@ -2454,7 +2454,7 @@
         "url": "https://swgoh.gg/characters/resistance-pilot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_resistancepilot.png",
         "side": "light",
-		"factions" : {"attacker", "human", "resistance"},
+        "factions" : ["attacker", "human", "resistance"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2477,7 +2477,7 @@
         "url": "https://swgoh.gg/characters/resistance-trooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_resistancetrooper.png",
         "side": "light",
-		"factions" : {"attacker", "human", "resistance"},
+        "factions" : ["attacker", "human", "resistance"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2500,7 +2500,7 @@
         "url": "https://swgoh.gg/characters/rey/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_reyjakku.png",
         "side": "light",
-		"factions" : {"attacker", "human", "resistance"},
+        "factions" : ["attacker", "human", "resistance"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2523,7 +2523,7 @@
         "url": "https://swgoh.gg/characters/royal-guard/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_royalguard.png",
         "side": "dark",
-		"factions" : {"tank", "empire"},
+        "factions" : ["tank", "empire"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2546,7 +2546,7 @@
         "url": "https://swgoh.gg/characters/sabine-wren/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sabine_s3.png",
         "side": "light",
-		"factions" : {"attacker", "rebel", "phoenix"},
+        "factions" : ["attacker", "rebel", "phoenix"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2569,7 +2569,7 @@
         "url": "https://swgoh.gg/characters/savage-opress/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_savageopress.png",
         "side": "dark",
-		"factions" : {"attacker", "sith"},
+        "factions" : ["attacker", "sith"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2592,7 +2592,7 @@
         "url": "https://swgoh.gg/characters/scarif-rebel-pathfinder/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebel_scarif.png",
         "side": "light",
-		"factions" : {"tank", "rebel"},
+        "factions" : ["tank", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2615,7 +2615,7 @@
         "url": "https://swgoh.gg/characters/shoretrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_troopershore.png",
         "side": "dark",
-		"factions" : {"tank", "empire", "imperial trooper"},
+        "factions" : ["tank", "empire", "imperial trooper"],
         "mods": {
             "Arena (Tank)": {
                 "sets": [
@@ -2651,7 +2651,7 @@
         "url": "https://swgoh.gg/characters/sith-assassin/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithassassin.png",
         "side": "dark",
-		"factions" : {"attacker", "sith"},
+        "factions" : ["attacker", "sith"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2674,7 +2674,7 @@
         "url": "https://swgoh.gg/characters/sith-trooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithtrooper.png",
         "side": "dark",
-		"factions" : {"tank", "sith"},
+        "factions" : ["tank", "sith"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2710,7 +2710,7 @@
         "url": "https://swgoh.gg/characters/snowtrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_troopersnow.png",
         "side": "dark",
-		"factions" : {"attacker", "human", "empire", "imperial trooper"},
+        "factions" : ["attacker", "human", "empire", "imperial trooper"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2733,7 +2733,7 @@
         "url": "https://swgoh.gg/characters/stormtrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm.png",
         "side": "dark",
-		"factions" : {"tank", "empire", "imperial trooper"},
+        "factions" : ["tank", "empire", "imperial trooper"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2756,7 +2756,7 @@
         "url": "https://swgoh.gg/characters/stormtrooper-han/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm_han.png",
         "side": "light",
-		"factions" : {"tank", "human", "scoundrel", "rebel"},
+        "factions" : ["tank", "human", "scoundrel", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2779,7 +2779,7 @@
         "url": "https://swgoh.gg/characters/sun-fac/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_sunfac.png",
         "side": "dark",
-		"factions" : {"tank", "geonosian", "separatist"},
+        "factions" : ["tank", "geonosian", "separatist"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2802,7 +2802,7 @@
         "url": "https://swgoh.gg/characters/tie-fighter-pilot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tiepilot.png",
         "side": "dark",
-		"factions" : {"attacker", "empire"},
+        "factions" : ["attacker", "empire"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2825,7 +2825,7 @@
         "url": "https://swgoh.gg/characters/talia/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_talia.png",
         "side": "dark",
-		"factions" : {"healer", "nightsister"},
+        "factions" : ["healer", "nightsister"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2848,7 +2848,7 @@
         "url": "https://swgoh.gg/characters/teebo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_teebo.png",
         "side": "light",
-		"factions" : {"tank", "ewok"},
+        "factions" : ["tank", "ewok"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2871,7 +2871,7 @@
         "url": "https://swgoh.gg/characters/tusken-raider/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tuskenraider.png",
         "side": "dark",
-		"factions" : {"attacker", "tusken"},
+        "factions" : ["attacker", "tusken"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2894,7 +2894,7 @@
         "url": "https://swgoh.gg/characters/tusken-shaman/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tuskenshaman.png",
         "side": "dark",
-		"factions" : {"healer", "tusken"},
+        "factions" : ["healer", "tusken"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2917,7 +2917,7 @@
         "url": "https://swgoh.gg/characters/ururrurrr/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_urorrurrr.png",
         "side": "dark",
-		"factions" : {"support", "tusken"},
+        "factions" : ["support", "tusken"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2940,7 +2940,7 @@
         "url": "https://swgoh.gg/characters/ugnaught/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ugnaught.png",
         "side": "light",
-		"factions" : {"support"},
+        "factions" : ["support"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2963,7 +2963,7 @@
         "url": "https://swgoh.gg/characters/wedge-antilles/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_wedge.png",
         "side": "light",
-		"factions" : {"attacker", "rebel"},
+        "factions" : ["attacker", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -2980,13 +2980,13 @@
             }
         }
     },
-	{
+    {
         "name":    "Wicket",
         "aliases": ["Wicket"],
         "url": "https://swgoh.gg/characters/wicket/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_wicket.png",
         "side": "light",
-		"factions" : {"ewok"},
+        "factions" : ["ewok"],
         "mods": {
             "Arena": {
                 "sets": [
@@ -3009,7 +3009,7 @@
         "url": "https://swgoh.gg/characters/zam-wesell/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zamwesell.png",
         "side": "dark",
-		"factions" : {"attacker", "scoundrel", "bounty hunter"},
+        "factions" : ["attacker", "scoundrel", "bounty hunter"],
         "mods": {
             "Arena": {
                 "sets": [
