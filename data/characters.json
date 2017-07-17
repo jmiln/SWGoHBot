@@ -1919,6 +1919,28 @@
             }
         }
     },
+	{
+        "name":    "Logray",
+        "aliases": ["Logray"],
+        "url": "https://swgoh.gg/characters/logray/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_logray.png",
+        "side": "light",
+        "mods": {
+            "Arena": {
+                "sets": [
+                    "",
+                    "",
+                    ""
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed",
+                "diamond": "Defense",
+                "triangle":"",
+                "circle":  "",
+                "cross":   ""
+            }
+        }
+    },
     {
         "name":    "Luke Skywalker (Farmboy)",
         "aliases": ["Luke Skywalker", "Luke"],
@@ -2158,6 +2180,28 @@
                 "triangle":"Protection",
                 "circle":  "Protection",
                 "cross":   "Protection / Potency"
+            }
+        }
+    },
+	{
+        "name":    "Paploo",
+        "aliases": ["Paploo"],
+        "url": "https://swgoh.gg/characters/paploo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_paploo.png",
+        "side": "light",
+        "mods": {
+            "Arena": {
+                "sets": [
+                    "",
+                    "",
+                    ""
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed",
+                "diamond": "Defense",
+                "triangle":"",
+                "circle":  "",
+                "cross":   ""
             }
         }
     },
@@ -2813,6 +2857,28 @@
                 "triangle":"Crit. Damage",
                 "circle":  "Protection",
                 "cross":   "Offense / Protection"
+            }
+        }
+    },
+	{
+        "name":    "Wicket",
+        "aliases": ["Wicket"],
+        "url": "https://swgoh.gg/characters/wicket/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_wicket.png",
+        "side": "light",
+        "mods": {
+            "Arena": {
+                "sets": [
+                    "",
+                    "",
+                    ""
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed",
+                "diamond": "Defense",
+                "triangle":"",
+                "circle":  "",
+                "cross":   ""
             }
         }
     },
