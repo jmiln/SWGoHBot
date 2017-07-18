@@ -9,23 +9,23 @@ exports.run = (client, message, params) => {
 
         commands = client.commands.array();
         helpString = "= Command List =\n\n[Use " + settings.prefix + "help <commandname> for details]\n";
-        
+
         starwarsString = `= Star Wars Commands =\n`;
         otherString = `= Misc Commands =\n`;
         adminString = `= Admin Commands =\n`;
-        
+
         commands.forEach(command => {
             type = command.conf.type;
 
             switch(type) {
                 case 'starwars':
-                    starwarsString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`; 
+                    starwarsString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`;
                     break;
                 case 'other':
-                    otherString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`; 
+                    otherString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`;
                     break;
                 case 'admin':
-                    adminString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`; 
+                    adminString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`;
                     break;
             }
         });
@@ -37,13 +37,13 @@ exports.run = (client, message, params) => {
         let command = params[0];
         if (client.commands.has(command)) {
             command = client.commands.get(command);
-            message.channel.send(`= ${command.help.name} = \n${command.help.description}\nUsage:   ${settings.prefix}${command.help.usage}`, {code:'asciidoc'});
+            message.channel.send(`= ${command.help.name} = \n${command.help.description} \nAliases: ${command.conf.aliases.join(", ")}\nUsage:   ${settings.prefix}${command.help.usage}`, {code:'asciidoc'});
         }
     }
 };
 
 function pad(pad, str, padLeft) {
-  if (typeof str === 'undefined') 
+  if (typeof str === 'undefined')
     return pad;
   if (padLeft) {
     return (pad + str).slice(-pad.length);
