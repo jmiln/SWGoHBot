@@ -8,13 +8,12 @@ This is a bot I made to make looking up recommended setups for the game more con
 = Star Wars Commands =
 activities :: Shows the daily guild activites.
 mods       :: Shows some suggested mods for the specified character.
-modsets    :: Shows how many of each kind of mod you need for a set
+;modsets   :: Shows how many of each kind of mod you need for a set.
+;raidteams :: Shows some teams that work well for each raid.
 
 = Misc Commands =
-changelog  :: Sends a link to join the test server where the changelog and announcements about the bot are.
-feedback   :: Send feedback or suggestions for the bot.
+info       :: Shows useful links and recent changes.
 help       :: Displays info about available commands.
-invite     :: Sends the link to invite the bot to your server.
 
 = Admin Commands =
 setconf    :: Used to set the bot's config settings.
@@ -30,6 +29,7 @@ showconf   :: Shows the current configs for your server.
 ## Setup
 In a command prompt in your projects folder (wherever that may be) run the following:
 `git clone git@github.com:JeffreyMilner/SWGoHBot.git`
+
 Once finished: 
 - In the folder from where you ran the git command, run `cd SWGoHBot` and then run `npm install`
 - Rename `settings.example.json` to `settings.json`
@@ -40,14 +40,7 @@ Once finished:
     "modrolename": "Moderator",
     "adminrolename": "Administrator",
     "prefix": ";",
-    "token": "YourBotTokenHere",
-    "defaultSettings": {
-        "adminRole": "Administrator",
-        "modRole": "Moderator",
-        "welcomeMessageOn": false,
-        "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
-        "useEmbeds": true
-    }
+    "token": "YourBotTokenHere"
 }
 
 ```
@@ -57,4 +50,7 @@ To start the bot, in the command prompt, run the following command:
 `node swgohbot.js`
 > If at any point it says "cannot find module X" just run `npm install X` and try again.
 
-Extended from the bot made by https://github.com/AnIdiotsGuide
+
+Special thanks to York for the started bot to base this on (https://github.com/AnIdiotsGuide/Tutorial-Bot/),
+to CrouchingRancor.com for all their mod suggestions,
+and to Morningstar-013 & Pete Butler, for their work in collecting a bunch of teams for the raids.
