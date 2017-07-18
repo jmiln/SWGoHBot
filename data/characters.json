@@ -1095,6 +1095,19 @@
                 "triangle":"Protection",
                 "circle":  "Protection",
                 "cross":   "Protection"
+            },
+            "Resistance Team": {
+                "sets": [
+                    "potency x2",
+                    "potency x2",
+                    "potency x2"
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed",
+                "diamond": "Defense",
+                "triangle":"Crit. Damage/ Health(Raid)",
+                "circle":  "Potency",
+                "cross":   "Potency"
             }
         }
     },
@@ -2340,6 +2353,19 @@
                 "triangle":"Protection",
                 "circle":  "Protection",
                 "cross":   "Potency"
+            },
+            "Resistance Team": {
+                "sets": [
+                    "Potency x2",
+                    "Speed x4",
+                    ""
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed",
+                "diamond": "Defense",
+                "triangle":"Health/ Protection/ Defense",
+                "circle":  "Protection/ Health(Raid)",
+                "cross":   "Potency"
             }
         }
     },
@@ -2445,6 +2471,19 @@
                 "triangle":"Crit. Chance / Protection",
                 "circle":  "Protection",
                 "cross":   "Potency"
+            },
+            "Resistance Team": {
+                "sets": [
+                    "Any",
+                    "Any",
+                    "Any"
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed",
+                "diamond": "Defense",
+                "triangle":"Health/ Protection/ Defense/ Crit. Damage",
+                "circle":  "Protection/ Health(Raid)",
+                "cross":   "Potency"
             }
         }
     },
@@ -2468,6 +2507,19 @@
                 "triangle":"Crit. Damage",
                 "circle":  "Protection",
                 "cross":   "Offense / Protection"
+            },
+            "Resistance Team": {
+				"sets": [
+                    "Critical Damage x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed",
+                "diamond": "Defense",
+                "triangle":"Crit. Damage",
+                "circle":  "Protection/ Health(Raid)",
+                "cross":   "Potency"
             }
         }
     },
@@ -2491,7 +2543,33 @@
                 "triangle":"Offense / Protection",
                 "circle":  "Protection",
                 "cross":   "Potency"
-            }
+            },
+            "Resistance Team 1": {
+                "sets": [
+                    "Potency x2",
+                    "Potency x2",
+                    "Potency x2"
+                ],
+                "square":  "Offense",
+                "arrow":   "Offense",
+                "diamond": "Defense",
+                "triangle":"Crit. Damage",
+                "circle":  "Protection/ Health(Raid)",
+                "cross":   "Potency"
+            },
+			"Resistance Team 2": {
+				"sets": [
+					"Critical Damage x4",
+					"Potency x2",
+					""
+				],
+				"square":  "Offense",
+				"arrow":   "Offense",
+				"diamond": "Defense",
+				"triangle":"Crit. Damage",
+				"circle":  "Protection/ Health(Raid)",
+				"cross":   "Potency"
+			}
         }
     },
     {
@@ -2513,6 +2591,19 @@
                 "diamond": "Defense",
                 "triangle":"Offense",
                 "circle":  "Protection",
+                "cross":   "Offense"
+            },
+			"Resistance Team": {
+                "sets": [
+                    "Critical Chance x2",
+                    "Critical Damage x4",
+                    ""
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed/ Offense",
+                "diamond": "Defense",
+                "triangle":"Crit. Damage",
+                "circle":  "Protection/ Health",
                 "cross":   "Offense"
             }
         }

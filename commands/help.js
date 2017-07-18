@@ -5,6 +5,7 @@ exports.run = (client, message, params) => {
     if (!params[0]) {  // Show the list of commands
         const commandNames = Array.from(client.commands.keys());
         const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
+        const longestSpace = ' '.repeat(longest + 1);
 
         commands = client.commands.array();
         helpString = "= Command List =\n\n[Use " + settings.prefix + "help <commandname> for details]\n";
@@ -18,13 +19,13 @@ exports.run = (client, message, params) => {
 
             switch(type) {
                 case 'starwars':
-                    starwarsString += `${settings.prefix}${pad('          ', command.help.name, false)} :: ${command.help.description}\n`; 
+                    starwarsString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`; 
                     break;
                 case 'other':
-                    otherString += `${settings.prefix}${pad('          ', command.help.name, false)} :: ${command.help.description}\n`; 
+                    otherString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`; 
                     break;
                 case 'admin':
-                    adminString += `${settings.prefix}${pad('          ', command.help.name, false)} :: ${command.help.description}\n`; 
+                    adminString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`; 
                     break;
             }
         });
@@ -36,7 +37,7 @@ exports.run = (client, message, params) => {
         let command = params[0];
         if (client.commands.has(command)) {
             command = client.commands.get(command);
-            message.channel.send("= " + command.help.name + " = \n" + command.help.description + "\nUsage:   " + settings.prefix + command.help.usage, {code:'asciidoc'});
+            message.channel.send(`= ${command.help.name} = \n${command.help.description}\nUsage:   ${settings.prefix}${command.help.usage}`, {code:'asciidoc'});
         }
     }
 };
