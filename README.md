@@ -8,8 +8,8 @@ This is a bot I made to make looking up recommended setups for the game more con
 = Star Wars Commands =
 activities :: Shows the daily guild activites.
 mods       :: Shows some suggested mods for the specified character.
-;modsets   :: Shows how many of each kind of mod you need for a set.
-;raidteams :: Shows some teams that work well for each raid.
+modsets   :: Shows how many of each kind of mod you need for a set.
+raidteams :: Shows some teams that work well for each raid.
 
 = Misc Commands =
 info       :: Shows useful links and recent changes.
