@@ -72,14 +72,14 @@
                 "characters": ["Captain Phasma (Zetad)", "Kylo Ren (Zetad)", "First Order Officer", "First Order Stormtrooper (Zetad)", "First Order TIE Pilot (Zetad)"]
             },
             "Scavenger Zody": {
-                "phase": "",
+                "phase": ["Phase 2"],
                 "characters": ["CC-2224 \"Cody\"(Zetad)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Jawa Scavenger"]
             },
             "Imperial Grand Maneuver": {
                 "phase": ["Phase 3"],
                 "characters": ["Grand Admiral Thrawn", "Jyn Erso, Shoretrooper", "Grand Moff Tarkin", "Director Krennic"]
             },
-            "Viva La Resistance": {
+            "Viva La Poe": {
                 "phase": ["Phase 3"],
                 "characters": ["Finn (Zetad)", "Poe Dameron", "R2-D2", "Resistance Pilot", "Resistance Trooper"]
             },
@@ -141,10 +141,6 @@
         "name": "Rancor Pit Raid",
         "aliases": ["pit", "rancor"],
         "teams": {
-            "EXAMPLE": {
-                "phase": [""],
-                "characters": [""]
-            },
             "Auto Lightzader": {
                 "phase": ["Solo"],
                 "characters": ["Darth Vader (Zetad)", "Grand Moff Tarkin", "Jyn Erso", "TIE Fighter Pilot", "Darth Sidious"]
