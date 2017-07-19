@@ -13,10 +13,10 @@ exports.run = (client, message, args) => {
     let currentPhase = "Phase 1";
 
     // Make sure the args are all there
-    if(typeof args[0] !== 'undefined' && args[0] !== null && args[0] !== "") {
+    if(typeof args[0] === 'undefined' || args[0] === null || args[0] === "") {
         return message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
     }
-    if(typeof args[1] !== 'undefined' && args[1] !== null && args[1] !== "") {
+    if(typeof args[1] === 'undefined' || args[1] === null || args[1] === "") {
         return message.channel.send("Invalid phase, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
     }
 
