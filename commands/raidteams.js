@@ -10,7 +10,15 @@ exports.run = (client, message, args) => {
     const guildSettings = client.guildSettings;
     const guildConf = guildSettings.get(message.guild.id);
 
-    let currentPhase = "Solo";
+    let currentPhase = "Phase 1";
+
+    // Make sure the args are all there
+    if(typeof args[0] !== 'undefined' && args[0] !== null && args[0] !== "") {
+        return message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
+    }
+    if(typeof args[1] !== 'undefined' && args[1] !== null && args[1] !== "") {
+        return message.channel.send("Invalid phase, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
+    }
 
     // Remove anything that's not a letter for the raid name
     let searchName = "";
@@ -19,8 +27,8 @@ exports.run = (client, message, args) => {
     }
 
     // Remove anything that's not a letter for the phase
-    let phaseName = "";
     if(args[1]) {
+        let phaseName = "";
         phaseName = String(args[1]).toLowerCase().replace(/[^\w\s]/gi, '');
         if(phaseName === "Solo") {
             currentPhase = "Solo"
@@ -32,6 +40,8 @@ exports.run = (client, message, args) => {
             currentPhase = "Phase 3"
         } else if(phaseName === "p4") {
             currentPhase = "Phase 4"
+        } else {
+            return message.channel.send("Invalid phase, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
         }
     }
 
@@ -47,7 +57,7 @@ exports.run = (client, message, args) => {
         for(ix = 0; ix < raidList.length; ix++) {
             var raid = raidList[ix];
 
-            if(raid.aliases.includes(searchName)) { // === raid.aliases[jx].toLowerCase()) {
+            if(raid.aliases.includes(searchName)) { 
                 // Found the raid, now just need to show it
                 found = true;
 
@@ -59,7 +69,7 @@ exports.run = (client, message, args) => {
                         let team = raid.teams[raidTeam];
 
                         let phase = team.phase
-                        if(phase.includes(currentPhase)) {// === phase.toLowerCase()) {
+                        if(phase.includes(currentPhase)) {
                             foundPhase = true;
                             let characters = team.characters
                             fields.push({
@@ -95,10 +105,10 @@ exports.run = (client, message, args) => {
         }
 
         if(found === false) {
-            message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName]\`\n **Example:** " + settings.prefix + "raidteams pit");
+            message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
         }
     } else {
-        message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName]\`\n**Example:** " + settings.prefix + "raidteams pit");
+            message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
     }
 
 };
