@@ -30,7 +30,7 @@ exports.run = (client, message, args) => {
     if(args[1]) {
         let phaseName = "";
         phaseName = String(args[1]).toLowerCase().replace(/[^\w\s]/gi, '');
-        if(phaseName === "Solo") {
+        if(phaseName === "solo") {
             currentPhase = "Solo"
         } else if(phaseName === "p1") {
             currentPhase = "Phase 1"
