@@ -1,8 +1,5 @@
-// Initialize **or load** the server configurations
-const PersistentCollection = require("djs-collection-persistent");
-const settings = require('../settings.json');
-
 exports.run = (client, message, args) => {
+    const config = client.config;
     const guildSettings = client.guildSettings;
 
     if(!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
@@ -12,10 +9,13 @@ exports.run = (client, message, args) => {
     if(guildConf) {
         if(!message.author.id === message.guild.owner.id) {
             if(!message.member.roles.has(guildConf["adminRole"])) {
-                return message.reply(`Sorry, but either you're not an admin, or your server leader has not set up the configs`);
+                return message.reply(`Sorry, but either you're not an admin, or your server leader has not set up the configs.`);
             }
         }
+        if(!args[0]) return message.reply(`You must select a config option to change.`);
         const key = args[0].toLowerCase();
+        
+        if(!args[1]) return message.reply(`You must give a value to change that option to.`);
         const value = args.splice(1).join(" ");
 
         const onVar =  ["true", "on", "enable"];
@@ -75,12 +75,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['setconfig'],
-    permLevel: 0,
-    type: 'admin'
+    permLevel: 3
 };
 
 exports.help = {
     name: 'setconf',
+    category: 'Admin',
     description: 'Used to set the bot\'s config settings.',
     usage: 'setconf [key] [value]',
     example: 'setconf adminRole Admin'

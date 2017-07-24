@@ -6,12 +6,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: [],
-    permLevel: 0,
-    type: 'starwars'
+    permLevel: 0
 };
 
 exports.help = {
     name: 'modsets',
+    category: "Star Wars",
     description: 'Shows how many of each kind of mod you need for a set.',
     usage: 'modsets'
 };

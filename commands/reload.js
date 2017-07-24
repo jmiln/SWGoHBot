@@ -25,12 +25,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['r'],
-    permLevel: 4,
-    type: "owner"
+    permLevel: 10
 };
 
 exports.help = {
     name: 'reload',
+    category: 'Dev',
     description: 'Reloads the command file, if it\'s been updated or modified.',
     usage: 'reload <commandname>'
 };

@@ -1,98 +1,53 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
-const settings = require('./settings.json');
-const chalk = require('chalk');
-const fs = require('fs');
-const moment = require('moment');
+const { promisify } = require("util");
+const readdir = promisify(require("fs").readdir);
 const PersistentCollection = require("djs-collection-persistent");
-require('./util/eventLoader')(client);
+const client = new Discord.Client();
 
-const log = message => {
-    console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
-};
+// Attach the config to the client so we can use it anywhere
+client.config = require('./config.json');
 
-client.guildSettings = new PersistentCollection({name: 'guildSettings'});
+require("./modules/functions.js")(client);
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
-fs.readdir('./commands/', (err, files) => {
-    if (err) console.error(err);
-    log(`Loading a total of ${files.length} commands.`);
-    files.forEach(f => {
-        let props = require(`./commands/${f}`);
-        // log(`Loading Command: ${props.help.name}. 👌`);
-        client.commands.set(props.help.name, props);
-        props.conf.aliases.forEach(alias => {
-            client.aliases.set(alias, props.help.name);
-        });
-    });
-});
 
-client.reload = command => {
-    return new Promise((resolve, reject) => {
+client.guildSettings = new PersistentCollection({name: 'guildSettings'});
+
+const init = async () => {
+
+    // Here we load **commands** into memory, as a collection, so they're accessible
+    // here and everywhere else.
+    const cmdFiles = await readdir("./commands/");
+    client.log("log", `Loading a total of ${cmdFiles.length} commands.`);
+    cmdFiles.forEach(f => {
         try {
-            delete require.cache[require.resolve(`./commands/${command}`)];
-            let cmd = require(`./commands/${command}`);
-            client.commands.delete(command);
-            client.aliases.forEach((cmd, alias) => {
-                if (cmd === command) client.aliases.delete(alias);
+            const props = require(`./commands/${f}`);
+            if(f.split(".").slice(-1)[0] !== "js") return;
+            client.commands.set(props.help.name, props);
+            props.conf.aliases.forEach(alias => {
+                client.aliases.set(alias, props.help.name);
             });
-            client.commands.set(command, cmd);
-            cmd.conf.aliases.forEach(alias => {
-                client.aliases.set(alias, cmd.help.name);
-            });
-            resolve();
         } catch (e) {
-            reject(e);
+            client.log(`Unable to load command ${f}: ${e}`);
         }
     });
+
+    // Then we load events, which will include our message and ready event.
+    const evtFiles = await readdir("./events/");
+    client.log("log", `Loading a total of ${evtFiles.length} events.`);
+    evtFiles.forEach(file => {
+        const eventName = file.split(".")[0];
+        const event = require(`./events/${file}`);
+        // This line is awesome by the way. Just sayin'.
+        client.on(eventName, event.bind(null, client));
+        delete require.cache[require.resolve(`./events/${file}`)];
+    });
+
+    // Here we login the client.
+    client.login(client.config.token);
+
+    // End top-level async/await function.
 };
 
-client.elevation = message => {
-    /* This function should resolve to an ELEVATION level which
-       is then sent to the command handler for verification*/
-
-    const guildSettings = client.guildSettings;
-
-    // Everyone
-    let permlvl = 0;
-
-    //  If it doesn't exist for some reason, don't let em work. (PMs maybe?)
-    if(!message.guild) return permlvl;
-
-    // Check again just in case
-    if(message.guild) {
-        const guildConf = guildSettings.get(message.guild.id);
-
-        // The mod role set in each guild
-        let mod_role = message.guild.roles.find('name', guildConf.modRole);
-        if (mod_role && message.member.roles.has(mod_role.id)) permlvl = 2;
-
-        // The admin role set in each of the guilds
-        let admin_role = message.guild.roles.find('name', guildConf.adminRole);
-        if (admin_role && message.member.roles.has(admin_role.id)) permlvl = 3;
-    }
-
-    if(!message.author) return permlvl;
-
-    // The owner of the guild is automatically an admin in that guild
-    if (message.author.id === message.guild.owner.id) permlvl = 3;
-
-    // Me, the maker of the bot
-    if (message.author.id === settings.ownerid)  permlvl = 4;
-
-    return permlvl;
-};
-
-
-var regToken = /[\w\d]{24}\.[\w\d]{6}\.[\w\d-_]{27}/g;
-
-client.on('warn', e => {
-    console.log(chalk.bgYellow(e.replace(regToken, 'that was redacted')));
-});
-
-client.on('error', e => {
-    console.log(chalk.bgRed(e.replace(regToken, 'that was redacted')));
-});
-
-client.login(settings.token);
+init();

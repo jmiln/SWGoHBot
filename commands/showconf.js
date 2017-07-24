@@ -1,8 +1,3 @@
-const PersistentCollection = require("djs-collection-persistent");
-// const settings = require('../settings.json');
-const defaultSettings = require('../data/defaultGuildSettings.json');
-
-
 exports.run = (client, message, args) => {
     const guildSettings = client.guildSettings;
 
@@ -18,13 +13,7 @@ exports.run = (client, message, args) => {
         configKeys = array.join('\n');
         message.channel.send(`The following are the server's current configuration: \`\`\`${configKeys}\`\`\``);
     } else {
-        let guildConf = {};
-        // const defaultSettings = settings.defaultSettings;
-
-        for(val in defaultSettings) {
-            guildConf[val] = defaultSettings[val];
-        }
-        guildSettings.set(message.guild.id, guildConf);
+        guildSettings.set(message.guild.id, client.config.defaultSettings);
 
         var array = [];
         for(key in guildConf) {
@@ -39,12 +28,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['showconfs', 'showconfig', 'showconfigs'],
-    permLevel: 3,
-    type: 'admin'
+    permLevel: 3
 };
 
 exports.help = {
     name: 'showconf',
+    category: 'Admin',
     description: 'Shows the current configs for your server.',
     usage: 'showconf'
 };

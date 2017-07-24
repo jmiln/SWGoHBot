@@ -18,12 +18,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['p'],
-    permLevel: 4,
-    type: 'owner'
+    permLevel: 4
 };
 
 exports.help = {
     name: 'purge',
+    category: 'Owner',
     description: 'Purges X amount of messages from a given channel.',
     usage: 'purge <number>'
 };

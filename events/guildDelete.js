@@ -1,5 +1,3 @@
-const PersistentCollection = require("djs-collection-persistent");
-const settings = require('../settings.json');
 
 module.exports = (client, guild) => {
     // The bot isn't in the server anymore, so get rid of the config

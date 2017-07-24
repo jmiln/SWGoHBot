@@ -13,15 +13,15 @@ exports.run = (client, message) => {
 };
 
 exports.conf = {
-    enabled: true,
+    enabled: false,
     guildOnly: false,
     aliases: [],
-    permLevel: 3,
-    type: 'wip'
+    permLevel: 7
 };
 
 exports.help = {
     name: 'poll',
+    category: 'WIP',
     description: 'Starts a poll, with comma separated options',
     usage: 'poll [Poll Question etc], [option1], [option2], ...'
 };

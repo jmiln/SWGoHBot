@@ -1,14 +1,9 @@
-const PersistentCollection = require("djs-collection-persistent");
-const util = require('util');
-
 var fs = require("fs");
 var raidList = JSON.parse(fs.readFileSync("data/teams.json"));
-var settings = require("../settings.json");
-
 
 exports.run = (client, message, args) => {
-    const guildSettings = client.guildSettings;
-    const guildConf = guildSettings.get(message.guild.id);
+    const config = client.config;
+    const guildConf = client.guildSettings.get(message.guild.id);
 
     let currentPhase = "Phase 1";
 
@@ -117,12 +112,12 @@ exports.conf = {
     guildOnly: false,
     enabled: true,
     aliases: ['raid'],
-    permLevel: 0,
-    type: 'starwars'
+    permLevel: 0
 };
 
 exports.help = {
     name: 'raidteams',
+    category: 'Star Wars',
     description: 'Shows some teams that work well for each raid.',
     usage: 'raidteams [aat|pit] [p1|p2|p3|p4|solo]',
     example: 'raidteams aat p1'

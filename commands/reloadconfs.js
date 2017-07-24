@@ -1,10 +1,10 @@
 const PersistentCollection = require("djs-collection-persistent");
 const util = require('util');
-const settings = require('../settings.json');
 
 exports.run = (client, message, args) => {
+    config = client.config;
     const guildSettings = client.guildSettings;
-    const defaultSettings = settings.defaultSettings;
+    const defaultSettings = client.defaultSettings;
 
     if(args[0] === 'all') {  // Reload the configs for all guilds
         const guildList = client.guilds.keyArray();
@@ -46,12 +46,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: [],
-    permLevel: 4,
-    type: 'owner'
+    permLevel: 10
 };
 
 exports.help = {
     name: 'reloadconfs',
-    description: '',
+    category: 'Dev',
+    description: 'Reload the configs for all guilds the bot is in.',
     usage: 'reloadconfs [all]'
 };

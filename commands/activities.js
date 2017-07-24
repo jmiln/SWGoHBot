@@ -1,5 +1,5 @@
-const settings = require("../settings.json");
 exports.run = (client, message, args) => {
+    const config = client.config;
     let day = String(args[0]).toLowerCase();
 
     switch (day) {
@@ -39,20 +39,20 @@ exports.run = (client, message, args) => {
                                  \n== After Reset == \nComplete Arena Battles \nSave Cantina Energy`, {code:'asciidoc'});
             break;
         default: 
-            message.channel.send("Invalid date, usage is \`" + settings.prefix + "activities [day]\`");
+            message.channel.send("Invalid date, usage is \`" + config.prefix + "activities [day]\`");
     }
 };
 
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['a', 'act'],
-    permLevel: 0,
-    type: 'starwars'
+    aliases: ['act'],
+    permLevel: 0
 };
 
 exports.help = {
     name: 'activities',
+    category: 'Star Wars',
     description: 'Shows the daily guild activites.',
     usage: 'activities [day]'
 };

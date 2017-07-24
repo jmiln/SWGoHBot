@@ -12,12 +12,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['nick'],
-    permLevel: 4,
-    type: 'owner'
+    permLevel: 3
 };
 
 exports.help = {
     name: 'nickname',
+    category: 'Admin',
     description: 'Changes the bot\'s nickname on the server',
     usage: 'nickname [name]'
 };

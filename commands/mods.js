@@ -1,13 +1,8 @@
 var fs = require("fs");
-// var charList = JSON.parse(fs.readFileSync("data/mods.json"));
 var charList = JSON.parse(fs.readFileSync("data/characters.json"));
-var settings = require("../settings.json");
-const PersistentCollection = require("djs-collection-persistent");
-
-const util = require('util');
-
 
 exports.run = (client, message, args) => {
+    const config = client.config;
     const guildSettings = client.guildSettings;
 
     if(!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
@@ -64,10 +59,10 @@ exports.run = (client, message, args) => {
         }
 
         if(found === false) {
-            message.channel.send("Invalid character, usage is \`" + settings.prefix + "mods [character]\`");
+            message.channel.send("Invalid character, usage is \`" + config.prefix + "mods [character]\`");
         }
     } else {
-        message.channel.send("Invalid character, usage is \`" + settings.prefix + "mods [character]\`");
+        message.channel.send("Invalid character, usage is \`" + config.prefix + "mods [character]\`");
     }
 
 };
@@ -76,12 +71,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['m', 'mod'],
-    permLevel: 0,
-    type: 'starwars'
+    permLevel: 0
 };
 
 exports.help = {
     name: 'mods',
+    category: 'Star Wars',
     description: 'Shows some suggested mods for the specified character.',
     usage: 'mods [character]'
 };

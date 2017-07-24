@@ -32,8 +32,8 @@ In a command prompt in your projects folder (wherever that may be) run the follo
 
 Once finished: 
 - In the folder from where you ran the git command, run `cd SWGoHBot` and then run `npm install`
-- Rename `settings.example.json` to `settings.json`
-- Edit `settings.json` and enter your bot's token and other details as indicated. 
+- Rename `config.example.json` to `config.json`
+- Edit `config.json` and enter your bot's token and other details as indicated. 
 ```js
 {
     "ownerid": "YourDiscordID",

@@ -1,67 +1,70 @@
-const settings = require('../settings.json');
+exports.run = (client, message, args, level) => {
+    const config = client.config; 
 
-exports.run = (client, message, params) => {
-
-    if (!params[0]) {  // Show the list of commands
-        const commandNames = Array.from(client.commands.keys());
+    if (!args[0]) {  // Show the list of commands
+        const myCommands = client.commands.filter(c=>c.conf.permLevel <= level);
+		const commandNames = myCommands.keyArray();
         const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-        const longestSpace = ' '.repeat(longest + 1);
 
         commands = client.commands.array();
-        helpString = "= Command List =\n\n[Use " + settings.prefix + "help <commandname> for details]\n";
+        helpString = "= Command List =\n\n[Use " + config.prefix + "help <commandname> for details]\n";
 
-        starwarsString = `= Star Wars Commands =\n`;
-        otherString = `= Misc Commands =\n`;
-        adminString = `= Admin Commands =\n`;
+        // starwarsString = `= Star Wars Commands =\n`;
+        // otherString = `= Misc Commands =\n`;
+        // adminString = `= Admin Commands =\n`;
+        //
+        // commands.forEach(command => {
+        //     type = command.conf.type;
+        //
+        //     switch(type) {
+        //         case 'starwars':
+        //             starwarsString += `${config.prefix}${" ".repeat(longest - c.help.name.length)} :: ${command.help.description}\n`;
+        //             break;
+        //         case 'other':
+        //             otherString += `${config.prefix}${" ".repeat(longest - c.help.name.length)} :: ${command.help.description}\n`;
+        //             break;
+        //         case 'admin':
+        //             adminString += `${config.prefix}${" ".repeat(longest - c.help.name.length)} :: ${command.help.description}\n`;
+        //             break;
+        //     }
+        // });
+        //
+        // helpString += `\n${starwarsString}\n${otherString}\n${adminString}`;
+        //
+        // message.channel.send(helpString, {code:'asciidoc'});
 
-        commands.forEach(command => {
-            type = command.conf.type;
+		let currentCategory = "";
+		let output = `= Command List =\n\n[Use ${client.config.prefix}help <commandname> for details]\n`;
+		const sorted = myCommands.sort((p, c) => p.help.category > c.help.category ? 1 : -1);
+		sorted.forEach( c => {
+			const cat = c.help.category.toProperCase();
+			if(currentCategory !== cat) {
+				output += `\n== ${cat} ==\n`;
+				currentCategory = cat;
+			}
+			output += `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
+		});
+		message.channel.send(output, {code:"asciidoc"});
 
-            switch(type) {
-                case 'starwars':
-                    starwarsString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`;
-                    break;
-                case 'other':
-                    otherString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`;
-                    break;
-                case 'admin':
-                    adminString += `${settings.prefix}${pad(longestSpace, command.help.name, false)} :: ${command.help.description}\n`;
-                    break;
-            }
-        });
-
-        helpString += `\n${starwarsString}\n${otherString}\n${adminString}`;
-
-        message.channel.send(helpString, {code:'asciidoc'});
     } else {  // Show the help for a specific command
-        let command = params[0];
+        let command = args[0];
         if (client.commands.has(command)) {
             command = client.commands.get(command);
-            message.channel.send(`= ${command.help.name} = \n${command.help.description} \nAliases: ${command.conf.aliases.join(", ")}\nUsage:   ${settings.prefix}${command.help.usage}`, {code:'asciidoc'});
+            message.channel.send(`= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${config.prefix}${command.help.usage}`, {code:'asciidoc'});
         }
     }
 };
-
-function pad(pad, str, padLeft) {
-  if (typeof str === 'undefined')
-    return pad;
-  if (padLeft) {
-    return (pad + str).slice(-pad.length);
-  } else {
-    return (str + pad).substring(0, pad.length);
-  }
-}
 
 exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['h', 'halp'],
-    permLevel: 0,
-    type: 'other'
+    permLevel: 0
 };
 
 exports.help = {
     name: 'help',
+    category: 'Misc',
     description: 'Displays info about available commands.',
     usage: 'help [command]'
 };

@@ -22,12 +22,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: [],
-    permLevel: 4,
-    type: 'owner'
+    permLevel: 3
 };
 
 exports.help = {
     name: 'stats',
+    category: 'Admin',
     description: 'Shows the bot\'s stats',
     usage: 'stats'
 };

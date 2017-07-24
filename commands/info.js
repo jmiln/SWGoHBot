@@ -29,12 +29,12 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: [],
-    permLevel: 0,
-    type: 'other'
+    permLevel: 0
 };
 
 exports.help = {
     name: 'info',
+    category: 'Misc',
     description: 'Shows useful links and recent changes.',
     usage: 'info'
 };
