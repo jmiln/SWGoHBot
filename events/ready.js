@@ -1,37 +1,25 @@
-const PersistentCollection = require("djs-collection-persistent");
 const chalk = require('chalk');
-const settings = require("../settings.json");
-const defaultSettings = require('../data/defaultGuildSettings.json');
 
+module.exports = async client => {
+	// Why await here? Because the ready event isn't actually ready, sometimes
+	// guild information will come in *after* ready. 1s is plenty, generally,
+	// for lal of them to be loaded.
+	await wait(1000);
 
-module.exports = client => {
-    // Get the settings to work with
-    const guildSettings = client.guildSettings;
+    // Get the guildSettings
+    guildSettings = client.guildSettings;
 
     // Grab a list of all the guilds the bot is in
     const guildList = client.guilds.keyArray();
 
-    // Give the settings a place to be stored
-    defaultGuildConf = {};
-
-    // Load em into the correct format
-    for(val in defaultSettings) {
-        defaultGuildConf[val] = defaultSettings[val];
-    }
-
     guildList.forEach(guild => {
-        // Get the config for each guild
-        guildConf = guildSettings.get(guild);
-
-        // If there is no config, make one
-        if(!guildConf) {
-            guildConf = defaultGuildConf;
-            guildSettings.set(guild, guildConf);
+        // If there is no config, give em one
+        if(!guildSettings.has(guild)) {
+            guildSettings.set(guild, client.config.defaultSettings);
         }
     })
 
+    client.log("log", `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, "Ready!");//chalk.bgGreen.black(client.user.username + ' is Online'));
 
-    console.log(chalk.bgGreen.black(client.user.username + ' is Online'));
-
-    client.user.setGame(`${settings.prefix}help ~ ${client.guilds.size} servers`).catch(console.error);
+    client.user.setGame(`${client.config.prefix}help ~ ${client.guilds.size} servers`).catch(console.error);
 };
