@@ -20,12 +20,13 @@ module.exports = (client) => {
 
 	// The rest of the perms rely on roles. If those roles are not found
 	// in the settings, or the user does not have it, their level will be 0
-	try {
-		const modRole = message.guild.roles.find(r => r.name.toLowerCase() === guildConf.modRole.toLowerCase());
-		if (modRole && message.member.roles.has(modRole.id)) permlvl = 2;
-	} catch (e) {
-		// console.warn("modRole not present in guild settings. Skipping Moderator (level 2) check");
-	}
+    // Currently commented out because there's no need for a mod role here
+	// try {
+	// 	const modRole = message.guild.roles.find(r => r.name.toLowerCase() === guildConf.modRole.toLowerCase());
+	// 	if (modRole && message.member.roles.has(modRole.id)) permlvl = 2;
+	// } catch (e) {
+	// 	// console.warn("modRole not present in guild settings. Skipping Moderator (level 2) check");
+	// }
 	try {
 		const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === guildConf.adminRole.toLowerCase());
 		if (adminRole && message.member.roles.has(adminRole.id)) permlvl = 3;
@@ -36,7 +37,6 @@ module.exports = (client) => {
 	// Guild Owner gets an extra level, wooh!
 	if(message.author.id === message.guild.owner.id) permlvl = 4;
 
-        client.log("Permlevel: " + permlvl)
 	return permlvl;
 };
 
@@ -82,7 +82,7 @@ module.exports = (client) => {
 	  msg.reply(`Oh, I really love ${response} too!`);
 	  */
 	client.awaitReply = async (msg, question, limit = 60000) => {
-		const filter = m=>m.author.id = msg.author.id;
+		const filter = m=>m.author.id === msg.author.id;
 		await msg.channel.send(question);
 		try {
 			const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: ["time"] });
@@ -92,7 +92,7 @@ module.exports = (client) => {
 		}
 	};
 
-/*
+    /*
 	  MESSAGE CLEAN FUNCTION
 	  "Clean" removes @everyone pings, as well as tokens, and makes code blocks
 	  escaped so they're shown more easily. As a bonus it resolves promises
@@ -100,48 +100,48 @@ module.exports = (client) => {
 	  This is mostly only used by the Eval and Exec commands.
 	  */
 	client.clean = async (client, text) => {
-		if (text && text.constructor.name == "Promise")
-			text = await text;
-		if (typeof evaled !== "string")
-			text = require("util").inspect(text, {depth: 0});
+        if (text && text.constructor.name == "Promise")
+            text = await text;
+        if (typeof evaled !== "string")
+            text = require("util").inspect(text, {depth: 0});
 
-text = text
-	.replace(/`/g, "`" + String.fromCharCode(8203))
-	.replace(/@/g, "@" + String.fromCharCode(8203))
-	.replace(client.token, "mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0");
+        text = text
+            .replace(/`/g, "`" + String.fromCharCode(8203))
+            .replace(/@/g, "@" + String.fromCharCode(8203))
+            .replace(client.token, "mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0");
 
-return text;
+        return text;
 	};
 
-/* MISCELANEOUS NON-CRITICAL FUNCTIONS */
+    /* MISCELANEOUS NON-CRITICAL FUNCTIONS */
 
-String.prototype.toProperCase = function() {
-	return this.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-};
+    String.prototype.toProperCase = function() {
+        return this.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    };
 
-// `await wait(1000);` to "pause" for 1 second.
-global.wait = require("util").promisify(setTimeout);
+    // `await wait(1000);` to "pause" for 1 second.
+    global.wait = require("util").promisify(setTimeout);
 
 
-// Another semi-useful utility command, which creates a "range" of numbers
-// in an array. `range(10).forEach()` loops 10 times for instance. Why?
-// Because honestly for...i loops are ugly.
-global.range = (count, start = 0) => {
-	const myArr = [];
-	for(var i = 0; i<count; i++) {
-		myArr[i] = i+start;
-	}
-	return myArr;
-};
+    // Another semi-useful utility command, which creates a "range" of numbers
+    // in an array. `range(10).forEach()` loops 10 times for instance. Why?
+    // Because honestly for...i loops are ugly.
+    global.range = (count, start = 0) => {
+        const myArr = [];
+        for(var i = 0; i<count; i++) {
+            myArr[i] = i+start;
+        }
+        return myArr;
+    };
 
-// These 2 simply handle unhandled things. Like Magic. /shrug
-process.on("uncaughtException", (err) => {
-	const errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, "g"), "./");
-	console.error("Uncaught Exception: ", errorMsg);
-});
+    // These 2 simply handle unhandled things. Like Magic. /shrug
+    process.on("uncaughtException", (err) => {
+        const errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, "g"), "./");
+        console.error("Uncaught Exception: ", errorMsg);
+    });
 
-process.on("unhandledRejection", err => {
-	console.error("Uncaught Promise Error: ", err);
-});
+    process.on("unhandledRejection", err => {
+        console.error("Uncaught Promise Error: ", err);
+    });
 
 };

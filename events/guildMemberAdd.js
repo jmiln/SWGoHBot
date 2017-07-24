@@ -7,7 +7,7 @@ module.exports = (client, member) => {
     const guildConf = client.guildSettings.get(member.guild.id);
 
     // Our welcome message has a bit of a placeholder, let's fix
-    if(guildConf.welcomeMessageOn && guildConf.welcomeMessage !== "") { // If they have it turned on, and it's not empty
+    if(guildConf.enableWelcome && guildConf.welcomeMessage !== "") { // If they have it turned on, and it's not empty
         const welcomeMessage = guildConf.welcomeMessage.toString();
 
         // We'll send to the default channel - not the best practice, but whatever

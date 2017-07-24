@@ -4,8 +4,7 @@
 	"token": "MzA3NDA2MTMxODAwODM0MDU5.DA_grw.gDKpe-Dmb5wNUV3dX6mWntI2ELM",
 	"defaultSettings": {
 		"adminRole": "Administrator",
-		"modRole": "Moderator",
-		"welcomeMessageOn": false,
+		"enableWelcome": false,
 		"welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
 		"useEmbeds": true
 	}
