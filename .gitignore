@@ -4,6 +4,7 @@
 /data/guildsettings
 
 # Specific Files
+config.json
 settings.json
 /commands/list.js
 
