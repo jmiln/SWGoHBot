@@ -12,7 +12,7 @@ module.exports = (client) => {
 	const guildSettings = client.guildSettings;
 
 	// If bot owner, return max perm level
-	if(message.author.id === client.config.ownerID) return 10;
+	if(message.author.id === client.config.ownerid) return 10;
 
 	// If DMs or webhook, return 0 perm level.
 	if(!message.guild || !message.member) return 0;
@@ -36,6 +36,7 @@ module.exports = (client) => {
 	// Guild Owner gets an extra level, wooh!
 	if(message.author.id === message.guild.owner.id) permlvl = 4;
 
+        client.log("Permlevel: " + permlvl)
 	return permlvl;
 };
 
@@ -48,15 +49,15 @@ module.exports = (client) => {
 		console.log(`[${type}] [${title}]${msg}`);
 	};
 
-/*
- * RELOAD COMMAND
- * Reloads the given command
- */
+    /*
+     * RELOAD COMMAND
+     * Reloads the given command
+     */
 	client.reload = (command) => {
 		return new Promise((resolve, reject) => {
 			try {
-				delete require.cache[require.resolve(`./commands/${command}`)];
-				let cmd = require(`./commands/${command}`);
+				delete require.cache[require.resolve(`../commands/${command}.js`)];
+				let cmd = require(`../commands/${command}.js`);
 				client.commands.delete(command);
 				client.aliases.forEach((cmd, alias) => {
 					if (cmd === command) client.aliases.delete(alias);
@@ -72,7 +73,7 @@ module.exports = (client) => {
 		});
 	};
 
-/*
+    /*
 	  SINGLE-LINE AWAITMESSAGE
 	  A simple way to grab a single reply, from the user that initiated
 	  the command. Useful to get "precisions" on certain things...
