@@ -9,10 +9,10 @@ exports.run = (client, message, args) => {
 
     // Make sure the args are all there
     if(typeof args[0] === 'undefined' || args[0] === null || args[0] === "") {
-        return message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
+        return message.channel.send("Invalid raid, usage is \`" + config.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + config.prefix + "raidteams pit p1`");
     }
     if(typeof args[1] === 'undefined' || args[1] === null || args[1] === "") {
-        return message.channel.send("Invalid phase, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
+        return message.channel.send("Invalid phase, usage is \`" + config.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + config.prefix + "raidteams pit p1`");
     }
 
     // Remove anything that's not a letter for the raid name
@@ -36,7 +36,7 @@ exports.run = (client, message, args) => {
         } else if(phaseName === "p4") {
             currentPhase = "Phase 4"
         } else {
-            return message.channel.send("Invalid phase, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
+            return message.channel.send("Invalid phase, usage is \`" + config.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + config.prefix + "raidteams pit p1`");
         }
     }
 
@@ -100,10 +100,10 @@ exports.run = (client, message, args) => {
         }
 
         if(found === false) {
-            message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
+            message.channel.send("Invalid raid, usage is \`" + config.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + config.prefix + "raidteams pit p1`");
         }
     } else {
-            message.channel.send("Invalid raid, usage is \`" + settings.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + settings.prefix + "raidteams pit p1`");
+            message.channel.send("Invalid raid, usage is \`" + config.prefix + "raidteams [raidName] [phase]\`\n**Example:** `" + config.prefix + "raidteams pit p1`");
     }
 
 };

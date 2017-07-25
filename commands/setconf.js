@@ -67,7 +67,7 @@ exports.run = (client, message, args) => {
         // We can confirm everything's done to the client.
         message.channel.send(`Guild configuration item ${key} has been changed to:\n\`${value}\``);
     } else {
-        message.channel.send(`No guild settings found, run \`${settings.prefix}showconf\` to build them.`);
+        message.channel.send(`No guild settings found, run \`${config.prefix}showconf\` to build them.`);
     }
 };
 

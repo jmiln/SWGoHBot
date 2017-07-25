@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 
 module.exports = (client, member) => {
     // This executes when a member joins, so let's welcome them!
-    if(!message.guild) return;
     const guildConf = client.guildSettings.get(member.guild.id);
 
     // Our welcome message has a bit of a placeholder, let's fix
