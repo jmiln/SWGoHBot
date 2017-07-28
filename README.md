@@ -5,19 +5,25 @@ This is a bot I made to make looking up recommended setups for the game more con
 
 ## Commands (So far)
 ```asciidoc
-= Star Wars Commands =
-activities :: Shows the daily guild activites.
-mods       :: Shows some suggested mods for the specified character.
-modsets    :: Shows how many of each kind of mod you need for a set.
-raidteams  :: Shows some teams that work well for each raid.
+= Command List =
 
-= Misc Commands =
-info       :: Shows useful links and recent changes.
-help       :: Displays info about available commands.
+[Use ;help <commandname> for details]
 
-= Admin Commands =
-setconf    :: Used to set the bot's config settings.
-showconf   :: Shows the current configs for your server.
+== Admin ==
+;stats      :: Shows the bot's stats
+;showconf   :: Shows the current configs for your server.
+;setconf    :: Used to set the bot's config settings.
+;nickname   :: Changes the bot's nickname on the server
+
+== Misc ==
+;info       :: Shows useful links and recent changes.
+;help       :: Displays info about available commands.
+
+== Star Wars ==
+;mods       :: Shows some suggested mods for the specified character.
+;modsets    :: Shows how many of each kind of mod you need for a set.
+;raidteams  :: Shows some teams that work well for each raid.
+;activities :: Shows the daily guild activites.
 ```
 
 ## Requirements
@@ -36,13 +42,16 @@ Once finished:
 - Edit `config.json` and enter your bot's token and other details as indicated. 
 ```js
 {
-    "ownerid": "YourDiscordID",
-    "modrolename": "Moderator",
-    "adminrolename": "Administrator",
-    "prefix": ";",
-    "token": "YourBotTokenHere"
+	"ownerid": "YourUserID",
+    "prefix": "YourPrefixGoesHere",
+    "token": "YourTokenGoesHere",
+    "defaultSettings": {
+        "adminRole": "Administrator",
+        "enableWelcome": false,
+        "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
+        "useEmbeds": true
+    }
 }
-
 ```
 
 ## Starting the bot
