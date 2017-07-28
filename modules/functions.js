@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 module.exports = (client) => {
 	/*
 	  PERMISSION LEVEL FUNCTION
@@ -46,7 +48,7 @@ module.exports = (client) => {
 	  */
 	client.log = (type, msg, title) => {
 		if(!title) title = "Log";
-		console.log(`[${type}] [${title}]${msg}`);
+		console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] [${type}] [${title}]${msg}`);
 	};
 
     /*

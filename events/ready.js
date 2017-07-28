@@ -3,7 +3,7 @@ const chalk = require('chalk');
 module.exports = async client => {
 	// Why await here? Because the ready event isn't actually ready, sometimes
 	// guild information will come in *after* ready. 1s is plenty, generally,
-	// for lal of them to be loaded.
+	// for all of them to be loaded.
 	await wait(1000);
 
     // Get the guildSettings
@@ -19,7 +19,7 @@ module.exports = async client => {
         }
     })
 
-    client.log("log", `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, "Ready!");//chalk.bgGreen.black(client.user.username + ' is Online'));
+    client.log("log", `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, "Ready!");
 
     client.user.setGame(`${client.config.prefix}help ~ ${client.guilds.size} servers`).catch(console.error);
 };
