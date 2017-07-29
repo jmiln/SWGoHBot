@@ -1,7 +1,7 @@
 # Directories
 /node_modules/
 /data/guildSettings
-/data/guildsettings
+/data/guildEvents
 
 # Specific Files
 config.json

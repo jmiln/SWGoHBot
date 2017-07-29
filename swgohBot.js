@@ -3,6 +3,9 @@ const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const PersistentCollection = require("djs-collection-persistent");
 const client = new Discord.Client();
+const util = require('util');
+var moment = require('moment-timezone');
+
 
 // Attach the config to the client so we can use it anywhere
 client.config = require('./config.json');
@@ -13,6 +16,7 @@ client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 
 client.guildSettings = new PersistentCollection({name: 'guildSettings'});
+client.guildEvents = new PersistentCollection({name: 'guildEvents'});
 
 const init = async () => {
 
@@ -49,5 +53,42 @@ const init = async () => {
 
     // End top-level async/await function.
 };
+
+// The function to check every minute for applicable events
+function checkDates() {
+    // #### NEED TO FINISH THIS
+    const guildEvents = client.guildEvents;
+    const guildList = client.guilds.keyArray();
+
+    guildList.forEach(g => {
+        events = guildEvents.get(g);
+        if (events) {
+            // client.log('log', util.inspect(events));
+
+            for(key in events) {
+                // client.log('log', util.inspect(events[event]));
+                event = events[key];
+                eventDate = moment(event.eventDay, 'DD/MM/YYYY').format('DD/MM/YYYY');
+                nowDate = moment().tz(guildConf[timezone]).format('DD/MM/YYYY');
+
+                if (eventDate === nowDate) {
+                    if(moment(event.eventTime, 'H:mm').format('H:mm') === moment().tz(guildConf[timezone]).format("H:mm")) {
+                        client.log('log', event.eventMessage);  // Found it!!!!
+                        message.channel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                        delete events[key];
+                        guildEvents.set(g, events);
+                    }
+                }
+            }   
+        }
+    });
+
+}
+
+// Run it once on start up
+checkDates();
+
+// Then every minute after
+setInterval(checkDates, 30*1000);
 
 init();

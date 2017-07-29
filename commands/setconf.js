@@ -1,3 +1,5 @@
+var moment = require('moment-timezone');
+
 exports.run = (client, message, args) => {
     const config = client.config;
     const guildSettings = client.guildSettings;
@@ -53,6 +55,15 @@ exports.run = (client, message, args) => {
                     return message.reply(`Invalid value, try true or false`);
                 }
                 break;
+            case "timezone":
+                newKey = "timezone";
+                if (moment.tz.zone(value)) { // Valid time zone
+                    guildConf(newKey) = value;
+                } else { // Not so valid
+                    return message.reply(`Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
+                    and find the one that you need, then enter what it says in the TZ column`);                
+                }
+                break;
             default:
                 return message.reply("This key is not in the configuration.");
         }
@@ -79,8 +90,12 @@ exports.help = {
     category: 'Admin',
     description: 'Used to set the bot\'s config settings.',
     usage: 'setconf [key] [value]',
-    extended: `\`\`\`xl
-        
-        \`\`\``,
-    example: 'setconf adminRole Admin'
+    extended: `\`\`\`md
+adminRole      :: The role that you want to be able to modify bot settings or set up events.
+enableWlecome  :: Toggles the welcome message on/ off.
+welcomeMessage :: The welcome message to send it you have it enabled. '{{user}}' gets replaced with the new user's name.
+useEmbeds      :: Toggles whether or not to use embeds for the mods output.
+timezone       :: Sets the timezone that you want all time related commands to use.
+\`\`\``,
+    example: 'setconf adminRole Admin\nOr "setconf help" for more info'
 };
