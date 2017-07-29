@@ -58,7 +58,7 @@ exports.run = (client, message, args) => {
             case "timezone":
                 newKey = "timezone";
                 if (moment.tz.zone(value)) { // Valid time zone
-                    guildConf(newKey) = value;
+                    guildConf[newKey] = value;
                 } else { // Not so valid
                     return message.reply(`Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
                     and find the one that you need, then enter what it says in the TZ column`);                

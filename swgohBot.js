@@ -62,6 +62,7 @@ function checkDates() {
 
     guildList.forEach(g => {
         events = guildEvents.get(g);
+        guildConf = guildSettings.get(g);
         if (events) {
             // client.log('log', util.inspect(events));
 
@@ -69,12 +70,12 @@ function checkDates() {
                 // client.log('log', util.inspect(events[event]));
                 event = events[key];
                 eventDate = moment(event.eventDay, 'DD/MM/YYYY').format('DD/MM/YYYY');
-                nowDate = moment().tz(guildConf[timezone]).format('DD/MM/YYYY');
+                nowDate = moment().tz(guildConf['timezone']).format('DD/MM/YYYY');
 
                 if (eventDate === nowDate) {
-                    if(moment(event.eventTime, 'H:mm').format('H:mm') === moment().tz(guildConf[timezone]).format("H:mm")) {
-                        client.log('log', event.eventMessage);  // Found it!!!!
-                        message.channel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                    if(moment(event.eventTime, 'H:mm').format('H:mm') === moment().tz(guildConf['timezone']).format("H:mm")) {
+                        // Need to stick something in the config for em to set their own channel for this, but at least it's working now
+                        client.guilds.get(g).defaultChannel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
                         delete events[key];
                         guildEvents.set(g, events);
                     }
