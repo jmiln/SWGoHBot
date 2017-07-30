@@ -33,6 +33,10 @@ This is a bot I made to make looking up recommended setups for the game more con
 - `Some knowledge of node` if you want to modify it.
 
 ## Setup
+
+Firstly, you'll need to set up the bot account, so you can get the token and such. 
+https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
+
 In a command prompt in your projects folder (wherever that may be) run the following:
 `git clone git@github.com:JeffreyMilner/SWGoHBot.git`
 
