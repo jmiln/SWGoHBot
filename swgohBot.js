@@ -56,7 +56,6 @@ const init = async () => {
 
 // The function to check every minute for applicable events
 function checkDates() {
-    // #### NEED TO FINISH THIS
     const guildEvents = client.guildEvents;
     const guildList = client.guilds.keyArray();
 
@@ -64,18 +63,23 @@ function checkDates() {
         events = guildEvents.get(g);
         guildConf = guildSettings.get(g);
         if (events) {
-            // client.log('log', util.inspect(events));
-
             for(key in events) {
-                // client.log('log', util.inspect(events[event]));
                 event = events[key];
                 eventDate = moment(event.eventDay, 'DD/MM/YYYY').format('DD/MM/YYYY');
                 nowDate = moment().tz(guildConf['timezone']).format('DD/MM/YYYY');
 
                 if (eventDate === nowDate) {
                     if(moment(event.eventTime, 'H:mm').format('H:mm') === moment().tz(guildConf['timezone']).format("H:mm")) {
-                        // Need to stick something in the config for em to set their own channel for this, but at least it's working now
-                        client.guilds.get(g).defaultChannel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                        if(guildConf["announceChan"] != "") {
+                            channel = client.guilds.get(g).channels.find('name', guildConf["announceChan"]);
+                            if (!channel) {
+                                client.guilds.get(g).defaultChannel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                            } else {
+                                channel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                            }
+                        } else {
+                            client.guilds.get(g).defaultChannel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                        }
                         delete events[key];
                         guildEvents.set(g, events);
                     }
@@ -86,10 +90,10 @@ function checkDates() {
 
 }
 
+init();
+
 // Run it once on start up
 checkDates();
 
-// Then every minute after
+// Then every 30 seconds after
 setInterval(checkDates, 30*1000);
-
-init();

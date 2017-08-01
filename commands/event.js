@@ -30,8 +30,7 @@ exports.run = (client, message, args) => {
     if (action === "create" || action === "delete") {
         if (message.author.id !== message.guild.owner.id) {
             if (!message.member.roles.has(guildConf["adminRole"])) {
-                return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\n
-                                          You cannot add or remove an event unless you have the configured admin role.`);
+                return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
             }
         }
     }
@@ -122,7 +121,7 @@ exports.help = {
     usage: 'event [create|view|delete|time] [eventName] [eventDay] [eventTime] [eventMessage]',
     extended: `\`\`\`md
 create :: Create a new event listing.
-view   ::   View your current event listings.
+view   :: View your current event listings.
 delete :: Delete an event.
 help   :: Shows this message.\`\`\``,
     example: 'event create FirstEvent 7/2/2017 13:56 This is my event message'

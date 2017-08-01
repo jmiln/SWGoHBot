@@ -9,30 +9,6 @@ exports.run = (client, message, args, level) => {
         commands = client.commands.array();
         helpString = "= Command List =\n\n[Use " + config.prefix + "help <commandname> for details]\n";
 
-        // starwarsString = `= Star Wars Commands =\n`;
-        // otherString = `= Misc Commands =\n`;
-        // adminString = `= Admin Commands =\n`;
-        //
-        // commands.forEach(command => {
-        //     type = command.conf.type;
-        //
-        //     switch(type) {
-        //         case 'starwars':
-        //             starwarsString += `${config.prefix}${" ".repeat(longest - c.help.name.length)} :: ${command.help.description}\n`;
-        //             break;
-        //         case 'other':
-        //             otherString += `${config.prefix}${" ".repeat(longest - c.help.name.length)} :: ${command.help.description}\n`;
-        //             break;
-        //         case 'admin':
-        //             adminString += `${config.prefix}${" ".repeat(longest - c.help.name.length)} :: ${command.help.description}\n`;
-        //             break;
-        //     }
-        // });
-        //
-        // helpString += `\n${starwarsString}\n${otherString}\n${adminString}`;
-        //
-        // message.channel.send(helpString, {code:'asciidoc'});
-
 		let currentCategory = "";
 		let output = `= Command List =\n\n[Use ${client.config.prefix}help <commandname> for details]\n`;
 		const sorted = myCommands.sort((p, c) => p.help.category > c.help.category ? 1 : -1);
