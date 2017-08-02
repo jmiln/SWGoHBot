@@ -44,7 +44,7 @@ exports.run = (client, message, args) => {
             if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`);
 
             if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`);
-            if (!moment(args[2], 'DD/MM/YYYY', true).isValid()) {
+            if (!moment(args[2], 'D/M/YYYY', true).isValid()) {
                 return message.channel.send(`${args[2]} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`);
             } else { // It's valid, go ahead and set it.
                 eventDay = args[2];
@@ -61,6 +61,10 @@ exports.run = (client, message, args) => {
                 eventMessage = "";
             } else {
                 eventMessage = args.splice(4).join(" ");
+            }
+
+            if(moment(`${eventDay} ${eventTime}`, 'D/M/YYYY H:mm').isBefore(moment().tz(guildConf['timezone']))) {
+                return message.channel.send(`You cannot set an event in the past.`);
             }
 
             let event = {

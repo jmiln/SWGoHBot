@@ -65,20 +65,21 @@ function checkDates() {
         if (events) {
             for(key in events) {
                 event = events[key];
-                eventDate = moment(event.eventDay, 'DD/MM/YYYY').format('DD/MM/YYYY');
-                nowDate = moment().tz(guildConf['timezone']).format('DD/MM/YYYY');
+                eventDate = moment(event.eventDay, 'D/M/YYYY').format('D/M/YYYY');
+                nowDate = moment().tz(guildConf['timezone']).format('D/M/YYYY');
 
                 if (eventDate === nowDate) {
                     if(moment(event.eventTime, 'H:mm').format('H:mm') === moment().tz(guildConf['timezone']).format("H:mm")) {
+                        announceMessage  = `Event alert for \`${key}\` @here. \n**Event Message:** ${event.eventMessage}`;
                         if(guildConf["announceChan"] != "") {
                             channel = client.guilds.get(g).channels.find('name', guildConf["announceChan"]);
                             if (!channel) {
-                                client.guilds.get(g).defaultChannel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                                client.guilds.get(g).defaultChannel.send(announceMessage);
                             } else {
-                                channel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                                channel.send(announceMessage);
                             }
                         } else {
-                            client.guilds.get(g).defaultChannel.send(`Event alert for \`${key}\` @everyone. \n**Event Message:** ${event.eventMessage}`);
+                            client.guilds.get(g).defaultChannel.send(announceMessage);
                         }
                         delete events[key];
                         guildEvents.set(g, events);
