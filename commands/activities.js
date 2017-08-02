@@ -5,12 +5,12 @@ exports.run = (client, message, args) => {
 
     if (!message.guild) return message.channel.send(`Sorry, something went wrong, please try again`);
 
-    const guildConf = guildSettings.get(message.guild.id);
+    const guildConf = client.guildSettings.get(message.guild.id);
 
     let day = '';
 
     if (!args[0]) {
-        day = moment().tz(guildConf['timezone']).format('ddd').toLowerCase;
+        day = moment().tz(guildConf['timezone']).format('ddd').toLowerCase();
     } else {
         day = String(args[0]).toLowerCase();
     }
