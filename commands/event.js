@@ -122,7 +122,7 @@ exports.help = {
     name: 'event',
     category: 'Misc',
     description: 'Used to make or check an event',
-    usage: 'event [create|view|delete|time] [eventName] [eventDay] [eventTime] [eventMessage]',
+    usage: 'event [create|view|delete] [eventName] [eventDay] [eventTime] [eventMessage]',
     extended: `\`\`\`md
 create :: Create a new event listing.
 view   :: View your current event listings.
