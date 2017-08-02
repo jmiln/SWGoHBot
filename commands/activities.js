@@ -10,7 +10,7 @@ exports.run = (client, message, args) => {
     let day = '';
 
     if (!args[0]) {
-        day = moment().tz(guildConf['timezone']).format('ddd').toLowerCase();
+        day = moment().tz(guildConf['timezone']).format('ddd').toLowerCase;
     } else {
         day = String(args[0]).toLowerCase();
     }
