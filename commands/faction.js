@@ -36,13 +36,13 @@ exports.run = (client, message, args) => {
                 charString = factionChars.join('\n');
                 fields = []
                 fields.push({
-                    "name": searchName.toProperCase(),
+                    "name": `searchName.toProperCase()`,
                     "value": charString 
                 });
                 message.channel.send({embed:{"fields": fields}});
             } else { // Embeds are disabled
                 charString = '* ' + factionChars.join('\n* ');
-                message.channel.send(`# Characters in ${searchName.toProperCase()} # \n${charString}`, { code: 'md' });
+                message.channel.send(`# Characters in the ${searchName.toProperCase()} faction # \n${charString}`, { code: 'md' });
             }
         } else {
             message.channel.send("Invalid faction, usage is \`" + config.prefix + "faction [faction]\`");
