@@ -1,7 +1,20 @@
+var moment = require('moment-timezone');
+
 exports.run = (client, message, args) => {
     const config = client.config;
-    let day = String(args[0]).toLowerCase();
 
+    if (!message.guild) return message.channel.send(`Sorry, something went wrong, please try again`);
+
+    const guildConf = guildSettings.get(message.guild.id);
+
+    let day = '';
+
+    if (!args[0]) {
+        day = moment().tz(guildConf['timezone']).format('ddd').toLowerCase();
+    } else {
+        day = String(args[0]).toLowerCase();
+    }
+    
     switch (day) {
         case 'sun':
         case 'sunday':
