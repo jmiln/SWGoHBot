@@ -2686,7 +2686,7 @@
                 "diamond": "Defense",
                 "triangle":"Offense",
                 "circle":  "Protection",
-                "cross":   "Protection  / Potency  / Potency"
+                "cross":   "Protection  / Potency"
             }
         }
     },
