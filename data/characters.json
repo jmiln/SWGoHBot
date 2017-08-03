@@ -2021,16 +2021,16 @@
         "mods": {
             "Arena": {
                 "sets": [
-                    "",
-                    "",
+                    "Speed x4",
+                    "Potency x2",
                     ""
                 ],
                 "square":  "Offense",
                 "arrow":   "Speed",
                 "diamond": "Defense",
-                "triangle":"",
-                "circle":  "",
-                "cross":   ""
+                "triangle":"Crit. Chance / Protection",
+                "circle":  "Protection",
+                "cross":   "Potency"
             }
         }
     },
@@ -2297,16 +2297,29 @@
         "mods": {
             "Arena": {
                 "sets": [
-                    "",
-                    "",
-                    ""
+                    "Defense x2",
+                    "Defense x2",
+                    "Tenacity x2"
                 ],
                 "square":  "Offense",
-                "arrow":   "Speed",
+                "arrow":   "Protection",
                 "diamond": "Defense",
-                "triangle":"",
-                "circle":  "",
-                "cross":   ""
+                "triangle":"Protection",
+                "circle":  "Protection",
+                "cross":   "Protection / Tenacity"
+            },
+            "Arena (with Logray)": {
+                "sets": [
+                    "Defense x2",
+                    "Tenacity x2",
+                    "Critical Chance x2"
+                ],
+                "square":  "Offense",
+                "arrow":   "Protection",
+                "diamond": "Defense",
+                "triangle":"Crit. Chance / Protection",
+                "circle":  "Protection",
+                "cross":   "Protection / Tenacity"
             }
         }
     },
@@ -2439,7 +2452,7 @@
         }
     },
     {
-        "name":    "R2-D2 (burn)",
+        "name":    "R2-D2",
         "aliases": ["R2 D2", "R2D2", "R2"],
         "url": "https://swgoh.gg/characters/r2-d2/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_astromech_r2d2.png",
@@ -2673,7 +2686,7 @@
                 "diamond": "Defense",
                 "triangle":"Offense",
                 "circle":  "Protection",
-                "cross":   "Protection  / Potency  / Potency"
+                "cross":   "Protection  / Potency"
             }
         }
     },
@@ -3081,16 +3094,16 @@
         "mods": {
             "Arena": {
                 "sets": [
-                    "",
-                    "",
+                    "Critical Damage x4",
+                    "Critical Chamce x2",
                     ""
                 ],
                 "square":  "Offense",
                 "arrow":   "Speed",
                 "diamond": "Defense",
-                "triangle":"",
-                "circle":  "",
-                "cross":   ""
+                "triangle":"Crit. Chance / Crit. Damage",
+                "circle":  "Protection",
+                "cross":   "Offense / Protection"
             }
         }
     },

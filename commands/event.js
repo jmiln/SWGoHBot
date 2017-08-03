@@ -30,8 +30,7 @@ exports.run = (client, message, args) => {
     if (action === "create" || action === "delete") {
         if (message.author.id !== message.guild.owner.id) {
             if (!message.member.roles.has(guildConf["adminRole"])) {
-                return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\n
-                                          You cannot add or remove an event unless you have the configured admin role.`);
+                return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
             }
         }
     }
@@ -45,7 +44,7 @@ exports.run = (client, message, args) => {
             if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`);
 
             if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`);
-            if (!moment(args[2], 'DD/MM/YYYY', true).isValid()) {
+            if (!moment(args[2], 'D/M/YYYY', true).isValid()) {
                 return message.channel.send(`${args[2]} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`);
             } else { // It's valid, go ahead and set it.
                 eventDay = args[2];
@@ -62,6 +61,10 @@ exports.run = (client, message, args) => {
                 eventMessage = "";
             } else {
                 eventMessage = args.splice(4).join(" ");
+            }
+
+            if(moment(`${eventDay} ${eventTime}`, 'D/M/YYYY H:mm').isBefore(moment().tz(guildConf['timezone']))) {
+                return message.channel.send(`You cannot set an event in the past.`);
             }
 
             let event = {
@@ -119,10 +122,10 @@ exports.help = {
     name: 'event',
     category: 'Misc',
     description: 'Used to make or check an event',
-    usage: 'event [create|view|delete|time] [eventName] [eventDay] [eventTime] [eventMessage]',
+    usage: 'event [create|view|delete] [eventName] [eventDay] [eventTime] [eventMessage]',
     extended: `\`\`\`md
 create :: Create a new event listing.
-view   ::   View your current event listings.
+view   :: View your current event listings.
 delete :: Delete an event.
 help   :: Shows this message.\`\`\``,
     example: 'event create FirstEvent 7/2/2017 13:56 This is my event message'

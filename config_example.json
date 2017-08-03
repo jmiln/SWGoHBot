@@ -7,6 +7,7 @@
         "enableWelcome": false,
         "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
         "useEmbeds": true,
-        "timezone": "America/Los_Angeles"
+        "timezone": "America/Los_Angeles",
+        "announceChan": ""
     }
 }

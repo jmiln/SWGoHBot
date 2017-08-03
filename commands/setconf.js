@@ -17,55 +17,69 @@ exports.run = (client, message, args) => {
         if (!args[0]) return message.reply(`You must select a config option to change.`);
         const key = args[0].toLowerCase();
 
-        if (!args[1]) return message.reply(`You must give a value to change that option to.`);
-        const value = args.splice(1).join(" ");
+        let value = '';
+
+        // The list of commands that don't need another argument
+        let noVal = ["help", "announcechan"];
+
+        // If there is no second argument, and it's not one that doesn't need one, return
+        if (!args[1] && !noVal.includes(key)) {
+            return message.reply(`You must give a value to change that option to.`);
+        } else {
+            value = args.splice(1).join(" ");
+        }
 
         const onVar = ["true", "on", "enable"];
         const offVar = ["false", "off", "disable"];
 
         // Now we can finally change the value. Here we only have strings for values so we won't
         // bother trying to make sure it's the right type and such. 
-        newKey = "";
         switch (key) {
             case "adminrole":
-                newKey = "adminRole";
-                guildConf[newKey] = value;
+                guildConf["adminRole"] = value;
                 break;
             case "enablewelcome":
-                newKey = "enableWelcome";
                 if (onVar.includes(value.toLowerCase())) {
-                    guildConf[newKey] = true;
+                    guildConf["enableWelcome"] = true;
                 } else if (offVar.includes(value.toLowerCase())) {
-                    guildConf[newKey] = false;
+                    guildConf["enableWelcome"] = false;
                 } else {
                     return message.reply(`Invalid value, try true or false`);
                 }
                 break;
             case "welcomemessage":
-                newKey = "welcomeMessage";
-                guildConf[newKey] = value;
+                guildConf["welcomeMessage"] = value;
                 break;
             case "useembeds":
-                newKey = "useEmbeds";
                 if (onVar.includes(value.toLowerCase())) {
-                    guildConf[newKey] = true;
+                    guildConf["useEmbeds"] = true;
                 } else if (offVar.includes(value.toLowerCase())) {
-                    guildConf[newKey] = false;
+                    guildConf["useEmbeds"] = false;
                 } else {
                     return message.reply(`Invalid value, try true or false`);
                 }
                 break;
             case "timezone":
-                newKey = "timezone";
                 if (moment.tz.zone(value)) { // Valid time zone
-                    guildConf[newKey] = value;
+                    guildConf["timezone"] = value;
                 } else { // Not so valid
-                    return message.reply(`Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
-                    and find the one that you need, then enter what it says in the TZ column`);                
+                    return message.reply(`Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`);
                 }
                 break;
+            case "announcechan":
+                if (value !== '') {
+                    newChannel = message.guild.channels.find('name', value);
+                    if(!newChannel) return message.channel.send(`Sorry, but I cannot find the channel ${value}. Please try again.`)
+                    guildConf["announceChan"] = value;
+                } else {
+                    guildConf["announceChan"] = "";
+                }
+                break;
+            case "help":
+                return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
+                break;
             default:
-                return message.reply("This key is not in the configuration.");
+                return message.reply(`This key is not in the configuration. Look in "${config.prefix}showconf", or "${config.prefix}setconf help" for a list`);
         }
 
         // Then we re-apply the changed value to the PersistentCollection
@@ -89,13 +103,15 @@ exports.help = {
     name: 'setconf',
     category: 'Admin',
     description: 'Used to set the bot\'s config settings.',
-    usage: 'setconf [key] [value]',
-    extended: `\`\`\`md
+    usage: 'setconf [help|key] [value]',
+    extended: `\`\`\`asciidoc
 adminRole      :: The role that you want to be able to modify bot settings or set up events.
 enableWlecome  :: Toggles the welcome message on/ off.
 welcomeMessage :: The welcome message to send it you have it enabled. '{{user}}' gets replaced with the new user's name.
 useEmbeds      :: Toggles whether or not to use embeds for the mods output.
-timezone       :: Sets the timezone that you want all time related commands to use.
+timezone       :: Sets the timezone that you want all time related commands to use. Look here if you need a list https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+announceChan   :: Sets the name of your announcements channel for events etc. Leave blank if there is none,  and it will send them in your defaul channel. Make sure it has permission to send them there.
+help           :: Shows this help message.
 \`\`\``,
     example: 'setconf adminRole Admin\nOr "setconf help" for more info'
 };
