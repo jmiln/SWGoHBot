@@ -10,11 +10,15 @@ exports.run = (client, message, args) => {
     let day = '';
 
     if (!args[0]) {
-        day = moment().tz(guildConf['timezone']).format('ddd').toLowerCase();
+        if(!guildConf['timezone']) {
+            day = moment().format('ddd').toLowerCase();
+        } else {
+            day = moment().tz(guildConf['timezone']).format('ddd').toLowerCase();
+        }
     } else {
         day = String(args[0]).toLowerCase();
     }
-    
+
     switch (day) {
         case 'sun':
         case 'sunday':
@@ -51,7 +55,7 @@ exports.run = (client, message, args) => {
             message.channel.send(`== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy
                                  \n== After Reset == \nComplete Arena Battles \nSave Cantina Energy`, {code:'asciidoc'});
             break;
-        default: 
+        default:
             message.channel.send("Invalid date, usage is \`" + config.prefix + "activities [day]\`");
     }
 };

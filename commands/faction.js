@@ -36,7 +36,7 @@ exports.run = (client, message, args) => {
                 charString = factionChars.join('\n');
                 fields = []
                 fields.push({
-                    "name": `searchName.toProperCase()`,
+                    "name": searchName.toProperCase(),
                     "value": charString 
                 });
                 message.channel.send({embed:{"fields": fields}});

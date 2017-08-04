@@ -2107,7 +2107,7 @@
         "name":    "Magmatrooper",
         "aliases": ["Magmatrooper", "Magma"],
         "url": "https://swgoh.gg/characters/magmatrooper/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_magma.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm_magma.png",
         "side": "dark",
         "factions" : ["attacker", "human", "empire", "imperial trooper"],
         "mods": {
