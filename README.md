@@ -2,6 +2,7 @@
 
 ## About
 This is a bot I made to make looking up recommended setups for the game more convenient, since so many people use Discord to communicate.
+It has since become so much more than I'd initially planned, and should become much more in time.
 
 ## Commands (So far)
 ```asciidoc
@@ -10,19 +11,22 @@ This is a bot I made to make looking up recommended setups for the game more con
 [Use ;help <commandname> for details]
 
 == Admin ==
+;nickname   :: Changes the bot's nickname on the server
 ;stats      :: Shows the bot's stats
 ;showconf   :: Shows the current configs for your server.
 ;setconf    :: Used to set the bot's config settings.
-;nickname   :: Changes the bot's nickname on the server
 
 == Misc ==
-;info       :: Shows useful links and recent changes.
+;event      :: Used to make or check an event
 ;help       :: Displays info about available commands.
+;info       :: Shows useful links and recent changes.
+;time       :: Used to check the time with the guild's configured timezone
 
 == Star Wars ==
-;mods       :: Shows some suggested mods for the specified character.
-;modsets    :: Shows how many of each kind of mod you need for a set.
 ;raidteams  :: Shows some teams that work well for each raid.
+;modsets    :: Shows how many of each kind of mod you need for a set.
+;mods       :: Shows some suggested mods for the specified character.
+;faction    :: Shows the list of characters in the specified faction.
 ;activities :: Shows the daily guild activites.
 ```
 
@@ -46,14 +50,16 @@ Once finished:
 - Edit `config.json` and enter your bot's token and other details as indicated. 
 ```js
 {
-	"ownerid": "YourUserID",
+    "ownerid": "YourUserID",
     "prefix": "YourPrefixGoesHere",
     "token": "YourTokenGoesHere",
     "defaultSettings": {
         "adminRole": "Administrator",
         "enableWelcome": false,
         "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
-        "useEmbeds": true
+        "useEmbeds": true,
+        "timezone": "America/Los_Angeles",
+        "announceChan": ""
     }
 }
 ```

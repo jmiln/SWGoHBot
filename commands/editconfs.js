@@ -8,6 +8,9 @@ exports.run = async(client, message, args) => {
 
     if (!args[0]) return message.channel.send(`Need args here`);
 
+    let count = 0;
+    const validAnswers = ['yes', 'y', 'no', 'n'];
+
     if (args[0] === 'replace') {
         if (!args[1] || !args[2]) return message.channel.send(`Needs two arguments here. Usage: \`editconfs replace [replaceThis] [withThis]\``);
 
@@ -15,7 +18,6 @@ exports.run = async(client, message, args) => {
         let newKey = args[2];
 
         const response = await client.awaitReply(message, `Are you sure you want to replace \`${oldKey}\` with \`${newKey}\`? (yes/no)`);
-        const validAnswers = ['yes', 'y', 'no', 'n'];
         if (validAnswers.includes(response.toLowerCase())) {
             if (response === "yes" || response === 'y') {
                 let guildList = client.guilds.keyArray();
@@ -24,13 +26,16 @@ exports.run = async(client, message, args) => {
                 guildList.forEach(g => {
                     guildConf = guildSettings.get(g);
                     if (guildConf) {
-                        oldKeyValue = guildConf[oldKey];
-                        delete guildConf[oldKey];
-                        guildConf[newKey] = oldKeyValue;
-                        guildSettings.set(g, guildConf);
+                        if(guildConf[oldKey]) {
+                            oldKeyValue = guildConf[oldKey];
+                            delete guildConf[oldKey];
+                            guildConf[newKey] = oldKeyValue;
+                            guildSettings.set(g, guildConf);
+                            count++;
+                        }
                     }
                 });
-                await message.reply(`Replacing \`${oldKey}\` with \`${newKey}\`.`)
+                await message.reply(`Replacing \`${oldKey}\` with \`${newKey}\` in ${count} configs.`)
             } else if (response === 'no' || response === 'n') {
                 return await message.reply("Canceling replacement.");
             }
@@ -47,7 +52,6 @@ exports.run = async(client, message, args) => {
         }
 
         const response = await client.awaitReply(message, `Are you sure you want to add \`${newKey}\` with a value of \`${newKeyValue}\`? (yes/no)`);
-        const validAnswers = ['yes', 'y', 'no', 'n'];
         if (validAnswers.includes(response.toLowerCase())) {
             if (response === "yes" || response === 'y') {
                 let guildList = client.guilds.keyArray();
@@ -55,11 +59,14 @@ exports.run = async(client, message, args) => {
                 guildList.forEach(g => {
                     guildConf = guildSettings.get(g);
                     if (guildConf) {
-                        guildConf[newKey] = newKeyValue;
-                        guildSettings.set(g, guildConf);
+                        if(!guildConf[newKey]) {
+                            guildConf[newKey] = newKeyValue;
+                            guildSettings.set(g, guildConf);
+                            count++;
+                        }
                     }
                 });
-                await message.reply(`Added \`${newKey}\` with value \`${newKeyValue}\`.`)
+                await message.reply(`Added \`${newKey}\` with value \`${newKeyValue}\` to ${count} configs.`)
             } else if (response === 'no' || response === 'n') {
                 return await message.reply("Canceling add.");
             }
@@ -72,7 +79,6 @@ exports.run = async(client, message, args) => {
         let oldKey = args[1];
 
         const response = await client.awaitReply(message, `Are you sure you want to remove \`${oldKey}\`? (yes/no)`);
-        const validAnswers = ['yes', 'y', 'no', 'n'];
         if (validAnswers.includes(response.toLowerCase())) {
             if (response === "yes" || response === 'y') {
                 let guildList = client.guilds.keyArray();
@@ -80,11 +86,14 @@ exports.run = async(client, message, args) => {
                 guildList.forEach(g => {
                     guildConf = guildSettings.get(g);
                     if (guildConf) {
-                        delete guildConf[oldKey];
-                        guildSettings.set(g, guildConf);
+                        if(guildConf[oldKey]) {
+                            delete guildConf[oldKey];
+                            guildSettings.set(g, guildConf);
+                            count++;
+                        }
                     }
                 });
-                await message.reply(`Removed \`${oldKey}\`.`)
+                await message.reply(`Removed \`${oldKey}\`. from ${count} configs`)
             } else if (response === 'no' || response === 'n') {
                 return await message.reply("Canceling removal.");
             }
@@ -97,7 +106,7 @@ exports.run = async(client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    aliases: ['edit', 'editconf'],
     permLevel: 10
 };
 
