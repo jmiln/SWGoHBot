@@ -2105,7 +2105,7 @@
     },
     {
         "name":    "Magmatrooper",
-        "aliases": ["Magamatrooper", "Magma"],
+        "aliases": ["Magmatrooper", "Magma"],
         "url": "https://swgoh.gg/characters/magmatrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_magma.png",
         "side": "dark",
@@ -2220,7 +2220,7 @@
     },
     {
         "name":    "Obi-Wan Kenobi (Old Ben)",
-        "aliases": ["ObiWan Kenobi", "Obi Wan Kenobi", "ObiWan", "Obi Wan", "Kenobi"],
+        "aliases": ["ObiWan Kenobi", "Obi Wan Kenobi", "ObiWan", "Obi Wan", "Kenobi", "Old Ben", "Ben"],
         "url": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwanep4.png",
         "side": "light",
