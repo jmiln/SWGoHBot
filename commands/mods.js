@@ -59,10 +59,10 @@ exports.run = (client, message, args) => {
         }
 
         if(found === false) {
-            message.channel.send("Invalid character, usage is \`" + config.prefix + "mods [character]\`");
+            message.channel.send("Invalid character, usage is \`" + config.prefix + "mods [character]\`").then(msg => msg.delete(4000)).catch(console.error);;
         }
     } else {
-        message.channel.send("Invalid character, usage is \`" + config.prefix + "mods [character]\`");
+        message.channel.send("Invalid character, usage is \`" + config.prefix + "mods [character]\`").then(msg => msg.delete(4000)).catch(console.error);;
     }
 
 };
