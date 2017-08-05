@@ -3,7 +3,6 @@ const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const PersistentCollection = require("djs-collection-persistent");
 const client = new Discord.Client();
-const util = require('util');
 var moment = require('moment-timezone');
 
 
@@ -27,7 +26,7 @@ const init = async () => {
     cmdFiles.forEach(f => {
         try {
             const props = require(`./commands/${f}`);
-            if(f.split(".").slice(-1)[0] !== "js") return;
+            if (f.split(".").slice(-1)[0] !== "js") return;
             client.commands.set(props.help.name, props);
             props.conf.aliases.forEach(alias => {
                 client.aliases.set(alias, props.help.name);
@@ -60,19 +59,19 @@ function checkDates() {
     const guildList = client.guilds.keyArray();
 
     guildList.forEach(g => {
-        events = guildEvents.get(g);
-        guildConf = guildSettings.get(g);
+        var events = client.guildEvents.get(g);
+        var guildConf = client.guildSettings.get(g);
         if (events) {
-            for(key in events) {
-                event = events[key];
-                eventDate = moment(event.eventDay).format('D/M/YYYY');
-                nowDate = moment().tz(guildConf['timezone']).format('D/M/YYYY');
+            for (var key in events) {
+                var event = events[key];
+                var eventDate = moment(event.eventDay).format('D/M/YYYY');
+                var nowDate = moment().tz(guildConf['timezone']).format('D/M/YYYY');
 
                 if (eventDate === nowDate) {
-                    if(moment(event.eventTime, 'H:mm').format('H:mm') === moment().tz(guildConf['timezone']).format("H:mm")) {
-                        announceMessage  = `Event alert for \`${key}\` @here. \n**Event Message:** ${event.eventMessage}`;
-                        if(guildConf["announceChan"] != "") {
-                            channel = client.guilds.get(g).channels.find('name', guildConf["announceChan"]);
+                    if (moment(event.eventTime, 'H:mm').format('H:mm') === moment().tz(guildConf['timezone']).format("H:mm")) {
+                        var announceMessage = `Event alert for \`${key}\` @here. \n**Event Message:** ${event.eventMessage}`;
+                        if (guildConf["announceChan"] != "") {
+                            var channel = client.guilds.get(g).channels.find('name', guildConf["announceChan"]);
                             if (!channel) {
                                 client.guilds.get(g).defaultChannel.send(announceMessage);
                             } else {
@@ -85,7 +84,7 @@ function checkDates() {
                         guildEvents.set(g, events);
                     }
                 }
-            }   
+            }
         }
     });
 
@@ -96,7 +95,6 @@ function checkDates() {
 checkDates();
 
 // Then every 30 seconds after
-setInterval(checkDates, 30*1000);
+setInterval(checkDates, 30 * 1000);
 
 init();
-

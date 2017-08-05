@@ -1,7 +1,6 @@
 exports.run = (client, message, args) => {
-    if(args.length > 0) {
-        let name = String(args.join(' '));
-
+    if (args.length > 0) {
+        const  name = String(args.join(' '));
         message.guild.member(client.user).setNickname(name);
     } else {
         message.guild.member(client.user).setNickname("");

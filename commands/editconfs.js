@@ -1,10 +1,5 @@
-const PersistentCollection = require("djs-collection-persistent");
-const util = require('util');
-
-exports.run = async(client, message, args) => {
-    config = client.config;
+exports.run = async (client, message, args) => {
     const guildSettings = client.guildSettings;
-    const defaultSettings = client.config.defaultSettings;
 
     if (!args[0]) return message.channel.send(`Need args here`);
 
@@ -14,20 +9,20 @@ exports.run = async(client, message, args) => {
     if (args[0] === 'replace') {
         if (!args[1] || !args[2]) return message.channel.send(`Needs two arguments here. Usage: \`editconfs replace [replaceThis] [withThis]\``);
 
-        let oldKey = args[1];
-        let newKey = args[2];
+        const oldKey = args[1];
+        const newKey = args[2];
 
         const response = await client.awaitReply(message, `Are you sure you want to replace \`${oldKey}\` with \`${newKey}\`? (yes/no)`);
         if (validAnswers.includes(response.toLowerCase())) {
             if (response === "yes" || response === 'y') {
-                let guildList = client.guilds.keyArray();
+                const  guildList = client.guilds.keyArray();
                 // let guildList = [message.guild.id];
 
                 guildList.forEach(g => {
-                    guildConf = guildSettings.get(g);
+                    var guildConf = guildSettings.get(g);
                     if (guildConf) {
-                        if(guildConf[oldKey]) {
-                            oldKeyValue = guildConf[oldKey];
+                        if (guildConf[oldKey]) {
+                            var oldKeyValue = guildConf[oldKey];
                             delete guildConf[oldKey];
                             guildConf[newKey] = oldKeyValue;
                             guildSettings.set(g, guildConf);
@@ -35,7 +30,7 @@ exports.run = async(client, message, args) => {
                         }
                     }
                 });
-                await message.reply(`Replacing \`${oldKey}\` with \`${newKey}\` in ${count} configs.`)
+                await message.reply(`Replacing \`${oldKey}\` with \`${newKey}\` in ${count} configs.`);
             } else if (response === 'no' || response === 'n') {
                 return await message.reply("Canceling replacement.");
             }
@@ -45,8 +40,8 @@ exports.run = async(client, message, args) => {
     } else if (args[0] === 'add') { // To add a new value into the guildSettings
         if (!args[1]) return message.channel.send(`Needs two arguments here. Usage: \`editconfs add [newKey]\``);
 
-        let newKey = args[1];
-        let newKeyValue = "";
+        const newKey = args[1];
+        var newKeyValue = "";
         if (args[2]) {
             newKeyValue = args.splice(2).join(" ");
         }
@@ -54,19 +49,19 @@ exports.run = async(client, message, args) => {
         const response = await client.awaitReply(message, `Are you sure you want to add \`${newKey}\` with a value of \`${newKeyValue}\`? (yes/no)`);
         if (validAnswers.includes(response.toLowerCase())) {
             if (response === "yes" || response === 'y') {
-                let guildList = client.guilds.keyArray();
+                const guildList = client.guilds.keyArray();
 
                 guildList.forEach(g => {
-                    guildConf = guildSettings.get(g);
+                    var guildConf = guildSettings.get(g);
                     if (guildConf) {
-                        if(!guildConf[newKey]) {
+                        if (!guildConf[newKey]) {
                             guildConf[newKey] = newKeyValue;
                             guildSettings.set(g, guildConf);
                             count++;
                         }
                     }
                 });
-                await message.reply(`Added \`${newKey}\` with value \`${newKeyValue}\` to ${count} configs.`)
+                await message.reply(`Added \`${newKey}\` with value \`${newKeyValue}\` to ${count} configs.`);
             } else if (response === 'no' || response === 'n') {
                 return await message.reply("Canceling add.");
             }
@@ -76,24 +71,24 @@ exports.run = async(client, message, args) => {
     } else if (args[0] === 'remove') {
         if (!args[1]) return message.channel.send(`Needs an argument here. Usage: \`editconfs remove [oldKey]\``);
 
-        let oldKey = args[1];
+        const oldKey = args[1];
 
         const response = await client.awaitReply(message, `Are you sure you want to remove \`${oldKey}\`? (yes/no)`);
         if (validAnswers.includes(response.toLowerCase())) {
             if (response === "yes" || response === 'y') {
-                let guildList = client.guilds.keyArray();
+                const guildList = client.guilds.keyArray();
 
                 guildList.forEach(g => {
-                    guildConf = guildSettings.get(g);
+                    var guildConf = guildSettings.get(g);
                     if (guildConf) {
-                        if(guildConf[oldKey]) {
+                        if (guildConf[oldKey]) {
                             delete guildConf[oldKey];
                             guildSettings.set(g, guildConf);
                             count++;
                         }
                     }
                 });
-                await message.reply(`Removed \`${oldKey}\`. from ${count} configs`)
+                await message.reply(`Removed \`${oldKey}\`. from ${count} configs`);
             } else if (response === 'no' || response === 'n') {
                 return await message.reply("Canceling removal.");
             }

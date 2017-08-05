@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
         let value = '';
 
         // The list of commands that don't need another argument
-        let noVal = ["help", "announcechan"];
+        const noVal = ["help", "announcechan"];
 
         // If there is no second argument, and it's not one that doesn't need one, return
         if (!args[1] && !noVal.includes(key)) {
@@ -68,8 +68,8 @@ exports.run = (client, message, args) => {
                 break;
             case "announcechan":
                 if (value !== '') {
-                    newChannel = message.guild.channels.find('name', value);
-                    if(!newChannel) return message.channel.send(`Sorry, but I cannot find the channel ${value}. Please try again.`)
+                    var newChannel = message.guild.channels.find('name', value);
+                    if (!newChannel) return message.channel.send(`Sorry, but I cannot find the channel ${value}. Please try again.`);
                     guildConf["announceChan"] = value;
                 } else {
                     guildConf["announceChan"] = "";
@@ -77,7 +77,6 @@ exports.run = (client, message, args) => {
                 break;
             case "help":
                 return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
-                break;
             default:
                 return message.reply(`This key is not in the configuration. Look in "${config.prefix}showconf", or "${config.prefix}setconf help" for a list`);
         }
