@@ -65,7 +65,7 @@ function checkDates() {
         if (events) {
             for(key in events) {
                 event = events[key];
-                eventDate = moment(event.eventDay, 'D/M/YYYY').format('D/M/YYYY');
+                eventDate = moment(event.eventDay).format('D/M/YYYY');
                 nowDate = moment().tz(guildConf['timezone']).format('D/M/YYYY');
 
                 if (eventDate === nowDate) {
@@ -91,10 +91,12 @@ function checkDates() {
 
 }
 
-init();
 
 // Run it once on start up
 checkDates();
 
 // Then every 30 seconds after
 setInterval(checkDates, 30*1000);
+
+init();
+

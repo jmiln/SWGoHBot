@@ -1,21 +1,28 @@
 var moment = require('moment-timezone');
+var util = require('util');
 
 exports.run = (client, message, args) => {
     const config = client.config;
 
-    let guildEvents = client.guildEvents;
+    const guildEvents = client.guildEvents;
     const guildSettings = client.guildSettings;
 
     if (!message.guild) return message.channel.send(`Sorry, something went wrong, please try again`);
 
     const guildConf = guildSettings.get(message.guild.id);
-    let events = guildEvents.get(message.guild.id);
+    var events =      guildEvents.get(message.guild.id);
 
     const actions = ['create', 'view', 'delete', 'help'];
 
     if (!events) {
-        guildEvents.set(message.guild.id, []);
+        guildEvents.set(message.guild.id, {});
         events = guildEvents.get(message.guild.id);
+    } else if(Array.isArray(events)) {
+        if(events.length === 0) {
+            guildEvents.delete(message.guild.id);
+            guildEvents.set(message.guild.id, {});
+            events = guildEvents.get(message.guild.id);
+        }
     }
 
     let action = "";
@@ -44,17 +51,17 @@ exports.run = (client, message, args) => {
             if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`);
 
             if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`);
-            if (!moment(args[2], 'D/M/YYYY', true).isValid()) {
+            if (!moment(args[2], 'D/M/YYYY').isValid()) {
                 return message.channel.send(`${args[2]} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`);
             } else { // It's valid, go ahead and set it.
-                eventDay = args[2];
+                eventDay = moment(args[2], 'D/M/YYYY').format('YYYY-MM-DD');
             }
 
             if (!args[3]) return message.channel.send(`You must give a time for your event.`);
             if (!moment(args[3], 'H:mm').isValid()) {
                 return message.channel.send(`You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`);
             } else { // It's valid, go ahead and set it.
-                eventTime = args[3];
+                eventTime = moment(args[3], 'HH:mm').format('HH:mm');
             }
 
             if (!args[4]) {
@@ -63,26 +70,31 @@ exports.run = (client, message, args) => {
                 eventMessage = args.splice(4).join(" ");
             }
 
-            if(moment(`${eventDay} ${eventTime}`, 'D/M/YYYY H:mm').isBefore(moment().tz(guildConf['timezone']))) {
-                return message.channel.send(`You cannot set an event in the past.`);
+            eventDate = moment.tz(`${eventDay} ${eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']); 
+            if(eventDate.isBefore(moment())) {
+                eventDATE = eventDate.format('D/M/YYYY H:mm');
+                nowDATE = moment().tz(guildConf['timezone']).format('D/M/YYYY H:mm');
+                return message.channel.send(`You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`);
             }
 
-            let event = {
+            let newEvent = {
                 "eventDay": eventDay,
                 "eventTime": eventTime,
                 "eventMessage": eventMessage
             };
 
-            events[eventName] = event;
+
+            events[eventName] = newEvent;
 
             guildEvents.set(message.guild.id, events);
-            return message.channel.send(`Event \`${eventName}\` created for ${eventDay} at ${eventTime}`);
+            return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
             break;
         case "view":
             array = [];
             if (events) {
                 for (key in events) {
-                    array.push(`**${key}:**\nEvent Time: ${events[key].eventDay} at ${events[key].eventTime}\nEvent Message: ${events[key].eventMessage}`);
+                    eventDate = moment.tz(`${events[key].eventDay} ${events[key].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
+                    array.push(`**${key}:**\nEvent Time: ${eventDate}\nEvent Message: ${events[key].eventMessage}`);
                 }
                 eventKeys = array.join('\n\n');
                 if (array.length === 0) {

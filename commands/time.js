@@ -10,7 +10,8 @@ exports.run = (client, message, args) => {
     if(!guildConf['timezone']) {
         message.channel.send(`Current time is: ${moment().format('DD/MM/YYYY [at] H:mm:ss')} UTC time`);
     } else {
-       message.channel.send(`Current time is: ${moment().tz(guildConf['timezone']).format('DD/MM/YYYY [at] H:mm:ss')} in ${guildConf['timezone']} time`);
+        offset = moment.tz(guildConf['timezone']).utcOffset();
+        message.channel.send(`Current time is: ${moment.tz(guildConf['timezone']).format('DD/MM/YYYY [at] H:mm:ss')} in ${guildConf['timezone']} time`); 
     }
 };
 
