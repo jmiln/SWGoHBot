@@ -106,7 +106,9 @@ exports.help = {
     extended: `\`\`\`asciidoc
 adminRole      :: The role that you want to be able to modify bot settings or set up events.
 enableWlecome  :: Toggles the welcome message on/ off.
-welcomeMessage :: The welcome message to send it you have it enabled. '{{user}}' gets replaced with the new user's name.
+welcomeMessage :: The welcome message to send it you have it enabled. 
+                  '{{user}}' gets replaced with the new user's name.
+                  '{{userMention}}' makes it mention the new user there
 useEmbeds      :: Toggles whether or not to use embeds for the mods output.
 timezone       :: Sets the timezone that you want all time related commands to use. Look here if you need a list https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
 announceChan   :: Sets the name of your announcements channel for events etc. Leave blank if there is none,  and it will send them in your defaul channel. Make sure it has permission to send them there.
