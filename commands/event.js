@@ -28,13 +28,11 @@ exports.run = (client, message, args, level) => {
     let eventTime = "";
     let eventMessage = "";
 
-    client.log('ROLE', level);
-
     if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`);
     action = args[0].toLowerCase();
 
     if (action === "create" || action === "delete") {
-        if(level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn't be able to use these
+        if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn't be able to use these
             return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
         }
     }
