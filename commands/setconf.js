@@ -36,7 +36,28 @@ exports.run = (client, message, args) => {
         // bother trying to make sure it's the right type and such. 
         switch (key) {
             case "adminrole":
-                guildConf["adminRole"] = value;
+                if (!args[2] || (args[2] !== 'add' && args[2] !== 'remove')) {
+                    return message.reply(`You must use \`add\` or \`remove\`.`);
+                }
+                if (!args[3]) {
+                    return message.reply(`You must specify a role to ${args[2]}.`);
+                }
+                var roleName = args[3];
+
+                var roleArray = guildConf["adminRole"];
+                if (args[2] === 'add') {
+                    var newRole = message.guild.roles.find('name', roleName);
+                    if (!newRole) return message.channel.send(`Sorry, but I cannot find the role ${roleName}. Please try again.`);
+                    if (!roleArray.includes(roleName)) {
+                        guildConf["adminRole"] = roleName;
+                    } else {
+                        return message.channel.send(`Sorry, but ${roleName} is already there.`);
+                    }
+                } else if (args[2] === 'remove') {
+                    if (roleArray.includes(roleName)) {
+                        roleArray.splice(roleArray.indexOf(roleName), 1);
+                    }
+                }
                 break;
             case "enablewelcome":
                 if (onVar.includes(value.toLowerCase())) {

@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-    const guildSettings = client.guildSettings;
+    const guildSettings = client.guildSettings;\
 
     if (!args[0]) return message.channel.send(`Need args here`);
 
@@ -40,9 +40,19 @@ exports.run = async (client, message, args) => {
     } else if (args[0] === 'add') { // To add a new value into the guildSettings
         if (!args[1]) return message.channel.send(`Needs two arguments here. Usage: \`editconfs add [newKey]\``);
 
+        const fillers = ["-emptyString", "-emptyArray", "-emptyObject"];
+
         const newKey = args[1];
         var newKeyValue = "";
-        if (args[2]) {
+        if (fillers.includes(newKey)) {
+            if (newKey === "-emptyString") {
+                newKeyValue = "";
+            } else if (newKey === "-emptyArray") {
+                newKeyValue =  [];
+            } else if (newKey === "-emptyObject") {
+                newKeyValue =  {};
+            } 
+        } else if (newKey !== "") {
             newKeyValue = args.splice(2).join(" ");
         }
 
@@ -95,6 +105,33 @@ exports.run = async (client, message, args) => {
         } else {
             return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).catch(() => console.error);
         }
+    } else if (args[0] === 'replaceType') {
+        const fillers = ["array"];
+
+        const key = args[1];
+        const newType = args[2];
+
+        if (fillers.includes(newType)) {
+            if(newType === 'array') {
+                const  guildList = client.guilds.keyArray();
+                
+                guildList.forEach(g => {
+                    var guildConf = guildSettings.get(g);
+                    if (guildConf) {
+                        if (guildConf[key]) {
+                            if (typeof guildConf[key] === 'string') {
+                                var oldKeyValue = guildConf[oldKey];
+                                guildConf[key] = [oldKeyValue];
+                                guildSettings.set(g, guildConf);
+                                count++;
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    } else if (args[0] === 'help') {
+        return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
     }
 };
 
@@ -109,5 +146,12 @@ exports.help = {
     name: 'editconfs',
     category: 'Dev',
     description: 'Edit the configs for all guilds the bot is in.',
-    usage: 'editconfs [replace|remove|add] [var1] [var2]'
+    usage: 'editconfs [replace|remove|add|replaceType] [var1] [var2]',
+    extended: `\`\`\`asciidoc
+replace        :: Replaces what the key is called (Can be used to reorder the list).
+remove         :: Removes a key from the configs
+add            :: Adds a key to the configs. Use one of these for an empty var: \`-emptyString, -emptyArray, -emptyObject\`
+replaceType    :: Changes the type from a string to being in an array 
+help           :: Shows this help message.
+\`\`\``
 };
