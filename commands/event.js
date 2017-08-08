@@ -1,21 +1,25 @@
 var moment = require('moment-timezone');
 
-exports.run = (client, message, args) => {
-    const config = client.config;
-
-    let guildEvents = client.guildEvents;
+exports.run = (client, message, args, level) => {
+    const guildEvents = client.guildEvents;
     const guildSettings = client.guildSettings;
 
     if (!message.guild) return message.channel.send(`Sorry, something went wrong, please try again`);
 
     const guildConf = guildSettings.get(message.guild.id);
-    let events = guildEvents.get(message.guild.id);
+    var events = guildEvents.get(message.guild.id);
 
     const actions = ['create', 'view', 'delete', 'help'];
 
     if (!events) {
-        guildEvents.set(message.guild.id, []);
+        guildEvents.set(message.guild.id, {});
         events = guildEvents.get(message.guild.id);
+    } else if (Array.isArray(events)) {
+        if (events.length === 0) {
+            guildEvents.delete(message.guild.id);
+            guildEvents.set(message.guild.id, {});
+            events = guildEvents.get(message.guild.id);
+        }
     }
 
     let action = "";
@@ -24,19 +28,17 @@ exports.run = (client, message, args) => {
     let eventTime = "";
     let eventMessage = "";
 
-    if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`)
+    if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`);
     action = args[0].toLowerCase();
 
     if (action === "create" || action === "delete") {
-        if (message.author.id !== message.guild.owner.id) {
-            if (!message.member.roles.has(guildConf["adminRole"])) {
-                return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
-            }
+        if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn't be able to use these
+            return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
         }
     }
 
     switch (action) {
-        case "create":
+        case "create": {
             if (!args[1]) return message.channel.send(`You must give a name for your event.`);
             eventName = args[1];
 
@@ -44,17 +46,17 @@ exports.run = (client, message, args) => {
             if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`);
 
             if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`);
-            if (!moment(args[2], 'D/M/YYYY', true).isValid()) {
+            if (!moment(args[2], 'D/M/YYYY').isValid()) {
                 return message.channel.send(`${args[2]} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`);
             } else { // It's valid, go ahead and set it.
-                eventDay = args[2];
+                eventDay = moment(args[2], 'D/M/YYYY').format('YYYY-MM-DD');
             }
 
             if (!args[3]) return message.channel.send(`You must give a time for your event.`);
             if (!moment(args[3], 'H:mm').isValid()) {
                 return message.channel.send(`You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`);
             } else { // It's valid, go ahead and set it.
-                eventTime = args[3];
+                eventTime = moment(args[3], 'HH:mm').format('HH:mm');
             }
 
             if (!args[4]) {
@@ -63,28 +65,32 @@ exports.run = (client, message, args) => {
                 eventMessage = args.splice(4).join(" ");
             }
 
-            if(moment(`${eventDay} ${eventTime}`, 'D/M/YYYY H:mm').isBefore(moment().tz(guildConf['timezone']))) {
-                return message.channel.send(`You cannot set an event in the past.`);
+            eventDate = moment.tz(`${eventDay} ${eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']);
+            if (eventDate.isBefore(moment())) {
+                var eventDATE = eventDate.format('D/M/YYYY H:mm');
+                var nowDATE = moment().tz(guildConf['timezone']).format('D/M/YYYY H:mm');
+                return message.channel.send(`You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`);
             }
 
-            let event = {
+            const newEvent = {
                 "eventDay": eventDay,
                 "eventTime": eventTime,
                 "eventMessage": eventMessage
             };
 
-            events[eventName] = event;
+
+            events[eventName] = newEvent;
 
             guildEvents.set(message.guild.id, events);
-            return message.channel.send(`Event \`${eventName}\` created for ${eventDay} at ${eventTime}`);
-            break;
-        case "view":
-            array = [];
+            return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
+        } case "view": {
+            const array = [];
             if (events) {
-                for (key in events) {
-                    array.push(`**${key}:**\nEvent Time: ${events[key].eventDay} at ${events[key].eventTime}\nEvent Message: ${events[key].eventMessage}`);
+                for (var key in events) {
+                    var eventDate = moment.tz(`${events[key].eventDay} ${events[key].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
+                    array.push(`**${key}:**\nEvent Time: ${eventDate}\nEvent Message: ${events[key].eventMessage}`);
                 }
-                eventKeys = array.join('\n\n');
+                var eventKeys = array.join('\n\n');
                 if (array.length === 0) {
                     message.channel.send(`You don't currently have any events scheduled.`);
                 } else {
@@ -92,7 +98,7 @@ exports.run = (client, message, args) => {
                 }
             }
             break;
-        case "delete":
+        } case "delete": {
             if (!args[1]) return message.channel.send(`You must give an event name to delete.`);
             eventName = args[1];
 
@@ -105,9 +111,10 @@ exports.run = (client, message, args) => {
                 message.channel.send(`Deleted event: ${eventName}`);
             }
             break;
-        case "help":
-        default:
+        }
+        case "help": {
             message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
+        }
     }
 };
 

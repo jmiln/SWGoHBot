@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
         let value = '';
 
         // The list of commands that don't need another argument
-        let noVal = ["help", "announcechan"];
+        const noVal = ["help", "announcechan"];
 
         // If there is no second argument, and it's not one that doesn't need one, return
         if (!args[1] && !noVal.includes(key)) {
@@ -36,7 +36,28 @@ exports.run = (client, message, args) => {
         // bother trying to make sure it's the right type and such. 
         switch (key) {
             case "adminrole":
-                guildConf["adminRole"] = value;
+                if (!args[2] || (args[2] !== 'add' && args[2] !== 'remove')) {
+                    return message.reply(`You must use \`add\` or \`remove\`.`);
+                }
+                if (!args[3]) {
+                    return message.reply(`You must specify a role to ${args[2]}.`);
+                }
+                var roleName = args[3];
+
+                var roleArray = guildConf["adminRole"];
+                if (args[2] === 'add') {
+                    var newRole = message.guild.roles.find('name', roleName);
+                    if (!newRole) return message.channel.send(`Sorry, but I cannot find the role ${roleName}. Please try again.`);
+                    if (!roleArray.includes(roleName)) {
+                        guildConf["adminRole"] = roleName;
+                    } else {
+                        return message.channel.send(`Sorry, but ${roleName} is already there.`);
+                    }
+                } else if (args[2] === 'remove') {
+                    if (roleArray.includes(roleName)) {
+                        roleArray.splice(roleArray.indexOf(roleName), 1);
+                    }
+                }
                 break;
             case "enablewelcome":
                 if (onVar.includes(value.toLowerCase())) {
@@ -68,8 +89,8 @@ exports.run = (client, message, args) => {
                 break;
             case "announcechan":
                 if (value !== '') {
-                    newChannel = message.guild.channels.find('name', value);
-                    if(!newChannel) return message.channel.send(`Sorry, but I cannot find the channel ${value}. Please try again.`)
+                    var newChannel = message.guild.channels.find('name', value);
+                    if (!newChannel) return message.channel.send(`Sorry, but I cannot find the channel ${value}. Please try again.`);
                     guildConf["announceChan"] = value;
                 } else {
                     guildConf["announceChan"] = "";
@@ -77,7 +98,6 @@ exports.run = (client, message, args) => {
                 break;
             case "help":
                 return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
-                break;
             default:
                 return message.reply(`This key is not in the configuration. Look in "${config.prefix}showconf", or "${config.prefix}setconf help" for a list`);
         }
@@ -107,10 +127,12 @@ exports.help = {
     extended: `\`\`\`asciidoc
 adminRole      :: The role that you want to be able to modify bot settings or set up events.
 enableWlecome  :: Toggles the welcome message on/ off.
-welcomeMessage :: The welcome message to send it you have it enabled. '{{user}}' gets replaced with the new user's name.
+welcomeMessage :: The welcome message to send it you have it enabled. 
+                  '{{user}}' gets replaced with the new user's name.
+                  '{{userMention}}' makes it mention the new user there.
 useEmbeds      :: Toggles whether or not to use embeds for the mods output.
-timezone       :: Sets the timezone that you want all time related commands to use. Look here if you need a list https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
-announceChan   :: Sets the name of your announcements channel for events etc. Leave blank if there is none,  and it will send them in your defaul channel. Make sure it has permission to send them there.
+timezone       :: Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.
+announceChan   :: Sets the name of your announcements channel for events etc. Leave blank if there is none,  and it will send them in your default channel. Make sure it has permission to send them there.
 help           :: Shows this help message.
 \`\`\``,
     example: 'setconf adminRole Admin\nOr "setconf help" for more info'

@@ -5,25 +5,25 @@ exports.run = (client, message, args) => {
     const config = client.config;
     const guildSettings = client.guildSettings;
 
-    if(!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
+    if (!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
     const guildConf = guildSettings.get(message.guild.id);
 
-    let searchName = String(args.join(' ')).toLowerCase().replace(/[^\w\s]/gi, '');
+    const searchName = String(args.join(' ')).toLowerCase().replace(/[^\w\s]/gi, '');
 
     let found = false;
 
-    embeds = false;
-    if(guildConf['useEmbeds'] === true && message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+    var embeds = false;
+    if (guildConf['useEmbeds'] === true && message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
         embeds = true;
     }
 
-    let factionChars = [];
+    const factionChars = [];
 
-    if(searchName !== "") {
-        for(ix = 0; ix < charList.length; ix++) {
+    if (searchName !== "") {
+        for (var ix = 0; ix < charList.length; ix++) {
             var character = charList[ix];
-            for(jx = 0; jx < character.factions.length; jx++) {
-                if(searchName.toLowerCase() === character.factions[jx].toLowerCase()) {
+            for (var jx = 0; jx < character.factions.length; jx++) {
+                if (searchName.toLowerCase() === character.factions[jx].toLowerCase()) {
                     // Found the character, now just need to show it
                     found = true;
 
@@ -31,24 +31,30 @@ exports.run = (client, message, args) => {
                 }
             }
         }
-        if(found) {
+        if (found) {
             if (embeds) { // if Embeds are enabled
-                charString = factionChars.join('\n');
-                fields = []
+                var charString = factionChars.join('\n');
+                const fields = [];
                 fields.push({
                     "name": searchName.toProperCase(),
-                    "value": charString 
+                    "value": charString
                 });
-                message.channel.send({embed:{"fields": fields}});
+                message.channel.send({
+                    embed: {
+                        "fields": fields
+                    }
+                });
             } else { // Embeds are disabled
                 charString = '* ' + factionChars.join('\n* ');
-                message.channel.send(`# Characters in the ${searchName.toProperCase()} faction # \n${charString}`, { code: 'md' });
+                message.channel.send(`# Characters in the ${searchName.toProperCase()} faction # \n${charString}`, {
+                    code: 'md'
+                });
             }
         } else {
-            message.channel.send("Invalid faction, usage is \`" + config.prefix + "faction [faction]\`");
+            message.channel.send(`Invalid faction, usage is \`${config.prefix}faction [faction]\``);
         }
     } else {
-        message.channel.send("Invalid faction, usage is \`" + config.prefix + "faction [faction]\`");
+        message.channel.send(`Invalid faction, usage is \`${config.prefix}faction [faction]\``);
     }
 
 };

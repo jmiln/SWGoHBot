@@ -1,22 +1,21 @@
-exports.run = (client, message, args) => {
+exports.run = (client, message) => {
     const guildSettings = client.guildSettings;
 
-    if(!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
+    if (!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
 
     const guildConf = guildSettings.get(message.guild.id);
 
-    if(guildConf) {
-        var array = [];
-        for(key in guildConf) {
+    var array = [];
+    if (guildConf) {
+        for (var key in guildConf) {
             array.push("* " + key + ": " + guildConf[key]);
         }
-        configKeys = array.join('\n');
+        var configKeys = array.join('\n');
         message.channel.send(`The following are the server's current configuration: \`\`\`${configKeys}\`\`\``);
     } else {
         guildSettings.set(message.guild.id, client.config.defaultSettings);
 
-        var array = [];
-        for(key in guildConf) {
+        for (key in guildConf) {
             array.push("* " + key + ": " + guildConf[key]);
         }
         configKeys = array.join('\n');
