@@ -1,6 +1,7 @@
 var moment = require('moment-timezone');
+var util = require('util')
 
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, level) => {
     const config = client.config;
     const guildSettings = client.guildSettings;
 
@@ -10,7 +11,7 @@ exports.run = (client, message, args) => {
 
     if (guildConf) {
         if (message.author.id !== message.guild.owner.id) {
-            if (!message.member.roles.has(guildConf["adminRole"])) {
+            if (level < this.conf.permLevel) {
                 return message.reply(`Sorry, but either you're not an admin, or your server leader has not set up the configs.`);
             }
         }
@@ -26,7 +27,7 @@ exports.run = (client, message, args) => {
         if (!args[1] && !noVal.includes(key)) {
             return message.reply(`You must give a value to change that option to.`);
         } else {
-            value = args.splice(1).join(" ");
+            value = args.slice(1).join(" ");
         }
 
         const onVar = ["true", "on", "enable"];
@@ -36,28 +37,33 @@ exports.run = (client, message, args) => {
         // bother trying to make sure it's the right type and such. 
         switch (key) {
             case "adminrole":
-                if (!args[2] || (args[2] !== 'add' && args[2] !== 'remove')) {
+                if (args[1] !== 'add' && args[1] !== 'remove') {
                     return message.reply(`You must use \`add\` or \`remove\`.`);
                 }
-                if (!args[3]) {
+                if (!args[2]) {
                     return message.reply(`You must specify a role to ${args[2]}.`);
                 }
-                var roleName = args[3];
+                var roleName = args.slice(2).join(' ');
 
                 var roleArray = guildConf["adminRole"];
-                if (args[2] === 'add') {
+                if (args[1] === 'add') {
                     var newRole = message.guild.roles.find('name', roleName);
                     if (!newRole) return message.channel.send(`Sorry, but I cannot find the role ${roleName}. Please try again.`);
                     if (!roleArray.includes(roleName)) {
-                        guildConf["adminRole"] = roleName;
+                        roleArray.push(roleName);
+                        guildConf["adminRole"] = roleArray;
                     } else {
                         return message.channel.send(`Sorry, but ${roleName} is already there.`);
                     }
-                } else if (args[2] === 'remove') {
+                } else if (args[1] === 'remove') {
                     if (roleArray.includes(roleName)) {
                         roleArray.splice(roleArray.indexOf(roleName), 1);
+                    } else {
+                        return message.channel.send(`Sorry, but ${roleName} is not in your config.`)
                     }
                 }
+                guildSettings.set(message.guild.id, guildConf);
+                return message.channel.send(`The role ${roleName} has been ${args[1] === 'add' ? 'added to' : 'removed from'} your admin roles.`);
                 break;
             case "enablewelcome":
                 if (onVar.includes(value.toLowerCase())) {
@@ -126,6 +132,8 @@ exports.help = {
     usage: 'setconf [help|key] [value]',
     extended: `\`\`\`asciidoc
 adminRole      :: The role that you want to be able to modify bot settings or set up events.
+                  'add' Add a role to the list 
+                  'remove' Remove a role from the list
 enableWlecome  :: Toggles the welcome message on/ off.
 welcomeMessage :: The welcome message to send it you have it enabled. 
                   '{{user}}' gets replaced with the new user's name.

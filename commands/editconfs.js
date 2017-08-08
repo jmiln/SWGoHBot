@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-    const guildSettings = client.guildSettings;\
+    const guildSettings = client.guildSettings;
 
     if (!args[0]) return message.channel.send(`Need args here`);
 
@@ -106,13 +106,13 @@ exports.run = async (client, message, args) => {
             return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).catch(() => console.error);
         }
     } else if (args[0] === 'replaceType') {
-        const fillers = ["array"];
+        const fillers = ["-array"];
 
         const key = args[1];
         const newType = args[2];
 
         if (fillers.includes(newType)) {
-            if(newType === 'array') {
+            if(newType === '-array') {
                 const  guildList = client.guilds.keyArray();
                 
                 guildList.forEach(g => {
@@ -120,7 +120,7 @@ exports.run = async (client, message, args) => {
                     if (guildConf) {
                         if (guildConf[key]) {
                             if (typeof guildConf[key] === 'string') {
-                                var oldKeyValue = guildConf[oldKey];
+                                var oldKeyValue = guildConf[key];
                                 guildConf[key] = [oldKeyValue];
                                 guildSettings.set(g, guildConf);
                                 count++;
@@ -128,6 +128,7 @@ exports.run = async (client, message, args) => {
                         }
                     }
                 });
+                await message.reply(`Changed type of  \`${key}\`. from ${count} configs`);
             }
         }
     } else if (args[0] === 'help') {

@@ -1,3 +1,5 @@
+const util = require('util');
+
 exports.run = (client, message) => {
     const guildSettings = client.guildSettings;
 
@@ -8,10 +10,10 @@ exports.run = (client, message) => {
     var array = [];
     if (guildConf) {
         for (var key in guildConf) {
-            array.push("* " + key + ": " + guildConf[key]);
+            array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
         }
         var configKeys = array.join('\n');
-        message.channel.send(`The following are the server's current configuration: \`\`\`${configKeys}\`\`\``);
+        message.channel.send(`The following is this server's current configuration: \`\`\`${configKeys}\`\`\``);
     } else {
         guildSettings.set(message.guild.id, client.config.defaultSettings);
 
