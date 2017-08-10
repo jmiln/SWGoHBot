@@ -640,6 +640,29 @@
         }
     },
     {
+        "name":    "Commander Luke Skywalker",
+        "aliases": ["Commander Luke Skywalker", "Luke Skywalker", "Luke", "CLS"],
+        "url": "https://swgoh.gg/characters/commander-luke-skywalker/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_lukebespin.png",
+        "side": "light",
+        "factions" : ["rebel", "attacker"],
+        "mods": {
+            "Arena": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square":  "Offense",
+                "arrow":   "Speed",
+                "diamond": "Defense", 
+                "triangle":"Crit. Chance / Crit. Damage",
+                "circle":  "Protection",
+                "cross":   "Potency / Protection"
+            }
+        }
+    },
+    {
         "name":    "Coruscant Underworld Police",
         "aliases": ["Coruscant Underworld Police", "CUP"],
         "url": "https://swgoh.gg/characters/coruscant-underworld-police/",
