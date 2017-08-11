@@ -292,7 +292,7 @@
         }
     },
     {
-        "name":    "Bohdi Rook",
+        "name":    "Bodhi Rook",
         "aliases": ["Bodhi Rook", "Bodhi"],
         "url": "https://swgoh.gg/characters/bodhi-rook/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bodhi.png",
@@ -2247,7 +2247,7 @@
         "url": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwanep4.png",
         "side": "light",
-        "factions" : ["tank", "human", "jedi"],
+        "factions" : ["tank", "human", "jedi", "rebel"],
         "mods": {
             "Arena": {
                 "sets": [
