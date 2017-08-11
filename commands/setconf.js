@@ -7,7 +7,7 @@ exports.run = (client, message, args, level) => {
 
     if (!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
 
-    const guildConf = guildSettings.get(message.guild.id);
+    let guildConf = guildSettings.get(message.guild.id);
 
     if (guildConf) {
         if (message.author.id !== message.guild.owner.id) {
@@ -45,7 +45,14 @@ exports.run = (client, message, args, level) => {
                 }
                 var roleName = args.slice(2).join(' ');
 
+
+                if (typeof guildConf['adminRole'] === 'string') {
+                    var oldKeyValue = guildConf['adminRole'];
+                    guildConf['adminRole'] = [oldKeyValue];
+                    guildSettings.set(message.guild.id, guildConf);
+                }
                 var roleArray = guildConf["adminRole"];
+
                 if (args[1] === 'add') {
                     var newRole = message.guild.roles.find('name', roleName);
                     if (!newRole) return message.channel.send(`Sorry, but I cannot find the role ${roleName}. Please try again.`);
