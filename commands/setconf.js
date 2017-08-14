@@ -72,7 +72,7 @@ exports.run = (client, message, args, level) => {
                 return message.channel.send(`The role ${roleName} has been ${args[1] === 'add' ? 'added to' : 'removed from'} your admin roles.`);
             case "enablewelcome":
                 if (onVar.includes(value.toLowerCase())) {
-                    var newChannel = message.guild.channels.find('name', guildConf['announceChan']);
+                    const newChannel = message.guild.channels.find('name', guildConf['announceChan']);
                     if (newChannel) {
                         guildConf["enableWelcome"] = true;
                     } else {
@@ -105,7 +105,7 @@ exports.run = (client, message, args, level) => {
                 break;
             case "announcechan":
                 if (value !== '') {
-                    var newChannel = message.guild.channels.find('name', value);
+                    const newChannel = message.guild.channels.find('name', value);
                     if (!newChannel) return message.channel.send(`Sorry, but I cannot find the channel ${value}. Please try again.`);
                     guildConf["announceChan"] = value;
                 } else {
