@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
     const config = client.config;
-    const guildConf = client.guildSettings.get(message.guild.id);
+    const guildConf = message.guildSettings;
     const raidList = client.teams;
 
     let currentPhase = "Phase 1";
@@ -40,10 +40,12 @@ exports.run = (client, message, args) => {
 
     let found = false;
     let foundPhase = false;
-    let embeds = false;
 
-    if (guildConf['useEmbeds'] === true && message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
-        embeds = true;
+    let embeds = true;
+    if (message.guild) {
+        if (guildConf['useEmbeds'] !== true || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+            embeds = false;
+        }
     }
 
     if (searchName !== "") {

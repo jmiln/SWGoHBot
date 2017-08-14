@@ -70,11 +70,15 @@ function checkDates() {
         if (events) {
             for (var key in events) {
                 var event = events[key];
+                
                 var eventDate = moment(event.eventDay).format('D/M/YYYY');
                 var nowDate = moment().tz(guildConf['timezone']).format('D/M/YYYY');
 
+                var eventTime = moment(event.eventTime, 'H:mm').format('H:mm');
+                var nowTime = moment().tz(guildConf['timezone']).format("H:mm");
+
                 if (eventDate === nowDate) {
-                    if (moment(event.eventTime, 'H:mm').format('H:mm') === moment().tz(guildConf['timezone']).format("H:mm")) {
+                    if (eventTime === nowTime) {
                         var announceMessage = `Event alert for \`${key}\` @here. \n**Event Message:** ${event.eventMessage}`;
                         if (guildConf["announceChan"] != "") {
                             var channel = client.guilds.get(g).channels.find('name', guildConf["announceChan"]);

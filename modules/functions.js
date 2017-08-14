@@ -27,7 +27,7 @@ module.exports = (client) => {
         // in the settings, or the user does not have it, their level will be 0
         try {
             const adminRoles = guildConf.adminRole;
-			
+
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
                 const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase());
                 if (adminRole && message.member.roles.has(adminRole.id)) return permlvl = 3;
@@ -38,19 +38,41 @@ module.exports = (client) => {
         return permlvl;
     };
 
+    // Putting this here so I can use it across all the spots I need it
+    client.findChar = (searchName, charList) => {
+        let found = false;
+        const chars = [];
+        
+        for (var ix = 0; ix < charList.length; ix++) {
+            var character = charList[ix];
+            for (var jx = 0; jx < character.aliases.length; jx++) {
+                if (searchName.toLowerCase() === character.aliases[jx].toLowerCase()) {
+                    found = true;
+                    chars.push(character);
+                }
+            }
+        }
+        if (!found) {
+            return [];
+        } else {
+            return chars;
+        }
+        
+    };
+
     /*
-		LOGGING FUNCTION
-		Logs to console. Future patches may include time+colors
-		*/
+     * LOGGING FUNCTION
+     * Logs to console. Future patches may include time+colors
+     */
     client.log = (type, msg, title) => {
         if (!title) title = "Log";
         console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] [${type}] [${title}]${msg}`);
     };
 
     /*
-	 * RELOAD COMMAND
-	 * Reloads the given command
-	 */
+     * RELOAD COMMAND
+     * Reloads the given command
+     */
     client.reload = (command) => {
         return new Promise((resolve, reject) => {
             try {
@@ -83,7 +105,11 @@ module.exports = (client) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question);
         try {
-            const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: ["time"] });
+            const collected = await msg.channel.awaitMessages(filter, {
+                max: 1,
+                time: limit,
+                errors: ["time"]
+            });
             return collected.first().content;
         } catch (e) {
             return false;
@@ -101,7 +127,9 @@ module.exports = (client) => {
         if (text && text.constructor.name == "Promise")
             text = await text;
         if (typeof evaled !== "string")
-            text = require("util").inspect(text, { depth: 0 });
+            text = require("util").inspect(text, {
+                depth: 0
+            });
 
         text = text
             .replace(/`/g, "`" + String.fromCharCode(8203))
@@ -114,7 +142,9 @@ module.exports = (client) => {
     /* MISCELANEOUS NON-CRITICAL FUNCTIONS */
 
     String.prototype.toProperCase = function() {
-        return this.replace(/([^\W_]+[^\s-]*) */g, function(txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+        return this.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
     };
 
     // `await wait(1000);` to "pause" for 1 second.

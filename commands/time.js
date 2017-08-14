@@ -1,10 +1,7 @@
 var moment = require('moment-timezone');
 
 exports.run = (client, message) => {
-    if (!message.guild) return message.channel.send(`Sorry, something went wrong, please try again`);
-
-    const guildSettings = client.guildSettings;
-    const guildConf = guildSettings.get(message.guild.id);
+    const guildConf = message.guildSettings;
 
     if (!guildConf['timezone']) {
         message.channel.send(`Current time is: ${moment().format('DD/MM/YYYY [at] H:mm:ss')} UTC time`);
@@ -15,7 +12,7 @@ exports.run = (client, message) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: true,
+    guildOnly: false,
     aliases: [''],
     permLevel: 0
 };

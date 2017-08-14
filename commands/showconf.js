@@ -1,11 +1,8 @@
 const util = require('util');
 
 exports.run = (client, message) => {
-    const guildSettings = client.guildSettings;
 
-    if (!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
-
-    const guildConf = guildSettings.get(message.guild.id);
+    const guildConf = message.guildSettings;
 
     var array = [];
     if (guildConf) {
@@ -15,7 +12,7 @@ exports.run = (client, message) => {
         var configKeys = array.join('\n');
         message.channel.send(`The following is this server's current configuration: \`\`\`${configKeys}\`\`\``);
     } else {
-        guildSettings.set(message.guild.id, client.config.defaultSettings);
+        message.guildSettings.set(message.guild.id, client.config.defaultSettings);
 
         for (key in guildConf) {
             array.push("* " + key + ": " + guildConf[key]);
@@ -27,7 +24,7 @@ exports.run = (client, message) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['showconfs', 'showconfig', 'showconfigs'],
     permLevel: 3
 };

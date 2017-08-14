@@ -3,19 +3,19 @@ var charList = JSON.parse(fs.readFileSync("data/characters.json"));
 
 exports.run = (client, message, args) => {
     const config = client.config;
-    const guildSettings = client.guildSettings;
 
-    if (!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
-    const guildConf = guildSettings.get(message.guild.id);
+    // Check if it should send as an embed or a code block
+    const guildConf = message.guildSettings;
+    let embeds = true;
+    if (message.guild) {
+        if (guildConf['useEmbeds'] !== true || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+            embeds = false;
+        }
+    }
 
     const searchName = String(args.join(' ')).toLowerCase().replace(/[^\w\s]/gi, '');
 
     let found = false;
-
-    var embeds = false;
-    if (guildConf['useEmbeds'] === true && message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
-        embeds = true;
-    }
 
     const factionChars = [];
 

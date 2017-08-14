@@ -4,8 +4,6 @@ exports.run = (client, message, args, level) => {
     const guildEvents = client.guildEvents;
     const guildSettings = client.guildSettings;
 
-    if (!message.guild) return message.channel.send(`Sorry, something went wrong, please try again`);
-
     const guildConf = guildSettings.get(message.guild.id);
     var events = guildEvents.get(message.guild.id);
 
@@ -81,13 +79,13 @@ exports.run = (client, message, args, level) => {
 
             events[eventName] = newEvent;
 
-			var announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
-			if (announceChannel) {
-				guildEvents.set(message.guild.id, events);
-				return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
-			} else {
-				return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`);
-			}
+            var announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
+            if (announceChannel) {
+                guildEvents.set(message.guild.id, events);
+                return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
+            } else {
+                return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`);
+            }
 
         } case "view": {
             const array = [];
@@ -126,7 +124,7 @@ exports.run = (client, message, args, level) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['events'],
     permLevel: 0
 };

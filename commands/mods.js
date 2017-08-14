@@ -1,80 +1,71 @@
 exports.run = (client, message, args) => {
     const config = client.config;
-    const guildSettings = client.guildSettings;
     const charList = client.characters;
 
-    if (!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
-    const guildConf = guildSettings.get(message.guild.id);
-
+    // Remove any junk from the name
     const searchName = String(args.join(' ')).toLowerCase().replace(/[^\w\s]/gi, '');
 
-    let found = false;
-    let modSetString = "";
-
-    let embeds = false;
-    if (guildConf['useEmbeds'] === true && message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
-        embeds = true;
+    // Check if it should send as an embed or a code block
+    const guildConf = message.guildSettings;
+    let embeds = true;
+    if (message.guild) {
+        if (guildConf['useEmbeds'] !== true || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+            embeds = false;
+        }
     }
 
-    if (searchName !== "") {
-        for (var ix = 0; ix < charList.length; ix++) {
-            var character = charList[ix];
-            for (var jx = 0; jx < character.aliases.length; jx++) {
-                if (searchName.toLowerCase() === character.aliases[jx].toLowerCase()) {
-                    // Found the character, now just need to show it
-                    found = true;
+    // Make sure they gave a character to find
+    if (searchName === "") {
+        message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);
+    }
 
-                    if (embeds) { // if Embeds are enabled
-                        const fields = [];
-                        for (var modSet in character.mods) {
-                            const mods = character.mods[modSet];
-                            modSetString = "* " + mods.sets.join("\n* ");
+    // Find any characters that match that
+    const chars = client.findChar(searchName, charList);
+    if (chars.length <= 0) {
+        message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);        
+    }
 
-                            let modPrimaryString = `**Square:**      ${mods.square}\n**Arrow:**       ${mods.arrow}\n**Diamond:**  ${mods.diamond}\n`;
-                            modPrimaryString += `**Triangle:**   ${mods.triangle}\n**Circle:**        ${mods.circle}\n**Cross:**        ${mods.cross}`;
+    chars.forEach(character => {
+        if (embeds) { // if Embeds are enabled
+            const fields = [];
+            for (var modSet in character.mods) {
+                const mods = character.mods[modSet];      
+                const modSetString = "* " + mods.sets.join("\n* ");                
 
-                            fields.push({
-                                "name": modSet,
-                                "value": `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
-                                "inline": true
-                            });
-                        }
-                        message.channel.send({
-                            embed: {
-                                "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
-                                "author": {
-                                    "name": character.name,
-                                    "url": character.url,
-                                    "icon_url": character.avatarURL
-                                },
-                                "fields": fields
-                            }
-                        });
-                    } else { // Embeds are disabled
-                        for (modSet in character.mods) {
-                            const mods = character.mods[modSet];
-                            let modSetString = "";
+                let modPrimaryString = `**Square:**      ${mods.square}\n**Arrow:**       ${mods.arrow}\n**Diamond:**  ${mods.diamond}\n`;
+                modPrimaryString += `**Triangle:**   ${mods.triangle}\n**Circle:**        ${mods.circle}\n**Cross:**        ${mods.cross}`;
 
-                            modSetString = "* " + mods.sets.join("\n* ");
-
-                            let modPrimaryString = `* Square:   ${mods.square}  \n* Arrow:    ${mods.arrow} \n* Diamond:  ${mods.diamond}\n`;
-                            modPrimaryString += `* Triangle: ${mods.triangle}\n* Circle:   ${mods.circle}\n* Cross:    ${mods.cross}`;
-
-                            message.channel.send(` * ${character.name} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`, {
-                                code: 'md'
-                            });
-                        }
-                    }
-                }
+                fields.push({
+                    "name": modSet,
+                    "value": `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
+                    "inline": true
+                });
             }
-        }
+            message.channel.send({
+                embed: {
+                    "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
+                    "author": {
+                        "name": character.name,
+                        "url": character.url,
+                        "icon_url": character.avatarURL
+                    },
+                    "fields": fields
+                }
+            });
+        } else { // Embeds are disabled
+            for (modSet in character.mods) {
+                const mods = character.mods[modSet];
+                const modSetString = "* " + mods.sets.join("\n* ");                
 
-        if (found === false) {
-            message.channel.send(`Invalid character, usage is \`${config.prefix}mods [character]\``).then(msg => msg.delete(4000)).catch(console.error);
-        }
-    } else {
-        message.channel.send(`Invalid character, usage is \`${config.prefix}mods [character]\``).then(msg => msg.delete(4000)).catch(console.error);
-    }
+                let modPrimaryString = `* Square:   ${mods.square}  \n* Arrow:    ${mods.arrow} \n* Diamond:  ${mods.diamond}\n`;
+                modPrimaryString += `* Triangle: ${mods.triangle}\n* Circle:   ${mods.circle}\n* Cross:    ${mods.cross}`;
+
+                message.channel.send(` * ${character.name} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`, {
+                    code: 'md'
+                });
+            }
+        } 
+    });
 };
 
 exports.conf = {

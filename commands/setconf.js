@@ -4,9 +4,7 @@ exports.run = (client, message, args, level) => {
     const config = client.config;
     const guildSettings = client.guildSettings;
 
-    if (!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
-
-    const guildConf = guildSettings.get(message.guild.id);
+    const guildConf = message.guildSettings;
 
     if (guildConf) {
         if (message.author.id !== message.guild.owner.id) {
@@ -130,7 +128,7 @@ exports.run = (client, message, args, level) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['setconfig'],
     permLevel: 3
 };

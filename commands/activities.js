@@ -3,10 +3,9 @@ var moment = require('moment-timezone');
 exports.run = (client, message, args) => {
     const config = client.config;
 
-    if (!message.guild) return message.channel.send(`Sorry, something went wrong, please try again`);
-
-    const guildConf = client.guildSettings.get(message.guild.id);
-
+    // Check if it should send as an embed or a code block
+    const guildConf = message.guildSettings;
+    
     let day = '';
 
     if (!args[0]) {
