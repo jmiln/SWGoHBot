@@ -1,5 +1,4 @@
 var moment = require('moment-timezone');
-var util = require('util')
 
 exports.run = (client, message, args, level) => {
     const config = client.config;
@@ -45,7 +44,14 @@ exports.run = (client, message, args, level) => {
                 }
                 var roleName = args.slice(2).join(' ');
 
+
+                if (typeof guildConf['adminRole'] === 'string') {
+                    var oldKeyValue = guildConf['adminRole'];
+                    guildConf['adminRole'] = [oldKeyValue];
+                    guildSettings.set(message.guild.id, guildConf);
+                }
                 var roleArray = guildConf["adminRole"];
+
                 if (args[1] === 'add') {
                     var newRole = message.guild.roles.find('name', roleName);
                     if (!newRole) return message.channel.send(`Sorry, but I cannot find the role ${roleName}. Please try again.`);
@@ -59,12 +65,11 @@ exports.run = (client, message, args, level) => {
                     if (roleArray.includes(roleName)) {
                         roleArray.splice(roleArray.indexOf(roleName), 1);
                     } else {
-                        return message.channel.send(`Sorry, but ${roleName} is not in your config.`)
+                        return message.channel.send(`Sorry, but ${roleName} is not in your config.`);
                     }
                 }
                 guildSettings.set(message.guild.id, guildConf);
                 return message.channel.send(`The role ${roleName} has been ${args[1] === 'add' ? 'added to' : 'removed from'} your admin roles.`);
-                break;
             case "enablewelcome":
                 if (onVar.includes(value.toLowerCase())) {
                     guildConf["enableWelcome"] = true;
