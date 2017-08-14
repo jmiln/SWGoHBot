@@ -141,6 +141,10 @@
         "name": "Rancor Pit Raid",
         "aliases": ["pit", "rancor"],
         "teams": {
+            "Full Auto Rebels": {
+                "phase": ["Solo"],
+                "characters": ["Wedge Antilles", "Biggs Darklighter", "Jyn Erso", "Bistan", "Cassian Andor"]
+            },
             "Auto Lightzader": {
                 "phase": ["Solo"],
                 "characters": ["Darth Vader (Zetad)", "Grand Moff Tarkin", "Jyn Erso", "TIE Fighter Pilot", "Darth Sidious"]
