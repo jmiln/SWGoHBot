@@ -55,7 +55,7 @@ exports.run = (client, message, args) => {
                                  \n== After Reset == \nComplete Arena Battles \nSave Cantina Energy`, {code:'asciidoc'});
             break;
         default:
-            message.channel.send(`Invalid date, usage is \`${config.prefix}activities [day]\``);
+            message.channel.send(`Invalid date, usage is \`${config.prefix}activities [dayOfWeek]\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 };
 

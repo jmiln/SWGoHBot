@@ -7,10 +7,10 @@ exports.run = (client, message, args) => {
 
     // Make sure the args are all there
     if (typeof args[0] === 'undefined' || args[0] === null || args[0] === "") {
-        return message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``);
+        return message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
     }
     if (typeof args[1] === 'undefined' || args[1] === null || args[1] === "") {
-        return message.channel.send(`Invalid phase, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``);
+        return message.channel.send(`Invalid phase, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Remove anything that's not a letter for the raid name
@@ -34,7 +34,7 @@ exports.run = (client, message, args) => {
         } else if (phaseName === "p4") {
             currentPhase = "Phase 4";
         } else {
-            return message.channel.send(`Invalid phase, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``);
+            return message.channel.send(`Invalid phase, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
         }
     }
 
@@ -88,7 +88,7 @@ exports.run = (client, message, args) => {
                             }
                         });
                     } else {
-                        message.channel.send(`Cannot find any teams under \`${currentPhase}\``);
+                        message.channel.send(`Cannot find any teams under \`${currentPhase}\``).then(msg => msg.delete(4000)).catch(console.error);
                     }
                 } else { // Embeds are disabled
                     let outString = ` * ${raid.name} * \n\n* Showing teams for ${currentPhase}\n\n`;
@@ -107,17 +107,17 @@ exports.run = (client, message, args) => {
                             split: true
                         });
                     } else {
-                        message.channel.send(`Cannot find any teams under \`${currentPhase}\``);
+                        message.channel.send(`Cannot find any teams under \`${currentPhase}\``).then(msg => msg.delete(4000)).catch(console.error);
                     }
                 }
             }
         }
 
         if (found === false) {
-            message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``);
+            message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
         }
     } else {
-        message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``);
+        message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 
 };

@@ -35,10 +35,10 @@ exports.run = async (client, message, args) => {
                 return await message.reply("Canceling replacement.");
             }
         } else {
-            return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).catch(() => console.error);
+            return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).then(msg => msg.delete(4000)).catch(console.error);
         }
     } else if (args[0] === 'add') { // To add a new value into the guildSettings
-        if (!args[1]) return message.channel.send(`Needs two arguments here. Usage: \`editconfs add [newKey]\``);
+        if (!args[1]) return message.channel.send(`Needs two arguments here. Usage: \`editconfs add [newKey]\``).then(msg => msg.delete(4000)).catch(console.error);;
 
         const fillers = ["-emptyString", "-emptyArray", "-emptyObject"];
 
@@ -76,7 +76,7 @@ exports.run = async (client, message, args) => {
                 return await message.reply("Canceling add.");
             }
         } else {
-            return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).catch(() => console.error);
+            return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).then(msg => msg.delete(4000)).catch(console.error);
         }
     } else if (args[0] === 'remove') {
         if (!args[1]) return message.channel.send(`Needs an argument here. Usage: \`editconfs remove [oldKey]\``);
@@ -103,7 +103,7 @@ exports.run = async (client, message, args) => {
                 return await message.reply("Canceling removal.");
             }
         } else {
-            return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).catch(() => console.error);
+            return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).then(msg => msg.delete(4000)).catch(console.error);
         }
     } else if (args[0] === 'replaceType') {
         const fillers = ["-array"];
