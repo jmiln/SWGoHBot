@@ -1,5 +1,4 @@
 var moment = require('moment-timezone');
-var util = require('util')
 
 exports.run = (client, message, args, level) => {
     const config = client.config;
@@ -7,7 +6,7 @@ exports.run = (client, message, args, level) => {
 
     if (!message.guild) return message.reply(`Sorry, something went wrong, please try again`);
 
-    let guildConf = guildSettings.get(message.guild.id);
+    const guildConf = guildSettings.get(message.guild.id);
 
     if (guildConf) {
         if (message.author.id !== message.guild.owner.id) {
@@ -66,12 +65,11 @@ exports.run = (client, message, args, level) => {
                     if (roleArray.includes(roleName)) {
                         roleArray.splice(roleArray.indexOf(roleName), 1);
                     } else {
-                        return message.channel.send(`Sorry, but ${roleName} is not in your config.`)
+                        return message.channel.send(`Sorry, but ${roleName} is not in your config.`);
                     }
                 }
                 guildSettings.set(message.guild.id, guildConf);
                 return message.channel.send(`The role ${roleName} has been ${args[1] === 'add' ? 'added to' : 'removed from'} your admin roles.`);
-                break;
             case "enablewelcome":
                 if (onVar.includes(value.toLowerCase())) {
                     var newChannel = message.guild.channels.find('name', guildConf['announceChan']);
