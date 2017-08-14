@@ -1,9 +1,7 @@
-var fs = require("fs");
-var raidList = JSON.parse(fs.readFileSync("data/teams.json"));
-
 exports.run = (client, message, args) => {
     const config = client.config;
     const guildConf = client.guildSettings.get(message.guild.id);
+    const raidList = client.teams;
 
     let currentPhase = "Phase 1";
 

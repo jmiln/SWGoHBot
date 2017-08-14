@@ -4,10 +4,16 @@ const readdir = promisify(require("fs").readdir);
 const PersistentCollection = require("djs-collection-persistent");
 const client = new Discord.Client();
 var moment = require('moment-timezone');
+var fs = require("fs");
 
 
 // Attach the config to the client so we can use it anywhere
 client.config = require('./config.json');
+
+// Attach the character and team files to the client so I don't have to reopen em each time
+client.characters  = JSON.parse(fs.readFileSync("data/characters.json"));
+client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
+
 
 require("./modules/functions.js")(client);
 

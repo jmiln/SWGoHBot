@@ -16,6 +16,10 @@ exports.run = (client, message, args) => {
         embeds = true;
     }
 
+    const zeta = client.emojis.find("name", "zeta");
+    const omega = client.emojis.find("name", "omega");
+    const abilityMatMK3 = client.emojis.find("name", "abilityMatMK3");
+
     if (searchName !== "") {
         for (var ix = 0; ix < charList.length; ix++) {
             var character = charList[ix];
@@ -26,17 +30,19 @@ exports.run = (client, message, args) => {
 
                     if (embeds) { // if Embeds are enabled
                         const fields = [];
-                        for (var modSet in character.mods) {
-                            const mods = character.mods[modSet];
-                            modSetString = "* " + mods.sets.join("\n* ");
+                        for (var ability in character.abilities) {
+                            const abilities = character.abilities[ability];
 
-                            let modPrimaryString = `**Square:**      ${mods.square}\n**Arrow:**       ${mods.arrow}\n**Diamond:**  ${mods.diamond}\n`;
-                            modPrimaryString += `**Triangle:**   ${mods.triangle}\n**Circle:**        ${mods.circle}\n**Cross:**        ${mods.cross}`;
+                            var mat = omega;
+                            if(abilities.tier === 'zeta') {
+                                mat = zeta;
+                            } else if(abilities.tier === 'abilityMatMK3'){
+                                mat = abilityMatMK3;
+                            }
 
                             fields.push({
-                                "name": modSet,
-                                "value": `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
-                                "inline": true
+                                "name": ability,
+                                "value": `**Ability Type:** ${abilities.type}     **Max ability mat needed:** ${mat}\n${abilities.abilityDesc}`
                             });
                         }
                         message.channel.send({
@@ -51,42 +57,36 @@ exports.run = (client, message, args) => {
                             }
                         });
                     } else { // Embeds are disabled
-                        for (modSet in character.mods) {
-                            const mods = character.mods[modSet];
-                            let modSetString = "";
+                        let abilityString = "";
+                        for (var ability in character.abilities) {
+                            const abilities = character.abilities[ability];
 
-                            modSetString = "* " + mods.sets.join("\n* ");
-
-                            let modPrimaryString = `* Square:   ${mods.square}  \n* Arrow:    ${mods.arrow} \n* Diamond:  ${mods.diamond}\n`;
-                            modPrimaryString += `* Triangle: ${mods.triangle}\n* Circle:   ${mods.circle}\n* Cross:    ${mods.cross}`;
-
-                            message.channel.send(` * ${character.name} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`, {
-                                code: 'md'
-                            });
+                            abilityString += `### ${ability} ###\n* Ability type: ${abilities.type}\n* Max ability mat needed: ${abilities.tier}\n* Description: ${abilities.abilityDesc}\n\n`
                         }
+                        message.channel.send(` * ${character.name} * \n${abilityString}`, { code: 'md' });
                     }
                 }
             }
         }
 
         if (found === false) {
-            message.channel.send(`Invalid character, usage is \`${config.prefix}mods [character]\``).then(msg => msg.delete(4000)).catch(console.error);
+            message.channel.send(`Invalid character, usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);
         }
     } else {
-        message.channel.send(`Invalid character, usage is \`${config.prefix}mods [character]\``).then(msg => msg.delete(4000)).catch(console.error);
+        message.channel.send(`Invalid character, usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 };
 
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['m', 'mod'],
+    aliases: ['a'],
     permLevel: 0
 };
 
 exports.help = {
-    name: 'mods',
+    name: 'abilities',
     category: 'Star Wars',
-    description: 'Shows some suggested mods for the specified character.',
-    usage: 'mods [character]'
+    description: 'Shows the abilities for the specified character.',
+    usage: 'abilities [character]'
 };
