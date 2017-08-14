@@ -72,13 +72,9 @@ function checkDates() {
                         var announceMessage = `Event alert for \`${key}\` @here. \n**Event Message:** ${event.eventMessage}`;
                         if (guildConf["announceChan"] != "") {
                             var channel = client.guilds.get(g).channels.find('name', guildConf["announceChan"]);
-                            if (!channel) {
-                                client.guilds.get(g).defaultChannel.send(announceMessage);
-                            } else {
+                            if (channel) {
                                 channel.send(announceMessage);
                             }
-                        } else {
-                            client.guilds.get(g).defaultChannel.send(announceMessage);
                         }
                         delete events[key];
                         guildEvents.set(g, events);

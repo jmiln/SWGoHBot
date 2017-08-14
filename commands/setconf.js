@@ -34,7 +34,7 @@ exports.run = (client, message, args, level) => {
         const offVar = ["false", "off", "disable"];
 
         // Now we can finally change the value. Here we only have strings for values so we won't
-        // bother trying to make sure it's the right type and such. 
+        // bother trying to make sure it's the right type and such.
         switch (key) {
             case "adminrole":
                 if (args[1] !== 'add' && args[1] !== 'remove') {
@@ -74,7 +74,12 @@ exports.run = (client, message, args, level) => {
                 break;
             case "enablewelcome":
                 if (onVar.includes(value.toLowerCase())) {
-                    guildConf["enableWelcome"] = true;
+                    var newChannel = message.guild.channels.find('name', guildConf['announceChan']);
+                    if (newChannel) {
+                        guildConf["enableWelcome"] = true;
+                    } else {
+                        return message.channel.send(`Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``);
+                    }
                 } else if (offVar.includes(value.toLowerCase())) {
                     guildConf["enableWelcome"] = false;
                 } else {
@@ -139,15 +144,15 @@ exports.help = {
     usage: 'setconf [help|key] [value]',
     extended: `\`\`\`asciidoc
 adminRole      :: The role that you want to be able to modify bot settings or set up events.
-                  'add' Add a role to the list 
+                  'add' Add a role to the list
                   'remove' Remove a role from the list
 enableWlecome  :: Toggles the welcome message on/ off.
-welcomeMessage :: The welcome message to send it you have it enabled. 
+welcomeMessage :: The welcome message to send it you have it enabled.
                   '{{user}}' gets replaced with the new user's name.
                   '{{userMention}}' makes it mention the new user there.
 useEmbeds      :: Toggles whether or not to use embeds for the mods output.
 timezone       :: Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.
-announceChan   :: Sets the name of your announcements channel for events etc. Leave blank if there is none,  and it will send them in your default channel. Make sure it has permission to send them there.
+announceChan   :: Sets the name of your announcements channel for events etc. Make sure it has permission to send them there.
 help           :: Shows this help message.
 \`\`\``,
     example: 'setconf adminRole Admin\nOr "setconf help" for more info'

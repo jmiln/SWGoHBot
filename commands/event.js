@@ -81,8 +81,14 @@ exports.run = (client, message, args, level) => {
 
             events[eventName] = newEvent;
 
-            guildEvents.set(message.guild.id, events);
-            return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
+			var announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
+			if (announceChannel) {
+				guildEvents.set(message.guild.id, events);
+				return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
+			} else {
+				return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`);
+			}
+
         } case "view": {
             const array = [];
             if (events) {
