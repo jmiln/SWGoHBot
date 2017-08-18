@@ -5232,7 +5232,7 @@
                 "type": "Unique",
                  "abilityCooldown": "0",
                 "abilityDesc": "As long as she has no debuffs, Rey has +25% Offense and inflicts Daze for 2 turns whenever she uses a Special ability. This effect can't be Resisted.",
-                "tier": "omega"
+                "tier": "zeta"
             }
         }
     },
@@ -5508,7 +5508,7 @@
             "Dark Shroud": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Dark Shroud",
+                "abilityDesc": "Dispel all debuffs from Sith Assassin and gain Stealth and Foresight for 2 turns. If she already had Stealth, gain Speed Up and Tenacity Up for 2 turns. Sith allies gain 12% Turn Meter for each buff on her.",
                 "tier": "omega"
             },
             "Electrocute": {

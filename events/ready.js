@@ -1,10 +1,10 @@
 const chalk = require('chalk');
 
 module.exports = async client => {
-	// Why await here? Because the ready event isn't actually ready, sometimes
-	// guild information will come in *after* ready. 1s is plenty, generally,
-	// for all of them to be loaded.
-	await wait(1000);
+    // Why await here? Because the ready event isn't actually ready, sometimes
+    // guild information will come in *after* ready. 1s is plenty, generally,
+    // for all of them to be loaded.
+    await wait(1000);
 
     // Get the guildSettings
     guildSettings = client.guildSettings;
@@ -19,7 +19,10 @@ module.exports = async client => {
         }
     })
 
+    // Logs that it's up, and some extra info
     client.log("log", `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, "Ready!");
 
-    client.user.setGame(`${client.config.prefix}help ~ ${client.guilds.size} servers`).catch(console.error);
+    // Sets the status as the current server count and help command 
+    const playingString =  `${client.config.prefix}help ~ ${client.guilds.size} servers`;
+    client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
 };

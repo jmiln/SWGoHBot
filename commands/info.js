@@ -12,7 +12,7 @@ exports.run = (client, message) => {
         "Added extended help to the editconfs command (DEV-only), and to the setconfs command"
     ];
 
-    message.channel.send(`**### INFORMATION ###** \n**Links**\nJoin the bot support server here \n<https://discord.gg/FfwGvhr>\nInvite the bot with this link\n<https://discordapp.com/oauth2/authorize?permissions=67624000&scope=bot&client_id=315739499932024834>\n\n**Recent Changes**\n${changes.slice(Math.max(changes.length - 4, 1)).join('\n')}`);
+    message.channel.send(`**### INFORMATION ###** \n**Links**\nJoin the bot support server here \n<https://discord.gg/FfwGvhr>\nInvite the bot with this link\n<https://discordapp.com/oauth2/authorize?permissions=67619904&scope=bot&client_id=315739499932024834>\n\n**Recent Changes**\n${changes.slice(Math.max(changes.length - 4, 1)).join('\n')}`);
 };
 
 exports.conf = {

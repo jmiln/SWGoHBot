@@ -41,9 +41,14 @@ exports.run = (client, message, args) => {
                     mat = abilityMatMK3;
                 }
 
+                var cooldownString = "";
+                if(abilities.abilityCooldown > 0) {
+                    cooldownString = `**Ability Cooldown:** ${abilities.abilityCooldown}\n`;
+                }
+
                 fields.push({
                     "name": ability,
-                    "value": `**Ability Type:** ${abilities.type}     **Max ability mat needed:** ${mat}\n${abilities.abilityDesc}`
+                    "value": `**Ability Type:** ${abilities.type}     **Max ability mat needed:** ${mat}\n${cooldownString}${abilities.abilityDesc}`
                 });
             }
             message.channel.send({
