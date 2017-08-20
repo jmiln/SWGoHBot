@@ -23,6 +23,10 @@ module.exports = (client) => {
         // Guild Owner gets an extra level, wooh!
         if (message.author.id === message.guild.owner.id) return permlvl = 4;
 
+        // Also giving them the permissions if they have the manage server role, 
+        // since they can change anything else in the server, so no reason not to
+        if(message.member.hasPermission(['ADMINISTRATOR', 'MANAGE_GUILD'])) return permlvl = 3;
+
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
         try {
@@ -36,6 +40,10 @@ module.exports = (client) => {
             // console.warn("adminRole not present in guild settings. Skipping Administrator (level 3) check");
         }
         return permlvl;
+    };
+
+    client.myTime = () => {
+        return moment.tz('US/Pacific').format('M/D/YYYY hh:mma');
     };
 
     // Putting this here so I can use it across all the spots I need it
@@ -66,7 +74,7 @@ module.exports = (client) => {
      */
     client.log = (type, msg, title) => {
         if (!title) title = "Log";
-        console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] [${type}] [${title}]${msg}`);
+        console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
     };
 
     /*
@@ -165,11 +173,11 @@ module.exports = (client) => {
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, "g"), "./");
-        console.error("Uncaught Exception: ", errorMsg);
+        console.error(`[${client.myTime()}] Uncaught Exception: `, errorMsg);
     });
 
     process.on("unhandledRejection", err => {
-        console.error("Uncaught Promise Error: ", err);
+        console.error(`[${client.myTime()}] Uncaught Promise Error: `, err);
     });
 
 };

@@ -81,9 +81,10 @@ function checkDates() {
                     if (eventTime === nowTime) {
                         var announceMessage = `Event alert for \`${key}\` @here. \n**Event Message:** ${event.eventMessage}`;
                         if (guildConf["announceChan"] != "") {
-                            var channel = client.guilds.get(g).channels.find('name', guildConf["announceChan"]);
-                            if (channel) {
-                                channel.send(announceMessage);
+                            const thisGuild = client.guilds.get(g);
+                            var channel = thisGuild.channels.find('name', guildConf["announceChan"]);
+                            if (channel && channel.permissionsFor(thisGuild.me).has("SEND_MESSAGES")) {
+                                channel.send(announceMessage).catch(console.error);
                             }
                         }
                         delete events[key];

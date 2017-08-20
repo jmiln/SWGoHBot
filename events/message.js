@@ -19,6 +19,9 @@ module.exports = (client, message) => {
     // which is set in the configuration file.
     if (message.content.indexOf(client.config.prefix) !== 0) return;
 
+    // If we don't have permission to respond, don't bother
+    if(message.guild && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
+
     // Here we separate our "command" name, and our "arguments" for the command.
     // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
     // command = say

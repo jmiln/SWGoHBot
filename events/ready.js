@@ -17,7 +17,7 @@ module.exports = async client => {
         if(!guildSettings.has(guild)) {
             guildSettings.set(guild, client.config.defaultSettings);
         }
-    })
+    });
 
     // Logs that it's up, and some extra info
     client.log("log", `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, "Ready!");
