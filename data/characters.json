@@ -20,6 +20,19 @@
                 "cross": "Potency"
             }
         },
+        "gear": {
+            "Gear 1": ["Mk 1 TaggeCo Holo Lens", "Mk 1 TaggeCo Holo Lens", "Mk 1 Nubian Security Scanner", "Mk 1 Loronar Power Cell", "Mk 1 Neuro-Saav Electrobinoculars", "Mk 1 CEC Fusion Furnace"],
+            "Gear 2": ["Mk 1 Neuro-Saav Electrobinoculars", "Mk 1 Neuro-Saav Electrobinoculars", "Mk 1 Chiewab Hypo Syringe", "Mk 2 Neuro-Saav Electrobinoculars", "Mk 2 Arakyd Droid Caller", "Mk 1 Sienar Holo Projector"],
+            "Gear 3": ["Mk 2 SoroSuub Keypad", "Mk 4 BlasTech Weapon Mod", "Mk 3 Nubian Security Scanner", "Mk 4 Loronar Power Cell", "Mk 1 Chedak Comlink", "Mk 6 Fabritech Data Pad"],
+            "Gear 4": ["Mk 2 Merr-Sonn Thermal Detonator", "Mk 5 BioTech Implant", "Mk 2 Merr-Sonn Shield Generator", "Mk 3 Chiewab Hypo Syringe", "Mk 6 BAW Armor Mod", "Mk 4 Nubian Security Scanner"],
+            "Gear 5": ["Mk 3 Nubian Security Scanner", "Mk 4 Loronar Power Cell", "Mk 6 BlasTech Weapon Mod", "Mk 6 BAW Armor Mod", "Mk 4 Chiewab Hypo Syringe", "Mk 4 Merr-Sonn Thermal Detonator"],
+            "Gear 6": ["Mk 4 Fabritech Data Pad", "MK 7 BlasTech Weapon Mod", "Mk 3 Sienar Holo Projector", "Mk 3 Sienar Holo Projector", "Mk 5 Nubian Security Scanner", "Mk 5 Nubian Design Tech"],
+            "Gear 7": ["Mk 4 Nubian Design Tech", "Mk 7 Fabritech Data Pad", "Mk 1 Zaltin Bacta Gel", "Mk 3 Sienar Holo Projector", "Mk 4 SoroSuub Keypad", "Mk 6 Merr-Sonn Shield Generator"],
+            "Gear 8": ["Mk 4 Nubian Security Scanner", "Mk 5 Chiewab Hypo Syringe", "Mk 8 TaggeCo Holo Lens", "Mk 6 Chiewab Hypo Syringe", "Mk 3 Czerka Stun Cuffs", "Mk 5 CEC Fusion Furnace"],
+            "Gear 9": ["Mk 7 Loronar Power Cell", "Mk 4 SoroSuub Keypad", "Mk 7 TaggeCo Holo Lens", "Mk 3 Carbanti Sensor Array", "Mk 9 BlasTech Weapon Mod", "Mk 4 Chedak Comlink"],
+            "Gear 10":["Mk 4 Arakyd Droid Caller", "Mk 6 Merr-Sonn Shield Generator", "Mk 3 Carbanti Sensor Array", "Mk 5 A/KT Stun Gun", "Mk 5 Merr-Sonn Thermal Detonator", "Mk 8 BioTech Implant"],
+            "Gear 11":["Mk 9 Fabritech Data Pad", "Mk 6 Merr-Sonn Thermal Detonator", "Mk 8 TaggeCo Holo Lens", "Mk 4 Sienar Holo Projector", "Unknown Gear", "Unknown Gear"]
+        },
         "abilities": {
             "Inspiring Strike": {
                 "type": "Basic",
@@ -52,8 +65,8 @@
         "aliases": ["Ackbar", "Admiral Ackbar"],
         "url": "https://swgoh.gg/characters/admiral-ackbar/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ackbaradmiral.png",
-        "side": "light",
         "factions": ["support", "rebel", "fleet commander"],
+        "side": "light",
         "mods": {
             "Arena": {
                 "sets": [
@@ -68,6 +81,19 @@
                 "circle": "Protection",
                 "cross": "Tenacity"
             }
+        },
+        "gear": {
+            "Gear 1": [],
+            "Gear 2": [],
+            "Gear 3": [],
+            "Gear 4": [],
+            "Gear 5": [],
+            "Gear 6": [],
+            "Gear 7": [],
+            "Gear 8": [],
+            "Gear 9": [],
+            "Gear 10":[],
+            "Gear 11":[]
         },
         "abilities": {
             "Quick Shot": {
