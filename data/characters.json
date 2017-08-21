@@ -1625,9 +1625,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Potency"
             },
             "Arena (EP Lead)": {
                 "sets": [
@@ -1638,9 +1638,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Offense"
             }
         },
         "abilities": {
@@ -1721,7 +1721,7 @@
     },
     {
         "name": "Death Trooper",
-        "aliases": ["Death Trooper", "DT"],
+        "aliases": ["Death Trooper", "Deathtrooper", "DT"],
         "url": "https://swgoh.gg/characters/death-trooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperdeath.png",
         "side": "dark",
@@ -2427,9 +2427,22 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "Raid (GK Sink)": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Offense",
+                "diamond": "Defense",
+                "triangle": "Crit. Dmg/ Offense",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "abilities": {
@@ -2838,7 +2851,7 @@
         "name": "Grand Master Yoda",
         "aliases": ["Grand Master Yoda", "Yoda"],
         "url": "https://swgoh.gg/characters/grand-master-yoda/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_grandmasteryoda.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_yodagrandmaster.png",
         "side": "light",
         "factions": ["support", "jedi", "galactic republic"],
         "mods": {
@@ -3412,7 +3425,7 @@
     },
     {
         "name": "Imperial Super Commando",
-        "aliases": ["Imperial Super Commando"],
+        "aliases": ["Imperial Super Commando", "ISC"],
         "url": "https://swgoh.gg/characters/imperial-super-commando/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_imperial_super_commando.png",
         "side": "dark",
@@ -3427,9 +3440,22 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "Raid (Gar/ GK Sink)": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Offense",
+                "diamond": "Defense",
+                "triangle": "Crit. Dmg/ Offense",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "abilities": {
@@ -4244,7 +4270,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense"
             }
         },
         "abilities": {
@@ -4276,7 +4302,7 @@
     },
     {
         "name": "Magmatrooper",
-        "aliases": ["Magmatrooper", "Magma"],
+        "aliases": ["Magmatrooper", "Magma Trooper", "Magma"],
         "url": "https://swgoh.gg/characters/magmatrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm_magma.png",
         "side": "dark",
@@ -5348,6 +5374,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection  / Potency"
+            },
+            "Arena (Nihilus Lead)": {
+                "sets": [
+                    "Health x2",
+                    "Offense x4",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection / Health",
+                "cross": "Protection  / Potency"
             }
         },
         "abilities": {
@@ -5585,16 +5624,16 @@
         "mods": {
             "Arena": {
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
+                    "Crit. Dmg x4",
+                    "Crit. Chance x2",
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Protection",
+                "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Critical Damage",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Offense"
             }
         },
         "abilities": {
@@ -5633,11 +5672,11 @@
                     "Defense x2"
                 ],
                 "square": "Offense",
-                "arrow": "Protection",
+                "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Potency"
             }
         },
         "abilities": {
@@ -6031,7 +6070,7 @@
     },
     {
         "name": "URoRRuR'R'R",
-        "aliases": ["URoRRuRRR", "Urorr"],
+        "aliases": ["URoRRuRRR", "Urorr", "Uror", "Ur"],
         "url": "https://swgoh.gg/characters/ururrurrr/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_urorrurrr.png",
         "side": "dark",

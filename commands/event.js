@@ -26,7 +26,7 @@ exports.run = (client, message, args, level) => {
     let eventTime = "";
     let eventMessage = "";
 
-    if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`).then(msg => msg.delete(4000)).catch(console.error);
+    if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`).then(msg => msg.delete(10000)).catch(console.error);
     action = args[0].toLowerCase();
 
     if (action === "create" || action === "delete") {
@@ -37,22 +37,22 @@ exports.run = (client, message, args, level) => {
 
     switch (action) {
         case "create": {
-            if (!args[1]) return message.channel.send(`You must give a name for your event.`).then(msg => msg.delete(4000)).catch(console.error);
+            if (!args[1]) return message.channel.send(`You must give a name for your event.`).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
 
             // Check if that name/ event already exists
-            if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`).then(msg => msg.delete(4000)).catch(console.error);
+            if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`).then(msg => msg.delete(10000)).catch(console.error);
 
-            if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`).then(msg => msg.delete(4000)).catch(console.error);
+            if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`).then(msg => msg.delete(10000)).catch(console.error);
             if (!moment(args[2], 'D/M/YYYY').isValid()) {
-                return message.channel.send(`${args[2]} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`).then(msg => msg.delete(4000)).catch(console.error);
+                return message.channel.send(`${args[2]} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`).then(msg => msg.delete(10000)).catch(console.error);
             } else { // It's valid, go ahead and set it.
                 eventDay = moment(args[2], 'D/M/YYYY').format('YYYY-MM-DD');
             }
 
-            if (!args[3]) return message.channel.send(`You must give a time for your event.`).then(msg => msg.delete(4000)).catch(console.error);
+            if (!args[3]) return message.channel.send(`You must give a time for your event.`).then(msg => msg.delete(10000)).catch(console.error);
             if (!moment(args[3], 'H:mm').isValid()) {
-                return message.channel.send(`You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`).then(msg => msg.delete(4000)).catch(console.error);
+                return message.channel.send(`You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`).then(msg => msg.delete(10000)).catch(console.error);
             } else { // It's valid, go ahead and set it.
                 eventTime = moment(args[3], 'HH:mm').format('HH:mm');
             }
@@ -103,12 +103,12 @@ exports.run = (client, message, args, level) => {
             }
             break;
         } case "delete": {
-            if (!args[1]) return message.channel.send(`You must give an event name to delete.`).then(msg => msg.delete(4000)).catch(console.error);;
+            if (!args[1]) return message.channel.send(`You must give an event name to delete.`).then(msg => msg.delete(10000)).catch(console.error);;
             eventName = args[1];
 
             // Check if that name/ event already exists
             if (!events.hasOwnProperty(eventName)) {
-                return message.channel.send(`That event does not exist.`).then(msg => msg.delete(4000)).catch(console.error);;
+                return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);;
             } else {
                 delete events[eventName];
                 guildEvents.set(message.guild.id, events);

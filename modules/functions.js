@@ -174,6 +174,13 @@ module.exports = (client) => {
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, "g"), "./");
         console.error(`[${client.myTime()}] Uncaught Exception: `, errorMsg);
+
+        // If it detects that, make it reboot... Really not the best 
+        // option, but at least it'll come back up for a while this way
+        if(errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
+            client.destroy();
+            process.exit();
+        }
     });
 
     process.on("unhandledRejection", err => {

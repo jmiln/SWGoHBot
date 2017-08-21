@@ -84,7 +84,8 @@ function checkDates() {
                             const thisGuild = client.guilds.get(g);
                             var channel = thisGuild.channels.find('name', guildConf["announceChan"]);
                             if (channel && channel.permissionsFor(thisGuild.me).has("SEND_MESSAGES")) {
-                                channel.send(announceMessage).catch(console.error);
+                                // client.log('HERE', `Event on this channel: ${channel}`);
+                                channel.send(announceMessage);
                             }
                         }
                         delete events[key];
