@@ -64,7 +64,7 @@
 	},
 	{
 		"name" : "First Order Tie Fighter",
-		"aliases" : ["FO TIE Fighter", "First Order"]
+		"aliases" : ["FO TIE Fighter", "First Order"],
 		"crew" : ["First Order TIE Pilot"],
 		"url" : "https://swgoh.gg/units/ships/first-order-tie-fighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_firstorder_tiefighter.png",
