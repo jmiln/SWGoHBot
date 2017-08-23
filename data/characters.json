@@ -30,8 +30,8 @@
         "Gear 7": ["Mk 4 Nubian Design Tech", "Mk 7 Fabritech Data Pad", "Mk 1 Zaltin Bacta Gel", "Mk 3 Sienar Holo Projector", "Mk 4 SoroSuub Keypad", "Mk 6 Merr-Sonn Shield Generator"],
         "Gear 8": ["Mk 4 Nubian Security Scanner", "Mk 5 Chiewab Hypo Syringe", "Mk 8 TaggeCo Holo Lens", "Mk 6 Chiewab Hypo Syringe", "Mk 3 Czerka Stun Cuffs", "Mk 5 CEC Fusion Furnace"],
         "Gear 9": ["Mk 7 Loronar Power Cell", "Mk 4 SoroSuub Keypad", "Mk 7 TaggeCo Holo Lens", "Mk 3 Carbanti Sensor Array", "Mk 9 BlasTech Weapon Mod", "Mk 4 Chedak Comlink"],
-        "Gear 10": ["Mk 4 Arakyd Droid Caller", "Mk 6 Merr-Sonn Shield Generator", "Mk 3 Carbanti Sensor Array", "Mk 5 A/KT Stun Gun", "Mk 5 Merr-Sonn Thermal Detonator", "Mk 8 BioTech Implant"],
-        "Gear 11": ["Mk 9 Fabritech Data Pad", "Mk 6 Merr-Sonn Thermal Detonator", "Mk 8 TaggeCo Holo Lens", "Mk 4 Sienar Holo Projector", "Unknown Gear", "Unknown Gear"]
+        "Gear 10":["Mk 4 Arakyd Droid Caller", "Mk 6 Merr-Sonn Shield Generator", "Mk 3 Carbanti Sensor Array", "Mk 5 A/KT Stun Gun", "Mk 5 Merr-Sonn Thermal Detonator", "Mk 8 BioTech Implant"],
+        "Gear 11":["Mk 9 Fabritech Data Pad", "Mk 6 Merr-Sonn Thermal Detonator", "Mk 8 TaggeCo Holo Lens", "Mk 4 Sienar Holo Projector", "Unknown Gear", "Unknown Gear"]
     },
     "abilities": {
         "Inspiring Strike": {
@@ -92,8 +92,8 @@
         "Gear 7": ["Mk 3 Chiewab Hypo Syringe","Mk 3 Sienar Holo Projector","Mk 4 Arakyd Droid Caller","Mk 4 Arakyd Droid Caller","Mk 2 Zaltin Bacta Gel","Mk 6 Merr-Sonn Shield Generator"],
         "Gear 8": ["Mk 4 Nubian Design Tech","Mk 4 A/KT Stun Gun","Mk 8 TaggeCo Holo Lens","Mk 6 Chiewab Hypo Syringe","Mk 7 BioTech Implant","Mk 5 Arakyd Droid Caller"],
         "Gear 9": ["Mk 3 Merr-Sonn Thermal Detonator","Mk 4 SoroSuub Keypad","Mk 5 Arakyd Droid Caller","Mk 7 Nubian Security Scanner","Mk 8 BAW Armor Mod","Mk 4 Chedak Comlink"],
-        "Gear 10": ["Mk 3 Sienar Holo Projector","Mk 6 Neuro-Saav Electrobinoculars","Mk 6 Merr-Sonn Shield Generator","Mk 8 Fabritech Data Pad","Mk 6 Nubian Design Tech","Mk 8 BioTech Implant"],
-        "Gear 11": ["Mk 4 Sienar Holo Projector","Mk 8 BioTech Implant","Mk 5 Athakam Medpac","Mk 4 Sienar Holo Projector","Mk 6 Merr-Sonn Thermal Detonator","Unknown Gear"]
+        "Gear 10":["Mk 3 Sienar Holo Projector","Mk 6 Neuro-Saav Electrobinoculars","Mk 6 Merr-Sonn Shield Generator","Mk 8 Fabritech Data Pad","Mk 6 Nubian Design Tech","Mk 8 BioTech Implant"],
+        "Gear 11":["Mk 4 Sienar Holo Projector","Mk 8 BioTech Implant","Mk 5 Athakam Medpac","Mk 4 Sienar Holo Projector","Mk 6 Merr-Sonn Thermal Detonator","Unknown Gear"]
     },
     "abilities": {
         "Quick Shot": {
@@ -154,8 +154,8 @@
         "Gear 7": ["Mk 2 Chedak Comlink","Mk 4 BioTech Implant","Mk 2 Athakam Medpac","Mk 5 SoroSuub Keypad","Mk 8 Fabritech Data Pad","Mk 3 Chedak Comlink"],
         "Gear 8": ["Mk 2 BioTech Implant","Mk 2 BioTech Implant","Mk 5 BlasTech Weapon Mod","Mk 5 Chiewab Hypo Syringe","Mk 3 Chedak Comlink","Mk 5 CEC Fusion Furnace"],
         "Gear 9": ["Mk 2 CEC Fusion Furnace","Mk 1 Chedak Comlink","Mk 5 TaggeCo Holo Lens","Mk 8 Fabritech Data Pad","Mk 6 Nubian Design Tech","Mk 4 Athakam Medpac"],
-        "Gear 10": ["Mk 7 Nubian Security Scanner","Mk 4 Sienar Holo Projector","Mk 7 Merr-Sonn Shield Generator","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 6 Merr-Sonn Thermal Detonator"],
-        "Gear 11": ["Mk 5 A/KT Stun Gun","Mk 4 Sienar Holo Projector","Mk 6 Merr-Sonn Thermal Detonator","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Unknown Gear"]
+        "Gear 10":["Mk 7 Nubian Security Scanner","Mk 4 Sienar Holo Projector","Mk 7 Merr-Sonn Shield Generator","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 6 Merr-Sonn Thermal Detonator"],
+        "Gear 11":["Mk 5 A/KT Stun Gun","Mk 4 Sienar Holo Projector","Mk 6 Merr-Sonn Thermal Detonator","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Unknown Gear"]
     },
     "abilities": {
         "Energetic Slash": {
@@ -208,16 +208,16 @@
     },
     "gear": {
         "Gear 1":  ["Mk 1 BAW Armor Mod","Mk 1 BAW Armor Mod","Mk 1 Loronar Power Cell","Mk 1 Loronar Power Cell","Mk 1 BioTech Implant","Mk 1 BioTech Implant"],
-        "Gear 2":  ["Mk 1 Loronar Power Cell","Mk 1 Merr-Sonn Shield Generator","Mk 2 BAW Armor Mod","Mk 2 Nubian Security Scanner","Mk 2 CEC Fusion Furnace","Mk 3 BAW Armor Mod"]"
-        "Gear 3":  ["Mk 3 Neuro-Saav Electrobinoculars","Mk 3 SoroSuub Keypad","Mk 4 BioTech Implant","Mk 3 Arakyd Droid Caller","Mk 5 Loronar Power Cell","Mk 4 BioTech Implant"]"
-        "Gear 4":  ["Mk 2 CEC Fusion Furnace","Mk 3 SoroSuub Keypad","Mk 4 BioTech Implant","Mk 6 BlasTech Weapon Mod","Mk 3 Merr-Sonn Thermal Detonator","Mk 4 Nubian Design Tech"]"
-        "Gear 5":  ["Mk 3 Nubian Security Scanner","Mk 3 Neuro-Saav Electrobinoculars","Mk 2 Sienar Holo Projector","Mk 6 BAW Armor Mod","Mk 7 BAW Armor Mod","Mk 2 Czerka Stun Cuffs"]"
-        "Gear 6":  ["Mk 2 A/KT Stun Gun","Mk 3 SoroSuub Keypad","Mk 7 Fabritech Data Pad","Mk 7 Loronar Power Cell","Mk 2 Carbanti Sensor Array","Mk 7 Neuro-Saav Electrobinoculars"]"
-        "Gear 7":  ["Mk 1 Chedak Comlink","Mk 5 Neuro-Saav Electrobinoculars","Mk 2 Sienar Holo Projector","Mk 1 Zaltin Bacta Gel","Mk 8 BlasTech Weapon Mod","Mk 8 Fabritech Data Pad"]"
-        "Gear 8":  ["Mk 4 BioTech Implant","Mk 5 BioTech Implant","Mk 4 A/KT Stun Gun","Mk 6 Chiewab Hypo Syringe","Mk 7 BioTech Implant","Mk 5 CEC Fusion Furnace"]"
-        "Gear 9":  ["Mk 1 Merr-Sonn Thermal Detonator","Mk 6 Loronar Power Cell","Mk 2 Athakam Medpac","Mk 8 Fabritech Data Pad","Mk 6 Nubian Design Tech","Mk 5 Merr-Sonn Thermal Detonator"]"
-        "Gear 10": ["Mk 1 Carbanti Sensor Array","Mk 6 Chiewab Hypo Syringe","Mk 8 BioTech Implant","Mk 5 Nubian Design Tech","Mk 2 Zaltin Bacta Gel","Mk 6 Merr-Sonn Thermal Detonator"]"
-        "Gear 11": ["Mk 8 BioTech Implant","Mk 7 Merr-Sonn Shield Generator","Mk 8 Neuro-Saav Electrobinoculars","Mk 8 BioTech Implant","Mk 4 Sienar Holo Projector","Unknown Gear"]
+        "Gear 2":  ["Mk 1 Loronar Power Cell","Mk 1 Merr-Sonn Shield Generator","Mk 2 BAW Armor Mod","Mk 2 Nubian Security Scanner","Mk 2 CEC Fusion Furnace","Mk 3 BAW Armor Mod"],
+        "Gear 3":  ["Mk 3 Neuro-Saav Electrobinoculars","Mk 3 SoroSuub Keypad","Mk 4 BioTech Implant","Mk 3 Arakyd Droid Caller","Mk 5 Loronar Power Cell","Mk 4 BioTech Implant"],
+        "Gear 4":  ["Mk 2 CEC Fusion Furnace","Mk 3 SoroSuub Keypad","Mk 4 BioTech Implant","Mk 6 BlasTech Weapon Mod","Mk 3 Merr-Sonn Thermal Detonator","Mk 4 Nubian Design Tech"],
+        "Gear 5":  ["Mk 3 Nubian Security Scanner","Mk 3 Neuro-Saav Electrobinoculars","Mk 2 Sienar Holo Projector","Mk 6 BAW Armor Mod","Mk 7 BAW Armor Mod","Mk 2 Czerka Stun Cuffs"],
+        "Gear 6":  ["Mk 2 A/KT Stun Gun","Mk 3 SoroSuub Keypad","Mk 7 Fabritech Data Pad","Mk 7 Loronar Power Cell","Mk 2 Carbanti Sensor Array","Mk 7 Neuro-Saav Electrobinoculars"],
+        "Gear 7":  ["Mk 1 Chedak Comlink","Mk 5 Neuro-Saav Electrobinoculars","Mk 2 Sienar Holo Projector","Mk 1 Zaltin Bacta Gel","Mk 8 BlasTech Weapon Mod","Mk 8 Fabritech Data Pad"],
+        "Gear 8":  ["Mk 4 BioTech Implant","Mk 5 BioTech Implant","Mk 4 A/KT Stun Gun","Mk 6 Chiewab Hypo Syringe","Mk 7 BioTech Implant","Mk 5 CEC Fusion Furnace"],
+        "Gear 9":  ["Mk 1 Merr-Sonn Thermal Detonator","Mk 6 Loronar Power Cell","Mk 2 Athakam Medpac","Mk 8 Fabritech Data Pad","Mk 6 Nubian Design Tech","Mk 5 Merr-Sonn Thermal Detonator"],
+        "Gear 10":["Mk 1 Carbanti Sensor Array","Mk 6 Chiewab Hypo Syringe","Mk 8 BioTech Implant","Mk 5 Nubian Design Tech","Mk 2 Zaltin Bacta Gel","Mk 6 Merr-Sonn Thermal Detonator"],
+        "Gear 11":["Mk 8 BioTech Implant","Mk 7 Merr-Sonn Shield Generator","Mk 8 Neuro-Saav Electrobinoculars","Mk 8 BioTech Implant","Mk 4 Sienar Holo Projector","Unknown Gear"]
     },
     "abilities": {
         "Balanced Strike": {
@@ -269,16 +269,16 @@
         }
     },
     "gear": {
-       "Gear 1": ["Mk 1 Fabritech Data Pad","Mk 1 Fabritech Data Pad","Mk 1 Arakyd Droid Caller","Mk 1 Arakyd Droid Caller","Mk 1 Nubian Security Scanner","Mk 1 BAW Armor Mod"]"
-       "Gear 2": ["Mk 3 TaggeCo Holo Lens","Mk 2 Loronar Power Cell","Mk 2 Loronar Power Cell","Mk 2 Fabritech Data Pad","Mk 2 SoroSuub Keypad","Mk 1 Sienar Holo Projector"]"
-       "Gear 3": ["Mk 2 Fabritech Data Pad","Mk 3 Merr-Sonn Shield Generator","Mk 3 SoroSuub Keypad","Mk 1 Merr-Sonn Thermal Detonator","Mk 2 Chiewab Hypo Syringe","Mk 6 Loronar Power Cell"]"
-       "Gear 4": ["Mk 1 Chedak Comlink","Mk 5 Neuro-Saav Electrobinoculars","Mk 2 Merr-Sonn Shield Generator","Mk 2 Merr-Sonn Shield Generator","Mk 5 TaggeCo Holo Lens","Mk 3 Nubian Design Tech"]"
-       "Gear 5": ["Mk 3 BioTech Implant","Mk 3 BioTech Implant","Mk 4 Nubian Security Scanner","Mk 7 Fabritech Data Pad","Mk 6 TaggeCo Holo Lens","Mk 6 Neuro-Saav Electrobinoculars"]"
-       "Gear 6": ["Mk 2 Merr-Sonn Shield Generator","Mk 3 Nubian Design Tech","Mk 6 TaggeCo Holo Lens","Mk 4 SoroSuub Keypad","Mk 4 Arakyd Droid Caller","Mk 6 BioTech Implant"]"
-       "Gear 7": ["Mk 1 Merr-Sonn Thermal Detonator","Mk 7 Loronar Power Cell","Mk 6 BioTech Implant","Mk 4 Arakyd Droid Caller","Mk 8 TaggeCo Holo Lens","Mk 3 Athakam Medpac"]"
-       "Gear 8": ["Mk 3 Sienar Holo Projector","Mk 2 Carbanti Sensor Array","Mk 3 Sienar Holo Projector","Mk 3 Athakam Medpac","Mk 5 A/KT Stun Gun","Mk 5 Arakyd Droid Caller"]"
-       "Gear 9": ["Mk 7 Loronar Power Cell","Mk 3 Sienar Holo Projector","Mk 5 A/KT Stun Gun","Mk 5 Arakyd Droid Caller","Mk 7 Nubian Security Scanner","Mk 5 Merr-Sonn Thermal Detonator"]"
-       "Gear 10":["Mk 7 Nubian Security Scanner","Mk 7 Merr-Sonn Shield Generator","Mk 11 BlasTech Weapon Mod","Mk 8 BioTech Implant","Mk 9 Fabritech Data Pad","Mk 6 Merr-Sonn Thermal Detonator"]"
+       "Gear 1": ["Mk 1 Fabritech Data Pad","Mk 1 Fabritech Data Pad","Mk 1 Arakyd Droid Caller","Mk 1 Arakyd Droid Caller","Mk 1 Nubian Security Scanner","Mk 1 BAW Armor Mod"],
+       "Gear 2": ["Mk 3 TaggeCo Holo Lens","Mk 2 Loronar Power Cell","Mk 2 Loronar Power Cell","Mk 2 Fabritech Data Pad","Mk 2 SoroSuub Keypad","Mk 1 Sienar Holo Projector"],
+       "Gear 3": ["Mk 2 Fabritech Data Pad","Mk 3 Merr-Sonn Shield Generator","Mk 3 SoroSuub Keypad","Mk 1 Merr-Sonn Thermal Detonator","Mk 2 Chiewab Hypo Syringe","Mk 6 Loronar Power Cell"],
+       "Gear 4": ["Mk 1 Chedak Comlink","Mk 5 Neuro-Saav Electrobinoculars","Mk 2 Merr-Sonn Shield Generator","Mk 2 Merr-Sonn Shield Generator","Mk 5 TaggeCo Holo Lens","Mk 3 Nubian Design Tech"],
+       "Gear 5": ["Mk 3 BioTech Implant","Mk 3 BioTech Implant","Mk 4 Nubian Security Scanner","Mk 7 Fabritech Data Pad","Mk 6 TaggeCo Holo Lens","Mk 6 Neuro-Saav Electrobinoculars"],
+       "Gear 6": ["Mk 2 Merr-Sonn Shield Generator","Mk 3 Nubian Design Tech","Mk 6 TaggeCo Holo Lens","Mk 4 SoroSuub Keypad","Mk 4 Arakyd Droid Caller","Mk 6 BioTech Implant"],
+       "Gear 7": ["Mk 1 Merr-Sonn Thermal Detonator","Mk 7 Loronar Power Cell","Mk 6 BioTech Implant","Mk 4 Arakyd Droid Caller","Mk 8 TaggeCo Holo Lens","Mk 3 Athakam Medpac"],
+       "Gear 8": ["Mk 3 Sienar Holo Projector","Mk 2 Carbanti Sensor Array","Mk 3 Sienar Holo Projector","Mk 3 Athakam Medpac","Mk 5 A/KT Stun Gun","Mk 5 Arakyd Droid Caller"],
+       "Gear 9": ["Mk 7 Loronar Power Cell","Mk 3 Sienar Holo Projector","Mk 5 A/KT Stun Gun","Mk 5 Arakyd Droid Caller","Mk 7 Nubian Security Scanner","Mk 5 Merr-Sonn Thermal Detonator"],
+       "Gear 10":["Mk 7 Nubian Security Scanner","Mk 7 Merr-Sonn Shield Generator","Mk 11 BlasTech Weapon Mod","Mk 8 BioTech Implant","Mk 9 Fabritech Data Pad","Mk 6 Merr-Sonn Thermal Detonator"],
        "Gear 11":["Unknown Gear","Mk 10 Neuro-Saav Electrobinoculars","Mk 4 Sienar Holo Projector","Unknown Gear","Unknown Gear","Unknown Gear"]
     },
     "abilities": {
@@ -350,16 +350,16 @@
         }
     },
     "gear": {
-       "Gear 1": ["Mk 1 BAW Armor Mod","Mk 1 BAW Armor Mod","Mk 1 Nubian Security Scanner","Mk 1 Nubian Security Scanner","Mk 1 Fabritech Data Pad","Mk 1 Fabritech Data Pad"]"
-       "Gear 2": ["Mk 1 Fabritech Data Pad","Mk 1 Merr-Sonn Shield Generator","Mk 2 BlasTech Weapon Mod","Mk 2 SoroSuub Keypad","Mk 1 Sienar Holo Projector","Mk 3 Neuro-Saav Electrobinoculars"]"
-       "Gear 3": ["Mk 1 Merr-Sonn Shield Generator","Mk 1 Chiewab Hypo Syringe","Mk 4 BlasTech Weapon Mod","Mk 1 Merr-Sonn Thermal Detonator","Mk 1 Merr-Sonn Thermal Detonator","Mk 4 Fabritech Data Pad"]"
-       "Gear 4": ["Mk 1 Merr-Sonn Shield Generator","Mk 3 Fabritech Data Pad","Mk 4 BAW Armor Mod","Mk 6 Loronar Power Cell","Mk 4 Fabritech Data Pad","Mk 5 Merr-Sonn Shield Generator"]"
-       "Gear 5": ["Mk 4 Fabritech Data Pad","Mk 6 Loronar Power Cell","Mk 2 Merr-Sonn Shield Generator","Mk 5 Merr-Sonn Shield Generator","Mk 1 Zaltin Bacta Gel","Mk 7 Loronar Power Cell"]"
-       "Gear 6": ["Mk 6 Fabritech Data Pad","Mk 4 Fabritech Data Pad","Mk 1 Merr-Sonn Thermal Detonator","Mk 2 Carbanti Sensor Array","Mk 7 Loronar Power Cell","Mk 8 BlasTech Weapon Mod"]"
-       "Gear 7": ["Mk 2 Chedak Comlink","Mk 4 Nubian Design Tech","Mk 2 Merr-Sonn Shield Generator","Mk 1 Zaltin Bacta Gel","Mk 6 Nubian Security Scanner","Mk 3 Athakam Medpac"]"
-       "Gear 8": ["Mk 4 BioTech Implant","Mk 6 Loronar Power Cell","Mk 4 Merr-Sonn Thermal Detonator","Mk 7 TaggeCo Holo Lens","Mk 5 A/KT Stun Gun","Mk 5 Arakyd Droid Caller"]"
-       "Gear 9": ["Mk 4 Nubian Design Tech","Mk 5 Merr-Sonn Shield Generator","Mk 6 TaggeCo Holo Lens","Mk 6 BioTech Implant","Mk 6 Nubian Security Scanner","Mk 4 Chedak Comlink"]"
-       "Gear 10":["Mk 4 Fabritech Data Pad","Mk 7 TaggeCo Holo Lens","Mk 3 Carbanti Sensor Array","Mk 7 Nubian Security Scanner","Mk 5 Athakam Medpac","Mk 3 Zaltin Bacta Gel"]"
+       "Gear 1": ["Mk 1 BAW Armor Mod","Mk 1 BAW Armor Mod","Mk 1 Nubian Security Scanner","Mk 1 Nubian Security Scanner","Mk 1 Fabritech Data Pad","Mk 1 Fabritech Data Pad"],
+       "Gear 2": ["Mk 1 Fabritech Data Pad","Mk 1 Merr-Sonn Shield Generator","Mk 2 BlasTech Weapon Mod","Mk 2 SoroSuub Keypad","Mk 1 Sienar Holo Projector","Mk 3 Neuro-Saav Electrobinoculars"],
+       "Gear 3": ["Mk 1 Merr-Sonn Shield Generator","Mk 1 Chiewab Hypo Syringe","Mk 4 BlasTech Weapon Mod","Mk 1 Merr-Sonn Thermal Detonator","Mk 1 Merr-Sonn Thermal Detonator","Mk 4 Fabritech Data Pad"],
+       "Gear 4": ["Mk 1 Merr-Sonn Shield Generator","Mk 3 Fabritech Data Pad","Mk 4 BAW Armor Mod","Mk 6 Loronar Power Cell","Mk 4 Fabritech Data Pad","Mk 5 Merr-Sonn Shield Generator"],
+       "Gear 5": ["Mk 4 Fabritech Data Pad","Mk 6 Loronar Power Cell","Mk 2 Merr-Sonn Shield Generator","Mk 5 Merr-Sonn Shield Generator","Mk 1 Zaltin Bacta Gel","Mk 7 Loronar Power Cell"],
+       "Gear 6": ["Mk 6 Fabritech Data Pad","Mk 4 Fabritech Data Pad","Mk 1 Merr-Sonn Thermal Detonator","Mk 2 Carbanti Sensor Array","Mk 7 Loronar Power Cell","Mk 8 BlasTech Weapon Mod"],
+       "Gear 7": ["Mk 2 Chedak Comlink","Mk 4 Nubian Design Tech","Mk 2 Merr-Sonn Shield Generator","Mk 1 Zaltin Bacta Gel","Mk 6 Nubian Security Scanner","Mk 3 Athakam Medpac"],
+       "Gear 8": ["Mk 4 BioTech Implant","Mk 6 Loronar Power Cell","Mk 4 Merr-Sonn Thermal Detonator","Mk 7 TaggeCo Holo Lens","Mk 5 A/KT Stun Gun","Mk 5 Arakyd Droid Caller"],
+       "Gear 9": ["Mk 4 Nubian Design Tech","Mk 5 Merr-Sonn Shield Generator","Mk 6 TaggeCo Holo Lens","Mk 6 BioTech Implant","Mk 6 Nubian Security Scanner","Mk 4 Chedak Comlink"],
+       "Gear 10":["Mk 4 Fabritech Data Pad","Mk 7 TaggeCo Holo Lens","Mk 3 Carbanti Sensor Array","Mk 7 Nubian Security Scanner","Mk 5 Athakam Medpac","Mk 3 Zaltin Bacta Gel"],
        "Gear 11":["Mk 10 TaggeCo Holo Lens","Mk 5 Athakam Medpac","Mk 9 Fabritech Data Pad","Mk 4 Sienar Holo Projector","Unknown Gear","Unknown Gear"]
     },
     "abilities": {
@@ -406,16 +406,16 @@
         }
     },
     "gear": {
-       "Gear 1": ["Mk 1 Nubian Security Scanner","Mk 1 Nubian Security Scanner","Mk 1 Fabritech Data Pad","Mk 1 Arakyd Droid Caller","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 A/KT Stun Gun"]"
-       "Gear 2": ["Mk 1 Sienar Holo Projector","Mk 3 BAW Armor Mod","Mk 1 Chiewab Hypo Syringe","Mk 2 Loronar Power Cell","Mk 2 Fabritech Data Pad","Mk 2 SoroSuub Keypad"]"
-       "Gear 3": ["Mk 4 Fabritech Data Pad","Mk 6 Loronar Power Cell","Mk 1 Merr-Sonn Thermal Detonator","Mk 3 SoroSuub Keypad","Mk 3 BioTech Implant","Mk 2 SoroSuub Keypad"]"
-       "Gear 4": ["Mk 2 Athakam Medpac","Mk 5 TaggeCo Holo Lens","Mk 3 Chiewab Hypo Syringe","Mk 2 Merr-Sonn Shield Generator","Mk 3 BioTech Implant","Mk 2 Chiewab Hypo Syringe"]"
-       "Gear 5": ["Mk 4 Merr-Sonn Thermal Detonator","Mk 7 Fabritech Data Pad","Mk 5 TaggeCo Holo Lens","Mk 4 Fabritech Data Pad","Mk 4 Fabritech Data Pad","Mk 2 Merr-Sonn Shield Generator"]"
-       "Gear 6": ["Mk 8 BlasTech Weapon Mod","Mk 7 Fabritech Data Pad","Mk 4 SoroSuub Keypad","Mk 2 Athakam Medpac","Mk 3 Chiewab Hypo Syringe","Mk 5 Fabritech Data Pad"]"
-       "Gear 7": ["Mk 3 Carbanti Sensor Array","Mk 7 TaggeCo Holo Lens","Mk 8 TaggeCo Holo Lens","Mk 6 Nubian Security Scanner","Mk 3 Sienar Holo Projector","Mk 7 Fabritech Data Pad"]"
-       "Gear 8": ["Mk 5 Arakyd Droid Caller","Mk 5 A/KT Stun Gun","Mk 3 Carbanti Sensor Array","Mk 8 TaggeCo Holo Lens","Mk 4 SoroSuub Keypad","Mk 6 TaggeCo Holo Lens"]"
-       "Gear 9": ["Mk 7 Nubian Security Scanner","Mk 5 Arakyd Droid Caller","Mk 5 Merr-Sonn Thermal Detonator","Mk 3 Carbanti Sensor Array","Mk 8 BlasTech Weapon Mod","Mk 3 Sienar Holo Projector"]"
-       "Gear 10":["Mk 3 Zaltin Bacta Gel","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 5 A/KT Stun Gun","Mk 3 Czerka Stun Cuffs","Mk 3 Carbanti Sensor Array"]"
+       "Gear 1": ["Mk 1 Nubian Security Scanner","Mk 1 Nubian Security Scanner","Mk 1 Fabritech Data Pad","Mk 1 Arakyd Droid Caller","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 A/KT Stun Gun"],
+       "Gear 2": ["Mk 1 Sienar Holo Projector","Mk 3 BAW Armor Mod","Mk 1 Chiewab Hypo Syringe","Mk 2 Loronar Power Cell","Mk 2 Fabritech Data Pad","Mk 2 SoroSuub Keypad"],
+       "Gear 3": ["Mk 4 Fabritech Data Pad","Mk 6 Loronar Power Cell","Mk 1 Merr-Sonn Thermal Detonator","Mk 3 SoroSuub Keypad","Mk 3 BioTech Implant","Mk 2 SoroSuub Keypad"],
+       "Gear 4": ["Mk 2 Athakam Medpac","Mk 5 TaggeCo Holo Lens","Mk 3 Chiewab Hypo Syringe","Mk 2 Merr-Sonn Shield Generator","Mk 3 BioTech Implant","Mk 2 Chiewab Hypo Syringe"],
+       "Gear 5": ["Mk 4 Merr-Sonn Thermal Detonator","Mk 7 Fabritech Data Pad","Mk 5 TaggeCo Holo Lens","Mk 4 Fabritech Data Pad","Mk 4 Fabritech Data Pad","Mk 2 Merr-Sonn Shield Generator"],
+       "Gear 6": ["Mk 8 BlasTech Weapon Mod","Mk 7 Fabritech Data Pad","Mk 4 SoroSuub Keypad","Mk 2 Athakam Medpac","Mk 3 Chiewab Hypo Syringe","Mk 5 Fabritech Data Pad"],
+       "Gear 7": ["Mk 3 Carbanti Sensor Array","Mk 7 TaggeCo Holo Lens","Mk 8 TaggeCo Holo Lens","Mk 6 Nubian Security Scanner","Mk 3 Sienar Holo Projector","Mk 7 Fabritech Data Pad"],
+       "Gear 8": ["Mk 5 Arakyd Droid Caller","Mk 5 A/KT Stun Gun","Mk 3 Carbanti Sensor Array","Mk 8 TaggeCo Holo Lens","Mk 4 SoroSuub Keypad","Mk 6 TaggeCo Holo Lens"],
+       "Gear 9": ["Mk 7 Nubian Security Scanner","Mk 5 Arakyd Droid Caller","Mk 5 Merr-Sonn Thermal Detonator","Mk 3 Carbanti Sensor Array","Mk 8 BlasTech Weapon Mod","Mk 3 Sienar Holo Projector"],
+       "Gear 10":["Mk 3 Zaltin Bacta Gel","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 5 A/KT Stun Gun","Mk 3 Czerka Stun Cuffs","Mk 3 Carbanti Sensor Array"],
        "Gear 11":["Unknown Gear","Mk 11 BlasTech Weapon Mod","Mk 8 BioTech Implant","Mk 7 Merr-Sonn Shield Generator","Mk 4 Sienar Holo Projector","Mk 10 BlasTech Weapon Mod"]
     },
     "abilities": {
@@ -468,17 +468,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 Nubian Security Scanner","Mk 1 Nubian Security Scanner","Mk 1 Fabritech Data Pad","Mk 1 Arakyd Droid Caller","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 A/KT Stun Gun"],
+        "Gear 2": ["Mk 1 Sienar Holo Projector","Mk 3 BAW Armor Mod","Mk 1 Chiewab Hypo Syringe","Mk 2 Loronar Power Cell","Mk 2 Fabritech Data Pad","Mk 2 SoroSuub Keypad"],
+        "Gear 3": ["Mk 4 Fabritech Data Pad","Mk 6 Loronar Power Cell","Mk 1 Merr-Sonn Thermal Detonator","Mk 3 SoroSuub Keypad","Mk 3 BioTech Implant","Mk 2 SoroSuub Keypad"],
+        "Gear 4": ["Mk 2 Athakam Medpac","Mk 5 TaggeCo Holo Lens","Mk 3 Chiewab Hypo Syringe","Mk 2 Merr-Sonn Shield Generator","Mk 3 BioTech Implant","Mk 2 Chiewab Hypo Syringe"],
+        "Gear 5": ["Mk 4 Merr-Sonn Thermal Detonator","Mk 7 Fabritech Data Pad","Mk 5 TaggeCo Holo Lens","Mk 4 Fabritech Data Pad","Mk 4 Fabritech Data Pad","Mk 2 Merr-Sonn Shield Generator"],
+        "Gear 6": ["Mk 8 BlasTech Weapon Mod","Mk 7 Fabritech Data Pad","Mk 4 SoroSuub Keypad","Mk 2 Athakam Medpac","Mk 3 Chiewab Hypo Syringe","Mk 5 Fabritech Data Pad"],
+        "Gear 7": ["Mk 3 Carbanti Sensor Array","Mk 7 TaggeCo Holo Lens","Mk 8 TaggeCo Holo Lens","Mk 6 Nubian Security Scanner","Mk 3 Sienar Holo Projector","Mk 7 Fabritech Data Pad"],
+        "Gear 8": ["Mk 5 Arakyd Droid Caller","Mk 5 A/KT Stun Gun","Mk 3 Carbanti Sensor Array","Mk 8 TaggeCo Holo Lens","Mk 4 SoroSuub Keypad","Mk 6 TaggeCo Holo Lens"],
+        "Gear 9": ["Mk 7 Nubian Security Scanner","Mk 5 Arakyd Droid Caller","Mk 5 Merr-Sonn Thermal Detonator","Mk 3 Carbanti Sensor Array","Mk 8 BlasTech Weapon Mod","Mk 3 Sienar Holo Projector"],
+        "Gear 10":["Mk 3 Zaltin Bacta Gel","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 5 A/KT Stun Gun","Mk 3 Czerka Stun Cuffs","Mk 3 Carbanti Sensor Array"],
+        "Gear 11":["Unknown Gear","Mk 11 BlasTech Weapon Mod","Mk 8 BioTech Implant","Mk 7 Merr-Sonn Shield Generator","Mk 4 Sienar Holo Projector","Mk 10 BlasTech Weapon Mod"]
     },
     "abilities": {
         "Heavy Repeater Cannon": {
@@ -530,17 +530,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BAW Armor Mod","Mk 1 BAW Armor Mod","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Loronar Power Cell","Mk 1 Loronar Power Cell","Mk 1 A/KT Stun Gun"],
+        "Gear 2": ["Mk 1 Fabritech Data Pad","Mk 2 Nubian Security Scanner","Mk 1 SoroSuub Keypad","Mk 2 BioTech Implant","Mk 1 Sienar Holo Projector","Mk 1 Sienar Holo Projector"],
+        "Gear 3": ["Mk 2 BioTech Implant","Mk 2 BlasTech Weapon Mod","Mk 3 CEC Fusion Furnace","Mk 3 Arakyd Droid Caller","Mk 6 Loronar Power Cell","Mk 6 Fabritech Data Pad"],
+        "Gear 4": ["Mk 1 Merr-Sonn Thermal Detonator","Mk 4 Loronar Power Cell","Mk 5 BAW Armor Mod","Mk 5 BioTech Implant","Mk 3 Chiewab Hypo Syringe","Mk 2 Sienar Holo Projector"],
+        "Gear 5": ["Mk 4 Fabritech Data Pad","Mk 5 BioTech Implant","Mk 3 Chiewab Hypo Syringe","Mk 2 Athakam Medpac","Mk 7 Fabritech Data Pad","Mk 4 Merr-Sonn Thermal Detonator"],
+        "Gear 6": ["Mk 7 BlasTech Weapon Mod","Mk 2 Carbanti Sensor Array","Mk 3 Sienar Holo Projector","Mk 4 SoroSuub Keypad","Mk 4 Arakyd Droid Caller","Mk 8 BlasTech Weapon Mod"],
+        "Gear 7": ["Mk 4 Merr-Sonn Thermal Detonator","Mk 5 SoroSuub Keypad","Mk 4 Arakyd Droid Caller","Mk 8 BlasTech Weapon Mod","Mk 8 Fabritech Data Pad","Mk 6 Chiewab Hypo Syringe"],
+        "Gear 8": ["Mk 6 TaggeCo Holo Lens","Mk 7 Loronar Power Cell","Mk 6 BioTech Implant","Mk 8 TaggeCo Holo Lens","Mk 5 A/KT Stun Gun","Mk 5 CEC Fusion Furnace"],
+        "Gear 9": ["Mk 6 Neuro-Saav Electrobinoculars","Mk 6 Neuro-Saav Electrobinoculars","Mk 5 Chiewab Hypo Syringe","Mk 6 Chiewab Hypo Syringe","Mk 7 Nubian Security Scanner","Mk 4 Athakam Medpac"],
+        "Gear 10":["Mk 3 Zaltin Bacta Gel","Mk 10 TaggeCo Holo Lens","Mk 7 Nubian Security Scanner","Mk 6 Chiewab Hypo Syringe","Mk 8 TaggeCo Holo Lens","Mk 4 Chedak Comlink"],
+        "Gear 11":["Mk 3 Zaltin Bacta Gel","Unknown Gear","Unknown Gear","Unknown Gear","Unknown Gear","Unknown Gear"]
     },
     "abilities": {
         "Cadet's Aim": {
@@ -586,17 +586,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": [,"Mk 1 BlasTech Weapon Mod","Mk 1 Loronar Power Cell","Mk 1 TaggeCo Holo Lens","Mk 1 Nubian Security Scanner","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 A/KT Stun Gun"],
+        "Gear 2": ["Mk 1 A/KT Stun Gun","Mk 2 Nubian Security Scanner","Mk 2 Neuro-Saav Electrobinoculars","Mk 3 TaggeCo Holo Lens","Mk 2 SoroSuub Keypad","Mk 3 BAW Armor Mod"],
+        "Gear 3": ["Mk 5 BlasTech Weapon Mod","Mk 4 Fabritech Data Pad","Mk 2 Merr-Sonn Thermal Detonator","Mk 1 Sienar Holo Projector","Mk 1 Merr-Sonn Thermal Detonator","Mk 5 BAW Armor Mod"],
+        "Gear 4": ["Mk 3 BlasTech Weapon Mod","Mk 2 Merr-Sonn Shield Generator","Mk 2 Merr-Sonn Shield Generator","Mk 5 BlasTech Weapon Mod","Mk 5 BlasTech Weapon Mod","Mk 2 Athakam Medpac"],
+        "Gear 5": ["Mk 4 Fabritech Data Pad","Mk 3 Chiewab Hypo Syringe","Mk 7 BlasTech Weapon Mod","Mk 2 Sienar Holo Projector","Mk 2 Czerka Stun Cuffs","Mk 7 Fabritech Data Pad"],
+        "Gear 6": ["Mk 3 BioTech Implant","Mk 3 Chiewab Hypo Syringe","Mk 5 BioTech Implant","Mk 7 Fabritech Data Pad","Mk 4 CEC Fusion Furnace","Mk 8 BlasTech Weapon Mod"],
+        "Gear 7": ["Mk 3 Sienar Holo Projector","Mk 5 Nubian Design Tech","Mk 7 Loronar Power Cell","Mk 5 Chiewab Hypo Syringe","Mk 3 Carbanti Sensor Array","Mk 6 Chiewab Hypo Syringe"],
+        "Gear 8": ["Mk 3 Sienar Holo Projector","Mk 7 TaggeCo Holo Lens","Mk 7 Loronar Power Cell","Mk 3 Czerka Stun Cuffs","Mk 5 A/KT Stun Gun","Mk 5 CEC Fusion Furnace"],
+        "Gear 9": ["Mk 3 Chedak Comlink","Mk 3 Czerka Stun Cuffs","Mk 6 Chiewab Hypo Syringe","Mk 3 Carbanti Sensor Array","Mk 4 Chedak Comlink","Mk 6 Nubian Design Tech"],
+        "Gear 10":["Mk 5 Athakam Medpac","Mk 5 Merr-Sonn Thermal Detonator","Mk 7 Merr-Sonn Shield Generator","Mk 8 BioTech Implant","Mk 9 Fabritech Data Pad","Mk 6 Merr-Sonn Thermal Detonator"],
+        "Gear 11":["Mk 6 Chiewab Hypo Syringe","Mk 5 Merr-Sonn Thermal Detonator","Mk 10 Neuro-Saav Electrobinoculars","Mk 4 Sienar Holo Projector","Mk 3 Zaltin Bacta Gel","Unknown Gear"]
     },
     "abilities": {
         "Blast 'Em": {
@@ -674,17 +674,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BlasTech Weapon Mod","Mk 1 CEC Fusion Furnace","Mk 1 CEC Fusion Furnace","Mk 1 A/KT Stun Gun","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Neuro-Saav Electrobinoculars"],
+        "Gear 2": ["Mk 3 BlasTech Weapon Mod","Mk 3 Loronar Power Cell","Mk 2 Nubian Security Scanner","Mk 1 Merr-Sonn Shield Generator","Mk 2 Neuro-Saav Electrobinoculars","Mk 1 Nubian Design Tech"],
+        "Gear 3": ["Mk 2 Merr-Sonn Thermal Detonator","Mk 5 Neuro-Saav Electrobinoculars","Mk 3 SoroSuub Keypad","Mk 3 Nubian Security Scanner","Mk 4 BlasTech Weapon Mod","Mk 4 Neuro-Saav Electrobinoculars"],
+        "Gear 4": ["Mk 2 Sienar Holo Projector","Mk 2 Merr-Sonn Thermal Detonator","Mk 1 Chedak Comlink","Mk 5 BioTech Implant","Mk 3 Chiewab Hypo Syringe","Mk 6 BAW Armor Mod"],
+        "Gear 5": ["Mk 7 Fabritech Data Pad","Mk 7 Fabritech Data Pad","Mk 4 Nubian Security Scanner","Mk 6 BAW Armor Mod","Mk 3 Chiewab Hypo Syringe","Mk 3 Arakyd Droid Caller"],
+        "Gear 6": ["Mk 4 Arakyd Droid Caller","Mk 7 Fabritech Data Pad","Mk 2 Czerka Stun Cuffs","Mk 2 Athakam Medpac","Mk 2 Sienar Holo Projector","Mk 4 Fabritech Data Pad"],
+        "Gear 7": ["Mk 6 Nubian Security Scanner","Mk 8 BlasTech Weapon Mod","Mk 3 CEC Fusion Furnace","Mk 1 Merr-Sonn Thermal Detonator","Mk 1 Merr-Sonn Thermal Detonator","Mk 2 Chedak Comlink"],
+        "Gear 8": ["Mk 5 CEC Fusion Furnace","Mk 6 Chiewab Hypo Syringe","Mk 6 Chiewab Hypo Syringe","Mk 5 Arakyd Droid Caller","Mk 6 Neuro-Saav Electrobinoculars","Mk 6 Loronar Power Cell"],
+        "Gear 9": ["Mk 6 Nubian Design Tech","Mk 5 A/KT Stun Gun","Mk 6 BioTech Implant","Mk 6 Chiewab Hypo Syringe","Mk 5 CEC Fusion Furnace","Mk 3 Sienar Holo Projector"],
+        "Gear 10":["Mk 5 CEC Fusion Furnace","Mk 6 Nubian Design Tech","Mk 9 Neuro-Saav Electrobinoculars","Mk 9 Neuro-Saav Electrobinoculars","Mk 7 Merr-Sonn Shield Generator","Mk 4 Chedak Comlink"],
+        "Gear 11":["Mk 7 Nubian Security Scanner","Mk 11 BlasTech Weapon Mod","Mk 6 Merr-Sonn Thermal Detonator","Mk 8 BioTech Implant","Mk 6 Merr-Sonn Thermal Detonator","Unknown Gear"]
     },
     "abilities": {
         "EE-3 Carbine": {
@@ -742,17 +742,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BlasTech Weapon Mod","Mk 1 BAW Armor Mod","Mk 1 A/KT Stun Gun","Mk 1 Fabritech Data Pad","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 BioTech Implant"],
+        "Gear 2": ["Mk 2 Loronar Power Cell","Mk 2 BAW Armor Mod","Mk 1 Sienar Holo Projector","Mk 2 SoroSuub Keypad","Mk 1 Czerka Stun Cuffs","Mk 2 Neuro-Saav Electrobinoculars"],
+        "Gear 3": ["Mk 5 Loronar Power Cell","Mk 1 Merr-Sonn Thermal Detonator","Mk 6 BlasTech Weapon Mod","Mk 3 Fabritech Data Pad","Mk 3 Nubian Security Scanner","Mk 3 BioTech Implant"],
+        "Gear 4": ["Mk 7 BlasTech Weapon Mod","Mk 3 Chiewab Hypo Syringe","Mk 3 Nubian Design Tech","Mk 3 Chiewab Hypo Syringe","Mk 2 Merr-Sonn Shield Generator","Mk 3 Merr-Sonn Thermal Detonator"],
+        "Gear 5": ["Mk 3 Chiewab Hypo Syringe","Mk 4 Chiewab Hypo Syringe","Mk 7 BlasTech Weapon Mod","Mk 3 Nubian Design Tech","Mk 3 Chiewab Hypo Syringe","Mk 2 Carbanti Sensor Array"],
+        "Gear 6": ["Mk 4 A/KT Stun Gun","Mk 4 CEC Fusion Furnace","Mk 6 Neuro-Saav Electrobinoculars","Mk 5 SoroSuub Keypad","Mk 4 SoroSuub Keypad","Mk 1 Chedak Comlink"],
+        "Gear 7": ["Mk 3 Athakam Medpac","Mk 8 TaggeCo Holo Lens","Mk 6 BioTech Implant","Mk 4 Arakyd Droid Caller","Mk 4 SoroSuub Keypad","Mk 4 A/KT Stun Gun"],
+        "Gear 8": ["Mk 6 Neuro-Saav Electrobinoculars","Mk 3 Carbanti Sensor Array","Mk 3 Czerka Stun Cuffs","Mk 6 Chiewab Hypo Syringe","Mk 5 A/KT Stun Gun","Mk 5 Arakyd Droid Caller"],
+        "Gear 9": ["Mk 3 Carbanti Sensor Array","Mk 3 Sienar Holo Projector","Mk 3 Czerka Stun Cuffs","Mk 7 BioTech Implant","Mk 5 A/KT Stun Gun","Mk 6 Nubian Design Tech"],
+        "Gear 10":["Mk 10 TaggeCo Holo Lens","Mk 7 Merr-Sonn Shield Generator","Mk 10 TaggeCo Holo Lens","Mk 5 Athakam Medpac","Mk 10 Neuro-Saav Electrobinoculars","Mk 3 Zaltin Bacta Gel"],
+        "Gear 11":["Unknown Gear","Mk 5 Athakam Medpac","Mk 10 Neuro-Saav Electrobinoculars","Unknown Gear","Unknown Gear","Mk 6 Merr-Sonn Thermal Detonator"]
     },
     "abilities": {
         "Call Targets": {
@@ -804,17 +804,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BlasTech Weapon Mod","Mk 1 BlasTech Weapon Mod","Mk 1 TaggeCo Holo Lens","Mk 1 A/KT Stun Gun","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Neuro-Saav Electrobinoculars"],
+        "Gear 2": ["Mk 1 BlasTech Weapon Mod","Mk 1 SoroSuub Keypad","Mk 2 BioTech Implant","Mk 3 TaggeCo Holo Lens","Mk 3 Loronar Power Cell","Mk 3 BlasTech Weapon Mod"],
+        "Gear 3": ["Mk 1 Merr-Sonn Shield Generator","Mk 4 Neuro-Saav Electrobinoculars","Mk 3 Merr-Sonn Shield Generator","Mk 3 Arakyd Droid Caller","Mk 1 Chedak Comlink","Mk 5 BioTech Implant"],
+        "Gear 4": ["Mk 3 Arakyd Droid Caller","Mk 3 Arakyd Droid Caller","Mk 5 BAW Armor Mod","Mk 5 BioTech Implant","Mk 6 BAW Armor Mod","Mk 4 Nubian Security Scanner"],
+        "Gear 5": ["Mk 4 Fabritech Data Pad","Mk 5 BioTech Implant","Mk 3 Chiewab Hypo Syringe","Mk 2 Sienar Holo Projector","Mk 7 Fabritech Data Pad","Mk 6 Neuro-Saav Electrobinoculars"],
+        "Gear 6": ["Mk 3 SoroSuub Keypad","Mk 6 BAW Armor Mod","Mk 4 Chiewab Hypo Syringe","Mk 6 Neuro-Saav Electrobinoculars","Mk 4 Arakyd Droid Caller","Mk 8 BlasTech Weapon Mod"],
+        "Gear 7": ["Mk 4 Nubian Security Scanner","Mk 3 Sienar Holo Projector","Mk 8 Fabritech Data Pad","Mk 3 Chedak Comlink","Mk 4 Arakyd Droid Caller","Mk 6 Chiewab Hypo Syringe"],
+        "Gear 8": ["Mk 4 Chiewab Hypo Syringe","Mk 4 SoroSuub Keypad","Mk 6 Nubian Security Scanner","Mk 6 Chiewab Hypo Syringe","Mk 3 Czerka Stun Cuffs","Mk 5 CEC Fusion Furnace"],
+        "Gear 9": ["Mk 2 Athakam Medpac","Mk 8 TaggeCo Holo Lens","Mk 6 Chiewab Hypo Syringe","Mk 7 Nubian Security Scanner","Mk 6 Nubian Design Tech","Mk 4 Athakam Medpac"],
+        "Gear 10":["Mk 9 BlasTech Weapon Mod","Mk 6 Merr-Sonn Shield Generator","Mk 11 BlasTech Weapon Mod","Mk 3 Czerka Stun Cuffs","Mk 3 Czerka Stun Cuffs","Mk 4 Arakyd Droid Caller"],
+        "Gear 11":["Mk 7 Merr-Sonn Shield Generator","Mk 9 Fabritech Data Pad","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 6 Merr-Sonn Thermal Detonator","Unknown Gear"]
     },
     "abilities": {
         "Gun Slinger": {
@@ -866,17 +866,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Nubian Security Scanner","Mk 1 A/KT Stun Gun","Mk 1 BAW Armor Mod","Mk 1 Loronar Power Cell","Mk 1 Arakyd Droid Caller"],
+        "Gear 2": ["Mk 1 Nubian Security Scanner","Mk 1 Chiewab Hypo Syringe","Mk 3 BAW Armor Mod","Mk 3 TaggeCo Holo Lens","Mk 2 SoroSuub Keypad","Mk 1 Sienar Holo Projector"],
+        "Gear 3": ["Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Sienar Holo Projector","Mk 4 BlasTech Weapon Mod","Mk 3 SoroSuub Keypad","Mk 2 Chedak Comlink","Mk 5 BlasTech Weapon Mod"],
+        "Gear 4": ["Mk 3 BAW Armor Mod","Mk 3 Merr-Sonn Shield Generator","Mk 1 Merr-Sonn Thermal Detonator","Mk 5 TaggeCo Holo Lens","Mk 3 Chiewab Hypo Syringe","Mk 4 Nubian Design Tech"],
+        "Gear 5": ["Mk 5 Fabritech Data Pad","Mk 3 Chiewab Hypo Syringe","Mk 6 BlasTech Weapon Mod","Mk 2 Sienar Holo Projector","Mk 5 Merr-Sonn Shield Generator","Mk 7 Loronar Power Cell"],
+        "Gear 6": ["Mk 4 BAW Armor Mod","Mk 3 Chiewab Hypo Syringe","Mk 6 TaggeCo Holo Lens","Mk 1 Zaltin Bacta Gel","Mk 7 Fabritech Data Pad","Mk 6 BioTech Implant"],
+        "Gear 7": ["Mk 6 BlasTech Weapon Mod","Mk 8 BlasTech Weapon Mod","Mk 7 TaggeCo Holo Lens","Mk 3 Sienar Holo Projector","Mk 3 Carbanti Sensor Array","Mk 8 TaggeCo Holo Lens"],
+        "Gear 8": ["Mk 5 Fabritech Data Pad","Mk 7 BlasTech Weapon Mod","Mk 8 Fabritech Data Pad","Mk 8 TaggeCo Holo Lens","Mk 5 CEC Fusion Furnace","Mk 5 A/KT Stun Gun"],
+        "Gear 9": ["Mk 4 Fabritech Data Pad","Mk 5 TaggeCo Holo Lens","Mk 2 Sienar Holo Projector","Mk 6 BioTech Implant","Mk 5 A/KT Stun Gun","Mk 5 Merr-Sonn Thermal Detonator"],
+        "Gear 10":["Mk 6 BioTech Implant","Mk 4 Carbanti Sensor Array","Mk 10 BlasTech Weapon Mod","Mk 9 Neuro-Saav Electrobinoculars","Mk 4 Sienar Holo Projector","Mk 6 BioTech Implant"],
+        "Gear 11":["Mk 5 Athakam Medpac","Unknown Gear","Mk 10 BlasTech Weapon Mod","Mk 3 Zaltin Bacta Gel","Unknown Gear","Unknown Gear"]
     },
     "abilities": {
         "Onslaught": {
@@ -928,17 +928,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BioTech Implant","Mk 1 BioTech Implant","Mk 1 CEC Fusion Furnace","Mk 1 CEC Fusion Furnace","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 BAW Armor Mod"],
+        "Gear 2": ["Mk 3 Neuro-Saav Electrobinoculars","Mk 2 Arakyd Droid Caller","Mk 3 BAW Armor Mod","Mk 1 Merr-Sonn Shield Generator","Mk 1 Nubian Design Tech","Mk 2 BAW Armor Mod"],
+        "Gear 3": ["Mk 5 BlasTech Weapon Mod","Mk 5 Loronar Power Cell","Mk 3 A/KT Stun Gun","Mk 3 Neuro-Saav Electrobinoculars","Mk 2 Arakyd Droid Caller","Mk 1 A/KT Stun Gun"],
+        "Gear 4": ["Mk 2 Sienar Holo Projector","Mk 2 Merr-Sonn Thermal Detonator","Mk 1 Chedak Comlink","Mk 5 BioTech Implant","Mk 3 Chiewab Hypo Syringe","Mk 6 BAW Armor Mod"],
+        "Gear 5": ["Mk 7 Fabritech Data Pad","Mk 7 Fabritech Data Pad","Mk 4 Nubian Security Scanner","Mk 6 BAW Armor Mod","Mk 3 Chiewab Hypo Syringe","Mk 3 Arakyd Droid Caller"],
+        "Gear 6": ["Mk 4 Arakyd Droid Caller","Mk 7 Fabritech Data Pad","Mk 2 Czerka Stun Cuffs","Mk 2 Athakam Medpac","Mk 2 Sienar Holo Projector","Mk 4 Fabritech Data Pad"],
+        "Gear 7": ["Mk 5 Arakyd Droid Caller","Mk 6 Merr-Sonn Shield Generator","Mk 8 TaggeCo Holo Lens","Mk 3 Sienar Holo Projector","Mk 3 Sienar Holo Projector","Mk 4 SoroSuub Keypad"],
+        "Gear 8": ["Mk 6 Nubian Design Tech","Mk 7 Nubian Security Scanner","Mk 6 Merr-Sonn Shield Generator","Mk 3 Carbanti Sensor Array","Mk 3 Carbanti Sensor Array","Mk 4 BAW Armor Mod"],
+        "Gear 9": ["Mk 6 CEC Fusion Furnace","Mk 5 Athakam Medpac","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 5 Carbanti Sensor Array","Mk 8 BioTech Implant"],
+        "Gear 10":["Unknown Gear","Unknown Gear","Mk 6 Merr-Sonn Thermal Detonator","Mk 3 Zaltin Bacta Gel","Mk 10 TaggeCo Holo Lens","Mk 10 TaggeCo Holo Lens"],
+        "Gear 11":["Mk 1 BAW Armor Mod","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 BAW Armor Mod","Mk 1 Loronar Power Cell","Mk 1 BlasTech Weapon Mod","Mk 1 A/KT Stun Gun"]
     },
     "abilities": {
         "Two Steps Ahead": {
@@ -1003,17 +1003,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 TaggeCo Holo Lens","Mk 1 Merr-Sonn Shield Generator","Mk 2 Nubian Security Scanner","Mk 1 SoroSuub Keypad","Mk 3 TaggeCo Holo Lens","Mk 2 Arakyd Droid Caller"],
+        "Gear 2": ["Mk 2 BlasTech Weapon Mod","Mk 3 Loronar Power Cell","Mk 4 Neuro-Saav Electrobinoculars","Mk 3 BioTech Implant","Mk 5 BAW Armor Mod","Mk 4 TaggeCo Holo Lens"],
+        "Gear 3": ["Mk 3 Chiewab Hypo Syringe","Mk 5 BAW Armor Mod","Mk 4 TaggeCo Holo Lens","Mk 5 BioTech Implant","Mk 2 Merr-Sonn Shield Generator","Mk 3 Merr-Sonn Thermal Detonator"],
+        "Gear 4": ["Mk 5 BAW Armor Mod","Mk 7 BlasTech Weapon Mod","Mk 2 Sienar Holo Projector","Mk 3 Merr-Sonn Thermal Detonator","Mk 6 TaggeCo Holo Lens","Mk 4 Chiewab Hypo Syringe"],
+        "Gear 5": ["Mk 6 Fabritech Data Pad","Mk 2 Sienar Holo Projector","Mk 1 Zaltin Bacta Gel","Mk 4 SoroSuub Keypad","Mk 4 Arakyd Droid Caller","Mk 7 Neuro-Saav Electrobinoculars"],
+        "Gear 6": ["Mk 4 SoroSuub Keypad","Mk 4 SoroSuub Keypad","Mk 2 Zaltin Bacta Gel","Mk 8 TaggeCo Holo Lens","Mk 7 Neuro-Saav Electrobinoculars","Mk 6 Chiewab Hypo Syringe"],
+        "Gear 7": ["Mk 7 Neuro-Saav Electrobinoculars","Mk 8 Fabritech Data Pad","Mk 6 Chiewab Hypo Syringe","Mk 3 Czerka Stun Cuffs","Mk 3 Czerka Stun Cuffs","Mk 5 CEC Fusion Furnace"],
+        "Gear 8": ["Mk 7 Neuro-Saav Electrobinoculars","Mk 6 Chiewab Hypo Syringe","Mk 6 Chiewab Hypo Syringe","Mk 5 CEC Fusion Furnace","Mk 7 Nubian Security Scanner","Mk 6 Nubian Design Tech"],
+        "Gear 9": ["Mk 3 Sienar Holo Projector","Mk 3 Sienar Holo Projector","Mk 5 CEC Fusion Furnace","Mk 4 Sienar Holo Projector","Mk 7 Merr-Sonn Shield Generator","Mk 7 Merr-Sonn Shield Generator"],
+        "Gear 10":["Mk 9 Fabritech Data Pad","Mk 5 A/KT Stun Gun","Mk 7 Merr-Sonn Shield Generator","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Unknown Gear"],
+        "Gear 11":["Mk 1 BioTech Implant","Mk 1 Arakyd Droid Caller","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 BAW Armor Mod","Mk 1 BioTech Implant","Mk 1 TaggeCo Holo Lens"]
     },
     "abilities": {
         "Alpha Strike": {
@@ -1065,17 +1065,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BioTech Implant","Mk 1 Merr-Sonn Shield Generator","Mk 2 Loronar Power Cell","Mk 1 Czerka Stun Cuffs","Mk 2 Nubian Security Scanner","Mk 2 BlasTech Weapon Mod"],
+        "Gear 2": ["Mk 1 Sienar Holo Projector","Mk 3 Fabritech Data Pad","Mk 5 Loronar Power Cell","Mk 1 Merr-Sonn Thermal Detonator","Mk 5 Neuro-Saav Electrobinoculars","Mk 6 BlasTech Weapon Mod"],
+        "Gear 3": ["Mk 5 Neuro-Saav Electrobinoculars","Mk 6 BlasTech Weapon Mod","Mk 2 Merr-Sonn Shield Generator","Mk 3 Chiewab Hypo Syringe","Mk 7 BlasTech Weapon Mod","Mk 3 Nubian Design Tech"],
+        "Gear 4": ["Mk 2 Merr-Sonn Shield Generator","Mk 3 Chiewab Hypo Syringe","Mk 7 BlasTech Weapon Mod","Mk 4 Nubian Security Scanner","Mk 2 Carbanti Sensor Array","Mk 4 Chiewab Hypo Syringe"],
+        "Gear 5": ["Mk 4 Merr-Sonn Thermal Detonator","Mk 4 Chiewab Hypo Syringe","Mk 4 A/KT Stun Gun","Mk 4 A/KT Stun Gun","Mk 4 Arakyd Droid Caller","Mk 6 BioTech Implant"],
+        "Gear 6": ["Mk 3 Sienar Holo Projector","Mk 7 Neuro-Saav Electrobinoculars","Mk 4 Arakyd Droid Caller","Mk 8 TaggeCo Holo Lens","Mk 8 Fabritech Data Pad","Mk 3 Athakam Medpac"],
+        "Gear 7": ["Mk 4 Arakyd Droid Caller","Mk 3 Carbanti Sensor Array","Mk 5 Chiewab Hypo Syringe","Mk 8 TaggeCo Holo Lens","Mk 3 Czerka Stun Cuffs","Mk 7 BioTech Implant"],
+        "Gear 8": ["Mk 8 Fabritech Data Pad","Mk 3 Czerka Stun Cuffs","Mk 3 Czerka Stun Cuffs","Mk 5 A/KT Stun Gun","Mk 7 Nubian Security Scanner","Mk 6 Nubian Design Tech"],
+        "Gear 9": ["Mk 8 Fabritech Data Pad","Mk 3 Czerka Stun Cuffs","Mk 3 Czerka Stun Cuffs","Mk 5 A/KT Stun Gun","Mk 7 Nubian Security Scanner","Mk 6 Nubian Design Tech"],
+        "Gear 10":["Mk 4 Sienar Holo Projector","Mk 6 Nubian Design Tech","Mk 5 Arakyd Droid Caller","Mk 9 Fabritech Data Pad","Mk 8 BioTech Implant","Mk 10 Neuro-Saav Electrobinoculars"],
+        "Gear 11":["Mk 7 Merr-Sonn Shield Generator","Mk 8 BioTech Implant","Mk 4 Sienar Holo Projector","Mk 10 TaggeCo Holo Lens","Mk 6 Merr-Sonn Thermal Detonator","Unknown Gear"]
     },
     "abilities": {
         "Bounding Strike": {
@@ -1127,17 +1127,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BlasTech Weapon Mod","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Nubian Security Scanner","Mk 1 Fabritech Data Pad","Mk 1 Arakyd Droid Caller","Mk 1 TaggeCo Holo Lens"],
+        "Gear 2": ["Mk 1 Nubian Security Scanner","Mk 2 Neuro-Saav Electrobinoculars","Mk 1 Chiewab Hypo Syringe","Mk 2 Fabritech Data Pad","Mk 1 Sienar Holo Projector","Mk 1 Sienar Holo Projector"],
+        "Gear 3": ["Mk 1 Sienar Holo Projector","Mk 4 BlasTech Weapon Mod","Mk 2 Chiewab Hypo Syringe","Mk 6 Loronar Power Cell","Mk 1 Merr-Sonn Thermal Detonator","Mk 6 BlasTech Weapon Mod"],
+        "Gear 4": ["Mk 1 Merr-Sonn Thermal Detonator","Mk 1 Merr-Sonn Thermal Detonator","Mk 6 Loronar Power Cell","Mk 4 Fabritech Data Pad","Mk 2 Merr-Sonn Shield Generator","Mk 5 Merr-Sonn Shield Generator"],
+        "Gear 5": ["Mk 1 Sienar Holo Projector","Mk 1 Merr-Sonn Thermal Detonator","Mk 5 BlasTech Weapon Mod","Mk 2 Merr-Sonn Shield Generator","Mk 5 Merr-Sonn Shield Generator","Mk 1 Zaltin Bacta Gel"],
+        "Gear 6": ["Mk 1 Merr-Sonn Thermal Detonator","Mk 4 Fabritech Data Pad","Mk 3 Nubian Design Tech","Mk 4 Chiewab Hypo Syringe","Mk 4 Arakyd Droid Caller","Mk 8 BlasTech Weapon Mod"],
+        "Gear 7": ["Mk 1 Merr-Sonn Thermal Detonator","Mk 4 Chiewab Hypo Syringe","Mk 5 Merr-Sonn Shield Generator","Mk 1 Zaltin Bacta Gel","Mk 3 Athakam Medpac","Mk 3 Carbanti Sensor Array"],
+        "Gear 8": ["Mk 3 Sienar Holo Projector","Mk 3 Sienar Holo Projector","Mk 1 Zaltin Bacta Gel","Mk 3 Athakam Medpac","Mk 5 A/KT Stun Gun","Mk 5 Arakyd Droid Caller"],
+        "Gear 9": ["Mk 3 Sienar Holo Projector","Mk 5 SoroSuub Keypad","Mk 3 Carbanti Sensor Array","Mk 9 BlasTech Weapon Mod","Mk 6 Nubian Design Tech","Mk 5 Merr-Sonn Thermal Detonator"],
+        "Gear 10":["Mk 3 Sienar Holo Projector","Mk 7 Merr-Sonn Shield Generator","Mk 11 BlasTech Weapon Mod","Mk 8 BioTech Implant","Mk 4 Sienar Holo Projector","Mk 6 Merr-Sonn Thermal Detonator"],
+        "Gear 11":["Mk 6 Merr-Sonn Shield Generator","Mk 3 Sienar Holo Projector","Mk 8 BioTech Implant","Unknown Gear","Unknown Gear","Unknown Gear"]
     },
     "abilities": {
         "Sheltering Shot": {
@@ -1189,17 +1189,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BlasTech Weapon Mod","Mk 1 Loronar Power Cell","Mk 1 Nubian Security Scanner","Mk 1 A/KT Stun Gun","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 BAW Armor Mod"],
+        "Gear 2": ["Mk 1 Sienar Holo Projector","Mk 3 BlasTech Weapon Mod","Mk 2 Nubian Security Scanner","Mk 3 Loronar Power Cell","Mk 2 BioTech Implant","Mk 2 Neuro-Saav Electrobinoculars"],
+        "Gear 3": ["Mk 5 BioTech Implant","Mk 2 Chedak Comlink","Mk 3 CEC Fusion Furnace","Mk 5 Fabritech Data Pad","Mk 1 Sienar Holo Projector","Mk 3 BAW Armor Mod"],
+        "Gear 4": ["Mk 4 Nubian Security Scanner","Mk 6 BlasTech Weapon Mod","Mk 5 BioTech Implant","Mk 4 Fabritech Data Pad","Mk 2 Chedak Comlink","Mk 3 BioTech Implant"],
+        "Gear 5": ["Mk 6 Neuro-Saav Electrobinoculars","Mk 2 Merr-Sonn Thermal Detonator","Mk 4 Nubian Security Scanner","Mk 2 Athakam Medpac","Mk 2 Merr-Sonn Shield Generator","Mk 5 BAW Armor Mod"],
+        "Gear 6": ["Mk 4 CEC Fusion Furnace","Mk 4 Arakyd Droid Caller","Mk 2 Czerka Stun Cuffs","Mk 6 TaggeCo Holo Lens","Mk 5 BioTech Implant","Mk 4 Fabritech Data Pad"],
+        "Gear 7": ["Mk 3 Chedak Comlink","Mk 2 Zaltin Bacta Gel","Mk 4 SoroSuub Keypad","Mk 3 Sienar Holo Projector","Mk 5 SoroSuub Keypad","Mk 6 TaggeCo Holo Lens"],
+        "Gear 8": ["Mk 5 CEC Fusion Furnace","Mk 5 A/KT Stun Gun","Mk 3 Czerka Stun Cuffs","Mk 6 Chiewab Hypo Syringe","Mk 3 Carbanti Sensor Array","Mk 2 Athakam Medpac"],
+        "Gear 9": ["Mk 6 Nubian Design Tech","Mk 5 Arakyd Droid Caller","Mk 3 Czerka Stun Cuffs","Mk 6 Chiewab Hypo Syringe","Mk 3 Carbanti Sensor Array","Mk 2 Zaltin Bacta Gel"],
+        "Gear 10":["Mk 4 Carbanti Sensor Array","Mk 9 Fabritech Data Pad","Mk 8 BioTech Implant","Mk 6 Chiewab Hypo Syringe","Mk 3 Czerka Stun Cuffs","Mk 4 Sienar Holo Projector"],
+        "Gear 11":["Mk 4 Carbanti Sensor Array","Unknown Gear","Unknown Gear","Mk 4 Sienar Holo Projector","Mk 4 Chedak Comlink","Mk 6 Merr-Sonn Thermal Detonator"]
     },
     "abilities": {
         "Staff Strike": {
@@ -1257,17 +1257,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 CEC Fusion Furnace","Mk 1 CEC Fusion Furnace","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Loronar Power Cell","Mk 1 TaggeCo Holo Lens","Mk 1 BioTech Implant"],
+        "Gear 2": ["Mk 3 BlasTech Weapon Mod","Mk 3 BlasTech Weapon Mod","Mk 1 Chiewab Hypo Syringe","Mk 3 TaggeCo Holo Lens","Mk 2 TaggeCo Holo Lens","Mk 1 Merr-Sonn Shield Generator"],
+        "Gear 3": ["Mk 2 Merr-Sonn Thermal Detonator","Mk 2 Merr-Sonn Thermal Detonator","Mk 4 BAW Armor Mod","Mk 3 Arakyd Droid Caller","Mk 5 Loronar Power Cell","Mk 4 TaggeCo Holo Lens"],
+        "Gear 4": ["Mk 2 Sienar Holo Projector","Mk 7 BlasTech Weapon Mod","Mk 3 Chiewab Hypo Syringe","Mk 5 BioTech Implant","Mk 6 Loronar Power Cell","Mk 5 Loronar Power Cell"],
+        "Gear 5": ["Mk 2 Czerka Stun Cuffs","Mk 7 Fabritech Data Pad","Mk 3 Nubian Design Tech","Mk 7 BlasTech Weapon Mod","Mk 4 Fabritech Data Pad","Mk 3 Arakyd Droid Caller"],
+        "Gear 6": ["Mk 6 BioTech Implant","Mk 5 Nubian Security Scanner","Mk 5 SoroSuub Keypad","Mk 4 A/KT Stun Gun","Mk 3 Chiewab Hypo Syringe","Mk 2 Merr-Sonn Shield Generator"],
+        "Gear 7": ["Mk 6 Chiewab Hypo Syringe","Mk 3 Chedak Comlink","Mk 8 TaggeCo Holo Lens","Mk 5 Nubian Security Scanner","Mk 3 Sienar Holo Projector","Mk 5 SoroSuub Keypad"],
+        "Gear 8": ["Mk 5 CEC Fusion Furnace","Mk 3 Czerka Stun Cuffs","Mk 6 Chiewab Hypo Syringe","Mk 6 Merr-Sonn Shield Generator","Mk 3 Sienar Holo Projector","Mk 4 Arakyd Droid Caller"],
+        "Gear 9": ["Mk 6 Nubian Design Tech","Mk 7 Nubian Security Scanner","Mk 7 BioTech Implant","Mk 3 Czerka Stun Cuffs","Mk 6 Chiewab Hypo Syringe","Mk 4 SoroSuub Keypad"],
+        "Gear 10":["Mk 4 Sienar Holo Projector","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 7 Merr-Sonn Shield Generator","Mk 5 A/KT Stun Gun","Mk 9 Fabritech Data Pad"],
+        "Gear 11":["Unknown Gear","Unknown Gear","Mk 4 Sienar Holo Projector","Mk 8 BioTech Implant","Mk 5 Athakam Medpac","Mk 7 Merr-Sonn Shield Generator"]
     },
     "abilities": {
         "Reckless Fling": {
@@ -1319,17 +1319,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BAW Armor Mod","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 TaggeCo Holo Lens","Mk 1 Loronar Power Cell","Mk 1 Loronar Power Cell","Mk 1 CEC Fusion Furnace"],
+        "Gear 2": ["Mk 2 SoroSuub Keypad","Mk 2 Loronar Power Cell","Mk 1 SoroSuub Keypad","Mk 2 Nubian Security Scanner","Mk 1 Loronar Power Cell","Mk 1 Sienar Holo Projector"],
+        "Gear 3": ["Mk 1 Athakam Medpac","Mk 3 Arakyd Droid Caller","Mk 1 Merr-Sonn Thermal Detonator","Mk 3 Fabritech Data Pad","Mk 3 TaggeCo Holo Lens","Mk 4 Neuro-Saav Electrobinoculars"],
+        "Gear 4": ["Mk 1 Athakam Medpac","Mk 4 Loronar Power Cell","Mk 6 Loronar Power Cell","Mk 7 BlasTech Weapon Mod","Mk 2 Merr-Sonn Shield Generator","Mk 6 BlasTech Weapon Mod"],
+        "Gear 5": ["Mk 7 Fabritech Data Pad","Mk 1 Athakam Medpac","Mk 4 Nubian Design Tech","Mk 4 Merr-Sonn Thermal Detonator","Mk 1 Carbanti Sensor Array","Mk 2 Merr-Sonn Shield Generator"],
+        "Gear 6": ["Mk 4 SoroSuub Keypad","Mk 4 Arakyd Droid Caller","Mk 4 Arakyd Droid Caller","Mk 8 BlasTech Weapon Mod","Mk 3 Sienar Holo Projector","Mk 2 Athakam Medpac"],
+        "Gear 7": ["Mk 6 Nubian Security Scanner","Mk 6 Neuro-Saav Electrobinoculars","Mk 6 BAW Armor Mod","Mk 3 SoroSuub Keypad","Mk 1 Chiewab Hypo Syringe","Mk 2 A/KT Stun Gun"],
+        "Gear 8": ["Mk 5 CEC Fusion Furnace","Mk 4 Arakyd Droid Caller","Mk 2 Athakam Medpac","Mk 4 Loronar Power Cell","Mk 2 Chedak Comlink","Mk 2 A/KT Stun Gun"],
+        "Gear 9": ["Mk 5 CEC Fusion Furnace","Mk 4 Chedak Comlink","Mk 4 Fabritech Data Pad","Mk 2 Sienar Holo Projector","Mk 1 Athakam Medpac","Mk 1 Carbanti Sensor Array"],
+        "Gear 10":["Mk 7 Merr-Sonn Shield Generator","Mk 8 BioTech Implant","Mk 8 BioTech Implant","Mk 6 Merr-Sonn Thermal Detonator","Mk 6 Chiewab Hypo Syringe","Mk 5 CEC Fusion Furnace"],
+        "Gear 11":["Mk 7 Nubian Security Scanner","Mk 9 Neuro-Saav Electrobinoculars","Mk 3 Zaltin Bacta Gel","Mk 8 BioTech Implant","Mk 10 Neuro-Saav Electrobinoculars","Unknown Gear"]
     },
     "abilities": {
         "Z-6 Rotary Blaster": {
@@ -1375,17 +1375,17 @@
         }
     },
     "gear": {
-        "Gear 1": [],
-        "Gear 2": [],
-        "Gear 3": [],
-        "Gear 4": [],
-        "Gear 5": [],
-        "Gear 6": [],
-        "Gear 7": [],
-        "Gear 8": [],
-        "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 1": ["Mk 1 BlasTech Weapon Mod","Mk 1 BlasTech Weapon Mod","Mk 1 BAW Armor Mod","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Nubian Security Scanner","Mk 1 CEC Fusion Furnace"],
+        "Gear 2": ["Mk 1 Neuro-Saav Electrobinoculars","Mk 1 Merr-Sonn Shield Generator","Mk 1 Chiewab Hypo Syringe","Mk 2 BlasTech Weapon Mod","Mk 1 Sienar Holo Projector","Mk 1 Sienar Holo Projector"],
+        "Gear 3": ["Mk 3 Loronar Power Cell","Mk 4 BlasTech Weapon Mod","Mk 3 SoroSuub Keypad","Mk 2 Chiewab Hypo Syringe","Mk 5 BAW Armor Mod","Mk 4 TaggeCo Holo Lens"],
+        "Gear 4": ["Mk 2 Chiewab Hypo Syringe","Mk 2 Merr-Sonn Shield Generator","Mk 2 Merr-Sonn Shield Generator","Mk 5 TaggeCo Holo Lens","Mk 6 BAW Armor Mod","Mk 4 Nubian Design Tech"],
+        "Gear 5": ["Mk 2 Merr-Sonn Shield Generator","Mk 4 Nubian Design Tech","Mk 7 Fabritech Data Pad","Mk 6 TaggeCo Holo Lens","Mk 2 Czerka Stun Cuffs","Mk 4 Merr-Sonn Thermal Detonator"],
+        "Gear 6": ["Mk 6 Neuro-Saav Electrobinoculars","Mk 7 Loronar Power Cell","Mk 3 Sienar Holo Projector","Mk 4 SoroSuub Keypad","Mk 4 Arakyd Droid Caller","Mk 8 BlasTech Weapon Mod"],
+        "Gear 7": ["Mk 5 SoroSuub Keypad","Mk 4 Arakyd Droid Caller","Mk 6 Nubian Security Scanner","Mk 8 TaggeCo Holo Lens","Mk 3 Athakam Medpac","Mk 3 Carbanti Sensor Array"],
+        "Gear 8": ["Mk 3 Athakam Medpac","Mk 7 TaggeCo Holo Lens","Mk 3 Carbanti Sensor Array","Mk 6 Chiewab Hypo Syringe","Mk 3 Czerka Stun Cuffs","Mk 5 A/KT Stun Gun"],
+        "Gear 9": ["Mk 4 SoroSuub Keypad","Mk 3 Athakam Medpac","Mk 2 Zaltin Bacta Gel","Mk 5 A/KT Stun Gun","Mk 7 Nubian Security Scanner","Mk 5 Merr-Sonn Thermal Detonator"],
+        "Gear 10":["Mk 4 A/KT Stun Gun","Mk 5 SoroSuub Keypad","Mk 3 Carbanti Sensor Array","Mk 6 Chiewab Hypo Syringe","Mk 4 Carbanti Sensor Array","Mk 5 Carbanti Sensor Array"],
+        "Gear 11":["Mk 4 Sienar Holo Projector","Mk 10 Neuro-Saav Electrobinoculars","Mk 11 BlasTech Weapon Mod","Mk 3 Carbanti Sensor Array","Mk 5 Chiewab Hypo Syringe","Unknown Gear"]
     },
     "abilities": {
         "Bowcaster": {
@@ -1446,8 +1446,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Destined Strike": {
@@ -1520,8 +1520,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Non-Lethal Takedown": {
@@ -1576,8 +1576,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Hindering Press": {
@@ -1638,8 +1638,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Supporting Fire": {
@@ -1701,8 +1701,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Dual DC-17 Blasters": {
@@ -1776,8 +1776,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Impeding Shot": {
@@ -1838,8 +1838,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Raging Storm": {
@@ -1913,8 +1913,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Ceaseless Craving": {
@@ -1981,8 +1981,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Deathstroke": {
@@ -2056,8 +2056,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Terrifying Swing": {
@@ -2118,8 +2118,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Hit and Run": {
@@ -2206,8 +2206,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Track Down": {
@@ -2268,8 +2268,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Target Spotted": {
@@ -2356,8 +2356,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Test Their Defenses": {
@@ -2424,8 +2424,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Breaching Strike": {
@@ -2499,8 +2499,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Lightning Strike": {
@@ -2567,8 +2567,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Guiding Strike": {
@@ -2623,8 +2623,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Ewok Ambush": {
@@ -2679,8 +2679,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Rushing Strike": {
@@ -2754,8 +2754,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Crack Shot": {
@@ -2816,8 +2816,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Capitalize": {
@@ -2872,8 +2872,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Hindering Shot": {
@@ -2928,8 +2928,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Double Tap": {
@@ -2984,8 +2984,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Hack and Slash": {
@@ -3053,8 +3053,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "On the Hunt": {
@@ -3115,8 +3115,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Bash": {
@@ -3190,8 +3190,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Furious Assault": {
@@ -3258,8 +3258,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Intuitive Strike": {
@@ -3339,8 +3339,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Daring Attack": {
@@ -3401,8 +3401,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Aggressive Advance": {
@@ -3457,8 +3457,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Feint": {
@@ -3513,8 +3513,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Manipulate": {
@@ -3581,8 +3581,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Ataru": {
@@ -3649,8 +3649,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Grand Moff's Attack": {
@@ -3717,8 +3717,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Who Shot First?": {
@@ -3779,8 +3779,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Quick Draw": {
@@ -3841,8 +3841,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Outwit": {
@@ -3903,8 +3903,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Superior Firepower": {
@@ -3965,8 +3965,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Bold Maneuvers": {
@@ -4021,8 +4021,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Cover Fire": {
@@ -4077,8 +4077,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Electrostaff Assault": {
@@ -4133,8 +4133,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Precision Strike": {
@@ -4189,8 +4189,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Mortal Wound": {
@@ -4251,8 +4251,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Sunder": {
@@ -4326,8 +4326,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Seize the Advantage": {
@@ -4382,8 +4382,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Exploit Weakness": {
@@ -4438,8 +4438,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Miniaturized Detonator": {
@@ -4500,8 +4500,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Dismantle": {
@@ -4562,8 +4562,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Saber Strike": {
@@ -4618,8 +4618,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Deft Bladework": {
@@ -4680,8 +4680,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Saber Sweep": {
@@ -4736,8 +4736,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Press the Attack": {
@@ -4804,8 +4804,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Carboplast Composite Fist": {
@@ -4866,8 +4866,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Disarming Strike": {
@@ -4928,8 +4928,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Lightsaber Mastery": {
@@ -4990,8 +4990,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Ragged Cut": {
@@ -5052,8 +5052,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Gambler's Shot": {
@@ -5114,8 +5114,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Calculated Aggression": {
@@ -5176,8 +5176,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Mystical Strike": {
@@ -5238,8 +5238,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Frontier Marksmanship": {
@@ -5349,8 +5349,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Invincible Assault": {
@@ -5411,8 +5411,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Line of Fire": {
@@ -5467,8 +5467,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Dirty Fighting": {
@@ -5523,8 +5523,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Strike from the Shadows": {
@@ -5579,8 +5579,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Slice Open": {
@@ -5635,8 +5635,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Cowardly Shot": {
@@ -5697,8 +5697,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Elegant Form": {
@@ -5765,8 +5765,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Insightful Blow": {
@@ -5827,8 +5827,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Strident Strike": {
@@ -5902,8 +5902,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Vigilant Strike": {
@@ -5964,8 +5964,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Quelling Blow": {
@@ -6039,8 +6039,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Challenging Shot": {
@@ -6101,8 +6101,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Quash": {
@@ -6163,8 +6163,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Hair Trigger": {
@@ -6225,8 +6225,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Quick Strike": {
@@ -6313,8 +6313,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Electroshock Prod": {
@@ -6394,8 +6394,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Hip Fire": {
@@ -6476,8 +6476,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Flush Out": {
@@ -6545,8 +6545,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Shifting Strike": {
@@ -6607,8 +6607,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Force Pike": {
@@ -6663,8 +6663,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Blasters Akimbo": {
@@ -6738,8 +6738,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Staggering Blow": {
@@ -6800,8 +6800,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Dig In": {
@@ -6869,8 +6869,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Target Weapons": {
@@ -6925,8 +6925,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Exploit Weakness": {
@@ -6994,8 +6994,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Disruptor Blast": {
@@ -7050,8 +7050,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Assault Shock Troops": {
@@ -7106,8 +7106,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Imperial Marksmanship": {
@@ -7162,8 +7162,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Wary Shot": {
@@ -7224,8 +7224,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Browbeat": {
@@ -7286,8 +7286,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Draining Strike": {
@@ -7348,8 +7348,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Stealth Takedown": {
@@ -7410,8 +7410,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Targeting Computer": {
@@ -7466,8 +7466,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Rifle Shot": {
@@ -7522,8 +7522,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Desert Toxins": {
@@ -7578,8 +7578,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Break Open": {
@@ -7634,8 +7634,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Gaffi Stick Slam": {
@@ -7696,8 +7696,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Focused Fire": {
@@ -7758,8 +7758,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Inquisitive Jab": {
@@ -7820,8 +7820,8 @@
         "Gear 7": [],
         "Gear 8": [],
         "Gear 9": [],
-        "Gear 10": [],
-        "Gear 11": []
+        "Gear 10":[],
+        "Gear 11":[]
     },
     "abilities": {
         "Detonating Shot": {
