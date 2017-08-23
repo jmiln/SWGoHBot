@@ -6,7 +6,7 @@
 		"url" : "https://swgoh.gg/units/ships/ahsoka-tanos-jedi-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter_ahsoka.png",
 		"side": "light",
-		"factions" : ["attacker", "jedi", "galactic republic"],
+		"factions" : ["attacker", "jedi", "galactic republic"]
 	},
 	{
 		"name" : "Biggs Darklighter's X-Wing",
@@ -15,7 +15,7 @@
 		"url" : "https://swgoh.gg/units/ships/biggs-darklighters-x-wing/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_red3.png",
 		"side": "light",
-		"factions" : ["tank", "rebel"],
+		"factions" : ["tank", "rebel"]
 	},
 	{
 		"name" : "Bistan's U-Wing",
@@ -24,7 +24,7 @@
 		"url" : "https://swgoh.gg/units/ships/bistans-u-wing/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_uwing.png",
 		"side": "light",
-		"factions" : ["support", "rebel"],
+		"factions" : ["support", "rebel"]
 	},
 	{
 		"name" : "Cassian's U-Wing",
@@ -33,7 +33,7 @@
 		"url" : "https://swgoh.gg/units/ships/cassians-u-wing/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_uwing_hero.png",
 		"side": "light",
-		"factions" : ["support", "rebel"],
+		"factions" : ["support", "rebel"]
 	},
 	{
 		"name" : "Clone Sergeant's ARC-170",
@@ -42,7 +42,7 @@
 		"url" : "https://swgoh.gg/units/ships/clone-sergeants-arc-170/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_arc170.png",
 		"side": "light",
-		"factions" : ["tank", "clone trooper", "galactic republic"],
+		"factions" : ["tank", "clone trooper", "galactic republic"]
 	},
 	{
 		"name" : "Endurance",
@@ -51,7 +51,7 @@
 		"url" : "https://swgoh.gg/units/ships/endurance/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_venator.png",
 		"side": "light",
-		"factions" : ["capital ship", "jedi", "galactic republic"],
+		"factions" : ["capital ship", "jedi", "galactic republic"]
 	},
 	{
 		"name" : "Executrix",
@@ -60,7 +60,7 @@
 		"url" : "https://swgoh.gg/units/ships/executrix/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_stardestroyer.png",
 		"side": "dark",
-		"factions" : ["capital ship", "empire"],
+		"factions" : ["capital ship", "empire"]
 	},
 	{
 		"name" : "First Order Tie Fighter",
@@ -69,7 +69,7 @@
 		"url" : "https://swgoh.gg/units/ships/first-order-tie-fighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_firstorder_tiefighter.png",
 		"side": "dark",
-		"factions" : ["attacker", "first order"],
+		"factions" : ["attacker", "first order"]
 	},
 	{
 		"name" : "Gauntlet Starfighter",
@@ -78,7 +78,7 @@
 		"url" : "https://swgoh.gg/units/ships/gauntlet-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_gauntlet.png",
 		"side": "dark",
-		"factions" : ["support", "empire"],
+		"factions" : ["support", "empire"]
 	},
 	{
 		"name" : "Geonosian Soldier's Starfighter",
@@ -87,7 +87,7 @@
 		"url" : "https://swgoh.gg/units/ships/geonosian-soldiers-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_soldier.png",
 		"side": "dark",
-		"factions" : ["attacker", "geonosian", "separatist"],
+		"factions" : ["attacker", "geonosian", "separatist"]
 	},
 	{
 		"name" : "Geonosian Spy's Starfighter",
@@ -96,7 +96,7 @@
 		"url" : "https://swgoh.gg/units/ships/geonosian-spys-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_spy.png",
 		"side": "dark",
-		"factions" : ["attacker", "geonosian", "separatist"],
+		"factions" : ["attacker", "geonosian", "separatist"]
 	},
 	{
 		"name" : "Ghost",
@@ -105,7 +105,7 @@
 		"url" : "https://swgoh.gg/units/ships/ghost/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_ghost.png",
 		"side": "light",
-		"factions" : ["attacker", "rebel", "phoenix"],
+		"factions" : ["attacker", "rebel", "phoenix"]
 	},
 	{
 		"name" : "Home One",
@@ -114,7 +114,7 @@
 		"url" : "https://swgoh.gg/units/ships/home-one/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_moncalamarilibertycruiser.png",
 		"side": "light",
-		"factions" : ["capital ship", "rebel"],
+		"factions" : ["capital ship", "rebel"]
 	},
 	{
 		"name" : "Imperial TIE Fighter",
@@ -123,7 +123,7 @@
 		"url" : "https://swgoh.gg/units/ships/imperial-tie-fighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiefighter.png",
 		"side": "dark",
-		"factions" : ["attacker", "empire"],
+		"factions" : ["attacker", "empire"]
 	},
 	{
 		"name" : "Jedi Consular's Starfighter",
@@ -132,7 +132,7 @@
 		"url" : "https://swgoh.gg/units/ships/jedi-consulars-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter.png",
 		"side": "light",
-		"factions" : ["support", "jedi", "galactic republic"],
+		"factions" : ["support", "jedi", "galactic republic"]
 	},
 	{
 		"name" : "Kylo Ren's Command Shuttle",
@@ -141,7 +141,7 @@
 		"url" : "https://swgoh.gg/units/ships/kylo-rens-command-shuttle/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_upsilon_shuttle_kylo.png",
 		"side": "dark",
-		"factions" : ["first order", "support"],
+		"factions" : ["first order", "support"]
 	},
 	{
 		"name" : "Millennium Falcon (Ep VII)",
@@ -150,7 +150,7 @@
 		"url" : "https://swgoh.gg/units/ships/millennium-falcon-ep-vii/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_mfalcon_ep7.png",
 		"side": "light",
-		"factions" : ["resistance", "attacker"],
+		"factions" : ["resistance", "attacker"]
 	},
 	{
 		"name" : "Phantom II",
@@ -159,6 +159,105 @@
 		"url" : "https://swgoh.gg/units/ships/phantom-ii/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_phantom2.png",
 		"side": "light",
-		"factions" : ["rebel", "phoenix", "attacker"],
+		"factions" : ["rebel", "phoenix", "attacker"]
 	},
+	{
+		"name" : "Plo Koon's Jedi Starfighter",
+		"aliases" : ["Jedi Starfighter"],
+		"crew" : ["Plo Koon"],
+		"url" : "https://swgoh.gg/units/ships/plo-koons-jedi-starfighter/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter_bladeofdorin.png",
+		"side": "light",
+		"factions" : ["jedi", "galactic republic", "support"]
+	},
+	{
+		"name" : "Poe Dameron's X-wing",
+		"aliases" : ["Poe", "Black Leader"],
+		"crew" : ["Poe Dameron"],
+		"url" : "https://swgoh.gg/units/ships/poe-damerons-x-wing/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_blackone.png",
+		"side": "light",
+		"factions" : ["resistance", "attacker"]
+	},
+	{
+		"name" : "Resistance X-wing",
+		"aliases" : ["R1"],
+		"crew" : ["Resistance Pilot"],
+		"url" : "https://swgoh.gg/units/ships/resistance-x-wing/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_resistance.png",
+		"side": "light",
+		"factions" : ["support", "resistance"]
+	},
+	{
+		"name" : "Rex's ARC-170",
+		"aliases" : ["ARC"],
+		"crew" : ["Darth Maul"],
+		"url" : "https://swgoh.gg/units/ships/rexs-arc-170/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_arc170_02.png",
+		"side": "light",
+		"factions" : ["galactic republic", "tank", "clone trooper"]
+	},
+	{
+		"name" : "Scimitar",
+		"aliases" : ["Scimitar"],
+		"crew" : ["CT-7567 Rex"],
+		"url" : "https://swgoh.gg/units/ships/scimitar/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_sithinfiltrator.png",
+		"side": "dark",
+		"factions" : ["sith", "support"]
+	},
+	{
+		"name" : "Slave I",
+		"aliases" : ["Slave"],
+		"crew" : ["Boba Fett"],
+		"url" : "https://swgoh.gg/units/ships/slave-i/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_slave1.png",
+		"side": "dark",
+		"factions" : ["attacker", "scoundrel"] 
+	},
+	{
+		"name" : "Sun Fac's Genosian Starfighter",
+		"aliases" : ["Starfighter"],
+		"crew" : ["Sun Fac"],
+		"url" : "https://swgoh.gg/units/ships/sun-facs-geonosian-starfighter/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_sunfac.png",
+		"side": "dark",
+		"factions" : ["separatist", "tank", "genosian"] 
+	},
+	{
+		"name" : "Tie Advanced",
+		"aliases" : ["x1"],
+		"crew" : ["Darth Vader"],
+		"url" : "https://swgoh.gg/units/ships/tie-advanced-x1/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tieadvanced.png",
+		"side": "dark",
+		"factions" : ["empire", "attacker", "sith"] 
+	},
+	{
+		"name" : "Tie Reaper",
+		"aliases" : ["Reaper"],
+		"crew" : ["Death Trooper", "Shore Trooper"],
+		"url" : "https://swgoh.gg/units/ships/tie-reaper/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiereaper.png",
+		"side": "dark",
+		"factions" : ["empire", "support"]
+	},
+	{
+		"name" : "Umbaran Starfighter",
+		"aliases" : ["Umbaran"],
+		"crew" : ["CT-5555 Fives"],
+		"url" : "https://swgoh.gg/units/ships/umbaran-starfighter/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_umbaran_star_fighter.png",
+		"side": "light",
+		"factions" : ["galactic replublic", "tank", "clone trooper"]
+	},
+	{
+		"name" : "Wedge Antilles's X-Wing",
+		"aliases" : ["Red Two", "Wedge"],
+		"crew" : ["Wedge Antilles"],
+		"url" : "https://swgoh.gg/units/ships/wedge-antilless-x-wing/",
+		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_red2.png",
+		"side": "light",
+		"factions" : ["rebel", "attacker"]
+	}
 ]
