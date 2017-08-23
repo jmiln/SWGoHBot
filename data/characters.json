@@ -586,7 +586,7 @@
         }
     },
     "gear": {
-        "Gear 1": [,"Mk 1 BlasTech Weapon Mod","Mk 1 Loronar Power Cell","Mk 1 TaggeCo Holo Lens","Mk 1 Nubian Security Scanner","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 A/KT Stun Gun"],
+        "Gear 1": ["Mk 1 BlasTech Weapon Mod","Mk 1 Loronar Power Cell","Mk 1 TaggeCo Holo Lens","Mk 1 Nubian Security Scanner","Mk 1 Neuro-Saav Electrobinoculars","Mk 1 A/KT Stun Gun"],
         "Gear 2": ["Mk 1 A/KT Stun Gun","Mk 2 Nubian Security Scanner","Mk 2 Neuro-Saav Electrobinoculars","Mk 3 TaggeCo Holo Lens","Mk 2 SoroSuub Keypad","Mk 3 BAW Armor Mod"],
         "Gear 3": ["Mk 5 BlasTech Weapon Mod","Mk 4 Fabritech Data Pad","Mk 2 Merr-Sonn Thermal Detonator","Mk 1 Sienar Holo Projector","Mk 1 Merr-Sonn Thermal Detonator","Mk 5 BAW Armor Mod"],
         "Gear 4": ["Mk 3 BlasTech Weapon Mod","Mk 2 Merr-Sonn Shield Generator","Mk 2 Merr-Sonn Shield Generator","Mk 5 BlasTech Weapon Mod","Mk 5 BlasTech Weapon Mod","Mk 2 Athakam Medpac"],
