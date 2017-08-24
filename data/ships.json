@@ -191,7 +191,7 @@
 	{
 		"name" : "Rex's ARC-170",
 		"aliases" : ["Rex", "ARC"],
-		"crew" : ["Darth Maul"],
+		"crew" : ["CT-7567 Rex"],
 		"url" : "https://swgoh.gg/units/ships/rexs-arc-170/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_arc170_02.png",
 		"side": "light",
