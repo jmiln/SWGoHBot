@@ -19,7 +19,7 @@
 	},
 	{
 		"name" : "Bistan's U-Wing",
-		"aliases" : ["Bistan"],
+		"aliases" : ["Bistan", "SRP"],
 		"crew" : ["Bistan", "Scarif Rebel Pathfinder"],
 		"url" : "https://swgoh.gg/units/ships/bistans-u-wing/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_uwing.png",
@@ -28,7 +28,7 @@
 	},
 	{
 		"name" : "Cassian's U-Wing",
-		"aliases" : ["Cassian"],
+		"aliases" : ["Cassian", "K2S0", "Jyn"],
 		"crew" : ["Cassian Andor", "K-2SO", "Jyn Erso"],
 		"url" : "https://swgoh.gg/units/ships/cassians-u-wing/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_uwing_hero.png",
@@ -64,7 +64,7 @@
 	},
 	{
 		"name" : "First Order Tie Fighter",
-		"aliases" : ["FO TIE Fighter", "First Order"],
+		"aliases" : ["FO TIE Fighter", "First Order", "FOTP"],
 		"crew" : ["First Order TIE Pilot"],
 		"url" : "https://swgoh.gg/units/ships/first-order-tie-fighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_firstorder_tiefighter.png",
@@ -73,7 +73,7 @@
 	},
 	{
 		"name" : "Gauntlet Starfighter",
-		"aliases" : ["Gauntlet"],
+		"aliases" : ["Gauntlet", "Gar", "Commando"],
 		"crew" : ["Gar Saxon", "Imperial Super Commando"],
 		"url" : "https://swgoh.gg/units/ships/gauntlet-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_gauntlet.png",
@@ -91,7 +91,7 @@
 	},
 	{
 		"name" : "Geonosian Spy's Starfighter",
-		"aliases" : ["Geonosian Spy", "Spy"],
+		"aliases" : ["Geonosian Spy", "Spy", "Genspy"],
 		"crew" : ["Geonosian Spy"],
 		"url" : "https://swgoh.gg/units/ships/geonosian-spys-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_spy.png",
@@ -100,7 +100,7 @@
 	},
 	{
 		"name" : "Ghost",
-		"aliases" : [""],
+		"aliases" : ["Hera", "Zeb", "Kanan"],
 		"crew" : ["Hera Syndulla", "Garazeb 'Zeb' Orrelios", "Kanan Jarrus"],
 		"url" : "https://swgoh.gg/units/ships/ghost/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_ghost.png",
@@ -118,7 +118,7 @@
 	},
 	{
 		"name" : "Imperial TIE Fighter",
-		"aliases" : ["TIE Fighter"],
+		"aliases" : ["TIE Fighter", "TFP"],
 		"crew" : ["TIE Fighter Pilot"],
 		"url" : "https://swgoh.gg/units/ships/imperial-tie-fighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiefighter.png",
@@ -127,7 +127,7 @@
 	},
 	{
 		"name" : "Jedi Consular's Starfighter",
-		"aliases" : ["Jedi Consular"],
+		"aliases" : ["Jedi Consular", "Consular"],
 		"crew" : ["Jedi Consular"],
 		"url" : "https://swgoh.gg/units/ships/jedi-consulars-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter.png",
@@ -136,7 +136,7 @@
 	},
 	{
 		"name" : "Kylo Ren's Command Shuttle",
-		"aliases" : ["Kylo", "Command Shuttle"],
+		"aliases" : ["Kylo", "Command Shuttle", "Phasma", "FOST"],
 		"crew" : ["Kylo Ren", "Captain Phasma", "First Order Stormtrooper"],
 		"url" : "https://swgoh.gg/units/ships/kylo-rens-command-shuttle/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_upsilon_shuttle_kylo.png",
@@ -145,7 +145,7 @@
 	},
 	{
 		"name" : "Millennium Falcon (Ep VII)",
-		"aliases" : ["Millenium Falcon", "Falcon"],
+		"aliases" : ["Millenium Falcon", "Falcon", "Rey", "Finn"],
 		"crew" : ["Rey", "Finn"],
 		"url" : "https://swgoh.gg/units/ships/millennium-falcon-ep-vii/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_mfalcon_ep7.png",
@@ -154,7 +154,7 @@
 	},
 	{
 		"name" : "Phantom II",
-		"aliases" : ["Phantom"],
+		"aliases" : ["Phantom", "Sabine", "Chopper", "Ezra"],
 		"crew" : ["Sabine Wren", "Chopper", "Ezra Bridger"],
 		"url" : "https://swgoh.gg/units/ships/phantom-ii/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_phantom2.png",
@@ -199,7 +199,7 @@
 	},
 	{
 		"name" : "Scimitar",
-		"aliases" : [""],
+		"aliases" : ["Maul"],
 		"crew" : ["Darth Maul"],
 		"url" : "https://swgoh.gg/units/ships/scimitar/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_sithinfiltrator.png",
@@ -208,7 +208,7 @@
 	},
 	{
 		"name" : "Slave I",
-		"aliases" : ["Slave", "Slave I"],
+		"aliases" : ["Slave", "Slave I", "Boba", "Boba Fett"],
 		"crew" : ["Boba Fett"],
 		"url" : "https://swgoh.gg/units/ships/slave-i/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_slave1.png",
@@ -226,7 +226,7 @@
 	},
 	{
 		"name" : "Tie Advanced",
-		"aliases" : ["Tie Advanced", "x1"],
+		"aliases" : ["Tie Advanced", "x1", "Darth Vader", "Vader"],
 		"crew" : ["Darth Vader"],
 		"url" : "https://swgoh.gg/units/ships/tie-advanced-x1/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tieadvanced.png",
@@ -235,7 +235,7 @@
 	},
 	{
 		"name" : "Tie Reaper",
-		"aliases" : ["Tie Reaper", "Reaper"],
+		"aliases" : ["Tie Reaper", "Reaper", "Death Trooper", "Shore Trooper"],
 		"crew" : ["Death Trooper", "Shore Trooper"],
 		"url" : "https://swgoh.gg/units/ships/tie-reaper/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiereaper.png",
@@ -244,7 +244,7 @@
 	},
 	{
 		"name" : "Umbaran Starfighter",
-		"aliases" : ["Umbaran"],
+		"aliases" : ["Umbaran", "Fives"],
 		"crew" : ["CT-5555 Fives"],
 		"url" : "https://swgoh.gg/units/ships/umbaran-starfighter/",
 		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_umbaran_star_fighter.png",
