@@ -5,17 +5,18 @@ exports.run = (client, message, args) => {
 
     // The current possible gear levels
     const gearLevels = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11',
-                        'gear1', 'gear2', 'gear3', 'gear4', 'gear5', 'gear6', 'gear7', 'gear8',
-                        'gear9', 'gear10', 'gear11']
+        'gear1', 'gear2', 'gear3', 'gear4', 'gear5', 'gear6', 'gear7', 'gear8',
+        'gear9', 'gear10', 'gear11'
+    ];
 
     // Figure out where the gear level is in the command, and grab it
     let gearLvl = '';
-    if(gearLevels.includes(args[0])) {
-        gearLvl = 'Gear ' + args[0].replace(/\D/g,'');
-        args.splice(0,1)
-    } else if(gearLevels.includes(args[args.length-1])) {
-        gearLvl = 'Gear ' + args[args.length-1].replace(/\D/g,'');
-        args.splice(-1,1)
+    if (gearLevels.includes(args[0])) {
+        gearLvl = 'Gear ' + args[0].replace(/\D/g, '');
+        args.splice(0, 1);
+    } else if (gearLevels.includes(args[args.length - 1])) {
+        gearLvl = 'Gear ' + args[args.length - 1].replace(/\D/g, '');
+        args.splice(-1, 1);
     }
 
     // Remove any junk from the name
@@ -41,13 +42,13 @@ exports.run = (client, message, args) => {
         message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 
-    if(gearLvl === '') {
+    if (gearLvl === '') {
         chars.forEach(character => {
-            let allGear = {};
+            const allGear = {};
 
-            for(level in character.gear) {
-                thisLvl = character.gear[level];
-                for(var ix = 0; ix < thisLvl.length; ix++) {
+            for (var level in character.gear) {
+                const thisLvl = character.gear[level];
+                for (var ix = 0; ix < thisLvl.length; ix++) {
                     if (!allGear[thisLvl[ix]]) { // If it's not been checked yet
                         allGear[thisLvl[ix]] = 1;
                     } else { // It's already in there
@@ -57,10 +58,13 @@ exports.run = (client, message, args) => {
             }
 
             let gearString = '';
-            for(var key in allGear) {
-                gearString += `* ${allGear[key]}x ${key}\n`
+            for (var key in allGear) {
+                gearString += `* ${allGear[key]}x ${key}\n`;
             }
-            message.channel.send(` * ${character.name} * \n### All Gear Needed ### \n${gearString}`, { code: 'md', split: true });
+            message.channel.send(` * ${character.name} * \n### All Gear Needed ### \n${gearString}`, {
+                code: 'md',
+                split: true
+            });
         });
     } else {
         // Format and send the requested data back
@@ -81,7 +85,9 @@ exports.run = (client, message, args) => {
                     }
                 });
             } else { // Embeds are disabled
-                message.channel.send(` * ${character.name} * \n### ${gearLvl} ### \n* ${character.gear[gearLvl].join('\n* ')}`, { code: 'md' });
+                message.channel.send(` * ${character.name} * \n### ${gearLvl} ### \n* ${character.gear[gearLvl].join('\n* ')}`, {
+                    code: 'md'
+                });
             }
         });
     }

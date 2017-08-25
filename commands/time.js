@@ -4,9 +4,9 @@ exports.run = (client, message) => {
     const guildConf = message.guildSettings;
 
     if (!guildConf['timezone']) {
-        message.channel.send(`Current time is: ${moment().format('DD/MM/YYYY [at] H:mm:ss')} UTC time`);
+        return message.channel.send(`Current time is: ${moment().format('DD/MM/YYYY [at] H:mm:ss')} UTC time`);
     } else {
-        message.channel.send(`Current time is: ${moment.tz(guildConf['timezone']).format('DD/MM/YYYY [at] H:mm:ss')} in ${guildConf['timezone']} time`); 
+        return message.channel.send(`Current time is: ${moment.tz(guildConf['timezone']).format('DD/MM/YYYY [at] H:mm:ss')} in ${guildConf['timezone']} time`); 
     }
 };
 

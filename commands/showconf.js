@@ -10,7 +10,7 @@ exports.run = (client, message) => {
             array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
         }
         var configKeys = array.join('\n');
-        message.channel.send(`The following is this server's current configuration: \`\`\`${configKeys}\`\`\``);
+        return message.channel.send(`The following is this server's current configuration: \`\`\`${configKeys}\`\`\``);
     } else {
         message.guildSettings.set(message.guild.id, client.config.defaultSettings);
 
@@ -18,7 +18,7 @@ exports.run = (client, message) => {
             array.push("* " + key + ": " + guildConf[key]);
         }
         configKeys = array.join('\n');
-        message.channel.send(`Here's your server's new configuration: \`\`\`${configKeys}\`\`\``);
+        return message.channel.send(`Here's your server's new configuration: \`\`\`${configKeys}\`\`\``);
     }
 };
 

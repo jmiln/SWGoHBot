@@ -38,7 +38,7 @@ exports.run = async (client, message, args) => {
             return await message.channel.send(`Only \`${validAnswers.join('`, `')}\` are valid, please use one of those.`).then(msg => msg.delete(4000)).catch(console.error);
         }
     } else if (args[0] === 'add') { // To add a new value into the guildSettings
-        if (!args[1]) return message.channel.send(`Needs two arguments here. Usage: \`editconfs add [newKey]\``).then(msg => msg.delete(4000)).catch(console.error);;
+        if (!args[1]) return message.channel.send(`Needs two arguments here. Usage: \`editconfs add [newKey]\``).then(msg => msg.delete(4000)).catch(console.error);
 
         const fillers = ["-emptyString", "-emptyArray", "-emptyObject"];
 
@@ -112,7 +112,7 @@ exports.run = async (client, message, args) => {
         const newType = args[2];
 
         if (fillers.includes(newType)) {
-            if(newType === '-array') {
+            if (newType === '-array') {
                 const  guildList = client.guilds.keyArray();
                 
                 guildList.forEach(g => {

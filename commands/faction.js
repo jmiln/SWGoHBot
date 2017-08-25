@@ -48,12 +48,10 @@ exports.run = (client, message, args) => {
             });
         } else { // Embeds are disabled
             charString = '* ' + factionChars.join('\n* ');
-            message.channel.send(`# Characters in the ${searchName.toProperCase()} faction # \n${charString}`, {
-                code: 'md'
-            });
+            return message.channel.send(`# Characters in the ${searchName.toProperCase()} faction # \n${charString}`, { code: 'md' });
         }
     } else {
-        message.channel.send(`Invalid faction, usage is \`${config.prefix}faction [faction]\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(`Invalid faction, usage is \`${config.prefix}faction [faction]\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 };
 
