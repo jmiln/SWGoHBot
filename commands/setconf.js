@@ -142,7 +142,7 @@ exports.help = {
 adminRole      :: The role that you want to be able to modify bot settings or set up events.
                   'add' Add a role to the list
                   'remove' Remove a role from the list
-enableWlecome  :: Toggles the welcome message on/ off.
+enableWelcome  :: Toggles the welcome message on/ off.
 welcomeMessage :: The welcome message to send it you have it enabled.
                   '{{user}}' gets replaced with the new user's name.
                   '{{userMention}}' makes it mention the new user there.

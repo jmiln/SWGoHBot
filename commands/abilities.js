@@ -42,7 +42,7 @@ exports.run = (client, message, args) => {
                 }
 
                 var cooldownString = "";
-                if(abilities.abilityCooldown > 0) {
+                if (abilities.abilityCooldown > 0) {
                     cooldownString = `**Ability Cooldown:** ${abilities.abilityCooldown}\n`;
                 }
 

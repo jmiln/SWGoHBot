@@ -25,7 +25,7 @@ module.exports = (client) => {
 
         // Also giving them the permissions if they have the manage server role, 
         // since they can change anything else in the server, so no reason not to
-        if(message.member.hasPermission(['ADMINISTRATOR', 'MANAGE_GUILD'])) return permlvl = 3;
+        if (message.member.hasPermission(['ADMINISTRATOR', 'MANAGE_GUILD'])) return permlvl = 3;
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
@@ -47,25 +47,19 @@ module.exports = (client) => {
     };
 
     // Putting this here so I can use it across all the spots I need it
+    // It finds any character that matches the search, and returns them in an array
     client.findChar = (searchName, charList) => {
-        let found = false;
         const chars = [];
-        
+        searchName = searchName.toLowerCase().replace(/[^\w\s]/gi, '');
         for (var ix = 0; ix < charList.length; ix++) {
             var character = charList[ix];
             for (var jx = 0; jx < character.aliases.length; jx++) {
                 if (searchName.toLowerCase() === character.aliases[jx].toLowerCase()) {
-                    found = true;
                     chars.push(character);
                 }
             }
         }
-        if (!found) {
-            return [];
-        } else {
-            return chars;
-        }
-        
+        return chars;
     };
 
     /*
@@ -177,7 +171,7 @@ module.exports = (client) => {
 
         // If it detects that, make it reboot... Really not the best 
         // option, but at least it'll come back up for a while this way
-        if(errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
+        if (errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
             client.destroy();
             process.exit();
         }

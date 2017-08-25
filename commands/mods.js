@@ -3,7 +3,7 @@ exports.run = (client, message, args) => {
     const charList = client.characters;
 
     // Remove any junk from the name
-    const searchName = String(args.join(' ')).toLowerCase().replace(/[^\w\s]/gi, '');
+    const searchName = args.join(' ');
 
     // Check if it should send as an embed or a code block
     const guildConf = message.guildSettings;
@@ -16,13 +16,13 @@ exports.run = (client, message, args) => {
 
     // Make sure they gave a character to find
     if (searchName === "") {
-        message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Find any characters that match that
     const chars = client.findChar(searchName, charList);
     if (chars.length <= 0) {
-        message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);        
+        return message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);        
     }
 
     chars.forEach(character => {
@@ -60,9 +60,7 @@ exports.run = (client, message, args) => {
                 let modPrimaryString = `* Square:   ${mods.square}  \n* Arrow:    ${mods.arrow} \n* Diamond:  ${mods.diamond}\n`;
                 modPrimaryString += `* Triangle: ${mods.triangle}\n* Circle:   ${mods.circle}\n* Cross:    ${mods.cross}`;
 
-                message.channel.send(` * ${character.name} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`, {
-                    code: 'md'
-                });
+                return message.channel.send(` * ${character.name} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`, { code: 'md' });
             }
         } 
     });

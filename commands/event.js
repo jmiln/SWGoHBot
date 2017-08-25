@@ -96,28 +96,27 @@ exports.run = (client, message, args, level) => {
                 }
                 var eventKeys = array.join('\n\n');
                 if (array.length === 0) {
-                    message.channel.send(`You don't currently have any events scheduled.`);
+                    return message.channel.send(`You don't currently have any events scheduled.`);
                 } else {
-                    message.channel.send(`Here's your server's Event Schedule: \n\n${eventKeys}`);
+                    return message.channel.send(`Here's your server's Event Schedule: \n\n${eventKeys}`);
                 }
             }
             break;
         } case "delete": {
-            if (!args[1]) return message.channel.send(`You must give an event name to delete.`).then(msg => msg.delete(10000)).catch(console.error);;
+            if (!args[1]) return message.channel.send(`You must give an event name to delete.`).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
 
             // Check if that name/ event already exists
             if (!events.hasOwnProperty(eventName)) {
-                return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);;
+                return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
             } else {
                 delete events[eventName];
                 guildEvents.set(message.guild.id, events);
-                message.channel.send(`Deleted event: ${eventName}`);
+                return message.channel.send(`Deleted event: ${eventName}`);
             }
-            break;
         }
         case "help": {
-            message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
+            return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
         }
     }
 };
