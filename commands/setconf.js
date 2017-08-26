@@ -105,6 +105,7 @@ exports.run = (client, message, args, level) => {
                 if (value !== '') {
                     const newChannel = message.guild.channels.find('name', value);
                     if (!newChannel) return message.channel.send(`Sorry, but I cannot find the channel ${value}. Please try again.`).then(msg => msg.delete(4000)).catch(console.error);
+                    if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) return message.channel.send(`Sorry, but I don't have permission to send message there. Please either change the perms, or choose another channel.`);
                     guildConf["announceChan"] = value;
                 } else {
                     guildConf["announceChan"] = "";

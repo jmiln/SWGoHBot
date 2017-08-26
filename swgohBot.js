@@ -71,8 +71,8 @@ function checkDates() {
             for (var key in events) {
                 var event = events[key];
                 
-                var eventDate = moment(event.eventDay).format('D/M/YYYY');
-                var nowDate = moment().tz(guildConf['timezone']).format('D/M/YYYY');
+                var eventDate = moment(event.eventDay).format('YYYY-MM-DD');
+                var nowDate = moment().tz(guildConf['timezone']).format('YYYY-MM-DD');
 
                 var eventTime = moment(event.eventTime, 'H:mm').format('H:mm');
                 var nowTime = moment().tz(guildConf['timezone']).format("H:mm");
@@ -82,22 +82,42 @@ function checkDates() {
                         var announceMessage = `Event alert for \`${key}\`.\n**Event Message:** ${event.eventMessage}`;
                         if (guildConf["announceChan"] != "") {
                             const thisGuild = client.guilds.get(g);
-                            var channel = thisGuild.channels.find('name', guildConf["announceChan"]);
-                            if (channel && channel.permissionsFor(thisGuild.me).has("SEND_MESSAGES")) {
-                                // client.log('HERE', `Event on this channel: ${channel}`);
+                            var channel = '';
+                            if (event['eventChan'] && event.eventChan !== '') {  // If they've set a channel, try using it
+                                channel = thisGuild.channels.find('name', event.eventChan);
+                            } else { // Else, use the default one from their settings
+                                channel = thisGuild.channels.find('name', guildConf["announceChan"]);
+                            }
+                            if (channel && channel.permissionsFor(thisGuild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
                                 channel.send(announceMessage);
                             }
                         }
-                        delete events[key];
+                        if (event.repeat['repeatDay'] !== 0 || event.repeat['repeatMin'] !== 0 || event.repeat['repeatMin'] !== 0) { // At least one of em is more than 0
+                            const newEvent = {
+                                "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeat['repeatDay'], 'd').format('YYYY-MM-DD'),
+                                "eventTime": moment(event.eventTime, 'H:mm').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').format('H:mm'),
+                                "eventMessage": event.eventMessage,
+                                "eventChan": event.eventChan,
+                                "repeat": {
+                                    "repeatDay": event.repeat['repeatDay'],
+                                    "repeatHour": event.repeat['repeatHour'],
+                                    "repeatMin": event.repeat['repeatMin']
+                                }
+                            };
+
+                            // Gotta delete it before we can add it, so there won't be conflicts
+                            delete events[key];
+                            events[key] = newEvent;
+                        } else {  // Go ahead and wipe it out
+                            delete events[key];
+                        }
                         guildEvents.set(g, events);
                     }
                 }
             }
         }
     });
-
 }
-
 
 // Run it once on start up
 checkDates();
