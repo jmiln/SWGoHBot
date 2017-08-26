@@ -6595,6 +6595,19 @@
             "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
+        },
+        "Arena (Stun)": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Defense x2"
+            ],
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency"
         }
     },
     "gear": {
