@@ -7,10 +7,10 @@ exports.run = (client, message, args) => {
 
     // Make sure the args are all there
     if (typeof args[0] === 'undefined' || args[0] === null || args[0] === "") {
-        return message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(`Invalid raid, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(4000)).catch(console.error);
     }
     if (typeof args[1] === 'undefined' || args[1] === null || args[1] === "") {
-        return message.channel.send(`Invalid phase, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(`Invalid phase, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Remove anything that's not a letter for the raid name
@@ -34,7 +34,7 @@ exports.run = (client, message, args) => {
         } else if (phaseName === "p4") {
             currentPhase = "Phase 4";
         } else {
-            return message.channel.send(`Invalid phase, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(`Invalid phase, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(4000)).catch(console.error);
         }
     }
 
@@ -111,10 +111,10 @@ exports.run = (client, message, args) => {
         }
 
         if (found === false) {
-            return message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(`Invalid raid, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(4000)).catch(console.error);
         }
     } else {
-        return message.channel.send(`Invalid raid, usage is \`${config.prefix} raidteams [raidName] [phase]\`\n**Example:** \`${config.prefix} raidteams pit p1\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(`Invalid raid, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 
 };
@@ -130,6 +130,6 @@ exports.help = {
     name: 'raidteams',
     category: 'Star Wars',
     description: 'Shows some teams that work well for each raid.',
-    usage: 'raidteams [aat|pit] [p1|p2|p3|p4|solo]',
+    usage: 'raidteams <aat|pit> <p1|p2|p3|p4|solo>',
     example: 'raidteams aat p1'
 };

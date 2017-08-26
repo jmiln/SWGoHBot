@@ -104,5 +104,5 @@ exports.help = {
     name: 'charactergear',
     category: 'Star Wars',
     description: 'Shows the gear requirements for the specified character/ lvl.',
-    usage: 'charactergear [character] [gearLvl]'
+    usage: 'charactergear <character> [gearLvl]'
 };

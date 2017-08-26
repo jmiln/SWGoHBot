@@ -138,7 +138,7 @@ exports.help = {
     name: 'setconf',
     category: 'Admin',
     description: 'Used to set the bot\'s config settings.',
-    usage: 'setconf [help|key] [value]',
+    usage: 'setconf <help|key> [value]',
     extended: `\`\`\`asciidoc
 adminRole      :: The role that you want to be able to modify bot settings or set up events.
                   'add' Add a role to the list

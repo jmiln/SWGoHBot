@@ -179,6 +179,8 @@ exports.help = {
     usage: 'event <create|view|delete> <eventName> <eventDay> <eventTime> <eventMessage> [--repeat 00d00h00m] [--channel channelName]',
     extended: `\`\`\`md
 create :: Create a new event listing.
+    --repeat  :: Lets you set a duration. It will repeat after that time has passed.
+    --channel :: Lets you set a specific channel for the event to announce on.
 view   :: View your current event listings.
 delete :: Delete an event.
 help   :: Shows this message.\`\`\``,

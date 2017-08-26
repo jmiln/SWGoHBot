@@ -19,13 +19,13 @@ exports.run = (client, message, args) => {
 
     // Make sure they gave a character to find
     if (searchName === "") {
-        return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Find any characters that match that
     const chars = client.findChar(searchName, charList);
     if (chars.length <= 0) {
-        return message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.name} [character]\``).then(msg => msg.delete(4000)).catch(console.error);        
+        return message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);        
     }
 
     chars.forEach(character => {
@@ -84,5 +84,5 @@ exports.help = {
     name: 'abilities',
     category: 'Star Wars',
     description: 'Shows the abilities for the specified character.',
-    usage: 'abilities [character]'
+    usage: 'abilities <character>'
 };

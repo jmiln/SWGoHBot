@@ -36,7 +36,7 @@ exports.run = (client, message, args) => {
         case 'saturday':
             return message.channel.send(dayString('Saturday'), {code:'asciidoc'});
         default:
-            return message.channel.send(`Invalid date, usage is \`${config.prefix}activities [dayOfWeek]\``).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(`Invalid date, usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 };
 
@@ -51,7 +51,7 @@ exports.help = {
     name: 'challenges',
     category: 'Star Wars',
     description: 'Shows the daily guild challenges.',
-    usage: 'challenges [day]'
+    usage: 'challenges <dayOfWeek>'
 };
 
 function dayString(day) {

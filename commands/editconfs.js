@@ -147,7 +147,7 @@ exports.help = {
     name: 'editconfs',
     category: 'Dev',
     description: 'Edit the configs for all guilds the bot is in.',
-    usage: 'editconfs [replace|remove|add|replaceType] [var1] [var2]',
+    usage: 'editconfs <replace|remove|add|replaceType> [var1] [var2]',
     extended: `\`\`\`asciidoc
 replace        :: Replaces what the key is called (Can be used to reorder the list).
 remove         :: Removes a key from the configs
