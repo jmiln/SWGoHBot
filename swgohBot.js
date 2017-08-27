@@ -92,7 +92,7 @@ function checkDates() {
                                 channel.send(announceMessage);
                             }
                         }
-                        if (event.repeat['repeatDay'] !== 0 || event.repeat['repeatMin'] !== 0 || event.repeat['repeatMin'] !== 0) { // At least one of em is more than 0
+                        if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatMin'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                             const newEvent = {
                                 "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeat['repeatDay'], 'd').format('YYYY-MM-DD'),
                                 "eventTime": moment(event.eventTime, 'H:mm').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').format('H:mm'),
