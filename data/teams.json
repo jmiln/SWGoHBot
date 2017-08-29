@@ -5,7 +5,7 @@
         "teams": {
             "Zylo": {
                 "phase": ["Phase 1"],
-                "characters": ["Kylo (Zetad)"]
+                "characters": ["Kylo (Z)"]
             },
             "Tenacity Jedi": {
                 "phase": ["Phase 1"],
@@ -17,7 +17,7 @@
             },
             "Qway Gon Fishin'": {
                 "phase": ["Phase 1"],
-                "characters": ["Qui-Gon Jinn (Zeta)", "Ezra Bridger", "Barriss Offee", "Jedi Knight Anakin", "Ima-Gun Di"]
+                "characters": ["Qui-Gon Jinn (Z)", "Ezra Bridger", "Barriss Offee", "Jedi Knight Anakin", "Ima-Gun Di"]
             },
             "Kenobi Sink": {
                 "phase": ["Phase 1"],
@@ -29,11 +29,15 @@
             },
             "Rogue Teebo": {
                 "phase": ["Phase 1"],
-                "characters": ["Teebo", "Jyn Erso", "Cassian Andor", "TIE Fighter Pilot", "Barriss Offee(Zetad)"]
+                "characters": ["Teebo", "Jyn Erso", "Cassian Andor", "TIE Fighter Pilot", "Barriss Offee(Z)"]
             },
             "Nihilus": {
                 "phase": ["Phase 1"],
-                "characters": ["Darth Nihlius", "Barriss Offee(Zetad)", "Darth Maul", "Savage Opress", "Count Dooku"]
+                "characters": ["Darth Nihlius", "Barriss Offee(Z)", "Darth Maul", "Savage Opress", "Count Dooku"]
+            },
+			"No Retreat": {
+                "phase": ["Phase 1"],
+                "characters": ["Teebo", "Commander Luke Skywalker", "First Order Officer", "Old Ben/Bodhi Rook", "Barriss Offee/Ewok Elder"]
             },
             "Droids": {
                 "phase": ["Phase 2"],
@@ -41,47 +45,51 @@
             },
             "Standard Clones": {
                 "phase": ["Phase 2"],
-                "characters": ["CC-2224 \"Cody\"(Zetad)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "CT-7567 \"Rex\"", "Clone Sergeant - Phase I"]
+                "characters": ["CC-2224 \"Cody\"(Z)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "CT-7567 \"Rex\"", "Clone Sergeant - Phase I"]
             },
             "Dathcha Zody": {
                 "phase": ["Phase 2"],
-                "characters": ["CC-2224 \"Cody\"(Zetad)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Dathcha"]
+                "characters": ["CC-2224 \"Cody\"(Z)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Dathcha"]
             },
             "Elder Zody": {
                 "phase": ["Phase 2"],
-                "characters": ["CC-2224 \"Cody\"(Zetad)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Ewok Elder"]
+                "characters": ["CC-2224 \"Cody\"(Z)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Ewok Elder"]
             },
             "Imperial Troopers": {
                 "phase": ["Phase 2"],
-                "characters": ["General Veers", "Stormtrooper", "Magmatrooper", "Death Trooper", "Snowtrooper"]
+                "characters": ["General Veers(Z)", "Stormtrooper", "Magmatrooper", "Death Trooper", "Snowtrooper"]
             },
             "SRP Zody": {
                 "phase": ["Phase 2"],
-                "characters": ["CC-2224 \"Cody\"(Zetad)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\" (Zetad)", "Clone Sergeant - Phase I", "Scarif Rebel Pathfinder"]
+                "characters": ["CC-2224 \"Cody\"(Z)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\" (Z)", "Clone Sergeant - Phase I", "Scarif Rebel Pathfinder"]
             },
             "Elder Zader": {
                 "phase": ["Phase 2"],
-                "characters": ["Darth Vader (Zetad)", "Darth Sidious (Zetad)", "Tusken Shaman", "Ewok Elder", "Captain Phasma"]
+                "characters": ["Darth Vader (Z)", "Darth Sidious (Z)", "Tusken Shaman", "Ewok Elder", "Captain Phasma"]
             },
             "Viva La Resistance": {
                 "phase": ["Phase 2"],
-                "characters": ["Finn (Zetad)", "Rey", "Poe Dameron", "Resistance Pilot", "Resistance Trooper"]
+                "characters": ["Finn (Z)", "Rey", "Poe Dameron", "Resistance Pilot", "Resistance Trooper"]
             },
             "Fourth Order": {
                 "phase": ["Phase 2"],
-                "characters": ["Captain Phasma (Zetad)", "Kylo Ren (Zetad)", "First Order Officer", "First Order Stormtrooper (Zetad)", "First Order TIE Pilot (Zetad)"]
+                "characters": ["Captain Phasma (Z)", "Kylo Ren (Z)", "First Order Officer", "First Order Stormtrooper (Z)", "First Order TIE Pilot (Z)"]
             },
             "Scavenger Zody": {
                 "phase": ["Phase 2"],
-                "characters": ["CC-2224 \"Cody\"(Zetad)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Jawa Scavenger"]
+                "characters": ["CC-2224 \"Cody\"(Z)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Jawa Scavenger"]
             },
             "Imperial Grand Maneuver": {
                 "phase": ["Phase 3"],
                 "characters": ["Grand Admiral Thrawn", "Jyn Erso, Shoretrooper", "Grand Moff Tarkin", "Director Krennic"]
             },
+			"Chirpathrawn": {
+                "phase": ["Phase 3"],
+                "characters": ["Chief Chirpa", "Emperor Palpatine", "Grand Admiral Thrawn(ZU)", "Sun Fac", "Royal Guard"]
+            },
             "Viva La Poe": {
                 "phase": ["Phase 3"],
-                "characters": ["Finn (Zetad)", "Poe Dameron", "R2-D2", "Resistance Pilot", "Resistance Trooper"]
+                "characters": ["Finn (Z)", "Poe Dameron", "R2-D2", "Resistance Pilot", "Resistance Trooper"]
             },
             "Chirpatine": {
                 "phase": ["Phase 3"],
@@ -107,17 +115,25 @@
                 "phase": ["Phase 3"],
                 "characters": ["Teebo", "Jyn Erso", "Baze Malbus", "Chirrut Îmwe", "TIE Fighter Pilot"]
             },
+			"Murder Bears": {
+                "phase": ["Phase 3"],
+                "characters": ["Chief Chirpa(Z)", "Teebo", "Wicket(Z)", "Logray", "Paploo(Z)"]
+            },
             "Standard Rebels": {
                 "phase": ["Phase 4"],
                 "characters": ["Wedge Antilles", "Biggs Darklighter", "Lando Calrissian", "Admiral Ackbar", "Princess Leia"]
             },
             "Princess Zody": {
                 "phase": ["Phase 4"],
-                "characters": ["CC-2224 \"Cody\"(Zetad)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\" (Zetad)", "Clone Sergeant - Phase I", "Princess Leia"]
+                "characters": ["CC-2224 \"Cody\"(Z)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\" (Z)", "Clone Sergeant - Phase I", "Princess Leia"]
+            },
+			"Rebel": {
+                "phase": ["Phase 4"],
+                "characters": ["Wedge Antilles", "Biggs Darklighter", "R2-D2", "Han Solo(Z)", "Ezra Bridger"]
             },
             "Ima Gun Kill Ya": {
                 "phase": ["Phase 4"],
-                "characters": ["CC-2224 \"Cody\"(Zetad)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Ima-Gun Di"]
+                "characters": ["CC-2224 \"Cody\"(Z)", "CT-21-0408 \"Echo\"", "CT-5555 \"Fives\"", "Clone Sergeant - Phase I", "Ima-Gun Di"]
             },
             "Chaze and Friends": {
                 "phase": ["Phase 4"],
@@ -129,11 +145,15 @@
             },
             "First Order": {
                 "phase": ["Phase 4"],
-                "characters": ["Captain Phasma", "Kylo Ren", "First Order Officer", "First Order Stor.mtrooper", "First Order TIE Pilot"]
+                "characters": ["Captain Phasma", "Kylo Ren", "First Order Officer", "First Order Stormtrooper", "First Order TIE Pilot"]
             },
             "Viva La R2": {
                 "phase": ["Phase 4"],
-                "characters": ["Finn (Zetad)", "Poe Dameron", "R2-D2", "Rey", "Resistance Trooper"]
+                "characters": ["Finn (Z)", "Poe Dameron", "R2-D2", "Rey", "Resistance Trooper"]
+            },
+			"Juggermaul": {
+                "phase": ["Phase 4"],
+                "characters": ["Darth Sidious", "Emperor Palpatine", "Darth Maul", "Sith Assassin", "Chirrut Îmwe/Ewok Elder"]
             }
         }
     },
@@ -143,19 +163,27 @@
         "teams": {
             "Full Auto Rebels": {
                 "phase": ["Solo"],
-                "characters": ["Wedge Antilles", "Biggs Darklighter", "Jyn Erso", "Bistan", "Cassian Andor"]
+                "characters": ["Wedge Antilles", "Biggs Darklighter", "Jyn Erso", "Han Solo/Rex", "Commander Luke Skywalker"]
             },
             "Auto Lightzader": {
                 "phase": ["Solo"],
-                "characters": ["Darth Vader (Zetad)", "Grand Moff Tarkin", "Jyn Erso", "TIE Fighter Pilot", "Darth Sidious"]
+                "characters": ["Darth Vader (Z)", "Grand Moff Tarkin", "Jyn Erso", "TIE Fighter Pilot", "Shoretrooper/Rex"]
             },
             "Imperial Grancor Maneuver": {
                 "phase": ["Solo"],
                 "characters": ["Grand Admiral Thrawn", "Jyn Erso", "Shoretrooper", "Grand Moff Tarkin", "Director Krennic"]
             },
-            "Rebel Power": {
+			"2 Jins and a Teebo": {
                 "phase": ["Solo"],
-                "characters": ["Wedge Antilles", "Jyn Erso", "Baze Malbus", "Bistan", "Scarif Rebel Pathfinder"]
+                "characters": ["Teebo", "Qui Gon Jinn", "Tie Fighter Pilot", "Jyn Erso", "Bistan"]
+            },
+            "Save the Dream": {
+                "phase": ["Solo"],
+                "characters": ["Wedge Antilles", "Jyn Erso", "Baze Malbus", "Bistan", "Biggs Darklighter"]
+            },
+			"Old School": {
+                "phase": ["Solo"],
+                "characters": ["Teebo", "Qui Gon Jinn", "Tie Fighter Pilot/Dengar", "Fives/Captain Phasma", "Rex/Ewok Elder"]
             },
             "Rebel Power Alt": {
                 "phase": ["Solo"],
