@@ -27,7 +27,9 @@ exports.run = (client, message, args, level) => {
     let eventDay = "";
     let eventTime = "";
     let eventMessage = "";
-    let repeatDay, repeatHour, repeatMin = 0;
+    let repeatDay = 0; 
+    let repeatHour = 0;
+    let repeatMin = 0;
 
     if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`).then(msg => msg.delete(10000)).catch(console.error);
     action = args[0].toLowerCase();
