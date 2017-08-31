@@ -845,7 +845,7 @@
 },
 {
     "name": "Captain Han Solo",
-    "aliases": ["Captain Han Solo", "Han Solo", "Han", "Solo"],
+    "aliases": ["Captain Han Solo", "Han Solo", "Han", "Solo", "CHS"],
     "url": "https://swgoh.gg/characters/captain-han-solo/",
     "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hoth_han.png",
     "side": "dark",
@@ -3935,7 +3935,7 @@
 },
 {
     "name": "Hermit Yoda",
-    "aliases": ["Hermit Yoda", "Hermit", "Yoda"],
+    "aliases": ["Hermit Yoda", "Hermit", "Yoda", "HY"],
     "url": "https://swgoh.gg/characters/hermit-yoda/",
     "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_yodahermit.png",
     "side": "light",
@@ -4065,7 +4065,7 @@
 },
 {
     "name": "Hoth Rebel Scout",
-    "aliases": ["Hoth Rebel Scout"],
+    "aliases": ["Hoth Rebel Scout", "Hoth Scout", "Hoth", "HRS"],
     "url": "https://swgoh.gg/characters/hoth-rebel-scout/",
     "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelhothscout.png",
     "side": "light",
@@ -4121,7 +4121,7 @@
 },
 {
     "name": "Hoth Rebel Soldier",
-    "aliases": ["Hoth Rebel Soldier"],
+    "aliases": ["Hoth Rebel Soldier", "Hoth Soldier", "Hoth", "HRS"],
     "url": "https://swgoh.gg/characters/hoth-rebel-soldier/",
     "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelhoth.png",
     "side": "light",
