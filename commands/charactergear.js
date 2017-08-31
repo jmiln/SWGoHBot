@@ -4,9 +4,9 @@ exports.run = (client, message, args) => {
 
 
     // The current possible gear levels
-    const gearLevels = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11',
+    const gearLevels = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11', 'g12',
         'gear1', 'gear2', 'gear3', 'gear4', 'gear5', 'gear6', 'gear7', 'gear8',
-        'gear9', 'gear10', 'gear11'
+        'gear9', 'gear10', 'gear11', 'gear12'
     ];
 
     // Figure out where the gear level is in the command, and grab it

@@ -844,6 +844,68 @@
     }
 },
 {
+    "name": "Captain Han Solo",
+    "aliases": ["Captain Han Solo", "Han Solo", "Han", "Solo"],
+    "url": "https://swgoh.gg/characters/captain-han-solo/",
+    "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hoth_han.png",
+    "side": "dark",
+    "factions": ["support", "scoundrel", "rebel"],
+    "mods": {
+        "Arena": {
+            "sets": [
+                "N/A",
+                "N/A",
+                "N/A"
+            ],
+            "square": "N/A",
+            "arrow": "N/A",
+            "diamond": "N/A",
+            "triangle": "N/A",
+            "circle": "N/A",
+            "cross": "N/A"
+        }
+    },
+    "gear": {
+        "Gear 1": [],
+        "Gear 2": [],
+        "Gear 3": [],
+        "Gear 4": [],
+        "Gear 5": [],
+        "Gear 6": [],
+        "Gear 7": [],
+        "Gear 8": [],
+        "Gear 9": [],
+        "Gear 10":[],
+        "Gear 11":[]
+    },
+    "abilities": {
+        "Disabling Shot": {
+            "type": "Basic",
+            "abilityCooldown": "0",
+            "abilityDesc": "Deal Physical damage to target enemy and inflict Daze for 2 turns. Empire targets can't Resist or Evade and take double damage from this attack. If Han has full health, gain 30% Turn Meter.",
+            "tier": "omega"
+        },
+        "Hunker Down": {
+            "type": "Special",
+            "abilityCooldown": "10",
+            "abilityDesc": "Dispel all debuffs on Han and target other ally, and they both recover Health equal to 40% of Han's Max Health and gain 25% Turn Meter. Then, if the target ally has full Health, they also recover 20% Protection. This ability's cooldown is reduced by 1 whenever an ally suffers a debuff.",
+            "tier": "omega"
+        },
+        "Search and Rescue": {
+            "type": "Special",
+            "abilityCooldown": "6",
+            "abilityDesc": "Revive a random defeated ally at 1% Health and 0% Turn Meter. If that ally is a Rebel, they recover 50% Health and gain 50% Turn Meter.",
+            "tier": "omega"
+        },
+        "Nick of Time": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "Captain Han Solo has +15% Critical Chance and +30% Critical Damage. In addition, at the end of his turn, Han recovers Health equal to 10% of his Max Health. If Han already has full Health, the least healthy ally is healed instead. Whenever Han uses his Basic attack he gains +10% Max Health (stacking) for 3 turns.",
+            "tier": "zeta"
+        }
+    }
+},
+{
     "name": "Captain Phasma",
     "aliases": ["Captain Phasma", "Phasma"],
     "url": "https://swgoh.gg/characters/captain-phasma/",
@@ -3872,6 +3934,74 @@
     }
 },
 {
+    "name": "Hermit Yoda",
+    "aliases": ["Hermit Yoda", "Hermit", "Yoda"],
+    "url": "https://swgoh.gg/characters/hermit-yoda/",
+    "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_yodahermit.png",
+    "side": "light",
+    "factions": ["support", "jedi"],
+    "mods": {
+        "Arena": {
+            "sets": [
+                "N/A",
+                "N/A",
+                "N/A"
+            ],
+            "square": "N/A",
+            "arrow": "N/A",
+            "diamond": "N/A",
+            "triangle": "N/A",
+            "circle": "N/A",
+            "cross": "N/A"
+        }
+    },
+    "gear": {
+        "Gear 1": [],
+        "Gear 2": [],
+        "Gear 3": [],
+        "Gear 4": [],
+        "Gear 5": [],
+        "Gear 6": [],
+        "Gear 7": [],
+        "Gear 8": [],
+        "Gear 9": [],
+        "Gear 10":[],
+        "Gear 11":[]
+    },
+    "abilities": {
+        "Master's Protection": {
+            "type": "Basic",
+            "abilityCooldown": "0",
+            "abilityDesc": "All other allies recover 10% Health and 5% Protection. All other Jedi allies gain 5% Turn Meter.",
+            "tier": "omega"
+        },
+        "Master's Training": {
+            "type": "Special",
+            "abilityCooldown": "3",
+            "abilityDesc": "Yoda gains Stealth for 2 turns. Dispel all debuffs on target other ally and grant them the Master's Training unique buff until the end of the battle. Then, call all allies with Master's Training to Assist. Master's Training: +25% (doubled on Jedi) Accuracy, Defense, Offense, Potency, and Tenacity. Can't be Dispelled or Prevented.",
+            "tier": "omega"
+        },
+        "Strength Flows From the Force": {
+            "type": "Special",
+            "abilityCooldown": "4",
+            "abilityDesc": "All allies have their current Health percentages equalized. (Health equalizing effects ignore Healing Immunity.) Then, all allies recover 20% Health and Protection and Jedi allies gain Foresight for 2 turns.",
+            "tier": "zeta"
+        },
+        "In Exile": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "Yoda gains Stealth for 2 turns at the start of each encounter and has +100% Evasion while Stealthed. When there are no active allies, Yoda escapes from the battle.",
+            "tier": "omega"
+        },
+        "Do or Do Not": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "Whenever an ally with Master's Training is defeated, Yoda gains 100% Turn Meter and resets all of his cooldowns.",
+            "tier": "zeta"
+        }
+    }
+},
+{
     "name": "HK-47",
     "aliases": ["HK47", "HK 47", "HK"],
     "url": "https://swgoh.gg/characters/hk-47/",
@@ -6497,6 +6627,68 @@
             "abilityCooldown": "0",
             "abilityDesc": "Resistance Trooper has +10% Potency and gains 55% Turn Meter whenever an enemy becomes Exposed.",
             "tier": "abilityMatMK3"
+        }
+    }
+},
+{
+    "name": "Rebel Officer Leia Organa",
+    "aliases": ["Leia", "Organa", "ROLO", "Rebel Officer Leia Organa", "Leia Organa"],
+    "url": "https://swgoh.gg/characters/rebel-officer-leia-organa/",
+    "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_leiahoth.png",
+    "side": "light",
+    "factions": ["attacker", "rebel"],
+    "mods": {
+        "Arena": {
+            "sets": [
+                "N/A",
+                "N/A",
+                "N/A"
+            ],
+            "square": "N/A",
+            "arrow": "N/A",
+            "diamond": "N/A",
+            "triangle": "N/A",
+            "circle": "N/A",
+            "cross": "N/A"
+        }
+    },
+    "gear": {
+        "Gear 1": [],
+        "Gear 2": [],
+        "Gear 3": [],
+        "Gear 4": [],
+        "Gear 5": [],
+        "Gear 6": [],
+        "Gear 7": [],
+        "Gear 8": [],
+        "Gear 9": [],
+        "Gear 10":[],
+        "Gear 11":[]
+    },
+    "abilities": {
+        "Hold Off": {
+            "type": "Basic",
+            "abilityCooldown": "0",
+            "abilityDesc": "Deal Physical damage to target enemy and inflict Buff Immunity for 2 turns. Leia gains 10% Turn Meter, an additional 10% Turn Meter if the target had full Health, and an additional 10% Turn Meter if the target is Empire.",
+            "tier": "omega"
+        },
+        "Rebel Barrage": {
+            "type": "Special",
+            "abilityCooldown": "14",
+            "abilityDesc": "Deal Physical damage 10 times to random enemy targets. Enemies struck more than once suffer Ability Block for 1 turn. This ability's cooldown is reduced by 1 whenever Leia scores a Critical Hit or suffers a debuff. These attacks can't be Countered.",
+            "tier": "omega"
+        },
+        "Battlefront Command": {
+            "type": "Leader",
+            "abilityCooldown": "0",
+            "abilityDesc": "Rebel allies have +20% Tenacity and 20% Critical Chance. Whenever a Rebel ally takes damage from an Empire enemy they have a 50% chance to gain Foresight for 2 turns. The first time each turn a Rebel ally Resists a detrimental effect or suffers a debuff, they gain 30% Turn Meter.",
+            "tier": "omega"
+        },
+        "Dauntless": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "Leia has +10% Offense and +40% Tenacity. The first time each turn Leia Resists a detrimental effect or suffers a debuff she gains 15% Turn Meter and gains 35% Offense (stacking) until the end of her next turn.",
+            "tier": "zeta"
         }
     }
 },

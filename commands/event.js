@@ -1,6 +1,6 @@
 var moment = require('moment-timezone');
 var minimist = require('minimist');
-// var util = require('util');
+var util = require('util');
 
 exports.run = (client, message, args, level) => {
     const guildEvents = client.guildEvents;
@@ -116,6 +116,8 @@ exports.run = (client, message, args, level) => {
                 }
             };
 
+            // client.log('EVENT-CREATE', `Creating event from message: ${message.content} \n\n${util.inspect(newEvent)}`)
+
             events[eventName] = newEvent;
 
             var announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
@@ -129,15 +131,16 @@ exports.run = (client, message, args, level) => {
             const array = [];
             if (events) {
                 for (var key in events) {
-                    var eventDate = moment.tz(`${events[key].eventDay} ${events[key].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
+                    let event = events[key];
+                    var eventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
                     var eventString = `**${key}:**\nEvent Time: ${eventDate}\n`;
-                    if (events[key].eventChan !== '') {
-                        eventString += `Sending on channel: ${events[key].eventChan}\n`;
+                    if (events.eventChan !== '') {
+                        eventString += `Sending on channel: ${event.eventChan}\n`;
                     }
-                    if (events[key].repeat['repeatDay'] !== 0 || events[key].repeat['repeatMin'] !== 0 || events[key].repeat['repeatMin'] !== 0) { // At least one of em is more than 0
-                        eventString += `Repeating every ${events[key].repeat['repeatDay']} days, ${events[key].repeat['repeatHour']} hours, and  ${events[key].repeat['repeatMin']} minutes\n`;
+                    if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                        eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
                     }
-                    eventString += `Event Message: ${events[key].eventMessage}`;
+                    eventString += `Event Message: ${event.eventMessage}`;
                     array.push(eventString);
                 }
                 var eventKeys = array.join('\n\n');
