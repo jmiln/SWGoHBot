@@ -845,7 +845,7 @@
 },
 {
     "name": "Captain Han Solo",
-    "aliases": ["Captain Han Solo", "Han Solo", "Han", "Solo", "CHS"],
+    "aliases": ["Captain Han Solo", "Captain Han", "Han Solo", "Han", "Solo", "CHS"],
     "url": "https://swgoh.gg/characters/captain-han-solo/",
     "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hoth_han.png",
     "side": "dark",
