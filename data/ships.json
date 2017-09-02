@@ -8,6 +8,23 @@
 		"side": "light",
 		"factions" : ["attacker", "jedi", "galactic republic"]
 	},
+    "abilities": {
+        "Reflexive Shot": {
+            "type": "Basic",
+            "abilityCooldown": "0",
+            "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to gain evasion Up for 2 turns.  Target Lock: Grant another random ally evasion Up for 2 turns.",
+        },
+        "Shut Down": {
+            "type": "Special",
+            "abilityCooldown": "3",
+            "abilityDesc": "Deal Physical damage to target enemy and dispel all buffs on them.  This ability's cooldown is reset whenever an enemy reinforces.",
+        },
+        "Turnabout": {
+            "type": "Crew",
+            "abilityCooldown": "2",
+            "abilityDesc": "If Ashoka Tano's Jedi Starfighter doesn't have any buffs, it gains Offense up for 2 turns and 25% turn meter.  Otherwise, it loses all status effects to recover 80% protection.",            
+        }    
+	},
 	{
 		"name" : "Biggs Darklighter's X-Wing",
 		"aliases" : ["Biggs", "Red3", "XWing", "X Wing", "Biggs X-Wing", "Biggs Darklighters X-Wing"],
