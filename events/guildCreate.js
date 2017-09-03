@@ -7,7 +7,7 @@ module.exports = (client, guild) => {
     client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
 
     // Log that it joined another guild
-    console.log(`I joined ${guild.name}(${guild.id})`);
+    client.log('GuildCreate', `I joined ${guild.name}(${guild.id})`);
 
     // Messages the guild owner to tell the how to set the bot up
     guild.owner.send(`Thank you for adding this SWGoHBot! Before using me, please configure the Admin role by running the following command: 

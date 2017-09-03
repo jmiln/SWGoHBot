@@ -28,7 +28,7 @@ const init = async () => {
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
-    client.log("log", `Loading a total of ${cmdFiles.length} commands.`);
+    client.log("Init", `Loading a total of ${cmdFiles.length} commands.`);
     cmdFiles.forEach(f => {
         try {
             const props = require(`./commands/${f}`);
@@ -38,13 +38,13 @@ const init = async () => {
                 client.aliases.set(alias, props.help.name);
             });
         } catch (e) {
-            client.log(`Unable to load command ${f}: ${e}`);
+            client.log('Init', `Unable to load command ${f}: ${e}`);
         }
     });
 
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
-    client.log("log", `Loading a total of ${evtFiles.length} events.`);
+    client.log("Init", `Loading a total of ${evtFiles.length} events.`);
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);

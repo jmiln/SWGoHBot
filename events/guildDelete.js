@@ -4,7 +4,7 @@ module.exports = (client, guild) => {
     client.guildSettings.delete(guild.id);
 
     // Log that the bot left
-    console.log(`I left ${guild.name}(${guild.id})`);
+    client.log('GuildDelete', `I left ${guild.name}(${guild.id})`);
 
     // Sets the status as the current server count and help command
     const playingString =  `${client.config.prefix}help ~ ${client.guilds.size} servers`;
