@@ -89,7 +89,11 @@ function checkDates() {
                                 channel = thisGuild.channels.find('name', guildConf["announceChan"]);
                             }
                             if (channel && channel.permissionsFor(thisGuild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
-                                channel.send(announceMessage);
+                                try {
+                                    channel.send(announceMessage);
+                                } catch(e) {
+                                    client.log('Event Broke!', announceMessage);
+                                }
                             }
                         }
                         if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0

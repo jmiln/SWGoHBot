@@ -4,9 +4,9 @@ exports.run = (client, message, args) => {
 
 
     // The current possible gear levels
-    const gearLevels = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11', 'g12',
+    const gearLevels = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11',// 'g12',
         'gear1', 'gear2', 'gear3', 'gear4', 'gear5', 'gear6', 'gear7', 'gear8',
-        'gear9', 'gear10', 'gear11', 'gear12'
+        'gear9', 'gear10', 'gear11'//, 'gear12'
     ];
 
     // Figure out where the gear level is in the command, and grab it
@@ -69,6 +69,7 @@ exports.run = (client, message, args) => {
     } else {
         // Format and send the requested data back
         chars.forEach(character => {
+            const thisGear = character.gear[gearLvl];
             if (embeds) { // if Embeds are enabled
                 message.channel.send({
                     embed: {
@@ -80,7 +81,7 @@ exports.run = (client, message, args) => {
                         },
                         "fields": [{
                             "name": gearLvl,
-                            "value": `* ${character.gear[gearLvl].join('\n* ')}`
+                            "value": `* ${thisGear.length > 0 ? thisGear.join('\n* ') : 'This gear has not been entered yet' }`
                         }]
                     }
                 });

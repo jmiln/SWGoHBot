@@ -144,10 +144,14 @@ exports.run = (client, message, args, level) => {
                     array.push(eventString);
                 }
                 var eventKeys = array.join('\n\n');
-                if (array.length === 0) {
-                    return message.channel.send(`You don't currently have any events scheduled.`);
-                } else {
-                    return message.channel.send(`Here's your server's Event Schedule: \n\n${eventKeys}`);
+                try {
+                    if (array.length === 0) {
+                        return message.channel.send(`You don't currently have any events scheduled.`);
+                    } else {
+                        return message.channel.send(`Here's your server's Event Schedule: \n\n${eventKeys}`, {'split': true});
+                    }
+                } catch (e) {
+                    client.log('Event View Broke!', eventKeys);
                 }
             }
             break;
