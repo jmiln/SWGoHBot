@@ -1,4 +1,4 @@
-const util = require('util');
+// const util = require('util');
 
 exports.run = (client, message, args) => {
     const config = client.config;
@@ -25,7 +25,7 @@ exports.run = (client, message, args) => {
     const ships = client.findShip(searchName, shipList);
     if (ships.length <= 0) {
         return message.channel.send(`Invalid character or ship. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
-    } else if(ships.length > 1) {
+    } else if (ships.length > 1) {
         return message.channel.send(`I found more than one result from that search. Please try to be more specific.`).then(msg => msg.delete(10000)).catch(console.error);
     }
 
@@ -36,14 +36,14 @@ exports.run = (client, message, args) => {
 
         fields.push({
             "name": 'Crew',
-            "value": ship['crew'].join(', ')
+            "value": ship['crew'].join(', ').toProperCase()
         });
         fields.push({
             "name": 'Factions',
-            "value": ship['factions'].join(', ')
+            "value": ship['factions'].join(', ').toProperCase()
         });
-        for(var ability in ship.abilities) {
-            const abilities = ship.abilities[ability]
+        for (var ability in ship.abilities) {
+            const abilities = ship.abilities[ability];
             fields.push({
                 "name": ability,
                 "value": `**Ability Type:** ${abilities.type}   **Ability Cooldown:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`
@@ -53,7 +53,7 @@ exports.run = (client, message, args) => {
             embed: {
                 "color": `${ship.side === "light" ? 0x5114e0 : 0xe01414}`,
                 "author": {
-                    "name": ship.name,
+                    "name": ship.name.toProperCase(),
                     "url": ship.url,
                     "icon_url": ship.avatarURL
                 },
@@ -63,13 +63,13 @@ exports.run = (client, message, args) => {
     } else { // Embeds are disabled
         let shipString = '';
 
-        shipString += ` * ${ship.name} *\n`;
-        shipString += `Crew: ${ship.crew.join(', ')}\n`;
-        shipString += `Factions: ${ship.factions.join(', ')}\n\n`;
+        shipString += ` * ${ship.name.toProperCase()} *\n`;
+        shipString += `Crew: ${ship.crew.join(', ').toProperCase()}\n`;
+        shipString += `Factions: ${ship.factions.join(', ').toProperCase()}\n\n`;
         shipString += ` * Abilities *\n`;
     
-        for(var ability in ship.abilities) {
-            const abilities = ship.abilities[ability]
+        for (var ability in ship.abilities) {
+            const abilities = ship.abilities[ability];
             shipString += `### ${ability} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`;
         }
 
