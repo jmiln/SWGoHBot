@@ -845,7 +845,7 @@
 },
 {
     "name": "Captain Han Solo",
-    "aliases": ["Captain Han Solo", "Captain Han", "Han Solo", "Han", "Solo", "CHS"],
+    "aliases": ["Captain Han Solo", "Captain Han", "Hoth Han", "Han Solo", "Han", "Solo", "CHS"],
     "url": "https://swgoh.gg/characters/captain-han-solo/",
     "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hoth_han.png",
     "side": "dark",
@@ -853,16 +853,16 @@
     "mods": {
         "Arena": {
             "sets": [
-                "N/A",
-                "N/A",
-                "N/A"
+                "Critical Damage x4",
+                "Health x2",
+                ""
             ],
-            "square": "N/A",
-            "arrow": "N/A",
-            "diamond": "N/A",
-            "triangle": "N/A",
-            "circle": "N/A",
-            "cross": "N/A"
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Dmg",
+            "circle": "Health",
+            "cross": "Health"
         }
     },
     "gear": {
@@ -3811,7 +3811,7 @@
 },
 {
     "name": "Han Solo",
-    "aliases": ["Han Solo", "Han"],
+    "aliases": ["Han Solo", "Han", "Raid Han"],
     "url": "https://swgoh.gg/characters/han-solo/",
     "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_han.png",
     "side": "light",
