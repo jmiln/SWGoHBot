@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include ../partials/head %>
+    </head>
+
+    <body>
+        <header>
+            <% include ../partials/nav %>
+            <style>
+                .sidenav {
+                    background-color: #2b2b2b;
+                    height: 100%;
+                    color: white;
+                    padding: 15px;
+                }
+                th {
+                    background-color: #2b2b2b;
+                }
+                table.table-striped > thead > tr > th {
+                    border-top:1px solid #2b2b2b;
+                    border-bottom:1px solid #2b2b2b;
+                }
+                table.table-striped > tbody > tr > td{
+                    border-top:1px solid #2b2b2b;
+                    border-bottom:1px solid #2b2b2b;
+                }
+            </style>
+        </header>
+        <div class="container">
+            <h2>Commands</h2>
+            <div class="row content">
+                <div class="col-sm-2 sidenav border-right rounded">
+                    <nav class="nav nav-pills flex-column">
+                        <a href="#admin" class="nav-link active" data-toggle="pill" role="tab">Admin</a>
+                        <a href="#misc" class="nav-link" data-toggle="pill" role="tab">Misc</a>
+                        <a href="#starWars" class="nav-link" data-toggle="pill" role="tab">Star Wars</a>
+                    </nav>
+
+                </div>
+
+                <div class="col-sm-9">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="admin" role="tabpanel">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                    <tr><th>Command</th><th>Description</th><th>Usage</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>nickname</strong></td>
+                                        <td>Set the bot's name on your server</td>
+                                        <td>nickname [newName]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>setconf</strong></td>
+                                        <td>Used to change the bot's config settings</td>
+                                        <td>setconf [help|key] [value] </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>showconf</strong></td>
+                                        <td>Shows the server's current config settings</td>
+                                        <td>showconf</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>stats</strong></td>
+                                        <td>Shows the bot's stats</td>
+                                        <td>stats</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="misc" role="tabpanel">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                    <tr><th>Command</th><th>Description</th><th>Usage</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>event</strong></td>
+                                        <td>Used to set events on your server</td>
+                                        <td>event [create|view|delete] [eventName] [eventDay] [eventTime] [eventMessage]</br> [--repeat 00d00h00m] [--channel channelName] </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>help</strong></td>
+                                        <td>Displays the list of all available commands</td>
+                                        <td>help [command]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>info</strong></td>
+                                        <td>Shows some useful links</td>
+                                        <td>info</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>time</strong></td>
+                                        <td>Shows the current time in the guild's configured timezone</td>
+                                        <td>timezone</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="starWars" role="tabpanel">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                    <tr><th>Command</th><th>Description</th><th>Usage</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>abilities</strong></td>
+                                        <td>Shows all the abilities for the specified character</td>
+                                        <td>abilities [character]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>activities</strong></td>
+                                        <td>Shows the daily guild activites</td>
+                                        <td>activities [dayOfWeek]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>challenges</strong></td>
+                                        <td>Shows the daily challenges</td>
+                                        <td>challenges [dayOfWeek]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>charactergear</strong></td>
+                                        <td>Shows the gear requirements for the specified character/ lvl.</td>
+                                        <td>charactergear [character]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>faction</strong></td>
+                                        <td>Shows the list of characters in the specified faction</td>
+                                        <td>faction [faction]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>mods</strong></td>
+                                        <td>Shows some suggested mods for the specified character</td>
+                                        <td>mods [character]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>modsets</strong></td>
+                                        <td>Shows how many of each kind of mod you need for a set</td>
+                                        <td>modsets</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>raidteams</strong></td>
+                                        <td>Shows some teams that work well for each raid</td>
+                                        <td>raidteams [raid] [phase]</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script>
+$(function () {
+    $('#myTab a:last').tab('show')
+})
+        </script>
+
+        <hr>
+
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
+
+        <!-- Bootstrap core JavaScript
+            ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    </body>
+</html>
+

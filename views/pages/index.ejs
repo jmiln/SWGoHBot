@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include ../partials/head %>
+    </head>
+
+    <body>
+        <header>
+            <% include ../partials/nav %>
+        </header>
+
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron" style="background-color: #2b2b2b">
+            <div class="container">
+                <h1 class="display-3">Hello!</h1>
+                <p>This is a simple bot, made to help players of EA/CG's game Star Wars Galaxy of Heroes, by making the information more accessible.</p>
+                <p>Currently running on <%= clientServers %> Discord servers.</p>
+                <p><a class="btn btn-primary btn-lg" href="/about" role="button">Learn more &raquo;</a></p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Characters</h2>
+                    <p>It shows a bunch of possible mod sets, as well as all the abilities for each character in the game.</p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Ever Changing</h2>
+                    <p>It always changing, as more commands get added, and old ones revamped.</p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Support Server</h2>
+                    <p>If you need help with any of the setup or commands, or if you want to contribute, I do have a discord server set up. This is also where I post upcoming features, and changelogs. <a href="https://discord.gg/FfwGvhr">https://discord.gg/FfwGvhr</a></p>
+                </div>
+            </div>
+
+            <hr>
+            <footer>
+                <% include ../partials/footer %>
+            </footer>
+        </div> <!-- /container -->
+
+
+        <!-- Bootstrap core JavaScript
+            ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    </body>
+</html>
+

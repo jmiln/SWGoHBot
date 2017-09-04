@@ -6,6 +6,7 @@ const client = new Discord.Client();
 var moment = require('moment-timezone');
 var fs = require("fs");
 
+const site = require('./siteSrc/website')
 
 // Attach the config to the client so we can use it anywhere
 client.config = require('./config.json');
@@ -57,6 +58,9 @@ const init = async () => {
     client.login(client.config.token);
 
     // End top-level async/await function.
+    
+    // Start the site up
+    site.initSite(client);
 };
 
 // The function to check every minute for applicable events
