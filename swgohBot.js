@@ -13,6 +13,7 @@ client.config = require('./config.json');
 
 // Attach the character and team files to the client so I don't have to reopen em each time
 client.characters  = JSON.parse(fs.readFileSync("data/characters.json"));
+client.ships  = JSON.parse(fs.readFileSync("data/ships.json"));
 client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
 
 
@@ -58,9 +59,12 @@ const init = async () => {
     client.login(client.config.token);
 
     // End top-level async/await function.
-    
+
     // Start the site up
-    site.initSite(client);
+
+    if(client.config.enableSite) {
+        site.initSite(client);
+    }
 };
 
 // The function to check every minute for applicable events

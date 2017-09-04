@@ -1,847 +1,847 @@
 [
-	{
-		"name" : "Ahsoka Tano's Jedi Starfighter",
-		"aliases" : ["Ahsoka", "Ahsoka Tano", "Ahsoka Tano's Jedi Starfighter", "Starfigter", "Jedi", "Jedi Starfighter"],
-		"crew" : ["Ahsoka Tano"],
-		"url" : "https://swgoh.gg/units/ships/ahsoka-tanos-jedi-starfighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter_ahsoka.png",
-		"side": "light",
-		"factions" : ["attacker", "jedi", "galactic republic"],	
-    	"abilities": {
-        	"Reflexive Shot": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal Physical damage to target enemy with a 70% chance to gain Evasion Up for 2 turns.  Target Lock: Grant another random ally Evasion Up for 2 turns."
+    {
+        "name" : "Ahsoka Tano's Jedi Starfighter",
+        "aliases" : ["Ahsoka", "Ahsoka Tano", "Ahsoka Tano's Jedi Starfighter", "Starfigter", "Jedi", "Jedi Starfighter"],
+        "crew" : ["Ahsoka Tano"],
+        "url" : "https://swgoh.gg/units/ships/ahsoka-tanos-jedi-starfighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter_ahsoka.png",
+        "side": "light",
+        "factions" : ["attacker", "jedi", "galactic republic"],
+        "abilities": {
+            "Reflexive Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to gain Evasion Up for 2 turns.  Target Lock: Grant another random ally Evasion Up for 2 turns."
+            },
+            "Shut Down": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy and dispel all buffs on them.  This ability's cooldown is reset whenever an enemy reinforces."
+            },
+            "Turnabout": {
+                "type": "Crew",
+                "abilityCooldown": "2",
+                "abilityDesc": "If Ashoka Tano's Jedi Starfighter doesn't have any buffs, it gains Offense Up for 2 turns and 25% turn meter.  Otherwise, it loses all status effects to recover 80% protection."
+            }
+        }
     },
-    		"Shut Down": {
-    	   		"type": "Special",
-       			"abilityCooldown": "3",
-       			"abilityDesc": "Deal Physical damage to target enemy and dispel all buffs on them.  This ability's cooldown is reset whenever an enemy reinforces."
+    {
+        "name" : "Biggs Darklighter's X-Wing",
+        "aliases" : ["Biggs", "Red3", "XWing", "X Wing", "Biggs X-Wing", "Biggs Darklighters X-Wing"],
+        "crew" : ["Biggs Darklighter"],
+        "url" : "https://swgoh.gg/units/ships/biggs-darklighters-x-wing/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_red3.png",
+        "side": "light",
+        "factions" : ["tank", "rebel"],
+        "abilities": {
+            "Hit The Mark": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to the target enemy and inflict Target Lock for 2 turns on a critical hit."
+            },
+            "Daring Assault": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Bigg's X-wing recovers 35% protection and taunts for 1 turn whenever an enemy becomes Target Locked."
+            },
+            "Academy Maneuver": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to target enemy and inflict Offense Down for 2 turns.  Target Lock: Call an ally to assist."
+            }
+        }
     },
-    		"Turnabout": {
-           		"type": "Crew",
-           		"abilityCooldown": "2",
-				"abilityDesc": "If Ashoka Tano's Jedi Starfighter doesn't have any buffs, it gains Offense Up for 2 turns and 25% turn meter.  Otherwise, it loses all status effects to recover 80% protection."
-			}	            
-		}	   
-	},
-	{
-		"name" : "Biggs Darklighter's X-Wing",
-		"aliases" : ["Biggs", "Red3", "XWing", "X Wing", "Biggs X-Wing", "Biggs Darklighters X-Wing"],
-		"crew" : ["Biggs Darklighter"],
-		"url" : "https://swgoh.gg/units/ships/biggs-darklighters-x-wing/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_red3.png",
-		"side": "light",
-		"factions" : ["tank", "rebel"],
-		"abilities": {
-        	"Hit The Mark": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to the target enemy and inflict Target Lock for 2 turns on a critical hit."
+    {
+        "name" : "Bistan's U-Wing",
+        "aliases" : ["Bistan", "SRP", "UWing", "U Wing", "Bistans UWing"],
+        "crew" : ["Bistan", "Scarif Rebel Pathfinder"],
+        "url" : "https://swgoh.gg/units/ships/bistans-u-wing/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_uwing.png",
+        "side": "light",
+        "factions" : ["support", "rebel"],
+        "abilities": {
+            "Opening Move": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy.  If Bistan's U-wing is stealthed, this attack can't be evaded and ignores the target's defense.  Target Lock: Inflict Tenacity Down for 2 turns."
+            },
+            "Tactical Comms": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever an ally scores a finishing blow, that ally gains 19% turn meter.  If that ally is a Rebel, Bistan's U-wing also gains that much turn meter."
+            },
+            "Scouting Mission": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Inflict Target Lock on target enemy for 2 turns.  This effect can't be resisted.  Bistan's U-wing gains stealth for 2 turns, with a 50% chance to also gain 35% turn meter."
+            },
+            "Assault Plan": {
+                "type": "Crew",
+                "abilityCooldown": "0",
+                "abilityDesc": "Bistan's U-wing has +20% speed.  In addition, whenever an enemy becomes Target Locked, another random ally gains 30% turn meter and advantage for 1 turn."
+            }
+        }
     },
-    		"Daring Assault": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Bigg's X-wing recovers 35% protection and taunts for 1 turn whenever an enemy becomes Target Locked."
+    {
+        "name" : "Cassian's U-Wing",
+        "aliases" : ["Cassian", "UWing", "U Wing", "Cassians UWing", "K2S0", "Jyn"],
+        "crew" : ["Cassian Andor", "K-2SO", "Jyn Erso"],
+        "url" : "https://swgoh.gg/units/ships/cassians-u-wing/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_uwing_hero.png",
+        "side": "light",
+        "factions" : ["support", "rebel"],
+        "abilities": {
+            "Trailblazer": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to the target enemy.  Target Lock: Cassian's U-wing gains 25% turn meter."
+            },
+            "Avoid Contact": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "All allies have +25% critical avoidance and +6% evasion when attacked by Target Locked enemies.  These bonuses are doubled for Rebel allies."
+            },
+            "Guerilla Strike": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal special damage to target enemy and call target ally to assist.  Both attackers have an additional 20% critical damage."
+            },
+            "Infiltration Tactics": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Dispel all debuffs on target ally and grant then stealth for 2 turns.  If that ally is a Rebel, also grant them 20% turn meter."
+            },
+            "Threat Assessment": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Inflict Target Lock and Tenacity Down for 2 turns on target enemy.  These effects can't be resisted.  If the target enemy has any buffs, remove 20% turn meter."
+            }
+        }
     },
-    		"Academy Maneuver": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Deal physical damage to target enemy and inflict Offense Down for 2 turns.  Target Lock: Call an ally to assist."
-			}	            
-		}
-	},
-	{
-		"name" : "Bistan's U-Wing",
-		"aliases" : ["Bistan", "SRP", "UWing", "U Wing", "Bistans UWing"],
-		"crew" : ["Bistan", "Scarif Rebel Pathfinder"],
-		"url" : "https://swgoh.gg/units/ships/bistans-u-wing/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_uwing.png",
-		"side": "light",
-		"factions" : ["support", "rebel"],
-		"abilities": {
-        	"Opening Move": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy.  If Bistan's U-wing is stealthed, this attack can't be evaded and ignores the target's defense.  Target Lock: Inflict Tenacity Down for 2 turns."
+    {
+        "name" : "Clone Sergeant's ARC-170",
+        "aliases" : ["Clone Sergeant", "ARC170", "Clone Sergeant's ARC-170", "Clone Trooper"],
+        "crew" : ["Clone Sergeant P1"],
+        "url" : "https://swgoh.gg/units/ships/clone-sergeants-arc-170/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_arc170.png",
+        "side": "light",
+        "factions" : ["tank", "clone trooper", "galactic republic"],
+        "abilities": {
+            "Wing Cannons": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy with a 50% chance to inflicy Target Lock for 2 turns."
+            },
+            "Overcharge": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Clone Sergeant's ARC-170 gains Offense Up for 2 turns and recovers 48% protection."
+            },
+            "Torpedo Strike": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to target enemy.  Target Lock: This attack is an automatic critical hit and can't be evaded."
+            }
+        }
     },
-    		"Tactical Comms": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Whenever an ally scores a finishing blow, that ally gains 19% turn meter.  If that ally is a Rebel, Bistan's U-wing also gains that much turn meter."
+    {
+        "name" : "Endurance",
+        "aliases" : ["Mace", "Mace Windu", "Venator", "Endurance"],
+        "crew" : ["Mace Windu"],
+        "url" : "https://swgoh.gg/units/ships/endurance/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_venator.png",
+        "side": "light",
+        "factions" : ["capital ship", "jedi", "galactic republic"],
+        "abilities": {
+            "Strike True": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal phsyical damage to target enemy and inflict Target Lock for 2 turns."
+            },
+            "Hold Fast": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Target ally recovers 48% protection, taunts and gains critical hit immunity for 2 turns."
+            },
+            "Fortune Favors The Bold": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal physical damage to target enemy and all enemies affected by Target Lock, then grant all allies Valor for 2 turns.  This abilitiy's cooldown is reduced by 1 for each enemy struck. (Valor:  Grant the Endurance 20% turn meter and reduce its ultimate ability's cooldown by 1 at end of turn.)"
+            },
+            "Honor and Might": {
+                "type": "Unique",
+                "abilityCooldown": "3",
+                "abilityDesc": "Allies with less than full health have +18% offense.  This bonus is doubled for Republic allies.  Reinforcement Bonus:  Reinforcements gain Valor for 2 turns.  (Valor:  Grant the Endurance 20% turn meter and reduce its ultimate ability's cooldown by 1 at end of turn.)"
+            },
+            "Convergence": {
+                "type": "Crew",
+                "abilityCooldown": "15",
+                "abilityDesc": "Each ally gains damage immunity and Offense Up for 1 turn.  This ability starts on cooldown."
+            }
+        }
     },
-    		"Scouting Mission": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Inflict Target Lock on target enemy for 2 turns.  This effect can't be resisted.  Bistan's U-wing gains stealth for 2 turns, with a 50% chance to also gain 35% turn meter."
-	},		
-			"Assault Plan": {
-				"type": "Crew",
-				"abilityCooldown": "0",
-				 "abilityDesc": "Bistan's U-wing has +20% speed.  In addition, whenever an enemy becomes Target Locked, another random ally gains 30% turn meter and advantage for 1 turn."			
-			}	            
-		}
-	},
-	{
-		"name" : "Cassian's U-Wing",
-		"aliases" : ["Cassian", "UWing", "U Wing", "Cassians UWing", "K2S0", "Jyn"],
-		"crew" : ["Cassian Andor", "K-2SO", "Jyn Erso"],
-		"url" : "https://swgoh.gg/units/ships/cassians-u-wing/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_uwing_hero.png",
-		"side": "light",
-		"factions" : ["support", "rebel"],
-		"abilities": {
-        	"Trailblazer": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to the target enemy.  Target Lock: Cassian's U-wing gains 25% turn meter."
+    {
+        "name" : "Executrix",
+        "aliases" : ["Moff", "Tarkin", "Grand Moff", "Executrix"],
+        "crew" : ["Grand Moff Tarkin"],
+        "url" : "https://swgoh.gg/units/ships/executrix/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_stardestroyer.png",
+        "side": "dark",
+        "factions" : ["capital ship", "empire"],
+        "abilities": {
+            "Turbolaser Batteries": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal phsyical damage to target enemy and expose them for 2 turns."
+            },
+            "Executive Order": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "All allies gain 40% turn meter and Offense Up for 1 turn.  Empire allies also gain Potency Up for 1 turn.  This ability starts on cooldown."
+            },
+            "Heavy Ion Canon": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal physical damage to all enemies with a 55% chance to inflicy Ability Block for 1 turn.  This attack deal 35% more damage to debuffed enemies."
+            },
+            "Imperial Assault": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal phsyical damage 12 times to random enemy targets.  These attacks can't be evaded.  Target Locked enemies are also stunned for 1 turn.  This ability starts on cooldown."
+            },
+            "Victory At All Costs": {
+                "type": "Crew",
+                "abilityCooldown": "0",
+                "abilityDesc": "Allies deal 15% more damage for each debuffed enemy.  This bonus is doubled for Empire allies.  Reinforcement Bonus: Reinforcements gain retribution for 3 turns."
+            }
+        }
     },
-    		"Avoid Contact": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "All allies have +25% critical avoidance and +6% evasion when attacked by Target Locked enemies.  These bonuses are doubled for Rebel allies."
+    {
+        "name" : "First Order Tie Fighter",
+        "aliases" : ["FO TIE Fighter", "First Order Tie Fighter", "First Order", "FOTP"],
+        "crew" : ["First Order TIE Pilot"],
+        "url" : "https://swgoh.gg/units/ships/first-order-tie-fighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_firstorder_tiefighter.png",
+        "side": "dark",
+        "factions" : ["attacker", "first order"],
+        "abilities": {
+            "Target Acquired": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage with a 45% chance to attack again.  Each hit has a 55% chance to inflict Target Lock for 2 turns."
+            },
+            "Relentless Pursuit": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "First Order TIE Fighter gains 16.5% turn meter whenever a Target Locked enemy is damaged by an attack."
+            },
+            "Strafe": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to target enemy.  Target Lock: Strafe's cooldown is refreshed."
+            }
+        }
     },
-    		"Guerilla Strike": {
-           		"type": "Crew",
-           		"abilityCooldown": "4",
-				"abilityDesc": "Deal special damage to target enemy and call target ally to assist.  Both attackers have an additional 20% critical damage."
-	},		
-			"Infiltration Tactics": {
-				"type": "Crew",
-				"abilityCooldown": "3",
-				 "abilityDesc": "Dispel all debuffs on target ally and grant then stealth for 2 turns.  If that ally is a Rebel, also grant them 20% turn meter."			
-	},		
-			"Threat Assessment": {
-				"type": "Crew",
-				"abilityCooldown": "3",
-		 		"abilityDesc": "Inflict Target Lock and Tenacity Down for 2 turns on target enemy.  These effects can't be resisted.  If the target enemy has any buffs, remove 20% turn meter."			
-			}	            
-		}
-	},
-	{
-		"name" : "Clone Sergeant's ARC-170",
-		"aliases" : ["Clone Sergeant", "ARC170", "Clone Sergeant's ARC-170", "Clone Trooper"],
-		"crew" : ["Clone Sergeant P1"],
-		"url" : "https://swgoh.gg/units/ships/clone-sergeants-arc-170/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_arc170.png",
-		"side": "light",
-		"factions" : ["tank", "clone trooper", "galactic republic"],
-		"abilities": {
-        	"Wing Cannons": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy with a 50% chance to inflicy Target Lock for 2 turns."
+    {
+        "name" : "Gauntlet Starfighter",
+        "aliases" : ["Gauntlet", "Gar", "Commando", "Gauntlet Starfighter"],
+        "crew" : ["Gar Saxon", "Imperial Super Commando"],
+        "url" : "https://swgoh.gg/units/ships/gauntlet-starfighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_gauntlet.png",
+        "side": "dark",
+        "factions" : ["support", "empire"],
+        "abilities": {
+            "Gauntlet Assault": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy.  Target Lock: Grant another random ally 20% turn meter."
+            },
+            "Superior Maneuverability": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Gauntlet Starfighter has +20 speed and gains an additional +5 speed for each other active Empire ally.  Additionally, it grants +20% defense to all allies, doubled for Empire allies."
+            },
+            "Reinvigorate": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Dispel all debuffs on all allies and grant them Protection Up (20%) for 2 turns.  Doubled for Empire allies."
+            },
+            "Proton Missle Launcher": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal pysical damage to target enemy and inflict Buff Immunity for 2 turns."
+            }
+        }
     },
-    		"Overcharge": {
-    	   		"type": "Special",
-       			"abilityCooldown": "4",
-       			"abilityDesc": "Clone Sergeant's ARC-170 gains Offense Up for 2 turns and recovers 48% protection."
+    {
+        "name" : "Geonosian Soldier's Starfighter",
+        "aliases" : ["Geonosian Soldier", "GenSol", "Geonosian Starfighter", "Geonosian Soldiers Starfighter"],
+        "crew" : ["Geonosian Soldier"],
+        "url" : "https://swgoh.gg/units/ships/geonosian-soldiers-starfighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_soldier.png",
+        "side": "dark",
+        "factions" : ["attacker", "geonosian", "separatist"],
+        "abilities": {
+            "Front Line": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy and remove 15% turn meter.  If the target is buffed, the turn meter removal is doubled."
+            },
+            "Swarm Aggression": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Genosian Soldier's Starfighter has 25% chance to assist dealing 45% less damage whenever an allay attacks during their turn.  This chance is doubled for Separatist allies."
+            },
+            "Separatist Assault": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to target enemy and call a random ally to assist.  Inflict Evasion Down for 2 turns if chosen ally is Separtist.  Target Lock: Both attackers deal 25% more damage."
+            }
+        }
     },
-    		"Torpedo Strike": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Deal physical damage to target enemy.  Target Lock: This attack is an automatic critical hit and can't be evaded."
-			}	            
-		}	   
-	},
-	{
-		"name" : "Endurance",
-		"aliases" : ["Mace", "Mace Windu", "Venator", "Endurance"],
-		"crew" : ["Mace Windu"],
-		"url" : "https://swgoh.gg/units/ships/endurance/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_venator.png",
-		"side": "light",
-		"factions" : ["capital ship", "jedi", "galactic republic"],
-		"abilities": {
-        	"Strike True": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal phsyical damage to target enemy and inflict Target Lock for 2 turns."
+    {
+        "name" : "Geonosian Spy's Starfighter",
+        "aliases" : ["Geonosian Spy", "Geonosian Starfighter", "Geonosian Spys Starfighter", "Spy", "Genspy"],
+        "crew" : ["Geonosian Spy"],
+        "url" : "https://swgoh.gg/units/ships/geonosian-spys-starfighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_spy.png",
+        "side": "dark",
+        "factions" : ["attacker", "geonosian", "separatist"],
+        "abilities": {
+            "Undermine": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy.  This attack deals more damage to buffed enemies."
+            },
+            "Clandestine Operations": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Genosian Spy's Starfighter has +35% critical damage while stealthed.  In addition, whenever it takes damage, it has 20% chance to gain stealth for 1 turn."
+            },
+            "Surprise Shot": {
+                "type": "Crew",
+                "abilityCooldown": "2",
+                "abilityDesc": "Deap special damage to target enemy and inflict Defense Down for 2 turns.  Target Lock: Call all stealthed allies to assist."
+            }
+        }
     },
-    		"Hold Fast": {
-    	   		"type": "Special",
-       			"abilityCooldown": "3",
-       			"abilityDesc": "Target ally recovers 48% protection, taunts and gains critical hit immunity for 2 turns."
+    {
+        "name" : "Ghost",
+        "aliases" : ["Ghost", "Hera", "Zeb", "Kanan"],
+        "crew" : ["Hera Syndulla", "Garazeb 'Zeb' Orrelios", "Kanan Jarrus"],
+        "url" : "https://swgoh.gg/units/ships/ghost/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_ghost.png",
+        "side": "light",
+        "factions" : ["attacker", "rebel", "phoenix"],
+        "abilities": {
+            "MS-2B Twin Laser Canon": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal phsyical damage to target enemy.  If the Ghost is stealthed this attack is guaranteed to be a critical hit."
+            },
+            "Sensor Scrambler": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "All enemies have -20 Potency and suffer Speed Down for 2 turns whenver the debuffs are resisted.  Additionally, while Phantom II is present the Ghost cannot be Target Locked."
+            },
+            "Static Jammer": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "The Ghost and target ally gain stealth for 2 turns.  Then call target's ally to assist and 2 buffed Rebel allies to assist (if able) dealing 50% less damage."
+            },
+            "Attack All Angels": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal phsyical damage to all enemies and deal 30% bonus damage to each stealthed Rebel ally.  Target Lock: Inflict Ability Block for 1 turn."
+            },
+            "Take 'em Down'": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Inflict Defense Down to target enemy for 2 turns and expose all Target Locked enemies.  These effects can't be resisted.  The Ghost gains 20% turn meter for each enemy that was exposed."
+            }
+        }
     },
-    		"Fortune Favors The Bold": {
-           		"type": "Special",
-           		"abilityCooldown": "4",
-				"abilityDesc": "Deal physical damage to target enemy and all enemies affected by Target Lock, then grant all allies Valor for 2 turns.  This abilitiy's cooldown is reduced by 1 for each enemy struck. (Valor:  Grant the Endurance 20% turn meter and reduce its ultimate ability's cooldown by 1 at end of turn.)"
-	},		
-			"Honor and Might": {
-				"type": "Unique",
-				"abilityCooldown": "3",
-				 "abilityDesc": "Allies with less than full health have +18% offense.  This bonus is doubled for Republic allies.  Reinforcement Bonus:  Reinforcements gain Valor for 2 turns.  (Valor:  Grant the Endurance 20% turn meter and reduce its ultimate ability's cooldown by 1 at end of turn.)"			
-	},		
-			"Convergence": {
-				"type": "Crew",
-				"abilityCooldown": "15",
-		 		"abilityDesc": "Each ally gains damage immunity and Offense Up for 1 turn.  This ability starts on cooldown."			
-			}	            
-		}
-	},
-	{
-		"name" : "Executrix",
-		"aliases" : ["Moff", "Tarkin", "Grand Moff", "Executrix"],
-		"crew" : ["Grand Moff Tarkin"],
-		"url" : "https://swgoh.gg/units/ships/executrix/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_stardestroyer.png",
-		"side": "dark",
-		"factions" : ["capital ship", "empire"],
-		"abilities": {
-        	"Turbolaser Batteries": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal phsyical damage to target enemy and expose them for 2 turns."
+    {
+        "name" : "Home One",
+        "aliases" : ["Ackbar", "Home One", "Liberty"],
+        "crew" : ["Admiral Ackbar"],
+        "url" : "https://swgoh.gg/units/ships/home-one/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_moncalamarilibertycruiser.png",
+        "side": "light",
+        "factions" : ["capital ship", "rebel"],
+        "abilities": {
+            "Mon Cal Cannons": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal phsyical damage to target enemy and call a random ally to assist."
+            },
+            "Sieze the Advantage": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Dispel debuffs on target ally.  That ally recovers 35% health and 35% protection and other allies gain advantage for 2 turns."
+            },
+            "Defiant Volley": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal special damage to all enemies and call up to two buffed allies to assist."
+            },
+            "Master Plan": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "All allies gain 30% turn meter and the Master Plan buff for 1 turn.  Master Plan: After this unit uses an ability during it's turn their cooldowns are reset and they gain 100% turn meter.  This ability starts on cooldown."
+            },
+            "Band Together'": {
+                "type": "Crew",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever an ally attacks out of turn they have +40% Critical Damage and gain Protection Up for (25%) for 2 turns.  These bonuses are doubled for Rebel allies.  Reinforcement Bonus: Reinforcements gain advantage for 1 turn."
+            }
+        }
     },
-    		"Executive Order": {
-    	   		"type": "Special",
-       			"abilityCooldown": "3",
-       			"abilityDesc": "All allies gain 40% turn meter and Offense Up for 1 turn.  Empire allies also gain Potency Up for 1 turn.  This ability starts on cooldown."
+    {
+        "name" : "Imperial TIE Fighter",
+        "aliases" : ["TIE Fighter", "Imperial TIE Fighter", "TFP"],
+        "crew" : ["TIE Fighter Pilot"],
+        "url" : "https://swgoh.gg/units/ships/imperial-tie-fighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiefighter.png",
+        "side": "dark",
+        "factions" : ["attacker", "empire"],
+        "abilities": {
+            "L-S1 Laser Canon": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy with a 70% chance to inflict Target Lock for 2 turns."
+            },
+            "T-S8 Targeting Computer": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to target enemy and gain Foresight for 2 turns.  Target Lock:  Inflict buff immunity for 2 turns."
+            },
+            "Control Thrusters": {
+                "type": "Crew",
+                "abilityCooldown": "0",
+                "abilityDesc": "Grants 15% turn meter to the allied Capital Ship whenever this ship evades an attack.  The effect is doubled for Empire Capital ships."
+            }
+        }
     },
-    		"Heavy Ion Canon": {
-           		"type": "Special",
-           		"abilityCooldown": "4",
-				"abilityDesc": "Deal physical damage to all enemies with a 55% chance to inflicy Ability Block for 1 turn.  This attack deal 35% more damage to debuffed enemies."
-	},		
-			"Imperial Assault": {
-				"type": "Special",
-				"abilityCooldown": "5",
-				 "abilityDesc": "Deal phsyical damage 12 times to random enemy targets.  These attacks can't be evaded.  Target Locked enemies are also stunned for 1 turn.  This ability starts on cooldown."			
-	},		
-			"Victory At All Costs": {
-				"type": "Crew",
-				"abilityCooldown": "0",
-		 		"abilityDesc": "Allies deal 15% more damage for each debuffed enemy.  This bonus is doubled for Empire allies.  Reinforcement Bonus: Reinforcements gain retribution for 3 turns."			
-			}	            
-		}
-	},
-	{
-		"name" : "First Order Tie Fighter",
-		"aliases" : ["FO TIE Fighter", "First Order Tie Fighter", "First Order", "FOTP"],
-		"crew" : ["First Order TIE Pilot"],
-		"url" : "https://swgoh.gg/units/ships/first-order-tie-fighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_firstorder_tiefighter.png",
-		"side": "dark",
-		"factions" : ["attacker", "first order"],
-		"abilities": {
-        	"Target Acquired": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage with a 45% chance to attack again.  Each hit has a 55% chance to inflict Target Lock for 2 turns."
+    {
+        "name" : "Jedi Consular's Starfighter",
+        "aliases" : ["Jedi Consular", "Consular", "Jedi", "Jedi Starfighter"],
+        "crew" : ["Jedi Consular"],
+        "url" : "https://swgoh.gg/units/ships/jedi-consulars-starfighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter.png",
+        "side": "light",
+        "factions" : ["support", "jedi", "galactic republic"],
+        "abilities": {
+            "Republic Defender": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy with a 70% chance to gain Defense Up for 2 turns.  Target Lock: Grant another random ally Defense Up for 2 turns."
+            },
+            "Guarded Assault": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal special damage to target enemy and call target ally to assist (if able.)  Jedi Consular's Starfights and the assisting ally gain Protection Up (40%) for 2 turns."
+            },
+            "Stabilize": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Target ally recovers 65% protection.  If that ally is Republic they recover an additional 25% protection."
+            }
+        }
     },
-    		"Relentless Pursuit": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "First Order TIE Fighter gains 16.5% turn meter whenever a Target Locked enemy is damaged by an attack."
+    {
+        "name" : "Kylo Ren's Command Shuttle",
+        "aliases" : ["Kylo", "Command Shuttle", "Kylo Rens Command Shuttle", "Phasma", "FOST"],
+        "crew" : ["Kylo Ren", "Captain Phasma", "First Order Stormtrooper"],
+        "url" : "https://swgoh.gg/units/ships/kylo-rens-command-shuttle/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_upsilon_shuttle_kylo.png",
+        "side": "dark",
+        "factions" : ["first order", "support"],
+        "abilities": {
+            "Defensive Fire": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal phsyical damage to target enemy and gain Protection Up (30%) for 2 turns."
+            },
+            "Advanced Jamming Array": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Dispel all buffs on target enemy with a 55% chance each to remove 30% turn meter and inflict Healing Immunity for 2 turns."
+            },
+            "Surprise Raid": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Target ally gains 100% turn meter, Advantage for 1 turn and their cooldowns are reduced by 1, but they lose 25% protection."
+            },
+            "Stirke Team": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Target ally loses all turn meter then all other allies gain 23% turn meter plus 25% of the turn meter that ally lost (doubled for First Order allies.)  If Kylo Ren's Command Shuttle targets itself, First Order allies gain Advantage for 2 turns."
+            },
+            "Zeal of the First Order": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Kylo Ren's Command Shuttle has +30 Speed while it has Protection and +30% counter chance while it doesn't.  If First Order Tie Fighter is present, it receives 25% turn meter every time the Command Shuttle takes damage."
+            }
+        }
     },
-    		"Strafe": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Deal physical damage to target enemy.  Target Lock: Strafe's cooldown is refreshed."
-			}	            
-		}
-	},
-	{
-		"name" : "Gauntlet Starfighter",
-		"aliases" : ["Gauntlet", "Gar", "Commando", "Gauntlet Starfighter"],
-		"crew" : ["Gar Saxon", "Imperial Super Commando"],
-		"url" : "https://swgoh.gg/units/ships/gauntlet-starfighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_gauntlet.png",
-		"side": "dark",
-		"factions" : ["support", "empire"],
-		"abilities": {
-        	"Gauntlet Assault": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy.  Target Lock: Grant another random ally 20% turn meter."
-    },
-    		"Superior Maneuverability": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Gauntlet Starfighter has +20 speed and gains an additional +5 speed for each other active Empire ally.  Additionally, it grants +20% defense to all allies, doubled for Empire allies."
-    },
-    		"Reinvigorate": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Dispel all debuffs on all allies and grant them Protection Up (20%) for 2 turns.  Doubled for Empire allies."
-	},		
-			"Proton Missle Launcher": {
-				"type": "Crew",
-				"abilityCooldown": "3",
-				 "abilityDesc": "Deal pysical damage to target enemy and inflict Buff Immunity for 2 turns."			
-			}	            
-		}
-	},
-	{
-		"name" : "Geonosian Soldier's Starfighter",
-		"aliases" : ["Geonosian Soldier", "GenSol", "Geonosian Starfighter", "Geonosian Soldiers Starfighter"],
-		"crew" : ["Geonosian Soldier"],
-		"url" : "https://swgoh.gg/units/ships/geonosian-soldiers-starfighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_soldier.png",
-		"side": "dark",
-		"factions" : ["attacker", "geonosian", "separatist"],
-		"abilities": {
-        	"Front Line": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy and remove 15% turn meter.  If the target is buffed, the turn meter removal is doubled."
-    },
-    		"Swarm Aggression": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Genosian Soldier's Starfighter has 25% chance to assist dealing 45% less damage whenever an allay attacks during their turn.  This chance is doubled for Separatist allies."
-    },
-    		"Separatist Assault": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Deal physical damage to target enemy and call a random ally to assist.  Inflict Evasion Down for 2 turns if chosen ally is Separtist.  Target Lock: Both attackers deal 25% more damage."
-			}	            
-		}
-	},
-	{
-		"name" : "Geonosian Spy's Starfighter",
-		"aliases" : ["Geonosian Spy", "Geonosian Starfighter", "Geonosian Spys Starfighter", "Spy", "Genspy"],
-		"crew" : ["Geonosian Spy"],
-		"url" : "https://swgoh.gg/units/ships/geonosian-spys-starfighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_spy.png",
-		"side": "dark",
-		"factions" : ["attacker", "geonosian", "separatist"],
-		"abilities": {
-        	"Undermine": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy.  This attack deals more damage to buffed enemies."
-    },
-    		"Clandestine Operations": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Genosian Spy's Starfighter has +35% critical damage while stealthed.  In addition, whenever it takes damage, it has 20% chance to gain stealth for 1 turn."
-    },
-    		"Surprise Shot": {
-           		"type": "Crew",
-           		"abilityCooldown": "2",
-				"abilityDesc": "Deap special damage to target enemy and inflict Defense Down for 2 turns.  Target Lock: Call all stealthed allies to assist."
-			}	            
-		}
-	},
-	{
-		"name" : "Ghost",
-		"aliases" : ["Ghost", "Hera", "Zeb", "Kanan"],
-		"crew" : ["Hera Syndulla", "Garazeb 'Zeb' Orrelios", "Kanan Jarrus"],
-		"url" : "https://swgoh.gg/units/ships/ghost/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_ghost.png",
-		"side": "light",
-		"factions" : ["attacker", "rebel", "phoenix"],
-		"abilities": {
-        	"MS-2B Twin Laser Canon": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal phsyical damage to target enemy.  If the Ghost is stealthed this attack is guaranteed to be a critical hit."
-    },
-    		"Sensor Scrambler": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "All enemies have -20 Potency and suffer Speed Down for 2 turns whenver the debuffs are resisted.  Additionally, while Phantom II is present the Ghost cannot be Target Locked."
-    },
-    		"Static Jammer": {
-           		"type": "Crew",
-           		"abilityCooldown": "4",
-				"abilityDesc": "The Ghost and target ally gain stealth for 2 turns.  Then call target's ally to assist and 2 buffed Rebel allies to assist (if able) dealing 50% less damage."
-	},		
-			"Attack All Angels": {
-				"type": "Crew",
-				"abilityCooldown": "4",
-				 "abilityDesc": "Deal phsyical damage to all enemies and deal 30% bonus damage to each stealthed Rebel ally.  Target Lock: Inflict Ability Block for 1 turn."			
-	},		
-			"Take 'em Down'": {
-				"type": "Crew",
-				"abilityCooldown": "3",
-		 		"abilityDesc": "Inflict Defense Down to target enemy for 2 turns and expose all Target Locked enemies.  These effects can't be resisted.  The Ghost gains 20% turn meter for each enemy that was exposed."			
-			}	            
-		}
-	},
-	{
-		"name" : "Home One",
-		"aliases" : ["Ackbar", "Home One", "Liberty"],
-		"crew" : ["Admiral Ackbar"],
-		"url" : "https://swgoh.gg/units/ships/home-one/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_moncalamarilibertycruiser.png",
-		"side": "light",
-		"factions" : ["capital ship", "rebel"],
-		"abilities": {
-        	"Mon Cal Cannons": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal phsyical damage to target enemy and call a random ally to assist."
-    },
-    		"Sieze the Advantage": {
-    	   		"type": "Special",
-       			"abilityCooldown": "3",
-       			"abilityDesc": "Dispel debuffs on target ally.  That ally recovers 35% health and 35% protection and other allies gain advantage for 2 turns."
-    },
-    		"Defiant Volley": {
-           		"type": "Special",
-           		"abilityCooldown": "4",
-				"abilityDesc": "Deal special damage to all enemies and call up to two buffed allies to assist."
-	},		
-			"Master Plan": {
-				"type": "Special",
-				"abilityCooldown": "5",
-				 "abilityDesc": "All allies gain 30% turn meter and the Master Plan buff for 1 turn.  Master Plan: After this unit uses an ability during it's turn their cooldowns are reset and they gain 100% turn meter.  This ability starts on cooldown."			
-	},		
-			"Band Together'": {
-				"type": "Crew",
-				"abilityCooldown": "0",
-		 		"abilityDesc": "Whenever an ally attacks out of turn they have +40% Critical Damage and gain Protection Up for (25%) for 2 turns.  These bonuses are doubled for Rebel allies.  Reinforcement Bonus: Reinforcements gain advantage for 1 turn."			
-			}	            
-		}
-	},
-	{
-		"name" : "Imperial TIE Fighter",
-		"aliases" : ["TIE Fighter", "Imperial TIE Fighter", "TFP"],
-		"crew" : ["TIE Fighter Pilot"],
-		"url" : "https://swgoh.gg/units/ships/imperial-tie-fighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiefighter.png",
-		"side": "dark",
-		"factions" : ["attacker", "empire"],
-		"abilities": {
-        	"L-S1 Laser Canon": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy with a 70% chance to inflict Target Lock for 2 turns."
-    },
-    		"T-S8 Targeting Computer": {
-    	   		"type": "Special",
-       			"abilityCooldown": "3",
-       			"abilityDesc": "Deal physical damage to target enemy and gain Foresight for 2 turns.  Target Lock:  Inflict buff immunity for 2 turns."
-    },
-    		"Control Thrusters": {
-           		"type": "Crew",
-           		"abilityCooldown": "0",
-				"abilityDesc": "Grants 15% turn meter to the allied Capital Ship whenever this ship evades an attack.  The effect is doubled for Empire Capital ships."
-			}	            
-		}
-	},
-	{
-		"name" : "Jedi Consular's Starfighter",
-		"aliases" : ["Jedi Consular", "Consular", "Jedi", "Jedi Starfighter"],
-		"crew" : ["Jedi Consular"],
-		"url" : "https://swgoh.gg/units/ships/jedi-consulars-starfighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter.png",
-		"side": "light",
-		"factions" : ["support", "jedi", "galactic republic"],
-		"abilities": {
-        	"Republic Defender": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy with a 70% chance to gain Defense Up for 2 turns.  Target Lock: Grant another random ally Defense Up for 2 turns."
-    },
-    		"Guarded Assault": {
-    	   		"type": "Special",
-       			"abilityCooldown": "4",
-       			"abilityDesc": "Deal special damage to target enemy and call target ally to assist (if able.)  Jedi Consular's Starfights and the assisting ally gain Protection Up (40%) for 2 turns."
-    },
-    		"Stabilize": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Target ally recovers 65% protection.  If that ally is Republic they recover an additional 25% protection."
-			}	            
-		}
-	},
-	{
-		"name" : "Kylo Ren's Command Shuttle",
-		"aliases" : ["Kylo", "Command Shuttle", "Kylo Rens Command Shuttle", "Phasma", "FOST"],
-		"crew" : ["Kylo Ren", "Captain Phasma", "First Order Stormtrooper"],
-		"url" : "https://swgoh.gg/units/ships/kylo-rens-command-shuttle/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_upsilon_shuttle_kylo.png",
-		"side": "dark",
-		"factions" : ["first order", "support"],
-		"abilities": {
-        	"Defensive Fire": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal phsyical damage to target enemy and gain Protection Up (30%) for 2 turns."
-    },
-    		"Advanced Jamming Array": {
-    	   		"type": "Special",
-       			"abilityCooldown": "4",
-       			"abilityDesc": "Dispel all buffs on target enemy with a 55% chance each to remove 30% turn meter and inflict Healing Immunity for 2 turns."
-    },
-    		"Surprise Raid": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Target ally gains 100% turn meter, Advantage for 1 turn and their cooldowns are reduced by 1, but they lose 25% protection."
-	},		
-			"Stirke Team": {
-				"type": "Crew",
-				"abilityCooldown": "4",
-				 "abilityDesc": "Target ally loses all turn meter then all other allies gain 23% turn meter plus 25% of the turn meter that ally lost (doubled for First Order allies.)  If Kylo Ren's Command Shuttle targets itself, First Order allies gain Advantage for 2 turns."			
-	},		
-			"Zeal of the First Order": {
-				"type": "Crew",
-				"abilityCooldown": "3",
-		 		"abilityDesc": "Kylo Ren's Command Shuttle has +30 Speed while it has Protection and +30% counter chance while it doesn't.  If First Order Tie Fighter is present, it receives 25% turn meter every time the Command Shuttle takes damage."			
-			}	            
-		}
-	},
-	{
-		"name" : "Millennium Falcon (Ep VII)",
-		"aliases" : ["Millenium Falcon", "Millennium Falcon Ep VII", "Falcon", "Rey", "Finn"],
-		"crew" : ["Rey", "Finn"],
-		"url" : "https://swgoh.gg/units/ships/millennium-falcon-ep-vii/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_mfalcon_ep7.png",
-		"side": "light",
-		"factions" : ["resistance", "attacker"],
-		"abilities": {
-        	"Quad Laser": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy with a 65% chance to hit them a second time, plus an additonal hit if Millenium Falcon (EP VII) is buffed.  Hits after the first deal 75% less damage.  Target Lock: This attack scores an additional hit."
-    },
-    		"Against the Odds": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Millenium Falcon (EP VII) gains 9% turn meter and 3% offense (stacking) whenever it is attacked.  If it is buffed when it is attacked, it also inflicts Target Lock on the attacker."
-    },
-    		"Thrust Reversal": {
-           		"type": "Crew",
-           		"abilityCooldown": "6",
-				"abilityDesc": "Millenium Falcom (EP VII) recovers 50% protection and gains 3 stacks of the Thrust Reversal unique buff.  Thrust Reversal: +4% Evasion per stack, 1 stack lost on taking damage; at end of turn, 1 stack is consumed to gain 100% turn meter."
-	},		
-			"Gambit": {
-				"type": "Crew",
-				"abilityCooldown": "4",
-				 "abilityDesc": "Deal physical damage to all enemies then lose all buffs.  This attack hits each enemy again for each buff lost this way (maximum 3.)  Hits after the first deal 50% less damage."			
-			}	            
-		}
+    {
+        "name" : "Millennium Falcon (Ep VII)",
+        "aliases" : ["Millenium Falcon", "Millennium Falcon Ep VII", "Falcon", "Rey", "Finn"],
+        "crew" : ["Rey", "Finn"],
+        "url" : "https://swgoh.gg/units/ships/millennium-falcon-ep-vii/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_mfalcon_ep7.png",
+        "side": "light",
+        "factions" : ["resistance", "attacker"],
+        "abilities": {
+            "Quad Laser": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy with a 65% chance to hit them a second time, plus an additonal hit if Millenium Falcon (EP VII) is buffed.  Hits after the first deal 75% less damage.  Target Lock: This attack scores an additional hit."
+            },
+            "Against the Odds": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Millenium Falcon (EP VII) gains 9% turn meter and 3% offense (stacking) whenever it is attacked.  If it is buffed when it is attacked, it also inflicts Target Lock on the attacker."
+            },
+            "Thrust Reversal": {
+                "type": "Crew",
+                "abilityCooldown": "6",
+                "abilityDesc": "Millenium Falcom (EP VII) recovers 50% protection and gains 3 stacks of the Thrust Reversal unique buff.  Thrust Reversal: +4% Evasion per stack, 1 stack lost on taking damage; at end of turn, 1 stack is consumed to gain 100% turn meter."
+            },
+            "Gambit": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal physical damage to all enemies then lose all buffs.  This attack hits each enemy again for each buff lost this way (maximum 3.)  Hits after the first deal 50% less damage."
+            }
+        }
 
-	},
-	{
-		"name" : "Phantom II",
-		"aliases" : ["Phantom", "Phantom II", "Sabine", "Chopper", "Ezra"],
-		"crew" : ["Sabine Wren", "Chopper", "Ezra Bridger"],
-		"url" : "https://swgoh.gg/units/ships/phantom-ii/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_phantom2.png",
-		"side": "light",
-		"factions" : ["rebel", "phoenix", "attacker"],
-		"abilities": {
-        	"Slip Away": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal phsyical damage to target enemy with a 75% chance to gain stealth for 2 turns."
     },
-    		"Distraction Tactics": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Phantom II gains 5% evasion for each active Rebel ally.  Additionally, any time the Ghost received a debuff or is critically hit.  Phanton II gains Foresight and Taunt until the next time it evades."
+    {
+        "name" : "Phantom II",
+        "aliases" : ["Phantom", "Phantom II", "Sabine", "Chopper", "Ezra"],
+        "crew" : ["Sabine Wren", "Chopper", "Ezra Bridger"],
+        "url" : "https://swgoh.gg/units/ships/phantom-ii/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_phantom2.png",
+        "side": "light",
+        "factions" : ["rebel", "phoenix", "attacker"],
+        "abilities": {
+            "Slip Away": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal phsyical damage to target enemy with a 75% chance to gain stealth for 2 turns."
+            },
+            "Distraction Tactics": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Phantom II gains 5% evasion for each active Rebel ally.  Additionally, any time the Ghost received a debuff or is critically hit.  Phanton II gains Foresight and Taunt until the next time it evades."
+            },
+            "Sights Locked": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Inflict Target Lock on the target enemy for 2 turns with a 50% chance to also inflict Target Lock on another random enemy."
+            },
+            "Maximum Power": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to target enemy with a 70% chance to grant all allies Critical Chance Up for 2 turns."
+            },
+            "Multipurpose C1-10P Droid": {
+                "type": "Crew",
+                "abilityCooldown": "0",
+                "abilityDesc": "While Phantom II has no protection it has 50% chance each to gain Advantage, Foresight, Offsense Up, or Defense Up for 2 turns at the end of its turn.  While the Phantom II is active, the Ghost also has this ability."
+            }
+        }
     },
-    		"Sights Locked": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Inflict Target Lock on the target enemy for 2 turns with a 50% chance to also inflict Target Lock on another random enemy."
-	},		
-			"Maximum Power": {
-				"type": "Crew",
-				"abilityCooldown": "3",
-				 "abilityDesc": "Deal physical damage to target enemy with a 70% chance to grant all allies Critical Chance Up for 2 turns."			
-	},		
-			"Multipurpose C1-10P Droid": {
-				"type": "Crew",
-				"abilityCooldown": "0",
-		 		"abilityDesc": "While Phantom II has no protection it has 50% chance each to gain Advantage, Foresight, Offsense Up, or Defense Up for 2 turns at the end of its turn.  While the Phantom II is active, the Ghost also has this ability."			
-			}	            
-		}
-	},
-	{
-		"name" : "Plo Koon's Jedi Starfighter",
-		"aliases" : ["Plo", "Plo Koon", "Jedi", "Jedi Starfighter"],
-		"crew" : ["Plo Koon"],
-		"url" : "https://swgoh.gg/units/ships/plo-koons-jedi-starfighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter_bladeofdorin.png",
-		"side": "light",
-		"factions" : ["jedi", "galactic republic", "support"],
-		"abilities": {
-        	"Coordinated Assault": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy with a 70% chance to gain Speed Up.  Target Lock: Grant another random ally Speed Up for 2 turns."
+    {
+        "name" : "Plo Koon's Jedi Starfighter",
+        "aliases" : ["Plo", "Plo Koon", "Jedi", "Jedi Starfighter"],
+        "crew" : ["Plo Koon"],
+        "url" : "https://swgoh.gg/units/ships/plo-koons-jedi-starfighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_jedi_fighter_bladeofdorin.png",
+        "side": "light",
+        "factions" : ["jedi", "galactic republic", "support"],
+        "abilities": {
+            "Coordinated Assault": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy with a 70% chance to gain Speed Up.  Target Lock: Grant another random ally Speed Up for 2 turns."
+            },
+            "Wings of the Republic": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Target ally Taunts for 2 turns.  If that ally is Republic, dispel all debuffs on them and grant them Protection Up (65%) for 2 turns."
+            },
+            "Inspiring Charge": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "All allies gain 40% Turn Meter, Clone allies gain Tenacity Up for 1 turn and Jedi allies gain Protection Recharge (35%) for 2 turns."
+            }
+        }
     },
-    		"Wings of the Republic": {
-    	   		"type": "Special",
-       			"abilityCooldown": "3",
-       			"abilityDesc": "Target ally Taunts for 2 turns.  If that ally is Republic, dispel all debuffs on them and grant them Protection Up (65%) for 2 turns."
+    {
+        "name" : "Poe Dameron's X-wing",
+        "aliases" : ["Poe", "Black Leader", "Poe Damerons XWing", "XWing", "X Wing"],
+        "crew" : ["Poe Dameron"],
+        "url" : "https://swgoh.gg/units/ships/poe-damerons-x-wing/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_blackone.png",
+        "side": "light",
+        "factions" : ["resistance", "attacker"],
+        "abilities": {
+            "Cover All Angles": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy.  Target Lock: Daze the target for 2 turns."
+            },
+            "Bolt From The Blue": {
+                "type": "Special",
+                "abilityCooldown": "7",
+                "abilityDesc": "Poe's X-Wing gains Offense Up and Foresight for 3 turns, as well as, 46% turn meter and 35% Protection."
+            },
+            "Perfect Shot": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal physical damage to target enemy.  This attack can't be evaded and always scores a Critical Hit against enemies without protection."
+            }
+        }
     },
-    		"Inspiring Charge": {
-           		"type": "Crew",
-           		"abilityCooldown": "4",
-				"abilityDesc": "All allies gain 40% Turn Meter, Clone allies gain Tenacity Up for 1 turn and Jedi allies gain Protection Recharge (35%) for 2 turns."
-			}	            
-		}
-	},
-	{
-		"name" : "Poe Dameron's X-wing",
-		"aliases" : ["Poe", "Black Leader", "Poe Damerons XWing", "XWing", "X Wing"],
-		"crew" : ["Poe Dameron"],
-		"url" : "https://swgoh.gg/units/ships/poe-damerons-x-wing/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_blackone.png",
-		"side": "light",
-		"factions" : ["resistance", "attacker"],
-		"abilities": {
-        	"Cover All Angles": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy.  Target Lock: Daze the target for 2 turns."
+    {
+        "name" : "Resistance X-wing",
+        "aliases" : ["Resistance XWing", "XWing", "X Wing", "R1"],
+        "crew" : ["Resistance Pilot"],
+        "url" : "https://swgoh.gg/units/ships/resistance-x-wing/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_resistance.png",
+        "side": "light",
+        "factions" : ["support", "resistance"],
+        "abilities": {
+            "Hot Pursuit": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy.  Target Lock: Expose the target for 2 turns."
+            },
+            "Dissarray": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Daze target enemy for 2 turns and remove 31% turn meter with a 35% chance to apply these effects to a second target."
+            },
+            "I'm On It": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to the target enemy and inflict Target Lock for 2 turns, with a 55% chance to also Expose them for 2 turns."
+            }
+        }
     },
-    		"Bolt From The Blue": {
-    	   		"type": "Special",
-       			"abilityCooldown": "7",
-       			"abilityDesc": "Poe's X-Wing gains Offense Up and Foresight for 3 turns, as well as, 46% turn meter and 35% Protection."
+    {
+        "name" : "Rex's ARC-170",
+        "aliases" : ["Rex", "ARC", "Rexs ARC170"],
+        "crew" : ["CT-7567 Rex"],
+        "url" : "https://swgoh.gg/units/ships/rexs-arc-170/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_arc170_02.png",
+        "side": "light",
+        "factions" : ["galactic republic", "tank", "clone trooper"],
+        "abilities": {
+            "Hair Trigger": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy and inflict Target Lock for 2 turns if they have no buffs or debuffs; otherwise remove 10% turn meter."
+            },
+            "Ready And Able": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Republic allies have +10% tenacity.  Whenever an ally resists and effect, all other allies recover 19% protection."
+            },
+            "Republic Coordination": {
+                "type": "Crew",
+                "abilityCooldown": "6",
+                "abilityDesc": "Rex's ARC-170 and another target ally gain 50% turn meter and recover 50% protection.  This ability's cooldown is reduced by 1 for each other Republic ally."
+            }
+        }
     },
-    		"Perfect Shot": {
-           		"type": "Crew",
-           		"abilityCooldown": "4",
-				"abilityDesc": "Deal physical damage to target enemy.  This attack can't be evaded and always scores a Critical Hit against enemies without protection."
-			}	            
-		}
-	},
-	{
-		"name" : "Resistance X-wing",
-		"aliases" : ["Resistance XWing", "XWing", "X Wing", "R1"],
-		"crew" : ["Resistance Pilot"],
-		"url" : "https://swgoh.gg/units/ships/resistance-x-wing/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_resistance.png",
-		"side": "light",
-		"factions" : ["support", "resistance"],
-		"abilities": {
-        	"Hot Pursuit": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy.  Target Lock: Expose the target for 2 turns."
+    {
+        "name" : "Scimitar",
+        "aliases" : ["Maul", "Scimitar"],
+        "crew" : ["Darth Maul"],
+        "url" : "https://swgoh.gg/units/ships/scimitar/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_sithinfiltrator.png",
+        "side": "dark",
+        "factions" : ["sith", "support"],
+        "abilities": {
+            "Dread Cannons": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy. If the Scimitar is stealthed remove 80% turn meter and lose stealth."
+            },
+            "Lurking Threat": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Stealthed allies have +32.5% offense.  In addition, whenever an enemy reinforces, the Scimitar inflicts Target Lock on them for 2 turns."
+            },
+            "Slip Through": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Target ally gains Protection Up (50%) and Retribution for 2 turns and all other allies gain stealth for 2 turns."
+            }
+        }
     },
-    		"Dissarray": {
-    	   		"type": "Special",
-       			"abilityCooldown": "4",
-       			"abilityDesc": "Daze target enemy for 2 turns and remove 31% turn meter with a 35% chance to apply these effects to a second target."
+    {
+        "name" : "Slave-I",
+        "aliases" : ["Slave", "Slave I", "Boba", "Boba Fett", "Fett"],
+        "crew" : ["Boba Fett"],
+        "url" : "https://swgoh.gg/units/ships/slave-i/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_slave1.png",
+        "side": "dark",
+        "factions" : ["attacker", "scoundrel"],
+        "abilities": {
+            "Rotating Twin Blaster Cannons": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy with a 55% chance each to damage them a second and third time.  Each hit has a 55% chance to inflict Target Lock for 2 turns, but hits after the first deal 75% less damage.  Target Lock:  Gain 20% turn meter on each critical hit."
+            },
+            "Seismic Charge": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to all enemies, plus bonus damage equal to 30% of their maximum health.  This attack ignores armor and protection.  This ability starts on cooldown."
+            },
+            "Proton Torpedoes": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to target enemy and all Target Locked enemies, and inflict Ability Block for 1 turn on all affected targets."
+            }
+        }
     },
-    		"I'm On It": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Deal physical damage to the target enemy and inflict Target Lock for 2 turns, with a 55% chance to also Expose them for 2 turns."
-			}	            
-		}
-	},
-	{
-		"name" : "Rex's ARC-170",
-		"aliases" : ["Rex", "ARC", "Rexs ARC170"],
-		"crew" : ["CT-7567 Rex"],
-		"url" : "https://swgoh.gg/units/ships/rexs-arc-170/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_arc170_02.png",
-		"side": "light",
-		"factions" : ["galactic republic", "tank", "clone trooper"],
-		"abilities": {
-        	"Hair Trigger": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy and inflict Target Lock for 2 turns if they have no buffs or debuffs; otherwise remove 10% turn meter."
+    {
+        "name" : "Sun Fac's Genosian Starfighter",
+        "aliases" : ["Sun Fac", "Geonosian Starfighter", "Geonosian", "Sun Fac's Genosian Starfighter"],
+        "crew" : ["Sun Fac"],
+        "url" : "https://swgoh.gg/units/ships/sun-facs-geonosian-starfighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_sunfac.png",
+        "side": "dark",
+        "factions" : ["separatist", "tank", "genosian"],
+        "abilities": {
+            "Air Superiority": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy.  If attacking out of turn also inflict Target Lock for 2 turns."
+            },
+            "Wings of the Republic": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever a buffed enemy starts their turn, Sun Fac's Genosian Starfighter gains 25% turn meter, 40% defense and taunt until the end of that enemy's turn."
+            },
+            "Prime Target": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal physical damage to target enemy.  If the target is buffed also stun them for 1 turn."
+            }
+        }
     },
-    		"Ready And Able": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Republic allies have +10% tenacity.  Whenever an ally resists and effect, all other allies recover 19% protection."
+    {
+        "name" : "Tie Advanced",
+        "aliases" : ["Tie Advanced", "x1", "Darth Vader", "Vader"],
+        "crew" : ["Darth Vader"],
+        "url" : "https://swgoh.gg/units/ships/tie-advanced-x1/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tieadvanced.png",
+        "side": "dark",
+        "factions" : ["empire", "attacker", "sith"],
+        "abilities": {
+            "Deadly Accuracy": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy and inflict Target Lock for 2 turns.  This attack can't be resisted for evaded.  Target Lock: Inflict 2 Damage over Time effects for 3 turns."
+            },
+            "Advanced Targeting System": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Target Locked enemies have -20% tenacity and immediately regain Target Lock for 2 turns whenever Target Lock expires on them.  In addition, Empire allies gain 10% turn meter whenever they attack a Target Locked enemy."
+            },
+            "I Have You Now": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Inflict Evasion Down and Ability Block on target enemy for 2 turns then gain 25% turn meter for each debuff on that enemy.  Target Lock:  Dispel all buffs and remove 100% turn meter."
+            }
+        }
     },
-    		"Republic Coordination": {
-           		"type": "Crew",
-           		"abilityCooldown": "6",
-				"abilityDesc": "Rex's ARC-170 and another target ally gain 50% turn meter and recover 50% protection.  This ability's cooldown is reduced by 1 for each other Republic ally."
-			}	            
-		}
-	},
-	{
-		"name" : "Scimitar",
-		"aliases" : ["Maul", "Scimitar"],
-		"crew" : ["Darth Maul"],
-		"url" : "https://swgoh.gg/units/ships/scimitar/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_sithinfiltrator.png",
-		"side": "dark",
-		"factions" : ["sith", "support"],
-		"abilities": {
-        	"Dread Cannons": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy. If the Scimitar is stealthed remove 80% turn meter and lose stealth."
+    {
+        "name" : "Tie Reaper",
+        "aliases" : ["Tie Reaper", "Reaper", "Death Trooper", "Shore Trooper"],
+        "crew" : ["Death Trooper", "Shore Trooper"],
+        "url" : "https://swgoh.gg/units/ships/tie-reaper/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiereaper.png",
+        "side": "dark",
+        "factions" : ["empire", "support"],
+        "abilities": {
+            "Defensive Battery": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy and inflict Offense Down for 1 turn if that enemy has no debuffs.  This effect can't be resisted by Rebels."
+            },
+            "Grim Voyage": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "The enemy Capital Ship loses 35% turn meter whenever any ship is defeated."
+            },
+            "Heavy Interference": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal physical damage to target enemy and dispel all buffs from them.  If that enemy had no buffs, increase their cooldowns by 1 and remove 50% turn meter.  These effects can't be resisted.  If this attack removes any turn meter it deals 1% more damage for each 1% turn meter removed."
+            },
+            "Imperial Support": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "ITE Reaper and target ally gain Defense Up and Protection Up (30%) for 2 turns.  If that ally is Empire, they receive an additional 20% Protection Up."
+            }
+        }
     },
-    		"Lurking Threat": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Stealthed allies have +32.5% offense.  In addition, whenever an enemy reinforces, the Scimitar inflicts Target Lock on them for 2 turns."
+    {
+        "name" : "Umbaran Starfighter",
+        "aliases" : ["Umbaran Starfighter", "Umbaran", "Fives"],
+        "crew" : ["CT-5555 Fives"],
+        "url" : "https://swgoh.gg/units/ships/umbaran-starfighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_umbaran_star_fighter.png",
+        "side": "light",
+        "factions" : ["galactic replublic", "tank", "clone trooper"],
+        "abilities": {
+            "Plasma Weapons": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy with a 100% chance to inflict Offense Down and Defense Down for 2 turns.  Target Lock: Dispel all positive status effects on target."
+            },
+            "Reckless Piloting": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever Umbaran Starfighter attacks it gains 20% turn meter and the target gains 25% turn meter."
+            },
+            "Umbaran Missle Pods": {
+                "type": "Crew",
+                "abilityCooldown": "5",
+                "abilityDesc": "Inflict Target Lock for 2 turns on target enemy (can't be resisted), then deal physical damage to each Target Locked enemy.  This attack deals +20% damage for each Target Locked enemy."
+            }
+        }
     },
-    		"Slip Through": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Target ally gains Protection Up (50%) and Retribution for 2 turns and all other allies gain stealth for 2 turns."
-			}	            
-		}
-	},
-	{
-		"name" : "Slave-I",
-		"aliases" : ["Slave", "Slave I", "Boba", "Boba Fett", "Fett"],
-		"crew" : ["Boba Fett"],
-		"url" : "https://swgoh.gg/units/ships/slave-i/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_slave1.png",
-		"side": "dark",
-		"factions" : ["attacker", "scoundrel"],
-		"abilities": {
-        	"Rotating Twin Blaster Cannons": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy with a 55% chance each to damage them a second and third time.  Each hit has a 55% chance to inflict Target Lock for 2 turns, but hits after the first deal 75% less damage.  Target Lock:  Gain 20% turn meter on each critical hit."
-    },
-    		"Seismic Charge": {
-    	   		"type": "Special",
-       			"abilityCooldown": "3",
-       			"abilityDesc": "Deal physical damage to all enemies, plus bonus damage equal to 30% of their maximum health.  This attack ignores armor and protection.  This ability starts on cooldown."
-    },
-    		"Proton Torpedoes": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Deal physical damage to target enemy and all Target Locked enemies, and inflict Ability Block for 1 turn on all affected targets."
-			}	            
-		}
-	},
-	{
-		"name" : "Sun Fac's Genosian Starfighter",
-		"aliases" : ["Sun Fac", "Geonosian Starfighter", "Geonosian", "Sun Fac's Genosian Starfighter"],
-		"crew" : ["Sun Fac"],
-		"url" : "https://swgoh.gg/units/ships/sun-facs-geonosian-starfighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_geonosis_fighter_sunfac.png",
-		"side": "dark",
-		"factions" : ["separatist", "tank", "genosian"],
-		"abilities": {
-        	"Air Superiority": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy.  If attacking out of turn also inflict Target Lock for 2 turns."
-    },
-    		"Wings of the Republic": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Whenever a buffed enemy starts their turn, Sun Fac's Genosian Starfighter gains 25% turn meter, 40% defense and taunt until the end of that enemy's turn."
-    },
-    		"Prime Target": {
-           		"type": "Crew",
-           		"abilityCooldown": "4",
-				"abilityDesc": "Deal physical damage to target enemy.  If the target is buffed also stun them for 1 turn."
-			}	            
-		} 
-	},
-	{
-		"name" : "Tie Advanced",
-		"aliases" : ["Tie Advanced", "x1", "Darth Vader", "Vader"],
-		"crew" : ["Darth Vader"],
-		"url" : "https://swgoh.gg/units/ships/tie-advanced-x1/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tieadvanced.png",
-		"side": "dark",
-		"factions" : ["empire", "attacker", "sith"],
-		"abilities": {
-        	"Deadly Accuracy": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy and inflict Target Lock for 2 turns.  This attack can't be resisted for evaded.  Target Lock: Inflict 2 Damage over Time effects for 3 turns."
-    },
-    		"Advanced Targeting System": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Target Locked enemies have -20% tenacity and immediately regain Target Lock for 2 turns whenever Target Lock expires on them.  In addition, Empire allies gain 10% turn meter whenever they attack a Target Locked enemy."
-    },
-    		"I Have You Now": {
-           		"type": "Crew",
-           		"abilityCooldown": "4",
-				"abilityDesc": "Inflict Evasion Down and Ability Block on target enemy for 2 turns then gain 25% turn meter for each debuff on that enemy.  Target Lock:  Dispel all buffs and remove 100% turn meter."
-			}	            
-		} 
-	},
-	{
-		"name" : "Tie Reaper",
-		"aliases" : ["Tie Reaper", "Reaper", "Death Trooper", "Shore Trooper"],
-		"crew" : ["Death Trooper", "Shore Trooper"],
-		"url" : "https://swgoh.gg/units/ships/tie-reaper/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiereaper.png",
-		"side": "dark",
-		"factions" : ["empire", "support"],
-		"abilities": {
-        	"Defensive Battery": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy and inflict Offense Down for 1 turn if that enemy has no debuffs.  This effect can't be resisted by Rebels."
-    },
-    		"Grim Voyage": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "The enemy Capital Ship loses 35% turn meter whenever any ship is defeated."
-    },
-    		"Heavy Interference": {
-           		"type": "Crew",
-           		"abilityCooldown": "3",
-				"abilityDesc": "Deal physical damage to target enemy and dispel all buffs from them.  If that enemy had no buffs, increase their cooldowns by 1 and remove 50% turn meter.  These effects can't be resisted.  If this attack removes any turn meter it deals 1% more damage for each 1% turn meter removed."
-	},		
-			"Imperial Support": {
-				"type": "Crew",
-				"abilityCooldown": "3",
-				 "abilityDesc": "ITE Reaper and target ally gain Defense Up and Protection Up (30%) for 2 turns.  If that ally is Empire, they receive an additional 20% Protection Up."			
-			}	            
-		}
-	},
-	{
-		"name" : "Umbaran Starfighter",
-		"aliases" : ["Umbaran Starfighter", "Umbaran", "Fives"],
-		"crew" : ["CT-5555 Fives"],
-		"url" : "https://swgoh.gg/units/ships/umbaran-starfighter/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_umbaran_star_fighter.png",
-		"side": "light",
-		"factions" : ["galactic replublic", "tank", "clone trooper"],
-		"abilities": {
-        	"Plasma Weapons": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy with a 100% chance to inflict Offense Down and Defense Down for 2 turns.  Target Lock: Dispel all positive status effects on target."
-    },
-    		"Reckless Piloting": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Whenever Umbaran Starfighter attacks it gains 20% turn meter and the target gains 25% turn meter."
-    },
-    		"Umbaran Missle Pods": {
-           		"type": "Crew",
-           		"abilityCooldown": "5",
-				"abilityDesc": "Inflict Target Lock for 2 turns on target enemy (can't be resisted), then deal physical damage to each Target Locked enemy.  This attack deals +20% damage for each Target Locked enemy."
-			}	            
-		} 
-	},
-	{
-		"name" : "Wedge Antilles's X-Wing",
-		"aliases" : ["Red Two", "Wedge", "X Wing", "XWing", "Wedge Antilless XWing"],
-		"crew" : ["Wedge Antilles"],
-		"url" : "https://swgoh.gg/units/ships/wedge-antilless-x-wing/",
-		"avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_red2.png",
-		"side": "light",
-		"factions" : ["rebel", "attacker"],
-		"abilities": {
-        	"KX9 Laser Cannons": {
-            	"type": "Basic",
-            	"abilityCooldown": "0",
-            	"abilityDesc": "Deal physical damage to target enemy.  In addition, inflict 2 Damage Over Time effects for 2 turns on a critical hit."
-    },
-    		"Lead The Way": {
-    	   		"type": "Unique",
-       			"abilityCooldown": "0",
-       			"abilityDesc": "Wedge's X-Wing gains 25% turn meter whenever it attacks out of turn."
-    },
-    		"Eyes On The Breach": {
-           		"type": "Crew",
-           		"abilityCooldown": "4",
-				"abilityDesc": "Deal physical damage to target enemy.  Deals 10% additonal damage for each detrimental effect on the target.  Target Lock: Inflict 3 Damage Over Time effects for 2 turns."
-			}	            
-		} 
-	}
+    {
+        "name" : "Wedge Antilles's X-Wing",
+        "aliases" : ["Red Two", "Wedge", "X Wing", "XWing", "Wedge Antilless XWing"],
+        "crew" : ["Wedge Antilles"],
+        "url" : "https://swgoh.gg/units/ships/wedge-antilless-x-wing/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_xwing_red2.png",
+        "side": "light",
+        "factions" : ["rebel", "attacker"],
+        "abilities": {
+            "KX9 Laser Cannons": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy.  In addition, inflict 2 Damage Over Time effects for 2 turns on a critical hit."
+            },
+            "Lead The Way": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Wedge's X-Wing gains 25% turn meter whenever it attacks out of turn."
+            },
+            "Eyes On The Breach": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal physical damage to target enemy.  Deals 10% additonal damage for each detrimental effect on the target.  Target Lock: Inflict 3 Damage Over Time effects for 2 turns."
+            }
+        }
+    }
 ]

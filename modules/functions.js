@@ -62,6 +62,21 @@ module.exports = (client) => {
         return chars;
     };
 
+    // And this one is for ships
+    client.findShip = (searchName, shipList) => {
+        const ships = [];
+        searchName = searchName.toLowerCase().replace(/[^\w\s]/gi, '');
+        for (var ix = 0; ix < shipList.length; ix++) {
+            var ship = shipList[ix];
+            for (var jx = 0; jx < ship.aliases.length; jx++) {
+                if (searchName.toLowerCase() === ship.aliases[jx].toLowerCase()) {
+                    ships.push(ship);
+                }
+            }
+        }
+        return ships;
+    };
+
     /*
      * LOGGING FUNCTION
      * Logs to console. Future patches may include time+colors

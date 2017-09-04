@@ -2,6 +2,7 @@
 	"ownerid": "YourUserID",
     "prefix": "YourPrefixGoesHere",
     "token": "YourTokenGoesHere",
+    "enableSite": false,
     "defaultSettings": {
         "adminRole": ["Administrator"],
         "enableWelcome": false,
