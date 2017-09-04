@@ -42,19 +42,13 @@ exports.run = (client, message, args) => {
             "name": 'Factions',
             "value": ship['factions'].join(', ')
         });
-        var abilityString = '';
         for(var ability in ship.abilities) {
             const abilities = ship.abilities[ability]
             fields.push({
                 "name": ability,
                 "value": `**Ability Type:** ${abilities.type}   **Ability Cooldown:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`
             });
-            // abilityString += `__**${ability}**__ \n**Ability Type:** ${abilities.type}   **Ability Cooldown:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}\n\n`;
         }
-        // fields.push({
-        //     "name": 'Abilities',
-        //     "value": abilityString
-        // });
         message.channel.send({
             embed: {
                 "color": `${ship.side === "light" ? 0x5114e0 : 0xe01414}`,
@@ -67,7 +61,19 @@ exports.run = (client, message, args) => {
             }
         });
     } else { // Embeds are disabled
-        return message.channel.send(` * ${ship.name} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`, { code: 'md' });
+        let shipString = '';
+
+        shipString += ` * ${ship.name} *\n`;
+        shipString += `Crew: ${ship.crew.join(', ')}\n`;
+        shipString += `Factions: ${ship.factions.join(', ')}\n\n`;
+        shipString += ` * Abilities *\n`;
+    
+        for(var ability in ship.abilities) {
+            const abilities = ship.abilities[ability]
+            shipString += `### ${ability} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`;
+        }
+
+        return message.channel.send(shipString, { code: 'md', split: true });
     }
 };
 
