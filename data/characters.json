@@ -7870,6 +7870,130 @@
     }
 },
 {
+    "name": "Veteran Smuggler Chewbacca",
+    "aliases": ["Veteran Smuggler Chewbacca", "Veteran Smuggler", "Veteran Chewbacca", "Chewbacca", "Chewie"],
+    "url": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
+    "avatarURL": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
+    "side": "light",
+    "factions": ["attacker", "scoundrel"],
+    "mods": {
+        "Arena": {
+            "sets": [
+                "Offense x4",
+                "Potency x2",
+                ""
+            ],
+            "square": "Offense",
+            "arrow": "Offense/ Speed",
+            "diamond": "Defense",
+            "triangle": "Offense/ Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense/ Potency"
+        }
+    },
+    "gear": {
+        "Gear 1": [],
+        "Gear 2": [],
+        "Gear 3": [],
+        "Gear 4": [],
+        "Gear 5": [],
+        "Gear 6": [],
+        "Gear 7": [],
+        "Gear 8": [],
+        "Gear 9": [],
+        "Gear 10":[],
+        "Gear 11":[]
+    },
+    "abilities": {
+        "Explosive Bolts" :{
+            "type": "Basic",
+            "abilityCooldown": "0",
+            "abilityDesc": "Deal Physical damage to target enemy with 80% chance to inflict Daze for 2 turns.",
+            "tier": "omega"
+        },
+        "Furious Blow": {
+            "type": "Special",
+            "abilityCooldown": "3",
+            "abilityDesc": "Deal Physical damage to target enemy. Dispel all buffs on them and Stun them for 1 turn. Inflict Speed Down on all enemies for 2 turns.",
+            "tier": "omega"
+        },
+        "Partner In Crime": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "Chewbacca has 25% Critical Chance and +50% Health Steal. When Veteran Smuggler Han Solo takes damage, Chewbacca gains 20% Critical Damage (stacking) until he scores a Critical Hit. When Veteran Smuggler Han Solo is defeated, Chewbacca gains 100% Turn Meter, his cooldowns are reset, and he takes additional turn after his next turn.",
+            "tier": "omega"
+        },
+        "Let the Wookiee Win": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "At the start of each enemy turn, Chewbacca gains 12% Offense (stacking) until he uses 2 abilities.",
+            "tier": "zeta"
+        }
+    }
+},
+{
+    "name": "Veteran Smuggler Han Solo",
+    "aliases": ["Veteran Smuggler Han Solo", "Veteran Smuggler", "Veteran Han Solo", "Han Solo", "Han", "Solo"],
+    "url": "https://swgoh.gg/characters/veteran-smuggler-han-solo/",
+    "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tfa_han.png",
+    "side": "light",
+    "factions": ["attacker", "scoundrel"],
+    "mods": {
+        "Arena": {
+            "sets": [
+                "Critical Damage x4",
+                "Potency x2",
+                ""
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance/ Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency/ Protection"
+        }
+    },
+    "gear": {
+        "Gear 1": [],
+        "Gear 2": [],
+        "Gear 3": [],
+        "Gear 4": [],
+        "Gear 5": [],
+        "Gear 6": [],
+        "Gear 7": [],
+        "Gear 8": [],
+        "Gear 9": [],
+        "Gear 10":[],
+        "Gear 11":[]
+    },
+    "abilities": {
+        "Trueshot": {
+            "type": "Basic",
+            "abilityCooldown": "0",
+            "abilityDesc": "Deal Physical damage to target enemy with 50% chance to attack again. The chance is doubled if the target is debuffed. Han inflicts Stagger for 2 turns when he attacks again.",
+            "tier": "omega"
+        },
+        "Can I Try That?": {
+            "type": "Special",
+            "abilityCooldown": "3",
+            "abilityDesc": "Deal Physical damage to all enemies. Stun the primary target for 1 turn with 80% chance to inflict Ability Block on all enemies for 1 turn.",
+            "tier": "omega"
+        },
+        "Partner In Crime": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "Han has +25% Critical Chance and +50% Health Steal. When Veteran Smuggler Chewbacca takes damage, Han gains 20% Critical Damage (stacking) until he scores a Critical Hit. When Veteran Smuggler Chewbacca is defeated, Han gains 100% Turn Meter, his cooldowns are reset, and he takes an additional turn after his next turn.",
+            "tier": "omega"
+        },
+        "Swindle": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "When an enemy gains a buff, Han gains 25% Counter Chance (stacking) until the end of his next turn. When Han gains a debuff, he gains 50% Defense (stacking) until the end of his next turn. When Han gains any status effect, he gains 50 Armor Penetration (stacking) until the end of his next turn.",
+            "tier": "zeta"
+        }
+    }
+},
+{
     "name": "Wedge Antilles",
     "aliases": ["Wedge Antilles", "Wedge", "Wiggs"],
     "url": "https://swgoh.gg/characters/wedge-antilles/",
