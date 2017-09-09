@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
-const PersistentCollection = require("djs-collection-persistent");
+const EnMap = require("enmap");
 const client = new Discord.Client();
 var moment = require('moment-timezone');
 var fs = require("fs");
@@ -19,11 +19,11 @@ client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
 
 require("./modules/functions.js")(client);
 
-client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
+client.commands = new EnMap();
+client.aliases = new EnMap();
 
-client.guildSettings = new PersistentCollection({name: 'guildSettings'});
-client.guildEvents = new PersistentCollection({name: 'guildEvents'});
+client.guildSettings = new EnMap({name: 'guildSettings'});
+client.guildEvents = new EnMap({name: 'guildEvents'});
 
 const init = async () => {
 

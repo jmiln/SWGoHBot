@@ -863,7 +863,34 @@
             "triangle": "Crit. Dmg",
             "circle": "Health",
             "cross": "Health"
+        },
+        "Arena 2": {
+            "sets": [
+                "Critical Damage x4",
+                "Critical Chance x2",
+                ""
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Dmg",
+            "circle": "Protection",
+            "cross": "Potency/ Protection"
+        },
+        "Territory Battles": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         }
+
     },
     "gear": {
         "Gear 1": [],
@@ -7337,7 +7364,7 @@
 },
 {
     "name": "Stormtrooper Han",
-    "aliases": ["Stormtrooper Han", "STHan", "st han"],
+    "aliases": ["Stormtrooper Han", "STHan", "ST Han", "Han", "Han Solo"],
     "url": "https://swgoh.gg/characters/stormtrooper-han/",
     "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm_han.png",
     "side": "light",

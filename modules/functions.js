@@ -184,12 +184,13 @@ module.exports = (client) => {
         const errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, "g"), "./");
         console.error(`[${client.myTime()}] Uncaught Exception: `, errorMsg);
 
-        // If it detects that, make it reboot... Really not the best 
-        // option, but at least it'll come back up for a while this way
-        if (errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
-            client.destroy();
-            process.exit();
+        // If it's that error, don't bother showing it again
+        if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
+            // client.channels.get("356111780579115010").send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
         }
+        // Always best practice to let the code crash on uncaught exceptions. 
+        // Because you should be catching them anyway.
+        process.exit(1);
     });
 
     process.on("unhandledRejection", err => {
