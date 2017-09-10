@@ -104,6 +104,14 @@ exports.run = (client, message, args, level) => {
                 return message.channel.send(`You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`).then(msg => msg.delete(10000)).catch(console.error);
             }
 
+            var announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
+            if (announceChannel) {
+                guildEvents.set(message.guild.id, events);
+                return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
+            } else {
+                return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`).then(msg => msg.delete(10000)).catch(console.error);
+            }
+
             const newEvent = {
                 "eventDay": eventDay,
                 "eventTime": eventTime,
@@ -117,16 +125,7 @@ exports.run = (client, message, args, level) => {
             };
 
             // client.log('EVENT-CREATE', `Creating event from message: ${message.content} \n\n${util.inspect(newEvent)}`)
-
             events[eventName] = newEvent;
-
-            var announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
-            if (announceChannel) {
-                guildEvents.set(message.guild.id, events);
-                return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
-            } else {
-                return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`).then(msg => msg.delete(10000)).catch(console.error);
-            }
         } case "view": {
             const array = [];
             if (events) {
