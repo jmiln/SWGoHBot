@@ -45,7 +45,7 @@ exports.run = (client, message, args, level) => {
             const minArgs = minimist(args, {default: {repeat: '0', channel: ''}});
             args = minArgs['_'];    // The args without the repeat var in there
             let repeatTime = String(minArgs['repeat']);
-            const eventChan = String(minArgs['channel']);
+            let eventChan = String(minArgs['channel']);
             const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
             
             // If the repeat is set to something other than default, try to parse it
@@ -62,6 +62,7 @@ exports.run = (client, message, args, level) => {
             } 
 
             // If the event channel is something other than default, check to make sure it works, then set it
+            const announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
             if (eventChan !== '') {
                 const checkChan = message.guild.channels.find('name', eventChan);
                 if (!checkChan) {   // Make sure it's a real channel
@@ -69,6 +70,8 @@ exports.run = (client, message, args, level) => {
                 } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {   // Make sure it can send messages there
                     return message.channel.send(`I don't have permission to send messages in ${checkChan}, please choose one where I can`).then(msg => msg.delete(10000));
                 } 
+            } else if (!announceChannel) {
+                return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`).then(msg => msg.delete(10000)).catch(console.error);
             }
             
             if (!args[1]) return message.channel.send(`You must give a name for your event.`).then(msg => msg.delete(10000)).catch(console.error);
@@ -104,13 +107,6 @@ exports.run = (client, message, args, level) => {
                 return message.channel.send(`You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`).then(msg => msg.delete(10000)).catch(console.error);
             }
 
-            var announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
-            if (announceChannel) {
-                guildEvents.set(message.guild.id, events);
-                return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
-            } else {
-                return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`).then(msg => msg.delete(10000)).catch(console.error);
-            }
 
             const newEvent = {
                 "eventDay": eventDay,
@@ -123,23 +119,27 @@ exports.run = (client, message, args, level) => {
                     "repeatMin": repeatMin
                 }
             };
-
-            // client.log('EVENT-CREATE', `Creating event from message: ${message.content} \n\n${util.inspect(newEvent)}`)
             events[eventName] = newEvent;
+            guildEvents.set(message.guild.id, events);
+            return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
         } case "view": {
+            let option = "";
+            if(args[1]) option = args[1];
             const array = [];
             if (events) {
                 for (var key in events) {
                     let event = events[key];
                     var eventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
                     var eventString = `**${key}:**\nEvent Time: ${eventDate}\n`;
-                    if (events.eventChan !== '') {
+                    if (event.eventChan !== '') {
                         eventString += `Sending on channel: ${event.eventChan}\n`;
                     }
                     if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                         eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
                     }
-                    eventString += `Event Message: ${event.eventMessage}`;
+                    if(['min', 'minimal', 'minimized'].indexOf(option) <= -1) {
+                        eventString += `Event Message: ${event.eventMessage}`;
+                    }
                     array.push(eventString);
                 }
                 var eventKeys = array.join('\n\n');

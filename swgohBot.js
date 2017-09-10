@@ -22,8 +22,8 @@ require("./modules/functions.js")(client);
 client.commands = new EnMap();
 client.aliases = new EnMap();
 
-client.guildSettings = new EnMap({name: 'guildSettings'});
-client.guildEvents = new EnMap({name: 'guildEvents'});
+client.guildSettings = new EnMap({name: 'guildSettings', persistent: true});
+client.guildEvents = new EnMap({name: 'guildEvents', persistent: true});
 
 const init = async () => {
 
