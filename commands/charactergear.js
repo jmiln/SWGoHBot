@@ -11,11 +11,12 @@ exports.run = (client, message, args) => {
 
     // Figure out where the gear level is in the command, and grab it
     let gearLvl = '';
-    if (gearLevels.includes(args[0])) {
-        gearLvl = 'Gear ' + args[0].replace(/\D/g, '');
+    let arg0 = args[0].toLowerCase();
+    if (gearLevels.includes(arg0)) {
+        gearLvl = 'Gear ' + arg0.replace(/\D/g, '');
         args.splice(0, 1);
-    } else if (gearLevels.includes(args[args.length - 1])) {
-        gearLvl = 'Gear ' + args[args.length - 1].replace(/\D/g, '');
+    } else if (gearLevels.includes(args[args.length - 1].toLowerCase())) {
+        gearLvl = 'Gear ' + args[args.length - 1].toLowerCase().replace(/\D/g, '');
         args.splice(-1, 1);
     }
 
@@ -97,7 +98,7 @@ exports.run = (client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['chargear'],
+    aliases: ['chargear', 'gear'],
     permLevel: 0
 };
 
