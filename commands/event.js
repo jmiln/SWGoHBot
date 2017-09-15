@@ -97,7 +97,23 @@ exports.run = (client, message, args, level) => {
             if (!args[4]) {
                 eventMessage = "";
             } else {
-                eventMessage = args.splice(4).join(" ");
+                let newArgs = message.content.split(' ');
+                let specialArgs = ['--channel', '--repeat'];
+                let newLen = newArgs.length;
+                for(var ix = 0; ix < newLen; ix++) {
+                    specialArgs.forEach(specA => {
+                        if(newArgs[ix].indexOf(specA) > -1) {
+                            newArgs[ix] = newArgs[ix].replace(specA, '');
+                            if(newArgs[ix+1].indexOf('\n') > -1) {
+                                newArgs[ix+1] = newArgs[ix+1].substring(newArgs[ix+1].indexOf('\n'));
+                            } else {
+                                newArgs.splice(ix+1, 1);
+                                newLen--;
+                            }
+                        }
+                    });
+                }
+                eventMessage = newArgs.splice(5).join(" ");
             }
 
             eventDate = moment.tz(`${eventDay} ${eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']);
@@ -184,7 +200,7 @@ exports.help = {
     name: 'event',
     category: 'Misc',
     description: 'Used to make or check an event',
-    usage: 'event <create|view|delete> <eventName> <eventDay> <eventTime> <eventMessage> [--repeat 00d00h00m] [--channel channelName]',
+    usage: 'event <create|view|delete> <eventName> <eventDay> <eventTime> [--repeat 00d00h00m] [--channel channelName] [eventMessage]',
     extended: `\`\`\`md
 create :: Create a new event listing.
     --repeat  :: Lets you set a duration. It will repeat after that time has passed.

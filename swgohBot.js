@@ -87,7 +87,7 @@ function checkDates() {
 
                 if (eventDate === nowDate) {
                     if (eventTime === nowTime) {
-                        var announceMessage = `Event alert for \`${key}\`.\n**Event Message:** ${event.eventMessage}`;
+                        var announceMessage = `**${key}**\n${event.eventMessage}`;
                         if (guildConf["announceChan"] != "") {
                             const thisGuild = client.guilds.get(g);
                             var channel = '';
