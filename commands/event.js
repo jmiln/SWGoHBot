@@ -200,7 +200,7 @@ exports.run = (client, message, args, level) => {
                 }
                 if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
                     try {
-                        return message.channel.send(announceMessage);
+                        return channel.send(announceMessage);
                     } catch (e) {
                         client.log('Event Broke!', announceMessage);
                     }
