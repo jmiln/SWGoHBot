@@ -9,7 +9,7 @@ exports.run = (client, message, args, level) => {
     const guildConf = guildSettings.get(message.guild.id);
     var events = guildEvents.get(message.guild.id);
 
-    const actions = ['create', 'view', 'delete', 'help'];
+    const actions = ['create', 'view', 'delete', 'help', 'trigger'];
 
     if (!events) {
         guildEvents.set(message.guild.id, {});
@@ -34,7 +34,7 @@ exports.run = (client, message, args, level) => {
     if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`).then(msg => msg.delete(10000)).catch(console.error);
     action = args[0].toLowerCase();
 
-    if (action === "create" || action === "delete") {
+    if (action === "create" || action === "delete" || action === "trigger") {
         if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn't be able to use these
             return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
         }
@@ -181,6 +181,30 @@ exports.run = (client, message, args, level) => {
                 delete events[eventName];
                 guildEvents.set(message.guild.id, events);
                 return message.channel.send(`Deleted event: ${eventName}`);
+            }
+        } case "trigger": {
+            if (!args[1]) return message.channel.send(`You must give an event name to delete.`).then(msg => msg.delete(10000)).catch(console.error);
+            eventName = args[1];
+
+            // Check if that name/ event already exists
+            if (!events.hasOwnProperty(eventName)) {
+                return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
+            } else {
+                var channel = '';
+                const event = events[eventName];
+                var announceMessage = `**${eventName}**\n${event.eventMessage}`;
+                if (event['eventChan'] && event.eventChan !== '') {  // If they've set a channel, try using it
+                    channel = message.guild.channels.find('name', event.eventChan);
+                } else { // Else, use the default one from their settings
+                    channel = thisGuild.channels.find('name', guildConf["announceChan"]);
+                }
+                if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
+                    try {
+                        return message.channel.send(announceMessage);
+                    } catch (e) {
+                        client.log('Event Broke!', announceMessage);
+                    }
+                }
             }
         }
         case "help": {
