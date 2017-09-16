@@ -183,7 +183,7 @@ exports.run = (client, message, args, level) => {
                 return message.channel.send(`Deleted event: ${eventName}`);
             }
         } case "trigger": {
-            if (!args[1]) return message.channel.send(`You must give an event name to delete.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (!args[1]) return message.channel.send(`You must give an event name to trigger.`).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
 
             // Check if that name/ event already exists
@@ -224,13 +224,14 @@ exports.help = {
     name: 'event',
     category: 'Misc',
     description: 'Used to make or check an event',
-    usage: 'event <create|view|delete> <eventName> <eventDay> <eventTime> [--repeat 00d00h00m] [--channel channelName] [eventMessage]',
+    usage: 'event <create|view|delete|trigger|help> <eventName> <eventDay> <eventTime> [--repeat 00d00h00m] [--channel channelName] [eventMessage]',
     extended: `\`\`\`md
 create :: Create a new event listing.
     --repeat  :: Lets you set a duration. It will repeat after that time has passed.
     --channel :: Lets you set a specific channel for the event to announce on.
 view   :: View your current event listings.
 delete :: Delete an event.
+trigger:: Trigger an event in the specified channel, leaves the event alone.
 help   :: Shows this message.\`\`\``,
     example: 'event create FirstEvent 7/2/2017 13:56 This is my event message'
 };
