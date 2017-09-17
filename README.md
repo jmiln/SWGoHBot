@@ -4,8 +4,9 @@
 This is a bot I made to make looking up recommended setups for the game more convenient, since so many people use Discord to communicate.
 It has since become so much more than I'd initially planned, and should become much more in time.
 
-If you want to invite the bot that I host, here's the link for that: [swgohbot.com/invite](swgohbot.com/invite)
-Or, if you have questions about anything, feel free to join the support server on Discord at [swgohbot.com/server](swgohbot.com/server)
+If you want to invite the bot that I host, here's the link for that: [swgohbot.com/invite](swgohbot.com/invite).
+
+Or, if you have questions about anything, feel free to join the support server on Discord at [swgohbot.com/server](swgohbot.com/server).
 
 ## Commands (So far)
 ```asciidoc
