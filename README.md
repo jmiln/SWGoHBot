@@ -42,7 +42,7 @@ Firstly, you'll need to set up the bot account, so you can get the token and suc
 https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
 
 In a command prompt in your projects folder (wherever that may be) run the following:
-`git clone git@github.com:JeffreyMilner/SWGoHBot.git`
+`git clone https://github.com/jmiln/SWGoHBot.git`
 
 Once finished: 
 - In the folder from where you ran the git command, run `cd SWGoHBot` and then run `npm install`
