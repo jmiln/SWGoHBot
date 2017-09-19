@@ -27,7 +27,7 @@ exports.run = (client, message, args, level) => {
     let eventDay = "";
     let eventTime = "";
     let eventMessage = "";
-    let repeatDay = 0; 
+    let repeatDay = 0;
     let repeatHour = 0;
     let repeatMin = 0;
 
@@ -47,7 +47,7 @@ exports.run = (client, message, args, level) => {
             let repeatTime = String(minArgs['repeat']);
             let eventChan = String(minArgs['channel']);
             const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
-            
+
             // If the repeat is set to something other than default, try to parse it
             if (repeatTime !== '0') {
                 if (repeatTime.match(timeReg)) {
@@ -59,7 +59,7 @@ exports.run = (client, message, args, level) => {
                 } else {
                     return message.channel.send(`The repeat is in the wrong format. Example: \`5d3h8m\` for 5 days, 3 hours, and 8 minutes`).then(msg => msg.delete(10000));
                 }
-            } 
+            }
 
             // If the event channel is something other than default, check to make sure it works, then set it
             const announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
@@ -69,11 +69,11 @@ exports.run = (client, message, args, level) => {
                     return message.channel.send(`This channel is invalid, please try again`).then(msg => msg.delete(10000));
                 } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {   // Make sure it can send messages there
                     return message.channel.send(`I don't have permission to send messages in ${checkChan}, please choose one where I can`).then(msg => msg.delete(10000));
-                } 
+                }
             } else if (!announceChannel) {
                 return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`).then(msg => msg.delete(10000)).catch(console.error);
             }
-            
+
             if (!args[1]) return message.channel.send(`You must give a name for your event.`).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
 
@@ -196,7 +196,7 @@ exports.run = (client, message, args, level) => {
                 if (event['eventChan'] && event.eventChan !== '') {  // If they've set a channel, try using it
                     channel = message.guild.channels.find('name', event.eventChan);
                 } else { // Else, use the default one from their settings
-                    channel = thisGuild.channels.find('name', guildConf["announceChan"]);
+                    channel = message.guild.channels.find('name', guildConf["announceChan"]);
                 }
                 if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
                     try {

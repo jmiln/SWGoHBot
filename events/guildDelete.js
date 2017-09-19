@@ -2,6 +2,7 @@
 module.exports = (client, guild) => {
     // The bot isn't in the server anymore, so get rid of the config
     client.guildSettings.delete(guild.id);
+    client.guildEvents.delete(guild.id);
 
     // Log that the bot left
     client.log('GuildDelete', `I left ${guild.name}(${guild.id})`);

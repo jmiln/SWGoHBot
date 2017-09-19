@@ -10,7 +10,7 @@ module.exports = (client, message) => {
     // Grab the settings for this server from the PersistentCollection
     // If there is no guild, get default conf (DMs)
     const guildSettings = message.guild ? client.guildSettings.get(message.guild.id) : client.config.defaultSettings;
-        
+
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.
     message.guildSettings = guildSettings;
@@ -20,7 +20,7 @@ module.exports = (client, message) => {
     if (message.content.indexOf(client.config.prefix) !== 0) return;
 
     // If we don't have permission to respond, don't bother
-    if(message.guild && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
+    if(message.guild && !message.channel.permissionsFor(message.guild.me).has(["READ_MESSAGES", "SEND_MESSAGES"])) return;
 
     // Here we separate our "command" name, and our "arguments" for the command.
     // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
@@ -33,7 +33,7 @@ module.exports = (client, message) => {
     const level = client.permlevel(message);
 
     // Check whether the command, or alias, exist in the collections defined
-    // in app.js.
+    // in swgohbot.js.
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
     // using this const varName = thing OR otherthing; is a pretty efficient
     // and clean way to grab one of 2 values!

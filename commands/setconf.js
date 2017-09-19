@@ -3,14 +3,11 @@ var moment = require('moment-timezone');
 exports.run = (client, message, args, level) => {
     const config = client.config;
     const guildSettings = client.guildSettings;
-
     const guildConf = message.guildSettings;
 
     if (guildConf) {
-        if (message.author.id !== message.guild.owner.id) {
-            if (level < this.conf.permLevel) {
-                return message.reply(`Sorry, but either you're not an admin, or your server leader has not set up the configs.`).then(msg => msg.delete(4000)).catch(console.error);
-            }
+        if (level < this.conf.permLevel) {
+            return message.reply(`Sorry, but either you're not an admin, or your server leader has not set up the configs.`).then(msg => msg.delete(4000)).catch(console.error);
         }
         if (!args[0]) return message.reply(`You must select a config option to change.`).then(msg => msg.delete(4000)).catch(console.error);
         const key = args[0].toLowerCase();

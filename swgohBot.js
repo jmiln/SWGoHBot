@@ -61,7 +61,6 @@ const init = async () => {
     // End top-level async/await function.
 
     // Start the site up
-
     if (client.config.enableSite) {
         site.initSite(client);
     }
