@@ -508,6 +508,74 @@
     }
 },
 {
+    "name": "BB-8",
+    "aliases": ["BB-8", "BB", "BB8"],
+    "url": "https://swgoh.gg/characters/bb-8/",
+    "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bb8.png",
+    "side": "light",
+    "factions": ["support", "resistance", "droid"],
+    "mods": {
+        "Arena": {
+            "sets": [
+                "TBA",
+                "TBA",
+                ""
+            ],
+            "square": "Offense",
+            "arrow": "TBA",
+            "diamond": "Defense",
+            "triangle": "TBA",
+            "circle": "TBA",
+            "cross": "TBA"
+        }
+    },
+    "gear": {
+        "Gear 1": [],
+        "Gear 2": [],
+        "Gear 3": [],
+        "Gear 4": [],
+        "Gear 5": [],
+        "Gear 6": [],
+        "Gear 7": [],
+        "Gear 8": [],
+        "Gear 9": [],
+        "Gear 10":[],
+        "Gear 11":[]
+    },
+    "abilities": {
+        "Arc Welder": {
+            "type": "Basic",
+            "abilityCooldown": "0",
+            "abilityDesc": "Deal Physical damage to target enemy and inflict Tenacity Down for 2 turns. If the target already had Tenacity Down, inflict Daze for 2 turns.",
+            "tier": "omega"
+        },
+        "Covert Data Transfer": {
+            "type": "Special",
+            "abilityCooldown": "0",
+            "abilityDesc": "BB-8 and a random ally who doesn't have it gain the Secret Intel unique buff for 3 turns. Then, BB-8 gains 8% Turn Meter for each ally with Secret Intel. If all active allies are Droids, BB-8 gains Taunt for 1 turn. Secret Intel: +25% Potency and when another ally uses a Special ability they gain Secret Intel for 3 turns, then the cooldown of Illuminated Destiny is reduced by 1 for each ally with Secret Intel.",
+            "tier": "omega"
+        },
+        "Illuminated Destiny": {
+            "type": "Special",
+            "abilityCooldown": "70",
+            "abilityDesc": "Dispel all debuffs on all allies and Expose all enemies for 2 turns. All allies gain 80% Turn Meter and gain Advantage, Critical Chance Up, Critical Damage Up, Offense Up, and Speed Up for 4 turns. Droid and Resistance allies recover 20% Protection. This ability starts on cooldown and can't be Evaded. Whenever a Droid ally scores a Critical Hit, reduce the cooldown of this ability by 1.",
+            "tier": "omega"
+        },
+        "Roll with the Punches": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "BB-8 has 80% Counter Chance. When BB-8 attacks out of turn, he calls a random Resistance ally to Assist.",
+            "tier": "zeta"
+        },
+        "Self-Preservation Protocol": {
+            "type": "Unique",
+            "abilityCooldown": "0",
+            "abilityDesc": "When BB-8 takes damage he has a 50% chance to gain Foresight for 2 turns. At the start of each encounter, if BB-8 is active, Droid allies gain 8% Turn Meter for each active Droid ally. When BB-8 Evades, Droid allies recover 8% Health and 8% Protection.",
+            "tier": "zeta"
+        }
+    }
+},
+{
     "name": "Biggs Darklighter",
     "aliases": ["Biggs Darklighter", "Biggs", "Wiggs"],
     "url": "https://swgoh.gg/characters/biggs-darklighter/",
