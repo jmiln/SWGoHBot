@@ -7064,7 +7064,7 @@
             "type": "Unique",
             "abilityCooldown": "0",
             "abilityDesc": "Whenever Savage takes damage, he gains Offense Up, Defense Up, and Heal Over Time for 2 turns and gains 30% Turn Meter. At the end of his turns, Savage Dispels all debuffs on a random other Sith ally and gains those debuffs for 1 turn. Dispel all debuffs from Savage whenever he is Critically Hit.",
-            "tier": "omega"
+            "tier": "zeta"
         }
     }
 },
