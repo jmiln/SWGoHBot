@@ -4,16 +4,16 @@ exports.run = (client, message, args) => {
 
 
     // The current possible gear levels
-    const gearLevels = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11',// 'g12',
+    const gearLevels = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11', 'g12',
         'gear1', 'gear2', 'gear3', 'gear4', 'gear5', 'gear6', 'gear7', 'gear8',
-        'gear9', 'gear10', 'gear11'//, 'gear12'
+        'gear9', 'gear10', 'gear11', 'gear12'
     ];
 
     // Figure out where the gear level is in the command, and grab it
     let gearLvl = '';
-    if(!args[0]) return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+    if (!args[0]) return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
 
-    let arg0 = args[0].toLowerCase();
+    const arg0 = args[0].toLowerCase();
     if (gearLevels.includes(arg0)) {
         gearLvl = 'Gear ' + arg0.replace(/\D/g, '');
         args.splice(0, 1);
