@@ -1597,7 +1597,7 @@
     },
     {
         "name": "Commander Luke Skywalker",
-        "aliases": ["Commander Luke Skywalker", "Luke Skywalker", "Luke", "CLS"],
+        "aliases": ["Commander Luke Skywalker", "Commander Luke", "Luke Skywalker", "Luke", "CLS"],
         "url": "https://swgoh.gg/characters/commander-luke-skywalker/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_lukebespin.png",
         "side": "light",
