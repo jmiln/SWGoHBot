@@ -15,23 +15,27 @@ Or, if you have questions about anything, feel free to join the support server o
 [Use ;help <commandname> for details]
 
 == Admin ==
-;nickname   :: Changes the bot's nickname on the server
-;stats      :: Shows the bot's stats
-;showconf   :: Shows the current configs for your server.
-;setconf    :: Used to set the bot's config settings.
+;nickname      :: Changes the bot's nickname on the server
+;setconf       :: Used to set the bot's config settings.
+;showconf      :: Shows the current configs for your server.
+;stats         :: Shows the bot's stats
 
 == Misc ==
-;event      :: Used to make or check an event
-;help       :: Displays info about available commands.
-;info       :: Shows useful links and recent changes.
-;time       :: Used to check the time with the guild's configured timezone
+;event         :: Used to make or check an event
+;help          :: Displays info about available commands.
+;info          :: Shows useful links and recent changes.
+;time          :: Used to check the time with the guild's configured timezone
 
 == Star Wars ==
-;raidteams  :: Shows some teams that work well for each raid.
-;modsets    :: Shows how many of each kind of mod you need for a set.
-;mods       :: Shows some suggested mods for the specified character.
-;faction    :: Shows the list of characters in the specified faction.
-;activities :: Shows the daily guild activites.
+;abilities     :: Shows the abilities for the specified character.
+;activities    :: Shows the daily guild activites.
+;challenges    :: Shows the daily guild challenges.
+;charactergear :: Shows the gear requirements for the specified character/ lvl.
+;faction       :: Shows the list of characters in the specified faction.
+;mods          :: Shows some suggested mods for the specified character.
+;modsets       :: Shows how many of each kind of mod you need for a set.
+;raidteams     :: Shows some teams that work well for each raid.
+;ships         :: Shows the info about the specified ship.
 ```
 
 ## Requirements
@@ -57,6 +61,7 @@ Once finished:
     "ownerid": "YourUserID",
     "prefix": "YourPrefixGoesHere",
     "token": "YourTokenGoesHere",
+    "enableSite": true,
     "defaultSettings": {
         "adminRole": "Administrator",
         "enableWelcome": false,

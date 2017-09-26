@@ -49,7 +49,11 @@ exports.run = (client, message, args) => {
                         "url": character.url,
                         "icon_url": character.avatarURL
                     },
-                    "fields": fields
+                    "fields": fields,
+                    "footer": { 
+                        "icon_url": 'https://cdn.discordapp.com/attachments/329514150105448459/361268366180352002/crouchingRancor.png',
+                        "text": "Mods via apps.crouchingrancor.com" 
+                    }
                 }
             });
         } else { // Embeds are disabled
