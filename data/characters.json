@@ -523,18 +523,44 @@
         "side": "light",
         "factions": ["support", "resistance", "droid"],
         "mods": {
-            "Arena": {
+            "HK-47 Lead - Damage": { 
                 "sets": [
-                    "TBA",
-                    "TBA",
+                    "Critical Damage x4", 
+                    "Critical Chance x2", 
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "TBA",
+                "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "TBA",
-                "circle": "TBA",
-                "cross": "TBA"
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense / Potency" 
+            },
+            "HK-47 Lead - Secret Intel Taunt": { 
+                "sets": [
+                    "Critical Damage x4", 
+                    "Critical Chance x2", 
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Protection",
+                "diamond": "Defense",
+                "triangle": "Protection",                                                                                                                                                                                                                      
+                "circle": "Protection",
+                "cross": "Protection" 
+            },
+            "Finn Lead": { 
+                "sets": [
+                    "Offense x4", 
+                    "Potency x2", 
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",                                                                                                                                                                                                                          
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense / Potency" 
             }
         },
         "gear": {
