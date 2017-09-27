@@ -61,7 +61,7 @@ Once finished:
     "ownerid": "YourUserID",
     "prefix": "YourPrefixGoesHere",
     "token": "YourTokenGoesHere",
-    "enableSite": true,
+    "enableSite": false,
     "defaultSettings": {
         "adminRole": "Administrator",
         "enableWelcome": false,
