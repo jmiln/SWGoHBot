@@ -4123,18 +4123,18 @@
         "side": "light",
         "factions": ["support", "jedi"],
         "mods": {
-            "Arena": {
-                "sets": [
-                    "N/A",
-                    "N/A",
-                    "N/A"
-                ],
-                "square": "N/A",
-                "arrow": "N/A",
-                "diamond": "N/A",
-                "triangle": "N/A",
-                "circle": "N/A",
-                "cross": "N/A"
+			"Arena": {
+				"sets": [ 
+					"Speed x4", 
+					"Health x2", 
+					""
+				],
+				"square": "Offense",
+				"arrow": "Speed",
+				"diamond": "Defense",
+				"triangle": "Health",
+				"circle": "Health",
+				"cross": "Health" 
             }
         },
         "gear": {
