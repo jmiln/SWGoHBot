@@ -26,7 +26,6 @@ client.guildSettings = new EnMap({name: 'guildSettings', persistent: true});
 client.guildEvents = new EnMap({name: 'guildEvents', persistent: true});
 
 const init = async () => {
-
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
@@ -59,6 +58,8 @@ const init = async () => {
     client.login(client.config.token);
 
     // End top-level async/await function.
+
+    // Check if the site needs to be loaded, and if so, do it 
     if (client.config.dashboard) {
         if (client.config.dashboard.enableSite) {
             // Start the site up

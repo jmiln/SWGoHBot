@@ -48,7 +48,7 @@ exports.initSite = function(client) {
         });
     });
 
-    // Commands page
+    // Commands page 
     app.get('/commands',function(req, res) {
         res.render('pages/commands', {
             page_name: 'commands',
@@ -56,17 +56,14 @@ exports.initSite = function(client) {
         });
     });
 
+    // The link to invite the bot
     app.get('/invite', function(req, res) {
         res.redirect('https://discordapp.com/oauth2/authorize?permissions=67624000&scope=bot&client_id=315739499932024834');
     });
 
+    // The link to join the support server
     app.get('/server', function(req, res) {
         res.redirect('https://discord.gg/FfwGvhr');
-    });
-
-    //The 404 Route (ALWAYS Keep this as the last route)
-    app.use('*',function(req, res) {
-        res.send('Error 404: Not Found!', 404);
     });
 
     app.use(function(err, req, res) {
@@ -74,6 +71,12 @@ exports.initSite = function(client) {
         res.status(500).send('Something broke!');
     });
 
+    //The 404 Route (ALWAYS Keep this as the last route)
+    app.use('*',function(req, res) {
+        res.send('Error 404: Not Found!', 404);
+    });
+
+    // Turn the site on
     app.listen(dashConf.port, function() {
         client.log('Site', `App listening on port ${dashConf.port}!`);
     });
