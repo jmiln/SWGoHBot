@@ -154,5 +154,6 @@ remove         :: Removes a key from the configs
 add            :: Adds a key to the configs. Use one of these for an empty var: \`-emptyString, -emptyArray, -emptyObject\`
 replaceType    :: Changes the type from a string to being in an array 
 help           :: Shows this help message.
-\`\`\``
+\`\`\``,
+    example: ``
 };

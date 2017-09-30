@@ -84,5 +84,7 @@ exports.help = {
     name: 'abilities',
     category: 'Star Wars',
     description: 'Shows the abilities for the specified character.',
-    usage: 'abilities <character>'
+    usage: 'abilities <character>',
+    example: `;abilities rex`,
+    extended: ``
 };

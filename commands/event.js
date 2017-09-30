@@ -1,6 +1,6 @@
 var moment = require('moment-timezone');
 var minimist = require('minimist');
-var util = require('util');
+// var util = require('util');
 
 exports.run = (client, message, args, level) => {
     const guildEvents = client.guildEvents;
@@ -45,7 +45,7 @@ exports.run = (client, message, args, level) => {
             const minArgs = minimist(args, {default: {repeat: '0', channel: ''}});
             args = minArgs['_'];    // The args without the repeat var in there
             let repeatTime = String(minArgs['repeat']);
-            let eventChan = String(minArgs['channel']);
+            const eventChan = String(minArgs['channel']);
             const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
 
             // If the repeat is set to something other than default, try to parse it
@@ -97,14 +97,14 @@ exports.run = (client, message, args, level) => {
             if (!args[4]) {
                 eventMessage = "";
             } else {
-                let newArgs = message.content.split(' ');
-                let specialArgs = ['--channel', '--repeat'];
+                const newArgs = message.content.split(' ');
+                const specialArgs = ['--channel', '--repeat'];
                 let newLen = newArgs.length;
-                for(var ix = 0; ix < newLen; ix++) {
+                for (var ix = 0; ix < newLen; ix++) {
                     specialArgs.forEach(specA => {
-                        if(newArgs[ix].indexOf(specA) > -1) {
+                        if (newArgs[ix].indexOf(specA) > -1) {
                             newArgs[ix] = newArgs[ix].replace(specA, '');
-                            if(newArgs[ix+1].indexOf('\n') > -1) {
+                            if (newArgs[ix+1].indexOf('\n') > -1) {
                                 newArgs[ix+1] = newArgs[ix+1].substring(newArgs[ix+1].indexOf('\n'));
                             } else {
                                 newArgs.splice(ix+1, 1);
@@ -140,11 +140,11 @@ exports.run = (client, message, args, level) => {
             return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
         } case "view": {
             let option = "";
-            if(args[1]) option = args[1];
+            if (args[1]) option = args[1];
             const array = [];
             if (events) {
                 for (var key in events) {
-                    let event = events[key];
+                    const event = events[key];
                     var eventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
                     var eventString = `**${key}:**\nEvent Time: ${eventDate}\n`;
                     if (event.eventChan !== '') {
@@ -153,7 +153,7 @@ exports.run = (client, message, args, level) => {
                     if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                         eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
                     }
-                    if(['min', 'minimal', 'minimized'].indexOf(option) <= -1) {
+                    if (['min', 'minimal', 'minimized'].indexOf(option) <= -1) {
                         eventString += `Event Message: ${event.eventMessage}`;
                     }
                     array.push(eventString);
@@ -206,6 +206,7 @@ exports.run = (client, message, args, level) => {
                     }
                 }
             }
+            break;
         }
         case "help": {
             return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
@@ -224,10 +225,10 @@ exports.help = {
     name: 'event',
     category: 'Misc',
     description: 'Used to make or check an event',
-    usage: 'event <create|view|delete|trigger|help> <eventName> <eventDay> <eventTime> [--repeat 00d00h00m] [--channel channelName] [eventMessage]',
+    usage: 'event [create|view|delete|help] [eventName] [eventDay] [eventTime] [--repeat 00d00h00m] [--channel channelName] [eventMessage]',
     extended: `\`\`\`md
 create :: Create a new event listing.
-    --repeat  :: Lets you set a duration. It will repeat after that time has passed.
+    --repeat  :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
     --channel :: Lets you set a specific channel for the event to announce on.
 view   :: View your current event listings.
 delete :: Delete an event.

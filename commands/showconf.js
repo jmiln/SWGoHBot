@@ -33,6 +33,9 @@ exports.help = {
     name: 'showconf',
     category: 'Admin',
     description: 'Shows the current configs for your server.',
-    usage: 'showconf'
+    usage: 'showconf',
+    example: `;showconf`,
+    extended: `\`\`\`asciidoc
+    \`\`\``
 };
 

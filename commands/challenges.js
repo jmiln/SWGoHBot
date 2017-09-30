@@ -51,7 +51,9 @@ exports.help = {
     name: 'challenges',
     category: 'Star Wars',
     description: 'Shows the daily guild challenges.',
-    usage: 'challenges <dayOfWeek>'
+    usage: 'challenges <dayOfWeek>',
+    example: `;challenges monday`,
+    extended: ``
 };
 
 function dayString(day) {

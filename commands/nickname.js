@@ -18,5 +18,9 @@ exports.help = {
     name: 'nickname',
     category: 'Admin',
     description: 'Changes the bot\'s nickname on the server',
-    usage: 'nickname <name>'
+    usage: 'nickname <name>',
+    example: `;nickname swgohBot`,
+    extended: `\`\`\`asciidoc
+    name    :: The name you're wanting to change it to.
+    \`\`\``
 };

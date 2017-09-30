@@ -43,5 +43,9 @@ exports.help = {
     name: 'help',
     category: 'Misc',
     description: 'Displays info about available commands.',
-    usage: 'help [command]'
+    usage: 'help [command]',
+    example: `;help help`,
+    extended: `\`\`\`asciidoc
+    command     :: The command you want to look up info on.
+    \`\`\``
 };

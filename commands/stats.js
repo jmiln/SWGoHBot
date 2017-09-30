@@ -29,6 +29,9 @@ exports.help = {
     name: 'stats',
     category: 'Admin',
     description: 'Shows the bot\'s stats',
-    usage: 'stats'
+    usage: 'stats',
+    example: `;stats`,
+    extended: `\`\`\`asciidoc
+    \`\`\``
 };
 

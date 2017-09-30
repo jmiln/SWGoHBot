@@ -5,14 +5,14 @@ module.exports = async client => {
     await wait(1000);
 
     // Get the guildSettings
-    guildSettings = client.guildSettings;
+    const guildSettings = client.guildSettings;
 
     // Grab a list of all the guilds the bot is in
     const guildList = client.guilds.keyArray();
 
     guildList.forEach(guild => {
         // If there is no config, give em one
-        if(!guildSettings.has(guild)) {
+        if (!guildSettings.has(guild)) {
             guildSettings.set(guild, client.config.defaultSettings);
         }
     });

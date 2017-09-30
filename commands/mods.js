@@ -81,5 +81,9 @@ exports.help = {
     name: 'mods',
     category: 'Star Wars',
     description: 'Shows some suggested mods for the specified character.',
-    usage: 'mods <character>'
+    usage: 'mods <character>',
+    example: `;mods rex`,
+    extended: `\`\`\`asciidoc
+    character   :: The character you want to show the mods for.
+    \`\`\``
 };

@@ -70,5 +70,7 @@ exports.help = {
     name: 'activities',
     category: 'Star Wars',
     description: 'Shows the daily guild activites.',
-    usage: 'activities [dayOfWeek]'
+    usage: 'activities [dayOfWeek]',
+    example: `;activities monday`,
+    extended: ``
 };

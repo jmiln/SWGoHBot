@@ -6,7 +6,7 @@ const client = new Discord.Client();
 var moment = require('moment-timezone');
 var fs = require("fs");
 
-const site = require('./siteSrc/website');
+const site = require('./website');
 
 // Attach the config to the client so we can use it anywhere
 client.config = require('./config.json');
@@ -59,10 +59,11 @@ const init = async () => {
     client.login(client.config.token);
 
     // End top-level async/await function.
-
-    // Start the site up
-    if (client.config.enableSite) {
-        site.initSite(client);
+    if (client.config.dashboard) {
+        if (client.config.dashboard.enableSite) {
+            // Start the site up
+            site.initSite(client);
+        }
     }
 };
 
