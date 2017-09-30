@@ -84,6 +84,13 @@ module.exports = (client) => {
     client.log = (type, msg, title) => {
         if (!title) title = "Log";
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
+        try {
+            // Sends the errors to the channel I have set up for it.
+            client.channels.get("363512933726027776").send(`[${client.myTime()}] [${type}] ${msg}`, {code: 'md'});
+        } catch (e) {
+            // Probably broken because it's not started yet
+            // console.log(`[${client.myTime()}] I couldn't send it`);
+        }
     };
 
     /*
