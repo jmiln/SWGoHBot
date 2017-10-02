@@ -1,6 +1,7 @@
 [
     {
         "name" : "Ahsoka Tano's Jedi Starfighter",
+        "uniqueName": "JEDISTARFIGHTERAHSOKATANO",
         "aliases" : ["Ahsoka", "Ahsoka Tano", "Ahsoka Tano's Jedi Starfighter", "Starfigter", "Jedi", "Jedi Starfighter"],
         "crew" : ["Ahsoka Tano"],
         "url" : "https://swgoh.gg/units/ships/ahsoka-tanos-jedi-starfighter/",
@@ -27,6 +28,7 @@
     },
     {
         "name" : "Biggs Darklighter's X-Wing",
+        "uniqueName": "XWINGRED3",
         "aliases" : ["Biggs", "Red3", "XWing", "X Wing", "Biggs X-Wing", "Biggs Darklighters X-Wing"],
         "crew" : ["Biggs Darklighter"],
         "url" : "https://swgoh.gg/units/ships/biggs-darklighters-x-wing/",
@@ -53,6 +55,7 @@
     },
     {
         "name" : "Bistan's U-Wing",
+        "uniqueName": "UWINGSCARIF",
         "aliases" : ["Bistan", "SRP", "UWing", "U Wing", "Bistans UWing"],
         "crew" : ["Bistan", "Scarif Rebel Pathfinder"],
         "url" : "https://swgoh.gg/units/ships/bistans-u-wing/",
@@ -84,6 +87,7 @@
     },
     {
         "name" : "Cassian's U-Wing",
+        "uniqueName": "UWINGROGUEONE",
         "aliases" : ["Cassian", "UWing", "U Wing", "Cassians UWing", "K2S0", "Jyn"],
         "crew" : ["Cassian Andor", "K-2SO", "Jyn Erso"],
         "url" : "https://swgoh.gg/units/ships/cassians-u-wing/",
@@ -120,6 +124,7 @@
     },
     {
         "name" : "Clone Sergeant's ARC-170",
+        "uniqueName": "ARC170CLONESERGEANT",
         "aliases" : ["Clone Sergeant", "ARC170", "Clone Sergeant's ARC-170", "Clone Trooper"],
         "crew" : ["Clone Sergeant P1"],
         "url" : "https://swgoh.gg/units/ships/clone-sergeants-arc-170/",
@@ -146,6 +151,7 @@
     },
     {
         "name" : "Endurance",
+        "uniqueName": "CAPITALJEDICRUISER",
         "aliases" : ["Mace", "Mace Windu", "Venator", "Endurance"],
         "crew" : ["Mace Windu"],
         "url" : "https://swgoh.gg/units/ships/endurance/",
@@ -182,6 +188,7 @@
     },
     {
         "name" : "Executrix",
+        "uniqueName": "CAPITALSTARDESTROYER",
         "aliases" : ["Moff", "Tarkin", "Grand Moff", "Executrix"],
         "crew" : ["Grand Moff Tarkin"],
         "url" : "https://swgoh.gg/units/ships/executrix/",
@@ -218,6 +225,7 @@
     },
     {
         "name" : "First Order Tie Fighter",
+        "uniqueName": "TIEFIGHTERFIRSTORDER",
         "aliases" : ["FO TIE Fighter", "First Order Tie Fighter", "First Order", "FOTP"],
         "crew" : ["First Order TIE Pilot"],
         "url" : "https://swgoh.gg/units/ships/first-order-tie-fighter/",
@@ -244,6 +252,7 @@
     },
     {
         "name" : "Gauntlet Starfighter",
+        "uniqueName": "GAUNTLETSTARFIGHTER",
         "aliases" : ["Gauntlet", "Gar", "Commando", "Gauntlet Starfighter"],
         "crew" : ["Gar Saxon", "Imperial Super Commando"],
         "url" : "https://swgoh.gg/units/ships/gauntlet-starfighter/",
@@ -275,6 +284,7 @@
     },
     {
         "name" : "Geonosian Soldier's Starfighter",
+        "uniqueName": "GEONOSIANSTARFIGHTER1",
         "aliases" : ["Geonosian Soldier", "GenSol", "Geonosian Starfighter", "Geonosian Soldiers Starfighter"],
         "crew" : ["Geonosian Soldier"],
         "url" : "https://swgoh.gg/units/ships/geonosian-soldiers-starfighter/",
@@ -301,6 +311,7 @@
     },
     {
         "name" : "Geonosian Spy's Starfighter",
+        "uniqueName": "GEONOSIANSTARFIGHTER3",
         "aliases" : ["Geonosian Spy", "Geonosian Starfighter", "Geonosian Spys Starfighter", "Spy", "Genspy"],
         "crew" : ["Geonosian Spy"],
         "url" : "https://swgoh.gg/units/ships/geonosian-spys-starfighter/",
@@ -327,6 +338,7 @@
     },
     {
         "name" : "Ghost",
+        "uniqueName": "GHOST",
         "aliases" : ["Ghost", "Hera", "Zeb", "Kanan"],
         "crew" : ["Hera Syndulla", "Garazeb 'Zeb' Orrelios", "Kanan Jarrus"],
         "url" : "https://swgoh.gg/units/ships/ghost/",
@@ -363,6 +375,7 @@
     },
     {
         "name" : "Home One",
+        "uniqueName": "CAPITALMONCALAMARICRUISER",
         "aliases" : ["Ackbar", "Home One", "Liberty"],
         "crew" : ["Admiral Ackbar"],
         "url" : "https://swgoh.gg/units/ships/home-one/",
@@ -400,6 +413,7 @@
     {
         "name" : "Imperial TIE Fighter",
         "aliases" : ["TIE Fighter", "Imperial TIE Fighter", "TFP"],
+        "uniqueName": "TIEFIGHTERIMPERIAL",
         "crew" : ["TIE Fighter Pilot"],
         "url" : "https://swgoh.gg/units/ships/imperial-tie-fighter/",
         "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tiefighter.png",
@@ -425,6 +439,7 @@
     },
     {
         "name" : "Jedi Consular's Starfighter",
+        "uniqueName": "JEDISTARFIGHTERCONSULAR",
         "aliases" : ["Jedi Consular", "Consular", "Jedi", "Jedi Starfighter"],
         "crew" : ["Jedi Consular"],
         "url" : "https://swgoh.gg/units/ships/jedi-consulars-starfighter/",
@@ -451,6 +466,7 @@
     },
     {
         "name" : "Kylo Ren's Command Shuttle",
+        "uniqueName": "COMMANDSHUTTLE",
         "aliases" : ["Kylo", "Command Shuttle", "Kylo Rens Command Shuttle", "Phasma", "FOST"],
         "crew" : ["Kylo Ren", "Captain Phasma", "First Order Stormtrooper"],
         "url" : "https://swgoh.gg/units/ships/kylo-rens-command-shuttle/",
@@ -519,6 +535,7 @@
     },
     {
         "name" : "Phantom II",
+        "uniqueName": "PHANTOM2",
         "aliases" : ["Phantom", "Phantom II", "Sabine", "Chopper", "Ezra"],
         "crew" : ["Sabine Wren", "Chopper", "Ezra Bridger"],
         "url" : "https://swgoh.gg/units/ships/phantom-ii/",
@@ -555,6 +572,7 @@
     },
     {
         "name" : "Plo Koon's Jedi Starfighter",
+        "uniqueName": "BLADEOFDORIN",
         "aliases" : ["Plo", "Plo Koon", "Jedi", "Jedi Starfighter"],
         "crew" : ["Plo Koon"],
         "url" : "https://swgoh.gg/units/ships/plo-koons-jedi-starfighter/",
@@ -581,6 +599,7 @@
     },
     {
         "name" : "Poe Dameron's X-wing",
+        "uniqueName": "XWINGBLACKONE",
         "aliases" : ["Poe", "Black Leader", "Poe Damerons XWing", "XWing", "X Wing"],
         "crew" : ["Poe Dameron"],
         "url" : "https://swgoh.gg/units/ships/poe-damerons-x-wing/",
@@ -607,6 +626,7 @@
     },
     {
         "name" : "Resistance X-wing",
+        "uniqueName": "XWINGRESISTANCE",
         "aliases" : ["Resistance XWing", "XWing", "X Wing", "R1"],
         "crew" : ["Resistance Pilot"],
         "url" : "https://swgoh.gg/units/ships/resistance-x-wing/",
@@ -633,6 +653,7 @@
     },
     {
         "name" : "Rex's ARC-170",
+        "uniqueName": "ARC170REX",
         "aliases" : ["Rex", "ARC", "Rexs ARC170"],
         "crew" : ["CT-7567 Rex"],
         "url" : "https://swgoh.gg/units/ships/rexs-arc-170/",
@@ -659,6 +680,7 @@
     },
     {
         "name" : "Scimitar",
+        "uniqueName": "SITHINFILTRATOR",
         "aliases" : ["Maul", "Scimitar"],
         "crew" : ["Darth Maul"],
         "url" : "https://swgoh.gg/units/ships/scimitar/",
@@ -685,6 +707,7 @@
     },
     {
         "name" : "Slave-I",
+        "uniqueName": "SLAVE1",
         "aliases" : ["Slave", "Slave I", "Boba", "Boba Fett", "Fett"],
         "crew" : ["Boba Fett"],
         "url" : "https://swgoh.gg/units/ships/slave-i/",
@@ -711,6 +734,7 @@
     },
     {
         "name" : "Sun Fac's Genosian Starfighter",
+        "uniqueName": "GEONOSIANSTARFIGHTER2",
         "aliases" : ["Sun Fac", "Geonosian Starfighter", "Geonosian", "Sun Fac's Genosian Starfighter"],
         "crew" : ["Sun Fac"],
         "url" : "https://swgoh.gg/units/ships/sun-facs-geonosian-starfighter/",
@@ -737,6 +761,7 @@
     },
     {
         "name" : "Tie Advanced",
+        "uniqueName": "TIEADVANCED",
         "aliases" : ["Tie Advanced", "x1", "Darth Vader", "Vader"],
         "crew" : ["Darth Vader"],
         "url" : "https://swgoh.gg/units/ships/tie-advanced-x1/",
@@ -763,6 +788,7 @@
     },
     {
         "name" : "Tie Reaper",
+        "uniqueName": "TIEREAPER",
         "aliases" : ["Tie Reaper", "Reaper", "Death Trooper", "Shore Trooper"],
         "crew" : ["Death Trooper", "Shore Trooper"],
         "url" : "https://swgoh.gg/units/ships/tie-reaper/",
@@ -794,6 +820,7 @@
     },
     {
         "name" : "Umbaran Starfighter",
+        "uniqueName": "UMBARANSTARFIGHTER",
         "aliases" : ["Umbaran Starfighter", "Umbaran", "Fives"],
         "crew" : ["CT-5555 Fives"],
         "url" : "https://swgoh.gg/units/ships/umbaran-starfighter/",
@@ -820,6 +847,7 @@
     },
     {
         "name" : "Wedge Antilles's X-Wing",
+        "uniqueName": "XWINGRED2",
         "aliases" : ["Red Two", "Wedge", "X Wing", "XWing", "Wedge Antilless XWing"],
         "crew" : ["Wedge Antilles"],
         "url" : "https://swgoh.gg/units/ships/wedge-antilless-x-wing/",

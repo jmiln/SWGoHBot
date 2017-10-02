@@ -3,6 +3,9 @@ const path = require('path');
 
 const app = express();
 
+// Used to parse Markdown from things like ExtendedHelp
+const md = require("marked");
+
 var exports = module.exports = {};
 
 /**
@@ -52,7 +55,8 @@ exports.initSite = function(client) {
     app.get('/commands',function(req, res) {
         res.render('pages/commands', {
             page_name: 'commands',
-            command_list: loadCommands(client.commands)
+            command_list: loadCommands(client.commands),
+            md
         });
     });
 
@@ -66,14 +70,15 @@ exports.initSite = function(client) {
         res.redirect('https://discord.gg/FfwGvhr');
     });
 
-    app.use(function(err, req, res) {
+    app.use(function(err, req, res, next) { // eslint-disable-line no-unused-vars
         console.error(err.stack);
         res.status(500).send('Something broke!');
     });
 
     //The 404 Route (ALWAYS Keep this as the last route)
     app.use('*',function(req, res) {
-        res.send('Error 404: Not Found!', 404);
+        console.log("Can't find this");
+        res.status(404).send('Error 404: Not Found!');
     });
 
     // Turn the site on
@@ -88,6 +93,12 @@ function loadCommands(commands) {
     const commandList = commands.filter(c => c.conf.permLevel <= 4); // Keep out the dev ones
     
     commandList.forEach(command => {
+         
+        md(command.help.extended, function(err, content) {
+            if (err) throw err;
+            command.help.extended = content;
+        });
+        command.conf.aliases.indexOf(command.help.name) != -1 ? command.conf.aliases : command.conf.aliases.push(command.help.name);
         if (!coms[command.help.category]) {
             coms[command.help.category] = [command]; 
         } else {
