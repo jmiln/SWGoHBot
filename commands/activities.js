@@ -72,5 +72,7 @@ exports.help = {
     description: 'Shows the daily guild activites.',
     usage: 'activities [dayOfWeek]',
     example: `;activities monday`,
-    extended: ``
+    extended: `\`\`\`asciidoc
+Day of the week can be the full name or the general 3 character name (Ex. Monday vs Mon).
+    \`\`\``
 };

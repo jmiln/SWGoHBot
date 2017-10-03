@@ -86,5 +86,7 @@ exports.help = {
     description: 'Shows the abilities for the specified character.',
     usage: 'abilities <character>',
     example: `;abilities rex`,
-    extended: ``
+    extended: `\`\`\`asciidoc
+No extended help for this command.
+    \`\`\``
 };

@@ -16,5 +16,6 @@ exports.help = {
     usage: 'modsets',
     example: `;modsets`,
     extended: `\`\`\`asciidoc
+No extended help for this command.
     \`\`\``
 };

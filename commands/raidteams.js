@@ -131,9 +131,9 @@ exports.help = {
     category: 'Star Wars',
     description: 'Shows some teams that work well for each raid.',
     usage: 'raidteams <aat|pit> <p1|p2|p3|p4|solo>',
-    example: 'raidteams aat p1',
+    example: ';raidteams aat p1',
     extended: `\`\`\`asciidoc
-    raid        :: The raid you want to look up the teams for. Ex: aat, haat, or pit.
-    phase       :: The phase you're wanting to look up. Ex: p1, p4, solo
+raid        :: The raid you want to look up the teams for. Ex: aat, haat, or pit.
+phase       :: The phase you're wanting to look up. Ex: p1, p4, solo
     \`\`\``
 };

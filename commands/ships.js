@@ -91,6 +91,6 @@ exports.help = {
     usage: 'ships <ship|character>',
     example: `;ships tie reaper`,
     extended: `\`\`\`asciidoc
-    ship|character  :: The ship you're wanting to look up. Also accepts their crew members.
+ship|character  :: The ship you're wanting to look up. Also accepts their crew members.
     \`\`\``
 };

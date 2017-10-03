@@ -35,6 +35,6 @@ exports.help = {
     usage: 'reload <command>',
     example: `;reload help`,
     extended: `\`\`\`asciidoc
-    command     :: The command you're wanting to reload.
+command     :: The command you're wanting to reload.
     \`\`\``
 };

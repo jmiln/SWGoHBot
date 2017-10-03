@@ -17,5 +17,6 @@ exports.help = {
     usage: 'info',
     example: `;info`,
     extended: `\`\`\`asciidoc
+No extended help for this command.
     \`\`\``
 };

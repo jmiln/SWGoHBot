@@ -46,6 +46,6 @@ exports.help = {
     usage: 'help [command]',
     example: `;help help`,
     extended: `\`\`\`asciidoc
-    command     :: The command you want to look up info on.
+command     :: The command you want to look up info on.
     \`\`\``
 };

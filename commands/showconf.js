@@ -36,6 +36,7 @@ exports.help = {
     usage: 'showconf',
     example: `;showconf`,
     extended: `\`\`\`asciidoc
+No extended help for this command.
     \`\`\``
 };
 

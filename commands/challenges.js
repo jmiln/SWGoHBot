@@ -53,7 +53,9 @@ exports.help = {
     description: 'Shows the daily guild challenges.',
     usage: 'challenges <dayOfWeek>',
     example: `;challenges monday`,
-    extended: ``
+    extended: `\`\`\`asciidoc
+No extended help for this command.
+    \`\`\``
 };
 
 function dayString(day) {

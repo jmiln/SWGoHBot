@@ -21,6 +21,6 @@ exports.help = {
     usage: 'nickname <name>',
     example: `;nickname swgohBot`,
     extended: `\`\`\`asciidoc
-    name    :: The name you're wanting to change it to.
+name    :: The name you're wanting to change it to.
     \`\`\``
 };

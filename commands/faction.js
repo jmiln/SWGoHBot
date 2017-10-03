@@ -69,7 +69,7 @@ exports.help = {
     usage: 'faction <faction>',
     example: `;faction rebel`,
     extended: `\`\`\`asciidoc
-    faction     :: The faction you want to see the roster of. 
-                   Keep in mind, this is as shown in game, so it's rebel, not rebels
+faction     :: The faction you want to see the roster of. 
+               Keep in mind, this is as shown in game, so it's rebel, not rebels
     \`\`\``
 };

@@ -32,6 +32,7 @@ exports.help = {
     usage: 'stats',
     example: `;stats`,
     extended: `\`\`\`asciidoc
+Shows the current total of users, servers, channels etc.
     \`\`\``
 };
 
