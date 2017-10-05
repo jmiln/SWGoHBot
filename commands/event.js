@@ -42,10 +42,11 @@ exports.run = (client, message, args, level) => {
 
     switch (action) {
         case "create": {
-            const minArgs = minimist(args, {default: {repeat: '0', channel: ''}});
+            const minArgs = minimist(args, {default: {repeat: '0', channel: '', countdown: 'no'}});
             args = minArgs['_'];    // The args without the repeat var in there
             let repeatTime = String(minArgs['repeat']);
             const eventChan = String(minArgs['channel']);
+            const countdownOn = String(minArgs['countdown']);
             const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
 
             // If the repeat is set to something other than default, try to parse it
@@ -61,6 +62,9 @@ exports.run = (client, message, args, level) => {
                 }
             }
 
+			// validate countdown parameter
+            if (countdownOn !== 'no' && countdownOn !== 'yes') return message.channel.send(`The only valid option for countdown is yes. If you don\'t want a countdown, don\'t add the option.`).then(msg => msg.delete(10000)).catch(console.error);
+            
             // If the event channel is something other than default, check to make sure it works, then set it
             const announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
             if (eventChan !== '') {
@@ -98,7 +102,7 @@ exports.run = (client, message, args, level) => {
                 eventMessage = "";
             } else {
                 const newArgs = message.content.split(' ');
-                const specialArgs = ['--channel', '--repeat'];
+                const specialArgs = ['--channel', '--repeat', '--countdown'];
                 let newLen = newArgs.length;
                 for (var ix = 0; ix < newLen; ix++) {
                     specialArgs.forEach(specA => {
@@ -129,6 +133,7 @@ exports.run = (client, message, args, level) => {
                 "eventTime": eventTime,
                 "eventMessage": eventMessage,
                 "eventChan": eventChan,
+                "countdown": countdownOn,
                 "repeat": {
                     "repeatDay": repeatDay,
                     "repeatHour": repeatHour,
@@ -225,11 +230,12 @@ exports.help = {
     name: 'event',
     category: 'Misc',
     description: 'Used to make or check an event',
-    usage: 'event [create|view|delete|help] [eventName] [eventDay] [eventTime] [--repeat 00d00h00m] [--channel channelName] [eventMessage]',
+    usage: 'event [create|view|delete|help] [eventName] [eventDay] [eventTime] [--repeat 00d00h00m] [--channel channelName] [--countdown yes] [eventMessage]',
     extended: `\`\`\`md
 create :: Create a new event listing.
     --repeat  :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
     --channel :: Lets you set a specific channel for the event to announce on.
+    --countdown :: Adds a countdown to when your event will trigger - yes is the only valid parameter
 view   :: View your current event listings.
 delete :: Delete an event.
 trigger:: Trigger an event in the specified channel, leaves the event alone.

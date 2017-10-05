@@ -5,6 +5,7 @@ const EnMap = require("enmap");
 const client = new Discord.Client();
 var moment = require('moment-timezone');
 var fs = require("fs");
+const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
 
 const site = require('./website');
 
@@ -74,6 +75,7 @@ function checkDates() {
     const guildList = client.guilds.keyArray();
 
     guildList.forEach(g => {
+		const thisGuild = client.guilds.get(g);
         var events = client.guildEvents.get(g);
         var guildConf = client.guildSettings.get(g);
         if (events) {
@@ -89,28 +91,14 @@ function checkDates() {
                 if (eventDate === nowDate) {
                     if (eventTime === nowTime) {
                         var announceMessage = `**${key}**\n${event.eventMessage}`;
-                        if (guildConf["announceChan"] != "") {
-                            const thisGuild = client.guilds.get(g);
-                            var channel = '';
-                            if (event['eventChan'] && event.eventChan !== '') {  // If they've set a channel, try using it
-                                channel = thisGuild.channels.find('name', event.eventChan);
-                            } else { // Else, use the default one from their settings
-                                channel = thisGuild.channels.find('name', guildConf["announceChan"]);
-                            }
-                            if (channel && channel.permissionsFor(thisGuild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
-                                try {
-                                    channel.send(announceMessage);
-                                } catch (e) {
-                                    client.log('Event Broke!', announceMessage);
-                                }
-                            }
-                        }
+                        announceEvent(thisGuild, guildConf, event, announceMessage);
                         if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                             const newEvent = {
                                 "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeat['repeatDay'], 'd').format('YYYY-MM-DD'),
                                 "eventTime": moment(event.eventTime, 'H:mm').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').format('H:mm'),
                                 "eventMessage": event.eventMessage,
                                 "eventChan": event.eventChan,
+                                "countdown": event.countdown,
                                 "repeat": {
                                     "repeatDay": event.repeat['repeatDay'],
                                     "repeatHour": event.repeat['repeatHour'],
@@ -125,17 +113,77 @@ function checkDates() {
                             delete events[key];
                         }
                         guildEvents.set(g, events);
-                    }
+                    } 
                 }
+                
+                // if we have a countdown, see if we need to send a message
+				if (event.countdown == 'yes') {
+					checkCountdown(thisGuild, guildConf, key, event);
+				}              
             }
         }
     });
 }
 
+function checkCountdown(thisGuild, guildConf, key, event) {
+
+	// this function is run every INTERVAL_SECONDS - currently every 30 seconds
+	// we only want to run this function once per minute
+	// so let's make sure that the current number of seconds is less than the interval seconds
+	// if INTERVAL_SECONDS goes above 60 i.e. more than a minute, this will break
+	
+	var now = moment().tz(guildConf['timezone']);
+	if (now.seconds() >= INTERVAL_SECONDS) {
+		return;
+	}
+	
+	// full event date and time in the correct timezone
+	var eventDate = moment.tz(event.eventDay + " " + event.eventTime, "YYYY-MM-DD H:mm", guildConf['timezone']);
+	// full now date and time in the correct timezone with 0 seconds so we can compare against the event date
+	var nowDate = moment().tz(guildConf['timezone']).seconds(0);
+	
+	// times in minutes before event
+	const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5, 4, 3, 2, 1 ];
+		
+	// loop through all minutes before event start time
+	for (var index=0; index<timesToCountdown.length; ++index) {
+		// get the countdown date to test against
+		var countdownDate = moment(eventDate).subtract(timesToCountdown[index], 'minutes');
+		// compare to seconds level of accuracy (ignore milliseconds)
+		if (countdownDate.isSame(nowDate, 'seconds')) {
+			// we should trigger this countdown message so create the announcement message of how long to go
+			var timeToGo = moment.duration(eventDate.diff(nowDate)).humanize();
+			var announceMessage = `**${key}**\nStarting in ${timeToGo}`;
+			announceEvent(thisGuild, guildConf, event, announceMessage);
+			
+			// we matched so we don't have to look any more
+			break;
+		}
+	}
+}
+
+function announceEvent(thisGuild, guildConf, event, announceMessage) {
+	if (guildConf["announceChan"] != "") {
+		var channel = '';
+		if (event['eventChan'] && event.eventChan !== '') {  // If they've set a channel, try using it
+			channel = thisGuild.channels.find('name', event.eventChan);
+		} else { // Else, use the default one from their settings
+			channel = thisGuild.channels.find('name', guildConf["announceChan"]);
+		}
+		if (channel && channel.permissionsFor(thisGuild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
+			try {
+				channel.send(announceMessage);
+			} catch (e) {
+				client.log('Event Broke!', announceMessage);
+			}
+		}
+	}
+}
+
 // Run it once on start up
 checkDates();
 
-// Then every 30 seconds after
-setInterval(checkDates, 30 * 1000);
+// Then every INTERVAL_SECONDS seconds after
+setInterval(checkDates, INTERVAL_SECONDS * 1000);
 
 init();
