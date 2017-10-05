@@ -5,6 +5,8 @@
 /data/guildsettings
 /data/guildEvents
 /data/guildevents
+/data/guildchars
+/data/guildChars
 
 # Specific Files
 config.json
