@@ -5879,7 +5879,7 @@
     {
         "name": "Mob Enforcer",
         "uniqueName": "HUMANTHUG",
-        "aliases": ["Mob Enforcer", "Enforcer"],
+        "aliases": ["Mob Enforcer", "Mob", "Enforcer"],
         "url": "https://swgoh.gg/characters/mob-enforcer/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_thug_female_01.png",
         "side": "dark",

@@ -123,6 +123,43 @@
         }
     },
     {
+        "name" : "Chimaera",
+        "uniqueName": "",
+        "aliases" : ["Chimaera", "Grand Admiral Thrawn", "Thrawn"],
+        "crew" : ["Grand Admiral Thrawn"],
+        "url" : "https://swgoh.gg/ships/chimaera/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_chimaera.png",
+        "side": "dark",
+        "factions" : ["capital ship", "empire"],
+        "abilities": {
+            "Calculated Strike": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Target ally is called to Assist with +35% Offense."
+            },
+            "Art of War": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "All allies recover 20% Health and gain a buff for 2 turns. - Attacker: Offense Up - Support: Foresight - Tank: Defense Up Inflict a debuff on all enemies for 2 turns. These effects can't be Evaded. - Attacker: Offense Down - Support: Ability Block - Tank: Defense Down"
+            },
+            "Phylon 07 Tractor Beam Projectors": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Special damage to all enemies and remove 20% Turn Meter."
+            },
+            "Fierce Loyalty": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "All allies have +25% Critical Damage (doubled on Empire allies) and +15% Critical Chance. When an enemy is defeated, all allies gain 5% Tenacity (stacking) until the end of battle. Reinforcement Bonus: Critical Chance Up for 2 turns."
+            },
+            "Strategic Dominance": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Instantly defeat target enemy and deal damage to all remaining enemies equal to 40% of their Max Health. Dispel all debuffs on target ally and grant them 100% Health, 100% Protection and 75% Turn Meter, and heal all other allies equal to 40% of their Max Health. Increase all cooldowns on the enemy Capital Ship by 1. This ability starts on cooldown."
+            }
+        }
+    },
+    {
         "name" : "Clone Sergeant's ARC-170",
         "uniqueName": "ARC170CLONESERGEANT",
         "aliases" : ["Clone Sergeant", "ARC170", "Clone Sergeant's ARC-170", "Clone Trooper"],
