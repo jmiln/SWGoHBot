@@ -13,8 +13,8 @@ const site = require('./website');
 client.config = require('./config.json');
 
 // Attach the character and team files to the client so I don't have to reopen em each time
-client.characters  = JSON.parse(fs.readFileSync("data/characters.json"));
-client.ships  = JSON.parse(fs.readFileSync("data/ships.json"));
+client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
+client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
 client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
 
 
@@ -23,8 +23,9 @@ require("./modules/functions.js")(client);
 client.commands = new EnMap();
 client.aliases = new EnMap();
 
-client.guildSettings = new EnMap({name: 'guildSettings', persistent: true});
-client.guildEvents = new EnMap({name: 'guildEvents', persistent: true});
+client.guildSettings = new EnMap({ name: 'guildSettings', persistent: true });
+client.guildEvents = new EnMap({ name: 'guildEvents', persistent: true });
+client.guildChars = new EnMap({ name: 'guildChars', persistent: true });
 
 const init = async () => {
     // Here we load **commands** into memory, as a collection, so they're accessible
@@ -109,7 +110,7 @@ function checkDates() {
                             // Gotta delete it before we can add it, so there won't be conflicts
                             delete events[key];
                             events[key] = newEvent;
-                        } else {  // Go ahead and wipe it out
+                        } else { // Go ahead and wipe it out
                             delete events[key];
                         }
                         guildEvents.set(g, events);
@@ -146,7 +147,7 @@ function checkCountdown(thisGuild, guildConf, key, event) {
     const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
 
     // loop through all minutes before event start time
-    for (var index=0; index<timesToCountdown.length; ++index) {
+    for (var index = 0; index < timesToCountdown.length; ++index) {
         // get the countdown date to test against
         var countdownDate = moment(eventDate).subtract(timesToCountdown[index], 'minutes');
         // compare to seconds level of accuracy (ignore milliseconds)
@@ -165,7 +166,7 @@ function checkCountdown(thisGuild, guildConf, key, event) {
 function announceEvent(thisGuild, guildConf, event, announceMessage) {
     if (guildConf["announceChan"] != "") {
         var channel = '';
-        if (event['eventChan'] && event.eventChan !== '') {  // If they've set a channel, try using it
+        if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, try using it
             channel = thisGuild.channels.find('name', event.eventChan);
         } else { // Else, use the default one from their settings
             channel = thisGuild.channels.find('name', guildConf["announceChan"]);
