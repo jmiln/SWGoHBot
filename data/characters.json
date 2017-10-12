@@ -972,7 +972,7 @@
         "aliases": ["Captain Han Solo", "Captain Han", "Hoth Han", "Han Solo", "Han", "Solo", "CHS"],
         "url": "https://swgoh.gg/characters/captain-han-solo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hoth_han.png",
-        "side": "dark",
+        "side": "light",
         "factions": ["support", "scoundrel", "rebel"],
         "mods": {
             "Arena": {
@@ -6982,18 +6982,18 @@
         "side": "light",
         "factions": ["attacker", "rebel"],
         "mods": {
-            "Arena": {
-                "sets": [
-                    "N/A",
-                    "N/A",
-                    "N/A"
+            "Territory Battles": { 
+                "sets": [ 
+                    "Offense x4", 
+                    "Potency x2", 
+                    ""
                 ],
-                "square": "N/A",
-                "arrow": "N/A",
-                "diamond": "N/A",
-                "triangle": "N/A",
-                "circle": "N/A",
-                "cross": "N/A"
+                "square": "Offense",
+                "arrow": "Speed / Offense",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Offense / Potency" 
             }
         },
         "gear": {

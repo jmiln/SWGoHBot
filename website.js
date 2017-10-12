@@ -77,7 +77,6 @@ exports.initSite = function(client) {
 
     //The 404 Route (ALWAYS Keep this as the last route)
     app.use('*',function(req, res) {
-        console.log("Can't find this");
         res.status(404).send('Error 404: Not Found!');
     });
 
@@ -96,7 +95,7 @@ function loadCommands(commands) {
          
         md(command.help.extended, function(err, content) {
             if (err) throw err;
-            command.help.extended = content;
+            command.help.siteExtended = content;
         });
         command.conf.aliases.indexOf(command.help.name) != -1 ? command.conf.aliases : command.conf.aliases.push(command.help.name);
         if (!coms[command.help.category]) {
