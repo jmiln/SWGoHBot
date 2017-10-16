@@ -27,7 +27,7 @@ module.exports = (client, member) => {
             try {
                 channel.send(welcomeMessage);
             } catch (e) {
-                client.log('ERROR', `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildconf)}\n\nError:\n${e}`);
+                client.log('ERROR', `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
             } 
         }
     }

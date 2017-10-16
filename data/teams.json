@@ -95,6 +95,10 @@
                 "phase": ["Phase 3"],
                 "characters": ["Chief Chirpa", "Emperor Palpatine", "Stormtrooper Han", "Royal Guard", "Sun Fac"]
             },
+			"Tiebokin": {
+				"phase": ["Phase 3"],
+				"characters": ["Teebo", "Grand Moff Tarkin", "TIE Fighter Pilot", "Stormtrooper Han", "Royal Guard"]
+			},
             "Tiepatine": {
                 "phase": ["Phase 3"],
                 "characters": ["Emperor Palpatine", "TIE Fighter Pilot", "Sun Fac", "Stormtrooper Han", "Royal Guard"]
