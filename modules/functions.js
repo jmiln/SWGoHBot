@@ -190,8 +190,8 @@ module.exports = (client) => {
         console.error(`[${client.myTime()}] Uncaught Exception: `, errorMsg);
 
         // If it's that error, don't bother showing it again
-        if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
-            // client.channels.get("356111780579115010").send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
+        if (client.config.logs.logToChannel && !errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
+            client.channels.get(client.logs.channel).send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
         }
         // Always best practice to let the code crash on uncaught exceptions. 
         // Because you should be catching them anyway.

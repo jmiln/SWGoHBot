@@ -19,5 +19,10 @@
 		"useEmbeds": true,
         "timezone": "America/Los_Angeles",
         "announceChan": ""
+	},
+    "logs": {
+        "logToChannel": false,
+        "channel": "channel-ID-to-log-to"
+
 	}
 }
