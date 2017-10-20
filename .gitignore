@@ -11,5 +11,6 @@
 # Specific Files
 config.json
 settings.json
-/commands/list.js
+package-lock.json
 
+# Commands

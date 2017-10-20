@@ -7,8 +7,7 @@ module.exports = async (client, member) => {
 
     // Make sure the config option exists. Should not need this, but just in case
     if(!guildConf['announceChan']) {
-        guildConf['announceChan'] = '';
-        client.guildSettings.set(guild.id, guildConf);
+        client.guildSettings.update({announceChan: ''}, {where: {guildID: guild.id}});
     }
 
     // Our welcome message has a bit of a placeholder, let's fix
