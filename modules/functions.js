@@ -83,11 +83,13 @@ module.exports = (client) => {
         if (!title) title = "Log";
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
-            // Sends the errors to the channel I have set up for it.
-            // client.channels.get("363512933726027776").send(`[${client.myTime()}] [${type}] ${msg}`, {code: 'md'});
+            // Sends the logs to the channel I have set up for it.
+            if (client.config.logs.logToChannel) {
+                client.channels.get(client.config.logs.channel).send(`[${client.myTime()}] [${type}] ${msg}`, {code: 'md'});
+            }
         } catch (e) {
             // Probably broken because it's not started yet
-            // console.log(`[${client.myTime()}] I couldn't send it`);
+            // console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
         }
     };
 
@@ -190,8 +192,8 @@ module.exports = (client) => {
         console.error(`[${client.myTime()}] Uncaught Exception: `, errorMsg);
 
         // If it's that error, don't bother showing it again
-        if (client.config.logs.logToChannel && !errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
-            client.channels.get(client.logs.channel).send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
+        if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
+            client.channels.get('356111780579115010').send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
         }
         // Always best practice to let the code crash on uncaught exceptions. 
         // Because you should be catching them anyway.
