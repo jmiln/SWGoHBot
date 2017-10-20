@@ -176,7 +176,7 @@ function checkCountdown(thisGuild, guildConf, key, event) {
     var nowDate = moment().tz(guildConf['timezone']).seconds(0);
 
     // times in minutes before event
-    const timesToCountdown = [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5, 4, 3, 2, 1];
+    const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
 
     // loop through all minutes before event start time
     for (var index = 0; index < timesToCountdown.length; ++index) {

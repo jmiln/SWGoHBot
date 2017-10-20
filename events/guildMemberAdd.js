@@ -1,3 +1,4 @@
+const {inspect} = require('util');
 module.exports = async (client, member) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
@@ -24,7 +25,11 @@ module.exports = async (client, member) => {
                 welcomeMessage = welcomeMessage.replace("{{userMention}}", member.user);
             }
             // client.log('HERE', `This should be a channel: ${channel}`);
-            channel.send(welcomeMessage);
+            try {
+                channel.send(welcomeMessage);
+            } catch (e) {
+                client.log('ERROR', `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
+            } 
         }
     }
 };
