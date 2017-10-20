@@ -1,13 +1,13 @@
 var moment = require('moment-timezone');
 var minimist = require('minimist');
-// var util = require('util');
+var util = require('util');
 
-exports.run = (client, message, args, level) => {
-    const guildEvents = client.guildEvents;
-    const guildSettings = client.guildSettings;
+exports.run = async (client, message, args, level) => {
+    const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+    const guildConf = guildSettings.dataValues;
 
-    const guildConf = guildSettings.get(message.guild.id);
-    var events = guildEvents.get(message.guild.id);
+    const guildEvents = await client.guildEvents.findOne({where: {guildID: message.guild.id}, attributes: ['events']});
+    var events = guildEvents.dataValues.events;
 
     const actions = ['create', 'view', 'delete', 'help', 'trigger'];
 
@@ -18,7 +18,7 @@ exports.run = (client, message, args, level) => {
         if (events.length === 0) {
             guildEvents.delete(message.guild.id);
             guildEvents.set(message.guild.id, {});
-            events = guildEvents.get(message.guild.id);
+            events = guildEvents.get(message.guild.id); 
         }
     }
 
@@ -141,7 +141,7 @@ exports.run = (client, message, args, level) => {
                 }
             };
             events[eventName] = newEvent;
-            guildEvents.set(message.guild.id, events);
+            client.guildEvents.update({events: events}, {where: {guildID: message.guild.id}});
             return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
         } case "view": {
             let option = "";
@@ -184,7 +184,7 @@ exports.run = (client, message, args, level) => {
                 return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
             } else {
                 delete events[eventName];
-                guildEvents.set(message.guild.id, events);
+                client.guildEvents.update({events: events}, {where: {guildID: message.guild.id}});
                 return message.channel.send(`Deleted event: ${eventName}`);
             }
         } case "trigger": {
@@ -207,7 +207,7 @@ exports.run = (client, message, args, level) => {
                     try {
                         return channel.send(announceMessage);
                     } catch (e) {
-                        client.log('Event Broke!', announceMessage);
+                        client.log('Event trigger Broke!', announceMessage);
                     }
                 }
             }

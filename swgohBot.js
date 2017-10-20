@@ -1,10 +1,15 @@
 const Discord = require('discord.js');
 const { promisify } = require("util");
+const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
-const EnMap = require("enmap");
 const client = new Discord.Client();
 var moment = require('moment-timezone');
 var fs = require("fs");
+
+const EnMap = require("enmap");
+
+ const Sequelize = require('sequelize');
+
 const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
 
 const site = require('./website');
@@ -23,9 +28,32 @@ require("./modules/functions.js")(client);
 client.commands = new EnMap();
 client.aliases = new EnMap();
 
-client.guildSettings = new EnMap({ name: 'guildSettings', persistent: true });
-client.guildEvents = new EnMap({ name: 'guildEvents', persistent: true });
-client.guildChars = new EnMap({ name: 'guildChars', persistent: true });
+const Op = Sequelize.Op;
+client.sequelize = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
+    host: client.config.database.host,
+    dialect: 'postgres',
+    logging: false,
+    operatorAliases: Op
+});
+client.guildSettings = client.sequelize.define('settings', {
+    guildID: { type: Sequelize.TEXT, primaryKey: true },
+    adminRole: Sequelize.ARRAY(Sequelize.TEXT),
+    enableWelcome: Sequelize.BOOLEAN,
+    welcomeMessage: Sequelize.TEXT,
+    useEmbeds: Sequelize.BOOLEAN,
+    timezone: Sequelize.TEXT,
+    announceChan: Sequelize.TEXT
+});
+client.guildEvents = client.sequelize.define('events', {
+    guildID: { type: Sequelize.TEXT, primaryKey: true },
+    events: Sequelize.JSONB
+});
+
+
+client.once('ready', () => {
+  client.guildSettings.sync();
+  client.guildEvents.sync();
+});
 
 const init = async () => {
     // Here we load **commands** into memory, as a collection, so they're accessible
@@ -61,7 +89,7 @@ const init = async () => {
 
     // End top-level async/await function.
 
-    // Check if the site needs to be loaded, and if so, do it 
+    // Check if the site needs to be loaded, and if so, do it
     if (client.config.dashboard) {
         if (client.config.dashboard.enableSite) {
             // Start the site up
@@ -71,14 +99,18 @@ const init = async () => {
 };
 
 // The function to check every minute for applicable events
-function checkDates() {
-    const guildEvents = client.guildEvents;
+async function checkDates() {
     const guildList = client.guilds.keyArray();
 
-    guildList.forEach(g => {
+    guildList.forEach(async (g) => {
         const thisGuild = client.guilds.get(g);
-        var events = client.guildEvents.get(g);
-        var guildConf = client.guildSettings.get(g);
+
+        const guildSettings = await client.guildSettings.findOne({where: {guildID: g}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+        const guildConf = guildSettings.dataValues;
+
+        const guildEvents = await client.guildEvents.findOne({where: {guildID: g}, attributes: ['events']});
+        var events = guildEvents.dataValues.events;
+
         if (events) {
             for (var key in events) {
                 var event = events[key];
@@ -113,7 +145,7 @@ function checkDates() {
                         } else { // Go ahead and wipe it out
                             delete events[key];
                         }
-                        guildEvents.set(g, events);
+                        client.guildEvents.update({events: events}, {where: {guildID: g}});
                     }
                 }
 
@@ -182,7 +214,7 @@ function announceEvent(thisGuild, guildConf, event, announceMessage) {
 }
 
 // Run it once on start up
-checkDates();
+// checkDates();
 
 // Then every INTERVAL_SECONDS seconds after
 setInterval(checkDates, INTERVAL_SECONDS * 1000);

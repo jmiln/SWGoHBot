@@ -2,14 +2,21 @@
 // Note that due to the binding of client to every event, every event
 // goes `client, other, args` when this function is run.
 
-module.exports = (client, message) => {
+module.exports = async (client, message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
     if (message.author.bot) return;
 
     // Grab the settings for this server from the PersistentCollection
     // If there is no guild, get default conf (DMs)
-    const guildSettings = message.guild ? client.guildSettings.get(message.guild.id) : client.config.defaultSettings;
+    // const guildSettings = message.guild ? client.guildSettings.get(message.guild.id) : client.config.defaultSettings;
+    var guildSettings;
+    if(message.guild) {
+        guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+        guildSettings = guildSettings.dataValues;
+    } else {
+        guildSettings = client.config.defaultSettings;
+    }
 
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.

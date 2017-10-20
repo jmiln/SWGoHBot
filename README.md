@@ -41,6 +41,7 @@ Or, if you have questions about anything, feel free to join the support server o
 ## Requirements
 - `git` command line ([Windows](https://git-scm.com/download/win)|[Linux](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)|[MacOS](https://git-scm.com/download/mac)) installed
 - `Node` [Version 8.0.0 or higher](https://nodejs.org)
+- `Postgres` [I use version 9.6.5](https://www.postgresql.org/download/)
 - `A machine` to host it on. Want it to be online 24/7? Get a VPS.
 - `Some knowledge of node` if you want to modify it.
 
@@ -55,15 +56,24 @@ In a command prompt in your projects folder (wherever that may be) run the follo
 Once finished: 
 - In the folder from where you ran the git command, run `cd SWGoHBot` and then run `npm install`
 - Rename `config_example.json` to `config.json`
-- Edit `config.json` and enter your bot's token and other details as indicated. 
+- Edit `config.json` and enter your bot's token and other details as indicated. (The database part is for the postgresql db, and the dashboard is for linking into the website)
 ```js
 {
     "ownerid": "YourUserID",
     "prefix": "YourPrefixGoesHere",
     "token": "YourTokenGoesHere",
-    "enableSite": false,
+    "dashboard": {
+        "enableSite": false,
+        "port": 8080
+    },
+    "database": {
+        "host": "localhost",
+        "user": "username",
+        "pass": "password",
+        "data": "database"
+    },
     "defaultSettings": {
-        "adminRole": "Administrator",
+        "adminRole": ["Administrator"],
         "enableWelcome": false,
         "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
         "useEmbeds": true,

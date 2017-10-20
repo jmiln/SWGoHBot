@@ -11,14 +11,12 @@ module.exports = (client) => {
     client.permlevel = message => {
         let permlvl = 0;
 
-        const guildSettings = client.guildSettings;
-
         // If bot owner, return max perm level
         if (message.author.id === client.config.ownerid) return 10;
 
         // If DMs or webhook, return 0 perm level.
         if (!message.guild || !message.member) return 0;
-        const guildConf = guildSettings.get(message.guild.id);
+		const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
         if (message.author.id === message.guild.owner.id) return permlvl = 4;
@@ -86,7 +84,7 @@ module.exports = (client) => {
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
             // Sends the errors to the channel I have set up for it.
-            client.channels.get("363512933726027776").send(`[${client.myTime()}] [${type}] ${msg}`, {code: 'md'});
+            // client.channels.get("363512933726027776").send(`[${client.myTime()}] [${type}] ${msg}`, {code: 'md'});
         } catch (e) {
             // Probably broken because it's not started yet
             // console.log(`[${client.myTime()}] I couldn't send it`);

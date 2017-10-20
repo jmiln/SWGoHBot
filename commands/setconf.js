@@ -1,9 +1,10 @@
 var moment = require('moment-timezone');
+var {inspect} = require('util');
 
-exports.run = (client, message, args, level) => {
+exports.run = async (client, message, args, level) => {
     const config = client.config;
-    const guildSettings = client.guildSettings;
-    const guildConf = message.guildSettings;
+    const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+    const guildConf = guildSettings.dataValues;
 
     if (guildConf) {
         if (level < this.conf.permLevel) {
@@ -29,6 +30,7 @@ exports.run = (client, message, args, level) => {
 
         // Now we can finally change the value. Here we only have strings for values so we won't
         // bother trying to make sure it's the right type and such.
+        let boolVar = true;
         switch (key) {
             case "adminrole":
                 if (args[1] !== 'add' && args[1] !== 'remove') {
@@ -39,12 +41,6 @@ exports.run = (client, message, args, level) => {
                 }
                 var roleName = args.slice(2).join(' ');
 
-
-                if (typeof guildConf['adminRole'] === 'string') {
-                    var oldKeyValue = guildConf['adminRole'];
-                    guildConf['adminRole'] = [oldKeyValue];
-                    guildSettings.set(message.guild.id, guildConf);
-                }
                 var roleArray = guildConf["adminRole"];
 
                 if (args[1] === 'add') {
@@ -52,7 +48,6 @@ exports.run = (client, message, args, level) => {
                     if (!newRole) return message.channel.send(`Sorry, but I cannot find the role ${roleName}. Please try again.`).then(msg => msg.delete(4000)).catch(console.error);
                     if (!roleArray.includes(roleName)) {
                         roleArray.push(roleName);
-                        guildConf["adminRole"] = roleArray;
                     } else {
                         return message.channel.send(`Sorry, but ${roleName} is already there.`).then(msg => msg.delete(4000)).catch(console.error);
                     }
@@ -63,37 +58,38 @@ exports.run = (client, message, args, level) => {
                         return message.channel.send(`Sorry, but ${roleName} is not in your config.`).then(msg => msg.delete(4000)).catch(console.error);
                     }
                 }
-                guildSettings.set(message.guild.id, guildConf);
+                client.guildSettings.update({adminRole: roleArray}, {where: {guildID: message.guild.id}});
                 return message.channel.send(`The role ${roleName} has been ${args[1] === 'add' ? 'added to' : 'removed from'} your admin roles.`);
             case "enablewelcome":
                 if (onVar.includes(value.toLowerCase())) {
                     const newChannel = message.guild.channels.find('name', guildConf['announceChan']);
-                    if (newChannel) {
-                        guildConf["enableWelcome"] = true;
-                    } else {
+                    if (!newChannel) {
                         return message.channel.send(`Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``).then(msg => msg.delete(10000)).catch(console.error);
                     }
+                    boolVar = true;
                 } else if (offVar.includes(value.toLowerCase())) {
-                    guildConf["enableWelcome"] = false;
+                    boolVar = false;
                 } else {
                     return message.reply(`Invalid value, try true or false`).then(msg => msg.delete(4000)).catch(console.error);
                 }
+                client.guildSettings.update({enableWelcome: boolVar}, {where: {guildID: message.guild.id}});
                 break;
             case "welcomemessage":
-                guildConf["welcomeMessage"] = value;
+                client.guildSettings.update({welcomeMessage: value}, {where: {guildID: message.guild.id}});
                 break;
             case "useembeds":
                 if (onVar.includes(value.toLowerCase())) {
-                    guildConf["useEmbeds"] = true;
+                    boolVar = true;
                 } else if (offVar.includes(value.toLowerCase())) {
-                    guildConf["useEmbeds"] = false;
+                    boolVar = false;
                 } else {
                     return message.reply(`Invalid value, try true or false`).then(msg => msg.delete(4000)).catch(console.error);
                 }
+                client.guildSettings.update({useEmbeds: boolVar}, {where: {guildID: message.guild.id}});
                 break;
             case "timezone":
                 if (moment.tz.zone(value)) { // Valid time zone
-                    guildConf["timezone"] = value;
+                    client.guildSettings.update({timezone: value}, {where: {guildID: message.guild.id}});
                 } else { // Not so valid
                     return message.reply(`Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`).then(msg => msg.delete(10000)).catch(console.error);
                 }
@@ -103,9 +99,9 @@ exports.run = (client, message, args, level) => {
                     const newChannel = message.guild.channels.find('name', value);
                     if (!newChannel) return message.channel.send(`Sorry, but I cannot find the channel ${value}. Please try again.`).then(msg => msg.delete(4000)).catch(console.error);
                     if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) return message.channel.send(`Sorry, but I don't have permission to send message there. Please either change the perms, or choose another channel.`);
-                    guildConf["announceChan"] = value;
+                    client.guildSettings.update({announceChan: value}, {where: {guildID: message.guild.id}});
                 } else {
-                    guildConf["announceChan"] = "";
+                    client.guildSettings.update({announceChan: ''}, {where: {guildID: message.guild.id}});
                 }
                 break;
             case "help":
@@ -114,13 +110,10 @@ exports.run = (client, message, args, level) => {
                 return message.reply(`This key is not in the configuration. Look in "${config.prefix}showconf", or "${config.prefix}setconf help" for a list`).then(msg => msg.delete(4000)).catch(console.error);
         }
 
-        // Then we re-apply the changed value to the PersistentCollection
-        guildSettings.set(message.guild.id, guildConf);
-
         // We can confirm everything's done to the client.
         message.channel.send(`Guild configuration item ${key} has been changed to:\n\`${value}\``);
     } else {
-        message.channel.send(`No guild settings found, run \`${config.prefix}showconf\` to build them.`).then(msg => msg.delete(4000)).catch(console.error);
+        message.channel.send(`No guild settings found.`).then(msg => msg.delete(4000)).catch(console.error);
     }
 };
 

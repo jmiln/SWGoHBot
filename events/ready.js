@@ -4,17 +4,15 @@ module.exports = async client => {
     // for all of them to be loaded.
     await wait(1000);
 
-    // Get the guildSettings
-    const guildSettings = client.guildSettings;
-
     // Grab a list of all the guilds the bot is in
     const guildList = client.guilds.keyArray();
 
-    guildList.forEach(guild => {
-        // If there is no config, give em one
-        if (!guildSettings.has(guild)) {
-            guildSettings.set(guild, client.config.defaultSettings);
-        }
+    const defSet = client.config.defaultSettings;
+
+    guildList.forEach(async (guild) => {
+        // If there is no config, give em one, and an events object while we're at it
+        await client.guildSettings.findOrCreate({where: {guildID: guild}, defaults: {guildID: guild, adminRole: defSet.adminRole, enableWelcome: defSet.enableWelcome, welcomeMessage: defSet.welcomeMessage, useEmbeds: defSet.useEmbeds, timezone: defSet.timezone, announceChan: defSet.announceChan}}).then();
+        await client.guildEvents.findOrCreate({where: {guildID: guild}, defaults: {guildID: guild, events: {}}}).then();
     });
 
     // Logs that it's up, and some extra info

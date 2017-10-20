@@ -1,24 +1,17 @@
 const util = require('util');
 
-exports.run = (client, message) => {
-
-    const guildConf = message.guildSettings;
+exports.run = async (client, message) => {
+    const guildConf = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
 
     var array = [];
     if (guildConf) {
-        for (var key in guildConf) {
+        for (var key in guildConf.dataValues) {
             array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
         }
         var configKeys = array.join('\n');
         return message.channel.send(`The following is this server's current configuration: \`\`\`${configKeys}\`\`\``);
     } else {
-        message.guildSettings.set(message.guild.id, client.config.defaultSettings);
-
-        for (key in guildConf) {
-            array.push("* " + key + ": " + guildConf[key]);
-        }
-        configKeys = array.join('\n');
-        return message.channel.send(`Here's your server's new configuration: \`\`\`${configKeys}\`\`\``);
+        console.log('Something broke in showconf')
     }
 };
 
