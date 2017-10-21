@@ -159,7 +159,28 @@ exports.run = async (client, message, args, level) => {
                         eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
                     }
                     if (['min', 'minimal', 'minimized'].indexOf(option) <= -1) {
-                        eventString += `Event Message: ${event.eventMessage}`;
+                        const userReg = /<@!?(1|\d{17,19})>/g;
+						const roleReg = /<@&(1|\d{17,19})>/g;	
+                        let msg = event.eventMessage;
+                        
+                        let userResult = msg.match(userReg);
+                        let roleResult = msg.match(roleReg);
+						if (userResult !== null) {
+                            userResult.forEach(user => {
+                                let userID = user.replace(/\D/g,'');
+                                let thisUser = message.guild.members.find('id', userID);
+                                let userName = thisUser.nickname === null ? `${thisUser.user.username}#${thisUser.user.discriminator}`  : `${thisUser.nickname}#${thisUser.user.discriminator}`;
+                                msg = msg.replace(user, userName);
+                            });
+                        } 
+                        if (roleResult !== null) {
+                            roleResult.forEach(role => {
+                                let roleID = role.replace(/\D/g,'');
+                                let roleName = message.guild.roles.find('id', roleID).name;
+                                msg = msg.replace(role, `@${roleName}`);
+                            });
+                        }
+                        eventString += `Event Message: \`\`\`${msg}\`\`\``;
                     }
                     array.push(eventString);
                 }
