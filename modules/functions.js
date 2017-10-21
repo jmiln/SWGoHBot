@@ -79,13 +79,19 @@ module.exports = (client) => {
      * LOGGING FUNCTION
      * Logs to console. Future patches may include time+colors
      */
-    client.log = (type, msg, title) => {
+    client.log = (type, msg, title, codeType, prefix) => {
         if (!title) title = "Log";
+        if (!codeType) codeType = "md";
+        if (!prefix) {
+            prefix = ""; 
+        } else {
+            prefix = prefix + ' ';
+        }
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
             // Sends the logs to the channel I have set up for it.
             if (client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send(`[${client.myTime()}] [${type}] ${msg}`, {code: 'md'});
+                client.channels.get(client.config.logs.channel).send(`${prefix}[${client.myTime()}] [${type}] ${msg}`, {code: codeType});
             }
         } catch (e) {
             // Probably broken because it's not started yet
