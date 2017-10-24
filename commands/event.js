@@ -291,14 +291,16 @@ exports.conf = {
 exports.help = {
     name: 'event',
     category: 'Misc',
-    description: 'Used to make or check an event',
-    usage: 'event [create|view|delete|help] [eventName] [eventDay] [eventTime] [--repeat 00d00h00m] [--channel channelName] [--countdown yes] [eventMessage]',
+    description: 'Used to make or check an event.',
+    usage: 'event [create|view|delete|help] [eventName] [eventDay] [eventTime] [eventMessage]',
     extended: `\`\`\`md
 create :: Create a new event listing.
-    --repeat  :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
-    --channel :: Lets you set a specific channel for the event to announce on.
+    --repeat    :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
+    --channel   :: Lets you set a specific channel for the event to announce on.
     --countdown :: Adds a countdown to when your event will trigger - yes is the only valid parameter
 view   :: View your current event listings.
+    --min       :: Lets you view the events without the event message
+    --name      :: Lets you specify which event to view
 delete :: Delete an event.
 trigger:: Trigger an event in the specified channel, leaves the event alone.
 help   :: Shows this message.\`\`\``,
