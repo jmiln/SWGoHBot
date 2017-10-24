@@ -18,7 +18,7 @@ exports.run = async (client, message, args, level) => {
         if (events.length === 0) {
             guildEvents.delete(message.guild.id);
             guildEvents.set(message.guild.id, {});
-            events = guildEvents.get(message.guild.id); 
+            events = guildEvents.get(message.guild.id);
         }
     }
 
@@ -62,9 +62,9 @@ exports.run = async (client, message, args, level) => {
                 }
             }
 
-			// validate countdown parameter
+            // validate countdown parameter
             if (countdownOn !== 'no' && countdownOn !== 'yes') return message.channel.send(`The only valid option for countdown is yes. If you don\'t want a countdown, don\'t add the option.`).then(msg => msg.delete(10000)).catch(console.error);
-            
+
             // If the event channel is something other than default, check to make sure it works, then set it
             const announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
             if (eventChan !== '') {
@@ -160,19 +160,19 @@ exports.run = async (client, message, args, level) => {
                     }
                     if (['min', 'minimal', 'minimized'].indexOf(option) <= -1) {
                         const userReg = /<@!?(1|\d{17,19})>/g;
-						const roleReg = /<@&(1|\d{17,19})>/g;	
+                        const roleReg = /<@&(1|\d{17,19})>/g;
                         let msg = event.eventMessage;
-                        
+
                         let userResult = msg.match(userReg);
                         let roleResult = msg.match(roleReg);
-						if (userResult !== null) {
+                        if (userResult !== null) {
                             userResult.forEach(user => {
                                 let userID = user.replace(/\D/g,'');
                                 let thisUser = message.guild.members.find('id', userID);
                                 let userName = thisUser.nickname === null ? `${thisUser.user.username}#${thisUser.user.discriminator}`  : `${thisUser.nickname}#${thisUser.user.discriminator}`;
                                 msg = msg.replace(user, userName);
                             });
-                        } 
+                        }
                         if (roleResult !== null) {
                             roleResult.forEach(role => {
                                 let roleID = role.replace(/\D/g,'');
@@ -180,7 +180,8 @@ exports.run = async (client, message, args, level) => {
                                 msg = msg.replace(role, `@${roleName}`);
                             });
                         }
-                        eventString += `Event Message: \`\`\`${msg}\`\`\``;
+                        msg = msg.replace(/\`/g, '');
+                        eventString += `Event Message: \n\`\`\`${msg}\`\`\``;
                     }
                     array.push(eventString);
                 }
