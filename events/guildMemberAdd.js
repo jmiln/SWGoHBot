@@ -6,7 +6,7 @@ module.exports = async (client, member) => {
     const guildConf = guildSettings.dataValues;
 
     // Make sure the config option exists. Should not need this, but just in case
-    if(!guildConf['announceChan']) {
+    if (!guildConf['announceChan']) {
         client.guildSettings.update({announceChan: ''}, {where: {guildID: guild.id}});
     }
 
@@ -14,7 +14,7 @@ module.exports = async (client, member) => {
     if (guildConf.enableWelcome && guildConf.welcomeMessage !== "" && guildConf.announceChan !== "") { // If they have it turned on, and it's not empty
         var channel = guild.channels.find('name', guildConf['announceChan']);
         if (channel && channel.permissionsFor(guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
-            if(!channel) return;  // No reason for it to ever do this, but it's still breaking for some reason with the .send
+            if (!channel) return;  // No reason for it to ever do this, but it's still breaking for some reason with the .send
             let welcomeMessage = guildConf.welcomeMessage.toString();
 
             if (welcomeMessage.includes("{{user}}")) {

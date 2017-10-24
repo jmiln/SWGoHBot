@@ -68,8 +68,8 @@ exports.run = (client, message, args) => {
         shipString += `Factions: ${ship.factions.join(', ').toProperCase()}\n\n`;
         shipString += ` * Abilities *\n`;
     
-        for (var ability in ship.abilities) {
-            const abilities = ship.abilities[ability];
+        for (var thisAbility in ship.abilities) {
+            const abilities = ship.abilities[thisAbility];
             shipString += `### ${ability} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`;
         }
 

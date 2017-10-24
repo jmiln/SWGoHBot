@@ -4,6 +4,7 @@
     "description": "Bot for a SWGoH Discord server",
     "main": "swgohBot.js",
     "scripts": {
+        "lint": "eslint .",
         "start": "node swgohBot.js"
     },
     "author": "Jeff",
@@ -22,7 +23,6 @@
         "express": "^4.16.1",
         "express-session": "^1.15.6",
         "marked": "^0.3.6",
-        "minimist": "^1.2.0",
         "moment": "^2.18.1",
         "moment-duration-format": "^1.3.0",
         "moment-timezone": "^0.5.13",
@@ -30,7 +30,8 @@
         "pg": "^7.3.0",
         "pg-hstore": "^2.3.2",
         "sequelize": "^4.13.15",
-        "snekfetch": "^3.4.4"
+        "snekfetch": "^3.4.4",
+        "yargs": "^10.0.3"
     },
     "engines": {
         "node": "^8.4.0"

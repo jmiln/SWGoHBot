@@ -11,7 +11,7 @@ exports.run = async (client, message) => {
         var configKeys = array.join('\n');
         return message.channel.send(`The following is this server's current configuration: \`\`\`${configKeys}\`\`\``);
     } else {
-        console.log('Something broke in showconf')
+        console.log('Something broke in showconf');
     }
 };
 

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { promisify } = require("util");
-const { inspect } = require("util");
+// const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
 const client = new Discord.Client();
 var moment = require('moment-timezone');
@@ -8,7 +8,7 @@ var fs = require("fs");
 
 const EnMap = require("enmap");
 
- const Sequelize = require('sequelize');
+const Sequelize = require('sequelize');
 
 const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
 
@@ -51,8 +51,8 @@ client.guildEvents = client.sequelize.define('events', {
 
 
 client.once('ready', () => {
-  client.guildSettings.sync();
-  client.guildEvents.sync();
+    client.guildSettings.sync();
+    client.guildEvents.sync();
 });
 
 const init = async () => {

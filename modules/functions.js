@@ -2,12 +2,12 @@ const moment = require('moment');
 
 module.exports = (client) => {
     /*
-		PERMISSION LEVEL FUNCTION
-		This is a very basic permission system for commands which uses "levels"
-		"spaces" are intentionally left black so you can add them if you want.
-		NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
-		command including the VERY DANGEROUS `eval` and `exec` commands!
-		*/
+        PERMISSION LEVEL FUNCTION
+        This is a very basic permission system for commands which uses "levels"
+        "spaces" are intentionally left black so you can add them if you want.
+        NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
+        command including the VERY DANGEROUS `eval` and `exec` commands!
+        */
     client.permlevel = message => {
         let permlvl = 0;
 
@@ -16,7 +16,7 @@ module.exports = (client) => {
 
         // If DMs or webhook, return 0 perm level.
         if (!message.guild || !message.member) return 0;
-		const guildConf = message.guildSettings;
+        const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
         if (message.author.id === message.guild.owner.id) return permlvl = 4;
@@ -124,13 +124,13 @@ module.exports = (client) => {
     };
 
     /*
-	  SINGLE-LINE AWAITMESSAGE
-	  A simple way to grab a single reply, from the user that initiated
-	  the command. Useful to get "precisions" on certain things...
-	  USAGE
-	  const response = await client.awaitReply(msg, "Favourite Color?");
-	  msg.reply(`Oh, I really love ${response} too!`);
-	  */
+      SINGLE-LINE AWAITMESSAGE
+      A simple way to grab a single reply, from the user that initiated
+      the command. Useful to get "precisions" on certain things...
+      USAGE
+      const response = await client.awaitReply(msg, "Favourite Color?");
+      msg.reply(`Oh, I really love ${response} too!`);
+      */
     client.awaitReply = async (msg, question, limit = 60000) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question);
@@ -147,12 +147,12 @@ module.exports = (client) => {
     };
 
     /*
-	  MESSAGE CLEAN FUNCTION
-	  "Clean" removes @everyone pings, as well as tokens, and makes code blocks
-	  escaped so they're shown more easily. As a bonus it resolves promises
-	  and stringifies objects!
-	  This is mostly only used by the Eval and Exec commands.
-	  */
+      MESSAGE CLEAN FUNCTION
+      "Clean" removes @everyone pings, as well as tokens, and makes code blocks
+      escaped so they're shown more easily. As a bonus it resolves promises
+      and stringifies objects!
+      This is mostly only used by the Eval and Exec commands.
+      */
     client.clean = async (client, text) => {
         if (text && text.constructor.name == "Promise")
             text = await text;
@@ -194,7 +194,7 @@ module.exports = (client) => {
 
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, "g"), "./");
+        const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
         console.error(`[${client.myTime()}] Uncaught Exception: `, errorMsg);
 
         // If it's that error, don't bother showing it again

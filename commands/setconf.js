@@ -1,5 +1,5 @@
 var moment = require('moment-timezone');
-var {inspect} = require('util');
+// var {inspect} = require('util');
 
 exports.run = async (client, message, args, level) => {
     const config = client.config;

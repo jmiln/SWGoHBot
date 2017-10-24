@@ -1,6 +1,6 @@
 var moment = require('moment-timezone');
-var minimist = require('minimist');
-var util = require('util');
+var yargs = require('yargs');
+// var util = require('util');
 
 exports.run = async (client, message, args, level) => {
     const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
@@ -42,7 +42,26 @@ exports.run = async (client, message, args, level) => {
 
     switch (action) {
         case "create": {
-            const minArgs = minimist(args, {default: {repeat: '0', channel: '', countdown: 'no'}});
+            const minArgs = yargs.options({
+                'repeat': {
+                    alias: ['rep'],
+                    describe: 'Repeat the event',
+                    type: 'number',
+                    default: 0
+                },
+                'channel': {
+                    describe: 'Channel to announce the event in',
+                    type: 'string',
+                    default: ''
+                },
+                'countdown': {
+                    alias: ['cd'],
+                    describe: 'Turn on the countdown',
+                    type: 'string',
+                    choices: ['yes', 'no'],
+                    default: 'no'
+                }
+            }).parse(args);
             args = minArgs['_'];    // The args without the repeat var in there
             let repeatTime = String(minArgs['repeat']);
             const eventChan = String(minArgs['channel']);
@@ -63,7 +82,7 @@ exports.run = async (client, message, args, level) => {
             }
 
             // validate countdown parameter
-            if (countdownOn !== 'no' && countdownOn !== 'yes') return message.channel.send(`The only valid option for countdown is yes. If you don\'t want a countdown, don\'t add the option.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (countdownOn !== 'no' && countdownOn !== 'yes') return message.channel.send(`The only valid options for countdown are yes or no.`).then(msg => msg.delete(10000)).catch(console.error);
 
             // If the event channel is something other than default, check to make sure it works, then set it
             const announceChannel = message.guild.channels.find('name', guildConf['announceChan']);
@@ -144,46 +163,67 @@ exports.run = async (client, message, args, level) => {
             client.guildEvents.update({events: events}, {where: {guildID: message.guild.id}});
             return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
         } case "view": {
-            let option = "";
-            if (args[1]) option = args[1];
+            const minArgs = yargs.options({
+                'min': {
+                    alias: ['minimal', 'minimized'],
+                    describe: 'Show the events without the message',
+                    type: 'boolean',
+                    default: false
+                },
+                'page': {
+                    alias: ['p'],
+                    describe: 'Choose the page of events you want to see',
+                    type: 'number',
+                    default: 0
+                },
+                'eventName': {
+                    alias: ['name'],
+                    describe: 'Name of a specific event you want to show',
+                    type: 'string',
+                    default: ''
+                }
+            }).parse(args);
+            args = minArgs['_'];
             const array = [];
             if (events) {
-                for (var key in events) {
-                    const event = events[key];
-                    var eventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
-                    var eventString = `**${key}:**\nEvent Time: ${eventDate}\n`;
-                    if (event.eventChan !== '') {
-                        eventString += `Sending on channel: ${event.eventChan}\n`;
-                    }
-                    if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-                        eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
-                    }
-                    if (['min', 'minimal', 'minimized'].indexOf(option) <= -1) {
-                        const userReg = /<@!?(1|\d{17,19})>/g;
-                        const roleReg = /<@&(1|\d{17,19})>/g;
-                        let msg = event.eventMessage;
-
-                        let userResult = msg.match(userReg);
-                        let roleResult = msg.match(roleReg);
-                        if (userResult !== null) {
-                            userResult.forEach(user => {
-                                let userID = user.replace(/\D/g,'');
-                                let thisUser = message.guild.members.find('id', userID);
-                                let userName = thisUser.nickname === null ? `${thisUser.user.username}#${thisUser.user.discriminator}`  : `${thisUser.nickname}#${thisUser.user.discriminator}`;
-                                msg = msg.replace(user, userName);
-                            });
+                if (minArgs.eventName !== '') {
+                    // If they are looking to show a specific event
+                    if (events[minArgs.eventName]) {
+                        const thisEvent = events[minArgs.eventName];
+                        var eventDate = moment.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
+                        let eventString = `**${minArgs.eventName}** \nEvent Time: ${eventDate}\n`;
+                        if (thisEvent.eventChan !== '') {
+                            eventString += `Sending on channel: ${thisEvent.eventChan}\n`;
                         }
-                        if (roleResult !== null) {
-                            roleResult.forEach(role => {
-                                let roleID = role.replace(/\D/g,'');
-                                let roleName = message.guild.roles.find('id', roleID).name;
-                                msg = msg.replace(role, `@${roleName}`);
-                            });
+                        if (thisEvent['repeat'] && (thisEvent.repeat['repeatDay'] !== 0 || thisEvent.repeat['repeatHour'] !== 0 || thisEvent.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                            eventString += `Repeating every ${thisEvent.repeat['repeatDay']} days, ${thisEvent.repeat['repeatHour']} hours, and  ${thisEvent.repeat['repeatMin']} minutes\n`;
                         }
-                        msg = msg.replace(/\`/g, '');
-                        eventString += `Event Message: \n\`\`\`${msg}\`\`\``;
+                        if (!minArgs.min) {
+                            // If they want to show all available events without the eventMessage showing
+                            eventString += `Event Message: \n\`\`\`${removeTags(message, thisEvent.eventMessage)}\`\`\``;
+                        }
+                        return message.channel.send(eventString);
+                    } else {
+                        message.channel.send(`Sorry, but I cannot find the event \`${minArgs.eventName}\``);
                     }
-                    array.push(eventString);
+                } else {     
+                    for (var key in events) {
+                        const event = events[key];
+                        var thisEventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
+                        var eventString = `**${key}:**\nEvent Time: ${thisEventDate}\n`;
+                        if (event.eventChan !== '') {
+                            eventString += `Sending on channel: ${event.eventChan}\n`;
+                        }
+                        if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                            eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
+                        }
+                        if (!minArgs.min) {
+                            // If they want to show all available events without the eventMessage showing
+                            const msg = removeTags(message, event.eventMessage);
+                            eventString += `Event Message: \n\`\`\`${msg}\`\`\``;
+                        }
+                        array.push(eventString);
+                    }
                 }
                 var eventKeys = array.join('\n\n');
                 try {
@@ -264,3 +304,38 @@ trigger:: Trigger an event in the specified channel, leaves the event alone.
 help   :: Shows this message.\`\`\``,
     example: 'event create FirstEvent 7/2/2017 13:56 This is my event message'
 };
+
+
+function removeTags(message, mess) {
+    const userReg = /<@!?(1|\d{17,19})>/g;
+    const roleReg = /<@&(1|\d{17,19})>/g;
+    const chanReg = /<#(1|\d{17,19})>/g;
+
+    const userResult = mess.match(userReg);
+    const roleResult = mess.match(roleReg);
+    const chanResult = mess.match(chanReg);
+    if (userResult !== null) {
+        userResult.forEach(user => {
+            const userID = user.replace(/\D/g,'');
+            const thisUser = message.guild.members.find('id', userID);
+            const userName = thisUser.nickname === null ? `${thisUser.user.username}#${thisUser.user.discriminator}`  : `${thisUser.nickname}#${thisUser.user.discriminator}`;
+            mess = mess.replace(user, userName);
+        });
+    }
+    if (roleResult !== null) {
+        roleResult.forEach(role => {
+            const roleID = role.replace(/\D/g,'');
+            const roleName = message.guild.roles.find('id', roleID).name;
+            mess = mess.replace(role, `@${roleName}`);
+        });
+    }
+    if (chanResult !== null) {
+        chanResult.forEach(chan => {
+            const chanID = chan.replace(/\D/g,'');
+            const chanName = message.guild.channels.find('id', chanID).name;
+            mess = mess.replace(chan, `#${chanName}`);
+        });
+    }
+    mess = mess.replace(/`/g, '');
+    return mess;
+}
