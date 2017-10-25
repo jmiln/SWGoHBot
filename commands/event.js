@@ -174,7 +174,7 @@ exports.run = async (client, message, args, level) => {
                     alias: ['p'],
                     describe: 'Choose the page of events you want to see',
                     type: 'number',
-                    default: 0
+                    default: 1
                 },
                 'eventName': {
                     alias: ['name'],
@@ -204,10 +204,12 @@ exports.run = async (client, message, args, level) => {
                         }
                         return message.channel.send(eventString);
                     } else {
-                        message.channel.send(`Sorry, but I cannot find the event \`${minArgs.eventName}\``);
+                        return message.channel.send(`Sorry, but I cannot find the event \`${minArgs.eventName}\``);
                     }
                 } else {     
-                    for (var key in events) {
+                    const sortedEvents = Object.keys(events).sort((p, c) => moment.tz(`${events[p].eventDay} ${events[p].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']) > moment.tz(`${events[c].eventDay} ${events[c].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']));
+
+                    sortedEvents.forEach(key => {
                         const event = events[key];
                         var thisEventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
                         var eventString = `**${key}:**\nEvent Time: ${thisEventDate}\n`;
@@ -218,22 +220,22 @@ exports.run = async (client, message, args, level) => {
                             eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
                         }
                         if (!minArgs.min) {
-                            // If they want to show all available events without the eventMessage showing
+                            // If they want to show all available events with the eventMessage showing
                             const msg = removeTags(message, event.eventMessage);
                             eventString += `Event Message: \n\`\`\`${msg}\`\`\``;
                         }
                         array.push(eventString);
+                    });
+                    var eventKeys = array.join('\n\n');
+                    try {
+                        if (array.length === 0) {
+                            return message.channel.send(`You don't currently have any events scheduled.`);
+                        } else {
+                            return message.channel.send(`Here's your server's Event Schedule: \n\n${eventKeys}`, {'split': true});
+                        }
+                    } catch (e) {
+                        client.log('Event View Broke!', eventKeys);
                     }
-                }
-                var eventKeys = array.join('\n\n');
-                try {
-                    if (array.length === 0) {
-                        return message.channel.send(`You don't currently have any events scheduled.`);
-                    } else {
-                        return message.channel.send(`Here's your server's Event Schedule: \n\n${eventKeys}`, {'split': true});
-                    }
-                } catch (e) {
-                    client.log('Event View Broke!', eventKeys);
                 }
             }
             break;
