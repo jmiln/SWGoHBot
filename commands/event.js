@@ -6,6 +6,8 @@ exports.run = async (client, message, args, level) => {
     const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
     const guildConf = guildSettings.dataValues;
 
+    const EVENTS_PER_PAGE = 5;
+
     const guildEvents = await client.guildEvents.findOne({where: {guildID: message.guild.id}, attributes: ['events']});
     var events = guildEvents.dataValues.events;
 
@@ -171,7 +173,7 @@ exports.run = async (client, message, args, level) => {
                     default: false
                 },
                 'page': {
-                    alias: ['p'],
+                    alias: ['p', 'pages'],
                     describe: 'Choose the page of events you want to see',
                     type: 'number',
                     default: 1
@@ -207,7 +209,21 @@ exports.run = async (client, message, args, level) => {
                         return message.channel.send(`Sorry, but I cannot find the event \`${minArgs.eventName}\``);
                     }
                 } else {     
-                    const sortedEvents = Object.keys(events).sort((p, c) => moment.tz(`${events[p].eventDay} ${events[p].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']) > moment.tz(`${events[c].eventDay} ${events[c].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']));
+                    // Sort the events by the time/ day
+                    let sortedEvents = Object.keys(events).sort((p, c) => moment.tz(`${events[p].eventDay} ${events[p].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']) > moment.tz(`${events[c].eventDay} ${events[c].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']));
+
+                    // Grab the total # of events for later use
+                    const eventCount = sortedEvents.length;
+
+                    const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
+                    if (minArgs.pages < 1) minArgs.pages = 1;
+                    if (minArgs.pages > PAGES_NEEDED) minArgs.pages = PAGES_NEEDED;
+                    const PAGE_SELECTED = minArgs.pages;
+
+                    // Remove everything that isn't within the selected page
+                    if (PAGES_NEEDED > 1) {
+                        sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
+                    }
 
                     sortedEvents.forEach(key => {
                         const event = events[key];
@@ -231,7 +247,7 @@ exports.run = async (client, message, args, level) => {
                         if (array.length === 0) {
                             return message.channel.send(`You don't currently have any events scheduled.`);
                         } else {
-                            return message.channel.send(`Here's your server's Event Schedule: \n\n${eventKeys}`, {'split': true});
+                            return message.channel.send(`Here's your server's Event Schedule \n(${eventCount} total events) Showing page ${PAGE_SELECTED}/${PAGES_NEEDED}: \n\n${eventKeys}`, {'split': true});
                         }
                     } catch (e) {
                         client.log('Event View Broke!', eventKeys);
@@ -303,6 +319,7 @@ create :: Create a new event listing.
 view   :: View your current event listings.
     --min       :: Lets you view the events without the event message
     --name      :: Lets you specify which event to view
+    --page | -p :: Lets you select a page of events to view
 delete :: Delete an event.
 trigger:: Trigger an event in the specified channel, leaves the event alone.
 help   :: Shows this message.\`\`\``,
