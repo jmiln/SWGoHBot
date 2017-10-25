@@ -210,7 +210,7 @@ exports.run = async (client, message, args, level) => {
                     }
                 } else {     
                     // Sort the events by the time/ day
-                    let sortedEvents = Object.keys(events).sort((p, c) => moment.tz(`${events[p].eventDay} ${events[p].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']) > moment.tz(`${events[c].eventDay} ${events[c].eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']));
+                    let sortedEvents = Object.keys(events).sort((p, c) => moment(`${events[p].eventDay} ${events[p].eventTime}`, 'YYYY-MM-DD HH:mm').diff(moment(`${events[c].eventDay} ${events[c].eventTime}`, 'YYYY-MM-DD HH:mm')));
 
                     // Grab the total # of events for later use
                     const eventCount = sortedEvents.length;
@@ -225,9 +225,12 @@ exports.run = async (client, message, args, level) => {
                         sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
                     }
 
+                    let logString = '';
+
                     sortedEvents.forEach(key => {
                         const event = events[key];
                         var thisEventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
+                        logString += `${key} ${thisEventDate}\n`;
                         var eventString = `**${key}:**\nEvent Time: ${thisEventDate}\n`;
                         if (event.eventChan !== '') {
                             eventString += `Sending on channel: ${event.eventChan}\n`;
