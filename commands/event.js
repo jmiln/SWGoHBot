@@ -196,7 +196,7 @@ exports.run = async (client, message, args, level) => {
                         }
                         if (!minArgs.min) {
                             // If they want to show all available events without the eventMessage showing
-                            eventString += `Event Message: \n\`\`\`${removeTags(message, thisEvent.eventMessage)}\`\`\``;
+                            eventString += `Event Message: \n\`\`\`md\n${removeTags(message, thisEvent.eventMessage)}\`\`\``;
                         }
                         return message.channel.send(eventString);
                     } else {
