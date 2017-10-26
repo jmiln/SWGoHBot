@@ -177,23 +177,17 @@ exports.run = async (client, message, args, level) => {
                     describe: 'Choose the page of events you want to see',
                     type: 'number',
                     default: 1
-                },
-                'eventName': {
-                    alias: ['name'],
-                    describe: 'Name of a specific event you want to show',
-                    type: 'string',
-                    default: ''
                 }
             }).parse(args);
             args = minArgs['_'];
             const array = [];
             if (events) {
-                if (minArgs.eventName !== '') {
+                if (args[1]) {
                     // If they are looking to show a specific event
-                    if (events[minArgs.eventName]) {
-                        const thisEvent = events[minArgs.eventName];
+                    if (events[args[1]]) {
+                        const thisEvent = events[args[1]];
                         var eventDate = moment.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
-                        let eventString = `**${minArgs.eventName}** \nEvent Time: ${eventDate}\n`;
+                        let eventString = `**${args[1]}** \nEvent Time: ${eventDate}\n`;
                         if (thisEvent.eventChan !== '') {
                             eventString += `Sending on channel: ${thisEvent.eventChan}\n`;
                         }
@@ -206,7 +200,7 @@ exports.run = async (client, message, args, level) => {
                         }
                         return message.channel.send(eventString);
                     } else {
-                        return message.channel.send(`Sorry, but I cannot find the event \`${minArgs.eventName}\``);
+                        return message.channel.send(`Sorry, but I cannot find the event \`${args[1]}\``);
                     }
                 } else {     
                     // Sort the events by the time/ day
@@ -225,12 +219,9 @@ exports.run = async (client, message, args, level) => {
                         sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
                     }
 
-                    let logString = '';
-
                     sortedEvents.forEach(key => {
                         const event = events[key];
                         var thisEventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
-                        logString += `${key} ${thisEventDate}\n`;
                         var eventString = `**${key}:**\nEvent Time: ${thisEventDate}\n`;
                         if (event.eventChan !== '') {
                             eventString += `Sending on channel: ${event.eventChan}\n`;
@@ -313,15 +304,16 @@ exports.help = {
     name: 'event',
     category: 'Misc',
     description: 'Used to make or check an event.',
-    usage: 'event [create|view|delete|help] [eventName] [eventDay] [eventTime] [eventMessage]',
-    extended: `\`\`\`md
+    usage: `event [create] [eventName] [eventDay] [eventTime] [eventMessage]
+;event [view|delete|trigger] [eventName]
+;event help`,
+    extended: `\`\`\`asciidoc
 create :: Create a new event listing.
     --repeat    :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
     --channel   :: Lets you set a specific channel for the event to announce on.
     --countdown :: Adds a countdown to when your event will trigger - yes is the only valid parameter
 view   :: View your current event listings.
     --min       :: Lets you view the events without the event message
-    --name      :: Lets you specify which event to view
     --page | -p :: Lets you select a page of events to view
 delete :: Delete an event.
 trigger:: Trigger an event in the specified channel, leaves the event alone.
