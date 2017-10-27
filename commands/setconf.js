@@ -3,7 +3,7 @@ var moment = require('moment-timezone');
 
 exports.run = async (client, message, args, level) => {
     const config = client.config;
-    const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+    const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan', 'useEventPages']});
     const guildConf = guildSettings.dataValues;
 
     if (guildConf) {
@@ -104,6 +104,16 @@ exports.run = async (client, message, args, level) => {
                     client.guildSettings.update({announceChan: ''}, {where: {guildID: message.guild.id}});
                 }
                 break;
+            case "useeventpages": 
+                if (onVar.includes(value.toLowerCase())) {
+                    boolVar = true;
+                } else if (offVar.includes(value.toLowerCase())) {
+                    boolVar = false;
+                } else {
+                    return message.reply(`Invalid value, try true or false`).then(msg => msg.delete(4000)).catch(console.error);
+                }
+                client.guildSettings.update({useEventPages: boolVar}, {where: {guildID: message.guild.id}});
+                break;
             case "help":
                 return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
             default:
@@ -140,6 +150,7 @@ welcomeMessage :: The welcome message to send it you have it enabled.
 useEmbeds      :: Toggles whether or not to use embeds for the mods output.
 timezone       :: Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.
 announceChan   :: Sets the name of your announcements channel for events etc. Make sure it has permission to send them there.
+useEventPages  :: Sets it so event view shows in pages, rather than super spammy.
 help           :: Shows this help message.
 \`\`\``,
     example: 'setconf adminRole Admin\nOr "setconf help" for more info'

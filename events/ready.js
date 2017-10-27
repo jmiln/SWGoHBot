@@ -12,7 +12,7 @@ module.exports = async client => {
 
     guildList.forEach(async (guild) => {
         // If there is no config, give em one, and an events object while we're at it
-        await client.guildSettings.findOrCreate({where: {guildID: guild}, defaults: {guildID: guild, adminRole: defSet.adminRole, enableWelcome: defSet.enableWelcome, welcomeMessage: defSet.welcomeMessage, useEmbeds: defSet.useEmbeds, timezone: defSet.timezone, announceChan: defSet.announceChan}}).then();
+        await client.guildSettings.findOrCreate({where: {guildID: guild}, defaults: {guildID: guild, adminRole: defSet.adminRole, enableWelcome: defSet.enableWelcome, welcomeMessage: defSet.welcomeMessage, useEmbeds: defSet.useEmbeds, timezone: defSet.timezone, announceChan: defSet.announceChan, useEventPages: false}}).then();
         await client.guildEvents.findOrCreate({where: {guildID: guild}, defaults: {guildID: guild, events: {}}}).then();
     });
 

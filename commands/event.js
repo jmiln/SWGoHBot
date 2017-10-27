@@ -3,7 +3,7 @@ var yargs = require('yargs');
 // var util = require('util');
 
 exports.run = async (client, message, args, level) => {
-    const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+    const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan', 'useEventPages']});
     const guildConf = guildSettings.dataValues;
 
     const EVENTS_PER_PAGE = 5;
@@ -214,11 +214,12 @@ exports.run = async (client, message, args, level) => {
                     if (minArgs.pages > PAGES_NEEDED) minArgs.pages = PAGES_NEEDED;
                     const PAGE_SELECTED = minArgs.pages;
 
-                    // Remove everything that isn't within the selected page
-                    if (PAGES_NEEDED > 1) {
-                        sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
+                    if (guildConf['useEventPages']) {
+                        // If they have pages enabled, remove everything that isn't within the selected page
+                        if (PAGES_NEEDED > 1) {
+                            sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
+                        }
                     }
-
                     sortedEvents.forEach(key => {
                         const event = events[key];
                         var thisEventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
@@ -241,7 +242,11 @@ exports.run = async (client, message, args, level) => {
                         if (array.length === 0) {
                             return message.channel.send(`You don't currently have any events scheduled.`);
                         } else {
-                            return message.channel.send(`Here's your server's Event Schedule \n(${eventCount} total events) Showing page ${PAGE_SELECTED}/${PAGES_NEEDED}: \n\n${eventKeys}`, {'split': true});
+                            if (guildConf['useEventPages']) {
+                                return message.channel.send(`Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}) Showing page ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`, {'split': true});
+                            } else {
+                                return message.channel.send(`Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}): \n${eventKeys}`, {'split': true});
+                            }
                         }
                     } catch (e) {
                         client.log('Event View Broke!', eventKeys);

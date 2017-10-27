@@ -29,6 +29,7 @@ client.commands = new EnMap();
 client.aliases = new EnMap();
 
 const Op = Sequelize.Op;
+client.seqTypeBool = Sequelize.BOOLEAN;
 client.sequelize = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
     host: client.config.database.host,
     dialect: 'postgres',
@@ -42,7 +43,8 @@ client.guildSettings = client.sequelize.define('settings', {
     welcomeMessage: Sequelize.TEXT,
     useEmbeds: Sequelize.BOOLEAN,
     timezone: Sequelize.TEXT,
-    announceChan: Sequelize.TEXT
+    announceChan: Sequelize.TEXT,
+    useEventPages: Sequelize.BOOLEAN
 });
 client.guildEvents = client.sequelize.define('events', {
     guildID: { type: Sequelize.TEXT, primaryKey: true },
