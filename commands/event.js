@@ -48,7 +48,7 @@ exports.run = async (client, message, args, level) => {
                 'repeat': {
                     alias: ['rep'],
                     describe: 'Repeat the event',
-                    type: 'number',
+                    type: 'string',
                     default: 0
                 },
                 'channel': {
