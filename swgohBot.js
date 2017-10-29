@@ -5,6 +5,7 @@ const readdir = promisify(require("fs").readdir);
 const client = new Discord.Client();
 var moment = require('moment-timezone');
 var fs = require("fs");
+var snekfetch = require('snekfetch');
 
 const EnMap = require("enmap");
 
@@ -214,4 +215,156 @@ function announceEvent(thisGuild, guildConf, event, announceMessage) {
 // Then every INTERVAL_SECONDS seconds after
 setInterval(checkDates, INTERVAL_SECONDS * 1000);
 
+// Check every 12 hours to see if any mods have been changed
+setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
+//                               hr   min  sec  mSec
+
 init();
+
+
+
+function getModType(type) {
+    switch (type) {
+        case 'CC':
+            return 'Critical Chance x2';
+        case 'CD':
+            return 'Critical Damage x4';
+        case 'SPE':
+            return 'Speed x4';
+        case 'TEN':
+            return 'Tenacity x2';
+        case 'OFF':
+            return 'Offense x4';
+        case 'POT':
+            return 'Potency x2';
+        case 'HP':
+            return 'Health x2';
+        case 'DEF':
+            return 'Defense x2';
+        default:
+            return '';
+    }
+}
+
+
+async function updateCharacterMods() {
+    const jsonGrab = await snekfetch.get('http://apps.crouchingrancor.com/mods/advisor.json');
+    // console.log(inspect(jsonGrab.text))
+    const characterList = JSON.parse(jsonGrab.text).data;
+    const currentCharacters = client.characters;
+
+    let updateCount = 0, newCount = 0;
+    const cleanReg = /['-\s]/g;
+
+    characterList.forEach(thisChar => {
+        // console.log(inspect(thisChar))
+        let found = false;
+        currentCharacters.forEach(currentChar => {
+            // console.log(thisChar.cname + ' = ' + currentChar.name);
+            if (thisChar.cname.toLowerCase().replace(cleanReg, '') === currentChar.name.toLowerCase().replace(cleanReg, '')) {
+                found = true;
+                let setName = '';
+                if (thisChar.name.includes(thisChar.cname)) {
+                    setName = thisChar.name.split(' ').splice(thisChar.cname.split(' ').length).join(' ');
+                    if (setName === '') {
+                        setName = 'General';
+                    }
+                } else {
+                    setName = thisChar.name;
+                }
+                if (currentChar[setName]) {
+                    setName = thisChar.name;
+                }
+
+                // Go through all the variations of mods, and if they're the same,
+                // ignore em. If they're different, add it in as a new set
+                let newSet = true;
+                // console.log(inspect(currentChar.mods))
+                for (var thisSet in currentChar.mods) {
+                    const set = currentChar.mods[thisSet];
+                    if (getModType(thisChar.set1) === set.sets[0] && getModType(thisChar.set2) === set.sets[1] && getModType(thisChar.set3) === set.sets[2] && thisChar.square === set.square && thisChar.arrow === set.arrow && thisChar.diamond === set.diamond && thisChar.triangle === set.triangle && thisChar.circle === set.circle && thisChar.cross === set.cross) {
+                        newSet = false;
+                        break;
+                    }
+                }
+                if (newSet) {
+                    currentChar.mods[setName] = {
+                        "sets": [
+                            getModType(thisChar.set1),
+                            getModType(thisChar.set2),
+                            getModType(thisChar.set3)
+                        ],
+                        "square": thisChar.square,
+                        "arrow": thisChar.arrow,
+                        "diamond": thisChar.diamond,
+                        "triangle": thisChar.triangle,
+                        "circle": thisChar.circle,
+                        "cross": thisChar.cross
+                    };
+                    updateCount++;
+                    // console.log(inspect(currentChar));
+                }
+            }
+        });
+        if (!found) {
+            // Make a new character here (Maybe grab all the character info from swgoh.gg here too?
+            let setName = '';
+            if (thisChar.name.includes(thisChar.cname)) {
+                setName = thisChar.name.split(' ').splice(thisChar.cname.split(' ').length).join(' ');
+                if (setName === '') {
+                    setName = 'General';
+                }
+            } else {
+                setName = thisChar.name;
+            }
+            console.log('SetName: ' + setName);
+
+            const mods ={};
+            mods[setName] = {
+                "sets": [
+                    getModType(thisChar.set1),
+                    getModType(thisChar.set2),
+                    getModType(thisChar.set3)
+                ],
+                "square": thisChar.square,
+                "arrow": thisChar.arrow,
+                "diamond": thisChar.diamond,
+                "triangle": thisChar.triangle,
+                "circle": thisChar.circle,
+                "cross": thisChar.cross
+
+            };
+
+            const newCharacter = {
+                "name": thisChar.cname,
+                "aliases": [thisChar.cname],
+                "url": '',
+                "avatarURL": "",
+                "side": "",
+                "factions": thisChar.families.split(';'),
+                mods,
+                "gear": {
+                },
+                "abilities": {
+                }
+            };
+            currentCharacters.push(newCharacter);
+            newCount++;
+            client.log('NewChar', 'Added ' + thisChar.cname);
+        }
+    });
+
+    client.log('ModUpdate', `Updated ${updateCount}, created ${newCount}`);
+
+    if (updateCount > 0 || newCount > 0) {
+        fs.writeFile("./data/characters.json", JSON.stringify(currentCharacters, null, 4), 'utf8', function(err) {
+            if (err) {
+                return console.log(err);
+            }
+
+            client.log('Saved', "The updated character file was saved!");
+            client.characters = currentCharacters;
+        });
+    }
+}
+
