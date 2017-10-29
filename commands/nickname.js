@@ -1,9 +1,13 @@
 exports.run = (client, message, args) => {
-    if (args.length > 0) {
-        const  name = String(args.join(' '));
-        message.guild.member(client.user).setNickname(name);
-    } else {
-        message.guild.member(client.user).setNickname("");
+    try {
+        if (args.length > 0) {
+            const  name = String(args.join(' '));
+            message.guild.member(client.user).setNickname(name);
+        } else {
+            message.guild.member(client.user).setNickname("");
+        }
+    } catch (e) {
+        client.log('Broke', 'I broke while trying to set a nickname');
     }
 };
 
