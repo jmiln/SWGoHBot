@@ -28,13 +28,12 @@ require("./modules/functions.js")(client);
 client.commands = new EnMap();
 client.aliases = new EnMap();
 
-const Op = Sequelize.Op;
 client.seqTypeBool = Sequelize.BOOLEAN;
 client.sequelize = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
     host: client.config.database.host,
     dialect: 'postgres',
     logging: false,
-    operatorAliases: Op
+    operatorAliases: false
 });
 client.guildSettings = client.sequelize.define('settings', {
     guildID: { type: Sequelize.TEXT, primaryKey: true },
@@ -49,12 +48,6 @@ client.guildSettings = client.sequelize.define('settings', {
 client.guildEvents = client.sequelize.define('events', {
     guildID: { type: Sequelize.TEXT, primaryKey: true },
     events: Sequelize.JSONB
-});
-
-
-client.once('ready', () => {
-    client.guildSettings.sync();
-    client.guildEvents.sync();
 });
 
 const init = async () => {

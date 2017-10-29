@@ -10,6 +10,9 @@ module.exports = async client => {
 
     const defSet = client.config.defaultSettings;
 
+    client.guildSettings.sync();
+    client.guildEvents.sync();
+
     guildList.forEach(async (guild) => {
         // If there is no config, give em one, and an events object while we're at it
         await client.guildSettings.findOrCreate({where: {guildID: guild}, defaults: {guildID: guild, adminRole: defSet.adminRole, enableWelcome: defSet.enableWelcome, welcomeMessage: defSet.welcomeMessage, useEmbeds: defSet.useEmbeds, timezone: defSet.timezone, announceChan: defSet.announceChan, useEventPages: false}}).then();
