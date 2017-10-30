@@ -60,7 +60,6 @@ exports.run = async (client, message, args, level) => {
                     alias: ['cd'],
                     describe: 'Turn on the countdown',
                     type: 'string',
-                    choices: ['yes', 'no'],
                     default: 'no'
                 }
             }).parse(args);
@@ -103,7 +102,7 @@ exports.run = async (client, message, args, level) => {
             eventName = args[1];
 
             // Check if that name/ event already exists
-            if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (events[eventName]) return message.channel.send(`That event name already exists. Cannot add it again.`).then(msg => msg.delete(10000)).catch(console.error);
 
             if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`).then(msg => msg.delete(10000)).catch(console.error);
             if (!moment(args[2], 'D/M/YYYY').isValid()) {
@@ -259,7 +258,7 @@ exports.run = async (client, message, args, level) => {
             eventName = args[1];
 
             // Check if that name/ event already exists
-            if (!events.hasOwnProperty(eventName)) {
+            if (!events[eventName]) {
                 return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
             } else {
                 delete events[eventName];
@@ -271,7 +270,7 @@ exports.run = async (client, message, args, level) => {
             eventName = args[1];
 
             // Check if that name/ event already exists
-            if (!events.hasOwnProperty(eventName)) {
+            if (!events[eventName]) {
                 return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
             } else {
                 var channel = '';

@@ -1320,6 +1320,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Offense / Potency"
+            },
+            "Resistance": {
+                "sets": [
+                    "Speed/ Crit Dmg./ Offense x4",
+                    "Potency/ Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection/ Offense/ Crit Dmg",
+                "circle": "Health/ Protection",
+                "cross": "Offense / Potency/ Offense"
             }
         },
         "gear": {
