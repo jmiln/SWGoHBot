@@ -6,6 +6,7 @@ const client = new Discord.Client();
 var moment = require('moment-timezone');
 var fs = require("fs");
 var snekfetch = require('snekfetch');
+const cheerio = require('cheerio');
 
 const EnMap = require("enmap");
 
@@ -216,7 +217,9 @@ function announceEvent(thisGuild, guildConf, event, announceMessage) {
 setInterval(checkDates, INTERVAL_SECONDS * 1000);
 
 // Check every 12 hours to see if any mods have been changed
-setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
+// setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
+setInterval(updateCharacterMods, 1  * 1 * 60 * 1000);
+// updateCharacterMods();
 //                               hr   min  sec  mSec
 
 init();
@@ -249,18 +252,18 @@ function getModType(type) {
 
 async function updateCharacterMods() {
     const jsonGrab = await snekfetch.get('http://apps.crouchingrancor.com/mods/advisor.json');
-    // console.log(inspect(jsonGrab.text))
     const characterList = JSON.parse(jsonGrab.text).data;
     const currentCharacters = client.characters;
 
-    let updateCount = 0, newCount = 0;
+    let updated = false, newChar = false;
     const cleanReg = /['-\s]/g;
 
-    characterList.forEach(thisChar => {
-        // console.log(inspect(thisChar))
+    characterList.forEach(async thisChar => {
         let found = false;
+        
+        if (thisChar.cname === 'Bohdi Rook') thisChar.cname = 'Bodhi Rook';
+
         currentCharacters.forEach(currentChar => {
-            // console.log(thisChar.cname + ' = ' + currentChar.name);
             if (thisChar.cname.toLowerCase().replace(cleanReg, '') === currentChar.name.toLowerCase().replace(cleanReg, '')) {
                 found = true;
                 let setName = '';
@@ -279,7 +282,6 @@ async function updateCharacterMods() {
                 // Go through all the variations of mods, and if they're the same,
                 // ignore em. If they're different, add it in as a new set
                 let newSet = true;
-                // console.log(inspect(currentChar.mods))
                 for (var thisSet in currentChar.mods) {
                     const set = currentChar.mods[thisSet];
                     if (getModType(thisChar.set1) === set.sets[0] && getModType(thisChar.set2) === set.sets[1] && getModType(thisChar.set3) === set.sets[2] && thisChar.square === set.square && thisChar.arrow === set.arrow && thisChar.diamond === set.diamond && thisChar.triangle === set.triangle && thisChar.circle === set.circle && thisChar.cross === set.cross) {
@@ -301,14 +303,20 @@ async function updateCharacterMods() {
                         "circle": thisChar.circle,
                         "cross": thisChar.cross
                     };
-                    updateCount++;
-                    // console.log(inspect(currentChar));
+                    updated = true;
+                    client.log('NewMods', 'I added a new modset to ' + thisChar.cname);
                 }
             }
         });
         if (!found) {
-            // Make a new character here (Maybe grab all the character info from swgoh.gg here too?
+            // Make a new character here (Maybe grab all the character info from swgoh.gg here too?)
             let setName = '';
+            let charLink = 'https://swgoh.gg/characters/';
+            const linkName = thisChar.cname.replace(/[^\w\s]+/g, '');  // Get rid of non-alphanumeric characters ('"- etc)
+            charLink += linkName.replace(/\s+/g, '-').toLowerCase();  // Get rid of extra spaces, and format em to be dashes
+
+            const newCharacter = await ggGrab(charLink);
+
             if (thisChar.name.includes(thisChar.cname)) {
                 setName = thisChar.name.split(' ').splice(thisChar.cname.split(' ').length).join(' ');
                 if (setName === '') {
@@ -317,10 +325,8 @@ async function updateCharacterMods() {
             } else {
                 setName = thisChar.name;
             }
-            console.log('SetName: ' + setName);
 
-            const mods ={};
-            mods[setName] = {
+            newCharacter.mods[setName] = {
                 "sets": [
                     getModType(thisChar.set1),
                     getModType(thisChar.set2),
@@ -334,37 +340,149 @@ async function updateCharacterMods() {
                 "cross": thisChar.cross
 
             };
+            newCharacter.name = thisChar.cname;
+            newCharacter.aliases = [thisChar.cname];
 
-            const newCharacter = {
-                "name": thisChar.cname,
-                "aliases": [thisChar.cname],
-                "url": '',
-                "avatarURL": "",
-                "side": "",
-                "factions": thisChar.families.split(';'),
-                mods,
-                "gear": {
-                },
-                "abilities": {
-                }
-            };
+            // const newCharacter = {
+            //     "name": thisChar.cname,
+            //     "aliases": [thisChar.cname],
+            //     "url": '',
+            //     "avatarURL": "",
+            //     "side": "",
+            //     "factions": thisChar.families.split(';'),
+            //     mods,
+            //     "gear": {
+            //     },
+            //     "abilities": {
+            //     }
+            // };
             currentCharacters.push(newCharacter);
-            newCount++;
+            newChar = true;
             client.log('NewChar', 'Added ' + thisChar.cname);
         }
+        // If anything was updated, save it
+        if (updated || newChar) {
+            updated = false, newChar = false;
+            fs.writeFile("./data/characters.json", JSON.stringify(currentCharacters, null, 4), 'utf8', function(err) {
+                if (err) {
+                    return console.log(err);
+                }
+                client.characters = currentCharacters;
+            });
+        }
+    });
+}
+
+async function ggGrab(charLink) {
+    const gearLink = charLink + '/gear';
+    const character = {
+        "name": "",
+        "aliases": [],
+        "url": charLink,
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "mods": {
+        },
+        "gear": {
+        },
+        "abilities": {
+        }
+    };
+
+    const ggGrab = await snekfetch.get(charLink);
+    const ggGrabText = ggGrab.text;
+
+    let $ = cheerio.load(ggGrabText);
+
+    // Get the character's image link
+    const charImage = 'https:' + $('.panel-profile-img').attr('src');
+    character.avatarURL = charImage;
+
+    // Get the character's affiliations
+    let affiliations = [];
+    $('.panel-body').each(function() {
+        if ($(this).find('h5').text().indexOf('Affiliations') !== -1) {
+            affiliations = $(this).text().split('\n').slice(2, -1);  // Splice to get the blank and  the header out
+            character.factions = affiliations;
+            if (affiliations.indexOf('Light Side') !== -1) {
+                character.side = 'light';
+                affiliations.splice(affiliations.indexOf('Light Side'), 1);
+            } else {
+                character.side = 'dark';
+                affiliations.splice(affiliations.indexOf('Dark Side'), 1);
+            }
+        }
+    });
+    // Get the character's abilities and such
+    $('.char-detail-info').each(function() {
+        let abilityName = $(this).find('h5').text();    // May have the cooldown included, need to get rid of it
+        let desc = $(this).find('p').text().split('\n')[1];
+        let abilityMat = $(this).find('img').attr('title').split(' ').join('');
+        let abilityType = $(this).find('small').text();
+        let cooldown = $(this).find('h5 small').text().split(' ')[0];
+
+        // Make sure it doesn't have any line returns in there
+        if (abilityName.indexOf('\n') !== -1) {
+            abilityName = abilityName.replace(/\n/g, '');
+        }
+        if (desc.indexOf('\n') !== -1) {
+            desc = desc.replace(/\n/g, '');
+        }
+        if (abilityMat.indexOf('\n') !== -1) {
+            abilityMat = abilityMat.replace(/\n/g, '');
+        }
+
+        // Make sure it grabs the right one to work with the rest
+        if (abilityMat === "AbilityMaterialOmega") {
+            abilityMat = "omega";
+        } else if (abilityMat === "AbilityMaterialMkIII") {
+            abilityMat = "abilityMatMK3";
+        } else if (abilityMat === "AbilityMaterialZeta") {
+            abilityMat = "zeta";
+        }
+
+        // Grab the ability type
+        if (abilityType.indexOf('Basic') !== -1) {
+            abilityType = 'Basic';
+        } else if (abilityType.indexOf('Special') !== -1) {
+            abilityType = 'Special';
+        } else if (abilityType.indexOf('Leader') !== -1) {
+            abilityType = 'Leader';
+        } else if (abilityType.indexOf('Unique') !== -1) {
+            abilityType = 'Unique';
+        }
+        // If the cooldown isn't there, set it to 0
+        if (cooldown === '') {
+            cooldown = '0';
+        } else {
+            abilityName = abilityName.split(' ').slice(0, -3).join(' ').toString();
+        }
+
+        character.abilities[abilityName] = {
+            "type": abilityType,
+            "abilityCooldown": cooldown,
+            "abilityDesc": desc,
+            "tier": abilityMat
+        };
     });
 
-    client.log('ModUpdate', `Updated ${updateCount}, created ${newCount}`);
 
-    if (updateCount > 0 || newCount > 0) {
-        fs.writeFile("./data/characters.json", JSON.stringify(currentCharacters, null, 4), 'utf8', function(err) {
-            if (err) {
-                return console.log(err);
-            }
+    const gearGrab = await snekfetch.get(gearLink);
+    const gearGrabText = gearGrab.text;
 
-            client.log('Saved', "The updated character file was saved!");
-            client.characters = currentCharacters;
-        });
-    }
+    $ = cheerio.load(gearGrabText);
+
+    // Get the gear
+    $('.media.list-group-item.p-0.character').each(function(i) {
+        const thisGear = $(this).find('a').attr('title');
+        const gearLvl = 'Gear ' + (Math.floor(i / 6) + 1).toString();
+        if (character.gear[gearLvl]) {
+            character.gear[gearLvl].push(thisGear);
+        } else {
+            character.gear[gearLvl] = [thisGear];
+        }
+    });
+    return character;
 }
 
