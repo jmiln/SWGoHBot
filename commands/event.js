@@ -14,14 +14,9 @@ exports.run = async (client, message, args, level) => {
     const actions = ['create', 'view', 'delete', 'help', 'trigger'];
 
     if (!events) {
-        guildEvents.set(message.guild.id, {});
-        events = guildEvents.get(message.guild.id);
+        events = {};
     } else if (Array.isArray(events)) {
-        if (events.length === 0) {
-            guildEvents.delete(message.guild.id);
-            guildEvents.set(message.guild.id, {});
-            events = guildEvents.get(message.guild.id);
-        }
+        events = {};
     }
 
     let action = "";
@@ -102,7 +97,7 @@ exports.run = async (client, message, args, level) => {
             eventName = args[1];
 
             // Check if that name/ event already exists
-            if (events[eventName]) return message.channel.send(`That event name already exists. Cannot add it again.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`).then(msg => msg.delete(10000)).catch(console.error);
 
             if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`).then(msg => msg.delete(10000)).catch(console.error);
             if (!moment(args[2], 'D/M/YYYY').isValid()) {
@@ -258,7 +253,7 @@ exports.run = async (client, message, args, level) => {
             eventName = args[1];
 
             // Check if that name/ event already exists
-            if (!events[eventName]) {
+            if (!events.hasOwnProperty(eventName)) {
                 return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
             } else {
                 delete events[eventName];
@@ -270,7 +265,7 @@ exports.run = async (client, message, args, level) => {
             eventName = args[1];
 
             // Check if that name/ event already exists
-            if (!events[eventName]) {
+            if (!events.hasOwnProperty(eventName)) {
                 return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
             } else {
                 var channel = '';

@@ -3597,7 +3597,7 @@
             "Reckless Fling": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy and grant a random Phoenix ally Offense Up, Defense Up, or Speed Up at random for 2 turns, with a 60% chance to also reduce that ally's cooldowns by 1.",
+                "abilityDesc": "Deal Physical damage to target enemy and grant a random Phoenix or Droid ally Offense Up, Defense Up, or Speed Up at random for 2 turns, with a 60% chance to also reduce that ally's cooldowns by 1.",
                 "tier": "omega"
             },
             "Cantankerous Clanker": {
@@ -3609,13 +3609,13 @@
             "Metal Menace": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Dispel all buffs on target enemy. For each buff dispelled this way, all enemies lose 10% Turn Meter and Chopper gains 25% Protection. Droid targets are also Stunned for 1 turn.",
+                "abilityDesc": "Dispel all buffs on target enemy. For each buff dispelled this way, all enemies lose 10% Turn Meter and Chopper gains 25% Protection. Droid targets are also Stunned for 1 turn, which can't be Evaded.",
                 "tier": "omega"
             },
             "Maintenance Protocols": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "At the start of his turn, Chopper recovers 15% of his Max Health. In addition, whenever he is damaged by an attack, he gains Protection Up (15%) if he doesn't have Protection Up.",
+                "abilityDesc": "At the start of his turn, Chopper recovers 15% of his Max Health. In addition, whenever he is damaged by an attack, he gains Protection Up (15%) if he doesn't have Protection Up. Additionally, Chopper has a 30% Chance to Assist when another Phoenix or Droid ally uses an ability during their turn (this Assist is not shared with Phoenix allies).",
                 "tier": "omega"
             }
         }
@@ -7055,13 +7055,13 @@
             "Flourish": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Deal Physical damage to target enemy and Dispel all buffs on them. If the enemy had no buffs, this attack's cooldown is reduced by 1 and Ezra gains 50% Turn Meter instead.",
-                "tier": "abilityMatMK3"
+                "abilityDesc": "Deal Physical damage to target enemy and Dispel all buffs on them. If the enemy had no buffs, this attack's cooldown is reduced by 1 and Ezra gains 75% Turn Meter instead. Ezra gains Defense Up for 2 turns.",
+                "tier": "zeta"
             },
             "Watch and Learn": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Target ally attacks and then Ezra assists them, dealing 20% more damage. Both attackers gain a bonus effect based on the chosen ally's role: - Attacker: +100% Crit for this attack - Tank: Protection Up (40%) for 2 turns - Support: +40% Turn Meter Gain.",
+                "abilityDesc": "Target ally attacks and then Ezra assists them, dealing 20% more damage. Both attackers gain a bonus effect based on the chosen ally's role: - Attacker: +100% Crit for this attack - Tank: Protection Up (40%) for 2 turns - Support: +40% Turn Meter Gain",
                 "tier": "omega"
             },
             "Push Through": {
@@ -8163,9 +8163,9 @@
             },
             "Staggering Sweep": {
                 "type": "Special",
-                "abilityCooldown": "4",
-                "abilityDesc": "Deal Physical damage to target enemy and Stagger them for 1 turn. If the target has no debuffs, the attack deals 25% more damage and can't be Resisted.",
-                "tier": "abilityMatMK3"
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy and Stagger them for 1 turn. Zeb gains 10% Turn Meter for each active Phoenix ally. If the target has no debuffs, this attack can't be Resisted, deals double damage, and deals bonus damage equal to 20% of the enemy's Max Health. If the target has any buffs, ignore their Armor. If the target has any debuffs, this attack has +50% Critical Damage. This attack can't be Evaded.",
+                "tier": "zeta"
             },
             "Honor Guard": {
                 "type": "Special",
@@ -8176,7 +8176,7 @@
             "Shrug Off": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Zeb has bonus Max Protection equal to +40% of his Max Health and recovers 15% Protection at the start of his turn. This recovery is doubled if Zeb is debuffed.",
+                    "abilityDesc": "Zeb has bonus Max Protection equal to +40% of his Max Health and recovers 15% Protection at the start of his turn. This recovery is doubled if Zeb is debuffed.",
                 "tier": "omega"
             }
         }
@@ -9955,8 +9955,8 @@
             "Play to Strengths": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Call another target ally to Assist. That ally's attack has +25% Potency and deals 35% more damage.",
-                "tier": "abilityMatMK3"
+                "abilityDesc": "Call another target ally to Assist. That ally's attack has +50% Potency and deals 35% more damage. If target ally is Phoenix, Dispel all debuffs on them, reduce their cooldowns by 1, and grant them 50% Turn Meter.",
+                "tier": "zeta"
             },
             "Backup Plan": {
                 "type": "Special",
@@ -12771,8 +12771,8 @@
             "Total Defense": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Kanan Dispels all debuffs from himself, then grants himself and another target ally Protection Up (40%) for 2 turns.",
-                "tier": "abilityMatMK3"
+                "abilityDesc": "Dispel all debuffs on Phoenix allies and grant them Defense Up for 3 turns. Kanan grants himself and another target ally Foresight and Protection Up (40%) for 2 turns. When each of these Foresights expire, Kanan gains 100% Turn Meter and other Phoenix allies gain 50% Turn Meter.",
+                "tier": "zeta"
             },
             "Clear Mind": {
                 "type": "Unique",
@@ -17410,8 +17410,8 @@
             "Demolish": {
                 "type": "Special",
                 "abilityCooldown": "5",
-                "abilityDesc": "Deal Physical damage to all enemies. Expose and Stagger target enemy for 2 turns. This attack can't be Countered or Evaded.",
-                "tier": "abilityMatMK3"
+                "abilityDesc": "Deal Physical damage to all enemies, Stagger them for 2 turns, and Expose target enemy for 2 turns. For each active Phoenix ally, deal +15% more damage and Expose a random enemy. Phoenix allies gain Critical Chance Up and Offense Up for 2 turns. If this attack scores a Critical Hit, reduce Sabine's cooldowns by 2. This attack can't be Countered or Evaded.",
+                "tier": "zeta"
             },
             "Take It Back": {
                 "type": "Unique",
@@ -20766,44 +20766,17 @@
         }
     },
     {
-        "name": "Bohdi Rook",
-        "aliases": [
-            "Bohdi Rook"
-        ],
-        "url": "",
-        "avatarURL": "",
-        "side": "",
-        "factions": [
-            "rebel"
-        ],
-        "mods": {
-            "General": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection / Potency"
-            }
-        },
-        "gear": {},
-        "abilities": {}
-    },
-    {
         "name": "Mother Talzin",
         "aliases": [
-            "Mother Talzin"
+            "Mother Talzin",
+            "Talzin"
         ],
-        "url": "",
-        "avatarURL": "",
-        "side": "",
+        "url": "https://swgoh.gg/characters/mother-talzin/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsisters_talzin.png",
+        "side": "dark",
         "factions": [
-            "nightsister"
+            "nightsiser",
+            "support"
         ],
         "mods": {
             "General": {
@@ -20820,42 +20793,205 @@
                 "cross": "Protection"
             }
         },
-        "gear": {},
-        "abilities": {}
-    },
-    {
-        "name": "Nightsister Spirit",
-        "aliases": [
-            "Nightsister Spirit"
-        ],
-        "url": "",
-        "avatarURL": "",
-        "side": "",
-        "factions": [
-            "nightsister"
-        ],
-        "mods": {
-            "General": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense"
-            }
+        "gear": {
+            "Gear 1": [ "Mk 1 Nubian Security Scanner", "Mk 1 BioTech Implant", "Mk 1 BioTech Implant", "Mk 1 A/KT Stun Gun", "Mk 1 Neuro-Saav Electrobinoculars", "Mk 1 Nubian Security Scanner" ],
+            "Gear 2": [ "Mk 3 Neuro-Saav Electrobinoculars", "Mk 1 Sienar Holo Projector", "Mk 2 Arakyd Droid Caller", "Mk 3 Neuro-Saav Electrobinoculars", "Mk 1 Nubian Design Tech", "Mk 2 BAW Armor Mod" ],
+            "Gear 3": [ "Mk 4 TaggeCo Holo Lens", "Mk 5 Loronar Power Cell", "Mk 4 BAW Armor Mod", "Mk 1 Merr-Sonn Thermal Detonator", "Mk 3 Neuro-Saav Electrobinoculars", "Mk 3 BAW Armor Mod" ],
+            "Gear 4": [ "Mk 4 Nubian Design Tech", "Mk 3 Merr-Sonn Thermal Detonator", "Mk 3 Chiewab Hypo Syringe", "Mk 5 TaggeCo Holo Lens", "Mk 3 Neuro-Saav Electrobinoculars", "Mk 3 BAW Armor Mod" ],
+            "Gear 5": [ "Mk 7 Loronar Power Cell", "Mk 2 Carbanti Sensor Array", "Mk 7 BAW Armor Mod", "Mk 4 Nubian Design Tech", "Mk 3 Chiewab Hypo Syringe", "Mk 4 BAW Armor Mod" ],
+            "Gear 6": [ "Mk 7 Neuro-Saav Electrobinoculars", "Mk 7 Loronar Power Cell", "Mk 1 Zaltin Bacta Gel", "Mk 2 Carbanti Sensor Array", "Mk 3 Merr-Sonn Thermal Detonator", "Mk 3 BioTech Implant" ],
+            "Gear 7": [ "Mk 3 Athakam Medpac", "Mk 8 TaggeCo Holo Lens", "Mk 7 Neuro-Saav Electrobinoculars", "Mk 4 A/KT Stun Gun", "Mk 7 Loronar Power Cell", "Mk 3 Merr-Sonn Thermal Detonator" ],
+            "Gear 8": [ "Mk 5 Arakyd Droid Caller", "Mk 5 A/KT Stun Gun", "Mk 7 BioTech Implant", "Mk 4 A/KT Stun Gun", "Mk 3 Sienar Holo Projector", "Mk 3 Sienar Holo Projector" ],
+            "Gear 9": [ "Mk 7 Nubian Security Scanner", "Mk 5 Arakyd Droid Caller", "Mk 5 Carbanti Sensor Array", "Mk 3 Carbanti Sensor Array", "Mk 7 Loronar Power Cell", "Mk 3 Chiewab Hypo Syringe" ],
+            "Gear 10": [ "Mk 6 CEC Fusion Furnace", "Mk 5 Athakam Medpac", "Mk 8 BioTech Implant", "Mk 10 TaggeCo Holo Lens", "Mk 5 Carbanti Sensor Array", "Mk 8 BAW Armor Mod" ],
+            "Gear 11": [ "Mk 5 Athakam Medpac", "Mk 6 Arakyd Droid Caller", "Mk 8 Loronar Power Cell", "Mk 6 Merr-Sonn Thermal Detonator", "Mk 6 CEC Fusion Furnace", "Mk 5 A/KT Stun Gun" ],
+            "Gear 12": [ "Mk 12 ArmaTek Wrist Band", "Mk 12 ArmaTek Medpac", "Mk 12 ArmaTek Multi-tool", "Unknown Gear", "Unknown Gear", "Unknown Gear" ]
         },
-        "gear": {},
-        "abilities": {}
+        "abilities": {
+            "Ichor Lightning": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Special damage to target enemy and, if they were Plagued, inflict Plague for 3 turns. Deal Special damage to all Plagued enemies, which can't be Countered.",
+                "tier": "omega"
+            },
+            "Dark Magick": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Special damage to all enemies and inflict Plague for 3 turns. This attack ignores Protection. Plague: Unit loses 5% Health when inflicted and at the start of their turn, is immune to allied Dispels, and loses all stacks of Plague when healed to full Health",
+                "tier": "omega"
+            },
+            "Spirit Blade Assault": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Special damage to target enemy and call all Nightsister allies to Assist. If any enemies are defeated, all Nightsister allies are Revived and recover 100% Health.",
+                "tier": "omega"
+            },
+            "The Great Mother": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Nightsister allies have +50% Potency and +30 Speed. When a Nightsister ally uses a Special ability, they inflict Plague on the selected target for 3 turns, which can't be Evaded. When an enemy Resists a detrimental effect, Nightsister allies gain 5% Turn Meter. When a Nightsister ally uses a Basic ability during their turn, a random defeated Nightsister ally is Revived with 50% Health and called to Assist, then the Revived ally is immediately defeated unless an enemy was defeated (the Revived al)",
+                "tier": "zeta"
+            },
+            "Plaguebearer": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of each enemy turn, if they are Plagued and Talzin is active, they inflict Plague on another random enemy, which can't be Evaded or Resisted. When any unit falls below half health, Talzin gains 35% Turn Meter.",
+                "tier": "zeta"
+            }
+        }
+    },
+	{
+		"name": "Nightsister Spirit",
+		"aliases": [
+			"Nightsister Spirit",
+			"Spirit"
+		],
+		"url": "",
+		"avatarURL": "",
+		"side": "",
+		"factions": [
+			"nightsister",
+			"attacker"
+		],
+		"mods": {
+			"General": {
+				"sets": [
+					"Offense x4",
+					"Potency x2",
+					""
+				],
+				"square": "Offense",
+				"arrow": "Speed",
+				"diamond": "Defense",
+				"triangle": "Offense",
+				"circle": "Protection",
+				"cross": "Offense"
+			}
+		},
+		"gear": {
+			"Gear 1": [
+				"Mk 1 TaggeCo Holo Lens",
+				"Mk 1 BlasTech Weapon Mod",
+				"Mk 1 BlasTech Weapon Mod",
+				"Mk 1 Nubian Security Scanner",
+				"Mk 1 Nubian Security Scanner",
+				"Mk 1 Neuro-Saav Electrobinoculars"
+			],
+			"Gear 2": [
+				"Mk 1 SoroSuub Keypad",
+				"Mk 2 Nubian Security Scanner",
+				"Mk 2 Neuro-Saav Electrobinoculars",
+				"Mk 3 TaggeCo Holo Lens",
+				"Mk 3 BlasTech Weapon Mod",
+				"Mk 1 Sienar Holo Projector"
+			],
+			"Gear 3": [
+				"Mk 1 TaggeCo Holo Lens",
+				"Mk 3 TaggeCo Holo Lens",
+				"Mk 5 BlasTech Weapon Mod",
+				"Mk 3 Arakyd Droid Caller",
+				"Mk 2 Merr-Sonn Thermal Detonator",
+				"Mk 5 BlasTech Weapon Mod"
+			],
+			"Gear 4": [
+				"Mk 6 BlasTech Weapon Mod",
+				"Mk 5 Neuro-Saav Electrobinoculars",
+				"Mk 5 BioTech Implant",
+				"Mk 3 Chiewab Hypo Syringe",
+				"MK 7 BlasTech Weapon Mod",
+				"Mk 6 BAW Armor Mod"
+			],
+			"Gear 5": [
+				"Mk 6 Fabritech Data Pad",
+				"Mk 2 Merr-Sonn Thermal Detonator",
+				"Mk 6 BAW Armor Mod",
+				"Mk 7 Fabritech Data Pad",
+				"Mk 2 Czerka Stun Cuffs",
+				"Mk 6 Neuro-Saav Electrobinoculars"
+			],
+			"Gear 6": [
+				"Mk 2 Czerka Stun Cuffs",
+				"Mk 7 Fabritech Data Pad",
+				"Mk 2 Czerka Stun Cuffs",
+				"Mk 6 Neuro-Saav Electrobinoculars",
+				"Mk 4 SoroSuub Keypad",
+				"Mk 4 Arakyd Droid Caller"
+			],
+			"Gear 7": [
+				"Mk 3 Chiewab Hypo Syringe",
+				"Mk 4 Arakyd Droid Caller",
+				"Mk 8 BlasTech Weapon Mod",
+				"Mk 8 Fabritech Data Pad",
+				"Mk 8 TaggeCo Holo Lens",
+				"Mk 6 Chiewab Hypo Syringe"
+			],
+			"Gear 8": [
+				"Mk 3 Sienar Holo Projector",
+				"Mk 4 Arakyd Droid Caller",
+				"Mk 8 TaggeCo Holo Lens",
+				"Mk 3 Chedak Comlink",
+				"Mk 2 Zaltin Bacta Gel",
+				"Mk 5 CEC Fusion Furnace"
+			],
+			"Gear 9": [
+				"Mk 2 Zaltin Bacta Gel",
+				"Mk 3 Czerka Stun Cuffs",
+				"Mk 6 Chiewab Hypo Syringe",
+				"Mk 6 Nubian Design Tech",
+				"Mk 7 Nubian Security Scanner",
+				"Mk 4 Chedak Comlink"
+			],
+			"Gear 10": [
+				"Mk 2 Zaltin Bacta Gel",
+				"Mk 6 Merr-Sonn Thermal Detonator",
+				"Mk 8 TaggeCo Holo Lens",
+				"Mk 11 BlasTech Weapon Mod",
+				"Mk 9 Fabritech Data Pad",
+				"Mk 4 Sienar Holo Projector"
+			],
+			"Gear 11": [
+				"Mk 5 A/KT Stun Gun",
+				"Mk 10 BlasTech Weapon Mod",
+				"Mk 6 Chiewab Hypo Syringe",
+				"Mk 3 Zaltin Bacta Gel",
+				"Mk 5 Chedak Comlink",
+				"Mk 9 BioTech Implant"
+			],
+			"Gear 12": [
+				"Mk 12 ArmaTek Multi-tool",
+				"Mk 12 ArmaTek Armor Plating",
+				"Mk 12 ArmaTek Medpac",
+				"Unknown Gear",
+				"Unknown Gear",
+				"Unknown Gear"
+			]
+		},
+		"abilities": {
+			"Spectral Embrace": {
+				"type": "Basic",
+				"abilityCooldown": "0",
+				"abilityDesc": "Deal Physical damage to target enemy, inflict Speed Down for 2 turns, and remove 20% Turn Meter. Gain Turn Meter equal to the amount removed.",
+				"tier": "omega"
+			},
+			"Possess": {
+				"type": "Special",
+				"abilityCooldown": "3",
+				"abilityDesc": "Deal Physical damage to target enemy, Dispel all buffs on them, and inflict Stun for 1 turn.",
+				"tier": "omega"
+			},
+			"Malevolent Spirit": {
+				"type": "Unique",
+				"abilityCooldown": "0",
+				"abilityDesc": "At the end of her turn, and at the start of each encounter, Nightsister Spirit gains Foresight for 1 turn. While Nightsister Spirit has Foresight, she has +100% Offense and her attacks ignore Armor.",
+				"tier": "omega"
+			}
+		}
     },
     {
         "name": "Nightsister Zombie",
         "aliases": [
-            "Nightsister Zombie"
+            "Nightsister Zombie",
+            "Zombie"
         ],
         "url": "",
         "avatarURL": "",
@@ -20878,7 +21014,124 @@
                 "cross": "Health"
             }
         },
-        "gear": {},
-        "abilities": {}
+		"gear": {
+			"Gear 1": [
+				"Mk 1 BlasTech Weapon Mod",
+				"Mk 1 Loronar Power Cell",
+				"Mk 1 Loronar Power Cell",
+				"Mk 1 TaggeCo Holo Lens",
+				"Mk 1 BlasTech Weapon Mod",
+				"Mk 1 Neuro-Saav Electrobinoculars"
+			],
+			"Gear 2": [
+				"Mk 3 Loronar Power Cell",
+				"Mk 3 BlasTech Weapon Mod",
+				"Mk 2 Nubian Security Scanner",
+				"Mk 1 Loronar Power Cell",
+				"Mk 2 Neuro-Saav Electrobinoculars",
+				"Mk 1 Merr-Sonn Shield Generator"
+			],
+			"Gear 3": [
+				"Mk 4 Neuro-Saav Electrobinoculars",
+				"Mk 3 CEC Fusion Furnace",
+				"Mk 3 Arakyd Droid Caller",
+				"Mk 2 BlasTech Weapon Mod",
+				"Mk 2 BlasTech Weapon Mod",
+				"Mk 3 Loronar Power Cell"
+			],
+			"Gear 4": [
+				"Mk 2 Athakam Medpac",
+				"Mk 1 Athakam Medpac",
+				"Mk 2 Merr-Sonn Shield Generator",
+				"Mk 4 Fabritech Data Pad",
+				"Mk 3 Arakyd Droid Caller",
+				"Mk 3 Arakyd Droid Caller"
+			],
+			"Gear 5": [
+				"Mk 2 Czerka Stun Cuffs",
+				"Mk 5 BioTech Implant",
+				"Mk 5 BioTech Implant",
+				"Mk 7 Fabritech Data Pad",
+				"Mk 2 Sienar Holo Projector",
+				"Mk 5 Neuro-Saav Electrobinoculars"
+			],
+			"Gear 6": [
+				"Mk 4 SoroSuub Keypad",
+				"Mk 4 SoroSuub Keypad",
+				"Mk 6 Neuro-Saav Electrobinoculars",
+				"Mk 7 Fabritech Data Pad",
+				"Mk 5 SoroSuub Keypad",
+				"Mk 2 Czerka Stun Cuffs"
+			],
+			"Gear 7": [
+				"Mk 8 Fabritech Data Pad",
+				"Mk 2 Zaltin Bacta Gel",
+				"Mk 5 SoroSuub Keypad",
+				"Mk 4 A/KT Stun Gun",
+				"Mk 4 Merr-Sonn Thermal Detonator",
+				"Mk 4 Nubian Design Tech"
+			],
+			"Gear 8": [
+				"Mk 5 A/KT Stun Gun",
+				"Mk 6 Chiewab Hypo Syringe",
+				"Mk 6 Chiewab Hypo Syringe",
+				"Mk 6 Nubian Security Scanner",
+				"Mk 4 CEC Fusion Furnace",
+				"Mk 4 Arakyd Droid Caller"
+			],
+			"Gear 9": [
+				"Mk 6 Nubian Design Tech",
+				"Mk 7 Nubian Security Scanner",
+				"Mk 6 Nubian Security Scanner",
+				"Mk 6 Chiewab Hypo Syringe",
+				"Mk 6 Chiewab Hypo Syringe",
+				"Mk 7 TaggeCo Holo Lens"
+			],
+			"Gear 10": [
+				"Mk 8 BioTech Implant",
+				"Mk 7 BioTech Implant",
+				"Mk 7 Nubian Security Scanner",
+				"Mk 6 Merr-Sonn Thermal Detonator",
+				"Mk 5 CEC Fusion Furnace",
+				"Mk 8 TaggeCo Holo Lens"
+			],
+			"Gear 11": [
+				"Mk 7 BioTech Implant",
+				"Mk 9 BioTech Implant",
+				"Mk 6 A/KT Stun Gun",
+				"Mk 4 Sienar Holo Projector",
+				"Mk 6 Merr-Sonn Thermal Detonator",
+				"Mk 4 Zaltin Bacta Gel"
+			],
+			"Gear 12": [
+				"Mk 12 ArmaTek Multi-tool",
+				"Mk 12 ArmaTek Medpac",
+				"Mk 12 ArmaTek Armor Plating",
+				"Unknown Gear",
+				"Unknown Gear",
+				"Unknown Gear"
+			]
+        },
+        "abilities": {
+			"Blight Touch": {
+				"type": "Basic",
+				"abilityCooldown": "0",
+				"abilityDesc": "Deal Physical damage to target enemy and inflict Tenacity Down for 2 turns.",
+				"tier": "omega"
+			},
+			"Feed": {
+				"type": "Special",
+				"abilityCooldown": "3",
+				"abilityDesc": "Deal Physical damage to target enemy. If Nightsister Zombie has full Health, Dispel all debuffs on her. Otherwise, this attack has +100% Health Steal.",
+				"tier": "omega"
+			},
+			"Endless Horde": {
+				"type": "Unique",
+				"abilityCooldown": "0",
+				"abilityDesc": "At the end of her turn, and at the start of each encounter, Nightsister Zombie gains Taunt for 1 turn. When Nightsister Zombie is defeated while any other Nightsister allies are active, she is Revived with 100% Health and 25% Turn Meter. This Revive can't be prevented.",
+				"tier": "omega"
+			}
+
+		}
     }
 ]
