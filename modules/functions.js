@@ -1,4 +1,5 @@
 const moment = require('moment');
+const util = require('util');
 
 module.exports = (client) => {
     /*
@@ -198,8 +199,12 @@ module.exports = (client) => {
         console.error(`[${client.myTime()}] Uncaught Exception: `, errorMsg);
 
         // If it's that error, don't bother showing it again
-        if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear')) {
-            client.channels.get('356111780579115010').send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
+        try {
+            if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear') && client.config.logs.logToChannel) {
+                client.channels.get(client.config.logs.channel).send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
+            }
+        } catch (e) {
+            // Don't bother doing anything
         }
         // Always best practice to let the code crash on uncaught exceptions. 
         // Because you should be catching them anyway.
@@ -207,7 +212,15 @@ module.exports = (client) => {
     });
 
     process.on("unhandledRejection", err => {
-        console.error(`[${client.myTime()}] Uncaught Promise Error: `, err);
+        const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
+        console.errorMsgor(`[${client.myTime()}] Uncaught Promise Error: `, err);
+        try {
+            if (client.config.logs.logToChannel) {
+                client.channels.get(client.config.logs.channel).send(`\`\`\`${util.inspect(errorMsg)}\`\`\``,{split: true});
+            }
+        } catch (e) {
+            // Don't bother doing anything
+        }
     });
 
 };

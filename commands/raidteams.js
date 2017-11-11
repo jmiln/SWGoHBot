@@ -122,7 +122,7 @@ exports.run = (client, message, args) => {
 exports.conf = {
     guildOnly: false,
     enabled: true,
-    aliases: ['raid'],
+    aliases: ['raid', 'raidteam'],
     permLevel: 0
 };
 

@@ -349,7 +349,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -505,7 +505,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -1293,7 +1293,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Potency"
+                "cross": "Offense/ Potency"
             },
             "HK-47 Lead - Secret Intel Taunt": {
                 "sets": [
@@ -1319,7 +1319,7 @@
                 "diamond": "Defense",
                 "triangle": "Offense",
                 "circle": "Protection",
-                "cross": "Offense / Potency"
+                "cross": "Offense/ Potency"
             },
             "Resistance": {
                 "sets": [
@@ -1332,7 +1332,7 @@
                 "diamond": "Defense",
                 "triangle": "Health/ Protection/ Offense/ Crit Dmg",
                 "circle": "Health/ Protection",
-                "cross": "Offense / Potency/ Offense"
+                "cross": "Offense/ Potency/ Offense"
             }
         },
         "gear": {
@@ -1493,7 +1493,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -1640,7 +1640,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -1796,7 +1796,7 @@
                 "diamond": "Defense",
                 "triangle": "Offense",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Arena (Leader)": {
                 "sets": [
@@ -1809,7 +1809,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Arena (Support)": {
                 "sets": [
@@ -1982,7 +1982,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -2138,7 +2138,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -2337,7 +2337,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Health",
-                "cross": "Potency / Health"
+                "cross": "Potency/ Health"
             },
             "PvP": {
                 "sets": [
@@ -2350,7 +2350,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency / Protection"
+                "cross": "Potency/ Protection"
             }
         },
         "gear": {
@@ -2817,7 +2817,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Arena (Leader)": {
                 "sets": [
@@ -2830,9 +2830,9 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
-            "leader": {
+            "Leader": {
                 "sets": [
                     "Speed x4",
                     "Critical Chance x2",
@@ -2843,7 +2843,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -2997,7 +2997,7 @@
                 "diamond": "Defense",
                 "triangle": "Offense",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "General": {
                 "sets": [
@@ -3010,7 +3010,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -3318,7 +3318,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -3475,7 +3475,7 @@
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Speed / Protection / Prot.",
+                "arrow": "Speed/ Protection/ Prot.",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
@@ -3488,7 +3488,7 @@
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Speed / Protection",
+                "arrow": "Speed/ Protection",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
@@ -3649,7 +3649,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -3954,9 +3954,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Crit. Damage",
+                "triangle": "Crit. Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency / Protection"
+                "cross": "Potency/ Protection"
             },
             "Raid": {
                 "sets": [
@@ -3967,9 +3967,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Crit. Damage",
+                "triangle": "Crit. Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -4922,7 +4922,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -5077,7 +5077,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             },
             "Arena (Leader)": {
                 "sets": [
@@ -5088,9 +5088,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Offense/ Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -5251,7 +5251,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -5458,7 +5458,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage / Crit. Chance",
+                "triangle": "Crit. Damage/ Crit. Chance",
                 "circle": "Protection",
                 "cross": "Protection"
             }
@@ -5769,7 +5769,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Arena (Palp Lead)": {
                 "sets": [
@@ -5782,7 +5782,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Arena (Vader Lead)": {
                 "sets": [
@@ -5795,7 +5795,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -6104,7 +6104,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Arena (Vader Lead)": {
                 "sets": [
@@ -6117,7 +6117,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Arena (Leader)": {
                 "sets": [
@@ -6130,7 +6130,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Raid - Thrawn lead": {
                 "sets": [
@@ -6143,7 +6143,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -6645,9 +6645,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit.Chance / Protection",
+                "triangle": "Crit.Chance/ Protection",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -6794,7 +6794,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -7122,7 +7122,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
             }
@@ -7577,7 +7577,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -7724,7 +7724,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Tenacity"
+                "cross": "Protection/ Tenacity"
             }
         },
         "gear": {
@@ -8053,7 +8053,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -8384,7 +8384,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Tenacity"
+                "cross": "Protection/ Tenacity"
             }
         },
         "gear": {
@@ -8545,7 +8545,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             },
             "Arena (Leader)": {
                 "sets": [
@@ -8714,7 +8714,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -8862,7 +8862,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -9010,20 +9010,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Tenacity"
-            },
-            "General": {
-                "sets": [
-                    "Speed x4",
-                    "Tenacity x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection  / Tenacity"
+                "cross": "Protection/ Tenacity"
             },
             "Raid": {
                 "sets": [
@@ -9034,9 +9021,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Offense/ Protection",
                 "circle": "Protection",
-                "cross": "Protection  / Offense"
+                "cross": "Protection/ Offense"
             }
         },
         "gear": {
@@ -9360,7 +9347,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             },
             "General": {
                 "sets": [
@@ -9373,7 +9360,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -9844,7 +9831,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -10317,7 +10304,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -11397,7 +11384,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
             }
@@ -12007,7 +11994,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -12310,7 +12297,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Raid": {
                 "sets": [
@@ -12323,7 +12310,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -12498,7 +12485,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Potency / Protection"
+                "cross": "Potency/ Protection"
             }
         },
         "gear": {
@@ -12652,9 +12639,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Protection",
+                "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
-                "cross": "Protection / Tenacity"
+                "cross": "Protection/ Tenacity"
             }
         },
         "gear": {
@@ -12808,9 +12795,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Offense/ Protection",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -12967,7 +12954,7 @@
                 "diamond": "Defense",
                 "triangle": "Offense",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -13123,7 +13110,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -13277,7 +13264,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -13428,7 +13415,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Protection",
+                "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
             }
@@ -13574,19 +13561,6 @@
             "rebel"
         ],
         "mods": {
-            "Arena": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency"
-            },
             "General": {
                 "sets": [
                     "Critical Chance x2",
@@ -13596,9 +13570,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Crit. Damage",
+                "triangle": "Crit. Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency / Protection"
+                "cross": "Potency/ Protection"
             }
         },
         "gear": {
@@ -13751,9 +13725,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health / Protection",
-                "circle": "Health / Protection",
-                "cross": "Protection / Potency"
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -14078,9 +14052,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Offense/ Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -14376,7 +14350,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -14672,7 +14646,7 @@
                 "diamond": "Defense",
                 "triangle": "Offense",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -15146,7 +15120,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -15299,7 +15273,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Tenacity"
+                "cross": "Protection/ Tenacity"
             },
             "Arena (with Logray)": {
                 "sets": [
@@ -15310,35 +15284,9 @@
                 "square": "Offense",
                 "arrow": "Protection",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Protection",
+                "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
-                "cross": "Protection / Tenacity"
-            },
-            "General": {
-                "sets": [
-                    "Defense x2",
-                    "Defense x2",
-                    "Tenacity x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection  / Tenacity"
-            },
-            "with Logray": {
-                "sets": [
-                    "Defense x2",
-                    "Tenacity x2",
-                    "Critical Chance x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance / Protection",
-                "circle": "Protection",
-                "cross": "Protection  / Tenacity"
+                "cross": "Protection/ Tenacity"
             }
         },
         "gear": {
@@ -15970,7 +15918,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -16283,7 +16231,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Protection",
+                "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
             },
@@ -16296,7 +16244,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Protection",
+                "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
             },
@@ -16472,7 +16420,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             },
             "Resistance Team": {
                 "sets": [
@@ -16631,7 +16579,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
             },
@@ -16806,11 +16754,11 @@
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Speed / Offense",
+                "arrow": "Speed/ Offense",
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
-                "cross": "Offense / Potency"
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -17293,7 +17241,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -17448,7 +17396,7 @@
                 "diamond": "Defense",
                 "triangle": "Offense",
                 "circle": "Protection",
-                "cross": "Protection  / Potency"
+                "cross": "Protection/ Potency"
             },
             "Arena (Nihilus Lead)": {
                 "sets": [
@@ -17460,8 +17408,8 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Offense",
-                "circle": "Protection / Health",
-                "cross": "Protection  / Potency"
+                "circle": "Protection/ Health",
+                "cross": "Protection/ Potency"
             },
             "Nihilus Lead": {
                 "sets": [
@@ -17474,7 +17422,7 @@
                 "diamond": "Defense",
                 "triangle": "Offense",
                 "circle": "Protection",
-                "cross": "Protection  / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -17787,7 +17735,7 @@
                     "Tenacity x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed / Protection / Prot.",
+                "arrow": "Speed/ Protection/ Prot.",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
@@ -17800,7 +17748,7 @@
                     "Tenacity x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed / Protection",
+                "arrow": "Speed/ Protection",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
@@ -17952,7 +17900,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -18100,7 +18048,7 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             },
             "Arena (Palp Lead)": {
                 "sets": [
@@ -18273,7 +18221,7 @@
                 "square": "Offense",
                 "arrow": "Protection",
                 "diamond": "Defense",
-                "triangle": "Offense / Protection",
+                "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Protection"
             }
@@ -18733,19 +18681,6 @@
             "separatist"
         ],
         "mods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed / Protection / Prot.",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection / Potency"
-            },
             "General": {
                 "sets": [
                     "Health x2",
@@ -18753,11 +18688,11 @@
                     "Defense x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed / Protection",
+                "arrow": "Speed/ Protection",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection / Potency"
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -19074,7 +19009,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Protection",
+                "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
             }
@@ -19230,7 +19165,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -19987,11 +19922,11 @@
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Offense / Speed",
+                "arrow": "Offense/ Speed",
                 "diamond": "Defense",
-                "triangle": "Offense / Crit. Damage",
+                "triangle": "Offense/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Potency"
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -20160,9 +20095,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Crit. Damage",
+                "triangle": "Crit. Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency / Protection"
+                "cross": "Potency/ Protection"
             }
         },
         "gear": {
@@ -20317,7 +20252,7 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -20458,19 +20393,6 @@
             "ewok"
         ],
         "mods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chamce x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance / Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense / Protection"
-            },
             "General": {
                 "sets": [
                     "Critical Damage x4",
@@ -20480,9 +20402,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance / Crit. Damage",
+                "triangle": "Crit. Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense / Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -21214,6 +21136,496 @@
                 "abilityCooldown": "0",
                 "abilityDesc": "At the end of her turn, and at the start of each encounter, Nightsister Zombie gains Taunt for 1 turn. When Nightsister Zombie is defeated while any other Nightsister allies are active, she is Revived with 100% Health and 25% Turn Meter. This Revive can't be prevented.",
                 "tier": "omega"
+            }
+        }
+    },
+    {
+        "name": "First Order SF TIE Pilot",
+        "aliases": [
+            "First Order SF TIE Pilot"
+        ],
+        "url": "https://swgoh.gg/characters/first-order-sf-tie-pilot",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorder_pilot.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "First Order"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. damage",
+                "circle": "Protection",
+                "cross": "Potency/ Offense"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Fabritech Data Pad"
+            ],
+            "Gear 2": [
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 3 BAW Armor Mod",
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 1 Chiewab Hypo Syringe"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 BioTech Implant",
+                "Mk 4 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 4": [
+                "Mk 2 Athakam Medpac",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 2 A/KT Stun Gun",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 3 BioTech Implant",
+                "Mk 1 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 5": [
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 1 Chedak Comlink",
+                "Mk 4 BAW Armor Mod"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 3 Chiewab Hypo Syringe"
+            ],
+            "Gear 7": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 8 BlasTech Weapon Mod"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 6 Chiewab Hypo Syringe"
+            ],
+            "Gear 9": [
+                "Mk 7 Nubian Security Scanner",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 2 Zaltin Bacta Gel"
+            ],
+            "Gear 10": [
+                "Mk 4 Sienar Holo Projector",
+                "Mk 8 BioTech Implant",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 3 Carbanti Sensor Array"
+            ],
+            "Gear 11": [
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "Mk 9 BAW Armor Mod",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 8 BioTech Implant",
+                "Mk 6 Merr-Sonn Shield Generator"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Cybernetics",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Reciprocation": {
+                "type": "Special",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Defense Down for 2 turns. Then, if the target has Defense Down, gain Advantage for 2 turns.",
+                "tier": "omega"
+            },
+            "Drumfire": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Special damage to all enemies and inflict Defense Down for 2 turns on each Critically Hit enemy. First Order allies gain Speed Up for 2 turns.",
+                "tier": "omega"
+            },
+            "Oppressive Burst": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Special damage to target enemy and call target other ally to Assist. If target other ally is First Order, they gain Advantage for 2 turns and Stun the target enemy for 1 turn.",
+                "tier": "omega"
+            }
+        }
+    },
+    {
+        "name": "Kylo Ren Unmasked",
+        "aliases": [
+            "Kylo Ren Unmasked"
+        ],
+        "url": "https://swgoh.gg/characters/kylo-ren-unmasked",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kylo_unmasked.png",
+        "side": "dark",
+        "factions": [
+            "First Order",
+            "Human",
+            "Tank"
+        ],
+        "mods": {
+            "Leader": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. damage",
+                "circle": "Health",
+                "cross": "Health/ Offense"
+            },
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Fabritech Data Pad",
+                "Mk 1 Arakyd Droid Caller",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 1 Sienar Holo Projector",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 2 Loronar Power Cell",
+                "Mk 3 BAW Armor Mod",
+                "Mk 2 Fabritech Data Pad"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Loronar Power Cell",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 Merr-Sonn Shield Generator",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 4": [
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Loronar Power Cell",
+                "Mk 1 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 5": [
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 3 Nubian Design Tech",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 5 BlasTech Weapon Mod"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 7": [
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Athakam Medpac",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 9": [
+                "Mk 4 Chedak Comlink",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Athakam Medpac",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 6 TaggeCo Holo Lens"
+            ],
+            "Gear 10": [
+                "Mk 4 Sienar Holo Projector",
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 4 Chedak Comlink",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 8 BioTech Implant",
+                "Mk 6 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 11": [
+                "Mk 9 BAW Armor Mod",
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 8 BioTech Implant",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "Mk 10 TaggeCo Holo Lens"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Armor Plating",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Aggressive Strike": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Tenacity Down for 2 turns. If the target was already debuffed, and it is Kylo's turn, he gains Taunt for 1 turn.",
+                "tier": "omega"
+            },
+            "Halt": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Dispel all buffs on target enemy and Stun them for 2 turns. Kylo recovers 10% Health and gains Taunt for 1 turn. This attack can't be Evaded or Resisted.",
+                "tier": "omega"
+            },
+            "Focused Rage": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy and recover Health equal to the damage dealt. If the target is Stunned, deal double damage.",
+                "tier": "omega"
+            },
+            "Merciless Pursuit": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "First Order allies have +40% Critical Damage and +30 Speed. When a First Order ally scores a Critical Hit, they gain 20% Turn Meter. When a First Order ally gains a status effect, they recover 5% Health and 5% Protection.",
+                "tier": "zeta"
+            },
+            "Scarred": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "When Kylo takes damage, he recovers 8% Health and a random First Order ally who doesn't have it gains Advantage for 2 turns. Kylo has +50% Counter Chance, doubled while he has Taunt. Kylo takes reduced damage from Percent Health damage effects and gains Taunt for 1 turn at the start of each encounter.",
+                "tier": "zeta"
+            }
+        }
+    },
+    {
+        "name": "Kylo Ren Unmasked",
+        "aliases": [
+            "Kylo Ren Unmasked"
+        ],
+        "url": "https://swgoh.gg/characters/kylo-ren-unmasked",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kylo_unmasked.png",
+        "side": "dark",
+        "factions": [
+            "First Order",
+            "Human",
+            "Tank"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
+            },
+            "Leader": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. damage",
+                "circle": "Health",
+                "cross": "Health/ Offense"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Fabritech Data Pad",
+                "Mk 1 Arakyd Droid Caller",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 1 Sienar Holo Projector",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 2 Loronar Power Cell",
+                "Mk 3 BAW Armor Mod",
+                "Mk 2 Fabritech Data Pad"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Loronar Power Cell",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 Merr-Sonn Shield Generator",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 4": [
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Loronar Power Cell",
+                "Mk 1 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 5": [
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 3 Nubian Design Tech",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 5 BlasTech Weapon Mod"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 7": [
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Athakam Medpac",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 9": [
+                "Mk 4 Chedak Comlink",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Athakam Medpac",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 6 TaggeCo Holo Lens"
+            ],
+            "Gear 10": [
+                "Mk 4 Sienar Holo Projector",
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 4 Chedak Comlink",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 8 BioTech Implant",
+                "Mk 6 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 11": [
+                "Mk 9 BAW Armor Mod",
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 8 BioTech Implant",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "Mk 10 TaggeCo Holo Lens"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Armor Plating",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Aggressive Strike": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Tenacity Down for 2 turns. If the target was already debuffed, and it is Kylo's turn, he gains Taunt for 1 turn.",
+                "tier": "omega"
+            },
+            "Halt": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Dispel all buffs on target enemy and Stun them for 2 turns. Kylo recovers 10% Health and gains Taunt for 1 turn. This attack can't be Evaded or Resisted.",
+                "tier": "omega"
+            },
+            "Focused Rage": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy and recover Health equal to the damage dealt. If the target is Stunned, deal double damage.",
+                "tier": "omega"
+            },
+            "Merciless Pursuit": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "First Order allies have +40% Critical Damage and +30 Speed. When a First Order ally scores a Critical Hit, they gain 20% Turn Meter. When a First Order ally gains a status effect, they recover 5% Health and 5% Protection.",
+                "tier": "zeta"
+            },
+            "Scarred": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "When Kylo takes damage, he recovers 8% Health and a random First Order ally who doesn't have it gains Advantage for 2 turns. Kylo has +50% Counter Chance, doubled while he has Taunt. Kylo takes reduced damage from Percent Health damage effects and gains Taunt for 1 turn at the start of each encounter.",
+                "tier": "zeta"
             }
         }
     }

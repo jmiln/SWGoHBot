@@ -261,6 +261,33 @@
         }
     },
     {
+        "name" : "First Order SF Tie Fighter",
+        "uniqueName": "UNKNOWN-FOSFTF",
+        "aliases" : ["FO TIE Fighter", "First Order SF Tie Fighter", "Special Forces", "SF Tie Fighter", "First Order", "FOTP"],
+        "crew" : ["First Order SF TIE Pilot"],
+        "url" : "https://swgoh.gg/units/ships/first-order-sf-tie-fighter/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_fosf_tie_fighter.png",
+        "side": "dark",
+        "factions" : ["attacker", "first order"],
+        "abilities": {
+            "L-s9.6 Laser Cannons": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy. If this attack scores a Critical Hit, inflict Target Lock for 2 turns. This attack has +10% Critical Chance."
+            },
+            "Double Offensive": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to all enemies with a 35% chance to remove 20% Turn Meter. Target Lock: Turn Meter removal is doubled and can't be Resisted."
+            },
+            "Concussion Missile": {
+                "type": "Crew",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Special damage to target enemy, inflict Ability Block for 1 turn, gain 20% Turn Meter, and call a random ally to assist. If that ally is First Order, grant them Advantage for 2 turns. This attack ignores Protection."
+            }
+        }
+    },
+    {
         "name" : "First Order Tie Fighter",
         "uniqueName": "TIEFIGHTERFIRSTORDER",
         "aliases" : ["FO TIE Fighter", "First Order Tie Fighter", "First Order", "FOTP"],
@@ -852,6 +879,33 @@
                 "type": "Crew",
                 "abilityCooldown": "3",
                 "abilityDesc": "ITE Reaper and target ally gain Defense Up and Protection Up (30%) for 2 turns.  If that ally is Empire, they receive an additional 20% Protection Up."
+            }
+        }
+    },
+    {
+        "name" : "Tie Silencer",
+        "uniqueName": "UNKNOWN-TS",
+        "aliases" : ["Tie Silencer", "Kylo Ren Unmasked", "Kylo Ren", "Kylo"],
+        "crew" : ["Kylo Ren Unmasked"],
+        "url" : "https://swgoh.gg/units/ships/tie-silencer/",
+        "avatarURL" : "https://swgoh.gg/static/img/assets/ships/tex.charui_tie_silencer.png",
+        "side": "dark",
+        "factions" : ["first order", "attacker"],
+        "abilities": {
+            "Disruptive Advance": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and Stun them for 1 turn if they have more than 50% Turn Meter. Otherwise, gain Advantage for 2 turns."
+            },
+            "Overwhelming Advantage": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy. If the TIE silencer has Advantage, this attack deals 75% more damage. If this attack defeats an enemy, gain 20% Turn Meter and Foresight for 2 turns."
+            },
+            "Frenzied Rage": {
+                "type": "Crew",
+                "abilityCooldown": "0",
+                "abilityDesc": "Each time the TIE silencer is damaged or damages a Target Locked enemy, it gains +10 Speed and +10% Offense (stacking) until the end of the encounter."
             }
         }
     },

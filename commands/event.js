@@ -41,18 +41,19 @@ exports.run = async (client, message, args, level) => {
         case "create": {
             const minArgs = yargs.options({
                 'repeat': {
-                    alias: ['rep'],
+                    alias: ['r', 'rep'],
                     describe: 'Repeat the event',
                     type: 'string',
                     default: 0
                 },
                 'channel': {
+                    alias: ['c'],
                     describe: 'Channel to announce the event in',
                     type: 'string',
                     default: ''
                 },
                 'countdown': {
-                    alias: ['cd'],
+                    alias: ['d', 'cd'],
                     describe: 'Turn on the countdown',
                     type: 'string',
                     default: 'no'
@@ -123,11 +124,13 @@ exports.run = async (client, message, args, level) => {
                     specialArgs.forEach(specA => {
                         if (newArgs[ix].indexOf(specA) > -1) {
                             newArgs[ix] = newArgs[ix].replace(specA, '');
-                            if (newArgs[ix+1].indexOf('\n') > -1) {
-                                newArgs[ix+1] = newArgs[ix+1].substring(newArgs[ix+1].indexOf('\n'));
-                            } else {
-                                newArgs.splice(ix+1, 1);
-                                newLen--;
+                            if (newArgs[ix+1]) {
+                                if (newArgs[ix+1].indexOf('\n') > -1) {
+                                    newArgs[ix+1] = newArgs[ix+1].substring(newArgs[ix+1].indexOf('\n'));
+                                } else {
+                                    newArgs.splice(ix+1, 1);
+                                    newLen--;
+                                }
                             }
                         }
                     });
@@ -161,7 +164,7 @@ exports.run = async (client, message, args, level) => {
         } case "view": {
             const minArgs = yargs.options({
                 'min': {
-                    alias: ['minimal', 'minimized'],
+                    alias: ['m', 'minimal', 'minimized'],
                     describe: 'Show the events without the message',
                     type: 'boolean',
                     default: false
@@ -308,12 +311,12 @@ exports.help = {
 ;event help`,
     extended: `\`\`\`asciidoc
 create :: Create a new event listing.
-    --repeat    :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
-    --channel   :: Lets you set a specific channel for the event to announce on.
-    --countdown :: Adds a countdown to when your event will trigger - yes is the only valid parameter
+    --repeat|-r  :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
+    --channel|-c :: Lets you set a specific channel for the event to announce on.
+    --countdown  :: Adds a countdown to when your event will trigger - yes is the only valid parameter
 view   :: View your current event listings.
-    --min       :: Lets you view the events without the event message
-    --page | -p :: Lets you select a page of events to view
+    --min|-m     :: Lets you view the events without the event message
+    --page|-p    :: Lets you select a page of events to view
 delete :: Delete an event.
 trigger:: Trigger an event in the specified channel, leaves the event alone.
 help   :: Shows this message.\`\`\``,

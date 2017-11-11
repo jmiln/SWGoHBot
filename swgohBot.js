@@ -217,9 +217,7 @@ function announceEvent(thisGuild, guildConf, event, announceMessage) {
 setInterval(checkDates, INTERVAL_SECONDS * 1000);
 
 // Check every 12 hours to see if any mods have been changed
-// setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
-setInterval(updateCharacterMods, 1  * 1 * 60 * 1000);
-// updateCharacterMods();
+setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
 //                               hr   min  sec  mSec
 
 init();
@@ -253,13 +251,13 @@ function getModType(type) {
 async function updateCharacterMods() {
     const jsonGrab = await snekfetch.get('http://apps.crouchingrancor.com/mods/advisor.json');
     const characterList = JSON.parse(jsonGrab.text).data;
-    const currentCharacters = client.characters;
 
     let updated = false, newChar = false;
     const cleanReg = /['-\s]/g;
 
     characterList.forEach(async thisChar => {
         let found = false;
+        const currentCharacters = client.characters;
         
         if (thisChar.cname === 'Bohdi Rook') thisChar.cname = 'Bodhi Rook';
 
@@ -284,6 +282,15 @@ async function updateCharacterMods() {
                 let newSet = true;
                 for (var thisSet in currentChar.mods) {
                     const set = currentChar.mods[thisSet];
+
+                    // Take out the space behind any slashes
+                    thisChar.square = thisChar.square.replace(/\s+\/\s/g, '/ ');
+                    thisChar.arrow = thisChar.arrow.replace(/\s+\/\s/g, '/ ');
+                    thisChar.diamond = thisChar.diamond.replace(/\s+\/\s/g, '/ ');
+                    thisChar.triangle = thisChar.triangle.replace(/\s+\/\s/g, '/ ');
+                    thisChar.circle = thisChar.circle.replace(/\s+\/\s/g, '/ ');
+                    thisChar.cross = thisChar.cross.replace(/\s+\/\s/g, '/ ');
+
                     if (getModType(thisChar.set1) === set.sets[0] && getModType(thisChar.set2) === set.sets[1] && getModType(thisChar.set3) === set.sets[2] && thisChar.square === set.square && thisChar.arrow === set.arrow && thisChar.diamond === set.diamond && thisChar.triangle === set.triangle && thisChar.circle === set.circle && thisChar.cross === set.cross) {
                         newSet = false;
                         break;
@@ -325,6 +332,14 @@ async function updateCharacterMods() {
             } else {
                 setName = thisChar.name;
             }
+
+            // Take out the space behind any slashes
+            thisChar.square = thisChar.square.replace(/\s+\/\s/g, '/ ');
+            thisChar.arrow = thisChar.arrow.replace(/\s+\/\s/g, '/ ');
+            thisChar.diamond = thisChar.diamond.replace(/\s+\/\s/g, '/ ');
+            thisChar.triangle = thisChar.triangle.replace(/\s+\/\s/g, '/ ');
+            thisChar.circle = thisChar.circle.replace(/\s+\/\s/g, '/ ');
+            thisChar.cross = thisChar.cross.replace(/\s+\/\s/g, '/ ');
 
             newCharacter.mods[setName] = {
                 "sets": [

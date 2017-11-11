@@ -1,6 +1,8 @@
 // Ranks from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/45nacs/what_are_the_highest_ranks_you_can_attack_in_arena/
 // Formula from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/49kbrq/arena_rank_range/d0srqjn/
 const arenaJumps = {
+    46:38,
+    41:33,
     36:28,
     35:27,
     34:26,
@@ -43,6 +45,9 @@ exports.run = (client, message, args) => {
     if (isNaN(currentRank) || !currentRank) {
         return message.channel.send(`You need to enter a valid rank number`);
     }
+
+    // If they are rank 1, don't bother calculating anything
+    if (currentRank === 1) return message.channel.send(`You've already gotten as far as you can, congrats!`);
     
     // Mark em as estimates if needed
     let est = false;
@@ -57,7 +62,7 @@ exports.run = (client, message, args) => {
         if (newRank === 1) break;
     }
 
-    return message.channel.send(`From rank ${currentRank}, in ${arenaBattles.length-1} battle${arenaBattles.length-1 > 1 ? 's' : ''} \nThe best you can get is ${arenaBattles.join(' → ')} ${est ? '\n\nKeep in mind, this is an estimate.' : ''}`);
+    return message.channel.send(`From rank ${currentRank}, in ${arenaBattles.length-1} battle${arenaBattles.length-1 > 1 ? 's' : ''} ${est ? '**(estimate)**' : ''}\nThe best you can get is ${arenaBattles.join(' → ')}`);
 };
 
 exports.conf = {
