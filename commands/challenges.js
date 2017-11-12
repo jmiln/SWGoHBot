@@ -1,10 +1,16 @@
 const challenges = {
+    // Normal Challenges
     "Training Droids": ['Sunday', 'Monday', 'Saturday'],
     "Ability Mats": ['Sunday', 'Wednesday', 'Saturday'],
     "Bounty Hunter": ['Sunday', 'Tuesday', 'Friday'],
     "Agility Gear": ['Sunday', 'Tuesday', 'Friday'],
     "Strength Gear": ['Sunday', 'Monday', 'Thursday'],
-    "Tactics Gear": ['Sunday', 'Wednesday', 'Saturday']
+    "Tactics Gear": ['Sunday', 'Wednesday', 'Saturday'],
+
+    // Ship Challenges
+    "Ship Enhancement Droids": ['Monday', 'Wednesday', 'Saturday'],
+    "Ship Building Materials": ['Monday', 'Tuesday', 'Friday'],
+    "Ship Ability Materials": ['Monday', 'Thursday', 'Sunday']
 };
 
 exports.run = (client, message, args) => {
