@@ -118,32 +118,34 @@ async function checkDates() {
                 var eventTime = moment(event.eventTime, 'H:mm').format('H:mm');
                 var nowTime = moment().tz(guildConf['timezone']).format("H:mm");
 
-                if (eventDate === nowDate) {
-                    if (eventTime === nowTime) {
-                        var announceMessage = `**${key}**\n${event.eventMessage}`;
-                        announceEvent(thisGuild, guildConf, event, announceMessage);
-                        if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-                            const newEvent = {
-                                "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeat['repeatDay'], 'd').format('YYYY-MM-DD'),
-                                "eventTime": moment(event.eventTime, 'H:mm').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').format('H:mm'),
-                                "eventMessage": event.eventMessage,
-                                "eventChan": event.eventChan,
-                                "countdown": event.countdown,
-                                "repeat": {
-                                    "repeatDay": event.repeat['repeatDay'],
-                                    "repeatHour": event.repeat['repeatHour'],
-                                    "repeatMin": event.repeat['repeatMin']
-                                }
-                            };
+                if (eventDate === nowDate && eventTime === nowTime) {
+                    var announceMessage = `**${key}**\n${event.eventMessage}`;
+                    announceEvent(thisGuild, guildConf, event, announceMessage);
+                    if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                        const newEvent = {
+                            "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeat['repeatDay'], 'd').format('YYYY-MM-DD'),
+                            "eventTime": moment(event.eventTime, 'H:mm').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').format('H:mm'),
+                            "eventMessage": event.eventMessage,
+                            "eventChan": event.eventChan,
+                            "countdown": event.countdown,
+                            "repeat": {
+                                "repeatDay": event.repeat['repeatDay'],
+                                "repeatHour": event.repeat['repeatHour'],
+                                "repeatMin": event.repeat['repeatMin']
+                            }
+                        };
 
-                            // Gotta delete it before we can add it, so there won't be conflicts
-                            delete events[key];
-                            events[key] = newEvent;
-                        } else { // Go ahead and wipe it out
-                            delete events[key];
-                        }
-                        client.guildEvents.update({events: events}, {where: {guildID: g}});
+                        // Gotta delete it before we can add it, so there won't be conflicts
+                        delete events[key];
+                        events[key] = newEvent;
+                    } else { // Go ahead and wipe it out
+                        delete events[key];
                     }
+                    client.guildEvents.update({events: events}, {where: {guildID: g}});
+                } else if (moment(eventDate).isBefore(moment(nowDate).subtract(2, 'h'))) {
+                    console.log('Should wipe it here');
+                    delete events[key];
+                    client.guildEvents.update({events: events}, {where: {guildID: g}});
                 }
 
                 // if we have a countdown, see if we need to send a message

@@ -13,10 +13,10 @@ module.exports = async client => {
     client.guildSettings.sync();
     client.guildEvents.sync();
 
-    guildList.forEach(async (guild) => {
+    guildList.forEach(async (guildID) => {
         // If there is no config, give em one, and an events object while we're at it
-        await client.guildSettings.findOrCreate({where: {guildID: guild}, defaults: {guildID: guild, adminRole: defSet.adminRole, enableWelcome: defSet.enableWelcome, welcomeMessage: defSet.welcomeMessage, useEmbeds: defSet.useEmbeds, timezone: defSet.timezone, announceChan: defSet.announceChan, useEventPages: false}}).then();
-        await client.guildEvents.findOrCreate({where: {guildID: guild}, defaults: {guildID: guild, events: {}}}).then();
+        await client.guildSettings.findOrCreate({where: {guildID: guildID}, defaults: {guildID: guildID, adminRole: defSet.adminRole, enableWelcome: defSet.enableWelcome, welcomeMessage: defSet.welcomeMessage, useEmbeds: defSet.useEmbeds, timezone: defSet.timezone, announceChan: defSet.announceChan, useEventPages: defSet.useEventPages}}).then().catch(err => {client.log('ERROR', `Broke setting up new Settings: \`${err}\``);});
+        await client.guildEvents.findOrCreate({where: {guildID: guildID}, defaults: {guildID: guildID, events: {}}}).then().catch(err => {client.log('ERROR', `Broke setting up new Events: \`${err}\``);});
     });
 
     // Logs that it's up, and some extra info

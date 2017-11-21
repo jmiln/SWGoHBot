@@ -18,11 +18,11 @@
 		"welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
 		"useEmbeds": true,
         "timezone": "America/Los_Angeles",
-        "announceChan": ""
+        "announceChan": "",
+        "useEventPages": false
 	},
     "logs": {
         "logToChannel": false,
         "channel": "channel-ID-to-log-to"
-
 	}
 }

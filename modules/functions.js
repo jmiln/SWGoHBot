@@ -213,7 +213,7 @@ module.exports = (client) => {
 
     process.on("unhandledRejection", err => {
         const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
-        console.errorMsgor(`[${client.myTime()}] Uncaught Promise Error: `, err);
+        console.error(`[${client.myTime()}] Uncaught Promise Error: `, errorMsg);
         try {
             if (client.config.logs.logToChannel) {
                 client.channels.get(client.config.logs.channel).send(`\`\`\`${util.inspect(errorMsg)}\`\`\``,{split: true});
