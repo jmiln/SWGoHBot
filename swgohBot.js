@@ -141,11 +141,11 @@ async function checkDates() {
                     } else { // Go ahead and wipe it out
                         delete events[key];
                     }
-                    client.guildEvents.update({events: events}, {where: {guildID: g}});
+                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
                 } else if (moment(eventDate).isBefore(moment(nowDate).subtract(2, 'h'))) {
                     console.log('Should wipe it here');
                     delete events[key];
-                    client.guildEvents.update({events: events}, {where: {guildID: g}});
+                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
                 }
 
                 // if we have a countdown, see if we need to send a message
@@ -159,36 +159,36 @@ async function checkDates() {
 
 function checkCountdown(thisGuild, guildConf, key, event) {
 
-    // this function is run every INTERVAL_SECONDS - currently every 30 seconds
-    // we only want to run this function once per minute
-    // so let's make sure that the current number of seconds is less than the interval seconds
-    // if INTERVAL_SECONDS goes above 60 i.e. more than a minute, this will break
+    // This function is run every INTERVAL_SECONDS - currently every 30 seconds
+    // We only want to run this function once per minute
+    // So let's make sure that the current number of seconds is less than the interval seconds
+    // If INTERVAL_SECONDS goes above 60 i.e. more than a minute, this will break
 
     var now = moment().tz(guildConf['timezone']);
     if (now.seconds() >= INTERVAL_SECONDS) {
         return;
     }
 
-    // full event date and time in the correct timezone
+    // Full event date and time in the correct timezone
     var eventDate = moment.tz(event.eventDay + " " + event.eventTime, "YYYY-MM-DD H:mm", guildConf['timezone']);
-    // full now date and time in the correct timezone with 0 seconds so we can compare against the event date
+    // Full now date and time in the correct timezone with 0 seconds so we can compare against the event date
     var nowDate = moment().tz(guildConf['timezone']).seconds(0);
 
-    // times in minutes before event
+    // Times in minutes before event
     const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
 
-    // loop through all minutes before event start time
+    // Loop through all minutes before event start time
     for (var index = 0; index < timesToCountdown.length; ++index) {
-        // get the countdown date to test against
+        // Get the countdown date to test against
         var countdownDate = moment(eventDate).subtract(timesToCountdown[index], 'minutes');
-        // compare to seconds level of accuracy (ignore milliseconds)
+        // Compare to seconds level of accuracy (ignore milliseconds)
         if (countdownDate.isSame(nowDate, 'seconds')) {
-            // we should trigger this countdown message so create the announcement message of how long to go
+            // We should trigger this countdown message so create the announcement message of how long to go
             var timeToGo = moment.duration(eventDate.diff(nowDate)).humanize();
             var announceMessage = `**${key}**\nStarting in ${timeToGo}`;
             announceEvent(thisGuild, guildConf, event, announceMessage);
 
-            // we matched so we don't have to look any more
+            // We matched so we don't have to look any more
             break;
         }
     }
@@ -196,24 +196,13 @@ function checkCountdown(thisGuild, guildConf, key, event) {
 
 function announceEvent(thisGuild, guildConf, event, announceMessage) {
     if (guildConf["announceChan"] != "") {
-        var channel = '';
         if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, try using it
-            channel = thisGuild.channels.find('name', event.eventChan);
+            client.announceMsg(thisGuild, announceMessage, event.eventChan);
         } else { // Else, use the default one from their settings
-            channel = thisGuild.channels.find('name', guildConf["announceChan"]);
-        }
-        if (channel && channel.permissionsFor(thisGuild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
-            try {
-                channel.send(announceMessage);
-            } catch (e) {
-                client.log('Event Broke!', announceMessage);
-            }
+            client.announceMsg(thisGuild, announceMessage);
         }
     }
 }
-
-// Run it once on start up
-// checkDates();
 
 // Then every INTERVAL_SECONDS seconds after
 setInterval(checkDates, INTERVAL_SECONDS * 1000);
@@ -223,8 +212,6 @@ setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
 //                               hr   min  sec  mSec
 
 init();
-
-
 
 function getModType(type) {
     switch (type) {
@@ -360,19 +347,6 @@ async function updateCharacterMods() {
             newCharacter.name = thisChar.cname;
             newCharacter.aliases = [thisChar.cname];
 
-            // const newCharacter = {
-            //     "name": thisChar.cname,
-            //     "aliases": [thisChar.cname],
-            //     "url": '',
-            //     "avatarURL": "",
-            //     "side": "",
-            //     "factions": thisChar.families.split(';'),
-            //     mods,
-            //     "gear": {
-            //     },
-            //     "abilities": {
-            //     }
-            // };
             currentCharacters.push(newCharacter);
             newChar = true;
             client.log('NewChar', 'Added ' + thisChar.cname);

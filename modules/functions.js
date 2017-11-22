@@ -101,6 +101,40 @@ module.exports = (client) => {
     };
 
     /*
+     * ANNOUNCEMENT MESSAGE
+     * Sends a message to the set announcement channel
+     */
+    client.announceMsg = async (guild, announceMsg, channel='') => {
+        const guildSettings = await client.guildSettings.findOne({where: {guildID: guild.id}, attributes: ['announceChan']});
+        const guildConf = guildSettings.dataValues;
+        let guildChannel;
+
+        let announceChan = guildConf.announceChan;
+        if (channel !== '') {
+            announceChan = channel;
+        }
+
+        if (guild.channels.exists('name', announceChan)) {
+            guildChannel = await guild.channels.find('name', announceChan);
+        } else {
+            return;
+        }
+
+        if (guildChannel.permissionsFor(guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
+            guildChannel.send(announceMsg).catch(console.error);
+        }
+    };
+
+
+    /*
+     * COMMAND ERROR
+     * Spits back the correct usage and such for a command
+     */
+    client.cmdErr = (message, command) => {
+        message.channel.send(`**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`);
+    };
+
+    /*
      * RELOAD COMMAND
      * Reloads the given command
      */

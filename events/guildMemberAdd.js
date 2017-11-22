@@ -12,23 +12,15 @@ module.exports = async (client, member) => {
 
     // Our welcome message has a bit of a placeholder, let's fix
     if (guildConf.enableWelcome && guildConf.welcomeMessage !== "" && guildConf.announceChan !== "") { // If they have it turned on, and it's not empty
-        var channel = guild.channels.find('name', guildConf['announceChan']);
-        if (channel && channel.permissionsFor(guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
-            if (!channel) return;  // No reason for it to ever do this, but it's still breaking for some reason with the .send
-            let welcomeMessage = guildConf.welcomeMessage.toString();
-
-            if (welcomeMessage.includes("{{user}}")) {
-                welcomeMessage = welcomeMessage.replace("{{user}}", member.user.username);
-            }
-            if (welcomeMessage.includes("{{userMention}}")) {
-                welcomeMessage = welcomeMessage.replace("{{userMention}}", member.user);
-            }
-            // client.log('HERE', `This should be a channel: ${channel}`);
-            try {
-                channel.send(welcomeMessage);
-            } catch (e) {
-                client.log('ERROR', `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
-            } 
-        }
+        const welcomeMessage = guildConf.welcomeMessage
+            .replace(/{{user}}/gi, member.user.username)
+            .replace(/{{usermention}}/gi, member.user)
+            .replace(/{{server}}/gi, member.guild.name)
+            .replace(/{{prefix}}/gi, client.config.prefix);
+        try {
+            client.announceMsg(guild, welcomeMessage);
+        } catch (e) {
+            client.log('ERROR', `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
+        } 
     }
 };

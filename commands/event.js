@@ -290,7 +290,8 @@ exports.run = async (client, message, args, level) => {
             break;
         }
         case "help": {
-            return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
+            // return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
+            return client.cmdErr(message, this);
         }
     }
 };

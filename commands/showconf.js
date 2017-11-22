@@ -1,7 +1,13 @@
 const util = require('util');
 
-exports.run = async (client, message) => {
-    const guildConf = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan', 'useEventPages']});
+exports.run = async (client, message, args, level) => {
+    let guildID = message.guild.id;
+    // If I or an adminHelper adds a guild ID here, pull up that instead
+    if (args[0] && level >= 9) {
+        guildID = args[0];
+    }
+
+    const guildConf = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan', 'useEventPages']});
 
     var array = [];
     if (guildConf) {
