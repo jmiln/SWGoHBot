@@ -20,7 +20,9 @@ module.exports = (client) => {
         const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
-        if (message.author.id === message.guild.owner.id) return permlvl = 4;
+        if (message.channel.type === 'text') {
+            if (message.author.id === message.guild.owner.id) return permlvl = 4;
+        }
 
         // Also giving them the permissions if they have the manage server role, 
         // since they can change anything else in the server, so no reason not to
@@ -35,9 +37,7 @@ module.exports = (client) => {
                 const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase());
                 if (adminRole && message.member.roles.has(adminRole.id)) return permlvl = 3;
             }
-        } catch (e) {
-            // console.warn("adminRole not present in guild settings. Skipping Administrator (level 3) check");
-        }
+        } catch (e) {() => {};}
         return permlvl;
     };
 

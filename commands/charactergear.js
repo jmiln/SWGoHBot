@@ -3,23 +3,23 @@ exports.run = (client, message, args) => {
     const charList = client.characters;
 
 
-    // The current possible gear levels
-    const gearLevels = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10', 'g11', 'g12',
-        'gear1', 'gear2', 'gear3', 'gear4', 'gear5', 'gear6', 'gear7', 'gear8',
-        'gear9', 'gear10', 'gear11', 'gear12'
-    ];
+    // The current max possible gear level
+    const MAX_GEAR = 12;
 
     // Figure out where the gear level is in the command, and grab it
     let gearLvl = '';
     if (!args[0]) return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
 
-    const arg0 = args[0].toLowerCase();
-    if (gearLevels.includes(arg0)) {
-        gearLvl = 'Gear ' + arg0.replace(/\D/g, '');
-        args.splice(0, 1);
-    } else if (gearLevels.includes(args[args.length - 1].toLowerCase())) {
-        gearLvl = 'Gear ' + args[args.length - 1].toLowerCase().replace(/\D/g, '');
-        args.splice(-1, 1);
+    if (args[1]) {
+        gearLvl = parseInt(args[args.length - 1].replace(/\D/g, ''));
+        if (gearLvl < 1 || gearLvl > MAX_GEAR) {
+            gearLvl = '';
+        } else {
+            gearLvl = 'Gear ' + gearLvl;
+            args.splice(args.length - 1);
+        }
+    } else {
+        gearLvl = '';
     }
 
     // Remove any junk from the name
