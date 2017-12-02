@@ -21142,7 +21142,9 @@
     {
         "name": "First Order SF TIE Pilot",
         "aliases": [
-            "First Order SF TIE Pilot"
+            "First Order SF TIE Pilot",
+            "FOSFTP",
+            "Special Forces Tie Pilot"
         ],
         "url": "https://swgoh.gg/characters/first-order-sf-tie-pilot",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorder_pilot.png",
@@ -21288,7 +21290,12 @@
     {
         "name": "Kylo Ren Unmasked",
         "aliases": [
-            "Kylo Ren Unmasked"
+            "Kylo Ren Unmasked",
+            "KRU",
+            "Kylo Ren",
+            "Kylo",
+            "Kylo Unmasked",
+            "Matt"
         ],
         "url": "https://swgoh.gg/characters/kylo-ren-unmasked",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kylo_unmasked.png",
@@ -21453,6 +21460,469 @@
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "When Kylo takes damage, he recovers 8% Health and a random First Order ally who doesn't have it gains Advantage for 2 turns. Kylo has +50% Counter Chance, doubled while he has Taunt. Kylo takes reduced damage from Percent Health damage effects and gains Taunt for 1 turn at the start of each encounter.",
+                "tier": "zeta"
+            }
+        }
+    },
+    {
+        "name": "Colonel Starck",
+        "aliases": [
+            "Colonel Starck"
+        ],
+        "url": "https://swgoh.gg/characters/colonel-starck",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_colonel_stark.png",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Imperial Trooper",
+            "Support"
+        ],
+        "mods": {
+            "PvE": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed/ Offense",
+                "diamond": "Defense",
+                "triangle": "Offense/ Protection",
+                "circle": "Protection",
+                "cross": "Potency"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 3 BAW Armor Mod",
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Merr-Sonn Shield Generator"
+            ],
+            "Gear 3": [
+                "Mk 4 BlasTech Weapon Mod",
+                "Mk 5 BioTech Implant",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 4 BAW Armor Mod",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 4 Loronar Power Cell"
+            ],
+            "Gear 4": [
+                "Mk 2 Athakam Medpac",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 2 Chedak Comlink",
+                "Mk 4 BAW Armor Mod"
+            ],
+            "Gear 5": [
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Athakam Medpac",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 5 BAW Armor Mod"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 3 BioTech Implant"
+            ],
+            "Gear 7": [
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 8 TaggeCo Holo Lens"
+            ],
+            "Gear 9": [
+                "Mk 7 Nubian Security Scanner",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 4 Arakyd Droid Caller"
+            ],
+            "Gear 10": [
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 8 BioTech Implant",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 3 Carbanti Sensor Array"
+            ],
+            "Gear 11": [
+                "Mk 9 BAW Armor Mod",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "Mk 9 BioTech Implant"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Medpac",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Debilitating Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Defense Down for 2 turns. If the target was already debuffed, deal double damage.",
+                "tier": "omega"
+            },
+            "Scan All Wavelengths": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Empire allies gain Critical Chance Up and Critical Damage Up for 3 turns. Starck gains 5% Turn Meter for each Empire ally and each Rebel enemy.",
+                "tier": "omega"
+            },
+            "Blizzard Four Barrage": {
+                "type": "Special",
+                "abilityCooldown": "8",
+                "abilityDesc": "Deal Physical damage to all enemies with a 50% chance to Stagger them. Dispel all buffs on the primary target. For each active Imperial Trooper ally, deal 10% more damage and reduce the cooldown of this ability by 1.",
+                "tier": "omega"
+            },
+            "Imperial Intelligence": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the end of his turn, Starck recovers 7% Health and 3% Protection, and removes 1% Turn Meter from all enemies for each active Empire ally (doubled for Imperial Trooper allies).",
+                "tier": "zeta"
+            }
+        }
+    },
+    {
+        "name": "Imperial Probe Droid",
+        "aliases": [
+            "Imperial Probe Droid"
+        ],
+        "url": "https://swgoh.gg/characters/imperial-probe-droid",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_probedroid.png",
+        "side": "dark",
+        "factions": [
+            "Droid",
+            "Empire",
+            "Support"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Defense x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Defense",
+                "circle": "Health",
+                "cross": "Health/ Defense"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BioTech Implant",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Fabritech Data Pad",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 BioTech Implant"
+            ],
+            "Gear 2": [
+                "Mk 3 Loronar Power Cell",
+                "Mk 1 Czerka Stun Cuffs",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 2 Loronar Power Cell"
+            ],
+            "Gear 3": [
+                "Mk 3 Fabritech Data Pad",
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 3 Fabritech Data Pad",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 4 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 4": [
+                "Mk 4 Loronar Power Cell",
+                "Mk 3 Merr-Sonn Shield Generator",
+                "Mk 4 Neuro-Saav Electrobinoculars",
+                "Mk 3 Nubian Security Scanner",
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 5": [
+                "Mk 4 Nubian Design Tech",
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 2 Carbanti Sensor Array"
+            ],
+            "Gear 6": [
+                "Mk 4 A/KT Stun Gun",
+                "Mk 4 Merr-Sonn Shield Generator",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 7 BAW Armor Mod",
+                "Mk 3 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 7": [
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 4 A/KT Stun Gun"
+            ],
+            "Gear 8": [
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 9 Neuro-Saav Electrobinoculars",
+                "Mk 5 Carbanti Sensor Array",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 6 Chiewab Hypo Syringe"
+            ],
+            "Gear 9": [
+                "Mk 4 Chedak Comlink",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 5 Carbanti Sensor Array",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 7 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 10": [
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 10 BlasTech Weapon Mod",
+                "Mk 10 TaggeCo Holo Lens",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 3 Athakam Medpac",
+                "Mk 8 BAW Armor Mod"
+            ],
+            "Gear 11": [
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 4 Czerka Stun Cuffs",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 8 Loronar Power Cell",
+                "Mk 10 BlasTech Weapon Mod"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Medpac",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Precision Blasters": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy with a 80% chance to Expose them for 2 turns.",
+                "tier": "omega"
+            },
+            " Detect": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Dispel all buffs on all enemies with a 75% chance to inflict Target Lock for 2 turns. Then, remove 5% Turn Meter from Target Locked enemies. This attack can't be Evaded.",
+                "tier": "omega"
+            },
+            "Self-Destruct": {
+                "type": "Special",
+                "abilityCooldown": "1",
+                "abilityDesc": "Imperial Probe Droid instantly defeats itself and can't be Revived. Deal massive damage to target enemy. Deal bonus damage to other enemies equal to 30% of their Max Health. Expose all Target Locked enemies for 2 turns. This attack can't be Evaded. While Imperial Probe Droid has full Health, or has no active allies, the cooldown of this ability is set to max and can't be reduced.",
+                "tier": "omega"
+            },
+            "Imperial Logistics": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Imperial Probe Droid has +50% Max Health. At the end of each Droid ally turn, at the end of each Empire ally turn, and at the end of each Rebel enemy turn, Imperial Probe Droid gains 3% Turn Meter.",
+                "tier": "zeta"
+            }
+        }
+    },
+    {
+        "name": "Wampa",
+        "aliases": [
+            "Wampa"
+        ],
+        "url": "https://swgoh.gg/characters/wampa",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_wampa.png",
+        "side": "dark",
+        "factions": [
+            "Attacker"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Critical Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 Loronar Power Cell",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 3 SoroSuub Keypad",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 4 BAW Armor Mod",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 4": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Chedak Comlink",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 6 BAW Armor Mod"
+            ],
+            "Gear 5": [
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 4 BlasTech Weapon Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 4 Nubian Security Scanner",
+                "Mk 6 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 6": [
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller"
+            ],
+            "Gear 7": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Fabritech Data Pad",
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Chedak Comlink"
+            ],
+            "Gear 8": [
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 2 Athakam Medpac",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 5 A/KT Stun Gun"
+            ],
+            "Gear 9": [
+                "Mk 7 Nubian Security Scanner",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 6 Nubian Design Tech",
+                "Mk 4 Chedak Comlink"
+            ],
+            "Gear 10": [
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 8 BioTech Implant",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 10 BlasTech Weapon Mod",
+                "Mk 9 Neuro-Saav Electrobinoculars",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 6 A/KT Stun Gun"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Bayonet",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Womp!": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Damage Over Time for 2 turns. If the target was Exposed or Staggered, Stun them for 1 turn. If the target was debuffed, gain 20% Turn Meter. If Wampa isn't debuffed, gain 20% Turn Meter. This attack can't be Evaded. This attack has +100% Offense against Rebel targets.",
+                "tier": "omega"
+            },
+            "Icebreaker": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Dispel all debuffs on Wampa. Deal Physical damage to all enemies and Daze them for 2 turns. Wampa gains Protection Up (150%) until the next time this ability is used, which can't be Dispelled or prevented.",
+                "tier": "omega"
+            },
+            "Furious Foe": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Inflict Healing Immunity on all enemies for 2 turns, which can't be Evaded. Wampa gains 40% Accuracy, 40% Critical Chance, and 40% Offense (stacking) until the end of the encounter. Wampa gains 15% Turn Meter for each defeated ally and each active enemy. This ability starts on cooldown.",
+                "tier": "zeta"
+            },
+            "Howling Rage": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "While Wampa has Protection Up, it has +20% Counter Chance, +50% Offense, and +50% Tenacity.",
+                "tier": "omega"
+            },
+            "Cornered Beast": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Wampa has +50% Counter Chance. Wampa has +10% Counter Chance, +5% Health Steal, and +5% Offense for each Damage Over Time effect on each enemy.",
                 "tier": "zeta"
             }
         }

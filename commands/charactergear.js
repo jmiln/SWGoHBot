@@ -12,9 +12,10 @@ exports.run = (client, message, args) => {
 
     if (args[1]) {
         gearLvl = parseInt(args[args.length - 1].replace(/\D/g, ''));
-        if (gearLvl < 1 || gearLvl > MAX_GEAR) {
+        if (gearLvl.isNaN() || gearLvl < 1 || gearLvl > MAX_GEAR) {
             gearLvl = '';
         } else {
+            // There is a valid gear level being requested
             gearLvl = 'Gear ' + gearLvl;
             args.splice(args.length - 1);
         }
@@ -41,7 +42,7 @@ exports.run = (client, message, args) => {
 
     // Find any characters that match that
     const chars = client.findChar(searchName, charList);
-    if (chars.length <= 0) {
+    if (!chars || chars.length <= 0) {
         return message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
     }
 
