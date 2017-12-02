@@ -1,4 +1,5 @@
 var moment = require('moment-timezone');
+require('moment-duration-format');
 var yargs = require('yargs');
 // var util = require('util');
 
@@ -185,6 +186,7 @@ exports.run = async (client, message, args, level) => {
                         const thisEvent = events[args[1]];
                         var eventDate = moment.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
                         let eventString = `**${args[1]}** \nEvent Time: ${eventDate}\n`;
+                        eventString += `Time Remaining: ${moment.duration(moment().diff(moment.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]")}\n`;
                         if (thisEvent.eventChan !== '') {
                             eventString += `Sending on channel: ${thisEvent.eventChan}\n`;
                         }
@@ -221,6 +223,7 @@ exports.run = async (client, message, args, level) => {
                         const event = events[key];
                         var thisEventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
                         var eventString = `**${key}:**\nEvent Time: ${thisEventDate}\n`;
+                        eventString += `Time Remaining: ${moment.duration(moment().diff(moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]")}\n`;
                         if (event.eventChan !== '') {
                             eventString += `Sending on channel: ${event.eventChan}\n`;
                         }
