@@ -1,8 +1,10 @@
 // Ranks from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/45nacs/what_are_the_highest_ranks_you_can_attack_in_arena/
 // Formula from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/49kbrq/arena_rank_range/d0srqjn/
 const arenaJumps = {
+    49:40,
     46:38,
     41:33,
+    40:33,
     36:28,
     35:27,
     34:26,

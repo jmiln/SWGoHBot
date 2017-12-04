@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
 
     if (args[1]) {
         gearLvl = parseInt(args[args.length - 1].replace(/\D/g, ''));
-        if (gearLvl.isNaN() || gearLvl < 1 || gearLvl > MAX_GEAR) {
+        if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(gearLvl) ) {
             gearLvl = '';
         } else {
             // There is a valid gear level being requested
