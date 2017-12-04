@@ -789,7 +789,7 @@
             "Rampage": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Whenever any ally or enemy is defeated, Asajj Ventress gains Offense Up and Critical Chance Up for two actions and gains 50% Turn Meter. Asajj Ventress gains 15 Speed for each enemy with no buffs.",
+                "abilityDesc": "When any ally or enemy is defeated, Asajj gains 35% Turn Meter, and, gains 15% Offense, 15% Critical Chance, and 5% Max Health (stacking) until the end of the encounter. Asajj has +15 Speed for each enemy with no buffs.",
                 "tier": "zeta"
             }
         }
