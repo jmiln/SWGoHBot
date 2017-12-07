@@ -368,6 +368,7 @@ async function ggGrab(charLink) {
     const gearLink = charLink + '/gear';
     const character = {
         "name": "",
+        "uniqueName": "",
         "aliases": [],
         "url": charLink,
         "avatarURL": "",

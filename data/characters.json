@@ -20689,6 +20689,7 @@
     },
     {
         "name": "Mother Talzin",
+        "uniqueName": "MOTHERTALZIN",
         "aliases": [
             "Mother Talzin",
             "Talzin"
@@ -20848,6 +20849,7 @@
     },
     {
         "name": "Nightsister Spirit",
+        "uniqueName": "NIGHTSISTERSPIRIT",
         "aliases": [
             "Nightsister Spirit",
             "Spirit"
@@ -20995,6 +20997,7 @@
     },
     {
         "name": "Nightsister Zombie",
+        "uniqueName": "NIGHTSISTERZOMBIE",
         "aliases": [
             "Nightsister Zombie",
             "Zombie"
@@ -21141,6 +21144,7 @@
     },
     {
         "name": "First Order SF TIE Pilot",
+        "uniqueName": "FIRSTORDERSPECIALFORCESPILOT",
         "aliases": [
             "First Order SF TIE Pilot",
             "FOSFTP",
@@ -21289,6 +21293,7 @@
     },
     {
         "name": "Kylo Ren Unmasked",
+        "uniqueName": "KYLORENUNMASKED",
         "aliases": [
             "Kylo Ren Unmasked",
             "KRU",
@@ -21466,6 +21471,7 @@
     },
     {
         "name": "Colonel Starck",
+        "uniqueName": "COLONELSTARCK",
         "aliases": [
             "Colonel Starck"
         ],
@@ -21619,6 +21625,7 @@
     },
     {
         "name": "Imperial Probe Droid",
+        "uniqueName": "IMPERIALPROBEDROID",
         "aliases": [
             "Imperial Probe Droid"
         ],
@@ -21772,6 +21779,7 @@
     },
     {
         "name": "Wampa",
+        "uniqueName": "WAMPA",
         "aliases": [
             "Wampa"
         ],

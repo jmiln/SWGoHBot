@@ -1,5 +1,6 @@
 # Directories
 /node_modules/
+/wipCommands/
 
 /data/guildSettings
 /data/guildsettings
