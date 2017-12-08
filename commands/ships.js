@@ -22,7 +22,7 @@ exports.run = (client, message, args) => {
     }
 
     // Find any characters that match that
-    const ships = client.findShip(searchName, shipList);
+    const ships = client.findChar(searchName, shipList);
     if (ships.length <= 0) {
         return message.channel.send(`Invalid character or ship. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
     } else if (ships.length > 1) {

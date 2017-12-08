@@ -1,5 +1,6 @@
 const moment = require('moment');
 const util = require('util');
+const Fuse = require("fuse-js-latest");
 
 module.exports = (client) => {
     /*
@@ -45,35 +46,19 @@ module.exports = (client) => {
         return moment.tz('US/Pacific').format('M/D/YYYY hh:mma');
     };
 
-    // Putting this here so I can use it across all the spots I need it
-    // It finds any character that matches the search, and returns them in an array
-    client.findChar = (searchName, charList) => {
-        const chars = [];
-        searchName = searchName.toLowerCase().replace(/[^\w\s]/gi, '');
-        for (var ix = 0; ix < charList.length; ix++) {
-            var character = charList[ix];
-            for (var jx = 0; jx < character.aliases.length; jx++) {
-                if (searchName.toLowerCase() === character.aliases[jx].toLowerCase()) {
-                    chars.push(character);
-                }
-            }
+    // This finds any character that matches the search, and returns them in an array
+    client.findChar = (searchName, charList, noLimit=false) => {
+        var options = {
+            keys: ['name', 'aliases'],
+            threshold: .2
+        };
+        const fuse = new Fuse(charList, options);
+        let chars = fuse.search(searchName);
+        // If there's a ton of em, only return the first 4
+        if (chars.length > 4 && !noLimit) {
+            chars = chars.slice(0, 4);
         }
         return chars;
-    };
-
-    // And this one is for ships
-    client.findShip = (searchName, shipList) => {
-        const ships = [];
-        searchName = searchName.toLowerCase().replace(/[^\w\s]/gi, '');
-        for (var ix = 0; ix < shipList.length; ix++) {
-            var ship = shipList[ix];
-            for (var jx = 0; jx < ship.aliases.length; jx++) {
-                if (searchName.toLowerCase() === ship.aliases[jx].toLowerCase()) {
-                    ships.push(ship);
-                }
-            }
-        }
-        return ships;
     };
 
     /*
