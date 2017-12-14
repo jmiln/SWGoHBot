@@ -128,13 +128,13 @@
                 "Mk 6 Merr-Sonn Thermal Detonator",
                 "Mk 8 TaggeCo Holo Lens",
                 "Mk 4 Sienar Holo Projector",
-                "Unknown Gear",
-                "Unknown Gear"
+                "Mk 9 Fabritech Data Pad",
+                "Mk 5 Chedak Comlink"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Cybernetics",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -284,12 +284,12 @@
                 "Mk 5 Athakam Medpac",
                 "Mk 4 Sienar Holo Projector",
                 "Mk 6 Merr-Sonn Thermal Detonator",
-                "Unknown Gear"
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Multi-tool",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -439,12 +439,12 @@
                 "Mk 6 Merr-Sonn Thermal Detonator",
                 "Mk 8 BioTech Implant",
                 "Mk 8 BioTech Implant",
-                "Unknown Gear"
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Multi-tool",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -506,6 +506,161 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BioTech Implant",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 3 BAW Armor Mod",
+                "Mk 3 Loronar Power Cell",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 3": [
+                "Mk 4 Loronar Power Cell",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 5 BioTech Implant",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 BlasTech Weapon Mod"
+            ],
+            "Gear 4": [
+                "Mk 2 Sienar Holo Projector",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 5 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 5": [
+                "Mk 6 BAW Armor Mod",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 6 Fabritech Data Pad",
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 6": [
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 SoroSuub Keypad"
+            ],
+            "Gear 7": [
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 8": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 SoroSuub Keypad"
+            ],
+            "Gear 9": [
+                "Mk 4 Athakam Medpac",
+                "Mk 6 Nubian Design Tech",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 10": [
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 9 BlasTech Weapon Mod",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 9 Fabritech Data Pad"
+            ],
+            "Gear 11": [
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 8 BioTech Implant",
+                "Mk 9 BlasTech Weapon Mod",
+                "MK 6 Arakyd Droid Caller"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTeck Multi-tool",
+                "Mk 12 ArmaTeck Medpac",
+                "Mk 12 ArmaTeck Bayonet",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Balanced Strike": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy, gain Protection Up (40%) for 2 turns, and grant Protection Up (40%) to a random ally that doesn't have it for 2 turns.",
+                "tier": "omega"
+            },
+            "Meditate": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Ahsoka gains Foresight, Retribution, and each non-unique buff (excluding Taunt) present on other allies for 2 turns, then gains 15% Turn Meter for each buff on her.",
+                "tier": "omega"
+            },
+            "Whirlwind": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Consume all non-unique buffs on Ahsoka and deal Physical damage to target enemy. This attack scores an additional hit for each type of buff consumed. The target can't Evade and has -50% Armor against this attack.",
+                "tier": "zeta"
+            },
+            "Perseverance": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Ahsoka is immune to Damage Over Time effects and gains 30% Critical Avoidance. At the end of each turn, Ahsoka dispels all debuffs on herself and loses 10% Health for each debuff dispelled, then recovers 5% Health for each buff on her. This Health Loss can't defeat Ahsoka.",
+                "tier": "omega"
+            }
+        }
+    },
+    {
+        "name": "Asajj Ventress",
+        "uniqueName": "ASAJVENTRESS",
+        "aliases": [
+            "Asajj Ventress",
+            "Asajj"
+        ],
+        "url": "https://swgoh.gg/characters/asajj-ventress/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ventress.png",
+        "side": "dark",
+        "factions": [
+            "support",
+            "nightsister",
+            "separatist"
+        ],
+        "mods": {
+            "Arena": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -605,60 +760,79 @@
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },
+        },        
         "abilities": {
-            "Balanced Strike": {
+            "Cruel Strike": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy, gain Protection Up (40%) for 2 turns, and grant Protection Up (40%) to a random ally that doesn't have it for 2 turns.",
+                "abilityDesc": "Deal Physical damage to target enemy with a 35% chance to Stun for 1 turn.",
                 "tier": "omega"
             },
-            "Meditate": {
+            "Strike Fear": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Ahsoka gains Foresight, Retribution, and each non-unique buff (excluding Taunt) present on other allies for 2 turns, then gains 15% Turn Meter for each buff on her.",
+                "abilityDesc": "Dispel all positive status effects from all enemies and Asajj recovers 40% of her Max Health. For each effect dispelled this way, Asajj recovers an additional 9% Max Health and has a 50% chance to remove 10% Turn Meter.",
                 "tier": "omega"
             },
-            "Whirlwind": {
+            "Endless Wrath": {
                 "type": "Special",
-                "abilityCooldown": "3",
-                "abilityDesc": "Consume all non-unique buffs on Ahsoka and deal Physical damage to target enemy. This attack scores an additional hit for each type of buff consumed. The target can't Evade and has -50% Armor against this attack.",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Special damage to all enemies and refresh all cooldowns on a finishing blow.",
+                "tier": "omega"
+            },
+            "Nightsister Swiftness": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Nightsister allies gain 28 Speed, gain 50% Turn Meter when they fall below 100% Health, and have a 50% chance to remove 20% Turn Meter when they damage an enemy. This Turn Meter removal can't be Resisted.",
                 "tier": "zeta"
             },
-            "Perseverance": {
+            "Rampage": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Ahsoka is immune to Damage Over Time effects and gains 30% Critical Avoidance. At the end of each turn, Ahsoka dispels all debuffs on herself and loses 10% Health for each debuff dispelled, then recovers 5% Health for each buff on her. This Health Loss can't defeat Ahsoka.",
-                "tier": "omega"
+                "abilityDesc": "When any ally or enemy is defeated, Asajj gains 35% Turn Meter, and, gains 15% Offense, 15% Critical Chance, and 5% Max Health (stacking) until the end of the encounter. Asajj has +15 Speed for each enemy with no buffs.",
+                "tier": "zeta"
             }
         }
     },
     {
-        "name": "Asajj Ventress",
-        "uniqueName": "ASAJVENTRESS",
+        "name": "B2 Super Battle Droid",
+        "uniqueName": "B2SUPERBATTLEDROID",
         "aliases": [
-            "Asajj Ventress",
-            "Asajj"
+            "B2 Super Battle Droid",
+            "B2"
         ],
-        "url": "https://swgoh.gg/characters/asajj-ventress/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ventress.png",
+        "url": "https://swgoh.gg/characters/b2-super-battle-droid/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b2.png",
         "side": "dark",
         "factions": [
-            "support",
-            "nightsister",
+            "tank",
+            "droid",
             "separatist"
         ],
         "mods": {
-            "Arena": {
+            "Arena (with HK-47 lead)": {
                 "sets": [
                     "Critical Damage x4",
                     "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Speed",
+                "arrow": "Accuracy",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "Arena (without HK-47)": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Accuracy",
+                "diamond": "Defense",
+                "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
             }
@@ -760,81 +934,56 @@
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },
+        },        
         "abilities": {
-            "Cruel Strike": {
+            "Heavy Arms": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy with a 35% chance to Stun for 1 turn.",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Evasion Down for 2 turns.",
                 "tier": "omega"
             },
-            "Strike Fear": {
+            "Mow Down": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Dispel all positive status effects from all enemies and Asajj recovers 40% of her Max Health. For each effect dispelled this way, Asajj recovers an additional 9% Max Health and has a 50% chance to remove 10% Turn Meter.",
+                "abilityDesc": "Deal Physical damage to all enemies and Dispel all positive status effects on them, with a 65% chance to also inflict Buff Immunity for 2 turns (applied before damage.)",
                 "tier": "omega"
             },
-            "Endless Wrath": {
-                "type": "Special",
-                "abilityCooldown": "4",
-                "abilityDesc": "Deal Special damage to all enemies and refresh all cooldowns on a finishing blow.",
-                "tier": "omega"
-            },
-            "Nightsister Swiftness": {
-                "type": "Leader",
-                "abilityCooldown": "0",
-                "abilityDesc": "Nightsister allies gain 28 Speed, gain 50% Turn Meter when they fall below 100% Health, and have a 50% chance to remove 20% Turn Meter when they damage an enemy. This Turn Meter removal can't be Resisted.",
-                "tier": "zeta"
-            },
-            "Rampage": {
+            "Relentless Barrage": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "When any ally or enemy is defeated, Asajj gains 35% Turn Meter, and, gains 15% Offense, 15% Critical Chance, and 5% Max Health (stacking) until the end of the encounter. Asajj has +15 Speed for each enemy with no buffs.",
-                "tier": "zeta"
+                "abilityDesc": "B2 has a 40% chance to gain 100% Turn Meter whenever another ally is Evaded or damaged by an attack.",
+                "tier": "omega"
             }
         }
     },
     {
-        "name": "B2 Super Battle Droid",
-        "uniqueName": "B2SUPERBATTLEDROID",
+        "name": "Barriss Offee",
+        "uniqueName": "BARRISSOFFEE",
         "aliases": [
-            "B2 Super Battle Droid",
-            "B2"
+            "Barriss Offee",
+            "Barriss"
         ],
-        "url": "https://swgoh.gg/characters/b2-super-battle-droid/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b2.png",
-        "side": "dark",
+        "url": "https://swgoh.gg/characters/barriss-offee/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_barriss_light.png",
+        "side": "light",
         "factions": [
-            "tank",
-            "droid",
-            "separatist"
+            "healer",
+            "jedi",
+            "galactic republic"
         ],
         "mods": {
-            "Arena (with HK-47 lead)": {
+            "Arena": {
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
-                "arrow": "Accuracy",
+                "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency"
-            },
-            "Arena (without HK-47)": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Accuracy",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency"
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
             }
         },
         "gear": {
@@ -934,156 +1083,7 @@
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },
-        "abilities": {
-            "Heavy Arms": {
-                "type": "Basic",
-                "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy and inflict Evasion Down for 2 turns.",
-                "tier": "omega"
-            },
-            "Mow Down": {
-                "type": "Special",
-                "abilityCooldown": "3",
-                "abilityDesc": "Deal Physical damage to all enemies and Dispel all positive status effects on them, with a 65% chance to also inflict Buff Immunity for 2 turns (applied before damage.)",
-                "tier": "omega"
-            },
-            "Relentless Barrage": {
-                "type": "Unique",
-                "abilityCooldown": "0",
-                "abilityDesc": "B2 has a 40% chance to gain 100% Turn Meter whenever another ally is Evaded or damaged by an attack.",
-                "tier": "omega"
-            }
-        }
-    },
-    {
-        "name": "Barriss Offee",
-        "uniqueName": "BARRISSOFFEE",
-        "aliases": [
-            "Barriss Offee",
-            "Barriss"
-        ],
-        "url": "https://swgoh.gg/characters/barriss-offee/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_barriss_light.png",
-        "side": "light",
-        "factions": [
-            "healer",
-            "jedi",
-            "galactic republic"
-        ],
-        "mods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Health",
-                "circle": "Health",
-                "cross": "Health"
-            }
-        },
-        "gear": {
-            "Gear 1": [
-                "Mk 1 Nubian Security Scanner",
-                "Mk 1 Nubian Security Scanner",
-                "Mk 1 Fabritech Data Pad",
-                "Mk 1 Arakyd Droid Caller",
-                "Mk 1 Neuro-Saav Electrobinoculars",
-                "Mk 1 A/KT Stun Gun"
-            ],
-            "Gear 2": [
-                "Mk 1 Sienar Holo Projector",
-                "Mk 3 BAW Armor Mod",
-                "Mk 1 Chiewab Hypo Syringe",
-                "Mk 2 Loronar Power Cell",
-                "Mk 2 Fabritech Data Pad",
-                "Mk 2 SoroSuub Keypad"
-            ],
-            "Gear 3": [
-                "Mk 4 Fabritech Data Pad",
-                "Mk 6 Loronar Power Cell",
-                "Mk 1 Merr-Sonn Thermal Detonator",
-                "Mk 3 SoroSuub Keypad",
-                "Mk 3 BioTech Implant",
-                "Mk 2 SoroSuub Keypad"
-            ],
-            "Gear 4": [
-                "Mk 2 Athakam Medpac",
-                "Mk 5 TaggeCo Holo Lens",
-                "Mk 3 Chiewab Hypo Syringe",
-                "Mk 2 Merr-Sonn Shield Generator",
-                "Mk 3 BioTech Implant",
-                "Mk 2 Chiewab Hypo Syringe"
-            ],
-            "Gear 5": [
-                "Mk 4 Merr-Sonn Thermal Detonator",
-                "Mk 7 Fabritech Data Pad",
-                "Mk 5 TaggeCo Holo Lens",
-                "Mk 4 Fabritech Data Pad",
-                "Mk 4 Fabritech Data Pad",
-                "Mk 2 Merr-Sonn Shield Generator"
-            ],
-            "Gear 6": [
-                "Mk 8 BlasTech Weapon Mod",
-                "Mk 7 Fabritech Data Pad",
-                "Mk 4 SoroSuub Keypad",
-                "Mk 2 Athakam Medpac",
-                "Mk 3 Chiewab Hypo Syringe",
-                "Mk 5 Fabritech Data Pad"
-            ],
-            "Gear 7": [
-                "Mk 3 Carbanti Sensor Array",
-                "Mk 7 TaggeCo Holo Lens",
-                "Mk 8 TaggeCo Holo Lens",
-                "Mk 6 Nubian Security Scanner",
-                "Mk 3 Sienar Holo Projector",
-                "Mk 7 Fabritech Data Pad"
-            ],
-            "Gear 8": [
-                "Mk 5 Arakyd Droid Caller",
-                "Mk 5 A/KT Stun Gun",
-                "Mk 3 Carbanti Sensor Array",
-                "Mk 8 TaggeCo Holo Lens",
-                "Mk 4 SoroSuub Keypad",
-                "Mk 6 TaggeCo Holo Lens"
-            ],
-            "Gear 9": [
-                "Mk 7 Nubian Security Scanner",
-                "Mk 5 Arakyd Droid Caller",
-                "Mk 5 Merr-Sonn Thermal Detonator",
-                "Mk 3 Carbanti Sensor Array",
-                "Mk 8 BlasTech Weapon Mod",
-                "Mk 3 Sienar Holo Projector"
-            ],
-            "Gear 10": [
-                "Mk 3 Zaltin Bacta Gel",
-                "Mk 8 BioTech Implant",
-                "Mk 8 BioTech Implant",
-                "Mk 5 A/KT Stun Gun",
-                "Mk 3 Czerka Stun Cuffs",
-                "Mk 3 Carbanti Sensor Array"
-            ],
-            "Gear 11": [
-                "Unknown Gear",
-                "Mk 11 BlasTech Weapon Mod",
-                "Mk 8 BioTech Implant",
-                "Mk 7 Merr-Sonn Shield Generator",
-                "Mk 4 Sienar Holo Projector",
-                "Mk 10 BlasTech Weapon Mod"
-            ],
-            "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear"
-            ]
-        },
+        },        
         "abilities": {
             "Invigorating Strike": {
                 "type": "Basic",
@@ -9766,12 +9766,12 @@
                 "Mk 8 BioTech Implant",
                 "Mk 8 BioTech Implant",
                 "Mk 4 Sienar Holo Projector",
-                "Unknown Gear"
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Cybernetics",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
