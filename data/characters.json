@@ -760,7 +760,7 @@
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },        
+        },
         "abilities": {
             "Cruel Strike": {
                 "type": "Basic",
@@ -934,7 +934,7 @@
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },        
+        },
         "abilities": {
             "Heavy Arms": {
                 "type": "Basic",
@@ -1083,7 +1083,7 @@
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },        
+        },
         "abilities": {
             "Invigorating Strike": {
                 "type": "Basic",
@@ -16887,7 +16887,7 @@
         }
     },
     {
-        "name": "Rey",
+        "name": "Rey Scavenger",
         "uniqueName": "REY",
         "aliases": [
             "Rey"
@@ -21931,6 +21931,171 @@
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Wampa has +50% Counter Chance. Wampa has +10% Counter Chance, +5% Health Steal, and +5% Offense for each Damage Over Time effect on each enemy.",
+                "tier": "zeta"
+            }
+        }
+    },
+    {
+        "name": "Rey Jedi Training",
+        "uniqueName": "REYJEDITRAINING",
+        "aliases": [
+            "Rey Jedi Training"
+        ],
+        "url": "https://swgoh.gg/characters/rey-jedi-training",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rey_tlj.png",
+        "side": "light",
+        "factions": [
+            "Resistance",
+            "Tank"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Critical Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 Fabritech Data Pad",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 TaggeCo Holo Lens"
+            ],
+            "Gear 2": [
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 2 Nubian Design Tech",
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 4 Loronar Power Cell",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 6 Loronar Power Cell",
+                "Mk 4 Loronar Power Cell"
+            ],
+            "Gear 4": [
+                "Mk 3 SoroSuub Keypad",
+                "Mk 3 SoroSuub Keypad",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 5 Fabritech Data Pad",
+                "Mk 6 Fabritech Data Pad",
+                "Mk 2 Sienar Holo Projector"
+            ],
+            "Gear 5": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 4 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 6": [
+                "Mk 5 SoroSuub Keypad",
+                "Mk 5 Fabritech Data Pad",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 5 Nubian Security Scanner",
+                "Mk 8 BlasTech Weapon Mod"
+            ],
+            "Gear 7": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 6 Nubian Security Scanner",
+                "Mk 3 Chedak Comlink"
+            ],
+            "Gear 8": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 5 CEC Fusion Furnace"
+            ],
+            "Gear 9": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 6 Merr-Sonn Shield Generator"
+            ],
+            "Gear 10": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 6 Nubian Design Tech",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 6 Nubian Design Tech"
+            ],
+            "Gear 11": [
+                "Mk 6 A/KT Stun Gun",
+                "Mk 8 BioTech Implant",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 7 Merr-Sonn Shield Generator"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Multi-tool",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Connected Strikes": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy. Damage is increased by 25% for each of the following: Rey has no debuffs; Rey has any buffs; the target has no buffs; the target has any debuffs.",
+                "tier": "omega"
+            },
+            "Defiant Slash": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Healing Immunity for 2 turns (this effect can’t be Copied, Dispelled, or Resisted). Target other Resistance ally and dispel all their debuffs, call them to Assist, and grant them Foresight for 2 turns.",
+                "tier": "omega"
+            },
+            "Mind Trick": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Dispel all buffs on target enemy and inflict Ability Block, Daze, Offense Down, and Speed Down for 2 turns. For each debuff inflicted, remove 10% Turn Meter, which can't be Resisted. For each debuff Resisted, remove 20% Turn Meter, which can't be Resisted. For each active Resistance ally, gain 15% Turn Meter. This attack can't be Evaded.",
+                "tier": "omega"
+            },
+            "Inspirational Presence": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Resistance allies have +30% Critical Chance and +30% Critical Damage. When they score a Critical Hit, they have a 70% chance to inflict Expose for 2 turns (this effect can't be Resisted). Resistance allies gain 10% Turn Meter when an enemy is Exposed.",
+                "tier": "zeta"
+            },
+            "Virtuous Protector": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "When another ally suffers a debuff, or when another Resistance ally gains Secret Intel, Rey gains 8% Turn Meter. When Rey suffers a debuff, she has a 40% chance to Dispel all debuffs on herself.",
+                "tier": "zeta"
+            },
+            "Insight": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of each encounter, Rey gains Foresight until she Evades. When Rey Evades, she recovers 5% Health and 5% Protection.",
                 "tier": "zeta"
             }
         }

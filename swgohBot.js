@@ -207,6 +207,8 @@ function announceEvent(thisGuild, guildConf, event, announceMessage) {
 // Then every INTERVAL_SECONDS seconds after
 setInterval(checkDates, INTERVAL_SECONDS * 1000);
 
+// Run it one minute after the bot boots
+setTimeout(updateCharacterMods,        1 * 60 * 1000);
 // Check every 12 hours to see if any mods have been changed
 setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
 //                               hr   min  sec  mSec
