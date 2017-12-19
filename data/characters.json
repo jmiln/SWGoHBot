@@ -1333,6 +1333,19 @@
                 "triangle": "Health/ Protection/ Offense/ Crit Dmg",
                 "circle": "Health/ Protection",
                 "cross": "Offense/ Potency/ Offense"
+            },
+            "RJT lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Critical Damage",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -21939,7 +21952,9 @@
         "name": "Rey Jedi Training",
         "uniqueName": "REYJEDITRAINING",
         "aliases": [
-            "Rey Jedi Training"
+            "Rey Jedi Training",
+            "RJT",
+            "JRT"
         ],
         "url": "https://swgoh.gg/characters/rey-jedi-training",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rey_tlj.png",
