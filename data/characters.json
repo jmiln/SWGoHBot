@@ -750,17 +750,17 @@
                 "Mk 8 Neuro-Saav Electrobinoculars",
                 "Mk 8 BioTech Implant",
                 "Mk 4 Sienar Holo Projector",
-                "Unknown Gear"
+                "Mk 5 Chedak Comlink"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Medpac",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },        
+        },
         "abilities": {
             "Cruel Strike": {
                 "type": "Basic",
@@ -919,22 +919,22 @@
                 "Mk 6 Merr-Sonn Thermal Detonator"
             ],
             "Gear 11": [
-                "Unknown Gear",
+                "Mk 9 TaggeCo Holo Lens",
                 "Mk 10 Neuro-Saav Electrobinoculars",
                 "Mk 4 Sienar Holo Projector",
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear"
+                "Mk 4 Czerka Stun Cuffs",
+                "Mk 6 A/KT Stun Gun",
+                "Mk 4 Zaltin Bacta Gel"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Tactical Data",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },        
+        },
         "abilities": {
             "Heavy Arms": {
                 "type": "Basic",
@@ -1072,18 +1072,18 @@
                 "Mk 5 Athakam Medpac",
                 "Mk 9 Fabritech Data Pad",
                 "Mk 4 Sienar Holo Projector",
-                "Unknown Gear",
-                "Unknown Gear"
+                "Mk 9 BAW Armor Mod",
+                "Mk 8 Loronar Power Cell"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Armor Plating",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
             ]
-        },        
+        },
         "abilities": {
             "Invigorating Strike": {
                 "type": "Basic",
@@ -1230,9 +1230,9 @@
                 "Mk 10 BlasTech Weapon Mod"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Tactical Data",
+                "Mk 12 ArmaTek Bayonet",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -1579,16 +1579,16 @@
             ],
             "Gear 11": [
                 "Mk 3 Zaltin Bacta Gel",
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear"
+                "Mk 5 Athakam Medpac",
+                "Mk 5 Athakam Medpac",
+                "Mk 8 Loronar Power Cell",
+                "Mk 10 TaggeCo Holo Lens",
+                "Mk 10 Neuro-Saav Electrobinoculars"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Tactical Data",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -1730,12 +1730,12 @@
                 "Mk 10 Neuro-Saav Electrobinoculars",
                 "Mk 4 Sienar Holo Projector",
                 "Mk 3 Zaltin Bacta Gel",
-                "Unknown Gear"
+                "Mk 5 Chedak Comlink"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Medpac",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -1912,12 +1912,12 @@
                 "Mk 6 Merr-Sonn Thermal Detonator",
                 "Mk 8 BioTech Implant",
                 "Mk 6 Merr-Sonn Thermal Detonator",
-                "Unknown Gear"
+                "Mk 5 Chedak Comlink"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmorTek Medpac",
+                "Mk 12 ArmorTek Bayonet",
+                "Mk 12 ArmorTek Multi-tool",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -2067,17 +2067,17 @@
                 "Mk 3 Zaltin Bacta Gel"
             ],
             "Gear 11": [
-                "Unknown Gear",
+                "Mk 6 A/KT Stun Gun",
                 "Mk 5 Athakam Medpac",
                 "Mk 10 Neuro-Saav Electrobinoculars",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 4 Czerka Stun Cuffs",
                 "Mk 6 Merr-Sonn Thermal Detonator"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Cybernetics",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -2228,12 +2228,12 @@
                 "Mk 8 BioTech Implant",
                 "Mk 8 BioTech Implant",
                 "Mk 6 Merr-Sonn Thermal Detonator",
-                "Unknown Gear"
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Armor Plating",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -2591,16 +2591,16 @@
             ],
             "Gear 11": [
                 "Mk 5 Athakam Medpac",
-                "Unknown Gear",
+                "Mk 9 BioTech Implant",
                 "Mk 10 BlasTech Weapon Mod",
                 "Mk 3 Zaltin Bacta Gel",
-                "Unknown Gear",
-                "Unknown Gear"
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 8 Loronar Power Cell"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Armor Plating",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -2737,8 +2737,8 @@
                 "Mk 8 BioTech Implant"
             ],
             "Gear 10": [
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 5 Athakam Medpac",
                 "Mk 6 Merr-Sonn Thermal Detonator",
                 "Mk 3 Zaltin Bacta Gel",
                 "Mk 10 TaggeCo Holo Lens",
@@ -2753,9 +2753,9 @@
                 "Mk 1 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Wrist Band",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Multi-tool",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -2848,86 +2848,6 @@
         },
         "gear": {
             "Gear 1": [
-                "Mk 1 TaggeCo Holo Lens",
-                "Mk 1 Merr-Sonn Shield Generator",
-                "Mk 2 Nubian Security Scanner",
-                "Mk 1 SoroSuub Keypad",
-                "Mk 3 TaggeCo Holo Lens",
-                "Mk 2 Arakyd Droid Caller"
-            ],
-            "Gear 2": [
-                "Mk 2 BlasTech Weapon Mod",
-                "Mk 3 Loronar Power Cell",
-                "Mk 4 Neuro-Saav Electrobinoculars",
-                "Mk 3 BioTech Implant",
-                "Mk 5 BAW Armor Mod",
-                "Mk 4 TaggeCo Holo Lens"
-            ],
-            "Gear 3": [
-                "Mk 3 Chiewab Hypo Syringe",
-                "Mk 5 BAW Armor Mod",
-                "Mk 4 TaggeCo Holo Lens",
-                "Mk 5 BioTech Implant",
-                "Mk 2 Merr-Sonn Shield Generator",
-                "Mk 3 Merr-Sonn Thermal Detonator"
-            ],
-            "Gear 4": [
-                "Mk 5 BAW Armor Mod",
-                "Mk 7 BlasTech Weapon Mod",
-                "Mk 2 Sienar Holo Projector",
-                "Mk 3 Merr-Sonn Thermal Detonator",
-                "Mk 6 TaggeCo Holo Lens",
-                "Mk 4 Chiewab Hypo Syringe"
-            ],
-            "Gear 5": [
-                "Mk 6 Fabritech Data Pad",
-                "Mk 2 Sienar Holo Projector",
-                "Mk 1 Zaltin Bacta Gel",
-                "Mk 4 SoroSuub Keypad",
-                "Mk 4 Arakyd Droid Caller",
-                "Mk 7 Neuro-Saav Electrobinoculars"
-            ],
-            "Gear 6": [
-                "Mk 4 SoroSuub Keypad",
-                "Mk 4 SoroSuub Keypad",
-                "Mk 2 Zaltin Bacta Gel",
-                "Mk 8 TaggeCo Holo Lens",
-                "Mk 7 Neuro-Saav Electrobinoculars",
-                "Mk 6 Chiewab Hypo Syringe"
-            ],
-            "Gear 7": [
-                "Mk 7 Neuro-Saav Electrobinoculars",
-                "Mk 8 Fabritech Data Pad",
-                "Mk 6 Chiewab Hypo Syringe",
-                "Mk 3 Czerka Stun Cuffs",
-                "Mk 3 Czerka Stun Cuffs",
-                "Mk 5 CEC Fusion Furnace"
-            ],
-            "Gear 8": [
-                "Mk 7 Neuro-Saav Electrobinoculars",
-                "Mk 6 Chiewab Hypo Syringe",
-                "Mk 6 Chiewab Hypo Syringe",
-                "Mk 5 CEC Fusion Furnace",
-                "Mk 7 Nubian Security Scanner",
-                "Mk 6 Nubian Design Tech"
-            ],
-            "Gear 9": [
-                "Mk 3 Sienar Holo Projector",
-                "Mk 3 Sienar Holo Projector",
-                "Mk 5 CEC Fusion Furnace",
-                "Mk 4 Sienar Holo Projector",
-                "Mk 7 Merr-Sonn Shield Generator",
-                "Mk 7 Merr-Sonn Shield Generator"
-            ],
-            "Gear 10": [
-                "Mk 9 Fabritech Data Pad",
-                "Mk 5 A/KT Stun Gun",
-                "Mk 7 Merr-Sonn Shield Generator",
-                "Mk 8 BioTech Implant",
-                "Mk 8 BioTech Implant",
-                "Unknown Gear"
-            ],
-            "Gear 11": [
                 "Mk 1 BioTech Implant",
                 "Mk 1 Arakyd Droid Caller",
                 "Mk 1 Neuro-Saav Electrobinoculars",
@@ -2935,10 +2855,90 @@
                 "Mk 1 BioTech Implant",
                 "Mk 1 TaggeCo Holo Lens"
             ],
+            "Gear 2": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 1 SoroSuub Keypad",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 2 Arakyd Droid Caller"
+            ],
+            "Gear 3": [
+                "Mk 2 BlasTech Weapon Mod",
+                "Mk 3 Loronar Power Cell",
+                "Mk 4 Neuro-Saav Electrobinoculars",
+                "Mk 3 BioTech Implant",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 TaggeCo Holo Lens"
+            ],
+            "Gear 4": [
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 TaggeCo Holo Lens",
+                "Mk 5 BioTech Implant",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 3 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 5": [
+                "Mk 5 BAW Armor Mod",
+                "Mk 7 BlasTech Weapon Mod",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 3 Merr-Sonn Thermal Detonator",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 4 Chiewab Hypo Syringe"
+            ],
+            "Gear 6": [
+                "Mk 6 Fabritech Data Pad",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 7 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 7": [
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 6 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 5 CEC Fusion Furnace"
+            ],
+            "Gear 9": [
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 6 Nubian Design Tech"
+            ],
+            "Gear 10": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 7 Merr-Sonn Shield Generator"
+            ],
+            "Gear 11": [
+                "Mk 9 Fabritech Data Pad",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 8 BioTech Implant",
+                "Mk 8 BioTech Implant",
+                "Mk 6 A/KT Stun Gun"
+            ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Wrist Band",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
