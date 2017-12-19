@@ -3752,12 +3752,12 @@
                 "Mk 3 Zaltin Bacta Gel",
                 "Mk 8 BioTech Implant",
                 "Mk 10 Neuro-Saav Electrobinoculars",
-                "Unknown Gear"
+                "Mk 5 Chedak Comlink"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -3902,12 +3902,12 @@
                 "Mk 11 BlasTech Weapon Mod",
                 "Mk 3 Carbanti Sensor Array",
                 "Mk 5 Chiewab Hypo Syringe",
-                "Unknown Gear"
+                "Mk 8 Loronar Power Cell"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Visor",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -4238,12 +4238,12 @@
                 "Mk 7 Merr-Sonn Shield Generator",
                 "Mk 8 BioTech Implant",
                 "Mk 6 Merr-Sonn Thermal Detonator",
-                "Unknown Gear"
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Medpac",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -4387,12 +4387,12 @@
                 "Mk 8 BioTech Implant",
                 "Mk 9 Fabritech Data Pad",
                 "Mk 6 Merr-Sonn Thermal Detonator",
-                "Unknown Gear"
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Tactical Data",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -4543,13 +4543,13 @@
                 "Mk 8 Neuro-Saav Electrobinoculars",
                 "Mk 8 BioTech Implant",
                 "Mk 6 CEC Fusion Furnace",
-                "Unknown Gear",
-                "Unknown Gear"
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Wrist Band",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -4698,15 +4698,15 @@
             "Gear 11": [
                 "Mk 7 Merr-Sonn Shield Generator",
                 "Mk 11 BlasTech Weapon Mod",
-                "Unknown Gear",
+                "Mk 7 Nubian Security Scanner",
                 "Mk 10 Neuro-Saav Electrobinoculars",
-                "Unknown Gear",
-                "Unknown Gear"
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 8 Loronar Power Cell"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Armor Plating",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -4868,15 +4868,15 @@
             "Gear 11": [
                 "Mk 3 Zaltin Bacta Gel",
                 "Mk 4 Sienar Holo Projector",
-                "Unknown Gear",
+                "Mk 4 Zaltin Bacta Gel",
                 "Mk 3 Carbanti Sensor Array",
                 "Mk 5 Chiewab Hypo Syringe",
-                "Unknown Gear"
+                "Mk 7 Nubian Security Scanner"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTeck Multi-tool",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
