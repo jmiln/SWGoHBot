@@ -103,6 +103,8 @@ module.exports = (client) => {
             guildChannel = await guild.channels.find('name', announceChan);
             if (guildChannel.permissionsFor(guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
                 await guildChannel.send(announceMsg).catch(console.error);
+            } else {
+                return;
             }
         } else {
             return;

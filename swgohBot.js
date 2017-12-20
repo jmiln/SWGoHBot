@@ -118,10 +118,43 @@ async function checkDates() {
                 var eventTime = moment(event.eventTime, 'H:mm').format('H:mm');
                 var nowTime = moment().tz(guildConf['timezone']).format("H:mm");
 
+                if (!event.repeatDays) {
+                    event['repeatDays'] = [];
+                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
+                } 
+
                 if (eventDate === nowDate && eventTime === nowTime) {
                     var announceMessage = `**${key}**\n${event.eventMessage}`;
                     announceEvent(thisGuild, guildConf, event, announceMessage);
-                    if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                    
+                    // If it's got any left in repeatDays
+                    if (event.repeatDays.length > 0) {            
+                        
+                        let eventMsg = event.eventMessage;
+                        // If this is the last time, tack a message to the end to let them know it's the last one
+                        if (event.repeatDays.length === 1) {
+                            eventMsg += `\n\nYour event schedule has ended. To continue receiving announcements, create a new event.`;
+                        }
+                        
+                        const newEvent = {
+                            "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeatDays.splice(0, 1), 'd').format('YYYY-MM-DD'),
+                            "eventTime": event.eventTime,
+                            "eventMessage": eventMsg,
+                            "eventChan": event.eventChan,
+                            "countdown": event.countdown,
+                            "repeat": {
+                                "repeatDay": 0,
+                                "repeatHour": 0,
+                                "repeatMin": 0
+                            },
+                            "repeatDays": event.repeatDays
+                        };
+
+                        // Gotta delete it before we can add it, so there won't be conflicts
+                        delete events[key];
+                        events[key] = newEvent;
+                    // Else if it's set to repeat 
+                    } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                         const newEvent = {
                             "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeat['repeatDay'], 'd').format('YYYY-MM-DD'),
                             "eventTime": moment(event.eventTime, 'H:mm').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').format('H:mm'),
@@ -132,16 +165,20 @@ async function checkDates() {
                                 "repeatDay": event.repeat['repeatDay'],
                                 "repeatHour": event.repeat['repeatHour'],
                                 "repeatMin": event.repeat['repeatMin']
-                            }
+                            },
+                            "repeatDays": []
                         };
 
                         // Gotta delete it before we can add it, so there won't be conflicts
                         delete events[key];
                         events[key] = newEvent;
-                    } else { // Go ahead and wipe it out
+                    // Else, it's not supposed to repeat at all, so go ahead and wipe it out
+                    } else { 
                         delete events[key];
                     }
                     await client.guildEvents.update({events: events}, {where: {guildID: g}});
+                // If the event has passed without being noticed, go ahead and wipe it
+                // Probably from the bot crashing during an event, or back during testing
                 } else if (moment(eventDate).isBefore(moment(nowDate).subtract(2, 'h'))) {
                     console.log('Should wipe it here');
                     delete events[key];
