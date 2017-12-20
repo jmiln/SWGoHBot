@@ -5025,12 +5025,12 @@
                 "Mk 6 Merr-Sonn Thermal Detonator",
                 "Mk 8 BioTech Implant",
                 "Mk 8 BioTech Implant",
-                "Unknown Gear"
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Bayonet",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -5188,17 +5188,17 @@
                 "Mk 8 BAW Armor Mod"
             ],
             "Gear 11": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 4 Zaltin Bacta Gel",
+                "Mk 5 Chedak Comlink",
                 "Mk 6 Merr-Sonn Thermal Detonator",
                 "Mk 6 CEC Fusion Furnace",
                 "Mk 5 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Tactical Data",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Multi-tool",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -5354,12 +5354,12 @@
                 "Mk 7 Merr-Sonn Shield Generator",
                 "Mk 8 BioTech Implant",
                 "Mk 8 BioTech Implant",
-                "Unknown Gear"
+                "Mk 5 Chedak Comlink"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "MK 12 ArmaTek Multi-tool",
+                "MK 12 ArmaTek Medpac",
+                "MK 12 ArmaTek Multi-tool",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -5558,17 +5558,17 @@
                 "Mk 5 SoroSuub Keypad"
             ],
             "Gear 11": [
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 8 Loronar Power Cell",
+                "Mk 9 BioTech Implant",
                 "Mk 8 BioTech Implant",
                 "Mk 7 Merr-Sonn Shield Generator",
                 "Mk 4 Chedak Comlink",
                 "Mk 8 TaggeCo Holo Lens"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Tactical Data",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Cybernetics",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -5716,12 +5716,12 @@
                 "Mk 8 BioTech Implant",
                 "Mk 8 BioTech Implant",
                 "Mk 4 Sienar Holo Projector",
-                "Unknown Gear"
+                "Mk 6 A/KT Stun Gun"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Wrist Band",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Cybernetics",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -5894,16 +5894,16 @@
             ],
             "Gear 11": [
                 "Mk 6 Merr-Sonn Thermal Detonator",
-                "Unknown Gear",
+                "Mk 8 Loronar Power Cell",
                 "Mk 3 Zaltin Bacta Gel",
                 "Mk 5 A/KT Stun Gun",
                 "Mk 10 BlasTech Weapon Mod",
                 "Mk 9 Neuro-Saav Electrobinoculars"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Cybernetics",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -6050,14 +6050,14 @@
                 "Mk 8 BioTech Implant",
                 "Mk 11 BlasTech Weapon Mod",
                 "Mk 6 Merr-Sonn Thermal Detonator",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 4 Czerka Stun Cuffs",
+                "Mk 7 Nubian Security Scanner",
                 "Mk 10 BlasTech Weapon Mod"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Mutli-tool",
+                "Mk 12 ArmaTek Bayonet",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
@@ -6243,15 +6243,15 @@
             "Gear 11": [
                 "Mk 6 CEC Fusion Furnace",
                 "Mk 8 Neuro-Saav Electrobinoculars",
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 8 Loronar Power Cell",
+                "Mk 6 Arakyd Droid Cell",
                 "Mk 8 BAW Armor Mod"
             ],
             "Gear 12": [
-                "Unknown Gear",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Wrist Band",
+                "Mk 12 ArmaTek Tactical Data",
                 "Unknown Gear",
                 "Unknown Gear",
                 "Unknown Gear"
