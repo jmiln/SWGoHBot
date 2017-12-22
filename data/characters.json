@@ -1336,16 +1336,16 @@
             },
             "RJT lead": {
                 "sets": [
-                    "Critical Damage x4",
+                    "Speed x4",
                     "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Critical Damage/ Critical Chance",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -16273,6 +16273,19 @@
                 "triangle": "Health/ Protection/ Defense/ Crit. Damage",
                 "circle": "Protection/ Health(Raid)",
                 "cross": "Potency"
+            },
+            "RJT lead": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Critical Damage/ Critical Chance",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {

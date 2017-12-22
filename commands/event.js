@@ -28,6 +28,7 @@ exports.run = async (client, message, args, level) => {
     let repeatDay = 0;
     let repeatHour = 0;
     let repeatMin = 0;
+    let dayList = [];
 
     if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`).then(msg => msg.delete(10000)).catch(console.error);
     action = args[0].toLowerCase();
@@ -37,15 +38,21 @@ exports.run = async (client, message, args, level) => {
             return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
         }
     }
-
+    const specialArgs = ['-r', '--rep', '-repeat', '--repeatDay', '--repeatday', '--repday', '--channel', '-c', '--countdown', '-d', '--cd'];
     switch (action) {
         case "create": {
             const minArgs = yargs.options({
                 'repeat': {
                     alias: ['r', 'rep'],
-                    describe: 'Repeat the event',
+                    describe: 'Repeat the event on an interval',
                     type: 'string',
-                    default: 0
+                    default: '0'
+                },
+                'repeatDay': {
+                    alias: ['repeatday', 'repday'],
+                    describe: 'Repeat the event on set days',
+                    type: 'string',
+                    default: '0'
                 },
                 'channel': {
                     alias: ['c'],
@@ -62,11 +69,18 @@ exports.run = async (client, message, args, level) => {
             }).parse(args);
             args = minArgs['_'];    // The args without the repeat var in there
             let repeatTime = String(minArgs['repeat']);
+            const repeatDays = String(minArgs['repeatDay']);
             const eventChan = String(minArgs['channel']);
             const countdownOn = String(minArgs['countdown']);
             const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
+            const dayReg  = /^[0-9,]*$/gi;
 
-            // If the repeat is set to something other than default, try to parse it
+            // If they try and set a repeat time and a repeating day schedule, tell em to pick just one
+            if (repeatDays !== '0' && repeatTime !== '0') {
+                return message.channel.send('Sorry, but you cannot use both `repeat` and `repeatDay` in one event. Please pick one or the other');
+            }
+
+            // If the repeat is set, try to parse it
             if (repeatTime !== '0') {
                 if (repeatTime.match(timeReg)) {
                     repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf('d')));
@@ -77,9 +91,18 @@ exports.run = async (client, message, args, level) => {
                 } else {
                     return message.channel.send(`The repeat is in the wrong format. Example: \`5d3h8m\` for 5 days, 3 hours, and 8 minutes`).then(msg => msg.delete(10000));
                 }
+            } 
+
+            // If they chose repeatDay, split the days 
+            if (repeatDays !== '0') {
+                if (repeatDays.match(dayReg)) {
+                    dayList = repeatDays.split(',');
+                } else {
+                    return message.channel.send(`Please use comma seperated numbers for repeatDay. Example: \`1,2,1,3,4\``);
+                }
             }
 
-            // validate countdown parameter
+            // Validate countdown parameter
             if (countdownOn !== 'no' && countdownOn !== 'yes') return message.channel.send(`The only valid options for countdown are yes or no.`).then(msg => msg.delete(10000)).catch(console.error);
 
             // If the event channel is something other than default, check to make sure it works, then set it
@@ -118,18 +141,20 @@ exports.run = async (client, message, args, level) => {
             if (!args[4]) {
                 eventMessage = "";
             } else {
+                // This is to keep the line returns in the message (I think?)
                 const newArgs = message.content.split(' ');
-                const specialArgs = ['--channel', '--repeat', '--countdown'];
                 let newLen = newArgs.length;
                 for (var ix = 0; ix < newLen; ix++) {
                     specialArgs.forEach(specA => {
-                        if (newArgs[ix].indexOf(specA) > -1) {
-                            newArgs[ix] = newArgs[ix].replace(specA, '');
-                            if (newArgs[ix+1]) {
-                                if (newArgs[ix+1].indexOf('\n') > -1) {
-                                    newArgs[ix+1] = newArgs[ix+1].substring(newArgs[ix+1].indexOf('\n'));
+                        if (newArgs[ix] === specA) {
+                            newArgs.splice(ix, 1);
+                            newLen--;
+                            // newArgs[ix] = newArgs[ix].replace(specA, '');
+                            if (newArgs[ix]) {
+                                if (newArgs[ix].indexOf('\n') > -1) {
+                                    newArgs[ix] = '\n';//newArgs[ix+1].substring(newArgs[ix+1].indexOf('\n'));
                                 } else {
-                                    newArgs.splice(ix+1, 1);
+                                    newArgs.splice(ix, 1);
                                     newLen--;
                                 }
                             }
@@ -137,6 +162,7 @@ exports.run = async (client, message, args, level) => {
                     });
                 }
                 eventMessage = newArgs.splice(5).join(" ");
+                eventMessage = eventMessage.replace(/^\s*/, '');
             }
 
             eventDate = moment.tz(`${eventDay} ${eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']);
@@ -157,7 +183,8 @@ exports.run = async (client, message, args, level) => {
                     "repeatDay": repeatDay,
                     "repeatHour": repeatHour,
                     "repeatMin": repeatMin
-                }
+                },
+                "repeatDays": dayList
             };
             events[eventName] = newEvent;
             client.guildEvents.update({events: events}, {where: {guildID: message.guild.id}});
@@ -190,7 +217,9 @@ exports.run = async (client, message, args, level) => {
                         if (thisEvent.eventChan !== '') {
                             eventString += `Sending on channel: ${thisEvent.eventChan}\n`;
                         }
-                        if (thisEvent['repeat'] && (thisEvent.repeat['repeatDay'] !== 0 || thisEvent.repeat['repeatHour'] !== 0 || thisEvent.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                        if (thisEvent['repeatDays'].length > 0) {
+                            eventString += `Repeat schedule: ${thisEvent.repeatDays.join(', ')}\n`;
+                        } else if (thisEvent['repeat'] && (thisEvent.repeat['repeatDay'] !== 0 || thisEvent.repeat['repeatHour'] !== 0 || thisEvent.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                             eventString += `Repeating every ${thisEvent.repeat['repeatDay']} days, ${thisEvent.repeat['repeatHour']} hours, and  ${thisEvent.repeat['repeatMin']} minutes\n`;
                         }
                         if (!minArgs.min) {
@@ -227,7 +256,9 @@ exports.run = async (client, message, args, level) => {
                         if (event.eventChan !== '') {
                             eventString += `Sending on channel: ${event.eventChan}\n`;
                         }
-                        if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                        if (event['repeatDays'].length > 0) {
+                            eventString += `Repeat schedule: ${event.repeatDays.join(', ')}\n`;
+                        } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                             eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
                         }
                         if (!minArgs.min) {
@@ -316,6 +347,7 @@ exports.help = {
     extended: `\`\`\`asciidoc
 create :: Create a new event listing.
     --repeat|-r  :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
+    --repeatDay  :: Lets you set it to repeat on set days with the format of 0,0,0,0,0. 
     --channel|-c :: Lets you set a specific channel for the event to announce on.
     --countdown  :: Adds a countdown to when your event will trigger - yes is the only valid parameter
 view   :: View your current event listings.
