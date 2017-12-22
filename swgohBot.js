@@ -133,11 +133,10 @@ async function checkDates() {
                         let eventMsg = event.eventMessage;
                         // If this is the last time, tack a message to the end to let them know it's the last one
                         if (event.repeatDays.length === 1) {
-                            eventMsg += `\n\nYour event schedule has ended. To continue receiving announcements, create a new event.`;
+                            eventMsg += `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`;
                         }
-                        
                         const newEvent = {
-                            "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeatDays.splice(0, 1), 'd').format('YYYY-MM-DD'),
+                            "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(parseInt(event.repeatDays.splice(0, 1)), 'd').format('YYYY-MM-DD'),
                             "eventTime": event.eventTime,
                             "eventMessage": eventMsg,
                             "eventChan": event.eventChan,

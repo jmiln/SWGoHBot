@@ -162,6 +162,7 @@ exports.run = async (client, message, args, level) => {
                     });
                 }
                 eventMessage = newArgs.splice(5).join(" ");
+                eventMessage = eventMessage.replace(/^\s*/, '');
             }
 
             eventDate = moment.tz(`${eventDay} ${eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']);
@@ -216,7 +217,9 @@ exports.run = async (client, message, args, level) => {
                         if (thisEvent.eventChan !== '') {
                             eventString += `Sending on channel: ${thisEvent.eventChan}\n`;
                         }
-                        if (thisEvent['repeat'] && (thisEvent.repeat['repeatDay'] !== 0 || thisEvent.repeat['repeatHour'] !== 0 || thisEvent.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                        if (thisEvent['repeatDays'].length > 0) {
+                            eventString += `Repeat schedule: ${thisEvent.repeatDays.join(', ')}\n`;
+                        } else if (thisEvent['repeat'] && (thisEvent.repeat['repeatDay'] !== 0 || thisEvent.repeat['repeatHour'] !== 0 || thisEvent.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                             eventString += `Repeating every ${thisEvent.repeat['repeatDay']} days, ${thisEvent.repeat['repeatHour']} hours, and  ${thisEvent.repeat['repeatMin']} minutes\n`;
                         }
                         if (!minArgs.min) {
@@ -253,7 +256,9 @@ exports.run = async (client, message, args, level) => {
                         if (event.eventChan !== '') {
                             eventString += `Sending on channel: ${event.eventChan}\n`;
                         }
-                        if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+                        if (event['repeatDays'].length > 0) {
+                            eventString += `Repeat schedule: ${event.repeatDays.join(', ')}\n`;
+                        } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                             eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
                         }
                         if (!minArgs.min) {
