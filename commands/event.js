@@ -38,7 +38,7 @@ exports.run = async (client, message, args, level) => {
             return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
         }
     }
-    const specialArgs = ['-r', '--rep', '-repeat', '--repeatDay', '--repeatday', '--repday', 'schedule', 'chan', '--channel', '-c', '--countdown', '-d', '--cd'];
+    const specialArgs = ['-r', '--rep', '-repeat', '--repeatDay', '--repeatday', '--repday', '--schedule', '--chan', '--channel', '-c', '--countdown', '-d', '--cd'];
     switch (action) {
         case "create": {
             const minArgs = yargs.options({
@@ -141,28 +141,7 @@ exports.run = async (client, message, args, level) => {
             if (!args[4]) {
                 eventMessage = "";
             } else {
-                // This is to keep the line returns in the message (I think?)
-                const newArgs = message.content.split(' ');
-                let newLen = newArgs.length;
-                for (var ix = 0; ix < newLen; ix++) {
-                    specialArgs.forEach(specA => {
-                        if (newArgs[ix] === specA) {
-                            newArgs.splice(ix, 1);
-                            newLen--;
-                            // newArgs[ix] = newArgs[ix].replace(specA, '');
-                            if (newArgs[ix]) {
-                                if (newArgs[ix].indexOf('\n') > -1) {
-                                    newArgs[ix] = '\n';//newArgs[ix+1].substring(newArgs[ix+1].indexOf('\n'));
-                                } else {
-                                    newArgs.splice(ix, 1);
-                                    newLen--;
-                                }
-                            }
-                        }
-                    });
-                }
-                eventMessage = newArgs.splice(5).join(" ");
-                eventMessage = eventMessage.replace(/^\s*/, '');
+                eventMessage = cleanMessage(message, specialArgs);
             }
 
             eventDate = moment.tz(`${eventDay} ${eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']);
@@ -359,6 +338,34 @@ help   :: Shows this message.\`\`\``,
     example: 'event create FirstEvent 7/2/2017 13:56 This is my event message'
 };
 
+// Remove all special args from the message
+function cleanMessage(message, specialArgs) {
+    let eventMessage = '';
+    let remNext = false;
+    const newArgs = message.content.split(' ');
+    const newMsg = [];
+
+    for (var ix = 0; ix < newArgs.length; ix++) {
+        // specialArgs.forEach(specA => {
+        if (specialArgs.indexOf(newArgs[ix]) > -1) {
+            remNext = true;
+            if (newArgs[ix].indexOf('\n') > -1) {
+                newMsg.push('\n');
+            }
+        } else if (remNext) {
+            remNext = false;
+            if (newArgs[ix].indexOf('\n') > -1) {
+                newMsg.push('\n');
+            }
+        } else {
+            newMsg.push(newArgs[ix]);
+        }
+        // });
+    }
+    eventMessage = newMsg.splice(5).join(" "); // Remove all the beginning args so this is just the message
+    eventMessage = eventMessage.replace(/^\s*/, '');    // Remove the annoying space at the begining
+    return eventMessage;
+}            
 
 function removeTags(message, mess) {
     const userReg = /<@!?(1|\d{17,19})>/g;
