@@ -38,7 +38,7 @@ exports.run = async (client, message, args, level) => {
             return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
         }
     }
-    const specialArgs = ['-r', '--rep', '-repeat', '--repeatDay', '--repeatday', '--repday', '--channel', '-c', '--countdown', '-d', '--cd'];
+    const specialArgs = ['-r', '--rep', '-repeat', '--repeatDay', '--repeatday', '--repday', 'schedule', 'chan', '--channel', '-c', '--countdown', '-d', '--cd'];
     switch (action) {
         case "create": {
             const minArgs = yargs.options({
@@ -49,13 +49,13 @@ exports.run = async (client, message, args, level) => {
                     default: '0'
                 },
                 'repeatDay': {
-                    alias: ['repeatday', 'repday'],
+                    alias: ['repeatday', 'repday', 'schedule'],
                     describe: 'Repeat the event on set days',
                     type: 'string',
                     default: '0'
                 },
                 'channel': {
-                    alias: ['c'],
+                    alias: ['c', 'chan'],
                     describe: 'Channel to announce the event in',
                     type: 'string',
                     default: ''
