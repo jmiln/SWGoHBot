@@ -346,7 +346,6 @@ function cleanMessage(message, specialArgs) {
     const newMsg = [];
 
     for (var ix = 0; ix < newArgs.length; ix++) {
-        // specialArgs.forEach(specA => {
         if (specialArgs.indexOf(newArgs[ix]) > -1) {
             remNext = true;
             if (newArgs[ix].indexOf('\n') > -1) {
@@ -360,9 +359,8 @@ function cleanMessage(message, specialArgs) {
         } else {
             newMsg.push(newArgs[ix]);
         }
-        // });
     }
-    eventMessage = newMsg.splice(5).join(" "); // Remove all the beginning args so this is just the message
+    eventMessage = newMsg.splice(5).join(" ");          // Remove all the beginning args so this is just the message
     eventMessage = eventMessage.replace(/^\s*/, '');    // Remove the annoying space at the begining
     return eventMessage;
 }            
