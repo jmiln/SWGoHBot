@@ -38,7 +38,7 @@ exports.run = async (client, message, args, level) => {
             return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
         }
     }
-    const specialArgs = ['-r', '--rep', '-repeat', '--repeatDay', '--repeatday', '--repday', '--schedule', '--chan', '--channel', '-c', '--countdown', '-d', '--cd'];
+    const specialArgs = ['-r', '--rep', '--repeat', '--repeatDay', '--repeatday', '--repday', '--schedule', '--chan', '--channel', '-c', '--countdown', '-d', '--cd'];
     switch (action) {
         case "create": {
             const minArgs = yargs.options({
