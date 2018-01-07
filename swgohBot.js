@@ -493,7 +493,43 @@ async function ggGrab(charLink) {
             "type": abilityType,
             "abilityCooldown": cooldown,
             "abilityDesc": desc,
-            "tier": abilityMat
+            "tier": abilityMat,
+            "cost": {
+                'mk3': 0,
+                'omega': 0,
+                'zeta': 0
+            }
+        };
+    });
+
+    $('.list-group-item-ability').each(function() {
+        const aName = $(this).find('.ability-mechanics-link').text().replace(/^View /, '').replace(/\sMechanics$/, '');
+
+        let mk3s = 0, omegas = 0, zetas = 0;
+        // Each level of the ability is in a tr
+        const aCost = [];
+        $(this).find('tr').each(function() {
+            // And the cost of each is in the 2nd td in each row
+            const lvl = [];
+            $(this).find('td').each(function() {
+                lvl.push($(this).html());
+            });
+            aCost.push(lvl[1]);
+        });
+        aCost.splice(0,2);  // Ignore the first two (Header then default unlock)
+        aCost.forEach(lvl => {
+            const count = getCount(lvl);
+            // console.log('Count1: ' + inspect(count));
+            mk3s += count.mk3;
+            omegas += count.omega;
+            zetas += count.zeta;
+            // console.log('Count2: ' + inspect(count));
+        });
+        // console.log(`${mk3s} MK3, ${omegas} Omegas, ${zetas} Zetas`);
+        character.abilities[aName].cost = {
+            'mk3': mk3s,
+            'omega': omegas,
+            'zeta': zetas
         };
     });
 
@@ -516,3 +552,35 @@ async function ggGrab(charLink) {
     return character;
 }
 
+
+const mk3 = '<img src="//swgoh.gg/static/img/assets/tex.skill_pentagon_white.png" style="width: 25px;">';
+const omega = '<img src="//swgoh.gg/static/img/assets/tex.skill_pentagon_gold.png" style="width: 25px;">';
+const zeta =  '<img src="//swgoh.gg/static/img/assets/tex.skill_zeta.png" style="width: 25px;">';
+
+// Lvl is the string from each level of the ability
+function getCount(lvl) {
+    const lvlCost = {
+        'mk3': 0,
+        'omega': 0,
+        'zeta': 0
+    };
+    if (lvl.indexOf(mk3) > -1) {
+        let lvlmk3 = lvl;
+        lvlmk3 = lvlmk3.replace(new RegExp(`^.*${mk3} x`), '');
+        lvlmk3 = lvlmk3.replace(/\s.*/, '');
+        lvlCost.mk3 = parseInt(lvlmk3);
+    }
+    if (lvl.indexOf(omega) > -1) {
+        let lvlomega = lvl;
+        lvlomega = lvlomega.replace(new RegExp(`^.*${omega} x`), '');
+        lvlomega = lvlomega.replace(/\s.*/, '');
+        lvlCost.omega = parseInt(lvlomega);
+    }
+    if (lvl.indexOf(zeta) > -1) {
+        let lvlzeta = lvl;
+        lvlzeta = lvlzeta.replace(new RegExp(`^.*${zeta} x`), '');
+        lvlzeta = lvlzeta.replace(/\s.*/, '');
+        lvlCost.zeta = parseInt(lvlzeta);
+    }
+    return lvlCost;
+}
