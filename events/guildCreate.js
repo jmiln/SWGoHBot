@@ -10,7 +10,8 @@ module.exports = async (client, guild) => {
         welcomeMessage: defSet.welcomeMessage,
         useEmbeds: defSet.useEmbeds,
         timezone: defSet.timezone,
-        announceChan: defSet.announceChan
+        announceChan: defSet.announceChan,
+        useEventPages: defSet.useEventPages
     })
         .then(() => {})
         .catch(error => { console.log(error, guild.id); });

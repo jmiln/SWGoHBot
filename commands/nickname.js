@@ -1,10 +1,14 @@
 exports.run = (client, message, args) => {
     try {
-        if (args.length > 0) {
-            const  name = String(args.join(' '));
-            message.guild.member(client.user).setNickname(name);
+        if (message.channel.permissionsFor(message.guild.me).has(["MANAGE_NICKNAMES"])) {
+            if (args.length > 0) {
+                const  name = String(args.join(' '));
+                message.guild.member(client.user).setNickname(name);
+            } else {
+                message.guild.member(client.user).setNickname("");
+            }
         } else {
-            message.guild.member(client.user).setNickname("");
+            message.channel.send("Sorry, but I don't have permission to change that.");
         }
     } catch (e) {
         client.log('Broke', 'I broke while trying to set a nickname');
@@ -25,6 +29,6 @@ exports.help = {
     usage: 'nickname <name>',
     example: `;nickname swgohBot`,
     extended: `\`\`\`asciidoc
-name    :: The name you're wanting to change it to.
+name    :: The name you're wanting to change it to. Leave it blank to reset it to default.
     \`\`\``
 };
