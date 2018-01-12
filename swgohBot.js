@@ -3,9 +3,9 @@ const { promisify } = require("util");
 // const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
 const client = new Discord.Client();
-var moment = require('moment-timezone');
-var fs = require("fs");
-var snekfetch = require('snekfetch');
+const moment = require('moment-timezone');
+const fs = require("fs");
+const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
 
 const EnMap = require("enmap");

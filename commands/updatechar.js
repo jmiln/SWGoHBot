@@ -54,7 +54,7 @@ exports.run = async (client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    aliases: ["u"],
     permLevel: 10
 };
 
@@ -62,7 +62,7 @@ exports.help = {
     name: 'updatechar',
     category: 'Dev',
     description: 'Update the info on a specified character',
-    usage: 'updatechar [gear|info|mods]',
+    usage: 'updatechar [gear|info|mods] [charater]',
     extended: `\`\`\`asciidoc
 \`\`\``,
     example: ``

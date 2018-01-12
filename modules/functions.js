@@ -69,7 +69,7 @@ module.exports = (client) => {
         };
         const fuse = new Fuse(charList, options);
         let char = fuse.search(searchName);
-        return char;
+        return char[0];
     };
 
     /*
