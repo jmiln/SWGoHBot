@@ -61,6 +61,17 @@ module.exports = (client) => {
         return chars;
     };
 
+    // This find one character that matches the search, and returns it
+    client.findCharByName = (searchName, charList) => {
+        var options = {
+            keys: ['name'],
+            threshold: 0.0
+        };
+        const fuse = new Fuse(charList, options);
+        let char = fuse.search(searchName);
+        return char;
+    };
+
     /*
      * LOGGING FUNCTION
      * Logs to console. Future patches may include time+colors
