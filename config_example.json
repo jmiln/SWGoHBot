@@ -19,7 +19,8 @@
 		"useEmbeds": true,
         "timezone": "America/Los_Angeles",
         "announceChan": "",
-        "useEventPages": false
+        "useEventPages": false,
+        "language": "en_US"
 	},
     "logs": {
         "logToChannel": false,

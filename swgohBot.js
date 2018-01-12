@@ -27,6 +27,10 @@ client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
 
 require("./modules/functions.js")(client);
 
+// Languages
+client.languages = {};
+client.languages.en_US = require('./languages/en-US.js');
+
 client.commands = new EnMap();
 client.aliases = new EnMap();
 

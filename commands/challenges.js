@@ -1,48 +1,58 @@
-const challenges = {
-    // Normal Challenges
-    "Training Droids": ['Sunday', 'Monday', 'Saturday'],
-    "Ability Mats": ['Sunday', 'Wednesday', 'Saturday'],
-    "Bounty Hunter": ['Sunday', 'Tuesday', 'Friday'],
-    "Agility Gear": ['Sunday', 'Tuesday', 'Friday'],
-    "Strength Gear": ['Sunday', 'Monday', 'Thursday'],
-    "Tactics Gear": ['Sunday', 'Wednesday', 'Saturday'],
-
-    // Ship Challenges
-    "Ship Enhancement Droids": ['Monday', 'Wednesday', 'Saturday'],
-    "Ship Building Materials": ['Monday', 'Tuesday', 'Friday'],
-    "Ship Ability Materials": ['Monday', 'Thursday', 'Sunday']
-};
-
 exports.run = (client, message, args) => {
     const config = client.config;
 
-    if (!args[0]) return message.channel.send('You need to specify a day');
+    const challenges = {
+        // Normal Challenges
+        [message.language.COMMAND_CHALLENGES_TRAINING]: ['Sunday', 'Monday', 'Saturday'],
+        [message.language.COMMAND_CHALLENGES_ABILITY] : ['Sunday', 'Wednesday', 'Saturday'],
+        [message.language.COMMAND_CHALLENGES_BOUNTY]  : ['Sunday', 'Tuesday', 'Friday'],
+        [message.language.COMMAND_CHALLENGES_AGILITY] : ['Sunday', 'Tuesday', 'Friday'],
+        [message.language.COMMAND_CHALLENGES_STRENGTH]: ['Sunday', 'Monday', 'Thursday'],
+        [message.language.COMMAND_CHALLENGES_TACTICS] : ['Sunday', 'Wednesday', 'Saturday'],
+    
+        // Ship Challenges
+        [message.language.COMMAND_CHALLENGES_SHIP_ENHANCEMENT]: ['Monday', 'Wednesday', 'Saturday'],
+        [message.language.COMMAND_CHALLENGES_SHIP_BUILDING]   : ['Monday', 'Tuesday', 'Friday'],
+        [message.language.COMMAND_CHALLENGES_SHIP_ABILITY]    : ['Monday', 'Thursday', 'Sunday']
+    };
+
+    const dayString = (day) => {
+        let dayString = `== Challenges for ${message.language.DAYSOFWEEK[day.toUpperCase()].LONG.toProperCase()} ==`;
+        for (var challenge in challenges) {
+            if (challenges[challenge].includes(day)) {
+                dayString += `\n* ${challenge}`;
+            }
+        }
+        return dayString;
+    };
+
+    if (!args[0]) return message.channel.send(message.language.COMMAND_CHALLENGES_MISSING_DAY);
     const day = String(args[0]).toLowerCase();
 
     switch (day) {
-        case 'sun':
-        case 'sunday':
+        case message.language.DAYSOFWEEK.SUNDAY.SHORT:
+        case message.language.DAYSOFWEEK.SUNDAY.LONG:
             return message.channel.send(dayString('Sunday'), {code:'asciidoc'});
-        case 'mon':
-        case 'monday':
+        case message.language.DAYSOFWEEK.MONDAY.SHORT:
+        case message.language.DAYSOFWEEK.MONDAY.LONG:
             return message.channel.send(dayString('Monday'), {code:'asciidoc'});
-        case 'tue':
-        case 'tuesday':
+        case message.language.DAYSOFWEEK.TUESDAY.SHORT:
+        case message.language.DAYSOFWEEK.TUESDAY.LONG:
             return message.channel.send(dayString('Tuesday'), {code:'asciidoc'});
-        case 'wed':
-        case 'wednesday':
+        case message.language.DAYSOFWEEK.WEDNESDAY.SHORT:
+        case message.language.DAYSOFWEEK.WEDNESDAY.LONG:
             return message.channel.send(dayString('Wednesday'), {code:'asciidoc'});
-        case 'thu':
-        case 'thursday':
+        case message.language.DAYSOFWEEK.THURSDAY.SHORT:
+        case message.language.DAYSOFWEEK.THURSDAY.LONG:
             return message.channel.send(dayString('Thursday'), {code:'asciidoc'});
-        case 'fri':
-        case 'friday':
+        case message.language.DAYSOFWEEK.FRIDAY.SHORT:
+        case message.language.DAYSOFWEEK.FRIDAY.LONG:
             return message.channel.send(dayString('Friday'), {code:'asciidoc'});
-        case 'sat':
-        case 'saturday':
+        case message.language.DAYSOFWEEK.SATURDAY.SHORT:
+        case message.language.DAYSOFWEEK.SATURDAY.LONG:
             return message.channel.send(dayString('Saturday'), {code:'asciidoc'});
         default:
-            return message.channel.send(`Invalid date, usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.COMMAND_CHALLENGES_DEFAULT(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 };
 
@@ -63,13 +73,3 @@ exports.help = {
 No extended help for this command.
     \`\`\``
 };
-
-function dayString(day) {
-    let dayString = `== Challenges for ${day} ==`;
-    for (var challenge in challenges) {
-        if (challenges[challenge].includes(day)) {
-            dayString += `\n* ${challenge}`;
-        }
-    }
-    return dayString;
-}

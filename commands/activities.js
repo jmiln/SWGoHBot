@@ -19,43 +19,36 @@ exports.run = (client, message, args) => {
     }
 
     switch (day) {
-        case 'sun':
-        case 'sunday':
-            message.channel.send(`== Before Reset == \nComplete Arena Battles \nSave Cantina Energy \nSave Normal Energy
-                                 \n== After Reset == \nSpend Cantina Energy \nSave Normal Energy`, {code:'asciidoc'});
+        case message.language.DAYSOFWEEK.SUNDAY.SHORT:
+        case message.language.DAYSOFWEEK.SUNDAY.LONG:
+            message.channel.send(message.language.COMMAND_ACTIVITIES_SUNDAY, {code:'asciidoc'});
             break;
-        case 'mon':
-        case 'monday':
-            message.channel.send(`== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \nSave Galactic War (unless reset available)
-                                 \n== After Reset == \nSpend Normal Energy on Light Side Battles \nSave Galactic War (unless reset available)`, {code:'asciidoc'});
+        case message.language.DAYSOFWEEK.MONDAY.SHORT:
+        case message.language.DAYSOFWEEK.MONDAY.LONG:
+            message.channel.send(message.language.COMMAND_ACTIVITIES_MONDAY, {code:'asciidoc'});
             break;
-        case 'tue':
-        case 'tuesday':
-            message.channel.send(`== Before Reset == \nSpend Normal Energy on Light Side Battles \nSave Galactic War
-                                 \n== After Reset == \nComplete Galactic War Battles \nSave Normal Energy`, {code:'asciidoc'});
+        case message.language.DAYSOFWEEK.TUESDAY.SHORT:
+        case message.language.DAYSOFWEEK.TUESDAY.LONG:
+            message.channel.send(message.language.COMMAND_ACTIVITIES_TUESDAY, {code:'asciidoc'});
             break;
-        case 'wed':
-        case 'wednesday':
-            message.channel.send(`== Before Reset == \nComplete Galactic War Battles \nSave Normal Energy
-                                 \n== After Reset == \nSpend Normal Energy on Hard Mode Battles`, {code:'asciidoc'});
+        case message.language.DAYSOFWEEK.WEDNESDAY.SHORT:
+        case message.language.DAYSOFWEEK.WEDNESDAY.LONG:
+            message.channel.send(message.language.COMMAND_ACTIVITIES_WEDNESDAY, {code:'asciidoc'});
             break;
-        case 'thu':
-        case 'thursday':
-            message.channel.send(`== Before Reset == \nSpend Normal Energy on Hard Mode Battles \nSave Challenges
-                                 \n== After Reset == \nComplete Challenges \nSave Normal Energy`, {code:'asciidoc'});
+        case message.language.DAYSOFWEEK.THURSDAY.SHORT:
+        case message.language.DAYSOFWEEK.THURSDAY.LONG:
+            message.channel.send(message.language.COMMAND_ACTIVITIES_THURSDAY, {code:'asciidoc'});
             break;
-        case 'fri':
-        case 'friday':
-            message.channel.send(`== Before Reset == \nComplete Challenges \nSave Normal Energy
-                                 \n== After Reset == \nSpend Normal Energy on Dark Side Battles`, {code:'asciidoc'});
+        case message.language.DAYSOFWEEK.FRIDAY.SHORT:
+        case message.language.DAYSOFWEEK.FRIDAY.LONG:
+            message.channel.send(message.language.COMMAND_ACTIVITIES_FRIDAY, {code:'asciidoc'});
             break;
-        case 'sat':
-        case 'saturday':
-            message.channel.send(`== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy
-                                 \n== After Reset == \nComplete Arena Battles \nSave Cantina Energy`, {code:'asciidoc'});
+        case message.language.DAYSOFWEEK.SATURDAY.SHORT:
+        case message.language.DAYSOFWEEK.SATURDAY.LONG:
+            message.channel.send(message.language.COMMAND_ACTIVITIES_SATURDAY, {code:'asciidoc'});
             break;
         default:
-            message.channel.send(`Invalid date, usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+            message.channel.send(message.language.COMMAND_ACTIVITIES_ERROR(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 };
 

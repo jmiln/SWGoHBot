@@ -21,7 +21,8 @@ module.exports = async (client, message) => {
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.
     message.guildSettings = guildSettings;
-
+    message.language = client.languages[client.config.defaultSettings.language];
+    
     // Also good practice to ignore any message that does not start with our prefix,
     // which is set in the configuration file.
     if (message.content.indexOf(client.config.prefix) !== 0) return;
