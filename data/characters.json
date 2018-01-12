@@ -20724,7 +20724,7 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsisters_talzin.png",
         "side": "dark",
         "factions": [
-            "nightsiser",
+            "nightsister",
             "support"
         ],
         "mods": {
@@ -22132,7 +22132,8 @@
         "name": "First Order Executioner",
         "uniqueName": "",
         "aliases": [
-            "First Order Executioner"
+            "First Order Executioner",
+            "FOE"
         ],
         "url": "https://swgoh.gg/characters/first-order-executioner",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorder_executioner.png",
