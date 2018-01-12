@@ -27,9 +27,7 @@ exports.run = async (client, message, args) => {
     const fuse = new Fuse(client.characters, options);
     const chars = fuse.search(charName);
     // If there's a ton of em, only return the first 4
-    if (chars.length > 1) {
-        return message.channel.send(`Sorry, but your search for '${charName}' came up with too many results. Please be more specific.`);
-    } else if (chars.length === 0) {
+    if (chars.length === 0) {
         return message.channel.send(`Sorry, but your search for '${charName}' did not find any results. Please try again.`);
     } else {
         client.characters.some(function(obj, ix) {
