@@ -14803,10 +14803,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwanep4.png",
         "side": "light",
         "factions": [
-            "tank",
-            "human",
-            "jedi",
-            "rebel"
+            "Jedi",
+            "Rebel",
+            "Tank"
         ],
         "mods": {
             "Arena": {
@@ -14926,31 +14925,56 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy, inflict Evasion Down for 2 turns, then gain Potency Up for 2 turns. This attack can't be Evaded.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Mind Tricks": {
                 "type": "Special",
                 "abilityCooldown": "5",
                 "abilityDesc": "Inflict Ability Block on all enemies for 1 turn and Offense Down for 2 turns, with an 80% chance to remove 60% Turn Meter. Jedi and Rebel allies gain 3% Turn Meter for each effect Resisted. This attack can't be Evaded.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Devoted Protector": {
                 "type": "Special",
-                "abilityCooldown": "5",
+                "abilityCooldown": "4",
                 "abilityDesc": "Old Ben gains Taunt for 2 turns. When this Taunt expires, Old Ben gains Taunt for 1 turn. All allies gain Defense Up for 2 turns.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
             },
             "Old Jedi Knight": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "All allies gain 15% Evasion and gain 30% Turn Meter whenever they Evade an attack.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "If You Strike Me Down": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever another Jedi or Rebel ally takes damage, Old Ben gains 5% Turn Meter. The first time Old Ben is defeated, all allies gain Offense Up and Speed Up for 2 turns, recover 50% Health and 50% Protection, and gain 25% Turn Meter.",
-                "tier": "omega"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -14965,8 +14989,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_daka.png",
         "side": "dark",
         "factions": [
-            "healer",
-            "nightsister"
+            "Healer",
+            "Nightsister"
         ],
         "mods": {
             "Arena": {
@@ -15085,26 +15109,46 @@
             "Insightful Blow": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy with a 60% chance to stun for 1 turn and a 55% chance to stun a random enemy for 1 turn.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to target enemy with a 75% chance to Stun them for 1 turn. Deal Physical damage to a random enemy with a 55% chance to Stun them for 1 turn.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Chant of Resurrection": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "All allies recover Health equal to 30% of Old Daka's Max Health, with a 35% chance to revive defeated allies at 1 Health.",
-                "tier": "omega"
+                "abilityDesc": "Revive a random defeated Nightsister ally at 1 Health with a 35% chance (doubled on Nightsisters) to Revive other defeated allies at 1 Health. All allies recover Health equal to 50% of Old Daka's Max Health.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Nightsister Elder": {
                 "type": "Leader",
                 "abilityCooldown": "0",
-                "abilityDesc": "Nightsister allies gain 40 Defense and 10% Health.",
-                "tier": "omega"
+                "abilityDesc": "Nightsister allies have +50% Health and +50% Defense.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Serve Again": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Whenever another ally is defeated, Daka has a 10% chance to revive it with 30% Health and grant it Offense and Defense Up for 1 turn. In addition, revived character gains 20% Turn Meter.",
-                "tier": "abilityMatMK3"
+                "abilityDesc": "When another ally is defeated, Old Daka gains 50% Turn Meter and the cooldown of Chant of Resurrection is reduced by 1. When another ally is Revived while Old Daka is active, the Revived ally gains 20% Turn Meter and gains Offense Up and Defense Up for 2 turns, and Old Daka gains +10% Max Health (stacking) until the end of the encounter.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
