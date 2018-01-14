@@ -1,15 +1,17 @@
 exports.run = (client, message, args) => {
     const charCount = client.characters.length;
     const MAX_CHARACTERS = 5;
-    let count = 1;
+    let count;
 
     const charOut = [];
 
-    if (args > 0) {
+    if (args.length > 0) {
         count = parseInt(args[0]);
-        if (isNaN(count) || count < 0 || count > MAX_CHARACTERS) {
+        if (isNaN(count) || count < 1 || count > MAX_CHARACTERS) {
             return message.channel.send(`Sorry, but you need a number from 1-${MAX_CHARACTERS} there.`);
         }
+    } else {
+        count = 1;
     }
 
     for (let ix = 0; ix < count; ix++) {
