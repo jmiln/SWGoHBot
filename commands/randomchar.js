@@ -15,15 +15,18 @@ exports.run = (client, message, args) => {
     }
 
     for (let ix = 0; ix < count; ix++) {
-        const newChar = client.characters[Math.floor(Math.random()*charCount)].name;
+        const newIndex = Math.floor(Math.random()*charCount);
+        const newChar = client.characters[newIndex].name;
         if (charOut.includes(newChar)) {    // If it's already picked a character, don't let it pick them again
             ix--;
-        } else {
+        } else {    // If it's already picked a character, don't let it pick them again
             charOut.push(newChar);
         }
     }
+    const charString = charOut.join('\n');
+    console.log(`charOut.len: ${charOut.length}, chars: ${charString}\n`);
 
-    message.channel.send('```' + charOut.join('\n') + '```');
+    message.channel.send('```\n' + charString + '```');
 };
 
 exports.conf = {
