@@ -15,7 +15,7 @@ exports.run = async (client, message, args, level) => {
             array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
         }
         var configKeys = array.join('\n');
-        return message.channel.send(`The following is this server's current configuration: \`\`\`${configKeys}\`\`\``);
+        return message.channel.send(message.language.COMMAND_SHOWCONF_OUTPUT(configKeys));
     } else {
         console.log('Something broke in showconf');
     }

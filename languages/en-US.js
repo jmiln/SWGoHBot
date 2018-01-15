@@ -59,6 +59,8 @@ module.exports = {
 
     // Generic (Not tied to a command)
     COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
+    COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
+
 
     // Abilities Command 
     COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
@@ -187,7 +189,55 @@ module.exports = {
     // Reload Command
     COMMAND_RELOAD_INVALID_CMD: (cmd) => `I cannot find the command: ${cmd}`,
     COMMAND_RELOAD_SUCCESS: (cmd) => `Successfully reloaded: ${cmd}`,
-    COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Command reload failed: ${cmd}\n\`\`\`${stackTrace}\`\`\``
+    COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Command reload failed: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
 
+    // Setconf Command
+    COMMAND_SETCONF_MISSING_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.`,
+    COMMAND_SETCONF_MISSING_OPTION: `You must select a config option to change.`,
+    COMMAND_SETCONF_MISSING_VALUE: `You must give a value to change that option to.`,
+    COMMAND_SETCONF_ADMINROLE_MISSING_OPT: `You must use \`add\` or \`remove\`.`,
+    COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `You must specify a role to ${opt}.`,
+    COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Sorry, but I cannot find the role ${roleName}. Please try again.`,
+    COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Sorry, but ${roleName} is already there.`,
+    COMMAND_SETCONF_ADMINROLE_NOT_IN_CONFIG: (roleName) => `Sorry, but ${roleName} is not in your config.`,
+    COMMAND_SETCONF_ADMINROLE_SUCCESS: (roleName, action) => `The role ${roleName} has been ${args[1] === 'add' ? 'added to' : 'removed from'} your admin roles.`,
+    COMMAND_SETCONF_WELCOME_NEED_CHAN: `Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``,
+    COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
+    COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,
+    COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Sorry, but I don't have permission to send message there. Please either change the perms, or choose another channel.`,
+    COMMAND_SETCONF_NO_KEY: (prefix) => `This key is not in the configuration. Look in "${prefix}showconf", or "${prefix}setconf help" for a list`,
+    COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Guild configuration item ${key} has been changed to:\n\`${value}\``,
+    COMMAND_SETCONF_NO_SETTINGS: `No guild settings found.`,
+    
+    // Ships Command
+    COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Need a character or ship. Usage is \`${prefix}${usage}\``,
+    COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `Invalid character or ship. Usage is \`${prefix}${usage}\``,
+    COMMAND_SHIPS_TOO_MANY: `I found more than one result from that search. Please try to be more specific.`,
+    COMMAND_SHIPS_CREW: 'Crew',
+    COMMAND_SHIPS_FACTIONS: 'Factions',
+    COMMAND_SHIPS_ABILITIES: (abilities) => `**Ability Type:** ${abilities.type}   **Ability Cooldown:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
+    COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * Abilities *\n`,
+    COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
+    
+    // Showconf Command
+    COMMAND_SHOWCONF_OUTPUT: (configKeys) => `The following is this server's current configuration: \`\`\`${configKeys}\`\`\``,
 
+    // Stats Command
+    COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels) => `= STATISTICS =\n
+• Mem Usage  :: ${memUsage} MB
+• CPU Load   :: ${cpuLoad}%
+• Uptime     :: ${uptime}
+• Users      :: ${users}
+• Servers    :: ${servers}
+• Channels   :: ${channels}
+• Source     :: https://github.com/jmiln/SWGoHBot`,
+
+    COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time}} in ${zone} time`,
+    COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time ${time} in ${zone} time`,
+    COMMAND_TIME_NO_ZONE: (time) => `Current time is: ${time} UTC time`,
+    COMMAND_TIME_WITH_ZONE: (time, zone) => `Current time is: ${time} in ${zone} time`,
+
+    COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Sorry, but ${arg} isn't a valid argument. Try one of these: ${usableArgs}`,
+    COMMAND_UPDATECHAR_NEED_CHAR: `You need to specify a character to update.`,
+    COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Sorry, but your search for '${charName}' did not find any results. Please try again.`,
 };
