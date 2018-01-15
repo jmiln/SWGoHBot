@@ -8,7 +8,7 @@ exports.run = (client, message, args) => {
 
     // Figure out where the gear level is in the command, and grab it
     let gearLvl = '';
-    if (!args[0]) return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+    if (!args[0]) return message.channel.send(message.language.COMMAND_CHARGEAR_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
 
     if (args[1]) {
         gearLvl = parseInt(args[args.length - 1].replace(/\D/g, ''));
@@ -37,13 +37,13 @@ exports.run = (client, message, args) => {
 
     // Make sure they gave a character to find
     if (searchName === "") {
-        return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_CHARGEAR_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Find any characters that match that
     const chars = client.findChar(searchName, charList);
     if (!chars || chars.length <= 0) {
-        return message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_CHARGEAR_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     if (gearLvl === '') {
@@ -65,7 +65,7 @@ exports.run = (client, message, args) => {
             for (var key in allGear) {
                 gearString += `* ${allGear[key]}x ${key}\n`;
             }
-            message.channel.send(` * ${character.name} * \n### All Gear Needed ### \n${gearString}`, {
+            message.channel.send(message.language.COMMAND_CHARGEAR_GEAR_ALL(character.name, gearString), {
                 code: 'md',
                 split: true
             });
@@ -85,7 +85,7 @@ exports.run = (client, message, args) => {
                         },
                         "fields": [{
                             "name": gearLvl,
-                            "value": `* ${thisGear.length > 0 ? thisGear.join('\n* ') : 'This gear has not been entered yet' }`
+                            "value": `* ${thisGear.length > 0 ? thisGear.join('\n* ') : message.language.COMMAND_CHARGEAR_GEAR_NA}`
                         }]
                     }
                 });
