@@ -16,13 +16,13 @@ exports.run = (client, message, args) => {
 
     // Make sure they gave a character to find
     if (searchName === "") {
-        return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_MESSAGE_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Find any characters that match that
     const chars = client.findChar(searchName, charList);
     if (chars.length <= 0) {
-        return message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);        
+        return message.channel.send(message.language.COMMAND_MESSAGE_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);        
     }
 
     chars.forEach(character => {
@@ -32,12 +32,12 @@ exports.run = (client, message, args) => {
                 const mods = character.mods[modSet];      
                 const modSetString = "* " + mods.sets.join("\n* ");                
 
-                let modPrimaryString = `**Square:**      ${mods.square}\n**Arrow:**       ${mods.arrow}\n**Diamond:**  ${mods.diamond}\n`;
-                modPrimaryString += `**Triangle:**   ${mods.triangle}\n**Circle:**        ${mods.circle}\n**Cross:**        ${mods.cross}`;
+                let modPrimaryString = message.language.COMMAND_MODS_EMBED_STRING1(mods.square, mods.arrow, mods.diamond);
+                modPrimaryString += message.language.COMMAND_MODS_EMBED_STRING2(mods.triangle, mods.circle, mods.cross);
 
                 fields.push({
                     "name": modSet,
-                    "value": `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
+                    "value": message.language.COMMAND_MODS_EMBED_OUTPUT(modSetString, modPrimaryString),
                     "inline": true
                 });
             }
@@ -61,10 +61,10 @@ exports.run = (client, message, args) => {
                 const mods = character.mods[modSet];
                 const modSetString = "* " + mods.sets.join("\n* ");                
 
-                let modPrimaryString = `* Square:   ${mods.square}  \n* Arrow:    ${mods.arrow} \n* Diamond:  ${mods.diamond}\n`;
-                modPrimaryString += `* Triangle: ${mods.triangle}\n* Circle:   ${mods.circle}\n* Cross:    ${mods.cross}`;
+                let modPrimaryString = message.language.COMMAND_MODS_CODE_STRING1(mods.square, mods.arrow, mods.diamond);
+                modPrimaryString += message.language.COMMAND_MODS_CODE_STRING2(mods.triangle, mods.circle, mods.cross);
 
-                return message.channel.send(` * ${character.name} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`, { code: 'md' });
+                return message.channel.send(message.language.COMMAND_MODS_CODE_OUTPUT(character.name, modSetString, modPrimaryString), { code: 'md' });
             }
         } 
     });

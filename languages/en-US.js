@@ -139,7 +139,55 @@ module.exports = {
     // Event Command (Trigger)
     COMMAND_EVENT_TRIGGER_NEED_NAME: `You must give an event name to trigger.`,
 
+    // Faction Command
+    COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `Invalid faction, usage is \`${prefix}${usage}\``,
+    COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
 
+    // Help Command
+    COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
+    COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
+
+    // Info Command
+    COMMAND_INFO_OUTPUT: `**### INFORMATION ###** \n**Links**\nJoin the bot support server here \n<http://swgohbot.com/server>\nInvite the bot with this link\n<http://swgohbot.com/invite>`,
+
+    // Mods Command
+    COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
+    COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
+    COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `**Square:**      ${square}\n**Arrow:**       ${arrow}\n**Diamond:**  ${diamond}\n`,
+    COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `**Triangle:**   ${triangle}\n**Circle:**        ${circle}\n**Cross:**        ${cross}`,
+    COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
+    COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Square:   ${square}  \n* Arrow:    ${arrow} \n* Diamond:  ${diamond}\n`,
+    COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triangle: ${triangle}\n* Circle:   ${circle}\n* Cross:    ${cross}`,
+    COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`,
+
+    // Modsets command
+    COMMAND_MODSETS_OUTPUT: `* Critical Chance:  2\n* Critical Damage:  4\n* Defense:  2\n* Health:   2\n* Offense:  4\n* Potency:  2\n* Speed:    4\n* Tenacity: 2`,
+
+    // Nickname Command
+    COMMAND_NICKNAME_SUCCESS: `I have changed my nickname.`,
+    COMMAND_NICKNAME_FAILURE: `Sorry, but I don't have permission to change that.`,
+
+    // Raidteams Command
+    COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+    COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+    COMMAND_RAIDTEAMS_PHASE_SOLO: 'Solo',
+    COMMAND_RAIDTEAMS_PHASE_ONE: 'Phase 1',
+    COMMAND_RAIDTEAMS_PHASE_TWO: 'Phase 2',
+    COMMAND_RAIDTEAMS_PHASE_THREE: 'Phase 3',
+    COMMAND_RAIDTEAMS_PHASE_FOUR: 'Phase 4',
+    COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Characters:** \`${charList}\``,
+    COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Showing teams for ${currentPhase}`,
+    COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `Cannot find any teams under \`${currentPhase}\``,
+    COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Showing teams for ${currentPhase}\n\n`,
+    COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Characters: ${charList}\n`,
+    
+    // Randomchar Command
+    COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Sorry, but you need a number from 1-${maxChar} there.`,
+    
+    // Reload Command
+    COMMAND_RELOAD_INVALID_CMD: (cmd) => `I cannot find the command: ${cmd}`,
+    COMMAND_RELOAD_SUCCESS: (cmd) => `Successfully reloaded: ${cmd}`,
+    COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Command reload failed: ${cmd}\n\`\`\`${stackTrace}\`\`\``
 
 
 };

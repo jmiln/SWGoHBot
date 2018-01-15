@@ -6,16 +6,16 @@ exports.run = (client, message, args) => {
         command = client.aliases.get(args[0]);
     }
     if (!command) {
-        return message.channel.send(`I cannot find the command: ${args[0]}`).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_RELOAD_INVALID_CMD(args[0])).then(msg => msg.delete(4000)).catch(console.error);
     } else {
         message.channel.send(`Reloading: ${command}`)
             .then(m => {
                 client.reload(command)
                     .then(() => {
-                        m.edit(`Successfully reloaded: ${command}`);
+                        m.edit(message.language.COMMAND_RELOAD_SUCCESS(command));
                     })
                     .catch(e => {
-                        m.edit(`Command reload failed: ${command}\n\`\`\`${e.stack}\`\`\``);
+                        m.edit(message.language.COMMAND_RELOAD_FAILURE(command, e.stack));
                     });
             });
     }
