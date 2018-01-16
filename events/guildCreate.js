@@ -11,7 +11,8 @@ module.exports = async (client, guild) => {
         useEmbeds: defSet.useEmbeds,
         timezone: defSet.timezone,
         announceChan: defSet.announceChan,
-        useEventPages: defSet.useEventPages
+        useEventPages: defSet.useEventPages,
+        language: defSet.language
     })
         .then(() => {})
         .catch(error => { console.log(error, guild.id); });
