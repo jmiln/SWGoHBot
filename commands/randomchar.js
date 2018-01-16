@@ -8,7 +8,7 @@ exports.run = (client, message, args) => {
     if (args.length > 0) {
         count = parseInt(args[0]);
         if (isNaN(count) || count < 1 || count > MAX_CHARACTERS) {
-            return message.channel.send(`Sorry, but you need a number from 1-${MAX_CHARACTERS} there.`);
+            return message.channel.send(message.language.COMMAND_RANDOMCHAR_INVALID_NUM(MAX_CHARACTERS));
         }
     } else {
         count = 1;

@@ -8,14 +8,14 @@ exports.run = async (client, message, args) => {
     let characterIndex, action;
     // Make sure they're trying to update something that exists
     if (!usableArgs.includes(args[0])) {
-        return message.channel.send(`Sorry, but ${args[0]} isn't a valid argument. Try one of these: ${usableArgs.join(', ')}`);
+        return message.channel.send(message.language.COMMAND_UPDATECHAR_INVALID_OPT(args[0], usableArgs.join(', ')));
     } else {
         action = args[0];
     }
     
     // If their message only has what to update, but not who
     if (args.length < 2) {
-        return message.channel.send(`You need to specify a character to update.`);
+        return message.channel.send(message.language.COMMAND_UPDATECHAR_NEED_CHAR);
     }
 
     const charName = args.splice(1).join(' ');
@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
     const chars = fuse.search(charName);
     // If there's a ton of em, only return the first 4
     if (chars.length === 0) {
-        return message.channel.send(`Sorry, but your search for '${charName}' did not find any results. Please try again.`);
+        return message.channel.send(message.language.COMMAND_UPDATECHAR_WRONG_CHAR(charName));
     } else {
         client.characters.some(function(obj, ix) {
             if (obj.uniqueName === chars[0].uniqueName) {

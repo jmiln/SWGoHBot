@@ -7,8 +7,9 @@ exports.run = (client, message, args) => {
             } else {
                 message.guild.member(client.user).setNickname("");
             }
+            message.channel.send(message.language.COMMAND_NICKNAME_SUCCESS);
         } else {
-            message.channel.send("Sorry, but I don't have permission to change that.");
+            message.channel.send(message.language.COMMAND_NICKNAME_FAILURE);
         }
     } catch (e) {
         client.log('Broke', 'I broke while trying to set a nickname');

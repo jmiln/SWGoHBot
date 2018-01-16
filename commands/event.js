@@ -30,12 +30,12 @@ exports.run = async (client, message, args, level) => {
     let repeatMin = 0;
     let dayList = [];
 
-    if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(`Valid actions are \`${actions.join(', ')}\`.`).then(msg => msg.delete(10000)).catch(console.error);
+    if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(message.language.COMMAND_EVENT_INVALID_ACTION(actions.join(', '))).then(msg => msg.delete(10000)).catch(console.error);
     action = args[0].toLowerCase();
 
     if (action === "create" || action === "delete" || action === "trigger") {
         if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn't be able to use these
-            return message.channel.send(`Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`);
+            return message.channel.send(message.language.COMMAND_EVENT_INVALID_PERMS);
         }
     }
     const specialArgs = ['-r', '--rep', '--repeat', '--repeatDay', '--repeatday', '--repday', '--schedule', '--chan', '--channel', '-c', '--countdown', '-d', '--cd'];
@@ -77,7 +77,7 @@ exports.run = async (client, message, args, level) => {
 
             // If they try and set a repeat time and a repeating day schedule, tell em to pick just one
             if (repeatDays !== '0' && repeatTime !== '0') {
-                return message.channel.send('Sorry, but you cannot use both `repeat` and `repeatDay` in one event. Please pick one or the other');
+                return message.channel.send(message.language.COMMAND_EVENT_ONE_REPEAT);
             }
 
             // If the repeat is set, try to parse it
@@ -89,7 +89,7 @@ exports.run = async (client, message, args, level) => {
                     repeatTime = repeatTime.replace(/^\d{1,2}h/, '');
                     repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf('m')));
                 } else {
-                    return message.channel.send(`The repeat is in the wrong format. Example: \`5d3h8m\` for 5 days, 3 hours, and 8 minutes`).then(msg => msg.delete(10000));
+                    return message.channel.send(message.language.COMMAND_EVENT_INVALID_REPEAT).then(msg => msg.delete(10000));
                 }
             } 
 
@@ -98,7 +98,7 @@ exports.run = async (client, message, args, level) => {
                 if (repeatDays.match(dayReg)) {
                     dayList = repeatDays.split(',');
                 } else {
-                    return message.channel.send(`Please use comma seperated numbers for repeatDay. Example: \`1,2,1,3,4\``);
+                    return message.channel.send(message.language.COMMAND_EVENT_USE_COMMAS);
                 }
             }
 
@@ -110,30 +110,30 @@ exports.run = async (client, message, args, level) => {
             if (eventChan !== '') {
                 const checkChan = message.guild.channels.find('name', eventChan);
                 if (!checkChan) {   // Make sure it's a real channel
-                    return message.channel.send(`This channel is invalid, please try again`).then(msg => msg.delete(10000));
+                    return message.channel.send(message.language.COMMAND_EVENT_INVALID_CHAN).then(msg => msg.delete(10000));
                 } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {   // Make sure it can send messages there
-                    return message.channel.send(`I don't have permission to send messages in ${checkChan}, please choose one where I can`).then(msg => msg.delete(10000));
+                    return message.channel.send(message.language.COMMAND_EVENT_CHANNEL_NO_PERM(checkChan)).then(msg => msg.delete(10000));
                 }
             } else if (!announceChannel) {
-                return message.channel.send(`ERROR: I need a configured channel to send this to. Configure \`announceChan\` to be able to make events.`).then(msg => msg.delete(10000)).catch(console.error);
+                return message.channel.send(message.language.COMMAND_EVENT_NEED_CHAN).then(msg => msg.delete(10000)).catch(console.error);
             }
 
-            if (!args[1]) return message.channel.send(`You must give a name for your event.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (!args[1]) return message.channel.send(message.language.COMMAND_EVENT_NEED_NAME).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
 
             // Check if that name/ event already exists
-            if (events.hasOwnProperty(eventName)) return message.channel.send(`That event name already exists. Cannot add it again.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (events.hasOwnProperty(eventName)) return message.channel.send(message.language.COMMAND_EVENT_EVENT_EXISTS).then(msg => msg.delete(10000)).catch(console.error);
 
-            if (!args[2]) return message.channel.send(`You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (!args[2]) return message.channel.send(message.language.COMMAND_EVENT_NEED_DATE).then(msg => msg.delete(10000)).catch(console.error);
             if (!moment(args[2], 'D/M/YYYY').isValid()) {
-                return message.channel.send(`${args[2]} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`).then(msg => msg.delete(10000)).catch(console.error);
+                return message.channel.send(message.language.COMMAND_EVENT_BAD_DATE(args[2])).then(msg => msg.delete(10000)).catch(console.error);
             } else { // It's valid, go ahead and set it.
                 eventDay = moment(args[2], 'D/M/YYYY').format('YYYY-MM-DD');
             }
 
-            if (!args[3]) return message.channel.send(`You must give a time for your event.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (!args[3]) return message.channel.send(message.language.COMMAND_EVENT_NEED_TIME).then(msg => msg.delete(10000)).catch(console.error);
             if (!moment(args[3], 'H:mm').isValid()) {
-                return message.channel.send(`You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`).then(msg => msg.delete(10000)).catch(console.error);
+                return message.channel.send(message.language.COMMAND_EVEMT_INVALID_TIME).then(msg => msg.delete(10000)).catch(console.error);
             } else { // It's valid, go ahead and set it.
                 eventTime = moment(args[3], 'HH:mm').format('HH:mm');
             }
@@ -148,7 +148,7 @@ exports.run = async (client, message, args, level) => {
             if (eventDate.isBefore(moment())) {
                 var eventDATE = eventDate.format('D/M/YYYY H:mm');
                 var nowDATE = moment().tz(guildConf['timezone']).format('D/M/YYYY H:mm');
-                return message.channel.send(`You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`).then(msg => msg.delete(10000)).catch(console.error);
+                return message.channel.send(message.language.COMMAND_EVENT_PAST_DATE(eventDATE, nowDATE)).then(msg => msg.delete(10000)).catch(console.error);
             }
 
 
@@ -167,7 +167,7 @@ exports.run = async (client, message, args, level) => {
             };
             events[eventName] = newEvent;
             client.guildEvents.update({events: events}, {where: {guildID: message.guild.id}});
-            return message.channel.send(`Event \`${eventName}\` created for ${moment(eventDate).format('MMM Do YYYY [at] H:mm')}`);
+            return message.channel.send(message.language.COMMAND_EVENT_CREATED(eventName, moment(eventDate).format('MMM Do YYYY [at] H:mm')));  
         } case "view": {
             const minArgs = yargs.options({
                 'min': {
@@ -191,23 +191,23 @@ exports.run = async (client, message, args, level) => {
                     if (events[args[1]]) {
                         const thisEvent = events[args[1]];
                         var eventDate = moment.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
-                        let eventString = `**${args[1]}** \nEvent Time: ${eventDate}\n`;
-                        eventString += `Time Remaining: ${moment.duration(moment().diff(moment.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]")}\n`;
+                        let eventString = message.language.COMMAND_EVENT_TIME(args[1], eventDate);
+                        eventString += message.language.COMMAND_EVENT_TIME_LEFT(moment.duration(moment().diff(moment.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
                         if (thisEvent.eventChan !== '') {
-                            eventString += `Sending on channel: ${thisEvent.eventChan}\n`;
+                            eventString += message.language.COMMAND_EVENT_CHAN(thisEvent.eventChan);
                         }
                         if (thisEvent['repeatDays'].length > 0) {
-                            eventString += `Repeat schedule: ${thisEvent.repeatDays.join(', ')}\n`;
+                            eventString += message.language.COMMAND_EVENT_SCHEDULE(thisEvent.repeatDays.join(', '));
                         } else if (thisEvent['repeat'] && (thisEvent.repeat['repeatDay'] !== 0 || thisEvent.repeat['repeatHour'] !== 0 || thisEvent.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-                            eventString += `Repeating every ${thisEvent.repeat['repeatDay']} days, ${thisEvent.repeat['repeatHour']} hours, and  ${thisEvent.repeat['repeatMin']} minutes\n`;
+                            eventString += message.language.COMMAND_EVENT_REPEAT(thisEvent.repeat['repeatDay'], thisEvent.repeat['repeatHour'], thisEvent.repeat['repeatMin']);
                         }
                         if (!minArgs.min) {
                             // If they want to show all available events without the eventMessage showing
-                            eventString += `Event Message: \n\`\`\`md\n${removeTags(message, thisEvent.eventMessage)}\`\`\``;
+                            eventString += message.language.COMMAND_EVENT_MESSAGE(removeTags(message, thisEvent.eventMessage));
                         }
                         return message.channel.send(eventString);
                     } else {
-                        return message.channel.send(`Sorry, but I cannot find the event \`${args[1]}\``);
+                        return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(args[1]));
                     }
                 } else {     
                     // Sort the events by the time/ day
@@ -230,32 +230,32 @@ exports.run = async (client, message, args, level) => {
                     sortedEvents.forEach(key => {
                         const event = events[key];
                         var thisEventDate = moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']).format('MMM Do YYYY [at] H:mm');
-                        var eventString = `**${key}:**\nEvent Time: ${thisEventDate}\n`;
-                        eventString += `Time Remaining: ${moment.duration(moment().diff(moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]")}\n`;
+                        var eventString = message.language.COMMAND_EVENT_TIME(key, thisEventDate);
+                        eventString += message.language.COMMAND_EVENT_TIME_LEFT(moment.duration(moment().diff(moment.tz(`${event.eventDay} ${event.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf['timezone']), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
                         if (event.eventChan !== '') {
-                            eventString += `Sending on channel: ${event.eventChan}\n`;
+                            eventString += message.language.COMMAND_EVENT_CHAN(event.eventChan);
                         }
                         if (event['repeatDays'].length > 0) {
-                            eventString += `Repeat schedule: ${event.repeatDays.join(', ')}\n`;
+                            eventString += message.language.COMMAND_EVENT_SCHEDULE(event.repeatDays.join(', '));
                         } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-                            eventString += `Repeating every ${event.repeat['repeatDay']} days, ${event.repeat['repeatHour']} hours, and  ${event.repeat['repeatMin']} minutes\n`;
+                            eventString += message.language.COMMAND_EVENT_REPEAT(event.repeat['repeatDay'], event.repeat['repeatHour'], event.repeat['repeatMin']);
                         }
                         if (!minArgs.min) {
                             // If they want to show all available events with the eventMessage showing
                             const msg = removeTags(message, event.eventMessage);
-                            eventString += `Event Message: \n\`\`\`${msg}\`\`\``;
+                            eventString += message.language.COMMAND_EVENT_MESSAGE(msg);
                         }
                         array.push(eventString);
                     });
                     var eventKeys = array.join('\n\n');
                     try {
                         if (array.length === 0) {
-                            return message.channel.send(`You don't currently have any events scheduled.`);
+                            return message.channel.send(message.language.COMMAND_EVENT_NO_EVENT);
                         } else {
                             if (guildConf['useEventPages']) {
-                                return message.channel.send(`Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}) Showing page ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`, {'split': true});
+                                return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys));
                             } else {
-                                return message.channel.send(`Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}): \n${eventKeys}`, {'split': true});
+                                return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, eventKeys));
                             }
                         }
                     } catch (e) {
@@ -265,24 +265,24 @@ exports.run = async (client, message, args, level) => {
             }
             break;
         } case "delete": {
-            if (!args[1]) return message.channel.send(`You must give an event name to delete.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (!args[1]) return message.channel.send(message.language.COMMAND_EVENT_DELETE_NEED_NAME).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
 
             // Check if that name/ event already exists
             if (!events.hasOwnProperty(eventName)) {
-                return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
+                return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(eventName)).then(msg => msg.delete(10000)).catch(console.error);
             } else {
                 delete events[eventName];
                 client.guildEvents.update({events: events}, {where: {guildID: message.guild.id}});
-                return message.channel.send(`Deleted event: ${eventName}`);
+                return message.channel.send(message.language.COMMAND_EVENT_DELETED(eventName));
             }
         } case "trigger": {
-            if (!args[1]) return message.channel.send(`You must give an event name to trigger.`).then(msg => msg.delete(10000)).catch(console.error);
+            if (!args[1]) return message.channel.send(message.language.COMMAND_EVENT_TRIGGER_NEED_NAME).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
 
             // Check if that name/ event already exists
             if (!events.hasOwnProperty(eventName)) {
-                return message.channel.send(`That event does not exist.`).then(msg => msg.delete(10000)).catch(console.error);
+                return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(eventName)).then(msg => msg.delete(10000)).catch(console.error);
             } else {
                 var channel = '';
                 const event = events[eventName];
@@ -303,8 +303,7 @@ exports.run = async (client, message, args, level) => {
             break;
         }
         case "help": {
-            // return message.channel.send(`**Extended help for ${this.help.name}** \n**Usage**: ${this.help.usage} \n${this.help.extended}`);
-            return client.cmdErr(message, this);
+            return message.channel.send(message.language.COMMAND_EXTENDED_HELP(this));
         }
     }
 };

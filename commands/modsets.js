@@ -1,5 +1,5 @@
 exports.run = (client, message) => {
-    message.channel.send(`* Critical Chance:  2\n* Critical Damage:  4\n* Defense:  2\n* Health:   2\n* Offense:  4\n* Potency:  2\n* Speed:    4\n* Tenacity: 2`, {code: 'md'});
+    message.channel.send(message.language.COMMAND_MODSETS_OUTPUT, {code: 'md'});
 };
 
 exports.conf = {

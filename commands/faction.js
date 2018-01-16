@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
     const factionChars = [];
 
     if (searchName === "") {
-        return message.channel.send(`Invalid faction, usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_FACTION_INVALID_CHAR(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
     for (var ix = 0; ix < charList.length; ix++) {
         var character = charList[ix];
@@ -48,10 +48,10 @@ exports.run = (client, message, args) => {
             });
         } else { // Embeds are disabled
             charString = '* ' + factionChars.join('\n* ');
-            return message.channel.send(`# Characters in the ${searchName.toProperCase()} faction # \n${charString}`, { code: 'md' });
+            return message.channel.send(message.language.COMMAND_FACTION_CODE_OUT(searchName.toProperCase(),charString), { code: 'md' });
         }
     } else {
-        return message.channel.send(`Invalid faction, usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_FACTION_INVALID_CHAR(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 };
 

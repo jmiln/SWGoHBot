@@ -7,7 +7,7 @@ exports.run = async (client, message, args, level) => {
         guildID = args[0];
     }
 
-    const guildConf = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan', 'useEventPages']});
+    const guildConf = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
 
     var array = [];
     if (guildConf) {
@@ -15,7 +15,7 @@ exports.run = async (client, message, args, level) => {
             array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
         }
         var configKeys = array.join('\n');
-        return message.channel.send(`The following is this server's current configuration: \`\`\`${configKeys}\`\`\``);
+        return message.channel.send(message.language.COMMAND_SHOWCONF_OUTPUT(configKeys));
     } else {
         console.log('Something broke in showconf');
     }
