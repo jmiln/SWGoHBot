@@ -15,7 +15,17 @@ module.exports = async client => {
 
     guildList.forEach(async (guildID) => {
         // If there is no config, give em one, and an events object while we're at it
-        await client.guildSettings.findOrCreate({where: {guildID: guildID}, defaults: {guildID: guildID, adminRole: defSet.adminRole, enableWelcome: defSet.enableWelcome, welcomeMessage: defSet.welcomeMessage, useEmbeds: defSet.useEmbeds, timezone: defSet.timezone, announceChan: defSet.announceChan, useEventPages: defSet.useEventPages}}).then().catch(err => {client.log('ERROR', `Broke setting up new Settings: \`${err}\``);});
+        await client.guildSettings.findOrCreate({where: {guildID: guildID}, defaults: {
+            guildID: guildID, 
+            adminRole: defSet.adminRole, 
+            enableWelcome: defSet.enableWelcome, 
+            welcomeMessage: defSet.welcomeMessage, 
+            useEmbeds: defSet.useEmbeds, 
+            timezone: defSet.timezone, 
+            announceChan: defSet.announceChan, 
+            useEventPages: defSet.useEventPages,
+            language: defSet.language
+        }}).then().catch(err => {client.log('ERROR', `Broke setting up new Settings: \`${err}\``);});
         await client.guildEvents.findOrCreate({where: {guildID: guildID}, defaults: {guildID: guildID, events: {}}}).then().catch(err => {client.log('ERROR', `Broke setting up new Events: \`${err}\``);});
     });
 

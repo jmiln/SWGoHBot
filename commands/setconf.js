@@ -3,8 +3,9 @@ var moment = require('moment-timezone');
 
 exports.run = async (client, message, args, level) => {
     const config = client.config;
-    const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan', 'useEventPages']});
+    const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
     const guildConf = guildSettings.dataValues;
+    const langList = Object.keys(client.languages);
 
     if (guildConf) {
         if (level < this.conf.permLevel) {
@@ -113,6 +114,13 @@ exports.run = async (client, message, args, level) => {
                     return message.reply(message.language.COMMAND_INVALID_BOOL).then(msg => msg.delete(4000)).catch(console.error);
                 }
                 client.guildSettings.update({useEventPages: boolVar}, {where: {guildID: message.guild.id}});
+                break;
+            case "language":
+                if (langList.includes(value)) {
+                    client.guildSettings.update({language: value}, {where: {guildID: message.guild.id}});
+                } else {
+                    return message.channel.send(message.language.COMMAND_SETCONF_INVALID_LANG(value, langList.join(', '))).then(msg => msg.delete(15000)).catch(console.error);
+                }
                 break;
             case "help":
                 return message.channel.send(message.language.COMMAND_EXTENDED_HELP(this));

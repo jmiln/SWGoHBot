@@ -57,10 +57,13 @@ module.exports = {
         }
     },
 
+    // Base swgohBot.js file
+    BASE_LAST_EVENT_NOTIFICATOIN: `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`,
+    BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
+
     // Generic (Not tied to a command)
     COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
     COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
-
 
     // Abilities Command 
     COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
@@ -200,7 +203,7 @@ module.exports = {
     COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Sorry, but I cannot find the role ${roleName}. Please try again.`,
     COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Sorry, but ${roleName} is already there.`,
     COMMAND_SETCONF_ADMINROLE_NOT_IN_CONFIG: (roleName) => `Sorry, but ${roleName} is not in your config.`,
-    COMMAND_SETCONF_ADMINROLE_SUCCESS: (roleName, action) => `The role ${roleName} has been ${args[1] === 'add' ? 'added to' : 'removed from'} your admin roles.`,
+    COMMAND_SETCONF_ADMINROLE_SUCCESS: (roleName, action) => `The role ${roleName} has been ${action === 'add' ? 'added to' : 'removed from'} your admin roles.`,
     COMMAND_SETCONF_WELCOME_NEED_CHAN: `Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``,
     COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
     COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,
@@ -208,6 +211,7 @@ module.exports = {
     COMMAND_SETCONF_NO_KEY: (prefix) => `This key is not in the configuration. Look in "${prefix}showconf", or "${prefix}setconf help" for a list`,
     COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Guild configuration item ${key} has been changed to:\n\`${value}\``,
     COMMAND_SETCONF_NO_SETTINGS: `No guild settings found.`,
+    COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Sorry, but ${value} is not a currently supported language. \nCurrently supported languages are: \`${langList}\``,
     
     // Ships Command
     COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Need a character or ship. Usage is \`${prefix}${usage}\``,
@@ -239,5 +243,5 @@ module.exports = {
 
     COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Sorry, but ${arg} isn't a valid argument. Try one of these: ${usableArgs}`,
     COMMAND_UPDATECHAR_NEED_CHAR: `You need to specify a character to update.`,
-    COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Sorry, but your search for '${charName}' did not find any results. Please try again.`,
+    COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Sorry, but your search for '${charName}' did not find any results. Please try again.`
 };

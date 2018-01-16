@@ -12,7 +12,7 @@ module.exports = async (client, message) => {
     // const guildSettings = message.guild ? client.guildSettings.get(message.guild.id) : client.config.defaultSettings;
     var guildSettings;
     if (message.guild) {
-        guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+        guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
     } else {
         guildSettings = client.config.defaultSettings;
@@ -21,7 +21,7 @@ module.exports = async (client, message) => {
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.
     message.guildSettings = guildSettings;
-    message.language = client.languages[client.config.defaultSettings.language];
+    message.language = client.languages[guildSettings.language];
     
     // Also good practice to ignore any message that does not start with our prefix,
     // which is set in the configuration file.

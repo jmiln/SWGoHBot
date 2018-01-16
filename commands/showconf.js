@@ -7,7 +7,7 @@ exports.run = async (client, message, args, level) => {
         guildID = args[0];
     }
 
-    const guildConf = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan', 'useEventPages']});
+    const guildConf = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
 
     var array = [];
     if (guildConf) {

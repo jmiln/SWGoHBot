@@ -24,7 +24,6 @@ client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
 client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
 client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
 
-
 require("./modules/functions.js")(client);
 
 // Languages
@@ -49,7 +48,8 @@ client.guildSettings = client.sequelize.define('settings', {
     useEmbeds: Sequelize.BOOLEAN,
     timezone: Sequelize.TEXT,
     announceChan: Sequelize.TEXT,
-    useEventPages: Sequelize.BOOLEAN
+    useEventPages: Sequelize.BOOLEAN,
+    language: Sequelize.TEXT
 });
 client.guildEvents = client.sequelize.define('events', {
     guildID: { type: Sequelize.TEXT, primaryKey: true },
@@ -106,7 +106,7 @@ async function checkDates() {
     guildList.forEach(async (g) => {
         const thisGuild = client.guilds.get(g);
 
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: g}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+        const guildSettings = await client.guildSettings.findOne({where: {guildID: g}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
 
         const guildEvents = await client.guildEvents.findOne({where: {guildID: g}, attributes: ['events']});
@@ -137,7 +137,7 @@ async function checkDates() {
                         let eventMsg = event.eventMessage;
                         // If this is the last time, tack a message to the end to let them know it's the last one
                         if (event.repeatDays.length === 1) {
-                            eventMsg += `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`;
+                            eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
                         }
                         const newEvent = {
                             "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(parseInt(event.repeatDays.splice(0, 1)), 'd').format('YYYY-MM-DD'),
@@ -183,7 +183,6 @@ async function checkDates() {
                 // If the event has passed without being noticed, go ahead and wipe it
                 // Probably from the bot crashing during an event, or back during testing
                 } else if (moment(eventDate).isBefore(moment(nowDate).subtract(2, 'h'))) {
-                    console.log('Should wipe it here');
                     delete events[key];
                     await client.guildEvents.update({events: events}, {where: {guildID: g}});
                 }
@@ -225,7 +224,8 @@ function checkCountdown(thisGuild, guildConf, key, event) {
         if (countdownDate.isSame(nowDate, 'seconds')) {
             // We should trigger this countdown message so create the announcement message of how long to go
             var timeToGo = moment.duration(eventDate.diff(nowDate)).humanize();
-            var announceMessage = `**${key}**\nStarting in ${timeToGo}`;
+            // var announceMessage = client.languages[guildConf].BASE_EVENT_STARTING_IN_MSG(key, timeToGo);
+            var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(key, timeToGo);
             announceEvent(thisGuild, guildConf, event, announceMessage);
 
             // We matched so we don't have to look any more
