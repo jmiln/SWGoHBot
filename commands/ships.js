@@ -18,15 +18,15 @@ exports.run = (client, message, args) => {
 
     // Make sure they gave a character to find
     if (searchName === "") {
-        return message.channel.send(`Need a character or ship. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_SHIPS_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Find any characters that match that
     const ships = client.findChar(searchName, shipList);
     if (ships.length <= 0) {
-        return message.channel.send(`Invalid character or ship. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_SHIPS_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     } else if (ships.length > 1) {
-        return message.channel.send(`I found more than one result from that search. Please try to be more specific.`).then(msg => msg.delete(10000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_SHIPS_TOO_MANY).then(msg => msg.delete(10000)).catch(console.error);
     }
 
     const ship = ships[0];
@@ -35,18 +35,18 @@ exports.run = (client, message, args) => {
         const fields = [];
 
         fields.push({
-            "name": 'Crew',
+            "name": message.language.COMMAND_SHIPS_CREW,
             "value": ship['crew'].join(', ').toProperCase()
         });
         fields.push({
-            "name": 'Factions',
+            "name": message.language.COMMAND_SHIPS_FACTIONS,
             "value": ship['factions'].join(', ').toProperCase()
         });
         for (var ability in ship.abilities) {
             const abilities = ship.abilities[ability];
             fields.push({
                 "name": ability,
-                "value": `**Ability Type:** ${abilities.type}   **Ability Cooldown:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`
+                "value": message.language.COMMAND_SHIPS_ABILITIES(abilities)
             });
         }
         message.channel.send({
@@ -64,13 +64,13 @@ exports.run = (client, message, args) => {
         let shipString = '';
 
         shipString += ` * ${ship.name.toProperCase()} *\n`;
-        shipString += `Crew: ${ship.crew.join(', ').toProperCase()}\n`;
-        shipString += `Factions: ${ship.factions.join(', ').toProperCase()}\n\n`;
-        shipString += ` * Abilities *\n`;
+        shipString += `${message.language.COMMAND_SHIPS_CREW}: ${ship.crew.join(', ').toProperCase()}\n`;
+        shipString += `${message.language.COMMAND_SHIPS_FACTIONS}: ${ship.factions.join(', ').toProperCase()}\n\n`;
+        shipString += message.language.COMMAND_SHIPS_CODE_ABILITES_HEADER;
     
         for (var thisAbility in ship.abilities) {
             const abilities = ship.abilities[thisAbility];
-            shipString += `### ${ability} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`;
+            shipString += message.language.COMMAND_SHIPS_CODE_ABILITIES(ability, abilities);
         }
 
         return message.channel.send(shipString, { code: 'md', split: true });

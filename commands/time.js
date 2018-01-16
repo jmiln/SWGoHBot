@@ -5,16 +5,16 @@ exports.run = (client, message, args) => {
 
     if (args[0]) {
         if (moment.tz.zone(args[0])) { // Valid time zone
-            return message.channel.send(`Current time is: ${moment.tz(args[0]).format('DD/MM/YYYY [at] H:mm:ss')} in ${args[0]} time`); 
+            return message.channel.send(message.language.COMMAND_TIME_CURRENT(moment.tz(args[0]).format('DD/MM/YYYY [at] H:mm:ss'), args[0])); 
         } else { // Not so valid
-            return message.reply(`Invalid timezone, here's your guild's time ${moment.tz(guildConf['timezone']).format('DD/MM/YYYY [at] H:mm:ss')} in ${guildConf['timezone']} time`).then(msg => msg.delete(10000)).catch(console.error);
+            return message.reply(message.channel.COMMAND_TIME_INVALID_ZONE(moment.tz(guildConf['timezone']).format('DD/MM/YYYY [at] H:mm:ss'), guildConf['timezone'])).then(msg => msg.delete(10000)).catch(console.error);
         }
     }
 
     if (!guildConf['timezone']) {
-        return message.channel.send(`Current time is: ${moment().format('DD/MM/YYYY [at] H:mm:ss')} UTC time`);
+        return message.channel.send(message.language.COMMAND_TIME_NO_ZONE(moment().format('DD/MM/YYYY [at] H:mm:ss')));
     } else {
-        return message.channel.send(`Current time is: ${moment.tz(guildConf['timezone']).format('DD/MM/YYYY [at] H:mm:ss')} in ${guildConf['timezone']} time`); 
+        return message.channel.send(message.language.COMMAND_TIME_WITH_ZONE(moment.tz(guildConf['timezone']).format('DD/MM/YYYY [at] H:mm:ss'), guildConf['timezone'])); 
     }
 };
 

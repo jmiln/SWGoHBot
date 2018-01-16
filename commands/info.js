@@ -1,6 +1,6 @@
 exports.run = (client, message) => {
 
-    message.channel.send(`**### INFORMATION ###** \n**Links**\nJoin the bot support server here \n<http://swgohbot.com/server>\nInvite the bot with this link\n<http://swgohbot.com/invite>`);//\n\n**Recent Changes**\n${changes.slice(Math.max(changes.length - 4, 1)).join('\n')}`);
+    message.channel.send(message.language.COMMAND_INFO_OUTPUT);
 };
 
 exports.conf = {

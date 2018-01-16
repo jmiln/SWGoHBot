@@ -7,10 +7,10 @@ exports.run = (client, message, args) => {
 
     // Make sure the args are all there
     if (typeof args[0] === 'undefined' || args[0] === null || args[0] === "") {
-        return message.channel.send(`Invalid raid, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(10000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_RAIDTEAMS_INVALID_RAID(config.prefix, this.help)).then(msg => msg.delete(10000)).catch(console.error);
     }
     if (typeof args[1] === 'undefined' || args[1] === null || args[1] === "") {
-        return message.channel.send(`Invalid phase, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(10000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_RAIDTEAMS_INVALID_PHASE(config.prefix, this.help)).then(msg => msg.delete(10000)).catch(console.error);
     }
 
     // Remove anything that's not a letter for the raid name
@@ -24,17 +24,17 @@ exports.run = (client, message, args) => {
         let phaseName = "";
         phaseName = String(args[1]).toLowerCase().replace(/[^\w\s]/gi, '');
         if (phaseName === "solo") {
-            currentPhase = "Solo";
+            currentPhase = message.language.COMMAND_RAIDTEAMS_PHASE_SOLO;
         } else if (phaseName === "p1") {
-            currentPhase = "Phase 1";
+            currentPhase = message.language.COMMAND_RAIDTEAMS_PHASE_ONE;
         } else if (phaseName === "p2") {
-            currentPhase = "Phase 2";
+            currentPhase = message.language.COMMAND_RAIDTEAMS_PHASE_TWO;
         } else if (phaseName === "p3") {
-            currentPhase = "Phase 3";
+            currentPhase = message.language.COMMAND_RAIDTEAMS_PHASE_THREE;
         } else if (phaseName === "p4") {
-            currentPhase = "Phase 4";
+            currentPhase = message.language.COMMAND_RAIDTEAMS_PHASE_FOUR;
         } else {
-            return message.channel.send(`Invalid phase, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(10000)).catch(console.error);
+            return message.channel.send(message.language.COMMAND_RAIDTEAMS_INVALID_PHASE(config.prefix, this.help)).then(msg => msg.delete(10000)).catch(console.error);
         }
     }
 
@@ -68,7 +68,7 @@ exports.run = (client, message, args) => {
                             foundPhase = true;
                             fields.push({
                                 "name": raidTeam,
-                                "value": `**Characters:** \`${team.characters.join(", ")}\``
+                                "value": message.language.COMMAND_RAIDTEAMS_CHARLIST(team.characters.join(", "))
                             });
                         }
                     }
@@ -79,7 +79,7 @@ exports.run = (client, message, args) => {
                                 "author": {
                                     "name": raid.name
                                 },
-                                "title": `Showing teams for ${currentPhase}`,
+                                "title": message.language.COMMAND_RAIDTEAMS_SHOWING(currentPhase),
                                 "color": 2,
                                 "fields": fields,
                                 "footer": {
@@ -88,33 +88,33 @@ exports.run = (client, message, args) => {
                             }
                         });
                     } else {
-                        return message.channel.send(`Cannot find any teams under \`${currentPhase}\``).then(msg => msg.delete(10000)).catch(console.error);
+                        return message.channel.send(message.language.COMMAND_RAIDTEAMS_NO_TEAMS(currentPhase)).then(msg => msg.delete(10000)).catch(console.error);
                     }
                 } else { // Embeds are disabled
-                    let outString = ` * ${raid.name} * \n\n* Showing teams for ${currentPhase}\n\n`;
+                    let outString = message.language.COMMAND_RAIDTEAMS_CODE_TEAMS(raid.name, currentPhase);
                     for (var raidTeam in teams) {
                         const team = raid.teams[raidTeam];
                         const phase = team.phase;
 
                         if (phase.includes(currentPhase)) { // === phase.toLowerCase()) {
                             foundPhase = true;
-                            outString += `### ${raidTeam} ### \n* Characters: ${team.characters.join(", ")}\n`;
+                            outString += message.language.COMMAND_RAIDTEAMS_CODE_TEAMCHARS(raidTeam, team.characters.join(", "));
                         }
                     }
                     if (foundPhase) {
                         return message.channel.send(outString, { code: 'md', split: true });
                     } else {
-                        return message.channel.send(`Cannot find any teams under \`${currentPhase}\``).then(msg => msg.delete(10000)).catch(console.error);
+                        return message.channel.send(message.language.COMMAND_RAIDTEAMS_NO_TEAMS(currentPhase)).then(msg => msg.delete(10000)).catch(console.error);
                     }
                 }
             }
         }
 
         if (found === false) {
-            return message.channel.send(`Invalid raid, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(10000)).catch(console.error);
+            return message.channel.send(message.language.COMMAND_RAIDTEAMS_INVALID_RAID(config.prefix, this.help)).then(msg => msg.delete(10000)).catch(console.error);
         }
     } else {
-        return message.channel.send(`Invalid raid, usage is \`${config.prefix}${this.help.usage}\`\n**Example:** \`${config.prefix}${this.help.example}\``).then(msg => msg.delete(10000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_RAIDTEAMS_INVALID_PHASE(config.prefix, this.help)).then(msg => msg.delete(10000)).catch(console.error);
     }
 
 };

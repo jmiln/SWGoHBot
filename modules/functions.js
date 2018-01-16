@@ -50,7 +50,8 @@ module.exports = (client) => {
     client.findChar = (searchName, charList, noLimit=false) => {
         var options = {
             keys: ['name', 'aliases'],
-            threshold: .2
+            threshold: .2,
+            distance: 4
         };
         const fuse = new Fuse(charList, options);
         let chars = fuse.search(searchName);
@@ -68,7 +69,7 @@ module.exports = (client) => {
             threshold: 0.0
         };
         const fuse = new Fuse(charList, options);
-        let char = fuse.search(searchName);
+        const char = fuse.search(searchName);
         return char[0];
     };
 
@@ -112,7 +113,7 @@ module.exports = (client) => {
 
         if (guild.channels.exists('name', announceChan)) {
             guildChannel = await guild.channels.find('name', announceChan);
-            if (guildChannel.permissionsFor(guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
+            if (guildChannel.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                 await guildChannel.send(announceMsg).catch(console.error);
             } else {
                 return;

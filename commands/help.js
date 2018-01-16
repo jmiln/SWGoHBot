@@ -7,7 +7,7 @@ exports.run = (client, message, args, level) => {
         const commandList = client.commands.filter(c => c.conf.permLevel <= level);
         const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
 
-        let output = `= Command List =\n\n[Use ${client.config.prefix}help <commandname> for details]\n`;
+        let output = message.language.COMMAND_HELP_HEADER(config.prefix);
 
         commandList.forEach(c => {
             const cat = c.help.category.toProperCase();
@@ -22,12 +22,12 @@ exports.run = (client, message, args, level) => {
         sortedCat.forEach(category => {
             output += `\n== ${category} ==\n${help[category]}`;
         });
-        message.channel.send(output, { code: "asciidoc" });
+        message.channel.send(output, { code: 'asciidoc', split: true });
     } else { // Show the help for a specific command
         let command = args[0];
         if (client.commands.has(command)) {
             command = client.commands.get(command);
-            message.channel.send(`= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${config.prefix}${command.help.usage}`, { code: 'asciidoc' });
+            message.channel.send(message.language.COMMAND_HELP_OUTPUT(command, config.prefix), { code: 'asciidoc' });
         }
     }
 };

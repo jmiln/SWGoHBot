@@ -45,11 +45,11 @@ const arenaJumps = {
 exports.run = (client, message, args) => {
     const currentRank = parseInt(args[0]);
     if (isNaN(currentRank) || !currentRank) {
-        return message.channel.send(`You need to enter a valid rank number`);
+        return message.channel.send(message.language.COMMAND_ARENARANK_INVALID_NUMBER);
     }
 
     // If they are rank 1, don't bother calculating anything
-    if (currentRank === 1) return message.channel.send(`You've already gotten as far as you can, congrats!`);
+    if (currentRank === 1) return message.channel.send(message.language.COMMAND_ARENARANK_BEST_RANK);
     
     // Mark em as estimates if needed
     let est = false;
@@ -63,8 +63,7 @@ exports.run = (client, message, args) => {
         arenaBattles.push(newRank);
         if (newRank === 1) break;
     }
-
-    return message.channel.send(`From rank ${currentRank}, in ${arenaBattles.length-1} battle${arenaBattles.length-1 > 1 ? 's' : ''} ${est ? '**(estimate)**' : ''}\nThe best you can get is ${arenaBattles.join(' → ')}`);
+    return message.channel.send(message.language.COMMAND_ARENARANK_RANKLIST(currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? 's' : '', est ? '**(estimate)**' : '', arenaBattles.join(' → '))); 
 };
 
 exports.conf = {

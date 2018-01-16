@@ -19,13 +19,13 @@ exports.run = (client, message, args) => {
 
     // Make sure they gave a character to find
     if (searchName === "") {
-        return message.channel.send(`Need a character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_ABILITIES_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Find any characters that match that
     const chars = client.findChar(searchName, charList);
     if (chars.length <= 0) {
-        return message.channel.send(`Invalid character. Usage is \`${config.prefix}${this.help.usage}\``).then(msg => msg.delete(4000)).catch(console.error);        
+        return message.channel.send(message.language.COMMAND_ABILITIES_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);        
     }
 
     chars.forEach(character => {
@@ -43,12 +43,12 @@ exports.run = (client, message, args) => {
 
                 var cooldownString = "";
                 if (abilities.abilityCooldown > 0) {
-                    cooldownString = `**Ability Cooldown:** ${abilities.abilityCooldown}\n`;
+                    cooldownString = message.language.COMMAND_ABILITIES_COOLDOWN(abilities.abilityCooldown);
                 }
 
                 fields.push({
                     "name": ability,
-                    "value": `**Ability Type:** ${abilities.type}     **Max ability mat needed:** ${mat}\n${cooldownString}${abilities.abilityDesc}`
+                    "value": message.language.COMMAND_ABILITIES_ABILITY(abilities.type, mat, cooldownString, abilities.abilityDesc)
                 });
             }
             message.channel.send({
@@ -66,9 +66,9 @@ exports.run = (client, message, args) => {
             let abilityString = "";
             for (const ability in character.abilities) {
                 const abilities = character.abilities[ability];
-                abilityString += `### ${ability} ###\n* Ability type: ${abilities.type}\n* Max ability mat needed: ${abilities.tier}\n* Description: ${abilities.abilityDesc}\n\n`;
+                abilityString += message.language.COMMAND_ABILITIES_ABILITY_CODE(ability, abilities.type, abilities.tier, abilities.abilityDesc);
             }
-            message.channel.send(` * ${character.name} * \n${abilityString}`, { code: 'md' });
+            message.channel.send(` * ${character.name} * \n${abilityString}`, { code: 'md', split: true });
         }
     });         
 };
