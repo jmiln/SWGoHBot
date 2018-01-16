@@ -111,7 +111,7 @@ exports.run = async (client, message, args, level) => {
                 const checkChan = message.guild.channels.find('name', eventChan);
                 if (!checkChan) {   // Make sure it's a real channel
                     return message.channel.send(message.language.COMMAND_EVENT_INVALID_CHAN).then(msg => msg.delete(10000));
-                } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {   // Make sure it can send messages there
+                } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {   // Make sure it can send messages there
                     return message.channel.send(message.language.COMMAND_EVENT_CHANNEL_NO_PERM(checkChan)).then(msg => msg.delete(10000));
                 }
             } else if (!announceChannel) {
@@ -292,7 +292,7 @@ exports.run = async (client, message, args, level) => {
                 } else { // Else, use the default one from their settings
                     channel = message.guild.channels.find('name', guildConf["announceChan"]);
                 }
-                if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) {
+                if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                     try {
                         return channel.send(announceMessage);
                     } catch (e) {

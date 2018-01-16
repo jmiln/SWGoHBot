@@ -28,7 +28,7 @@ module.exports = async (client, message) => {
     if (message.content.indexOf(client.config.prefix) !== 0) return;
 
     // If we don't have permission to respond, don't bother
-    if (message.guild && !message.channel.permissionsFor(message.guild.me).has(["READ_MESSAGES", "SEND_MESSAGES"])) return;
+    if (message.guild && !message.channel.permissionsFor(message.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) return;
 
     // Here we separate our "command" name, and our "arguments" for the command.
     // e.g. if we have the message "+say Is this the real life?" , we'll get the following:

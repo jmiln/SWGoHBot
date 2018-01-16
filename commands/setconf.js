@@ -99,7 +99,7 @@ exports.run = async (client, message, args, level) => {
                 if (value !== '') {
                     const newChannel = message.guild.channels.find('name', value);
                     if (!newChannel) return message.channel.send(message.channel.COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN(value)).then(msg => msg.delete(4000)).catch(console.error);
-                    if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "READ_MESSAGES"])) return message.channel.send(message.language.COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS);
+                    if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return message.channel.send(message.language.COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS);
                     client.guildSettings.update({announceChan: value}, {where: {guildID: message.guild.id}});
                 } else {
                     client.guildSettings.update({announceChan: ''}, {where: {guildID: message.guild.id}});
