@@ -253,9 +253,9 @@ exports.run = async (client, message, args, level) => {
                             return message.channel.send(message.language.COMMAND_EVENT_NO_EVENT);
                         } else {
                             if (guildConf['useEventPages']) {
-                                return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys));
+                                return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys), {'split': true});
                             } else {
-                                return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, eventKeys));
+                                return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, eventKeys), {'split': true});
                             }
                         }
                     } catch (e) {

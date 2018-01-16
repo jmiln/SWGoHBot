@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { promisify } = require("util");
-// const { inspect } = require("util");
+const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
 const client = new Discord.Client();
 const moment = require('moment-timezone');
@@ -98,6 +98,10 @@ const init = async () => {
         }
     }
 };
+
+client.on('error', (err) => {
+    client.log('ERROR', inspect(err));
+});
 
 // The function to check every minute for applicable events
 async function checkDates() {
