@@ -24,7 +24,6 @@ exports.run = (client, message, args) => {
         }
     }
     const charString = charOut.join('\n');
-    console.log(`charOut.len: ${charOut.length}, chars: ${charString}\n`);
 
     message.channel.send('```\n' + charString + '```');
 };
