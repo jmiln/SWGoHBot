@@ -22,7 +22,7 @@ exports.run = (client, message, args, level) => {
         sortedCat.forEach(category => {
             output += `\n== ${category} ==\n${help[category]}`;
         });
-        message.channel.send(output, { code: "asciidoc" });
+        message.channel.send(output, { code: 'asciidoc', split: true });
     } else { // Show the help for a specific command
         let command = args[0];
         if (client.commands.has(command)) {

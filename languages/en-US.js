@@ -65,6 +65,9 @@ module.exports = {
     COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
     COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
 
+    // Event Strings (message/ ready etc.)
+    BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
+
     // Abilities Command 
     COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
     COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,

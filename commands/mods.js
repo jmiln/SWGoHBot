@@ -64,7 +64,7 @@ exports.run = (client, message, args) => {
                 let modPrimaryString = message.language.COMMAND_MODS_CODE_STRING1(mods.square, mods.arrow, mods.diamond);
                 modPrimaryString += message.language.COMMAND_MODS_CODE_STRING2(mods.triangle, mods.circle, mods.cross);
 
-                return message.channel.send(message.language.COMMAND_MODS_CODE_OUTPUT(character.name, modSetString, modPrimaryString), { code: 'md' });
+                return message.channel.send(message.language.COMMAND_MODS_CODE_OUTPUT(character.name, modSetString, modPrimaryString), { code: 'md', split: true });
             }
         } 
     });

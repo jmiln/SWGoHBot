@@ -9,7 +9,6 @@ module.exports = async (client, message) => {
 
     // Grab the settings for this server from the PersistentCollection
     // If there is no guild, get default conf (DMs)
-    // const guildSettings = message.guild ? client.guildSettings.get(message.guild.id) : client.config.defaultSettings;
     var guildSettings;
     if (message.guild) {
         guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
@@ -21,7 +20,6 @@ module.exports = async (client, message) => {
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.
     message.guildSettings = guildSettings;
-    message.language = client.languages[guildSettings.language];
     
     // Also good practice to ignore any message that does not start with our prefix,
     // which is set in the configuration file.
@@ -29,6 +27,9 @@ module.exports = async (client, message) => {
 
     // If we don't have permission to respond, don't bother
     if (message.guild && !message.channel.permissionsFor(message.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) return;
+
+    // Load the language file for whatever language they have set
+    message.language = client.languages[guildSettings.language];
 
     // Here we separate our "command" name, and our "arguments" for the command.
     // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
@@ -49,7 +50,7 @@ module.exports = async (client, message) => {
     // Some commands may not be useable in DMs. This check prevents those commands from running
     // and return a friendly error message.
     if (cmd && !message.guild && cmd.conf.guildOnly) {
-        return message.channel.send("This command is unavailable via private message. Please run this command in a guild.").then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.BASE_COMMAND_UNAVAILABLE).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // If the command exists, **AND** the user has permission, run it.

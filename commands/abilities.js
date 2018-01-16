@@ -68,7 +68,7 @@ exports.run = (client, message, args) => {
                 const abilities = character.abilities[ability];
                 abilityString += message.language.COMMAND_ABILITIES_ABILITY_CODE(ability, abilities.type, abilities.tier, abilities.abilityDesc);
             }
-            message.channel.send(` * ${character.name} * \n${abilityString}`, { code: 'md' });
+            message.channel.send(` * ${character.name} * \n${abilityString}`, { code: 'md', split: true });
         }
     });         
 };
