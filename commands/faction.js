@@ -1,8 +1,6 @@
-var fs = require("fs");
-var charList = JSON.parse(fs.readFileSync("data/characters.json"));
-
 exports.run = (client, message, args) => {
     const config = client.config;
+    const charList = client.characters;
 
     // Check if it should send as an embed or a code block
     const guildConf = message.guildSettings;
