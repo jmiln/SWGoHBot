@@ -16,13 +16,13 @@ exports.run = (client, message, args) => {
 
     // Make sure they gave a character to find
     if (searchName === "") {
-        return message.channel.send(message.language.COMMAND_MESSAGE_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.COMMAND_MODS_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // Find any characters that match that
     const chars = client.findChar(searchName, charList);
     if (chars.length <= 0) {
-        return message.channel.send(message.language.COMMAND_MESSAGE_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);        
+        return message.channel.send(message.language.COMMAND_MODS_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);        
     }
 
     chars.forEach(character => {
