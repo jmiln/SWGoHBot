@@ -89,7 +89,7 @@ module.exports = (client) => {
         try {
             // Sends the logs to the channel I have set up for it.
             if (client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send(`${prefix}[${client.myTime()}] [${type}] ${msg}`, {code: codeType});
+                client.channels.get(client.config.logs.channel).send(`${prefix}[${client.myTime()}] [${type}] ${msg}`, {code: codeType, split: true});
             }
         } catch (e) {
             // Probably broken because it's not started yet

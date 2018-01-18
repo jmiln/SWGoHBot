@@ -13,6 +13,8 @@ module.exports = async (client, message) => {
     if (message.guild) {
         guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
+        // If we don't have permission to respond, don't bother
+        if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')) return;
     } else {
         guildSettings = client.config.defaultSettings;
     }
@@ -24,9 +26,6 @@ module.exports = async (client, message) => {
     // Also good practice to ignore any message that does not start with our prefix,
     // which is set in the configuration file.
     if (message.content.indexOf(client.config.prefix) !== 0) return;
-
-    // If we don't have permission to respond, don't bother
-    if (message.guild && !message.channel.permissionsFor(message.guild.me).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) return;
 
     // Load the language file for whatever language they have set
     message.language = client.languages[guildSettings.language];
@@ -41,11 +40,8 @@ module.exports = async (client, message) => {
     // Get the user or member's permission level from the elevation
     const level = client.permlevel(message);
 
-    // Check whether the command, or alias, exist in the collections defined
-    // in swgohbot.js.
+    // Check whether the command, or alias, exist in the collections defined in swgohbot.js.
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
-    // using this const varName = thing OR otherthing; is a pretty efficient
-    // and clean way to grab one of 2 values!
 
     // Some commands may not be useable in DMs. This check prevents those commands from running
     // and return a friendly error message.
