@@ -27,6 +27,7 @@ exports.run = async (client, message, args) => {
     const fuse = new Fuse(client.characters, options);
     const chars = fuse.search(charName);
     // If there's a ton of em, only return the first 4
+    console.log(chars);
     if (chars.length === 0) {
         return message.channel.send(message.language.COMMAND_UPDATECHAR_WRONG_CHAR(charName));
     } else {
@@ -289,6 +290,7 @@ async function updateCharacterInfo(client, message, charIndex) {
             return console.log(err);
         } else {
             client.characters = charList;
+            console.log("+++++++++++++++++" + charIndex);
             message.channel.send(`I have updated the info for ${client.characters[charIndex].name}.`);
         }
     });

@@ -33,7 +33,7 @@ exports.run = (client, message, args) => {
             const fields = [];
             for (const ability in character.abilities) {
                 const abilities = character.abilities[ability];
-
+                
                 var mat = omega;
                 if (abilities.tier === 'zeta') {
                     mat = zeta;
@@ -45,12 +45,13 @@ exports.run = (client, message, args) => {
                 if (abilities.abilityCooldown > 0) {
                     cooldownString = message.language.COMMAND_ABILITIES_COOLDOWN(abilities.abilityCooldown);
                 }
-
+            
                 fields.push({
                     "name": ability,
                     "value": message.language.COMMAND_ABILITIES_ABILITY(abilities.type, mat, cooldownString, abilities.abilityDesc)
                 });
             }
+            
             message.channel.send({
                 embed: {
                     "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,

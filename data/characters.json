@@ -10,9 +10,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_aaylasecura.png",
         "side": "light",
         "factions": [
-            "support",
-            "jedi",
-            "galactic republic"
+            "Galactic Republic",
+            "Jedi",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -145,25 +145,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 35% chance to call an ally to Assist. If the assisting ally is a Jedi, they deal 50% more damage.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Survivor": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and recover Health equal to 65% of the damage dealt.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Jedi Valor": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Jedi allies gain 40% Tenacity and recover 10% of their Max Health when they ward off an effect.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Superior Riposte": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Aayla has +10% Critical Chance, 65% Counter Chance and +50% Counter Damage. In addition, she Stuns her target for 1 turn whenever she critically hits.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -177,9 +197,9 @@
         "url": "https://swgoh.gg/characters/admiral-ackbar/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ackbaradmiral.png",
         "factions": [
-            "support",
-            "rebel",
-            "fleet commander"
+            "Fleet Commander",
+            "Rebel",
+            "Support"
         ],
         "side": "light",
         "mods": {
@@ -300,25 +320,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 55% chance to gain 45% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "It's a Trap!": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Dispel all negative status effects from all allies. Each ally recovers 9% of their Max Health for each effect dispelled this way. Admiral Ackbar has a 25% chance to gain 40% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Tactical Genius": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Ackbar grants each ally the Tactical Genius effect. The first ally to use a Special ability while they have this effect gains 100% Turn Meter and recovers 30% of their Max Health. Tactical Genius ends whenever any ally triggers this effect or at the end of Ackbar's next turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Rebel Coordination": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Rebel allies have +25 Speed and +10% Tenacity. In addition, whenever an ally uses an ability that isn't an attack, they call a Rebel ally to Assist.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -333,9 +373,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ahsoka.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "jedi",
-            "galactic republic"
+            "Attacker",
+            "Galactic Republic",
+            "Jedi"
         ],
         "mods": {
             "Arena": {
@@ -455,25 +495,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and Ahsoka recovers Health equal to 20% of her Max Health, increased to 30% on a Critical Hit.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Protective Maneuver": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy. If the target had 50% Health or more, all allies recover Health equal to 30% of Ahsoka's Max Health; otherwise, this attack deals 50% more damage.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Quick Steps": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Jedi and Nightsister allies have +14% Evasion, and gain 20% Turn Meter whenever they Evade.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Daring Padawan": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Ahsoka has +45% Health, +45 Speed, and +15% Critical Chance. When Critically Hit, she loses one effect. When she defeats an enemy, she regains all of them. If Jedi Knight Anakin is present, Ahsoka gains Critical Hit Immunity for 2 turns at the start of each encounter and whenever she uses a Special ability.",
-                "tier": "abilityMatMK3"
+                "abilityDesc": "Ahsoka has +45% Health, +45 Speed, and +15% Critical Chance. When Critically Hit, she loses one effect. When she defeats an enemy, she regains all of them.",
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -490,8 +550,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ahsokaadult.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "rebel"
+            "Attacker",
+            "Rebel"
         ],
         "mods": {
             "Arena": {
@@ -611,25 +671,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy, gain Protection Up (40%) for 2 turns, and grant Protection Up (40%) to a random ally that doesn't have it for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Meditate": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Ahsoka gains Foresight, Retribution, and each non-unique buff (excluding Taunt) present on other allies for 2 turns, then gains 15% Turn Meter for each buff on her.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Whirlwind": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Consume all non-unique buffs on Ahsoka and deal Physical damage to target enemy. This attack scores an additional hit for each type of buff consumed. The target can't Evade and has -50% Armor against this attack.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
             },
             "Perseverance": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Ahsoka is immune to Damage Over Time effects and gains 30% Critical Avoidance. At the end of each turn, Ahsoka dispels all debuffs on herself and loses 10% Health for each debuff dispelled, then recovers 5% Health for each buff on her. This Health Loss can't defeat Ahsoka.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -644,9 +724,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ventress.png",
         "side": "dark",
         "factions": [
-            "support",
-            "nightsister",
-            "separatist"
+            "Nightsister",
+            "Separatist",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -765,32 +845,57 @@
             "Cruel Strike": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy with a 35% chance to Stun for 1 turn.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to target enemy with a 50% chance to Stun for 1 turn.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Strike Fear": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Dispel all positive status effects from all enemies and Asajj recovers 40% of her Max Health. For each effect dispelled this way, Asajj recovers an additional 9% Max Health and has a 50% chance to remove 10% Turn Meter.",
-                "tier": "omega"
+                "abilityDesc": "Dispel all buffs on all enemies and Nightsister allies recover 40% Health. For each buff dispelled, that enemy has a 50% chance to lose 20% Turn Meter and Nightsister allies recover 10% Health. This attack can't be Evaded or Resisted.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Endless Wrath": {
                 "type": "Special",
-                "abilityCooldown": "4",
-                "abilityDesc": "Deal Special damage to all enemies and refresh all cooldowns on a finishing blow.",
-                "tier": "omega"
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Special damage to all enemies and inflict Defense Down for 2 turns. Refresh all cooldowns on a finishing blow.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Nightsister Swiftness": {
                 "type": "Leader",
                 "abilityCooldown": "0",
-                "abilityDesc": "Nightsister allies gain 28 Speed, gain 50% Turn Meter when they fall below 100% Health, and have a 50% chance to remove 20% Turn Meter when they damage an enemy. This Turn Meter removal can't be Resisted.",
-                "tier": "zeta"
+                "abilityDesc": "Nightsister allies have +30 Speed, +30% Offense, gain 50% Turn Meter when they fall below 100% Health, and have a 50% chance to remove 20% Turn Meter when they damage an enemy. This Turn Meter removal can't be Resisted.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Rampage": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "When any ally or enemy is defeated, Asajj gains 35% Turn Meter, and, gains 15% Offense, 15% Critical Chance, and 5% Max Health (stacking) until the end of the encounter. Asajj has +15 Speed for each enemy with no buffs.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -805,9 +910,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b2.png",
         "side": "dark",
         "factions": [
-            "tank",
-            "droid",
-            "separatist"
+            "Droid",
+            "Separatist",
+            "Tank"
         ],
         "mods": {
             "Arena (with HK-47 lead)": {
@@ -940,19 +1045,34 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Evasion Down for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Mow Down": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to all enemies and Dispel all positive status effects on them, with a 65% chance to also inflict Buff Immunity for 2 turns (applied before damage.)",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Relentless Barrage": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "B2 has a 40% chance to gain 100% Turn Meter whenever another ally is Evaded or damaged by an attack.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -967,9 +1087,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_barriss_light.png",
         "side": "light",
         "factions": [
-            "healer",
-            "jedi",
-            "galactic republic"
+            "Galactic Republic",
+            "Healer",
+            "Jedi"
         ],
         "mods": {
             "Arena": {
@@ -1089,25 +1209,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 45% chance for all allies to recover 6% of Barriss Offee's Max Health.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Force Healer": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "All allies have their current Health percentages equalized. (Health equalizing effects ignore Healing Immunity.) Then, each ally recovers 15% of their Max Health and gains Defense Up for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "No One Left Behind": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Jedi allies gain 20% Max Health, and other allies gain half that amount. In addition, at the start of each of their turns, Jedi allies heal for 8% of Barriss Offee's Max Health, and other allies heal half that amount.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Swift Recovery": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "At the end of each of her turns, Barriss Dispels all debuffs from the debuffed ally with the lowest Health and gains 10% Turn Meter for each effect removed. Whenever an ally is Critically Hit, that ally recovers 20% of their Max Health and Barriss gains 10% Turn Meter. This effect is disabled while Barriss is defeated.",
-                "tier": "zeta"
+                "abilityDesc": "At the end of each of her turns, Barriss Dispels all debuffs from the debuffed ally with the lowest Health and gains 10% Turn Meter for each effect removed.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -1122,8 +1262,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bazemalbus.png",
         "side": "light",
         "factions": [
-            "tank",
-            "rebel"
+            "Rebel",
+            "Tank"
         ],
         "mods": {
             "Arena": {
@@ -1243,25 +1383,56 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to inflict Speed Down for 3 turns. If Chirrut Îmwe is present, he gains 10% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Unload": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to all enemies and Dispel all buffs on them. Empire enemies and enemies who were not buffed take bonus damage equal to 25% of their Max Health. If Chirrut Îmwe is present, he is called to Assist.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Fierce Reprisal": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and dispel all buffs on them. For each buff dispelled, inflict the opposite debuff, if any, for 2 turns.",
-                "tier": "abilityMatMK3"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Dauntless Courage": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Baze Malbus gains Max Health equal to 20% of his Max Health. Chirrut Îmwe also gains that much Max Health.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
+            },
+            "For Jedha": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Baze Malbus gains Taunt and Retribution for 1 turn at the start of each encounter, whenever an enemy is defeated, and whenever Chirrut Îmwe falls below 100% Health. Baze Malbus gains 5% Turn Meter whenever an enemy gains a buff.",
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -1501,17 +1672,6 @@
                     "omega": 13,
                     "zeta": 20
                 }
-            },
-            "Arc Welder ": {
-                "type": "Basic",
-                "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy and inflict Tenacity Down for 2 turns. If the target already had Tenacity Down, inflict Daze for 2 turns.",
-                "tier": "omega",
-                "cost": {
-                    "mk3": 0,
-                    "omega": 0,
-                    "zeta": 0
-                }
             }
         }
     },
@@ -1527,8 +1687,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_biggs.png",
         "side": "light",
         "factions": [
-            "support",
-            "rebel"
+            "Rebel",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -1648,19 +1808,34 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 50% chance to gain Critical Chance Up for 2 turns. On a Critical Hit grant a random ally Critical Damage Up for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Comrade-in-Arms": {
                 "type": "Special",
                 "abilityCooldown": "2",
                 "abilityDesc": "Deal Physical damage to target enemy and call an Assist. If Wedge Antilles is present he also Assists. All attacks have 75% more Critical Chance.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Adrenaline Rush": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Biggs Darklighter gains 100% Turn Meter and Evasion Up for 4 turns after surviving any damage from an Empire enemy or a Critical Hit from any enemy.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -1674,8 +1849,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bistan.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "rebel"
+            "Attacker",
+            "Rebel"
         ],
         "mods": {
             "Arena": {
@@ -1795,25 +1970,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to inflict Damage Over Time for 3 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Frenzy": {
                 "type": "Special",
                 "abilityCooldown": "7",
-                "abilityDesc": "Bistan gains Frenzy for 4 turns and all other allies gain 20% Turn Meter. Frenzy: Whenever another ally uses a Special ability, this unit gains 100% Turn Meter.",
-                "tier": "omega"
+                "abilityDesc": "Bistan gains Frenzy for 4 turns and all other allies gain 20% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Gunner Tactics": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and remove Turn Meter equal to Bistan's Potency.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Amped Up": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Bistan gains 10% Potency for each Rebel ally and each debuffed enemy.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -1829,9 +2024,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bobafett.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "scoundrel",
-            "bounty hunter"
+            "Attacker",
+            "Bounty Hunter",
+            "Scoundrel"
         ],
         "mods": {
             "Arena (Attacker)": {
@@ -1977,7 +2172,12 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 50% chance (doubled against Scoundrels) to attack again. Each attack has a 70% chance to inflict Damage Over Time for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Death Frome Above": {
                 "type": "Special",
@@ -1989,19 +2189,45 @@
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and dispel all status effects on them. Deal 30% more damage for each effect dispelled. Enemies defeated by this ability can't be revived. Reduce all cooldowns by 1 on a finishing blow. This attack can't be Evaded.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Dead or Alive": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "All allies gain 50% Critical Damage and 10% Critical Chance. Bounty Hunter allies gain 15 Speed for each debuffed enemy, gain Max Health equal to 50% of the total Potency of all Bounty Hunter allies, and gain 15% Turn Meter whenever a Thermal Detonator explodes.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Bounty Hunter's Resolve": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "At the start of battle, and whenever he defeats an enemy, Boba Fett recovers 100% Protection and gains Bounty Hunter's Resolve until he is defeated. Bounty Hunter's Resolve: Boba Fett ignores Taunts during his turn. When defeated, revive at 100% Health. Can't be Dispelled or prevented.",
-                "tier": "zeta"
+                "abilityDesc": "At the start of battle, and whenever he defeats an enemy, Boba Fett recovers 100% Protection and gains Bounty Hunter's Resolve until he is defeated.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Death From Above": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to all enemies with an 80% chance to inflict Ability Block for 1 turn and a 50% chance to inflict Damage Over Time for 2 turns. Inflict Ability Block on the selected target for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -2016,8 +2242,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bodhi.png",
         "side": "light",
         "factions": [
-            "support",
-            "rebel"
+            "Rebel",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -2137,25 +2363,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Evasion Down for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Spotter": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Inflict target enemy with Evasion Down for 2 turns, which can't be Evaded. Target other ally gains Offense Up and Potency Up for 2 turns and is called to Assist. If the target ally is a Rebel, Bodhi gains 30% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Intercept Communications": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Remove 10% Turn Meter from all enemies (doubled on Empire enemies) which can't be Evaded. All allies gain 10% Turn Meter (doubled on Rebel allies).",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Double Duty": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "While Bodhi is active, Rebel allies with Offense Up also gain +50% Defense. At the end of each of his turns, Bodhi grants Offense Up for 2 turns to a random ally who doesn't have it.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -2171,9 +2417,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cadbane.png",
         "side": "dark",
         "factions": [
-            "support",
-            "scoundrel",
-            "bounty hunter"
+            "Bounty Hunter",
+            "Scoundrel",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -2293,25 +2539,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 55% chance to attack again. Cad Bane has a 50% chance to gain 15% Turn Meter with each attack.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Stun Glove": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal unavoidable Physical damage to target enemy and Stun for 1 turn. In addition, remove 40% Turn Meter, or 100% Turn Meter if the target is a Jedi.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Hunter's Reflexes": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Scoundrel allies gain 20% Evasion and gain 25% Turn Meter whenever they Evade.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 0,
+                    "zeta": 0
+                }
             },
             "Jedi Hunter": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Cad Bane has +35% Critical Chance and +20% Critical Damage when attacking Jedi enemies.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -2331,9 +2597,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hoth_han.png",
         "side": "light",
         "factions": [
-            "support",
-            "scoundrel",
-            "rebel"
+            "Rebel",
+            "Scoundrel",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -2505,25 +2771,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Daze for 2 turns. Empire targets can't Resist or Evade and take double damage from this attack. If Han has full health, gain 30% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Hunker Down": {
                 "type": "Special",
                 "abilityCooldown": "10",
-                "abilityDesc": "Dispel all debuffs on Han and target other ally, and they both recover Health equal to 40% of Han's Max Health and gain 25% Turn Meter. Then, if the target ally has full Health, they also recover 20% Protection. This ability's cooldown is reduced by 1 whenever an ally suffers a debuff.",
-                "tier": "omega"
+                "abilityDesc": "Dispel all debuffs on Han and target other ally, and they both recover Health equal to 40% of Han's Max Health and gain 25% Turn Meter. Then, if the target ally has full Health, they also recover 20% Protection.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Search and Rescue": {
                 "type": "Special",
                 "abilityCooldown": "6",
                 "abilityDesc": "Revive a random defeated ally at 1% Health and 0% Turn Meter. If that ally is a Rebel, they recover 50% Health and gain 50% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Nick of Time": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Captain Han Solo has +15% Critical Chance and +30% Critical Damage. In addition, at the end of his turn, Han recovers Health equal to 10% of his Max Health. If Han already has full Health, the least healthy ally is healed instead. Whenever Han uses his Basic attack he gains +10% Max Health (stacking) for 3 turns.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -2538,9 +2824,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_phasma.png",
         "side": "dark",
         "factions": [
-            "support",
-            "human",
-            "first order"
+            "First Order",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -2660,25 +2945,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical Damage to target enemy and inflict Defense Down for 2 turns on a Critical Hit. If this attack is not a Critical Hit, Phasma has a 50% chance to gain Advantage for 2 turns instead.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Victory March": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "All allies gain 50% Turn Meter and Advantage for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Fusillade": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Physical damage to all enemies with a 90% chance to inflict Speed Down for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Fire at Will": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever an ally attacks, they have a 20% chance to call a random ally to Assist. This chance is tripled if the attacking ally is First Order. If that ally had Advantage, they regain it for 2 turns. First Order allies gain Advantage for 2 turns at the start of each encounter, can't be Critically Hit while they have Advantage, and gain 20% Potency.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -2694,8 +2999,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cassian.png",
         "side": "light",
         "factions": [
-            "support",
-            "rebel"
+            "Rebel",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -2814,26 +3119,46 @@
             "Two Steps Ahead": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Two Steps Ahead",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to target enemy with a 85% chance to inflict Buff Immunity for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Shock Grenade": {
                 "type": "Special",
                 "abilityCooldown": "2",
                 "abilityDesc": "Inflict Ability Block, Defense Down, Healing Immunity, Offense Down, and Speed Down (once each) on random enemies for 2 turns. If the primary target is Empire, Expose them for 2 turns. If K-2SO is present, he is called to Assist. Then, gain 20% Turn Meter for each debuffed enemy.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Crippling Shot": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to target enemy. For each debuff present on other enemies, inflict that debuff on the target for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Groundwork": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the start of each encounter all Rebel allies gain Protection Up (20%) for 3 turns, all Rebel Attackers gain Defense Up for 3 turns, all Rebel Supports gain Potency Up for 3 turns, and all Rebel Tanks gain Tenacity Up for 3 turns. If K-2SO is present, he gains all of these buffs.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -2849,10 +3174,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_cody.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "human",
-            "clone trooper",
-            "galactic republic"
+            "Attacker",
+            "Clone Trooper",
+            "Galactic Republic"
         ],
         "mods": {
             "Arena (Attacker)": {
@@ -2998,25 +3322,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and gain 20% Turn Meter. Gain an additional 20% Turn Meter if that enemy has more than 50% Health, and an additional 20% Turn Meter if that enemy has less than 50% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "AT-TE Mass-Driver Cannon": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Special damage to target enemy and 35% less damage to all other enemies. If this attack scores at least 2 Critical Hits, Stun the primary target for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "The 212th Attack": {
                 "type": "Special",
                 "abilityCooldown": "6",
                 "abilityDesc": "Call all Clone allies and one random ally to assist. These Assists deal 40% less damage. Each time an Assist scores a Critical Hit, reduce the Cooldown of this ability by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Ghost Company Commander": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Clone allies gain 30% Critical Chance, and other allies gain half that amount. Cody gains 60% Defense for each living Clone ally and other Clone allies gain half that amount. Clone allies recover 5% of their Max Protection whenever they use a Basic ability.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -3028,11 +3372,11 @@
             "Chirpa"
         ],
         "url": "https://swgoh.gg/characters/chief-chirpa/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chirpa.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_chirpa.png",
         "side": "light",
         "factions": [
-            "support",
-            "ewok"
+            "Ewok",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -3165,25 +3509,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy. In addition, Chirpa gains 35% Turn Meter if that enemy had more than 50% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Ancestral Secrets": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "All allies recover 20% of their Max Health and gain Heal Over Time (20%) for 3 turns. Ewok allies also gain Retribution for 2 turns and Heal Over Time for 1 additional turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Tribal Unity": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Grant all allies Speed Up for 2 turns, then call all Ewok allies and one other random ally to Assist.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Simple Tactics": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Ewok allies gain 20% Turn Meter and deal 10% more damage whenever they perform a Basic attack. These effects are halved for other allies. Whenever an Ewok ally uses a Special ability, 60% chance to call another random Ewok ally to Assist.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -3198,8 +3562,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_nebit.png",
         "side": "light",
         "factions": [
-            "tank",
-            "jawa"
+            "Jawa",
+            "Tank"
         ],
         "mods": {
             "Arena": {
@@ -3319,25 +3683,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to grant Protection Up equal to 20% of Nebit's Max Health for 2 turns to a random ally who is not Stealthed.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Distracting Negotiations": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Nebit taunts for 2 turns and gain Heal Over Time for 3 turns. Reduce the cooldowns of all Jawa and Droid allies by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Desert Ambush": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and call a random ally to Assist dealing 20% less damage. If the Assisting ally is a Jawa or a Droid, call another random ally to Assist. All Jawa called to Assist gain Stealth for 3 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Raiding Parties": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Jawa and Droid allies gain 30% Critical Chance and inflict Critical Chance Down for 3 turns on a Critical Hit.",
-                "tier": "zeta"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -3352,8 +3736,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chirrut.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "rebel"
+            "Attacker",
+            "Rebel"
         ],
         "mods": {
             "Arena": {
@@ -3473,31 +3857,56 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to gain Heal Over Time for 3 turns. If the target is debuffed, grant Heal Over Time to a random ally for 3 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "As the Force Wills": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "All allies have their current Health percentages equalized. Dispel all debuffs from all allies and grant them a Heal Over Time effect for 4 turns for each effect dispelled. Allies that were not debuffed gain Tenacity Up for 3 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Strength of Purpose": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy, dealing 20% more damage for each buffed ally. If Baze Malbus is present, he is called to Assist.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Indomitable Will": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Chirrut Îmwe gains +17% Counter Chance and Health Steal for each living enemy, doubled for Empire enemies. If Baze Malbus is present he also gains these bonuses.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             },
             "Resolute Endurance": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever a Rebel ally is Critically Hit they gain Heal Over Time for 2 turns. At the start of each turn, if Chirrut Îmwe is alive, all allies with Heal Over Time recover 4% of their Max Health.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -3511,10 +3920,10 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chopper.png",
         "side": "light",
         "factions": [
-            "support",
-            "droid",
-            "rebel",
-            "phoenix"
+            "Droid",
+            "Phoenix",
+            "Rebel",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -3647,25 +4056,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and grant a random Phoenix or Droid ally Offense Up, Defense Up, or Speed Up at random for 2 turns, with a 60% chance to also reduce that ally's cooldowns by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Cantankerous Clanker": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Chopper gains Taunt for 1 turn. While he has this Taunt buff, Chopper gains 30% Evasion.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Metal Menace": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Dispel all buffs on target enemy. For each buff dispelled this way, all enemies lose 10% Turn Meter and Chopper gains 25% Protection. Droid targets are also Stunned for 1 turn, which can't be Evaded.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Maintenance Protocols": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the start of his turn, Chopper recovers 15% of his Max Health. In addition, whenever he is damaged by an attack, he gains Protection Up (15%) if he doesn't have Protection Up. Additionally, Chopper has a 30% Chance to Assist when another Phoenix or Droid ally uses an ability during their turn (this Assist is not shared with Phoenix allies).",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -3681,10 +4110,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclonegreen.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "human",
-            "clone trooper",
-            "galactic republic"
+            "Attacker",
+            "Clone Trooper",
+            "Galactic Republic"
         ],
         "mods": {
             "Arena": {
@@ -3804,19 +4232,34 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and gain 50% Turn Meter on a critical hit.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Suppressive Fire": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to all enemies and remove 50% of their Turn Meters.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Concentrated Fire": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Clone Sergeant Phase I gains 4.5% Critical Chance Up for each living Clone ally. In addition, he has +10% Critical Damage and Offense Up for 2 turns whenever he critically hits.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -3990,8 +4433,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_lukebespin.png",
         "side": "light",
         "factions": [
-            "rebel",
-            "attacker"
+            "Attacker",
+            "Rebel"
         ],
         "mods": {
             "Arena": {
@@ -4124,37 +4567,67 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Speed Down and Defense Down for 2 turns. If the target already had Speed Down, remove 30% Turn Meter. If the target already had Defense Down, inflict Stun for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Use the Force": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Physical damage to target enemy, Dispel all buffs on them, remove 100% Turn Meter, and inflict Buff Immunity and Tenacity Down for 2 turns. Reduce the cooldown of this ability by 1 if the target didn't have full Health.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Call to Action": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Dispel all debuffs on Luke. Luke gains 100% Turn Meter and recovers 40% Health and 40% Protection. If Luke doesn't have the Call to Action unique buff, he gains it until the next time this ability is used. Call to Action: Luke ignores Taunts during his turn and has +50% Accuracy, +50% Critical Chance, and +50% Critical Damage. Can't be Dispelled or prevented.",
-                "tier": "omega"
+                "abilityDesc": "Dispel all debuffs on Luke. Luke gains 100% Turn Meter and recovers 40% Health and 40% Protection. If Luke doesn't have the Call to Action unique buff, he gains it until the next time this ability is used.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Rebel Maneuvers": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Rebel allies have +50% Counter Chance, +50% Defense, and +15% Offense. Whenever an enemy Resists a detrimental effect, Rebel allies gain 5% Turn Meter.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Learn Control": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "While Luke doesn't have Call to Action, he has +50% Counter Chance, +50% Critical Avoidance, +50% Defense, +100% Tenacity, and gains 10% Turn Meter whenever another Rebel ally takes damage.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             },
             "It Binds All Things": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Luke has +40% Potency. Whenever Luke Resists a detrimental effect he recovers 5% Health and 5% Protection. Whenever Luke inflicts a debuff he gains 10% Turn Meter and other allies gain half that amount.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -4169,8 +4642,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_coruscantpolice.png",
         "side": "light",
         "factions": [
-            "support",
-            "galactic republic"
+            "Galactic Republic",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -4290,19 +4763,34 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 50% chance to Stun the target for one turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Non-Lethal Crowd Control": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to all enemies with a 70% chance to inflict Offense Down for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Non-Lethal Specialist": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Coruscant Underworld Police gains 30% Potency. In addition, he gains 20% Turn Meter whenever he inflicts a negative status effect.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -4317,9 +4805,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dooku.png",
         "side": "dark",
         "factions": [
-            "support",
-            "sith",
-            "separatist"
+            "Separatist",
+            "Sith",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -4439,25 +4927,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 50% chance to attack again. These attacks have a 25% chance to Stun for 1 turn and a 25% chance to inflict Ability Block for 1 turn. Debuff chances doubled against Jedi. This attack can't be Countered.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Force Lightning": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to target enemy with a 50% chance to Shock and Stun them for 1 turn, and a 50% chance to Stun a random enemy. Debuff chances doubled against Jedi.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Master Tactician": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "All allies gain 15% Evasion and gain Offense Up for 2 turns whenever they evade.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Flawless Riposte": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Count Dooku has 100% Counter Chance. In addition, whenever he attacks outside of his turn, he deals 30% more damage, has a 25% chance to gain 45% Turn Meter, recovers 10% Protection, and gains Critical Hit Immunity for 1 turn.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -4473,10 +4981,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_echo.png",
         "side": "light",
         "factions": [
-            "support",
-            "human",
-            "clone trooper",
-            "galactic republic"
+            "Clone Trooper",
+            "Galactic Republic",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -4596,25 +5103,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and grant 20% Turn Meter to another random ally with less than 50% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "EMP Grenade": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Special damage to all enemies and Dispel all positive status effects on them.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "By the Book": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Clone allies recover 7% of their Max Health whenever they use a Basic ability. This effect can't trigger more than two times before their next turn, and is disabled if Echo is defeated.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Follow-Up": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever another ally uses a Basic ability during their turn, Echo has a 30% chance to Assist, dealing 40% less damage. This Assist chance is doubled if the attacking ally is a Clone.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -4630,10 +5157,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_fives.png",
         "side": "light",
         "factions": [
-            "tank",
-            "human",
-            "clone trooper",
-            "galactic republic"
+            "Clone Trooper",
+            "Galactic Republic",
+            "Tank"
         ],
         "mods": {
             "Arena": {
@@ -4753,25 +5279,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal physical damage to target enemy and inflict Speed Down for 2 turns. Attack again if enemy is inflicted with Speed Down.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Combined Fire": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and call a random ally to Assist. If the Assisting ally is a Clone, both attackers deal 75% more damage.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Veteran Clone Trooper": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Clone allies gain 65 Defense, and other allies gain half that amount.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Tactical Awareness": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Fives has 85% Counter Chance and +50% Counter Damage. Fives gains 15% Turn Meter whenever another Clone ally takes damage and 7.5% Turn Meter whenever a non-Clone ally takes damage.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -4787,10 +5333,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_rex.png",
         "side": "light",
         "factions": [
-            "support",
-            "human",
-            "clone trooper",
-            "galactic republic"
+            "Clone Trooper",
+            "Galactic Republic",
+            "Support"
         ],
         "mods": {
             "Arena (Leader)": {
@@ -4923,25 +5468,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and remove 25% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Squad Discipline": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Dispel all negative status effects on all allies and grant them Tenacity Up for 3 turns. Clone allies gain 60% Turn Meter, plus an additional 10% Turn Meter for each effect dispelled this way, and other allies gain half that amount.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Subdue": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Physical damage to target enemy, plus bonus damage equal to 25% of the target's Maximum Health.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Brothers in Arms": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Clone allies gain 20% Max Health, and other allies gain half that amount. In addition, whenever an ally suffers a Critical Hit, all Clone allies gain 15% Turn Meter, and other allies gain half that amount.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -4956,8 +5521,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_maul.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "sith"
+            "Attacker",
+            "Sith"
         ],
         "mods": {
             "Arena": {
@@ -5077,25 +5642,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy. On a finishing blow, gain 100% Turn Meter and Offense Up for 2 turns. This attack deals double damage to Jedi.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Whirling Blades": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to all enemies and inflict Daze for 2 turns. This attack deals double damage to Jedi.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Dancing Shadows": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "All Sith allies gain 20% Evasion, gain 20% Turn Meter and Stealth for 1 turn at the start of each encounter and whenever they Evade or are Critically Hit, can't be Critically Hit while Stealthed, and gain Advantage for 2 turns whenever Stealth expires. The Stealth and Turn Meter from this ability ignores Taunting allies.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Power of Hatred": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Darth Maul gains 20% Max Health, gains Max Health equal to 10% of the damage he deals, and Potency equal to 0.3% of his Max Health. Whenever an enemy is defeated, Darth Maul gains bonuses for the rest of the encounter. First Enemy: 25% Critical Chance Second Enemy: 25% Evasion Third Enemy: 25% Max Health recovery on hitting with an attack",
-                "tier": "omega"
+                "abilityDesc": "Darth Maul gains 20% Max Health, gains Max Health equal to 10% of the damage he deals, and Potency equal to 0.3% of his Max Health. Whenever an enemy is defeated, Darth Maul gains bonuses for the rest of the encounter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -5111,8 +5696,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nihilus.png",
         "side": "dark",
         "factions": [
-            "support",
-            "sith"
+            "Sith",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -5245,31 +5830,56 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Special damage to target enemy and Dispel all buffs on them. If any buffs were dispelled, reduce the cooldown of Drain Force by 1",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Drain Force": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to all enemies with a 50% chance (doubled against debuffed enemies) to increase their cooldowns by 1. For each cooldown increased, reduce the cooldown of Annihilate by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Annihilate": {
                 "type": "Special",
                 "abilityCooldown": "8",
                 "abilityDesc": "Instantly defeat target enemy. Nihilus gains Max Health equal to the target's Max Health. The defeated target can't be Revived. This ability can't be Evaded and starts on cooldown.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Lord of Hunger": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Sith allies gain 60% Offense and 150% Health Steal. Sith allies lose all Protection and gain that much Max Health. Sith allies are immune to Healing effects that aren't Health Steal and can't score Critical Hits.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Wound in the Force": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the start of each of his turns, Nihilus inflicts Damage Over Time for 2 turns on a random enemy that doesn't have any debuffs. If all enemies are debuffed, inflict Damage Over Time on a random enemy. At the start of each enemy turn, Nihilus inflicts Health Down on them for 2 turns.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -5285,8 +5895,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sidious.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "sith"
+            "Attacker",
+            "Sith"
         ],
         "mods": {
             "Arena": {
@@ -5406,25 +6016,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Healing Immunity for 3 turns with a 50% chance (doubled if the target is debuffed) to ignore Defense.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Demoralizing Blows": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Physical damage to all enemies and inflict Damage Over Time and Expose for 2 turns. This attack inflicts two additional Damage Over Time effects on a Critical Hit.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Unlimited Power": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "All allies gain 15% Critical Chance and 30% Critical Damage. Sith allies gain 2% Offense until the end of battle when they score a Critical Hit.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Sadistic Glee": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Darth Sidious recovers 20% of his Max Health and gains 50% Turn Meter whenever any unit is defeated. In addition, he has +35% Evasion against Jedi attacks, +50% Potency, and gains Max Health equal to his Potency percentage.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -5440,10 +6070,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_vader.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "human",
-            "sith",
-            "empire"
+            "Attacker",
+            "Empire",
+            "Sith"
         ],
         "mods": {
             "Arena": {
@@ -5615,25 +6244,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with an 80% chance to inflict Ability Block for 1 turn. Jedi targets cannot Evade or Resist the effects of this attack.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Force Crush": {
                 "type": "Special",
                 "abilityCooldown": "5",
                 "abilityDesc": "Deal Physical damage to all enemies and inflict Speed Down and 3 Damage Over Time effects for 2 rounds.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Culling Blade": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Physical damage to target enemy and dispels all debuffs on them. This attack deals 50% more damage for each effect dispelled and grants 100% Turn Meter on a finishing blow. This attack can't be Evaded.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Inspiring Through Fear": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Empire and Sith allies gain 30% Offense and have a 50% chance to remove 20% Turn Meter when they damage an enemy. This Turn Meter removal can't be Resisted. While Darth Vader is alive, enemies immediately regain Damage Over Time for 2 turns whenever Damage Over Time expires on them.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -5644,11 +6293,11 @@
             "Dathcha"
         ],
         "url": "https://swgoh.gg/characters/dathcha/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dathcha.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_dathcha.png",
         "side": "light",
         "factions": [
-            "support",
-            "jawa"
+            "Jawa",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -5768,25 +6417,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 60% chance to gain Stealth for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Scout Instincts": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Special damage to all enemies with a 50% chance to inflict Ability Block for 1 turn and a 50% chance to Stun Droids for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Decommission": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever an ally damages a Droid, they have an 80% chance to inflict Defense Down for 3 turns and a 25% chance to remove 25% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             },
             "Droid Hunter": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Dathcha gains 4.5% Critical Chance for each living ally. In addition, he has +15% Critical Damage.",
-                "tier": "abilityMatMK3"
+                "abilityDesc": "Dathcha gains 4.5% Critical Chance for each living Jawa ally. In addition, he has +15% Critical Damage.",
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -5802,9 +6471,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperdeath.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "empire",
-            "imperial trooper"
+            "Attacker",
+            "Empire",
+            "Imperial Trooper"
         ],
         "mods": {
             "Arena (Krennic Lead)": {
@@ -5950,25 +6619,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to inflict Daze for 3 turns. If the target was already Dazed, Stun them for 1 turn. If the target is a Rebel, attack again.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Death Trooper Grenade": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Physical damage to all enemies and Dispel all buffs on them with a 70% chance to inflict Healing Immunity for 2 turns. Enemies who were not buffed have their cooldowns increased by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Terminate": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Deal Physical damage to target enemy. If the target is suffering any debuffs, this attack is a guaranteed Critical Hit. If there are any defeated enemies, also inflict Deathmark for 2 turns. Targets defeated by Terminate can't be revived.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to target enemy. If the target is suffering any debuffs, this attack is a guaranteed Critical Hit. If there are any defeated enemies, also inflict Deathmark for 2 turns, which can't be Resisted. Targets defeated by Terminate can't be revived.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Krennic's Guard": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Whenever Death Trooper scores a Critical Hit, he and Director Krennic recover 20% Health. Death Trooper has a 50% chance to gain 100% Turn Meter whenever Director Krennic takes damage. Director Krennic can't be Critically Hit while Death Trooper is alive. While Death Trooper is active, Imperial Trooper allies have +10% Health Steal.",
-                "tier": "zeta"
+                "abilityDesc": "Whenever Death Trooper scores a Critical Hit, he and Director Krennic recover 20% Health. Death Trooper has a 50% chance to gain 100% Turn Meter whenever Director Krennic takes damage. Director Krennic can't be Critically Hit while Death Trooper is alive.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -5982,9 +6671,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dengar.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "scoundrel",
-            "bounty hunter"
+            "Attacker",
+            "Bounty Hunter",
+            "Scoundrel"
         ],
         "mods": {
             "Arena": {
@@ -6104,25 +6793,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy. If the target is suffering from any debuffs, there is a 60% chance to call an Ally to assist. If the assisting ally is a Scoundrel, the attack is guaranteed to be a Critical Hit.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Blast & Smash": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy with a 50% chance to inflict Speed Down for 3 turns. If the target had 50% Turn Meter or more, they are also Stunned for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Mini-Mine Mayhem": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Deal Physical damage to all enemies, then inflict negative status effects on all enemies that suffer a Critical Hit. Effects inflicted depend on number of Critical Hits scored. 1 Critical Hit: Tenacity Down for 3 turns 2 Critical Hits: Damage Over Time for 3 turns 3 Critical Hits: 50% Turn Meter Reduction.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to all enemies, then inflict negative status effects on all enemies that suffer a Critical Hit. Effects inflicted depend on number of Critical Hits scored.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Grizzled Veteran": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever Dengar receives a Critical Hit, he gains Stealth for 2 turns. Whenever an enemy evades Dengar’s attack, he gains +60% Turn Meter. Whenever Dengar suffers a negative status effect, he gains Tenacity Up for 2 turns.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -6338,9 +7047,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_eethkoth.png",
         "side": "light",
         "factions": [
-            "support",
-            "jedi",
-            "galactic republic"
+            "Galactic Republic",
+            "Jedi",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -6460,25 +7169,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 50% chance to inflict Defense Down for 3 turns. If the target is a Droid, this attack has a 100% chance.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Force Push": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to target enemy with a 75% chance to Stun for 1 turn and a 100% chance to inflict Ability Block for 3 turns if the target is a Droid.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Stalwart Jedi Defender": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Jedi allies gain 60 Defense.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 0,
+                    "zeta": 0
+                }
             },
             "Anti-Droid Specialist": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Eeth Koth has +35% Critical Chance and +20% Critical Damage when attacking Droids.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -6494,9 +7223,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_palpatineemperor.png",
         "side": "dark",
         "factions": [
-            "support",
-            "sith",
-            "empire"
+            "Empire",
+            "Sith",
+            "Support"
         ],
         "mods": {
             "Arena": {
@@ -6629,31 +7358,56 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Special damage to target enemy and Shock them for 3 turns. Then, Palpatine gains 15% Turn Meter for each Shocked enemy.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Power of the Dark Side": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Special damage to all enemies with a 70% chance to Stun them for 1 turn. Shocked enemies are Stunned for 2 turns and have their Shock dispelled.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Let the Hate Flow": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "All allies gain Offense Up for 2 turns and all units lose 5% of their Max Health. Palpatine recovers health equal to 150% the total amount lost. For each Shocked enemy gain 50% Turn Meter and refresh the duration of Shock to 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Emperor of the Galactic Empire": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Empire and Sith allies gain +32% Potency and Max Health. Jedi and Rebel enemies have -32% Potency and Evasion. Whenever an Empire ally inflicts a debuff during their turn they gain 20% Turn Meter. Whenever a Sith ally inflicts a debuff during their turn they recover 20% of their Max Health.",
-                "tier": "omega"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 0,
+                    "zeta": 0
+                }
             },
             "Crackling Doom": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the end of each of his turns, Palpatine deals Special damage to all Shocked enemies and then deals Special damage to all Jedi and Rebel enemies. This damage can't defeat enemies.",
-                "tier": "omega"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -6665,11 +7419,11 @@
             "EE"
         ],
         "url": "https://swgoh.gg/characters/ewok-elder/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewokchief.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_chief.png",
         "side": "light",
         "factions": [
-            "healer",
-            "ewok"
+            "Ewok",
+            "Healer"
         ],
         "mods": {
             "Arena": {
@@ -6802,19 +7556,34 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 60% chance to gain 50% Turn Meter, grant other Ewok allies half that amount, and grant other allies 10% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Tribal Healer": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Dispel all debuffs on all allies. All allies recover Health equal to 30% of Ewok Elder's Max Health with a 35% chance to revive defeated allies at 15% Health.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Power of the Forest": {
                 "type": "Special",
                 "abilityCooldown": "7",
                 "abilityDesc": "Revive a random defeated ally at 40% Health with a 55% chance for Ewok Elder to gain 45% Turn Meter. If the revived ally is an Ewok, they are called to Assist. Whenever an Ewok ally is defeated, reduce the cooldown of this ability by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -6825,11 +7594,11 @@
             "Ewok Scout"
         ],
         "url": "https://swgoh.gg/characters/ewok-scout/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewokscout.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_scout.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "ewok"
+            "Attacker",
+            "Ewok"
         ],
         "mods": {
             "Arena": {
@@ -6949,19 +7718,34 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 55% chance to remove 50% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Rushing Attack": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy with an additional 50% chance of a Critical Hit and call a random ally to Assist.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Tribal Tactics": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Ewok Scout gains 5% Evasion for each living Ewok ally and gains 30% Turn Meter whenever he Evades an attack or lands a Critical Hit.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -6976,10 +7760,10 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ezra_s3.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "jedi",
-            "rebel",
-            "phoenix"
+            "Attacker",
+            "Jedi",
+            "Phoenix",
+            "Rebel"
         ],
         "mods": {
             "Arena": {
@@ -7099,25 +7883,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 40% chance to attack again. If Ezra has no debuffs, the chance is doubled.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Flourish": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and Dispel all buffs on them. If the enemy had no buffs, this attack's cooldown is reduced by 1 and Ezra gains 75% Turn Meter instead. Ezra gains Defense Up for 2 turns.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
             },
             "Watch and Learn": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Target ally attacks and then Ezra assists them, dealing 20% more damage. Both attackers gain a bonus effect based on the chosen ally's role: - Attacker: +100% Crit for this attack - Tank: Protection Up (40%) for 2 turns - Support: +40% Turn Meter Gain",
-                "tier": "omega"
+                "abilityDesc": "Target ally attacks and then Ezra assists them, dealing 20% more damage. Both attackers gain a bonus effect based on the chosen ally's role:",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Push Through": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Ezra gains 10% Offense at the end of his turn. The effect can stack up to 40%. This bonus is reset when Ezra is defeated.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -7131,9 +7935,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_finnjakku.png",
         "side": "light",
         "factions": [
-            "tank",
-            "human",
-            "resistance"
+            "Resistance",
+            "Tank"
         ],
         "mods": {
             "Arena": {
@@ -7279,25 +8082,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy. This attack deals 100% more damage to enemies that haven't already been struck by it.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Hold the Line": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Finn gains Advantage and Defense Up for 2 turns and Dispels all debuffs from all allies. Finn and Poe Dameron gain Heal Over Time (20%) for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Takedown": {
                 "type": "Special",
                 "abilityCooldown": "2",
                 "abilityDesc": "Deal Physical damage to target enemy and Expose them for 2 turns with an 80% chance to Stun them for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Balanced Tactics": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Resistance allies gain 30% Offense and 60% Defense, and other allies gain half that amount. Whenever a Resistance ally loses Foresight, they gain Advantage for 2 turns and whenever an enemy takes damage from Expose, reduce the cooldowns of all Resistance allies by 1 and grant them 35% Turn Meter.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -9709,9 +10532,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_han.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "scoundrel",
-            "rebel"
+            "Attacker",
+            "Rebel",
+            "Scoundrel"
         ],
         "mods": {
             "Arena": {
@@ -9831,25 +10654,56 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy. If the target has less than 50% Turn Meter, deal 75% more damage. Otherwise, remove 35% Turn Meter. This attack can't be Evaded.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Deadeye": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and Stun them for 1 turn. Gain Turn Meter equal to Han's Critical Chance.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Never Tell Me The Odds": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "All allies gain Critical Chance Up and Evasion Up for 2 turns. Han gains 50% Turn Meter and Critical Damage Up for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Shoots First": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Han has +35% Counter Chance and +20% Critical Chance. The first time each turn Han uses his Basic attack, he attacks again dealing 50% less damage. Han takes a bonus turn at the start of each encounter. During this turn Han ignores Taunts and he can only use his Basic ability, but it will Stun the target for 1 turn and can't be Resisted.",
-                "tier": "zeta"
+                "abilityDesc": "Han has +35% Counter Chance and +20% Critical Chance. The first time each turn Han uses his Basic attack, he attacks again dealing 50% less damage.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            " Deadeye": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy and Stun them for 1 turn. Gain Turn Meter equal to Han's Critical Chance.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 0,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -12987,9 +13841,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kyloren.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "human",
-            "first order"
+            "Attacker",
+            "First Order"
         ],
         "mods": {
             "Arena": {
@@ -13109,25 +13962,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 75% chance to inflict Healing Immunity for 2 turns and a 75% chance to inflict Damage Over Time for 3 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Lash Out": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Deal Physical damage to all enemies and gain Retribution for 2 turns. First Order allies and allies with Advantage gain 25% Turn Meter.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to all enemies and gain Retribution for 2 turns. This attack can't Critically Hit and deals bonus damage equals to 50% of Kylo Ren's Critical Damage. First Order allies and allies with Advantage gain 25% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Outrage": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and, if Kylo has full Health, inflict Stun for 1 turn. This attack deals 75% more damage if Kylo is below full Health. Recover Protection equal to the damage dealt.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
             },
             "Unstoppable": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever Kylo takes damage he gains 50% Defense and 15% Offense for 1 turn, and has a 50% chance to reset his cooldowns. Kylo takes reduced damage from Percent Health damage effects and gains 10 Speed for each debuff on him. Whenever Kylo uses a Special ability he gains Damage Over Time for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },
@@ -21707,25 +22580,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Defense Down for 2 turns. If the target was already debuffed, deal double damage.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Scan All Wavelengths": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Empire allies gain Critical Chance Up and Critical Damage Up for 3 turns. Starck gains 5% Turn Meter for each Empire ally and each Rebel enemy.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Blizzard Four Barrage": {
                 "type": "Special",
                 "abilityCooldown": "8",
                 "abilityDesc": "Deal Physical damage to all enemies with a 50% chance to Stagger them. Dispel all buffs on the primary target. For each active Imperial Trooper ally, deal 10% more damage and reduce the cooldown of this ability by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Imperial Intelligence": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the end of his turn, Starck recovers 7% Health and 3% Protection, and removes 1% Turn Meter from all enemies for each active Empire ally (doubled for Imperial Trooper allies).",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -22210,7 +23103,7 @@
     },
     {
         "name": "First Order Executioner",
-        "uniqueName": "",
+        "uniqueName": "FIRSTORDEREXECUTIONER",
         "aliases": [
             "First Order Executioner",
             "FOE"
