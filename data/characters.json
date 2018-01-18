@@ -12951,9 +12951,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kyloren.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "human",
-            "first order"
+            "Attacker",
+            "First Order"
         ],
         "mods": {
             "Arena": {
@@ -13073,25 +13072,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 75% chance to inflict Healing Immunity for 2 turns and a 75% chance to inflict Damage Over Time for 3 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Lash Out": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Deal Physical damage to all enemies and gain Retribution for 2 turns. First Order allies and allies with Advantage gain 25% Turn Meter.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to all enemies and gain Retribution for 2 turns. This attack can't Critically Hit and deals bonus damage equals to 50% of Kylo Ren's Critical Damage. First Order allies and allies with Advantage gain 25% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Outrage": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and, if Kylo has full Health, inflict Stun for 1 turn. This attack deals 75% more damage if Kylo is below full Health. Recover Protection equal to the damage dealt.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
             },
             "Unstoppable": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever Kylo takes damage he gains 50% Defense and 15% Offense for 1 turn, and has a 50% chance to reset his cooldowns. Kylo takes reduced damage from Percent Health damage effects and gains 10 Speed for each debuff on him. Whenever Kylo uses a Special ability he gains Damage Over Time for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         }
     },

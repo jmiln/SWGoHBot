@@ -31,7 +31,7 @@ exports.run = (client, message, args) => {
             for (var modSet in character.mods) {
                 const mods = character.mods[modSet];      
                 const modSetString = "* " + mods.sets.join("\n* ");                
-
+                
                 let modPrimaryString = message.language.COMMAND_MODS_EMBED_STRING1(mods.square, mods.arrow, mods.diamond);
                 modPrimaryString += message.language.COMMAND_MODS_EMBED_STRING2(mods.triangle, mods.circle, mods.cross);
 
