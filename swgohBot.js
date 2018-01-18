@@ -100,7 +100,7 @@ const init = async () => {
 };
 
 client.on('error', (err) => {
-    client.log('ERROR', inspect(err));
+    client.log('ERROR', inspect(err.error));
 });
 
 // The function to check every minute for applicable events
