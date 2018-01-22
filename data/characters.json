@@ -185,6 +185,27 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 1177,
+            "Agility": 887,
+            "Intelligence": 851,
+            "Speed": 125,
+            "Physical Damage": 2756,
+            "Physical Critical Rating": 740,
+            "Special Damage": 2351,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 44,
+            "Resistance Penetration": 15,
+            "Potency": 41,
+            "Health": 26236,
+            "Armor": 291,
+            "Resistance": 116,
+            "Tenacity": 41,
+            "Health Steal": 15,
+            "Protection": 28,
+            "activation": 50
         }
     },
     {
