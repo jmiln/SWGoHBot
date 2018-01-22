@@ -27,20 +27,24 @@ exports.run = async (client, message, args) => {
     const fuse = new Fuse(client.characters, options);
     const chars = fuse.search(charName);
     // If there's a ton of em, only return the first 4
-    console.log(chars);
+    let found = false;
     if (chars.length === 0) {
         return message.channel.send(message.language.COMMAND_UPDATECHAR_WRONG_CHAR(charName));
     } else {
         client.characters.some(function(obj, ix) {
             if (obj.uniqueName === chars[0].uniqueName) {
                 characterIndex = ix;
+                found = true;
                 return true;
             }
         });
     }
 
+    if (!found) {
+        return message.channel.send(`Sorry, but I cannot find ${charName}`);
+    }
+
     if (action === 'mods') {
-        console.log('Trying to update mods');
         await updateCharacterMods(client, message, characterIndex);
     } else if (action === 'gear') {
         await updateCharacterGear(client, message, characterIndex);
@@ -254,6 +258,7 @@ async function updateCharacterInfo(client, message, charIndex) {
         };
     });
 
+    // Grab ability costs
     $('.list-group-item-ability').each(function() {
         const aName = $(this).find('.ability-mechanics-link').text().replace(/^View /, '').replace(/\sMechanics$/, '');
 
@@ -271,13 +276,10 @@ async function updateCharacterInfo(client, message, charIndex) {
         aCost.splice(0,2);  // Ignore the first two (Header then default unlock)
         aCost.forEach(lvl => {
             const count = getCount(lvl);
-            // console.log('Count1: ' + inspect(count));
             mk3s += count.mk3;
             omegas += count.omega;
             zetas += count.zeta;
-            // console.log('Count2: ' + inspect(count));
         });
-        // console.log(`${mk3s} MK3, ${omegas} Omegas, ${zetas} Zetas`);
         charList[charIndex].abilities[aName].cost = {
             'mk3': mk3s,
             'omega': omegas,
@@ -285,12 +287,62 @@ async function updateCharacterInfo(client, message, charIndex) {
         };
     });
 
+    const stats = {
+        // Primary
+        'Power':0,
+        'Strength': 0,
+        'Agility':0,
+        'Intelligence':0,
+        // Offensive
+        'Speed': 0,
+        'Physical Damage': 0,
+        'Physical Critical Rating': 0,
+        'Special Damage': 0,
+        'Special Critical Rating': 0,
+        'Armor Penetration': 0,
+        'Resistance Penetration': 0,
+        'Potency': 0,
+        // Defensive
+        'Health': 0,
+        'Armor': 0,
+        'Resistance': 0,
+        'Tenacity': 0,
+        'Health Steal': 0,
+        'Protection': 0,
+        // Activation
+        'activation': 0
+    };
+
+    $('.content-container-primary-aside').each(function() {
+        $(this).find('.media-body').each(function() {
+            const rows = $(this).html().split('\n');
+
+            rows.forEach(stat => {
+                if (stat.startsWith('<p></p>') || stat.startsWith('</p>')) {
+                    stat = stat.replace(/<p><\/p>/g, '').replace(/^<p>/g, '').replace(/^<\/p>/g, '');
+                    stat = stat.replace(/\n/g, '').replace(/\(.*\)/g, '');
+                    if (stat.startsWith('<div class="pull-right">')) {
+                        stat = stat.replace('<div class="pull-right">', '');
+                        const statNum = parseInt(stat.replace(/<\/div>.*/g, ''));
+                        const statName = stat.replace(/.*<\/div>/g, '').replace(/\s*$/g, '');
+                        if (statName.indexOf('Shards for Activation') > -1) {
+                            stats.activation = statNum;
+                        } else {
+                            stats[statName] = statNum;
+                        }
+                    }
+                }
+            });
+        });
+    });
+
+    charList[charIndex].stats = stats;
+
     fs.writeFile("./data/characters.json", JSON.stringify(client.characters, null, 4), 'utf8', function(err) {
         if (err) {
             return console.log(err);
         } else {
             client.characters = charList;
-            console.log("+++++++++++++++++" + charIndex);
             message.channel.send(`I have updated the info for ${client.characters[charIndex].name}.`);
         }
     });

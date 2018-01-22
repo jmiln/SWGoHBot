@@ -425,6 +425,31 @@ async function ggGrab(charLink) {
         "gear": {
         },
         "abilities": {
+        },
+        "stats": {
+            // Primary
+            'Power':0,
+            'Strength': 0,
+            'Agility':0,
+            'Intelligence':0,
+            // Offensive
+            'Speed': 0,
+            'Physical Damage': 0,
+            'Physical Critical Rating': 0,
+            'Special Damage': 0,
+            'Special Critical Rating': 0,
+            'Armor Penetration': 0,
+            'Resistance Penetration': 0,
+            'Potency': 0,
+            // Defensive
+            'Health': 0,
+            'Armor': 0,
+            'Resistance': 0,
+            'Tenacity': 0,
+            'Health Steal': 0,
+            'Protection': 0,
+            // Activation
+            'activation': 0
         }
     };
 
@@ -510,6 +535,8 @@ async function ggGrab(charLink) {
         };
     });
 
+
+    // Grab the cost for each ability
     $('.list-group-item-ability').each(function() {
         const aName = $(this).find('.ability-mechanics-link').text().replace(/^View /, '').replace(/\sMechanics$/, '');
 
@@ -541,7 +568,31 @@ async function ggGrab(charLink) {
         };
     });
 
+    // Get the stats
+    $('.content-container-primary-aside').each(function() {
+        $(this).find('.media-body').each(function() {
+            const rows = $(this).html().split('\n');
 
+            rows.forEach(stat => {
+                if (stat.startsWith('<p></p>') || stat.startsWith('</p>')) {
+                    stat = stat.replace(/<p><\/p>/g, '').replace(/^<p>/g, '').replace(/^<\/p>/g, '');
+                    stat = stat.replace(/\n/g, '').replace(/\(.*\)/g, '');
+                    if (stat.startsWith('<div class="pull-right">')) {
+                        stat = stat.replace('<div class="pull-right">', '');
+                        const statNum = parseInt(stat.replace(/<\/div>.*/g, ''));
+                        const statName = stat.replace(/.*<\/div>/g, '').replace(/\s*$/g, '');
+                        if (statName.indexOf('Shards for Activation') > -1) {
+                            character.stats.activation = statNum;
+                        } else {
+                            character.stats[statName] = statNum;
+                        }
+                    }
+                }
+            });
+        });
+    });
+
+    // Grab the gear for the character
     const gearGrab = await snekfetch.get(gearLink);
     const gearGrabText = gearGrab.text;
 
@@ -592,3 +643,4 @@ function getCount(lvl) {
     }
     return lvlCost;
 }
+
