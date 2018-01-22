@@ -100,7 +100,11 @@ const init = async () => {
 };
 
 client.on('error', (err) => {
-    client.log('ERROR', inspect(err.error));
+    if (err.error.toString().indexOf('ECONNRESET') > -1) {
+        console.log('Connection error');
+    } else {
+        client.log('ERROR', inspect(err.error));
+    }
 });
 
 // The function to check every minute for applicable events

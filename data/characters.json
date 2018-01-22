@@ -15404,8 +15404,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_initiate.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "nightsister"
+            "Attacker",
+            "Nightsister"
         ],
         "mods": {
             "Arena": {
@@ -15524,20 +15524,46 @@
             "Slice Open": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy. On a Critical Hit, inflict Damage Over Time for 3 turns.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Damage Over Time for 3 turns. On a Critical Hit, inflict Damage Over Time for 3 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Cut Down": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Deal Physical damage to target enemy with an additional 70% chance of a Critical Hit.",
-                "tier": "omega"
+                "abilityDesc": "All allies gain Critical Chance Up for 3 turns. Then, deal Physical damage to target enemy.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Severing Strike": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Deal Physical damage to target enemy with a 75% chance to render the target Immune to positive status effects for 2 turns.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Buff Immunity for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Nightsister Retaliation": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "If Nightsister Initiate has full Health, she has +100% Counter Chance. Otherwise, she has +100% Offense.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
