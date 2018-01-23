@@ -236,6 +236,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -762,6 +775,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -1535,7 +1561,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage/ Critical Chance",
+                "triangle": "Crit. Damage/ Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -1701,8 +1727,7 @@
         "uniqueName": "BIGGSDARKLIGHTER",
         "aliases": [
             "Biggs Darklighter",
-            "Biggs",
-            "Wiggs"
+            "Biggs"
         ],
         "url": "https://swgoh.gg/characters/biggs-darklighter/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_biggs.png",
@@ -2455,6 +2480,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -2677,16 +2715,16 @@
             },
             "PvP": {
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
+                    "Speed x4",
+                    "Health x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Potency/ Protection"
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -2861,6 +2899,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -3415,16 +3466,16 @@
             },
             "General": {
                 "sets": [
-                    "Speed x4",
+                    "Critical Damage x4",
                     "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -3592,6 +3643,19 @@
                     "Health x2",
                     "Health x2",
                     "Defense x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -3773,6 +3837,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense/ Health"
             }
         },
         "gear": {
@@ -3963,7 +4040,7 @@
             "General": {
                 "sets": [
                     "Speed x4",
-                    "Defense x2",
+                    "Health x2",
                     ""
                 ],
                 "square": "Offense",
@@ -4483,6 +4560,19 @@
                 "triangle": "Crit. Chance/ Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -4667,18 +4757,18 @@
             "Support"
         ],
         "mods": {
-            "Arena": {
+            "why ?!": {
                 "sets": [
-                    "Potency x2",
-                    "Speed x4",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Potency x2"
                 ],
-                "square": "N/A",
-                "arrow": "N/A",
-                "diamond": "N/A",
-                "triangle": "N/A",
-                "circle": "N/A",
-                "cross": "N/A"
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -4843,6 +4933,32 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "DN Lead": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -5195,6 +5311,32 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "Raid w/ clones": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Offense",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "GK Lead": {
+                "sets": [
+                    "",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Offense",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -5384,6 +5526,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "leader": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -5558,6 +5713,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -5932,6 +6100,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Crit. Chance",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -6137,16 +6318,16 @@
             },
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Potency"
             },
             "Raid": {
                 "sets": [
@@ -6160,6 +6341,32 @@
                 "triangle": "Crit. Damage/ Crit. Chance",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "DN lead": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense"
+            },
+            "Lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -6535,6 +6742,45 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "Veers lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
+            },
+            "Krennic/EP lead": {
+                "sets": [
+                    "Critical Chance x2",
+                    "Critical Damage x4",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
+            },
+            "Thrawn lead": {
+                "sets": [
+                    "Critical Chance x2",
+                    "Critical Damage x4",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -6707,6 +6953,32 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "Raid": {
+                "sets": [
+                    "Critical Chance x2",
+                    "Critical Chance x2",
+                    "Critical Chance x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Potency"
             }
@@ -7085,6 +7357,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -7463,15 +7748,15 @@
             "General": {
                 "sets": [
                     "Speed x4",
-                    "Critical Chance x2",
+                    "Health x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit.Chance/ Protection",
-                "circle": "Protection",
-                "cross": "Offense/ Protection"
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Health/ Protection"
             }
         },
         "gear": {
@@ -7634,6 +7919,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -7988,7 +8286,7 @@
             },
             "General": {
                 "sets": [
-                    "Offense x4",
+                    "Speed x4",
                     "Potency x2",
                     ""
                 ],
@@ -7998,6 +8296,19 @@
                 "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "Raid with BB-8": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Ofense"
             }
         },
         "gear": {
@@ -8173,6 +8484,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -8322,6 +8646,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -8471,6 +8808,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -8618,6 +8968,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
+            },
+            "Vader lead": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -8782,16 +9145,16 @@
             },
             "General": {
                 "sets": [
-                    "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -8947,6 +9310,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "'Garazeb Zeb Orrelios Offensive variant'": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -9278,6 +9654,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -9452,6 +9841,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Offense"
+            },
+            "Lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -9907,16 +10309,29 @@
             },
             "Raid": {
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
+                    "Speed x4",
+                    "Health x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
+                "triangle": "Offense/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection/ Offense"
+                "cross": "Offense"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection/ Tenacity"
             }
         },
         "gear": {
@@ -10078,6 +10493,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Crit. Chance",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -10251,7 +10679,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Crit. Damage",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
             }
@@ -10414,6 +10842,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -10570,6 +11011,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -10756,6 +11210,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -11229,6 +11696,19 @@
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -11372,6 +11852,19 @@
                     "Health x2",
                     "Defense x2",
                     "Defense x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -11984,6 +12477,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -12154,16 +12660,16 @@
             },
             "General": {
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
+                    "Critical Damage x4",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -13235,6 +13741,19 @@
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Potency/ Protection"
             }
         },
         "gear": {
@@ -13410,6 +13929,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -13566,6 +14098,32 @@
                 "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "with jedi": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -13876,6 +14434,19 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -14506,16 +15077,16 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Critical Damage x4",
                     "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Potency x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency/ Protection"
+                "cross": "Potency/ Offense"
             }
         },
         "gear": {
@@ -14664,6 +15235,19 @@
                     "Health x2",
                     "Health x2",
                     "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -14831,16 +15415,16 @@
             },
             "General": {
                 "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Defense x2"
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -14998,6 +15582,19 @@
                 "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -15135,18 +15732,18 @@
             "scoundrel"
         ],
         "mods": {
-            "Arena": {
+            "why ?!": {
                 "sets": [
                     "Health x2",
-                    "Offense x4",
-                    ""
+                    "Health x2",
+                    "Potency x2"
                 ],
-                "square": "N/A",
-                "arrow": "N/A",
-                "diamond": "N/A",
-                "triangle": "N/A",
-                "circle": "N/A",
-                "cross": "N/A"
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -15287,6 +15884,19 @@
                     "Critical Chance x2",
                     "Health x2",
                     "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -15441,6 +16051,19 @@
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -15616,6 +16239,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -15961,6 +16597,32 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
+            },
+            "Asajj Lead - if Zeta": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
             }
         },
         "gear": {
@@ -16134,6 +16796,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection/ Offense"
             }
         },
         "gear": {
@@ -16300,6 +16975,19 @@
                 "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Protection",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -16448,6 +17136,19 @@
                     "Potency x2",
                     "Health x2",
                     "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -17283,7 +17984,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage/ Critical Chance",
+                "triangle": "Crit. Damage/ Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -17634,6 +18335,32 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection/ Health(Raid)",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "with BB-8": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -17783,6 +18510,19 @@
                 "arrow": "Speed/ Offense",
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
+            },
+            "TB": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed/ Offense",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Potency"
             }
@@ -17951,6 +18691,19 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection/ Health",
+                "cross": "Offense"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
                 "cross": "Offense"
             }
         },
@@ -18449,6 +19202,32 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Health",
+                "circle": "Protection",
+                "cross": "Offense/ Health"
+            },
+            "DN Lead": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -18604,6 +19383,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health/ Potency"
             }
         },
         "gear": {
@@ -18779,6 +19571,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "tank": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Protection",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -18927,6 +19732,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -19088,6 +19906,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Defense x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Protection",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -19240,16 +20071,16 @@
             },
             "General": {
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
+                    "Critical Damage x4",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Protection",
+                "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -19411,6 +20242,32 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "Thrawn lead": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "Veers lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -19564,6 +20421,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -19709,16 +20579,16 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Health x2",
-                    "Health x2",
-                    "Defense x2"
+                    ""
                 ],
                 "square": "Offense",
-                "arrow": "Speed/ Protection",
+                "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection/ Potency"
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -19872,6 +20742,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
             }
         },
         "gear": {
@@ -20339,6 +21222,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -20487,6 +21383,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -20943,14 +21852,14 @@
             },
             "General": {
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
+                    "Critical Damage x4",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Offense/ Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Potency"
             }
@@ -21115,15 +22024,15 @@
             "General": {
                 "sets": [
                     "Critical Damage x4",
-                    "Potency x2",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency/ Protection"
+                "cross": "Potency/ Offense"
             }
         },
         "gear": {
@@ -21256,8 +22165,7 @@
         "uniqueName": "WEDGEANTILLES",
         "aliases": [
             "Wedge Antilles",
-            "Wedge",
-            "Wiggs"
+            "Wedge"
         ],
         "url": "https://swgoh.gg/characters/wedge-antilles/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_wedge.png",
@@ -21586,6 +22494,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -21739,7 +22660,20 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Protection/ Potency"
+            },
+            "Asajj Lead": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -22037,9 +22971,9 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Health x2",
-                    "Health x2",
-                    "Health x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -22187,15 +23121,15 @@
             "General": {
                 "sets": [
                     "Critical Damage x4",
-                    "Potency x2",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency/ Offense"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -22323,8 +23257,6 @@
         "aliases": [
             "Kylo Ren Unmasked",
             "KRU",
-            "Kylo Ren",
-            "Kylo",
             "Kylo Unmasked",
             "Matt"
         ],
@@ -22339,9 +23271,9 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Health x2",
-                    "Health x2",
-                    "Health x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -22359,7 +23291,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. damage",
+                "triangle": "Crit. Damage",
                 "circle": "Health",
                 "cross": "Health/ Offense"
             }
@@ -22499,7 +23431,8 @@
         "name": "Colonel Starck",
         "uniqueName": "COLONELSTARCK",
         "aliases": [
-            "Colonel Starck"
+            "Colonel Starck",
+            "Starck"
         ],
         "url": "https://swgoh.gg/characters/colonel-starck",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_colonel_stark.png",
@@ -22512,16 +23445,16 @@
         "mods": {
             "PvE": {
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
+                    "Critical Damage x4",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Speed/ Offense",
+                "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -22673,7 +23606,9 @@
         "name": "Imperial Probe Droid",
         "uniqueName": "IMPERIALPROBEDROID",
         "aliases": [
-            "Imperial Probe Droid"
+            "Imperial Probe Droid",
+            "IPD",
+            "Probe Droid"
         ],
         "url": "https://swgoh.gg/characters/imperial-probe-droid",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_probedroid.png",
@@ -22687,7 +23622,7 @@
             "General": {
                 "sets": [
                     "Speed x4",
-                    "Defense x2",
+                    "Potency x2",
                     ""
                 ],
                 "square": "Offense",
@@ -22695,7 +23630,7 @@
                 "diamond": "Defense",
                 "triangle": "Health/ Defense",
                 "circle": "Health",
-                "cross": "Health/ Defense"
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -22845,7 +23780,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Critical Damage",
+                "triangle": "Offense/ Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -22987,7 +23922,7 @@
         "aliases": [
             "Rey Jedi Training",
             "RJT",
-            "JRT"
+            "JTR"
         ],
         "url": "https://swgoh.gg/characters/rey-jedi-training",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rey_tlj.png",
@@ -22999,6 +23934,19 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "Raid": {
+                "sets": [
                     "Critical Damage x4",
                     "Critical Chance x2",
                     ""
@@ -23006,7 +23954,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -23153,6 +24101,8 @@
         "uniqueName": "FIRSTORDEREXECUTIONER",
         "aliases": [
             "First Order Executioner",
+            "Executioner",
+            "FOX",
             "FOE"
         ],
         "url": "https://swgoh.gg/characters/first-order-executioner",
@@ -23172,9 +24122,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection"
+                "cross": "Offense"
             }
         },
         "gear": {
