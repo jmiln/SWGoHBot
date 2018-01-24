@@ -298,8 +298,6 @@ async function updateCharacterMods() {
         let found = false;
         const currentCharacters = client.characters;
         
-        if (thisChar.cname === 'Bohdi Rook') thisChar.cname = 'Bodhi Rook';
-
         currentCharacters.forEach(currentChar => {
             if (thisChar.cname.toLowerCase().replace(cleanReg, '') === currentChar.name.toLowerCase().replace(cleanReg, '')) {
                 found = true;
@@ -312,7 +310,7 @@ async function updateCharacterMods() {
                 } else {
                     setName = thisChar.name;
                 }
-                if (currentChar[setName]) {
+                if (currentChar.mods[setName]) {
                     setName = thisChar.name;
                 }
 
