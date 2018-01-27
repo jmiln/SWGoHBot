@@ -243,7 +243,7 @@ function checkCountdown(thisGuild, guildConf, key, event) {
 }
 
 function announceEvent(thisGuild, guildConf, event, announceMessage) {
-    if (guildConf["announceChan"] != "") {
+    if (guildConf["announceChan"] !== "" || event.eventChan !== '') {
         if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, try using it
             client.announceMsg(thisGuild, announceMessage, event.eventChan);
         } else { // Else, use the default one from their settings
