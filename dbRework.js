@@ -44,6 +44,8 @@ const init = async function() {
     await events.sync();
     await guildEvents.sync();
    
+    let ix = 0;
+
     const oldEvents = await events.findAll();
     // console.log('HERE: ' + inspect(oldEvents));
 
@@ -69,11 +71,9 @@ const init = async function() {
             };
             await guildEvents.create(newEvent);
         });
-
+        console.log(`Finished ${ix++}`);
 
     });
-    console.log('Done');
-    process.exit();
 };
 
 init();
