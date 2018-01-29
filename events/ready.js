@@ -10,8 +10,8 @@ module.exports = async client => {
 
     const defSet = client.config.defaultSettings;
 
-    client.guildSettings.sync();
-    client.guildEvents.sync();
+    await client.guildSettings.sync();
+    await client.guildEvents.sync();
 
     guildList.forEach(async (guildID) => {
         // If there is no config, give em one, and an events object while we're at it
@@ -26,7 +26,6 @@ module.exports = async client => {
             useEventPages: defSet.useEventPages,
             language: defSet.language
         }}).then().catch(err => {client.log('ERROR', `Broke setting up new Settings: \`${err}\``);});
-        await client.guildEvents.findOrCreate({where: {guildID: guildID}, defaults: {guildID: guildID, events: {}}}).then().catch(err => {client.log('ERROR', `Broke setting up new Events: \`${err}\``);});
     });
 
     // Logs that it's up, and some extra info
@@ -35,4 +34,6 @@ module.exports = async client => {
     // Sets the status as the current server count and help command 
     const playingString =  `${client.config.prefix}help ~ ${client.guilds.size} servers`;
     client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
+
+    client.loadAllEvents();
 };

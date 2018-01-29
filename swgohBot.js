@@ -3,7 +3,6 @@ const { promisify } = require("util");
 const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
 const client = new Discord.Client();
-const moment = require('moment-timezone');
 const fs = require("fs");
 const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
@@ -12,7 +11,7 @@ const EnMap = require("enmap");
 
 const Sequelize = require('sequelize');
 
-const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
+// const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
 
 const site = require('./website');
 
@@ -51,9 +50,14 @@ client.guildSettings = client.sequelize.define('settings', {
     useEventPages: Sequelize.BOOLEAN,
     language: Sequelize.TEXT
 });
-client.guildEvents = client.sequelize.define('events', {
-    guildID: { type: Sequelize.TEXT, primaryKey: true },
-    events: Sequelize.JSONB
+client.guildEvents = client.sequelize.define('eventDBs', {
+    eventID: { type: Sequelize.TEXT, primaryKey: true },
+    eventDT: Sequelize.TEXT,
+    eventMessage: Sequelize.TEXT,
+    eventChan: Sequelize.TEXT,
+    countdown: Sequelize.TEXT,
+    repeat: Sequelize.JSONB,
+    repeatDays: Sequelize.ARRAY(Sequelize.TEXT)
 });
 
 const init = async () => {
@@ -107,154 +111,25 @@ client.on('error', (err) => {
     }
 });
 
-// The function to check every minute for applicable events
-async function checkDates() {
-    const guildList = client.guilds.keyArray();
+// Instead of the mess that is the current event checker, when loading the events into schedule, we can load 
+// an extra event in for each countdown timer that is not before the current time, so one function for spitting 
+// out the countdown, and one for the event itself, just linked into each event that's loaded into schedule. 
+// This would make it easy to add a configurable countdown as well (max of 8 times, with no repeats?)
 
-    guildList.forEach(async (g) => {
-        const thisGuild = client.guilds.get(g);
+// Should convert the date/time from each event into the unix string of numbers so it doesn't have to convert em into each timezone all the time
+// Also... node-schedule accepts the number string
 
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: g}, attributes: Object.keys(client.config.defaultSettings)});
-        const guildConf = guildSettings.dataValues;
+// Maybe put this into the functions file, and add in addEvent and removeEvent?
 
-        const guildEvents = await client.guildEvents.findOne({where: {guildID: g}, attributes: ['events']});
-        var events = guildEvents.dataValues.events;
+// Every time the bot loads, it should load all of the events into node-schedule.
+// Every time a new event is created, it should add it straight into node-schedule
+// in addition to adding it into the DB
+// (Also need to add any applicable countdowns to the schedule)
+// Should change how events are stored, make it one per row, rather than in each guild's setup
+// (Maybe guildID-eventName as the unique rowID?) will need to redo how the events command works though
 
-        if (events) {
-            for (var key in events) {
-                var event = events[key];
 
-                var eventDate = moment(event.eventDay).format('YYYY-MM-DD');
-                var nowDate = moment().tz(guildConf['timezone']).format('YYYY-MM-DD');
-
-                var eventTime = moment(event.eventTime, 'H:mm').format('H:mm');
-                var nowTime = moment().tz(guildConf['timezone']).format("H:mm");
-
-                if (!event.repeatDays) {
-                    event['repeatDays'] = [];
-                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
-                } 
-
-                if (eventDate === nowDate && eventTime === nowTime) {
-                    var announceMessage = `**${key}**\n${event.eventMessage}`;
-                    announceEvent(thisGuild, guildConf, event, announceMessage);
-                    
-                    // If it's got any left in repeatDays
-                    if (event.repeatDays.length > 0) {            
-                        
-                        let eventMsg = event.eventMessage;
-                        // If this is the last time, tack a message to the end to let them know it's the last one
-                        if (event.repeatDays.length === 1) {
-                            eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
-                        }
-                        const newEvent = {
-                            "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(parseInt(event.repeatDays.splice(0, 1)), 'd').format('YYYY-MM-DD'),
-                            "eventTime": event.eventTime,
-                            "eventMessage": eventMsg,
-                            "eventChan": event.eventChan,
-                            "countdown": event.countdown,
-                            "repeat": {
-                                "repeatDay": 0,
-                                "repeatHour": 0,
-                                "repeatMin": 0
-                            },
-                            "repeatDays": event.repeatDays
-                        };
-
-                        // Gotta delete it before we can add it, so there won't be conflicts
-                        delete events[key];
-                        events[key] = newEvent;
-                    // Else if it's set to repeat 
-                    } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-                        const newEvent = {
-                            "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeat['repeatDay'], 'd').format('YYYY-MM-DD'),
-                            "eventTime": moment(event.eventTime, 'H:mm').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').format('H:mm'),
-                            "eventMessage": event.eventMessage,
-                            "eventChan": event.eventChan,
-                            "countdown": event.countdown,
-                            "repeat": {
-                                "repeatDay": event.repeat['repeatDay'],
-                                "repeatHour": event.repeat['repeatHour'],
-                                "repeatMin": event.repeat['repeatMin']
-                            },
-                            "repeatDays": []
-                        };
-
-                        // Gotta delete it before we can add it, so there won't be conflicts
-                        delete events[key];
-                        events[key] = newEvent;
-                    // Else, it's not supposed to repeat at all, so go ahead and wipe it out
-                    } else { 
-                        delete events[key];
-                    }
-                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
-                // If the event has passed without being noticed, go ahead and wipe it
-                // Probably from the bot crashing during an event, or back during testing
-                } else if (moment(eventDate).isBefore(moment(nowDate).subtract(2, 'h'))) {
-                    delete events[key];
-                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
-                }
-
-                // if we have a countdown, see if we need to send a message
-                if (event.countdown == 'yes') {
-                    checkCountdown(thisGuild, guildConf, key, event);
-                }
-            }
-        }
-    });
-}
-
-function checkCountdown(thisGuild, guildConf, key, event) {
-
-    // This function is run every INTERVAL_SECONDS - currently every 30 seconds
-    // We only want to run this function once per minute
-    // So let's make sure that the current number of seconds is less than the interval seconds
-    // If INTERVAL_SECONDS goes above 60 i.e. more than a minute, this will break
-
-    var now = moment().tz(guildConf['timezone']);
-    if (now.seconds() >= INTERVAL_SECONDS) {
-        return;
-    }
-
-    // Full event date and time in the correct timezone
-    var eventDate = moment.tz(event.eventDay + " " + event.eventTime, "YYYY-MM-DD H:mm", guildConf['timezone']);
-    // Full now date and time in the correct timezone with 0 seconds so we can compare against the event date
-    var nowDate = moment().tz(guildConf['timezone']).seconds(0);
-
-    // Times in minutes before event
-    const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
-
-    // Loop through all minutes before event start time
-    for (var index = 0; index < timesToCountdown.length; ++index) {
-        // Get the countdown date to test against
-        var countdownDate = moment(eventDate).subtract(timesToCountdown[index], 'minutes');
-        // Compare to seconds level of accuracy (ignore milliseconds)
-        if (countdownDate.isSame(nowDate, 'seconds')) {
-            // We should trigger this countdown message so create the announcement message of how long to go
-            var timeToGo = moment.duration(eventDate.diff(nowDate)).humanize();
-            // var announceMessage = client.languages[guildConf].BASE_EVENT_STARTING_IN_MSG(key, timeToGo);
-            var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(key, timeToGo);
-            announceEvent(thisGuild, guildConf, event, announceMessage);
-
-            // We matched so we don't have to look any more
-            break;
-        }
-    }
-}
-
-function announceEvent(thisGuild, guildConf, event, announceMessage) {
-    if (guildConf["announceChan"] !== "" || event.eventChan !== '') {
-        if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, try using it
-            client.announceMsg(thisGuild, announceMessage, event.eventChan);
-        } else { // Else, use the default one from their settings
-            client.announceMsg(thisGuild, announceMessage);
-        }
-    }
-}
-
-// Then every INTERVAL_SECONDS seconds after
-setInterval(checkDates, INTERVAL_SECONDS * 1000);
-
+// ## Here down is to update any characters that need it ##
 // Run it one minute after the bot boots
 setTimeout(updateCharacterMods,        1 * 60 * 1000);
 // Check every 12 hours to see if any mods have been changed

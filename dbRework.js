@@ -1,14 +1,8 @@
-const Enmap = require('enmap');
-const EnmapLevel = require('enmap-level');
 const Sequelize = require('sequelize');
-
-// const { inspect } = require('util');
+const { inspect } = require('util');
+const momentTZ = require('moment-timezone');
 
 const config = require('./config.json');
-
-const guildSettings = new Enmap({ provider: new EnmapLevel({ name: 'guildSettings' })});
-const guildEvents   = new Enmap({ provider: new EnmapLevel({ name: 'guildEvents' })});
-// const guildChars    = new Enmap({ provider: new EnmapLevel({ name: 'guildChars' })});
 
 /* eslint no-unused-vars: 0 */
 const init = async function() {
@@ -18,45 +12,68 @@ const init = async function() {
         logging: false,
         operatorAliases: false
     });
-    const settings = sequelize.define('settings', {
+
+    const guildSettings = sequelize.define('settings', {
         guildID: { type: Sequelize.TEXT, primaryKey: true },
         adminRole: Sequelize.ARRAY(Sequelize.TEXT),
         enableWelcome: Sequelize.BOOLEAN,
         welcomeMessage: Sequelize.TEXT,
         useEmbeds: Sequelize.BOOLEAN,
         timezone: Sequelize.TEXT,
-        announceChan: Sequelize.TEXT
+        announceChan: Sequelize.TEXT,
+        useEventPages: Sequelize.BOOLEAN,
+        language: Sequelize.TEXT
     });
+
     const events = sequelize.define('events', {
         guildID: { type: Sequelize.TEXT, primaryKey: true },
         events: Sequelize.JSONB
     });
-    await settings.sync();
-    await events.sync();
 
-    guildSettings.keyArray().forEach(gID => {
-        const gSet = guildSettings.get(gID);
-        const gEve = guildEvents.get(gID);
-
-        const settingTag = settings.create({
-            guildID: gID,
-            adminRole: gSet.adminRole,
-            enableWelcome: gSet.enableWelcome,
-            welcomeMessage: gSet.welcomeMessage,
-            useEmbeds: gSet.useEmbeds,
-            timezone: gSet.timezone,
-            announceChan: gSet.announceChan
-        })
-            .then(() => {})
-            .catch(error => { console.log(error, gID); });
-
-        const eventTag = events.create({
-            guildID: gID,
-            events: gEve
-        })
-            .then(() => {})
-            .catch(error => { console.log(error, gID); });
+    const guildEvents = sequelize.define('eventDB', {
+        eventID: { type: Sequelize.TEXT, primaryKey: true },
+        eventDT: Sequelize.TEXT,
+        eventMessage: Sequelize.TEXT,
+        eventChan: Sequelize.TEXT,
+        countdown: Sequelize.TEXT,
+        repeat: Sequelize.JSONB,
+        repeatDays: Sequelize.ARRAY(Sequelize.TEXT)
     });
+
+    await guildSettings.sync();
+    await events.sync();
+    await guildEvents.sync();
+   
+    const oldEvents = await events.findAll();
+    // console.log('HERE: ' + inspect(oldEvents));
+
+    oldEvents.forEach(async guild => {
+        const settings = await guildSettings.findOne({where: {guildID: guild.guildID}, attributes: ['timezone', 'language']});
+        const guildConf = settings.dataValues;
+
+        const gEvents = guild.events;
+        Object.keys(gEvents).forEach(async eventName => {
+            const thisEvent = gEvents[eventName];
+            const newEvent = {
+                "eventID": `${guild.guildID}-${eventName}`,
+                "eventDT": momentTZ.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf.timezone).unix()*1000,
+                "eventMessage": thisEvent.eventMessage,
+                "eventChan": thisEvent.eventChan,
+                "countdown": thisEvent.countdown,
+                "repeat": {
+                    "repeatDay": thisEvent.repeat['repeatDay'],
+                    "repeatHour": thisEvent.repeat['repeatHour'],
+                    "repeatMin": thisEvent.repeat['repeatMin']
+                },
+                "repeatDays": thisEvent.repeatDays
+            };
+            await guildEvents.create(newEvent);
+        });
+
+
+    });
+    console.log('Done');
+    process.exit();
 };
 
 init();

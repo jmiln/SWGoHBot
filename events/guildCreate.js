@@ -16,12 +16,6 @@ module.exports = async (client, guild) => {
     })
         .then(() => {})
         .catch(error => { console.log(error, guild.id); });
-    client.guildEvents.create({
-        guildID: guild.id,
-        events: {}
-    })
-        .then(() => {})
-        .catch(error => { console.log(error, guild.id); });
 
     // Updates the status to show the increased server count
     const playingString =  `${client.config.prefix}help ~ ${client.guilds.size} servers`;

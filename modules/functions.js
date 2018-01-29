@@ -1,6 +1,7 @@
-const moment = require('moment');
+const momentTZ = require('moment-timezone');
 const util = require('util');
 const Fuse = require("fuse-js-latest");
+const schedule = require("node-schedule");
 
 module.exports = (client) => {
     /*
@@ -43,7 +44,7 @@ module.exports = (client) => {
     };
 
     client.myTime = () => {
-        return moment.tz('US/Pacific').format('M/D/YYYY hh:mma');
+        return momentTZ.tz('US/Pacific').format('M/D/YYYY hh:mma');
     };
 
     // This finds any character that matches the search, and returns them in an array
@@ -255,4 +256,140 @@ module.exports = (client) => {
         }
     });
 
+
+
+
+
+    // Bunch of stuff for the events 
+    client.loadAllEvents = async () => {
+        const nowDate = momentTZ().format('YYYY-MM-DD');
+        const events = client.guildEvents.findAll();
+        if (events.length > 0) {
+            events.forEach(async event => {
+                // If it's past when it was supposed to announce
+                if (momentTZ(event.eventDT).isBefore(momentTZ(nowDate).subtract(2, 'h'))) {
+                    await client.guildEvents.destroy({where: {eventID: event.eventID}})
+                        .then(() => {})
+                        .catch(error => { client.log('ERROR',`Broke trying to delete zombies ${error}`); });
+                } else {
+                    client.scheduleEvent(event);
+                }
+            });
+        }
+    };
+    
+    // Actually schedule em here
+    client.scheduleEvent = async (event) => {
+        schedule.scheduleJob(event.eventID, event.eventDT, function() {
+            client.eventAnnounce(event);
+        });
+    
+        if (event.countdown === 'yes') {
+            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5, 3, 2, 1 ];
+            const nowTime = momentTZ.now();
+            timesToCountdown.forEach(time => {
+                if (momentTZ(event.eventDT).subtract(time, 'm') > nowTime) {
+                    schedule.scheduleJob(event.eventID, momentTZ(event.eventDT).subtract(time, 'm'), function() {
+                        client.countdownAnnounce(event);                    
+                    });
+                }
+            });
+        }
+    };
+    
+    // To stick into node-schedule for each countdown event
+    client.countdownAnnounce = async (event) => {
+        const eventNameID = event.eventID.split('-');
+        const eventName = eventNameID[0];
+        const guildID = eventNameID[1];
+    
+        const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: ['announceChan', 'language']});
+        const guildConf = guildSettings.dataValues;
+    
+        const nowTime = momentTZ.now();
+        var timeToGo = momentTZ.duration(event.eventDT.diff(nowTime)).humanize();
+        var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(eventName, timeToGo);
+    
+        if (guildConf["announceChan"] != "" || event.eventChan !== '') {
+            if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
+                client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+            } else { // Else, use the default one from their settings
+                client.announceMsg(client.guilds.get(guildID), announceMessage);
+            }
+        }
+    };
+    
+    // To stick into node-schedule for each full event
+    client.eventAnnounce = async (event) => {
+        // Parse out the eventName and guildName from the ID
+        const eventNameID = event.eventID.split('-');
+        const eventName = eventNameID[1];
+        const guildID = eventNameID[0];
+    
+        const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildConf = guildSettings.dataValues;
+    
+        let rep = false;
+        let newEvent = {};
+    
+        // Announce the event
+        var announceMessage = `**${eventName}**\n${event.eventMessage}`;
+        if (guildConf["announceChan"] != "" || event.eventChan !== '') {
+            if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
+                client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+            } else { // Else, use the default one from their settings
+                client.announceMsg(client.guilds.get(guildID), announceMessage);
+            }
+        }
+    
+        // If it's got any left in repeatDays
+        if (event.repeatDays.length > 0) {    
+            rep = true;        
+            let eventMsg = event.eventMessage;
+            // If this is the last time, tack a message to the end to let them know it's the last one
+            if (event.repeatDays.length === 1) {
+                eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
+            }
+            newEvent = {
+                "eventID": event.eventID,
+                "eventDT": (momentTZ(event.eventDT).add(parseInt(event.repeatDays.splice(0, 1)), 'd').unix()*1000),
+                "eventMessage": eventMsg,
+                "eventChan": event.eventChan,
+                "countdown": event.countdown,
+                "repeat": {
+                    "repeatDay": 0,
+                    "repeatHour": 0,
+                    "repeatMin": 0
+                },
+                "repeatDays": event.repeatDays
+            };
+        // Else if it's set to repeat 
+        } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+            rep = true;
+            newEvent = {
+                "eventID": event.eventID,
+                "eventDT": (momentTZ(event.eventDT).add(event.repeat['repeatDay'], 'd').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').unix()*1000),
+                "eventMessage": event.eventMessage,
+                "eventChan": event.eventChan,
+                "countdown": event.countdown,
+                "repeat": {
+                    "repeatDay": event.repeat['repeatDay'],
+                    "repeatHour": event.repeat['repeatHour'],
+                    "repeatMin": event.repeat['repeatMin']
+                },
+                "repeatDays": []
+            };
+        }  
+        await client.guildEvents.destroy({where: {eventID: event.eventID}})
+            .then(() => {})
+            .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
+        // If it's supposed to repeat, go ahead and put it back in    
+        if (rep) {
+            await client.guildEvents.create(newEvent)
+                .then(() => {
+                    client.scheduleEvent(newEvent);
+                })
+                .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
+        }
+    };
 };
