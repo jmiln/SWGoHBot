@@ -6781,6 +6781,32 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "Death Trooper Krennic/EP lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
+            },
+            "Death Trooper Thrawn lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -7193,6 +7219,32 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "leader": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "Palp lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -8309,6 +8361,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Ofense"
+            },
+            "Finn Raid with BB-8": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -24272,6 +24337,410 @@
                     "zeta": 0
                 }
             }
+        }
+    },
+    {
+        "name": "Rose Tico",
+        "uniqueName": "",
+        "aliases": [
+            "Rose Tico",
+            "Rose"
+        ],
+        "url": "https://swgoh.gg/characters/rose-tico",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rose.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Resistance"
+        ],
+        "mods": {
+            "Finn Lead": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
+            },
+            "RJT Lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 BlasTech Weapon Mod"
+            ],
+            "Gear 2": [
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 Loronar Power Cell",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 1 SoroSuub Keypad",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 3 Fabritech Data Pad",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 3 SoroSuub Keypad",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 4": [
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 BioTech Implant",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 1 Chedak Comlink",
+                "Mk 5 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 5": [
+                "Mk 7 Loronar Power Cell",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 4 Nubian Design Tech"
+            ],
+            "Gear 6": [
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 7 Loronar Power Cell",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 3 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 7": [
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 7 Loronar Power Cell",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 5 Nubian Design Tech",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 4 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 9": [
+                "Mk 7 Nubian Security Scanner",
+                "Mk 4 Athakam Medpac",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 1 Zaltin Bacta Gel"
+            ],
+            "Gear 10": [
+                "Mk 6 Nubian Design Tech",
+                "Mk 8 BioTech Implant",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 8 BioTech Implant"
+            ],
+            "Gear 11": [
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 9 BAW Armor Mod",
+                "Mk 8 BioTech Implant",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 8 BioTech Implant"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Cybernetics",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Courageous Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and grant Tenacity Up for 2 turns to a random Resistance ally who doesn't have it. 50% chance to attack again (once per turn).",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Dauntless Bravery": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Resistance allies gain Defense Up for 2 turns. Rose Tico gains 10% Turn Meter for each Resistance ally and each First Order enemy. Remove 8% Turn Meter for each Resistance ally from target enemy. This attack cannot be evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Shock Prod Strike": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal Special damage to target enemy and inflict Stun for 1 turn. When this Stun expires, the target is Dazed for 2 turns, which can't be Evaded or Resisted.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Valiant Spirit": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Rose Tico has +10% Offense for each Exposed enemy. When another Resistance ally scores a Critical Hit, Rose Tico gains 10% Turn Meter.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1049,
+            "Agility": 1199,
+            "Intelligence": 807,
+            "Speed": 141,
+            "Physical Damage": 2481,
+            "Physical Critical Rating": 631,
+            "Special Damage": 2286,
+            "Special Critical Rating": 35,
+            "Armor Penetration": 105,
+            "Resistance Penetration": 15,
+            "Potency": 54,
+            "Health": 24272,
+            "Armor": 289,
+            "Resistance": 104,
+            "Tenacity": 32,
+            "Health Steal": 10,
+            "Protection": 28,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Amilyn Holdo",
+        "uniqueName": "",
+        "aliases": [
+            "Amilyn Holdo",
+            "Holdo",
+            "Amilyn"
+        ],
+        "url": "https://swgoh.gg/characters/amilyn-holdo",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_holdo.png",
+        "side": "light",
+        "factions": [
+            "Resistance",
+            "Tank"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 BioTech Implant",
+                "Mk 1 BioTech Implant"
+            ],
+            "Gear 2": [
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 3 Fabritech Data Pad",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 BAW Armor Mod",
+                "Mk 4 BAW Armor Mod",
+                "Mk 2 A/KT Stun Gun",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 4": [
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Nubian Security Scanner",
+                "Mk 6 Loronar Power Cell",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 5": [
+                "Mk 4 A/KT Stun Gun",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Loronar Power Cell",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 2 Athakam Medpac",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 7": [
+                "Mk 3 Athakam Medpac",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Nubian Design Tech"
+            ],
+            "Gear 8": [
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 3 SoroSuub Keypad",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 6 BioTech Implant"
+            ],
+            "Gear 9": [
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Athakam Medpac",
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 Athakam Medpac",
+                "Mk 3 Nubian Design Tech"
+            ],
+            "Gear 10": [
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 3 Nubian Design Tech"
+            ],
+            "Gear 11": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 6 A/KT Stun Gun",
+                "Mk 4 Merr-Sonn Shield Generator",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 10 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Tactical Data",
+                "Mk 12 ArmaTek Armor Plating",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Measured Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and the least healthy other Resistance ally gains Foresight for 2 turns. When this Foresight expires, that ally Recovers 10% Health.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Bunker Buster": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal Special damage to all enemies and inflict Daze for 2 turns. Inflict Defense Down and Evasion Down on the primary target for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Reprieve": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Dispel all debuffs on target other ally, they Recover 40% Health and 20% Protection.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Quiet Confidence": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "When another Resistance ally loses Foresight, Amilyn Holdo gains Taunt for 1 turn and Recovers 10% Health. While Amilyn Holdo doesn't have Taunt, she has +50 Speed and all other Resistance allies have +20% Critical Avoidance.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1201,
+            "Agility": 699,
+            "Intelligence": 1133,
+            "Speed": 90,
+            "Physical Damage": 1997,
+            "Physical Critical Rating": 469,
+            "Special Damage": 3265,
+            "Special Critical Rating": 25,
+            "Armor Penetration": 5,
+            "Resistance Penetration": 0,
+            "Potency": 7,
+            "Health": 36873,
+            "Armor": 285,
+            "Resistance": 257,
+            "Tenacity": 36,
+            "Health Steal": 30,
+            "Protection": 43,
+            "activation": 25
         }
     }
 ]
