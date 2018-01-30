@@ -1,9 +1,11 @@
 const momentTZ = require('moment-timezone');
 const util = require('util');
 const Fuse = require("fuse-js-latest");
-const schedule = require("node-schedule");
+require('moment-duration-format');
 
 module.exports = (client) => {
+    // The scheduler for events
+    client.schedule = require("node-schedule");
     /*
         PERMISSION LEVEL FUNCTION
         This is a very basic permission system for commands which uses "levels"
@@ -286,10 +288,10 @@ module.exports = (client) => {
         }
         console.log(`Loaded ${ix} events`);
     };
-    
+
     // Actually schedule em here
     client.scheduleEvent = async (event) => {
-        schedule.scheduleJob(event.eventID, event.eventDT, function() {
+        client.schedule.scheduleJob(event.eventID, parseInt(event.eventDT), function() {
             client.eventAnnounce(event);
         });
     
@@ -299,9 +301,10 @@ module.exports = (client) => {
             timesToCountdown.forEach(time => {
                 const cdTime = time * 60;
                 const evTime = event.eventDT / 1000;
-                const newTime = (evTime-cdTime) * 1000; 
+                const newTime = (evTime-cdTime-60) * 1000; 
+                // const newTime = momentTZ(parseInt(event.eventDT)).subtract(parseInt(time), 'm').unix();
                 if (newTime > nowTime) {
-                    schedule.scheduleJob(event.eventID, newTime , function() {
+                    client.schedule.scheduleJob(`${event.eventID}-CD${time}`, parseInt(newTime) , function() {
                         client.countdownAnnounce(event);                    
                     });
                 }
@@ -318,8 +321,7 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        const nowTime = momentTZ.now().unix();
-        var timeToGo = momentTZ.duration(momentTZ(event.eventDT - nowTime)).humanize();
+        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format("h [hr], m [min]");
         var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(eventName, timeToGo);
     
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
@@ -364,7 +366,7 @@ module.exports = (client) => {
             }
             newEvent = {
                 "eventID": event.eventID,
-                "eventDT": (momentTZ(event.eventDT).add(parseInt(event.repeatDays.splice(0, 1)), 'd').unix()*1000),
+                "eventDT": (momentTZ(parseInt(event.eventDT)).add(parseInt(event.repeatDays.splice(0, 1)), 'd').unix()*1000),
                 "eventMessage": eventMsg,
                 "eventChan": event.eventChan,
                 "countdown": event.countdown,
@@ -380,7 +382,7 @@ module.exports = (client) => {
             rep = true;
             newEvent = {
                 "eventID": event.eventID,
-                "eventDT": (momentTZ(event.eventDT).add(event.repeat['repeatDay'], 'd').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').unix()*1000),
+                "eventDT": (momentTZ(parseInt(event.eventDT)).add(event.repeat['repeatDay'], 'd').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').unix()*1000),
                 "eventMessage": event.eventMessage,
                 "eventChan": event.eventChan,
                 "countdown": event.countdown,
@@ -393,15 +395,28 @@ module.exports = (client) => {
             };
         }  
         await client.guildEvents.destroy({where: {eventID: event.eventID}})
-            .then(() => {})
+            .then(async () => {
+                // If it's supposed to repeat, go ahead and put it back in    
+                if (rep) {
+                    await client.guildEvents.create({
+                        eventID: newEvent.eventID,
+                        eventDT: newEvent.eventDT,
+                        eventMessage: newEvent.eventMessage,
+                        eventChan: newEvent.eventChan,
+                        countdown: newEvent.countdown,
+                        repeat: {
+                            "repeatDay": newEvent.repeat['repeatDay'],
+                            "repeatHour": newEvent.repeat['repeatHour'],
+                            "repeatMin": newEvent.repeat['repeatMin']
+                        },
+                        repeatDays: []
+                    })
+                        .then(() => {
+                            client.scheduleEvent(newEvent);
+                        })
+                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
+                }
+            })
             .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
-        // If it's supposed to repeat, go ahead and put it back in    
-        if (rep) {
-            await client.guildEvents.create(newEvent)
-                .then(() => {
-                    client.scheduleEvent(newEvent);
-                })
-                .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
-        }
     };
 };

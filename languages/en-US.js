@@ -129,7 +129,7 @@ module.exports = {
     COMMAND_EVENT_NO_CREATE: `I couldn't set that event, please try again.`,
 
     // Event Command (View)
-    COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
+    COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \n\nEvent Time: ${eventDate}\n`,
     COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Time Remaining: ${timeLeft}\n`,
     COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
     COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,

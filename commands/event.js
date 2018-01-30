@@ -9,9 +9,6 @@ exports.run = async (client, message, args, level) => {
 
     const EVENTS_PER_PAGE = 5;
 
-    // const guildEvents = await client.guildEvents.findOne({where: {guildID: message.guild.id}, attributes: ['events']});
-    // var events = guildEvents.dataValues.events;
-
     const actions = ['create', 'view', 'delete', 'help', 'trigger'];
     const exampleEvent = {
         "eventID": 'guildID-eventName',
@@ -135,7 +132,7 @@ exports.run = async (client, message, args, level) => {
             }
 
             if (!args[2]) return message.channel.send(message.language.COMMAND_EVENT_NEED_DATE).then(msg => msg.delete(10000)).catch(console.error);
-            if (!momentTZ(args[2], 'D/M/YYYY').isValid()) {
+            if (!momentTZ(args[2], 'D/M/YYYY').isValid()) { 
                 return message.channel.send(message.language.COMMAND_EVENT_BAD_DATE(args[2])).then(msg => msg.delete(10000)).catch(console.error);
             }
 
@@ -200,6 +197,9 @@ exports.run = async (client, message, args, level) => {
             if (args[1]) {
                 // If they are looking to show a specific event
                 const guildEvents = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${args[1]}`}});
+                if (!guildEvents) {
+                    return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(args[1]));
+                }
                 const thisEvent = guildEvents.dataValues; 
                 if (thisEvent) {
                     const eventName = thisEvent.eventID.split('-')[1];
@@ -215,7 +215,7 @@ exports.run = async (client, message, args, level) => {
                     } else if (thisEvent['repeat'] && (thisEvent.repeat['repeatDay'] !== 0 || thisEvent.repeat['repeatHour'] !== 0 || thisEvent.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                         eventString += message.language.COMMAND_EVENT_REPEAT(thisEvent.repeat['repeatDay'], thisEvent.repeat['repeatHour'], thisEvent.repeat['repeatMin']);
                     }
-                    if (!minArgs.min) {
+                    if (!minArgs.min && thisEvent.eventMessage != '') {
                         // If they want to show all available events without the eventMessage showing
                         eventString += message.language.COMMAND_EVENT_MESSAGE(removeTags(message, thisEvent.eventMessage));
                     }
@@ -262,7 +262,7 @@ exports.run = async (client, message, args, level) => {
                     } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
                         eventString += message.language.COMMAND_EVENT_REPEAT(event.repeat['repeatDay'], event.repeat['repeatHour'], event.repeat['repeatMin']);
                     }
-                    if (!minArgs.min) {
+                    if (!minArgs.min && event.eventMessage != '') {
                         // If they want to show all available events with the eventMessage showing
                         const msg = removeTags(message, event.eventMessage);
                         eventString += message.language.COMMAND_EVENT_MESSAGE(msg);
@@ -288,14 +288,16 @@ exports.run = async (client, message, args, level) => {
         } case "delete": {
             if (!args[1]) return message.channel.send(message.language.COMMAND_EVENT_DELETE_NEED_NAME).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
-
+            const eventID = `${message.guild.id}-${eventName}`;
             // Check if that name/ event exists
-            const exists = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
+            const exists = await client.guildEvents.findOne({where: {eventID: eventID}})
                 .then(token => token !== null)
                 .then(isUnique => isUnique);
             if (exists) {
-                await client.guildEvents.destroy({where: {eventID: `${message.guild.id}-${eventName}`}})
+                await client.guildEvents.destroy({where: {eventID: eventID}})
                     .then(() => {
+                        const eventToDel = client.schedule.scheduledJobs[eventID];
+                        eventToDel.cancel();
                         return message.channel.send(message.language.COMMAND_EVENT_DELETED(eventName));
                     })
                     .catch(error => { client.log('ERROR',`Broke deleting an event ${error}`); });
@@ -393,6 +395,7 @@ function cleanMessage(message, specialArgs) {
     }
     eventMessage = newMsg.splice(5).join(" ");          // Remove all the beginning args so this is just the message
     eventMessage = eventMessage.replace(/^\s*/, '');    // Remove the annoying space at the begining
+    eventMessage = eventMessage.replace(/\s*$/, '');    // And at the end
     return eventMessage;
 }            
 
