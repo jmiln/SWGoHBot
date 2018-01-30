@@ -25,7 +25,9 @@ module.exports = async client => {
             announceChan: defSet.announceChan, 
             useEventPages: defSet.useEventPages,
             language: defSet.language
-        }}).then().catch(err => {client.log('ERROR', `Broke setting up new Settings: \`${err}\``);});
+        }})
+            .then(()=>{})
+            .catch(err => {client.log('ERROR', `Broke setting up new Settings: \`${err}\``);});
     });
 
     // Logs that it's up, and some extra info

@@ -1,5 +1,3 @@
-const { inspect } = require('util');
-
 const momentTZ = require('moment-timezone');
 const util = require('util');
 const Fuse = require("fuse-js-latest");
@@ -314,10 +312,10 @@ module.exports = (client) => {
     // To stick into node-schedule for each countdown event
     client.countdownAnnounce = async (event) => {
         const eventNameID = event.eventID.split('-');
-        const eventName = eventNameID[0];
-        const guildID = eventNameID[1];
+        const eventName = eventNameID[1];
+        const guildID = eventNameID[0];
     
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: ['announceChan', 'language']});
+        const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
         const nowTime = momentTZ.now();
@@ -347,7 +345,7 @@ module.exports = (client) => {
         let newEvent = {};
     
         // Announce the event
-        var announceMessage = `**${eventName}**\n${event.eventMessage}`;
+        var announceMessage = `**${eventName}**\n\n${event.eventMessage}`;
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
                 client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
