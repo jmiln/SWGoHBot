@@ -318,8 +318,8 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        const nowTime = momentTZ.now();
-        var timeToGo = momentTZ.duration(momentTZ(event.eventDT).diff(nowTime)).humanize();
+        const nowTime = momentTZ.now().unix();
+        var timeToGo = momentTZ.duration(momentTZ(event.eventDT - nowTime)).humanize();
         var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(eventName, timeToGo);
     
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {

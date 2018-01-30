@@ -232,7 +232,7 @@ exports.run = async (client, message, args, level) => {
                 });
 
                 // Sort the events by the time/ day
-                let sortedEvents = eventList.sort((p, c) => p.eventDT > c.eventDT);
+                let sortedEvents = eventList.sort((p, c) => p.eventDT - c.eventDT);
 
                 // Grab the total # of events for later use
                 const eventCount = sortedEvents.length;
