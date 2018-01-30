@@ -13,13 +13,6 @@ exports.run = async (client, message, args, level) => {
     // var events = guildEvents.dataValues.events;
 
     const actions = ['create', 'view', 'delete', 'help', 'trigger'];
-
-    // if (!events) {
-    //     events = {};
-    // } else if (Array.isArray(events)) {
-    //     events = {};
-    // }
-
     const exampleEvent = {
         "eventID": 'guildID-eventName',
         "eventDT": 1545299520000,

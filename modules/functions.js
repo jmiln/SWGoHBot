@@ -1,3 +1,5 @@
+const { inspect } = require('util');
+
 const momentTZ = require('moment-timezone');
 const util = require('util');
 const Fuse = require("fuse-js-latest");
@@ -262,20 +264,29 @@ module.exports = (client) => {
 
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
-        const nowDate = momentTZ().format('YYYY-MM-DD');
-        const events = client.guildEvents.findAll();
-        if (events.length > 0) {
-            events.forEach(async event => {
+        let ix = 0;
+        const nowTime = momentTZ().subtract(2, 'h').unix();
+        const events = await client.guildEvents.findAll();
+
+        const eventList = [];
+        events.forEach(event => {
+            eventList.push(event.dataValues);
+        });
+
+        if (eventList.length > 0) {
+            eventList.forEach(async event => {
                 // If it's past when it was supposed to announce
-                if (momentTZ(event.eventDT).isBefore(momentTZ(nowDate).subtract(2, 'h'))) {
+                if (event.eventDT < nowTime) {
                     await client.guildEvents.destroy({where: {eventID: event.eventID}})
                         .then(() => {})
                         .catch(error => { client.log('ERROR',`Broke trying to delete zombies ${error}`); });
                 } else {
+                    ix++;
                     client.scheduleEvent(event);
                 }
             });
         }
+        console.log(`Loaded ${ix} events`);
     };
     
     // Actually schedule em here
@@ -286,10 +297,13 @@ module.exports = (client) => {
     
         if (event.countdown === 'yes') {
             const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5, 3, 2, 1 ];
-            const nowTime = momentTZ.now();
+            const nowTime = momentTZ().unix();
             timesToCountdown.forEach(time => {
-                if (momentTZ(event.eventDT).subtract(time, 'm') > nowTime) {
-                    schedule.scheduleJob(event.eventID, momentTZ(event.eventDT).subtract(time, 'm'), function() {
+                const cdTime = time * 60;
+                const evTime = event.eventDT / 1000;
+                const newTime = (evTime-cdTime) * 1000; 
+                if (newTime > nowTime) {
+                    schedule.scheduleJob(event.eventID, newTime , function() {
                         client.countdownAnnounce(event);                    
                     });
                 }
