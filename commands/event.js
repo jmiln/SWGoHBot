@@ -173,7 +173,7 @@ exports.run = async (client, message, args, level) => {
             client.scheduleEvent(newEvent);
             await client.guildEvents.create(newEvent)
                 .then(() => {
-                    return message.channel.send(message.language.COMMAND_EVENT_CREATED(eventName, momentTZ(eventDT).format('MMM Do YYYY [at] H:mm')));  
+                    return message.channel.send(message.language.COMMAND_EVENT_CREATED(eventName, momentTZ.tz(eventDT, guildConf.timezone).format('MMM Do YYYY [at] H:mm')));  
                 })
                 .catch(error => { 
                     client.log('ERROR',`Broke trying to create new event ${error}`); 

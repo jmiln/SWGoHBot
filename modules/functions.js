@@ -319,7 +319,7 @@ module.exports = (client) => {
         const guildConf = guildSettings.dataValues;
     
         const nowTime = momentTZ.now();
-        var timeToGo = momentTZ.duration(event.eventDT.diff(nowTime)).humanize();
+        var timeToGo = momentTZ.duration(momentTZ(event.eventDT).diff(nowTime)).humanize();
         var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(eventName, timeToGo);
     
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
