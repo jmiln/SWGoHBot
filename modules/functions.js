@@ -296,17 +296,44 @@ module.exports = (client) => {
         });
     
         if (event.countdown === 'yes') {
-            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5, 3, 2, 1 ];
+            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
             const nowTime = momentTZ().unix();
             timesToCountdown.forEach(time => {
                 const cdTime = time * 60;
                 const evTime = event.eventDT / 1000;
                 const newTime = (evTime-cdTime-60) * 1000; 
-                // const newTime = momentTZ(parseInt(event.eventDT)).subtract(parseInt(time), 'm').unix();
                 if (newTime > nowTime) {
                     client.schedule.scheduleJob(`${event.eventID}-CD${time}`, parseInt(newTime) , function() {
                         client.countdownAnnounce(event);                    
                     });
+                }
+            });
+        }
+    };
+
+    // Delete em here as needed
+    client.deleteEvent = async (eventID) => {
+        const event = await client.guildEvents.findOne({where: {eventID: eventID}});
+
+        await client.guildEvents.destroy({where: {eventID: eventID}})
+            .then(() => {
+                const eventToDel = client.schedule.scheduledJobs[eventID];
+                eventToDel.cancel();
+            })
+            .catch(error => { 
+                client.log('ERROR',`Broke deleting an event ${error}`); 
+            });
+
+        if (event.countdown === 'yes') {
+            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
+            const nowTime = momentTZ().unix();
+            timesToCountdown.forEach(time => {
+                const cdTime = time * 60;
+                const evTime = event.eventDT / 1000;
+                const newTime = (evTime-cdTime-60) * 1000; 
+                if (newTime > nowTime) {
+                    const eventToDel = client.schedule.scheduledJobs[`${eventID}-CD${time}`];
+                    eventToDel.cancel();
                 }
             });
         }

@@ -294,17 +294,11 @@ exports.run = async (client, message, args, level) => {
                 .then(token => token !== null)
                 .then(isUnique => isUnique);
             if (exists) {
-                await client.guildEvents.destroy({where: {eventID: eventID}})
-                    .then(() => {
-                        const eventToDel = client.schedule.scheduledJobs[eventID];
-                        eventToDel.cancel();
-                        return message.channel.send(message.language.COMMAND_EVENT_DELETED(eventName));
-                    })
-                    .catch(error => { client.log('ERROR',`Broke deleting an event ${error}`); });
+                client.deleteEvent(eventID);
+                return message.channel.send(message.language.COMMAND_EVENT_DELETED(eventName));
             } else {
                 return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(eventName)).then(msg => msg.delete(10000)).catch(console.error);
             }
-            break;
         } case "trigger": {
             if (!args[1]) return message.channel.send(message.language.COMMAND_EVENT_TRIGGER_NEED_NAME).then(msg => msg.delete(10000)).catch(console.error);
             eventName = args[1];
