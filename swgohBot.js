@@ -111,23 +111,6 @@ client.on('error', (err) => {
     }
 });
 
-// Instead of the mess that is the current event checker, when loading the events into schedule, we can load 
-// an extra event in for each countdown timer that is not before the current time, so one function for spitting 
-// out the countdown, and one for the event itself, just linked into each event that's loaded into schedule. 
-// This would make it easy to add a configurable countdown as well (max of 8 times, with no repeats?)
-
-// Should convert the date/time from each event into the unix string of numbers so it doesn't have to convert em into each timezone all the time
-// Also... node-schedule accepts the number string
-
-// Maybe put this into the functions file, and add in addEvent and removeEvent?
-
-// Every time the bot loads, it should load all of the events into node-schedule.
-// Every time a new event is created, it should add it straight into node-schedule
-// in addition to adding it into the DB
-// (Also need to add any applicable countdowns to the schedule)
-// Should change how events are stored, make it one per row, rather than in each guild's setup
-// (Maybe guildID-eventName as the unique rowID?) will need to redo how the events command works though
-
 
 // ## Here down is to update any characters that need it ##
 // Run it one minute after the bot boots
@@ -303,6 +286,12 @@ async function ggGrab(charLink) {
         },
         "abilities": {
         },
+        "shardLocations": { 
+            "dark": [], 
+            "light": [], 
+            "cantina": [], 
+            "shops": [] 
+        },
         "stats": {
             // Primary
             'Power':0,
@@ -354,6 +343,7 @@ async function ggGrab(charLink) {
             }
         }
     });
+
     // Get the character's abilities and such
     $('.char-detail-info').each(function() {
         let abilityName = $(this).find('h5').text();    // May have the cooldown included, need to get rid of it
@@ -466,6 +456,37 @@ async function ggGrab(charLink) {
                     }
                 }
             });
+        });
+    });
+
+    // Get the farming locations
+    $(".panel-body:contains('Shard Locations')").each(function() {
+        $(this).find('li').each(function() {
+            const text = $(this).text();
+            if (text.startsWith('Cantina Battles')) {
+                const battle = text.replace(/^Cantina Battles: Battle /, '').replace(/\s.*/g, '');
+                character.shardLocations.cantina.push(battle);
+            } else if (text.startsWith('Dark Side Battles')) {
+                const battle = text.replace(/^Dark Side Battles: /, '').replace(/\s.*/g, '');
+                character.shardLocations.dark.push(battle);
+            } else if (text.startsWith('Light Side Battles')) {
+                const battle = text.replace(/^Light Side Battles: /, '').replace(/\s.*/g, '');
+                character.shardLocations.dark.push(battle);
+            } else if (text.startsWith('Squad Cantina Battle Shipments')) {
+                character.shardLocations.shops.push('Cantina Shipments');
+            } else if (text.startsWith('Squad Arena Shipments')) {
+                character.shardLocations.shops.push('Squad Arena Shipments');
+            } else if (text.startsWith('Fleet Store')) {
+                character.shardLocations.shops.push('Fleet Store');
+            } else if (text.startsWith('Guild Shipments')) {
+                character.shardLocations.shops.push('Guild Shipments');
+            } else if (text.startsWith('Guild Events Store')) {
+                character.shardLocations.shops.push('Guild Events Store');
+            } else if (text.startsWith('Galactic War Shipments')) {
+                character.shardLocations.shops.push('Galactic War Shipments');
+            } else if (text.startsWith('Shard Shop')) {
+                character.shardLocations.shops.push('Shard Shop');
+            }
         });
     });
 

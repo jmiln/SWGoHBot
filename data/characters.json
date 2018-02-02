@@ -206,6 +206,16 @@
             "Health Steal": 15,
             "Protection": 28,
             "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "5-B"
+            ],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
