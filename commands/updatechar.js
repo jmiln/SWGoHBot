@@ -338,7 +338,7 @@ async function updateCharacterInfo(client, message, charIndex) {
 
     charList[charIndex].stats = stats;
 
-    const shardLocations = { "dark": [], "light": [], "cantina": [], "shops": [] } 
+    const shardLocations = { "dark": [], "light": [], "cantina": [], "shops": [] };
 
     $(".panel-body:contains('Shard Locations')").each(function() {
         $(this).find('li').each(function() {
@@ -346,25 +346,25 @@ async function updateCharacterInfo(client, message, charIndex) {
             if (text.startsWith('Cantina Battles')) { 
                 const battle = text.replace(/^Cantina Battles: Battle /, '').replace(/\s.*/g, '');
                 shardLocations.cantina.push(battle);
-            } else if(text.startsWith('Dark Side Battles')) {
+            } else if (text.startsWith('Dark Side Battles')) {
                 const battle = text.replace(/^Dark Side Battles: /, '').replace(/\s.*/g, '');
                 shardLocations.dark.push(battle);
-            } else if(text.startsWith('Light Side Battles')) {
+            } else if (text.startsWith('Light Side Battles')) {
                 const battle = text.replace(/^Light Side Battles: /, '').replace(/\s.*/g, '');
                 shardLocations.dark.push(battle);
-            } else if(text.startsWith('Squad Cantina Battle Shipments')) {
+            } else if (text.startsWith('Squad Cantina Battle Shipments')) {
                 shardLocations.shops.push('Cantina Shipments');
-            } else if(text.startsWith('Squad Arena Shipments')) {
+            } else if (text.startsWith('Squad Arena Shipments')) {
                 shardLocations.shops.push('Squad Arena Shipments');
-            } else if(text.startsWith('Fleet Store')) {
+            } else if (text.startsWith('Fleet Store')) {
                 shardLocations.shops.push('Fleet Store');
-            } else if(text.startsWith('Guild Shipments')) {
+            } else if (text.startsWith('Guild Shipments')) {
                 shardLocations.shops.push('Guild Shipments');
-            } else if(text.startsWith('Guild Events Store')) {
+            } else if (text.startsWith('Guild Events Store')) {
                 shardLocations.shops.push('Guild Events Store');
-            } else if(text.startsWith('Galactic War Shipments')) {
+            } else if (text.startsWith('Galactic War Shipments')) {
                 shardLocations.shops.push('Galactic War Shipments');
-            } else if(text.startsWith('Shard Shop')) {
+            } else if (text.startsWith('Shard Shop')) {
                 shardLocations.shops.push('Shard Shop');
             } 
         });

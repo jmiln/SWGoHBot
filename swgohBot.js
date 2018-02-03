@@ -51,13 +51,17 @@ client.guildSettings = client.sequelize.define('settings', {
     language: Sequelize.TEXT
 });
 client.guildEvents = client.sequelize.define('eventDBs', {
-    eventID: { type: Sequelize.TEXT, primaryKey: true },
+    eventID: { type: Sequelize.TEXT, primaryKey: true }, // guildID-eventName
     eventDT: Sequelize.TEXT,
     eventMessage: Sequelize.TEXT,
     eventChan: Sequelize.TEXT,
     countdown: Sequelize.TEXT,
     repeat: Sequelize.JSONB,
     repeatDays: Sequelize.ARRAY(Sequelize.TEXT)
+});
+client.commandLogs = client.sequelize.define('commands', {
+    id: { type: Sequelize.TEXT, primaryKey: true },  // commandName-userID-messageID
+    commandText: Sequelize.TEXT
 });
 
 const init = async () => {
