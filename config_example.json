@@ -24,6 +24,7 @@
 	},
     "logs": {
         "logToChannel": false,
-        "channel": "channel-ID-to-log-to"
+        "channel": "channel-ID-to-log-to",
+        "logCom": false
 	}
 }
