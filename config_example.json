@@ -24,6 +24,11 @@
 	},
     "logs": {
         "logToChannel": false,
-        "channel": "channel-ID-to-log-to"
-	}
+        "channel": "channel-ID-to-log-to",
+        "logComs": false
+    },
+    "changelog": {
+        "changelogChannel": "307413253758386186",
+        "sendChangelogs": true
+    }
 }
