@@ -63,6 +63,9 @@ client.commandLogs = client.sequelize.define('commands', {
     id: { type: Sequelize.TEXT, primaryKey: true },  // commandName-userID-messageID
     commandText: Sequelize.TEXT
 });
+client.changelogs = client.sequelize.define('changelogs', {
+    logText: Sequelize.TEXT
+});
 
 const init = async () => {
     // Here we load **commands** into memory, as a collection, so they're accessible
