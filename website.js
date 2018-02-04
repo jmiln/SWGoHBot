@@ -3,8 +3,8 @@ const path = require('path');
 
 const app = express();
 
-// Used to parse Markdown from things like ExtendedHelp
-const md = require("marked");
+const Sequelize = require('sequelize');
+
 
 var exports = module.exports = {};
 
@@ -13,7 +13,17 @@ var exports = module.exports = {};
  * @param client - Discord.js Client Object
  * @public
  */
-exports.initSite = function(client) {
+exports.initSite = async function(client) {
+    const sequelize = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
+        host: client.config.database.host,
+        dialect: 'postgres',
+        logging: false,
+        operatorAliases: false
+    });
+    const changelogs = sequelize.define('changelogs', {
+        logText: Sequelize.TEXT
+    });
+    
     const dashConf = client.config.dashboard;
 
     // Set the directory for the views and stuff
@@ -38,9 +48,12 @@ exports.initSite = function(client) {
     });
 
     // Changelog page
-    app.get('/changelog',function(req, res) {
-        res.render('pages/changelog', {
-            page_name: 'changelog'
+    app.get('/changelog', async function(req, res) {
+        await changelogs.findAll().then(function(logs) { 
+            res.render('pages/changelog', {
+                changelogs: logs,
+                page_name: 'changelog'
+            });
         });
     });
 
@@ -55,8 +68,6 @@ exports.initSite = function(client) {
     app.get('/commands',function(req, res) {
         res.render('pages/commands', {
             page_name: 'commands',
-            command_list: loadCommands(client.commands),
-            md
         });
     });
 
@@ -86,24 +97,3 @@ exports.initSite = function(client) {
     });
 };
 
-// A quick function to put em into nice categories for later
-function loadCommands(commands) {
-    const coms = {};
-    const commandList = commands.filter(c => c.conf.permLevel <= 4); // Keep out the dev ones
-    
-    commandList.forEach(command => {
-         
-        md(command.help.extended, function(err, content) {
-            if (err) throw err;
-            command.help.siteExtended = content;
-        });
-        command.conf.aliases.indexOf(command.help.name) != -1 ? command.conf.aliases : command.conf.aliases.push(command.help.name);
-        if (!coms[command.help.category]) {
-            coms[command.help.category] = [command]; 
-        } else {
-            coms[command.help.category].push(command);
-        }
-    });
-
-    return coms;
-}

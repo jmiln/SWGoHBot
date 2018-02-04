@@ -13,6 +13,7 @@ module.exports = async client => {
     await client.guildSettings.sync();
     await client.guildEvents.sync();
     await client.commandLogs.sync();
+    await client.changelogs.sync();
 
     guildList.forEach(async (guildID) => {
         // If there is no config, give em one, and an events object while we're at it
