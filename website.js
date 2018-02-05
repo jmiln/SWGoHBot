@@ -50,7 +50,8 @@ exports.initSite = async function(client) {
     app.get('/changelog', async function(req, res) {
         await changelogs.findAll().then(function(logs) { 
             const logList = [];
-            logs.forEach(log => {
+            const sortedLogs = logs.sort((p, c) => c.dataValues.createdAt - p.dataValues.createdAt);
+            sortedLogs.forEach(log => {
                 logList.push(`<strong><font color="gray">${momentTZ.tz(log.dataValues.createdAt, 'us/pacific').format('M/D/YYYY [at] h:mm a')}</font></strong></br>${log.dataValues.logText.replace(/\n/g, '</br>')}`);
             });
 

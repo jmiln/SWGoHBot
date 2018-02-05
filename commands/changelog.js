@@ -2,7 +2,6 @@ exports.run = (client, message) => {
     let logMsg = message.content.split(' ');
     logMsg.splice(0, 1);
     logMsg = logMsg.join(' ');
-    console.log(logMsg);
 
     if (client.config.changelog.sendChangelogs) {
         client.channels

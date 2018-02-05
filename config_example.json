@@ -28,7 +28,7 @@
         "logComs": false
     },
     "changelog": {
-        "changelogChannel": "307413253758386186",
-        "sendChangelogs": true
+        "changelogChannel": "channel-to-send-to",
+        "sendChangelogs": false
     }
 }
