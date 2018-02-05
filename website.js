@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 const path = require('path');
-const moment = require('moment');
+const momentTZ = require('moment-timezone');
 
 const Sequelize = require('sequelize');
 var exports = module.exports = {};
@@ -51,7 +51,7 @@ exports.initSite = async function(client) {
         await changelogs.findAll().then(function(logs) { 
             const logList = [];
             logs.forEach(log => {
-                logList.push(`<strong><font color="gray">${moment(log.dataValues.createdAT).format('M/D/YYYY [at] h:mm a')}</font></strong></br>${log.dataValues.logText.replace(/\n/g, '</br>')}`);
+                logList.push(`<strong><font color="gray">${momentTZ.tz(log.dataValues.createdAt, 'us/pacific').format('M/D/YYYY [at] h:mm a')}</font></strong></br>${log.dataValues.logText.replace(/\n/g, '</br>')}`);
             });
 
             res.render('pages/changelog', {
