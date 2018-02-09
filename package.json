@@ -28,11 +28,12 @@
         "moment-duration-format": "^1.3.0",
         "moment-timezone": "^0.5.14",
         "ms": "^2.1.1",
+        "node-schedule": "^1.3.0",
         "pg": "^7.4.1",
         "pg-hstore": "^2.3.2",
-        "sequelize": "^4.31.2",
-        "snekfetch": "^3.6.1",
-        "yargs": "^10.1.1"
+        "sequelize": "^4.32.2",
+        "snekfetch": "^3.6.2",
+        "yargs": "^10.1.2"
     },
     "engines": {
         "node": "^8.4.0"

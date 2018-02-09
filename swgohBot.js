@@ -3,7 +3,6 @@ const { promisify } = require("util");
 const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
 const client = new Discord.Client();
-const moment = require('moment-timezone');
 const fs = require("fs");
 const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
@@ -12,7 +11,7 @@ const EnMap = require("enmap");
 
 const Sequelize = require('sequelize');
 
-const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
+// const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
 
 const site = require('./website');
 
@@ -51,9 +50,21 @@ client.guildSettings = client.sequelize.define('settings', {
     useEventPages: Sequelize.BOOLEAN,
     language: Sequelize.TEXT
 });
-client.guildEvents = client.sequelize.define('events', {
-    guildID: { type: Sequelize.TEXT, primaryKey: true },
-    events: Sequelize.JSONB
+client.guildEvents = client.sequelize.define('eventDBs', {
+    eventID: { type: Sequelize.TEXT, primaryKey: true }, // guildID-eventName
+    eventDT: Sequelize.TEXT,
+    eventMessage: Sequelize.TEXT,
+    eventChan: Sequelize.TEXT,
+    countdown: Sequelize.TEXT,
+    repeat: Sequelize.JSONB,
+    repeatDays: Sequelize.ARRAY(Sequelize.TEXT)
+});
+client.commandLogs = client.sequelize.define('commands', {
+    id: { type: Sequelize.TEXT, primaryKey: true },  // commandName-userID-messageID
+    commandText: Sequelize.TEXT
+});
+client.changelogs = client.sequelize.define('changelogs', {
+    logText: Sequelize.TEXT
 });
 
 const init = async () => {
@@ -100,157 +111,15 @@ const init = async () => {
 };
 
 client.on('error', (err) => {
-    client.log('ERROR', inspect(err.error));
+    if (err.error.toString().indexOf('ECONNRESET') > -1) {
+        console.log('Connection error');
+    } else {
+        client.log('ERROR', inspect(err.error));
+    }
 });
 
-// The function to check every minute for applicable events
-async function checkDates() {
-    const guildList = client.guilds.keyArray();
 
-    guildList.forEach(async (g) => {
-        const thisGuild = client.guilds.get(g);
-
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: g}, attributes: Object.keys(client.config.defaultSettings)});
-        const guildConf = guildSettings.dataValues;
-
-        const guildEvents = await client.guildEvents.findOne({where: {guildID: g}, attributes: ['events']});
-        var events = guildEvents.dataValues.events;
-
-        if (events) {
-            for (var key in events) {
-                var event = events[key];
-
-                var eventDate = moment(event.eventDay).format('YYYY-MM-DD');
-                var nowDate = moment().tz(guildConf['timezone']).format('YYYY-MM-DD');
-
-                var eventTime = moment(event.eventTime, 'H:mm').format('H:mm');
-                var nowTime = moment().tz(guildConf['timezone']).format("H:mm");
-
-                if (!event.repeatDays) {
-                    event['repeatDays'] = [];
-                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
-                } 
-
-                if (eventDate === nowDate && eventTime === nowTime) {
-                    var announceMessage = `**${key}**\n${event.eventMessage}`;
-                    announceEvent(thisGuild, guildConf, event, announceMessage);
-                    
-                    // If it's got any left in repeatDays
-                    if (event.repeatDays.length > 0) {            
-                        
-                        let eventMsg = event.eventMessage;
-                        // If this is the last time, tack a message to the end to let them know it's the last one
-                        if (event.repeatDays.length === 1) {
-                            eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
-                        }
-                        const newEvent = {
-                            "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(parseInt(event.repeatDays.splice(0, 1)), 'd').format('YYYY-MM-DD'),
-                            "eventTime": event.eventTime,
-                            "eventMessage": eventMsg,
-                            "eventChan": event.eventChan,
-                            "countdown": event.countdown,
-                            "repeat": {
-                                "repeatDay": 0,
-                                "repeatHour": 0,
-                                "repeatMin": 0
-                            },
-                            "repeatDays": event.repeatDays
-                        };
-
-                        // Gotta delete it before we can add it, so there won't be conflicts
-                        delete events[key];
-                        events[key] = newEvent;
-                    // Else if it's set to repeat 
-                    } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-                        const newEvent = {
-                            "eventDay": moment(event.eventDay, 'YYYY-MM-DD').add(event.repeat['repeatDay'], 'd').format('YYYY-MM-DD'),
-                            "eventTime": moment(event.eventTime, 'H:mm').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').format('H:mm'),
-                            "eventMessage": event.eventMessage,
-                            "eventChan": event.eventChan,
-                            "countdown": event.countdown,
-                            "repeat": {
-                                "repeatDay": event.repeat['repeatDay'],
-                                "repeatHour": event.repeat['repeatHour'],
-                                "repeatMin": event.repeat['repeatMin']
-                            },
-                            "repeatDays": []
-                        };
-
-                        // Gotta delete it before we can add it, so there won't be conflicts
-                        delete events[key];
-                        events[key] = newEvent;
-                    // Else, it's not supposed to repeat at all, so go ahead and wipe it out
-                    } else { 
-                        delete events[key];
-                    }
-                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
-                // If the event has passed without being noticed, go ahead and wipe it
-                // Probably from the bot crashing during an event, or back during testing
-                } else if (moment(eventDate).isBefore(moment(nowDate).subtract(2, 'h'))) {
-                    delete events[key];
-                    await client.guildEvents.update({events: events}, {where: {guildID: g}});
-                }
-
-                // if we have a countdown, see if we need to send a message
-                if (event.countdown == 'yes') {
-                    checkCountdown(thisGuild, guildConf, key, event);
-                }
-            }
-        }
-    });
-}
-
-function checkCountdown(thisGuild, guildConf, key, event) {
-
-    // This function is run every INTERVAL_SECONDS - currently every 30 seconds
-    // We only want to run this function once per minute
-    // So let's make sure that the current number of seconds is less than the interval seconds
-    // If INTERVAL_SECONDS goes above 60 i.e. more than a minute, this will break
-
-    var now = moment().tz(guildConf['timezone']);
-    if (now.seconds() >= INTERVAL_SECONDS) {
-        return;
-    }
-
-    // Full event date and time in the correct timezone
-    var eventDate = moment.tz(event.eventDay + " " + event.eventTime, "YYYY-MM-DD H:mm", guildConf['timezone']);
-    // Full now date and time in the correct timezone with 0 seconds so we can compare against the event date
-    var nowDate = moment().tz(guildConf['timezone']).seconds(0);
-
-    // Times in minutes before event
-    const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
-
-    // Loop through all minutes before event start time
-    for (var index = 0; index < timesToCountdown.length; ++index) {
-        // Get the countdown date to test against
-        var countdownDate = moment(eventDate).subtract(timesToCountdown[index], 'minutes');
-        // Compare to seconds level of accuracy (ignore milliseconds)
-        if (countdownDate.isSame(nowDate, 'seconds')) {
-            // We should trigger this countdown message so create the announcement message of how long to go
-            var timeToGo = moment.duration(eventDate.diff(nowDate)).humanize();
-            // var announceMessage = client.languages[guildConf].BASE_EVENT_STARTING_IN_MSG(key, timeToGo);
-            var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(key, timeToGo);
-            announceEvent(thisGuild, guildConf, event, announceMessage);
-
-            // We matched so we don't have to look any more
-            break;
-        }
-    }
-}
-
-function announceEvent(thisGuild, guildConf, event, announceMessage) {
-    if (guildConf["announceChan"] != "") {
-        if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, try using it
-            client.announceMsg(thisGuild, announceMessage, event.eventChan);
-        } else { // Else, use the default one from their settings
-            client.announceMsg(thisGuild, announceMessage);
-        }
-    }
-}
-
-// Then every INTERVAL_SECONDS seconds after
-setInterval(checkDates, INTERVAL_SECONDS * 1000);
-
+// ## Here down is to update any characters that need it ##
 // Run it one minute after the bot boots
 setTimeout(updateCharacterMods,        1 * 60 * 1000);
 // Check every 12 hours to see if any mods have been changed
@@ -294,8 +163,6 @@ async function updateCharacterMods() {
         let found = false;
         const currentCharacters = client.characters;
         
-        if (thisChar.cname === 'Bohdi Rook') thisChar.cname = 'Bodhi Rook';
-
         currentCharacters.forEach(currentChar => {
             if (thisChar.cname.toLowerCase().replace(cleanReg, '') === currentChar.name.toLowerCase().replace(cleanReg, '')) {
                 found = true;
@@ -308,7 +175,7 @@ async function updateCharacterMods() {
                 } else {
                     setName = thisChar.name;
                 }
-                if (currentChar[setName]) {
+                if (currentChar.mods[setName]) {
                     setName = thisChar.name;
                 }
 
@@ -425,6 +292,37 @@ async function ggGrab(charLink) {
         "gear": {
         },
         "abilities": {
+        },
+        "shardLocations": { 
+            "dark": [], 
+            "light": [], 
+            "cantina": [], 
+            "shops": [] 
+        },
+        "stats": {
+            // Primary
+            'Power':0,
+            'Strength': 0,
+            'Agility':0,
+            'Intelligence':0,
+            // Offensive
+            'Speed': 0,
+            'Physical Damage': 0,
+            'Physical Critical Rating': 0,
+            'Special Damage': 0,
+            'Special Critical Rating': 0,
+            'Armor Penetration': 0,
+            'Resistance Penetration': 0,
+            'Potency': 0,
+            // Defensive
+            'Health': 0,
+            'Armor': 0,
+            'Resistance': 0,
+            'Tenacity': 0,
+            'Health Steal': 0,
+            'Protection': 0,
+            // Activation
+            'activation': 0
         }
     };
 
@@ -452,6 +350,7 @@ async function ggGrab(charLink) {
             }
         }
     });
+
     // Get the character's abilities and such
     $('.char-detail-info').each(function() {
         let abilityName = $(this).find('h5').text();    // May have the cooldown included, need to get rid of it
@@ -510,6 +409,8 @@ async function ggGrab(charLink) {
         };
     });
 
+
+    // Grab the cost for each ability
     $('.list-group-item-ability').each(function() {
         const aName = $(this).find('.ability-mechanics-link').text().replace(/^View /, '').replace(/\sMechanics$/, '');
 
@@ -541,7 +442,62 @@ async function ggGrab(charLink) {
         };
     });
 
+    // Get the stats
+    $('.content-container-primary-aside').each(function() {
+        $(this).find('.media-body').each(function() {
+            const rows = $(this).html().split('\n');
 
+            rows.forEach(stat => {
+                if (stat.startsWith('<p></p>') || stat.startsWith('</p>')) {
+                    stat = stat.replace(/<p><\/p>/g, '').replace(/^<p>/g, '').replace(/^<\/p>/g, '');
+                    stat = stat.replace(/\n/g, '').replace(/\(.*\)/g, '');
+                    if (stat.startsWith('<div class="pull-right">')) {
+                        stat = stat.replace('<div class="pull-right">', '');
+                        const statNum = parseInt(stat.replace(/<\/div>.*/g, ''));
+                        const statName = stat.replace(/.*<\/div>/g, '').replace(/\s*$/g, '');
+                        if (statName.indexOf('Shards for Activation') > -1) {
+                            character.stats.activation = statNum;
+                        } else {
+                            character.stats[statName] = statNum;
+                        }
+                    }
+                }
+            });
+        });
+    });
+
+    // Get the farming locations
+    $(".panel-body:contains('Shard Locations')").each(function() {
+        $(this).find('li').each(function() {
+            const text = $(this).text();
+            if (text.startsWith('Cantina Battles')) {
+                const battle = text.replace(/^Cantina Battles: Battle /, '').replace(/\s.*/g, '');
+                character.shardLocations.cantina.push(battle);
+            } else if (text.startsWith('Dark Side Battles')) {
+                const battle = text.replace(/^Dark Side Battles: /, '').replace(/\s.*/g, '');
+                character.shardLocations.dark.push(battle);
+            } else if (text.startsWith('Light Side Battles')) {
+                const battle = text.replace(/^Light Side Battles: /, '').replace(/\s.*/g, '');
+                character.shardLocations.dark.push(battle);
+            } else if (text.startsWith('Squad Cantina Battle Shipments')) {
+                character.shardLocations.shops.push('Cantina Shipments');
+            } else if (text.startsWith('Squad Arena Shipments')) {
+                character.shardLocations.shops.push('Squad Arena Shipments');
+            } else if (text.startsWith('Fleet Store')) {
+                character.shardLocations.shops.push('Fleet Store');
+            } else if (text.startsWith('Guild Shipments')) {
+                character.shardLocations.shops.push('Guild Shipments');
+            } else if (text.startsWith('Guild Events Store')) {
+                character.shardLocations.shops.push('Guild Events Store');
+            } else if (text.startsWith('Galactic War Shipments')) {
+                character.shardLocations.shops.push('Galactic War Shipments');
+            } else if (text.startsWith('Shard Shop')) {
+                character.shardLocations.shops.push('Shard Shop');
+            }
+        });
+    });
+
+    // Grab the gear for the character
     const gearGrab = await snekfetch.get(gearLink);
     const gearGrabText = gearGrab.text;
 
@@ -592,3 +548,4 @@ function getCount(lvl) {
     }
     return lvlCost;
 }
+

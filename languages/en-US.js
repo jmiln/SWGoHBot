@@ -126,9 +126,10 @@ module.exports = {
     COMMAND_EVEMT_INVALID_TIME: `You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`,
     COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`,
     COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` created for ${eventDate}`,
+    COMMAND_EVENT_NO_CREATE: `I couldn't set that event, please try again.`,
 
     // Event Command (View)
-    COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
+    COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \n\nEvent Time: ${eventDate}\n`,
     COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Time Remaining: ${timeLeft}\n`,
     COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
     COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,
@@ -215,7 +216,8 @@ module.exports = {
     COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Guild configuration item ${key} has been changed to:\n\`${value}\``,
     COMMAND_SETCONF_NO_SETTINGS: `No guild settings found.`,
     COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Sorry, but ${value} is not a currently supported language. \nCurrently supported languages are: \`${langList}\``,
-    
+    COMMAND_SETCONF_RESET: `Your config has been reset`,
+
     // Ships Command
     COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Need a character or ship. Usage is \`${prefix}${usage}\``,
     COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `Invalid character or ship. Usage is \`${prefix}${usage}\``,

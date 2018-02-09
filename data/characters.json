@@ -185,6 +185,37 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 1177,
+            "Agility": 887,
+            "Intelligence": 851,
+            "Speed": 125,
+            "Physical Damage": 2756,
+            "Physical Critical Rating": 740,
+            "Special Damage": 2351,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 44,
+            "Resistance Penetration": 15,
+            "Potency": 41,
+            "Health": 26236,
+            "Armor": 291,
+            "Resistance": 116,
+            "Tenacity": 41,
+            "Health Steal": 15,
+            "Protection": 28,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "5-B"
+            ],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -215,6 +246,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -360,6 +404,37 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 857,
+            "Agility": 774,
+            "Intelligence": 1245,
+            "Speed": 119,
+            "Physical Damage": 2642,
+            "Physical Critical Rating": 314,
+            "Special Damage": 3454,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 75,
+            "Resistance Penetration": 37,
+            "Potency": 36,
+            "Health": 26856,
+            "Armor": 301,
+            "Resistance": 222,
+            "Tenacity": 40,
+            "Health Steal": 5,
+            "Protection": 19,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store",
+                "Squad Arena Shipments",
+                "Guild Events Store"
+            ]
         }
     },
     {
@@ -535,6 +610,39 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 1027,
+            "Agility": 1072,
+            "Intelligence": 583,
+            "Speed": 105,
+            "Physical Damage": 2648,
+            "Physical Critical Rating": 938,
+            "Special Damage": 1464,
+            "Special Critical Rating": 30,
+            "Armor Penetration": 129,
+            "Resistance Penetration": 0,
+            "Potency": 23,
+            "Health": 23102,
+            "Armor": 285,
+            "Resistance": 110,
+            "Tenacity": 33,
+            "Health Steal": 35,
+            "Protection": 16,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [
+                "4-C",
+                "5-D"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store",
+                "Cantina Shipments"
+            ]
         }
     },
     {
@@ -711,6 +819,35 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 900,
+            "Agility": 1269,
+            "Intelligence": 667,
+            "Speed": 148,
+            "Physical Damage": 2801,
+            "Physical Critical Rating": 749,
+            "Special Damage": 1765,
+            "Special Critical Rating": 40,
+            "Armor Penetration": 104,
+            "Resistance Penetration": 0,
+            "Potency": 38,
+            "Health": 26600,
+            "Armor": 219,
+            "Resistance": 92,
+            "Tenacity": 44,
+            "Health Steal": 15,
+            "Protection": 26,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store"
+            ]
         }
     },
     {
@@ -741,6 +878,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -897,6 +1047,35 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 22909,
+            "Strength": 815,
+            "Agility": 1167,
+            "Intelligence": 903,
+            "Speed": 104,
+            "Physical Damage": 2546,
+            "Physical Critical Rating": 706,
+            "Special Damage": 2575,
+            "Special Critical Rating": 15,
+            "Armor Penetration": 94,
+            "Resistance Penetration": 27,
+            "Potency": 23,
+            "Health": 24345,
+            "Armor": 284,
+            "Resistance": 116,
+            "Tenacity": 32,
+            "Health Steal": 55,
+            "Protection": 18,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Squad Arena Shipments"
+            ]
         }
     },
     {
@@ -1074,6 +1253,37 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 1150,
+            "Agility": 638,
+            "Intelligence": 805,
+            "Speed": 111,
+            "Physical Damage": 2419,
+            "Physical Critical Rating": 295,
+            "Special Damage": 2222,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 41,
+            "Resistance Penetration": 5,
+            "Potency": 53,
+            "Health": 28207,
+            "Armor": 366,
+            "Resistance": 431,
+            "Tenacity": 53,
+            "Health Steal": 15,
+            "Protection": 37,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "6-D"
+            ],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -1249,6 +1459,41 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1242,
+            "Agility": 692,
+            "Intelligence": 906,
+            "Speed": 116,
+            "Physical Damage": 2393,
+            "Physical Critical Rating": 517,
+            "Special Damage": 2482,
+            "Special Critical Rating": 90,
+            "Armor Penetration": 35,
+            "Resistance Penetration": 5,
+            "Potency": 20,
+            "Health": 29943,
+            "Armor": 393,
+            "Resistance": 253,
+            "Tenacity": 29,
+            "Health Steal": 10,
+            "Protection": 31,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [
+                "5-C",
+                "5-E",
+                "8-A"
+            ],
+            "light": [],
+            "cantina": [
+                "6-A"
+            ],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -1434,6 +1679,37 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 18097,
+            "Strength": 1386,
+            "Agility": 697,
+            "Intelligence": 795,
+            "Speed": 90,
+            "Physical Damage": 2622,
+            "Physical Critical Rating": 0,
+            "Special Damage": 1990,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 104,
+            "Resistance Penetration": 0,
+            "Potency": 48,
+            "Health": 28481,
+            "Armor": 385,
+            "Resistance": 271,
+            "Tenacity": 32,
+            "Health Steal": 15,
+            "Protection": 39,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [
+                "9-C"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Guild Events Store"
+            ]
         }
     },
     {
@@ -1514,7 +1790,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage/ Critical Chance",
+                "triangle": "Crit. Damage/ Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -1673,6 +1949,33 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 22909,
+            "Strength": 1040,
+            "Agility": 652,
+            "Intelligence": 1399,
+            "Speed": 162,
+            "Physical Damage": 2440,
+            "Physical Critical Rating": 330,
+            "Special Damage": 3783,
+            "Special Critical Rating": 85,
+            "Armor Penetration": 37,
+            "Resistance Penetration": 17,
+            "Potency": 47,
+            "Health": 25270,
+            "Armor": 285,
+            "Resistance": 307,
+            "Tenacity": 39,
+            "Health Steal": 5,
+            "Protection": 30,
+            "activation": 145
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     },
     {
@@ -1680,8 +1983,7 @@
         "uniqueName": "BIGGSDARKLIGHTER",
         "aliases": [
             "Biggs Darklighter",
-            "Biggs",
-            "Wiggs"
+            "Biggs"
         ],
         "url": "https://swgoh.gg/characters/biggs-darklighter/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_biggs.png",
@@ -1837,6 +2139,41 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 718,
+            "Agility": 1107,
+            "Intelligence": 1062,
+            "Speed": 108,
+            "Physical Damage": 2239,
+            "Physical Critical Rating": 823,
+            "Special Damage": 2611,
+            "Special Critical Rating": 150,
+            "Armor Penetration": 49,
+            "Resistance Penetration": 10,
+            "Potency": 51,
+            "Health": 15692,
+            "Armor": 275,
+            "Resistance": 304,
+            "Tenacity": 26,
+            "Health Steal": 0,
+            "Protection": 19,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [
+                "4-A"
+            ],
+            "light": [],
+            "cantina": [
+                "3-G"
+            ],
+            "shops": [
+                "Fleet Store",
+                "Galactic War Shipments",
+                "Guild Events Store"
+            ]
         }
     },
     {
@@ -2010,6 +2347,37 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 952,
+            "Agility": 1139,
+            "Intelligence": 658,
+            "Speed": 145,
+            "Physical Damage": 2659,
+            "Physical Critical Rating": 709,
+            "Special Damage": 1675,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 119,
+            "Resistance Penetration": 15,
+            "Potency": 38,
+            "Health": 28049,
+            "Armor": 277,
+            "Resistance": 121,
+            "Tenacity": 33,
+            "Health Steal": 15,
+            "Protection": 22,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Cantina Shipments",
+                "Guild Events Store",
+                "Fleet Store"
+            ]
         }
     },
     {
@@ -2229,6 +2597,40 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 20713,
+            "Strength": 770,
+            "Agility": 1280,
+            "Intelligence": 660,
+            "Speed": 147,
+            "Physical Damage": 2950,
+            "Physical Critical Rating": 751,
+            "Special Damage": 1687,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 103,
+            "Resistance Penetration": 0,
+            "Potency": 49,
+            "Health": 23193,
+            "Armor": 221,
+            "Resistance": 188,
+            "Tenacity": 45,
+            "Health Steal": 10,
+            "Protection": 19,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [
+                "2-B",
+                "4-E",
+                "8-A"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store",
+                "Cantina Shipments"
+            ]
         }
     },
     {
@@ -2403,6 +2805,36 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 842,
+            "Agility": 675,
+            "Intelligence": 1316,
+            "Speed": 132,
+            "Physical Damage": 2575,
+            "Physical Critical Rating": 465,
+            "Special Damage": 3313,
+            "Special Critical Rating": 65,
+            "Armor Penetration": 19,
+            "Resistance Penetration": 15,
+            "Potency": 27,
+            "Health": 26837,
+            "Armor": 236,
+            "Resistance": 284,
+            "Tenacity": 42,
+            "Health Steal": 10,
+            "Protection": 22,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Galactic War Shipments",
+                "Guild Events Store"
+            ]
         }
     },
     {
@@ -2434,6 +2866,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -2579,6 +3024,35 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 971,
+            "Agility": 1234,
+            "Intelligence": 734,
+            "Speed": 113,
+            "Physical Damage": 2991,
+            "Physical Critical Rating": 739,
+            "Special Damage": 1886,
+            "Special Critical Rating": 30,
+            "Armor Penetration": 39,
+            "Resistance Penetration": 0,
+            "Potency": 36,
+            "Health": 27439,
+            "Armor": 256,
+            "Resistance": 146,
+            "Tenacity": 35,
+            "Health Steal": 10,
+            "Protection": 15,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Galactic War Shipments"
+            ]
         }
     },
     {
@@ -2656,16 +3130,16 @@
             },
             "PvP": {
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
+                    "Speed x4",
+                    "Health x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Potency/ Protection"
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -2811,6 +3285,35 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1209,
+            "Agility": 1006,
+            "Intelligence": 936,
+            "Speed": 129,
+            "Physical Damage": 2111,
+            "Physical Critical Rating": 575,
+            "Special Damage": 2389,
+            "Special Critical Rating": 70,
+            "Armor Penetration": 25,
+            "Resistance Penetration": 0,
+            "Potency": 50,
+            "Health": 27432,
+            "Armor": 319,
+            "Resistance": 214,
+            "Tenacity": 39,
+            "Health Steal": 30,
+            "Protection": 32,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "7-D"
+            ],
+            "shops": []
         }
     },
     {
@@ -2840,6 +3343,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -2985,6 +3501,35 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1114,
+            "Agility": 718,
+            "Intelligence": 895,
+            "Speed": 121,
+            "Physical Damage": 2179,
+            "Physical Critical Rating": 539,
+            "Special Damage": 2307,
+            "Special Critical Rating": 70,
+            "Armor Penetration": 90,
+            "Resistance Penetration": 5,
+            "Potency": 53,
+            "Health": 26074,
+            "Armor": 295,
+            "Resistance": 271,
+            "Tenacity": 48,
+            "Health Steal": 35,
+            "Protection": 29,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Galactic War Shipments"
+            ]
         }
     },
     {
@@ -3160,6 +3705,36 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 945,
+            "Agility": 780,
+            "Intelligence": 1099,
+            "Speed": 134,
+            "Physical Damage": 2135,
+            "Physical Critical Rating": 465,
+            "Special Damage": 3508,
+            "Special Critical Rating": 190,
+            "Armor Penetration": 35,
+            "Resistance Penetration": 50,
+            "Potency": 66,
+            "Health": 27798,
+            "Armor": 186,
+            "Resistance": 135,
+            "Tenacity": 39,
+            "Health Steal": 10,
+            "Protection": 25,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Squad Arena Shipments",
+                "Guild Events Store"
+            ]
         }
     },
     {
@@ -3362,6 +3937,36 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 847,
+            "Agility": 1250,
+            "Intelligence": 761,
+            "Speed": 115,
+            "Physical Damage": 2581,
+            "Physical Critical Rating": 661,
+            "Special Damage": 2317,
+            "Special Critical Rating": 160,
+            "Armor Penetration": 99,
+            "Resistance Penetration": 55,
+            "Potency": 21,
+            "Health": 23694,
+            "Armor": 207,
+            "Resistance": 91,
+            "Tenacity": 31,
+            "Health Steal": 0,
+            "Protection": 16,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store",
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -3394,16 +3999,16 @@
             },
             "General": {
                 "sets": [
-                    "Speed x4",
+                    "Critical Damage x4",
                     "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -3549,6 +4154,35 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1160,
+            "Agility": 721,
+            "Intelligence": 988,
+            "Speed": 116,
+            "Physical Damage": 2672,
+            "Physical Critical Rating": 428,
+            "Special Damage": 2503,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 15,
+            "Potency": 30,
+            "Health": 28017,
+            "Armor": 326,
+            "Resistance": 253,
+            "Tenacity": 26,
+            "Health Steal": 10,
+            "Protection": 28,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "5-D"
+            ],
+            "shops": []
         }
     },
     {
@@ -3571,6 +4205,19 @@
                     "Health x2",
                     "Health x2",
                     "Defense x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -3723,6 +4370,35 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 1360,
+            "Agility": 685,
+            "Intelligence": 700,
+            "Speed": 115,
+            "Physical Damage": 2744,
+            "Physical Critical Rating": 396,
+            "Special Damage": 1956,
+            "Special Critical Rating": 30,
+            "Armor Penetration": 19,
+            "Resistance Penetration": 0,
+            "Potency": 13,
+            "Health": 34474,
+            "Armor": 0,
+            "Resistance": 228,
+            "Tenacity": 49,
+            "Health Steal": 15,
+            "Protection": 40,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Squad Arena Shipments"
+            ]
         }
     },
     {
@@ -3752,6 +4428,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense/ Health"
             }
         },
         "gear": {
@@ -3907,7 +4596,48 @@
                     "omega": 0,
                     "zeta": 0
                 }
+            },
+            " As the Force Wills": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "All allies have their current Health percentages equalized. Dispel all debuffs from all allies and grant them a Heal Over Time effect for 4 turns for each effect dispelled. Allies that were not debuffed gain Tenacity Up for 3 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 0,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
+        },
+        "stats": {
+            "Power": 18097,
+            "Strength": 758,
+            "Agility": 1046,
+            "Intelligence": 741,
+            "Speed": 153,
+            "Physical Damage": 2895,
+            "Physical Critical Rating": 706,
+            "Special Damage": 1819,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 197,
+            "Resistance Penetration": 0,
+            "Potency": 1,
+            "Health": 16110,
+            "Armor": 267,
+            "Resistance": 240,
+            "Tenacity": 26,
+            "Health Steal": 10,
+            "Protection": 24,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Guild Events Store",
+                "Fleet Store"
+            ]
         }
     },
     {
@@ -3942,7 +4672,7 @@
             "General": {
                 "sets": [
                     "Speed x4",
-                    "Defense x2",
+                    "Health x2",
                     ""
                 ],
                 "square": "Offense",
@@ -4096,6 +4826,36 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17733,
+            "Strength": 1140,
+            "Agility": 870,
+            "Intelligence": 822,
+            "Speed": 152,
+            "Physical Damage": 2319,
+            "Physical Critical Rating": 519,
+            "Special Damage": 2032,
+            "Special Critical Rating": 20,
+            "Armor Penetration": 63,
+            "Resistance Penetration": 10,
+            "Potency": 27,
+            "Health": 31708,
+            "Armor": 390,
+            "Resistance": 187,
+            "Tenacity": 31,
+            "Health Steal": 0,
+            "Protection": 29,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Cantina Shipments",
+                "Guild Events Store"
+            ]
         }
     },
     {
@@ -4261,6 +5021,39 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 966,
+            "Agility": 1175,
+            "Intelligence": 614,
+            "Speed": 107,
+            "Physical Damage": 2505,
+            "Physical Critical Rating": 760,
+            "Special Damage": 1513,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 93,
+            "Resistance Penetration": 5,
+            "Potency": 21,
+            "Health": 27009,
+            "Armor": 277,
+            "Resistance": 134,
+            "Tenacity": 25,
+            "Health Steal": 10,
+            "Protection": 19,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [
+                "1-B",
+                "3-E",
+                "5-E"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -4275,9 +5068,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chewbacca.png",
         "side": "light",
         "factions": [
-            "tank",
-            "scoundrel",
-            "galactic republic"
+            "Galactic Republic",
+            "Scoundrel",
+            "Tank"
         ],
         "mods": {
             "Arena": {
@@ -4397,26 +5190,79 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 55% chance to remove 50% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Wookiee Rage": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Chewbacca Taunts and gains 30% Health Up for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Defiant Roar": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Chewbacca dispels all debuffs from himself, recovers 50% of his Max Health, gains Defense Up for 3 Turns, and has a 50% Chance to gain 25% Turn Meter.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
             },
             "Wookiee Resolve": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "All allies have +50 Defense, and a 50% chance to gain Defense Up for 3 turns whenever they are damaged.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1277,
+            "Agility": 667,
+            "Intelligence": 699,
+            "Speed": 106,
+            "Physical Damage": 2757,
+            "Physical Critical Rating": 442,
+            "Special Damage": 2038,
+            "Special Critical Rating": 70,
+            "Armor Penetration": 101,
+            "Resistance Penetration": 0,
+            "Potency": 28,
+            "Health": 35134,
+            "Armor": 360,
+            "Resistance": 227,
+            "Tenacity": 29,
+            "Health Steal": 10,
+            "Protection": 31,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [
+                "2-C",
+                "3-E"
+            ],
+            "light": [],
+            "cantina": [
+                "1-C",
+                "5-G"
+            ],
+            "shops": []
         }
     },
     {
@@ -4460,6 +5306,19 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Chance/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -4629,6 +5488,33 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 25890,
+            "Strength": 900,
+            "Agility": 1338,
+            "Intelligence": 758,
+            "Speed": 152,
+            "Physical Damage": 3164,
+            "Physical Critical Rating": 886,
+            "Special Damage": 1872,
+            "Special Critical Rating": 20,
+            "Armor Penetration": 151,
+            "Resistance Penetration": 0,
+            "Potency": 11,
+            "Health": 25266,
+            "Armor": 222,
+            "Resistance": 106,
+            "Tenacity": 33,
+            "Health Steal": 10,
+            "Protection": 30,
+            "activation": 330
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     },
     {
@@ -4646,18 +5532,18 @@
             "Support"
         ],
         "mods": {
-            "Arena": {
+            "why ?!": {
                 "sets": [
-                    "Potency x2",
-                    "Speed x4",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Potency x2"
                 ],
-                "square": "N/A",
-                "arrow": "N/A",
-                "diamond": "N/A",
-                "triangle": "N/A",
-                "circle": "N/A",
-                "cross": "N/A"
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -4792,6 +5678,35 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 987,
+            "Agility": 1050,
+            "Intelligence": 739,
+            "Speed": 112,
+            "Physical Damage": 2493,
+            "Physical Critical Rating": 653,
+            "Special Damage": 1923,
+            "Special Critical Rating": 20,
+            "Armor Penetration": 41,
+            "Resistance Penetration": 0,
+            "Potency": 28,
+            "Health": 28338,
+            "Armor": 254,
+            "Resistance": 313,
+            "Tenacity": 42,
+            "Health Steal": 10,
+            "Protection": 16,
+            "activation": 10
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Squad Arena Shipments"
+            ]
         }
     },
     {
@@ -4822,6 +5737,32 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "DN Lead": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -4967,6 +5908,38 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 892,
+            "Agility": 1221,
+            "Intelligence": 894,
+            "Speed": 167,
+            "Physical Damage": 2187,
+            "Physical Critical Rating": 564,
+            "Special Damage": 2603,
+            "Special Critical Rating": 70,
+            "Armor Penetration": 65,
+            "Resistance Penetration": 10,
+            "Potency": 85,
+            "Health": 19559,
+            "Armor": 276,
+            "Resistance": 282,
+            "Tenacity": 39,
+            "Health Steal": 5,
+            "Protection": 16,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [
+                "1-C",
+                "1-C"
+            ],
+            "light": [],
+            "cantina": [
+                "6-G"
+            ],
+            "shops": []
         }
     },
     {
@@ -5143,6 +6116,36 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 898,
+            "Agility": 708,
+            "Intelligence": 1130,
+            "Speed": 129,
+            "Physical Damage": 2453,
+            "Physical Critical Rating": 343,
+            "Special Damage": 3645,
+            "Special Critical Rating": 150,
+            "Armor Penetration": 24,
+            "Resistance Penetration": 77,
+            "Potency": 26,
+            "Health": 29166,
+            "Armor": 209,
+            "Resistance": 143,
+            "Tenacity": 30,
+            "Health Steal": 5,
+            "Protection": 21,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store",
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -5174,6 +6177,32 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "Raid w/ clones": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Offense",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "GK Lead": {
+                "sets": [
+                    "",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Offense",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -5319,6 +6348,38 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1390,
+            "Agility": 708,
+            "Intelligence": 782,
+            "Speed": 115,
+            "Physical Damage": 2638,
+            "Physical Critical Rating": 390,
+            "Special Damage": 2067,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 25,
+            "Resistance Penetration": 0,
+            "Potency": 35,
+            "Health": 31787,
+            "Armor": 509,
+            "Resistance": 233,
+            "Tenacity": 43,
+            "Health Steal": 20,
+            "Protection": 35,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [
+                "2-D",
+                "4-F"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Cantina Shipments"
+            ]
         }
     },
     {
@@ -5363,6 +6424,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "leader": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -5508,6 +6582,36 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 723,
+            "Agility": 869,
+            "Intelligence": 1037,
+            "Speed": 140,
+            "Physical Damage": 2484,
+            "Physical Critical Rating": 765,
+            "Special Damage": 2723,
+            "Special Critical Rating": 125,
+            "Armor Penetration": 82,
+            "Resistance Penetration": 0,
+            "Potency": 38,
+            "Health": 20916,
+            "Armor": 194,
+            "Resistance": 180,
+            "Tenacity": 39,
+            "Health Steal": 10,
+            "Protection": 17,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store",
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -5537,6 +6641,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -5682,6 +6799,36 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 880,
+            "Agility": 1018,
+            "Intelligence": 474,
+            "Speed": 100,
+            "Physical Damage": 2852,
+            "Physical Critical Rating": 962,
+            "Special Damage": 1137,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 149,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 26165,
+            "Armor": 250,
+            "Resistance": 98,
+            "Tenacity": 24,
+            "Health Steal": 20,
+            "Protection": 12,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store",
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -5881,6 +7028,35 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 22909,
+            "Strength": 973,
+            "Agility": 621,
+            "Intelligence": 1247,
+            "Speed": 120,
+            "Physical Damage": 1657,
+            "Physical Critical Rating": 258,
+            "Special Damage": 4345,
+            "Special Critical Rating": 185,
+            "Armor Penetration": 10,
+            "Resistance Penetration": 22,
+            "Potency": 58,
+            "Health": 26259,
+            "Armor": 308,
+            "Resistance": 265,
+            "Tenacity": 46,
+            "Health Steal": 15,
+            "Protection": 38,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [
+                "9-A"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     },
     {
@@ -5911,6 +7087,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Crit. Chance",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -6056,6 +7245,35 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 827,
+            "Agility": 1370,
+            "Intelligence": 764,
+            "Speed": 161,
+            "Physical Damage": 2791,
+            "Physical Critical Rating": 809,
+            "Special Damage": 2025,
+            "Special Critical Rating": 20,
+            "Armor Penetration": 69,
+            "Resistance Penetration": 15,
+            "Potency": 45,
+            "Health": 23499,
+            "Armor": 258,
+            "Resistance": 100,
+            "Tenacity": 51,
+            "Health Steal": 25,
+            "Protection": 15,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Squad Arena Shipments"
+            ]
         }
     },
     {
@@ -6116,16 +7334,16 @@
             },
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Potency"
             },
             "Raid": {
                 "sets": [
@@ -6139,6 +7357,32 @@
                 "triangle": "Crit. Damage/ Crit. Chance",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "DN lead": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense"
+            },
+            "Lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -6283,7 +7527,47 @@
                     "omega": 10,
                     "zeta": 20
                 }
+            },
+            "Force Crush 5": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal Physical damage to all enemies and inflict Speed Down and 3 Damage Over Time effects for 2 rounds.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 0,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1307,
+            "Agility": 677,
+            "Intelligence": 932,
+            "Speed": 121,
+            "Physical Damage": 2514,
+            "Physical Critical Rating": 486,
+            "Special Damage": 2565,
+            "Special Critical Rating": 45,
+            "Armor Penetration": 25,
+            "Resistance Penetration": 0,
+            "Potency": 31,
+            "Health": 26646,
+            "Armor": 371,
+            "Resistance": 334,
+            "Tenacity": 33,
+            "Health Steal": 15,
+            "Protection": 35,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Fleet Store"
+            ]
         }
     },
     {
@@ -6457,6 +7741,40 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 854,
+            "Agility": 660,
+            "Intelligence": 1148,
+            "Speed": 137,
+            "Physical Damage": 2363,
+            "Physical Critical Rating": 588,
+            "Special Damage": 3232,
+            "Special Critical Rating": 120,
+            "Armor Penetration": 60,
+            "Resistance Penetration": 75,
+            "Potency": 45,
+            "Health": 23950,
+            "Armor": 247,
+            "Resistance": 165,
+            "Tenacity": 23,
+            "Health Steal": 20,
+            "Protection": 15,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [
+                "3-B",
+                "3-F"
+            ],
+            "light": [],
+            "cantina": [
+                "2-G"
+            ],
+            "shops": [
+                "Galactic War Shipments"
+            ]
         }
     },
     {
@@ -6514,6 +7832,71 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "Veers lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
+            },
+            "Krennic/EP lead": {
+                "sets": [
+                    "Critical Chance x2",
+                    "Critical Damage x4",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
+            },
+            "Thrawn lead": {
+                "sets": [
+                    "Critical Chance x2",
+                    "Critical Damage x4",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "Death Trooper Krennic/EP lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
+            },
+            "Death Trooper Thrawn lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -6659,6 +8042,35 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1217,
+            "Agility": 928,
+            "Intelligence": 827,
+            "Speed": 124,
+            "Physical Damage": 2429,
+            "Physical Critical Rating": 812,
+            "Special Damage": 2075,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 90,
+            "Resistance Penetration": 0,
+            "Potency": 56,
+            "Health": 26388,
+            "Armor": 255,
+            "Resistance": 152,
+            "Tenacity": 42,
+            "Health Steal": 10,
+            "Protection": 35,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "8-A"
+            ],
+            "shops": []
         }
     },
     {
@@ -6686,6 +8098,32 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "Raid": {
+                "sets": [
+                    "Critical Chance x2",
+                    "Critical Chance x2",
+                    "Critical Chance x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Potency"
             }
@@ -6833,6 +8271,35 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 1345,
+            "Agility": 624,
+            "Intelligence": 536,
+            "Speed": 109,
+            "Physical Damage": 2852,
+            "Physical Critical Rating": 593,
+            "Special Damage": 1377,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 132,
+            "Resistance Penetration": 0,
+            "Potency": 51,
+            "Health": 29230,
+            "Armor": 305,
+            "Resistance": 189,
+            "Tenacity": 39,
+            "Health Steal": 15,
+            "Protection": 33,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -6846,9 +8313,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_krennic.png",
         "side": "dark",
         "factions": [
-            "support",
-            "human",
-            "empire"
+            "Empire",
+            "Support"
         ],
         "mods": {
             "Arena (Palp Lead)": {
@@ -6900,6 +8366,32 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "leader": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "Palp lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -7007,32 +8499,88 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Special damage to target enemy and inflict Tenacity Down for 3 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Death Trooper Assault": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to all enemies with a 70% chance to inflict Stagger for 2 turns. If any enemies are debuffed, revive Death Trooper with 20% Health for each debuffed enemy. If Death Trooper is present, he is called to Assist.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Experimental Weaponry": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to target enemy and inflict a debuff (Attacker: Stun, Healer/Support: Ability Block, Tank: Buff Immunity) for 2 turns. If the target is a Rebel, also inflict Speed Down for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Director of Advanced Weapons Research": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Empire allies gain 25% Critical Chance and 25% Potency. Debuffed enemies who are Critically Hit during an Empire ally's turn suffer Ability Block for 1 turn. This effect can't be Resisted. Empire allies recover 10% Protection whenever they score a Critical Hit.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Immeasurable Power": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Director Krennic gains 10% Critical Damage for each debuffed enemy and 10% Critical Damage for each Rebel enemy. If Death Trooper is present he also gains these bonuses.",
-                "tier": "abilityMatMK3"
+                "tier": "abilityMatMK3",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
+        },
+        "stats": {
+            "Power": 20503,
+            "Strength": 713,
+            "Agility": 736,
+            "Intelligence": 1391,
+            "Speed": 129,
+            "Physical Damage": 2195,
+            "Physical Critical Rating": 470,
+            "Special Damage": 4446,
+            "Special Critical Rating": 195,
+            "Armor Penetration": 20,
+            "Resistance Penetration": 77,
+            "Potency": 47,
+            "Health": 24482,
+            "Armor": 166,
+            "Resistance": 212,
+            "Tenacity": 34,
+            "Health Steal": 10,
+            "Protection": 22,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [
+                "9-D"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Guild Events Store"
+            ]
         }
     },
     {
@@ -7064,6 +8612,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -7209,6 +8770,35 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 17523,
+            "Strength": 860,
+            "Agility": 713,
+            "Intelligence": 1181,
+            "Speed": 144,
+            "Physical Damage": 2152,
+            "Physical Critical Rating": 315,
+            "Special Damage": 3608,
+            "Special Critical Rating": 190,
+            "Armor Penetration": 92,
+            "Resistance Penetration": 67,
+            "Potency": 55,
+            "Health": 26307,
+            "Armor": 190,
+            "Resistance": 250,
+            "Tenacity": 37,
+            "Health Steal": 5,
+            "Protection": 17,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Squad Arena Shipments"
+            ]
         }
     },
     {
@@ -7409,6 +8999,33 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 18097,
+            "Strength": 703,
+            "Agility": 584,
+            "Intelligence": 1532,
+            "Speed": 122,
+            "Physical Damage": 2363,
+            "Physical Critical Rating": 239,
+            "Special Damage": 5300,
+            "Special Critical Rating": 275,
+            "Armor Penetration": 20,
+            "Resistance Penetration": 77,
+            "Potency": 47,
+            "Health": 24999,
+            "Armor": 142,
+            "Resistance": 223,
+            "Tenacity": 34,
+            "Health Steal": 0,
+            "Protection": 18,
+            "activation": 145
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     },
     {
@@ -7442,15 +9059,15 @@
             "General": {
                 "sets": [
                     "Speed x4",
-                    "Critical Chance x2",
+                    "Health x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit.Chance/ Protection",
-                "circle": "Protection",
-                "cross": "Offense/ Protection"
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Health/ Protection"
             }
         },
         "gear": {
@@ -7585,6 +9202,38 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 992,
+            "Agility": 1145,
+            "Intelligence": 804,
+            "Speed": 122,
+            "Physical Damage": 1933,
+            "Physical Critical Rating": 695,
+            "Special Damage": 2127,
+            "Special Critical Rating": 70,
+            "Armor Penetration": 20,
+            "Resistance Penetration": 10,
+            "Potency": 15,
+            "Health": 27549,
+            "Armor": 314,
+            "Resistance": 225,
+            "Tenacity": 39,
+            "Health Steal": 15,
+            "Protection": 26,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [
+                "2-C",
+                "8-C"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -7613,6 +9262,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -7747,6 +9409,37 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 834,
+            "Agility": 1453,
+            "Intelligence": 683,
+            "Speed": 140,
+            "Physical Damage": 2737,
+            "Physical Critical Rating": 844,
+            "Special Damage": 1777,
+            "Special Critical Rating": 140,
+            "Armor Penetration": 26,
+            "Resistance Penetration": 0,
+            "Potency": 35,
+            "Health": 25685,
+            "Armor": 272,
+            "Resistance": 120,
+            "Tenacity": 38,
+            "Health Steal": 15,
+            "Protection": 23,
+            "activation": 10
+        },
+        "shardLocations": {
+            "dark": [
+                "1-A",
+                "8-D",
+                "9-B"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     },
     {
@@ -7923,6 +9616,38 @@
                     "zeta": 0
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1183,
+            "Agility": 1109,
+            "Intelligence": 689,
+            "Speed": 143,
+            "Physical Damage": 2570,
+            "Physical Critical Rating": 631,
+            "Special Damage": 1744,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 125,
+            "Resistance Penetration": 0,
+            "Potency": 46,
+            "Health": 27310,
+            "Armor": 288,
+            "Resistance": 125,
+            "Tenacity": 44,
+            "Health Steal": 15,
+            "Protection": 28,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "2-B"
+            ],
+            "shops": [
+                "Guild Events Store",
+                "Fleet Store"
+            ]
         }
     },
     {
@@ -7967,7 +9692,7 @@
             },
             "General": {
                 "sets": [
-                    "Offense x4",
+                    "Speed x4",
                     "Potency x2",
                     ""
                 ],
@@ -7977,6 +9702,32 @@
                 "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "Raid with BB-8": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Ofense"
+            },
+            "Finn Raid with BB-8": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -8152,6 +9903,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -8301,6 +10065,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -8450,6 +10227,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -8597,6 +10387,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
+            },
+            "Vader lead": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -8761,16 +10564,16 @@
             },
             "General": {
                 "sets": [
-                    "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -8926,6 +10729,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "'Garazeb Zeb Orrelios Offensive variant'": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -9257,6 +11073,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -9431,6 +11260,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Offense"
+            },
+            "Lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -9884,7 +11726,20 @@
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
             },
-            "Raid": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection/ Tenacity"
+            },
+            "Raid 1": {
                 "sets": [
                     "Critical Damage x4",
                     "Critical Chance x2",
@@ -9896,6 +11751,19 @@
                 "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Offense"
+            },
+            "Raid 2": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -10057,6 +11925,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Crit. Chance",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -10230,7 +12111,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Crit. Damage",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
             }
@@ -10393,6 +12274,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -10549,6 +12443,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -10735,6 +12642,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -11208,6 +13128,19 @@
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -11351,6 +13284,19 @@
                     "Health x2",
                     "Defense x2",
                     "Defense x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -11963,6 +13909,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -12133,16 +14092,16 @@
             },
             "General": {
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
+                    "Critical Damage x4",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -13214,6 +15173,19 @@
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Potency/ Protection"
             }
         },
         "gear": {
@@ -13389,6 +15361,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -13545,6 +15530,32 @@
                 "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "with jedi": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -13855,6 +15866,19 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -14485,16 +16509,16 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Critical Damage x4",
                     "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Potency x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency/ Protection"
+                "cross": "Potency/ Offense"
             }
         },
         "gear": {
@@ -14643,6 +16667,19 @@
                     "Health x2",
                     "Health x2",
                     "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -14810,16 +16847,16 @@
             },
             "General": {
                 "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Defense x2"
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -14977,6 +17014,19 @@
                 "triangle": "Offense/ Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -15114,18 +17164,18 @@
             "scoundrel"
         ],
         "mods": {
-            "Arena": {
+            "why ?!": {
                 "sets": [
                     "Health x2",
-                    "Offense x4",
-                    ""
+                    "Health x2",
+                    "Potency x2"
                 ],
-                "square": "N/A",
-                "arrow": "N/A",
-                "diamond": "N/A",
-                "triangle": "N/A",
-                "circle": "N/A",
-                "cross": "N/A"
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -15273,6 +17323,19 @@
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -15404,8 +17467,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_initiate.png",
         "side": "dark",
         "factions": [
-            "attacker",
-            "nightsister"
+            "Attacker",
+            "Nightsister"
         ],
         "mods": {
             "Arena": {
@@ -15420,6 +17483,19 @@
                 "triangle": "Crit. Chance",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -15524,20 +17600,46 @@
             "Slice Open": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy. On a Critical Hit, inflict Damage Over Time for 3 turns.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Damage Over Time for 3 turns. On a Critical Hit, inflict Damage Over Time for 3 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Cut Down": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Deal Physical damage to target enemy with an additional 70% chance of a Critical Hit.",
-                "tier": "omega"
+                "abilityDesc": "All allies gain Critical Chance Up for 3 turns. Then, deal Physical damage to target enemy.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Severing Strike": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Deal Physical damage to target enemy with a 75% chance to render the target Immune to positive status effects for 2 turns.",
-                "tier": "omega"
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Buff Immunity for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Nightsister Retaliation": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "If Nightsister Initiate has full Health, she has +100% Counter Chance. Otherwise, she has +100% Offense.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         }
     },
@@ -15569,6 +17671,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -15914,6 +18029,32 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
+            },
+            "Asajj Lead - if Zeta": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
             }
         },
         "gear": {
@@ -16087,6 +18228,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection/ Offense"
             }
         },
         "gear": {
@@ -16253,6 +18407,19 @@
                 "triangle": "Crit. Chance/ Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Tenacity"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Protection",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -16401,6 +18568,19 @@
                     "Potency x2",
                     "Health x2",
                     "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -17236,7 +19416,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage/ Critical Chance",
+                "triangle": "Crit. Damage/ Crit. Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -17587,6 +19767,32 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection/ Health(Raid)",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
+            },
+            "with BB-8": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -17736,6 +19942,19 @@
                 "arrow": "Speed/ Offense",
                 "diamond": "Defense",
                 "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
+            },
+            "TB": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed/ Offense",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Potency"
             }
@@ -17904,6 +20123,19 @@
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection/ Health",
+                "cross": "Offense"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
                 "cross": "Offense"
             }
         },
@@ -18402,6 +20634,32 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Health",
+                "circle": "Protection",
+                "cross": "Offense/ Health"
+            },
+            "DN Lead": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -18557,6 +20815,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health/ Potency"
             }
         },
         "gear": {
@@ -18732,6 +21003,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Tenacity"
+            },
+            "tank": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Protection",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -18880,6 +21164,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection/ Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Potency"
             }
         },
         "gear": {
@@ -19041,6 +21338,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Defense x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Protection",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -19193,16 +21503,16 @@
             },
             "General": {
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
+                    "Critical Damage x4",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Protection",
+                "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -19364,6 +21674,32 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "Thrawn lead": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
+            },
+            "Veers lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -19517,6 +21853,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -19662,16 +22011,16 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Health x2",
-                    "Health x2",
-                    "Defense x2"
+                    ""
                 ],
                 "square": "Offense",
-                "arrow": "Speed/ Protection",
+                "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection/ Potency"
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -19825,6 +22174,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
             }
         },
         "gear": {
@@ -20292,6 +22654,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -20440,6 +22815,19 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -20896,14 +23284,14 @@
             },
             "General": {
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
+                    "Critical Damage x4",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Offense/ Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Potency"
             }
@@ -21068,15 +23456,15 @@
             "General": {
                 "sets": [
                     "Critical Damage x4",
-                    "Potency x2",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency/ Protection"
+                "cross": "Potency/ Offense"
             }
         },
         "gear": {
@@ -21209,8 +23597,7 @@
         "uniqueName": "WEDGEANTILLES",
         "aliases": [
             "Wedge Antilles",
-            "Wedge",
-            "Wiggs"
+            "Wedge"
         ],
         "url": "https://swgoh.gg/characters/wedge-antilles/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_wedge.png",
@@ -21539,6 +23926,19 @@
                 "triangle": "Offense",
                 "circle": "Protection",
                 "cross": "Potency"
+            },
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -21692,7 +24092,20 @@
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection"
+                "cross": "Protection/ Potency"
+            },
+            "Asajj Lead": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection/ Potency"
             }
         },
         "gear": {
@@ -21990,9 +24403,9 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Health x2",
-                    "Health x2",
-                    "Health x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -22140,15 +24553,15 @@
             "General": {
                 "sets": [
                     "Critical Damage x4",
-                    "Potency x2",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency/ Offense"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -22276,8 +24689,6 @@
         "aliases": [
             "Kylo Ren Unmasked",
             "KRU",
-            "Kylo Ren",
-            "Kylo",
             "Kylo Unmasked",
             "Matt"
         ],
@@ -22292,9 +24703,9 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Health x2",
-                    "Health x2",
-                    "Health x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -22312,7 +24723,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. damage",
+                "triangle": "Crit. Damage",
                 "circle": "Health",
                 "cross": "Health/ Offense"
             }
@@ -22452,7 +24863,8 @@
         "name": "Colonel Starck",
         "uniqueName": "COLONELSTARCK",
         "aliases": [
-            "Colonel Starck"
+            "Colonel Starck",
+            "Starck"
         ],
         "url": "https://swgoh.gg/characters/colonel-starck",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_colonel_stark.png",
@@ -22465,16 +24877,16 @@
         "mods": {
             "PvE": {
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
+                    "Critical Damage x4",
+                    "Critical Chance x2",
                     ""
                 ],
                 "square": "Offense",
-                "arrow": "Speed/ Offense",
+                "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency"
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
@@ -22620,13 +25032,44 @@
                     "zeta": 20
                 }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1026,
+            "Agility": 970,
+            "Intelligence": 834,
+            "Speed": 155,
+            "Physical Damage": 2264,
+            "Physical Critical Rating": 700,
+            "Special Damage": 2102,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 61,
+            "Resistance Penetration": 0,
+            "Potency": 40,
+            "Health": 28193,
+            "Armor": 291,
+            "Resistance": 133,
+            "Tenacity": 25,
+            "Health Steal": 30,
+            "Protection": 33,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
         "name": "Imperial Probe Droid",
         "uniqueName": "IMPERIALPROBEDROID",
         "aliases": [
-            "Imperial Probe Droid"
+            "Imperial Probe Droid",
+            "IPD",
+            "Probe Droid"
         ],
         "url": "https://swgoh.gg/characters/imperial-probe-droid",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_probedroid.png",
@@ -22640,7 +25083,7 @@
             "General": {
                 "sets": [
                     "Speed x4",
-                    "Defense x2",
+                    "Potency x2",
                     ""
                 ],
                 "square": "Offense",
@@ -22648,7 +25091,7 @@
                 "diamond": "Defense",
                 "triangle": "Health/ Defense",
                 "circle": "Health",
-                "cross": "Health/ Defense"
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -22798,7 +25241,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Critical Damage",
+                "triangle": "Offense/ Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -22940,7 +25383,7 @@
         "aliases": [
             "Rey Jedi Training",
             "RJT",
-            "JRT"
+            "JTR"
         ],
         "url": "https://swgoh.gg/characters/rey-jedi-training",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rey_tlj.png",
@@ -22952,6 +25395,19 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection"
+            },
+            "Raid": {
+                "sets": [
                     "Critical Damage x4",
                     "Critical Chance x2",
                     ""
@@ -22959,7 +25415,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection"
             }
@@ -23106,6 +25562,8 @@
         "uniqueName": "FIRSTORDEREXECUTIONER",
         "aliases": [
             "First Order Executioner",
+            "Executioner",
+            "FOX",
             "FOE"
         ],
         "url": "https://swgoh.gg/characters/first-order-executioner",
@@ -23125,9 +25583,9 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection"
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -23262,6 +25720,427 @@
                     "zeta": 0
                 }
             }
+        }
+    },
+    {
+        "name": "Rose Tico",
+        "uniqueName": "ROSETICO",
+        "aliases": [
+            "Rose Tico",
+            "Rose"
+        ],
+        "url": "https://swgoh.gg/characters/rose-tico",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rose.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Resistance"
+        ],
+        "mods": {
+            "Finn Lead": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
+            },
+            "RJT Lead": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 BlasTech Weapon Mod"
+            ],
+            "Gear 2": [
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 Loronar Power Cell",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 1 SoroSuub Keypad",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 3 Fabritech Data Pad",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 3 SoroSuub Keypad",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 4": [
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 BioTech Implant",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 1 Chedak Comlink",
+                "Mk 5 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 5": [
+                "Mk 7 Loronar Power Cell",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 4 Nubian Design Tech"
+            ],
+            "Gear 6": [
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 7 Loronar Power Cell",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 3 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 7": [
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 7 Loronar Power Cell",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 5 Nubian Design Tech",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 4 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 9": [
+                "Mk 7 Nubian Security Scanner",
+                "Mk 4 Athakam Medpac",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 1 Zaltin Bacta Gel"
+            ],
+            "Gear 10": [
+                "Mk 6 Nubian Design Tech",
+                "Mk 8 BioTech Implant",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 8 BioTech Implant"
+            ],
+            "Gear 11": [
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 9 BAW Armor Mod",
+                "Mk 8 BioTech Implant",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 8 BioTech Implant"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Cybernetics",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Courageous Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and grant Tenacity Up for 2 turns to a random Resistance ally who doesn't have it. 50% chance to attack again (once per turn).",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Dauntless Bravery": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Resistance allies gain Defense Up for 2 turns. Rose Tico gains 10% Turn Meter for each Resistance ally and each First Order enemy. Remove 8% Turn Meter for each Resistance ally from target enemy. This attack cannot be evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Shock Prod Strike": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal Special damage to target enemy and inflict Stun for 1 turn. When this Stun expires, the target is Dazed for 2 turns, which can't be Evaded or Resisted.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Valiant Spirit": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Rose Tico has +10% Offense for each Exposed enemy. When another Resistance ally scores a Critical Hit, Rose Tico gains 10% Turn Meter.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1049,
+            "Agility": 1199,
+            "Intelligence": 807,
+            "Speed": 141,
+            "Physical Damage": 2481,
+            "Physical Critical Rating": 631,
+            "Special Damage": 2286,
+            "Special Critical Rating": 35,
+            "Armor Penetration": 105,
+            "Resistance Penetration": 15,
+            "Potency": 54,
+            "Health": 24272,
+            "Armor": 289,
+            "Resistance": 104,
+            "Tenacity": 32,
+            "Health Steal": 10,
+            "Protection": 28,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Amilyn Holdo",
+        "uniqueName": "AMILYNHOLDO",
+        "aliases": [
+            "Amilyn Holdo",
+            "Holdo",
+            "Amilyn"
+        ],
+        "url": "https://swgoh.gg/characters/amilyn-holdo",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_holdo.png",
+        "side": "light",
+        "factions": [
+            "Resistance",
+            "Tank"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 BioTech Implant",
+                "Mk 1 BioTech Implant"
+            ],
+            "Gear 2": [
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 3 Fabritech Data Pad",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 BAW Armor Mod",
+                "Mk 4 BAW Armor Mod",
+                "Mk 2 A/KT Stun Gun",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 4": [
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Nubian Security Scanner",
+                "Mk 6 Loronar Power Cell",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 5": [
+                "Mk 4 A/KT Stun Gun",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Loronar Power Cell",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 2 Athakam Medpac",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 7": [
+                "Mk 3 Athakam Medpac",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Nubian Design Tech"
+            ],
+            "Gear 8": [
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 3 SoroSuub Keypad",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 6 BioTech Implant"
+            ],
+            "Gear 9": [
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Athakam Medpac",
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 Athakam Medpac",
+                "Mk 3 Nubian Design Tech"
+            ],
+            "Gear 10": [
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 3 Nubian Design Tech"
+            ],
+            "Gear 11": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 6 A/KT Stun Gun",
+                "Mk 4 Merr-Sonn Shield Generator",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 10 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Tactical Data",
+                "Mk 12 ArmaTek Armor Plating",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Measured Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and the least healthy other Resistance ally gains Foresight for 2 turns. When this Foresight expires, that ally Recovers 10% Health.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Bunker Buster": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal Special damage to all enemies and inflict Daze for 2 turns. Inflict Defense Down and Evasion Down on the primary target for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Reprieve": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Dispel all debuffs on target other ally, they Recover 40% Health and 20% Protection.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Quiet Confidence": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "When another Resistance ally loses Foresight, Amilyn Holdo gains Taunt for 1 turn and Recovers 10% Health. While Amilyn Holdo doesn't have Taunt, she has +50 Speed and all other Resistance allies have +20% Critical Avoidance.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            " Bunker Buster": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal Special damage to all enemies and inflict Daze for 2 turns. Inflict Defense Down and Evasion Down on the primary target for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 0,
+                    "omega": 0,
+                    "zeta": 0
+                }
+            }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1201,
+            "Agility": 699,
+            "Intelligence": 1133,
+            "Speed": 90,
+            "Physical Damage": 1997,
+            "Physical Critical Rating": 469,
+            "Special Damage": 3265,
+            "Special Critical Rating": 25,
+            "Armor Penetration": 5,
+            "Resistance Penetration": 0,
+            "Potency": 7,
+            "Health": 36873,
+            "Armor": 285,
+            "Resistance": 257,
+            "Tenacity": 36,
+            "Health Steal": 30,
+            "Protection": 43,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     }
 ]
