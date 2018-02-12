@@ -53,7 +53,7 @@ module.exports = (client) => {
     client.findChar = (searchName, charList, noLimit=false) => {
         var options = {
             keys: ['name', 'aliases'],
-            threshold: .2,
+            threshold: .1,
             distance: 4
         };
         const fuse = new Fuse(charList, options);
