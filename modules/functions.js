@@ -370,30 +370,35 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        let rep = false;
+        let repTime = repDays = false;
         let newEvent = {};
-    
+        const repDays = event.repeatDays;
+
         // Announce the event
         var announceMessage = `**${eventName}**\n\n${event.eventMessage}`;
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
-                client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+                try {
+                    client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+                } catch(e) {
+                    client.log('ERROR', 'Broke trying to announce event with ID: ${event.eventID} \n${e}')
+                }
             } else { // Else, use the default one from their settings
                 client.announceMsg(client.guilds.get(guildID), announceMessage);
             }
         }
     
         // If it's got any left in repeatDays
-        if (event.repeatDays.length > 0) {    
-            rep = true;        
+        if (repDays.length > 0) {    
+            repDays = true;        
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
-            if (event.repeatDays.length === 1) {
+            if (repeatDays.length === 1) {
                 eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
             }
             newEvent = {
                 "eventID": event.eventID,
-                "eventDT": (momentTZ(parseInt(event.eventDT)).add(parseInt(event.repeatDays.splice(0, 1)), 'd').unix()*1000),
+                "eventDT": (momentTZ(parseInt(event.eventDT)).add(parseInt(repDays.splice(0, 1)), 'd').unix()*1000),
                 "eventMessage": eventMsg,
                 "eventChan": event.eventChan,
                 "countdown": event.countdown,
@@ -402,11 +407,11 @@ module.exports = (client) => {
                     "repeatHour": 0,
                     "repeatMin": 0
                 },
-                "repeatDays": event.repeatDays
+                "repeatDays": repDays
             };
         // Else if it's set to repeat 
         } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-            rep = true;
+            repTime = true;
             newEvent = {
                 "eventID": event.eventID,
                 "eventDT": (momentTZ(parseInt(event.eventDT)).add(event.repeat['repeatDay'], 'd').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').unix()*1000),
@@ -424,7 +429,7 @@ module.exports = (client) => {
         await client.guildEvents.destroy({where: {eventID: event.eventID}})
             .then(async () => {
                 // If it's supposed to repeat, go ahead and put it back in    
-                if (rep) {
+                if (repTime) {
                     await client.guildEvents.create({
                         eventID: newEvent.eventID,
                         eventDT: newEvent.eventDT,
@@ -437,6 +442,24 @@ module.exports = (client) => {
                             "repeatMin": newEvent.repeat['repeatMin']
                         },
                         repeatDays: []
+                    })
+                        .then(() => {
+                            client.scheduleEvent(newEvent);
+                        })
+                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
+                } else if (repDays) {
+                    await client.guildEvents.create({
+                        eventID: newEvent.eventID,
+                        eventDT: newEvent.eventDT,
+                        eventMessage: newEvent.eventMessage,
+                        eventChan: newEvent.eventChan,
+                        countdown: newEvent.countdown,
+                        repeat: {
+                            "repeatDay": 0,
+                            "repeatHour": 0,
+                            "repeatMin": 0
+                        },
+                        repeatDays: repDays
                     })
                         .then(() => {
                             client.scheduleEvent(newEvent);

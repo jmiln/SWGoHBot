@@ -11,8 +11,6 @@ const EnMap = require("enmap");
 
 const Sequelize = require('sequelize');
 
-// const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
-
 const site = require('./website');
 
 // Attach the config to the client so we can use it anywhere

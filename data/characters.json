@@ -6203,6 +6203,19 @@
                 "triangle": "Health",
                 "circle": "Health",
                 "cross": "Potency"
+            },
+            "CT-5555 Fives GK Lead": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Offense",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Potency"
             }
         },
         "gear": {
@@ -25762,6 +25775,19 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense"
+            },
+            "zFinn Lead - PVP": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense"
             }
         },
         "gear": {
@@ -25958,6 +25984,19 @@
                 "triangle": "Health",
                 "circle": "Health",
                 "cross": "Health"
+            },
+            "Amilyn Holdo": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection"
             }
         },
         "gear": {
@@ -26141,6 +26180,208 @@
             "light": [],
             "cantina": [],
             "shops": []
+        }
+    },
+    {
+        "name": "Sith Marauder",
+        "uniqueName": "SITHMARAUDER",
+        "aliases": [
+            "Sith Marauder"
+        ],
+        "url": "https://swgoh.gg/characters/sith-marauder",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithmarauder.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Sith"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense"
+            },
+            "DN Lead": {
+                "sets": [
+                    "Offense x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Health",
+                "cross": "Offense"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BioTech Implant",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 3 BAW Armor Mod",
+                "Mk 3 Loronar Power Cell",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 3": [
+                "Mk 4 Loronar Power Cell",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 5 BioTech Implant",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 BlasTech Weapon Mod"
+            ],
+            "Gear 4": [
+                "Mk 2 Sienar Holo Projector",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 5 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 5": [
+                "Mk 6 BAW Armor Mod",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 6 Fabritech Data Pad",
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 6": [
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 SoroSuub Keypad"
+            ],
+            "Gear 7": [
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 8": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 7 Loronar Power Cell",
+                "Mk 7 Loronar Power Cell",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 SoroSuub Keypad"
+            ],
+            "Gear 9": [
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 5 BioTech Implant",
+                "Mk 6 Chiewab Hypo Syringe"
+            ],
+            "Gear 10": [
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 6 Nubian Design Tech",
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 9 Fabritech Data Pad"
+            ],
+            "Gear 11": [
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 6 Nubian Design Tech",
+                "Mk 9 BlasTech Weapon Mod",
+                "Mk 6 Arakyd Droid Caller"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Strength Through Passion": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Offense Down for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Victory Through Power": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to target enemy and grant all allies Potency Up for 2 turns. If this attack scores a Critical Hit, reduce the target's Max Health by 15% until end of the encounter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "The Force Shall Free Me": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Sith Marauder has +10% Defense, +10% Health Steal, and +10% Tenacity for each buff on all characters. Sith Marauder has +2% Critical Chance, +2% Offense and +2% Potency for each debuff on all characters. When an enemy uses an ability outside of their turn, Sith Marauder gains 20% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 1016,
+            "Agility": 1073,
+            "Intelligence": 692,
+            "Speed": 142,
+            "Physical Damage": 2604,
+            "Physical Critical Rating": 647,
+            "Special Damage": 1947,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 93,
+            "Resistance Penetration": 0,
+            "Potency": 30,
+            "Health": 29238,
+            "Armor": 237,
+            "Resistance": 95,
+            "Tenacity": 39,
+            "Health Steal": 20,
+            "Protection": 34,
+            "activation": 25
         }
     }
 ]
