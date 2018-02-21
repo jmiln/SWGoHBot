@@ -370,7 +370,7 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        let repTime = repDays = false;
+        let repTime = false, repDay = false;
         let newEvent = {};
         const repDays = event.repeatDays;
 
@@ -390,7 +390,7 @@ module.exports = (client) => {
     
         // If it's got any left in repeatDays
         if (repDays.length > 0) {    
-            repDays = true;        
+            repDay = true;        
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
             if (repeatDays.length === 1) {
@@ -447,7 +447,7 @@ module.exports = (client) => {
                             client.scheduleEvent(newEvent);
                         })
                         .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
-                } else if (repDays) {
+                } else if (repDay) {
                     await client.guildEvents.create({
                         eventID: newEvent.eventID,
                         eventDT: newEvent.eventDT,
