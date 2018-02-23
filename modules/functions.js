@@ -393,7 +393,7 @@ module.exports = (client) => {
             repDay = true;        
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
-            if (repeatDays.length === 1) {
+            if (repDays.length === 1) {
                 eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
             }
             newEvent = {
