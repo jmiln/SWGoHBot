@@ -79,6 +79,12 @@ exports.run = async (client, message, args, level) => {
                 client.guildSettings.update({enableWelcome: boolVar}, {where: {guildID: message.guild.id}});
                 break;
             case "welcomemessage":
+                // A messy way to keep all the line returns in there
+                if (message.content.includes('\n')) {
+                    let msg = message.content;
+                    const newStr = msg.replace(/\n/g, ' ##n##').split(/\s+/);
+                    value = newStr.splice(2).join(' ').replace(/##n##/g, '\n');
+                }
                 client.guildSettings.update({welcomeMessage: value}, {where: {guildID: message.guild.id}});
                 break;
             case "useembeds":
