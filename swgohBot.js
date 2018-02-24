@@ -26,6 +26,7 @@ require("./modules/functions.js")(client);
 // Languages
 client.languages = {};
 client.languages.en_US = require('./languages/en-US.js');
+client.languages.de_DE = require('./languages/de_DE.js');
 
 client.commands = new EnMap();
 client.aliases = new EnMap();

@@ -7511,7 +7511,7 @@
             "Force Crush": {
                 "type": "Special",
                 "abilityCooldown": "5",
-                "abilityDesc": "Deal Physical damage to all enemies and inflict Speed Down and 3 Damage Over Time effects for 2 rounds.",
+                "abilityDesc": "Deal Physical damage to all enemies and inflict Speed Down and 3 Damage Over Time effects for 2 turns. This attack can't be Countered.",
                 "tier": "omega",
                 "cost": {
                     "mk3": 19,
@@ -7551,10 +7551,21 @@
                     "omega": 0,
                     "zeta": 0
                 }
+            },
+            "No Escape": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of each encounter Darth Vader gains 8 Speed until the end of that encounter for each of the following: Empire ally, Sith ally, Jedi enemy, Rebel enemy. Darth Vader is immune to Turn Meter Reduction and recovers 5% Health when a Damage Over Time effect on an enemy expires.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         },
         "stats": {
-            "Power": 19929,
+            "Power": 22909,
             "Strength": 1307,
             "Agility": 677,
             "Intelligence": 932,
@@ -8971,7 +8982,7 @@
             "Power of the Dark Side": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Deal Special damage to all enemies with a 70% chance to Stun them for 1 turn. Shocked enemies are Stunned for 2 turns and have their Shock dispelled.",
+                "abilityDesc": "Deal Special damage to all enemies with a 70% chance to Stun them for 1 turn. Shocked enemies are Stunned for 2 turns and have their Shock dispelled. All allies gain Offense Up for 2 turns.",
                 "tier": "omega",
                 "cost": {
                     "mk3": 19,
@@ -8982,7 +8993,7 @@
             "Let the Hate Flow": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "All allies gain Offense Up for 2 turns and all units lose 5% of their Max Health. Palpatine recovers health equal to 150% the total amount lost. For each Shocked enemy gain 50% Turn Meter and refresh the duration of Shock to 2 turns.",
+                "abilityDesc": "All other units lose 5% Health and Palpatine recovers Health equal to 150% of the total amount lost. Palpatine gains 50% Turn Meter for each Shocked enemy. All allies gain Health Steal Up for 1 turn.",
                 "tier": "omega",
                 "cost": {
                     "mk3": 19,
@@ -8993,28 +9004,28 @@
             "Emperor of the Galactic Empire": {
                 "type": "Leader",
                 "abilityCooldown": "0",
-                "abilityDesc": "Empire and Sith allies gain +32% Potency and Max Health. Jedi and Rebel enemies have -32% Potency and Evasion. Whenever an Empire ally inflicts a debuff during their turn they gain 20% Turn Meter. Whenever a Sith ally inflicts a debuff during their turn they recover 20% of their Max Health.",
-                "tier": "abilityMatMK3",
+                "abilityDesc": "Empire and Sith allies have +35% Potency and 35% Max Health. Jedi and Rebel enemies have -35% Potency and -35% Evasion. When an Empire ally inflicts a debuff during their turn, they gain 20% Turn Meter. When a Sith ally inflicts a debuff during their turn, they recover 20% Health. When a debuff on an enemy expires, Empire and Sith allies gain 5% Turn Meter.",
+                "tier": "zeta",
                 "cost": {
-                    "mk3": 14,
-                    "omega": 0,
-                    "zeta": 0
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
                 }
             },
             "Crackling Doom": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "At the end of each of his turns, Palpatine deals Special damage to all Shocked enemies and then deals Special damage to all Jedi and Rebel enemies. This damage can't defeat enemies.",
-                "tier": "abilityMatMK3",
+                "abilityDesc": "While Palpatine is active, at the start of each enemy turn, they take damage equal to 20% of their Max Health for each of the following: they are Shocked; they are a Jedi; they are a Rebel. This damage can't defeat enemies. Palpatine has +50% Max Protection, and, when he inflicts Shock, he gains 5% Max Protection until the end of the encounter.",
+                "tier": "zeta",
                 "cost": {
-                    "mk3": 16,
-                    "omega": 0,
-                    "zeta": 0
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
                 }
             }
         },
         "stats": {
-            "Power": 18097,
+            "Power": 22909,
             "Strength": 703,
             "Agility": 584,
             "Intelligence": 1532,
