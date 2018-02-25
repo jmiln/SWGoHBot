@@ -68,7 +68,7 @@ const init = async () => {
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
-    client.log("Init", `Loading a total of ${cmdFiles.length} commands.`);
+    // client.log("Init", `Loading a total of ${cmdFiles.length} commands.`);
     cmdFiles.forEach(f => {
         try {
             const props = require(`./commands/${f}`);
@@ -84,7 +84,7 @@ const init = async () => {
 
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
-    client.log("Init", `Loading a total of ${evtFiles.length} events.`);
+    // client.log("Init", `Loading a total of ${evtFiles.length} events.`);
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
@@ -105,13 +105,24 @@ client.on('error', (err) => {
     }
 });
 
-
-// ## Here down is to update any characters that need it ##
-// Run it one minute after the bot boots
-setTimeout(updateCharacterMods,        1 * 60 * 1000);
-// Check every 12 hours to see if any mods have been changed
-setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
-//                               hr   min  sec  mSec
+// Make it so it only checks for new characters on the main shard
+if (client.shard.id === 0) {
+    // ## Here down is to update any characters that need it ##
+    // Run it one minute after the bot boots
+    setTimeout(updateCharacterMods,        1 * 60 * 1000);
+    // Check every 12 hours to see if any mods have been changed
+    setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
+    //                               hr   min  sec  mSec
+} else {
+    // To reload the characters on any shard other than the main one
+    // a bit after it would have grabbed new ones
+    setTimeout(function() {
+        setInterval(function() {
+            delete client.characters;
+            client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
+        }, 12 * 60 * 60 * 1000);
+    }, 2 * 60 * 1000);
+}
 
 init();
 
@@ -147,6 +158,7 @@ async function updateCharacterMods() {
     const cleanReg = /['-\s]/g;
 
     characterList.forEach(async thisChar => {
+        if (typeof thisChar.cname === 'undefined') return;
         let found = false;
         const currentCharacters = client.characters;
         

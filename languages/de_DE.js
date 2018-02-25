@@ -233,7 +233,7 @@ module.exports = {
     COMMAND_SHOWCONF_OUTPUT: (configKeys) => `Die Konfiguration des Servers: \`\`\`${configKeys}\`\`\``,
 
 	// Stats Command
-    COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels) => `= Statisken =\n
+    COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= Statisken (${shardID}) =\n
 • Speicherauslastung  :: ${memUsage} MB
 • CPU Auslastung      :: ${cpuLoad}%
 • Uptime              :: ${uptime}

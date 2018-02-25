@@ -1,14 +1,39 @@
 const moment = require("moment");
 require("moment-duration-format");
 
-exports.run = (client, message) => {
+exports.run = async (client, message) => {
     const duration = moment.duration(client.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
-    message.channel.send(message.language.COMMAND_STATS_OUTPUT((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2), 
+    let guilds = 0;
+    let users = 0;
+    let channels = 0;
+
+    if (client.shard.count > 1) {
+        await client.shard.fetchClientValues('guilds.size')
+            .then(results => {
+                guilds = results.reduce((prev, val) => prev + val, 0).toLocaleString();
+            })
+            .catch(console.error);
+        await client.shard.fetchClientValues('channels.size')
+            .then(results => {
+                channels = results.reduce((prev, val) => prev + val, 0).toLocaleString();
+            })
+            .catch(console.error);
+            .then(results => {
+                users = results.reduce((prev, val) => prev + val, 0).toLocaleString();
+            })
+    } else {
+        users = client.users.size.toLocaleString(),
+        guilds = client.guilds.size.toLocaleString(),
+        channels = client.channels.size.toLocaleString()
+    }
+
+    await message.channel.send(message.language.COMMAND_STATS_OUTPUT((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2), 
         Math.round(require("os").loadavg()[0]*10000)/100, 
         duration, 
-        client.users.size.toLocaleString(),
-        client.guilds.size.toLocaleString(),
-        client.channels.size.toLocaleString()
+        users,
+        guilds,
+        channels,
+        client.shard.id
     ), {code: "asciidoc"});
 };
 

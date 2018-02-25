@@ -232,7 +232,7 @@ module.exports = {
     COMMAND_SHOWCONF_OUTPUT: (configKeys) => `The following is this server's current configuration: \`\`\`${configKeys}\`\`\``,
 
     // Stats Command
-    COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels) => `= STATISTICS =\n
+    COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= STATISTICS (${shardID}) =\n
 • Mem Usage  :: ${memUsage} MB
 • CPU Load   :: ${cpuLoad}%
 • Uptime     :: ${uptime}

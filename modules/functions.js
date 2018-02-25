@@ -259,9 +259,6 @@ module.exports = (client) => {
     });
 
 
-
-
-
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
         let ix = 0;
@@ -270,7 +267,13 @@ module.exports = (client) => {
 
         const eventList = [];
         events.forEach(event => {
-            eventList.push(event.dataValues);
+            const eventNameID = event.eventID.split('-');
+            const guildID = eventNameID[0];
+            
+            // Make sure it only loads events for it's shard
+            if (client.guilds.keyArray().includes(guildID)) {
+                eventList.push(event.dataValues);
+            }
         });
 
         if (eventList.length > 0) {
