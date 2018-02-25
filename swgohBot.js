@@ -11,8 +11,6 @@ const EnMap = require("enmap");
 
 const Sequelize = require('sequelize');
 
-const site = require('./website');
-
 // Attach the config to the client so we can use it anywhere
 client.config = require('./config.json');
 
@@ -97,16 +95,6 @@ const init = async () => {
 
     // Here we login the client.
     client.login(client.config.token);
-
-    // End top-level async/await function.
-
-    // Check if the site needs to be loaded, and if so, do it
-    if (client.config.dashboard) {
-        if (client.config.dashboard.enableSite) {
-            // Start the site up
-            site.initSite(client);
-        }
-    }
 };
 
 client.on('error', (err) => {
