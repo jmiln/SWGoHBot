@@ -5,12 +5,12 @@ exports.run = (client, message) => {
 
     // If it's set up, send the changelog to a Discord channel
     if (client.config.changelog.sendChangelogs) {
-        client.channels
-            .get(client.config.changelog.changelogChannel)
-            .send(`[${client.myTime()}]\n${logMsg.replace('[Fixed]', '**[Fixed]**')
+        const clMessage = `[${client.myTime()}]\n${logMsg.replace('[Fixed]', '**[Fixed]**')
                 .replace('[Updated]', '**[Updated]**')
                 .replace('[Added]', '**[Added]**')
-                .replace('[Removed]', '**[Removed]**')}`);
+                .replace('[Removed]', '**[Removed]**')}`;
+
+        client.sendChangelog(clMessage);
     }
 
     // Adds it to the db with an auto-incrementing ID

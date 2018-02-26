@@ -18,9 +18,11 @@ exports.run = async (client, message) => {
                 channels = results.reduce((prev, val) => prev + val, 0).toLocaleString();
             })
             .catch(console.error);
+        await client.shard.fetchClientValues('users.size')
             .then(results => {
                 users = results.reduce((prev, val) => prev + val, 0).toLocaleString();
             })
+            .catch(console.error);
     } else {
         users = client.users.size.toLocaleString(),
         guilds = client.guilds.size.toLocaleString(),

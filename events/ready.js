@@ -33,7 +33,8 @@ module.exports = async client => {
     });
 
     // Logs that it's up, and some extra info
-    client.log("Ready", `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. On shard ${client.shardUtil.id}`);
+    const readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. On shard ${client.shard.id}`;
+    client.log('Ready', readyString);
 
     // Sets the status as the current server count and help command 
     const playingString =  `${client.config.prefix}help ~ swgohbot.com`;

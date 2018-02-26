@@ -90,15 +90,46 @@ module.exports = (client) => {
         }
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
+            const chan = client.config.logs.channel;
+            const mess = `${prefix}[${client.myTime()}] [${type}] ${msg}`;
+            const args = {code: codeType, split: true};
             // Sends the logs to the channel I have set up for it.
             if (client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send(`${prefix}[${client.myTime()}] [${type}] ${msg}`, {code: codeType, split: true});
+                if (client.channels.has(chan)) {
+                    client.channels.get(chan).send(mess, args);
+                } else {
+                    // If it's on a different shard, then send it there (sends it twice for some reason...)
+                    client.shard.broadcastEval(`
+                        if (this.channels.has('${chan}')) {
+                            this.channels.get('${chan}').send('${mess}', ${util.inspect(args)});
+                        }
+                    `);
+                }
             }
         } catch (e) {
             // Probably broken because it's not started yet
-            // console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
+            console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
         }
     };
+    /*
+     *  CHANGELOG MESSAGE
+     *  Send a changelog message to the specified channel
+     */
+    client.sendChangelog = (clMessage) => {
+        if (client.changelog.sendChangelogs) {
+            const clChan = client.configs.changelogChannel;
+            if (client.channels.has(clChan)) {
+                client.channels.get(clChan).send('clMessage');
+            } else {
+                client.shard.broadcastEval(`
+                    if (this.channels.has('${clChan}')) {
+                        this.channels.get('${clChan}').send('clMessage');
+                    } 
+                `);
+            }
+        }
+    }
+
 
     /*
      * ANNOUNCEMENT MESSAGE
@@ -236,7 +267,7 @@ module.exports = (client) => {
         // If it's that error, don't bother showing it again
         try {
             if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear') && client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
+                client.channels.get(client.config.log(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true}));
             }
         } catch (e) {
             // Don't bother doing anything
