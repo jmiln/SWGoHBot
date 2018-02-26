@@ -80,28 +80,30 @@ module.exports = (client) => {
      * LOGGING FUNCTION
      * Logs to console. Future patches may include time+colors
      */
-    client.log = (type, msg, title, codeType, prefix) => {
-        if (!title) title = "Log";
-        if (!codeType) codeType = "md";
-        if (!prefix) {
-            prefix = ""; 
-        } else {
-            prefix = prefix + ' ';
-        }
+    client.log = (type, msg, title="Log", codeType="md", prefix="") => {
+        // if (!title) title = "Log";
+        // if (!codeType) codeType = "md";
+        // if (!prefix) {
+        //     prefix = ""; 
+        // } else {
+        //     prefix = prefix + ' ';
+        // }
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
             const chan = client.config.logs.channel;
-            const mess = `${prefix}[${client.myTime()}] [${type}] ${msg}`;
+            const mess = `${prefix === '' ? '' : prefix + ' '}[${client.myTime()}] [${type}] ${msg}`.replace(/\n/g, '"|"');
             const args = {code: codeType, split: true};
             // Sends the logs to the channel I have set up for it.
             if (client.config.logs.logToChannel) {
                 if (client.channels.has(chan)) {
-                    client.channels.get(chan).send(mess, args);
+                    client.sendMsg(chan, mess, args);
                 } else {
                     // If it's on a different shard, then send it there (sends it twice for some reason...)
                     client.shard.broadcastEval(`
-                        if (this.channels.has('${chan}')) {
-                            this.channels.get('${chan}').send('${mess}', ${util.inspect(args)});
+                        const thisChan = ${util.inspect(chan)};
+                        const msg = "${mess}";
+                        if (this.channels.has(thisChan)) {
+                            this.sendMsg(thisChan, msg, ${util.inspect(args)});
                         }
                     `);
                 }
@@ -111,21 +113,34 @@ module.exports = (client) => {
             console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
         }
     };
+
+    client.sendMsg = (chanID, msg, options={}) => {
+        msg = msg.replace(/"\|"/g, '\n').replace(/\|\:\|/g, "'");
+        client.channels.get(chanID).send(msg, options);
+    }
+
     /*
      *  CHANGELOG MESSAGE
      *  Send a changelog message to the specified channel
      */
     client.sendChangelog = (clMessage) => {
-        if (client.changelog.sendChangelogs) {
-            const clChan = client.configs.changelogChannel;
+        clMessage = clMessage.replace(/\n/g, '"|"');
+        if (client.config.changelog.sendChangelogs) {
+            const clChan = client.config.changelog.changelogChannel;
             if (client.channels.has(clChan)) {
-                client.channels.get(clChan).send('clMessage');
+                client.sendMsg(clChan, clMessage);
             } else {
-                client.shard.broadcastEval(`
-                    if (this.channels.has('${clChan}')) {
-                        this.channels.get('${clChan}').send('clMessage');
-                    } 
-                `);
+                try {
+                    clMessage = clMessage.replace(/\'/g, '|:|');
+                    client.shard.broadcastEval(`
+                        const clMess = '${clMessage}';
+                        if (this.channels.has('${clChan}')) {
+                            this.sendMsg('${clChan}', clMess);
+                        } 
+                    `);
+                } catch(e) {
+                    console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
+                }
             }
         }
     }

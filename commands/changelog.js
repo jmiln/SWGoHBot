@@ -5,9 +5,10 @@ exports.run = (client, message) => {
 
     // If it's set up, send the changelog to a Discord channel
     if (client.config.changelog.sendChangelogs) {
-        const clMessage = `[${client.myTime()}]\n${logMsg.replace('[Fixed]', '**[Fixed]**')
+        const clMessage = `[${client.myTime()}]\n${logMsg
+                .replace('[Fixed]',   '**[Fixed]**')
                 .replace('[Updated]', '**[Updated]**')
-                .replace('[Added]', '**[Added]**')
+                .replace('[Added]',   '**[Added]**')
                 .replace('[Removed]', '**[Removed]**')}`;
 
         client.sendChangelog(clMessage);
@@ -27,10 +28,11 @@ exports.conf = {
 exports.help = {
     name: 'changelog',
     category: 'Dev',
-    description: 'Adds a changelog to the db, and sends it to the changelog channel',
+    description: 'Adds a changelog to the db, and sends it to the changelog channel\nUse [Updated], [Fixed], [Removed], and [Added] to organize the changes.',
     usage: 'changelog <message>',
     example: '',
     extended: `\`\`\`asciidoc
-Use [Updated], [Fixed], [Removed], and [Added] to organize the changes.
     \`\`\``
 };
+
+
