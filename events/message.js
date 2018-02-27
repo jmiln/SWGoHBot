@@ -10,14 +10,15 @@ module.exports = async (client, message) => {
     // Grab the settings for this server from the PersistentCollection
     // If there is no guild, get default conf (DMs)
     var guildSettings;
-    if (message.guild) {
+    if (!message.guild) {
+        guildSettings = client.config.defaultSettings;
+    } else {
         guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
         // If we don't have permission to respond, don't bother
         if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')) return;
-    } else {
-        guildSettings = client.config.defaultSettings;
     }
+    
 
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.

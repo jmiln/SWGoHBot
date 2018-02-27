@@ -30,8 +30,8 @@ module.exports = async (client, guild) => {
     }
 
     // Updates the status to show the increased server count
-    const playingString =  `${client.config.prefix}help ~ ${client.guilds.size} servers`;
-    client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
+    // const playingString =  `${client.config.prefix}help ~ ${client.guilds.size} servers`;
+    // client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
 
     // Messages the guild owner to tell the how to set the bot up
     guild.owner.send(`Thank you for adding this SWGoHBot! Before using me, please configure the Admin role by running the following command:

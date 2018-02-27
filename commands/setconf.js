@@ -27,6 +27,8 @@ exports.run = async (client, message, args, level) => {
             value = args.slice(1).join(" ");
         }
 
+        let tempLang = guildConf.language;
+
         const onVar = ["true", "on", "enable"];
         const offVar = ["false", "off", "disable"];
 
@@ -77,6 +79,12 @@ exports.run = async (client, message, args, level) => {
                 client.guildSettings.update({enableWelcome: boolVar}, {where: {guildID: message.guild.id}});
                 break;
             case "welcomemessage":
+                // A messy way to keep all the line returns in there
+                if (message.content.includes('\n')) {
+                    let msg = message.content;
+                    const newStr = msg.replace(/\n/g, ' ##n##').split(/\s+/);
+                    value = newStr.splice(2).join(' ').replace(/##n##/g, '\n');
+                }
                 client.guildSettings.update({welcomeMessage: value}, {where: {guildID: message.guild.id}});
                 break;
             case "useembeds":
@@ -119,6 +127,7 @@ exports.run = async (client, message, args, level) => {
             case "language":
                 if (langList.includes(value)) {
                     client.guildSettings.update({language: value}, {where: {guildID: message.guild.id}});
+                    tempLang = value;
                 } else {
                     return message.channel.send(message.language.COMMAND_SETCONF_INVALID_LANG(value, langList.join(', '))).then(msg => msg.delete(15000)).catch(console.error);
                 }
@@ -148,7 +157,7 @@ exports.run = async (client, message, args, level) => {
         }
 
         // We can confirm everything's done to the client.
-        message.channel.send(message.language.COMMAND_SETCONF_UPDATE_SUCCESS(key, value));
+        message.channel.send(client.languages[tempLang].COMMAND_SETCONF_UPDATE_SUCCESS(key, value));
     } else {
         message.channel.send(message.language.COMMAND_SETCONF_NO_SETTINGS).then(msg => msg.delete(4000)).catch(console.error);
     }

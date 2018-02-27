@@ -53,7 +53,7 @@ module.exports = (client) => {
     client.findChar = (searchName, charList, noLimit=false) => {
         var options = {
             keys: ['name', 'aliases'],
-            threshold: .2,
+            threshold: .1,
             distance: 4
         };
         const fuse = new Fuse(charList, options);
@@ -80,25 +80,71 @@ module.exports = (client) => {
      * LOGGING FUNCTION
      * Logs to console. Future patches may include time+colors
      */
-    client.log = (type, msg, title, codeType, prefix) => {
-        if (!title) title = "Log";
-        if (!codeType) codeType = "md";
-        if (!prefix) {
-            prefix = ""; 
-        } else {
-            prefix = prefix + ' ';
-        }
+    client.log = (type, msg, title="Log", codeType="md", prefix="") => {
+        // if (!title) title = "Log";
+        // if (!codeType) codeType = "md";
+        // if (!prefix) {
+        //     prefix = ""; 
+        // } else {
+        //     prefix = prefix + ' ';
+        // }
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
+            const chan = client.config.logs.channel;
+            const mess = `${prefix === '' ? '' : prefix + ' '}[${client.myTime()}] [${type}] ${msg}`.replace(/\n/g, '"|"');
+            const args = {code: codeType, split: true};
             // Sends the logs to the channel I have set up for it.
             if (client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send(`${prefix}[${client.myTime()}] [${type}] ${msg}`, {code: codeType, split: true});
+                if (client.channels.has(chan)) {
+                    client.sendMsg(chan, mess, args);
+                } else {
+                    // If it's on a different shard, then send it there (sends it twice for some reason...)
+                    client.shard.broadcastEval(`
+                        const thisChan = ${util.inspect(chan)};
+                        const msg = "${mess}";
+                        if (this.channels.has(thisChan)) {
+                            this.sendMsg(thisChan, msg, ${util.inspect(args)});
+                        }
+                    `);
+                }
             }
         } catch (e) {
             // Probably broken because it's not started yet
-            // console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
+            console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
         }
     };
+
+    client.sendMsg = (chanID, msg, options={}) => {
+        msg = msg.replace(/"\|"/g, '\n').replace(/\|\:\|/g, "'");
+        client.channels.get(chanID).send(msg, options);
+    }
+
+    /*
+     *  CHANGELOG MESSAGE
+     *  Send a changelog message to the specified channel
+     */
+    client.sendChangelog = (clMessage) => {
+        clMessage = clMessage.replace(/\n/g, '"|"');
+        if (client.config.changelog.sendChangelogs) {
+            const clChan = client.config.changelog.changelogChannel;
+            if (client.channels.has(clChan)) {
+                client.sendMsg(clChan, clMessage);
+            } else {
+                try {
+                    clMessage = clMessage.replace(/\'/g, '|:|');
+                    client.shard.broadcastEval(`
+                        const clMess = '${clMessage}';
+                        if (this.channels.has('${clChan}')) {
+                            this.sendMsg('${clChan}', clMess);
+                        } 
+                    `);
+                } catch(e) {
+                    console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
+                }
+            }
+        }
+    }
+
 
     /*
      * ANNOUNCEMENT MESSAGE
@@ -236,7 +282,7 @@ module.exports = (client) => {
         // If it's that error, don't bother showing it again
         try {
             if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear') && client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true});
+                client.channels.get(client.config.log(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true}));
             }
         } catch (e) {
             // Don't bother doing anything
@@ -259,9 +305,6 @@ module.exports = (client) => {
     });
 
 
-
-
-
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
         let ix = 0;
@@ -270,7 +313,13 @@ module.exports = (client) => {
 
         const eventList = [];
         events.forEach(event => {
-            eventList.push(event.dataValues);
+            const eventNameID = event.eventID.split('-');
+            const guildID = eventNameID[0];
+            
+            // Make sure it only loads events for it's shard
+            if (client.guilds.keyArray().includes(guildID)) {
+                eventList.push(event.dataValues);
+            }
         });
 
         if (eventList.length > 0) {
@@ -370,30 +419,35 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        let rep = false;
+        let repTime = false, repDay = false;
         let newEvent = {};
-    
+        const repDays = event.repeatDays;
+
         // Announce the event
         var announceMessage = `**${eventName}**\n\n${event.eventMessage}`;
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
-                client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+                try {
+                    client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+                } catch(e) {
+                    client.log('ERROR', 'Broke trying to announce event with ID: ${event.eventID} \n${e}')
+                }
             } else { // Else, use the default one from their settings
                 client.announceMsg(client.guilds.get(guildID), announceMessage);
             }
         }
     
         // If it's got any left in repeatDays
-        if (event.repeatDays.length > 0) {    
-            rep = true;        
+        if (repDays.length > 0) {    
+            repDay = true;        
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
-            if (event.repeatDays.length === 1) {
+            if (repDays.length === 1) {
                 eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
             }
             newEvent = {
                 "eventID": event.eventID,
-                "eventDT": (momentTZ(parseInt(event.eventDT)).add(parseInt(event.repeatDays.splice(0, 1)), 'd').unix()*1000),
+                "eventDT": (momentTZ(parseInt(event.eventDT)).add(parseInt(repDays.splice(0, 1)), 'd').unix()*1000),
                 "eventMessage": eventMsg,
                 "eventChan": event.eventChan,
                 "countdown": event.countdown,
@@ -402,11 +456,11 @@ module.exports = (client) => {
                     "repeatHour": 0,
                     "repeatMin": 0
                 },
-                "repeatDays": event.repeatDays
+                "repeatDays": repDays
             };
         // Else if it's set to repeat 
         } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-            rep = true;
+            repTime = true;
             newEvent = {
                 "eventID": event.eventID,
                 "eventDT": (momentTZ(parseInt(event.eventDT)).add(event.repeat['repeatDay'], 'd').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').unix()*1000),
@@ -424,7 +478,7 @@ module.exports = (client) => {
         await client.guildEvents.destroy({where: {eventID: event.eventID}})
             .then(async () => {
                 // If it's supposed to repeat, go ahead and put it back in    
-                if (rep) {
+                if (repTime) {
                     await client.guildEvents.create({
                         eventID: newEvent.eventID,
                         eventDT: newEvent.eventDT,
@@ -437,6 +491,24 @@ module.exports = (client) => {
                             "repeatMin": newEvent.repeat['repeatMin']
                         },
                         repeatDays: []
+                    })
+                        .then(() => {
+                            client.scheduleEvent(newEvent);
+                        })
+                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
+                } else if (repDay) {
+                    await client.guildEvents.create({
+                        eventID: newEvent.eventID,
+                        eventDT: newEvent.eventDT,
+                        eventMessage: newEvent.eventMessage,
+                        eventChan: newEvent.eventChan,
+                        countdown: newEvent.countdown,
+                        repeat: {
+                            "repeatDay": 0,
+                            "repeatHour": 0,
+                            "repeatMin": 0
+                        },
+                        repeatDays: repDays
                     })
                         .then(() => {
                             client.scheduleEvent(newEvent);

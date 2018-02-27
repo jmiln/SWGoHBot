@@ -45,10 +45,10 @@ exports.run = async (client, message, args, level) => {
         case "create": {
             const minArgs = yargs.options({
                 'repeat': {
-                    alias: ['r', 'rep'],
+                    // alias: ['r', 'rep'],
                     describe: 'Repeat the event on an interval',
                     type: 'string',
-                    default: '0'
+                    default: 0
                 },
                 'repeatDay': {
                     alias: ['repeatday', 'repday', 'schedule'],
@@ -83,7 +83,7 @@ exports.run = async (client, message, args, level) => {
             }
 
             // If the repeat is set, try to parse it
-            if (repeatTime !== '0') {
+            if (repeatTime !== '0' && repeatTime !== '') {
                 if (repeatTime.match(timeReg)) {
                     repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf('d')));
                     repeatTime = repeatTime.replace(/^\d{1,2}d/, '');
@@ -93,7 +93,9 @@ exports.run = async (client, message, args, level) => {
                 } else {
                     return message.channel.send(message.language.COMMAND_EVENT_INVALID_REPEAT).then(msg => msg.delete(10000));
                 }
-            } 
+            } else if (repeatTime === '') {
+                repeatTime = '0';
+            }
 
             // If they chose repeatDay, split the days 
             if (repeatDays !== '0') {

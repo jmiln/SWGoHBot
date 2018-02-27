@@ -11,10 +11,6 @@ const EnMap = require("enmap");
 
 const Sequelize = require('sequelize');
 
-// const INTERVAL_SECONDS = 30; // if this goes above 60, you need to alter the checkCountdown function
-
-const site = require('./website');
-
 // Attach the config to the client so we can use it anywhere
 client.config = require('./config.json');
 
@@ -28,6 +24,7 @@ require("./modules/functions.js")(client);
 // Languages
 client.languages = {};
 client.languages.en_US = require('./languages/en-US.js');
+client.languages.de_DE = require('./languages/de_DE.js');
 
 client.commands = new EnMap();
 client.aliases = new EnMap();
@@ -71,7 +68,7 @@ const init = async () => {
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
-    client.log("Init", `Loading a total of ${cmdFiles.length} commands.`);
+    // client.log("Init", `Loading a total of ${cmdFiles.length} commands.`);
     cmdFiles.forEach(f => {
         try {
             const props = require(`./commands/${f}`);
@@ -87,7 +84,7 @@ const init = async () => {
 
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
-    client.log("Init", `Loading a total of ${evtFiles.length} events.`);
+    // client.log("Init", `Loading a total of ${evtFiles.length} events.`);
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
@@ -98,16 +95,6 @@ const init = async () => {
 
     // Here we login the client.
     client.login(client.config.token);
-
-    // End top-level async/await function.
-
-    // Check if the site needs to be loaded, and if so, do it
-    if (client.config.dashboard) {
-        if (client.config.dashboard.enableSite) {
-            // Start the site up
-            site.initSite(client);
-        }
-    }
 };
 
 client.on('error', (err) => {
@@ -118,13 +105,24 @@ client.on('error', (err) => {
     }
 });
 
-
-// ## Here down is to update any characters that need it ##
-// Run it one minute after the bot boots
-setTimeout(updateCharacterMods,        1 * 60 * 1000);
-// Check every 12 hours to see if any mods have been changed
-setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
-//                               hr   min  sec  mSec
+// Make it so it only checks for new characters on the main shard
+if (client.shard.id === 0) {
+    // ## Here down is to update any characters that need it ##
+    // Run it one minute after the bot boots
+    setTimeout(updateCharacterMods,        1 * 60 * 1000);
+    // Check every 12 hours to see if any mods have been changed
+    setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
+    //                               hr   min  sec  mSec
+} else {
+    // To reload the characters on any shard other than the main one
+    // a bit after it would have grabbed new ones
+    setTimeout(function() {
+        setInterval(function() {
+            delete client.characters;
+            client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
+        }, 12 * 60 * 60 * 1000);
+    }, 2 * 60 * 1000);
+}
 
 init();
 
@@ -160,6 +158,7 @@ async function updateCharacterMods() {
     const cleanReg = /['-\s]/g;
 
     characterList.forEach(async thisChar => {
+        if (typeof thisChar.cname === 'undefined') return;
         let found = false;
         const currentCharacters = client.characters;
         
