@@ -106,7 +106,7 @@ client.on('error', (err) => {
 });
 
 // Make it so it only checks for new characters on the main shard
-if (client.shard.id === 0) {
+if (!client.shard || client.shard.id === 0) {
     // ## Here down is to update any characters that need it ##
     // Run it one minute after the bot boots
     setTimeout(updateCharacterMods,        1 * 60 * 1000);

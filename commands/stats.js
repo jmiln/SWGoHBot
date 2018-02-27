@@ -7,7 +7,8 @@ exports.run = async (client, message) => {
     let users = 0;
     let channels = 0;
 
-    if (client.shard.count > 1) {
+    
+    if (client.shard && client.shard.count > 1) {
         await client.shard.fetchClientValues('guilds.size')
             .then(results => {
                 guilds = results.reduce((prev, val) => prev + val, 0).toLocaleString();
@@ -35,7 +36,7 @@ exports.run = async (client, message) => {
         users,
         guilds,
         channels,
-        client.shard.id
+        (client.shard ? client.shard.id : 0)
     ), {code: "asciidoc"});
 };
 

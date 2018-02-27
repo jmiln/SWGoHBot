@@ -81,13 +81,6 @@ module.exports = (client) => {
      * Logs to console. Future patches may include time+colors
      */
     client.log = (type, msg, title="Log", codeType="md", prefix="") => {
-        // if (!title) title = "Log";
-        // if (!codeType) codeType = "md";
-        // if (!prefix) {
-        //     prefix = ""; 
-        // } else {
-        //     prefix = prefix + ' ';
-        // }
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
             const chan = client.config.logs.channel;

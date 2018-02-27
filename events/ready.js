@@ -33,7 +33,10 @@ module.exports = async client => {
     });
 
     // Logs that it's up, and some extra info
-    const readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. On shard ${client.shard.id}`;
+    const readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
+    if (client.shard) {
+        readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. ${client.shard.id}`;
+    }
     client.log('Ready', readyString);
 
     // Sets the status as the current server count and help command 
