@@ -33,7 +33,7 @@ module.exports = async client => {
     });
 
     // Logs that it's up, and some extra info
-    const readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
+    let  readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
     if (client.shard) {
         readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. ${client.shard.id}`;
     }
