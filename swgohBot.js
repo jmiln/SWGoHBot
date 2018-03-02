@@ -63,6 +63,10 @@ client.commandLogs = client.sequelize.define('commands', {
 client.changelogs = client.sequelize.define('changelogs', {
     logText: Sequelize.TEXT
 });
+client.shardTimes = client.sequelize.define('shardtimes', {
+    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id or guild.id-channel.id 
+    times: {type: Sequelize.JSONB, defaultValue: {} }
+});
 
 const init = async () => {
     // Here we load **commands** into memory, as a collection, so they're accessible
