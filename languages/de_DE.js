@@ -227,9 +227,9 @@ module.exports = {
     COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
     COMMAND_SHARDTIMES_USER_ADDED: `User successfully added!`,
     COMMAND_SHARDTIMES_USER_NOT_ADDED: `Something went wrong when with adding this user. Please try again.`,
-    COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Sorry, but you can only remove yourself unless you have an admin role.`
+    COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Sorry, but you can only remove yourself unless you have an admin role.`,
     COMMAND_SHARDTIMES_REM_SUCCESS: `User successfully removed!`,
-    COMMAND_SHARDTIMES_REM_FAIL: `Something went wrong when removing this user. Please try again.` 
+    COMMAND_SHARDTIMES_REM_FAIL: `Something went wrong when removing this user. Please try again.`,
     COMMAND_SHARDTIMES_REM_MISSING: `Sorry, but that user does not seem to be here.`,
     COMMAND_SHARDTIMES_SHARD_HEADER: `Shard payouts in:`,
 

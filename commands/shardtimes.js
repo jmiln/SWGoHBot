@@ -35,7 +35,7 @@ exports.run = async (client, message, args, level) => {
         // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
         if (!userID) {
             // Send the message with all the times (Closest first)
-            return message.channel.message.send(message.language.COMMAND_SHARDTIMES_MISSING_USER);
+            return message.channel.send(message.language.COMMAND_SHARDTIMES_MISSING_USER);
         } else { 
             if (userID === 'me') {
                 userID = message.author.id;
@@ -43,20 +43,20 @@ exports.run = async (client, message, args, level) => {
                 userID = userID.replace(/[^\d]*/g, '');
                 // If they are trying to add someone else and they don't have the right perms, stop em
                 if (userID !== message.author.id && level < 3) {
-                    return message.channel.message.send(message.language.COMMAND_SHARDTIMES_MISSING_ROLE);
+                    return message.channel.send(message.language.COMMAND_SHARDTIMES_MISSING_ROLE);
                 }
             } else {
                 // Bad name, grumblin time
-                return message.channel.message.send(message.language.COMMAND_SHARDTIMES_INVALID_USER);
+                return message.channel.send(message.language.COMMAND_SHARDTIMES_INVALID_USER);
             }
             
             if (!timezone) {
                 // Grumble that they need a timezone, then give the wiki list
-                return message.channel.message.send(message.language.COMMAND_SHARDTIMES_MISSING_TIMEZONE);
+                return message.channel.send(message.language.COMMAND_SHARDTIMES_MISSING_TIMEZONE);
             } else {
                 if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
                     // Grumble that it's an invalid tz
-                    return message.channel.message.send(message.language.COMMAND_SHARDTIMES_INVALID_TIMEZONE);
+                    return message.channel.send(message.language.COMMAND_SHARDTIMES_INVALID_TIMEZONE);
                 } 
             }
             if (flag.length > 0) {
@@ -74,10 +74,10 @@ exports.run = async (client, message, args, level) => {
             };
             await client.shardTimes.update({times: shardTimes}, {where: {id: shardID}})
                 .then(() => {
-                    return message.channel.message.send(message.language.COMMAND_SHARDTIMES_USER_ADDED);
+                    return message.channel.send(message.language.COMMAND_SHARDTIMES_USER_ADDED);
                 })
                 .catch(() => {
-                    return message.channel.message.send(message.language.COMMAND_SHARDTIMES_USER_NOT_ADDED);
+                    return message.channel.send(message.language.COMMAND_SHARDTIMES_USER_NOT_ADDED);
                 });
         }
     } else if (action === 'remove' || action === 'rem') {
@@ -88,21 +88,23 @@ exports.run = async (client, message, args, level) => {
             userID = userID.replace(/[\\|<|@|!]*(\d{17,18})[>]*/g,'$1');
             // If they are trying to remove someone else and they don't have the right perms, stop em
             if (userID !== message.author.id && level < 3) {
-                return message.channel.message.send(message.language.COMMAND_SHARDTIMES_REM_MISSING_PERMS);
+                return message.channel.send(message.language.COMMAND_SHARDTIMES_REM_MISSING_PERMS);
             }
         } 
         if (shardTimes.hasOwnProperty(userID)) {
             delete shardTimes[userID];
             await client.shardTimes.update({times: shardTimes}, {where: {id: shardID}})
                 .then(() => {
-                    return message.channel.message.send(message.language.COMMAND_SHARDTIMES_REM_SUCCESS);
+                    return message.channel.send(message.language.COMMAND_SHARDTIMES_REM_SUCCESS);
                 })
                 .catch(() => {
-                    return message.channel.message.send(message.language.COMMAND_SHARDTIMES_REM_FAIL);
+                    return message.channel.send(message.language.COMMAND_SHARDTIMES_REM_FAIL);
                 });
         } else {
-            return message.channel.message.send(message.language.COMMAND_SHARDTIMES_REM_MISSING);
+            return message.channel.send(message.language.COMMAND_SHARDTIMES_REM_MISSING);
         }
+    } else if (action === 'help') {
+        return message.channel.send(message.language.COMMAND_EXTENDED_HELP(this));
     } else {
         // View the shard table
         const shardOut = {};
@@ -125,9 +127,11 @@ exports.run = async (client, message, args, level) => {
                 if (!userFlag) {
                     userFlag = shardTimes[user].flag;
                 }
+                const maxLen = 20;
                 const thisUser = message.guild.members.get(user);
                 const userName = thisUser.nickname === null ? `${thisUser.user.username}` : `${thisUser.nickname}`;
-                times.push(`${shardTimes[user].flag != '' ? userFlag : ""}${userName}`);
+                const uName = userName.length > maxLen ? userName.substring(0, maxLen) : userName;
+                times.push(`${shardTimes[user].flag != '' ? userFlag : ""}${uName}`);
             });
             fields.push({
                 "name": time,
@@ -161,14 +165,12 @@ exports.help = {
     description: 'Lists the time til payout of anyone registered.',
     usage: `shardtimes add <me|userID|mention> <timezone> [flag/emoji]
 ;shardtimes remove <me|userID|mention>
-;shardtimes [view]
-    `,
+;shardtimes [view]`,
     example: `;shardtimes`,
     extended: `\`\`\`asciidoc
 add     - Add a user to the list of names
 remove  - Remove a user from the list
-view    - View the list. Also works with no arg
-    \`\`\``
+view    - View the list. Also works with no arg.\`\`\``
 };
 
 
