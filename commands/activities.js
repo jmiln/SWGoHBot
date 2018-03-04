@@ -69,3 +69,4 @@ exports.help = {
 Day of the week can be the full name or the general 3 character name (Ex. Monday vs Mon).
     \`\`\``
 };
+

@@ -35,3 +35,4 @@ exports.help = {
 timezone    :: If you want a different timezone than your guild's, put it here.
 \`\`\``,
 };
+

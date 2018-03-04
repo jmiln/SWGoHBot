@@ -33,3 +33,4 @@ exports.help = {
 name    :: The name you're wanting to change it to. Leave it blank to reset it to default.
     \`\`\``
 };
+

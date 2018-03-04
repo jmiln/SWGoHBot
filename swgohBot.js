@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { Collection, Discord } = require('discord.js');
 const { promisify } = require("util");
 const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
@@ -6,8 +6,6 @@ const client = new Discord.Client();
 const fs = require("fs");
 const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
-
-const EnMap = require("enmap");
 
 const Sequelize = require('sequelize');
 
@@ -26,8 +24,8 @@ client.languages = {};
 client.languages.en_US = require('./languages/en-US.js');
 client.languages.de_DE = require('./languages/de_DE.js');
 
-client.commands = new EnMap();
-client.aliases = new EnMap();
+client.commands = new Collection();
+client.aliases = new Collection();
 
 client.seqTypeBool = Sequelize.BOOLEAN;
 client.sequelize = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
@@ -62,6 +60,10 @@ client.commandLogs = client.sequelize.define('commands', {
 });
 client.changelogs = client.sequelize.define('changelogs', {
     logText: Sequelize.TEXT
+});
+client.shardTimes = client.sequelize.define('shardtimes', {
+    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id or guild.id-channel.id 
+    times: {type: Sequelize.JSONB, defaultValue: {} }
 });
 
 const init = async () => {
@@ -106,7 +108,7 @@ client.on('error', (err) => {
 });
 
 // Make it so it only checks for new characters on the main shard
-if (client.shard.id === 0) {
+if (!client.shard || client.shard.id === 0) {
     // ## Here down is to update any characters that need it ##
     // Run it one minute after the bot boots
     setTimeout(updateCharacterMods,        1 * 60 * 1000);
@@ -547,4 +549,5 @@ function getCount(lvl) {
     }
     return lvlCost;
 }
+
 

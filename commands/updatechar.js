@@ -454,3 +454,4 @@ function getCount(lvl) {
     }
     return lvlCost;
 }
+

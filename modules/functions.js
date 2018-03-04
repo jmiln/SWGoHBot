@@ -81,13 +81,6 @@ module.exports = (client) => {
      * Logs to console. Future patches may include time+colors
      */
     client.log = (type, msg, title="Log", codeType="md", prefix="") => {
-        // if (!title) title = "Log";
-        // if (!codeType) codeType = "md";
-        // if (!prefix) {
-        //     prefix = ""; 
-        // } else {
-        //     prefix = prefix + ' ';
-        // }
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
             const chan = client.config.logs.channel;
@@ -98,7 +91,7 @@ module.exports = (client) => {
                 if (client.channels.has(chan)) {
                     client.sendMsg(chan, mess, args);
                 } else {
-                    // If it's on a different shard, then send it there (sends it twice for some reason...)
+                    // If it's on a different shard, then send it there 
                     client.shard.broadcastEval(`
                         const thisChan = ${util.inspect(chan)};
                         const msg = "${mess}";
@@ -519,3 +512,4 @@ module.exports = (client) => {
             .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
     };
 };
+

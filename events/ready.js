@@ -14,6 +14,7 @@ module.exports = async client => {
     await client.guildEvents.sync();
     await client.commandLogs.sync();
     await client.changelogs.sync();
+    await client.shardTimes.sync();
 
     guildList.forEach(async (guildID) => {
         // If there is no config, give em one, and an events object while we're at it
@@ -33,7 +34,10 @@ module.exports = async client => {
     });
 
     // Logs that it's up, and some extra info
-    const readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. On shard ${client.shard.id}`;
+    let  readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
+    if (client.shard) {
+        readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. ${client.shard.id}`;
+    }
     client.log('Ready', readyString);
 
     // Sets the status as the current server count and help command 
@@ -43,3 +47,4 @@ module.exports = async client => {
 
     client.loadAllEvents();
 };
+

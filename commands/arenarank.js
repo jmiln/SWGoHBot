@@ -91,3 +91,4 @@ function findNextRank(currentRank) {
         return Math.floor(currentRank * 0.85);
     }
 }
+

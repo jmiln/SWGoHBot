@@ -12,3 +12,4 @@ module.exports = async (client, guild) => {
     // const playingString =  `${client.config.prefix}help ~ ${client.guilds.size} servers`;
     // client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
 };
+

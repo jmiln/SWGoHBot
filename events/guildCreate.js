@@ -40,3 +40,4 @@ This will allow anyone with that Discord role to edit the bot's settings.
 Also run \`${client.config.prefix}setconf timezone <timezone>\` to be the timezone of your guild's activities (Default is \`America/Los_Angeles\`), and run \`${client.config.prefix}setconf announceChan <AnnouncementChannel>\` if you want to use the events/ announcements or event commands.
 After that, you should be set to begin using SWGoHBot!`);
 };
+

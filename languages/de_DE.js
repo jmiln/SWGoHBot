@@ -219,6 +219,20 @@ module.exports = {
     COMMAND_SETCONF_NO_SETTINGS: `Keine Gildeneinstellungen gefunden.`,
     COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
 
+    // Shard times command
+    COMMAND_SHARDTIMES_MISSING_USER: `I need a user, please enter "me", mention someone here, or input their Discord ID.`,
+    COMMAND_SHARDTIMES_MISSING_ROLE: `Sorry, but you can only add yourself unless you have an admin role.`,
+    COMMAND_SHARDTIMES_INVALID_USER: `Invalid user, please enter "me", mention someone here, or input their discord ID.`,
+    COMMAND_SHARDTIMES_MISSING_TIMEZONE: `You need to enter a timezone.`,
+    COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
+    COMMAND_SHARDTIMES_USER_ADDED: `User successfully added!`,
+    COMMAND_SHARDTIMES_USER_NOT_ADDED: `Something went wrong when with adding this user. Please try again.`,
+    COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Sorry, but you can only remove yourself unless you have an admin role.`,
+    COMMAND_SHARDTIMES_REM_SUCCESS: `User successfully removed!`,
+    COMMAND_SHARDTIMES_REM_FAIL: `Something went wrong when removing this user. Please try again.`,
+    COMMAND_SHARDTIMES_REM_MISSING: `Sorry, but that user does not seem to be here.`,
+    COMMAND_SHARDTIMES_SHARD_HEADER: `Shard payouts in:`,
+
     // Ships Command
     COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Benoetigt Charakter oder Schiff. Der Befehl lautet: \`${prefix}${usage}\``,
     COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter oder Schiff. Der Befehl lautet: \`${prefix}${usage}\``,
@@ -251,4 +265,5 @@ module.exports = {
     COMMAND_UPDATECHAR_NEED_CHAR: `Es muss ein Charakter angegeben werden, um Ihn zu aktualisieren.`,
     COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Deine Suche '${charName}' ergab keine Treffer. Bitte erneut versuchen.`
 };
+
 
