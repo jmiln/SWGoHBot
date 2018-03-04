@@ -192,3 +192,4 @@ help           :: Shows this help message.
 \`\`\``,
     example: 'setconf adminRole add Admin\nOr "setconf help" for more info'
 };
+

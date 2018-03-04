@@ -428,3 +428,4 @@ function removeTags(message, mess) {
     mess = mess.replace(/`/g, '');
     return mess;
 }
+

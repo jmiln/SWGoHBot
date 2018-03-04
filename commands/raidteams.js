@@ -137,3 +137,4 @@ raid        :: The raid you want to look up the teams for. Ex: aat, haat, or pit
 phase       :: The phase you're wanting to look up. Ex: p1, p4, solo
     \`\`\``
 };
+

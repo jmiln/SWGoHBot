@@ -264,3 +264,4 @@ module.exports = {
     COMMAND_UPDATECHAR_NEED_CHAR: `You need to specify a character to update.`,
     COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Sorry, but your search for '${charName}' did not find any results. Please try again.`
 };
+

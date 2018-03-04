@@ -116,3 +116,4 @@ character   :: The character you want to look up the gear for.
 gearlvl     :: (Optional) The specific gear level you want to look up.
     \`\`\``
 };
+

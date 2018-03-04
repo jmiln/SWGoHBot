@@ -92,3 +92,4 @@ To start the bot, in the command prompt, run the following command:
 Special thanks to York for the started bot to base this on (https://github.com/AnIdiotsGuide/Tutorial-Bot/),
 to CrouchingRancor.com for all their mod suggestions,
 and to Morningstar-013 & Pete Butler, for their work in collecting a bunch of teams for the raids.
+

@@ -94,3 +94,4 @@ exports.help = {
 ship|character  :: The ship you're wanting to look up. Also accepts their crew members.
     \`\`\``
 };
+

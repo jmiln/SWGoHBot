@@ -47,3 +47,4 @@ module.exports = async client => {
 
     client.loadAllEvents();
 };
+

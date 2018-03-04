@@ -266,3 +266,4 @@ module.exports = {
     COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Deine Suche '${charName}' ergab keine Treffer. Bitte erneut versuchen.`
 };
 
+
