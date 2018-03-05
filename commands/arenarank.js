@@ -34,9 +34,9 @@ class Arenarank extends Command {
         for (let battle = 0; battle < 5; battle++) {
             let  newRank;
             if (arenaJumps.hasOwnProperty(currentRank)) {
-                newRank = arenaJumps[currentRank];
+                newRank = arenaJumps[arenaBattles[arenaBattles.length-1]];
             } else {
-                newRank = Math.floor(currentRank * 0.85);
+                newRank = Math.floor(arenaBattles[arenaBattles.length-1] * 0.85);
             }
             arenaBattles.push(newRank);
             if (newRank === 1) break;
