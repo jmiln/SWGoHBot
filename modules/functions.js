@@ -512,3 +512,4 @@ module.exports = (client) => {
             .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
     };
 };
+
