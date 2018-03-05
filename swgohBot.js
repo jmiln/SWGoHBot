@@ -1,8 +1,8 @@
-const { Collection, Discord } = require('discord.js');
+const { Client, Collection } = require('discord.js');
 const { promisify } = require("util");
 const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
-const client = new Discord.Client();
+const client = new Client();
 const fs = require("fs");
 const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
@@ -73,7 +73,7 @@ const init = async () => {
     // client.log("Init", `Loading a total of ${cmdFiles.length} commands.`);
     cmdFiles.forEach(f => {
         try {
-            const props = require(`./commands/${f}`);
+            const props = new(require(`./commands/${f}`))(client);
             if (f.split(".").slice(-1)[0] !== "js") return;
             client.commands.set(props.help.name, props);
             props.conf.aliases.forEach(alias => {
