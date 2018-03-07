@@ -243,7 +243,7 @@ module.exports = {
     COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
     
     // Showconf Command
-    COMMAND_SHOWCONF_OUTPUT: (configKeys) => `The following is this server's current configuration: \`\`\`${configKeys}\`\`\``,
+    COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`${configKeys}\`\`\``,
 
     // Stats Command
     COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= STATISTICS (${shardID}) =\n
