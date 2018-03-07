@@ -28,15 +28,25 @@ class Reload extends Command {
         } else {
             message.channel.send(`Reloading: ${command}`)
                 .then(async m => {
-                    await client.shard.broadcastEval(`
-                        this.reload('${command}');
-                    `)
-                        .then(() => {
-                            m.edit(message.language.COMMAND_RELOAD_SUCCESS(command));
-                        })
-                        .catch(e => {
-                            m.edit(message.language.COMMAND_RELOAD_FAILURE(command, e.stack));
-                        });
+                    if (client.shard) {
+                        await client.shard.broadcastEval(`
+                            this.reload('${command}');
+                        `)
+                            .then(() => {
+                                m.edit(message.language.COMMAND_RELOAD_SUCCESS(command));
+                            })
+                            .catch(e => {
+                                m.edit(message.language.COMMAND_RELOAD_FAILURE(command, e.stack));
+                            });
+                    } else {
+                        client.reload(command)
+                            .then(() => {
+                                m.edit(message.language.COMMAND_RELOAD_SUCCESS(command));
+                            })
+                            .catch(e => {
+                                m.edit(message.language.COMMAND_RELOAD_FAILURE(command, e.stack));
+                            });
+                    }
                 });
         }
     }

@@ -19,7 +19,7 @@ class Showconf extends Command {
         // If I or an adminHelper adds a guild ID here, pull up that instead
         if (args[0] && level >= 9) {
             let found = false;
-                if (!client.guilds.has(args[0])) {
+                if (!client.guilds.has(args[0]) && client.shard) {
                     const names = await client.shard.broadcastEval(`
                     if (this.guilds.has('${args[0]}')) {
                         this.guilds.get('${args[0]}').name;
