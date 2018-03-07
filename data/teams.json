@@ -222,6 +222,69 @@
                 "characters": ["Captain Phasma", "Geonosian Soldier", "Qui-Gon Jinn", "Rey", "CT-7567 \"Rex\""]
             }
         }
+    },
+    {
+        "name": "The Sith Trimutive",
+        "aliases": ["sith","trimutive"],
+        "teams": {
+            "JTR & Friends [2,000,000-11,000,000]": {
+                "phase": ["Phase 1"],
+                "characters": ["Rey (Jedi Training) (Z)","BB-8 (Z)", "Rey (Scavanger)","R2-D2 (Z)","Resistance Trooper"]
+            },
+            "Imperial Troopers [934,000~]": {
+                "phase": ["Phase 1"],
+                "characters": ["General Veers (Z)", "Snowtrooper", "Colonel Starck", "Stormtrooper", "Death Trooper"]
+            },
+            "Thermal D Scumbags [1,250,000~]": {
+                "phase": ["Phase 1"],
+                "characters": ["Boba Fett", "Zam Wesell", "Greedo", "Jawa Engineer", "Grand Master Yoda"]
+            },
+            "JTR & Friends 2 [1,400,000~]": {
+                "phase": ["Phase 1"],
+                "characters": ["Rey (Jedi Training) (Z)","BB-8 (Z)", "Rey (Scavanger)", "Ahsoka Tano (Fulcrum) (Z)", "Obi-Wan Kenobi (Old Ben)"]
+            },
+            "Rebel Force [680,000~]": {
+                "phase": ["Phase 1"],
+                "characters": ["Commandar Luke Skywalker (Z)", "R2-D2 (Z)", "Han Solo (Z)", "Wedge Antilles", "Biggs Darklighter"]
+            },
+            "Nightsisters [751,000~]": {
+                "phase": ["Phase 1"],
+                "characters": ["Mother Talzin (Z)", "Nightsister Acolyte", "Nightsister Zombie", "Asajj Ventress (Z)", "Old Daka"]
+            },
+            "Snackbar [400,000~]": {
+                "phase": ["Phase 1"],
+                "characters": ["Admiral Ackbar", "Hermit Yoda", "Han Solo (Z)", "Commandar Luke Skywalker (Z)", "General Kenobi"]
+            },
+            "Krennic Squad [2,400,000~]": {
+                "phase": ["Phase 1", "Phase 2"],
+                "characters": ["Director Krennic (Z)", "General Veers", "Death Trooper", "Colonel Starck", "Snowtrooper"]
+            },
+			"Phoenix Squad [2,100,000]": {
+                "phase": ["Phase 2"],
+                "characters": ["Hera Syndulla", "Kanan Jarrus (Z)", "Garazeb \"Zeb\" Orrelios (Z)", "Ezra Bridger", "Sabine Wren (Z)"]
+            },
+            "JTR & Thrawn [5,300,000]": {
+                "phase": ["Phase 2"],
+                "characters": ["Rey (Jedi Training) (Z)", "R2-D2 (Z)", "Commandar Luke Skywalker (Z)", "Grand Admiral Thrawn", "BB-8 (Z)"]
+            },
+            "CLS Squad [1,300,000]": {
+                "phase": ["Phase 2"],
+                "characters": ["Commandar Luke Skywalker (Z)", "Hermit Yoda", "Obi-Wan Kenobi (Old Ben)", "Han Solo (Z)", "General Kenobi"]
+            },
+            "JTR & Friends [6,000,000]": {
+                "phase": ["Phase 2"],
+                "characters": ["Rey (Jedi Training) (Z)", "R2-D2 (Z)", "BB-8 (Z)", "Rey (Scavanger)", "Resistance Trooper"]
+            },
+            "ROLO YOLO [1,500,000]": {
+                "phase": ["Phase 2"],
+                "characters": ["Rebel Officer Leia Organa", "Ahsoka Tano (Fulcrum) (Z)", "R2-D2 (Z)", "Princess Leia", "Death Trooper"]
+            },
+            "Nute [???]": {
+                "phase": ["Phase 2"],
+                "characters": ["Nute Gunray", "Nightsister Acolyte", "Nightsister Zombie", "First Order Officer", "Princess Leia"]
+            }
+            
+        }
     }
 
 ]
