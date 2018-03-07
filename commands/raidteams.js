@@ -7,7 +7,7 @@ class Raidteams extends Command {
             aliases: ['raid', 'raidteam'],
             category: 'Star Wars',
             description: 'Shows some teams that work well for each raid.',
-            usage: 'raidteams <aat|pit> <p1|p2|p3|p4|solo>',
+            usage: 'raidteams <aat|pit|sith> <p1|p2|p3|p4|solo>',
             example: ';raidteams aat p1',
             extended: `\`\`\`asciidoc
 raid        :: The raid you want to look up the teams for. Ex: aat, haat, or pit.
