@@ -182,7 +182,7 @@ module.exports = (client) => {
         return new Promise((resolve, reject) => {
             try {
                 delete require.cache[require.resolve(`../commands/${command}.js`)];
-                const cmd = require(`../commands/${command}.js`);
+                const cmd = new (require(`../commands/${command}.js`))(client);
                 client.commands.delete(command);
                 client.aliases.forEach((cmd, alias) => {
                     if (cmd === command) client.aliases.delete(alias);

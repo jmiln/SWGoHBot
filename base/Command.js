@@ -8,7 +8,7 @@ class Command {
         extended = "No information provided.",
         hidden = false,
         enabled = true, 
-        guildOnly = true,
+        guildOnly = false,
         aliases = [],
         permLevel = 0
     }) {

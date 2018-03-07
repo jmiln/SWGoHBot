@@ -16,7 +16,7 @@ class Reload extends Command {
         });
     }
 
-    run(client, message, args) {
+    async run(client, message, args) {
         let command;
         if (client.commands.has(args[0])) {
             command = args[0];
@@ -27,14 +27,26 @@ class Reload extends Command {
             return message.channel.send(message.language.COMMAND_RELOAD_INVALID_CMD(args[0])).then(msg => msg.delete(4000)).catch(console.error);
         } else {
             message.channel.send(`Reloading: ${command}`)
-                .then(m => {
-                    client.reload(command)
-                        .then(() => {
-                            m.edit(message.language.COMMAND_RELOAD_SUCCESS(command));
-                        })
-                        .catch(e => {
-                            m.edit(message.language.COMMAND_RELOAD_FAILURE(command, e.stack));
-                        });
+                .then(async m => {
+                    if (client.shard) {
+                        await client.shard.broadcastEval(`
+                            this.reload('${command}');
+                        `)
+                            .then(() => {
+                                m.edit(message.language.COMMAND_RELOAD_SUCCESS(command));
+                            })
+                            .catch(e => {
+                                m.edit(message.language.COMMAND_RELOAD_FAILURE(command, e.stack));
+                            });
+                    } else {
+                        client.reload(command)
+                            .then(() => {
+                                m.edit(message.language.COMMAND_RELOAD_SUCCESS(command));
+                            })
+                            .catch(e => {
+                                m.edit(message.language.COMMAND_RELOAD_FAILURE(command, e.stack));
+                            });
+                    }
                 });
         }
     }
