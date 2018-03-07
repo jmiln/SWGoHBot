@@ -244,7 +244,7 @@ module.exports = {
     COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nFaehigkeitstyp: ${abilities.type}   Faehigkeitsabklingzeit: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
     
     // Showconf Command
-    COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `Die Konfiguration des Servers: \`\`\`${configKeys}\`\`\``,
+    COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `Dies ist die aktuelle Konfiguration für ${serverName}: \`\`\`${configKeys}\`\`\``,
 
 	// Stats Command
     COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= Statisken (${shardID}) =\n
