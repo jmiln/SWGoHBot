@@ -6,7 +6,7 @@ const Command = require('../base/Command');
 class Setconf extends Command {
     constructor(client) {
         super(client, {
-            name: 'setonf',
+            name: 'setconf',
             aliases: ['setconfig'],
             permLevel: 3,
             category: 'Admin',
