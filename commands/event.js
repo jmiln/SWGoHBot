@@ -33,6 +33,7 @@ help   :: Shows this message.\`\`\``,
     }
 
     async run(client, message, args, level) {
+        const maxSize = 1800;
         const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
 
@@ -179,6 +180,11 @@ help   :: Shows this message.\`\`\``,
                 } else {
                     eventMessage = cleanMessage(message, specialArgs);
                 }
+                
+                if ((eventMessage.length + eventName.length) > maxSize) {
+                    const currentSize = eventMessage.length + eventName.length;
+                    return message.channel.send(message.language.COMMAND_EVENT_TOO_BIG(currentSize-maxSize));
+                }
 
                 if (momentTZ(eventDT).isBefore(momentTZ())) {
                     var eventDATE = momentTZ.tz(eventDT, guildConf.timezone).format('D/M/YYYY H:mm');
@@ -268,12 +274,13 @@ help   :: Shows this message.\`\`\``,
                     // Grab the total # of events for later use
                     const eventCount = sortedEvents.length;
 
-                    const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
-                    if (minArgs.pages < 1) minArgs.pages = 1;
-                    if (minArgs.pages > PAGES_NEEDED) minArgs.pages = PAGES_NEEDED;
-                    const PAGE_SELECTED = minArgs.pages;
 
                     if (guildConf['useEventPages']) {
+                        const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
+                        if (minArgs.pages < 1) minArgs.pages = 1;
+                        if (minArgs.pages > PAGES_NEEDED) minArgs.pages = PAGES_NEEDED;
+                        const PAGE_SELECTED = minArgs.pages;
+
                         // If they have pages enabled, remove everything that isn't within the selected page
                         if (PAGES_NEEDED > 1) {
                             sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
@@ -300,15 +307,29 @@ help   :: Shows this message.\`\`\``,
                         }
                         array.push(eventString);
                     });
-                    var eventKeys = array.join('\n\n');
+                    const evArray = client.msgArray(array, '\n\n');
                     try {
-                        if (array.length === 0) {
+                        if (evArray.length === 0) {
                             return message.channel.send(message.language.COMMAND_EVENT_NO_EVENT);
                         } else {
-                            if (guildConf['useEventPages']) {
-                                return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys), {split: true});
+                            if (evArray.length > 1) {
+                                evArray.forEach((evMsg, ix) => {
+                                    if (guildConf['useEventPages']) {
+                                        return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg), {split: true});
+                                    } else {
+                                        if (ix === 0) {
+                                            return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, evMsg), {split: true});
+                                        } else {
+                                            return message.channel.send(evMsg, {split: true});
+                                        }
+                                    }
+                                })
                             } else {
-                                return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, eventKeys), {split: true});
+                                    if (guildConf['useEventPages']) {
+                                        return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
+                                    } else {
+                                        return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, evArray[0]), {split: true});
+                                    }
                             }
                         }
                     } catch (e) {

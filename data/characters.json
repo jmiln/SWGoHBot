@@ -26197,7 +26197,9 @@
         "name": "Sith Marauder",
         "uniqueName": "SITHMARAUDER",
         "aliases": [
-            "Sith Marauder"
+            "Sith Marauder",
+            "Marauder",
+            "SM"
         ],
         "url": "https://swgoh.gg/characters/sith-marauder",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithmarauder.png",
@@ -26392,6 +26394,630 @@
             "Tenacity": 39,
             "Health Steal": 20,
             "Protection": 34,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Darth Traya",
+        "uniqueName": "DARTHTRAYA",
+        "aliases": [
+            "Darth Traya",
+            "Traya"
+        ],
+        "url": "https://swgoh.gg/characters/darth-traya",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_traya.png",
+        "side": "dark",
+        "factions": [
+            "Sith",
+            "Support"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Offense",
+                "circle": "Health",
+                "cross": "Health/ Offense"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 BioTech Implant",
+                "Mk 1 BioTech Implant",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Nubian Security Scanner"
+            ],
+            "Gear 2": [
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 2 Arakyd Droid Caller",
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 1 Nubian Design Tech",
+                "Mk 2 BAW Armor Mod"
+            ],
+            "Gear 3": [
+                "Mk 4 TaggeCo Holo Lens",
+                "Mk 5 Loronar Power Cell",
+                "Mk 4 BAW Armor Mod",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 4": [
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Merr-Sonn Thermal Detonator",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 5": [
+                "Mk 7 Loronar Power Cell",
+                "Mk 2 Carbanti Sensor Array",
+                "Mk 7 BAW Armor Mod",
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 BAW Armor Mod"
+            ],
+            "Gear 6": [
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 7 Loronar Power Cell",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 2 Carbanti Sensor Array",
+                "Mk 3 Merr-Sonn Thermal Detonator",
+                "Mk 3 BioTech Implant"
+            ],
+            "Gear 7": [
+                "Mk 3 Athakam Medpac",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 4 A/KT Stun Gun",
+                "Mk 7 Loronar Power Cell",
+                "Mk 1 Zaltin Bacta Gel"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 4 A/KT Stun Gun",
+                "Mk 4 A/KT Stun Gun",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 9": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 Carbanti Sensor Array",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 7 Loronar Power Cell",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 10": [
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 5 Athakam Medpac",
+                "Mk 8 BioTech Implant",
+                "Mk 10 TaggeCo Holo Lens",
+                "Mk 5 Carbanti Sensor Array",
+                "Mk 5 Arakyd Droid Caller"
+            ],
+            "Gear 11": [
+                "Mk 5 Athakam Medpac",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 8 Loronar Power Cell",
+                "Mk 8 BAW Armor Mod",
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 5 A/KT Stun Gun"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Wrist Band",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Multi-tool",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Deceptive Strike": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Special damage to target enemy and Daze them for 2 turns. Traya inflicts all debuffs on allies to target enemy for 1 turn. If any debuffs were inflicted, reduce the cooldown of Saber Storm by 1.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Saber Storm": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Special damage to target enemy and inflict Tenacity Down for 2 turns. If Traya has full Health, deal damage an additional time and inflict Ability Block for 2 turns. If the target is buffed, deal damage an additional time and inflict Healing Immunity for 2 turns. This attack can't be Evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Isolate": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Dispel all buffs on target enemy, increase their cooldowns by 1, and inflict Isolation on target enemy until another enemy is Isolated or Traya is defeated. Reduce target ally's cooldowns by 1 and grant them Protection Up (50%) until the end of the encounter. Isolation can't be copied, dispelled, or Resisted. This attack can't be Evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Lord of Betrayal": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Sith allies have +40% Critical Avoidance and +40% Potency. When a debuffed enemy takes damage, all Sith allies recover 10% Health. When an enemy uses an ability outside of their turn, they take damage equal to 35% of their Max Health. This damage can't defeat enemies. When an enemy gains a buff outside of their turn, they lose 50% Offense until the end of their next turn.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Compassion is Weakness": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "When an ally suffers a debuff, Darth Traya gains +10% Bonus Protection (stacking) until the end of her next turn. At the start of each Sith ally's turn, Traya dispels all debuffs on them and deals damage equal to 5% of their Max Health for each debuff dispelled. When allied Darth Nihilus or Darth Sion are Critically Hit or inflicted with a debuff, Traya gains +12% Offense (stacking) for 2 turns.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 22909,
+            "Strength": 894,
+            "Agility": 568,
+            "Intelligence": 1434,
+            "Speed": 134,
+            "Physical Damage": 2313,
+            "Physical Critical Rating": 237,
+            "Special Damage": 5007,
+            "Special Critical Rating": 250,
+            "Armor Penetration": 5,
+            "Resistance Penetration": 72,
+            "Potency": 43,
+            "Health": 32072,
+            "Armor": 188,
+            "Resistance": 161,
+            "Tenacity": 47,
+            "Health Steal": 15,
+            "Protection": 38,
+            "activation": 145
+        }
+    },
+    {
+        "name": "Visas Marr",
+        "uniqueName": "VISASMARR",
+        "aliases": [
+            "Visas Marr",
+            "Visas"
+        ],
+        "url": "https://swgoh.gg/characters/visas-marr",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_visas.png",
+        "side": "light",
+        "factions": [
+            "Healer"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Health",
+                "cross": "Health/ Protection"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 3 BAW Armor Mod",
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 3 BAW Armor Mod",
+                "Mk 1 Merr-Sonn Shield Generator"
+            ],
+            "Gear 3": [
+                "Mk 4 BlasTech Weapon Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 4 BAW Armor Mod",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 4 Loronar Power Cell"
+            ],
+            "Gear 4": [
+                "Mk 2 Athakam Medpac",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 2 Chedak Comlink",
+                "Mk 4 BAW Armor Mod"
+            ],
+            "Gear 5": [
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Athakam Medpac",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 5 BAW Armor Mod"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 3 BioTech Implant"
+            ],
+            "Gear 7": [
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 8 TaggeCo Holo Lens"
+            ],
+            "Gear 9": [
+                "Mk 7 Nubian Security Scanner",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 Arakyd Droid Caller"
+            ],
+            "Gear 10": [
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 8 BioTech Implant",
+                "Mk 8 BioTech Implant",
+                "Mk 4 Arakyd Droid Caller"
+            ],
+            "Gear 11": [
+                "Mk 6 A/KT Stun Gun",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "Mk 9 BioTech Implant"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Medpac",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Telekinetic Blast": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and dispel all debuffs on Visas and another random debuffed ally. If the target is Sith, Visas Marr and her lowest-Health ally also recover 25% Max Health. If any debuffs were dispelled, reduce the cooldown of Dark Healing by 1.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Dark Healing": {
+                "type": "Special",
+                "abilityCooldown": "8",
+                "abilityDesc": "Deal Physical damage to all enemies. All allies gain Health Steal Up for 1 turn and recover Health equal to 35% of Visas Marr's Max Health. If Visas Marr is at full Health after using this ability, revive a random defeated ally at 50% Health.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Piercing Strike": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to target enemy and grant all allies Defense Penetration Up for 2 turns. This attack ignores Protection.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Returned to the Light": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "While Visas Marr has no debuffs, she has +100% Counter Chance and a 60% chance to Assist when another ally attacks Sith enemies once per turn.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 996,
+            "Agility": 953,
+            "Intelligence": 871,
+            "Speed": 126,
+            "Physical Damage": 2345,
+            "Physical Critical Rating": 687,
+            "Special Damage": 2241,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 46,
+            "Resistance Penetration": 0,
+            "Potency": 48,
+            "Health": 28028,
+            "Armor": 246,
+            "Resistance": 137,
+            "Tenacity": 39,
+            "Health Steal": 35,
+            "Protection": 33,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Darth Sion",
+        "uniqueName": "DARTHSION",
+        "aliases": [
+            "Darth Sion",
+            "Sion"
+        ],
+        "url": "https://swgoh.gg/characters/darth-sion",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sion.png",
+        "side": "dark",
+        "factions": [
+            "Sith",
+            "Tank"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Protection",
+                "circle": "Health",
+                "cross": "Offense/ Protection"
+            }
+        },
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Fabritech Data Pad",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 1 Sienar Holo Projector",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 3 BAW Armor Mod",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 2 Loronar Power Cell"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 4 BlasTech Weapon Mod",
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 3 Fabritech Data Pad"
+            ],
+            "Gear 4": [
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 Fabritech Data Pad"
+            ],
+            "Gear 5": [
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 2 Athakam Medpac",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 1 Athakam Medpac"
+            ],
+            "Gear 6": [
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 2 Athakam Medpac",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 7": [
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 7 Loronar Power Cell",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 3 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Chiewab Hypo Syringe"
+            ],
+            "Gear 9": [
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 4 SoroSuub Keypad"
+            ],
+            "Gear 10": [
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 8 BioTech Implant",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 10 TaggeCo Holo Lens",
+                "Mk 9 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 11": [
+                "Mk 6 A/KT Stun Gun",
+                "Mk 9 BAW Armor Mod",
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 4 Zaltin Bacta Gel",
+                "Mk 9 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Multi-tool",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Dark Rage": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Pain for 3 turns. If the target already has Pain, dispel all debuffs on Sion.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Torment": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Deal Physical damage to all enemies and then dispel all buffs on them. Then, inflict Pain on all enemies for 3 turns. Reduce the cooldown of this ability by 1 for each enemy without Pain. This attack can't be Evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Break Will": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage and inflict Pain on target enemy for 3 turns. This attack can't be Evaded. If the target already has Pain, this attack deals 100% more damage and Sion recovers 35% Protection.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Held By Hatred": {
+                "type": "Special",
+                "abilityCooldown": "15",
+                "abilityDesc": "Sion dispels all debuffs on himself, recovers 100% Health and gains 100% Turn Meter. Sion gains Hatred until he is defeated, which can't be dispelled or prevented. This ability starts on cooldown. When Sion inflicts Pain, reduce the cooldown of this ability by 1.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Lord of Pain": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Sion has +100% Defense and +100% Tenacity against enemies with Pain. At the start of each enemy's turn, if they have Pain, Sion gains Taunt until the end of the turn. At the end of each turn, Sion inflicts Pain for 3 turns on enemies who damaged him that turn. When allied Darth Traya or Darth Nihilus are Critically Hit, reduce Held By Hatred's cooldown by 1.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 20713,
+            "Strength": 1446,
+            "Agility": 686,
+            "Intelligence": 713,
+            "Speed": 137,
+            "Physical Damage": 3001,
+            "Physical Critical Rating": 383,
+            "Special Damage": 2071,
+            "Special Critical Rating": 70,
+            "Armor Penetration": 34,
+            "Resistance Penetration": 0,
+            "Potency": 47,
+            "Health": 33278,
+            "Armor": 400,
+            "Resistance": 194,
+            "Tenacity": 41,
+            "Health Steal": 20,
+            "Protection": 39,
             "activation": 25
         }
     }

@@ -298,6 +298,29 @@ module.exports = (client) => {
     });
 
 
+    /*
+     *  MESSAGE SPLITTER
+     *  Input an array of strings, and it will put them together so that it 
+     *  doesn't exceed the 2000 character limit of Discord mesages.
+     */
+    client.msgArray = (arr, join='\n') => {
+        const maxLen = 1900;
+        const messages = [];
+        arr.forEach((elem, ix) => {
+			if  (messages.length === 0) {
+				messages.push(elem);
+			} else {
+				const lastMsgLen = messages[messages.length - 1].length;
+                if ((lastMsgLen + elem.length) > maxLen) {
+					messages.push(elem);
+				} else {
+                    messages[messages.length - 1] = messages[messages.length - 1] + join + elem;
+				}
+			}
+		});
+        return messages;
+    };
+
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
         let ix = 0;
