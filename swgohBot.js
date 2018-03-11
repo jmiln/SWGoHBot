@@ -65,6 +65,10 @@ client.shardTimes = client.sequelize.define('shardtimes', {
     id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id or guild.id-channel.id 
     times: {type: Sequelize.JSONB, defaultValue: {} }
 });
+client.polls = client.sequelize.define('polls', {
+    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id-channel.id 
+    poll: Sequelize.JSONB
+});
 
 const init = async () => {
     // Here we load **commands** into memory, as a collection, so they're accessible

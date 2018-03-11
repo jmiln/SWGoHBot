@@ -31,6 +31,7 @@ class Shardtimes extends Command {
         super(client, {
             name: 'shardtimes',
             aliases: ['shard', 'payout'],
+            guildOnly: true,
             category: 'Misc',
             description: 'Lists the time til payout of anyone registered.',
             usage: `shardtimes add <me|userID|mention> <timezone> [flag/emoji]
