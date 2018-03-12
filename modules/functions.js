@@ -108,9 +108,9 @@ module.exports = (client) => {
     };
 
     client.sendMsg = (chanID, msg, options={}) => {
-        msg = msg.replace(/"\|"/g, '\n').replace(/\|\:\|/g, "'");
+        msg = msg.replace(/"\|"/g, '\n').replace(/\|:\|/g, "'");
         client.channels.get(chanID).send(msg, options);
-    }
+    };
 
     /*
      *  CHANGELOG MESSAGE
@@ -124,19 +124,19 @@ module.exports = (client) => {
                 client.sendMsg(clChan, clMessage);
             } else {
                 try {
-                    clMessage = clMessage.replace(/\'/g, '|:|');
+                    clMessage = clMessage.replace(/'/g, '|:|');
                     client.shard.broadcastEval(`
                         const clMess = '${clMessage}';
                         if (this.channels.has('${clChan}')) {
                             this.sendMsg('${clChan}', clMess);
                         } 
                     `);
-                } catch(e) {
+                } catch (e) {
                     console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
                 }
             }
         }
-    }
+    };
 
 
     /*
@@ -306,18 +306,18 @@ module.exports = (client) => {
     client.msgArray = (arr, join='\n') => {
         const maxLen = 1900;
         const messages = [];
-        arr.forEach((elem, ix) => {
-			if  (messages.length === 0) {
-				messages.push(elem);
-			} else {
-				const lastMsgLen = messages[messages.length - 1].length;
+        arr.forEach((elem) => {
+            if  (messages.length === 0) {
+                messages.push(elem);
+            } else {
+                const lastMsgLen = messages[messages.length - 1].length;
                 if ((lastMsgLen + elem.length) > maxLen) {
-					messages.push(elem);
-				} else {
+                    messages.push(elem);
+                } else {
                     messages[messages.length - 1] = messages[messages.length - 1] + join + elem;
-				}
-			}
-		});
+                }
+            }
+        });
         return messages;
     };
 
@@ -445,8 +445,8 @@ module.exports = (client) => {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
                 try {
                     client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
-                } catch(e) {
-                    client.log('ERROR', 'Broke trying to announce event with ID: ${event.eventID} \n${e}')
+                } catch (e) {
+                    client.log('ERROR', 'Broke trying to announce event with ID: ${event.eventID} \n${e}');
                 }
             } else { // Else, use the default one from their settings
                 client.announceMsg(client.guilds.get(guildID), announceMessage);

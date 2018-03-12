@@ -119,7 +119,7 @@ help    :: Show this help\`\`\``,
                         let voted = -1;
                         if (poll.votes[message.author.id] === opt) {
                             return message.channel.send(message.language.COMMAND_POLL_SAME_OPT(poll.options[opt]));
-                        } else if(poll.votes.hasOwnProperty(message.author.id)) {
+                        } else if (poll.votes.hasOwnProperty(message.author.id)) {
                             voted = poll.votes[message.author.id];
                         }
                         poll.votes[message.author.id] = opt;
