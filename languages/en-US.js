@@ -179,7 +179,7 @@ module.exports = {
     COMMAND_NICKNAME_FAILURE: `Sorry, but I don't have permission to change that.`,
 
     // Polls Command
-    COMMAND_POLL_NO_ARG: 'You need to provide an argument.',
+    COMMAND_POLL_NO_ARG: 'You need to provide either an option to vote on, or an action (create/view/etc).',
     COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
     COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
     COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
