@@ -64,6 +64,7 @@ module.exports = {
     // Generic (Not tied to a command)
     COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
     COMMAND_INVALID_BOOL: `Ungueltiger Wert, versuche true oder false`,
+	COMMAND_MISSING_PERMS: `Entschuldigung, aber Sie haben nicht die richtigen Berechtigungen, um das zu verwenden.`,
 
     // Event Strings (message/ ready etc.)
     BASE_COMMAND_UNAVAILABLE: "Dieser Befehl ist ueber Privatnachrichten nicht verfuegbar. Bitte fuehre diesen Befehl innerhalb eines Gildenservers aus.",
@@ -176,6 +177,22 @@ module.exports = {
     // Nickname Command
     COMMAND_NICKNAME_SUCCESS: `Ich habe meinen nickname geaendert.`,
     COMMAND_NICKNAME_FAILURE: `Entschuldige, aber ich habe keine Berechtigung das zu aendern.`,
+
+    // Polls Command
+    COMMAND_POLL_NO_ARG: 'Es muss ein Parameter angegeben werden.',
+	COMMAND_POLL_ALREADY_RUNNING: "Entschuldigung, aber Sie koennen nur eine Umfrage zur gleichen Zeit durchfuehren. Bitte beenden Sie zuerst die aktuelle Umfrage.",
+	COMMAND_POLL_MISSING_QUESTION: "Sie muessen etwas angeben, über das abgestimmt werden soll.",
+	COMMAND_POLL_TOO_FEW_OPT: "Sie muessen mindestens 2 Optionen zur Wahl stellen.",
+	COMMAND_POLL_TOO_MANY_OPT: "Sie koennen max. bis zu 10 Optionen zur Wahl stellen.",
+	COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n\n${poll}`,
+	COMMAND_POLL_NO_POLL: "Es wird aktuell keine Umfrage durchgefuehrt",
+	COMMAND_POLL_FINAL: (poll) => `Endergebnisse fuer ${poll}`,
+	COMMAND_POLL_FINAL_ERROR: (question) => `Loeschen fehlgeschlagen **${question}**, bitte erneut versuchen.`,
+	COMMAND_POLL_INVALID_OPTION: "Das ist keine gueltige Option.",
+	COMMAND_POLL_SAME_OPT: (opt) => `Sie haben bereits gewaehlt **${opt}**`,
+	COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Sie haben Ihre Auswahl von **${oldOpt}** zu **${newOpt}** geaendert`,
+	COMMAND_POLL_REGISTERED: (opt) => `Wahl fuer **${opt}** gespeichert`,
+	COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` (${optCount} vote${optCount === 1 ? '' : 's'}) ${choice}\n`,
 
     // Raidteams Command
     COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Ungueltiger Raid, Verwendung lautet \`${prefix}${help.usage}\`\n**Beispiel:** \`${prefix}${help.example}\``,

@@ -21,7 +21,7 @@ help    :: Show this help\`\`\``,
 
     async run(client, message, [action, ...opts], level) {   
         if (!action) {
-            return message.channel.send('You need to provide an argument.')
+            return message.channel.send(message.language.COMMAND_POLL_NO_ARG);
         }
         const pollID = `${message.guild.id}-${message.channel.id}`;
         const exists = await client.polls.findOne({where: {id: pollID}})
