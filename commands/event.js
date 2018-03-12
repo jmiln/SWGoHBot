@@ -274,12 +274,12 @@ help   :: Shows this message.\`\`\``,
                     // Grab the total # of events for later use
                     const eventCount = sortedEvents.length;
 
-
+                    let PAGE_SELECTED = 1;
+                    const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
                     if (guildConf['useEventPages']) {
-                        const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
                         if (minArgs.pages < 1) minArgs.pages = 1;
                         if (minArgs.pages > PAGES_NEEDED) minArgs.pages = PAGES_NEEDED;
-                        const PAGE_SELECTED = minArgs.pages;
+                        PAGE_SELECTED = minArgs.pages;
 
                         // If they have pages enabled, remove everything that isn't within the selected page
                         if (PAGES_NEEDED > 1) {
@@ -323,17 +323,17 @@ help   :: Shows this message.\`\`\``,
                                             return message.channel.send(evMsg, {split: true});
                                         }
                                     }
-                                })
+                                });
                             } else {
-                                    if (guildConf['useEventPages']) {
-                                        return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
-                                    } else {
-                                        return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, evArray[0]), {split: true});
-                                    }
+                                if (guildConf['useEventPages']) {
+                                    return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
+                                } else {
+                                    return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, evArray[0]), {split: true});
+                                }
                             }
                         }
                     } catch (e) {
-                        client.log('Event View Broke!', eventKeys);
+                        client.log('Event View Broke!', evArray);
                     }
                 }
                 break;
