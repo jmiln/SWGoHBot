@@ -64,6 +64,7 @@ module.exports = {
     // Generic (Not tied to a command)
     COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
     COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
+    COMMAND_MISSING_PERMS: `Sorry, but you don't have the correct permissions to use that.`,
 
     // Event Strings (message/ ready etc.)
     BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
@@ -177,6 +178,21 @@ module.exports = {
     COMMAND_NICKNAME_SUCCESS: `I have changed my nickname.`,
     COMMAND_NICKNAME_FAILURE: `Sorry, but I don't have permission to change that.`,
 
+    // Polls Command
+    COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
+    COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
+    COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
+    COMMAND_POLL_TOO_MANY_OPT: "You can only have up to 10 options to vote on.",
+    COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n\n${poll}`,
+    COMMAND_POLL_NO_POLL: "There is no poll in progress",
+    COMMAND_POLL_FINAL: (poll) => `Final results for ${poll}`,
+    COMMAND_POLL_FINAL_ERROR: (question) => `I couldn't delete **${question}**, please try again.`,
+    COMMAND_POLL_INVALID_OPTION: "That is not a valid option.",
+    COMMAND_POLL_SAME_OPT: (opt) => `You have already chosen **${opt}**`,
+    COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `You have changed your choice from **${oldOpt}** to **${newOpt}**`,
+    COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
+    COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` (${optCount} vote${optCount === 1 ? '' : 's'}) ${choice}\n`,
+    
     // Raidteams Command
     COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
     COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,

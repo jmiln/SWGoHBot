@@ -20,6 +20,9 @@ help    :: Show this help\`\`\``,
     }
 
     async run(client, message, [action, ...opts], level) {   
+        if (!action) {
+            return message.channel.send('You need to provide an argument.')
+        }
         const pollID = `${message.guild.id}-${message.channel.id}`;
         const exists = await client.polls.findOne({where: {id: pollID}})
             .then(token => token != null)
@@ -44,21 +47,21 @@ help    :: Show this help\`\`\``,
             case 'create': {
                 // Create a poll (lvl 3+)
                 if (level < 3) {
-                    return message.channel.send("You don't have the perms to use this command.");
+                    return message.channel.send(message.language.COMMAND_MISSING_PERMS);
                 }
                 if (exists) {
-                    return message.channel.send("Sorry, but you can only run one poll at a time. Please end the current one first.");
+                    return message.channel.send(message.language.COMMAND_POLL_ALREADY_RUNNING);
                 }
                 if (!optsJoin[0]) {
-                    return message.channel.send('You need to specify something to vote on');
+                    return message.channel.send(message.language.COMMAND_POLL_MISSING_QUESTION);
                 } else {
                     poll.question = optsJoin[0];
                     optsJoin.splice(0,1);
                 }
                 if (optsJoin.length < 2) {
-                    return message.channel.send('You need to have at least 2 options to vote on');
+                    return message.channel.send(message.language.COMMAND_POLL_TOO_FEW_OPT);
                 } else if (optsJoin.length > 10) {
-                    return message.channel.send('You can only have up to 10 options to vote on');
+                    return message.channel.send(message.language.COMMAND_POLL_TOO_MANY_OPT);
                 } else {
                     optsJoin.forEach((opt, ix) => {
                         optsJoin[ix] = opt.replace(/^\s*/, '').replace(/\s*$/, '');
@@ -70,7 +73,7 @@ help    :: Show this help\`\`\``,
                     poll: poll
                 })
                     .then(() => {
-                        return message.channel.send(`**${message.author.username}** has started a new poll:\nVote with \`${client.config.prefix}poll <choice>\`\n\n${pollCheck(poll)}`);
+                        return message.channel.send(message.language.COMMAND_POLL_CREATED(message.author.username, client.config.prefix, pollCheck(poll)));
                     });               
                 break;
             } 
@@ -78,7 +81,7 @@ help    :: Show this help\`\`\``,
             case 'check': {
                 // Check the current poll
                 if (!exists) {
-                    return message.channel.send("There is no poll in progress");
+                    return message.channel.send(message.language.COMMAND_POLL_NO_POLL);
                 } else {
                     const outString = pollCheck(poll);
                     return message.channel.send(outString);
@@ -88,18 +91,18 @@ help    :: Show this help\`\`\``,
             case 'end': {
                 // Close the current poll and send the results (lvl 3+)
                 if (level < 3) {
-                    return message.channel.send("You don't have the perms to use this command.");
+                    return message.channel.send(message.language.COMMAND_MISSING_PERMS);
                 }
                 if (!exists) {
-                    return message.channel.send("There is no poll in progress");
+                    return message.channel.send(message.language.COMMAND_POLL_NO_POLL);
                 } else {
                     // Delete the current poll
                     await client.polls.destroy({where: {id: pollID}})
                         .then(() => {
-                            message.channel.send(`Final results for ${pollCheck(poll)}`);
+                            return message.channel.send(message.language.COMMAND_POLL_FINAL(pollCheck(poll)));
                         })
                         .catch(() => { 
-                            message.channel.send(`I couldn't delete **${poll.question}**, please try again.`);
+                            return message.channel.send(message.language.COMMAND_POLL_FINAL_ERROR(poll.question));
                         });
                 }
                 break;
@@ -108,15 +111,15 @@ help    :: Show this help\`\`\``,
                 // Someone voting on an option
                 // Check if there is a poll going, then if there is, vote, else tell em that there isn't 
                 if (!exists) {
-                    return message.channel.send("There is no poll in progress");
+                    return message.channel.send(message.language.COMMAND_POLL_NO_POLL);
                 } else {
-                    const opt = parseInt(action);
-                    if (poll.options.length < opt-1) {
-                        return message.channel.send('That is not a valid option.');
+                    const opt = Math.abs(parseInt(action));
+                    if (poll.options.length < opt+1) {
+                        return message.channel.send(message.language.COMMAND_POLL_INVALID_OPTION);
                     } else {
                         let voted = -1;
                         if (poll.votes[message.author.id] === opt) {
-                            return message.channel.send(`You have already chosen **${poll.options[opt]}**`);
+                            return message.channel.send(message.language.COMMAND_POLL_SAME_OPT(poll.options[opt]));
                         } else if(poll.votes.hasOwnProperty(message.author.id)) {
                             voted = poll.votes[message.author.id];
                         }
@@ -124,9 +127,9 @@ help    :: Show this help\`\`\``,
                         await client.polls.update({poll: poll}, {where: {id: pollID}})
                             .then(() => {
                                 if (voted !== -1) {
-                                    return message.channel.send(`You have changed your choice from **${poll.options[voted]}** to **${poll.options[opt]}**`)
+                                    return message.channel.send(message.language.COMMAND_POLL_CHANGED_OPT(poll.options[voted], poll.options[opt]));
                                 } else {
-                                    return message.channel.send(`Choice for **${poll.options[opt]}** registered`);
+                                    return message.channel.send(message.language.COMMAND_POLL_REGISTERED(poll.options[opt]));
                                 }
                             });
                     }
@@ -136,7 +139,6 @@ help    :: Show this help\`\`\``,
             default: {
                 // Help
                 return message.channel.send(message.language.COMMAND_EXTENDED_HELP(this));
-                break;
             }
         }
 
@@ -149,9 +151,9 @@ help    :: Show this help\`\`\``,
                 voteCount[poll.votes[voter]] += 1;
             });
             
-            let outString = "**" + poll.question + "**\n";
+            let outString = `**${poll.question}**\n`;
             Object.keys(voteCount).forEach(opt => {
-                outString += `\`[${opt}]\` (${voteCount[opt]} vote${voteCount[opt] === 1 ? '' : 's'}) ${poll.options[opt]}\n`;
+                outString += message.language.COMMAND_POLL_CHOICE(opt, voteCount[opt], poll.options[opt]);
             });
             return outString;
         }
