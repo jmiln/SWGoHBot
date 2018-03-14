@@ -21,7 +21,7 @@ command     :: The command you want to look up info on.
         const help = {};
 
         if (!args[0]) { // Show the list of commands
-            const commandList = client.commands.filter(c => c.conf.permLevel <= level);
+            const commandList = client.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
             const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
 
             let output = message.language.COMMAND_HELP_HEADER(config.prefix);
