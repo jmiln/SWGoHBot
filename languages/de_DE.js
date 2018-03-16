@@ -274,7 +274,7 @@ module.exports = {
 • Kanaele   		  :: ${channels}
 • Quelle     		  :: https://github.com/jmiln/SWGoHBot`,
 
-    COMMAND_TIME_CURRENT: (time, zone) => `Die aktuelle Uhrzeit ist: ${time}} in der Zeitzone ${zone}`,
+    COMMAND_TIME_CURRENT: (time, zone) => `Die aktuelle Uhrzeit ist: ${time} in der Zeitzone ${zone}`,
     COMMAND_TIME_INVALID_ZONE: (time, zone) => `Falsche Zeitzone, hier ist die Zeit Deiner Gilde ${time} in der Zeitzone ${zone}`,
     COMMAND_TIME_NO_ZONE: (time) => `Die aktuelle Uhrzeit ist: ${time} UTC Zeit`,
     COMMAND_TIME_WITH_ZONE: (time, zone) => `Die aktuelle Uhrzeit ist: ${time} in der Zeitzone ${zone}`,
