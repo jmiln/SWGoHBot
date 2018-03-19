@@ -668,7 +668,7 @@ module.exports = {
         ]
     },
 
-    COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time}} in ${zone} time`,
+    COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time} in ${zone} time`,
     COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time ${time} in ${zone} time`,
     COMMAND_TIME_NO_ZONE: (time) => `Current time is: ${time} UTC time`,
     COMMAND_TIME_WITH_ZONE: (time, zone) => `Current time is: ${time} in ${zone} time`,
