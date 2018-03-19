@@ -11,24 +11,7 @@ class Event extends Command {
             guildOnly: true,
             name: 'event',
             category: 'Misc',
-            description: 'Used to make or check an event.',
-            usage: `event [create] [eventName] [eventDay] [eventTime] [eventMessage]
-        ;event [view|delete|trigger] [eventName]
-        ;event help`,
-            extended: `\`\`\`asciidoc
-create :: Create a new event listing.
-    --repeat|-r  :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
-    --repeatDay  :: Lets you set it to repeat on set days with the format of 0,0,0,0,0. 
-    --channel|-c :: Lets you set a specific channel for the event to announce on.
-    --countdown  :: Adds a countdown to when your event will trigger - yes is the only valid parameter
-view   :: View your current event listings.
-    --min|-m     :: Lets you view the events without the event message
-    --page|-p    :: Lets you select a page of events to view
-delete :: Delete an event.
-trigger:: Trigger an event in the specified channel, leaves the event alone.
-help   :: Shows this message.\`\`\``,
-            aliases: ['events'],
-            example: 'event create FirstEvent 7/2/2017 13:56 This is my event message'
+            aliases: ['events']
         });
     }
 
@@ -383,7 +366,7 @@ help   :: Shows this message.\`\`\``,
                 break;
             }
             case "help": {
-                return message.channel.send(message.language.COMMAND_EXTENDED_HELP(this));
+                return message.channel.send(client.helpOut(message.language, this));
             }
         }
 

@@ -5,8 +5,6 @@ class Charactergear extends Command {
         super(client, {
             name: 'charactergear',
             category: 'Star Wars',
-            description: 'Shows the gear requirements for the specified character/ lvl.',
-            usage: 'charactergear <character> [gearLvl]',
             aliases: ['chargear', 'gear']
         });
     }

@@ -5,15 +5,7 @@ class Poll extends Command {
         super(client, {
             name: 'poll',
             guildOnly: true,
-            description: "Lets you start a poll with multiple options",
             category: "Misc",
-            usage: `poll  <create|choice|view|close|help> <question> | <opt1> | <opt2> | [...] | [opt10]`,
-            extended: `\`\`\`asciidoc
-create  :: Create a new poll            
-<choice>:: Vote for your preferred answer (0-9)
-view    :: View the current standings
-close   :: Close the poll and display the results
-help    :: Show this help\`\`\``,
             aliases: ['vote']
         });
     }

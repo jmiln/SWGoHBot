@@ -9,25 +9,7 @@ class Setconf extends Command {
             name: 'setconf',
             aliases: ['setconfig'],
             permLevel: 3,
-            category: 'Admin',
-            description: 'Used to set the bot\'s config settings.',
-            usage: 'setconf <help|key> [value]',
-            extended: `\`\`\`asciidoc
-adminRole      :: The role that you want to be able to modify bot settings or set up events.
-                    'add' Add a role to the list
-                    'remove' Remove a role from the list
-enableWelcome  :: Toggles the welcome message on/ off.
-welcomeMessage :: The welcome message to send it you have it enabled.
-                    '{{user}}' gets replaced with the new user's name.
-                    '{{userMention}}' makes it mention the new user there.
-useEmbeds      :: Toggles whether or not to use embeds for the mods output.
-timezone       :: Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.
-announceChan   :: Sets the name of your announcements channel for events etc. Make sure it has permission to send them there.
-useEventPages  :: Sets it so event view shows in pages, rather than super spammy.
-reset          :: Resets the config back to default (ONLY use this if you are sure)
-help           :: Shows this help message.
-\`\`\``,
-            example: 'setconf adminRole add Admin\nOr "setconf help" for more info'
+            category: 'Admin'
         });
     }
 

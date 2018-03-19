@@ -297,6 +297,47 @@ module.exports = (client) => {
         }
     });
 
+    /*
+     *  COMMAND HELP OUTPUT
+     *  Input the language and the command, and it'll give ya back the embed object to send
+     */
+    client.helpOut = (message, command) => {
+        const language = message.language;
+        const help = language[`COMMAND_${command.help.name.toUpperCase()}_HELP`];
+        const actions = help.actions.slice();
+        let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(', ') : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
+
+        // Stick the extra help bit in
+        actions.push(language.BASE_COMMAND_HELP_HELP(command.help.name.toLowerCase()));
+        const actionArr = [];
+
+        actions.forEach(action => {
+            const outAct = {};
+            const keys = Object.keys(action.args);
+            let argString = "";
+            if (keys.length > 0) {
+                keys.forEach(key => {
+                    argString += `**${key}**  ${action.args[key]}\n`;
+                });
+            }
+            if (action.action !== '') {
+                outAct.name = action.action;
+                outAct.value = `${action.actionDesc === '' ? '' : action.actionDesc} \n\`\`\`${action.usage}\`\`\`${argString}\n`;
+                actionArr.push(outAct);
+            } else {
+                headerString += `\`\`\`${action.usage}\`\`\`${argString}`;
+            }
+        });
+        message.channel.send({embed: {
+            "color": 0x605afc,
+            "author": {
+                "name": language.BASE_COMMAND_HELP_HEADER(command.help.name)
+            },
+            "description": headerString,
+            "fields": actionArr
+        }});
+    };
+
 
     /*
      *  MESSAGE SPLITTER

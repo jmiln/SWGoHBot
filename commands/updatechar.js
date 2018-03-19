@@ -11,8 +11,6 @@ class Updatechar extends Command {
             aliases: ["u"],
             permLevel: 9,
             category: 'Dev',
-            description: 'Update the info on a specified character',
-            usage: 'updatechar [gear|info|mods] [charater]'
         });
     }
 
@@ -417,12 +415,12 @@ class Updatechar extends Command {
         }
         
         
-        const mk3 = '<img src="//swgoh.gg/static/img/assets/tex.skill_pentagon_white.png" style="width: 25px;">';
-        const omega = '<img src="//swgoh.gg/static/img/assets/tex.skill_pentagon_gold.png" style="width: 25px;">';
-        const zeta =  '<img src="//swgoh.gg/static/img/assets/tex.skill_zeta.png" style="width: 25px;">';
         
         // Lvl is the string from each level of the ability
         function getCount(lvl) {
+            const mk3 = '<img src="//swgoh.gg/static/img/assets/tex.skill_pentagon_white.png" style="width: 25px;">';
+            const omega = '<img src="//swgoh.gg/static/img/assets/tex.skill_pentagon_gold.png" style="width: 25px;">';
+            const zeta =  '<img src="//swgoh.gg/static/img/assets/tex.skill_zeta.png" style="width: 25px;">';
             const lvlCost = {
                 'mk3': 0,
                 'omega': 0,

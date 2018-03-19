@@ -6,13 +6,7 @@ class Reload extends Command {
             name: 'reload',
             aliases: ['r'],
             permLevel: 10,
-            category: 'Dev',
-            description: 'Reloads the command file, if it\'s been updated or modified.',
-            usage: 'reload <command>',
-            example: `;reload help`,
-            extended: `\`\`\`asciidoc
-        command     :: The command you're wanting to reload.
-            \`\`\``
+            category: 'Dev'
         });
     }
 

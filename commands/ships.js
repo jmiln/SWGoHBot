@@ -6,13 +6,7 @@ class Ships extends Command {
         super(client, {
             name: 'ships',
             aliases: ['s', 'ship'],
-            category: 'Star Wars',
-            description: 'Shows the info about the specified ship.',
-            usage: 'ships <ship|character>',
-            example: `;ships tie reaper`,
-            extended: `\`\`\`asciidoc
-ship|character  :: The ship you're wanting to look up. Also accepts their crew members.
-            \`\`\``
+            category: 'Star Wars'
         });
     }
 

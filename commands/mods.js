@@ -5,13 +5,7 @@ class Mods extends Command {
         super(client, {
             name: 'mods',
             aliases: ['m', 'mod'],
-            category: 'Misc',
-            description: 'Shows some suggested mods for the specified character.',
-            usage: 'mods <character>',
-            example: `;mods rex`,
-            extended: `\`\`\`asciidoc
-character   :: The character you want to show the mods for.
-            \`\`\``
+            category: 'Misc'
         });
     }
 

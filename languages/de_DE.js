@@ -64,10 +64,18 @@ module.exports = {
     // Generic (Not tied to a command)
     COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
     COMMAND_INVALID_BOOL: `Ungueltiger Wert, versuche true oder false`,
-	COMMAND_MISSING_PERMS: `Entschuldigung, aber Sie haben nicht die richtigen Berechtigungen, um das zu verwenden.`,
-
-    // Event Strings (message/ ready etc.)
+    COMMAND_MISSING_PERMS: `Entschuldigung, aber Sie haben nicht die richtigen Berechtigungen, um das zu verwenden.`,
     BASE_COMMAND_UNAVAILABLE: "Dieser Befehl ist ueber Privatnachrichten nicht verfuegbar. Bitte fuehre diesen Befehl innerhalb eines Gildenservers aus.",
+    BASE_COMMAND_HELP_HEADER: (name) => `Hilfe fuer ${name}`,
+    BASE_COMMAND_HELP_HEADER_CONT: (name) => `Fortgesetzte Hilfe fuer ${name}`,
+    BASE_COMMAND_HELP_HELP: (name) => {
+        return {
+            action: "Help",
+            actionDesc: "Zeigt diese Hilfe an.",
+            usage: `;${name} help`,
+            args: {}
+        };
+    },
 
     // Abilities Command 
     COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}${usage}\``,
@@ -75,6 +83,17 @@ module.exports = {
     COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Abklingzeit Faehigkeit:** ${aCooldown}\n`,
     COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Faehigkeiten-Typ:** ${aType}     **Max Faehigkeit Mat benoetigt:** ${mat}\n${cdString}${aDesc}`,
     COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Faehigkeiten-Typ: ${type}\n* Max Faehigkeit Mat benoetigt: ${tier}\n* Beschreibung: ${aDesc}\n\n`,
+    COMMAND_ABILITIES_HELP: {
+        description: "Zeigt die Faehigkeiten für einen spezifizierten Charakter.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';abilities <Charaktername>',
+                args: {}
+            }
+        ]
+    },
 
     // Activities Command
     COMMAND_ACTIVITIES_SUNDAY: `== Bis Reset == \nArena Kaempfe kaempfen \nCantina Energie sparen \nNormale Energie sparen\n\n== Nach Reset == \nCantina Energie verwenden \nNormale Energie sparen`,
@@ -85,13 +104,35 @@ module.exports = {
     COMMAND_ACTIVITIES_FRIDAY: `== Bis Reset == \nAlle Herausforderungen beenden / kaempfen \nNormale Energie spare\n\n== Nach Reset == \nNormale Energie fuer Kaempfe der dunklen Seite verwenden`,
     COMMAND_ACTIVITIES_SATURDAY: `== Bis Reset == \nNormale Energie fuer Kaempfe der dunklen Seite verwenden \nArena Kaempfe sparen \nCantina Energie sparen\n\n== Nach Reset == \nArena Kaempfe kaempfen\nCantina Energie sparen`,
     COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Ungueltiger Tag, Verwendung lautet \`${prefix}${usage}\``,
+    COMMAND_ACTIVITIES_HELP: {
+        description: "Zeigt die taeglichen Aktivitaeten der Gilde an.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';activities [Charaktername]',
+                args: {}
+            }
+        ]
+    },
 
     // Arenarank Command
     COMMAND_ARENARANK_INVALID_NUMBER: `Bitte einen gueltigen Rang angeben`,
     COMMAND_ARENARANK_BEST_RANK: `Weiter kommt man nicht, gratuliere!`,
     COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `Von Rang ${currentRank}, in ${battleCount} battle${plural} ${est}\nDie bestmoegliche Platzierung ist ${rankList}`,
+    COMMAND_ARENARANK_HELP: {
+        description: "Zeigt den (vermutlich) hoechsten Rang an, der erreicht werden kann, wenn jeder Arenakampf gewonnen wird.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';arenarank <aktuellerRank>',
+                args: {}
+            }
+        ]
+    },
 
-	// Challenges Command
+    // Challenges Command
     COMMAND_CHALLENGES_TRAINING: "Trainingsdroiden",
     COMMAND_CHALLENGES_ABILITY : "Faehigkeitenfundament",
     COMMAND_CHALLENGES_BOUNTY  : "Kopfgeldjaeger",  
@@ -103,23 +144,59 @@ module.exports = {
     COMMAND_CHALLENGES_SHIP_ABILITY    : "Schiff-Faehigkeitsmaterialien",
     COMMAND_CHALLENGES_MISSING_DAY: 'Ein Tag muss spezifziert werden',
     COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `Ungueltiges Datum, der Befehl lautet: \`${prefix}${usage}\``,
+    COMMAND_CHALLENGES_HELP: {
+        description: "Zeigt die taeglichen Herausforderungen der Gilde an.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';challenges <Wochentag>',
+                args: {}
+            }
+        ]
+    },
+
+    // Changelog Command (Help)
+    COMMAND_CHANGELOG_HELP: {
+        description: "Fuegt eine Logdatei zur DB hinzu und fuegt diese dem Changelog-Kanal hinzu.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: 'changelog <Nachricht>',
+                args: {
+                    "Nachricht": "Benutze [Updated], [Fixed], [Removed], und [Added] um die Aenderungen zu organisieren."
+                }
+            }
+        ]
+    },
 
     // Character gear Command
     COMMAND_CHARGEAR_NEED_CHARACTER: (prefix, usage) => `Benoetigt Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
     COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
     COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### Komplette benoetigte Ausruestung ### \n${gearString}`,
     COMMAND_CHARGEAR_GEAR_NA: 'Diese Ausruestung wurde nicht eingefuegt',
-
+    COMMAND_CHARACTERGEAR_HELP: {
+        description: "Zeigt die Gearanforderungen für den spezifizierten Charakter / Level.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: 'charactergear <Charakter> [Gearlevel]',
+                args: {}
+            }
+        ]
+    },
 
     // Event Command (Create)
-	COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
+    COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
     COMMAND_EVENT_INVALID_PERMS: `Entschuldigung, aber entweder du bist kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.`,
     COMMAND_EVENT_ONE_REPEAT: 'Entschuldigung, aber du kannst nicht `repeat` und `repeatDay` in einem Event nutzen. Bitte benutze nur eins der beiden.',
-    COMMAND_EVENT_INVALID_REPEAT: `Die Wiederholung ist im falschen Format. Beispiel: \ˋ5d3h8m\ˋ steht fuer 5 Tage 3 Stunden und 8 Minuten`,
+    COMMAND_EVENT_INVALID_REPEAT: 'Die Wiederholung ist im falschen Format. Beispiel: ˋ5d3h8mˋ steht fuer 5 Tage 3 Stunden und 8 Minuten',
     COMMAND_EVENT_USE_COMMAS: `Bitte benutze Komma getrennte Nummern fuer repeatDay. Beispiel: \`1,2,1,3,4\``,
     COMMAND_EVENT_INVALID_CHAN: `Dieser Kanal ist ungueltig. Bitte erneut versuchen`,
     COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `Ich habe keine Berechtigung in ${channel} Nachrichten zu senden, bitte waehle einen Kanal, wo ich es kann`,
-	COMMAND_EVENT_NEED_CHAN: `FEHLER: Um dies zu senden, wird ein konfigurierter Kanal benoetigt. Konfiguriere \ˋannounceChan\ˋ zum Erstellen von Events..`,
+    COMMAND_EVENT_NEED_CHAN: 'FEHLER: Um dies zu senden, wird ein konfigurierter Kanal benoetigt. Konfiguriere ˋannounceChanˋ zum Erstellen von Events..',
     COMMAND_EVENT_NEED_NAME: `Du musst dem Event einen Namen geben.`,
     COMMAND_EVENT_EVENT_EXISTS: `Dieser Eventname existiert bereits. Erneutes anlegen nicht moeglich.`,
     COMMAND_EVENT_NEED_DATE: `Du musst ein Datum fuer dein Event angeben. Akzeptiertes Format ist \`DD/MM/YYYY\`.`,
@@ -150,16 +227,92 @@ module.exports = {
     // Event Command (Trigger)
     COMMAND_EVENT_TRIGGER_NEED_NAME: `Es muss ein Event angegeben werden.`,
 
-   // Faction Command
+    // Event Command (Help)
+    COMMAND_EVENT_HELP: {
+        description: "Wird verwendet um ein Event zu erstellen, zu pruefen oder zu loeschen.",
+        actions: [
+            {
+                action: "Create",
+                actionDesc: 'Erstellt ein neues Event',
+                usage: ';event create <eventName> <eventTag> <eventZeit> [eventNachricht]',
+                args: {
+                    "--repeat <WiederholZeit>": "Setzt die Dauer / ein Intervall im Format 00d00h00m. Wird nach Ablauf der Dauer in dem angegebenen Intervall wiederholt.",
+                    "--repeatDay <planwerte>": "Setzt eine Wiederholung in bestimmten Tagen im Format 0,0,0,0,0.",
+                    "--channel <KanalName>": "Setzt einen spezifischen Kanal fuer die Ankuendigung.",
+                    "--countdown": "Fuegt dem Event ein Countdown hinzu. Der Parameter - yes ist die einzige gueltige Option."
+                }
+            },
+            {
+                action: "View",
+                actionDesc: 'Zeigt die aktuelle Liste der Events an.',
+                usage: ';event view [eventName]',
+                args: {
+                    "--min": "Zeigt alle geplanten Events ohne Event-Nachricht an.",
+                    "--page <Seite#>": "Waehlt eine bestimmte Seite des Eventplans aus um diese anzuzeigen."
+                }
+            },
+            {
+                action: "Delete",
+                actionDesc: 'Loescht ein Event.',
+                usage: ';event delete <eventName>',
+                args: {}
+            },
+            {
+                action: "Trigger",
+                actionDesc: 'Loest die Ankuendigung in dem spezifizierten Kanal aus. Das Event bleibt unverändert.',
+                usage: ';event trigger <eventName>',
+                args: {}
+            }
+        ]
+    },
+
+    // Faction Command
     COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `Ungueltige Fraktion, das Kommando lautet: \`${prefix}${usage}\``,
     COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Charakter gehoert zur Fraktion: ${searchName} # \n${charString}`,
+    COMMAND_FACTION_HELP: {
+        description: "Zeigt die Liste der Charaktere der spezifizierten Fraktion an.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: 'faction <Fraktion>',
+                args: {
+                    "Fraktion": "Die Fraktion, von der Du das Rooster sehen willst. \nDenke dran, diese Anzeige ist wie im Spiel, z.B. Rebell und nicht Rebellen"
+                }
+            }
+        ]
+    },
 
     // Help Command
     COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\nBenutze ${prefix} Hilfe <commandname> fuer Details]\n`,
     COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\n Befehl:: ${prefix}${command.help.usage}`,
+    COMMAND_HELP_HELP: {
+        description: "Zeigt die verfuegbaren Kommandos an.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';help [Kommando]',
+                args: {
+                    "Kommando": "Das Kommando, zu dem Du die Hilfe aufrufen willst."
+                }
+            }
+        ]
+    },
 
     // Info Command
     COMMAND_INFO_OUTPUT: `**### INFORMATION ###** \n**Links**\nTritt dem Botsupportserver hier bei: \n<http://swgohbot.com/server>\n>Lade den Bot mit diesem Link ein\n<http://swgohbot.com/invite>`,
+    COMMAND_INFO_HELP: {
+        description: "Zeigt nuetzliche Links in Bezug auf den Bot.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: 'info',
+                args: {}
+            }
+        ]
+    },
 
     // Mods Command
     COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
@@ -170,29 +323,101 @@ module.exports = {
     COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Quadrat:   ${square}  \n* Pfeil:    ${arrow} \n* Diamant:  ${diamond}\n`,
     COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Dreieck: ${triangle}\n* Kreis:   ${circle}\n* Kreuz:    ${cross}`,
     COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Sets ### \n${modSetString}\n### Primaer ###\n${modPrimaryString}`,
+    COMMAND_MODS_HELP: {
+        description: "Zeigt empfohlene Mods für den Charakter an.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';mods <Charakter>',
+                args: {
+                    "Charakter": "Der Charakter fuer den Du Mods anzeigen willst"
+                }
+            }
+        ]
+    },
 
     // Modsets command
     COMMAND_MODSETS_OUTPUT: `* Kritischer Treffer Chance:  2\n* Kritischer Schaden:  4\n* Abwehr:  2\n* Gesundheit:   2\n* Angriff:  4\n* Effektivität:  2\n* Tempo:    4\n* Zaehigkeit: 2`,
+    COMMAND_MODSETS_HELP: {
+        description: "Zeigt an, wieviele Mods fuer ein Set benoetigt werden.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';modsets',
+                args: {}
+            }
+        ]
+    },
 
     // Nickname Command
     COMMAND_NICKNAME_SUCCESS: `Ich habe meinen nickname geaendert.`,
     COMMAND_NICKNAME_FAILURE: `Entschuldige, aber ich habe keine Berechtigung das zu aendern.`,
+    COMMAND_NICKNAME_TOO_LONG: 'Ein Name kann maximal 32 Zeichen lang sein.',
+    COMMAND_NICKNAME_HELP: {
+        description: "Aendert den Botnamen auf dem Server.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';nickname <Name>',
+                args: {
+                    "Name": "Der Name zu dem Du den Botnamen aendern moechtest. Keinen Namen angeben um den Namen auf den Standardwert zurueckzusetzen."
+                }
+            }
+        ]
+    },
 
     // Polls Command
     COMMAND_POLL_NO_ARG: 'Es muss eine waehlbare Option oder eine Aktion angegeben werden (create/view/etc).',
-	COMMAND_POLL_ALREADY_RUNNING: "Entschuldigung, aber Sie koennen nur eine Umfrage zur gleichen Zeit durchfuehren. Bitte beenden Sie zuerst die aktuelle Umfrage.",
-	COMMAND_POLL_MISSING_QUESTION: "Sie muessen etwas angeben, über das abgestimmt werden soll.",
-	COMMAND_POLL_TOO_FEW_OPT: "Sie muessen mindestens 2 Optionen zur Wahl stellen.",
-	COMMAND_POLL_TOO_MANY_OPT: "Sie koennen max. bis zu 10 Optionen zur Wahl stellen.",
-	COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n\n${poll}`,
-	COMMAND_POLL_NO_POLL: "Es wird aktuell keine Umfrage durchgefuehrt",
-	COMMAND_POLL_FINAL: (poll) => `Endergebnisse fuer ${poll}`,
-	COMMAND_POLL_FINAL_ERROR: (question) => `Loeschen fehlgeschlagen **${question}**, bitte erneut versuchen.`,
-	COMMAND_POLL_INVALID_OPTION: "Das ist keine gueltige Option.",
-	COMMAND_POLL_SAME_OPT: (opt) => `Sie haben bereits gewaehlt **${opt}**`,
-	COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Sie haben Ihre Auswahl von **${oldOpt}** zu **${newOpt}** geaendert`,
-	COMMAND_POLL_REGISTERED: (opt) => `Wahl fuer **${opt}** gespeichert`,
-	COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` (${optCount} vote${optCount === 1 ? '' : 's'}) ${choice}\n`,
+    COMMAND_POLL_ALREADY_RUNNING: "Entschuldigung, aber Sie koennen nur eine Umfrage zur gleichen Zeit durchfuehren. Bitte beenden Sie zuerst die aktuelle Umfrage.",
+    COMMAND_POLL_MISSING_QUESTION: "Sie muessen etwas angeben, über das abgestimmt werden soll.",
+    COMMAND_POLL_TOO_FEW_OPT: "Sie muessen mindestens 2 Optionen zur Wahl stellen.",
+    COMMAND_POLL_TOO_MANY_OPT: "Sie koennen max. bis zu 10 Optionen zur Wahl stellen.",
+    COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n\n${poll}`,
+    COMMAND_POLL_NO_POLL: "Es wird aktuell keine Umfrage durchgefuehrt",
+    COMMAND_POLL_FINAL: (poll) => `Endergebnisse fuer ${poll}`,
+    COMMAND_POLL_FINAL_ERROR: (question) => `Loeschen fehlgeschlagen **${question}**, bitte erneut versuchen.`,
+    COMMAND_POLL_INVALID_OPTION: "Das ist keine gueltige Option.",
+    COMMAND_POLL_SAME_OPT: (opt) => `Sie haben bereits gewaehlt **${opt}**`,
+    COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Sie haben Ihre Auswahl von **${oldOpt}** zu **${newOpt}** geaendert`,
+    COMMAND_POLL_REGISTERED: (opt) => `Wahl fuer **${opt}** gespeichert`,
+    COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` (${optCount} vote${optCount === 1 ? '' : 's'}) ${choice}\n`,
+    COMMAND_POLL_HELP: {
+        description: "Startet Deine Umfrage mit mehreren Optionen.",
+        actions: [
+            {
+                action: "Create",
+                actionDesc: 'Erstelle eine neue Umfrage',
+                usage: ';poll create <Frage> | <Opt1> | <Opt2> | [...] | [Opt10]',
+                args: {
+                    "Frage": "Deine Frage, zu der Du Feedback erwartest.",
+                    "Opt": "Die Optionen, von denen die Teilnehmer auswaehlen koennen"
+                }
+            },
+            {
+                action: "Vote",
+                actionDesc: 'Waehle Deine Option aus',
+                usage: ';poll <Auswahl>',
+                args: {
+                    "Auswahl": "Die Option die Du waehlst."
+                }
+            },
+            {
+                action: "View",
+                actionDesc: 'Sieh Dir die aktuellen Ergebnisse an.',
+                usage: ';poll view',
+                args: {}
+            },
+            {
+                action: "Close",
+                actionDesc: 'Beende die Umfrage und zeige das finale Ergebnis.',
+                usage: ';poll close',
+                args: {}
+            }
+        ]
+    },
 
     // Raidteams Command
     COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Ungueltiger Raid, Verwendung lautet \`${prefix}${help.usage}\`\n**Beispiel:** \`${prefix}${help.example}\``,
@@ -207,20 +432,60 @@ module.exports = {
     COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `Keine Teams gefunden \`${currentPhase}\``,
     COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Zeige Teams fuer ${currentPhase}\n\n`,
     COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Charaktere: ${charList}\n`,
-    
+    COMMAND_RAIDTEAMS_HELP: {
+        description: "Zeigt Teams an, die im Raid gut funktionieren.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';raidteams <Raid> <Phase>',
+                args: {
+                    "Raid": "Der Raid, fuer welchen Du Teams anzeigen willst. (aat|pit|sith)",
+                    "Phase": "Die Phase des Raids, fuer welches Du Teams anzeigen lassen willst. (p1|p2|p3|p4|solo)"
+                }
+            }
+        ]
+    },
+
     // Randomchar Command
     COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Entschuldige, aber du brauchst eine Nummer 1-${maxChar} hier.`,
-    
+    COMMAND_RANDOMCHAR_HELP: {
+        description: "Nimmt 5 zufaellige Charaktere und erstellt ein Team.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';randomchar [AnzahlCharaktere]',
+                args: {
+                    "AnzahlCharaktere": "Die Anzahl der Charaktere, die ausgewaehlt werden sollen"
+                }
+            }
+        ]
+    },
+
     // Reload Command
     COMMAND_RELOAD_INVALID_CMD: (cmd) => `Ich kann das Kommando nicht finden: ${cmd}`,
     COMMAND_RELOAD_SUCCESS: (cmd) => `Erfolgreich neu geladen: ${cmd}`,
     COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Neuladen des Kommandos fehlgeschlagen: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
+    COMMAND_RELOAD_HELP: {
+        description: "Laedt die Kommandodatei neu, wenn sie aktualisiert oder geändert wurde.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';reload <Kommando>',
+                args: {
+                    "Kommando": "Das Kommando, welches neu geladen werden soll."
+                }
+            }
+        ]
+    },
 
     // Setconf Command
     COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anführer dieses Servers hat die Konfiguration nicht eingestellt.`,
     COMMAND_SETCONF_MISSING_OPTION: `Du musst eine Konfig-Option auswaehlen zum aendern.`,
     COMMAND_SETCONF_MISSING_VALUE: `Zum aendern dieser Option musst du einen Wert angeben.`,
-    COMMAND_SETCONF_ADMINROLE_MISSING_OPT: `Verwende \`add\` oder \`remove\`.`,
+    COMMAND_SETCONF_ADMINROLE_MISSING_OPT: 'Es muss `add` oder `remove` benutzt werden.',
     COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Du musst eine Rolle definieren ${opt}.`,
     COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Entschuldige, aber ich kann die Rolle nicht finden ${roleName}. Bitte erneut versuchen.`,
 
@@ -236,6 +501,71 @@ module.exports = {
     COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Gildenkonfiguration ${key} geaendert auf:\n\`${value}\``,
     COMMAND_SETCONF_NO_SETTINGS: `Keine Gildeneinstellungen gefunden.`,
     COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
+    COMMAND_SETCONF_HELP: {
+        description: "Zum Bearbeiten der Einstellungen des Bots.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';setconf <Schluessel> <Wert>',
+                args: {}
+            },
+            {
+                action: "adminRole",
+                actionDesc: 'Die Rolle, welche die Moeglichkeit haben soll Einstellungen des Bots zu aendern oder Events anlegen kann',
+                usage: ';setconf adminRole <hinzufuegen|entfernen> <Rolle>',
+                args: {
+                    'hinzufuegen':  'Eine Rolle zur Liste hinzufuegen',
+                    'entfernen': 'Eine Rolle von der Liste entfernen'
+                }
+            },
+            {
+                action: "enableWelcome",
+                actionDesc: 'Schaltet die Willkommensnachricht ein bzw. aus.',
+                usage: ';setconf enableWelcome <true|false>',
+                args: {}
+            },
+            {
+                action: "welcomeMessage",
+                actionDesc: 'Die Willkommensnachricht, die gesendet wird, wenn sie eingeschaltet ist (Besondere Variablen unten)',
+                usage: ';setconf welcomeMessage <Nachricht>',
+                args: {
+                    '{{user}}':  "Wird durch den Benutzernamen ersetzt.",
+                    '{{userMention}}': "Erwaehnt den neuen Benutzer."
+                }
+            },
+            {
+                action: "useEmbeds",
+                actionDesc: 'Schaltet ein bzw. aus, ob die Ausgabe einiger Kommandos eingebettet werden soll.',
+                usage: ';setconf useEmbeds <true|false>',
+                args: {}
+            },
+            {
+                action: "timezone",
+                actionDesc: 'Setzt die Zeitzone, die fuer Kommandos genutzt werden soll. Hier eine Liste der Zeitzonen https://goo.gl/Vqwe49.',
+                usage: ';setconf timezone <Zeitzone>',
+                args: {}
+            },
+            {
+                action: "announceChan",
+                actionDesc: 'Setzt den Ankuendigungskanal fuer Events etc. Stelle sicher, dass die Berechtigung zum Schreiben in dem Kanal gesetzt ist.',
+                usage: ';setconf announceChan <KanalName>',
+                args: {}
+            },
+            {
+                action: "useEventPages",
+                actionDesc: 'Zeigt Events in Seiten an.',
+                usage: ';setconf useEventPages <true|false>',
+                args: {}
+            },
+            {
+                action: "reset",
+                actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn Du Dir sicher bist)',
+                usage: ';setconf reset',
+                args: {}
+            }
+        ]
+    },
 
     // Shard times command
     COMMAND_SHARDTIMES_MISSING_USER: `Benutzer wird benoetigt, bitte "me" verwenden, einen Benutzer benennen oder eine Discord ID einfuegen.`,
@@ -250,6 +580,35 @@ module.exports = {
     COMMAND_SHARDTIMES_REM_FAIL: `Etwas lief schieb beim entfernen des Benutzers, bitte erneut probieren.`,
     COMMAND_SHARDTIMES_REM_MISSING: `Dieser Benutzer scheint hier nicht zu existieren.`,
     COMMAND_SHARDTIMES_SHARD_HEADER: `Splitterauszahlung in:`,
+    COMMAND_SHARDTIMES_HELP: {
+        description: "Zeigt die Payout-Zeiten von allen registrierten Benutzern an.",
+        actions: [
+            {
+                action: "Add",
+                actionDesc: 'Benutzer zum Splitter-Tracker hinzufuegen',
+                usage: ';shardtimes add <Benutzer> <Zeitzone> [Emoji]',
+                args: {
+                    "Benutzer": "Der Benutzer, der hinzugefuegt wird. (me | userID | mention)",
+                    "Zeitzone": "Die Zeitzone, die fuer Dich gilt.",
+                    "Emoji": "OPTIONAL: Ein Emoji, das neben dem Namen angezeigt wird."
+                }
+            },
+            {
+                action: "Remove",
+                actionDesc: 'Benutzer vom Splitter-Tracker entfernen',
+                usage: ';shardtimes remove <Benutzer>',
+                args: {
+                    "Benutzer": "Der Benutzer, der entfernt werden soll. (me | userID | mention)"
+                }
+            },
+            {
+                action: "View",
+                actionDesc: 'Zeigt alle Zeiten fuer Dich und Deiner Splitter-Gefaehrten an.',
+                usage: ';shardtimes view',
+                args: {}
+            }
+        ]
+    },
 
     // Ships Command
     COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Benoetigt Charakter oder Schiff. Der Befehl lautet: \`${prefix}${usage}\``,
@@ -260,28 +619,91 @@ module.exports = {
     COMMAND_SHIPS_ABILITIES: (abilities) => `**Faehigkeitstyp:** ${abilities.type}   **Faehigkeitsabklingzeit:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
     COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * Faehigkeiten*\n`,
     COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nFaehigkeitstyp: ${abilities.type}   Faehigkeitsabklingzeit: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
-    
+    COMMAND_SHIPS_HELP: {
+        description: "Zeigt Infos zum ausgewaehlten Schiff.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: 'ship <Schiff|Pilot>',
+                args: {
+                    "Schiff|Pilot": "Das Schiff oder der Pilot zu dem Informationen angezeigt werden sollen."
+                }
+            }
+        ]
+    },
+
     // Showconf Command
     COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `Dies ist die aktuelle Konfiguration für ${serverName}: \`\`\`${configKeys}\`\`\``,
+    COMMAND_SHOWCONF_HELP: {
+        description: "Zeigt die aktuelle Konfiguration fuer den Server an.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';showconf',
+                args: {}
+            }
+        ]
+    },
 
-	// Stats Command
+    // Stats Command
     COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= Statisken (${shardID}) =\n
 • Speicherauslastung  :: ${memUsage} MB
 • CPU Auslastung      :: ${cpuLoad}%
 • Uptime              :: ${uptime}
-• Anwender      	  :: ${users}
-• Server    		  :: ${servers}
-• Kanaele   		  :: ${channels}
-• Quelle     		  :: https://github.com/jmiln/SWGoHBot`,
+• Anwender            :: ${users}
+• Server              :: ${servers}
+• Kanaele             :: ${channels}
+• Quelle               :: https://github.com/jmiln/SWGoHBot`,
+    COMMAND_STATS_HELP: {
+        description: "Zeigt die Statistiken des Bots an.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';stats',
+                args: {}
+            }
+        ]
+    },
 
     COMMAND_TIME_CURRENT: (time, zone) => `Die aktuelle Uhrzeit ist: ${time}} in der Zeitzone ${zone}`,
     COMMAND_TIME_INVALID_ZONE: (time, zone) => `Falsche Zeitzone, hier ist die Zeit Deiner Gilde ${time} in der Zeitzone ${zone}`,
     COMMAND_TIME_NO_ZONE: (time) => `Die aktuelle Uhrzeit ist: ${time} UTC Zeit`,
     COMMAND_TIME_WITH_ZONE: (time, zone) => `Die aktuelle Uhrzeit ist: ${time} in der Zeitzone ${zone}`,
+    COMMAND_TIME_HELP: {
+        description: "Pruefe die fuer die Gilde eingestellte Zeitzone.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';time [Zeitzone]',
+                args: {
+                    "Zeitzone": "OPTIONAL wenn Du sehen moechtest, wie spaet es woanders ist."
+                }
+            }
+        ]
+    },
 
     COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `${arg} ist kein gueltiges Argument. Probiere eines von diesen: ${usableArgs}`,
     COMMAND_UPDATECHAR_NEED_CHAR: `Es muss ein Charakter angegeben werden, um Ihn zu aktualisieren.`,
-    COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Deine Suche '${charName}' ergab keine Treffer. Bitte erneut versuchen.`
+    COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Die Suche nach '${charName}' ergab keine Treffer. Bitte erneut versuchen.`,
+    COMMAND_UPDATECHAR_HELP: {
+        description: "Aktualisiere die Infos zu einem spezifizierten Charakter.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';updatechar [Gear|Info|Mods] [Charakter]',
+                args: {
+                    "Gear": "Aktualisiere die Infos zur Gear eines Charakters.",
+                    "Info": "Aktualisiere die Infos zu einem Charakter (Link zum Bild, Faehigkeiten etc.)",
+                    "Mods": "Aktualisiere die Mods von crouchingrancor.com"
+                }
+            }
+        ]
+    }
 };
 
 

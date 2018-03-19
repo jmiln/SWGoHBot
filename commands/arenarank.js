@@ -9,8 +9,6 @@ class Arenarank extends Command {
         super(client, {
             name: "arenarank",
             category: 'Star Wars',
-            description: 'Shows the (approximate) highest rank you can get if you win every arena battle.',
-            usage: 'arenarank [currentRank]',
             aliases: ['arena']
         });
     }

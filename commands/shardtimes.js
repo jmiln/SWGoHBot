@@ -32,16 +32,7 @@ class Shardtimes extends Command {
             name: 'shardtimes',
             aliases: ['shard', 'payout'],
             guildOnly: true,
-            category: 'Misc',
-            description: 'Lists the time til payout of anyone registered.',
-            usage: `shardtimes add <me|userID|mention> <timezone> [flag/emoji]
-;shardtimes remove <me|userID|mention>
-;shardtimes [view]`,
-            example: `;shardtimes`,
-            extended: `\`\`\`asciidoc
-add     - Add a user to the list of names
-remove  - Remove a user from the list
-view    - View the list. Also works with no arg.\`\`\``
+            category: 'Misc'
         });
     }
 
