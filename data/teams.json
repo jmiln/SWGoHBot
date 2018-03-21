@@ -224,8 +224,8 @@
         }
     },
     {
-        "name": "The Sith Trimutive",
-        "aliases": ["sith","trimutive"],
+        "name": "The Sith Triumvirate",
+        "aliases": ["sith","triumvirate"],
         "teams": {
             "JTR & Friends [2,000,000-11,000,000]": {
                 "phase": ["Phase 1"],
