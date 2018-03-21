@@ -5,10 +5,7 @@ class Randomchar extends Command {
         super(client, {
             name: 'randomchar',
             aliases: ['rand', 'random'],
-            category: 'Star Wars',
-            description: 'Picks up to 5 random characters to form a squad.',
-            usage: 'randomchar [numberOfChars]',
-            example: `;randomchar 5`,
+            category: 'Star Wars'
         });
     }
 

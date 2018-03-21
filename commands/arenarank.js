@@ -9,8 +9,6 @@ class Arenarank extends Command {
         super(client, {
             name: "arenarank",
             category: 'Star Wars',
-            description: 'Shows the (approximate) highest rank you can get if you win every arena battle.',
-            usage: 'arenarank [currentRank]',
             aliases: ['arena']
         });
     }
@@ -30,18 +28,23 @@ class Arenarank extends Command {
 
 
         // Loop through findRank up to 5 times, breaking if it returns 1
-        const arenaBattles = [currentRank];
-        for (let battle = 0; battle < 5; battle++) {
-            let  newRank;
-            if (arenaJumps.hasOwnProperty(currentRank)) {
-                newRank = arenaJumps[arenaBattles[arenaBattles.length-1]];
-            } else {
-                newRank = Math.floor(arenaBattles[arenaBattles.length-1] * 0.85);
-            }
-            arenaBattles.push(newRank);
-            if (newRank === 1) break;
-        }
+		const arenaBattles = [currentRank];
+		for (let battle = 0; battle < 5; battle++) {
+			const  newRank = findNextRank(arenaBattles[arenaBattles.length-1]);
+			arenaBattles.push(newRank);
+			if (newRank === 1) break;
+		}
+
         return message.channel.send(message.language.COMMAND_ARENARANK_RANKLIST(currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? 's' : '', est ? '**(estimate)**' : '', arenaBattles.join(' → '))); 
+
+
+        function findNextRank(currentRank) {
+			if (arenaJumps.hasOwnProperty(currentRank)) {
+				return arenaJumps[currentRank];
+			} else {
+				return Math.floor(currentRank * 0.85);
+			}
+		}
     }    
 }
 

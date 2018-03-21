@@ -6,11 +6,8 @@ class Stats extends Command {
     constructor(client) {
         super(client, {
             name: 'stats',
-            aliases: [],
             permLevel: 3,
-            category: 'Admin',
-            description: 'Shows the bot\'s stats',
-            usage: 'stats'
+            category: 'Admin'
         });
     }
 

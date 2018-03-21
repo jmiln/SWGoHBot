@@ -4,13 +4,11 @@ class Abilities extends Command {
     constructor(client) {
         super(client, {
             name: "abilities",
-            description: "Shows the abilities for the specified character.",
+            description: "",
             category: "Star Wars",
-            usage: "abilities <characterName>",
             aliases: ['a']
         });
     }
-
 
     run(client, message, args) {
         const config = client.config;
@@ -86,7 +84,7 @@ class Abilities extends Command {
                 message.channel.send(` * ${character.name} * \n${abilityString}`, { code: 'md', split: true });
             }
         });         
-    };
+    }
 }
 
 module.exports = Abilities;

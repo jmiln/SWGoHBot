@@ -5,9 +5,7 @@ class Activites extends Command {
     constructor(client) {
         super(client, {
             name: "activities",
-            description: "Shows the daily guild activites.",
             category: "Star Wars",
-            usage: "activities [dayOfWeek]",
             aliases: ['act']
         });
     }

@@ -7,8 +7,6 @@ class Showconf extends Command {
             name: 'showconf',
             aliases: ['showconfs', 'showconfig', 'showconfigs'],
             category: 'Admin',
-            description: 'Shows the current configs for your server.',
-            usage: 'showconf',
             permLevel: 3
         });
     }
@@ -19,8 +17,8 @@ class Showconf extends Command {
         // If I or an adminHelper adds a guild ID here, pull up that instead
         if (args[0] && level >= 9) {
             let found = false;
-                if (!client.guilds.has(args[0]) && client.shard) {
-                    const names = await client.shard.broadcastEval(`
+            if (!client.guilds.has(args[0]) && client.shard) {
+                const names = await client.shard.broadcastEval(`
                     if (this.guilds.has('${args[0]}')) {
                         this.guilds.get('${args[0]}').name;
                     }
@@ -30,7 +28,7 @@ class Showconf extends Command {
                         found = true;
                         guildName = gName;
                     }
-                })
+                });
             } else {
                 guildName = client.guilds.get(guildID).name;
                 found = true;

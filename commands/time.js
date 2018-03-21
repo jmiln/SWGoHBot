@@ -6,12 +6,7 @@ class Time extends Command {
     constructor(client) {
         super(client, {
             name: 'time',
-            category: 'Misc',
-            description: 'Used to check the time with the guild\'s configured timezone',
-            usage: 'time [timezone] \n;time',
-            example: ';time US/Pacific',
-            extended: `\`\`\`asciidoc
-timezone    :: If you want a different timezone than your guild's, put it here. \`\`\``,
+            category: 'Misc'
         });
     }
 

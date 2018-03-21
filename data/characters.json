@@ -6804,7 +6804,7 @@
             "Power of Hatred": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Darth Maul gains 20% Max Health, gains Max Health equal to 10% of the damage he deals, and Potency equal to 0.3% of his Max Health. Whenever an enemy is defeated, Darth Maul gains bonuses for the rest of the encounter.",
+                "abilityDesc": "Darth Maul gains 20% Max Health, gains Max Health equal to 10% of the damage he deals, and Potency equal to 0.3% of his Max Health. Whenever an enemy is defeated, Darth Maul gains bonuses for the rest of the encounter. First Enemy: 25% Critical Chance Second Enemy: 25% Evasion Third Enemy: 25% Max Health recovery on hitting with an attack.",
                 "tier": "omega",
                 "cost": {
                     "mk3": 16,

@@ -4,13 +4,10 @@ class Changelog extends Command {
     constructor(client) {
         super(client, {
             name: "changelog",
-            description: "Adds a changelog to the db, and sends it to the changelog channel.",
             category: "Dev",
-            usage: "changelog <message>\nUse [Updated], [Fixed], [Removed], and [Added] to organize the changes.",
             permLevel: 10
         });
     }
-
 
     run(client, message) {
         let logMsg = message.content.split(' ');

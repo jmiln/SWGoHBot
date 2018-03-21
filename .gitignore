@@ -1,13 +1,7 @@
 # Directories
 /node_modules/
 /wipCommands/
-
-/data/guildSettings
-/data/guildsettings
-/data/guildEvents
-/data/guildevents
-/data/guildchars
-/data/guildChars
+/data/img/
 
 # Specific Files
 config.json
@@ -15,4 +9,5 @@ settings.json
 package-lock.json
 
 # Commands
+/commands/boom.js
 

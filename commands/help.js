@@ -5,15 +5,11 @@ class Help extends Command {
         super(client, {
             name: 'help',
             aliases: ['h'],
-            category: 'Misc',
-            description: 'Displays info about available commands.',
-            usage: 'help [command]',
-            example: `;help help`,
-            extended: `\`\`\`asciidoc
-command     :: The command you want to look up info on.
-            \`\`\``
+            category: 'Misc'
         });
     }
+
+
 
     run(client, message, args, level) {
         const config = client.config;
@@ -21,7 +17,7 @@ command     :: The command you want to look up info on.
         const help = {};
 
         if (!args[0]) { // Show the list of commands
-            const commandList = client.commands.filter(c => c.conf.permLevel <= level);
+            const commandList = client.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
             const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
 
             let output = message.language.COMMAND_HELP_HEADER(config.prefix);
@@ -30,9 +26,9 @@ command     :: The command you want to look up info on.
                 const cat = c.help.category.toProperCase();
                 // If the categry isn't there, then make it
                 if (!help[cat]) {
-                    help[cat] = `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
+                    help[cat] = `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language[`COMMAND_${c.help.name.toUpperCase()}_HELP`].description}\n`;
                 } else {
-                    help[cat] += `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
+                    help[cat] += `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language[`COMMAND_${c.help.name.toUpperCase()}_HELP`].description}\n`;
                 }
             });
             const sortedCat = Object.keys(help).sort((p, c) => p > c ? 1 : -1);
@@ -41,11 +37,16 @@ command     :: The command you want to look up info on.
             });
             message.channel.send(output, { code: 'asciidoc', split: true });
         } else { // Show the help for a specific command
-            let command = args[0];
-            if (client.commands.has(command)) {
-                command = client.commands.get(command);
-                message.channel.send(message.language.COMMAND_HELP_OUTPUT(command, config.prefix), { code: 'asciidoc' });
+            let command;
+            if (client.commands.has(args[0])) {
+                command = client.commands.get(args[0]);
+            } else if (client.aliases.has(args[0])) {
+                command = client.commands.get(client.aliases.get(args[0]));
+            } else {
+                return message.channel.send(message.language.COMMAND_RELOAD_INVALID_CMD(args[0]));
             }
+            
+            client.helpOut(message, command);
         }
     }
 }

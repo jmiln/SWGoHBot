@@ -52,7 +52,12 @@ module.exports = async (client, message) => {
 
     // If the command exists, **AND** the user has permission, run it.
     if (cmd && level >= cmd.conf.permLevel) {
-        cmd.run(client, message, args, level);
+        // If they're just looking for the help, don't bother going through the command
+        if (args.length === 1 && args[0].toLowerCase() === 'help') {
+            client.helpOut(message, cmd);
+        } else {
+            cmd.run(client, message, args, level);
+        }
         if (client.config.logs.logComs) {
             client.commandLogs.create({
                 id: `${cmd.help.name}-${message.author.id}-${message.id}`,

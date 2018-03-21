@@ -5,17 +5,9 @@ class Faction extends Command {
         super(client, {
             name: 'faction',
             aliases: ['factions'],
-            category: 'Star Wars',
-            description: 'Shows the list of characters in the specified faction.',
-            usage: 'faction <faction>',
-            example: `;faction rebel`,
-            extended: `\`\`\`asciidoc
-faction     :: The faction you want to see the roster of. 
-               Keep in mind, this is as shown in game, so it's rebel, not rebels
-            \`\`\``
+            category: 'Star Wars'
         });
     }
-
 
     run(client, message, args) {
         const config = client.config;

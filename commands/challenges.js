@@ -5,8 +5,6 @@ class Challenges extends Command {
         super(client, {
             name: 'challenges',
             category: 'Star Wars',
-            description: 'Shows the daily guild challenges.',
-            usage: 'challenges <dayOfWeek>',
             aliases: ['challenge', 'chal']
         });
     }

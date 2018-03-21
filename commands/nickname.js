@@ -7,13 +7,7 @@ class Nickname extends Command {
             aliases: ['nick'],
             guildOnly: true,
             permLevel: 3,
-            category: 'Admin',
-            description: 'Changes the bot\'s nickname on the server',
-            usage: 'nickname <name>',
-            example: `;nickname swgohBot`,
-            extended: `\`\`\`asciidoc
-name    :: The name you're wanting to change it to. Leave it blank to reset it to default.
-            \`\`\``
+            category: 'Admin'
         });
     }
 
@@ -21,7 +15,10 @@ name    :: The name you're wanting to change it to. Leave it blank to reset it t
         try {
             if (message.channel.permissionsFor(message.guild.me).has(["MANAGE_NICKNAMES"])) {
                 if (args.length > 0) {
-                    const  name = String(args.join(' '));
+                    const name = String(args.join(' '));
+                    if (name.length > 32) {
+                        return message.channel.send(message.language.COMMAND_NICKNAME_TOO_LONG);
+                    }
                     message.guild.member(client.user).setNickname(name);
                 } else {
                     message.guild.member(client.user).setNickname("");
@@ -31,7 +28,7 @@ name    :: The name you're wanting to change it to. Leave it blank to reset it t
                 message.channel.send(message.language.COMMAND_NICKNAME_FAILURE);
             }
         } catch (e) {
-            client.log('Broke', 'I broke while trying to set a nickname');
+            client.log('Broke', 'I broke while trying to set a nickname\n' + e);
         }
     }
 }

@@ -11,24 +11,7 @@ class Event extends Command {
             guildOnly: true,
             name: 'event',
             category: 'Misc',
-            description: 'Used to make or check an event.',
-            usage: `event [create] [eventName] [eventDay] [eventTime] [eventMessage]
-        ;event [view|delete|trigger] [eventName]
-        ;event help`,
-            extended: `\`\`\`asciidoc
-create :: Create a new event listing.
-    --repeat|-r  :: Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.
-    --repeatDay  :: Lets you set it to repeat on set days with the format of 0,0,0,0,0. 
-    --channel|-c :: Lets you set a specific channel for the event to announce on.
-    --countdown  :: Adds a countdown to when your event will trigger - yes is the only valid parameter
-view   :: View your current event listings.
-    --min|-m     :: Lets you view the events without the event message
-    --page|-p    :: Lets you select a page of events to view
-delete :: Delete an event.
-trigger:: Trigger an event in the specified channel, leaves the event alone.
-help   :: Shows this message.\`\`\``,
-            aliases: ['events'],
-            example: 'event create FirstEvent 7/2/2017 13:56 This is my event message'
+            aliases: ['events']
         });
     }
 
@@ -274,12 +257,12 @@ help   :: Shows this message.\`\`\``,
                     // Grab the total # of events for later use
                     const eventCount = sortedEvents.length;
 
-
+                    let PAGE_SELECTED = 1;
+                    const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
                     if (guildConf['useEventPages']) {
-                        const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
                         if (minArgs.pages < 1) minArgs.pages = 1;
                         if (minArgs.pages > PAGES_NEEDED) minArgs.pages = PAGES_NEEDED;
-                        const PAGE_SELECTED = minArgs.pages;
+                        PAGE_SELECTED = minArgs.pages;
 
                         // If they have pages enabled, remove everything that isn't within the selected page
                         if (PAGES_NEEDED > 1) {
@@ -323,17 +306,17 @@ help   :: Shows this message.\`\`\``,
                                             return message.channel.send(evMsg, {split: true});
                                         }
                                     }
-                                })
+                                });
                             } else {
-                                    if (guildConf['useEventPages']) {
-                                        return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
-                                    } else {
-                                        return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, evArray[0]), {split: true});
-                                    }
+                                if (guildConf['useEventPages']) {
+                                    return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
+                                } else {
+                                    return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, evArray[0]), {split: true});
+                                }
                             }
                         }
                     } catch (e) {
-                        client.log('Event View Broke!', eventKeys);
+                        client.log('Event View Broke!', evArray);
                     }
                 }
                 break;
@@ -383,7 +366,7 @@ help   :: Shows this message.\`\`\``,
                 break;
             }
             case "help": {
-                return message.channel.send(message.language.COMMAND_EXTENDED_HELP(this));
+                return message.channel.send(client.helpOut(message.language, this));
             }
         }
 
