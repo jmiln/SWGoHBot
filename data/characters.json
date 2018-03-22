@@ -26836,6 +26836,19 @@
                 "triangle": "Offense/ Protection",
                 "circle": "Health",
                 "cross": "Offense/ Protection"
+            },
+            "Pro's BOB": {
+                "sets": [
+                    "Defense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Protection",
+                "circle": "Health",
+                "cross": "Offense/ Protection"
             }
         },
         "gear": {
