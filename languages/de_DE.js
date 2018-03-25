@@ -284,7 +284,7 @@ module.exports = {
     },
 
     // Help Command
-    COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\nBenutze ${prefix} Hilfe <commandname> fuer Details]\n`,
+    COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\n[Benutze ${prefix}Help <Kommandoname> fuer Details]\n`,
     COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\n Befehl:: ${prefix}${command.help.usage}`,
     COMMAND_HELP_HELP: {
         description: "Zeigt die verfuegbaren Kommandos an.",

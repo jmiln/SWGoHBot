@@ -1508,7 +1508,8 @@
         "side": "light",
         "factions": [
             "Rebel",
-            "Tank"
+            "Tank",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
@@ -2187,7 +2188,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Rebel"
+            "Rebel",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
@@ -2645,7 +2647,8 @@
         "side": "light",
         "factions": [
             "Rebel",
-            "Support"
+            "Support",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
@@ -3545,7 +3548,8 @@
         "side": "light",
         "factions": [
             "Rebel",
-            "Support"
+            "Support",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
@@ -4413,7 +4417,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Rebel"
+            "Rebel",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
@@ -15169,7 +15174,8 @@
         "side": "light",
         "factions": [
             "attacker",
-            "rebel"
+            "rebel",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
@@ -15357,7 +15363,8 @@
         "factions": [
             "tank",
             "droid",
-            "rebel"
+            "rebel",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
@@ -18237,7 +18244,8 @@
         "side": "light",
         "factions": [
             "attacker",
-            "rebel"
+            "rebel",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
@@ -20824,7 +20832,8 @@
         "side": "light",
         "factions": [
             "tank",
-            "rebel"
+            "rebel",
+            "Rogue One"
         ],
         "mods": {
             "Arena": {
