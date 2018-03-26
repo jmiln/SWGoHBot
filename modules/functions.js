@@ -454,7 +454,7 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format("h [hr], m [min]");
+        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format(`h [${client.languages[guildConf.language].TIMES.HOUR.SHORT_SING}], m [${client.languages[guildConf.language].TIMES.MINUTE.SHORT_SING}]`);
         var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(eventName, timeToGo);
     
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {

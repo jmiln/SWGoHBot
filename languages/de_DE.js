@@ -1,31 +1,31 @@
 module.exports = {
     DAYSOFWEEK: {
         SUNDAY: {
-            SHORT: 'so',
+            SHORT: 'So',
             LONG: 'Sonntag'
         },
         MONDAY: {
-            SHORT: 'mo',
+            SHORT: 'Mo',
             LONG: 'Montag'
         },
         TUESDAY: {
-            SHORT: 'di',
+            SHORT: 'Di',
             LONG: 'Dienstag'
         },
         WEDNESDAY: {
-            SHORT: 'mi',
+            SHORT: 'Mi',
             LONG: 'Mittwoch'
         },
         THURSDAY: {
-            SHORT: 'do',
+            SHORT: 'Do',
             LONG: 'Donnerstag'
         },
         FRIDAY: {
-            SHORT: 'fr',
+            SHORT: 'Fr',
             LONG: 'Freitag'
         },
         SATURDAY: {
-            SHORT: 'sa',
+            SHORT: 'Sa',
             LONG: 'Samstag'
         }
     },
@@ -34,28 +34,28 @@ module.exports = {
         DAY: {
             PLURAL: 'Tage',
             SING: 'Tag',
-            SHORT_PLURAL: 'tge',
-            SHORT_SING: 't'
+            SHORT_PLURAL: 'T',
+            SHORT_SING: 'T'
         },
         HOUR: {
             PLURAL: 'Stunden',
             SING: 'Stunde',
-            SHORT_PLURAL: 'Stdn',
+            SHORT_PLURAL: 'Std',
             SHORT_SING: 'Std'
         },
         MINUTE: {
             PLURAL: 'Minuten',
             SING: 'Minute',
-            SHORT_PLURAL: 'mins',
-            SHORT_SING: 'min'
+            SHORT_PLURAL: 'Min',
+            SHORT_SING: 'Min'
         },
         SECOND: {
             PLURAL: 'Sekunden',
             SING: 'Sekunde',
-            SHORT_PLURAL: 'sek',
-            SHORT_SING: 'sek'
+            SHORT_PLURAL: 'Sek',
+            SHORT_SING: 'Sek'
         }
-    },
+    },	
 
     // Base swgohBot.js file
     BASE_LAST_EVENT_NOTIFICATOIN: `\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.`,
