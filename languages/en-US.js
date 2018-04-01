@@ -61,6 +61,9 @@ module.exports = {
     BASE_LAST_EVENT_NOTIFICATOIN: `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`,
     BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
 
+    // Base swgohAPI
+    BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register @${client.users.get(userID).tag} <allycode>\``,
+
     // Generic (Not tied to a command)
     COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
     COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
@@ -284,6 +287,30 @@ module.exports = {
         ]
     },
 
+    // GuildSearch Command
+    COMMAND_GUILDSEARCH_BAD_STAR: 'You can only choose a star level from 1-7',
+    COMMAND_GUILDSEARCH_MISSING_CHAR: 'You need to enter a character to check for',
+    COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `I did not find any results for ${character}`,
+    COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+    COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num) => `${tier} Star (${num})`,
+    COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `No one in your guild seems to have this character at ${starLvl} stars.`,
+    COMMAND_GUILDSEARCH_NO_CHAR: `No one in your guild seems to have this character.`,
+    COMMAND_GUILDSEARCH_HELP: {
+        description: "Shows the star level of the selected character for everyone in the guild.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';guildsearch [user] <character> [starLvl]',
+                args: {
+                    "user": "The person you're adding. (me | userID | mention)",
+                    "character": "The character you want to search for.",
+                    "starLvl": "Select the star level you want to see."
+                }
+            }
+        ]
+    },
+
     // Help Command
     COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
     COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
@@ -302,7 +329,15 @@ module.exports = {
     },
 
     // Info Command
-    COMMAND_INFO_OUTPUT: `**### INFORMATION ###** \n**Links**\nJoin the bot support server here \n<http://swgohbot.com/server>\nInvite the bot with this link\n<http://swgohbot.com/invite>`,
+    COMMAND_INFO_OUTPUT: (guilds) => content = {
+        "header": 'INFORMATION',
+        "desc": ` \nCurrently running on **${guilds}** servers \n`,
+        "links": {
+            "Invite me": "Invite the bot [here](http://swgohbot.com/invite)",
+            "Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is [here](https://discord.gg/FfwGvhr)",
+            "Support the Bot": "The bot's code is on github [here](https://github.com/jmiln/SWGoHBot), and is open to contributions. I also have a Patreon [here](https://www.patreon.com/swgohbot) if you're interested."
+        }
+    },
     COMMAND_INFO_HELP: {
         description: "Shows useful links pertaining to the bot.",
         actions: [
@@ -463,6 +498,29 @@ module.exports = {
             }
         ]
     },
+
+    // Register Command
+    COMMAND_REGISTER_MISSING_ARGS: 'You need to supply a userID (mention or ID), and an ally code',
+    COMMAND_REGISTER_MISSING_ALLY: 'You need to enter an ally code to link your account to.',
+    COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
+    COMMAND_REGISTER_PLEASE_WAIT: 'Please wait while I sync your data.',
+    COMMAND_REGISTER_SUCCESS: 'Registration successful!',
+    COMMAND_REGISTER_HELP: {
+        description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';register <user> <allyCode>',
+                args: {
+                    "user": "The person you're adding. (me | userID | mention)",
+                    "allyCode": "Your ally code from in-game."
+                }
+            }
+        ]
+    },
+
+
     
     // Reload Command
     COMMAND_RELOAD_INVALID_CMD: (cmd) => `I cannot find the command: ${cmd}`,
@@ -668,6 +726,7 @@ module.exports = {
         ]
     },
 
+    // Time Command
     COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time} in ${zone} time`,
     COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time ${time} in ${zone} time`,
     COMMAND_TIME_NO_ZONE: (time) => `Current time is: ${time} UTC time`,
@@ -686,6 +745,7 @@ module.exports = {
         ]
     },
 
+    // Updatechar Command
     COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Sorry, but ${arg} isn't a valid argument. Try one of these: ${usableArgs}`,
     COMMAND_UPDATECHAR_NEED_CHAR: `You need to specify a character to update.`,
     COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Sorry, but your search for '${charName}' did not find any results. Please try again.`,
@@ -700,6 +760,23 @@ module.exports = {
                     "gear": "Update the gear for the character.",
                     "info": "Update the info for the character (Image link, abilities etc.)",
                     "mods": "Update the mods from crouchingrancor.com"
+                }
+            }
+        ]
+    },
+
+    // Zetas Command
+    COMMAND_ZETA_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register @${client.users.get(userID).tag} <allycode>\``,
+    COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${'-'.repeat(30)}\``,
+    COMMAND_ZETAS_HELP: {
+        description: "Show the abilities that you have put zetas on.",
+        actions: [
+            {
+                action: "",
+                actionDesc: '',
+                usage: ';zeta [user]',
+                args: {
+                    "user": "The person you're adding. (me | userID | mention)"
                 }
             }
         ]

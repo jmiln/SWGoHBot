@@ -18,7 +18,7 @@ class Stats extends Command {
         let channels = 0;
 
 
-        if (client.shard && client.shard.count > 1) {
+        if (client.shard && client.shard.count > 0) {
             await client.shard.fetchClientValues('guilds.size')
                 .then(results => {
                     guilds = results.reduce((prev, val) => prev + val, 0).toLocaleString();

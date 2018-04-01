@@ -56,6 +56,13 @@ module.exports = (client) => {
             threshold: .1,
             distance: 4
         };
+        // Make it so it only returns the one if it's exact
+        for (let ix = 0; ix < charList.length; ix++) {
+            if (charList[ix].name.toLowerCase() === searchName.toLowerCase()) {
+                return [charList[ix]];
+            }
+        }
+        // If it's not exact, send back the big mess
         const fuse = new Fuse(charList, options);
         let chars = fuse.search(searchName);
         // If there's a ton of em, only return the first 4
@@ -64,6 +71,8 @@ module.exports = (client) => {
         }
         return chars;
     };
+
+
 
     // This find one character that matches the search, and returns it
     client.findCharByName = (searchName, charList) => {

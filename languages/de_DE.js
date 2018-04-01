@@ -301,7 +301,7 @@ module.exports = {
     },
 
     // Info Command
-    COMMAND_INFO_OUTPUT: `**### INFORMATION ###** \n**Links**\nTritt dem Botsupportserver hier bei: \n<http://swgohbot.com/server>\n>Lade den Bot mit diesem Link ein\n<http://swgohbot.com/invite>`,
+    COMMAND_INFO_OUTPUT: (guilds) => `**### INFORMATION ###** \n**Links**\nTritt dem Botsupportserver hier bei: \n<http://swgohbot.com/server>\n>Lade den Bot mit diesem Link ein\n<http://swgohbot.com/invite>`,
     COMMAND_INFO_HELP: {
         description: "Zeigt nuetzliche Links in Bezug auf den Bot.",
         actions: [

@@ -1,4 +1,5 @@
 const Command = require('../base/Command');
+const {inspect} = require('util')
 
 class Reload extends Command {
     constructor(client) {
@@ -22,7 +23,7 @@ class Reload extends Command {
         } else {
             message.channel.send(`Reloading: ${command}`)
                 .then(async m => {
-                    if (client.shard) {
+                    if (client.shard.count > 0) {
                         await client.shard.broadcastEval(`
                             this.reload('${command}');
                         `)
