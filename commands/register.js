@@ -12,19 +12,19 @@ class Register extends Command {
     async run(client, message, [userID, allyCode, ...args], level) { // eslint-disable-line no-unused-vars
 
         if (!userID) {
-            return message.channel.send(message.language.COMMAND_REGISTER_MISSING_ARGS);
+            return message.channel.send(message.language.get('COMMAND_REGISTER_MISSING_ARGS'));
         } else {
             if (userID === 'me') {
                 userID = message.author.id;
-            } else if(userID.match(/\d{17,18}/)) {
-				userID = userID.replace(/[^\d]*/g, '');
-				// If they are trying to add someone else and they don't have the right perms, stop em
-				if (userID !== message.author.id && level < 3) {
-					return message.channel.send(message.language.COMMAND_SHARDTIMES_MISSING_ROLE);
-				}
+            } else if (userID.match(/\d{17,18}/)) {
+                userID = userID.replace(/[^\d]*/g, '');
+                // If they are trying to add someone else and they don't have the right perms, stop em
+                if (userID !== message.author.id && level < 3) {
+                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
+                }
             } else {
                 // Bad name, grumblin time
-                return message.channel.send(message.language.COMMAND_SHARDTIMES_INVALID_USER);
+                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_USER'));
             }
         }
         const exists = await client.allyCodes.findOne({where: {id: userID}})
@@ -32,13 +32,13 @@ class Register extends Command {
             .then(isUnique => isUnique);
 
         if (!allyCode) {
-            return message.channel.send(message.language.COMMAND_REGISTER_MISSING_ALLY);
+            return message.channel.send(message.language.get('COMMAND_REGISTER_MISSING_ALLY'));
         } else {
-            if(allyCode.replace(/[^\d]*/g, '').match(/\d{9}/)) {
+            if (allyCode.replace(/[^\d]*/g, '').match(/\d{9}/)) {
                 allyCode = allyCode.replace(/[^\d]*/g, '');
             } else {
                 // Bad code, grumblin time
-                return message.channel.send(message.language.COMMAND_REGISTER_INVALID_ALLY(allyCode));
+                return message.channel.send(message.language.get('COMMAND_REGISTER_INVALID_ALLY', allyCode));
             }
         }
 
@@ -51,12 +51,12 @@ class Register extends Command {
             await client.allyCodes.create({
                 id: userID,
                 allyCode: allyCode
-            })
+            });
         }
         // Sync up their swgoh account
-        const msg = message.channel.send(message.language.COMMAND_REGISTER_PLEASE_WAIT).then(async msg => {
+        message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
             await client.swgohAPI.updatePlayer(allyCode).then(() => {
-                msg.edit(message.language.COMMAND_REGISTER_SUCCESS);
+                msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS'));
             });
         });
     }

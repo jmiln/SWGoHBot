@@ -18,9 +18,12 @@ class Zetas extends Command {
             userID = userID.replace(/[^\d]*/g, '');
         }
 
-        let ally = await client.allyCodes.findOne({where: {id: userID}});
+        const ally = await client.allyCodes.findOne({where: {id: userID}});
+        if (!client.users.get(userID)) {
+            return message.channel.send(message.language.get('COMMAND_ZETA_NO_USER'));
+        }
         if (!ally) {
-            return message.channel.send(message.language.BASE_SWGOH_NOT_REG(client.users.get(userID).tag));
+            return message.channel.send(message.language.get('BASE_SWGOH_NOT_REG', client.users.get(userID).tag));
         }       
         const allyCode = ally.dataValues.allyCode;
 
@@ -74,18 +77,30 @@ class Zetas extends Command {
                         name: `(${zetas[character].length}) ${character}`,
                         value: zetas[character].join('\n') + '\n`' + '-'.repeat(30) + '`',
                         inline: true
-                    })
+                    });
                 });
                 const auth = message.guild.members.get(userID);
+                const author = {name: `${name}'s Zetas`};
+                if (auth) {
+                    author.icon_url = auth.user.avatarURL;
+                } else {
+                    // client.fetchUser(userID).then(u => {
+                    //     author.name = `${client.fetchUser(userID).name}'s Zetas`;'`
+                    // })
+                    author.name = `${client.users.get(userID).username}'s Zetas`;
+                }
+                let desc;
+                if (fields.length === 0) {
+                    desc = message.language.get('COMMAND_ZETA_NO_ZETAS');
+                } else {
+                    desc = message.language.get('COMMAND_ZETA_OUT_DESC');
+                }
                 message.channel.send({embed: {
                     color: 0x000000,
-                    author: {
-                        name: `${name}'s Zetas`,
-                        icon_url: auth.user.avatarURL
-                    },
-                    description: message.language.COMMAND_ZETA_OUT_DESC, 
+                    author: author,
+                    description: desc, 
                     fields: fields
-                }})
+                }});
             }
         });
 

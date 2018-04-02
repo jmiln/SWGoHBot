@@ -27,13 +27,13 @@ class Mods extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.COMMAND_MODS_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_MODS_NEED_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
         }
 
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
         if (chars.length <= 0) {
-            return message.channel.send(message.language.COMMAND_MODS_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);        
+            return message.channel.send(message.language.get('COMMAND_MODS_INVALID_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);        
         }
 
         chars.forEach(character => {
@@ -43,12 +43,12 @@ class Mods extends Command {
                     const mods = character.mods[modSet];      
                     const modSetString = "* " + mods.sets.join("\n* ");                
                     
-                    let modPrimaryString = message.language.COMMAND_MODS_EMBED_STRING1(mods.square, mods.arrow, mods.diamond);
-                    modPrimaryString += message.language.COMMAND_MODS_EMBED_STRING2(mods.triangle, mods.circle, mods.cross);
+                    let modPrimaryString = message.language.get('COMMAND_MODS_EMBED_STRING1', mods.square, mods.arrow, mods.diamond);
+                    modPrimaryString += message.language.get('COMMAND_MODS_EMBED_STRING2', mods.triangle, mods.circle, mods.cross);
 
                     fields.push({
                         "name": modSet,
-                        "value": message.language.COMMAND_MODS_EMBED_OUTPUT(modSetString, modPrimaryString),
+                        "value": message.language.get('COMMAND_MODS_EMBED_OUTPUT', modSetString, modPrimaryString),
                         "inline": true
                     });
                 }
@@ -72,10 +72,10 @@ class Mods extends Command {
                     const mods = character.mods[modSet];
                     const modSetString = "* " + mods.sets.join("\n* ");                
 
-                    let modPrimaryString = message.language.COMMAND_MODS_CODE_STRING1(mods.square, mods.arrow, mods.diamond);
-                    modPrimaryString += message.language.COMMAND_MODS_CODE_STRING2(mods.triangle, mods.circle, mods.cross);
+                    let modPrimaryString = message.language.get('COMMAND_MODS_CODE_STRING1', mods.square, mods.arrow, mods.diamond);
+                    modPrimaryString += message.language.get('COMMAND_MODS_CODE_STRING2', mods.triangle, mods.circle, mods.cross);
 
-                    return message.channel.send(message.language.COMMAND_MODS_CODE_OUTPUT(character.name, modSetString, modPrimaryString), { code: 'md', split: true });
+                    return message.channel.send(message.language.get('COMMAND_MODS_CODE_OUTPUT', character.name, modSetString, modPrimaryString), { code: 'md', split: true });
                 }
             } 
         });

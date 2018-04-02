@@ -40,7 +40,7 @@ class Stats extends Command {
             channels = client.channels.size.toLocaleString();
         }
 
-        await message.channel.send(message.language.COMMAND_STATS_OUTPUT((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
+        await message.channel.send(message.language.get('COMMAND_STATS_OUTPUT', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
             Math.round(require("os").loadavg()[0] * 10000) / 100,
             duration,
             users,

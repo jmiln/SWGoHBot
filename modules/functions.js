@@ -312,12 +312,12 @@ module.exports = (client) => {
      */
     client.helpOut = (message, command) => {
         const language = message.language;
-        const help = language[`COMMAND_${command.help.name.toUpperCase()}_HELP`];
+        const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
         const actions = help.actions.slice();
         let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(', ') : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
 
         // Stick the extra help bit in
-        actions.push(language.BASE_COMMAND_HELP_HELP(command.help.name.toLowerCase()));
+        actions.push(language.get('BASE_COMMAND_HELP_HELP', command.help.name.toLowerCase()));
         const actionArr = [];
 
         actions.forEach(action => {
@@ -340,7 +340,7 @@ module.exports = (client) => {
         message.channel.send({embed: {
             "color": 0x605afc,
             "author": {
-                "name": language.BASE_COMMAND_HELP_HEADER(command.help.name)
+                "name": language.get('BASE_COMMAND_HELP_HEADER', command.help.name)
             },
             "description": headerString,
             "fields": actionArr
@@ -370,6 +370,16 @@ module.exports = (client) => {
         });
         return messages;
     };
+
+    /*
+     * CODE BLOCK MAKER
+     * Makes a codeblock with the specified lang for highlighting.
+     */
+    client.codeBlock = (lang, str) => {
+        return `\`\`\`${lang}\n${str}\`\`\``;
+    };
+
+
 
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {

@@ -69,7 +69,7 @@ class Shardtimes extends Command {
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
             if (!userID) {
                 // Send the message with all the times (Closest first)
-                return message.channel.send(message.language.COMMAND_SHARDTIMES_MISSING_USER);
+                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_USER'));
             } else { 
                 if (userID === 'me') {
                     userID = message.author.id;
@@ -77,20 +77,20 @@ class Shardtimes extends Command {
                     userID = userID.replace(/[^\d]*/g, '');
                     // If they are trying to add someone else and they don't have the right perms, stop em
                     if (userID !== message.author.id && level < 3) {
-                        return message.channel.send(message.language.COMMAND_SHARDTIMES_MISSING_ROLE);
+                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
                     }
                 } else {
                     // Bad name, grumblin time
-                    return message.channel.send(message.language.COMMAND_SHARDTIMES_INVALID_USER);
+                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_USER'));
                 }
                 
                 if (!timezone) {
                     // Grumble that they need a timezone, then give the wiki list
-                    return message.channel.send(message.language.COMMAND_SHARDTIMES_MISSING_TIMEZONE);
+                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_TIMEZONE'));
                 } else {
                     if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
                         // Grumble that it's an invalid tz
-                        return message.channel.send(message.language.COMMAND_SHARDTIMES_INVALID_TIMEZONE);
+                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_TIMEZONE'));
                     } 
                 }
                 if (flag.length > 0) {
@@ -108,10 +108,10 @@ class Shardtimes extends Command {
                 };
                 await client.shardTimes.update({times: shardTimes}, {where: {id: shardID}})
                     .then(() => {
-                        return message.channel.send(message.language.COMMAND_SHARDTIMES_USER_ADDED);
+                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_USER_ADDED'));
                     })
                     .catch(() => {
-                        return message.channel.send(message.language.COMMAND_SHARDTIMES_USER_NOT_ADDED);
+                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_USER_NOT_ADDED'));
                     });
             }
         } else if (action === 'remove' || action === 'rem') {
@@ -122,23 +122,23 @@ class Shardtimes extends Command {
                 userID = userID.replace(/[\\|<|@|!]*(\d{17,18})[>]*/g,'$1');
                 // If they are trying to remove someone else and they don't have the right perms, stop em
                 if (userID !== message.author.id && level < 3) {
-                    return message.channel.send(message.language.COMMAND_SHARDTIMES_REM_MISSING_PERMS);
+                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_MISSING_PERMS'));
                 }
             } 
             if (shardTimes.hasOwnProperty(userID)) {
                 delete shardTimes[userID];
                 await client.shardTimes.update({times: shardTimes}, {where: {id: shardID}})
                     .then(() => {
-                        return message.channel.send(message.language.COMMAND_SHARDTIMES_REM_SUCCESS);
+                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_SUCCESS'));
                     })
                     .catch(() => {
-                        return message.channel.send(message.language.COMMAND_SHARDTIMES_REM_FAIL);
+                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_FAIL'));
                     });
             } else {
-                return message.channel.send(message.language.COMMAND_SHARDTIMES_REM_MISSING);
+                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_MISSING'));
             }
         } else if (action === 'help') {
-            return message.channel.send(message.language.COMMAND_EXTENDED_HELP(this));
+            return message.channel.send(message.language.get('COMMAND_EXTENDED_HELP', this));
         } else {
             // View the shard table
             const shardOut = {};
@@ -176,7 +176,7 @@ class Shardtimes extends Command {
             return message.channel.send({
                 embed: {
                     "author": {
-                        "name": message.language.COMMAND_SHARDTIMES_SHARD_HEADER
+                        "name": message.language.get('COMMAND_SHARDTIMES_SHARD_HEADER')
                     },
                     "fields": fields
                 }

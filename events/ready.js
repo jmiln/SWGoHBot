@@ -37,7 +37,7 @@ module.exports = async client => {
 
     // Logs that it's up, and some extra info
     let  readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
-    if (client.shard.count > 0) {
+    if (client.shard && client.shard.count > 0) {
         readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. Shard #${client.shard.id}`;
     }
     client.log('Ready', readyString);

@@ -25,40 +25,33 @@ class Activites extends Command {
                 day = moment().tz(guildConf['timezone']).format('ddd').toLowerCase();
             }
         } else {
-            day = String(args[0]).toLowerCase();
+            day = String(args[0]).toProperCase();
         }
 
         switch (day) {
-            case message.language.DAYSOFWEEK.SUNDAY.SHORT:
-            case message.language.DAYSOFWEEK.SUNDAY.LONG:
-                message.channel.send(message.language.COMMAND_ACTIVITIES_SUNDAY, {code:'asciidoc'});
+            case message.language.getDay('SUNDAY', 'SHORT'): case message.language.getDay('SUNDAY', 'LONG'):
+                message.channel.send(message.language.get('COMMAND_ACTIVITIES_SUNDAY'), {code:'asciidoc'});
                 break;
-            case message.language.DAYSOFWEEK.MONDAY.SHORT:
-            case message.language.DAYSOFWEEK.MONDAY.LONG:
-                message.channel.send(message.language.COMMAND_ACTIVITIES_MONDAY, {code:'asciidoc'});
+            case message.language.getDay('MONDAY', 'SHORT'): case message.language.getDay('MONDAY', 'LONG'):
+                message.channel.send(message.language.get('COMMAND_ACTIVITIES_MONDAY'), {code:'asciidoc'});
                 break;
-            case message.language.DAYSOFWEEK.TUESDAY.SHORT:
-            case message.language.DAYSOFWEEK.TUESDAY.LONG:
-                message.channel.send(message.language.COMMAND_ACTIVITIES_TUESDAY, {code:'asciidoc'});
+            case message.language.getDay('TUESDAY', 'SHORT'): case message.language.getDay('TUESDAY', 'LONG'):
+                message.channel.send(message.language.get('COMMAND_ACTIVITIES_TUESDAY'), {code:'asciidoc'});
                 break;
-            case message.language.DAYSOFWEEK.WEDNESDAY.SHORT:
-            case message.language.DAYSOFWEEK.WEDNESDAY.LONG:
-                message.channel.send(message.language.COMMAND_ACTIVITIES_WEDNESDAY, {code:'asciidoc'});
+            case message.language.getDay('WEDNESDAY', 'SHORT'): case message.language.getDay('WEDNESDAY', 'LONG'):
+                message.channel.send(message.language.get('COMMAND_ACTIVITIES_WEDNESDAY'), {code:'asciidoc'});
                 break;
-            case message.language.DAYSOFWEEK.THURSDAY.SHORT:
-            case message.language.DAYSOFWEEK.THURSDAY.LONG:
-                message.channel.send(message.language.COMMAND_ACTIVITIES_THURSDAY, {code:'asciidoc'});
+            case message.language.getDay('THURSDAY', 'SHORT'): case message.language.getDay('THURSDAY', 'LONG'):
+                message.channel.send(message.language.get('COMMAND_ACTIVITIES_THURSDAY'), {code:'asciidoc'});
                 break;
-            case message.language.DAYSOFWEEK.FRIDAY.SHORT:
-            case message.language.DAYSOFWEEK.FRIDAY.LONG:
-                message.channel.send(message.language.COMMAND_ACTIVITIES_FRIDAY, {code:'asciidoc'});
+            case message.language.getDay('FRIDAY', 'SHORT'): case message.language.getDay('FRIDAY', 'LONG'):
+                message.channel.send(message.language.get('COMMAND_ACTIVITIES_FRIDAY'), {code:'asciidoc'});
                 break;
-            case message.language.DAYSOFWEEK.SATURDAY.SHORT:
-            case message.language.DAYSOFWEEK.SATURDAY.LONG:
-                message.channel.send(message.language.COMMAND_ACTIVITIES_SATURDAY, {code:'asciidoc'});
+            case message.language.getDay('SATURDAY', 'SHORT'): case message.language.getDay('SATURDAY', 'LONG'):
+                message.channel.send(message.language.get('COMMAND_ACTIVITIES_SATURDAY'), {code:'asciidoc'});
                 break;
             default:
-                message.channel.send(message.language.COMMAND_ACTIVITIES_ERROR(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+                message.channel.send(message.language.get('COMMAND_ACTIVITIES_ERROR', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
         }
     }
 }

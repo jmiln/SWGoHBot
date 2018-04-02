@@ -20,7 +20,7 @@ class Info extends Command {
         } else {
             guilds = client.guilds.size.toLocaleString();
         }
-        const content = message.language.COMMAND_INFO_OUTPUT(guilds);
+        const content = message.language.get('COMMAND_INFO_OUTPUT', guilds);
         const fields = [];
         Object.keys(content.links).forEach(link => {
             fields.push({

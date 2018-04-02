@@ -31,13 +31,13 @@ class Abilities extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.COMMAND_ABILITIES_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_ABILITIES_NEED_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
         }
 
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
         if (chars.length <= 0) {
-            return message.channel.send(message.language.COMMAND_ABILITIES_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);        
+            return message.channel.send(message.language.get('COMMAND_ABILITIES_INVALID_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);        
         }
 
         chars.forEach(character => {
@@ -55,12 +55,12 @@ class Abilities extends Command {
 
                     var cooldownString = "";
                     if (abilities.abilityCooldown > 0) {
-                        cooldownString = message.language.COMMAND_ABILITIES_COOLDOWN(abilities.abilityCooldown);
+                        cooldownString = message.language.get('COMMAND_ABILITIES_COOLDOWN', abilities.abilityCooldown);
                     }
                 
                     fields.push({
                         "name": ability,
-                        "value": message.language.COMMAND_ABILITIES_ABILITY(abilities.type, mat, cooldownString, abilities.abilityDesc)
+                        "value": message.language.get('COMMAND_ABILITIES_ABILITY', abilities.type, mat, cooldownString, abilities.abilityDesc)
                     });
                 }
                 
@@ -79,7 +79,7 @@ class Abilities extends Command {
                 let abilityString = "";
                 for (const ability in character.abilities) {
                     const abilities = character.abilities[ability];
-                    abilityString += message.language.COMMAND_ABILITIES_ABILITY_CODE(ability, abilities.type, abilities.tier, abilities.abilityDesc);
+                    abilityString += message.language.get('COMMAND_ABILITIES_ABILITY_CODE', ability, abilities.type, abilities.tier, abilities.abilityDesc);
                 }
                 message.channel.send(` * ${character.name} * \n${abilityString}`, { code: 'md', split: true });
             }

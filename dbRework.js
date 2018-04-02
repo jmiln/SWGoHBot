@@ -43,7 +43,7 @@ const init = async function() {
     await guildSettings.sync();
     await events.sync();
     await guildEvents.sync();
-   
+
     let ix = 0;
 
     const oldEvents = await events.findAll();
