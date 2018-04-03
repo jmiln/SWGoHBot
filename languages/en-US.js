@@ -433,7 +433,7 @@ module.exports = class extends Language {
             COMMAND_POLL_SAME_OPT: (opt) => `You have already chosen **${opt}**`,
             COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `You have changed your choice from **${oldOpt}** to **${newOpt}**`,
             COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
-            COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: ${optCount} **vote${optCount === 1 ? '' : 's'}**\n`,
+            COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
             COMMAND_POLL_HELP: {
                 description: "Lets you start a poll with multiple options.",
                 actions: [
