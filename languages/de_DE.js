@@ -73,7 +73,7 @@ module.exports = class extends Language {
         this.getTime = getTime;
         this.language = {
             // Base swgohBot.js file
-            BASE_LAST_EVENT_NOTIFICATOIN: `\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.`,
+            BASE_LAST_EVENT_NOTIFICATION: `\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
             // Generic (Not tied to a command)
@@ -398,7 +398,7 @@ module.exports = class extends Language {
             COMMAND_POLL_SAME_OPT: (opt) => `Sie haben bereits gewaehlt **${opt}**`,
             COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Sie haben Ihre Auswahl von **${oldOpt}** zu **${newOpt}** geaendert`,
             COMMAND_POLL_REGISTERED: (opt) => `Wahl fuer **${opt}** gespeichert`,
-            COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` (${optCount} vote${optCount === 1 ? '' : 's'}) ${choice}\n`,
+            COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice} **${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
             COMMAND_POLL_HELP: {
                 description: "Startet Deine Umfrage mit mehreren Optionen.",
                 actions: [

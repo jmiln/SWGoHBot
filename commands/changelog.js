@@ -20,7 +20,8 @@ class Changelog extends Command {
                 .replace('[Fixed]',   '**[Fixed]**')
                 .replace('[Updated]', '**[Updated]**')
                 .replace('[Added]',   '**[Added]**')
-                .replace('[Removed]', '**[Removed]**')}`;
+                .replace('[Removed]', '**[Removed]**')
+                .replace('[Changed]', '**[Changed]**')}`;
 
             client.sendChangelog(clMessage);
         }

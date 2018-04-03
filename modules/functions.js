@@ -473,8 +473,8 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format(`h [${client.languages[guildConf.language].TIMES.HOUR.SHORT_SING}], m [${client.languages[guildConf.language].TIMES.MINUTE.SHORT_SING}]`);
-        var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(eventName, timeToGo);
+        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format(`h [${client.languages[guildConf.language].getTime('HOUR', 'SHORT_SING')}], m [${client.languages[guildConf.language].getTime('MINUTE', 'SHORT_SING')}]`);
+        var announceMessage = client.languages[guildConf.language].get('BASE_EVENT_STARTING_IN_MSG', eventName, timeToGo);
     
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
@@ -519,7 +519,7 @@ module.exports = (client) => {
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
             if (repDays.length === 1) {
-                eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
+                eventMsg += client.languages[guildConf.language].get('BASE_LAST_EVENT_NOTIFICATION');
             }
             newEvent = {
                 "eventID": event.eventID,

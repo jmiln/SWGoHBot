@@ -417,7 +417,13 @@ class Event extends Command {
             if (roleResult !== null) {
                 roleResult.forEach(role => {
                     const roleID = role.replace(/\D/g,'');
-                    const roleName = message.guild.roles.find('id', roleID).name;
+                    // const roleName = message.guild.roles.find('id', roleID).name;
+                    let roleName;
+                    try {
+                        roleName = message.guild.roles.find('id', roleID).name;
+                    } catch (e) {
+                        roleName = roleID;
+                    }
                     mess = mess.replace(role, `@${roleName}`);
                 });
             }
