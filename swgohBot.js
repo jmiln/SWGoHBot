@@ -185,7 +185,9 @@ async function updateCharacterMods() {
 	});
 
     // iterate the crouching rancor data (may contain currently unknown characters)
-    rancorCharacterList.forEach(async rancorChar => {
+    for (var rancorCharKey in rancorCharacterList) {
+		const rancorChar = rancorCharacterList[rancorCharKey];
+
         // skip garbage data
         if (typeof rancorChar.cname === 'undefined') return;
 
@@ -236,6 +238,7 @@ async function updateCharacterMods() {
             let charLink = 'https://swgoh.gg/characters/';
             const linkName = rancorChar.cname.replace(/[^\w\s]+/g, '');  // Get rid of non-alphanumeric characters ('"- etc)
             charLink += linkName.replace(/\s+/g, '-').toLowerCase();  // Get rid of extra spaces, and format em to be dashes
+            charLink += '/'; // add trailing slash to be consistent with swgoh.gg's conventions
 
             let newCharacter = await ggGrab(charLink);
 
