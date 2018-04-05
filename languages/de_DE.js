@@ -720,13 +720,13 @@ module.exports = class extends Language {
 
             // Stats Command
             COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= Statisken (${shardID}) =\n
-        • Speicherauslastung  :: ${memUsage} MB
-        • CPU Auslastung      :: ${cpuLoad}%
-        • Uptime              :: ${uptime}
-        • Anwender            :: ${users}
-        • Server              :: ${servers}
-        • Kanaele             :: ${channels}
-        • Quelle               :: https://github.com/jmiln/SWGoHBot`,
+• Speicherauslastung  :: ${memUsage} MB
+• CPU Auslastung      :: ${cpuLoad}%
+• Uptime              :: ${uptime}
+• Anwender            :: ${users}
+• Server              :: ${servers}
+• Kanaele             :: ${channels}
+• Quelle               :: https://github.com/jmiln/SWGoHBot`,
             COMMAND_STATS_HELP: {
                 description: "Zeigt die Statistiken des Bots an.",
                 actions: [
