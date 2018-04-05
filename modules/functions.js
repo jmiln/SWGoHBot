@@ -56,6 +56,13 @@ module.exports = (client) => {
             threshold: .1,
             distance: 4
         };
+        // Make it so it only returns the one if it's exact
+        for (let ix = 0; ix < charList.length; ix++) {
+            if (charList[ix].name.toLowerCase() === searchName.toLowerCase()) {
+                return [charList[ix]];
+            }
+        }
+        // If it's not exact, send back the big mess
         const fuse = new Fuse(charList, options);
         let chars = fuse.search(searchName);
         // If there's a ton of em, only return the first 4
@@ -64,6 +71,8 @@ module.exports = (client) => {
         }
         return chars;
     };
+
+
 
     // This find one character that matches the search, and returns it
     client.findCharByName = (searchName, charList) => {
@@ -303,12 +312,12 @@ module.exports = (client) => {
      */
     client.helpOut = (message, command) => {
         const language = message.language;
-        const help = language[`COMMAND_${command.help.name.toUpperCase()}_HELP`];
+        const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
         const actions = help.actions.slice();
         let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(', ') : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
 
         // Stick the extra help bit in
-        actions.push(language.BASE_COMMAND_HELP_HELP(command.help.name.toLowerCase()));
+        actions.push(language.get('BASE_COMMAND_HELP_HELP', command.help.name.toLowerCase()));
         const actionArr = [];
 
         actions.forEach(action => {
@@ -331,7 +340,7 @@ module.exports = (client) => {
         message.channel.send({embed: {
             "color": 0x605afc,
             "author": {
-                "name": language.BASE_COMMAND_HELP_HEADER(command.help.name)
+                "name": language.get('BASE_COMMAND_HELP_HEADER', command.help.name)
             },
             "description": headerString,
             "fields": actionArr
@@ -361,6 +370,16 @@ module.exports = (client) => {
         });
         return messages;
     };
+
+    /*
+     * CODE BLOCK MAKER
+     * Makes a codeblock with the specified lang for highlighting.
+     */
+    client.codeBlock = (lang, str) => {
+        return `\`\`\`${lang}\n${str}\`\`\``;
+    };
+
+
 
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
@@ -454,8 +473,8 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format("h [hr], m [min]");
-        var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(eventName, timeToGo);
+        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format(`h [${client.languages[guildConf.language].getTime('HOUR', 'SHORT_SING')}], m [${client.languages[guildConf.language].getTime('MINUTE', 'SHORT_SING')}]`);
+        var announceMessage = client.languages[guildConf.language].get('BASE_EVENT_STARTING_IN_MSG', eventName, timeToGo);
     
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
@@ -500,7 +519,7 @@ module.exports = (client) => {
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
             if (repDays.length === 1) {
-                eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
+                eventMsg += client.languages[guildConf.language].get('BASE_LAST_EVENT_NOTIFICATION');
             }
             newEvent = {
                 "eventID": event.eventID,

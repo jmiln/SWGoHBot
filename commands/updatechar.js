@@ -19,14 +19,14 @@ class Updatechar extends Command {
         let characterIndex, action;
         // Make sure they're trying to update something that exists
         if (!usableArgs.includes(args[0])) {
-            return message.channel.send(message.language.COMMAND_UPDATECHAR_INVALID_OPT(args[0], usableArgs.join(', ')));
+            return message.channel.send(message.language.get('COMMAND_UPDATECHAR_INVALID_OPT', args[0], usableArgs.join(', ')));
         } else {
             action = args[0];
         }
         
         // If their message only has what to update, but not who
         if (args.length < 2) {
-            return message.channel.send(message.language.COMMAND_UPDATECHAR_NEED_CHAR);
+            return message.channel.send(message.language.get('COMMAND_UPDATECHAR_NEED_CHAR'));
         }
 
         const charName = args.splice(1).join(' ');
@@ -40,7 +40,7 @@ class Updatechar extends Command {
         // If there's a ton of em, only return the first 4
         let found = false;
         if (chars.length === 0) {
-            return message.channel.send(message.language.COMMAND_UPDATECHAR_WRONG_CHAR(charName));
+            return message.channel.send(message.language.get('COMMAND_UPDATECHAR_WRONG_CHAR', charName));
         } else {
             client.characters.some(function(obj, ix) {
                 if (obj.uniqueName === chars[0].uniqueName) {

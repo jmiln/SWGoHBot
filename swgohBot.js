@@ -21,8 +21,10 @@ require("./modules/functions.js")(client);
 
 // Languages
 client.languages = {};
-client.languages.en_US = require('./languages/en-US.js');
-client.languages.de_DE = require('./languages/de_DE.js');
+const en_US = require('./languages/en-US.js');
+client.languages.en_US = new en_US(client);
+const de_DE = require('./languages/de_DE.js');
+client.languages.de_DE = new de_DE(client);
 
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -69,16 +71,24 @@ client.polls = client.sequelize.define('polls', {
     id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id-channel.id 
     poll: Sequelize.JSONB
 });
+client.allyCodes = client.sequelize.define('allyCodes', {
+    id: {type: Sequelize.TEXT, primaryKey: true},   // userID
+    allyCode: Sequelize.BIGINT
+});
 
 const init = async () => {
+    // If we have the magic, use it
+    if (client.config.swgohLoc && client.config.swgohLoc !== "") {
+        client.swgohAPI = require(`./${client.config.swgohLoc}/swgoh.js`);
+    }
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
-    // client.log("Init", `Loading a total of ${cmdFiles.length} commands.`);
     cmdFiles.forEach(f => {
         try {
             const props = new(require(`./commands/${f}`))(client);
             if (f.split(".").slice(-1)[0] !== "js") return;
+            if (props.help.category === "SWGoH" && !client.swgohAPI) return; 
             client.commands.set(props.help.name, props);
             props.conf.aliases.forEach(alias => {
                 client.aliases.set(alias, props.help.name);

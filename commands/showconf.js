@@ -36,7 +36,7 @@ class Showconf extends Command {
             if (found) {
                 guildID = args[0];
             } else {
-                return message.channel.send(`Sorry, but I don't seem to be in the guild ${args[0]}.`)
+                return message.channel.send(`Sorry, but I don't seem to be in the guild ${args[0]}.`);
             }
 
         } else {
@@ -51,7 +51,7 @@ class Showconf extends Command {
                 array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
             }
             var configKeys = array.join('\n');
-            return message.channel.send(message.language.COMMAND_SHOWCONF_OUTPUT(configKeys, guildName));
+            return message.channel.send(message.language.get('COMMAND_SHOWCONF_OUTPUT', configKeys, guildName));
         } else {
             console.log('Something broke in showconf');
         }
