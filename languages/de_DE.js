@@ -76,6 +76,9 @@ module.exports = class extends Language {
             BASE_LAST_EVENT_NOTIFICATION: `\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
+            // Base swgohAPI
+            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register @${user} <allycode>\``,
+
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
             COMMAND_INVALID_BOOL: `Ungueltiger Wert, versuche true oder false`,
@@ -298,6 +301,30 @@ module.exports = class extends Language {
                 ]
             },
 
+            // GuildSearch Command
+            COMMAND_GUILDSEARCH_BAD_STAR: 'Du kannst nur ein Sternen-Level von 1-7 waehlen',
+            COMMAND_GUILDSEARCH_MISSING_CHAR: 'Du musst einen Charakter angeben',
+            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `Ich habe keine Ergebnisse gefunden fuer ${character}`,
+            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Deine Suche hat zu viele Treffer ergeben. Bitte spezifizieren. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
+            COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Sterne (${num}) ${setNum.length > 0 ? setNum : ''}`,
+            COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `Niemand in deiner Gilde scheint diesen Charakter auf ${starLvl} Sterne zu haben.`,
+            COMMAND_GUILDSEARCH_NO_CHAR: `Niemand in deiner Gilde scheint diesen Charakter zu haben.`,
+            COMMAND_GUILDSEARCH_HELP: {
+                description: "Zeigt den Stern-Level des gewaehlten Charakters von allen Gildenmitgliedern an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';guildsearch [user] <charakter> [starLvl]',
+                        args: {
+                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
+                            "character": "Der Charakter nach dem du suchen moechtest.",
+                            "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
+                        }
+                    }
+                ]
+            },
+
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\n[Benutze ${prefix}Help <Kommandoname> fuer Details]\n`,
             COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\n Befehl:: ${prefix}${command.help.usage}`,
@@ -316,9 +343,17 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: `**### INFORMATION ###** \n**Links**\nTritt dem Botsupportserver hier bei: \n<http://swgohbot.com/server>\n>Lade den Bot mit diesem Link ein\n<http://swgohbot.com/invite>`,
+            COMMAND_INFO_OUTPUT: (guilds) => ({
+                "header": 'INFORMATION',
+                "desc": ` \nLaeuft zur Zeit auf **${guilds}** server \n`,
+                "links": {
+                    "Einladung": "Lade den Bot ein [here](http://swgohbot.com/invite)",
+                    "Support Server": "Wenn du eine Frage hast oder einfach nur vorbeischauen moechtest, der Bot support server lautet [here](https://discord.gg/FfwGvhr)",
+                    "Support the Bot": "Der Quellcode des Bots ist auf github [here](https://github.com/jmiln/SWGoHBot), und es kann beigetragen werden. Ich habe ausserdem ein Patreon [here](https://www.patreon.com/swgohbot) falls du interessiert bist."
+                }
+            }),
             COMMAND_INFO_HELP: {
-                description: "Zeigt nuetzliche Links in Bezug auf den Bot.",
+                description: "Shows useful links pertaining to the bot.",
                 actions: [
                     {
                         action: "",
@@ -473,6 +508,27 @@ module.exports = class extends Language {
                         usage: ';randomchar [AnzahlCharaktere]',
                         args: {
                             "AnzahlCharaktere": "Die Anzahl der Charaktere, die ausgewaehlt werden sollen"
+                        }
+                    }
+                ]
+            },
+
+            // Register Command
+            COMMAND_REGISTER_MISSING_ARGS: 'Du musst eine userID (mention or ID) angeben, und einen ally code',
+            COMMAND_REGISTER_MISSING_ALLY: 'Du musst einen ally code angeben mit dem du dein Konto verknuepfen willst.',
+            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger ally code`,
+            COMMAND_REGISTER_PLEASE_WAIT: 'Bitte warten waehrend ich die Daten synchronisiere.',
+            COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
+            COMMAND_REGISTER_HELP: {
+                description: "Registriert deinen ally code zu deiner Discord ID, und synchronisiert dein SWGoH Profil.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';register <user> <allyCode>',
+                        args: {
+                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
+                            "allyCode": "Dein Ally Code aus dem Spiel."
                         }
                     }
                 ]
@@ -715,6 +771,22 @@ module.exports = class extends Language {
                             "Gear": "Aktualisiere die Infos zur Gear eines Charakters.",
                             "Info": "Aktualisiere die Infos zu einem Charakter (Link zum Bild, Faehigkeiten etc.)",
                             "Mods": "Aktualisiere die Mods von crouchingrancor.com"
+                        }
+                    }
+                ]
+            },
+            // Zetas Command
+            COMMAND_ZETA_NOT_REG: (user) => `Entschuldige, aber dieser User ist nicht registriert. Bitte registriere mit \`;register @${user} <allycode>\``,
+            COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Anfuehrer | \`[S]\` Spezial | \`[U]\` Einzigartig\n\`${'-'.repeat(30)}\``,
+            COMMAND_ZETAS_HELP: {
+                description: "Zeigt die Faehigkeiten die mit Zeta hochgestülpt wurden.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';zeta [user]',
+                        args: {
+                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)"
                         }
                     }
                 ]

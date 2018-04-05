@@ -306,7 +306,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'You need to enter a character to check for',
             COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `I did not find any results for ${character}`,
             COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
-            COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num) => `${tier} Star (${num})`,
+            COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Star (${num}) ${setNum.length > 0 ? setNum : ''}`,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `No one in your guild seems to have this character at ${starLvl} stars.`,
             COMMAND_GUILDSEARCH_NO_CHAR: `No one in your guild seems to have this character.`,
             COMMAND_GUILDSEARCH_HELP: {

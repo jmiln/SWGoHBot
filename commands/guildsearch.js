@@ -60,7 +60,7 @@ class GuildSearch extends Command {
             charS.forEach(c => {
                 charL.push(c.name);
             });
-            return message.channel.send(message.laguage.get('COMMAND_GUILDSEARCH_CHAR_LIST', charL.join('\n')));
+            return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_CHAR_LIST', charL.join('\n')));
         } else {
             character = chars[0];
             charURL = character.avatarURL;
@@ -103,12 +103,36 @@ class GuildSearch extends Command {
             const fields = [];
             Object.keys(charList).forEach((tier) => {
                 // Sort the names of everyone 
-                const sorted = charList[tier].sort((p, c) => p > c ? 1 : -1);
+                const sorted = charList[tier].sort((p, c) => p.toLowerCase() > c.toLowerCase() ? 1 : -1);
                 if (starLvl && starLvl !== parseInt(tier)) return; 
-                fields.push({
-                    name: message.language.get('COMMAND_GUILDSEARCH_FIELD_HEADER', tier, charList[tier].length),
-                    value: sorted.join('\n')
-                });
+                // In case the names become too long for one field
+                if (sorted.join('\n').length > 1800) {
+                    const out = {
+                        first: [],
+                        last: []
+                    };
+                    const hLen = sorted.length/2; 
+                    sorted.forEach((u, ix) => {
+                        if (ix < hLen) {
+                            out.first.push(u);
+                        } else {
+                            out.last.push(u);
+                        }
+                    });
+                    fields.push({
+                        name: message.language.get('COMMAND_GUILDSEARCH_FIELD_HEADER', tier, charList[tier].length, '1/2'),
+                        value: out.first.join('\n')
+                    });
+                    fields.push({
+                        name: message.language.get('COMMAND_GUILDSEARCH_FIELD_HEADER', tier, charList[tier].length, '2/2'),
+                        value: out.last.join('\n')
+                    });
+                } else {
+                    fields.push({
+                        name: message.language.get('COMMAND_GUILDSEARCH_FIELD_HEADER', tier, charList[tier].length),
+                        value: sorted.join('\n')
+                    });
+                }
             });
             if (fields.length === 0) {
                 if (starLvl) {
