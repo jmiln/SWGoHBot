@@ -18,10 +18,12 @@ class Raidteams extends Command {
 
         // Make sure the args are all there
         if (typeof args[0] === 'undefined' || args[0] === null || args[0] === "") {
-            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_RAID', config.prefix, this.help)).then(msg => msg.delete(10000)).catch(console.error);
+            return client.helpOut(message, this);
+            // return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_RAID', config.prefix, this)).then(msg => msg.delete(10000)).catch(console.error);
         }
         if (typeof args[1] === 'undefined' || args[1] === null || args[1] === "") {
-            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_PHASE', (config.prefix, this.help))).then(msg => msg.delete(10000)).catch(console.error);
+            return client.helpOut(message, this);
+            // return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_PHASE', (config.prefix, this))).then(msg => msg.delete(10000)).catch(console.error);
         }
 
         // Remove anything that's not a letter for the raid name
