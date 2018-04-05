@@ -518,7 +518,8 @@ module.exports = class extends Language {
             COMMAND_REGISTER_MISSING_ALLY: 'You need to enter an ally code to link your account to.',
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Please wait while I sync your data.',
-            COMMAND_REGISTER_SUCCESS: 'Registration successful!',
+            COMMAND_REGISTER_FAILURE: 'Registration failed, please make sure your ally code is correct.',
+            COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [

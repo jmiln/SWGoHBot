@@ -55,8 +55,13 @@ class Register extends Command {
         }
         // Sync up their swgoh account
         message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
-            await client.swgohAPI.updatePlayer(allyCode).then(() => {
-                msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS'));
+            await client.swgohAPI.updatePlayer(allyCode).then(async (u) => {
+                if (!u) {
+                    await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
+                } else {
+                    await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
+                    console.log('yay: ' + u.name);
+                }
             });
         });
     }
