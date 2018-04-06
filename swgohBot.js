@@ -10,7 +10,7 @@ const cheerio = require('cheerio');
 const Sequelize = require('sequelize');
 
 // Attach the config to the client so we can use it anywhere
-client.config = require('./config.json');
+client.config = require('./config.js');
 
 // Attach the character and team files to the client so I don't have to reopen em each time
 client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
