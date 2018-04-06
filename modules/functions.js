@@ -99,7 +99,7 @@ module.exports = (client) => {
             if (client.config.logs.logToChannel) {
                 if (client.channels.has(chan)) {
                     client.sendMsg(chan, mess, args);
-                } else {
+                } else if (client.shard && client.shard.count > 0) {
                     // If it's on a different shard, then send it there 
                     client.shard.broadcastEval(`
                         const thisChan = ${util.inspect(chan)};

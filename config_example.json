@@ -1,6 +1,6 @@
 {
-	"ownerid": "YourUserID",
-	"prefix": "YourPrefixGoesHere",
+    "ownerid": "YourUserID",
+    "prefix": "YourPrefixGoesHere",
     "token": "YourTokenGoesHere",
     "dashboard": {
         "enableSite": false,
@@ -12,16 +12,16 @@
         "pass": "password",
         "data": "database"
     },
-	"defaultSettings": {
-		"adminRole": ["Administrator"],
-		"enableWelcome": false,
-		"welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
-		"useEmbeds": true,
+    "defaultSettings": {
+        "adminRole": ["Administrator"],
+        "enableWelcome": false,
+        "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
+        "useEmbeds": true,
         "timezone": "America/Los_Angeles",
         "announceChan": "",
         "useEventPages": false,
         "language": "en_US"
-	},
+    },
     "logs": {
         "logToChannel": false,
         "channel": "channel-ID-to-log-to",
@@ -30,6 +30,13 @@
     "changelog": {
         "changelogChannel": "channel-to-send-to",
         "sendChangelogs": false
+    },
+    "swgohLoc": "",
+    "mySqlDB": {
+        "host"     : "",
+        "user"     : "",
+        "password" : "",
+        "database" : ""
     }
 }
 
