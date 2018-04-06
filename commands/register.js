@@ -60,7 +60,6 @@ class Register extends Command {
                     await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
                 } else {
                     await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
-                    console.log('yay: ' + u.name);
                 }
             });
         });

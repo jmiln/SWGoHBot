@@ -57,7 +57,7 @@ const TIMES = {
     }
 };
 
-function weekDay(day, type) {
+function getDay(day, type) {
     return DAYSOFWEEK[`${day}`][`${type}`];
 }
 
@@ -69,7 +69,7 @@ module.exports = class extends Language {
     constructor(...args) {
         super(...args);
 
-        this.weekDay = weekDay;
+        this.getDay = getDay;
         this.getTime = getTime;
         this.language = {
             // Base swgohBot.js file
@@ -776,10 +776,12 @@ module.exports = class extends Language {
                 ]
             },
             // Zetas Command
+            COMMAND_ZETA_NO_USER: `Entschuldigung, aber diesen User kann ich nicht finden.`,
+            COMMAND_ZETA_NO_ZETAS: 'Keine Fähigkeiten mit Zeta gefunden.',
             COMMAND_ZETA_NOT_REG: (user) => `Entschuldige, aber dieser User ist nicht registriert. Bitte registriere mit \`;register @${user} <allycode>\``,
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Anfuehrer | \`[S]\` Spezial | \`[U]\` Einzigartig\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
-                description: "Zeigt die Faehigkeiten die mit Zeta hochgestülpt wurden.",
+                description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft  wurden.",
                 actions: [
                     {
                         action: "",

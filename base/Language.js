@@ -7,11 +7,12 @@ class Language {
 
     get(str, ...args) {
         if (!this.language[str]) {
+            const defLang = this.client.languages[this.client.config.defaultSettings.language];
             // If it isn't in the configured language's file, use the main one (probably en_US)
             if (!args.length) {
-                return this.client.languages[`${this.client.config.defaultSettings.language}`].get(str);
+                return defLang.get(str);
             } else {
-                return this.client.languages[`${this.client.config.defaultSettings.language}`].get(str, ...args);
+                return defLang.get(str, ...args);
             }
         } else {
             // console.log(args)
