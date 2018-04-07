@@ -42,23 +42,23 @@ class Register extends Command {
             }
         }
 
-        // They made it past the checks, valid uID & ally code     
-        if (exists) {
-            // Update their link
-            await client.allyCodes.update({allyCode: allyCode}, {where: {id: userID}});
-        } else {
-            // Create a new one
-            await client.allyCodes.create({
-                id: userID,
-                allyCode: allyCode
-            });
-        }
         // Sync up their swgoh account
         message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
             await client.swgohAPI.updatePlayer(allyCode).then(async (u) => {
                 if (!u) {
                     await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
                 } else {
+                    // They made it past the checks, valid uID & ally code     
+                    if (exists) {
+                        // Update their link
+                        await client.allyCodes.update({allyCode: allyCode}, {where: {id: userID}});
+                    } else {
+                        // Create a new one
+                        await client.allyCodes.create({
+                            id: userID,
+                            allyCode: allyCode
+                        });
+                    }
                     await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
                 }
             });

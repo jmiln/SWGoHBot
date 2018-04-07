@@ -62,8 +62,10 @@ class Zetas extends Command {
             const zetas = {};
             let name;
             if (results) {
+                let count = 0;
                 results.forEach(row => {
                     name = row.Name;
+                    count += 1;
                     row.aName = `\`[${row.ID.toUpperCase()[0]}]\` ${row.aName}`;
                     if (zetas.hasOwnProperty(row.Character)) {
                         zetas[row.Character].push(row.aName);
@@ -81,14 +83,11 @@ class Zetas extends Command {
                     });
                 });
                 const auth = message.guild.members.get(userID);
-                const author = {name: `${name}'s Zetas`};
+                const author = {name: `${name}'s Zetas (${count})`};
                 if (auth) {
                     author.icon_url = auth.user.avatarURL;
                 } else {
-                    // client.fetchUser(userID).then(u => {
-                    //     author.name = `${client.fetchUser(userID).name}'s Zetas`;'`
-                    // })
-                    author.name = `${client.users.get(userID).username}'s Zetas`;
+                    author.name = `${client.users.get(userID).username}'s Zetas (${count})`;
                 }
                 let desc;
                 if (fields.length === 0) {
