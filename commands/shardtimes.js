@@ -137,8 +137,6 @@ class Shardtimes extends Command {
             } else {
                 return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_MISSING'));
             }
-        } else if (action === 'help') {
-            return message.channel.send(message.language.get('COMMAND_EXTENDED_HELP', this));
         } else {
             // View the shard table
             const shardOut = {};
@@ -192,7 +190,7 @@ class Shardtimes extends Command {
                 // If it's already passed for the day
                 targetTime = momentTZ.tz(zone).startOf("day").add(1, 'd').add(timeToAdd, 'h');
             }
-            return momentTZ.duration(targetTime.diff(momentTZ.tz(zone))).format('hh:mm');
+            return momentTZ.duration(targetTime.diff(momentTZ.tz(zone))).format('HH:mm', { trim: false });
         }
     }
 }
