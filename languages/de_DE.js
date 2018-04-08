@@ -77,7 +77,7 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register @${user} <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <allycode>\``,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
@@ -778,7 +778,6 @@ module.exports = class extends Language {
             // Zetas Command
             COMMAND_ZETA_NO_USER: `Entschuldigung, aber diesen User kann ich nicht finden.`,
             COMMAND_ZETA_NO_ZETAS: 'Keine Fähigkeiten mit Zeta gefunden.',
-            COMMAND_ZETA_NOT_REG: (user) => `Entschuldige, aber dieser User ist nicht registriert. Bitte registriere mit \`;register @${user} <allycode>\``,
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Anfuehrer | \`[S]\` Spezial | \`[U]\` Einzigartig\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
                 description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft  wurden.",
