@@ -28,7 +28,7 @@ class Guilds extends Command {
             await connection.query('CALL getAllGuilds();', function(err, results) {
                 results[0].forEach((row, ix) => {
                     if (ix < 20) {
-                        guilds.push(`\`[${row.count > 9 ? row.count : '0' + row.count}] ${' '.repeat(10 - row.gp.toString().length) + row.gp.toLocaleString()} GP\` - ${row.guildName}`);
+                        guilds.push(`\`[${row.count > 9 ? row.count : '0' + row.count}] ${' '.repeat(10 - row.gp.toString().length) + row.gp.toLocaleString()} GP\` - **${row.guildName}**`);
                     }
                 });
                 
@@ -71,17 +71,16 @@ class Guilds extends Command {
                 }
                 const users = [];
                 await connection.query('CALL getGuildByAllyCode( ? );', [ally], function(err, results) {
-                    // console.log(ally + ' ' +results);
                     let guildName;
                     results[0].forEach((row) => {
                         guildName = row.Guild;
-                        users.push(`\`[${' '.repeat(7 - row.TotalGP.toString().length) + row.TotalGP.toLocaleString()}] GP\` - ${row.Name}`);
+                        users.push(`\`[${' '.repeat(7 - row.TotalGP.toString().length) + row.TotalGP.toLocaleString()} GP]\` - **${row.Name}**`);
                     });
 
                     const desc = users.join('\n');
                     message.channel.send({embed: {
                         author: {
-                            name: `Players in ${guildName}`
+                            name: `${results[0].length} Players in ${guildName}`
                         },
                         description: desc
                     }});
@@ -89,17 +88,16 @@ class Guilds extends Command {
             } else {
                 const users = [];
                 await connection.query("CALL getGuildByName( ? );", [user], function(err, results) {
-                    console.log(user + ' ' +results);
                     let guildName;
                     results[0].forEach((row) => {
                         guildName = row.Guild;
-                        users.push(`\`[${' '.repeat(9 - row.TotalGP.toLocaleString().length) + row.TotalGP.toLocaleString()}] GP\` - ${row.pName}`);
+                        users.push(`\`[${' '.repeat(9 - row.TotalGP.toLocaleString().length) + row.TotalGP.toLocaleString()} GP]\` - **${row.pName}**`);
                     });
 
                     const desc = users.join('\n');
                     message.channel.send({embed: {
                         author: {
-                            name: `Players in ${guildName}`
+                            name: `${results[0].length} Players in ${guildName}`
                         },
                         description: desc
                     }});
