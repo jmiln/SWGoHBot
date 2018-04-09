@@ -74,7 +74,7 @@ class Guilds extends Command {
                     // console.log(ally + ' ' +results);
                     let guildName;
                     results[0].forEach((row) => {
-                        guildName = row.guildName;
+                        guildName = row.Guild;
                         users.push(`\`[${' '.repeat(7 - row.TotalGP.toString().length) + row.TotalGP.toLocaleString()}] GP\` - ${row.Name}`);
                     });
 
@@ -83,13 +83,7 @@ class Guilds extends Command {
                         author: {
                             name: `Players in ${guildName}`
                         },
-                        description: desc,
-                        fields: [
-                            {
-                                name: 'For more info on a specific guilds:',
-                                value: '```;guilds <mention|allyCode|guildName>```'
-                            }
-                        ]
+                        description: desc
                     }});
                 });
             } else {
@@ -98,7 +92,7 @@ class Guilds extends Command {
                     console.log(user + ' ' +results);
                     let guildName;
                     results[0].forEach((row) => {
-                        guildName = row.guildName;
+                        guildName = row.Guild;
                         users.push(`\`[${' '.repeat(9 - row.TotalGP.toLocaleString().length) + row.TotalGP.toLocaleString()}] GP\` - ${row.pName}`);
                     });
 
@@ -107,13 +101,7 @@ class Guilds extends Command {
                         author: {
                             name: `Players in ${guildName}`
                         },
-                        description: desc,
-                        fields: [
-                            {
-                                name: 'For more info on a specific guilds:',
-                                value: '```;guilds <mention|allyCode|guildName>```'
-                            }
-                        ]
+                        description: desc
                     }});
                 });
             }
