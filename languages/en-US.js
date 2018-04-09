@@ -304,6 +304,21 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Guilds Command
+            COMMAND_GUILDS_HELP: {
+                description: "Shows the top guilds and everyone that's registered in yours.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';guild [user]',
+                        args: {
+                            "user": "A way to identify the guild. (mention | allyCode | guildName)"
+                        }
+                    }
+                ]
+            },
+
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: 'You can only choose a star level from 1-7',
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'You need to enter a character to check for',

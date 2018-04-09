@@ -1,0 +1,131 @@
+const Command = require('../base/Command');
+const mysql = require('mysql');
+
+class Guilds extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'guilds',
+            category: "SWGoH",
+            aliases: ['guild']
+        });
+    }
+
+    async run(client, message, [user, ...args], level) { // eslint-disable-line no-unused-vars
+        // basic, with no args, shows the top ## guilds (Based on how many have registered)
+        // <allyCode | mention | guildName >
+        
+        // Shows your guild's total GP, average GP, and a list of your members
+        const connection = mysql.createConnection({
+            host     : client.config.mySqlDB.host,
+            user     : client.config.mySqlDB.user,
+            password : client.config.mySqlDB.password,
+            database : client.config.mySqlDB.database
+        });
+
+        // Not trying to get any specific guild, show em the top ones
+        if (!user) {
+            const guilds = [];
+            await connection.query('CALL getAllGuilds();', function(err, results) {
+                results[0].forEach((row, ix) => {
+                    if (ix < 20) {
+                        guilds.push(`\`[${row.count > 9 ? row.count : '0' + row.count}] ${' '.repeat(10 - row.gp.toString().length) + row.gp.toLocaleString()} GP\` - ${row.guildName}`);
+                    }
+                });
+                
+                const desc = guilds.join('\n');
+                message.channel.send({embed: {
+                    author: {
+                        name: `Top ${Object.keys(guilds).length}/${results[0].length} Guilds`
+                    },
+                    description: desc,
+                    fields: [
+                        {
+                            name: 'For more info on a specific guilds:',
+                            value: '```;guilds <mention|allyCode|guildName>```'
+                        }
+                    ]
+                }});
+            });
+        } else {    // Else they want a specific guild
+            let type = 'userID';
+            // Get the user's ally code from the message or psql db
+            if (user === "me") {
+                user = message.author.id;
+            } else if (user.match(/\d{17,18}/)) {
+                user = user.replace(/[^\d]*/g, '');
+            } else if (user.match(/\d{9}/)) {
+                user = user.replace(/[^\d]*/g, '');
+                type = 'allyCode';
+            } else {
+                // Or, if they don't have one of those, try getting the guild by name
+                type = 'gName';
+            }
+
+            if (type === 'userID' || type === 'allyCode') {
+                let ally;
+                if (type === 'userID') {
+                    ally = await client.allyCodes.findOne({where: {id: user}});
+                    ally = ally.dataValues.allyCode;
+                } else {
+                    ally = user;
+                }
+                const users = [];
+                await connection.query('CALL getGuildByAllyCode( ? );', [ally], function(err, results) {
+                    // console.log(ally + ' ' +results);
+                    let guildName;
+                    results[0].forEach((row) => {
+                        guildName = row.guildName;
+                        users.push(`\`[${' '.repeat(7 - row.TotalGP.toString().length) + row.TotalGP.toLocaleString()}] GP\` - ${row.Name}`);
+                    });
+
+                    const desc = users.join('\n');
+                    message.channel.send({embed: {
+                        author: {
+                            name: `Players in ${guildName}`
+                        },
+                        description: desc,
+                        fields: [
+                            {
+                                name: 'For more info on a specific guilds:',
+                                value: '```;guilds <mention|allyCode|guildName>```'
+                            }
+                        ]
+                    }});
+                });
+            } else {
+                const users = [];
+                await connection.query("CALL getGuildByName( ? );", [user], function(err, results) {
+                    console.log(user + ' ' +results);
+                    let guildName;
+                    results[0].forEach((row) => {
+                        guildName = row.guildName;
+                        users.push(`\`[${' '.repeat(9 - row.TotalGP.toLocaleString().length) + row.TotalGP.toLocaleString()}] GP\` - ${row.pName}`);
+                    });
+
+                    const desc = users.join('\n');
+                    message.channel.send({embed: {
+                        author: {
+                            name: `Players in ${guildName}`
+                        },
+                        description: desc,
+                        fields: [
+                            {
+                                name: 'For more info on a specific guilds:',
+                                value: '```;guilds <mention|allyCode|guildName>```'
+                            }
+                        ]
+                    }});
+                });
+            }
+        }
+
+
+
+
+
+        connection.end();
+    }
+}
+
+module.exports = Guilds;
+
