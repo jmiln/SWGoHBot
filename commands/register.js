@@ -10,7 +10,8 @@ class Register extends Command {
     }
 
     async run(client, message, [action, userID, allyCode, ...args], level) { // eslint-disable-line no-unused-vars
-        if (!action) {
+        const acts = ['add', 'update', 'remove'];
+        if (!action|| !acts.includes(action.toLowerCase())) {
             return message.channel.send('You need to choose either `add`, `remove`, or `update`.');
         }
         if (!userID) {
@@ -95,9 +96,11 @@ class Register extends Command {
                             message.channel.send('Something went wrong, please try again.');
                         });
                 }
+                break;
+            default:
+                client.helpOut(message, this);
 
         }
-
     }
 }
 
