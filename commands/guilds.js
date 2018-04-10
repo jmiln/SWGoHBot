@@ -67,7 +67,6 @@ class Guilds extends Command {
                 min = true;
                 tUser.splice(tUser.indexOf('-min'), 1);
                 user = tUser;
-                console.log(user);
             }
 
             let totalGP = 0;
