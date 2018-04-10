@@ -554,42 +554,14 @@ module.exports = (client) => {
         await client.guildEvents.destroy({where: {eventID: event.eventID}})
             .then(async () => {
                 // If it's supposed to repeat, go ahead and put it back in    
-                if (repTime) {
-                    await client.guildEvents.create({
-                        eventID: newEvent.eventID,
-                        eventDT: newEvent.eventDT,
-                        eventMessage: newEvent.eventMessage,
-                        eventChan: newEvent.eventChan,
-                        countdown: newEvent.countdown,
-                        repeat: {
-                            "repeatDay": newEvent.repeat['repeatDay'],
-                            "repeatHour": newEvent.repeat['repeatHour'],
-                            "repeatMin": newEvent.repeat['repeatMin']
-                        },
-                        repeatDays: []
-                    })
+                if (repTime || repDay) {
+                    await client.guildEvents.create(newEvent)
                         .then(() => {
                             client.scheduleEvent(newEvent);
                         })
-                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
-                } else if (repDay) {
-                    await client.guildEvents.create({
-                        eventID: newEvent.eventID,
-                        eventDT: newEvent.eventDT,
-                        eventMessage: newEvent.eventMessage,
-                        eventChan: newEvent.eventChan,
-                        countdown: newEvent.countdown,
-                        repeat: {
-                            "repeatDay": 0,
-                            "repeatHour": 0,
-                            "repeatMin": 0
-                        },
-                        repeatDays: repDays
-                    })
-                        .then(() => {
-                            client.scheduleEvent(newEvent);
-                        })
-                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
+                        .catch(error => { 
+                            client.log('ERROR',`Broke trying to replace old event ${error}`); 
+                        });
                 }
             })
             .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
