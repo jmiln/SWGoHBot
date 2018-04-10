@@ -48,6 +48,7 @@ class Guilds extends Command {
             });
         } else {    // Else they want a specific guild
             let type = 'userID';
+            let min = false;
             // Get the user's ally code from the message or psql db
             if (user === "me") {
                 user = message.author.id;
@@ -60,6 +61,13 @@ class Guilds extends Command {
                 // Or, if they don't have one of those, try getting the guild by name
                 user = user + ' ' + args.join(' ');
                 type = 'gName';
+            }
+            const tUser = user.split(' ');
+            if (tUser.includes('-min')) {
+                min = true;
+                tUser.splice(tUser.indexOf('-min'), 1);
+                user = tUser;
+                console.log(user);
             }
 
             let totalGP = 0;
@@ -86,11 +94,11 @@ class Guilds extends Command {
                         author: {
                             name: `${results[0].length} Players in ${guildName}`
                         },
-                        description: desc,
+                        description: min ? '' : desc,
                         fields: [
                             {
                                 name: 'Registered Guild GP',
-                                value: '```Total GP: ' + totalGP.toLocaleString() + '\nAverage : ' + averageGP + '```' 
+                                value: '```Total GP: ' + totalGP.toLocaleString() + '\nAverage : ' + averageGP.toLocaleString() + '```' 
                             }
                         ]
                     }});
@@ -110,11 +118,11 @@ class Guilds extends Command {
                         author: {
                             name: `${results[0].length} Players in ${guildName}`
                         },
-                        description: desc,
+                        description: min ? '' : desc,
                         fields: [
                             {
                                 name: 'Registered Guild GP',
-                                value: '```Total GP : ' + totalGP + '\nAverage GP: ' + averageGP + '```' 
+                                value: '```Total GP: ' + totalGP.toLocaleString() + '\nAverage : ' + averageGP.toLocaleString() + '```' 
                             }
                         ]
                     }});
