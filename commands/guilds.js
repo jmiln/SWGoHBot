@@ -58,9 +58,12 @@ class Guilds extends Command {
                 type = 'allyCode';
             } else {
                 // Or, if they don't have one of those, try getting the guild by name
+                user = user + ' ' + args.join(' ');
                 type = 'gName';
             }
 
+            let totalGP = 0;
+            let averageGP = 0;
             if (type === 'userID' || type === 'allyCode') {
                 let ally;
                 if (type === 'userID') {
@@ -73,16 +76,23 @@ class Guilds extends Command {
                 await connection.query('CALL getGuildByAllyCode( ? );', [ally], function(err, results) {
                     let guildName;
                     results[0].forEach((row) => {
+                        totalGP += parseInt(row.TotalGP);
                         guildName = row.Guild;
-                        users.push(`\`[${' '.repeat(7 - row.TotalGP.toString().length) + row.TotalGP.toLocaleString()} GP]\` - **${row.Name}**`);
+                        users.push(`\`[${' '.repeat(9 - row.TotalGP.toLocaleString().length) + row.TotalGP.toLocaleString()} GP]\` - **${row.Name}**`);
                     });
-
+                    averageGP = Math.floor(totalGP / results[0].length).toLocaleString();
                     const desc = users.join('\n');
                     message.channel.send({embed: {
                         author: {
                             name: `${results[0].length} Players in ${guildName}`
                         },
-                        description: desc
+                        description: desc,
+                        fields: [
+                            {
+                                name: 'Registered Guild GP',
+                                value: '```Total GP: ' + totalGP.toLocaleString() + '\nAverage : ' + averageGP + '```' 
+                            }
+                        ]
                     }});
                 });
             } else {
@@ -90,25 +100,27 @@ class Guilds extends Command {
                 await connection.query("CALL getGuildByName( ? );", [user], function(err, results) {
                     let guildName;
                     results[0].forEach((row) => {
+                        totalGP += parseInt(row.TotalGP);
                         guildName = row.Guild;
                         users.push(`\`[${' '.repeat(9 - row.TotalGP.toLocaleString().length) + row.TotalGP.toLocaleString()} GP]\` - **${row.pName}**`);
                     });
-
+                    averageGP = totalGP / results[0].length;
                     const desc = users.join('\n');
                     message.channel.send({embed: {
                         author: {
                             name: `${results[0].length} Players in ${guildName}`
                         },
-                        description: desc
+                        description: desc,
+                        fields: [
+                            {
+                                name: 'Registered Guild GP',
+                                value: '```Total GP : ' + totalGP + '\nAverage GP: ' + averageGP + '```' 
+                            }
+                        ]
                     }});
                 });
             }
         }
-
-
-
-
-
         connection.end();
     }
 }
