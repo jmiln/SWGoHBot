@@ -245,7 +245,7 @@
             },
             "Rebel Force [680,000~]": {
                 "phase": ["Phase 1"],
-                "characters": ["Commandar Luke Skywalker (Z)", "R2-D2 (Z)", "Han Solo (Z)", "Wedge Antilles", "Biggs Darklighter"]
+                "characters": ["Commander Luke Skywalker (Z)", "R2-D2 (Z)", "Han Solo (Z)", "Wedge Antilles", "Biggs Darklighter"]
             },
             "Nightsisters [751,000~]": {
                 "phase": ["Phase 1"],
@@ -253,7 +253,7 @@
             },
             "Snackbar [400,000~]": {
                 "phase": ["Phase 1"],
-                "characters": ["Admiral Ackbar", "Hermit Yoda", "Han Solo (Z)", "Commandar Luke Skywalker (Z)", "General Kenobi"]
+                "characters": ["Admiral Ackbar", "Hermit Yoda", "Han Solo (Z)", "Commander Luke Skywalker (Z)", "General Kenobi"]
             },
             "Krennic Squad [2,400,000~]": {
                 "phase": ["Phase 1", "Phase 2"],
@@ -265,11 +265,11 @@
             },
             "JTR & Thrawn [5,300,000]": {
                 "phase": ["Phase 2"],
-                "characters": ["Rey (Jedi Training) (Z)", "R2-D2 (Z)", "Commandar Luke Skywalker (Z)", "Grand Admiral Thrawn", "BB-8 (Z)"]
+                "characters": ["Rey (Jedi Training) (Z)", "R2-D2 (Z)", "Commander Luke Skywalker (Z)", "Grand Admiral Thrawn", "BB-8 (Z)"]
             },
             "CLS Squad [1,300,000]": {
                 "phase": ["Phase 2"],
-                "characters": ["Commandar Luke Skywalker (Z)", "Hermit Yoda", "Obi-Wan Kenobi (Old Ben)", "Han Solo (Z)", "General Kenobi"]
+                "characters": ["Commander Luke Skywalker (Z)", "Hermit Yoda", "Obi-Wan Kenobi (Old Ben)", "Han Solo (Z)", "General Kenobi"]
             },
             "JTR & Friends [6,000,000]": {
                 "phase": ["Phase 2"],
