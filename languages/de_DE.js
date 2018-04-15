@@ -29,7 +29,6 @@ const DAYSOFWEEK = {
         LONG: 'Samstag'
     }
 };
-
 const TIMES = {
     DAY: {
         PLURAL: 'Tage',
@@ -519,20 +518,6 @@ module.exports = class extends Language {
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger ally code`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Bitte warten waehrend ich die Daten synchronisiere.',
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
-            COMMAND_REGISTER_HELP: {
-                description: "Registriert deinen ally code zu deiner Discord ID, und synchronisiert dein SWGoH Profil.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';register <user> <allyCode>',
-                        args: {
-                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
-                            "allyCode": "Dein Ally Code aus dem Spiel."
-                        }
-                    }
-                ]
-            },
 
             // Reload Command
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `Ich kann das Kommando nicht finden: ${cmd}`,

@@ -106,6 +106,7 @@ class Guilds extends Command {
                 const users = [];
                 await connection.query("CALL getGuildByName( ? );", [user], function(err, results) {
                     let guildName;
+                    if (!results) return message.channel.send('No results found.');
                     results[0].forEach((row) => {
                         totalGP += parseInt(row.TotalGP);
                         guildName = row.Guild;

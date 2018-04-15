@@ -16,7 +16,7 @@ class Language {
             }
         } else {
             // console.log(args)
-            return args.length ? this.language[str](...args) : this.language[str];
+            return (args.length > 0 && typeof this.language[str] === 'function') ? this.language[str](...args) : this.language[str];
         }
     }
 }
