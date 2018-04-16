@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
         guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
         // If we don't have permission to respond, don't bother
-        if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')) return;
+        if (!message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
     }
     
 
