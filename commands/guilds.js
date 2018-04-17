@@ -76,7 +76,7 @@ class Guilds extends Command {
                 if (type === 'userID') {
                     ally = await client.allyCodes.findOne({where: {id: user}});
                     if (!ally) {
-                        return message.channel.send(message.language.get('BASE_SWGOH_NOT_REG', client.users.get(userID).tag));
+                        return message.channel.send(message.language.get('BASE_SWGOH_NOT_REG', client.users.get(user).tag));
                     }
                     ally = ally.dataValues.allyCode;
                 } else {
