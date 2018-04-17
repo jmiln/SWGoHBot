@@ -68,6 +68,7 @@ module.exports = async (client, message) => {
             const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
 
             if (missingPerms.length > 0) {
+                missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace('_', ' ').toProperCase();});
                 try {
                     return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(', ')}\``);
                 } catch (err) { 
