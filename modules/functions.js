@@ -359,15 +359,7 @@ module.exports = (client) => {
      */
     client.isUserID = async (numStr) => {
         const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
-        if (!match) {
-            return false;
-        }
-        const id = match[1];
-        const check = await client.users.fetch(id);
-        if (check.username !== undefined) {
-            return true;
-        }
-        return false;
+        return match ? true : false;
     };
 
     /*
