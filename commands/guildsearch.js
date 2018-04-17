@@ -6,7 +6,8 @@ class GuildSearch extends Command {
         super(client, {
             name: 'guildsearch',
             category: "SWGoH",
-            aliases: ['search']
+            aliases: ['search'],
+            permissions: ['EMBED_LINKS']
         });
     }
 

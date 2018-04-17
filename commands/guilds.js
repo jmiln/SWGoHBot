@@ -6,7 +6,8 @@ class Guilds extends Command {
         super(client, {
             name: 'guilds',
             category: "SWGoH",
-            aliases: ['guild']
+            aliases: ['guild'],
+            permissions: ['EMBED_LINKS']
         });
     }
 

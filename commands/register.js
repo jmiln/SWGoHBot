@@ -19,7 +19,7 @@ class Register extends Command {
         } else {
             if (userID === 'me') {
                 userID = message.author.id;
-            } else if (userID.match(/\d{17,18}/)) {
+            } else if (client.isUserID(userID)) {
                 userID = userID.replace(/[^\d]*/g, '');
                 // If they are trying to add someone else and they don't have the right perms, stop em
                 if (userID !== message.author.id && level < 3) {
@@ -39,7 +39,7 @@ class Register extends Command {
                 if (!allyCode) {
                     return message.channel.send(message.language.get('COMMAND_REGISTER_MISSING_ALLY'));
                 } else {
-                    if (allyCode.replace(/[^\d]*/g, '').match(/\d{9}/)) {
+                    if (client.isAllyCode(allyCode)) {
                         allyCode = allyCode.replace(/[^\d]*/g, '');
                     } else {
                         // Bad code, grumblin time

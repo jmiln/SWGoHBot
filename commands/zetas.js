@@ -7,7 +7,8 @@ class Zetas extends Command {
             name: 'zetas',
             guildOnly: true,
             category: "SWGoH",
-            aliases: ['zeta']
+            aliases: ['zeta'],
+            permissions: ['EMBED_LINKS']
         });
     }
 

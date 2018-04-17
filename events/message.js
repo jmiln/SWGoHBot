@@ -57,6 +57,26 @@ module.exports = async (client, message) => {
 
     // If the command exists, **AND** the user has permission, run it.
     if (cmd && level >= cmd.conf.permLevel) {
+        if (message.guild) {
+            const defPerms = ['SEND_MESSAGES', 'VIEW_CHANNEL'];
+            if (args.length === 1 && args[0].toLowerCase() === 'help') {
+                // If they want the help, it's embeds now, so they need that activated
+                defPerms.push('EMBED_LINKS');
+            }
+            // Merge the permission arrays to make sure it has at least the minimum
+            const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
+            const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
+
+            if (missingPerms.length > 0) {
+                try {
+                    return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(', ')}\``);
+                } catch (err) { 
+                    /* stuff */ 
+                    console.log('Broke trying to report missing Perms for (${cmd.help.name}): ' + err);
+                }
+            }
+        }
+
         // If they're just looking for the help, don't bother going through the command
         if (args.length === 1 && args[0].toLowerCase() === 'help') {
             client.helpOut(message, cmd);

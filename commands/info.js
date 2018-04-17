@@ -5,7 +5,8 @@ class Info extends Command {
         super(client, {
             aliases: ['invite', 'inv'],
             name: 'info',
-            category: 'Misc'
+            category: 'Misc',
+            permissions: ['EMBED_LINKS']
         });
     }
 

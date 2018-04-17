@@ -8,7 +8,8 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['shard'],
-    permLevel: 0
+    permLevel: 0,
+    permissions: ['EMBED_LINKS']
 };
 
 exports.help = {
