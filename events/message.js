@@ -85,7 +85,7 @@ module.exports = async (client, message) => {
             try {
                 cmd.run(client, message, args, level);
             } catch (err) {
-                client.log('ERROR', `Command ${cmd.help.name} broke: ${err}`);
+                client.log('ERROR', `I broke: ${err}`, cmd.help.name.toProperCase());
             }
         }
         if (client.config.logs.logComs) {
