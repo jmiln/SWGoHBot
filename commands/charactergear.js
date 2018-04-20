@@ -19,7 +19,7 @@ class Charactergear extends Command {
 
         // Figure out where the gear level is in the command, and grab it
         let gearLvl = '';
-        if (!args[0]) return message.channel.send(message.language.COMMAND_CHARGEAR_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+        if (!args[0]) return message.channel.send(message.language.get('COMMAND_CHARGEAR_NEED_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
 
         if (args[1]) {
             gearLvl = parseInt(args[args.length - 1].replace(/\D/g, ''));
@@ -48,13 +48,13 @@ class Charactergear extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.COMMAND_CHARGEAR_NEED_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_CHARGEAR_NEED_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
         }
 
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
         if (!chars || chars.length <= 0) {
-            return message.channel.send(message.language.COMMAND_CHARGEAR_INVALID_CHARACTER(config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_CHARGEAR_INVALID_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
         }
 
         if (gearLvl === '') {
@@ -76,7 +76,7 @@ class Charactergear extends Command {
                 for (var key in allGear) {
                     gearString += `* ${allGear[key]}x ${key}\n`;
                 }
-                message.channel.send(message.language.COMMAND_CHARGEAR_GEAR_ALL(character.name, gearString), {
+                message.channel.send(message.language.get('COMMAND_CHARGEAR_GEAR_ALL', character.name, gearString), {
                     code: 'md',
                     split: true
                 });
@@ -96,7 +96,7 @@ class Charactergear extends Command {
                             },
                             "fields": [{
                                 "name": gearLvl,
-                                "value": `* ${thisGear.length > 0 ? thisGear.join('\n* ') : message.language.COMMAND_CHARGEAR_GEAR_NA}`
+                                "value": `* ${thisGear.length > 0 ? thisGear.join('\n* ') : message.language.get('COMMAND_CHARGEAR_GEAR_NA')}`
                             }]
                         }
                     });

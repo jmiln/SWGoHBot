@@ -16,11 +16,11 @@ class Arenarank extends Command {
     run(client, message, args) {
         const currentRank = parseInt(args[0]);
         if (isNaN(currentRank) || !currentRank) {
-            return message.channel.send(message.language.COMMAND_ARENARANK_INVALID_NUMBER);
+            return message.channel.send(message.language.get('COMMAND_ARENARANK_INVALID_NUMBER'));
         }
 
         // If they are rank 1, don't bother calculating anything
-        if (currentRank === 1) return message.channel.send(message.language.COMMAND_ARENARANK_BEST_RANK);
+        if (currentRank === 1) return message.channel.send(message.language.get('COMMAND_ARENARANK_BEST_RANK'));
         
         // Mark em as estimates if needed
         let est = false;
@@ -28,23 +28,23 @@ class Arenarank extends Command {
 
 
         // Loop through findRank up to 5 times, breaking if it returns 1
-		const arenaBattles = [currentRank];
-		for (let battle = 0; battle < 5; battle++) {
-			const  newRank = findNextRank(arenaBattles[arenaBattles.length-1]);
-			arenaBattles.push(newRank);
-			if (newRank === 1) break;
-		}
+        const arenaBattles = [currentRank];
+        for (let battle = 0; battle < 5; battle++) {
+            const  newRank = findNextRank(arenaBattles[arenaBattles.length-1]);
+            arenaBattles.push(newRank);
+            if (newRank === 1) break;
+        }
 
-        return message.channel.send(message.language.COMMAND_ARENARANK_RANKLIST(currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? 's' : '', est ? '**(estimate)**' : '', arenaBattles.join(' → '))); 
+        return message.channel.send(message.language.get('COMMAND_ARENARANK_RANKLIST', currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? 's' : '', est ? '**(estimate)**' : '', arenaBattles.join(' → '))); 
 
 
         function findNextRank(currentRank) {
-			if (arenaJumps.hasOwnProperty(currentRank)) {
-				return arenaJumps[currentRank];
-			} else {
-				return Math.floor(currentRank * 0.85);
-			}
-		}
+            if (arenaJumps.hasOwnProperty(currentRank)) {
+                return arenaJumps[currentRank];
+            } else {
+                return Math.floor(currentRank * 0.85);
+            }
+        }
     }    
 }
 

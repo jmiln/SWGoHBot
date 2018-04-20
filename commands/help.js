@@ -5,7 +5,8 @@ class Help extends Command {
         super(client, {
             name: 'help',
             aliases: ['h'],
-            category: 'Misc'
+            category: 'Misc',
+            permissions: ['EMBED_LINKS']
         });
     }
 
@@ -20,15 +21,15 @@ class Help extends Command {
             const commandList = client.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
             const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
 
-            let output = message.language.COMMAND_HELP_HEADER(config.prefix);
+            let output = message.language.get('COMMAND_HELP_HEADER', config.prefix);
 
             commandList.forEach(c => {
                 const cat = c.help.category.toProperCase();
                 // If the categry isn't there, then make it
                 if (!help[cat]) {
-                    help[cat] = `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language[`COMMAND_${c.help.name.toUpperCase()}_HELP`].description}\n`;
+                    help[cat] = `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language.get(`COMMAND_${c.help.name.toUpperCase()}_HELP`).description}\n`;
                 } else {
-                    help[cat] += `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language[`COMMAND_${c.help.name.toUpperCase()}_HELP`].description}\n`;
+                    help[cat] += `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language.get(`COMMAND_${c.help.name.toUpperCase()}_HELP`).description}\n`;
                 }
             });
             const sortedCat = Object.keys(help).sort((p, c) => p > c ? 1 : -1);
@@ -43,7 +44,7 @@ class Help extends Command {
             } else if (client.aliases.has(args[0])) {
                 command = client.commands.get(client.aliases.get(args[0]));
             } else {
-                return message.channel.send(message.language.COMMAND_RELOAD_INVALID_CMD(args[0]));
+                return message.channel.send(message.language.get('COMMAND_RELOAD_INVALID_CMD', args[0]));
             }
             
             client.helpOut(message, command);

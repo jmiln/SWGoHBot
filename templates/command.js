@@ -9,6 +9,7 @@ class CommandName extends Command {
             enabled: true, 
             guildOnly: true,
             aliases: [],
+            permissions: [],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
             permLevel: 0
         });
     }
@@ -16,7 +17,7 @@ class CommandName extends Command {
     async run(client, message, [action, ...args], level) { // eslint-disable-line no-unused-vars
         // Whatever the command needs to do here
         // Message is the Discord message object, action is the first argument after the command call.
-        // the ...args is the rest of the message content. 
+        // the ...args is an array of the rest of the message content. 
         // level is the permLevel of the message author. 10 for bot owner, 3 for server admin, 0 for everyone else
     }
 }

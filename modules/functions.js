@@ -56,6 +56,13 @@ module.exports = (client) => {
             threshold: .1,
             distance: 4
         };
+        // Make it so it only returns the one if it's exact
+        for (let ix = 0; ix < charList.length; ix++) {
+            if (charList[ix].name.toLowerCase() === searchName.toLowerCase()) {
+                return [charList[ix]];
+            }
+        }
+        // If it's not exact, send back the big mess
         const fuse = new Fuse(charList, options);
         let chars = fuse.search(searchName);
         // If there's a ton of em, only return the first 4
@@ -64,6 +71,8 @@ module.exports = (client) => {
         }
         return chars;
     };
+
+
 
     // This find one character that matches the search, and returns it
     client.findCharByName = (searchName, charList) => {
@@ -90,7 +99,7 @@ module.exports = (client) => {
             if (client.config.logs.logToChannel) {
                 if (client.channels.has(chan)) {
                     client.sendMsg(chan, mess, args);
-                } else {
+                } else if (client.shard && client.shard.count > 0) {
                     // If it's on a different shard, then send it there 
                     client.shard.broadcastEval(`
                         const thisChan = ${util.inspect(chan)};
@@ -165,15 +174,6 @@ module.exports = (client) => {
         }
     };
 
-
-    /*
-     * COMMAND ERROR
-     * Spits back the correct usage and such for a command
-     */
-    client.cmdErr = (message, command) => {
-        message.channel.send(`**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`);
-    };
-
     /*
      * RELOAD COMMAND
      * Reloads the given command
@@ -210,11 +210,7 @@ module.exports = (client) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question);
         try {
-            const collected = await msg.channel.awaitMessages(filter, {
-                max: 1,
-                time: limit,
-                errors: ["time"]
-            });
+            const collected = await msg.channel.awaitMessages(filter, {max: 1, time: limit, errors: ["time"]});
             return collected.first().content;
         } catch (e) {
             return false;
@@ -255,18 +251,6 @@ module.exports = (client) => {
     // `await wait(1000);` to "pause" for 1 second.
     global.wait = require("util").promisify(setTimeout);
 
-
-    // Another semi-useful utility command, which creates a "range" of numbers
-    // in an array. `range(10).forEach()` loops 10 times for instance. Why?
-    // Because honestly for...i loops are ugly.
-    global.range = (count, start = 0) => {
-        const myArr = [];
-        for (var i = 0; i < count; i++) {
-            myArr[i] = i + start;
-        }
-        return myArr;
-    };
-
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
@@ -303,12 +287,12 @@ module.exports = (client) => {
      */
     client.helpOut = (message, command) => {
         const language = message.language;
-        const help = language[`COMMAND_${command.help.name.toUpperCase()}_HELP`];
+        const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
         const actions = help.actions.slice();
         let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(', ') : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
 
         // Stick the extra help bit in
-        actions.push(language.BASE_COMMAND_HELP_HELP(command.help.name.toLowerCase()));
+        actions.push(language.get('BASE_COMMAND_HELP_HELP', command.help.name.toLowerCase()));
         const actionArr = [];
 
         actions.forEach(action => {
@@ -331,7 +315,7 @@ module.exports = (client) => {
         message.channel.send({embed: {
             "color": 0x605afc,
             "author": {
-                "name": language.BASE_COMMAND_HELP_HEADER(command.help.name)
+                "name": language.get('BASE_COMMAND_HELP_HEADER', command.help.name)
             },
             "description": headerString,
             "fields": actionArr
@@ -344,8 +328,7 @@ module.exports = (client) => {
      *  Input an array of strings, and it will put them together so that it 
      *  doesn't exceed the 2000 character limit of Discord mesages.
      */
-    client.msgArray = (arr, join='\n') => {
-        const maxLen = 1900;
+    client.msgArray = (arr, join='\n', maxLen=1900) => {
         const messages = [];
         arr.forEach((elem) => {
             if  (messages.length === 0) {
@@ -361,6 +344,34 @@ module.exports = (client) => {
         });
         return messages;
     };
+
+    /*
+     * CODE BLOCK MAKER
+     * Makes a codeblock with the specified lang for highlighting.
+     */
+    client.codeBlock = (lang, str) => {
+        return `\`\`\`${lang}\n${str}\`\`\``;
+    };
+
+    /*
+     * isUserID
+     * Check if a string of numbers is a valid user.
+     */
+    client.isUserID = async (numStr) => {
+        const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
+        return match ? true : false;
+    };
+
+    /*
+     * isAllyCode
+     * Check if a string of numbers is a valid ally code.
+     */
+    client.isAllyCode = (aCode) => {
+        const match = aCode.replace(/[^\d]*/g, '').match(/\d{9}/);
+        return match ? true : false;
+    };
+
+
 
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
@@ -454,8 +465,8 @@ module.exports = (client) => {
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format("h [hr], m [min]");
-        var announceMessage = client.languages[guildConf.language].BASE_EVENT_STARTING_IN_MSG(eventName, timeToGo);
+        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format(`h [${client.languages[guildConf.language].getTime('HOUR', 'SHORT_SING')}], m [${client.languages[guildConf.language].getTime('MINUTE', 'SHORT_SING')}]`);
+        var announceMessage = client.languages[guildConf.language].get('BASE_EVENT_STARTING_IN_MSG', eventName, timeToGo);
     
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
@@ -500,7 +511,7 @@ module.exports = (client) => {
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
             if (repDays.length === 1) {
-                eventMsg += client.languages[guildConf.language].BASE_LAST_EVENT_NOTIFICATOIN;
+                eventMsg += client.languages[guildConf.language].get('BASE_LAST_EVENT_NOTIFICATION');
             }
             newEvent = {
                 "eventID": event.eventID,
@@ -535,42 +546,14 @@ module.exports = (client) => {
         await client.guildEvents.destroy({where: {eventID: event.eventID}})
             .then(async () => {
                 // If it's supposed to repeat, go ahead and put it back in    
-                if (repTime) {
-                    await client.guildEvents.create({
-                        eventID: newEvent.eventID,
-                        eventDT: newEvent.eventDT,
-                        eventMessage: newEvent.eventMessage,
-                        eventChan: newEvent.eventChan,
-                        countdown: newEvent.countdown,
-                        repeat: {
-                            "repeatDay": newEvent.repeat['repeatDay'],
-                            "repeatHour": newEvent.repeat['repeatHour'],
-                            "repeatMin": newEvent.repeat['repeatMin']
-                        },
-                        repeatDays: []
-                    })
+                if (repTime || repDay) {
+                    await client.guildEvents.create(newEvent)
                         .then(() => {
                             client.scheduleEvent(newEvent);
                         })
-                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
-                } else if (repDay) {
-                    await client.guildEvents.create({
-                        eventID: newEvent.eventID,
-                        eventDT: newEvent.eventDT,
-                        eventMessage: newEvent.eventMessage,
-                        eventChan: newEvent.eventChan,
-                        countdown: newEvent.countdown,
-                        repeat: {
-                            "repeatDay": 0,
-                            "repeatHour": 0,
-                            "repeatMin": 0
-                        },
-                        repeatDays: repDays
-                    })
-                        .then(() => {
-                            client.scheduleEvent(newEvent);
-                        })
-                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
+                        .catch(error => { 
+                            client.log('ERROR',`Broke trying to replace old event ${error}`); 
+                        });
                 }
             })
             .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });

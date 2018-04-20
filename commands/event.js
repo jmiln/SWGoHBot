@@ -45,7 +45,7 @@ class Event extends Command {
         let repeatMin = 0;
         let dayList = [];
 
-        if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(message.language.COMMAND_EVENT_INVALID_ACTION(actions.join(', '))).then(msg => msg.delete(10000)).catch(console.error);
+        if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(message.language.get('COMMAND_EVENT_INVALID_ACTION', actions.join(', '))).then(msg => msg.delete(10000)).catch(console.error);
         action = args[0].toLowerCase();
 
         if (action === "create" || action === "delete" || action === "trigger") {
@@ -92,7 +92,7 @@ class Event extends Command {
 
                 // If they try and set a repeat time and a repeating day schedule, tell em to pick just one
                 if (repeatDays !== '0' && repeatTime !== '0') {
-                    return message.channel.send(message.language.COMMAND_EVENT_ONE_REPEAT);
+                    return message.channel.send(message.language.get('COMMAND_EVENT_ONE_REPEAT'));
                 }
 
                 // If the repeat is set, try to parse it
@@ -104,7 +104,7 @@ class Event extends Command {
                         repeatTime = repeatTime.replace(/^\d{1,2}h/, '');
                         repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf('m')));
                     } else {
-                        return message.channel.send(message.language.COMMAND_EVENT_INVALID_REPEAT).then(msg => msg.delete(10000));
+                        return message.channel.send(message.language.get('COMMAND_EVENT_INVALID_REPEAT')).then(msg => msg.delete(10000));
                     }
                 } else if (repeatTime === '') {
                     repeatTime = '0';
@@ -115,7 +115,7 @@ class Event extends Command {
                     if (repeatDays.match(dayReg)) {
                         dayList = repeatDays.split(',');
                     } else {
-                        return message.channel.send(message.language.COMMAND_EVENT_USE_COMMAS);
+                        return message.channel.send(message.language.get('COMMAND_EVENT_USE_COMMAS'));
                     }
                 }
 
@@ -127,15 +127,15 @@ class Event extends Command {
                 if (eventChan !== '') {
                     const checkChan = message.guild.channels.find('name', eventChan);
                     if (!checkChan) {   // Make sure it's a real channel
-                        return message.channel.send(message.language.COMMAND_EVENT_INVALID_CHAN).then(msg => msg.delete(10000));
+                        return message.channel.send(message.language.get('COMMAND_EVENT_INVALID_CHAN')).then(msg => msg.delete(10000));
                     } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {   // Make sure it can send messages there
-                        return message.channel.send(message.language.COMMAND_EVENT_CHANNEL_NO_PERM(checkChan)).then(msg => msg.delete(10000));
+                        return message.channel.send(message.language.get('COMMAND_EVENT_CHANNEL_NO_PERM', checkChan)).then(msg => msg.delete(10000));
                     }
                 } else if (!announceChannel) {
-                    return message.channel.send(message.language.COMMAND_EVENT_NEED_CHAN).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get('COMMAND_EVENT_NEED_CHAN')).then(msg => msg.delete(10000)).catch(console.error);
                 }
 
-                if (!args[1]) return message.channel.send(message.language.COMMAND_EVENT_NEED_NAME).then(msg => msg.delete(10000)).catch(console.error);
+                if (!args[1]) return message.channel.send(message.language.get('COMMAND_EVENT_NEED_NAME')).then(msg => msg.delete(10000)).catch(console.error);
                 eventName = args[1];
 
                 // Check if that name/ event already exists
@@ -143,17 +143,17 @@ class Event extends Command {
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
                 if (exists) {
-                    return message.channel.send(message.language.COMMAND_EVENT_EVENT_EXISTS).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get('COMMAND_EVENT_EVENT_EXISTS')).then(msg => msg.delete(10000)).catch(console.error);
                 }
 
-                if (!args[2]) return message.channel.send(message.language.COMMAND_EVENT_NEED_DATE).then(msg => msg.delete(10000)).catch(console.error);
+                if (!args[2]) return message.channel.send(message.language.get('COMMAND_EVENT_NEED_DATE')).then(msg => msg.delete(10000)).catch(console.error);
                 if (!momentTZ(args[2], 'D/M/YYYY').isValid()) { 
-                    return message.channel.send(message.language.COMMAND_EVENT_BAD_DATE(args[2])).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get('COMMAND_EVENT_BAD_DATE', args[2])).then(msg => msg.delete(10000)).catch(console.error);
                 }
 
-                if (!args[3]) return message.channel.send(message.language.COMMAND_EVENT_NEED_TIME).then(msg => msg.delete(10000)).catch(console.error);
+                if (!args[3]) return message.channel.send(message.language.get('COMMAND_EVENT_NEED_TIME')).then(msg => msg.delete(10000)).catch(console.error);
                 if (!momentTZ(args[3], 'H:mm').isValid()) {
-                    return message.channel.send(message.language.COMMAND_EVEMT_INVALID_TIME).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get('COMMAND_EVEMT_INVALID_TIME')).then(msg => msg.delete(10000)).catch(console.error);
                 }
 
                 const eventDT = momentTZ.tz(`${args[2]} ${args[3]}`, 'DD/MM/YYYY H:mm', guildConf.timezone).unix() * 1000;
@@ -166,13 +166,13 @@ class Event extends Command {
                 
                 if ((eventMessage.length + eventName.length) > maxSize) {
                     const currentSize = eventMessage.length + eventName.length;
-                    return message.channel.send(message.language.COMMAND_EVENT_TOO_BIG(currentSize-maxSize));
+                    return message.channel.send(message.language.get('COMMAND_EVENT_TOO_BIG', currentSize-maxSize));
                 }
 
                 if (momentTZ(eventDT).isBefore(momentTZ())) {
                     var eventDATE = momentTZ.tz(eventDT, guildConf.timezone).format('D/M/YYYY H:mm');
                     var nowDATE = momentTZ().tz(guildConf['timezone']).format('D/M/YYYY H:mm');
-                    return message.channel.send(message.language.COMMAND_EVENT_PAST_DATE(eventDATE, nowDATE)).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get('COMMAND_EVENT_PAST_DATE', eventDATE, nowDATE)).then(msg => msg.delete(10000)).catch(console.error);
                 }
                 const newEvent = {
                     eventID: `${message.guild.id}-${eventName}`,
@@ -190,11 +190,11 @@ class Event extends Command {
                 client.scheduleEvent(newEvent);
                 await client.guildEvents.create(newEvent)
                     .then(() => {
-                        return message.channel.send(message.language.COMMAND_EVENT_CREATED(eventName, momentTZ.tz(eventDT, guildConf.timezone).format('MMM Do YYYY [at] H:mm')));  
+                        return message.channel.send(message.language.get('COMMAND_EVENT_CREATED', eventName, momentTZ.tz(eventDT, guildConf.timezone).format('MMM Do YYYY [at] H:mm')));  
                     })
                     .catch(error => { 
                         client.log('ERROR',`Broke trying to create new event ${error}`); 
-                        return message.channel.send(message.language.COMMAND_EVENT_NO_CREATE);  
+                        return message.channel.send(message.language.get('COMMAND_EVENT_NO_CREATE'));  
                     });
                 break;
             } case "view": {
@@ -218,30 +218,30 @@ class Event extends Command {
                     // If they are looking to show a specific event
                     const guildEvents = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${args[1]}`}});
                     if (!guildEvents) {
-                        return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(args[1]));
+                        return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', args[1]));
                     }
                     const thisEvent = guildEvents.dataValues; 
                     if (thisEvent) {
                         const eventName = thisEvent.eventID.split('-')[1];
                         const eventDate = momentTZ(parseInt(thisEvent.eventDT)).tz(guildConf.timezone).format('MMM Do YYYY [at] H:mm');
                         
-                        let eventString = message.language.COMMAND_EVENT_TIME(eventName, eventDate);
-                        eventString += message.language.COMMAND_EVENT_TIME_LEFT(momentTZ.duration(momentTZ().diff(momentTZ(parseInt(thisEvent.eventDT)), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
+                        let eventString = message.language.get('COMMAND_EVENT_TIME', eventName, eventDate);
+                        eventString += message.language.get('COMMAND_EVENT_TIME_LEFT', momentTZ.duration(momentTZ().diff(momentTZ(parseInt(thisEvent.eventDT)), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
                         if (thisEvent.eventChan !== '') {
-                            eventString += message.language.COMMAND_EVENT_CHAN(thisEvent.eventChan);
+                            eventString += message.language.get('COMMAND_EVENT_CHAN', thisEvent.eventChan);
                         }
                         if (thisEvent['repeatDays'].length > 0) {
-                            eventString += message.language.COMMAND_EVENT_SCHEDULE(thisEvent.repeatDays.join(', '));
+                            eventString += message.language.get('COMMAND_EVENT_SCHEDULE', thisEvent.repeatDays.join(', '));
                         } else if (thisEvent['repeat'] && (thisEvent.repeat['repeatDay'] !== 0 || thisEvent.repeat['repeatHour'] !== 0 || thisEvent.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-                            eventString += message.language.COMMAND_EVENT_REPEAT(thisEvent.repeat['repeatDay'], thisEvent.repeat['repeatHour'], thisEvent.repeat['repeatMin']);
+                            eventString += message.language.get('COMMAND_EVENT_REPEAT', thisEvent.repeat['repeatDay'], thisEvent.repeat['repeatHour'], thisEvent.repeat['repeatMin']);
                         }
                         if (!minArgs.min && thisEvent.eventMessage != '') {
                             // If they want to show all available events without the eventMessage showing
-                            eventString += message.language.COMMAND_EVENT_MESSAGE(removeTags(message, thisEvent.eventMessage));
+                            eventString += message.language.get('COMMAND_EVENT_MESSAGE', removeTags(message, thisEvent.eventMessage));
                         }
                         return message.channel.send(eventString);
                     } else {
-                        return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(args[1]));
+                        return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', args[1]));
                     }
                 } else {     
                     // Grab all events for this guild
@@ -273,35 +273,35 @@ class Event extends Command {
                         const eventName = event.eventID.split('-')[1];
                         const eventDate = momentTZ(parseInt(event.eventDT)).tz(guildConf.timezone).format('MMM Do YYYY [at] H:mm');
                         
-                        let eventString = message.language.COMMAND_EVENT_TIME(eventName, eventDate);
-                        eventString += message.language.COMMAND_EVENT_TIME_LEFT(momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
+                        let eventString = message.language.get('COMMAND_EVENT_TIME', eventName, eventDate);
+                        eventString += message.language.get('COMMAND_EVENT_TIME_LEFT', momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
                         if (event.eventChan !== '') {
-                            eventString += message.language.COMMAND_EVENT_CHAN(event.eventChan);
+                            eventString += message.language.get('COMMAND_EVENT_CHAN', event.eventChan);
                         }
                         if (event['repeatDays'].length > 0) {
-                            eventString += message.language.COMMAND_EVENT_SCHEDULE(event.repeatDays.join(', '));
+                            eventString += message.language.get('COMMAND_EVENT_SCHEDULE', event.repeatDays.join(', '));
                         } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
-                            eventString += message.language.COMMAND_EVENT_REPEAT(event.repeat['repeatDay'], event.repeat['repeatHour'], event.repeat['repeatMin']);
+                            eventString += message.language.get('COMMAND_EVENT_REPEAT', event.repeat['repeatDay'], event.repeat['repeatHour'], event.repeat['repeatMin']);
                         }
                         if (!minArgs.min && event.eventMessage != '') {
                             // If they want to show all available events with the eventMessage showing
                             const msg = removeTags(message, event.eventMessage);
-                            eventString += message.language.COMMAND_EVENT_MESSAGE(msg);
+                            eventString += message.language.get('COMMAND_EVENT_MESSAGE', msg);
                         }
                         array.push(eventString);
                     });
                     const evArray = client.msgArray(array, '\n\n');
                     try {
                         if (evArray.length === 0) {
-                            return message.channel.send(message.language.COMMAND_EVENT_NO_EVENT);
+                            return message.channel.send(message.language.get('COMMAND_EVENT_NO_EVENT'));
                         } else {
                             if (evArray.length > 1) {
                                 evArray.forEach((evMsg, ix) => {
                                     if (guildConf['useEventPages']) {
-                                        return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg), {split: true});
+                                        return message.channel.send(message.language.get('COMMAND_EVENT_SHOW_PAGED', eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg), {split: true});
                                     } else {
                                         if (ix === 0) {
-                                            return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, evMsg), {split: true});
+                                            return message.channel.send(message.language.get('COMMAND_EVENT_SHOW', eventCount, evMsg), {split: true});
                                         } else {
                                             return message.channel.send(evMsg, {split: true});
                                         }
@@ -309,9 +309,9 @@ class Event extends Command {
                                 });
                             } else {
                                 if (guildConf['useEventPages']) {
-                                    return message.channel.send(message.language.COMMAND_EVENT_SHOW_PAGED(eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
+                                    return message.channel.send(message.language.get('COMMAND_EVENT_SHOW_PAGED',eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
                                 } else {
-                                    return message.channel.send(message.language.COMMAND_EVENT_SHOW(eventCount, evArray[0]), {split: true});
+                                    return message.channel.send(message.language.get('COMMAND_EVENT_SHOW',eventCount, evArray[0]), {split: true});
                                 }
                             }
                         }
@@ -321,7 +321,7 @@ class Event extends Command {
                 }
                 break;
             } case "delete": {
-                if (!args[1]) return message.channel.send(message.language.COMMAND_EVENT_DELETE_NEED_NAME).then(msg => msg.delete(10000)).catch(console.error);
+                if (!args[1]) return message.channel.send(message.language.get('COMMAND_EVENT_DELETE_NEED_NAME')).then(msg => msg.delete(10000)).catch(console.error);
                 eventName = args[1];
                 const eventID = `${message.guild.id}-${eventName}`;
                 // Check if that name/ event exists
@@ -330,12 +330,12 @@ class Event extends Command {
                     .then(isUnique => isUnique);
                 if (exists) {
                     client.deleteEvent(eventID);
-                    return message.channel.send(message.language.COMMAND_EVENT_DELETED(eventName));
+                    return message.channel.send(message.language.get('COMMAND_EVENT_DELETED', eventName));
                 } else {
-                    return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(eventName)).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', eventName)).then(msg => msg.delete(10000)).catch(console.error);
                 }
             } case "trigger": {
-                if (!args[1]) return message.channel.send(message.language.COMMAND_EVENT_TRIGGER_NEED_NAME).then(msg => msg.delete(10000)).catch(console.error);
+                if (!args[1]) return message.channel.send(message.language.get('COMMAND_EVENT_TRIGGER_NEED_NAME')).then(msg => msg.delete(10000)).catch(console.error);
                 eventName = args[1];
 
                 const exists = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
@@ -344,7 +344,7 @@ class Event extends Command {
 
                 // Check if that name/ event already exists
                 if (!exists) {
-                    return message.channel.send(message.language.COMMAND_EVENT_UNFOUND_EVENT(eventName)).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', eventName)).then(msg => msg.delete(10000)).catch(console.error);
                 } else {
                     const events = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
                     const event = events.dataValues;
@@ -417,7 +417,13 @@ class Event extends Command {
             if (roleResult !== null) {
                 roleResult.forEach(role => {
                     const roleID = role.replace(/\D/g,'');
-                    const roleName = message.guild.roles.find('id', roleID).name;
+                    // const roleName = message.guild.roles.find('id', roleID).name;
+                    let roleName;
+                    try {
+                        roleName = message.guild.roles.find('id', roleID).name;
+                    } catch (e) {
+                        roleName = roleID;
+                    }
                     mess = mess.replace(role, `@${roleName}`);
                 });
             }

@@ -1715,7 +1715,7 @@
     },
     {
         "name": "BB-8",
-        "uniqueName": "",
+        "uniqueName": "BB8",
         "aliases": [
             "BB-8",
             "BB",
@@ -12813,11 +12813,13 @@
     },
     {
         "name": "Hermit Yoda",
-        "uniqueName": "",
+        "uniqueName": "HERMITYODA",
         "aliases": [
             "Hermit Yoda",
             "Hermit",
             "Yoda",
+            "Hoda",
+            "hYoda",
             "HY"
         ],
         "url": "https://swgoh.gg/characters/hermit-yoda/",
@@ -14715,12 +14717,12 @@
             "JC"
         ],
         "url": "https://swgoh.gg/characters/jedi-consular/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_consular.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_consular_03.png",
         "side": "light",
         "factions": [
-            "healer",
-            "jedi",
-            "galactic republic"
+            "Galactic Republic",
+            "Healer",
+            "Jedi"
         ],
         "mods": {
             "Arena": {
@@ -14840,20 +14842,71 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 50% chance to reduce Jedi Consular's Cooldowns by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Jedi Healing": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Each ally recovers Health equal to 40% of Jedi Consular's Max Health, with a 50% chance of granting Jedi Consular 25% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Attack as Defense": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to target enemy and recover Health equal to 30% of the damage dealt. This attack has a 50% chance to ignore the target's Armor.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 868,
+            "Agility": 840,
+            "Intelligence": 1008,
+            "Speed": 119,
+            "Physical Damage": 2055,
+            "Physical Critical Rating": 478,
+            "Special Damage": 2824,
+            "Special Critical Rating": 130,
+            "Armor Penetration": 46,
+            "Resistance Penetration": 82,
+            "Potency": 13,
+            "Health": 23767,
+            "Armor": 276,
+            "Resistance": 209,
+            "Tenacity": 27,
+            "Health Steal": 5,
+            "Protection": 18,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [
+                "1-D",
+                "3-C",
+                "1-B"
+            ],
+            "light": [],
+            "cantina": [
+                "3-A",
+                "6-E"
+            ],
+            "shops": [
+                "Fleet Store"
+            ]
         }
     },
     {
@@ -19948,7 +20001,7 @@
     },
     {
         "name": "Rebel Officer Leia Organa",
-        "uniqueName": "",
+        "uniqueName": "HOTHLEIA",
         "aliases": [
             "Leia",
             "Organa",

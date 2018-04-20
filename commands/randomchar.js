@@ -19,7 +19,7 @@ class Randomchar extends Command {
         if (args.length > 0) {
             count = parseInt(args[0]);
             if (isNaN(count) || count < 1 || count > MAX_CHARACTERS) {
-                return message.channel.send(message.language.COMMAND_RANDOMCHAR_INVALID_NUM(MAX_CHARACTERS));
+                return message.channel.send(message.language.get('COMMAND_RANDOMCHAR_INVALID_NUM', MAX_CHARACTERS));
             }
         } else {
             count = 1;
