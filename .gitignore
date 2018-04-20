@@ -2,8 +2,9 @@
 /node_modules/
 /wipCommands/
 /data/img/
-
+/swgoh
 # Specific Files
+config.js
 config.json
 settings.json
 package-lock.json
