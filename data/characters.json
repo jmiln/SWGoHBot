@@ -1715,7 +1715,7 @@
     },
     {
         "name": "BB-8",
-        "uniqueName": "",
+        "uniqueName": "BB8",
         "aliases": [
             "BB-8",
             "BB",
@@ -12813,11 +12813,13 @@
     },
     {
         "name": "Hermit Yoda",
-        "uniqueName": "",
+        "uniqueName": "HERMITYODA",
         "aliases": [
             "Hermit Yoda",
             "Hermit",
             "Yoda",
+            "Hoda",
+            "hYoda",
             "HY"
         ],
         "url": "https://swgoh.gg/characters/hermit-yoda/",
@@ -19999,7 +20001,7 @@
     },
     {
         "name": "Rebel Officer Leia Organa",
-        "uniqueName": "",
+        "uniqueName": "HOTHLEIA",
         "aliases": [
             "Leia",
             "Organa",

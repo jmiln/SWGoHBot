@@ -71,12 +71,15 @@ module.exports = class extends Language {
         this.getDay = getDay;
         this.getTime = getTime;
         this.language = {
+            // Default in case it can't find one.
+            BASE_DEFAULT_MISSING: 'Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.',
+
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register @${user} <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register add @${user} <allycode>\``,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
@@ -127,7 +130,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';activities [characterName]',
+                        usage: ';activities [dayOfWeek]',
                         args: {}
                     }
                 ]
@@ -296,6 +299,21 @@ module.exports = class extends Language {
                         usage: 'faction <faction>',
                         args: {
                             "faction": "The faction you want to see the roster of. \nKeep in mind, this is as shown in game, so it's rebel, not rebels"
+                        }
+                    }
+                ]
+            },
+
+            // Guilds Command
+            COMMAND_GUILDS_HELP: {
+                description: "Shows the top guilds and everyone that's registered in yours.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';guild [user]',
+                        args: {
+                            "user": "A way to identify the guild. (mention | allyCode | guildName)"
                         }
                     }
                 ]
@@ -524,12 +542,28 @@ module.exports = class extends Language {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [
                     {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';register <user> <allyCode>',
+                        action: "Add",
+                        actionDesc: 'Link your Discord profile to a SWGoH account',
+                        usage: ';register add <user> <allyCode>',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "allyCode": "Your ally code from in-game."
+                        }
+                    },
+                    {
+                        action: "Update",
+                        actionDesc: 'Update/ resync your SWGoH data.',
+                        usage: ';register update <user>',
+                        args: {
+                            "user": "The person you're adding. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Remove",
+                        actionDesc: 'Unlink your Discord profile to a SWGoH account',
+                        usage: ';register remove <user>',
+                        args: {
+                            "user": "The person you're adding. (me | userID | mention)"
                         }
                     }
                 ]
@@ -783,7 +817,6 @@ module.exports = class extends Language {
             // Zetas Command
             COMMAND_ZETA_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
             COMMAND_ZETA_NO_ZETAS: 'You don\'t seem to have any abilities zetad.',
-            COMMAND_ZETA_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register @${user} <allycode>\``,
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
                 description: "Show the abilities that you have put zetas on.",

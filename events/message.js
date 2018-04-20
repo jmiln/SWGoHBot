@@ -6,17 +6,18 @@ module.exports = async (client, message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
     if (message.author.bot) return;
+    if (message.guild && !message.guild.me) await message.guild.members.fetch(this.client.user);
+    // If we don't have permission to respond, don't bother
+    if (message.guild && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
 
     // Grab the settings for this server from the PersistentCollection
     // If there is no guild, get default conf (DMs)
-    var guildSettings;
+    let guildSettings;
     if (!message.guild) {
         guildSettings = client.config.defaultSettings;
     } else {
         guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
-        // If we don't have permission to respond, don't bother
-        if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')) return;
     }
     
 
@@ -24,12 +25,16 @@ module.exports = async (client, message) => {
     // to the message object, so `message.guildSettings` is accessible.
     message.guildSettings = guildSettings;
     
-    // Also good practice to ignore any message that does not start with our prefix,
-    // which is set in the configuration file.
-    if (message.content.indexOf(client.config.prefix) !== 0) return;
-
     // Load the language file for whatever language they have set
     message.language = client.languages[guildSettings.language];
+
+    // If the message is just mentioning the bot, tell them what the prefix is
+    if (message.content === client.user.toString() || (message.guild && message.content === message.guild.me.toString())) {
+        return message.channel.send(`The prefix is \`${client.config.prefix}\`.`);
+    }
+
+    // Also good practice to ignore any message that does not start with our prefix, which is set in the configuration file.
+    if (message.content.indexOf(client.config.prefix) !== 0) return;
 
     // Here we separate our "command" name, and our "arguments" for the command.
     // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
@@ -52,11 +57,36 @@ module.exports = async (client, message) => {
 
     // If the command exists, **AND** the user has permission, run it.
     if (cmd && level >= cmd.conf.permLevel) {
+        if (message.guild) {
+            const defPerms = ['SEND_MESSAGES', 'VIEW_CHANNEL'];
+            if (args.length === 1 && args[0].toLowerCase() === 'help') {
+                // If they want the help, it's embeds now, so they need that activated
+                defPerms.push('EMBED_LINKS');
+            }
+            // Merge the permission arrays to make sure it has at least the minimum
+            const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
+            const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
+
+            if (missingPerms.length > 0) {
+                missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace('_', ' ').toProperCase();});
+                try {
+                    return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(', ')}\``);
+                } catch (err) { 
+                    /* stuff */ 
+                    console.log('Broke trying to report missing Perms for (${cmd.help.name}): ' + err);
+                }
+            }
+        }
+
         // If they're just looking for the help, don't bother going through the command
         if (args.length === 1 && args[0].toLowerCase() === 'help') {
             client.helpOut(message, cmd);
         } else {
-            cmd.run(client, message, args, level);
+            try {
+                cmd.run(client, message, args, level);
+            } catch (err) {
+                client.log('ERROR', `I broke: ${err}`, cmd.help.name.toProperCase());
+            }
         }
         if (client.config.logs.logComs) {
             client.commandLogs.create({
