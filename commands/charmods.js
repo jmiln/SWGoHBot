@@ -18,12 +18,12 @@ class CharMods extends Command {
         const stats = message.language.get('COMMAND_CHARMODS_STAT_NAMES');
         const types = message.language.get('COMMAND_CHARMODS_MOD_TYPES');
         const icons = {
-            'STATMOD_SLOT_01': client.emojis.get('362066327101243392'),
-            'STATMOD_SLOT_02': client.emojis.get('362066325474115605'),
-            'STATMOD_SLOT_03': client.emojis.get('362066326925082637'),
-            'STATMOD_SLOT_04': client.emojis.get('362066327168352257'),
-            'STATMOD_SLOT_05': client.emojis.get('362066326996385812'),
-            'STATMOD_SLOT_06': client.emojis.get('362066327516610570')
+            'STATMOD_SLOT_01': client.emojis.find('name', 'modSquare'),
+            'STATMOD_SLOT_02': client.emojis.find('name', 'modArrow'),
+            'STATMOD_SLOT_03': client.emojis.find('name', 'modDiamond'),
+            'STATMOD_SLOT_04': client.emojis.find('name', 'modTriangle'),
+            'STATMOD_SLOT_05': client.emojis.find('name', 'modCircle'),
+            'STATMOD_SLOT_06': client.emojis.find('name', 'modCross')
         };
         if (searchChar) searchChar = searchChar.join(' ');
 
