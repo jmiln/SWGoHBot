@@ -40,7 +40,13 @@ class GuildSearch extends Command {
         if (shipArr.includes(userID) && searchChar.length) {
             ships = true;
             userID = searchChar.splice(0, 1)[0];
-        } 
+        } else if (shipArr.filter(e => searchChar.includes(e)).length > 0) {
+            const comp = shipArr.filter(e => searchChar.includes(e));
+            ships = true;
+            comp.forEach(e => {
+                searchChar.splice(searchChar.indexOf(e));
+            });
+        }
         if (userID === "me") {
             userID = message.author.id;
         } else if (userID.match(/\d{17,18}/)) {
