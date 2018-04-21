@@ -381,10 +381,11 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guildsearch [user] <character> [starLvl]',
+                        usage: ';guildsearch [user] <character> [-ships] [starLvl]',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "character": "The character you want to search for.",
+                            "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
                             "starLvl": "Select the star level you want to see."
                         }
                     }
