@@ -22,6 +22,8 @@ class GuildSearch extends Command {
             "SEVEN_STAR": 7
         };
 
+        const shipArr = ['-ships', '-s', '-ship'];
+        let ships = false;
         let starLvl = null;
         // If there's enough elements in searchChar, and it's in the format of a numer*
         if (searchChar.length > 0 && searchChar[searchChar.length-1].match(/\d\*/)) {
@@ -31,22 +33,31 @@ class GuildSearch extends Command {
             }
         }
         
-        searchChar = searchChar.join(' ');
-
         // Need to get the allycode from the db, then use that
         if (!userID) {
             return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_MISSING_CHAR'));
-        } else if (userID === "me") {
+        }
+        if (shipArr.includes(userID) && searchChar.length) {
+            ships = true;
+            userID = searchChar.splice(0, 1)[0];
+        } else if (shipArr.filter(e => searchChar.includes(e)).length > 0) {
+            const comp = shipArr.filter(e => searchChar.includes(e));
+            ships = true;
+            comp.forEach(e => {
+                searchChar.splice(searchChar.indexOf(e));
+            });
+        }
+        if (userID === "me") {
             userID = message.author.id;
         } else if (userID.match(/\d{17,18}/)) {
             userID = userID.replace(/[^\d]*/g, '');
         } else {
             // If they're just looking for a character for themselves, get the char
-            searchChar = userID + ' ' + searchChar;
-            searchChar = searchChar.trim();
+            searchChar.splice(0, 1, userID);
             userID = message.author.id;
         }
-        const chars = client.findChar(searchChar, client.characters);
+        searchChar = searchChar.join(' ');
+        const chars = !ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships);
         let character;
         let charURL;
         if (!searchChar) {
@@ -157,9 +168,6 @@ class GuildSearch extends Command {
                 fields: fields
             }});
         });
-
-
-
 
         function getResult(sql) {
             return new Promise(function(resolve,reject) {

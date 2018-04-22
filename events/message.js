@@ -6,7 +6,7 @@ module.exports = async (client, message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
     if (message.author.bot) return;
-    if (message.guild && !message.guild.me) await message.guild.members.fetch(this.client.user);
+    // if (message.guild && !message.guild.me) await message.guild.members.fetch(client.user);
     // If we don't have permission to respond, don't bother
     if (message.guild && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
 
@@ -68,13 +68,11 @@ module.exports = async (client, message) => {
             const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
 
             if (missingPerms.length > 0) {
+                // If it can't send messages, don't bother trying
+                if (missingPerms.includes('SEND_MESSAGES')) return;
+                // Make it more readable
                 missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace('_', ' ').toProperCase();});
-                try {
-                    return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(', ')}\``);
-                } catch (err) { 
-                    /* stuff */ 
-                    console.log('Broke trying to report missing Perms for (${cmd.help.name}): ' + err);
-                }
+                return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(', ')}\``);
             }
         }
 
