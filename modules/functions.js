@@ -50,25 +50,40 @@ module.exports = (client) => {
     };
 
     // This finds any character that matches the search, and returns them in an array
-    client.findChar = (searchName, charList, noLimit=false) => {
-        var options = {
+    client.findChar = (searchName, charList) => {
+        const options = {
+            tokenize: true,
+            matchAllTokens: true,
+            threshold: 0,
+            distance: 0,
+            keys: [ "name", "aliases" ]
+        };
+        const options2 = {
             keys: ['name', 'aliases'],
             threshold: .1,
             distance: 4
         };
-        // Make it so it only returns the one if it's exact
+        // In case of any extra spaces
+        searchName = searchName.trim().toLowerCase();
+
+        // Check the names for an exact match
         for (let ix = 0; ix < charList.length; ix++) {
-            if (charList[ix].name.toLowerCase() === searchName.toLowerCase()) {
+            // console.log('checking: ' + charList[ix].name.toLowerCase() + ' VS ' + searchName);
+            if (charList[ix].name.toLowerCase() === searchName) {
                 return [charList[ix]];
             }
         }
-        // If it's not exact, send back the big mess
+
+        // If there's not an exact name match, fuzzy search it
         const fuse = new Fuse(charList, options);
         let chars = fuse.search(searchName);
-        // If there's a ton of em, only return the first 4
-        if (chars.length > 4 && !noLimit) {
-            chars = chars.slice(0, 4);
+        if (chars.length >= 1) {
+            return chars;
         }
+
+        // If it's not exact, send back the big mess
+        const fuse2 = new Fuse(charList, options2);
+        chars = fuse2.search(searchName);
         return chars;
     };
 
@@ -99,7 +114,7 @@ module.exports = (client) => {
             if (client.config.logs.logToChannel) {
                 if (client.channels.has(chan)) {
                     client.sendMsg(chan, mess, args);
-                } else {
+                } else if (client.shard && client.shard.count > 0) {
                     // If it's on a different shard, then send it there 
                     client.shard.broadcastEval(`
                         const thisChan = ${util.inspect(chan)};
@@ -174,15 +189,6 @@ module.exports = (client) => {
         }
     };
 
-
-    /*
-     * COMMAND ERROR
-     * Spits back the correct usage and such for a command
-     */
-    client.cmdErr = (message, command) => {
-        message.channel.send(`**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`);
-    };
-
     /*
      * RELOAD COMMAND
      * Reloads the given command
@@ -219,11 +225,7 @@ module.exports = (client) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question);
         try {
-            const collected = await msg.channel.awaitMessages(filter, {
-                max: 1,
-                time: limit,
-                errors: ["time"]
-            });
+            const collected = await msg.channel.awaitMessages(filter, {max: 1, time: limit, errors: ["time"]});
             return collected.first().content;
         } catch (e) {
             return false;
@@ -263,18 +265,6 @@ module.exports = (client) => {
 
     // `await wait(1000);` to "pause" for 1 second.
     global.wait = require("util").promisify(setTimeout);
-
-
-    // Another semi-useful utility command, which creates a "range" of numbers
-    // in an array. `range(10).forEach()` loops 10 times for instance. Why?
-    // Because honestly for...i loops are ugly.
-    global.range = (count, start = 0) => {
-        const myArr = [];
-        for (var i = 0; i < count; i++) {
-            myArr[i] = i + start;
-        }
-        return myArr;
-    };
 
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
@@ -353,8 +343,7 @@ module.exports = (client) => {
      *  Input an array of strings, and it will put them together so that it 
      *  doesn't exceed the 2000 character limit of Discord mesages.
      */
-    client.msgArray = (arr, join='\n') => {
-        const maxLen = 1900;
+    client.msgArray = (arr, join='\n', maxLen=1900) => {
         const messages = [];
         arr.forEach((elem) => {
             if  (messages.length === 0) {
@@ -377,6 +366,24 @@ module.exports = (client) => {
      */
     client.codeBlock = (lang, str) => {
         return `\`\`\`${lang}\n${str}\`\`\``;
+    };
+
+    /*
+     * isUserID
+     * Check if a string of numbers is a valid user.
+     */
+    client.isUserID = async (numStr) => {
+        const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
+        return match ? true : false;
+    };
+
+    /*
+     * isAllyCode
+     * Check if a string of numbers is a valid ally code.
+     */
+    client.isAllyCode = (aCode) => {
+        const match = aCode.replace(/[^\d]*/g, '').match(/\d{9}/);
+        return match ? true : false;
     };
 
 
@@ -554,42 +561,14 @@ module.exports = (client) => {
         await client.guildEvents.destroy({where: {eventID: event.eventID}})
             .then(async () => {
                 // If it's supposed to repeat, go ahead and put it back in    
-                if (repTime) {
-                    await client.guildEvents.create({
-                        eventID: newEvent.eventID,
-                        eventDT: newEvent.eventDT,
-                        eventMessage: newEvent.eventMessage,
-                        eventChan: newEvent.eventChan,
-                        countdown: newEvent.countdown,
-                        repeat: {
-                            "repeatDay": newEvent.repeat['repeatDay'],
-                            "repeatHour": newEvent.repeat['repeatHour'],
-                            "repeatMin": newEvent.repeat['repeatMin']
-                        },
-                        repeatDays: []
-                    })
+                if (repTime || repDay) {
+                    await client.guildEvents.create(newEvent)
                         .then(() => {
                             client.scheduleEvent(newEvent);
                         })
-                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
-                } else if (repDay) {
-                    await client.guildEvents.create({
-                        eventID: newEvent.eventID,
-                        eventDT: newEvent.eventDT,
-                        eventMessage: newEvent.eventMessage,
-                        eventChan: newEvent.eventChan,
-                        countdown: newEvent.countdown,
-                        repeat: {
-                            "repeatDay": 0,
-                            "repeatHour": 0,
-                            "repeatMin": 0
-                        },
-                        repeatDays: repDays
-                    })
-                        .then(() => {
-                            client.scheduleEvent(newEvent);
-                        })
-                        .catch(error => { client.log('ERROR',`Broke trying to replace old event ${error}`); });
+                        .catch(error => { 
+                            client.log('ERROR',`Broke trying to replace old event ${error}`); 
+                        });
                 }
             })
             .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });

@@ -1,4 +1,5 @@
 const Command = require('../base/Command');
+var moment = require('moment-timezone');
 
 class Challenges extends Command {
     constructor(client) {
@@ -10,7 +11,7 @@ class Challenges extends Command {
     }
 
     run(client, message, args) {
-        const config = client.config;
+        const guildConf = message.guildSettings;
 
         const challenges = {
             // Normal Challenges
@@ -37,26 +38,34 @@ class Challenges extends Command {
             return dayString;
         };
 
-        if (!args[0]) return message.channel.send(message.language.COMMAND_CHALLENGES_MISSING_DAY);
-        const day = String(args[0]).toProperCase();
+        let day;
+        if (!args[0]) {
+            if (!guildConf['timezone']) {
+                day = moment().format('ddd').toProperCase();
+            } else {
+                day = moment().tz(guildConf['timezone']).format('ddd').toProperCase();
+            }
+        } else {
+            day = String(args[0]).toProperCase();
+        }
 
         switch (day) {
-            case message.language.getDay('SUNDAY', 'SHORT'): case  message.language.getDay('SUNDAY', 'LONG'):
+            case message.language.getDay('SUNDAY', 'SHORT'): case  message.language.getDay('SUNDAY', 'LONG'): case 'Sun':
                 return message.channel.send(dayString('Sunday'), {code:'asciidoc'});
-            case message.language.getDay('MONDAY', 'SHORT'): case message.language.getDay('MONDAY', 'LONG'):
+            case message.language.getDay('MONDAY', 'SHORT'): case message.language.getDay('MONDAY', 'LONG'): case 'Mon':
                 return message.channel.send(dayString('Monday'), {code:'asciidoc'});
-            case message.language.getDay('TUESDAY', 'SHORT'): case  message.language.getDay('TUESDAY', 'LONG'):
+            case message.language.getDay('TUESDAY', 'SHORT'): case  message.language.getDay('TUESDAY', 'LONG'): case 'Tue':
                 return message.channel.send(dayString('Tuesday'), {code:'asciidoc'});
-            case message.language.getDay('WEDNESDAY', 'SHORT'): case message.language.getDay('WEDNESDAY', 'LONG'):
+            case message.language.getDay('WEDNESDAY', 'SHORT'): case message.language.getDay('WEDNESDAY', 'LONG'): case 'Wed':
                 return message.channel.send(dayString('Wednesday'), {code:'asciidoc'});
-            case message.language.getDay('THURSDAY', 'SHORT'): case message.language.getDay('THURSDAY', 'LONG'):
+            case message.language.getDay('THURSDAY', 'SHORT'): case message.language.getDay('THURSDAY', 'LONG'): case 'Thu':
                 return message.channel.send(dayString('Thursday'), {code:'asciidoc'});
-            case message.language.getDay('FRIDAY', 'SHORT'): case message.language.getDay('FRIDAY', 'LONG'):
+            case message.language.getDay('FRIDAY', 'SHORT'): case message.language.getDay('FRIDAY', 'LONG'): case 'Fri':
                 return message.channel.send(dayString('Friday'), {code:'asciidoc'});
-            case message.language.getDay('SATURDAY', 'SHORT'): case message.language.getDay('SATURDAY', 'LONG'):
+            case message.language.getDay('SATURDAY', 'SHORT'): case message.language.getDay('SATURDAY', 'LONG'): case 'Sat':
                 return message.channel.send(dayString('Saturday'), {code:'asciidoc'});
             default:
-                return message.channel.send(message.language.get('COMMAND_CHALLENGES_DEFAULT', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+                return client.helpOut(message, this);
         }
     }
 }

@@ -5,7 +5,8 @@ class Help extends Command {
         super(client, {
             name: 'help',
             aliases: ['h'],
-            category: 'Misc'
+            category: 'Misc',
+            permissions: ['EMBED_LINKS']
         });
     }
 

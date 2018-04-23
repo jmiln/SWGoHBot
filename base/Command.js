@@ -10,6 +10,7 @@ class Command {
         enabled = true, 
         guildOnly = false,
         aliases = [],
+        permissions = [],
         permLevel = 0
     }) {
         this.client = client;
@@ -18,6 +19,7 @@ class Command {
             hidden,
             guildOnly,
             aliases,
+            permissions,
             permLevel
         };
         this.help = {

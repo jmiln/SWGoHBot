@@ -29,7 +29,6 @@ const DAYSOFWEEK = {
         LONG: 'Samstag'
     }
 };
-
 const TIMES = {
     DAY: {
         PLURAL: 'Tage',
@@ -57,7 +56,7 @@ const TIMES = {
     }
 };
 
-function weekDay(day, type) {
+function getDay(day, type) {
     return DAYSOFWEEK[`${day}`][`${type}`];
 }
 
@@ -69,7 +68,7 @@ module.exports = class extends Language {
     constructor(...args) {
         super(...args);
 
-        this.weekDay = weekDay;
+        this.getDay = getDay;
         this.getTime = getTime;
         this.language = {
             // Base swgohBot.js file
@@ -77,7 +76,7 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register @${user} <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <allycode>\``,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
@@ -367,8 +366,8 @@ module.exports = class extends Language {
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
             COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
-            COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `**Quadrat:**      ${square}\n**Pfeil:**       ${arrow}\n**Diamant:**  ${diamond}\n`,
-            COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `**Dreieck:**   ${triangle}\n**Kreis:**        ${circle}\n**Kreuz:**        ${cross}`,
+            COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
+            COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
             COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Quadrat:   ${square}  \n* Pfeil:    ${arrow} \n* Diamant:  ${diamond}\n`,
             COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Dreieck: ${triangle}\n* Kreis:   ${circle}\n* Kreuz:    ${cross}`,
@@ -519,20 +518,6 @@ module.exports = class extends Language {
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger ally code`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Bitte warten waehrend ich die Daten synchronisiere.',
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
-            COMMAND_REGISTER_HELP: {
-                description: "Registriert deinen ally code zu deiner Discord ID, und synchronisiert dein SWGoH Profil.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';register <user> <allyCode>',
-                        args: {
-                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
-                            "allyCode": "Dein Ally Code aus dem Spiel."
-                        }
-                    }
-                ]
-            },
 
             // Reload Command
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `Ich kann das Kommando nicht finden: ${cmd}`,
@@ -720,13 +705,13 @@ module.exports = class extends Language {
 
             // Stats Command
             COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= Statisken (${shardID}) =\n
-        • Speicherauslastung  :: ${memUsage} MB
-        • CPU Auslastung      :: ${cpuLoad}%
-        • Uptime              :: ${uptime}
-        • Anwender            :: ${users}
-        • Server              :: ${servers}
-        • Kanaele             :: ${channels}
-        • Quelle               :: https://github.com/jmiln/SWGoHBot`,
+• Speicherauslastung  :: ${memUsage} MB
+• CPU Auslastung      :: ${cpuLoad}%
+• Uptime              :: ${uptime}
+• Anwender            :: ${users}
+• Server              :: ${servers}
+• Kanaele             :: ${channels}
+• Quelle               :: https://github.com/jmiln/SWGoHBot`,
             COMMAND_STATS_HELP: {
                 description: "Zeigt die Statistiken des Bots an.",
                 actions: [
@@ -776,10 +761,11 @@ module.exports = class extends Language {
                 ]
             },
             // Zetas Command
-            COMMAND_ZETA_NOT_REG: (user) => `Entschuldige, aber dieser User ist nicht registriert. Bitte registriere mit \`;register @${user} <allycode>\``,
+            COMMAND_ZETA_NO_USER: `Entschuldigung, aber diesen User kann ich nicht finden.`,
+            COMMAND_ZETA_NO_ZETAS: 'Keine Fähigkeiten mit Zeta gefunden.',
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Anfuehrer | \`[S]\` Spezial | \`[U]\` Einzigartig\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
-                description: "Zeigt die Faehigkeiten die mit Zeta hochgestülpt wurden.",
+                description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft  wurden.",
                 actions: [
                     {
                         action: "",

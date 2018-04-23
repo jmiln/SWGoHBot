@@ -5,6 +5,7 @@
 /swgoh
 
 # Specific Files
+config.js
 config.json
 settings.json
 package-lock.json

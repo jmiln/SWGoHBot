@@ -71,12 +71,19 @@ module.exports = class extends Language {
         this.getDay = getDay;
         this.getTime = getTime;
         this.language = {
+            // Default in case it can't find one.
+            BASE_DEFAULT_MISSING: 'Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.',
+
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register @${user} <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register add @${user} <allycode>\``,
+            BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
+            BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
+            BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
+            BASE_SWGPH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
@@ -127,7 +134,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';activities [characterName]',
+                        usage: ';activities [dayOfWeek]',
                         args: {}
                     }
                 ]
@@ -204,6 +211,50 @@ module.exports = class extends Language {
                     }
                 ]
             },
+
+            // CharacterMods Command
+            COMMAND_CHARMODS_STAT_NAMES: ({
+                'UNIT_STAT_MAX_HEALTH_PERCENT_ADDITIVE': '% Health',
+                'UNIT_STAT_MAX_HEALTH': ' Health',
+                'UNIT_STAT_ACCURACY': '% Potency',
+                'UNIT_STAT_CRITICAL_CHANCE_PERCENT_ADDITIVE': '% Crit Chance',
+                'UNIT_STAT_MAX_SHIELD_PERCENT_ADDITIVE': '% Protection',
+                'UNIT_STAT_MAX_SHIELD': ' Protection',
+                'UNIT_STAT_CRITICAL_DAMAGE': '% Crit Dmg',
+                'UNIT_STAT_DEFENSE_PERCENT_ADDITIVE': '% Defense',
+                'UNIT_STAT_DEFENSE': ' Defense',
+                'UNIT_STAT_OFFENSE_PERCENT_ADDITIVE': '% Offense',
+                'UNIT_STAT_OFFENSE': ' Offense',
+                'UNIT_STAT_RESISTANCE': '% Tenacity',
+                'UNIT_STAT_SPEED': ' Speed',
+                'UNIT_STAT_EVASION_NEGATE_PERCENT_ADDITIVE': '% Accuracy',
+                'UNIT_STAT_CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE': '% Crit Avoidance'
+            }),
+            COMMAND_CHARMODS_MOD_TYPES: ({
+                'icon_buff_health': 'Health',
+                'icon_buff_accuracy': 'Potency',
+                'icon_buff_speed': 'Speed',
+                'icon_buff_critical_damage': 'Crit Damage',
+                'icon_buff_crit_chance': 'Crit Chance',
+                'icon_buff_armor': 'Defense',
+                'icon_tenacity': 'Tenacity'
+            }),
+            COMMAND_CHARMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
+            COMMAND_CHARMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
+            COMMAND_CHARMODS_HELP: ({
+                description: "Shows the mods that you have equipped on the selected character.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';charactermods [user] <character>',
+                        args: {
+                            "user": "The person you're adding. (me | userID | mention)",
+                            "character": "The character you want to search for."
+                        }
+                    }
+                ]
+            }),
 
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
@@ -301,6 +352,21 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Guilds Command
+            COMMAND_GUILDS_HELP: {
+                description: "Shows the top guilds and everyone that's registered in yours.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';guild [user]',
+                        args: {
+                            "user": "A way to identify the guild. (mention | allyCode | guildName)"
+                        }
+                    }
+                ]
+            },
+
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: 'You can only choose a star level from 1-7',
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'You need to enter a character to check for',
@@ -315,10 +381,11 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guildsearch [user] <character> [starLvl]',
+                        usage: ';guildsearch [user] <character> [-ships] [starLvl]',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "character": "The character you want to search for.",
+                            "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
                             "starLvl": "Select the star level you want to see."
                         }
                     }
@@ -518,17 +585,34 @@ module.exports = class extends Language {
             COMMAND_REGISTER_MISSING_ALLY: 'You need to enter an ally code to link your account to.',
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Please wait while I sync your data.',
-            COMMAND_REGISTER_SUCCESS: 'Registration successful!',
+            COMMAND_REGISTER_FAILURE: 'Registration failed, please make sure your ally code is correct.',
+            COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [
                     {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';register <user> <allyCode>',
+                        action: "Add",
+                        actionDesc: 'Link your Discord profile to a SWGoH account',
+                        usage: ';register add <user> <allyCode>',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "allyCode": "Your ally code from in-game."
+                        }
+                    },
+                    {
+                        action: "Update",
+                        actionDesc: 'Update/ resync your SWGoH data.',
+                        usage: ';register update <user>',
+                        args: {
+                            "user": "The person you're adding. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Remove",
+                        actionDesc: 'Unlink your Discord profile to a SWGoH account',
+                        usage: ';register remove <user>',
+                        args: {
+                            "user": "The person you're adding. (me | userID | mention)"
                         }
                     }
                 ]
@@ -721,13 +805,13 @@ module.exports = class extends Language {
 
             // Stats Command
             COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= STATISTICS (${shardID}) =\n
-        • Mem Usage  :: ${memUsage} MB
-        • CPU Load   :: ${cpuLoad}%
-        • Uptime     :: ${uptime}
-        • Users      :: ${users}
-        • Servers    :: ${servers}
-        • Channels   :: ${channels}
-        • Source     :: https://github.com/jmiln/SWGoHBot`,
+• Mem Usage  :: ${memUsage} MB
+• CPU Load   :: ${cpuLoad}%
+• Uptime     :: ${uptime}
+• Users      :: ${users}
+• Servers    :: ${servers}
+• Channels   :: ${channels}
+• Source     :: https://github.com/jmiln/SWGoHBot`,
             COMMAND_STATS_HELP: {
                 description: "Shows the bot's stats.",
                 actions: [
@@ -782,7 +866,6 @@ module.exports = class extends Language {
             // Zetas Command
             COMMAND_ZETA_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
             COMMAND_ZETA_NO_ZETAS: 'You don\'t seem to have any abilities zetad.',
-            COMMAND_ZETA_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register @${user} <allycode>\``,
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
                 description: "Show the abilities that you have put zetas on.",
