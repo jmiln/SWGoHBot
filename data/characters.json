@@ -3065,9 +3065,6 @@
             "Captain Han Solo",
             "Captain Han",
             "Hoth Han",
-            "Han Solo",
-            "Han",
-            "Solo",
             "CHS"
         ],
         "url": "https://swgoh.gg/characters/captain-han-solo/",
@@ -16579,7 +16576,10 @@
         "name": "Luke Skywalker Farmboy",
         "uniqueName": "LUKESKYWALKER",
         "aliases": [
+            "Luke Skywalker Farmboy",
             "Luke Skywalker",
+            "Luke Farmboy",
+            "Farmboy",
             "Luke"
         ],
         "url": "https://swgoh.gg/characters/luke-skywalker-farmboy/",
@@ -21913,9 +21913,7 @@
         "aliases": [
             "Stormtrooper Han",
             "STHan",
-            "ST Han",
-            "Han",
-            "Han Solo"
+            "ST Han"
         ],
         "url": "https://swgoh.gg/characters/stormtrooper-han/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm_han.png",
@@ -23344,8 +23342,7 @@
             "Veteran Smuggler Chewbacca",
             "Veteran Smuggler",
             "Veteran Chewbacca",
-            "Chewbacca",
-            "Chewie"
+            "Vet Chewbacca"
         ],
         "url": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
         "avatarURL": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
@@ -23513,10 +23510,7 @@
         "aliases": [
             "Veteran Smuggler Han Solo",
             "Veteran Smuggler",
-            "Veteran Han Solo",
-            "Han Solo",
-            "Han",
-            "Solo"
+            "Veteran Han Solo"
         ],
         "url": "https://swgoh.gg/characters/veteran-smuggler-han-solo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tfa_han.png",
@@ -24773,7 +24767,6 @@
         "name": "Kylo Ren Unmasked",
         "uniqueName": "KYLORENUNMASKED",
         "aliases": [
-            "Kylo Ren Unmasked",
             "KRU",
             "Kylo Unmasked",
             "Matt"

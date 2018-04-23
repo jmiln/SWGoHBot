@@ -53,7 +53,7 @@ class GuildSearch extends Command {
             userID = userID.replace(/[^\d]*/g, '');
         } else {
             // If they're just looking for a character for themselves, get the char
-            searchChar.splice(0, 1, userID);
+            searchChar = [userID].concat(searchChar);
             userID = message.author.id;
         }
         searchChar = searchChar.join(' ');
