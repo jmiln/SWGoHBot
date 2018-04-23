@@ -220,7 +220,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Aayla Secura"
+        ]
     },
     {
         "name": "Admiral Ackbar",
@@ -443,7 +446,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Admiral Ackbar"
+        ]
     },
     {
         "name": "Ahsoka Tano",
@@ -653,7 +659,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Ahsoka Tano"
+        ]
     },
     {
         "name": "Ahsoka Tano Fulcrum",
@@ -758,7 +767,7 @@
                 "Mk 4 Sienar Holo Projector",
                 "Mk 8 BioTech Implant",
                 "Mk 9 BlasTech Weapon Mod",
-                "MK 6 Arakyd Droid Caller"
+                "Mk 6 Arakyd Droid Caller"
             ],
             "Gear 12": [
                 "Mk 12 ArmaTek Multi-tool",
@@ -860,7 +869,11 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Ahsoka Tano Fulcrum",
+            "Ahsoka Tano (Fulcrum)"
+        ]
     },
     {
         "name": "Asajj Ventress",
@@ -1092,7 +1105,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Asajj Ventress"
+        ]
     },
     {
         "name": "B2 Super Battle Droid",
@@ -1303,7 +1319,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "B2 Super Battle Droid"
+        ]
     },
     {
         "name": "Barriss Offee",
@@ -1515,7 +1534,10 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Barriss Offee"
+        ]
     },
     {
         "name": "Baze Malbus",
@@ -1734,7 +1756,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Baze Malbus"
+        ]
     },
     {
         "name": "BB-8",
@@ -2007,7 +2032,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "BB-8"
+        ]
     },
     {
         "name": "Biggs Darklighter",
@@ -2207,7 +2235,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Biggs Darklighter"
+        ]
     },
     {
         "name": "Bistan",
@@ -2414,7 +2445,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Bistan"
+        ]
     },
     {
         "name": "Boba Fett",
@@ -2671,7 +2705,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Boba Fett"
+        ]
     },
     {
         "name": "Bodhi Rook",
@@ -2878,7 +2915,10 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Bodhi Rook"
+        ]
     },
     {
         "name": "Cad Bane",
@@ -3100,7 +3140,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Cad Bane"
+        ]
     },
     {
         "name": "Captain Han Solo",
@@ -3365,7 +3408,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Captain Han Solo"
+        ]
     },
     {
         "name": "Captain Phasma",
@@ -3585,7 +3631,10 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Captain Phasma"
+        ]
     },
     {
         "name": "Cassian Andor",
@@ -3793,7 +3842,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Cassian Andor"
+        ]
     },
     {
         "name": "CC-2224 Cody",
@@ -3813,12 +3865,12 @@
         ],
         "gear": {
             "Gear 1": [
-                "Mk 1 BioTech Implant",
-                "Mk 1 Arakyd Droid Caller",
+                "Mk 1 BAW Armor Mod",
                 "Mk 1 Neuro-Saav Electrobinoculars",
                 "Mk 1 BAW Armor Mod",
-                "Mk 1 BioTech Implant",
-                "Mk 1 TaggeCo Holo Lens"
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 A/KT Stun Gun"
             ],
             "Gear 2": [
                 "Mk 1 TaggeCo Holo Lens",
@@ -3846,7 +3898,7 @@
             ],
             "Gear 5": [
                 "Mk 5 BAW Armor Mod",
-                "Mk 7 BlasTech Weapon Mod",
+                "MK 7 BlasTech Weapon Mod",
                 "Mk 2 Sienar Holo Projector",
                 "Mk 3 Merr-Sonn Thermal Detonator",
                 "Mk 6 TaggeCo Holo Lens",
@@ -4030,7 +4082,11 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "CC-2224 Cody",
+            "CC-2224 \"Cody\""
+        ]
     },
     {
         "name": "Chief Chirpa",
@@ -4250,7 +4306,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Chief Chirpa"
+        ]
     },
     {
         "name": "Chief Nebit",
@@ -4470,7 +4529,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Chief Nebit"
+        ]
     },
     {
         "name": "Chirrut Imwe",
@@ -4479,7 +4541,7 @@
             "Chirrut Imwe",
             "Chirrut"
         ],
-        "url": "https://swgoh.gg/characters/chirrut-imwe",
+        "url": "https://swgoh.gg/characters/chirrut-imwe/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chirrut.png",
         "side": "light",
         "factions": [
@@ -4714,7 +4776,11 @@
                 "cross": "Offense/ Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Chirrut Imwe",
+            "Chirrut Îmwe"
+        ]
     },
     {
         "name": "Chopper",
@@ -4936,7 +5002,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Chopper"
+        ]
     },
     {
         "name": "Clone Sergeant Phase I",
@@ -5136,7 +5205,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Clone Sergeant Phase I"
+        ]
     },
     {
         "name": "Clone Wars Chewbacca",
@@ -5347,7 +5419,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Clone Wars Chewbacca"
+        ]
     },
     {
         "name": "Commander Luke Skywalker",
@@ -5604,7 +5679,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Commander Luke Skywalker"
+        ]
     },
     {
         "name": "Coruscant Underworld Police",
@@ -5798,7 +5876,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Coruscant Underworld Police"
+        ]
     },
     {
         "name": "Count Dooku",
@@ -6036,7 +6117,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Count Dooku"
+        ]
     },
     {
         "name": "CT-21-0408 Echo",
@@ -6137,7 +6221,7 @@
             ],
             "Gear 11": [
                 "Mk 11 BlasTech Weapon Mod",
-                "Mk 8 Neuro-Saav Electrobinoculars",
+                "MK 8 Neuro-Saav Electrobinoculars",
                 "Mk 8 BioTech Implant",
                 "Mk 6 CEC Fusion Furnace",
                 "Mk 9 TaggeCo Holo Lens",
@@ -6244,7 +6328,11 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "CT-21-0408 Echo",
+            "CT-21-0408 \"Echo\""
+        ]
     },
     {
         "name": "CT-5555 Fives",
@@ -6497,7 +6585,11 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "CT-5555 Fives",
+            "CT-5555 \"Fives\""
+        ]
     },
     {
         "name": "CT-7567 Rex",
@@ -6748,7 +6840,11 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "CT-7567 Rex",
+            "CT-7567 \"Rex\""
+        ]
     },
     {
         "name": "Darth Maul",
@@ -6969,7 +7065,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Darth Maul"
+        ]
     },
     {
         "name": "Darth Nihilus",
@@ -7200,7 +7299,10 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Darth Nihilus"
+        ]
     },
     {
         "name": "Darth Sidious",
@@ -7421,7 +7523,10 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Darth Sidious"
+        ]
     },
     {
         "name": "Darth Vader",
@@ -7735,7 +7840,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Darth Vader"
+        ]
     },
     {
         "name": "Dathcha",
@@ -7944,7 +8052,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Dathcha"
+        ]
     },
     {
         "name": "Death Trooper",
@@ -8250,7 +8361,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Death Trooper"
+        ]
     },
     {
         "name": "Dengar",
@@ -8484,7 +8598,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Dengar"
+        ]
     },
     {
         "name": "Director Krennic",
@@ -8773,7 +8890,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Director Krennic"
+        ]
     },
     {
         "name": "Eeth Koth",
@@ -8995,7 +9115,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Eeth Koth"
+        ]
     },
     {
         "name": "Emperor Palpatine",
@@ -9225,7 +9348,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Emperor Palpatine"
+        ]
     },
     {
         "name": "Ewok Elder",
@@ -9437,7 +9563,10 @@
                 "cross": "Health/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Ewok Elder"
+        ]
     },
     {
         "name": "Ewok Scout",
@@ -9647,7 +9776,10 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Ewok Scout"
+        ]
     },
     {
         "name": "Ezra Bridger",
@@ -9857,7 +9989,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Ezra Bridger"
+        ]
     },
     {
         "name": "Finn",
@@ -10089,7 +10224,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Finn"
+        ]
     },
     {
         "name": "First Order Officer",
@@ -10255,7 +10393,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "First Order Officer"
+        ]
     },
     {
         "name": "First Order Stormtrooper",
@@ -10421,7 +10562,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "First Order Stormtrooper"
+        ]
     },
     {
         "name": "First Order TIE Pilot",
@@ -10587,7 +10731,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "First Order TIE Pilot"
+        ]
     },
     {
         "name": "Gamorrean Guard",
@@ -10751,7 +10898,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Gamorrean Guard"
+        ]
     },
     {
         "name": "Gar Saxon",
@@ -10760,12 +10910,12 @@
             "Gar Saxon",
             "Gar"
         ],
-        "url": "https://swgoh.gg/characters/gar-saxon",
+        "url": "https://swgoh.gg/characters/gar-saxon/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_gar_saxon.png",
         "side": "dark",
         "factions": [
-            "tank",
-            "empire"
+            "Empire",
+            "Tank"
         ],
         "gear": {
             "Gear 1": [
@@ -10870,25 +11020,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to inflict Speed Down for 2 turns. If the target already had Speed Down, reduce Gar Saxon's cooldowns by 1.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Calculated Ambush": {
                 "type": "Special",
                 "abilityCooldown": "5",
                 "abilityDesc": "Deal Physical damage to all enemies, dealing double damage to enemies with less than 50% Turn Meter. Enemies that had at least 50% Turn Meter lose 30% Turn Meter.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Mandalorian Retaliation": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Empire allies gain 50% Counter Chance and 40% Defense. Whenever an Empire ally uses a Basic attack, they recover 5% Health",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Viceroy's Vengeance": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever another ally attacks during an enemy turn, Gar Saxon has a 100% chance to Assist.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         },
         "legacyMods": {
@@ -10936,7 +11106,39 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1241,
+            "Agility": 750,
+            "Intelligence": 690,
+            "Speed": 127,
+            "Physical Damage": 2742,
+            "Physical Critical Rating": 471,
+            "Special Damage": 1847,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 97,
+            "Resistance Penetration": 0,
+            "Potency": 42,
+            "Health": 26701,
+            "Armor": 404,
+            "Resistance": 247,
+            "Tenacity": 35,
+            "Health Steal": 20,
+            "Protection": 30,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "8-E"
+            ],
+            "shops": []
+        },
+        "nameVariant": [
+            "Gar Saxon"
+        ]
     },
     {
         "name": "Garazeb 'Zeb' Orrelios",
@@ -10949,9 +11151,9 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zeb_s3.png",
         "side": "light",
         "factions": [
-            "tank",
-            "rebel",
-            "phoenix"
+            "Phoenix",
+            "Rebel",
+            "Tank"
         ],
         "gear": {
             "Gear 1": [
@@ -11056,25 +11258,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and Daze them for 2 turns. If that enemy was already Dazed, Staggered, or Exposed, they are Stunned for 1 turn instead. This attack deals 30% more damage to debuffed enemies.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Staggering Sweep": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and Stagger them for 1 turn. Zeb gains 10% Turn Meter for each active Phoenix ally. If the target has no debuffs, this attack can't be Resisted, deals double damage, and deals bonus damage equal to 20% of the enemy's Max Health. If the target has any buffs, ignore their Armor. If the target has any debuffs, this attack has +50% Critical Damage. This attack can't be Evaded.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
             },
             "Honor Guard": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Zeb and target ally gain Protection Up (50%) for 2 turns. Both gain Tenacity Up for 2 turns if they have no debuffs and Retribution for 2 turns if they do.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Shrug Off": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Zeb has bonus Max Protection equal to +40% of his Max Health and recovers 15% Protection at the start of his turn. This recovery is doubled if Zeb is debuffed.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         },
         "legacyMods": {},
@@ -11107,6 +11329,40 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
+        },
+        "nameVariant": [
+            "Garazeb 'Zeb' Orrelios",
+            "Garazeb \"Zeb\" Orrelios"
+        ],
+        "stats": {
+            "Power": 19929,
+            "Strength": 1366,
+            "Agility": 720,
+            "Intelligence": 579,
+            "Speed": 115,
+            "Physical Damage": 2748,
+            "Physical Critical Rating": 691,
+            "Special Damage": 1439,
+            "Special Critical Rating": 120,
+            "Armor Penetration": 30,
+            "Resistance Penetration": 0,
+            "Potency": 48,
+            "Health": 36749,
+            "Armor": 352,
+            "Resistance": 102,
+            "Tenacity": 40,
+            "Health Steal": 20,
+            "Protection": 33,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Galactic War Shipments",
+                "Guild Events Store"
+            ]
         }
     },
     {
@@ -11285,7 +11541,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "General Grievous"
+        ]
     },
     {
         "name": "General Kenobi",
@@ -11464,7 +11723,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "General Kenobi"
+        ]
     },
     {
         "name": "General Veers",
@@ -11650,11 +11912,14 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "General Veers"
+        ]
     },
     {
         "name": "Geonosian Soldier",
-        "uniqueName": "CHOPPERS3",
+        "uniqueName": "GEONOSIANSOLDIER",
         "aliases": [
             "Geonosian Soldier",
             "Geo Soldier",
@@ -11802,7 +12067,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Geonosian Soldier"
+        ]
     },
     {
         "name": "Geonosian Spy",
@@ -11952,7 +12220,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Geonosian Spy"
+        ]
     },
     {
         "name": "Grand Admiral Thrawn",
@@ -12157,7 +12428,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Grand Admiral Thrawn"
+        ]
     },
     {
         "name": "Grand Master Yoda",
@@ -12335,7 +12609,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Grand Master Yoda"
+        ]
     },
     {
         "name": "Grand Moff Tarkin",
@@ -12515,7 +12792,10 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Grand Moff Tarkin"
+        ]
     },
     {
         "name": "Greedo",
@@ -12686,7 +12966,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Greedo"
+        ]
     },
     {
         "name": "Han Solo",
@@ -12890,7 +13173,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Han Solo"
+        ]
     },
     {
         "name": "Hera Syndulla",
@@ -13062,7 +13348,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Hera Syndulla"
+        ]
     },
     {
         "name": "Hermit Yoda",
@@ -13228,7 +13517,10 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Hermit Yoda"
+        ]
     },
     {
         "name": "HK-47",
@@ -13385,7 +13677,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "HK-47"
+        ]
     },
     {
         "name": "Hoth Rebel Scout",
@@ -13552,7 +13847,10 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Hoth Rebel Scout"
+        ]
     },
     {
         "name": "Hoth Rebel Soldier",
@@ -13719,7 +14017,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Hoth Rebel Soldier"
+        ]
     },
     {
         "name": "IG-100 Magna Guard",
@@ -13871,7 +14172,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "IG-100 Magna Guard"
+        ]
     },
     {
         "name": "IG-86 Sentinel Droid",
@@ -14022,7 +14326,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "IG-86 Sentinel Droid"
+        ]
     },
     {
         "name": "IG-88",
@@ -14180,7 +14487,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "IG-88"
+        ]
     },
     {
         "name": "Ima-Gun Di",
@@ -14353,7 +14663,10 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Ima-Gun Di"
+        ]
     },
     {
         "name": "Imperial Super Commando",
@@ -14532,7 +14845,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Imperial Super Commando"
+        ]
     },
     {
         "name": "Jawa",
@@ -14681,7 +14997,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Jawa"
+        ]
     },
     {
         "name": "Jawa Engineer",
@@ -14837,7 +15156,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Jawa Engineer"
+        ]
     },
     {
         "name": "Jawa Scavenger",
@@ -14993,7 +15315,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Jawa Scavenger"
+        ]
     },
     {
         "name": "Jedi Consular",
@@ -15195,7 +15520,10 @@
             "shops": [
                 "Fleet Store"
             ]
-        }
+        },
+        "nameVariant": [
+            "Jedi Consular"
+        ]
     },
     {
         "name": "Jedi Knight Anakin",
@@ -15354,7 +15682,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Jedi Knight Anakin"
+        ]
     },
     {
         "name": "Jedi Knight Guardian",
@@ -15505,7 +15836,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Jedi Knight Guardian"
+        ]
     },
     {
         "name": "Jyn Erso",
@@ -15697,7 +16031,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Jyn Erso"
+        ]
     },
     {
         "name": "K-2SO",
@@ -15885,7 +16222,10 @@
                 "cross": "Potency/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "K-2SO"
+        ]
     },
     {
         "name": "Kanan Jarrus",
@@ -16072,7 +16412,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Kanan Jarrus"
+        ]
     },
     {
         "name": "Kit Fisto",
@@ -16230,7 +16573,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Kit Fisto"
+        ]
     },
     {
         "name": "Kylo Ren",
@@ -16423,7 +16769,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Kylo Ren"
+        ]
     },
     {
         "name": "Lando Calrissian",
@@ -16581,7 +16930,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Lando Calrissian"
+        ]
     },
     {
         "name": "Lobot",
@@ -16737,7 +17089,10 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Lobot"
+        ]
     },
     {
         "name": "Logray",
@@ -16892,7 +17247,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Logray"
+        ]
     },
     {
         "name": "Luke Skywalker Farmboy",
@@ -16908,9 +17266,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_luke_ep4.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "human",
-            "rebel"
+            "Attacker",
+            "Rebel"
         ],
         "gear": {
             "Gear 1": [
@@ -17015,25 +17372,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical Damage to target enemy. If this attack scores a Critical Hit, gain 40% Turn Meter and inflict Damage Over Time for 3 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Bullseye": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Defense Down and Speed Down for 2 turns. If this attack scores a Critical Hit, Stun the target for 1 turn. Otherwise, dispel all buffs on the target.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "A New Hope": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "All allies gain 50% Tenacity. Whenever an ally Resists a detrimental effect they gain Advantage for 2 turns.",
-                "tier": "omega"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Draw a Bead": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Luke has 25% Critical Chance. At the start of each of his turns, Luke gains 10% Critical Damage (stacking) until the end of the encounter.",
-                "tier": "omega"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         },
         "legacyMods": {},
@@ -17052,6 +17429,45 @@
                 "cross": "Potency/ Offense",
                 "source": "Crouching Rancor"
             }
+        },
+        "nameVariant": [
+            "Luke Skywalker Farmboy",
+            "Luke Skywalker (Farmboy)"
+        ],
+        "stats": {
+            "Power": 22125,
+            "Strength": 810,
+            "Agility": 1167,
+            "Intelligence": 613,
+            "Speed": 125,
+            "Physical Damage": 2760,
+            "Physical Critical Rating": 885,
+            "Special Damage": 1521,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 114,
+            "Resistance Penetration": 0,
+            "Potency": 31,
+            "Health": 24870,
+            "Armor": 222,
+            "Resistance": 87,
+            "Tenacity": 35,
+            "Health Steal": 15,
+            "Protection": 19,
+            "activation": 50
+        },
+        "shardLocations": {
+            "dark": [
+                "7-D"
+            ],
+            "light": [],
+            "cantina": [
+                "1-B",
+                "5-A"
+            ],
+            "shops": [
+                "Guild Events Store",
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -17224,7 +17640,10 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Luminara Unduli"
+        ]
     },
     {
         "name": "Mace Windu",
@@ -17398,7 +17817,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Mace Windu"
+        ]
     },
     {
         "name": "Magmatrooper",
@@ -17566,7 +17988,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Magmatrooper"
+        ]
     },
     {
         "name": "Mob Enforcer",
@@ -17717,7 +18142,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Mob Enforcer"
+        ]
     },
     {
         "name": "Nightsister Acolyte",
@@ -17881,7 +18309,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Nightsister Acolyte"
+        ]
     },
     {
         "name": "Nightsister Initiate",
@@ -18071,7 +18502,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Nightsister Initiate"
+        ]
     },
     {
         "name": "Nute Gunray",
@@ -18243,7 +18677,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Nute Gunray"
+        ]
     },
     {
         "name": "Obi-Wan Kenobi Old Ben",
@@ -18436,6 +18873,42 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
+        },
+        "nameVariant": [
+            "Obi-Wan Kenobi Old Ben",
+            "Obi-Wan Kenobi (Old Ben)"
+        ],
+        "stats": {
+            "Power": 22909,
+            "Strength": 1183,
+            "Agility": 671,
+            "Intelligence": 915,
+            "Speed": 118,
+            "Physical Damage": 2260,
+            "Physical Critical Rating": 483,
+            "Special Damage": 2643,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 20,
+            "Resistance Penetration": 5,
+            "Potency": 35,
+            "Health": 26248,
+            "Armor": 435,
+            "Resistance": 353,
+            "Tenacity": 45,
+            "Health Steal": 20,
+            "Protection": 31,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "2-F",
+                "6-B"
+            ],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -18641,7 +19114,10 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Old Daka"
+        ]
     },
     {
         "name": "Pao",
@@ -18812,7 +19288,10 @@
                 "cross": "Protection/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Pao"
+        ]
     },
     {
         "name": "Paploo",
@@ -18996,7 +19475,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Paploo"
+        ]
     },
     {
         "name": "Plo Koon",
@@ -19168,7 +19650,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Plo Koon"
+        ]
     },
     {
         "name": "Poe Dameron",
@@ -19340,7 +19825,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Poe Dameron"
+        ]
     },
     {
         "name": "Poggle The Lesser",
@@ -19497,7 +19985,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Poggle The Lesser"
+        ]
     },
     {
         "name": "Princess Leia",
@@ -19653,7 +20144,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Princess Leia"
+        ]
     },
     {
         "name": "Qui-Gon Jinn",
@@ -19812,7 +20306,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Qui-Gon Jinn"
+        ]
     },
     {
         "name": "R2-D2",
@@ -20021,7 +20518,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "R2-D2"
+        ]
     },
     {
         "name": "Resistance Pilot",
@@ -20187,7 +20687,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Resistance Pilot"
+        ]
     },
     {
         "name": "Resistance Trooper",
@@ -20394,7 +20897,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Resistance Trooper"
+        ]
     },
     {
         "name": "Rebel Officer Leia Organa",
@@ -20568,7 +21074,10 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Rebel Officer Leia Organa"
+        ]
     },
     {
         "name": "Rey Scavenger",
@@ -20580,9 +21089,8 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_reyjakku.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "human",
-            "resistance"
+            "Attacker",
+            "Resistance"
         ],
         "gear": {
             "Gear 1": [
@@ -20687,25 +21195,45 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 40% chance to gain Foresight for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Leverage": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Physical damage to target enemy. In addition, Rey gains Foresight for 2 turns if she doesn't have any positive status effects, and Offense Up for 3 turns if she does.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Flurry of Blows": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Physical damage to target enemy twice, with a 55% chance to deal damage a third time. If Rey has any positive status effects, she will deal damage one additional time. Hits after the first deal reduced damage.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Focused Strikes": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "As long as she has no debuffs, Rey has +25% Offense and inflicts Daze for 2 turns whenever she uses a Special ability. This effect can't be Resisted.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         },
         "legacyMods": {
@@ -20753,6 +21281,43 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
+        },
+        "nameVariant": [
+            "Rey Scavenger",
+            "Rey (Scavenger)"
+        ],
+        "stats": {
+            "Power": 19929,
+            "Strength": 747,
+            "Agility": 1103,
+            "Intelligence": 696,
+            "Speed": 164,
+            "Physical Damage": 2699,
+            "Physical Critical Rating": 826,
+            "Special Damage": 1758,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 104,
+            "Resistance Penetration": 15,
+            "Potency": 5,
+            "Health": 23076,
+            "Armor": 209,
+            "Resistance": 146,
+            "Tenacity": 28,
+            "Health Steal": 10,
+            "Protection": 16,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [
+                "2-A",
+                "5-D",
+                "7-B"
+            ],
+            "light": [],
+            "cantina": [],
+            "shops": [
+                "Guild Shipments"
+            ]
         }
     },
     {
@@ -20918,7 +21483,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Royal Guard"
+        ]
     },
     {
         "name": "Sabine Wren",
@@ -21075,7 +21643,10 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Sabine Wren"
+        ]
     },
     {
         "name": "Savage Opress",
@@ -21289,7 +21860,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Savage Opress"
+        ]
     },
     {
         "name": "Scarif Rebel Pathfinder",
@@ -21456,7 +22030,10 @@
                 "cross": "Health/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Scarif Rebel Pathfinder"
+        ]
     },
     {
         "name": "Shoretrooper",
@@ -21650,7 +22227,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Shoretrooper"
+        ]
     },
     {
         "name": "Sith Assassin",
@@ -21815,7 +22395,10 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Sith Assassin"
+        ]
     },
     {
         "name": "Sith Trooper",
@@ -21994,7 +22577,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Sith Trooper"
+        ]
     },
     {
         "name": "Snowtrooper",
@@ -22160,7 +22746,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Snowtrooper"
+        ]
     },
     {
         "name": "Stormtrooper",
@@ -22353,7 +22942,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Stormtrooper"
+        ]
     },
     {
         "name": "Stormtrooper Han",
@@ -22529,7 +23121,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Stormtrooper Han"
+        ]
     },
     {
         "name": "Sun Fac",
@@ -22686,7 +23281,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Sun Fac"
+        ]
     },
     {
         "name": "Talia",
@@ -22856,7 +23454,10 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Talia"
+        ]
     },
     {
         "name": "Teebo",
@@ -23026,7 +23627,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Teebo"
+        ]
     },
     {
         "name": "TIE Fighter Pilot",
@@ -23176,7 +23780,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "TIE Fighter Pilot"
+        ]
     },
     {
         "name": "Tusken Raider",
@@ -23340,7 +23947,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Tusken Raider"
+        ]
     },
     {
         "name": "Tusken Shaman",
@@ -23505,7 +24115,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Tusken Shaman"
+        ]
     },
     {
         "name": "Ugnaught",
@@ -23653,7 +24266,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Ugnaught"
+        ]
     },
     {
         "name": "URoRRuR'R'R",
@@ -23811,7 +24427,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "URoRRuR'R'R"
+        ]
     },
     {
         "name": "Veteran Smuggler Chewbacca",
@@ -24033,7 +24652,10 @@
                 "8-F"
             ],
             "shops": []
-        }
+        },
+        "nameVariant": [
+            "Veteran Smuggler Chewbacca"
+        ]
     },
     {
         "name": "Veteran Smuggler Han Solo",
@@ -24205,7 +24827,10 @@
                 "cross": "Potency/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Veteran Smuggler Han Solo"
+        ]
     },
     {
         "name": "Wedge Antilles",
@@ -24361,7 +24986,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Wedge Antilles"
+        ]
     },
     {
         "name": "Wicket",
@@ -24515,7 +25143,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Wicket"
+        ]
     },
     {
         "name": "Zam Wesell",
@@ -24687,7 +25318,10 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Zam Wesell"
+        ]
     },
     {
         "name": "Mother Talzin",
@@ -24863,7 +25497,10 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Mother Talzin"
+        ]
     },
     {
         "name": "Nightsister Spirit",
@@ -24872,12 +25509,12 @@
             "Nightsister Spirit",
             "Spirit"
         ],
-        "url": "",
-        "avatarURL": "",
-        "side": "",
+        "url": "https://swgoh.gg/characters/nightsister-spirit/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsisters_wraith.png",
+        "side": "dark",
         "factions": [
-            "nightsister",
-            "attacker"
+            "Attacker",
+            "Nightsister"
         ],
         "gear": {
             "Gear 1": [
@@ -24982,19 +25619,34 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy, inflict Speed Down for 2 turns, and remove 20% Turn Meter. Gain Turn Meter equal to the amount removed.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Possess": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy, Dispel all buffs on them, and inflict Stun for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Malevolent Spirit": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the end of her turn, and at the start of each encounter, Nightsister Spirit gains Foresight for 1 turn. While Nightsister Spirit has Foresight, she has +100% Offense and her attacks ignore Armor.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         },
         "legacyMods": {},
@@ -25013,7 +25665,37 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 775,
+            "Agility": 1171,
+            "Intelligence": 622,
+            "Speed": 153,
+            "Physical Damage": 3052,
+            "Physical Critical Rating": 661,
+            "Special Damage": 1542,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 133,
+            "Resistance Penetration": 5,
+            "Potency": 69,
+            "Health": 24035,
+            "Armor": 220,
+            "Resistance": 108,
+            "Tenacity": 43,
+            "Health Steal": 10,
+            "Protection": 28,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "nameVariant": [
+            "Nightsister Spirit"
+        ]
     },
     {
         "name": "Nightsister Zombie",
@@ -25022,11 +25704,12 @@
             "Nightsister Zombie",
             "Zombie"
         ],
-        "url": "",
-        "avatarURL": "",
-        "side": "",
+        "url": "https://swgoh.gg/characters/nightsister-zombie/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsisters_zombie.png",
+        "side": "dark",
         "factions": [
-            "nightsister"
+            "Nightsister",
+            "Tank"
         ],
         "gear": {
             "Gear 1": [
@@ -25131,19 +25814,34 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Tenacity Down for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Feed": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy. If Nightsister Zombie has full Health, Dispel all debuffs on her. Otherwise, this attack has +100% Health Steal.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Endless Horde": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the end of her turn, and at the start of each encounter, Nightsister Zombie gains Taunt for 1 turn. When Nightsister Zombie is defeated while any other Nightsister allies are active, she is Revived with 100% Health and 25% Turn Meter. This Revive can't be prevented.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         },
         "legacyMods": {},
@@ -25162,7 +25860,37 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 1176,
+            "Agility": 948,
+            "Intelligence": 716,
+            "Speed": 120,
+            "Physical Damage": 2502,
+            "Physical Critical Rating": 569,
+            "Special Damage": 1808,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 61,
+            "Resistance Penetration": 0,
+            "Potency": 48,
+            "Health": 32201,
+            "Armor": 357,
+            "Resistance": 158,
+            "Tenacity": 38,
+            "Health Steal": 5,
+            "Protection": 38,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "nameVariant": [
+            "Nightsister Zombie"
+        ]
     },
     {
         "name": "First Order SF TIE Pilot",
@@ -25172,7 +25900,7 @@
             "FOSFTP",
             "Special Forces Tie Pilot"
         ],
-        "url": "https://swgoh.gg/characters/first-order-sf-tie-pilot",
+        "url": "https://swgoh.gg/characters/first-order-sf-tie-pilot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorder_pilot.png",
         "side": "dark",
         "factions": [
@@ -25282,19 +26010,34 @@
                 "type": "Special",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Defense Down for 2 turns. Then, if the target has Defense Down, gain Advantage for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Drumfire": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal Special damage to all enemies and inflict Defense Down for 2 turns on each Critically Hit enemy. First Order allies gain Speed Up for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Oppressive Burst": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to target enemy and call target other ally to Assist. If target other ally is First Order, they gain Advantage for 2 turns and Stun the target enemy for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         },
         "legacyMods": {},
@@ -25313,7 +26056,37 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 1191,
+            "Agility": 819,
+            "Intelligence": 1024,
+            "Speed": 130,
+            "Physical Damage": 2325,
+            "Physical Critical Rating": 511,
+            "Special Damage": 2668,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 71,
+            "Resistance Penetration": 0,
+            "Potency": 46,
+            "Health": 27640,
+            "Armor": 316,
+            "Resistance": 163,
+            "Tenacity": 41,
+            "Health Steal": 35,
+            "Protection": 32,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "nameVariant": [
+            "First Order SF TIE Pilot"
+        ]
     },
     {
         "name": "Kylo Ren Unmasked",
@@ -25323,12 +26096,11 @@
             "Kylo Unmasked",
             "Matt"
         ],
-        "url": "https://swgoh.gg/characters/kylo-ren-unmasked",
+        "url": "https://swgoh.gg/characters/kylo-ren-unmasked/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kylo_unmasked.png",
         "side": "dark",
         "factions": [
             "First Order",
-            "Human",
             "Tank"
         ],
         "gear": {
@@ -25434,31 +26206,56 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Tenacity Down for 2 turns. If the target was already debuffed, and it is Kylo's turn, he gains Taunt for 1 turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Halt": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Dispel all buffs on target enemy and Stun them for 2 turns. Kylo recovers 10% Health and gains Taunt for 1 turn. This attack can't be Evaded or Resisted.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Focused Rage": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy and recover Health equal to the damage dealt. If the target is Stunned, deal double damage.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Merciless Pursuit": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "First Order allies have +40% Critical Damage and +30 Speed. When a First Order ally scores a Critical Hit, they gain 20% Turn Meter. When a First Order ally gains a status effect, they recover 5% Health and 5% Protection.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Scarred": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "When Kylo takes damage, he recovers 8% Health and a random First Order ally who doesn't have it gains Advantage for 2 turns. Kylo has +50% Counter Chance, doubled while he has Taunt. Kylo takes reduced damage from Percent Health damage effects and gains Taunt for 1 turn at the start of each encounter.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         },
         "legacyMods": {},
@@ -25491,6 +26288,39 @@
                 "cross": "Health/ Offense",
                 "source": "Crouching Rancor"
             }
+        },
+        "nameVariant": [
+            "Kylo Ren Unmasked",
+            "Kylo Ren (Unmasked)"
+        ],
+        "stats": {
+            "Power": 22909,
+            "Strength": 1381,
+            "Agility": 668,
+            "Intelligence": 789,
+            "Speed": 132,
+            "Physical Damage": 3051,
+            "Physical Critical Rating": 513,
+            "Special Damage": 2067,
+            "Special Critical Rating": 60,
+            "Armor Penetration": 59,
+            "Resistance Penetration": 0,
+            "Potency": 47,
+            "Health": 30428,
+            "Armor": 332,
+            "Resistance": 190,
+            "Tenacity": 38,
+            "Health Steal": 15,
+            "Protection": 36,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "3-F"
+            ],
+            "shops": []
         }
     },
     {
@@ -25500,7 +26330,7 @@
             "Colonel Starck",
             "Starck"
         ],
-        "url": "https://swgoh.gg/characters/colonel-starck",
+        "url": "https://swgoh.gg/characters/colonel-starck/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_colonel_stark.png",
         "side": "dark",
         "factions": [
@@ -25697,7 +26527,10 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Colonel Starck"
+        ]
     },
     {
         "name": "Imperial Probe Droid",
@@ -25707,7 +26540,7 @@
             "IPD",
             "Probe Droid"
         ],
-        "url": "https://swgoh.gg/characters/imperial-probe-droid",
+        "url": "https://swgoh.gg/characters/imperial-probe-droid/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_probedroid.png",
         "side": "dark",
         "factions": [
@@ -25818,7 +26651,12 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with a 80% chance to Expose them for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             " Detect": {
                 "type": "Special",
@@ -25830,13 +26668,34 @@
                 "type": "Special",
                 "abilityCooldown": "1",
                 "abilityDesc": "Imperial Probe Droid instantly defeats itself and can't be Revived. Deal massive damage to target enemy. Deal bonus damage to other enemies equal to 30% of their Max Health. Expose all Target Locked enemies for 2 turns. This attack can't be Evaded. While Imperial Probe Droid has full Health, or has no active allies, the cooldown of this ability is set to max and can't be reduced.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Imperial Logistics": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Imperial Probe Droid has +50% Max Health. At the end of each Droid ally turn, at the end of each Empire ally turn, and at the end of each Rebel enemy turn, Imperial Probe Droid gains 3% Turn Meter.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Detect": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Dispel all buffs on all enemies with a 75% chance to inflict Target Lock for 2 turns. Then, remove 5% Turn Meter from Target Locked enemies. This attack can't be Evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             }
         },
         "legacyMods": {},
@@ -25855,7 +26714,37 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 848,
+            "Agility": 713,
+            "Intelligence": 1177,
+            "Speed": 132,
+            "Physical Damage": 2105,
+            "Physical Critical Rating": 295,
+            "Special Damage": 3491,
+            "Special Critical Rating": 160,
+            "Armor Penetration": 55,
+            "Resistance Penetration": 22,
+            "Potency": 51,
+            "Health": 27089,
+            "Armor": 290,
+            "Resistance": 282,
+            "Tenacity": 28,
+            "Health Steal": 0,
+            "Protection": 32,
+            "activation": 80
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "nameVariant": [
+            "Imperial Probe Droid"
+        ]
     },
     {
         "name": "Wampa",
@@ -25863,7 +26752,7 @@
         "aliases": [
             "Wampa"
         ],
-        "url": "https://swgoh.gg/characters/wampa",
+        "url": "https://swgoh.gg/characters/wampa/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_wampa.png",
         "side": "dark",
         "factions": [
@@ -25972,31 +26861,56 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Damage Over Time for 2 turns. If the target was Exposed or Staggered, Stun them for 1 turn. If the target was debuffed, gain 20% Turn Meter. If Wampa isn't debuffed, gain 20% Turn Meter. This attack can't be Evaded. This attack has +100% Offense against Rebel targets.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Icebreaker": {
                 "type": "Special",
                 "abilityCooldown": "5",
                 "abilityDesc": "Dispel all debuffs on Wampa. Deal Physical damage to all enemies and Daze them for 2 turns. Wampa gains Protection Up (150%) until the next time this ability is used, which can't be Dispelled or prevented.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Furious Foe": {
                 "type": "Special",
                 "abilityCooldown": "4",
                 "abilityDesc": "Inflict Healing Immunity on all enemies for 2 turns, which can't be Evaded. Wampa gains 40% Accuracy, 40% Critical Chance, and 40% Offense (stacking) until the end of the encounter. Wampa gains 15% Turn Meter for each defeated ally and each active enemy. This ability starts on cooldown.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
             },
             "Howling Rage": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "While Wampa has Protection Up, it has +20% Counter Chance, +50% Offense, and +50% Tenacity.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Cornered Beast": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Wampa has +50% Counter Chance. Wampa has +10% Counter Chance, +5% Health Steal, and +5% Offense for each Damage Over Time effect on each enemy.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         },
         "legacyMods": {},
@@ -26015,7 +26929,37 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "stats": {
+            "Power": 22909,
+            "Strength": 1355,
+            "Agility": 753,
+            "Intelligence": 632,
+            "Speed": 127,
+            "Physical Damage": 3160,
+            "Physical Critical Rating": 523,
+            "Special Damage": 1667,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 193,
+            "Resistance Penetration": 0,
+            "Potency": 50,
+            "Health": 29260,
+            "Armor": 263,
+            "Resistance": 117,
+            "Tenacity": 39,
+            "Health Steal": 10,
+            "Protection": 34,
+            "activation": 145
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "nameVariant": [
+            "Wampa"
+        ]
     },
     {
         "name": "Rey Jedi Training",
@@ -26025,7 +26969,7 @@
             "RJT",
             "JTR"
         ],
-        "url": "https://swgoh.gg/characters/rey-jedi-training",
+        "url": "https://swgoh.gg/characters/rey-jedi-training/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rey_tlj.png",
         "side": "light",
         "factions": [
@@ -26135,37 +27079,67 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy. Damage is increased by 25% for each of the following: Rey has no debuffs; Rey has any buffs; the target has no buffs; the target has any debuffs.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Defiant Slash": {
                 "type": "Special",
                 "abilityCooldown": "5",
                 "abilityDesc": "Deal Physical damage to target enemy and inflict Healing Immunity for 2 turns (this effect can’t be Copied, Dispelled, or Resisted). Target other Resistance ally and dispel all their debuffs, call them to Assist, and grant them Foresight for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Mind Trick": {
                 "type": "Special",
                 "abilityCooldown": "5",
                 "abilityDesc": "Dispel all buffs on target enemy and inflict Ability Block, Daze, Offense Down, and Speed Down for 2 turns. For each debuff inflicted, remove 10% Turn Meter, which can't be Resisted. For each debuff Resisted, remove 20% Turn Meter, which can't be Resisted. For each active Resistance ally, gain 15% Turn Meter. This attack can't be Evaded.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Inspirational Presence": {
                 "type": "Leader",
                 "abilityCooldown": "0",
                 "abilityDesc": "Resistance allies have +30% Critical Chance and +30% Critical Damage. When they score a Critical Hit, they have a 70% chance to inflict Expose for 2 turns (this effect can't be Resisted). Resistance allies gain 10% Turn Meter when an enemy is Exposed.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
             },
             "Virtuous Protector": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "When another ally suffers a debuff, or when another Resistance ally gains Secret Intel, Rey gains 8% Turn Meter. When Rey suffers a debuff, she has a 40% chance to Dispel all debuffs on herself.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             },
             "Insight": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the start of each encounter, Rey gains Foresight until she Evades. When Rey Evades, she recovers 5% Health and 5% Protection.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
         },
         "legacyMods": {},
@@ -26198,6 +27172,37 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
+        },
+        "nameVariant": [
+            "Rey Jedi Training",
+            "Rey (Jedi Training)"
+        ],
+        "stats": {
+            "Power": 25890,
+            "Strength": 1231,
+            "Agility": 1258,
+            "Intelligence": 759,
+            "Speed": 140,
+            "Physical Damage": 2703,
+            "Physical Critical Rating": 806,
+            "Special Damage": 1991,
+            "Special Critical Rating": 20,
+            "Armor Penetration": 104,
+            "Resistance Penetration": 0,
+            "Potency": 36,
+            "Health": 28508,
+            "Armor": 336,
+            "Resistance": 90,
+            "Tenacity": 40,
+            "Health Steal": 20,
+            "Protection": 33,
+            "activation": 330
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     },
     {
@@ -26209,7 +27214,7 @@
             "FOX",
             "FOE"
         ],
-        "url": "https://swgoh.gg/characters/first-order-executioner",
+        "url": "https://swgoh.gg/characters/first-order-executioner/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorder_executioner.png",
         "side": "dark",
         "factions": [
@@ -26365,7 +27370,36 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "stats": {
+            "Power": 16948,
+            "Strength": 1142,
+            "Agility": 888,
+            "Intelligence": 635,
+            "Speed": 111,
+            "Physical Damage": 2904,
+            "Physical Critical Rating": 587,
+            "Special Damage": 1574,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 96,
+            "Resistance Penetration": 0,
+            "Health": 29216,
+            "Armor": 308,
+            "Resistance": 176,
+            "Tenacity": 32,
+            "Health Steal": 15,
+            "Protection": 34,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "nameVariant": [
+            "First Order Executioner"
+        ]
     },
     {
         "name": "Rose Tico",
@@ -26374,7 +27408,7 @@
             "Rose Tico",
             "Rose"
         ],
-        "url": "https://swgoh.gg/characters/rose-tico",
+        "url": "https://swgoh.gg/characters/rose-tico/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rose.png",
         "side": "light",
         "factions": [
@@ -26590,7 +27624,16 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "nameVariant": [
+            "Rose Tico"
+        ]
     },
     {
         "name": "Amilyn Holdo",
@@ -26600,7 +27643,7 @@
             "Holdo",
             "Amilyn"
         ],
-        "url": "https://swgoh.gg/characters/amilyn-holdo",
+        "url": "https://swgoh.gg/characters/amilyn-holdo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_holdo.png",
         "side": "light",
         "factions": [
@@ -26820,7 +27863,10 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Amilyn Holdo"
+        ]
     },
     {
         "name": "Sith Marauder",
@@ -26830,7 +27876,7 @@
             "Marauder",
             "SM"
         ],
-        "url": "https://swgoh.gg/characters/sith-marauder",
+        "url": "https://swgoh.gg/characters/sith-marauder/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithmarauder.png",
         "side": "dark",
         "factions": [
@@ -26968,6 +28014,17 @@
                     "omega": 5,
                     "zeta": 0
                 }
+            },
+            "Victory Through Power 4": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to target enemy and grant all allies Potency Up for 2 turns. If this attack scores a Critical Hit, reduce the target's Max Health by 15% until end of the encounter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 0,
+                    "omega": 0,
+                    "zeta": 0
+                }
             }
         },
         "shardLocations": {
@@ -27027,7 +28084,10 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Sith Marauder"
+        ]
     },
     {
         "name": "Darth Traya",
@@ -27036,7 +28096,7 @@
             "Darth Traya",
             "Traya"
         ],
-        "url": "https://swgoh.gg/characters/darth-traya",
+        "url": "https://swgoh.gg/characters/darth-traya/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_traya.png",
         "side": "dark",
         "factions": [
@@ -27241,7 +28301,10 @@
                 "cross": "Health/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Darth Traya"
+        ]
     },
     {
         "name": "Visas Marr",
@@ -27250,7 +28313,7 @@
             "Visas Marr",
             "Visas"
         ],
-        "url": "https://swgoh.gg/characters/visas-marr",
+        "url": "https://swgoh.gg/characters/visas-marr/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_visas.png",
         "side": "light",
         "factions": [
@@ -27443,7 +28506,10 @@
                 "cross": "Health/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Visas Marr"
+        ]
     },
     {
         "name": "Darth Sion",
@@ -27452,7 +28518,7 @@
             "Darth Sion",
             "Sion"
         ],
-        "url": "https://swgoh.gg/characters/darth-sion",
+        "url": "https://swgoh.gg/characters/darth-sion/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sion.png",
         "side": "dark",
         "factions": [
@@ -27672,6 +28738,9 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "nameVariant": [
+            "Darth Sion"
+        ]
     }
 ]
