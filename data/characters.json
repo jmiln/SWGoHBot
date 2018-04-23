@@ -23345,11 +23345,11 @@
             "Vet Chewbacca"
         ],
         "url": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
-        "avatarURL": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tfa_chewbacca.png",
         "side": "light",
         "factions": [
-            "attacker",
-            "scoundrel"
+            "Attacker",
+            "Scoundrel"
         ],
         "mods": {
             "Arena": {
@@ -23482,26 +23482,75 @@
                 "type": "Basic",
                 "abilityCooldown": "0",
                 "abilityDesc": "Deal Physical damage to target enemy with 80% chance to inflict Daze for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Furious Blow": {
                 "type": "Special",
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Physical damage to target enemy. Dispel all buffs on them and Stun them for 1 turn. Inflict Speed Down on all enemies for 2 turns.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Partner In Crime": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "Chewbacca has 25% Critical Chance and +50% Health Steal. When Veteran Smuggler Han Solo takes damage, Chewbacca gains 20% Critical Damage (stacking) until he scores a Critical Hit. When Veteran Smuggler Han Solo is defeated, Chewbacca gains 100% Turn Meter, his cooldowns are reset, and he takes additional turn after his next turn.",
-                "tier": "omega"
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
             },
             "Let the Wookiee Win": {
                 "type": "Unique",
                 "abilityCooldown": "0",
                 "abilityDesc": "At the start of each enemy turn, Chewbacca gains 12% Offense (stacking) until he uses 2 abilities.",
-                "tier": "zeta"
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
             }
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1544,
+            "Agility": 697,
+            "Intelligence": 588,
+            "Speed": 102,
+            "Physical Damage": 3251,
+            "Physical Critical Rating": 450,
+            "Special Damage": 1521,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 77,
+            "Resistance Penetration": 0,
+            "Potency": 48,
+            "Health": 33412,
+            "Armor": 372,
+            "Resistance": 181,
+            "Tenacity": 36,
+            "Health Steal": 10,
+            "Protection": 39,
+            "activation": 25
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [
+                "8-F"
+            ],
+            "shops": []
         }
     },
     {
