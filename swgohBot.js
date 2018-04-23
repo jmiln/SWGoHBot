@@ -188,12 +188,12 @@ async function updateIfChanged(localCachePath, dataSourceUri) {
         const remoteData = JSON.parse(remoteResponse.text);
 
         try {
-			localCache = JSON.parse(fs.readFileSync(localCachePath));
-		} catch (err) {
-			let reason = err || "unknown error";
-			localCache = {};
-			console.log('UpdateRemoteData', 'Error reading local cache for ' + dataSourceUri + ', reason: ' + reason);
-		}
+            localCache = JSON.parse(fs.readFileSync(localCachePath));
+        } catch (err) {
+            let reason = err || "unknown error";
+            localCache = {};
+            console.log('UpdateRemoteData', 'Error reading local cache for ' + dataSourceUri + ', reason: ' + reason);
+        }
 
         if (JSON.stringify(remoteData) !== JSON.stringify(localCache)) {
             saveFile(localCachePath, remoteData);
@@ -234,11 +234,11 @@ async function updateRemoteData() {
     }
 
     console.log('UpdateRemoteData', 'Finished processing remote updates');
-	if (currentSnapshot !== JSON.stringify(currentCharacters)) {
-		console.log('UpdateRemoteData', 'Changes detected in character data, saving updates and reloading');
-		saveFile("./data/characters.json", currentCharacters);
-		client.characters = currentCharacters;
-	}
+    if (currentSnapshot !== JSON.stringify(currentCharacters)) {
+        console.log('UpdateRemoteData', 'Changes detected in character data, saving updates and reloading');
+        saveFile("./data/characters.json", currentCharacters);
+        client.characters = currentCharacters;
+    }
 }
 
 async function updateShips() {
@@ -247,8 +247,8 @@ async function updateShips() {
     const currentShips = client.ships;
 
     for (var ggShipkey in ggShipList) {
-		const ggShip = ggShipList[ggShipkey];
-		// TODO - check for new ships / reconcile data source differences
+        const ggShip = ggShipList[ggShipkey];
+        // TODO - check for new ships / reconcile data source differences
     }
 }
 
@@ -266,18 +266,18 @@ function isSameCharacter(localChar, remoteChar, nameAttribute) {
     if (remoteName === getCleanString(localChar.name)) {
         isSame = true;
     } else {
-		if (localChar.nameVariant) {
-			for (const key in localChar.nameVariant) {
-				let localName = getCleanString(localChar.nameVariant[key]);
-				if (remoteName === localName) {
-					isSame = true;
-					break;
-				}
-			}
-		} else {
-			localChar.nameVariant = [];
-			localChar.nameVariant.push(localChar.name);
-		}
+        if (localChar.nameVariant) {
+            for (const key in localChar.nameVariant) {
+                let localName = getCleanString(localChar.nameVariant[key]);
+                if (remoteName === localName) {
+                    isSame = true;
+                    break;
+                }
+            }
+        } else {
+            localChar.nameVariant = [];
+            localChar.nameVariant.push(localChar.name);
+        }
     }
 
     return isSame;
@@ -287,53 +287,53 @@ async function updateCharacters(currentCharacters) {
     const ggCharList = JSON.parse(fs.readFileSync(GG_CHAR_CACHE));
 
     for (var ggCharKey in ggCharList) {
-		const ggChar = ggCharList[ggCharKey];
+        const ggChar = ggCharList[ggCharKey];
         let found = false;
         for (var currentCharKey in currentCharacters) {
             const currentChar = currentCharacters[currentCharKey];
 
             // attempt to match in increasing uniqueness- base_id, url, then name variants
             if (currentChar.uniqueName && currentChar.uniqueName !== UNKNOWN) {
-				if (currentChar.uniqueName === ggChar.base_id) {
-					found = true;
-				}
-			} else if (currentChar.url && currentChar.url !== UNKNOWN) {
-				if (ggChar.url === currentChar.url) {
-					found = true;
-				}
-			} else if (isSameCharacter(currentChar, ggChar)) {
-				found = true;
-			}
+                if (currentChar.uniqueName === ggChar.base_id) {
+                    found = true;
+                }
+            } else if (currentChar.url && currentChar.url !== UNKNOWN) {
+                if (ggChar.url === currentChar.url) {
+                    found = true;
+                }
+            } else if (isSameCharacter(currentChar, ggChar)) {
+                found = true;
+            }
 
-			if (found) {
-				let updated = false;
+            if (found) {
+                let updated = false;
 
-				// character discovered from another source that wasn't yet added to swgoh.gg
-				if (!currentChar.url || currentChar.url === UNKNOWN || ggChar.url !== currentChar.url) {
+                // character discovered from another source that wasn't yet added to swgoh.gg
+                if (!currentChar.url || currentChar.url === UNKNOWN || ggChar.url !== currentChar.url) {
                     console.log('UpdateRemoteData', 'Automatically reconciling ' + currentChar.name + "'s swgoh.gg url");
                     currentChar.url = ggChar.url;
                     updated = true;
                 }
                 if (currentChar.uniqueName !== ggChar.base_id) {
-					console.log('UpdateRemoteData', 'Automatically reconciling ' + currentChar.name + "'s swgoh.gg base_id");
-					currentChar.uniqueName = ggChar.base_id;
-					updated = true;
-				}
-				if (!isSameCharacter(currentChar, ggChar)) {
-					console.log('UpdateRemoteData', 'Automatically reconciling ' + currentChar.name + "'s swgoh.gg name variants");
-					if (!currentChar.nameVariant) {
-						currentChar.nameVariant = [];
-					}
-					currentChar.nameVariant.push(ggChar.name);
-					updated = true;
-				}
+                    console.log('UpdateRemoteData', 'Automatically reconciling ' + currentChar.name + "'s swgoh.gg base_id");
+                    currentChar.uniqueName = ggChar.base_id;
+                    updated = true;
+                }
+                if (!isSameCharacter(currentChar, ggChar)) {
+                    console.log('UpdateRemoteData', 'Automatically reconciling ' + currentChar.name + "'s swgoh.gg name variants");
+                    if (!currentChar.nameVariant) {
+                        currentChar.nameVariant = [];
+                    }
+                    currentChar.nameVariant.push(ggChar.name);
+                    updated = true;
+                }
 
-				if (updated) {
-					// some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
-					await ggGrab(currentChar);
-				}
-				break;
-			}
+                if (updated) {
+                    // some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
+                    await ggGrab(currentChar);
+                }
+                break;
+            }
         }
 
         if (!found) {
@@ -349,7 +349,7 @@ async function updateCharacters(currentCharacters) {
 }
 
 async function updateCharacterMods(currentCharacters) {
-	const rancorFile = fs.readFileSync(RANCOR_MOD_CACHE);
+    const rancorFile = fs.readFileSync(RANCOR_MOD_CACHE);
     const rancorData = JSON.parse(rancorFile);
     const rancorCharacterList = rancorData.data;
     const RANCOR_SOURCE = "Crouching Rancor";
@@ -366,7 +366,7 @@ async function updateCharacterMods(currentCharacters) {
 
     // iterate the crouching rancor data (may contain currently unknown characters)
     for (var rancorCharKey in rancorCharacterList) {
-		const rancorChar = rancorCharacterList[rancorCharKey];
+        const rancorChar = rancorCharacterList[rancorCharKey];
 
         // skip garbage data
         if (typeof rancorChar.cname === 'undefined') return;
@@ -433,40 +433,40 @@ async function updateCharacterMods(currentCharacters) {
 }
 
 function getEmptyShardLocations() {
-	return {
-		"dark": [],
-		"light": [],
-		"cantina": [],
-		"shops": []
-	};
+    return {
+        "dark": [],
+        "light": [],
+        "cantina": [],
+        "shops": []
+    };
 }
 
 function getEmptyStats() {
-	return {
-		// Primary
-		'Power':0,
-		'Strength': 0,
-		'Agility':0,
-		'Intelligence':0,
-		// Offensive
-		'Speed': 0,
-		'Physical Damage': 0,
-		'Physical Critical Rating': 0,
-		'Special Damage': 0,
-		'Special Critical Rating': 0,
-		'Armor Penetration': 0,
-		'Resistance Penetration': 0,
-		'Potency': 0,
-		// Defensive
-		'Health': 0,
-		'Armor': 0,
-		'Resistance': 0,
-		'Tenacity': 0,
-		'Health Steal': 0,
-		'Protection': 0,
-		// Activation
-		'activation': 0
-	};
+    return {
+        // Primary
+        'Power':0,
+        'Strength': 0,
+        'Agility':0,
+        'Intelligence':0,
+        // Offensive
+        'Speed': 0,
+        'Physical Damage': 0,
+        'Physical Critical Rating': 0,
+        'Special Damage': 0,
+        'Special Critical Rating': 0,
+        'Armor Penetration': 0,
+        'Resistance Penetration': 0,
+        'Potency': 0,
+        // Defensive
+        'Health': 0,
+        'Armor': 0,
+        'Resistance': 0,
+        'Tenacity': 0,
+        'Health Steal': 0,
+        'Protection': 0,
+        // Activation
+        'activation': 0
+    };
 }
 
 function createEmptyChar(name, url, uniqueName) {
@@ -498,14 +498,14 @@ async function ggGrab(character) {
 
     // safety nets in case of entries created by hand
     if (!character.abilities) {
-		character.abilities = {};
-	}
-	if (!character.stats) {
-		character.stats = {};
-	}
+        character.abilities = {};
+    }
+    if (!character.stats) {
+        character.stats = {};
+    }
 
-	character.shardLocations = getEmptyShardLocations();
-	character.gear = {};
+    character.shardLocations = getEmptyShardLocations();
+    character.gear = {};
 
     let $ = cheerio.load(ggGrabText);
 
