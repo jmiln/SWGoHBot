@@ -17,13 +17,20 @@ class CharMods extends Command {
     async run(client, message, [userID, ...searchChar], level) { // eslint-disable-line no-unused-vars
         const stats = message.language.get('COMMAND_CHARMODS_STAT_NAMES');
         const types = message.language.get('COMMAND_CHARMODS_MOD_TYPES');
+        const STATMOD_SLOT_01 = client.emojis.find("name", "modSquare");
+        const STATMOD_SLOT_02 = client.emojis.find("name", "modArrow");
+        const STATMOD_SLOT_03 = client.emojis.find("name", "modDiamond");
+        const STATMOD_SLOT_04 = client.emojis.find("name", "modTriangle");
+        const STATMOD_SLOT_05 = client.emojis.find("name", "modCircle");
+        const STATMOD_SLOT_06 = client.emojis.find("name", "modCross");
+
         const icons = {
-            'STATMOD_SLOT_01': client.emojis.find('name', 'modSquare'),
-            'STATMOD_SLOT_02': client.emojis.find('name', 'modArrow'),
-            'STATMOD_SLOT_03': client.emojis.find('name', 'modDiamond'),
-            'STATMOD_SLOT_04': client.emojis.find('name', 'modTriangle'),
-            'STATMOD_SLOT_05': client.emojis.find('name', 'modCircle'),
-            'STATMOD_SLOT_06': client.emojis.find('name', 'modCross')
+            'STATMOD_SLOT_01': STATMOD_SLOT_01 ? STATMOD_SLOT_01 : "Square",
+            'STATMOD_SLOT_02': STATMOD_SLOT_02 ? STATMOD_SLOT_02 : "Arrow",
+            'STATMOD_SLOT_03': STATMOD_SLOT_03 ? STATMOD_SLOT_03 : "Diamond",
+            'STATMOD_SLOT_04': STATMOD_SLOT_04 ? STATMOD_SLOT_04 : "Triangle",
+            'STATMOD_SLOT_05': STATMOD_SLOT_05 ? STATMOD_SLOT_05 : "Circle",
+            'STATMOD_SLOT_06': STATMOD_SLOT_06 ? STATMOD_SLOT_06 : "Cross"
         };
         if (searchChar) searchChar = searchChar.join(' ');
 
