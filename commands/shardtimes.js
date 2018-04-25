@@ -162,7 +162,7 @@ class Shardtimes extends Command {
                     }
                     const maxLen = 20;
                     const thisUser = message.guild.members.get(user);
-                    const userName = thisUser.nickname === null ? `${thisUser.user.username}` : `${thisUser.nickname}`;
+                    const userName = thisUser ? `${thisUser.displayName}` : `${client.users.get(user) ? client.users.get(user).username : 'Unknown'}`;
                     const uName = userName.length > maxLen ? userName.substring(0, maxLen) : userName;
                     times.push(`${shardTimes[user].flag != '' ? userFlag : ""}${uName}`);
                 });
