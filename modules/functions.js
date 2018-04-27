@@ -50,25 +50,40 @@ module.exports = (client) => {
     };
 
     // This finds any character that matches the search, and returns them in an array
-    client.findChar = (searchName, charList, noLimit=false) => {
-        var options = {
+    client.findChar = (searchName, charList) => {
+        const options = {
+            tokenize: true,
+            matchAllTokens: true,
+            threshold: 0,
+            distance: 0,
+            keys: [ "name", "aliases" ]
+        };
+        const options2 = {
             keys: ['name', 'aliases'],
             threshold: .1,
             distance: 4
         };
-        // Make it so it only returns the one if it's exact
+        // In case of any extra spaces
+        searchName = searchName.trim().toLowerCase();
+
+        // Check the names for an exact match
         for (let ix = 0; ix < charList.length; ix++) {
-            if (charList[ix].name.toLowerCase() === searchName.toLowerCase()) {
+            // console.log('checking: ' + charList[ix].name.toLowerCase() + ' VS ' + searchName);
+            if (charList[ix].name.toLowerCase() === searchName) {
                 return [charList[ix]];
             }
         }
-        // If it's not exact, send back the big mess
+
+        // If there's not an exact name match, fuzzy search it
         const fuse = new Fuse(charList, options);
         let chars = fuse.search(searchName);
-        // If there's a ton of em, only return the first 4
-        if (chars.length > 4 && !noLimit) {
-            chars = chars.slice(0, 4);
+        if (chars.length >= 1) {
+            return chars;
         }
+
+        // If it's not exact, send back the big mess
+        const fuse2 = new Fuse(charList, options2);
+        chars = fuse2.search(searchName);
         return chars;
     };
 
@@ -435,6 +450,7 @@ module.exports = (client) => {
         await client.guildEvents.destroy({where: {eventID: eventID}})
             .then(() => {
                 const eventToDel = client.schedule.scheduledJobs[eventID];
+                if (!eventToDel) console.log('Trying to delete: ' + event);
                 eventToDel.cancel();
             })
             .catch(error => { 
