@@ -129,7 +129,7 @@ client.on('error', (err) => {
 if (!client.shard || client.shard.id === 0) {
     // ## Here down is to update any characters that need it ##
     // Run it one minute after the bot boots
-    setTimeout(updateRemoteData,        1 * 5 * 1000);
+    setTimeout(updateRemoteData,        1 * 60 * 1000);
     // Check every 12 hours to see if any mods have been changed
     setInterval(updateRemoteData, 12 * 60 * 60 * 1000);
     //                               hr   min  sec  mSec
