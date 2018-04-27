@@ -16,6 +16,10 @@ client.config = require('./config.js');
 client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
 client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
 client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
+const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
+const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";
+const GG_SHIPS_CACHE = "./data/swgoh-gg-ships.json";
+const UNKNOWN = "Unknown";
 
 require("./modules/functions.js")(client);
 
@@ -64,11 +68,11 @@ client.changelogs = client.sequelize.define('changelogs', {
     logText: Sequelize.TEXT
 });
 client.shardTimes = client.sequelize.define('shardtimes', {
-    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id or guild.id-channel.id 
+    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id or guild.id-channel.id
     times: {type: Sequelize.JSONB, defaultValue: {} }
 });
 client.polls = client.sequelize.define('polls', {
-    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id-channel.id 
+    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id-channel.id
     poll: Sequelize.JSONB
 });
 client.allyCodes = client.sequelize.define('allyCodes', {
@@ -88,7 +92,7 @@ const init = async () => {
         try {
             const props = new(require(`./commands/${f}`))(client);
             if (f.split(".").slice(-1)[0] !== "js") return;
-            if (props.help.category === "SWGoH" && !client.swgohAPI) return; 
+            if (props.help.category === "SWGoH" && !client.swgohAPI) return;
             client.commands.set(props.help.name, props);
             props.conf.aliases.forEach(alias => {
                 client.aliases.set(alias, props.help.name);
@@ -125,9 +129,9 @@ client.on('error', (err) => {
 if (!client.shard || client.shard.id === 0) {
     // ## Here down is to update any characters that need it ##
     // Run it one minute after the bot boots
-    setTimeout(updateCharacterMods,        1 * 60 * 1000);
+    setTimeout(updateRemoteData,        1 * 60 * 1000);
     // Check every 12 hours to see if any mods have been changed
-    setInterval(updateCharacterMods, 12 * 60 * 60 * 1000);
+    setInterval(updateRemoteData, 12 * 60 * 60 * 1000);
     //                               hr   min  sec  mSec
 } else {
     // To reload the characters on any shard other than the main one
@@ -165,184 +169,350 @@ function getModType(type) {
     }
 }
 
+function saveFile(filePath, jsonData) {
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4), 'utf8');
+    } catch(err) {
+        if (err) {
+            console.log(err);
+        }
+    }
+}
 
-async function updateCharacterMods() {
-    const jsonGrab = await snekfetch.get('http://apps.crouchingrancor.com/mods/advisor.json');
-    const characterList = JSON.parse(jsonGrab.text).data;
+async function updateIfChanged(localCachePath, dataSourceUri) {
+    let updated = false;
 
-    let updated = false, newChar = false;
+    let localCache = {};
+
+    try {
+        console.log('UpdateRemoteData', 'Fetching ' + dataSourceUri);
+        const remoteResponse = await snekfetch.get(dataSourceUri);
+        const remoteData = JSON.parse(remoteResponse.text);
+
+        try {
+            localCache = JSON.parse(fs.readFileSync(localCachePath));
+        } catch (err) {
+            const reason = err || "unknown error";
+            localCache = {};
+            console.log('UpdateRemoteData', 'Error reading local cache for ' + dataSourceUri + ', reason: ' + reason);
+        }
+
+        if (JSON.stringify(remoteData) !== JSON.stringify(localCache)) {
+            saveFile(localCachePath, remoteData);
+            updated = true;
+        }
+    } catch (err) {
+        const reason = err || "unknown error";
+        return console.log('UpdateRemoteData', 'Unable to update cache for ' + dataSourceUri + ', reason: ' + reason);
+    }
+
+    return updated;
+}
+
+async function updateRemoteData() {
+    // TODO potentially leverage REST end point for google doc farming location spreadsheet (if more accurate / current than swgoh.gg?)
+    // https://docs.google.com/spreadsheets/d/1Z0mOMyCctmxXWEU1cLMlDMRDUdw1ocBmWh4poC3RVXg/htmlview#
+    // https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=false
+    // https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=true
+
+    const currentCharacters = client.characters;
+    const currentSnapshot = JSON.stringify(currentCharacters);
+
+    console.log('UpdateRemoteData', 'Checking for updates to remote data sources');
+    if (await updateIfChanged(GG_SHIPS_CACHE, 'https://swgoh.gg/api/ships/')) {
+        console.log('UpdateRemoteData', 'Detected a change in ships from swgoh.gg');
+        await updateShips();
+    }
+
+    if (await updateIfChanged(GG_CHAR_CACHE, 'https://swgoh.gg/api/characters/')) {
+        console.log('UpdateRemoteData', 'Detected a change in characters from swgoh.gg');
+        // TODO - periodic forced updates to adopt updated minor changes?
+        await updateCharacters(currentCharacters);
+    }
+
+    if (await updateIfChanged(RANCOR_MOD_CACHE, 'http://apps.crouchingrancor.com/mods/advisor.json')) {
+        console.log('UpdateRemoteData', 'Detected a change in mods from Crouching Rancor');
+        await updateCharacterMods(currentCharacters);
+    }
+
+    console.log('UpdateRemoteData', 'Finished processing remote updates');
+    if (currentSnapshot !== JSON.stringify(currentCharacters)) {
+        console.log('UpdateRemoteData', 'Changes detected in character data, saving updates and reloading');
+        saveFile("./data/characters.json", currentCharacters);
+        client.characters = currentCharacters;
+    }
+}
+
+async function updateShips() {
+    const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE));
+
+    const currentShips = client.ships;
+
+    for (var ggShipkey in ggShipList) {
+        const ggShip = ggShipList[ggShipkey];
+        // TODO - check for new ships / reconcile data source differences
+    }
+}
+
+function getCleanString(input) {
     const cleanReg = /['-\s]/g;
 
-    characterList.forEach(async thisChar => {
-        if (typeof thisChar.cname === 'undefined') return;
+    return input.toLowerCase().replace(cleanReg, '');
+}
+
+function isSameCharacter(localChar, remoteChar, nameAttribute) {
+    let isSame = false;
+    const remoteAttribute = nameAttribute || "name";
+    const remoteName = getCleanString(remoteChar[remoteAttribute]);
+
+    if (remoteName === getCleanString(localChar.name)) {
+        isSame = true;
+    } else {
+        if (localChar.nameVariant) {
+            for (const key in localChar.nameVariant) {
+                const localName = getCleanString(localChar.nameVariant[key]);
+                if (remoteName === localName) {
+                    isSame = true;
+                    break;
+                }
+            }
+        } else {
+            localChar.nameVariant = [];
+            localChar.nameVariant.push(localChar.name);
+        }
+    }
+
+    return isSame;
+}
+
+async function updateCharacters(currentCharacters) {
+    const ggCharList = JSON.parse(fs.readFileSync(GG_CHAR_CACHE));
+
+    for (var ggCharKey in ggCharList) {
+        const ggChar = ggCharList[ggCharKey];
         let found = false;
-        const currentCharacters = client.characters;
-        
-        currentCharacters.forEach(currentChar => {
-            if (thisChar.cname.toLowerCase().replace(cleanReg, '') === currentChar.name.toLowerCase().replace(cleanReg, '')) {
+        for (var currentCharKey in currentCharacters) {
+            const currentChar = currentCharacters[currentCharKey];
+
+            // attempt to match in increasing uniqueness- base_id, url, then name variants
+            if (currentChar.uniqueName && currentChar.uniqueName !== UNKNOWN) {
+                if (currentChar.uniqueName === ggChar.base_id) {
+                    found = true;
+                }
+            } else if (currentChar.url && currentChar.url !== UNKNOWN) {
+                if (ggChar.url === currentChar.url) {
+                    found = true;
+                }
+            } else if (isSameCharacter(currentChar, ggChar)) {
                 found = true;
-                let setName = '';
-                if (thisChar.name.includes(thisChar.cname)) {
-                    setName = thisChar.name.split(' ').splice(thisChar.cname.split(' ').length).join(' ');
-                    if (setName === '') {
-                        setName = 'General';
-                    }
-                } else {
-                    setName = thisChar.name;
-                }
-                if (currentChar.mods[setName]) {
-                    setName = thisChar.name;
-                }
+            }
 
-                // Go through all the variations of mods, and if they're the same,
-                // ignore em. If they're different, add it in as a new set
-                let newSet = true;
-                for (var thisSet in currentChar.mods) {
-                    const set = currentChar.mods[thisSet];
+            if (found) {
+                let updated = false;
 
-                    // Take out the space behind any slashes
-                    thisChar.square = thisChar.square.replace(/\s+\/\s/g, '/ ');
-                    thisChar.arrow = thisChar.arrow.replace(/\s+\/\s/g, '/ ');
-                    thisChar.diamond = thisChar.diamond.replace(/\s+\/\s/g, '/ ');
-                    thisChar.triangle = thisChar.triangle.replace(/\s+\/\s/g, '/ ');
-                    thisChar.circle = thisChar.circle.replace(/\s+\/\s/g, '/ ');
-                    thisChar.cross = thisChar.cross.replace(/\s+\/\s/g, '/ ');
-
-                    if (getModType(thisChar.set1) === set.sets[0] && getModType(thisChar.set2) === set.sets[1] && getModType(thisChar.set3) === set.sets[2] && thisChar.square === set.square && thisChar.arrow === set.arrow && thisChar.diamond === set.diamond && thisChar.triangle === set.triangle && thisChar.circle === set.circle && thisChar.cross === set.cross) {
-                        newSet = false;
-                        break;
-                    }
-                }
-                if (newSet) {
-                    currentChar.mods[setName] = {
-                        "sets": [
-                            getModType(thisChar.set1),
-                            getModType(thisChar.set2),
-                            getModType(thisChar.set3)
-                        ],
-                        "square": thisChar.square,
-                        "arrow": thisChar.arrow,
-                        "diamond": thisChar.diamond,
-                        "triangle": thisChar.triangle,
-                        "circle": thisChar.circle,
-                        "cross": thisChar.cross
-                    };
+                // character discovered from another source that wasn't yet added to swgoh.gg
+                if (!currentChar.url || currentChar.url === UNKNOWN || ggChar.url !== currentChar.url) {
+                    console.log('UpdateRemoteData', 'Automatically reconciling ' + currentChar.name + "'s swgoh.gg url");
+                    currentChar.url = ggChar.url;
                     updated = true;
-                    client.log('NewMods', 'I added a new modset to ' + thisChar.cname);
                 }
+                if (currentChar.uniqueName !== ggChar.base_id) {
+                    console.log('UpdateRemoteData', 'Automatically reconciling ' + currentChar.name + "'s swgoh.gg base_id");
+                    currentChar.uniqueName = ggChar.base_id;
+                    updated = true;
+                }
+                if (!isSameCharacter(currentChar, ggChar)) {
+                    console.log('UpdateRemoteData', 'Automatically reconciling ' + currentChar.name + "'s swgoh.gg name variants");
+                    if (!currentChar.nameVariant) {
+                        currentChar.nameVariant = [];
+                    }
+                    currentChar.nameVariant.push(ggChar.name);
+                    updated = true;
+                }
+
+                //updated = true; // force an update of everything
+
+                if (updated) {
+                    // some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
+                    await ggGrab(currentChar);
+                }
+                break;
+            }
+        }
+
+        if (!found) {
+            console.log('UpdateRemoteData', 'New character discovered from swgoh.gg: ' + ggChar.name);
+            const newCharacter = createEmptyChar(ggChar.name, ggChar.url, ggChar.base_id);
+
+            currentCharacters.push(newCharacter);
+
+            // queue an update to fill in the empty character's details from swgoh.gg
+            await ggGrab(newCharacter);
+        }
+    }
+}
+
+async function updateCharacterMods(currentCharacters) {
+    const rancorFile = fs.readFileSync(RANCOR_MOD_CACHE);
+    const rancorData = JSON.parse(rancorFile);
+    const rancorCharacterList = rancorData.data;
+    const RANCOR_SOURCE = "Crouching Rancor";
+
+    // clear out old crouching rancor mod advice
+    currentCharacters.forEach(currentChar => {
+        for (var thisSet in currentChar.mods) {
+            const set = currentChar.mods[thisSet];
+            if (set.source === RANCOR_SOURCE) {
+                delete currentChar.mods[thisSet];
+            }
+        }
+    });
+
+    // iterate the crouching rancor data (may contain currently unknown characters)
+    for (var rancorCharKey in rancorCharacterList) {
+        const rancorChar = rancorCharacterList[rancorCharKey];
+
+        // skip garbage data
+        if (typeof rancorChar.cname === 'undefined') return;
+
+        let found = false;
+
+        const modObject = {
+            "sets": [
+                getModType(rancorChar.set1),
+                getModType(rancorChar.set2),
+                getModType(rancorChar.set3)
+            ],
+            // Take out the space behind any slashes
+            "square": rancorChar.square.replace(/\s+\/\s/g, '/ '),
+            "arrow": rancorChar.arrow.replace(/\s+\/\s/g, '/ '),
+            "diamond": rancorChar.diamond.replace(/\s+\/\s/g, '/ '),
+            "triangle": rancorChar.triangle.replace(/\s+\/\s/g, '/ '),
+            "circle": rancorChar.circle.replace(/\s+\/\s/g, '/ '),
+            "cross": rancorChar.cross.replace(/\s+\/\s/g, '/ '),
+            "source": RANCOR_SOURCE
+        };
+
+        let setName = '';
+        if (rancorChar.name.includes(rancorChar.cname)) {
+            setName = rancorChar.name.split(' ').splice(rancorChar.cname.split(' ').length).join(' ');
+            if (setName === '') {
+                setName = 'General';
+            }
+        } else {
+            setName = rancorChar.name;
+        }
+
+        // Make a guess at the character URL in case of poor matchup to swgoh.gg's API by name
+        let charLink = 'https://swgoh.gg/characters/';
+        const linkName = rancorChar.cname.replace(/[^\w\s-]+/g, '');  // Get rid of non-alphanumeric characters besides dashes
+        charLink += linkName.replace(/\s+/g, '-').toLowerCase();  // Get rid of extra spaces, and format em to be dashes
+        charLink += '/'; // add trailing slash to be consistent with swgoh.gg's conventions
+
+        // iterate all known characters to find a match
+        currentCharacters.forEach(currentChar => {
+            if (isSameCharacter(currentChar, rancorChar, "cname") ||
+                    (currentChar.url && currentChar.url !== UNKNOWN && currentChar.url === charLink)) {
+                found = true;
+
+                if (currentChar.mods[setName]) {
+                    setName = rancorChar.name;
+                }
+
+                currentChar.mods[setName] = modObject;
+                //client.log('NewMods', 'I added a new modset to ' + rancorChar.cname);
             }
         });
         if (!found) {
-            // Make a new character here (Maybe grab all the character info from swgoh.gg here too?)
-            let setName = '';
-            let charLink = 'https://swgoh.gg/characters/';
-            const linkName = thisChar.cname.replace(/[^\w\s]+/g, '');  // Get rid of non-alphanumeric characters ('"- etc)
-            charLink += linkName.replace(/\s+/g, '-').toLowerCase();  // Get rid of extra spaces, and format em to be dashes
+            // create a new character
+            console.log('UpdateRemoteData', 'New character discovered from crouching rancor: ' + rancorChar.cname);
+            const newCharacter = createEmptyChar(rancorChar.cname, charLink, UNKNOWN);
 
-            const newCharacter = await ggGrab(charLink);
-
-            if (thisChar.name.includes(thisChar.cname)) {
-                setName = thisChar.name.split(' ').splice(thisChar.cname.split(' ').length).join(' ');
-                if (setName === '') {
-                    setName = 'General';
-                }
-            } else {
-                setName = thisChar.name;
-            }
-
-            // Take out the space behind any slashes
-            thisChar.square = thisChar.square.replace(/\s+\/\s/g, '/ ');
-            thisChar.arrow = thisChar.arrow.replace(/\s+\/\s/g, '/ ');
-            thisChar.diamond = thisChar.diamond.replace(/\s+\/\s/g, '/ ');
-            thisChar.triangle = thisChar.triangle.replace(/\s+\/\s/g, '/ ');
-            thisChar.circle = thisChar.circle.replace(/\s+\/\s/g, '/ ');
-            thisChar.cross = thisChar.cross.replace(/\s+\/\s/g, '/ ');
-
-            newCharacter.mods[setName] = {
-                "sets": [
-                    getModType(thisChar.set1),
-                    getModType(thisChar.set2),
-                    getModType(thisChar.set3)
-                ],
-                "square": thisChar.square,
-                "arrow": thisChar.arrow,
-                "diamond": thisChar.diamond,
-                "triangle": thisChar.triangle,
-                "circle": thisChar.circle,
-                "cross": thisChar.cross
-
-            };
-            newCharacter.name = thisChar.cname;
-            newCharacter.aliases = [thisChar.cname];
+            newCharacter.mods[setName] = modObject;
 
             currentCharacters.push(newCharacter);
-            newChar = true;
-            client.log('NewChar', 'Added ' + thisChar.cname);
+
+            // async fetch character information from swgoh.gg
+            await ggGrab(newCharacter);
         }
-        // If anything was updated, save it
-        if (updated || newChar) {
-            updated = false, newChar = false;
-            fs.writeFile("./data/characters.json", JSON.stringify(currentCharacters, null, 4), 'utf8', function(err) {
-                if (err) {
-                    return console.log(err);
-                }
-                client.characters = currentCharacters;
-            });
-        }
-    });
+    }
 }
 
-async function ggGrab(charLink) {
-    const gearLink = charLink + '/gear';
-    const character = {
-        "name": "",
-        "uniqueName": "",
-        "aliases": [],
-        "url": charLink,
+function getEmptyShardLocations() {
+    return {
+        "dark": [],
+        "light": [],
+        "cantina": [],
+        "shops": []
+    };
+}
+
+function getEmptyStats() {
+    return {
+        // Primary
+        'Power':0,
+        'Strength': 0,
+        'Agility':0,
+        'Intelligence':0,
+        // Offensive
+        'Speed': 0,
+        'Physical Damage': 0,
+        'Physical Critical Rating': 0,
+        'Special Damage': 0,
+        'Special Critical Rating': 0,
+        'Armor Penetration': 0,
+        'Resistance Penetration': 0,
+        'Potency': 0,
+        // Defensive
+        'Health': 0,
+        'Armor': 0,
+        'Resistance': 0,
+        'Tenacity': 0,
+        'Health Steal': 0,
+        'Protection': 0,
+        // Activation
+        'activation': 0
+    };
+}
+
+function createEmptyChar(name, url, uniqueName) {
+    return {
+        "name": name,
+        "uniqueName": uniqueName,
+        "aliases": [name], // common community names
+        "nameVariant": [name], // names used by remote data sources, for unique matches
+        "url": url,
         "avatarURL": "",
         "side": "",
         "factions": [],
         "mods": {
         },
+        "legacyMods": {
+        },
         "gear": {
         },
         "abilities": {
         },
-        "shardLocations": { 
-            "dark": [], 
-            "light": [], 
-            "cantina": [], 
-            "shops": [] 
-        },
-        "stats": {
-            // Primary
-            'Power':0,
-            'Strength': 0,
-            'Agility':0,
-            'Intelligence':0,
-            // Offensive
-            'Speed': 0,
-            'Physical Damage': 0,
-            'Physical Critical Rating': 0,
-            'Special Damage': 0,
-            'Special Critical Rating': 0,
-            'Armor Penetration': 0,
-            'Resistance Penetration': 0,
-            'Potency': 0,
-            // Defensive
-            'Health': 0,
-            'Armor': 0,
-            'Resistance': 0,
-            'Tenacity': 0,
-            'Health Steal': 0,
-            'Protection': 0,
-            // Activation
-            'activation': 0
-        }
+        "shardLocations": getEmptyShardLocations(),
+        "stats": getEmptyStats()
     };
+}
 
-    const ggGrab = await snekfetch.get(charLink);
-    const ggGrabText = ggGrab.text;
+async function ggGrab(character) {
+    //console.log('ggGrab', 'Fetching: "' + character.url + '"');
+    const charGrab = await snekfetch.get(character.url);
+    const ggGrabText = charGrab.text;
+
+    // safety nets in case of entries created by hand
+    if (!character.abilities) {
+        character.abilities = {};
+    }
+    if (!character.stats) {
+        character.stats = getEmptyStats();
+    }
+
+    character.shardLocations = getEmptyShardLocations();
+    character.gear = {};
 
     let $ = cheerio.load(ggGrabText);
 
@@ -368,22 +538,26 @@ async function ggGrab(charLink) {
 
     // Get the character's abilities and such
     $('.char-detail-info').each(function() {
-        let abilityName = $(this).find('h5').text();    // May have the cooldown included, need to get rid of it
-        let desc = $(this).find('p').text().split('\n')[1];
-        let abilityMat = $(this).find('img').attr('title').split(' ').join('');
-        let abilityType = $(this).find('small').text();
-        let cooldown = $(this).find('h5 small').text().split(' ')[0];
+        let abilityName = $(this).find('h5').text().trim();    // May have the cooldown included, need to get rid of it
+        let desc = $(this).find('p').text().split('\n')[1].trim();
+        let abilityMat = $(this).find('img').attr('title').split(' ').join('').trim();
+        let abilityType = $(this).find('small').text().trim();
+        let cooldown = $(this).find('h5 small').text().trim();
+        let selectorId = "#" + $(this).parent().attr('aria-controls');
 
-        // Make sure it doesn't have any line returns in there
-        if (abilityName.indexOf('\n') !== -1) {
-            abilityName = abilityName.replace(/\n/g, '');
+        // remove cooldown information from the ability name
+        let cooldownIndex = abilityName.indexOf(cooldown);
+        if (cooldown && cooldownIndex !== -1 && cooldownIndex !== 0) {
+            abilityName = abilityName.substring(0, cooldownIndex - 1).trim();
         }
-        if (desc.indexOf('\n') !== -1) {
-            desc = desc.replace(/\n/g, '');
+        //console.log('ggGrab', 'After splitting out cooldown text ability: "' + abilityName + '"');
+        cooldown = cooldown.split(' ')[0];
+
+        // If the cooldown isn't there, set it to 0
+        if (cooldown === '') {
+            cooldown = '0';
         }
-        if (abilityMat.indexOf('\n') !== -1) {
-            abilityMat = abilityMat.replace(/\n/g, '');
-        }
+
 
         // Make sure it grabs the right one to work with the rest
         if (abilityMat === "AbilityMaterialOmega") {
@@ -403,36 +577,15 @@ async function ggGrab(charLink) {
             abilityType = 'Leader';
         } else if (abilityType.indexOf('Unique') !== -1) {
             abilityType = 'Unique';
-        }
-        // If the cooldown isn't there, set it to 0
-        if (cooldown === '') {
-            cooldown = '0';
         } else {
-            abilityName = abilityName.split(' ').slice(0, -3).join(' ').toString();
+            // it's probably a Unique
+            abilityType = 'Unique';
         }
-
-        character.abilities[abilityName] = {
-            "type": abilityType,
-            "abilityCooldown": cooldown,
-            "abilityDesc": desc,
-            "tier": abilityMat,
-            "cost": {
-                'mk3': 0,
-                'omega': 0,
-                'zeta': 0
-            }
-        };
-    });
-
-
-    // Grab the cost for each ability
-    $('.list-group-item-ability').each(function() {
-        const aName = $(this).find('.ability-mechanics-link').text().replace(/^View /, '').replace(/\sMechanics$/, '');
 
         let mk3s = 0, omegas = 0, zetas = 0;
         // Each level of the ability is in a tr
         const aCost = [];
-        $(this).find('tr').each(function() {
+        $(selectorId).find('tr').each(function() {
             // And the cost of each is in the 2nd td in each row
             const lvl = [];
             $(this).find('td').each(function() {
@@ -449,11 +602,18 @@ async function ggGrab(charLink) {
             zetas += count.zeta;
             // console.log('Count2: ' + inspect(count));
         });
-        // console.log(`${mk3s} MK3, ${omegas} Omegas, ${zetas} Zetas`);
-        character.abilities[aName].cost = {
-            'mk3': mk3s,
-            'omega': omegas,
-            'zeta': zetas
+        //console.log(`${mk3s} MK3, ${omegas} Omegas, ${zetas} Zetas`);
+
+        character.abilities[abilityName] = {
+            "type": abilityType,
+            "abilityCooldown": cooldown,
+            "abilityDesc": desc,
+            "tier": abilityMat,
+            "cost": {
+                'mk3': mk3s,
+                'omega': omegas,
+                'zeta': zetas
+            }
         };
     });
 
@@ -513,6 +673,7 @@ async function ggGrab(charLink) {
     });
 
     // Grab the gear for the character
+    const gearLink = character.url + 'gear';
     const gearGrab = await snekfetch.get(gearLink);
     const gearGrabText = gearGrab.text;
 
@@ -528,7 +689,8 @@ async function ggGrab(charLink) {
             character.gear[gearLvl] = [thisGear];
         }
     });
-    return character;
+
+    console.log('ggGrab', 'Finished fetching swgoh.gg data for ' + character.name);
 }
 
 

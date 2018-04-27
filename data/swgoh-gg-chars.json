@@ -1,0 +1,1462 @@
+[
+    {
+        "name": "Aayla Secura",
+        "base_id": "AAYLASECURA",
+        "pk": 80,
+        "url": "https://swgoh.gg/characters/aayla-secura/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_aaylasecura.png",
+        "power": 17523,
+        "description": "Versatile attacker with high survivability through Dodge, Hitpoints, and self healing.",
+        "combat_type": 1
+    },
+    {
+        "name": "Admiral Ackbar",
+        "base_id": "ADMIRALACKBAR",
+        "pk": 169,
+        "url": "https://swgoh.gg/characters/admiral-ackbar/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ackbaradmiral.png",
+        "power": 17523,
+        "description": "Rebel Support that can Dispel debuffs and grant allies extra turns",
+        "combat_type": 1
+    },
+    {
+        "name": "Ahsoka Tano",
+        "base_id": "AHSOKATANO",
+        "pk": 64,
+        "url": "https://swgoh.gg/characters/ahsoka-tano/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ahsoka.png",
+        "power": 17523,
+        "description": "Versatile Attacker with healing and superior stats as long as she can avoid suffering Critical Hits",
+        "combat_type": 1
+    },
+    {
+        "name": "Ahsoka Tano (Fulcrum)",
+        "base_id": "FULCRUMAHSOKA",
+        "pk": 236,
+        "url": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ahsokaadult.png",
+        "power": 19929,
+        "description": "Enduring Rebel Attacker who shrugs off debuffs and consumes buffs to deal extra damage",
+        "combat_type": 1
+    },
+    {
+        "name": "Amilyn Holdo",
+        "base_id": "AMILYNHOLDO",
+        "pk": 254,
+        "url": "https://swgoh.gg/characters/amilyn-holdo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_holdo.png",
+        "power": 19929,
+        "description": "Seasoned Resistance Tank with powerful ally support and enemy debuffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Asajj Ventress",
+        "base_id": "ASAJVENTRESS",
+        "pk": 23,
+        "url": "https://swgoh.gg/characters/asajj-ventress/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ventress.png",
+        "power": 22909,
+        "description": "Nightsister controller with healing who generates attack power as characters are defeated",
+        "combat_type": 1
+    },
+    {
+        "name": "B2 Super Battle Droid",
+        "base_id": "B2SUPERBATTLEDROID",
+        "pk": 195,
+        "url": "https://swgoh.gg/characters/b2-super-battle-droid/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_b2.png",
+        "power": 16948,
+        "description": "Droid Tank that relentlessly punishes enemies that evade attacks or damage allies",
+        "combat_type": 1
+    },
+    {
+        "name": "Barriss Offee",
+        "base_id": "BARRISSOFFEE",
+        "pk": 61,
+        "url": "https://swgoh.gg/characters/barriss-offee/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_barriss_light.png",
+        "power": 19929,
+        "description": "Jedi Healer that can balance party Health and Dispel allied Jedi frequently",
+        "combat_type": 1
+    },
+    {
+        "name": "Baze Malbus",
+        "base_id": "BAZEMALBUS",
+        "pk": 216,
+        "url": "https://swgoh.gg/characters/baze-malbus/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bazemalbus.png",
+        "power": 18097,
+        "description": "Fearsome Rebel Tank who Taunts, dispels buffs, and inflicts debuffs",
+        "combat_type": 1
+    },
+    {
+        "name": "BB-8",
+        "base_id": "BB8",
+        "pk": 242,
+        "url": "https://swgoh.gg/characters/bb-8/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bb8.png",
+        "power": 22909,
+        "description": "Persistent Resistance Droid who empowers allies by circulating Secret Intel",
+        "combat_type": 1
+    },
+    {
+        "name": "Biggs Darklighter",
+        "base_id": "BIGGSDARKLIGHTER",
+        "pk": 152,
+        "url": "https://swgoh.gg/characters/biggs-darklighter/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_rebelpilot_biggs.png",
+        "power": 16948,
+        "description": "Rebel Support with Critical Hit synergies who calls Assists",
+        "combat_type": 1
+    },
+    {
+        "name": "Bistan",
+        "base_id": "BISTAN",
+        "pk": 214,
+        "url": "https://swgoh.gg/characters/bistan/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bistan.png",
+        "power": 17523,
+        "description": "Wild Rebel Attacker who gains Frenzy, debuffs enemies, and removes Turn Meter",
+        "combat_type": 1
+    },
+    {
+        "name": "Boba Fett",
+        "base_id": "BOBAFETT",
+        "pk": 164,
+        "url": "https://swgoh.gg/characters/boba-fett/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bobafett.png",
+        "power": 20713,
+        "description": "Ruthless Bounty Hunter Attacker who ignores Taunts, Ability Blocks and self-revives",
+        "combat_type": 1
+    },
+    {
+        "name": "Bodhi Rook",
+        "base_id": "BODHIROOK",
+        "pk": 232,
+        "url": "https://swgoh.gg/characters/bodhi-rook/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bodhi.png",
+        "power": 19929,
+        "description": "Clever Rebel Support who spots enemy units for his allies",
+        "combat_type": 1
+    },
+    {
+        "name": "Bossk",
+        "base_id": "BOSSK",
+        "pk": 264,
+        "url": "https://swgoh.gg/characters/bossk/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bossk.png",
+        "power": 22125,
+        "description": "Bounty Hunter Tank that constantly regenerates Health and Protection",
+        "combat_type": 1
+    },
+    {
+        "name": "Cad Bane",
+        "base_id": "CADBANE",
+        "pk": 121,
+        "url": "https://swgoh.gg/characters/cad-bane/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_cadbane.png",
+        "power": 17523,
+        "description": "High damage attacker with a powerful stun and bonuses against Jedi characters.",
+        "combat_type": 1
+    },
+    {
+        "name": "Captain Han Solo",
+        "base_id": "HOTHHAN",
+        "pk": 239,
+        "url": "https://swgoh.gg/characters/captain-han-solo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_hoth_han.png",
+        "power": 19929,
+        "description": "Daring Rebel Support that risks himself to Revive allies and Daze enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "Captain Phasma",
+        "base_id": "PHASMA",
+        "pk": 67,
+        "url": "https://swgoh.gg/characters/captain-phasma/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_phasma.png",
+        "power": 19929,
+        "description": "High-damage First Order support that can grant allies many extra attacks",
+        "combat_type": 1
+    },
+    {
+        "name": "Cassian Andor",
+        "base_id": "CASSIANANDOR",
+        "pk": 219,
+        "url": "https://swgoh.gg/characters/cassian-andor/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_cassian.png",
+        "power": 19929,
+        "description": "Rebel Support who buffs allies at the start of battle and debuffs enemies during battle",
+        "combat_type": 1
+    },
+    {
+        "name": "CC-2224 \"Cody\"",
+        "base_id": "CC2224",
+        "pk": 26,
+        "url": "https://swgoh.gg/characters/cc-2224-cody/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperclone_cody.png",
+        "power": 19929,
+        "description": "Clone Attacker that Stuns and calls tons of Assists",
+        "combat_type": 1
+    },
+    {
+        "name": "Chief Chirpa",
+        "base_id": "CHIEFCHIRPA",
+        "pk": 72,
+        "url": "https://swgoh.gg/characters/chief-chirpa/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ewok_chirpa.png",
+        "power": 19929,
+        "description": "Ewok Leader that greatly improves ally Basic abilities",
+        "combat_type": 1
+    },
+    {
+        "name": "Chief Nebit",
+        "base_id": "CHIEFNEBIT",
+        "pk": 93,
+        "url": "https://swgoh.gg/characters/chief-nebit/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jawa_nebit.png",
+        "power": 17523,
+        "description": "Cunning Jawa Tank with Stealth synergies who can reduce cooldowns",
+        "combat_type": 1
+    },
+    {
+        "name": "Chirrut Îmwe",
+        "base_id": "CHIRRUTIMWE",
+        "pk": 215,
+        "url": "https://swgoh.gg/characters/chirrut-imwe/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_chirrut.png",
+        "power": 18097,
+        "description": "Balanced Rebel Attacker who dispels debuffs, heals allies, and grants Tenacity Up",
+        "combat_type": 1
+    },
+    {
+        "name": "Chopper",
+        "base_id": "CHOPPERS3",
+        "pk": 225,
+        "url": "https://swgoh.gg/characters/chopper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_chopper.png",
+        "power": 17733,
+        "description": "Surly Phoenix Support who Taunts and Dispels, and can recover Phoenix cooldowns",
+        "combat_type": 1
+    },
+    {
+        "name": "Clone Sergeant - Phase I",
+        "base_id": "CLONESERGEANTPHASEI",
+        "pk": 186,
+        "url": "https://swgoh.gg/characters/clone-sergeant-phase-i/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperclonegreen.png",
+        "power": 16948,
+        "description": "Clone Attacker with AoE damage and Turn Meter Reduction",
+        "combat_type": 1
+    },
+    {
+        "name": "Clone Wars Chewbacca",
+        "base_id": "CLONEWARSCHEWBACCA",
+        "pk": 62,
+        "url": "https://swgoh.gg/characters/clone-wars-chewbacca/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_chewbacca.png",
+        "power": 19929,
+        "description": "Durable Tank with both Taunt and self-Healing",
+        "combat_type": 1
+    },
+    {
+        "name": "Colonel Starck",
+        "base_id": "COLONELSTARCK",
+        "pk": 247,
+        "url": "https://swgoh.gg/characters/colonel-starck/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_colonel_stark.png",
+        "power": 19929,
+        "description": "Offensive Support who provides critical buffs and removes enemy Turn Meter",
+        "combat_type": 1
+    },
+    {
+        "name": "Commander Luke Skywalker",
+        "base_id": "COMMANDERLUKESKYWALKER",
+        "pk": 238,
+        "url": "https://swgoh.gg/characters/commander-luke-skywalker/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_lukebespin.png",
+        "power": 25890,
+        "description": "Determined Rebel hero who can ignore debuffs or ignore Taunts",
+        "combat_type": 1
+    },
+    {
+        "name": "Coruscant Underworld Police",
+        "base_id": "CORUSCANTUNDERWORLDPOLICE",
+        "pk": 78,
+        "url": "https://swgoh.gg/characters/coruscant-underworld-police/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_coruscantpolice.png",
+        "power": 16948,
+        "description": "Support that shuts down enemies with Stuns and Offense Down",
+        "combat_type": 1
+    },
+    {
+        "name": "Count Dooku",
+        "base_id": "COUNTDOOKU",
+        "pk": 91,
+        "url": "https://swgoh.gg/characters/count-dooku/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_dooku.png",
+        "power": 19929,
+        "description": "High-damage attacker with stun, bonus attacks, and incredible counter-attacking.",
+        "combat_type": 1
+    },
+    {
+        "name": "CT-21-0408 \"Echo\"",
+        "base_id": "CT210408",
+        "pk": 149,
+        "url": "https://swgoh.gg/characters/ct-21-0408-echo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperclone_echo.png",
+        "power": 17523,
+        "description": "Clone Support that automatically Assists allies and can Dispel all enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "CT-5555 \"Fives\"",
+        "base_id": "CT5555",
+        "pk": 189,
+        "url": "https://swgoh.gg/characters/ct-5555-fives/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperclone_fives.png",
+        "power": 19929,
+        "description": "Tank character with high Defense, enemy speed reduction, and joint attack ability.",
+        "combat_type": 1
+    },
+    {
+        "name": "CT-7567 \"Rex\"",
+        "base_id": "CT7567",
+        "pk": 16,
+        "url": "https://swgoh.gg/characters/ct-7567-rex/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperclone_rex.png",
+        "power": 17523,
+        "description": "Clone leader with a variety of abilities to support and protect Clone allies.",
+        "combat_type": 1
+    },
+    {
+        "name": "Darth Maul",
+        "base_id": "MAUL",
+        "pk": 82,
+        "url": "https://swgoh.gg/characters/darth-maul/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_maul.png",
+        "power": 19929,
+        "description": "Deadly Attacker that gains power and extra turns as enemies are defeated",
+        "combat_type": 1
+    },
+    {
+        "name": "Darth Nihilus",
+        "base_id": "DARTHNIHILUS",
+        "pk": 222,
+        "url": "https://swgoh.gg/characters/darth-nihilus/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_nihilus.png",
+        "power": 22909,
+        "description": "Sith Support that can instantly defeat enemies by draining cooldowns",
+        "combat_type": 1
+    },
+    {
+        "name": "Darth Sidious",
+        "base_id": "DARTHSIDIOUS",
+        "pk": 73,
+        "url": "https://swgoh.gg/characters/darth-sidious/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_sidious.png",
+        "power": 19929,
+        "description": "Brutal Attacker effective against Healers and Jedi while boosting allied Criticals as a Leader",
+        "combat_type": 1
+    },
+    {
+        "name": "Darth Sion",
+        "base_id": "DARTHSION",
+        "pk": 259,
+        "url": "https://swgoh.gg/characters/darth-sion/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_sion.png",
+        "power": 20713,
+        "description": "Aggressive Sith tank that becomes stronger with Hatred",
+        "combat_type": 1
+    },
+    {
+        "name": "Darth Traya",
+        "base_id": "DARTHTRAYA",
+        "pk": 258,
+        "url": "https://swgoh.gg/characters/darth-traya/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_traya.png",
+        "power": 22909,
+        "description": "Sith support who punishes enemies for relying on others",
+        "combat_type": 1
+    },
+    {
+        "name": "Darth Vader",
+        "base_id": "VADER",
+        "pk": 200,
+        "url": "https://swgoh.gg/characters/darth-vader/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_vader.png",
+        "power": 22909,
+        "description": "Fearsome Attacker that applies AoE Damage Over Time, and crushes debuffed targets for extra turns",
+        "combat_type": 1
+    },
+    {
+        "name": "Dathcha",
+        "base_id": "DATHCHA",
+        "pk": 142,
+        "url": "https://swgoh.gg/characters/dathcha/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jawa_dathcha.png",
+        "power": 17523,
+        "description": "Versatile Support able to Ability Block and Stealth, effective against Droids or with Jawas",
+        "combat_type": 1
+    },
+    {
+        "name": "Death Trooper",
+        "base_id": "DEATHTROOPER",
+        "pk": 221,
+        "url": "https://swgoh.gg/characters/death-trooper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperdeath.png",
+        "power": 19929,
+        "description": "Terrifying Empire Attacker who inflicts debilitating debuffs and prevents revives",
+        "combat_type": 1
+    },
+    {
+        "name": "Dengar",
+        "base_id": "DENGAR",
+        "pk": 115,
+        "url": "https://swgoh.gg/characters/dengar/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_dengar.png",
+        "power": 17523,
+        "description": "Adaptable Scoundrel attacker that Stuns and inflicts Tenacity Down.",
+        "combat_type": 1
+    },
+    {
+        "name": "Director Krennic",
+        "base_id": "DIRECTORKRENNIC",
+        "pk": 220,
+        "url": "https://swgoh.gg/characters/director-krennic/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_krennic.png",
+        "power": 20503,
+        "description": "Intimidating Empire Support who inflicts devastating debuffs and slows enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "Eeth Koth",
+        "base_id": "EETHKOTH",
+        "pk": 203,
+        "url": "https://swgoh.gg/characters/eeth-koth/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_eethkoth.png",
+        "power": 17523,
+        "description": "Stunning Jedi Support extremely effective against Droids",
+        "combat_type": 1
+    },
+    {
+        "name": "Emperor Palpatine",
+        "base_id": "EMPERORPALPATINE",
+        "pk": 180,
+        "url": "https://swgoh.gg/characters/emperor-palpatine/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_palpatineemperor.png",
+        "power": 22909,
+        "description": "Overwhelming Sith Support who inflicts Shock and can Stun targets for multiple turns",
+        "combat_type": 1
+    },
+    {
+        "name": "Ewok Elder",
+        "base_id": "EWOKELDER",
+        "pk": 21,
+        "url": "https://swgoh.gg/characters/ewok-elder/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ewok_chief.png",
+        "power": 16948,
+        "description": "Ewok Healer that specializes in Revives",
+        "combat_type": 1
+    },
+    {
+        "name": "Ewok Scout",
+        "base_id": "EWOKSCOUT",
+        "pk": 71,
+        "url": "https://swgoh.gg/characters/ewok-scout/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ewok_scout.png",
+        "power": 16948,
+        "description": "Powerful single-target Attacker that becomes evasive with Ewok allies",
+        "combat_type": 1
+    },
+    {
+        "name": "Ezra Bridger",
+        "base_id": "EZRABRIDGERS3",
+        "pk": 230,
+        "url": "https://swgoh.gg/characters/ezra-bridger/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ezra_s3.png",
+        "power": 19929,
+        "description": "Versatile Phoenix Attacker that can perform a variety of effects based on the Roles of allies",
+        "combat_type": 1
+    },
+    {
+        "name": "Finn",
+        "base_id": "FINN",
+        "pk": 66,
+        "url": "https://swgoh.gg/characters/finn/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_finnjakku.png",
+        "power": 19929,
+        "description": "Resistance tank that keeps the pressure up with a balance between offense and defense",
+        "combat_type": 1
+    },
+    {
+        "name": "First Order Executioner",
+        "base_id": "FIRSTORDEREXECUTIONER",
+        "pk": 253,
+        "url": "https://swgoh.gg/characters/first-order-executioner/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_firstorder_executioner.png",
+        "power": 16948,
+        "description": "Merciless First Order Attacker who executes powerful attacks",
+        "combat_type": 1
+    },
+    {
+        "name": "First Order Officer",
+        "base_id": "FIRSTORDEROFFICERMALE",
+        "pk": 166,
+        "url": "https://swgoh.gg/characters/first-order-officer/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_firstorderofficer.png",
+        "power": 16948,
+        "description": "First Order support that grants Advantage and can manipulate both ally and enemy Turn Meters",
+        "combat_type": 1
+    },
+    {
+        "name": "First Order SF TIE Pilot",
+        "base_id": "FIRSTORDERSPECIALFORCESPILOT",
+        "pk": 246,
+        "url": "https://swgoh.gg/characters/first-order-sf-tie-pilot/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_firstorder_pilot.png",
+        "power": 16948,
+        "description": "Subversive First Order Attacker who buffs allies and disrupts enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "First Order Stormtrooper",
+        "base_id": "FIRSTORDERTROOPER",
+        "pk": 150,
+        "url": "https://swgoh.gg/characters/first-order-stormtrooper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_firstordertrooper.png",
+        "power": 19144,
+        "description": "First Order tank that uses Advantage to disrupt enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "First Order TIE Pilot",
+        "base_id": "FIRSTORDERTIEPILOT",
+        "pk": 199,
+        "url": "https://swgoh.gg/characters/first-order-tie-pilot/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_firstordertiepilot.png",
+        "power": 19144,
+        "description": "First Order attacker that can deal extreme damage in a single turn with Advantage",
+        "combat_type": 1
+    },
+    {
+        "name": "Gamorrean Guard",
+        "base_id": "GAMORREANGUARD",
+        "pk": 207,
+        "url": "https://swgoh.gg/characters/gamorrean-guard/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_gamorreanguard.png",
+        "power": 16948,
+        "description": "Aggressive tank that Taunts and Counters with multiple Damage Over Time effects",
+        "combat_type": 1
+    },
+    {
+        "name": "Gar Saxon",
+        "base_id": "GARSAXON",
+        "pk": 234,
+        "url": "https://swgoh.gg/characters/gar-saxon/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_gar_saxon.png",
+        "power": 19929,
+        "description": "Leader who grants Empire allies Counter Chance and Assists them when they Counter Attack",
+        "combat_type": 1
+    },
+    {
+        "name": "Garazeb \"Zeb\" Orrelios",
+        "base_id": "ZEBS3",
+        "pk": 229,
+        "url": "https://swgoh.gg/characters/garazeb-zeb-orrelios/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_zeb_s3.png",
+        "power": 19929,
+        "description": "Versatile Phoenix Tank with wide variety of effects for allies or enemies with or without debuffs",
+        "combat_type": 1
+    },
+    {
+        "name": "General Grievous",
+        "base_id": "GRIEVOUS",
+        "pk": 1,
+        "url": "https://swgoh.gg/characters/general-grievous/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_grievous.png",
+        "power": 18097,
+        "description": "Brutal Attacker that cuts down defensive enemies while protecting himself with forced ally taunts; although he hates being called a droid, he counts as one in combat.",
+        "combat_type": 1
+    },
+    {
+        "name": "General Kenobi",
+        "base_id": "GENERALKENOBI",
+        "pk": 213,
+        "url": "https://swgoh.gg/characters/general-kenobi/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_obiwangeneral.png",
+        "power": 18097,
+        "description": "Vigorous Jedi Tank who gains Foresight, dispels debuffs to grant buffs, and calls buffed allies to Assist",
+        "combat_type": 1
+    },
+    {
+        "name": "General Veers",
+        "base_id": "VEERS",
+        "pk": 132,
+        "url": "https://swgoh.gg/characters/general-veers/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_veers.png",
+        "power": 19929,
+        "description": "Aggressive Empire Support that becomes stronger as enemies are defeated",
+        "combat_type": 1
+    },
+    {
+        "name": "Geonosian Soldier",
+        "base_id": "GEONOSIANSOLDIER",
+        "pk": 57,
+        "url": "https://swgoh.gg/characters/geonosian-soldier/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_geonosian_soldier.png",
+        "power": 16948,
+        "description": "Aggressive Attacker that calls Assists and works extremely well with Geonosians",
+        "combat_type": 1
+    },
+    {
+        "name": "Geonosian Spy",
+        "base_id": "GEONOSIANSPY",
+        "pk": 88,
+        "url": "https://swgoh.gg/characters/geonosian-spy/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_geonosian_spy.png",
+        "power": 16948,
+        "description": "Stealthy Geonosian attacker that can dispel status effects to deal massive damage.",
+        "combat_type": 1
+    },
+    {
+        "name": "Grand Admiral Thrawn",
+        "base_id": "GRANDADMIRALTHRAWN",
+        "pk": 237,
+        "url": "https://swgoh.gg/characters/grand-admiral-thrawn/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_thrawn.png",
+        "power": 22909,
+        "description": "Calculating Empire Leader who can halt enemies in their tracks, and grants Empire allies a new Special ability",
+        "combat_type": 1
+    },
+    {
+        "name": "Grand Master Yoda",
+        "base_id": "GRANDMASTERYODA",
+        "pk": 144,
+        "url": "https://swgoh.gg/characters/grand-master-yoda/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_yodagrandmaster.png",
+        "power": 22909,
+        "description": "Masterful Jedi support that can replicate enemy buffs and share them with allies",
+        "combat_type": 1
+    },
+    {
+        "name": "Grand Moff Tarkin",
+        "base_id": "GRANDMOFFTARKIN",
+        "pk": 138,
+        "url": "https://swgoh.gg/characters/grand-moff-tarkin/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_tarkinadmiral.png",
+        "power": 22909,
+        "description": "Offensive Empire Support with crushing AoE debuffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Greedo",
+        "base_id": "GREEDO",
+        "pk": 190,
+        "url": "https://swgoh.gg/characters/greedo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_greedo.png",
+        "power": 17523,
+        "description": "Deadly Attacker that gains extra attacks from Critical Hits",
+        "combat_type": 1
+    },
+    {
+        "name": "Han Solo",
+        "base_id": "HANSOLO",
+        "pk": 41,
+        "url": "https://swgoh.gg/characters/han-solo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_han.png",
+        "power": 19929,
+        "description": "Daring Attacker that stacks Criticals in his favor and always shoots first",
+        "combat_type": 1
+    },
+    {
+        "name": "Hera Syndulla",
+        "base_id": "HERASYNDULLAS3",
+        "pk": 227,
+        "url": "https://swgoh.gg/characters/hera-syndulla/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_hera_s3.png",
+        "power": 19929,
+        "description": "Cunning Phoenix Support that allows Phoenix allies to share their Unique abilities with each other",
+        "combat_type": 1
+    },
+    {
+        "name": "Hermit Yoda",
+        "base_id": "HERMITYODA",
+        "pk": 74,
+        "url": "https://swgoh.gg/characters/hermit-yoda/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_yodahermit.png",
+        "power": 22909,
+        "description": "Jedi recluse who imparts sage wisdom in the ways of the Force",
+        "combat_type": 1
+    },
+    {
+        "name": "HK-47",
+        "base_id": "HK47",
+        "pk": 172,
+        "url": "https://swgoh.gg/characters/hk-47/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_hk47.png",
+        "power": 17523,
+        "description": "Offensive Support with a variety of debuffs and a high chance to self-Revive once",
+        "combat_type": 1
+    },
+    {
+        "name": "Hoth Rebel Scout",
+        "base_id": "HOTHREBELSCOUT",
+        "pk": 157,
+        "url": "https://swgoh.gg/characters/hoth-rebel-scout/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_rebelhothscout.png",
+        "power": 16948,
+        "description": "Single target attacker with crit synergies and speed building abilities.",
+        "combat_type": 1
+    },
+    {
+        "name": "Hoth Rebel Soldier",
+        "base_id": "HOTHREBELSOLDIER",
+        "pk": 54,
+        "url": "https://swgoh.gg/characters/hoth-rebel-soldier/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_rebelhoth.png",
+        "power": 16948,
+        "description": "Support character that debuffs, taunts, and defensively buffs, with Rebel and anti-Empire synergies.",
+        "combat_type": 1
+    },
+    {
+        "name": "IG-100 MagnaGuard",
+        "base_id": "MAGNAGUARD",
+        "pk": 17,
+        "url": "https://swgoh.gg/characters/ig-100-magnaguard/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_magnaguard.png",
+        "power": 16948,
+        "description": "Disruptive Droid Tank that becomes deadly if ignored",
+        "combat_type": 1
+    },
+    {
+        "name": "IG-86 Sentinel Droid",
+        "base_id": "IG86SENTINELDROID",
+        "pk": 167,
+        "url": "https://swgoh.gg/characters/ig-86-sentinel-droid/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ig86.png",
+        "power": 16948,
+        "description": "Droid Attacker with a powerful Droid Assist and devastating Criticals",
+        "combat_type": 1
+    },
+    {
+        "name": "IG-88",
+        "base_id": "IG88",
+        "pk": 143,
+        "url": "https://swgoh.gg/characters/ig-88/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ig88.png",
+        "power": 17523,
+        "description": "Droid Attacker with debuffs and a damage bonus against debuffed enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "Ima-Gun Di",
+        "base_id": "IMAGUNDI",
+        "pk": 147,
+        "url": "https://swgoh.gg/characters/ima-gun-di/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_imagundi.png",
+        "power": 17523,
+        "description": "Supportive Tank that boost ally defense and grants Jedi allies Counter Chance",
+        "combat_type": 1
+    },
+    {
+        "name": "Imperial Probe Droid",
+        "base_id": "IMPERIALPROBEDROID",
+        "pk": 248,
+        "url": "https://swgoh.gg/characters/imperial-probe-droid/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_probedroid.png",
+        "power": 19929,
+        "description": "Imperial Droid who reveals and tracks enemies with Target Lock",
+        "combat_type": 1
+    },
+    {
+        "name": "Imperial Super Commando",
+        "base_id": "IMPERIALSUPERCOMMANDO",
+        "pk": 233,
+        "url": "https://swgoh.gg/characters/imperial-super-commando/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_imperial_super_commando.png",
+        "power": 16948,
+        "description": "An Empire Attacker with counter mechanics who dispels buffs and applies buff immunity",
+        "combat_type": 1
+    },
+    {
+        "name": "Jawa",
+        "base_id": "JAWA",
+        "pk": 123,
+        "url": "https://swgoh.gg/characters/jawa/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jawa_jawa.png",
+        "power": 16948,
+        "description": "Attacker effective against debuffed enemies as well as Droids",
+        "combat_type": 1
+    },
+    {
+        "name": "Jawa Engineer",
+        "base_id": "JAWAENGINEER",
+        "pk": 87,
+        "url": "https://swgoh.gg/characters/jawa-engineer/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jawa_engineer.png",
+        "power": 17523,
+        "description": "High-speed Jawa Healer with a Critical Chance buff and both Jawa and Droid synergy",
+        "combat_type": 1
+    },
+    {
+        "name": "Jawa Scavenger",
+        "base_id": "JAWASCAVENGER",
+        "pk": 209,
+        "url": "https://swgoh.gg/characters/jawa-scavenger/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jawa_scavenger.png",
+        "power": 17523,
+        "description": "Versatile Jawa Support who can detonate Thermal Detonators to inflict a large variety of status effects",
+        "combat_type": 1
+    },
+    {
+        "name": "Jedi Consular",
+        "base_id": "JEDIKNIGHTCONSULAR",
+        "pk": 100,
+        "url": "https://swgoh.gg/characters/jedi-consular/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_consular_03.png",
+        "power": 16948,
+        "description": "Well-rounded Jedi Healer with a mix of offense and defense",
+        "combat_type": 1
+    },
+    {
+        "name": "Jedi Knight Anakin",
+        "base_id": "ANAKINKNIGHT",
+        "pk": 112,
+        "url": "https://swgoh.gg/characters/jedi-knight-anakin/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_anakinknight.png",
+        "power": 17523,
+        "description": "High-pressure Jedi attacker that punishes enemies for wounding his allies",
+        "combat_type": 1
+    },
+    {
+        "name": "Jedi Knight Guardian",
+        "base_id": "JEDIKNIGHTGUARDIAN",
+        "pk": 107,
+        "url": "https://swgoh.gg/characters/jedi-knight-guardian/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_guardian_01.png",
+        "power": 16948,
+        "description": "Tenacious Jedi tank with crippling debuffs and natural recovery at low Health",
+        "combat_type": 1
+    },
+    {
+        "name": "Jyn Erso",
+        "base_id": "JYNERSO",
+        "pk": 217,
+        "url": "https://swgoh.gg/characters/jyn-erso/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jyn.png",
+        "power": 22909,
+        "description": "Offensive Rebel Leader who gains Advantage, Stuns enemies, revives Rebel allies and grants them Potency Up",
+        "combat_type": 1
+    },
+    {
+        "name": "K-2SO",
+        "base_id": "K2SO",
+        "pk": 218,
+        "url": "https://swgoh.gg/characters/k-2so/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_k2so.png",
+        "power": 19929,
+        "description": "Rebel Tank who Taunts and Counter Attacks",
+        "combat_type": 1
+    },
+    {
+        "name": "Kanan Jarrus",
+        "base_id": "KANANJARRUSS3",
+        "pk": 226,
+        "url": "https://swgoh.gg/characters/kanan-jarrus/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_kanan_s3.png",
+        "power": 19929,
+        "description": "Durable Phoenix Tank that keeps enemy Offense crippled and allies healthy",
+        "combat_type": 1
+    },
+    {
+        "name": "Kit Fisto",
+        "base_id": "KITFISTO",
+        "pk": 187,
+        "url": "https://swgoh.gg/characters/kit-fisto/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_kitfisto.png",
+        "power": 17523,
+        "description": "Versatile Jedi Attacker with multi-attack, Counter Chance, and a variety of ally buffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Kylo Ren",
+        "base_id": "KYLOREN",
+        "pk": 141,
+        "url": "https://swgoh.gg/characters/kylo-ren/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_kyloren.png",
+        "power": 19929,
+        "description": "Versatile First Order attacker that can reuse special attacks when damaged",
+        "combat_type": 1
+    },
+    {
+        "name": "Kylo Ren (Unmasked)",
+        "base_id": "KYLORENUNMASKED",
+        "pk": 245,
+        "url": "https://swgoh.gg/characters/kylo-ren-unmasked/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_kylo_unmasked.png",
+        "power": 22909,
+        "description": "Tough First Order Tank with a powerful Stun",
+        "combat_type": 1
+    },
+    {
+        "name": "Lando Calrissian",
+        "base_id": "ADMINISTRATORLANDO",
+        "pk": 4,
+        "url": "https://swgoh.gg/characters/lando-calrissian/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_landobespin.png",
+        "power": 17313,
+        "description": "Scoundrel leader with high offense and excellent Critical Hit synergy",
+        "combat_type": 1
+    },
+    {
+        "name": "Lobot",
+        "base_id": "LOBOT",
+        "pk": 84,
+        "url": "https://swgoh.gg/characters/lobot/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_lobot.png",
+        "power": 17523,
+        "description": "Rebel Support that can reliably inflict Defense Down, clear allied debuffs, and speed up allied Droids",
+        "combat_type": 1
+    },
+    {
+        "name": "Logray",
+        "base_id": "LOGRAY",
+        "pk": 170,
+        "url": "https://swgoh.gg/characters/logray/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ewok_logray.png",
+        "power": 19929,
+        "description": "Sage Ewok Support who can Daze enemies and grant Ewok allies many buffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Luke Skywalker (Farmboy)",
+        "base_id": "LUKESKYWALKER",
+        "pk": 24,
+        "url": "https://swgoh.gg/characters/luke-skywalker-farmboy/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_luke_ep4.png",
+        "power": 22125,
+        "description": "Attacker that can boost his own Critical Rate, then disable enemies with Critical Hits",
+        "combat_type": 1
+    },
+    {
+        "name": "Luminara Unduli",
+        "base_id": "LUMINARAUNDULI",
+        "pk": 158,
+        "url": "https://swgoh.gg/characters/luminara-unduli/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_luminara.png",
+        "power": 19929,
+        "description": "Versatile attacker with ability block and powerful party heal.",
+        "combat_type": 1
+    },
+    {
+        "name": "Mace Windu",
+        "base_id": "MACEWINDU",
+        "pk": 70,
+        "url": "https://swgoh.gg/characters/mace-windu/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_macewindu.png",
+        "power": 17523,
+        "description": "Aggressive Jedi tank with devastating damage if left unchecked",
+        "combat_type": 1
+    },
+    {
+        "name": "Magmatrooper",
+        "base_id": "MAGMATROOPER",
+        "pk": 47,
+        "url": "https://swgoh.gg/characters/magmatrooper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperstorm_magma.png",
+        "power": 16948,
+        "description": "Resilient Attacker that recovers quickly from debuffs and deals potent AoE damage",
+        "combat_type": 1
+    },
+    {
+        "name": "Mob Enforcer",
+        "base_id": "HUMANTHUG",
+        "pk": 2,
+        "url": "https://swgoh.gg/characters/mob-enforcer/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_thug_female_01.png",
+        "power": 16948,
+        "description": "Scoundrel Tank with enemy debuff ability and a thermal detonator.",
+        "combat_type": 1
+    },
+    {
+        "name": "Mother Talzin",
+        "base_id": "MOTHERTALZIN",
+        "pk": 75,
+        "url": "https://swgoh.gg/characters/mother-talzin/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_nightsisters_talzin.png",
+        "power": 22909,
+        "description": "Vicious Nightsister Leader who inflicts Plague, preventing enemies from Dispelling debuffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Nightsister Acolyte",
+        "base_id": "NIGHTSISTERACOLYTE",
+        "pk": 108,
+        "url": "https://swgoh.gg/characters/nightsister-acolyte/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_nightsister_acolyte.png",
+        "power": 16948,
+        "description": "Stealth attacker with some enemy debuffing and self healing ability.",
+        "combat_type": 1
+    },
+    {
+        "name": "Nightsister Initiate",
+        "base_id": "NIGHTSISTERINITIATE",
+        "pk": 129,
+        "url": "https://swgoh.gg/characters/nightsister-initiate/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_nightsister_initiate.png",
+        "power": 19929,
+        "description": "Critical-focused Attacker that can render enemies immune to buffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Nightsister Spirit",
+        "base_id": "NIGHTSISTERSPIRIT",
+        "pk": 244,
+        "url": "https://swgoh.gg/characters/nightsister-spirit/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_nightsisters_wraith.png",
+        "power": 16948,
+        "description": "Veiled Nightsister Attacker who Dispels, Stuns, and gains Foresight",
+        "combat_type": 1
+    },
+    {
+        "name": "Nightsister Zombie",
+        "base_id": "NIGHTSISTERZOMBIE",
+        "pk": 243,
+        "url": "https://swgoh.gg/characters/nightsister-zombie/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_nightsisters_zombie.png",
+        "power": 16948,
+        "description": "Vile Nightsister Tank who inflicts Tenacity Down and can't be stopped from reviving endlessly",
+        "combat_type": 1
+    },
+    {
+        "name": "Nute Gunray",
+        "base_id": "NUTEGUNRAY",
+        "pk": 177,
+        "url": "https://swgoh.gg/characters/nute-gunray/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_nutegunray.png",
+        "power": 17523,
+        "description": "Attacker with powerful Stealth bonuses and a potent Thermal Detonator",
+        "combat_type": 1
+    },
+    {
+        "name": "Obi-Wan Kenobi (Old Ben)",
+        "base_id": "OLDBENKENOBI",
+        "pk": 154,
+        "url": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_obiwanep4.png",
+        "power": 22909,
+        "description": "Durable Jedi Tank able to shut down enemy offense with multiple debuffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Old Daka",
+        "base_id": "DAKA",
+        "pk": 25,
+        "url": "https://swgoh.gg/characters/old-daka/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_daka.png",
+        "power": 19929,
+        "description": "Defensive Nightsister Healer who Stuns and Revives",
+        "combat_type": 1
+    },
+    {
+        "name": "Pao",
+        "base_id": "PAO",
+        "pk": 228,
+        "url": "https://swgoh.gg/characters/pao/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_pao.png",
+        "power": 19929,
+        "description": "Unrelenting Rebel Attacker with a mighty battle cry",
+        "combat_type": 1
+    },
+    {
+        "name": "Paploo",
+        "base_id": "PAPLOO",
+        "pk": 185,
+        "url": "https://swgoh.gg/characters/paploo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ewok_paploo.png",
+        "power": 19929,
+        "description": "Resourceful Ewok Tank with assist and buff synergies",
+        "combat_type": 1
+    },
+    {
+        "name": "Plo Koon",
+        "base_id": "PLOKOON",
+        "pk": 7,
+        "url": "https://swgoh.gg/characters/plo-koon/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_plokoon.png",
+        "power": 17523,
+        "description": "Jedi Tank with Clone synergy, reliable enemy Dispel and anti-Stealth",
+        "combat_type": 1
+    },
+    {
+        "name": "Poe Dameron",
+        "base_id": "POE",
+        "pk": 179,
+        "url": "https://swgoh.gg/characters/poe-dameron/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_poe.png",
+        "power": 17523,
+        "description": "Resistance Tank with a Taunt that inflicts Expose for big reversals",
+        "combat_type": 1
+    },
+    {
+        "name": "Poggle the Lesser",
+        "base_id": "POGGLETHELESSER",
+        "pk": 81,
+        "url": "https://swgoh.gg/characters/poggle-the-lesser/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_geonosian_poggle.png",
+        "power": 17523,
+        "description": "Support character with strong droid synergies.",
+        "combat_type": 1
+    },
+    {
+        "name": "Princess Leia",
+        "base_id": "PRINCESSLEIA",
+        "pk": 122,
+        "url": "https://swgoh.gg/characters/princess-leia/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_leia_princess.png",
+        "power": 19929,
+        "description": "Well-rounded Rebel Attacker with extra attacks, Stealth, and team Critical bonuses.",
+        "combat_type": 1
+    },
+    {
+        "name": "Qui-Gon Jinn",
+        "base_id": "QUIGONJINN",
+        "pk": 44,
+        "url": "https://swgoh.gg/characters/qui-gon-jinn/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_quigon.png",
+        "power": 19929,
+        "description": "Versatile attacker focused on generating extra attacks.",
+        "combat_type": 1
+    },
+    {
+        "name": "R2-D2",
+        "base_id": "R2D2_LEGENDARY",
+        "pk": 235,
+        "url": "https://swgoh.gg/characters/r2-d2/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_astromech_r2d2.png",
+        "power": 22909,
+        "description": "Versatile Support Droid that inflicts Burning and grants allies Stealth",
+        "combat_type": 1
+    },
+    {
+        "name": "Rebel Officer Leia Organa",
+        "base_id": "HOTHLEIA",
+        "pk": 92,
+        "url": "https://swgoh.gg/characters/rebel-officer-leia-organa/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_leiahoth.png",
+        "power": 19929,
+        "description": "Tenacious Rebel Attacker that counters debuffs and is more effective against healthy targets",
+        "combat_type": 1
+    },
+    {
+        "name": "Resistance Pilot",
+        "base_id": "RESISTANCEPILOT",
+        "pk": 38,
+        "url": "https://swgoh.gg/characters/resistance-pilot/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_resistancepilot.png",
+        "power": 16738,
+        "description": "Resistance attacker that can use Expose, Foresight, and Turn Meter gains to surprise enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "Resistance Trooper",
+        "base_id": "RESISTANCETROOPER",
+        "pk": 133,
+        "url": "https://swgoh.gg/characters/resistance-trooper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_resistancetrooper.png",
+        "power": 16738,
+        "description": "Opportunistic Resistance attacker that can deal heavy damage to debuffed enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "Rey (Jedi Training)",
+        "base_id": "REYJEDITRAINING",
+        "pk": 250,
+        "url": "https://swgoh.gg/characters/rey-jedi-training/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_rey_tlj.png",
+        "power": 25890,
+        "description": "Resilient Resistance Tank who avenges debuffed allies and controls the battlefield",
+        "combat_type": 1
+    },
+    {
+        "name": "Rey (Scavenger)",
+        "base_id": "REY",
+        "pk": 116,
+        "url": "https://swgoh.gg/characters/rey-scavenger/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_reyjakku.png",
+        "power": 19929,
+        "description": "Risky Attacker that has high damage and evasion, but is vulnerable to debuffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Rose Tico",
+        "base_id": "ROSETICO",
+        "pk": 255,
+        "url": "https://swgoh.gg/characters/rose-tico/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_rose.png",
+        "power": 19929,
+        "description": "A brave Resistance Attacker who can Stun and grant allies buffs.",
+        "combat_type": 1
+    },
+    {
+        "name": "Royal Guard",
+        "base_id": "ROYALGUARD",
+        "pk": 18,
+        "url": "https://swgoh.gg/characters/royal-guard/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_royalguard.png",
+        "power": 16948,
+        "description": "Versatile Empire Tank that punishes enemies for attacking other allies",
+        "combat_type": 1
+    },
+    {
+        "name": "Sabine Wren",
+        "base_id": "SABINEWRENS3",
+        "pk": 231,
+        "url": "https://swgoh.gg/characters/sabine-wren/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_sabine_s3.png",
+        "power": 19929,
+        "description": "Aggressive Phoenix Attacker that permanently strips Defense and punishes slower enemies",
+        "combat_type": 1
+    },
+    {
+        "name": "Savage Opress",
+        "base_id": "SAVAGEOPRESS",
+        "pk": 137,
+        "url": "https://swgoh.gg/characters/savage-opress/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_savageopress.png",
+        "power": 19929,
+        "description": "Durable Attacker that crushes low-health units and becomes stronger when attacked",
+        "combat_type": 1
+    },
+    {
+        "name": "Scarif Rebel Pathfinder",
+        "base_id": "SCARIFREBEL",
+        "pk": 210,
+        "url": "https://swgoh.gg/characters/scarif-rebel-pathfinder/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_rebel_scarif.png",
+        "power": 16948,
+        "description": "Steadfast Rebel Tank who debuffs, Taunts, and self-revives",
+        "combat_type": 1
+    },
+    {
+        "name": "Shoretrooper",
+        "base_id": "SHORETROOPER",
+        "pk": 212,
+        "url": "https://swgoh.gg/characters/shoretrooper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_troopershore.png",
+        "power": 16948,
+        "description": "Empire Tank who enters battle with Taunt, heals allies, and grants them Critical Hit Immunity",
+        "combat_type": 1
+    },
+    {
+        "name": "Sith Assassin",
+        "base_id": "SITHASSASSIN",
+        "pk": 224,
+        "url": "https://swgoh.gg/characters/sith-assassin/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_sithassassin.png",
+        "power": 16948,
+        "description": "Elusive Sith Attacker with Stealth synergy",
+        "combat_type": 1
+    },
+    {
+        "name": "Sith Marauder",
+        "base_id": "SITHMARAUDER",
+        "pk": 256,
+        "url": "https://swgoh.gg/characters/sith-marauder/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_sithmarauder.png",
+        "power": 16948,
+        "description": "Destructive Sith Attacker that takes advantage of all buffs and debuffs in battle",
+        "combat_type": 1
+    },
+    {
+        "name": "Sith Trooper",
+        "base_id": "SITHTROOPER",
+        "pk": 223,
+        "url": "https://swgoh.gg/characters/sith-trooper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_sithtrooper.png",
+        "power": 16948,
+        "description": "Sith Tank who Taunts and ignores enemy Protection",
+        "combat_type": 1
+    },
+    {
+        "name": "Snowtrooper",
+        "base_id": "SNOWTROOPER",
+        "pk": 162,
+        "url": "https://swgoh.gg/characters/snowtrooper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_troopersnow.png",
+        "power": 16948,
+        "description": "Empire Attacker that becomes faster and stronger as enemies are defeated",
+        "combat_type": 1
+    },
+    {
+        "name": "Stormtrooper",
+        "base_id": "STORMTROOPER",
+        "pk": 55,
+        "url": "https://swgoh.gg/characters/stormtrooper/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperstorm.png",
+        "power": 19144,
+        "description": "Empire Tank that can Taunt and surprise enemies with unpredictable damage",
+        "combat_type": 1
+    },
+    {
+        "name": "Stormtrooper Han",
+        "base_id": "STORMTROOPERHAN",
+        "pk": 202,
+        "url": "https://swgoh.gg/characters/stormtrooper-han/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_trooperstorm_han.png",
+        "power": 19719,
+        "description": "Versatile tank able to surprise enemies with sudden Turn Meter changes and Offense boosts",
+        "combat_type": 1
+    },
+    {
+        "name": "Sun Fac",
+        "base_id": "SUNFAC",
+        "pk": 192,
+        "url": "https://swgoh.gg/characters/sun-fac/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_geonosian_sunfac.png",
+        "power": 17523,
+        "description": "Geonosian Tank that punishes attackers with a variety of negative status effects",
+        "combat_type": 1
+    },
+    {
+        "name": "Talia",
+        "base_id": "TALIA",
+        "pk": 197,
+        "url": "https://swgoh.gg/characters/talia/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_nightsister_talia.png",
+        "power": 17523,
+        "description": "Aggressive Healer that sacrifices Health so allies can recover Health and Turn Meter",
+        "combat_type": 1
+    },
+    {
+        "name": "Teebo",
+        "base_id": "TEEBO",
+        "pk": 168,
+        "url": "https://swgoh.gg/characters/teebo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ewok_teebo.png",
+        "power": 17733,
+        "description": "Ewok stealth character with stealth synergies and some control ability.",
+        "combat_type": 1
+    },
+    {
+        "name": "TIE Fighter Pilot",
+        "base_id": "TIEFIGHTERPILOT",
+        "pk": 124,
+        "url": "https://swgoh.gg/characters/tie-fighter-pilot/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_tiepilot.png",
+        "power": 16948,
+        "description": "Empire Attacker who inflicts Buff Immunity and gains Foresight",
+        "combat_type": 1
+    },
+    {
+        "name": "Tusken Raider",
+        "base_id": "TUSKENRAIDER",
+        "pk": 43,
+        "url": "https://swgoh.gg/characters/tusken-raider/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_tuskenraider.png",
+        "power": 16948,
+        "description": "Durable Attacker with Tusken Synergy and a strong Assist attack",
+        "combat_type": 1
+    },
+    {
+        "name": "Tusken Shaman",
+        "base_id": "TUSKENSHAMAN",
+        "pk": 39,
+        "url": "https://swgoh.gg/characters/tusken-shaman/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_tuskenshaman.png",
+        "power": 16948,
+        "description": "Offensive Healer that can also boost Offense and rapidly stack Damage Over Time effects",
+        "combat_type": 1
+    },
+    {
+        "name": "Ugnaught",
+        "base_id": "UGNAUGHT",
+        "pk": 58,
+        "url": "https://swgoh.gg/characters/ugnaught/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ugnaught.png",
+        "power": 16738,
+        "description": "Anti-Droid Support with AoE damage and high Evasion against Droids",
+        "combat_type": 1
+    },
+    {
+        "name": "URoRRuR'R'R",
+        "base_id": "URORRURRR",
+        "pk": 125,
+        "url": "https://swgoh.gg/characters/urorrurrr/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_urorrurrr.png",
+        "power": 17523,
+        "description": "Tusken Support that can Stun frequently and speed up Tuskens for surprise attacks",
+        "combat_type": 1
+    },
+    {
+        "name": "Veteran Smuggler Chewbacca",
+        "base_id": "SMUGGLERCHEWBACCA",
+        "pk": 240,
+        "url": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_tfa_chewbacca.png",
+        "power": 19929,
+        "description": "Lumbering attacker who accumulates Offensive capabilities as enemies take actions",
+        "combat_type": 1
+    },
+    {
+        "name": "Veteran Smuggler Han Solo",
+        "base_id": "SMUGGLERHAN",
+        "pk": 241,
+        "url": "https://swgoh.gg/characters/veteran-smuggler-han-solo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_tfa_han.png",
+        "power": 19929,
+        "description": "Scoundrel Attacker with multi-attack and multiple devastating debuffs",
+        "combat_type": 1
+    },
+    {
+        "name": "Visas Marr",
+        "base_id": "VISASMARR",
+        "pk": 257,
+        "url": "https://swgoh.gg/characters/visas-marr/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_visas.png",
+        "power": 19929,
+        "description": "Offensive Healer with strong anti-Sith synergy",
+        "combat_type": 1
+    },
+    {
+        "name": "Wampa",
+        "base_id": "WAMPA",
+        "pk": 249,
+        "url": "https://swgoh.gg/characters/wampa/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_wampa.png",
+        "power": 22909,
+        "description": "Fearsome predator from Hoth that attacks constantly with increasing strength",
+        "combat_type": 1
+    },
+    {
+        "name": "Wedge Antilles",
+        "base_id": "WEDGEANTILLES",
+        "pk": 191,
+        "url": "https://swgoh.gg/characters/wedge-antilles/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_rebelpilot_wedge.png",
+        "power": 17523,
+        "description": "Rebel Attacker with a strong offensive opening",
+        "combat_type": 1
+    },
+    {
+        "name": "Wicket",
+        "base_id": "WICKET",
+        "pk": 105,
+        "url": "https://swgoh.gg/characters/wicket/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ewok_wicket.png",
+        "power": 19929,
+        "description": "Jittery Ewok Attacker with Critical Hit and Stealth synergies",
+        "combat_type": 1
+    },
+    {
+        "name": "Zam Wesell",
+        "base_id": "ZAMWESELL",
+        "pk": 208,
+        "url": "https://swgoh.gg/characters/zam-wesell/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_zamwesell.png",
+        "power": 17523,
+        "description": "Lightning fast Scoundrel attacker that inflicts Evasion Down and detonates bombs.",
+        "combat_type": 1
+    }
+]
