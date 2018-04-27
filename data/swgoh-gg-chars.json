@@ -140,6 +140,16 @@
         "combat_type": 1
     },
     {
+        "name": "Bossk",
+        "base_id": "BOSSK",
+        "pk": 264,
+        "url": "https://swgoh.gg/characters/bossk/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bossk.png",
+        "power": 22125,
+        "description": "Bounty Hunter Tank that constantly regenerates Health and Protection",
+        "combat_type": 1
+    },
+    {
         "name": "Cad Bane",
         "base_id": "CADBANE",
         "pk": 121,

@@ -129,7 +129,7 @@ client.on('error', (err) => {
 if (!client.shard || client.shard.id === 0) {
     // ## Here down is to update any characters that need it ##
     // Run it one minute after the bot boots
-    setTimeout(updateRemoteData,        1 * 60 * 1000);
+    setTimeout(updateRemoteData,        1 * 5 * 1000);
     // Check every 12 hours to see if any mods have been changed
     setInterval(updateRemoteData, 12 * 60 * 60 * 1000);
     //                               hr   min  sec  mSec
@@ -170,11 +170,13 @@ function getModType(type) {
 }
 
 function saveFile(filePath, jsonData) {
-    fs.writeFile(filePath, JSON.stringify(jsonData, null, 4), 'utf8', function(err) {
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4), 'utf8');
+    } catch(err) {
         if (err) {
-            return console.log(err);
+            console.log(err);
         }
-    });
+    }
 }
 
 async function updateIfChanged(localCachePath, dataSourceUri) {
@@ -190,7 +192,7 @@ async function updateIfChanged(localCachePath, dataSourceUri) {
         try {
             localCache = JSON.parse(fs.readFileSync(localCachePath));
         } catch (err) {
-            let reason = err || "unknown error";
+            const reason = err || "unknown error";
             localCache = {};
             console.log('UpdateRemoteData', 'Error reading local cache for ' + dataSourceUri + ', reason: ' + reason);
         }
@@ -200,7 +202,7 @@ async function updateIfChanged(localCachePath, dataSourceUri) {
             updated = true;
         }
     } catch (err) {
-        let reason = err || "unknown error";
+        const reason = err || "unknown error";
         return console.log('UpdateRemoteData', 'Unable to update cache for ' + dataSourceUri + ', reason: ' + reason);
     }
 
@@ -215,7 +217,6 @@ async function updateRemoteData() {
 
     const currentCharacters = client.characters;
     const currentSnapshot = JSON.stringify(currentCharacters);
-    const pendingCharUpdates = [];
 
     console.log('UpdateRemoteData', 'Checking for updates to remote data sources');
     if (await updateIfChanged(GG_SHIPS_CACHE, 'https://swgoh.gg/api/ships/')) {
@@ -225,6 +226,7 @@ async function updateRemoteData() {
 
     if (await updateIfChanged(GG_CHAR_CACHE, 'https://swgoh.gg/api/characters/')) {
         console.log('UpdateRemoteData', 'Detected a change in characters from swgoh.gg');
+        // TODO - periodic forced updates to adopt updated minor changes?
         await updateCharacters(currentCharacters);
     }
 
@@ -253,22 +255,22 @@ async function updateShips() {
 }
 
 function getCleanString(input) {
-    const cleanReg = /[\'-\s]/g;
+    const cleanReg = /['-\s]/g;
 
     return input.toLowerCase().replace(cleanReg, '');
 }
 
 function isSameCharacter(localChar, remoteChar, nameAttribute) {
     let isSame = false;
-    let remoteAttribute = nameAttribute || "name";
-    let remoteName = getCleanString(remoteChar[remoteAttribute]);
+    const remoteAttribute = nameAttribute || "name";
+    const remoteName = getCleanString(remoteChar[remoteAttribute]);
 
     if (remoteName === getCleanString(localChar.name)) {
         isSame = true;
     } else {
         if (localChar.nameVariant) {
             for (const key in localChar.nameVariant) {
-                let localName = getCleanString(localChar.nameVariant[key]);
+                const localName = getCleanString(localChar.nameVariant[key]);
                 if (remoteName === localName) {
                     isSame = true;
                     break;
@@ -328,6 +330,8 @@ async function updateCharacters(currentCharacters) {
                     updated = true;
                 }
 
+                //updated = true; // force an update of everything
+
                 if (updated) {
                     // some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
                     await ggGrab(currentChar);
@@ -345,7 +349,7 @@ async function updateCharacters(currentCharacters) {
             // queue an update to fill in the empty character's details from swgoh.gg
             await ggGrab(newCharacter);
         }
-    };
+    }
 }
 
 async function updateCharacterMods(currentCharacters) {
@@ -399,9 +403,16 @@ async function updateCharacterMods(currentCharacters) {
             setName = rancorChar.name;
         }
 
+        // Make a guess at the character URL in case of poor matchup to swgoh.gg's API by name
+        let charLink = 'https://swgoh.gg/characters/';
+        const linkName = rancorChar.cname.replace(/[^\w\s-]+/g, '');  // Get rid of non-alphanumeric characters besides dashes
+        charLink += linkName.replace(/\s+/g, '-').toLowerCase();  // Get rid of extra spaces, and format em to be dashes
+        charLink += '/'; // add trailing slash to be consistent with swgoh.gg's conventions
+
         // iterate all known characters to find a match
         currentCharacters.forEach(currentChar => {
-            if (isSameCharacter(currentChar, rancorChar, "cname")) {
+            if (isSameCharacter(currentChar, rancorChar, "cname") ||
+                    (currentChar.url && currentChar.url !== UNKNOWN && currentChar.url === charLink)) {
                 found = true;
 
                 if (currentChar.mods[setName]) {
@@ -413,12 +424,7 @@ async function updateCharacterMods(currentCharacters) {
             }
         });
         if (!found) {
-            // Make a new character
-            let charLink = 'https://swgoh.gg/characters/';
-            const linkName = rancorChar.cname.replace(/[^\w\s]+/g, '');  // Get rid of non-alphanumeric characters ('"- etc)
-            charLink += linkName.replace(/\s+/g, '-').toLowerCase();  // Get rid of extra spaces, and format em to be dashes
-            charLink += '/'; // add trailing slash to be consistent with swgoh.gg's conventions
-
+            // create a new character
             console.log('UpdateRemoteData', 'New character discovered from crouching rancor: ' + rancorChar.cname);
             const newCharacter = createEmptyChar(rancorChar.cname, charLink, UNKNOWN);
 
@@ -493,6 +499,7 @@ function createEmptyChar(name, url, uniqueName) {
 }
 
 async function ggGrab(character) {
+    //console.log('ggGrab', 'Fetching: "' + character.url + '"');
     const charGrab = await snekfetch.get(character.url);
     const ggGrabText = charGrab.text;
 
@@ -501,7 +508,7 @@ async function ggGrab(character) {
         character.abilities = {};
     }
     if (!character.stats) {
-        character.stats = {};
+        character.stats = getEmptyStats();
     }
 
     character.shardLocations = getEmptyShardLocations();
@@ -531,22 +538,26 @@ async function ggGrab(character) {
 
     // Get the character's abilities and such
     $('.char-detail-info').each(function() {
-        let abilityName = $(this).find('h5').text();    // May have the cooldown included, need to get rid of it
-        let desc = $(this).find('p').text().split('\n')[1];
-        let abilityMat = $(this).find('img').attr('title').split(' ').join('');
-        let abilityType = $(this).find('small').text();
-        let cooldown = $(this).find('h5 small').text().split(' ')[0];
+        let abilityName = $(this).find('h5').text().trim();    // May have the cooldown included, need to get rid of it
+        let desc = $(this).find('p').text().split('\n')[1].trim();
+        let abilityMat = $(this).find('img').attr('title').split(' ').join('').trim();
+        let abilityType = $(this).find('small').text().trim();
+        let cooldown = $(this).find('h5 small').text().trim();
+        let selectorId = "#" + $(this).parent().attr('aria-controls');
 
-        // Make sure it doesn't have any line returns in there
-        if (abilityName.indexOf('\n') !== -1) {
-            abilityName = abilityName.replace(/\n/g, '');
+        // remove cooldown information from the ability name
+        let cooldownIndex = abilityName.indexOf(cooldown);
+        if (cooldown && cooldownIndex !== -1 && cooldownIndex !== 0) {
+            abilityName = abilityName.substring(0, cooldownIndex - 1).trim();
         }
-        if (desc.indexOf('\n') !== -1) {
-            desc = desc.replace(/\n/g, '');
+        //console.log('ggGrab', 'After splitting out cooldown text ability: "' + abilityName + '"');
+        cooldown = cooldown.split(' ')[0];
+
+        // If the cooldown isn't there, set it to 0
+        if (cooldown === '') {
+            cooldown = '0';
         }
-        if (abilityMat.indexOf('\n') !== -1) {
-            abilityMat = abilityMat.replace(/\n/g, '');
-        }
+
 
         // Make sure it grabs the right one to work with the rest
         if (abilityMat === "AbilityMaterialOmega") {
@@ -566,36 +577,15 @@ async function ggGrab(character) {
             abilityType = 'Leader';
         } else if (abilityType.indexOf('Unique') !== -1) {
             abilityType = 'Unique';
-        }
-        // If the cooldown isn't there, set it to 0
-        if (cooldown === '') {
-            cooldown = '0';
         } else {
-            abilityName = abilityName.split(' ').slice(0, -3).join(' ').toString();
+            // it's probably a Unique
+            abilityType = 'Unique';
         }
-
-        character.abilities[abilityName] = {
-            "type": abilityType,
-            "abilityCooldown": cooldown,
-            "abilityDesc": desc,
-            "tier": abilityMat,
-            "cost": {
-                'mk3': 0,
-                'omega': 0,
-                'zeta': 0
-            }
-        };
-    });
-
-
-    // Grab the cost for each ability
-    $('.list-group-item-ability').each(function() {
-        const aName = $(this).find('.ability-mechanics-link').text().replace(/^View /, '').replace(/\sMechanics$/, '');
 
         let mk3s = 0, omegas = 0, zetas = 0;
         // Each level of the ability is in a tr
         const aCost = [];
-        $(this).find('tr').each(function() {
+        $(selectorId).find('tr').each(function() {
             // And the cost of each is in the 2nd td in each row
             const lvl = [];
             $(this).find('td').each(function() {
@@ -612,11 +602,18 @@ async function ggGrab(character) {
             zetas += count.zeta;
             // console.log('Count2: ' + inspect(count));
         });
-        // console.log(`${mk3s} MK3, ${omegas} Omegas, ${zetas} Zetas`);
-        character.abilities[aName].cost = {
-            'mk3': mk3s,
-            'omega': omegas,
-            'zeta': zetas
+        //console.log(`${mk3s} MK3, ${omegas} Omegas, ${zetas} Zetas`);
+
+        character.abilities[abilityName] = {
+            "type": abilityType,
+            "abilityCooldown": cooldown,
+            "abilityDesc": desc,
+            "tier": abilityMat,
+            "cost": {
+                'mk3': mk3s,
+                'omega': omegas,
+                'zeta': zetas
+            }
         };
     });
 
