@@ -79,6 +79,7 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
 
             // Base swgohAPI
+            BASE_SWGOH_NO_ALLY: `Sorry, but that user is not registered. Please go register with \`;register add <user> <allycode>\``,
             BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register add @${user} <allycode>\``,
             BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
             BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
@@ -240,6 +241,7 @@ module.exports = class extends Language {
                 'icon_tenacity': 'Tenacity'
             }),
             COMMAND_CHARMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
+            COMMAND_CHARMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
             COMMAND_CHARMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
             COMMAND_CHARMODS_HELP: ({
                 description: "Shows the mods that you have equipped on the selected character.",
@@ -464,6 +466,27 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: 'modsets',
                         args: {}
+                    }
+                ]
+            },
+
+            // MyArena Command
+            COMMAND_MYARENA_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
+            COMMAND_MYARENA_NO_CHAR: 'Something went wrong, I could not get your characters.',
+            COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rank: ${rank})`,
+            COMMAND_MYARENA_FLEET: (rank) => `Ship Arena (Rank: ${rank})`,
+            COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
+            COMMAND_MYARENA_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
+            COMMAND_MYARENA_HELP: {
+                description: "Show user's current arena ranks and their squads.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';myarena [user]',
+                        args: {
+                            "user": "The person you're checking. (me | userID | mention)"
+                        }
                     }
                 ]
             },
