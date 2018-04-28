@@ -172,7 +172,7 @@ function getModType(type) {
 function saveFile(filePath, jsonData) {
     try {
         fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4), 'utf8');
-    } catch(err) {
+    } catch (err) {
         if (err) {
             console.log(err);
         }
@@ -221,7 +221,7 @@ async function updateRemoteData() {
     console.log('UpdateRemoteData', 'Checking for updates to remote data sources');
     if (await updateIfChanged(GG_SHIPS_CACHE, 'https://swgoh.gg/api/ships/')) {
         console.log('UpdateRemoteData', 'Detected a change in ships from swgoh.gg');
-        await updateShips();
+        // await updateShips();
     }
 
     if (await updateIfChanged(GG_CHAR_CACHE, 'https://swgoh.gg/api/characters/')) {
@@ -243,16 +243,16 @@ async function updateRemoteData() {
     }
 }
 
-async function updateShips() {
-    const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE));
-
-    const currentShips = client.ships;
-
-    for (var ggShipkey in ggShipList) {
-        const ggShip = ggShipList[ggShipkey];
-        // TODO - check for new ships / reconcile data source differences
-    }
-}
+// async function updateShips() {
+//     const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE));
+//
+//     const currentShips = client.ships;
+//
+//     for (var ggShipkey in ggShipList) {
+//         const ggShip = ggShipList[ggShipkey];
+//         // TODO - check for new ships / reconcile data source differences
+//     }
+// }
 
 function getCleanString(input) {
     const cleanReg = /['-\s]/g;
@@ -539,14 +539,14 @@ async function ggGrab(character) {
     // Get the character's abilities and such
     $('.char-detail-info').each(function() {
         let abilityName = $(this).find('h5').text().trim();    // May have the cooldown included, need to get rid of it
-        let desc = $(this).find('p').text().split('\n')[1].trim();
+        const desc = $(this).find('p').text().split('\n')[1].trim();
         let abilityMat = $(this).find('img').attr('title').split(' ').join('').trim();
         let abilityType = $(this).find('small').text().trim();
         let cooldown = $(this).find('h5 small').text().trim();
-        let selectorId = "#" + $(this).parent().attr('aria-controls');
+        const selectorId = "#" + $(this).parent().attr('aria-controls');
 
         // remove cooldown information from the ability name
-        let cooldownIndex = abilityName.indexOf(cooldown);
+        const cooldownIndex = abilityName.indexOf(cooldown);
         if (cooldown && cooldownIndex !== -1 && cooldownIndex !== 0) {
             abilityName = abilityName.substring(0, cooldownIndex - 1).trim();
         }
