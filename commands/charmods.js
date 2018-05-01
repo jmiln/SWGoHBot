@@ -83,6 +83,9 @@ class CharMods extends Command {
         connection.query(`CALL getCharMods(${allyCode}, "${character.uniqueName}");`, function(err, results) {
             if (!results) return message.channel.send(message.language.get('COMMAND_CHARMODS_NO_MODS', character.name));
             const res = results[0];
+            if (!res) {
+                return message.channel.send(message.language.get('COMMAND_CHARMODS_MISSING_MODS'));
+            }
             let updated = res[0].updated;
             const slots = {};
             const name = res[0].uName;
