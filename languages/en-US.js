@@ -394,6 +394,24 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Heists Command
+            COMMAND_HEISTS_HEADER: "SWGoH Heists Schedule",
+            COMMAND_HEISTS_CREDIT: (date) => `**Credits** : ${date}\n`,
+            COMMAND_HEISTS_DROID: (date) => `**Droids**  : ${date}\n`,
+            COMMAND_HEISTS_NOT_SCHEDULED: "`Not scheduled`",
+            COMMAND_HEISTS_HELP: {
+                description: "Shows any upcoming heists.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';heists',
+                        args: {}
+                    }
+                ]
+            },
+            
+
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
             COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
