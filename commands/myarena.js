@@ -111,7 +111,7 @@ class MyArena extends Command {
                 author.icon_url = auth.user.avatarURL;
             }
         } 
-        return await message.channel.send({embed: {
+        return message.channel.send({embed: {
             author: author,
             footer: {
                 text: message.language.get('COMMAND_MYARENA_EMBED_FOOTER', new Date().toISOString().replace(/T/g,' ').replace(/\..*/g,''))
