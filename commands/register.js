@@ -74,11 +74,9 @@ class Register extends Command {
                     await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
                         await client.swgohAPI.updatePlayer(ally).then(async (u) => {
                             if (!u) {
-                                // await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
-                                await msg.edit('Something went wrong, make sure your registered ally code is correct');
+                                await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
                             } else {
-                                // await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
-                                await msg.edit('Profile updated for `' + u.name + '`.');
+                                await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_SUCCESS', u.name));
                             }
                         });
                     });
