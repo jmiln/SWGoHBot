@@ -36,11 +36,15 @@ module.exports = async (client, message) => {
     // Also good practice to ignore any message that does not start with our prefix, which is set in the configuration file.
     if (message.content.indexOf(client.config.prefix) !== 0) return;
 
-    // Here we separate our "command" name, and our "arguments" for the command.
-    // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
-    // command = say
-    // args = ["Is", "this", "the", "real", "life?"]
-    const args = message.content.split(/\s+/g);
+    // Splits on line returns, then on spaces to preserve the line returns
+    const nArgs = message.content.split(/(\n+)/);
+    let args = [];
+    nArgs.forEach(e => {
+        const ne = e.split(' ').filter(String);
+        args = args.concat(ne);    
+    });
+
+    // Get the command name/ remove it from the args
     const command = args.shift().slice(client.config.prefix.length).toLowerCase();
 
     // Get the user or member's permission level from the elevation
@@ -76,12 +80,21 @@ module.exports = async (client, message) => {
             }
         }
 
+        
+
+        const flagArgs = getFlags(cmd.conf.flags, cmd.conf.subArgs, args);
+        
+        
         // If they're just looking for the help, don't bother going through the command
         if (args.length === 1 && args[0].toLowerCase() === 'help') {
             client.helpOut(message, cmd);
         } else {
             try {
-                cmd.run(client, message, args, level);
+                cmd.run(client, message, args, {
+                    level: level,
+                    flags: flagArgs.flags,
+                    subArgs: flagArgs.subArgs
+                });
             } catch (err) {
                 client.log('ERROR', `I broke: ${err}`, cmd.help.name.toProperCase());
             }
@@ -94,4 +107,59 @@ module.exports = async (client, message) => {
         }
     }
 };
+
+// Checks for any args that start with - or -- that match what the command is looking for
+function checkForArgs(key, args) {
+    if (args.includes('-'+key)) { 
+        return [true, '-'+key];
+    } else if (args.includes('--'+key)) {
+        return [true, '--'+key];
+    } else {
+        return [false, null];
+    }
+}
+
+// Get the flags and extra args for the command
+function getFlags(cFlags, cSubArgs, args) {
+    const flags = {};
+    const subArgs = {};
+
+    const flagKeys = Object.keys(cFlags);
+    flagKeys.forEach(key => { 
+        let found = checkForArgs(key, args);
+        flags[key] = false;
+        if (!found[0]) {
+            for (let ix = 0; ix < cFlags[key].aliases.length; ix++) {
+                found = checkForArgs(cFlags[key].aliases[ix], args);
+                if (found[0]) break;
+            }
+        }
+        if (found[0]) {
+            args.splice(args.indexOf(found[1]), 1);   
+            flags[key] = true;
+        }
+    });
+
+    const subKeys = Object.keys(cSubArgs);
+    subKeys.forEach(key => { 
+        let found = checkForArgs(key, args);
+        if (!found[0]) {
+            for (let ix = 0; ix < cSubArgs[key].aliases.length; ix++) {
+                found = checkForArgs(cSubArgs[key].aliases[ix], args);
+                break;
+            }
+        }
+        if (found[0]) {
+            const res = args.splice(args.indexOf(found[1]), 2);    
+            subArgs[key] = res[1] ? res[1] : null;
+        } else {
+            subArgs[key] = cSubArgs[key].default ? cSubArgs[key].default : null;
+        }
+    });
+
+    return {
+        subArgs: subArgs,
+        flags: flags
+    };
+}
 

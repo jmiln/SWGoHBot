@@ -3,6 +3,7 @@ const util = require('util');
 const Fuse = require("fuse-js-latest");
 require('moment-duration-format');
 const mysql = require('mysql');
+// const {inspect} = require('util');
 
 module.exports = (client) => {
     // The scheduler for events
@@ -69,7 +70,6 @@ module.exports = (client) => {
 
         // Check the names for an exact match
         for (let ix = 0; ix < charList.length; ix++) {
-            // console.log('checking: ' + charList[ix].name.toLowerCase() + ' VS ' + searchName);
             if (charList[ix].name.toLowerCase() === searchName) {
                 return [charList[ix]];
             }
@@ -476,7 +476,7 @@ module.exports = (client) => {
             client.eventAnnounce(event);
         });
     
-        if (event.countdown === 'yes') {
+        if (event.countdown === 'true' || event.countdown === 'yes') {
             const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
             const nowTime = momentTZ().unix();
             timesToCountdown.forEach(time => {
@@ -506,7 +506,7 @@ module.exports = (client) => {
                 client.log('ERROR',`Broke deleting an event ${error}`); 
             });
 
-        if (event.countdown === 'yes') {
+        if (event.countdown === 'true' || event.countdown === 'yes') {
             const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
             const nowTime = momentTZ().unix();
             timesToCountdown.forEach(time => {
@@ -555,6 +555,12 @@ module.exports = (client) => {
         let repTime = false, repDay = false;
         let newEvent = {};
         const repDays = event.repeatDays;
+
+        if (event.countdown === 'yes') {
+            event.countdown = 'true';
+        } else if (event.countdown === 'no') {
+            event.countdown = 'false';
+        }
 
         // Announce the event
         var announceMessage = `**${eventName}**\n\n${event.eventMessage}`;

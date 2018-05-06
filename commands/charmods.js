@@ -14,7 +14,7 @@ class CharMods extends Command {
         });
     }
 
-    async run(client, message, [userID, ...searchChar], level) { // eslint-disable-line no-unused-vars
+    async run(client, message, [userID, ...searchChar]) { // eslint-disable-line no-unused-vars
         const stats = message.language.get('COMMAND_CHARMODS_STAT_NAMES');
         const types = message.language.get('COMMAND_CHARMODS_MOD_TYPES');
         const STATMOD_SLOT_01 = client.emojis.find("name", "modSquare");

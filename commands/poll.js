@@ -10,7 +10,8 @@ class Poll extends Command {
         });
     }
 
-    async run(client, message, [action, ...opts], level) {   
+    async run(client, message, [action, ...opts], options) {
+        const level = options.level;
         if (!action) {
             return message.channel.send(message.language.get('COMMAND_POLL_NO_ARG'));
         }

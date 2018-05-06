@@ -12,7 +12,8 @@ class Help extends Command {
 
 
 
-    run(client, message, args, level) {
+    run(client, message, args, options) {
+        const level = options.level;
         const config = client.config;
 
         const help = {};

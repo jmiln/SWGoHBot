@@ -11,7 +11,9 @@ class Command {
         guildOnly = false,
         aliases = [],
         permissions = [],
-        permLevel = 0
+        permLevel = 0,
+        flags = {},
+        subArgs = {}
     }) {
         this.client = client;
         this.conf = {
@@ -20,7 +22,9 @@ class Command {
             guildOnly,
             aliases,
             permissions,
-            permLevel
+            permLevel,
+            flags,
+            subArgs
         };
         this.help = {
             name,
