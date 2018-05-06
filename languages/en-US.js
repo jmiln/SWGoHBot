@@ -310,7 +310,7 @@ module.exports = class extends Language {
                             "--repeat <repeatTime>": "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
                             "--repeatDay <schedule>": "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
                             "--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
-                            "--countdown": "Adds a countdown to when your event will trigger - yes is the only valid parameter."
+                            "--countdown": "Adds a countdown to when your event will trigger."
                         }
                     },
                     {
