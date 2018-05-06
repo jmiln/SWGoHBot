@@ -89,10 +89,15 @@ class Event extends Command {
                 const countdownOn = String(minArgs['countdown']);
                 const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
                 const dayReg  = /^[0-9,]*$/gi;
+                let msgOut = '';
 
                 // If they try and set a repeat time and a repeating day schedule, tell em to pick just one
                 if (repeatDays !== '0' && repeatTime !== '0') {
-                    return message.channel.send(message.language.get('COMMAND_EVENT_ONE_REPEAT'));
+                    msgOut = message.language.get('COMMAND_EVENT_ONE_REPEAT');
+                    if (!msgOut.trim()) {
+                        client.log('Trying to send empty message, broke checking for a repeat: ' + message.content);
+                    }
+                    return message.channel.send(msgOut);
                 }
 
                 // If the repeat is set, try to parse it
@@ -104,7 +109,11 @@ class Event extends Command {
                         repeatTime = repeatTime.replace(/^\d{1,2}h/, '');
                         repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf('m')));
                     } else {
-                        return message.channel.send(message.language.get('COMMAND_EVENT_INVALID_REPEAT')).then(msg => msg.delete(10000));
+                        msgOut = message.language.get('COMMAND_EVENT_INVALID_REPEAT');
+                        if (!msgOut.trim()) {
+                            client.log('Trying to send empty message, INVREP: ' + message.content);
+                        }
+                        return message.channel.send(msgOut);
                     }
                 } else if (repeatTime === '') {
                     repeatTime = '0';
@@ -115,7 +124,11 @@ class Event extends Command {
                     if (repeatDays.match(dayReg)) {
                         dayList = repeatDays.split(',');
                     } else {
-                        return message.channel.send(message.language.get('COMMAND_EVENT_USE_COMMAS'));
+                        msgOut = message.language.get('COMMAND_EVENT_USE_COMMAS');
+                        if (!msgOut.trim()) {
+                            client.log('Trying to send empty message, broke in repeatDay: ' + message.content);
+                        }
+                        return message.channel.send(msgOut);
                     }
                 }
 
@@ -127,12 +140,24 @@ class Event extends Command {
                 if (eventChan !== '') {
                     const checkChan = message.guild.channels.find('name', eventChan);
                     if (!checkChan) {   // Make sure it's a real channel
-                        return message.channel.send(message.language.get('COMMAND_EVENT_INVALID_CHAN')).then(msg => msg.delete(10000));
+                        msgOut = message.language.get('COMMAND_EVENT_INVALID_CHAN');
+                        if (!msgOut.trim()) {
+                            client.log('Trying to send empty message, BADCHAN: ' + message.content);
+                        }
+                        return message.channel.send(msgOut);
                     } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {   // Make sure it can send messages there
-                        return message.channel.send(message.language.get('COMMAND_EVENT_CHANNEL_NO_PERM', checkChan)).then(msg => msg.delete(10000));
+                        msgOut = message.language.get('COMMAND_EVENT_CHANNEL_NO_PERM', checkChan);
+                        if (!msgOut.trim()) {
+                            client.log('Trying to send empty message, NOPERM: ' + message.content);
+                        }
+                        return message.channel.send(msgOut);
                     }
                 } else if (!announceChannel) {
-                    return message.channel.send(message.language.get('COMMAND_EVENT_NEED_CHAN')).then(msg => msg.delete(10000)).catch(console.error);
+                    msgOut = message.language.get('COMMAND_EVENT_NEED_CHAN');
+                    if (!msgOut.trim()) {
+                        client.log('Trying to send empty message, NEEDCHAN: ' + message.content);
+                    }
+                    return message.channel.send(msgOut);
                 }
 
                 if (!args[1]) return message.channel.send(message.language.get('COMMAND_EVENT_NEED_NAME')).then(msg => msg.delete(10000)).catch(console.error);
@@ -143,17 +168,29 @@ class Event extends Command {
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
                 if (exists) {
-                    return message.channel.send(message.language.get('COMMAND_EVENT_EVENT_EXISTS')).then(msg => msg.delete(10000)).catch(console.error);
+                    msgOut = message.language.get('COMMAND_EVENT_EVENT_EXISTS');
+                    if (!msgOut.trim()) {
+                        client.log('Trying to send empty message, EXISTS: ' + message.content);
+                    }
+                    return message.channel.send(msgOut);
                 }
 
                 if (!args[2]) return message.channel.send(message.language.get('COMMAND_EVENT_NEED_DATE')).then(msg => msg.delete(10000)).catch(console.error);
                 if (!momentTZ(args[2], 'D/M/YYYY').isValid()) { 
-                    return message.channel.send(message.language.get('COMMAND_EVENT_BAD_DATE', args[2])).then(msg => msg.delete(10000)).catch(console.error);
+                    msgOut = message.language.get('COMMAND_EVENT_BAD_DATE', args[2]);
+                    if (!msgOut.trim()) {
+                        client.log('Trying to send empty message, BADDATE: ' + message.content);
+                    }
+                    return message.channel.send(msgOut);
                 }
 
                 if (!args[3]) return message.channel.send(message.language.get('COMMAND_EVENT_NEED_TIME')).then(msg => msg.delete(10000)).catch(console.error);
                 if (!momentTZ(args[3], 'H:mm').isValid()) {
-                    return message.channel.send(message.language.get('COMMAND_EVEMT_INVALID_TIME')).then(msg => msg.delete(10000)).catch(console.error);
+                    msgOut = message.language.get('COMMAND_EVEMT_INVALID_TIME');
+                    if (!msgOut.trim()) {
+                        client.log('Trying to send empty message, INVTIME: ' + message.content);
+                    }
+                    return message.channel.send(msgOut);
                 }
 
                 const eventDT = momentTZ.tz(`${args[2]} ${args[3]}`, 'DD/MM/YYYY H:mm', guildConf.timezone).unix() * 1000;
@@ -166,13 +203,22 @@ class Event extends Command {
                 
                 if ((eventMessage.length + eventName.length) > maxSize) {
                     const currentSize = eventMessage.length + eventName.length;
-                    return message.channel.send(message.language.get('COMMAND_EVENT_TOO_BIG', currentSize-maxSize));
+                    msgOut = message.language.get('COMMAND_EVENT_TOO_BIG', currentSize-maxSize);
+                    if (!msgOut.trim()) {
+                        client.log('Trying to send empty message, TOOBIG: ' + message.content);
+                    }
+                    return message.channel.send(msgOut);
                 }
 
                 if (momentTZ(eventDT).isBefore(momentTZ())) {
                     var eventDATE = momentTZ.tz(eventDT, guildConf.timezone).format('D/M/YYYY H:mm');
                     var nowDATE = momentTZ().tz(guildConf['timezone']).format('D/M/YYYY H:mm');
-                    return message.channel.send(message.language.get('COMMAND_EVENT_PAST_DATE', eventDATE, nowDATE)).then(msg => msg.delete(10000)).catch(console.error);
+                    
+                    msgOut = message.language.get('COMMAND_EVENT_PAST_DATE', eventDATE, nowDATE);
+                    if (!msgOut.trim()) {
+                        client.log('Trying to send empty message, PASTTIME: ' + message.content);
+                    }
+                    return message.channel.send(msgOut);
                 }
                 const newEvent = {
                     eventID: `${message.guild.id}-${eventName}`,
@@ -190,10 +236,14 @@ class Event extends Command {
                 client.scheduleEvent(newEvent);
                 await client.guildEvents.create(newEvent)
                     .then(() => {
-                        return message.channel.send(message.language.get('COMMAND_EVENT_CREATED', eventName, momentTZ.tz(eventDT, guildConf.timezone).format('MMM Do YYYY [at] H:mm')));  
+                        msgOut = message.language.get('COMMAND_EVENT_CREATED', eventName, momentTZ.tz(eventDT, guildConf.timezone).format('MMM Do YYYY [at] H:mm'));  
+                        if (!msgOut.trim()) {
+                            client.log('Trying to send empty message, CREATED: ' + message.content);
+                        }
+                        message.channel.send(msgOut);
                     })
                     .catch(error => { 
-                        client.log('ERROR',`Broke trying to create new event ${error}`); 
+                        client.log('ERROR',`Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`); 
                         return message.channel.send(message.language.get('COMMAND_EVENT_NO_CREATE'));  
                     });
                 break;

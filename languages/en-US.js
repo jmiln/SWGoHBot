@@ -906,6 +906,19 @@ module.exports = class extends Language {
                 ]
             },
 
+            // UpdateClient Command
+            COMMAND_UPDATECLIENT_HELP: {
+                description: "Update the client for the SWGoHAPI.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';updateclient',
+                        args: {}
+                    }
+                ]
+            },
+
             // Zetas Command
             COMMAND_ZETA_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
             COMMAND_ZETA_NO_ZETAS: 'You don\'t seem to have any abilities zetad.',
