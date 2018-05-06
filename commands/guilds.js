@@ -41,7 +41,7 @@ class Guilds extends Command {
                     description: desc,
                     fields: [
                         {
-                            name: 'For more info on a specific guilds:',
+                            name: message.language.get('COMMAND_GUILDS_MORE_INFO'),
                             value: '```;guilds <mention|allyCode|guildName>```'
                         }
                     ]

@@ -499,7 +499,7 @@ module.exports = (client) => {
         await client.guildEvents.destroy({where: {eventID: eventID}})
             .then(() => {
                 const eventToDel = client.schedule.scheduledJobs[eventID];
-                if (!eventToDel) console.log('Trying to delete: ' + event);
+                if (!eventToDel) console.log('Broke trying to delete: ' + event);
                 eventToDel.cancel();
             })
             .catch(error => { 

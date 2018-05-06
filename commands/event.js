@@ -74,7 +74,6 @@ class Event extends Command {
 
         if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(message.language.get('COMMAND_EVENT_INVALID_ACTION', actions.join(', '))).then(msg => msg.delete(10000)).catch(console.error);
         action = args.splice(0, 1);
-        console.log(action);
         action = action[0].toLowerCase();
 
         if (action === "create" || action === "delete" || action === "trigger") {
@@ -204,7 +203,6 @@ class Event extends Command {
                 if (!args[0]) {
                     eventMessage = "";
                 } else {
-                    console.log(args);
                     eventMessage = args.join(' ');
                 }
                 
@@ -411,34 +409,6 @@ class Event extends Command {
                 return message.channel.send(client.helpOut(message.language, this));
             }
         }
-
-        // Remove all special args from the message
-        // function cleanMessage(message, specialArgs) {
-        //     let eventMessage = '';
-        //     let remNext = false;
-        //     const newArgs = message.content.split(' ');
-        //     const newMsg = [];
-        //
-        //     for (var ix = 0; ix < newArgs.length; ix++) {
-        //         if (specialArgs.indexOf(newArgs[ix]) > -1) {
-        //             remNext = true;
-        //             if (newArgs[ix].indexOf('\n') > -1) {
-        //                 newMsg.push('\n');
-        //             }
-        //         } else if (remNext) {
-        //             remNext = false;
-        //             if (newArgs[ix].indexOf('\n') > -1) {
-        //                 newMsg.push('\n');
-        //             }
-        //         } else {
-        //             newMsg.push(newArgs[ix]);
-        //         }
-        //     }
-        //     eventMessage = newMsg.splice(5).join(" ");          // Remove all the beginning args so this is just the message
-        //     eventMessage = eventMessage.replace(/^\s|)}>#, '');    // Remove the annoying space at the begining
-        //     eventMessage = eventMessage.replace(/\s*$/, '');    // And at the end
-        //     return eventMessage;
-        // }            
 
         function removeTags(message, mess) {
             const userReg = /<@!?(1|\d{17,19})>/g;

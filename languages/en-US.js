@@ -355,6 +355,7 @@ module.exports = class extends Language {
             },
 
             // Guilds Command
+            COMMAND_GUILDS_MORE_INFO: 'For more info on a specific guild:',
             COMMAND_GUILDS_HELP: {
                 description: "Shows the top guilds and everyone that's registered in yours.",
                 actions: [
