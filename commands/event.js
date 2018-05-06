@@ -262,7 +262,9 @@ class Event extends Command {
                     }
                     const thisEvent = guildEvents.dataValues; 
                     if (thisEvent) {
-                        const eventName = thisEvent.eventID.split('-')[1];
+                        let eventName = thisEvent.eventID.split('-');
+                        eventName.splice(0, 1);
+                        eventName = eventName.join('-');
                         const eventDate = momentTZ(parseInt(thisEvent.eventDT)).tz(guildConf.timezone).format('MMM Do YYYY [at] H:mm');
                         
                         let eventString = message.language.get('COMMAND_EVENT_TIME', eventName, eventDate);
@@ -310,7 +312,9 @@ class Event extends Command {
                         }
                     }
                     sortedEvents.forEach(event => {
-                        const eventName = event.eventID.split('-')[1];
+                        let eventName = event.eventID.split('-');
+                        eventName.splice(0, 1);
+                        eventName = eventName.join('-');
                         const eventDate = momentTZ(parseInt(event.eventDT)).tz(guildConf.timezone).format('MMM Do YYYY [at] H:mm');
                         
                         let eventString = message.language.get('COMMAND_EVENT_TIME', eventName, eventDate);
@@ -364,6 +368,7 @@ class Event extends Command {
                 if (!args[0]) return message.channel.send(message.language.get('COMMAND_EVENT_DELETE_NEED_NAME')).then(msg => msg.delete(10000)).catch(console.error);
                 eventName = args[0];
                 const eventID = `${message.guild.id}-${eventName}`;
+               
                 // Check if that name/ event exists
                 const exists = await client.guildEvents.findOne({where: {eventID: eventID}})
                     .then(token => token !== null)
