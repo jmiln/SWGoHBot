@@ -11,7 +11,7 @@ class GuildSearch extends Command {
         });
     }
 
-    async run(client, message, [userID, ...searchChar], level) { // eslint-disable-line no-unused-vars
+    async run(client, message, [userID, ...searchChar]) { // eslint-disable-line no-unused-vars
         const charRarity = {
             "ONE_STAR":   1,
             "TWO_STAR":   2,

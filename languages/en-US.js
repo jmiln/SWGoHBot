@@ -865,6 +865,19 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Test command (in .gitignore)
+            COMMAND_TEST_HELP: {
+                description: "A command to test things out.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';test',
+                        args: {}
+                    }
+                ]
+            },
+
             // Time Command
             COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time} in ${zone} time`,
             COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time ${time} in ${zone} time`,

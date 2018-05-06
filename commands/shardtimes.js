@@ -37,7 +37,8 @@ class Shardtimes extends Command {
         });
     }
 
-    async run(client, message, args, level) {
+    async run(client, message, args, options) {
+        const level = options.level;
         // DB ID will be guild.id-channel.id
         const shardID = `${message.guild.id}-${message.channel.id}`;
 

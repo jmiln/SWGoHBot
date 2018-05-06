@@ -9,7 +9,8 @@ class Register extends Command {
         });
     }
 
-    async run(client, message, [action, userID, allyCode, ...args], level) { // eslint-disable-line no-unused-vars
+    async run(client, message, [action, userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
+        const level = options.level;
         const acts = ['add', 'update', 'remove'];
         if (!action|| !acts.includes(action.toLowerCase())) {
             return message.channel.send('You need to choose either `add`, `remove`, or `update`.');
