@@ -66,8 +66,9 @@ class Zetas extends Command {
                 let count = 0;
                 results.forEach(row => {
                     name = row.Name;
+                    row.Character = row.Character.replace(/"/g, '');
                     count += 1;
-                    row.aName = `\`[${row.ID.toUpperCase()[0]}]\` ${row.aName}`;
+                    row.aName = `\`[${row.ID.toUpperCase()[0]}]\` ${row.aName.replace(/"/g, '')}`;
                     if (zetas.hasOwnProperty(row.Character)) {
                         zetas[row.Character].push(row.aName);
                     } else {

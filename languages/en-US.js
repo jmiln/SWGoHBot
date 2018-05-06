@@ -628,6 +628,8 @@ module.exports = class extends Language {
             COMMAND_REGISTER_PLEASE_WAIT: 'Please wait while I sync your data.',
             COMMAND_REGISTER_FAILURE: 'Registration failed, please make sure your ally code is correct.',
             COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
+            COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
+            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [
