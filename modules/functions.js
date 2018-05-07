@@ -524,7 +524,7 @@ module.exports = (client) => {
     // To stick into node-schedule for each countdown event
     client.countdownAnnounce = async (event) => {
         let eventName = event.eventID.split('-');
-        const guildID = eventName.splice(0, 1);
+        const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join('-');
     
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
@@ -546,7 +546,7 @@ module.exports = (client) => {
     client.eventAnnounce = async (event) => {
         // Parse out the eventName and guildName from the ID
         let eventName = event.eventID.split('-');
-        const guildID = eventName.splice(0, 1);
+        const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join('-');
     
         const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
