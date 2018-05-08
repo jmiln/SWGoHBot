@@ -7,7 +7,6 @@ class CommandReport extends Command {
         super(client, {
             name: 'commandreport',
             category: "Dev",
-            hidden: true,
             enabled: true, 
             aliases: ['comreport', 'cr'],
             permissions: ['EMBED_LINKS'],   
