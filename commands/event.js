@@ -21,7 +21,7 @@ class Event extends Command {
             },
             subArgs: {
                 'channel': {
-                    aliases: ['ch', 'chan', 'channel', 'channel']       
+                    aliases: ['c', 'ch', 'chan', 'channel', 'channel']       
                 },
                 'repeatDay': {
                     aliases: ['repeatday', 'repday', 'rd']
