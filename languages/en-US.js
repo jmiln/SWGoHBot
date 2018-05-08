@@ -258,6 +258,19 @@ module.exports = class extends Language {
                 ]
             }),
 
+            // Command Report Command
+            COMMAND_COMMANDREPORT_HELP: ({
+                description: "Shows a list of all the commands that have been run in the last 10 days.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';commandreport',
+                        args: {}
+                    }
+                ]
+            }),
+
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
             COMMAND_EVENT_INVALID_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`,
