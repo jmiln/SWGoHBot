@@ -5,6 +5,7 @@ const mysql = require('mysql');
 const {promisify, inspect} = require('util');      // eslint-disable-line no-unused-vars
 const moment = require('moment');       // eslint-disable-line no-unused-vars
 const { Op } = require('sequelize');    // eslint-disable-line no-unused-vars
+const fs = require('fs');    // eslint-disable-line no-unused-vars
 const readdir = promisify(require("fs").readdir);       // eslint-disable-line no-unused-vars
 
 module.exports = (client) => {
@@ -272,6 +273,17 @@ module.exports = (client) => {
         return [coms, errArr];
     };
 
+    // Reload the data files (ships, teams, characters)
+    client.reloadDataFiles = async () => {
+        try {
+            client.characters = await JSON.parse(fs.readFileSync("data/characters.json"));
+            client.ships = await JSON.parse(fs.readFileSync("data/ships.json"));
+            client.teams = await JSON.parse(fs.readFileSync("data/teams.json"));
+            return false;
+        } catch (e) {
+            return e;
+        }
+    };
 
 
     /*
@@ -674,20 +686,20 @@ module.exports = (client) => {
                 "repeatDays": []
             };
         }  
-        await client.guildEvents.destroy({where: {eventID: event.eventID}})
-            .then(async () => {
-                // If it's supposed to repeat, go ahead and put it back in    
-                if (repTime || repDay) {
-                    await client.guildEvents.create(newEvent)
-                        .then(() => {
-                            client.scheduleEvent(newEvent);
-                        })
-                        .catch(error => { 
-                            client.log('ERROR',`Broke trying to replace old event ${error}`); 
-                        });
-                }
-            })
-            .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
+        
+        if (repTime || repDay) {
+            await client.guildEvents.update(newEvent, {where: {eventID: event.eventID}})
+                .then(async () => {
+                    console.log('Resetting event: ' + inspect(event));
+                    client.scheduleEvent(newEvent);
+                })
+                .catch(error => { client.log('ERROR', "Broke trying to replace event: " + error); });
+        } else {
+            // Just destroy it
+            await client.guildEvents.destroy({where: {eventID: event.eventID}})
+                .then(async () => {})
+                .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
+        }
     };
 };
 
