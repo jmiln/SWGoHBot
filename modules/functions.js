@@ -537,7 +537,7 @@ module.exports = (client) => {
         });
     
         if (event.countdown === 'true' || event.countdown === 'yes' || event.countdown === true) {
-            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5, 4, 3, 2, 1 ];
+            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5 ];
             const nowTime = momentTZ().unix();
             timesToCountdown.forEach(time => {
                 const cdTime = time * 60;
@@ -567,7 +567,7 @@ module.exports = (client) => {
             });
 
         if (event.countdown === 'true' || event.countdown === 'yes') {
-            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
+            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5 ];
             const nowTime = momentTZ().unix();
             timesToCountdown.forEach(time => {
                 const cdTime = time * 60;
