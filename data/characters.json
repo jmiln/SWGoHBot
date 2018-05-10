@@ -32699,7 +32699,22 @@
             "Scoundrel",
             "Tank"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Protection",
+                "circle": "Health",
+                "cross": "Offense/ Protection",
+                "source": "GoC Supremacy"
+            }
+        },
         "legacyMods": {},
         "gear": {
             "Gear 1": [
