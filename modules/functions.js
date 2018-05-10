@@ -1,9 +1,11 @@
 const momentTZ = require('moment-timezone');
-const util = require('util');
 const Fuse = require("fuse-js-latest");
 require('moment-duration-format');
 const mysql = require('mysql');
-// const {inspect} = require('util');
+const {promisify, inspect} = require('util');      // eslint-disable-line no-unused-vars
+const moment = require('moment');       // eslint-disable-line no-unused-vars
+const { Op } = require('sequelize');    // eslint-disable-line no-unused-vars
+const readdir = promisify(require("fs").readdir);       // eslint-disable-line no-unused-vars
 
 module.exports = (client) => {
     // The scheduler for events
@@ -118,10 +120,10 @@ module.exports = (client) => {
                 } else if (client.shard && client.shard.count > 0) {
                     // If it's on a different shard, then send it there 
                     client.shard.broadcastEval(`
-                        const thisChan = ${util.inspect(chan)};
+                        const thisChan = ${inspect(chan)};
                         const msg = "${mess}";
                         if (this.channels.has(thisChan)) {
-                            this.sendMsg(thisChan, msg, ${util.inspect(args)});
+                            this.sendMsg(thisChan, msg, ${inspect(args)});
                         }
                     `);
                 }
@@ -191,28 +193,86 @@ module.exports = (client) => {
     };
 
     /*
-     * RELOAD COMMAND
-     * Reloads the given command
+     * Loads the given command
      */
-    client.reload = (command) => {
-        return new Promise((resolve, reject) => {
+    client.loadCommand = (commandName) => {
+        try {
+            const cmd = new (require(`../commands/${commandName}`))(client);
+            client.commands.set(cmd.help.name, cmd);
+            cmd.conf.aliases.forEach(alias => {
+                client.aliases.set(alias, cmd.help.name);
+            });
+            return false;
+        } catch (e) {
+            return `Unable to load command ${commandName}: ${e}`;
+        }
+    };
+
+    /*
+     * Unloads the given command
+     */
+    client.unloadCommand = async (command) => {
+        client.commands.delete(command);
+        client.aliases.forEach((cmd, alias) => {
+            if (cmd === command) client.aliases.delete(alias);
+        });
+        delete require.cache[require.resolve(`../commands/${command.help.name}.js`)];
+        return false;
+    };
+
+    /*
+     * Combines the last two, and reloads a command
+     */
+    client.reloadCommand = async (commandName) => {
+        let command;
+        if (client.commands.has(commandName)) {
+            command = client.commands.get(commandName);
+        } else if (client.aliases.has(commandName)) {
+            command = client.commands.get(client.aliases.get(commandName));
+        }
+        if (!command) throw new Error(`The command \`${commandName}\` doesn"t seem to exist, nor is it an alias. Try again!`);
+
+        let response = await client.unloadCommand(command);
+        if (response) {
+            throw new Error(`Error Unloading: ${response}`);
+        } else {
+            response = client.loadCommand(command.help.name);
+            if (response) {
+                throw new Error(`Error Loading: ${response}`);
+            }
+        }
+        return command.help.name;
+    };
+
+    // Reloads all commads (event if they were not loaded before)
+    // Will not remove a command it it's been loaded, 
+    // but will load a new command it it's been added
+    client.reloadAllCommands = async () => {
+        client.commands.keyArray().forEach(c => {
+            client.unloadCommand(c);
+        });
+        const cmdFiles = await readdir('./commands/');
+        const coms = [], errArr = [];
+        cmdFiles.forEach(f => {
             try {
-                delete require.cache[require.resolve(`../commands/${command}.js`)];
-                const cmd = new (require(`../commands/${command}.js`))(client);
-                client.commands.delete(command);
-                client.aliases.forEach((cmd, alias) => {
-                    if (cmd === command) client.aliases.delete(alias);
-                });
-                client.commands.set(command, cmd);
-                cmd.conf.aliases.forEach(alias => {
-                    client.aliases.set(alias, cmd.help.name);
-                });
-                resolve();
+                const cmd = new(require(`../commands/${f}`))(client);
+                if (f.split(".").slice(-1)[0] !== "js") {
+                    errArr.push(f);
+                } else if (cmd.help.category === "SWGoH" && !client.swgohAPI) {
+                    errArr.push(f);
+                } else {
+                    client.loadCommand(cmd.help.name);
+                    coms.push(cmd.help.name);
+                }
             } catch (e) {
-                reject(e);
+                console.log('Error: ' + e);
+                errArr.push(f);
             }
         });
+        return [coms, errArr];
     };
+
+
 
     /*
       SINGLE-LINE AWAITMESSAGE
@@ -244,7 +304,7 @@ module.exports = (client) => {
         if (text && text.constructor.name == "Promise")
             text = await text;
         if (typeof evaled !== "string")
-            text = require("util").inspect(text, {
+            text = inspect(text, {
                 depth: 0
             });
 
@@ -265,7 +325,7 @@ module.exports = (client) => {
     };
 
     // `await wait(1000);` to "pause" for 1 second.
-    global.wait = require("util").promisify(setTimeout);
+    global.wait = promisify(setTimeout);
 
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
@@ -275,7 +335,7 @@ module.exports = (client) => {
         // If it's that error, don't bother showing it again
         try {
             if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear') && client.config.logs.logToChannel) {
-                client.channels.get(client.config.log(`\`\`\`util.inspect(errorMsg)\`\`\``,{split: true}));
+                client.channels.get(client.config.log(`\`\`\`inspect(errorMsg)\`\`\``,{split: true}));
             }
         } catch (e) {
             // Don't bother doing anything
@@ -290,7 +350,7 @@ module.exports = (client) => {
         console.error(`[${client.myTime()}] Uncaught Promise Error: `, errorMsg);
         try {
             if (client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send(`\`\`\`${util.inspect(errorMsg)}\`\`\``,{split: true});
+                client.channels.get(client.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
             }
         } catch (e) {
             // Don't bother doing anything
@@ -476,8 +536,8 @@ module.exports = (client) => {
             client.eventAnnounce(event);
         });
     
-        if (event.countdown === 'true' || event.countdown === 'yes') {
-            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10 ];
+        if (event.countdown === 'true' || event.countdown === 'yes' || event.countdown === true) {
+            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5, 4, 3, 2, 1 ];
             const nowTime = momentTZ().unix();
             timesToCountdown.forEach(time => {
                 const cdTime = time * 60;

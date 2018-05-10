@@ -93,10 +93,7 @@ const init = async () => {
             const props = new(require(`./commands/${f}`))(client);
             if (f.split(".").slice(-1)[0] !== "js") return;
             if (props.help.category === "SWGoH" && !client.swgohAPI) return;
-            client.commands.set(props.help.name, props);
-            props.conf.aliases.forEach(alias => {
-                client.aliases.set(alias, props.help.name);
-            });
+            client.loadCommand(props.help.name);
         } catch (e) {
             client.log('Init', `Unable to load command ${f}: ${e}`);
         }
@@ -104,7 +101,6 @@ const init = async () => {
 
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
-    // client.log("Init", `Loading a total of ${evtFiles.length} events.`);
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
