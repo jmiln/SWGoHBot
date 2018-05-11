@@ -690,7 +690,6 @@ module.exports = (client) => {
         if (repTime || repDay) {
             await client.guildEvents.update(newEvent, {where: {eventID: event.eventID}})
                 .then(async () => {
-                    console.log('Resetting event: ' + inspect(event));
                     client.scheduleEvent(newEvent);
                 })
                 .catch(error => { client.log('ERROR', "Broke trying to replace event: " + error); });
