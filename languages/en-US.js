@@ -695,6 +695,21 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Reload Data Command
+            COMMAND_RELOADDATA_HELP: {
+                description: "Reloads the selected file(s).",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';reloaddata <option>',
+                        args: {
+                            "option": "What you're wanting to reload ( commands | data | events | function )."
+                        }
+                    }
+                ]
+            },
+
             // Setconf Command
             COMMAND_SETCONF_MISSING_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.`,
             COMMAND_SETCONF_MISSING_OPTION: `You must select a config option to change.`,

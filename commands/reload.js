@@ -1,4 +1,5 @@
 const Command = require('../base/Command');
+// const {inspect} = require('util');
 
 class Reload extends Command {
     constructor(client) {
@@ -18,18 +19,18 @@ class Reload extends Command {
                 .then(async m => {
                     if (client.shard && client.shard.count > 0) {
                         await client.shard.broadcastEval(`
-                            this.reloadCommand('${command}');
-                        `)
-                            .then((name) => {
-                                m.edit(message.language.get('COMMAND_RELOAD_SUCCESS', name));
+                                this.reloadCommand('${command}');
+                            `)
+                            .then(() => {
+                                m.edit(message.language.get('COMMAND_RELOAD_SUCCESS', command));
                             })
                             .catch(e => {
                                 m.edit(message.language.get('COMMAND_RELOAD_FAILURE',command, e.stack));
                             });
                     } else {
                         client.reloadCommand(command)
-                            .then((name) => {
-                                m.edit(message.language.get('COMMAND_RELOAD_SUCCESS', name));
+                            .then(() => {
+                                m.edit(message.language.get('COMMAND_RELOAD_SUCCESS', command));
                             })
                             .catch(e => {
                                 m.edit(message.language.get('COMMAND_RELOAD_FAILURE', command, e.stack));
