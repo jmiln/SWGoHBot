@@ -7,7 +7,7 @@ class Zetas extends Command {
             name: 'zetas',
             guildOnly: true,
             category: "SWGoH",
-            aliases: ['zeta'],
+            aliases: ['zeta', 'z'],
             permissions: ['EMBED_LINKS']
         });
     }
@@ -105,6 +105,8 @@ class Zetas extends Command {
                     description: desc, 
                     fields: fields
                 }});
+            } else {
+                msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
             }
         });
 

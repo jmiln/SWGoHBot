@@ -84,7 +84,8 @@ module.exports = class extends Language {
             BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
             BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
-            BASE_SWGPH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_NO_ACCT: `Something went wrong, please make sure your account is synced correctly.`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
