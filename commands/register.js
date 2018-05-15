@@ -11,11 +11,11 @@ class Register extends Command {
 
     async run(client, message, [action, userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
         const level = options.level;
-        action = action.toLowerCase();
         const acts = ['add', 'update', 'remove'];
-        if (!action || !acts.includes(action)) {
+        if (!action || !acts.includes(action.toLowerCase())) {
             return message.channel.send('You need to choose either `add`, `remove`, or `update`.');
         }
+        action = action.toLowerCase();
         if (!userID) {
             return message.channel.send(message.language.get('COMMAND_REGISTER_MISSING_ARGS'));
         } else {
