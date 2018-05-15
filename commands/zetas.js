@@ -7,7 +7,7 @@ class Zetas extends Command {
             name: 'zetas',
             guildOnly: true,
             category: "SWGoH",
-            aliases: ['zeta'],
+            aliases: ['zeta', 'z'],
             permissions: ['EMBED_LINKS']
         });
     }
@@ -59,7 +59,9 @@ class Zetas extends Command {
             password : client.config.mySqlDB.password,
             database : client.config.mySqlDB.database
         });
-        connection.query(zetaSql, function(err, results) {
+        connection.query(zetaSql, async function(err, results) {
+            connection.end();
+            const msg = await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT'));
             const zetas = {};
             let name;
             if (results) {
@@ -97,16 +99,17 @@ class Zetas extends Command {
                 } else {
                     desc = message.language.get('COMMAND_ZETA_OUT_DESC');
                 }
-                message.channel.send({embed: {
+                msg.edit({embed: {
                     color: 0x000000,
                     author: author,
                     description: desc, 
                     fields: fields
                 }});
+            } else {
+                msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
             }
         });
 
-        connection.end();
     }
 }
 
