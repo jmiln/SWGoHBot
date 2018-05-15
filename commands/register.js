@@ -11,8 +11,9 @@ class Register extends Command {
 
     async run(client, message, [action, userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
         const level = options.level;
+        action = action.toLowerCase();
         const acts = ['add', 'update', 'remove'];
-        if (!action|| !acts.includes(action.toLowerCase())) {
+        if (!action || !acts.includes(action)) {
             return message.channel.send('You need to choose either `add`, `remove`, or `update`.');
         }
         if (!userID) {
@@ -23,8 +24,14 @@ class Register extends Command {
             } else if (client.isUserID(userID)) {
                 userID = userID.replace(/[^\d]*/g, '');
                 // If they are trying to add someone else and they don't have the right perms, stop em
-                if (userID !== message.author.id && level < 3) {
-                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
+                if (userID !== message.author.id) {
+                    if (level < 3) {
+                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
+                    } else if (!message.guild.members.has(userID) && action === 'add') {  // If they are trying to add someone that is not in their server
+                        return message.channel.send('You can only add users that are in your server.');
+                    } else if (!message.guild.members.has(userID) && action === 'remove' && level < 4) {   // If they are trying to remove someone else 
+                        return message.channel.send('You cannot remove other people');
+                    }
                 }
             } else {
                 // Bad name, grumblin time

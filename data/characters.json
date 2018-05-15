@@ -32909,5 +32909,385 @@
             "Protection": 40,
             "activation": 10
         }
+    },
+    {
+        "name": "Vandor Chewbacca",
+        "uniqueName": "YOUNGCHEWBACCA",
+        "aliases": [
+            "Vandor Chewbacca"
+        ],
+        "nameVariant": [
+            "Vandor Chewbacca"
+        ],
+        "url": "https://swgoh.gg/characters/vandor-chewbacca/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "side": "light",
+        "factions": [
+            "Scoundrel",
+            "Tank"
+        ],
+        "mods": {},
+        "legacyMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 2 BlasTech Weapon Mod",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 3 Loronar Power Cell",
+                "Mk 4 BlasTech Weapon Mod",
+                "Mk 3 SoroSuub Keypad",
+                "Mk 2 Chiewab Hypo Syringe",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 TaggeCo Holo Lens"
+            ],
+            "Gear 4": [
+                "Mk 2 Chiewab Hypo Syringe",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 6 BAW Armor Mod",
+                "Mk 4 Nubian Design Tech"
+            ],
+            "Gear 5": [
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 4 Nubian Design Tech",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 4 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 6": [
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 7 Loronar Power Cell",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 8 BlasTech Weapon Mod"
+            ],
+            "Gear 7": [
+                "Mk 5 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 6 Nubian Security Scanner",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 3 Athakam Medpac",
+                "Mk 3 Carbanti Sensor Array"
+            ],
+            "Gear 8": [
+                "Mk 3 Athakam Medpac",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 7 TaggeCo Holo Lens"
+            ],
+            "Gear 9": [
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Athakam Medpac",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 5 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 10": [
+                "Mk 4 A/KT Stun Gun",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 4 Carbanti Sensor Array",
+                "Mk 5 Carbanti Sensor Array"
+            ],
+            "Gear 11": [
+                "Mk 4 Sienar Holo Projector",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Chedak Comlink"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Visor",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Unchained": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy. If it's Chewbacca's turn, he also gains Advantage for 2 turns. This attack ignores Defense.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Freedom Fighter": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage, based on Chewbacca's Max Health instead of his Attack Damage, to target enemy twice. Target other ally recovers Health equal to 50% of the damage dealt. Then, Chewbacca and target other ally gain Protection Up (30%) for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "The Beast": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Chewbacca has 40% less Max Protection, but 80% more Max Health. In addition, all enemies deal -25% damage while Chewbacca is buffed.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Ferocious Protector": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "While Chewbacca is buffed, he has 100% Counter Chance. At the end of each turn while Chewbacca is buffed, if any ally took damage from an attack and Chewbacca did not, he recovers Protection equal to 10% of his Max Health and other Scoundrel allies recover half of that amount. When Chewbacca recovers to Max Protection this way, he becomes Prepared. When another light side Scoundrel ally is defeated, Revive that ally at 60% Health, if Chewbacca is Prepared. Then, Chewbacca is no longer Prepared.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1183,
+            "Agility": 729,
+            "Intelligence": 636,
+            "Speed": 131,
+            "Physical Damage": 3008,
+            "Physical Critical Rating": 497,
+            "Special Damage": 1887,
+            "Special Critical Rating": 70,
+            "Armor Penetration": 161,
+            "Resistance Penetration": 0,
+            "Potency": 31,
+            "Health": 26854,
+            "Armor": 336,
+            "Resistance": 183,
+            "Tenacity": 27,
+            "Health Steal": 10,
+            "Protection": 32,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Young Han Solo",
+        "uniqueName": "YOUNGHAN",
+        "aliases": [
+            "Young Han Solo"
+        ],
+        "nameVariant": [
+            "Young Han Solo"
+        ],
+        "url": "https://swgoh.gg/characters/young-han-solo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Scoundrel"
+        ],
+        "mods": {},
+        "legacyMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 BAW Armor Mod"
+            ],
+            "Gear 2": [
+                "Mk 1 Sienar Holo Projector",
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 3 Loronar Power Cell",
+                "Mk 2 BioTech Implant",
+                "Mk 2 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 5 BioTech Implant",
+                "Mk 2 Chedak Comlink",
+                "Mk 3 CEC Fusion Furnace",
+                "Mk 5 Fabritech Data Pad",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 4": [
+                "Mk 4 Nubian Security Scanner",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 2 Chedak Comlink",
+                "Mk 3 BioTech Implant"
+            ],
+            "Gear 5": [
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 4 Nubian Security Scanner",
+                "Mk 2 Athakam Medpac",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 5 BAW Armor Mod"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 7": [
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 8 TaggeCo Holo Lens"
+            ],
+            "Gear 8": [
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 7 Nubian Security Scanner"
+            ],
+            "Gear 9": [
+                "Mk 7 Nubian Security Scanner",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 Arakyd Droid Caller"
+            ],
+            "Gear 10": [
+                "Mk 4 Carbanti Sensor Array",
+                "Mk 5 Athakam Medpac",
+                "Mk 8 BioTech Implant",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 4 Zaltin Bacta Gel",
+                "Mk 5 Athakam Medpac",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 6 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Medpac",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Trick Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Speed Down for 2 turns. Han becomes Prepared if target was below 50% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Upper Hand": {
+                "type": "Special",
+                "abilityCooldown": "2",
+                "abilityDesc": "Han gains Protection Up (100%) and Retribution for 2 turns. Han also gains +50 Speed for rest of the encounter. This effect can stack up to +200 Speed.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Just In Time": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy. This attack deals 25% more damage for each other Prepared ally. Target other ally recovers Protection equal to 50% of damage dealt.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Ready For Anything": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "When Han starts his turn with Protection Up, he gains +10% Offense (stacking) and +10% Critical Chance (stacking) until the end of battle. While Prepared, Han has 70% chance to Assist another Scoundrel ally's attack during their turn, limited once per turn.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 840,
+            "Agility": 1180,
+            "Intelligence": 676,
+            "Speed": 125,
+            "Physical Damage": 2725,
+            "Physical Critical Rating": 754,
+            "Special Damage": 1792,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 177,
+            "Resistance Penetration": 0,
+            "Potency": 47,
+            "Health": 24720,
+            "Armor": 228,
+            "Resistance": 108,
+            "Tenacity": 34,
+            "Health Steal": 15,
+            "Protection": 29,
+            "activation": 25
+        }
     }
 ]

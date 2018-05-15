@@ -229,7 +229,7 @@
         "base_id": "SLAVE1",
         "url": "https://swgoh.gg/ships/slave-i/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_slave1.png",
-        "power": 49949,
+        "power": 51715,
         "description": "Deadly Bounty Hunter Attacker that inflicts and exploits Target Lock for high area-of-effect damage",
         "combat_type": 2
     },
