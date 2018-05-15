@@ -1394,7 +1394,7 @@
         "base_id": "YOUNGCHEWBACCA",
         "pk": 266,
         "url": "https://swgoh.gg/characters/vandor-chewbacca/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_chewbacca_vandor.png",
         "power": 19929,
         "description": "Aggressive Scoundrel Tank that provides Protection Recovery for his allies when they are attacked",
         "combat_type": 1
@@ -1464,7 +1464,7 @@
         "base_id": "YOUNGHAN",
         "pk": 267,
         "url": "https://swgoh.gg/characters/young-han-solo/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_han_young.png",
         "power": 19929,
         "description": "Scoundrel Attacker who becomes more deadly over time",
         "combat_type": 1

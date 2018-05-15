@@ -9,9 +9,6 @@ const fs = require('fs');    // eslint-disable-line no-unused-vars
 const readdir = promisify(require("fs").readdir);       // eslint-disable-line no-unused-vars
 
 module.exports = (client) => {
-    // Test stuffs
-    client.test = 'This is another different test message!';
-
     // The scheduler for events
     client.schedule = require("node-schedule");
     
@@ -247,7 +244,6 @@ module.exports = (client) => {
         } else if (client.aliases.has(commandName)) {
             command = client.commands.get(client.aliases.get(commandName));
         }
-        console.log('test');
         if (!command) return new Error(`The command \`${commandName}\` doesn"t seem to exist, nor is it an alias. Try again!`);
 
         let response = client.unloadCommand(command);

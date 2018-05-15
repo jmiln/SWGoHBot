@@ -106,9 +106,11 @@ class MyArena extends Command {
         author.name = message.language.get('COMMAND_MYARENA_EMBED_HEADER', playerName);
         if (!user || user === 'me' || client.isUserID(user)) {
             if (!user || user === 'me') user = message.author.id;
-            const auth = message.guild.members.get(user.replace(/[^\d]*/g, ''));
-            if (auth) {
-                author.icon_url = auth.user.avatarURL;
+            if (message.guild) {
+                const auth = message.guild.members.get(user.replace(/[^\d]*/g, ''));
+                if (auth) {
+                    author.icon_url = auth.user.avatarURL;
+                }
             }
         } 
         return message.channel.send({embed: {
