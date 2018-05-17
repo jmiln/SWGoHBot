@@ -14,10 +14,13 @@ class MyArena extends Command {
 
     async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
         let result, playerName;
-        const allyCode = await client.getAllyCode(message, user);
-        if (!allyCode) {
+        const allyCodes = await client.getAllyCode(message, user);
+        if (!allyCodes.length) {
             return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY'));
+        } else if (allyCodes.length > 1) {
+            return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific');
         }
+        const allyCode = allyCodes[0];
         try {
             result = await fetchPlayer(allyCode);
 

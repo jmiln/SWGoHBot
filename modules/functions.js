@@ -528,27 +528,35 @@ module.exports = (client) => {
 
     // Get the ally code of someone that's registered
     client.getAllyCode = async (message, user = 'me') => {
+        user = user.trim();
         let uID, uAC;
-        if (user === 'me') {
+        if (!user || user === 'me') {
             uID = message.author.id;
             try {
                 uAC = await client.allyCodes.findOne({where: {id: uID}});
-                return uAC.dataValues.allyCode;
+                return [uAC.dataValues.allyCode];
             } catch (e) {
-                return false;
+                return [];
             }
         } else if (client.isUserID(user)) {
             uID = user.replace(/[^\d]*/g, '');
             try {
                 uAC = await client.allyCodes.findOne({where: {id: uID}});
-                return uAC.dataValues.allyCode;
+                return [uAC.dataValues.allyCode];
             } catch (e) {
-                return false;
+                return [];
             }
         }  else if (client.isAllyCode(user)) {
-            return user.replace(/[^\d]*/g, '');
+            return [user.replace(/[^\d]*/g, '')];
         }  else {
-            return false;
+            const acArr = [];
+            const results = await client.sqlQuery("CALL getAllyFromName( ? );", [user]);
+            if (results && results[0] && results[0].length) {
+                results[0].forEach(r => {
+                    acArr.push(r.allyCode);
+                });
+            }
+            return acArr;
         }
     };
 

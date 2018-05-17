@@ -14,20 +14,26 @@ class Zetas extends Command {
 
     async run(client, message, [userID, ...args], level) { // eslint-disable-line no-unused-vars
         // Need to get the allycode from the db, then use that
+        let name;
         if (!userID || userID === "me") {
             userID = message.author.id;
         } else if (userID.match(/\d{17,18}/)) {
             userID = userID.replace(/[^\d]*/g, '');
+        } else {
+            name = userID + ' ' + args.join(' ');
         }
-
-        const ally = await client.allyCodes.findOne({where: {id: userID}});
-        if (!client.users.get(userID)) {
-            return message.channel.send(message.language.get('COMMAND_ZETA_NO_USER'));
+        const allyCodes = await client.getAllyCode(message, name ? name : userID);
+        console.log('Codes: ' + allyCodes);
+        let allyCode;
+        if (!allyCodes.length) {
+            // Tell em no match found
+            return message.channel.send("I didn't find any results for that user");
+        } else if (allyCodes.length > 1) {
+            // Tell em there's too many
+            return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific');
+        } else {
+            allyCode = allyCodes[0];
         }
-        if (!ally) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NOT_REG', client.users.get(userID).tag));
-        }       
-        const allyCode = ally.dataValues.allyCode;
 
         const lang = 'ENG_US';
         const zetaSql = `
@@ -91,7 +97,7 @@ class Zetas extends Command {
                 if (auth) {
                     author.icon_url = auth.user.avatarURL;
                 } else {
-                    author.name = `${client.users.get(userID).username}'s Zetas (${count})`;
+                    author.name = `${name ? name : client.users.get(userID).username}'s Zetas (${count})`;
                 }
                 let desc;
                 if (fields.length === 0) {
