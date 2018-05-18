@@ -23,7 +23,6 @@ class Zetas extends Command {
             name = userID + ' ' + args.join(' ');
         }
         const allyCodes = await client.getAllyCode(message, name ? name : userID);
-        console.log('Codes: ' + allyCodes);
         let allyCode;
         if (!allyCodes.length) {
             // Tell em no match found
