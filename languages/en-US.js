@@ -281,8 +281,10 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';currentevents',
-                        args: {}
+                        usage: ';currentevents [num]',
+                        args: {
+                            "num": "The max number of events you want to show"
+                        }
                     }
                 ]
             },
