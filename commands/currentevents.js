@@ -1,6 +1,5 @@
 const Command = require('../base/Command');
 const moment = require('moment');
-const {inspect} = require('util');
 
 // To get the dates of any upcoming events if any (Adapted from shittybill#3024's Scorpio) 
 class CurrentEvents extends Command {
@@ -34,7 +33,7 @@ class CurrentEvents extends Command {
         const fResult = result.filter(o => {
             if (o.type === 3 && o.nameKey.includes("HERO")) return false;
             if (!o.nameKey || !o.descKey) return false;
-            if (!moment().subtract(10, 'd').isBefore(moment(Math.max(...Array.from(o.instanceList, t => t.startTime))))) return false
+            if (!moment().subtract(10, 'd').isBefore(moment(Math.max(...Array.from(o.instanceList, t => t.startTime))))) return false;
             return true;
         });
 
@@ -43,7 +42,7 @@ class CurrentEvents extends Command {
             o.instanceList = o.instanceList.filter(p => {
                 if (!moment().isBefore(moment(p.endTime))) return false;
                 return true;
-            })
+            });
         });
 
         // Sort all the events so the closest ones show first
