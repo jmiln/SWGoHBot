@@ -272,6 +272,21 @@ module.exports = class extends Language {
                 ]
             }),
 
+            // Current Events Command
+            COMMAND_CURRENTEVENTS_HEADER: "SWGoH Events Schedule",
+            COMMAND_CURRENTEVENTS_DESC: (num) => `Next ${num} events.\nNote: *Dates are subject to change.*`,
+            COMMAND_CURRENTEVENTS_HELP: {
+                description: "Shows any upcoming events.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';currentevents',
+                        args: {}
+                    }
+                ]
+            },
+
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
             COMMAND_EVENT_INVALID_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`,
