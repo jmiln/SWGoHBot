@@ -12,35 +12,38 @@ class Register extends Command {
     async run(client, message, [action, userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
         const level = options.level;
         const acts = ['add', 'update', 'remove'];
+        let exists, name;
         if (!action || !acts.includes(action.toLowerCase())) {
             return message.channel.send('You need to choose either `add`, `remove`, or `update`.');
         }
         action = action.toLowerCase();
-        if (!userID) {
-            return message.channel.send(message.language.get('COMMAND_REGISTER_MISSING_ARGS'));
-        } else {
-            if (userID === 'me') {
-                userID = message.author.id;
-            } else if (client.isUserID(userID)) {
-                userID = userID.replace(/[^\d]*/g, '');
-                // If they are trying to add someone else and they don't have the right perms, stop em
-                if (userID !== message.author.id) {
-                    if (level < 3) {
-                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
-                    } else if (!message.guild.members.has(userID) && action === 'add') {  // If they are trying to add someone that is not in their server
-                        return message.channel.send('You can only add users that are in your server.');
-                    } else if (!message.guild.members.has(userID) && action === 'remove' && level < 4) {   // If they are trying to remove someone else 
-                        return message.channel.send('You cannot remove other people');
-                    }
-                }
+        if (action !== 'update') {
+            if (!userID) {
+                return message.channel.send(message.language.get('COMMAND_REGISTER_MISSING_ARGS'));
             } else {
-                // Bad name, grumblin time
-                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_USER'));
+                if (userID === 'me') {
+                    userID = message.author.id;
+                } else if (client.isUserID(userID)) {
+                    userID = userID.replace(/[^\d]*/g, '');
+                    // If they are trying to add someone else and they don't have the right perms, stop em
+                    if (userID !== message.author.id) {
+                        if (level < 3) {
+                            return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
+                        } else if (!message.guild.members.has(userID) && action === 'add') {  // If they are trying to add someone that is not in their server
+                            return message.channel.send('You can only add users that are in your server.');
+                        } else if (!message.guild.members.has(userID) && action === 'remove' && level < 4) {   // If they are trying to remove someone else 
+                            return message.channel.send('You cannot remove other people');
+                        }
+                    }
+                } else {
+                    // Bad name, grumblin time
+                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_USER'));
+                }
             }
+            exists = await client.allyCodes.findOne({where: {id: userID}})
+                .then(token => token != null)
+                .then(isUnique => isUnique);
         }
-        const exists = await client.allyCodes.findOne({where: {id: userID}})
-            .then(token => token != null)
-            .then(isUnique => isUnique);
 
         switch (action) {
             case 'add':
@@ -70,26 +73,42 @@ class Register extends Command {
                         });
                     });
                 } else {
-                    return message.channel.send('You are already registered! Please use `;register update`.');
+                    return message.channel.send('You are already registered! Please use `;register update <user>`.');
                 }
                 break;
-            case 'update':
-                if (!exists) {
-                    return message.channel.send('You have not registered yet.');
+            case 'update': {
+                if (!userID || userID === "me") {
+                    userID = message.author.id;
+                } else if (userID.match(/\d{17,18}/)) {
+                    userID = userID.replace(/[^\d]*/g, '');
                 } else {
-                    let ally = await client.allyCodes.findOne({where: {id: userID}});
-                    ally = ally.dataValues.allyCode;
-                    await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
-                        await client.swgohAPI.updatePlayer(ally).then(async (u) => {
-                            if (!u) {
-                                await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
-                            } else {
-                                await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_SUCCESS', u.name));
-                            }
-                        });
-                    });
+                    name = userID; 
+                    name += allyCode ? ' ' + allyCode : '';
+                    name += args.length ? ' ' + args.join(' ') : '';
                 }
+                const allyCodes = await client.getAllyCode(message, name ? name.trim() : userID);
+                let ac;
+                if (!allyCodes.length) {
+                    // Tell em no match found
+                    return message.channel.send("I didn't find any results for that user");
+                } else if (allyCodes.length > 1) {
+                    // Tell em there's too many
+                    return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific, or use their ally code, Discord userID, or mention them.');
+                } else {
+                    ac = allyCodes[0];
+                }
+
+                await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
+                    await client.swgohAPI.updatePlayer(ac).then(async (u) => {
+                        if (!u) {
+                            await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
+                        } else {
+                            await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_SUCCESS', u.name));
+                        }
+                    });
+                });
                 break;
+            }
             case 'remove':
                 if (!exists) {
                     message.channel.send('You were not linked to a SWGoH account.');
