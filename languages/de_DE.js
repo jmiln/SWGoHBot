@@ -513,12 +513,44 @@ module.exports = class extends Language {
             },
 
             // Register Command
-            COMMAND_REGISTER_MISSING_ARGS: 'Du musst eine userID (mention or ID) angeben, und einen ally code',
-            COMMAND_REGISTER_MISSING_ALLY: 'Du musst einen ally code angeben mit dem du dein Konto verknuepfen willst.',
-            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger ally code`,
+            COMMAND_REGISTER_MISSING_ARGS: 'Du musst eine userID (mention oder ID) angeben, und einen Buendniscode',
+            COMMAND_REGISTER_MISSING_ALLY: 'Du musst einen Buendniscode angeben mit dem du das Konto verknuepfen willst.',
+            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger Buendniscode`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Bitte warten waehrend ich die Daten synchronisiere.',
             COMMAND_REGISTER_FAILURE: 'Registrierung fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',    
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
+            COMMAND_REGISTER_UPDATE_FAILURE: 'Etwas ist fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',
+            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profil aktualisiert fuer \`${user}\`.`,
+            COMMAND_REGISTER_HELP: {
+                description: "Registriert einen Buendniscode zu einer Discord ID, und synchronisiert ein SWGoH Profil.",
+                actions: [
+                    {
+                        action: "Add",
+                        actionDesc: 'Verlinkt ein Discord Profil mit einem SWGoH account',
+                        usage: ';register add <user> <Buendniscode>',
+                        args: {
+                            "user": "Das Discordprofil das du verlinken moechtest. (me | userID | mention)",
+                            "allyCode": "Dein in-game Buendniscode."
+                        }
+                    },
+                    {
+                        action: "Update",
+                        actionDesc: 'Aktualisiert / synchronisiert die SWGoH Daten.',
+                        usage: ';register update <user>',
+                        args: {
+                            "user": "Das Discordprofil das du aktualisieren moechtest. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Remove",
+                        actionDesc: 'Trennt die Verbindung des Discordprofils mit dem SWGoH account',
+                        usage: ';register remove <user>',
+                        args: {
+                            "user": "Das Discordprofil dessen Verbindung du trennen moechtest. (me | userID | mention)"
+                        }
+                    }
+                ]
+            },   
 
             // Reload Command
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `Ich kann das Kommando nicht finden: ${cmd}`,
