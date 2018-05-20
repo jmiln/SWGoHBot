@@ -517,6 +517,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_MISSING_ALLY: 'Du musst einen ally code angeben mit dem du dein Konto verknuepfen willst.',
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger ally code`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Bitte warten waehrend ich die Daten synchronisiere.',
+            COMMAND_REGISTER_FAILURE: 'Registrierung fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',    
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
 
             // Reload Command
@@ -672,9 +673,9 @@ module.exports = class extends Language {
             COMMAND_SHIPS_TOO_MANY: `Es wurde mehr als ein Ergebnis gefunden. Bitte spezifizieren Sie Ihre Suche genauer.`,
             COMMAND_SHIPS_CREW: 'Crew',
             COMMAND_SHIPS_FACTIONS: 'Fraktionen',
-            COMMAND_SHIPS_ABILITIES: (abilities) => `**Faehigkeitstyp:** ${abilities.type}   **Faehigkeitsabklingzeit:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
+            COMMAND_SHIPS_ABILITIES: (abilities) => `**Faehigkeitstyp:** ${abilities.type}   **Abklingzeit:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
             COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * Faehigkeiten*\n`,
-            COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nFaehigkeitstyp: ${abilities.type}   Faehigkeitsabklingzeit: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
+            COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nFaehigkeitstyp: ${abilities.type}   Abklingzeit: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
             COMMAND_SHIPS_HELP: {
                 description: "Zeigt Infos zum ausgewaehlten Schiff.",
                 actions: [
