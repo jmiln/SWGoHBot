@@ -549,6 +549,7 @@ module.exports = (client) => {
         }  else if (client.isAllyCode(user)) {
             return [user.replace(/[^\d]*/g, '')];
         }  else {
+            user = user.toLowerCase();
             const acArr = [];
             const results = await client.sqlQuery("CALL getAllyFromName( ? );", [user]);
             if (results && results[0] && results[0].length) {
