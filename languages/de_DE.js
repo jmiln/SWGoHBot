@@ -71,6 +71,9 @@ module.exports = class extends Language {
         this.getDay = getDay;
         this.getTime = getTime;
         this.language = {
+            // Default in case it can't find one.
+            BASE_DEFAULT_MISSING: 'Es wird versucht eine nicht vorhandene Zeichenkette zu verwenden. Wenn du diese Info siehst, dann bitte melden damit es gefixt werden kann.',
+
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: `\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
