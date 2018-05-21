@@ -259,6 +259,36 @@ module.exports = class extends Language {
                 ]
             }),
 
+            // Command Report Command
+            COMMAND_COMMANDREPORT_HELP: ({
+                description: "Zeigt eine Liste aller Befehle an, die in den letzten 10 Tagen ausgefuehrt wurden.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';commandreport',
+                        args: {}
+                    }
+                ]
+            }),
+
+            // Current Events Command
+            COMMAND_CURRENTEVENTS_HEADER: "SWGoH Events Plan",
+            COMMAND_CURRENTEVENTS_DESC: (num) => `Die naechste ${num} Events.\nNotiz: *Die Termine koennen sich ggf. noch aendern.*`,
+            COMMAND_CURRENTEVENTS_HELP: {
+                description: "Zeigt die naechsten geplanten Events an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';currentevents [num]',
+                        args: {
+                            "num": "Die maximale Anzahl von Events die du anzeigen moechtest."
+                        }
+                    }
+                ]
+            },
+
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
             COMMAND_EVENT_INVALID_PERMS: `Entschuldigung, aber entweder du bist kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.`,
