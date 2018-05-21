@@ -85,6 +85,7 @@ module.exports = class extends Language {
             BASE_SWGOH_MISSING_CHAR: 'Du musst einen Charakter angeben',
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `Kein Ergebnis gefunden fuer ${character}`,
             BASE_SWGPH_CHAR_LIST: (chars) => `Deine Suche ergab zu viele Treffer, bitte sei spezifischer. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_NO_ACCT: `Etwas ist schief gegangen, bitte sicherstellen dass dein Account korrekt synchronisiert wurde.`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
