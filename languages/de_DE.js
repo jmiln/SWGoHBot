@@ -79,7 +79,12 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <allycode>\``,
+            BASE_SWGOH_NO_ALLY: `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add <user> <buendniscode>\``,
+            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <buendniscode>\``,
+            BASE_SWGOH_NO_USER: `Entschuldigung, aber ich habe diesen User nirgends gelistet.`,
+            BASE_SWGOH_MISSING_CHAR: 'Du musst einen Charakter angeben',
+            BASE_SWGOH_NO_CHAR_FOUND: (character) => `Kein Ergebnis gefunden fuer ${character}`,
+            BASE_SWGPH_CHAR_LIST: (chars) => `Deine Suche ergab zu viele Treffer, bitte sei spezifischer. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
