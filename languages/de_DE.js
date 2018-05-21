@@ -143,7 +143,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';arenarank <aktuellerRank>',
+                        usage: ';arenarank <aktuellerRang>',
                         args: {}
                     }
                 ]
