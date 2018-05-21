@@ -106,7 +106,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';abilities <Wochentag>',
+                        usage: ';abilities <Charaktername>',
                         args: {}
                     }
                 ]
@@ -127,7 +127,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';activities [Charaktername]',
+                        usage: ';activities [Wochentag]',
                         args: {}
                     }
                 ]
