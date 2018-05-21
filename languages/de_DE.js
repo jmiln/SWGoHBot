@@ -106,7 +106,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';abilities <Charaktername>',
+                        usage: ';abilities <Wochentag>',
                         args: {}
                     }
                 ]
