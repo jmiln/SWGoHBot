@@ -385,6 +385,22 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Guilds Command
+            COMMAND_GUILDS_MORE_INFO: 'Fuer mehr Info zu einer spezifischen Gilde:',
+            COMMAND_GUILDS_HELP: {
+                description: "Zeigt die Top Gilden und jeden der in deiner registriert ist an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';guild [user]',
+                        args: {
+                            "user": "Zur Identifizierung der Gilde. (mention | allyCode | guildName)"
+                        }
+                    }
+                ]
+            },
+
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: 'Du kannst nur ein Sternen-Level von 1-7 waehlen',
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'Du musst einen Charakter angeben',
