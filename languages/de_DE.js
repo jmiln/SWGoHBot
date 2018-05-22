@@ -693,6 +693,8 @@ module.exports = class extends Language {
                 ]
             },   
 
+
+
             // Reload Command
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `Ich kann das Kommando nicht finden: ${cmd}`,
             COMMAND_RELOAD_SUCCESS: (cmd) => `Erfolgreich neu geladen: ${cmd}`,
@@ -706,6 +708,21 @@ module.exports = class extends Language {
                         usage: ';reload <Kommando>',
                         args: {
                             "Kommando": "Das Kommando, welches neu geladen werden soll."
+                        }
+                    }
+                ]
+            },
+
+            // Reload Data Command
+            COMMAND_RELOADDATA_HELP: {
+                description: "Laedt die selektierte(n) Datei(en) neu.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';reloaddata <option>',
+                        args: {
+                            "option": "Was du neuladen moechtest ( Kommando | Daten | Events | Funktion )."
                         }
                     }
                 ]
