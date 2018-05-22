@@ -419,6 +419,7 @@ module.exports = class extends Language {
                         args: {
                             "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest.",
+                            "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
                     }
