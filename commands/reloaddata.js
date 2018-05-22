@@ -58,7 +58,7 @@ class ReloadData extends Command {
                 }
                 break;
             default:
-                return message.channel.send('You can only choose `commands, events, functions, or data.`');
+                return message.channel.send('You can only choose `commands, events, functions, languages, or data.`');
 
         }
     }
