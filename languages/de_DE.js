@@ -914,24 +914,6 @@ module.exports = class extends Language {
                 ]
             },
 
-            COMMAND_TIME_CURRENT: (time, zone) => `Die aktuelle Uhrzeit ist: ${time} in der Zeitzone ${zone}`,
-            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Falsche Zeitzone, hier ist die Zeit Deiner Gilde ${time} in der Zeitzone ${zone}`,
-            COMMAND_TIME_NO_ZONE: (time) => `Die aktuelle Uhrzeit ist: ${time} UTC Zeit`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `Die aktuelle Uhrzeit ist: ${time} in der Zeitzone ${zone}`,
-            COMMAND_TIME_HELP: {
-                description: "Pruefe die fuer die Gilde eingestellte Zeitzone.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';time [Zeitzone]',
-                        args: {
-                            "Zeitzone": "OPTIONAL wenn Du sehen moechtest, wie spaet es woanders ist."
-                        }
-                    }
-                ]
-            },
-
             // Test command (in .gitignore)
             COMMAND_TEST_HELP: {
                 description: "Kommando fuer Testzwecke.",
