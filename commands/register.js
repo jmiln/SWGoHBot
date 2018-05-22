@@ -67,8 +67,13 @@ class Register extends Command {
                                 await client.allyCodes.create({
                                     id: userID,
                                     allyCode: allyCode
-                                });
-                                await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
+                                })
+                                    .then(async () => {
+                                        await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
+                                    })
+                                    .catch(e => {
+                                        client.log('REGISTER', 'Broke while trying to link new user: ' + e);
+                                    });
                             }
                         });
                     });
@@ -117,7 +122,8 @@ class Register extends Command {
                         .then(() => {
                             message.channel.send('Successfully unlinked.');
                         })
-                        .catch(() => {
+                        .catch((e) => {
+                            client.log('REGISTER', 'Broke trying to unlink: ' + e);
                             message.channel.send('Something went wrong, please try again.');
                         });
                 }
