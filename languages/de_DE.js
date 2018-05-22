@@ -729,13 +729,12 @@ module.exports = class extends Language {
             },
 
             // Setconf Command
-            COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anführer dieses Servers hat die Konfiguration nicht eingestellt.`,
+            COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anfuehrer dieses Servers hat die Konfiguration nicht eingestellt.`,
             COMMAND_SETCONF_MISSING_OPTION: `Du musst eine Konfig-Option auswaehlen zum aendern.`,
             COMMAND_SETCONF_MISSING_VALUE: `Zum aendern dieser Option musst du einen Wert angeben.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_OPT: 'Es muss `add` oder `remove` benutzt werden.',
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Du musst eine Rolle definieren ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Entschuldige, aber ich kann die Rolle nicht finden ${roleName}. Bitte erneut versuchen.`,
-
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Entschuldige, aber ${roleName} ist bereits vorhanden.`,
             COMMAND_SETCONF_ADMINROLE_NOT_IN_CONFIG: (roleName) => `Entschuldige, aber ${roleName} ist nicht in deiner Konfig.`,
             COMMAND_SETCONF_ADMINROLE_SUCCESS: (roleName, action) => `Die Rolle ${roleName} wurde ${action === 'add' ? 'hinzugefuegt' : 'entfernt'} von den Admin-Rollen.`,
@@ -743,11 +742,11 @@ module.exports = class extends Language {
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an`,
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.`,
-
             COMMAND_SETCONF_NO_KEY: (prefix) => `Dieser Schluessel ist nicht in der Konfiguration. Schaue in "${prefix}showconf", oder "${prefix}setconf help" fuer eine Uebersicht`,
             COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Gildenkonfiguration ${key} geaendert auf:\n\`${value}\``,
             COMMAND_SETCONF_NO_SETTINGS: `Keine Gildeneinstellungen gefunden.`,
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
+            COMMAND_SETCONF_RESET: `Die Konfiguration wurde zurueckgesetzt`,
             COMMAND_SETCONF_HELP: {
                 description: "Zum Bearbeiten der Einstellungen des Bots.",
                 actions: [
@@ -760,10 +759,10 @@ module.exports = class extends Language {
                     {
                         action: "adminRole",
                         actionDesc: 'Die Rolle, welche die Moeglichkeit haben soll Einstellungen des Bots zu aendern oder Events anlegen kann',
-                        usage: ';setconf adminRole <hinzufuegen|entfernen> <Rolle>',
+                        usage: ';setconf adminRole <add|remove> <Rolle>',
                         args: {
-                            'hinzufuegen':  'Eine Rolle zur Liste hinzufuegen',
-                            'entfernen': 'Eine Rolle von der Liste entfernen'
+                            'add':  'Eine Rolle zur Liste hinzufuegen',
+                            'remove': 'Eine Rolle von der Liste entfernen'
                         }
                     },
                     {
@@ -774,11 +773,11 @@ module.exports = class extends Language {
                     },
                     {
                         action: "welcomeMessage",
-                        actionDesc: 'Die Willkommensnachricht, die gesendet wird, wenn sie eingeschaltet ist (Besondere Variablen unten)',
+                        actionDesc: 'Die Willkommensnachricht, die gesendet wird, wenn sie eingeschaltet ist (besondere Variablen unten)',
                         usage: ';setconf welcomeMessage <Nachricht>',
                         args: {
                             '{{user}}':  "Wird durch den Benutzernamen ersetzt.",
-                            '{{userMention}}': "Erwaehnt den neuen Benutzer."
+                            '{{userMention}}': "Taggt den neuen Benutzer."
                         }
                     },
                     {
@@ -789,13 +788,13 @@ module.exports = class extends Language {
                     },
                     {
                         action: "timezone",
-                        actionDesc: 'Setzt die Zeitzone, die fuer Kommandos genutzt werden soll. Hier eine Liste der Zeitzonen https://goo.gl/Vqwe49.',
+                        actionDesc: 'Setzt die Zeitzone die genutzt werden soll. Hier eine Liste der Zeitzonen https://goo.gl/Vqwe49.',
                         usage: ';setconf timezone <Zeitzone>',
                         args: {}
                     },
                     {
                         action: "announceChan",
-                        actionDesc: 'Setzt den Ankuendigungskanal fuer Events etc. Stelle sicher, dass die Berechtigung zum Schreiben in dem Kanal gesetzt ist.',
+                        actionDesc: 'Setzt den Ankuendigungskanal fuer Events etc. Stelle sicher, dass eine Schreibberechtigung fuer diesen Kanal vorhanden ist.',
                         usage: ';setconf announceChan <KanalName>',
                         args: {}
                     },
@@ -807,7 +806,7 @@ module.exports = class extends Language {
                     },
                     {
                         action: "reset",
-                        actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn Du Dir sicher bist)',
+                        actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn du dir sicher bist)',
                         usage: ';setconf reset',
                         args: {}
                     }
