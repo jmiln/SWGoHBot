@@ -932,8 +932,41 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Test command (in .gitignore)
+            COMMAND_TEST_HELP: {
+                description: "Kommando fuer Testzwecke.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';test',
+                        args: {}
+                    }
+                ]
+            },
+
+            // Time Command
+            COMMAND_TIME_CURRENT: (time, zone) => `Aktuelle Uhrzeit is: ${time} in ${zone} Zeit`,
+            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Ungueltige Zeitzone, fuer deine Gilde ist es jetzt ${time} in ${zone} Zeit`,
+            COMMAND_TIME_NO_ZONE: (time) => `Aktuelle Uhrzeit: ${time} UTC Zeit`,
+            COMMAND_TIME_WITH_ZONE: (time, zone) => `Aktuelle Uhrzeit: ${time} in ${zone} Zeit`,
+            COMMAND_TIME_HELP: {
+                description: "Wird benutzt um die aktuelle Uhrzeit und die eingestellte Zeitzone zu ueberpruefen.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';time [Zeitzone]',
+                        args: {
+                            "Zeitzone": "Optional falls du sehen moechtest welche Uhrzeit es woanders ist"
+                        }
+                    }
+                ]
+            },
+
+            // Updatechar Command
             COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `${arg} ist kein gueltiges Argument. Probiere eines von diesen: ${usableArgs}`,
-            COMMAND_UPDATECHAR_NEED_CHAR: `Es muss ein Charakter angegeben werden, um Ihn zu aktualisieren.`,
+            COMMAND_UPDATECHAR_NEED_CHAR: `Es muss ein Charakter angegeben werden, um ihn zu aktualisieren.`,
             COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Die Suche nach '${charName}' ergab keine Treffer. Bitte erneut versuchen.`,
             COMMAND_UPDATECHAR_HELP: {
                 description: "Aktualisiere die Infos zu einem spezifizierten Charakter.",
@@ -943,26 +976,40 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';updatechar [Gear|Info|Mods] [Charakter]',
                         args: {
-                            "Gear": "Aktualisiere die Infos zur Gear eines Charakters.",
+                            "Gear": "Aktualisiere die Infos zur Ausruestung eines Charakters.",
                             "Info": "Aktualisiere die Infos zu einem Charakter (Link zum Bild, Faehigkeiten etc.)",
                             "Mods": "Aktualisiere die Mods von crouchingrancor.com"
                         }
                     }
                 ]
             },
+
+            // UpdateClient Command
+            COMMAND_UPDATECLIENT_HELP: {
+                description: "Aktualisiert den Client fuer die SWGoHAPI.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';updateclient',
+                        args: {}
+                    }
+                ]
+            },
+
             // Zetas Command
             COMMAND_ZETA_NO_USER: `Entschuldigung, aber diesen User kann ich nicht finden.`,
             COMMAND_ZETA_NO_ZETAS: 'Keine Fähigkeiten mit Zeta gefunden.',
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Anfuehrer | \`[S]\` Spezial | \`[U]\` Einzigartig\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
-                description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft  wurden.",
+                description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft wurden.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';zeta [user]',
                         args: {
-                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)"
+                            "user": "Das Discordprofil vom Spieler den du sehen moechtest. (me | userID | mention)"
                         }
                     }
                 ]
