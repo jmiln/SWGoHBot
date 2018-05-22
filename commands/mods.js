@@ -52,20 +52,25 @@ class Mods extends Command {
                         "inline": true
                     });
                 }
-                message.channel.send({
-                    embed: {
-                        "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
-                        "author": {
-                            "name": character.name,
-                            "url": character.url,
-                            "icon_url": character.avatarURL
-                        },
-                        "fields": fields,
-                        "footer": { 
-                            "icon_url": 'https://cdn.discordapp.com/attachments/329514150105448459/361268366180352002/crouchingRancor.png',
-                            "text": "Mods via apps.crouchingrancor.com" 
-                        }
+                const embed = {
+                    "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
+                    "author": {
+                        "name": character.name,
+                        "url": character.url,
+                        "icon_url": character.avatarURL
+                    },
+                    "footer": { 
+                        "icon_url": 'https://cdn.discordapp.com/attachments/329514150105448459/361268366180352002/crouchingRancor.png',
+                        "text": "Mods via apps.crouchingrancor.com" 
                     }
+                };
+                if (!fields.length) { // If there are no sets there
+                    embed.description = message.language.get('COMMAND_NO_MODSETS');
+                } else {
+                    embed.fields = fields;
+                }
+                message.channel.send({
+                    embed: embed
                 });
             } else { // Embeds are disabled
                 for (modSet in character.mods) {

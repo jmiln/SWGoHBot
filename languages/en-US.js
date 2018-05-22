@@ -492,6 +492,7 @@ module.exports = class extends Language {
             COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Square:   ${square}  \n* Arrow:    ${arrow} \n* Diamond:  ${diamond}\n`,
             COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triangle: ${triangle}\n* Circle:   ${circle}\n* Cross:    ${cross}`,
             COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`,
+            COMMAND_NO_MODSETS: "No mod sets for this character",
             COMMAND_MODS_HELP: {
                 description: "Shows some suggested mods for the specified character.",
                 actions: [
