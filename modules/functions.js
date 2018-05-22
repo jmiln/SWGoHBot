@@ -333,7 +333,7 @@ module.exports = (client) => {
     };
 
     // Reload the data files (ships, teams, characters)
-    client.reloadDataFiles = async (msgID=false) => {
+    client.reloadDataFiles = async (msgID) => {
         let err = false;
         try {
             client.characters = await JSON.parse(fs.readFileSync("data/characters.json"));
@@ -352,6 +352,33 @@ module.exports = (client) => {
         }
     };
 
+    // Reload all the language files
+    client.reloadLanguages = async (msgID) => {
+        let err = false;
+        try {
+            Object.keys(client.languages).forEach(lang => {
+                delete client.languages[lang];
+            });
+            const langFiles = await readdir(`${process.cwd()}/languages/`);
+            langFiles.forEach(file => {
+                console.log(file);
+                const langName = file.split(".")[0];
+                const lang = require(`${process.cwd()}/languages/${file}`);
+                client.languages[langName] = new lang(client);
+                delete require.cache[require.resolve(`${process.cwd()}/languages/${file}`)];
+            });
+        } catch (e) {
+            err = e;
+        }
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            if (err) {
+                channel.send(`Something broke: ${err}`);
+            } else {
+                channel.send(`Reloaded language files.`);
+            }
+        }
+    };
 
     /*
       SINGLE-LINE AWAITMESSAGE
