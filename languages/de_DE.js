@@ -443,6 +443,7 @@ module.exports = class extends Language {
                 ]
             },
 
+
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\n[Benutze ${prefix}Help <Kommandoname> fuer Details]\n`,
             COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\n Befehl:: ${prefix}${command.help.usage}`,
@@ -515,6 +516,27 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';modsets',
                         args: {}
+                    }
+                ]
+            },
+
+            // MyArena Command
+            COMMAND_MYARENA_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden für den Spieler ${user}. Bitte sicherstellen, dass der Account synchronisiert ist.`,
+            COMMAND_MYARENA_NO_CHAR: 'Etwas ist schief gegangen, ich konnte deine Charaktere nicht holen.',
+            COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rang: ${rank})`,
+            COMMAND_MYARENA_FLEET: (rank) => `Flotten Arena (Rang: ${rank})`,
+            COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
+            COMMAND_MYARENA_EMBED_FOOTER: (date) => `Arena Daten sind vom: ${date}`,
+            COMMAND_MYARENA_HELP: {
+                description: "Zeigt den gegenwaertigen Rang der Arena und das aktuelle Team eines Spielers an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';myarena [user]',
+                        args: {
+                            "user": "Spieler den du sehen willst. (me | userID | mention)"
+                        }
                     }
                 ]
             },
