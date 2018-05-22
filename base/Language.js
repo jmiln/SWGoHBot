@@ -9,6 +9,9 @@ class Language {
         if (!this.language[str]) {
             const defLang = this.client.languages[this.client.config.defaultSettings.language];
             // If it isn't in the configured language's file, use the main one (probably en_US)
+            if (!defLang[str]) {
+                return 'MISSING STRING: ' + str;
+            }
             if (!args.length) {
                 return defLang.get(str);
             } else {

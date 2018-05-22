@@ -361,9 +361,9 @@ module.exports = (client) => {
             });
             const langFiles = await readdir(`${process.cwd()}/languages/`);
             langFiles.forEach(file => {
-                console.log(file);
                 const langName = file.split(".")[0];
                 const lang = require(`${process.cwd()}/languages/${file}`);
+                console.log('reloading ' + file);
                 client.languages[langName] = new lang(client);
                 delete require.cache[require.resolve(`${process.cwd()}/languages/${file}`)];
             });
