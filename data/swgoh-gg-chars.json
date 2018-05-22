@@ -125,7 +125,7 @@
         "pk": 164,
         "url": "https://swgoh.gg/characters/boba-fett/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_bobafett.png",
-        "power": 20713,
+        "power": 21498,
         "description": "Ruthless Bounty Hunter Attacker who ignores Taunts, Ability Blocks and self-revives",
         "combat_type": 1
     },
@@ -145,7 +145,7 @@
         "pk": 264,
         "url": "https://swgoh.gg/characters/bossk/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_bossk.png",
-        "power": 22125,
+        "power": 23694,
         "description": "Bounty Hunter Tank that constantly regenerates Health and Protection",
         "combat_type": 1
     },
@@ -415,7 +415,7 @@
         "pk": 115,
         "url": "https://swgoh.gg/characters/dengar/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_dengar.png",
-        "power": 17523,
+        "power": 21498,
         "description": "Adaptable Scoundrel attacker that Stuns and inflicts Tenacity Down.",
         "combat_type": 1
     },
@@ -655,7 +655,7 @@
         "pk": 190,
         "url": "https://swgoh.gg/characters/greedo/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_greedo.png",
-        "power": 17523,
+        "power": 21288,
         "description": "Deadly Attacker that gains extra attacks from Critical Hits",
         "combat_type": 1
     },
@@ -745,7 +745,7 @@
         "pk": 143,
         "url": "https://swgoh.gg/characters/ig-88/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_ig88.png",
-        "power": 17523,
+        "power": 20713,
         "description": "Droid Attacker with debuffs and a damage bonus against debuffed enemies",
         "combat_type": 1
     },
@@ -1390,6 +1390,16 @@
         "combat_type": 1
     },
     {
+        "name": "Vandor Chewbacca",
+        "base_id": "YOUNGCHEWBACCA",
+        "pk": 266,
+        "url": "https://swgoh.gg/characters/vandor-chewbacca/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_chewbacca_vandor.png",
+        "power": 19929,
+        "description": "Aggressive Scoundrel Tank that provides Protection Recovery for his allies when they are attacked",
+        "combat_type": 1
+    },
+    {
         "name": "Veteran Smuggler Chewbacca",
         "base_id": "SMUGGLERCHEWBACCA",
         "pk": 240,
@@ -1447,6 +1457,16 @@
         "image": "//swgoh.gg/static/img/assets/tex.charui_ewok_wicket.png",
         "power": 19929,
         "description": "Jittery Ewok Attacker with Critical Hit and Stealth synergies",
+        "combat_type": 1
+    },
+    {
+        "name": "Young Han Solo",
+        "base_id": "YOUNGHAN",
+        "pk": 267,
+        "url": "https://swgoh.gg/characters/young-han-solo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_han_young.png",
+        "power": 19929,
+        "description": "Scoundrel Attacker who becomes more deadly over time",
         "combat_type": 1
     },
     {

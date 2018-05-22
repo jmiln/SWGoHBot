@@ -14,10 +14,13 @@ class MyArena extends Command {
 
     async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
         let result, playerName;
-        const allyCode = await client.getAllyCode(message, user);
-        if (!allyCode) {
+        const allyCodes = await client.getAllyCode(message, user);
+        if (!allyCodes.length) {
             return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY'));
+        } else if (allyCodes.length > 1) {
+            return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific');
         }
+        const allyCode = allyCodes[0];
         try {
             result = await fetchPlayer(allyCode);
 
@@ -106,9 +109,11 @@ class MyArena extends Command {
         author.name = message.language.get('COMMAND_MYARENA_EMBED_HEADER', playerName);
         if (!user || user === 'me' || client.isUserID(user)) {
             if (!user || user === 'me') user = message.author.id;
-            const auth = message.guild.members.get(user.replace(/[^\d]*/g, ''));
-            if (auth) {
-                author.icon_url = auth.user.avatarURL;
+            if (message.guild) {
+                const auth = message.guild.members.get(user.replace(/[^\d]*/g, ''));
+                if (auth) {
+                    author.icon_url = auth.user.avatarURL;
+                }
             }
         } 
         return message.channel.send({embed: {

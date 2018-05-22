@@ -34,10 +34,14 @@ module.exports = async (client, guild) => {
     // client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
 
     // Messages the guild owner to tell the how to set the bot up
-    guild.owner.send(`Thank you for adding this SWGoHBot! Before using me, please configure the Admin role by running the following command:
+    try {
+        guild.owner.send(`Thank you for adding this SWGoHBot! Before using me, please configure the Admin role by running the following command:
 \`${client.config.prefix}setconf adminRole add <AdminRoleName>\`.
 This will allow anyone with that Discord role to edit the bot's settings.
 Also run \`${client.config.prefix}setconf timezone <timezone>\` to be the timezone of your guild's activities (Default is \`America/Los_Angeles\`), and run \`${client.config.prefix}setconf announceChan <AnnouncementChannel>\` if you want to use the events/ announcements or event commands.
 After that, you should be set to begin using SWGoHBot!`);
+    } catch (e) {
+        console.error('Broke trying to send guildCreate message: ' + e);
+    }
 };
 

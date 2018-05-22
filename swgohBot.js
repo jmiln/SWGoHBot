@@ -25,10 +25,7 @@ require("./modules/functions.js")(client);
 
 // Languages
 client.languages = {};
-const en_US = require('./languages/en-US.js');
-client.languages.en_US = new en_US(client);
-const de_DE = require('./languages/de_DE.js');
-client.languages.de_DE = new de_DE(client);
+client.reloadLanguages();
 
 client.commands = new Collection();
 client.aliases = new Collection();

@@ -84,7 +84,8 @@ module.exports = class extends Language {
             BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
             BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
-            BASE_SWGPH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_NO_ACCT: `Something went wrong, please make sure your account is synced correctly.`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
@@ -270,6 +271,23 @@ module.exports = class extends Language {
                     }
                 ]
             }),
+
+            // Current Events Command
+            COMMAND_CURRENTEVENTS_HEADER: "SWGoH Events Schedule",
+            COMMAND_CURRENTEVENTS_DESC: (num) => `Next ${num} events.\nNote: *Dates are subject to change.*`,
+            COMMAND_CURRENTEVENTS_HELP: {
+                description: "Shows any upcoming events.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';currentevents [num]',
+                        args: {
+                            "num": "The max number of events you want to show"
+                        }
+                    }
+                ]
+            },
 
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
@@ -474,6 +492,7 @@ module.exports = class extends Language {
             COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Square:   ${square}  \n* Arrow:    ${arrow} \n* Diamond:  ${diamond}\n`,
             COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triangle: ${triangle}\n* Circle:   ${circle}\n* Cross:    ${cross}`,
             COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`,
+            COMMAND_NO_MODSETS: "No mod sets for this character",
             COMMAND_MODS_HELP: {
                 description: "Shows some suggested mods for the specified character.",
                 actions: [
@@ -690,6 +709,21 @@ module.exports = class extends Language {
                         usage: ';reload <command>',
                         args: {
                             "command": "The command you're wanting to reload."
+                        }
+                    }
+                ]
+            },
+
+            // Reload Data Command
+            COMMAND_RELOADDATA_HELP: {
+                description: "Reloads the selected file(s).",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';reloaddata <option>',
+                        args: {
+                            "option": "What you're wanting to reload ( commands | data | events | function )."
                         }
                     }
                 ]

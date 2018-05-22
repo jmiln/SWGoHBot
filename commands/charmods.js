@@ -61,7 +61,7 @@ class CharMods extends Command {
             charS.forEach(c => {
                 charL.push(c.name);
             });
-            return message.channel.send(message.language.get('BASE_SWGPH_CHAR_LIST', charL.join('\n')));
+            return message.channel.send(message.language.get('BASE_SWGOH_CHAR_LIST', charL.join('\n')));
         } else {
             character = chars[0];
         }

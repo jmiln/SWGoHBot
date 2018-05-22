@@ -5,11 +5,13 @@ const mysql = require('mysql');
 const {promisify, inspect} = require('util');      // eslint-disable-line no-unused-vars
 const moment = require('moment');       // eslint-disable-line no-unused-vars
 const { Op } = require('sequelize');    // eslint-disable-line no-unused-vars
+const fs = require('fs');    // eslint-disable-line no-unused-vars
 const readdir = promisify(require("fs").readdir);       // eslint-disable-line no-unused-vars
 
 module.exports = (client) => {
     // The scheduler for events
     client.schedule = require("node-schedule");
+    
     /*
         PERMISSION LEVEL FUNCTION
         This is a very basic permission system for commands which uses "levels"
@@ -198,6 +200,9 @@ module.exports = (client) => {
     client.loadCommand = (commandName) => {
         try {
             const cmd = new (require(`../commands/${commandName}`))(client);
+            if (cmd.help.category === "SWGoH" && !client.swgohAPI) {
+                return 'Unable to load command ${commandName}: no swgohAPI';
+            }
             client.commands.set(cmd.help.name, cmd);
             cmd.conf.aliases.forEach(alias => {
                 client.aliases.set(alias, cmd.help.name);
@@ -211,7 +216,16 @@ module.exports = (client) => {
     /*
      * Unloads the given command
      */
-    client.unloadCommand = async (command) => {
+    client.unloadCommand = (command) => {
+        if (typeof command === 'string') {
+            const commandName = command;
+            if (client.commands.has(commandName)) {
+                command = client.commands.get(commandName);
+            } else if (client.aliases.has(commandName)) {
+                command = client.commands.get(client.aliases.get(commandName));
+            }
+        }
+
         client.commands.delete(command);
         client.aliases.forEach((cmd, alias) => {
             if (cmd === command) client.aliases.delete(alias);
@@ -230,49 +244,140 @@ module.exports = (client) => {
         } else if (client.aliases.has(commandName)) {
             command = client.commands.get(client.aliases.get(commandName));
         }
-        if (!command) throw new Error(`The command \`${commandName}\` doesn"t seem to exist, nor is it an alias. Try again!`);
+        if (!command) return new Error(`The command \`${commandName}\` doesn"t seem to exist, nor is it an alias. Try again!`);
 
-        let response = await client.unloadCommand(command);
+        let response = client.unloadCommand(command);
         if (response) {
-            throw new Error(`Error Unloading: ${response}`);
+            return new Error(`Error Unloading: ${response}`);
         } else {
             response = client.loadCommand(command.help.name);
             if (response) {
-                throw new Error(`Error Loading: ${response}`);
+                return new Error(`Error Loading: ${response}`);
             }
         }
         return command.help.name;
     };
 
-    // Reloads all commads (event if they were not loaded before)
+    // Reloads all commads (even if they were not loaded before)
     // Will not remove a command it it's been loaded, 
     // but will load a new command it it's been added
-    client.reloadAllCommands = async () => {
+    client.reloadAllCommands = async (msgID) => {
         client.commands.keyArray().forEach(c => {
             client.unloadCommand(c);
         });
         const cmdFiles = await readdir('./commands/');
         const coms = [], errArr = [];
-        cmdFiles.forEach(f => {
+        cmdFiles.forEach(async (f) => {
             try {
-                const cmd = new(require(`../commands/${f}`))(client);
+                const cmd = f.split(".")[0];
                 if (f.split(".").slice(-1)[0] !== "js") {
                     errArr.push(f);
-                } else if (cmd.help.category === "SWGoH" && !client.swgohAPI) {
-                    errArr.push(f);
                 } else {
-                    client.loadCommand(cmd.help.name);
-                    coms.push(cmd.help.name);
+                    const res = client.loadCommand(cmd);
+                    if (!res) {
+                        coms.push(cmd);
+                    } else {
+                        errArr.push(f);
+                    }
                 }
             } catch (e) {
                 console.log('Error: ' + e);
                 errArr.push(f);
             }
         });
-        return [coms, errArr];
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            channel.send(`Reloaded ${coms.length} commands, failed to reload ${errArr.length} commands.${errArr.length > 0 ? '\n```' + errArr.join('\n') + '```' : ''}`);
+        }
     };
 
+    // Reload the events files (message, guildCreate, etc)
+    client.reloadAllEvents = async (msgID) => {
+        const ev = [], errEv = [];
+        const evtFiles = await readdir("./events/");
+        evtFiles.forEach(file => {
+            try {
+                const eventName = file.split(".")[0];
+                const event = require(`../events/${file}`);
+                client.removeAllListeners(eventName);
+                client.on(eventName, event.bind(null, client));
+                delete require.cache[require.resolve(`../events/${file}`)];
+                ev.push(eventName);
+            } catch (e) {
+                errEv.push(file);
+            }
+        });
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            channel.send(`Reloaded ${ev.length} events, failed to reload ${errEv.length} events.${errEv.length > 0 ? '\n```' + errEv.join('\n') + '```' : ''}`);
+        }
+    };
 
+    // Reload the functions (this) file
+    client.reloadFunctions = async (msgID) => {
+        let err = false;
+        try {
+            delete require.cache[require.resolve("../modules/functions.js")];
+            require("../modules/functions.js")(client);
+        } catch (e) {
+            err = e;
+        }
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            if (err) {
+                channel.send(`Something broke: ${err}`);
+            } else {
+                channel.send(`Reloaded functions`);
+            }
+        }
+    };
+
+    // Reload the data files (ships, teams, characters)
+    client.reloadDataFiles = async (msgID) => {
+        let err = false;
+        try {
+            client.characters = await JSON.parse(fs.readFileSync("data/characters.json"));
+            client.ships = await JSON.parse(fs.readFileSync("data/ships.json"));
+            client.teams = await JSON.parse(fs.readFileSync("data/teams.json"));
+        } catch (e) {
+            err = e;
+        }
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            if (err) {
+                channel.send(`Something broke: ${err}`);
+            } else {
+                channel.send(`Reloaded data files.`);
+            }
+        }
+    };
+
+    // Reload all the language files
+    client.reloadLanguages = async (msgID) => {
+        let err = false;
+        try {
+            Object.keys(client.languages).forEach(lang => {
+                delete client.languages[lang];
+            });
+            const langFiles = await readdir(`${process.cwd()}/languages/`);
+            langFiles.forEach(file => {
+                const langName = file.split(".")[0];
+                const lang = require(`${process.cwd()}/languages/${file}`);
+                client.languages[langName] = new lang(client);
+                delete require.cache[require.resolve(`${process.cwd()}/languages/${file}`)];
+            });
+        } catch (e) {
+            err = e;
+        }
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            if (err) {
+                channel.send(`Something broke: ${err}`);
+            } else {
+                channel.send(`Reloaded language files.`);
+            }
+        }
+    };
 
     /*
       SINGLE-LINE AWAITMESSAGE
@@ -449,27 +554,36 @@ module.exports = (client) => {
 
     // Get the ally code of someone that's registered
     client.getAllyCode = async (message, user = 'me') => {
+        user = user.trim();
         let uID, uAC;
-        if (user === 'me') {
+        if (!user || user === 'me') {
             uID = message.author.id;
             try {
                 uAC = await client.allyCodes.findOne({where: {id: uID}});
-                return uAC.dataValues.allyCode;
+                return [uAC.dataValues.allyCode];
             } catch (e) {
-                return false;
+                return [];
             }
         } else if (client.isUserID(user)) {
             uID = user.replace(/[^\d]*/g, '');
             try {
                 uAC = await client.allyCodes.findOne({where: {id: uID}});
-                return uAC.dataValues.allyCode;
+                return [uAC.dataValues.allyCode];
             } catch (e) {
-                return false;
+                return [];
             }
         }  else if (client.isAllyCode(user)) {
-            return user.replace(/[^\d]*/g, '');
+            return [user.replace(/[^\d]*/g, '')];
         }  else {
-            return false;
+            user = user.toLowerCase();
+            const acArr = [];
+            const results = await client.sqlQuery("CALL getAllyFromName( ? );", [user]);
+            if (results && results[0] && results[0].length) {
+                results[0].forEach(r => {
+                    acArr.push(r.allyCode);
+                });
+            }
+            return acArr;
         }
     };
 
@@ -674,20 +788,19 @@ module.exports = (client) => {
                 "repeatDays": []
             };
         }  
-        await client.guildEvents.destroy({where: {eventID: event.eventID}})
-            .then(async () => {
-                // If it's supposed to repeat, go ahead and put it back in    
-                if (repTime || repDay) {
-                    await client.guildEvents.create(newEvent)
-                        .then(() => {
-                            client.scheduleEvent(newEvent);
-                        })
-                        .catch(error => { 
-                            client.log('ERROR',`Broke trying to replace old event ${error}`); 
-                        });
-                }
-            })
-            .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
+        
+        if (repTime || repDay) {
+            await client.guildEvents.update(newEvent, {where: {eventID: event.eventID}})
+                .then(async () => {
+                    client.scheduleEvent(newEvent);
+                })
+                .catch(error => { client.log('ERROR', "Broke trying to replace event: " + error); });
+        } else {
+            // Just destroy it
+            await client.guildEvents.destroy({where: {eventID: event.eventID}})
+                .then(async () => {})
+                .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
+        }
     };
 };
 

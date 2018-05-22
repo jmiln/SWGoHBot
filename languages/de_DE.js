@@ -631,7 +631,7 @@ module.exports = class extends Language {
                         usage: ';raidteams <Raid> <Phase>',
                         args: {
                             "Raid": "Der Raid, fuer welchen Du Teams anzeigen willst. (aat|pit|sith)",
-                            "Phase": "Die Phase des Raids, fuer welches Du Teams anzeigen lassen willst. (p1|p2|p3|p4|solo)"
+                            "Phase": "Die Phase des Raids, fuer welches Du Teams anzeigen lassen willst. ( p1 | p2 | p3 | p4 | solo )"
                         }
                     }
                 ]
@@ -823,7 +823,7 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_USER_NOT_ADDED: `Etwas lief schief beim Benutzer hinzufuegen, bitte erneut probieren.`,
             COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Du kannst nur Dich selbst entfernen, es sei denn Du hast Adminrechte.`,
             COMMAND_SHARDTIMES_REM_SUCCESS: `Benutzer erfolgreich entfernt!`,
-            COMMAND_SHARDTIMES_REM_FAIL: `Etwas lief schieb beim entfernen des Benutzers, bitte erneut probieren.`,
+            COMMAND_SHARDTIMES_REM_FAIL: `Etwas lief schief beim entfernen des Benutzers, bitte erneut probieren.`,
             COMMAND_SHARDTIMES_REM_MISSING: `Dieser Benutzer scheint hier nicht zu existieren.`,
             COMMAND_SHARDTIMES_SHARD_HEADER: `Splitterauszahlung in:`,
             COMMAND_SHARDTIMES_HELP: {
@@ -882,7 +882,7 @@ module.exports = class extends Language {
             // Showconf Command
             COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `Dies ist die aktuelle Konfiguration für ${serverName}: \`\`\`${configKeys}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
-                description: "Zeigt die aktuelle Konfiguration fuer den Server an.",
+                description: "Zeigt die aktuelle Server Konfiguration an.",
                 actions: [
                     {
                         action: "",
@@ -981,7 +981,7 @@ module.exports = class extends Language {
 
             // Zetas Command
             COMMAND_ZETA_NO_USER: `Entschuldigung, aber diesen User kann ich nicht finden.`,
-            COMMAND_ZETA_NO_ZETAS: 'Keine Fähigkeiten mit Zeta gefunden.',
+            COMMAND_ZETA_NO_ZETAS: 'Keine Faehigkeiten mit Zeta gefunden.',
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Anfuehrer | \`[S]\` Spezial | \`[U]\` Einzigartig\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
                 description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft wurden.",
