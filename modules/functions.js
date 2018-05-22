@@ -363,7 +363,6 @@ module.exports = (client) => {
             langFiles.forEach(file => {
                 const langName = file.split(".")[0];
                 const lang = require(`${process.cwd()}/languages/${file}`);
-                console.log('reloading ' + file);
                 client.languages[langName] = new lang(client);
                 delete require.cache[require.resolve(`${process.cwd()}/languages/${file}`)];
             });
