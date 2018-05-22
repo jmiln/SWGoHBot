@@ -5,7 +5,7 @@ class Mods extends Command {
         super(client, {
             name: 'mods',
             aliases: ['m', 'mod'],
-            category: 'Misc'
+            category: 'Star Wars'
         });
     }
 
