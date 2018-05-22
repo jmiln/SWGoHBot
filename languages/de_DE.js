@@ -71,12 +71,21 @@ module.exports = class extends Language {
         this.getDay = getDay;
         this.getTime = getTime;
         this.language = {
+            // Default in case it can't find one.
+            BASE_DEFAULT_MISSING: 'Es wird versucht eine nicht vorhandene Zeichenkette zu verwenden. Wenn du diese Info siehst, dann bitte melden damit es gefixt werden kann.',
+
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: `\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <allycode>\``,
+            BASE_SWGOH_NO_ALLY: `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add <user> <buendniscode>\``,
+            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <buendniscode>\``,
+            BASE_SWGOH_NO_USER: `Entschuldigung, aber ich habe diesen User nirgends gelistet.`,
+            BASE_SWGOH_MISSING_CHAR: 'Du musst einen Charakter angeben',
+            BASE_SWGOH_NO_CHAR_FOUND: (character) => `Kein Ergebnis gefunden fuer ${character}`,
+            BASE_SWGPH_CHAR_LIST: (chars) => `Deine Suche ergab zu viele Treffer, bitte sei spezifischer. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_NO_ACCT: `Etwas ist schief gegangen, bitte sicherstellen dass dein Account korrekt synchronisiert wurde.`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
@@ -127,7 +136,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';activities [Charaktername]',
+                        usage: ';activities [Wochentag]',
                         args: {}
                     }
                 ]
@@ -143,7 +152,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';arenarank <aktuellerRank>',
+                        usage: ';arenarank <aktuellerRang>',
                         args: {}
                     }
                 ]
@@ -205,6 +214,81 @@ module.exports = class extends Language {
                 ]
             },
 
+            // CharacterMods Command
+            COMMAND_CHARMODS_STAT_NAMES: ({
+                'UNIT_STAT_MAX_HEALTH_PERCENT_ADDITIVE': '% Gesundheit',
+                'UNIT_STAT_MAX_HEALTH': ' Gesundheit',
+                'UNIT_STAT_ACCURACY': '% Effektivitaet',
+                'UNIT_STAT_CRITICAL_CHANCE_PERCENT_ADDITIVE': '% Krit Chance',
+                'UNIT_STAT_MAX_SHIELD_PERCENT_ADDITIVE': '% Schutz',
+                'UNIT_STAT_MAX_SHIELD': ' Schutz',
+                'UNIT_STAT_CRITICAL_DAMAGE': '% Krit Schaden',
+                'UNIT_STAT_DEFENSE_PERCENT_ADDITIVE': '% Abwehr',
+                'UNIT_STAT_DEFENSE': ' Abwehr',
+                'UNIT_STAT_OFFENSE_PERCENT_ADDITIVE': '% Angriff',
+                'UNIT_STAT_OFFENSE': ' Angriff',
+                'UNIT_STAT_RESISTANCE': '% Zaehigkeit',
+                'UNIT_STAT_SPEED': ' Tempo',
+                'UNIT_STAT_EVASION_NEGATE_PERCENT_ADDITIVE': '% Praezision',
+                'UNIT_STAT_CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE': '% Krit Ausweichen'
+            }),
+            COMMAND_CHARMODS_MOD_TYPES: ({
+                'icon_buff_health': 'Gesundheit',
+                'icon_buff_accuracy': 'Effektivitaet',
+                'icon_buff_speed': 'Tempo',
+                'icon_buff_critical_damage': 'Krit Schaden',
+                'icon_buff_crit_chance': 'Krit Chance',
+                'icon_buff_armor': 'Abwehr',
+                'icon_tenacity': 'Zaehigkeit'
+            }),
+            COMMAND_CHARMODS_NO_MODS: (charName) => `Entschuldigung, aber ich konnte keine Mods finden fuer ${charName}`,
+            COMMAND_CHARMODS_MISSING_MODS: `Entschuldigung, aber ich kann aktuell keine Mods finden. Bitte warte etwas und versuche es erneut.`,
+            COMMAND_CHARMODS_LAST_UPDATED: (lastUpdated) => `Mods zuletzt aktualisiert: ${lastUpdated} ago`,
+            COMMAND_CHARMODS_HELP: ({
+                description: "Zeigt die ausgestatteten Mods eines bestimmten Charakters an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';charactermods [user] <Charakter>',
+                        args: {
+                            "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
+                            "character": "Der Charakter nach dem du suchst."
+                        }
+                    }
+                ]
+            }),
+
+            // Command Report Command
+            COMMAND_COMMANDREPORT_HELP: ({
+                description: "Zeigt eine Liste aller Befehle an, die in den letzten 10 Tagen ausgefuehrt wurden.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';commandreport',
+                        args: {}
+                    }
+                ]
+            }),
+
+            // Current Events Command
+            COMMAND_CURRENTEVENTS_HEADER: "SWGoH Events Plan",
+            COMMAND_CURRENTEVENTS_DESC: (num) => `Die naechste ${num} Events.\nNotiz: *Die Termine koennen sich ggf. noch aendern.*`,
+            COMMAND_CURRENTEVENTS_HELP: {
+                description: "Zeigt die naechsten geplanten Events an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';currentevents [num]',
+                        args: {
+                            "num": "Die maximale Anzahl von Events die du anzeigen moechtest."
+                        }
+                    }
+                ]
+            },
+
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
             COMMAND_EVENT_INVALID_PERMS: `Entschuldigung, aber entweder du bist kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.`,
@@ -222,6 +306,7 @@ module.exports = class extends Language {
             COMMAND_EVEMT_INVALID_TIME: `Du musst fuer dein Event eine gueltige Zeit angeben. Akzeptiertes Format ist \`HH:MM\`, bei Nutzung vom 24 Stunden-Format. Aber nicht beim 12 Stunden-Format wie AM und PM`,
             COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `Du kannst kein Event in der Vergangenheit anlegen. ${eventDATE} ist vor dem heutigen ${nowDATE}`,
             COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` fuer ${eventDate} angelegt`,
+            COMMAND_EVENT_NO_CREATE: `Event konnte nicht angelegt werden, bitte erneut versuchen.`,
             COMMAND_EVENT_TOO_BIG:(charCount) => `Entschuldigung, aber entweder ist der Eventname oder die Eventnachricht zu lang. Bitte kuerze diese um mindestens ${charCount} Zeichen.`,
 
             // Event Command (View)
@@ -300,6 +385,22 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Guilds Command
+            COMMAND_GUILDS_MORE_INFO: 'Fuer mehr Info zu einer spezifischen Gilde:',
+            COMMAND_GUILDS_HELP: {
+                description: "Zeigt die Top Gilden und jeden der in deiner registriert ist an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';guild [user]',
+                        args: {
+                            "user": "Zur Identifizierung der Gilde. (mention | allyCode | guildName)"
+                        }
+                    }
+                ]
+            },
+
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: 'Du kannst nur ein Sternen-Level von 1-7 waehlen',
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'Du musst einen Charakter angeben',
@@ -318,11 +419,30 @@ module.exports = class extends Language {
                         args: {
                             "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest.",
+                            "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
                     }
                 ]
             },
+
+            // Heists Command
+            COMMAND_HEISTS_HEADER: "SWGoH Raub Planung",
+            COMMAND_HEISTS_CREDIT: (date) => `**Credits** : ${date}\n`,
+            COMMAND_HEISTS_DROID: (date) => `**Droiden**  : ${date}\n`,
+            COMMAND_HEISTS_NOT_SCHEDULED: "`Nicht geplant`",
+            COMMAND_HEISTS_HELP: {
+                description: "Zeigt alle kommenden Raub-Events an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';heists',
+                        args: {}
+                    }
+                ]
+            },
+
 
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\n[Benutze ${prefix}Help <Kommandoname> fuer Details]\n`,
@@ -396,6 +516,27 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';modsets',
                         args: {}
+                    }
+                ]
+            },
+
+            // MyArena Command
+            COMMAND_MYARENA_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden für den Spieler ${user}. Bitte sicherstellen, dass der Account synchronisiert ist.`,
+            COMMAND_MYARENA_NO_CHAR: 'Etwas ist schief gegangen, ich konnte deine Charaktere nicht holen.',
+            COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rang: ${rank})`,
+            COMMAND_MYARENA_FLEET: (rank) => `Flotten Arena (Rang: ${rank})`,
+            COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
+            COMMAND_MYARENA_EMBED_FOOTER: (date) => `Arena Daten sind vom: ${date}`,
+            COMMAND_MYARENA_HELP: {
+                description: "Zeigt den gegenwaertigen Rang der Arena und das aktuelle Team eines Spielers an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';myarena [user]',
+                        args: {
+                            "user": "Spieler den du sehen willst. (me | userID | mention)"
+                        }
                     }
                 ]
             },
@@ -513,12 +654,46 @@ module.exports = class extends Language {
             },
 
             // Register Command
-            COMMAND_REGISTER_MISSING_ARGS: 'Du musst eine userID (mention or ID) angeben, und einen ally code',
-            COMMAND_REGISTER_MISSING_ALLY: 'Du musst einen ally code angeben mit dem du dein Konto verknuepfen willst.',
-            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger ally code`,
+            COMMAND_REGISTER_MISSING_ARGS: 'Du musst eine userID (mention oder ID) angeben, und einen Buendniscode',
+            COMMAND_REGISTER_MISSING_ALLY: 'Du musst einen Buendniscode angeben mit dem du das Konto verknuepfen willst.',
+            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger Buendniscode`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Bitte warten waehrend ich die Daten synchronisiere.',
             COMMAND_REGISTER_FAILURE: 'Registrierung fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',    
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
+            COMMAND_REGISTER_UPDATE_FAILURE: 'Etwas ist fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',
+            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profil aktualisiert fuer \`${user}\`.`,
+            COMMAND_REGISTER_HELP: {
+                description: "Registriert einen Buendniscode zu einer Discord ID, und synchronisiert ein SWGoH Profil.",
+                actions: [
+                    {
+                        action: "Add",
+                        actionDesc: 'Verlinkt ein Discord Profil mit einem SWGoH account',
+                        usage: ';register add <user> <Buendniscode>',
+                        args: {
+                            "user": "Das Discordprofil das du verlinken moechtest. (me | userID | mention)",
+                            "allyCode": "Dein in-game Buendniscode."
+                        }
+                    },
+                    {
+                        action: "Update",
+                        actionDesc: 'Aktualisiert / synchronisiert die SWGoH Daten.',
+                        usage: ';register update <user>',
+                        args: {
+                            "user": "Das Discordprofil das du aktualisieren moechtest. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Remove",
+                        actionDesc: 'Trennt die Verbindung des Discordprofils mit dem SWGoH account',
+                        usage: ';register remove <user>',
+                        args: {
+                            "user": "Das Discordprofil dessen Verbindung du trennen moechtest. (me | userID | mention)"
+                        }
+                    }
+                ]
+            },   
+
+
 
             // Reload Command
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `Ich kann das Kommando nicht finden: ${cmd}`,
@@ -538,14 +713,28 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Reload Data Command
+            COMMAND_RELOADDATA_HELP: {
+                description: "Laedt die selektierte(n) Datei(en) neu.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';reloaddata <option>',
+                        args: {
+                            "option": "Was du neuladen moechtest ( Kommando | Daten | Events | Funktion )."
+                        }
+                    }
+                ]
+            },
+
             // Setconf Command
-            COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anführer dieses Servers hat die Konfiguration nicht eingestellt.`,
+            COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anfuehrer dieses Servers hat die Konfiguration nicht eingestellt.`,
             COMMAND_SETCONF_MISSING_OPTION: `Du musst eine Konfig-Option auswaehlen zum aendern.`,
             COMMAND_SETCONF_MISSING_VALUE: `Zum aendern dieser Option musst du einen Wert angeben.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_OPT: 'Es muss `add` oder `remove` benutzt werden.',
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Du musst eine Rolle definieren ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Entschuldige, aber ich kann die Rolle nicht finden ${roleName}. Bitte erneut versuchen.`,
-
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Entschuldige, aber ${roleName} ist bereits vorhanden.`,
             COMMAND_SETCONF_ADMINROLE_NOT_IN_CONFIG: (roleName) => `Entschuldige, aber ${roleName} ist nicht in deiner Konfig.`,
             COMMAND_SETCONF_ADMINROLE_SUCCESS: (roleName, action) => `Die Rolle ${roleName} wurde ${action === 'add' ? 'hinzugefuegt' : 'entfernt'} von den Admin-Rollen.`,
@@ -553,11 +742,11 @@ module.exports = class extends Language {
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an`,
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.`,
-
             COMMAND_SETCONF_NO_KEY: (prefix) => `Dieser Schluessel ist nicht in der Konfiguration. Schaue in "${prefix}showconf", oder "${prefix}setconf help" fuer eine Uebersicht`,
             COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Gildenkonfiguration ${key} geaendert auf:\n\`${value}\``,
             COMMAND_SETCONF_NO_SETTINGS: `Keine Gildeneinstellungen gefunden.`,
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
+            COMMAND_SETCONF_RESET: `Die Konfiguration wurde zurueckgesetzt`,
             COMMAND_SETCONF_HELP: {
                 description: "Zum Bearbeiten der Einstellungen des Bots.",
                 actions: [
@@ -570,10 +759,10 @@ module.exports = class extends Language {
                     {
                         action: "adminRole",
                         actionDesc: 'Die Rolle, welche die Moeglichkeit haben soll Einstellungen des Bots zu aendern oder Events anlegen kann',
-                        usage: ';setconf adminRole <hinzufuegen|entfernen> <Rolle>',
+                        usage: ';setconf adminRole <add|remove> <Rolle>',
                         args: {
-                            'hinzufuegen':  'Eine Rolle zur Liste hinzufuegen',
-                            'entfernen': 'Eine Rolle von der Liste entfernen'
+                            'add':  'Eine Rolle zur Liste hinzufuegen',
+                            'remove': 'Eine Rolle von der Liste entfernen'
                         }
                     },
                     {
@@ -584,11 +773,11 @@ module.exports = class extends Language {
                     },
                     {
                         action: "welcomeMessage",
-                        actionDesc: 'Die Willkommensnachricht, die gesendet wird, wenn sie eingeschaltet ist (Besondere Variablen unten)',
+                        actionDesc: 'Die Willkommensnachricht, die gesendet wird, wenn sie eingeschaltet ist (besondere Variablen unten)',
                         usage: ';setconf welcomeMessage <Nachricht>',
                         args: {
                             '{{user}}':  "Wird durch den Benutzernamen ersetzt.",
-                            '{{userMention}}': "Erwaehnt den neuen Benutzer."
+                            '{{userMention}}': "Taggt den neuen Benutzer."
                         }
                     },
                     {
@@ -599,13 +788,13 @@ module.exports = class extends Language {
                     },
                     {
                         action: "timezone",
-                        actionDesc: 'Setzt die Zeitzone, die fuer Kommandos genutzt werden soll. Hier eine Liste der Zeitzonen https://goo.gl/Vqwe49.',
+                        actionDesc: 'Setzt die Zeitzone die genutzt werden soll. Hier eine Liste der Zeitzonen https://goo.gl/Vqwe49.',
                         usage: ';setconf timezone <Zeitzone>',
                         args: {}
                     },
                     {
                         action: "announceChan",
-                        actionDesc: 'Setzt den Ankuendigungskanal fuer Events etc. Stelle sicher, dass die Berechtigung zum Schreiben in dem Kanal gesetzt ist.',
+                        actionDesc: 'Setzt den Ankuendigungskanal fuer Events etc. Stelle sicher, dass eine Schreibberechtigung fuer diesen Kanal vorhanden ist.',
                         usage: ';setconf announceChan <KanalName>',
                         args: {}
                     },
@@ -617,7 +806,7 @@ module.exports = class extends Language {
                     },
                     {
                         action: "reset",
-                        actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn Du Dir sicher bist)',
+                        actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn du dir sicher bist)',
                         usage: ';setconf reset',
                         args: {}
                     }
@@ -725,26 +914,41 @@ module.exports = class extends Language {
                 ]
             },
 
-            COMMAND_TIME_CURRENT: (time, zone) => `Die aktuelle Uhrzeit ist: ${time} in der Zeitzone ${zone}`,
-            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Falsche Zeitzone, hier ist die Zeit Deiner Gilde ${time} in der Zeitzone ${zone}`,
-            COMMAND_TIME_NO_ZONE: (time) => `Die aktuelle Uhrzeit ist: ${time} UTC Zeit`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `Die aktuelle Uhrzeit ist: ${time} in der Zeitzone ${zone}`,
+            // Test command (in .gitignore)
+            COMMAND_TEST_HELP: {
+                description: "Kommando fuer Testzwecke.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';test',
+                        args: {}
+                    }
+                ]
+            },
+
+            // Time Command
+            COMMAND_TIME_CURRENT: (time, zone) => `Aktuelle Uhrzeit is: ${time} in ${zone} Zeit`,
+            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Ungueltige Zeitzone, fuer deine Gilde ist es jetzt ${time} in ${zone} Zeit`,
+            COMMAND_TIME_NO_ZONE: (time) => `Aktuelle Uhrzeit: ${time} UTC Zeit`,
+            COMMAND_TIME_WITH_ZONE: (time, zone) => `Aktuelle Uhrzeit: ${time} in ${zone} Zeit`,
             COMMAND_TIME_HELP: {
-                description: "Pruefe die fuer die Gilde eingestellte Zeitzone.",
+                description: "Wird benutzt um die aktuelle Uhrzeit und die eingestellte Zeitzone zu ueberpruefen.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';time [Zeitzone]',
                         args: {
-                            "Zeitzone": "OPTIONAL wenn Du sehen moechtest, wie spaet es woanders ist."
+                            "Zeitzone": "Optional falls du sehen moechtest welche Uhrzeit es woanders ist"
                         }
                     }
                 ]
             },
 
+            // Updatechar Command
             COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `${arg} ist kein gueltiges Argument. Probiere eines von diesen: ${usableArgs}`,
-            COMMAND_UPDATECHAR_NEED_CHAR: `Es muss ein Charakter angegeben werden, um Ihn zu aktualisieren.`,
+            COMMAND_UPDATECHAR_NEED_CHAR: `Es muss ein Charakter angegeben werden, um ihn zu aktualisieren.`,
             COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Die Suche nach '${charName}' ergab keine Treffer. Bitte erneut versuchen.`,
             COMMAND_UPDATECHAR_HELP: {
                 description: "Aktualisiere die Infos zu einem spezifizierten Charakter.",
@@ -754,13 +958,27 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';updatechar [Gear|Info|Mods] [Charakter]',
                         args: {
-                            "Gear": "Aktualisiere die Infos zur Gear eines Charakters.",
+                            "Gear": "Aktualisiere die Infos zur Ausruestung eines Charakters.",
                             "Info": "Aktualisiere die Infos zu einem Charakter (Link zum Bild, Faehigkeiten etc.)",
                             "Mods": "Aktualisiere die Mods von crouchingrancor.com"
                         }
                     }
                 ]
             },
+
+            // UpdateClient Command
+            COMMAND_UPDATECLIENT_HELP: {
+                description: "Aktualisiert den Client fuer die SWGoHAPI.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';updateclient',
+                        args: {}
+                    }
+                ]
+            },
+
             // Zetas Command
             COMMAND_ZETA_NO_USER: `Entschuldigung, aber diesen User kann ich nicht finden.`,
             COMMAND_ZETA_NO_ZETAS: 'Keine Faehigkeiten mit Zeta gefunden.',
@@ -773,7 +991,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';zeta [user]',
                         args: {
-                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)"
+                            "user": "Das Discordprofil vom Spieler den du sehen moechtest. (me | userID | mention)"
                         }
                     }
                 ]
