@@ -808,13 +808,16 @@ module.exports = (client) => {
     // Reload the SWGoH data for all patrons
     client.reloadPatrons = async () => {
         client.patrons = await client.getPatrons();
-        const patronIDs = (client.config.vipList && client.config.vipList.length) ? client.config.vipList : [];
-        patronIDs.push(client.config.ownerid);
+        let patronIDs = (client.config.vipList && client.config.vipList.length) ? client.config.vipList : [];
+        if (!patronIDs.indexOf(client.config.ownerid)) {
+            patronIDs.push(client.config.ownerid);
+        }
         client.patrons.forEach(patron => {
             if (patron.discordID) {
                 patronIDs.push(patron.discordID.toString());
             }
         });
+        patronIDs = [...new Set(patronIDs)];
         console.log('Reloading Patrons (' + patronIDs.length + ')');
         if (patronIDs.length) {
             for (let ix=0; ix < patronIDs.length; ix++) {
