@@ -7,6 +7,7 @@ const moment = require('moment');       // eslint-disable-line no-unused-vars
 const { Op } = require('sequelize');    // eslint-disable-line no-unused-vars
 const fs = require('fs');    // eslint-disable-line no-unused-vars
 const readdir = promisify(require("fs").readdir);       // eslint-disable-line no-unused-vars
+const request = require('request-promise-native');
 
 module.exports = (client) => {
     // The scheduler for events
@@ -771,7 +772,7 @@ module.exports = (client) => {
                 },
                 "repeatDays": repDays
             };
-        // Else if it's set to repeat 
+            // Else if it's set to repeat 
         } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
             repTime = true;
             newEvent = {
@@ -788,7 +789,7 @@ module.exports = (client) => {
                 "repeatDays": []
             };
         }  
-        
+
         if (repTime || repDay) {
             await client.guildEvents.update(newEvent, {where: {eventID: event.eventID}})
                 .then(async () => {
@@ -802,5 +803,88 @@ module.exports = (client) => {
                 .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
         }
     };
-};
 
+    
+    // Reload the SWGoH data for all patrons
+    client.reloadPatrons = async () => {
+        client.patrons = await client.getPatrons();
+        console.log('Reloading Patrons (' + client.patrons.length + ')');
+        const patronIDs = (client.config.vipList && client.config.vipList.length) ? client.config.vipList : [];
+        patronIDs.push(client.config.ownerid);
+        client.patrons.forEach(patron => {
+            if (patron.discordID) {
+                // console.log('Adding ' + patron.full_name + ' with dID of ' + patron.discordID);
+                patronIDs.push(patron.discordID.toString());
+            }
+        });
+        if (patronIDs.length) {
+            // console.log(patronIDs);
+            for (let ix=0; ix < patronIDs.length; ix++) {
+                const allyCodes = await client.getAllyCode(null, patronIDs[ix].toString());
+                if (allyCodes.length === 1) {
+                    // console.log('Reloading dID ' + patronIDs[ix] + ' with allyCode ' + allyCodes[0]);
+                    await client.swgohAPI.updatePlayer(allyCodes[0]);
+                }
+            }
+        }
+    };
+
+    // Get all patrons and their info
+    client.getPatrons = async () => {
+        const patreon = client.config.patreon;
+        return new Promise(async (resolve, reject) => {
+            if (!patreon) {
+                reject('No Patreon settings');
+            }
+            try {
+                let response = await request({
+                    headers: {
+                        Authorization: 'Bearer ' + patreon.creatorAccessToken
+                    },
+                    uri: 'https://www.patreon.com/api/oauth2/api/current_user/campaigns',
+                    json: true
+                });
+
+                if (response && response.data && response.data.length) {
+                    response = await request({
+                        headers: {
+                            Authorization: 'Bearer ' + patreon.creatorAccessToken
+                        },
+                        uri: 'https://www.patreon.com/api/oauth2/api/campaigns/' + response.data[0].id + '/pledges',
+                        json: true
+                    });
+
+                    const data = response.data;
+                    const included = response.included;
+
+                    const pledges = data.filter(data => data.type === 'pledge');
+                    const users = included.filter(inc => inc.type === 'user');
+
+                    let patrons = [];
+                    pledges.forEach(pledge => {
+                        const user = users.filter(user => user.id === pledge.relationships.patron.data.id)[0];
+                        patrons.push({
+                            id: pledge.relationships.patron.data.id,
+                            full_name: user.attributes.full_name,
+                            vanity: user.attributes.vanity,
+                            email: user.attributes.email,
+                            discordID: user.attributes.social_connections.discord ? user.attributes.social_connections.discord.user_id : null,
+                            amount_cents: pledge.attributes.amount_cents,
+                            created_at: pledge.attributes.created_at,
+                            declined_since: pledge.attributes.declined_since,
+                            patron_pays_fees: pledge.attributes.patron_pays_fees,
+                            pledge_cap_cents: pledge.attributes.pledge_cap_cents,
+                            image_url: user.attributes.image_url
+                        });
+                    });
+
+                    patrons = patrons.filter(patron => !patron.declined_since);
+
+                    resolve(patrons);
+                }
+            } catch (e) {
+                reject(e);
+            }
+        });
+    };
+};

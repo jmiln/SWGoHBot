@@ -16,6 +16,7 @@ client.config = require('./config.js');
 client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
 client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
 client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
+client.patrons = [];
 const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE = "./data/swgoh-gg-ships.json";
@@ -78,6 +79,7 @@ client.allyCodes = client.sequelize.define('allyCodes', {
 });
 
 const init = async () => {
+
     // If we have the magic, use it
     if (client.config.swgohLoc && client.config.swgohLoc !== "") {
         client.swgohAPI = require(`./${client.config.swgohLoc}/swgoh.js`);
@@ -126,6 +128,10 @@ if (!client.shard || client.shard.id === 0) {
     // Check every 12 hours to see if any mods have been changed
     setInterval(updateRemoteData, 12 * 60 * 60 * 1000);
     //                               hr   min  sec  mSec
+    
+    // Set the patron's goh data to be reloaded
+    setTimeout(client.reloadPatrons,    1 * 60 * 1000);   // Load em a min after start
+    setInterval(client.reloadPatrons,  60 * 60 * 1000);   // Then every hour after
 } else {
     // To reload the characters on any shard other than the main one
     // a bit after it would have grabbed new ones
