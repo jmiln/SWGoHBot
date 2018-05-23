@@ -808,21 +808,18 @@ module.exports = (client) => {
     // Reload the SWGoH data for all patrons
     client.reloadPatrons = async () => {
         client.patrons = await client.getPatrons();
-        console.log('Reloading Patrons (' + client.patrons.length + ')');
         const patronIDs = (client.config.vipList && client.config.vipList.length) ? client.config.vipList : [];
         patronIDs.push(client.config.ownerid);
         client.patrons.forEach(patron => {
             if (patron.discordID) {
-                // console.log('Adding ' + patron.full_name + ' with dID of ' + patron.discordID);
                 patronIDs.push(patron.discordID.toString());
             }
         });
+        console.log('Reloading Patrons (' + patronIDs.length + ')');
         if (patronIDs.length) {
-            // console.log(patronIDs);
             for (let ix=0; ix < patronIDs.length; ix++) {
                 const allyCodes = await client.getAllyCode(null, patronIDs[ix].toString());
-                if (allyCodes.length === 1) {
-                    // console.log('Reloading dID ' + patronIDs[ix] + ' with allyCode ' + allyCodes[0]);
+                if (allyCodes.length) {
                     await client.swgohAPI.updatePlayer(allyCodes[0]);
                 }
             }
