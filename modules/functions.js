@@ -834,7 +834,7 @@ module.exports = (client) => {
         const patreon = client.config.patreon;
         return new Promise(async (resolve, reject) => {
             if (!patreon) {
-                reject('No Patreon settings');
+                resolve([]);
             }
             try {
                 let response = await request({

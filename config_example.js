@@ -2,6 +2,9 @@ const config = {
     // The Discord ID for the bot owner (Gets max perms/ can use Dev commands)
     "ownerid": "YourUserID",
 
+    // Array of discord ID strings
+    "vipList": [],
+
     // The prefix for commands (';' is used as ;help, '+' for +help etc. )
     "prefix": "YourPrefixGoesHere",
 
@@ -48,6 +51,14 @@ const config = {
     //     "user"     : "",
     //     "password" : "",
     //     "database" : ""
+    // },
+    //
+    // Need a Patreon account for this
+    // "patreon": {                                                                 │50     //     "host"     : "",
+    //     "clientID": "",
+    //     "clientSecret": "",
+    //     "creatorAccessToken": "",
+    //     "creatorRefreshToken": ""
     // }
 };
 
