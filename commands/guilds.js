@@ -48,19 +48,19 @@ class Guilds extends Command {
                 }});
             });
         } else {    // Else they want a specific guild
-            let type = 'userID';
+            let type = 'allyCode';
             let min = false;
             // Get the user's ally code from the message or psql db
-            if (user === "me") {
-                user = message.author.id;
-            } else if (user.match(/\d{17,18}/)) {
-                user = user.replace(/[^\d]*/g, '');
-            } else if (user.match(/\d{9}/)) {
-                user = user.replace(/[^\d]*/g, '');
-                type = 'allyCode';
+            if (user === "me" || client.isUserID(user) || client.isAllyCode(user)) {
+                user = await client.getAllyCode(message, user);
+                if (!user.length) {
+                    return message.channel.send('I cannot find a guild for that user.');
+                } 
+                user = user[0];
+                console.log(user);
             } else {
                 // Or, if they don't have one of those, try getting the guild by name
-                user = user + ' ' + args.join(' ');
+                user += args.length ? ' ' + args.join(' ') : '';
                 type = 'gName';
             }
             const tUser = user.split(' ');

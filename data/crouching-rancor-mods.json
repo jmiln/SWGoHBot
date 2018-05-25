@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2018-05-14 20:00:01.000000",
+        "date": "2018-05-24 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -3046,6 +3046,54 @@
             "cross": "Health / Offense",
             "short": "ds",
             "families": "sith",
+            "crew": "0"
+        },
+        {
+            "name": "Bossk",
+            "cname": "Bossk",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "short": "",
+            "families": "scoundrel ; bounty hunter",
+            "crew": "0"
+        },
+        {
+            "name": "Vandor Chewbacca",
+            "cname": "Vandor Chewbacca",
+            "set1": "HP",
+            "set2": "HP",
+            "set3": "HP",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health / Offense",
+            "circle": "Health",
+            "cross": "Health / Offense",
+            "short": "vc",
+            "families": "scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "Young Han Solo",
+            "cname": "Young Han Solo",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "yhs",
+            "families": "scoundrel",
             "crew": "0"
         }
     ]

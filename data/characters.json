@@ -32713,6 +32713,20 @@
                 "circle": "Health",
                 "cross": "Offense/ Protection",
                 "source": "GoC Supremacy"
+            },
+            "Bossk": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "Crouching Rancor"
             }
         },
         "legacyMods": {},
@@ -32926,7 +32940,22 @@
             "Scoundrel",
             "Tank"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Offense",
+                "circle": "Health",
+                "cross": "Health/ Offense",
+                "source": "Crouching Rancor"
+            }
+        },
         "legacyMods": {},
         "gear": {
             "Gear 1": [
@@ -33116,7 +33145,22 @@
             "Attacker",
             "Scoundrel"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        },
         "legacyMods": {},
         "gear": {
             "Gear 1": [

@@ -4,7 +4,7 @@
         "base_id": "JEDISTARFIGHTERAHSOKATANO",
         "url": "https://swgoh.gg/ships/ahsoka-tanos-jedi-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_fighter_ahsoka.png",
-        "power": 42771,
+        "power": 46349,
         "description": "Versatile Jedi Attacker that uses dispels and buffs to adapt to the battle",
         "combat_type": 2
     },
@@ -13,7 +13,7 @@
         "base_id": "XWINGRED3",
         "url": "https://swgoh.gg/ships/biggs-darklighters-x-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_xwing_red3.png",
-        "power": 41478,
+        "power": 45055,
         "description": "Heroic Rebel Tank that can exploit Target Lock for Taunts and Assists",
         "combat_type": 2
     },
@@ -22,7 +22,7 @@
         "base_id": "UWINGSCARIF",
         "url": "https://swgoh.gg/ships/bistans-u-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_uwing.png",
-        "power": 50278,
+        "power": 53855,
         "description": "Elusive Rebel Support that boosts ally Turn Meter while using Stealth and Target Lock",
         "combat_type": 2
     },
@@ -31,7 +31,7 @@
         "base_id": "UWINGROGUEONE",
         "url": "https://swgoh.gg/ships/cassians-u-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_uwing_hero.png",
-        "power": 60630,
+        "power": 64207,
         "description": "Evasive Rebel Support ship that turns the tide of battle with Stealth and Turn Meter manipulation",
         "combat_type": 2
     },
@@ -40,7 +40,7 @@
         "base_id": "CAPITALCHIMAERA",
         "url": "https://swgoh.gg/ships/chimaera/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_chimaera.png",
-        "power": 55320,
+        "power": 57443,
         "description": "Tactical Empire Capital Ship that shuts down enemy Capital Ships and manipulates the flow of battle",
         "combat_type": 2
     },
@@ -49,7 +49,7 @@
         "base_id": "ARC170CLONESERGEANT",
         "url": "https://swgoh.gg/ships/clone-sergeants-arc-170/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_arc170.png",
-        "power": 41478,
+        "power": 45055,
         "description": "Reliable Clone Tank that both inflicts and exploits Target Lock",
         "combat_type": 2
     },
@@ -58,7 +58,7 @@
         "base_id": "CAPITALJEDICRUISER",
         "url": "https://swgoh.gg/ships/endurance/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_venator.png",
-        "power": 43202,
+        "power": 45324,
         "description": "Defensive Jedi Capital Ship that uses Valor to gain a huge Speed advantage",
         "combat_type": 2
     },
@@ -67,7 +67,7 @@
         "base_id": "CAPITALSTARDESTROYER",
         "url": "https://swgoh.gg/ships/executrix/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_stardestroyer.png",
-        "power": 55320,
+        "power": 57443,
         "description": "Aggressive Empire Capital Ship that crushes debuffed enemies",
         "combat_type": 2
     },
@@ -76,7 +76,7 @@
         "base_id": "TIEFIGHTERFOSF",
         "url": "https://swgoh.gg/ships/first-order-sf-tie-fighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_fosf_tie_fighter.png",
-        "power": 41478,
+        "power": 45055,
         "description": "Superior First Order Attacker that has multiple offensive capabilities and inflicts multiple debuffs",
         "combat_type": 2
     },
@@ -85,7 +85,7 @@
         "base_id": "TIEFIGHTERFIRSTORDER",
         "url": "https://swgoh.gg/ships/first-order-tie-fighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_firstorder_tiefighter.png",
-        "power": 46419,
+        "power": 49996,
         "description": "Aggressive First Order Attacker with reliable Target Lock and rapid-fire Special ability",
         "combat_type": 2
     },
@@ -94,7 +94,7 @@
         "base_id": "GAUNTLETSTARFIGHTER",
         "url": "https://swgoh.gg/ships/gauntlet-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_gauntlet.png",
-        "power": 53526,
+        "power": 57103,
         "description": "Reliable Empire Support that dispels ally debuffs and prevents enemy buffs",
         "combat_type": 2
     },
@@ -103,7 +103,7 @@
         "base_id": "GEONOSIANSTARFIGHTER2",
         "url": "https://swgoh.gg/ships/geonosian-soldiers-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_soldier.png",
-        "power": 41478,
+        "power": 45055,
         "description": "Aggressive Separatist Attacker that can Assist allies automatically",
         "combat_type": 2
     },
@@ -112,7 +112,7 @@
         "base_id": "GEONOSIANSTARFIGHTER3",
         "url": "https://swgoh.gg/ships/geonosian-spys-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_spy.png",
-        "power": 41478,
+        "power": 45055,
         "description": "Elusive Separatist Attacker that uses Stealth for both offense and defense",
         "combat_type": 2
     },
@@ -121,8 +121,8 @@
         "base_id": "GHOST",
         "url": "https://swgoh.gg/ships/ghost/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_ghost.png",
-        "power": 57948,
-        "description": "Elusive Rebel attacker that reduces enemy Potency and wreaks havok with buffed allies",
+        "power": 61525,
+        "description": "Elusive Rebel attacker that reduces enemy Potency and wreaks havok with Rebel allies",
         "combat_type": 2
     },
     {
@@ -130,7 +130,7 @@
         "base_id": "CAPITALMONCALAMARICRUISER",
         "url": "https://swgoh.gg/ships/home-one/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_moncalamarilibertycruiser.png",
-        "power": 43202,
+        "power": 45324,
         "description": "Versatile Rebel Capital Ship that uses Advantage and bonus attacks to turn the tide",
         "combat_type": 2
     },
@@ -139,8 +139,8 @@
         "base_id": "TIEFIGHTERIMPERIAL",
         "url": "https://swgoh.gg/ships/imperial-tie-fighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_tiefighter.png",
-        "power": 41478,
-        "description": "Evasive Empire Attacker that both inflicts and exploits Target Lock while gaining speed each turn",
+        "power": 45055,
+        "description": "Evasive Empire Attacker that both inflicts and exploits Target Lock",
         "combat_type": 2
     },
     {
@@ -148,7 +148,7 @@
         "base_id": "JEDISTARFIGHTERCONSULAR",
         "url": "https://swgoh.gg/ships/jedi-consulars-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_fighter.png",
-        "power": 41478,
+        "power": 45055,
         "description": "Defensive Jedi Support that can rapidly restore ally Protection",
         "combat_type": 2
     },
@@ -157,7 +157,7 @@
         "base_id": "COMMANDSHUTTLE",
         "url": "https://swgoh.gg/ships/kylo-rens-command-shuttle/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_upsilon_shuttle_kylo.png",
-        "power": 57241,
+        "power": 60819,
         "description": "Durable First Order Support with unparalleled ability to manipulate allied Turn Meter",
         "combat_type": 2
     },
@@ -166,7 +166,7 @@
         "base_id": "MILLENNIUMFALCONEP7",
         "url": "https://swgoh.gg/ships/millennium-falcon-ep-vii/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
-        "power": 57550,
+        "power": 61128,
         "description": "Daring Resistance freighter that can turn the tide by sacrificing buffs",
         "combat_type": 2
     },
@@ -175,8 +175,8 @@
         "base_id": "PHANTOM2",
         "url": "https://swgoh.gg/ships/phantom-ii/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_phantom2.png",
-        "power": 55971,
-        "description": "Evasive Rebel attacker that provides as a decoy for the Ghost while applying multiple buffs to allies",
+        "power": 59549,
+        "description": "Evasive Rebel attacker that provides as a decoy for the Ghost while applying buffs to allies",
         "combat_type": 2
     },
     {
@@ -184,7 +184,7 @@
         "base_id": "BLADEOFDORIN",
         "url": "https://swgoh.gg/ships/plo-koons-jedi-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_fighter_bladeofdorin.png",
-        "power": 42771,
+        "power": 46349,
         "description": "Versatile Jedi Support with powerful Republic buffs and a targeted ally Taunt",
         "combat_type": 2
     },
@@ -193,7 +193,7 @@
         "base_id": "XWINGBLACKONE",
         "url": "https://swgoh.gg/ships/poe-damerons-x-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_xwing_blackone.png",
-        "power": 42771,
+        "power": 46349,
         "description": "Heroic Resistance Attacker that can exploit Turn Meter and punish enemies without Protection",
         "combat_type": 2
     },
@@ -202,7 +202,7 @@
         "base_id": "XWINGRESISTANCE",
         "url": "https://swgoh.gg/ships/resistance-x-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_xwing_resistance.png",
-        "power": 41005,
+        "power": 44583,
         "description": "Aggressive Resistance Support that shuts down enemies with Expose, Target Lock, and Daze",
         "combat_type": 2
     },
@@ -211,7 +211,7 @@
         "base_id": "ARC170REX",
         "url": "https://swgoh.gg/ships/rexs-arc-170/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_arc170_02.png",
-        "power": 42771,
+        "power": 46349,
         "description": "Defensive Clone Tank that can inflict Target Lock and boost ally Protection and Tenacity",
         "combat_type": 2
     },
@@ -220,8 +220,8 @@
         "base_id": "SITHINFILTRATOR",
         "url": "https://swgoh.gg/ships/scimitar/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_sithinfiltrator.png",
-        "power": 48185,
-        "description": "Deadly Sith Support that can Stealth allies to set up deadly attacks",
+        "power": 51762,
+        "description": "Deadly Sith Support that can Stealth allies to set up devastating attacks",
         "combat_type": 2
     },
     {
@@ -229,7 +229,7 @@
         "base_id": "SLAVE1",
         "url": "https://swgoh.gg/ships/slave-i/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_slave1.png",
-        "power": 51715,
+        "power": 55293,
         "description": "Deadly Bounty Hunter Attacker that inflicts and exploits Target Lock for high area-of-effect damage",
         "combat_type": 2
     },
@@ -238,7 +238,7 @@
         "base_id": "GEONOSIANSTARFIGHTER1",
         "url": "https://swgoh.gg/ships/sun-facs-geonosian-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_sunfac.png",
-        "power": 42771,
+        "power": 46349,
         "description": "Punishing Separatist Tank that automatically Taunts against buffed enemies",
         "combat_type": 2
     },
@@ -247,7 +247,7 @@
         "base_id": "TIEADVANCED",
         "url": "https://swgoh.gg/ships/tie-advanced-x1/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_tieadvanced.png",
-        "power": 54890,
+        "power": 58467,
         "description": "Fearsome Empire Attacker that shuts enemies down with stacking debuffs and permanent Target Locks",
         "combat_type": 2
     },
@@ -256,7 +256,7 @@
         "base_id": "TIEREAPER",
         "url": "https://swgoh.gg/ships/tie-reaper/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_tiereaper.png",
-        "power": 53526,
+        "power": 54123,
         "description": "Defensive Empire Support that Dispels, delays cooldowns, and removes Turn Meter from the enemy Capital Ship",
         "combat_type": 2
     },
@@ -265,7 +265,7 @@
         "base_id": "TIESILENCER",
         "url": "https://swgoh.gg/ships/tie-silencer/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_tie_silencer.png",
-        "power": 54890,
+        "power": 58467,
         "description": "Superior First Order Attacker that gains unlimited speed and deals massive damage",
         "combat_type": 2
     },
@@ -274,7 +274,7 @@
         "base_id": "UMBARANSTARFIGHTER",
         "url": "https://swgoh.gg/ships/umbaran-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_umbaran_star_fighter.png",
-        "power": 48185,
+        "power": 51762,
         "description": "Risky Clone Tank that inflicts great damage and debuffs, but grants Turn Meter to enemies",
         "combat_type": 2
     },
@@ -283,8 +283,8 @@
         "base_id": "XWINGRED2",
         "url": "https://swgoh.gg/ships/wedge-antilless-x-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_xwing_red2.png",
-        "power": 42771,
-        "description": "Aggressive Rebel Attacker that overwhelms enemies with Continuous Damage",
+        "power": 46349,
+        "description": "Aggressive Rebel Attacker that overwhelms enemies with debuffs",
         "combat_type": 2
     }
 ]
