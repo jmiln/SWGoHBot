@@ -103,7 +103,7 @@ module.exports = class extends Language {
                 };
             },
 
-            // Abilities Command 
+            // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}${usage}\``,
             COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter. Verwendung \`${prefix}${usage}\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Abklingzeit Faehigkeit:** ${aCooldown}\n`,
@@ -161,10 +161,10 @@ module.exports = class extends Language {
             // Challenges Command
             COMMAND_CHALLENGES_TRAINING: "Trainingsdroiden",
             COMMAND_CHALLENGES_ABILITY : "Faehigkeitenfundament",
-            COMMAND_CHALLENGES_BOUNTY  : "Kopfgeldjaeger",  
-            COMMAND_CHALLENGES_AGILITY : "GES-Ausruestung",   
-            COMMAND_CHALLENGES_STRENGTH: "KRA-Ausruestung",  
-            COMMAND_CHALLENGES_TACTICS : "Tak-Ausruestung",   
+            COMMAND_CHALLENGES_BOUNTY  : "Kopfgeldjaeger",
+            COMMAND_CHALLENGES_AGILITY : "GES-Ausruestung",
+            COMMAND_CHALLENGES_STRENGTH: "KRA-Ausruestung",
+            COMMAND_CHALLENGES_TACTICS : "Tak-Ausruestung",
             COMMAND_CHALLENGES_SHIP_ENHANCEMENT: "Schiffsaufwertungsdroiden",
             COMMAND_CHALLENGES_SHIP_BUILDING   : "Schiffbaumaterialien",
             COMMAND_CHALLENGES_SHIP_ABILITY    : "Schiff-Faehigkeitsmaterialien",
@@ -483,6 +483,28 @@ module.exports = class extends Language {
                 ]
             },
 
+            COMMAND_MODS_CRIT_CHANCE_SET: "Krit. Chance x2",
+            COMMAND_MODS_CRIT_DAMAGE_SET: "Krit. Schaden x4",
+            COMMAND_MODS_SPEED_SET: "Tempo x4",
+            COMMAND_MODS_TENACITY_SET: "Zaehigkeit x2",
+            COMMAND_MODS_OFFENSE_SET: "Angriff x4",
+            COMMAND_MODS_POTENCY_SET: "Effektivitaet x2",
+            COMMAND_MODS_HEALTH_SET: "Gesundheit x2",
+            COMMAND_MODS_DEFENSE_SET: "Abwehr x2",
+            COMMAND_MODS_EMPTY_SET: " ",
+
+            COMMAND_MODS_ACCURACY_STAT: "Praezision",
+            COMMAND_MODS_CRIT_CHANCE_STAT: "Krit. Chance",
+            COMMAND_MODS_CRIT_DAMAGE_STAT: "Krit. Schaden",
+            COMMAND_MODS_DEFENSE_STAT: "Abwehr",
+            COMMAND_MODS_HEALTH_STAT: "Gesundheit",
+            COMMAND_MODS_OFFENSE_STAT: "Angriff",
+            COMMAND_MODS_PROTECTION_STAT: "Schutz",
+            COMMAND_MODS_POTENCY_STAT: "Effektivitaet",
+            COMMAND_MODS_SPEED_STAT: "Tempo",
+            COMMAND_MODS_TENACITY_STAT: "Zaehigkeit",
+            COMMAND_MODS_UNKNOWN: "Unbekannt",
+
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
             COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
@@ -659,7 +681,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_MISSING_ALLY: 'Du musst einen Buendniscode angeben mit dem du das Konto verknuepfen willst.',
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger Buendniscode`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Bitte warten waehrend ich die Daten synchronisiere.',
-            COMMAND_REGISTER_FAILURE: 'Registrierung fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',    
+            COMMAND_REGISTER_FAILURE: 'Registrierung fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
             COMMAND_REGISTER_UPDATE_FAILURE: 'Etwas ist fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profil aktualisiert fuer \`${user}\`.`,
@@ -692,7 +714,7 @@ module.exports = class extends Language {
                         }
                     }
                 ]
-            },   
+            },
 
 
 
@@ -998,7 +1020,7 @@ module.exports = class extends Language {
                 ]
             }
         };
-    }       
+    }
 };
 
 
