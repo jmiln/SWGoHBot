@@ -1120,6 +1120,16 @@
         "combat_type": 1
     },
     {
+        "name": "Qi'ra",
+        "base_id": "QIRA",
+        "pk": 272,
+        "url": "https://swgoh.gg/characters/qira/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_qira.png",
+        "power": 20713,
+        "description": "High-utility Support that uses Prepared, debuffs, and an adaptable Leader ability to overwhelm enemies",
+        "combat_type": 1
+    },
+    {
         "name": "Qui-Gon Jinn",
         "base_id": "QUIGONJINN",
         "pk": 44,
