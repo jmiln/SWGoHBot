@@ -103,7 +103,7 @@ module.exports = class extends Language {
                 };
             },
 
-            // Abilities Command 
+            // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
             COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
@@ -123,8 +123,8 @@ module.exports = class extends Language {
 
             // Activities Command
             COMMAND_ACTIVITIES_SUNDAY: `== Before Reset == \nComplete Arena Battles \nSave Cantina Energy \nSave Normal Energy\n\n== After Reset == \nSpend Cantina Energy \nSave Normal Energy`,
-            COMMAND_ACTIVITIES_MONDAY: `== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \nSave Galactic War (unless reset available)\n\n== After Reset == \nSpend Normal Energy on Light Side Battles \nSave Galactic War (unless reset available)`,
-            COMMAND_ACTIVITIES_TUESDAY: `== Before Reset == \nSpend Normal Energy on Light Side Battles \nSave Galactic War\n\n== After Reset == \nComplete Galactic War Battles \nSave Normal Energy`,
+            COMMAND_ACTIVITIES_MONDAY: `== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \n\n== After Reset == \nSpend Normal Energy on Light Side Battles `,
+            COMMAND_ACTIVITIES_TUESDAY: `== Before Reset == \nSpend Normal Energy on Light Side Battles \nSave All Kinds of Energy\n\n== After Reset == \nSpend All Kinds of Energy \nSave Normal Energy`,
             COMMAND_ACTIVITIES_WEDNESDAY: `== Before Reset == \nComplete Galactic War Battles \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Hard Mode Battles`,
             COMMAND_ACTIVITIES_THURSDAY: `== Before Reset == \nSpend Normal Energy on Hard Mode Battles \nSave Challenges\n\n== After Reset == \nComplete Challenges \nSave Normal Energy`,
             COMMAND_ACTIVITIES_FRIDAY: `== Before Reset == \nComplete Challenges \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Dark Side Battles`,
@@ -161,10 +161,10 @@ module.exports = class extends Language {
             // Challenges Command
             COMMAND_CHALLENGES_TRAINING: "Training Droids",
             COMMAND_CHALLENGES_ABILITY : "Ability Mats",
-            COMMAND_CHALLENGES_BOUNTY  : "Bounty Hunter",  
-            COMMAND_CHALLENGES_AGILITY : "Agility Gear",   
-            COMMAND_CHALLENGES_STRENGTH: "Strength Gear",  
-            COMMAND_CHALLENGES_TACTICS : "Tactics Gear",   
+            COMMAND_CHALLENGES_BOUNTY  : "Bounty Hunter",
+            COMMAND_CHALLENGES_AGILITY : "Agility Gear",
+            COMMAND_CHALLENGES_STRENGTH: "Strength Gear",
+            COMMAND_CHALLENGES_TACTICS : "Tactics Gear",
             COMMAND_CHALLENGES_SHIP_ENHANCEMENT: "Ship Enhancement Droids",
             COMMAND_CHALLENGES_SHIP_BUILDING   : "Ship Building Materials",
             COMMAND_CHALLENGES_SHIP_ABILITY    : "Ship Ability Materials",
@@ -442,7 +442,7 @@ module.exports = class extends Language {
                     }
                 ]
             },
-            
+
 
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
@@ -482,6 +482,28 @@ module.exports = class extends Language {
                     }
                 ]
             },
+
+            COMMAND_MODS_CRIT_CHANCE_SET: "Crit. Chance x2",
+            COMMAND_MODS_CRIT_DAMAGE_SET: "Crit. Damage x4",
+            COMMAND_MODS_SPEED_SET: "Speed x4",
+            COMMAND_MODS_TENACITY_SET: "Tenacity x2",
+            COMMAND_MODS_OFFENSE_SET: "Offense x4",
+            COMMAND_MODS_POTENCY_SET: "Potency x2",
+            COMMAND_MODS_HEALTH_SET: "Health x2",
+            COMMAND_MODS_DEFENSE_SET: "Defense x2",
+            COMMAND_MODS_EMPTY_SET: " ",
+
+            COMMAND_MODS_ACCURACY_STAT: "Accuracy",
+            COMMAND_MODS_CRIT_CHANCE_STAT: "Crit. Chance",
+            COMMAND_MODS_CRIT_DAMAGE_STAT: "Crit. Damage",
+            COMMAND_MODS_DEFENSE_STAT: "Defense",
+            COMMAND_MODS_HEALTH_STAT: "Health",
+            COMMAND_MODS_OFFENSE_STAT: "Offense",
+            COMMAND_MODS_PROTECTION_STAT: "Protection",
+            COMMAND_MODS_POTENCY_STAT: "Potency",
+            COMMAND_MODS_SPEED_STAT: "Speed",
+            COMMAND_MODS_TENACITY_STAT: "Tenacity",
+            COMMAND_MODS_UNKNOWN: "Unknown",
 
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
@@ -609,7 +631,7 @@ module.exports = class extends Language {
                     }
                 ]
             },
-            
+
             // Raidteams Command
             COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
             COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
@@ -637,7 +659,7 @@ module.exports = class extends Language {
                     }
                 ]
             },
-            
+
             // Randomchar Command
             COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Sorry, but you need a number from 1-${maxChar} there.`,
             COMMAND_RANDOMCHAR_HELP: {
@@ -695,7 +717,7 @@ module.exports = class extends Language {
             },
 
 
-            
+
             // Reload Command
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `I cannot find the command: ${cmd}`,
             COMMAND_RELOAD_SUCCESS: (cmd) => `Successfully reloaded: ${cmd}`,
@@ -741,7 +763,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_ADMINROLE_SUCCESS: (roleName, action) => `The role ${roleName} has been ${action} your admin roles.`,
             COMMAND_SETCONF_WELCOME_NEED_CHAN: `Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``,
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,    
+            COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Sorry, but I don't have permission to send message there. Please either change the perms, or choose another channel.`,
             COMMAND_SETCONF_NO_KEY: (prefix) => `This key is not in the configuration. Look in "${prefix}showconf", or "${prefix}setconf help" for a list`,
             COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Guild configuration item ${key} has been changed to:\n\`${value}\``,

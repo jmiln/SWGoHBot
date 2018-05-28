@@ -189,22 +189,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Critical Chance x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -223,7 +207,8 @@
         },
         "nameVariant": [
             "Aayla Secura"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Admiral Ackbar",
@@ -415,22 +400,6 @@
                 "Guild Events Store"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Tenacity x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -449,7 +418,8 @@
         },
         "nameVariant": [
             "Admiral Ackbar"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Ahsoka Tano",
@@ -643,7 +613,6 @@
                 "Cantina Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -662,7 +631,8 @@
         },
         "nameVariant": [
             "Ahsoka Tano"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Ahsoka Tano Fulcrum",
@@ -853,7 +823,6 @@
                 "Fleet Store"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -873,7 +842,8 @@
         "nameVariant": [
             "Ahsoka Tano Fulcrum",
             "Ahsoka Tano (Fulcrum)"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Asajj Ventress",
@@ -1074,22 +1044,6 @@
                 "Squad Arena Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -1108,7 +1062,8 @@
         },
         "nameVariant": [
             "Asajj Ventress"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "B2 Super Battle Droid",
@@ -1289,7 +1244,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "B2 with HK-47 lead": {
                 "sets": [
@@ -1322,7 +1276,8 @@
         },
         "nameVariant": [
             "B2 Super Battle Droid"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Barriss Offee",
@@ -1518,7 +1473,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -1537,7 +1491,8 @@
         },
         "nameVariant": [
             "Barriss Offee"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Baze Malbus",
@@ -1740,7 +1695,6 @@
                 "Guild Events Store"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -1759,7 +1713,8 @@
         },
         "nameVariant": [
             "Baze Malbus"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "BB-8",
@@ -1959,22 +1914,6 @@
             "cantina": [],
             "shops": []
         },
-        "legacyMods": {
-            "Resistance": {
-                "sets": [
-                    "Speed/ Crit Dmg./ Offense x4",
-                    "Potency/ Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Health/ Protection/ Offense/ Crit Dmg",
-                "circle": "Health/ Protection",
-                "cross": "Offense/ Potency/ Offense",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "HK-47 Lead - Damage": {
                 "sets": [
@@ -2035,7 +1974,8 @@
         },
         "nameVariant": [
             "BB-8"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Biggs Darklighter",
@@ -2219,7 +2159,6 @@
                 "Guild Events Store"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -2238,7 +2177,8 @@
         },
         "nameVariant": [
             "Biggs Darklighter"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Bistan",
@@ -2429,7 +2369,6 @@
                 "Fleet Store"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -2448,7 +2387,8 @@
         },
         "nameVariant": [
             "Bistan"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Boba Fett",
@@ -2672,7 +2612,6 @@
                 "Cantina Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "leader": {
                 "sets": [
@@ -2719,7 +2658,8 @@
         },
         "nameVariant": [
             "Boba Fett"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Bodhi Rook",
@@ -2910,7 +2850,6 @@
                 "Guild Events Store"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -2929,7 +2868,8 @@
         },
         "nameVariant": [
             "Bodhi Rook"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Cad Bane",
@@ -3120,22 +3060,6 @@
                 "Galactic War Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -3154,7 +3078,8 @@
         },
         "nameVariant": [
             "Cad Bane"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Captain Han Solo",
@@ -3346,50 +3271,6 @@
             ],
             "shops": []
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Dmg",
-                "circle": "Health",
-                "cross": "Health",
-                "source": "Unknown"
-            },
-            "Arena 2": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Dmg",
-                "circle": "Protection",
-                "cross": "Potency/ Protection",
-                "source": "Unknown"
-            },
-            "Territory Battles": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Health",
-                "circle": "Health",
-                "cross": "Health",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "TB": {
                 "sets": [
@@ -3422,7 +3303,8 @@
         },
         "nameVariant": [
             "Captain Han Solo"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Captain Phasma",
@@ -3611,22 +3493,6 @@
                 "Galactic War Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -3645,7 +3511,8 @@
         },
         "nameVariant": [
             "Captain Phasma"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Cassian Andor",
@@ -3837,7 +3704,6 @@
                 "Guild Events Store"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -3856,7 +3722,8 @@
         },
         "nameVariant": [
             "Cassian Andor"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "CC-2224 Cody",
@@ -4048,22 +3915,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena (Leader)": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "leader": {
                 "sets": [
@@ -4097,7 +3948,8 @@
         "nameVariant": [
             "CC-2224 Cody",
             "CC-2224 \"Cody\""
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Chief Chirpa",
@@ -4286,22 +4138,6 @@
             ],
             "shops": []
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -4320,7 +4156,8 @@
         },
         "nameVariant": [
             "Chief Chirpa"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Chief Nebit",
@@ -4509,22 +4346,6 @@
                 "Squad Arena Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -4543,7 +4364,8 @@
         },
         "nameVariant": [
             "Chief Nebit"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Chirrut Imwe",
@@ -4756,22 +4578,6 @@
                 "Fleet Store"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -4791,7 +4597,8 @@
         "nameVariant": [
             "Chirrut Imwe",
             "Chirrut Îmwe"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Chopper",
@@ -4982,22 +4789,6 @@
                 "Guild Events Store"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Defense x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed/ Protection/ Prot.",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -5016,7 +4807,8 @@
         },
         "nameVariant": [
             "Chopper"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Clone Sergeant Phase I",
@@ -5200,7 +4992,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "Clone Sergeant P1": {
                 "sets": [
@@ -5219,7 +5010,8 @@
         },
         "nameVariant": [
             "Clone Sergeant Phase I"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Clone Wars Chewbacca",
@@ -5414,7 +5206,6 @@
             ],
             "shops": []
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -5433,7 +5224,8 @@
         },
         "nameVariant": [
             "Clone Wars Chewbacca"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Commander Luke Skywalker",
@@ -5645,22 +5437,6 @@
             "cantina": [],
             "shops": []
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -5693,7 +5469,8 @@
         },
         "nameVariant": [
             "Commander Luke Skywalker"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Coruscant Underworld Police",
@@ -5871,7 +5648,6 @@
                 "Squad Arena Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "why ?!": {
                 "sets": [
@@ -5890,7 +5666,8 @@
         },
         "nameVariant": [
             "Coruscant Underworld Police"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Count Dooku",
@@ -6083,22 +5860,6 @@
             ],
             "shops": []
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Tenacity x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -6131,7 +5892,8 @@
         },
         "nameVariant": [
             "Count Dooku"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "CT-21-0408 Echo",
@@ -6323,7 +6085,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -6343,7 +6104,8 @@
         "nameVariant": [
             "CT-21-0408 Echo",
             "CT-21-0408 \"Echo\""
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "CT-5555 Fives",
@@ -6537,36 +6299,6 @@
                 "Cantina Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Defense x2",
-                    "Defense x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Unknown"
-            },
-            "GK Lead": {
-                "sets": [
-                    "",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Offense",
-                "diamond": "Defense",
-                "triangle": "Health",
-                "circle": "Health",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "Raid w/ clones": {
                 "sets": [
@@ -6600,7 +6332,8 @@
         "nameVariant": [
             "CT-5555 Fives",
             "CT-5555 \"Fives\""
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "CT-7567 Rex",
@@ -6792,36 +6525,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena (Leader)": {
-                "sets": [
-                    "Tenacity x2",
-                    "Tenacity x2",
-                    "Tenacity x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Unknown"
-            },
-            "Arena (Support)": {
-                "sets": [
-                    "Speed x4",
-                    "Tenacity x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "leader": {
                 "sets": [
@@ -6855,7 +6558,8 @@
         "nameVariant": [
             "CT-7567 Rex",
             "CT-7567 \"Rex\""
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Darth Maul",
@@ -7045,22 +6749,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -7079,7 +6767,8 @@
         },
         "nameVariant": [
             "Darth Maul"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Darth Nihilus",
@@ -7291,7 +6980,6 @@
             "cantina": [],
             "shops": []
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -7324,7 +7012,8 @@
         },
         "nameVariant": [
             "Darth Nihilus"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Darth Sidious",
@@ -7514,22 +7203,6 @@
                 "Squad Arena Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -7548,7 +7221,8 @@
         },
         "nameVariant": [
             "Darth Sidious"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Darth Vader",
@@ -7761,50 +7435,6 @@
                 "Fleet Store"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            },
-            "Arena (EP Lead)": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Unknown"
-            },
-            "EP lead": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "DN lead": {
                 "sets": [
@@ -7865,7 +7495,8 @@
         },
         "nameVariant": [
             "Darth Vader"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Dathcha",
@@ -8058,7 +7689,6 @@
                 "Galactic War Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -8077,7 +7707,8 @@
         },
         "nameVariant": [
             "Dathcha"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Death Trooper",
@@ -8268,78 +7899,6 @@
             ],
             "shops": []
         },
-        "legacyMods": {
-            "Arena (Krennic Lead)": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Damage x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            },
-            "Arena (Palp Lead)": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Damage x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            },
-            "Arena (Vader Lead)": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            },
-            "Krennic/EP lead": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Damage x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Unknown"
-            },
-            "Thrawn lead": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Damage x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "Veers lead": {
                 "sets": [
@@ -8386,7 +7945,8 @@
         },
         "nameVariant": [
             "Death Trooper"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Dengar",
@@ -8597,22 +8157,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "Raid": {
                 "sets": [
@@ -8645,7 +8189,8 @@
         },
         "nameVariant": [
             "Dengar"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Director Krennic",
@@ -8847,36 +8392,6 @@
                 "Guild Events Store"
             ]
         },
-        "legacyMods": {
-            "Arena (Palp Lead)": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Damage x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            },
-            "Arena (Leader)": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Damage x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "Vader lead": {
                 "sets": [
@@ -8937,7 +8452,8 @@
         },
         "nameVariant": [
             "Director Krennic"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Eeth Koth",
@@ -9128,22 +8644,6 @@
                 "Squad Arena Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -9162,7 +8662,8 @@
         },
         "nameVariant": [
             "Eeth Koth"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Emperor Palpatine",
@@ -9362,7 +8863,6 @@
             "cantina": [],
             "shops": []
         },
-        "legacyMods": {},
         "mods": {
             "leader": {
                 "sets": [
@@ -9395,7 +8895,8 @@
         },
         "nameVariant": [
             "Emperor Palpatine"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Ewok Elder",
@@ -9576,22 +9077,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -9610,7 +9095,8 @@
         },
         "nameVariant": [
             "Ewok Elder"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Ewok Scout",
@@ -9789,22 +9275,6 @@
             "cantina": [],
             "shops": []
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -9823,7 +9293,8 @@
         },
         "nameVariant": [
             "Ewok Scout"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Ezra Bridger",
@@ -10017,7 +9488,6 @@
                 "Fleet Store"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -10036,7 +9506,8 @@
         },
         "nameVariant": [
             "Ezra Bridger"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Finn",
@@ -10195,50 +9666,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Defense x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            },
-            "Resistance Team": {
-                "sets": [
-                    "potency x2",
-                    "potency x2",
-                    "potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage/ Health(Raid)",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            },
-            "Raid with BB-8": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Ofense",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -10305,7 +9732,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "First Order Officer",
@@ -10454,22 +9882,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -10517,7 +9929,8 @@
             "shops": [
                 "Cantina Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "First Order Stormtrooper",
@@ -10666,22 +10079,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Potency x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -10731,7 +10128,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "First Order TIE Pilot",
@@ -10880,22 +10278,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -10944,7 +10326,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Gamorrean Guard",
@@ -11092,22 +10475,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "Vader lead": {
                 "sets": [
@@ -11155,7 +10522,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Gar Saxon",
@@ -11315,36 +10683,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            },
-            "Raid (GK Sink)": {
-                "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Offense",
-                "diamond": "Defense",
-                "triangle": "Crit. Dmg/ Offense",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -11392,7 +10730,8 @@
         },
         "nameVariant": [
             "Gar Saxon"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Garazeb 'Zeb' Orrelios",
@@ -11553,7 +10892,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -11617,7 +10955,8 @@
                 "Galactic War Shipments",
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "General Grievous",
@@ -11790,7 +11129,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "HK-47 lead": {
                 "sets": [
@@ -11853,7 +11191,8 @@
                 "Shard Shop",
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "General Kenobi",
@@ -12026,22 +11365,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Tenacity x2",
-                    "Defense x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -12087,7 +11410,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "General Veers",
@@ -12248,36 +11572,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            },
-            "Arena (Leader)": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "Leader": {
                 "sets": [
@@ -12327,7 +11621,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Geonosian Soldier",
@@ -12478,7 +11773,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -12528,7 +11822,8 @@
             "shops": [
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Geonosian Spy",
@@ -12677,7 +11972,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -12727,7 +12021,8 @@
             "shops": [
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Grand Admiral Thrawn",
@@ -12899,22 +12194,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Tenacity x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -12988,7 +12267,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Grand Master Yoda",
@@ -13160,22 +12440,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Tenacity x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -13221,7 +12485,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Grand Moff Tarkin",
@@ -13394,22 +12659,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Tenacity x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -13458,7 +12707,8 @@
                 "Squad Arena Shipments",
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Greedo",
@@ -13646,22 +12896,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Potency x2",
-                    "Critical Chance x2",
-                    "Critical Chance x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -13709,7 +12943,8 @@
             "shops": [
                 "Squad Arena Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Han Solo",
@@ -13882,22 +13117,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -13943,7 +13162,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Hera Syndulla",
@@ -14104,22 +13324,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Tenacity x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -14169,7 +13373,8 @@
             "shops": [
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Hermit Yoda",
@@ -14344,7 +13549,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -14390,7 +13594,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "HK-47",
@@ -14551,7 +13756,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -14599,7 +13803,8 @@
             "shops": [
                 "Squad Arena Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Hoth Rebel Scout",
@@ -14750,22 +13955,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -14817,7 +14006,8 @@
                 "Guild Events Store",
                 "Cantina Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Hoth Rebel Soldier",
@@ -14968,22 +14158,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Defense x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -15033,7 +14207,8 @@
             "shops": [
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "IG-100 Magna Guard",
@@ -15184,7 +14359,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -15236,7 +14410,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "IG-86 Sentinel Droid",
@@ -15386,7 +14561,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -15439,7 +14613,8 @@
             "shops": [
                 "Galactic War Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "IG-88",
@@ -15612,7 +14787,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -15660,7 +14834,8 @@
             "shops": [
                 "Squad Arena Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Ima-Gun Di",
@@ -15822,22 +14997,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -15890,7 +15049,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Imperial Super Commando",
@@ -16039,36 +15199,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            },
-            "Raid (Gar/ GK Sink)": {
-                "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Offense",
-                "diamond": "Defense",
-                "triangle": "Crit. Dmg/ Offense",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -16118,7 +15248,8 @@
             "shops": [
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Jawa",
@@ -16266,7 +15397,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -16317,7 +15447,8 @@
                 "2-D"
             ],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Jawa Engineer",
@@ -16477,7 +15608,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -16525,7 +15655,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Jawa Scavenger",
@@ -16685,7 +15816,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -16733,7 +15863,8 @@
             "shops": [
                 "Cantina Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Jedi Consular",
@@ -16883,7 +16014,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -16938,7 +16068,8 @@
         },
         "nameVariant": [
             "Jedi Consular"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Jedi Knight Anakin",
@@ -17100,7 +16231,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -17152,7 +16282,8 @@
                 "7-G"
             ],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Jedi Knight Guardian",
@@ -17302,7 +16433,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -17352,7 +16482,8 @@
             "shops": [
                 "Cantina Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Jyn Erso",
@@ -17524,22 +16655,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Critical Chance x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -17602,7 +16717,8 @@
                 "Guild Events Store",
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "K-2SO",
@@ -17765,22 +16881,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Tenacity x2",
-                    "Tenacity x2",
-                    "Tenacity x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -17843,7 +16943,8 @@
                 "Galactic War Shipments",
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Kanan Jarrus",
@@ -18005,22 +17106,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Tenacity x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance/ Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -18083,7 +17168,8 @@
                 "Squad Arena Shipments",
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Kit Fisto",
@@ -18245,7 +17331,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -18295,7 +17380,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Kylo Ren",
@@ -18457,22 +17543,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -18523,7 +17593,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Lando Calrissian",
@@ -18684,7 +17755,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -18735,7 +17805,8 @@
             "shops": [
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Lobot",
@@ -18894,7 +17965,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -18943,7 +18013,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Logray",
@@ -19102,7 +18173,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -19150,7 +18220,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Luke Skywalker Farmboy",
@@ -19313,7 +18384,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -19368,7 +18438,8 @@
                 "Guild Events Store",
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Luminara Unduli",
@@ -19509,22 +18580,6 @@
                 "tier": "zeta"
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Health/ Protection",
-                "circle": "Health/ Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -19622,7 +18677,8 @@
             "shops": [
                 "Galactic War Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Mace Windu",
@@ -19784,22 +18840,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -19852,7 +18892,8 @@
                 "Squad Arena Shipments",
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Magmatrooper",
@@ -20003,22 +19044,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -20066,7 +19091,8 @@
             "shops": [
                 "Galactic War Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Mob Enforcer",
@@ -20216,7 +19242,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "why ?!": {
                 "sets": [
@@ -20264,7 +19289,8 @@
             "shops": [
                 "Cantina Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Nightsister Acolyte",
@@ -20412,22 +19438,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -20477,7 +19487,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Nightsister Initiate",
@@ -20636,22 +19647,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Defense x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -20699,7 +19694,8 @@
             "shops": [
                 "Galactic War Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Nute Gunray",
@@ -20860,22 +19856,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -20923,7 +19903,8 @@
             "shops": [
                 "Squad Arena Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Obi-Wan Kenobi Old Ben",
@@ -21100,7 +20081,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -21152,7 +20132,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Old Daka",
@@ -21312,22 +20293,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -21391,7 +20356,8 @@
             "shops": [
                 "Cantina Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Pao",
@@ -21551,22 +20517,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -21615,7 +20565,8 @@
                 "Cantina Shipments",
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Paploo",
@@ -21774,36 +20725,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Defense x2",
-                    "Defense x2",
-                    "Tenacity x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Tenacity",
-                "source": "Unknown"
-            },
-            "Arena (with Logray)": {
-                "sets": [
-                    "Defense x2",
-                    "Tenacity x2",
-                    "Critical Chance x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance/ Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -21853,7 +20774,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Plo Koon",
@@ -22014,22 +20936,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Potency x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -22081,7 +20987,8 @@
             "shops": [
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Poe Dameron",
@@ -22241,22 +21148,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Resistance Team": {
-                "sets": [
-                    "Potency x2",
-                    "Speed x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Health/ Protection/ Defense",
-                "circle": "Protection/ Health(Raid)",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -22308,7 +21199,8 @@
                 "Cantina Shipments",
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Poggle The Lesser",
@@ -22469,7 +21361,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -22520,7 +21411,8 @@
             "shops": [
                 "Galactic War Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Princess Leia",
@@ -22680,7 +21572,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -22729,7 +21620,8 @@
                 "Squad Arena Shipments",
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Qui-Gon Jinn",
@@ -22892,7 +21784,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -22940,7 +21831,8 @@
             "shops": [
                 "Cantina Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "R2-D2",
@@ -23115,22 +22007,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Resistance Team": {
-                "sets": [
-                    "Any",
-                    "Any",
-                    "Any"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Health/ Protection/ Defense/ Crit. Damage",
-                "circle": "Protection/ Health(Raid)",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "burn": {
                 "sets": [
@@ -23204,7 +22080,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Resistance Pilot",
@@ -23353,22 +22230,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Resistance Team": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection/ Health(Raid)",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -23417,7 +22278,8 @@
                 "Galactic War Shipments",
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Resistance Trooper",
@@ -23565,50 +22427,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            },
-            "Resistance Team 1": {
-                "sets": [
-                    "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Offense",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection/ Health(Raid)",
-                "cross": "Potency",
-                "source": "Unknown"
-            },
-            "Resistance Team 2": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Offense",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection/ Health(Raid)",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -23673,7 +22491,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Rebel Officer Leia Organa",
@@ -23836,22 +22655,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Territory Battles": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed/ Offense",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "TB": {
                 "sets": [
@@ -23897,7 +22700,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Rey Scavenger",
@@ -24056,36 +22860,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Unknown"
-            },
-            "Resistance Team": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Damage x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed/ Offense",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection/ Health",
-                "cross": "Offense",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -24138,7 +22912,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Royal Guard",
@@ -24287,22 +23062,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena (Stun)": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -24353,7 +23112,8 @@
                 "7-C"
             ],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Sabine Wren",
@@ -24514,7 +23274,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -24564,7 +23323,8 @@
             "shops": [
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Savage Opress",
@@ -24725,36 +23485,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Critical Chance x2",
-                    "Critical Chance x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            },
-            "Arena (Nihilus Lead)": {
-                "sets": [
-                    "Health x2",
-                    "Offense x4",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection/ Health",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -24830,7 +23560,8 @@
             "shops": [
                 "Squad Arena Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Scarif Rebel Pathfinder",
@@ -24981,22 +23712,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Defense x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -25047,7 +23762,8 @@
                 "Guild Events Store",
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Shoretrooper",
@@ -25197,50 +23913,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena (Tank)": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            },
-            "Arena (Taunt)": {
-                "sets": [
-                    "Tenacity x2",
-                    "Tenacity x2",
-                    "Tenacity x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed/ Protection/ Prot.",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Unknown"
-            },
-            "taunt": {
-                "sets": [
-                    "Tenacity x2",
-                    "Tenacity x2",
-                    "Tenacity x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed/ Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "tank": {
                 "sets": [
@@ -25288,7 +23960,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Sith Assassin",
@@ -25437,22 +24110,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -25502,7 +24159,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Sith Trooper",
@@ -25651,22 +24309,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Defense x2",
-                    "Defense x2",
-                    "Potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -25728,7 +24370,8 @@
                 "8-B"
             ],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Snowtrooper",
@@ -25877,22 +24520,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Crit. Dmg x4",
-                    "Crit. Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Critical Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -25944,7 +24571,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Stormtrooper",
@@ -26093,36 +24721,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Defense x2",
-                    "Defense x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            },
-            "General": {
-                "sets": [
-                    "Defense x2",
-                    "Defense x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "Thrawn lead": {
                 "sets": [
@@ -26188,7 +24786,8 @@
             "shops": [
                 "Cantina Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Stormtrooper Han",
@@ -26352,22 +24951,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -26416,7 +24999,8 @@
                 "Squad Arena Shipments",
                 "Guild Events Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Sun Fac",
@@ -26577,7 +25161,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -26626,7 +25209,8 @@
                 "Fleet Store",
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Talia",
@@ -26785,22 +25369,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -26854,7 +25422,8 @@
             "shops": [
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Teebo",
@@ -27013,22 +25582,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -27079,7 +25632,8 @@
             "shops": [
                 "Galactic War Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "TIE Fighter Pilot",
@@ -27228,7 +25782,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -27278,7 +25831,8 @@
             "shops": [
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Tusken Raider",
@@ -27426,22 +25980,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -27493,7 +26031,8 @@
             "shops": [
                 "Galactic War Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Tusken Shaman",
@@ -27642,22 +26181,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -27706,7 +26229,8 @@
                 "Fleet Store",
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Ugnaught",
@@ -27853,7 +26377,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -27901,7 +26424,8 @@
             "shops": [
                 "Squad Arena Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "URoRRuR'R'R",
@@ -28063,7 +26587,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -28112,7 +26635,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Veteran Smuggler Chewbacca",
@@ -28274,22 +26798,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Offense/ Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -28337,7 +26845,8 @@
         },
         "nameVariant": [
             "Veteran Smuggler Chewbacca"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Veteran Smuggler Han Solo",
@@ -28498,22 +27007,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -28561,7 +27054,8 @@
                 "8-G"
             ],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Wedge Antilles",
@@ -28721,7 +27215,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -28772,7 +27265,8 @@
                 "Guild Events Store",
                 "Fleet Store"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Wicket",
@@ -28931,7 +27425,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -28977,7 +27470,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Zam Wesell",
@@ -29144,22 +27638,6 @@
                 }
             }
         },
-        "legacyMods": {
-            "Arena": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -29208,7 +27686,8 @@
                 "Fleet Store",
                 "Guild Shipments"
             ]
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Mother Talzin",
@@ -29379,7 +27858,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -29439,7 +27917,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Nightsister Spirit",
@@ -29588,7 +28067,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -29634,7 +28112,8 @@
         },
         "nameVariant": [
             "Nightsister Spirit"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Nightsister Zombie",
@@ -29783,7 +28262,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -29829,7 +28307,8 @@
         },
         "nameVariant": [
             "Nightsister Zombie"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "First Order SF TIE Pilot",
@@ -29979,7 +28458,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -30025,7 +28503,8 @@
         },
         "nameVariant": [
             "First Order SF TIE Pilot"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Kylo Ren Unmasked",
@@ -30197,7 +28676,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -30260,7 +28738,8 @@
                 "3-F"
             ],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Colonel Starck",
@@ -30450,7 +28929,6 @@
                 "Guild Shipments"
             ]
         },
-        "legacyMods": {},
         "mods": {
             "PvE": {
                 "sets": [
@@ -30469,7 +28947,8 @@
         },
         "nameVariant": [
             "Colonel Starck"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Imperial Probe Droid",
@@ -30637,7 +29116,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -30683,7 +29161,8 @@
         },
         "nameVariant": [
             "Imperial Probe Droid"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Wampa",
@@ -30852,7 +29331,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -30898,7 +29376,8 @@
         },
         "nameVariant": [
             "Wampa"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Rey Jedi Training",
@@ -31081,7 +29560,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "Raid": {
                 "sets": [
@@ -31142,7 +29620,8 @@
             "light": [],
             "cantina": [],
             "shops": []
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "First Order Executioner",
@@ -31293,7 +29772,6 @@
                 }
             }
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -31338,7 +29816,8 @@
         },
         "nameVariant": [
             "First Order Executioner"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Rose Tico",
@@ -31519,7 +29998,6 @@
             "Protection": 28,
             "activation": 25
         },
-        "legacyMods": {},
         "mods": {
             "RJT Lead": {
                 "sets": [
@@ -31572,7 +30050,8 @@
         },
         "nameVariant": [
             "Rose Tico"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Amilyn Holdo",
@@ -31771,22 +30250,6 @@
             "cantina": [],
             "shops": []
         },
-        "legacyMods": {
-            "General": {
-                "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Health x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Health",
-                "circle": "Health",
-                "cross": "Health",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -31805,7 +30268,8 @@
         },
         "nameVariant": [
             "Amilyn Holdo"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Sith Marauder",
@@ -31993,7 +30457,6 @@
             "Protection": 34,
             "activation": 25
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -32026,7 +30489,8 @@
         },
         "nameVariant": [
             "Sith Marauder"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Darth Traya",
@@ -32224,7 +30688,6 @@
             "Protection": 38,
             "activation": 145
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -32243,7 +30706,8 @@
         },
         "nameVariant": [
             "Darth Traya"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Visas Marr",
@@ -32429,7 +30893,6 @@
             "Protection": 33,
             "activation": 25
         },
-        "legacyMods": {},
         "mods": {
             "General": {
                 "sets": [
@@ -32448,7 +30911,8 @@
         },
         "nameVariant": [
             "Visas Marr"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Darth Sion",
@@ -32646,22 +31110,6 @@
             "Protection": 39,
             "activation": 25
         },
-        "legacyMods": {
-            "Pro's BOB": {
-                "sets": [
-                    "Defense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Health",
-                "cross": "Offense/ Protection",
-                "source": "Unknown"
-            }
-        },
         "mods": {
             "General": {
                 "sets": [
@@ -32680,7 +31128,8 @@
         },
         "nameVariant": [
             "Darth Sion"
-        ]
+        ],
+        "defaultMods": {}
     },
     {
         "name": "Bossk",
@@ -32729,7 +31178,6 @@
                 "source": "Crouching Rancor"
             }
         },
-        "legacyMods": {},
         "gear": {
             "Gear 1": [
                 "Mk 1 BlasTech Weapon Mod",
@@ -32922,7 +31370,8 @@
             "Health Steal": 10,
             "Protection": 40,
             "activation": 10
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Vandor Chewbacca",
@@ -32956,7 +31405,6 @@
                 "source": "Crouching Rancor"
             }
         },
-        "legacyMods": {},
         "gear": {
             "Gear 1": [
                 "Mk 1 BlasTech Weapon Mod",
@@ -33127,7 +31575,8 @@
             "Health Steal": 10,
             "Protection": 32,
             "activation": 25
-        }
+        },
+        "defaultMods": {}
     },
     {
         "name": "Young Han Solo",
@@ -33161,7 +31610,6 @@
                 "source": "Crouching Rancor"
             }
         },
-        "legacyMods": {},
         "gear": {
             "Gear 1": [
                 "Mk 1 BlasTech Weapon Mod",
@@ -33332,6 +31780,225 @@
             "Health Steal": 15,
             "Protection": 29,
             "activation": 25
+        },
+        "defaultMods": {}
+    },
+    {
+        "name": "Qi'ra",
+        "uniqueName": "QIRA",
+        "aliases": [
+            "Qi'ra",
+            "kira",
+            "qira"
+        ],
+        "nameVariant": [
+            "Qi'ra"
+        ],
+        "url": "https://swgoh.gg/characters/qira/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_qira.png",
+        "side": "light",
+        "factions": [
+            "Scoundrel",
+            "Support"
+        ],
+        "mods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 3 BioTech Implant",
+                "Mk 3 BioTech Implant",
+                "Mk 2 Chedak Comlink",
+                "Mk 4 Loronar Power Cell",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 1 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 4": [
+                "Mk 3 BioTech Implant",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 6 BAW Armor Mod",
+                "Mk 4 Nubian Security Scanner"
+            ],
+            "Gear 5": [
+                "Mk 3 BioTech Implant",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 3 BioTech Implant",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 4 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 6": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 A/KT Stun Gun",
+                "Mk 1 Carbanti Sensor Array",
+                "Mk 4 CEC Fusion Furnace"
+            ],
+            "Gear 7": [
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 6 BioTech Implant"
+            ],
+            "Gear 8": [
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 5 CEC Fusion Furnace"
+            ],
+            "Gear 9": [
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 6 Nubian Design Tech"
+            ],
+            "Gear 10": [
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 8 BioTech Implant",
+                "Mk 5 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 11": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 8 BioTech Implant",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 6 A/KT Stun Gun"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Deadly Double": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy twice and inflict Offense Down for 2 turns. This attack can't be Countered. If this attack scores a Critical Hit, also Daze them for 1 turn, and if both hits are Critical, deal bonus damage equal to 10% of the target's Max Health.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Scattering Blast": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Dispel all buffs on target enemy, then deal Physical damage to all enemies and Stagger them for 2 turns. This attack deals 25% more damage per buffed enemy.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Joint Operation": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to target enemy and call another target ally to Assist. If that ally is a Scoundrel, both attacks deal 30% more damage. Each attack has a 50% chance to Expose the target for 2 turns, even if the target Evades.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Tools of the Trade": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Scoundrel allies have +20% Critical Chance. In addition, whenever they score a Critical Hit, they recover 10% Protection and gain an additional bonus based on their Role for the rest of the battle.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Insult to Injury": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "While attacking, Qi'ra has +40% Potency if her target isn't debuffed and +30% Critical Damage if it is. Other Scoundrel allies gain half these benefits while attacking. In addition, at the end of each turn, if any single enemy suffered more than one Critical Hit this turn, Qi'ra becomes Prepared and gains 15% Turn Meter and Health Steal Up for 1 turn. Each other ally that used an ability this turn also gains Health Steal Up for 1 turn.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 20713,
+            "Strength": 972,
+            "Agility": 965,
+            "Intelligence": 605,
+            "Speed": 142,
+            "Physical Damage": 2644,
+            "Physical Critical Rating": 756,
+            "Special Damage": 1473,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 160,
+            "Resistance Penetration": 0,
+            "Potency": 28,
+            "Health": 27746,
+            "Armor": 256,
+            "Resistance": 100,
+            "Tenacity": 41,
+            "Health Steal": 15,
+            "Protection": 32,
+            "activation": 25
+        },
+        "defaultMods": {
+            "General": {
+                "sets": [
+                    "Critical Chance x2",
+                    "Critical Chance x2",
+                    "Critical Chance x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Chance",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "Made up"
+            }
         }
     }
 ]

@@ -128,7 +128,7 @@ if (!client.shard || client.shard.id === 0) {
     // Check every 12 hours to see if any mods have been changed
     setInterval(updateRemoteData, 12 * 60 * 60 * 1000);
     //                               hr   min  sec  mSec
-    
+
     // Set the patron's goh data to be reloaded
     setTimeout(client.reloadPatrons,    1 * 60 * 1000);   // Load em a min after start
     setInterval(client.reloadPatrons,  60 * 60 * 1000);   // Then every hour after
@@ -486,7 +486,7 @@ function createEmptyChar(name, url, uniqueName) {
         "factions": [],
         "mods": {
         },
-        "legacyMods": {
+        "defaultMods": {
         },
         "gear": {
         },
