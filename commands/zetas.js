@@ -1,5 +1,6 @@
 const Command = require('../base/Command');
 const mysql = require('mysql');
+const moment = require('moment');
 
 class Zetas extends Command {
     constructor(client) {
@@ -20,7 +21,8 @@ class Zetas extends Command {
         } else if (userID.match(/\d{17,18}/)) {
             userID = userID.replace(/[^\d]*/g, '');
         } else {
-            name = userID + ' ' + args.join(' ');
+            name = userID;
+            name += args.length ? ' ' + args.join(' ') : '';
         }
         const allyCodes = await client.getAllyCode(message, name ? name : userID);
         let allyCode;
@@ -34,46 +36,26 @@ class Zetas extends Command {
             allyCode = allyCodes[0];
         }
 
-        const lang = 'ENG_US';
-        const zetaSql = `
-        SELECT
-        PlayerProfile.name as \`Name\`,
-            udn.text as 'Character',
-            abn.text as 'aName',
-            abn.id as 'ID'
-
-        FROM PlayerProfile
-        JOIN Unit ON Unit.playerProfilePlayerId = PlayerProfile.playerId
-        JOIN Skill ON Skill.unitId = Unit.id
-        JOIN SkillTierDefinition ON SkillTierDefinition.skillDefinitionId = Skill.id
-
-        JOIN UnitDef ON UnitDef.id = Unit.definitionId
-        JOIN Localization udn ON udn.id = UnitDef.nameKey AND udn.language = '${lang}'
-
-        JOIN SkillDefinition ON SkillDefinition.id = Skill.id
-        JOIN Ability ON Ability.id = SkillDefinition.abilityReference
-        JOIN Localization abn ON abn.id = Ability.nameKey AND abn.language = '${lang}'
-
-        WHERE PlayerProfile.allyCode = ${allyCode}
-        AND Skill.tier = 6
-        AND SkillTierDefinition.powerOverrideTag = 'zeta';`;
-
         const connection = mysql.createConnection({
             host     : client.config.mySqlDB.host,
             user     : client.config.mySqlDB.user,
             password : client.config.mySqlDB.password,
             database : client.config.mySqlDB.database
         });
-        connection.query(zetaSql, async function(err, results) {
+        connection.query(`call getZetasFromAlly( ? )`, [allyCode], async function(err, results) {
             connection.end();
-            const msg = await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT'));
+            const msg = await message.channel.send(message.language.get('BASE_SWGOH_PLS_WAIT_FETCH', 'zetas'));
             const zetas = {};
-            let name;
+            let name, lastUpdated;
             if (results) {
+                results = results[0];
                 let count = 0;
-                results.forEach(row => {
-                    name = row.Name;
-                    row.Character = row.Character.replace(/"/g, '');
+                results.forEach((row, ix) => {
+                    if (ix === 0) {
+                        name = row.Name;
+                        lastUpdated = moment.duration(Math.abs(moment(row.updated).diff(moment()))).format("d [days], h [hrs], m [min]");
+                    }
+                    row.Character = row.Character.replace(/[\\"]/g, '');
                     count += 1;
                     row.aName = `\`[${row.ID.toUpperCase()[0]}]\` ${row.aName.replace(/"/g, '')}`;
                     if (zetas.hasOwnProperty(row.Character)) {
@@ -108,7 +90,10 @@ class Zetas extends Command {
                     color: 0x000000,
                     author: author,
                     description: desc, 
-                    fields: fields
+                    fields: fields,
+                    footer: {
+                        text: message.language.get('BASE_SWGOH_LAST_UPDATED', lastUpdated)
+                    }
                 }});
             } else {
                 msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
