@@ -3,6 +3,7 @@
 /wipCommands/
 /data/img/
 /swgoh
+/swgohAPI
 
 # Specific Files
 config.js

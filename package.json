@@ -4,7 +4,7 @@
     "description": "Bot for a SWGoH Discord server",
     "main": "swgohBot.js",
     "scripts": {
-        "lint": "eslint .",
+        "lint": "eslint",
         "start": "node swgohBot.js"
     },
     "author": "Jeff",
