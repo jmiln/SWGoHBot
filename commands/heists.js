@@ -53,29 +53,11 @@ class Heists extends Command {
 
         async function fetchEvents() {
             return new Promise( async (resolve, reject) => {
-                const settings = { 
-                    path    : `${process.cwd()}/${client.config.swgohLoc}`, 
-                    hush    : true, 
-                    verbose : false, 
-                    force   : false 
-                };
-
-                let rpc; 
                 try {             
-                    const RpcService = require(`${settings.path}/services/service.rpc.js`);
-                    rpc = await new RpcService(settings);
-
-                    /** Start the RPC Service - with no logging**/
-                    await rpc.start(`Fetching events...\n`, false);
-
-                    const iData = await rpc.Player( 'GetInitialData' );
-
-                    /** End the RPC Service **/
-                    await rpc.end("All data fetched");
-
+                    const rpc = require(`${process.cwd()}/${client.config.swgohAPILoc}/swgohService/swgohAPI/index.js`);//core/swgoh.rpc.js`);
+                    const iData = await rpc.initialDataRequest();
                     resolve( iData.gameEventList );
                 } catch (e) {     
-                    await rpc.end(e.message);
                     reject(e);    
                 }                 
             });                                                                                                                                                                     
