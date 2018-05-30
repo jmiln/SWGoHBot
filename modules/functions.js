@@ -203,6 +203,8 @@ module.exports = (client) => {
             const cmd = new (require(`../commands/${commandName}`))(client);
             if (cmd.help.category === "SWGoH" && !client.swgohAPI) {
                 return 'Unable to load command ${commandName}: no swgohAPI';
+            } else if (!cmd.conf.enabled) {
+                return false;
             }
             client.commands.set(cmd.help.name, cmd);
             cmd.conf.aliases.forEach(alias => {
