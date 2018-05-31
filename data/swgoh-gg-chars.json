@@ -450,6 +450,16 @@
         "combat_type": 1
     },
     {
+        "name": "Enfys Nest",
+        "base_id": "ENFYSNEST",
+        "pk": 274,
+        "url": "https://swgoh.gg/characters/enfys-nest/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_enfys.png",
+        "power": 19929,
+        "description": "Powerhouse attacker that stacks Protection when attacked, then dismantles enemy defenses with Dispels and Turn Meter manipulation",
+        "combat_type": 1
+    },
+    {
         "name": "Ewok Elder",
         "base_id": "EWOKELDER",
         "pk": 21,

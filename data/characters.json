@@ -32000,5 +32000,195 @@
                 "source": "Made up"
             }
         }
+    },
+    {
+        "name": "Enfys Nest",
+        "uniqueName": "ENFYSNEST",
+        "aliases": [
+            "Enfys Nest"
+        ],
+        "nameVariant": [
+            "Enfys Nest"
+        ],
+        "url": "https://swgoh.gg/characters/enfys-nest/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_enfys.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Scoundrel"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 2 CEC Fusion Furnace",
+                "Mk 3 Loronar Power Cell",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 3 BioTech Implant",
+                "Mk 3 BioTech Implant",
+                "Mk 2 Chedak Comlink",
+                "Mk 4 BioTech Implant",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 6 Fabritech Data Pad"
+            ],
+            "Gear 4": [
+                "Mk 3 BioTech Implant",
+                "Mk 5 BAW Armor Mod",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 BioTech Implant",
+                "Mk 6 BAW Armor Mod",
+                "Mk 4 Nubian Security Scanner"
+            ],
+            "Gear 5": [
+                "Mk 3 BioTech Implant",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Nubian Security Scanner",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 7 Fabritech Data Pad"
+            ],
+            "Gear 6": [
+                "Mk 3 BioTech Implant",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 CEC Fusion Furnace"
+            ],
+            "Gear 7": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 7 TaggeCo Holo Lens"
+            ],
+            "Gear 8": [
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 6 Nubian Design Tech"
+            ],
+            "Gear 9": [
+                "Mk 4 BAW Armor Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 6 Nubian Design Tech"
+            ],
+            "Gear 10": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 8 BioTech Implant",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 8 BioTech Implant",
+                "Mk 8 BioTech Implant",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 6 A/KT Stun Gun"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Bayonet",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Cut Through": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and Expose them for 1 turn. If the target had any defensive buffs, Dispel them. This attack can't be Evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Sudden Impact": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy, Stun them for 1 turn, and inflict Buff Immunity for 3 turns. If that target had any Protection, this attack deals 50% more damage and ignores Armor.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Kinetite Charge": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to all enemies, Daze them for 2 turns, remove 20% Turn Meter from each enemy that had full Health, and gain 40% Turn Meter for each enemy with less than full Health. This attack can't be Countered or Evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Fighting Instinct": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Nest has +80% Counter Chance and ignores Taunt during her turn.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 951,
+            "Agility": 939,
+            "Intelligence": 653,
+            "Speed": 159,
+            "Physical Damage": 2476,
+            "Physical Critical Rating": 716,
+            "Special Damage": 1668,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 229,
+            "Resistance Penetration": 0,
+            "Potency": 41,
+            "Health": 27438,
+            "Armor": 217,
+            "Resistance": 70,
+            "Tenacity": 39,
+            "Health Steal": 10,
+            "Protection": 32,
+            "activation": 25
+        }
     }
 ]

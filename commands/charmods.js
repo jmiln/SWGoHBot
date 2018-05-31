@@ -92,7 +92,7 @@ class CharMods extends Command {
             res.forEach(stat => {
                 const slotN = stat.Slot;
                 let statStr;
-                if (stats[stat.statID].indexOf('%') > -1) {
+                if (stats[stat.statID] && stats[stat.statID].indexOf('%') > -1) {
                     statStr = stat.Value/100 + stats[stat.statID];
                 } else {
                     statStr = parseInt(stat.Value/10000) + stats[stat.statID];
@@ -104,7 +104,7 @@ class CharMods extends Command {
                         lvl: 0
                     };
                     slots[`${slotN}`].stats = [{
-                        stat: statStr,
+                        stat: statStr.toString() === 'NaN' ? 'Unknown' : statStr,
                         lastU: stat.updated
                     }];
                     slots[`${slotN}`].type = types[stat.Icon];
@@ -112,7 +112,7 @@ class CharMods extends Command {
                     if (moment(updated).unix() < moment(stat.updated).unix()) updated = stat.updated;
                 } else {
                     slots[`${slotN}`].stats.push({
-                        stat: statStr,
+                        stat: statStr.toString() === 'NaN' ? 'Unknown' : statStr,
                         lastU: stat.updated    
                     });
                 }
