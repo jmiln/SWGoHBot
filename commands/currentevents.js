@@ -101,7 +101,7 @@ class CurrentEvents extends Command {
         async function fetchEvents() {
             return new Promise( async (resolve, reject) => {
                 try {             
-                    const rpc = require(`${process.cwd()}/${client.config.swgohAPILoc}/swgohService/swgohAPI/index.js`);//core/swgoh.rpc.js`);
+                    const rpc = require(`${process.cwd()}/${client.config.swgohAPILoc}/swgohAPI/index.js`);
                     const iData = await rpc.initialDataRequest();
                     resolve( iData.gameEventList );
                 } catch (e) {     
