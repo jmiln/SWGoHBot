@@ -81,8 +81,8 @@ client.allyCodes = client.sequelize.define('allyCodes', {
 const init = async () => {
 
     // If we have the magic, use it
-    if (client.config.swgohLoc && client.config.swgohLoc !== "") {
-        client.swgohAPI = require(`./${client.config.swgohLoc}/swgoh.js`);
+    if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
+        client.swgohAPI = require(`./${client.config.swgohAPILoc}/`);
     }
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
@@ -120,28 +120,28 @@ client.on('error', (err) => {
     }
 });
 
-// Make it so it only checks for new characters on the main shard
-if (!client.shard || client.shard.id === 0) {
-    // ## Here down is to update any characters that need it ##
-    // Run it one minute after the bot boots
-    setTimeout(updateRemoteData,        1 * 60 * 1000);
-    // Check every 12 hours to see if any mods have been changed
-    setInterval(updateRemoteData, 12 * 60 * 60 * 1000);
-    //                               hr   min  sec  mSec
-
-    // Set the patron's goh data to be reloaded
-    setTimeout(client.reloadPatrons,    1 * 60 * 1000);   // Load em a min after start
-    setInterval(client.reloadPatrons,  60 * 60 * 1000);   // Then every hour after
-} else {
-    // To reload the characters on any shard other than the main one
-    // a bit after it would have grabbed new ones
-    setTimeout(function() {
-        setInterval(function() {
-            delete client.characters;
-            client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
-        }, 12 * 60 * 60 * 1000);
-    }, 2 * 60 * 1000);
-}
+// // Make it so it only checks for new characters on the main shard
+// if (!client.shard || client.shard.id === 0) {
+//     // ## Here down is to update any characters that need it ##
+//     // Run it one minute after the bot boots
+//     setTimeout(updateRemoteData,        1 * 60 * 1000);
+//     // Check every 12 hours to see if any mods have been changed
+//     setInterval(updateRemoteData, 12 * 60 * 60 * 1000);
+//     //                               hr   min  sec  mSec
+//
+//     // Set the patron's goh data to be reloaded
+//     setTimeout(client.reloadPatrons,    1 * 60 * 1000);   // Load em a min after start
+//     setInterval(client.reloadPatrons,  60 * 60 * 1000);   // Then every hour after
+// } else {
+//     // To reload the characters on any shard other than the main one
+//     // a bit after it would have grabbed new ones
+//     setTimeout(function() {
+//         setInterval(function() {
+//             delete client.characters;
+//             client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
+//         }, 12 * 60 * 60 * 1000);
+//     }, 2 * 60 * 1000);
+// }
 
 init();
 

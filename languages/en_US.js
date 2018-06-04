@@ -233,43 +233,17 @@ module.exports = class extends Language {
                 ]
             },
 
-            // CharacterMods Command
-            COMMAND_CHARMODS_STAT_NAMES: ({
-                'UNIT_STAT_MAX_HEALTH_PERCENT_ADDITIVE': '% Health',
-                'UNIT_STAT_MAX_HEALTH': ' Health',
-                'UNIT_STAT_ACCURACY': '% Potency',
-                'UNIT_STAT_CRITICAL_CHANCE_PERCENT_ADDITIVE': '% Crit Chance',
-                'UNIT_STAT_MAX_SHIELD_PERCENT_ADDITIVE': '% Protection',
-                'UNIT_STAT_MAX_SHIELD': ' Protection',
-                'UNIT_STAT_CRITICAL_DAMAGE': '% Crit Dmg',
-                'UNIT_STAT_DEFENSE_PERCENT_ADDITIVE': '% Defense',
-                'UNIT_STAT_DEFENSE': ' Defense',
-                'UNIT_STAT_OFFENSE_PERCENT_ADDITIVE': '% Offense',
-                'UNIT_STAT_OFFENSE': ' Offense',
-                'UNIT_STAT_RESISTANCE': '% Tenacity',
-                'UNIT_STAT_SPEED': ' Speed',
-                'UNIT_STAT_EVASION_NEGATE_PERCENT_ADDITIVE': '% Accuracy',
-                'UNIT_STAT_CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE': '% Crit Avoidance'
-            }),
-            COMMAND_CHARMODS_MOD_TYPES: ({
-                'icon_buff_health': 'Health',
-                'icon_buff_accuracy': 'Potency',
-                'icon_buff_speed': 'Speed',
-                'icon_buff_critical_damage': 'Crit Damage',
-                'icon_buff_crit_chance': 'Crit Chance',
-                'icon_buff_armor': 'Defense',
-                'icon_tenacity': 'Tenacity'
-            }),
-            COMMAND_CHARMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
-            COMMAND_CHARMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
-            COMMAND_CHARMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
-            COMMAND_CHARMODS_HELP: ({
+            // MyMods Command
+            COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
+            COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
+            COMMAND_MYMODS_HELP: ({
                 description: "Shows the mods that you have equipped on the selected character.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';charactermods [user] <character>',
+                        usage: ';mymods [user] <character>',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "character": "The character you want to search for."
