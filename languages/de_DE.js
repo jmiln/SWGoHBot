@@ -86,6 +86,8 @@ module.exports = class extends Language {
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `Kein Ergebnis gefunden fuer ${character}`,
             BASE_SWGPH_CHAR_LIST: (chars) => `Deine Suche ergab zu viele Treffer, bitte sei spezifischer. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: `Etwas ist schief gegangen, bitte sicherstellen dass dein Account korrekt synchronisiert wurde.`,
+            BASE_SWGOH_LAST_UPDATED: (date) => `Zuletzt aktualisiert vor ${date}`,
+            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Bitte warten waehrend ich aktualisiere ${dType ? dType : 'Daten'}`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
@@ -123,9 +125,9 @@ module.exports = class extends Language {
 
             // Activities Command
             COMMAND_ACTIVITIES_SUNDAY: `== Bis Reset == \nArena Kaempfe kaempfen \nCantina Energie sparen \nNormale Energie sparen\n\n== Nach Reset == \nCantina Energie verwenden \nNormale Energie sparen`,
-            COMMAND_ACTIVITIES_MONDAY: `== Bis Reset == \nCantina Energie ausgeben \nNormale Energie sparen \nGalaktische Kriegsknoten NICHT kaempfen (bis reset verfuegbar)\n\n== Nach Reset == \nNormale Energie fuer Kaempfe der hellen Seite verwenden \nGalaktische Kriegsknoten weiterhin NICHT kaempfen (bis reset verfuegbar)`,
-            COMMAND_ACTIVITIES_TUESDAY: `== Bis Reset == \nNormale Energie fuer Kaempfe der hellen Seite verwenden \nGalaktische Kriegsknoten weiterhin NICHT kaempfen\n\n== Nach Reset == \nGalaktische Kriegsknoten KAEMPFEN \nNormale Energie sparen`,
-            COMMAND_ACTIVITIES_WEDNESDAY: `== Bis Reset == \nGalaktische Kriegsknoten KAEMPFEN \nNormale Energie sparen\n\n== Nach Reset == \nNormale Energie fuer Harte Kaempfe verwenden`,
+            COMMAND_ACTIVITIES_MONDAY: `== Bis Reset == \nCantina Energie ausgeben \nNormale Energie sparen \n\n== Nach Reset == \nNormale Energie fuer Kaempfe der hellen Seite verwenden `,
+            COMMAND_ACTIVITIES_TUESDAY: `== Bis Reset == \nNormale Energie fuer Kaempfe der hellen Seite verwenden \n Alle anderen Arten von Energie sparen \n\n== Nach Reset == \nSaemtliche Energie ausgeben `,
+            COMMAND_ACTIVITIES_WEDNESDAY: `== Bis Reset == \nSaemtliche Energie (außer Normal) ausgeben \nNormale Energie sparen\n\n== Nach Reset == \nNormale Energie fuer Harte Kaempfe verwenden`,
             COMMAND_ACTIVITIES_THURSDAY: `== Bis Reset == \nNormale Energie fuer Harte Kaempfe verwenden \nHerausforderungen sparen\n\n== Nach Reset == \nAlle Herausforderungen beenden / kaempfen \nNormale Energie sparen`,
             COMMAND_ACTIVITIES_FRIDAY: `== Bis Reset == \nAlle Herausforderungen beenden / kaempfen \nNormale Energie spare\n\n== Nach Reset == \nNormale Energie fuer Kaempfe der dunklen Seite verwenden`,
             COMMAND_ACTIVITIES_SATURDAY: `== Bis Reset == \nNormale Energie fuer Kaempfe der dunklen Seite verwenden \nArena Kaempfe sparen \nCantina Energie sparen\n\n== Nach Reset == \nArena Kaempfe kaempfen\nCantina Energie sparen`,
