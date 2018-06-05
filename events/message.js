@@ -8,7 +8,7 @@ module.exports = async (client, message) => {
     if (message.author.bot) return;
     // if (message.guild && !message.guild.me) await message.guild.members.fetch(client.user);
     // If we don't have permission to respond, don't bother
-    if (message.guild && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
+    if (message.guild && message.channel.permissionsFor(message.guild.me) && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
 
     // Grab the settings for this server from the PersistentCollection
     // If there is no guild, get default conf (DMs)
