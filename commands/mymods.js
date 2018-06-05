@@ -1,6 +1,5 @@
 const Command = require('../base/Command');
-const mysql = require('mysql');
-const moment = require('moment');
+// const moment = require('moment');
 require('moment-duration-format');
 
 class MyMods extends Command {
@@ -15,24 +14,24 @@ class MyMods extends Command {
     }
 
     async run(client, message, [userID, ...searchChar]) { // eslint-disable-line no-unused-vars
-        // const stats = message.language.get('COMMAND_CHARMODS_STAT_NAMES');
-        // const types = message.language.get('COMMAND_CHARMODS_MOD_TYPES');
         const modTypes = message.language.get('BASE_MOD_TYPES');
-        const STATMOD_SLOT_01 = client.emojis.find("name", "modSquare");
-        const STATMOD_SLOT_02 = client.emojis.find("name", "modArrow");
-        const STATMOD_SLOT_03 = client.emojis.find("name", "modDiamond");
-        const STATMOD_SLOT_04 = client.emojis.find("name", "modTriangle");
-        const STATMOD_SLOT_05 = client.emojis.find("name", "modCircle");
-        const STATMOD_SLOT_06 = client.emojis.find("name", "modCross");
+        // TODO Figure out why the mod icons aren's working
+        // const STATMOD_SLOT_01 = client.emojis.find("name", "modSquare");
+        // const STATMOD_SLOT_02 = client.emojis.find("name", "modArrow");
+        // const STATMOD_SLOT_03 = client.emojis.find("name", "modDiamond");
+        // const STATMOD_SLOT_04 = client.emojis.find("name", "modTriangle");
+        // const STATMOD_SLOT_05 = client.emojis.find("name", "modCircle");
+        // const STATMOD_SLOT_06 = client.emojis.find("name", "modCross");
+        //
+        // const icons = {
+        //     'SQUARE':   STATMOD_SLOT_01 ? STATMOD_SLOT_01 : "Square",
+        //     'ARROW':    STATMOD_SLOT_02 ? STATMOD_SLOT_02 : "Arrow",
+        //     'DIAMOND':  STATMOD_SLOT_03 ? STATMOD_SLOT_03 : "Diamond",
+        //     'TRIANGLE': STATMOD_SLOT_04 ? STATMOD_SLOT_04 : "Triangle",
+        //     'CIRCLE':   STATMOD_SLOT_05 ? STATMOD_SLOT_05 : "Circle",
+        //     'CROSS':    STATMOD_SLOT_06 ? STATMOD_SLOT_06 : "Cross"
+        // };
 
-        const icons = {
-            'SQUARE':   STATMOD_SLOT_01 ? STATMOD_SLOT_01 : "Square",
-            'ARROW':    STATMOD_SLOT_02 ? STATMOD_SLOT_02 : "Arrow",
-            'DIAMOND':  STATMOD_SLOT_03 ? STATMOD_SLOT_03 : "Diamond",
-            'TRIANGLE': STATMOD_SLOT_04 ? STATMOD_SLOT_04 : "Triangle",
-            'CIRCLE':   STATMOD_SLOT_05 ? STATMOD_SLOT_05 : "Circle",
-            'CROSS':    STATMOD_SLOT_06 ? STATMOD_SLOT_06 : "Cross"
-        };
         if (searchChar) searchChar = searchChar.join(' ');
 
         // Need to get the allycode from the db, then use that
@@ -84,10 +83,9 @@ class MyMods extends Command {
         } catch (e) {
             console.log(e);
         }
-        const charMods = mods.mods.filter(m => m.characterName === character.uniqueName);
+        const charMods = mods.mods.filter(m => (m.characterName.replace(/[^a-zA-Z ]/g, '') === character.name.replace(/[^a-zA-Z ]/g, '') || m.characterName === character.uniqueName));
 
         const slots = {};
-        const name = character.name;
 
         charMods.forEach(mod => {
             slots[mod.slot] = {
