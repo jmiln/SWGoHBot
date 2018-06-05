@@ -78,7 +78,7 @@ class Event extends Command {
 
         if (action === "create" || action === "delete" || action === "trigger") {
             if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn't be able to use these
-                return message.channel.send(message.language.COMMAND_EVENT_INVALID_PERMS);
+                return message.channel.send(message.language.get('COMMAND_EVENT_INVALID_PERMS'));
             }
         }
         // const specialArgs = ['-r', '--rep', '--repeat', '--repeatDay', '--repeatday', '--repday', '--schedule', '--chan', '--channel', '-c', '--countdown', '-d', '--cd'];
