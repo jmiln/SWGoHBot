@@ -14,7 +14,7 @@ class Register extends Command {
         const acts = ['add', 'update', 'remove'];
         let exists, name;
         if (!action || !acts.includes(action.toLowerCase())) {
-            return message.channel.send('You need to choose either `add`, `remove`, or `update`.');
+            return client.helpOut(message, this);
         }
         action = action.toLowerCase();
         if (action !== 'update') {
@@ -60,7 +60,7 @@ class Register extends Command {
                 if (!exists) {
                     // Sync up their swgoh account
                     message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
-                        await client.swgohAPI.updatePlayer(allyCode).then(async (u) => {
+                        await client.swgohAPI.getPlayer(allyCode, 'ENG_US').then(async (u) => {
                             if (!u) {
                                 await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
                             } else {
@@ -104,7 +104,7 @@ class Register extends Command {
                 }
 
                 await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
-                    await client.swgohAPI.updatePlayer(ac).then(async (u) => {
+                    await client.swgohAPI.getPlayer(ac, 'ENG_US').then(async (u) => {
                         if (!u) {
                             await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
                         } else {
