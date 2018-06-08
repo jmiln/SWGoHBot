@@ -15,100 +15,73 @@ class CurrentEvents extends Command {
     async run(client, message, [num]) {
         const DEF_NUM = 10;
         const lang = 'ENG_US';
-        let result = null;              
-        const fields = [];
+    
+        let botClient = null;
         try {
-            result = await fetchEvents();
+            botClient = await client.swgohAPI.getClient(lang);
         } catch (e) {
-            return console.error('Error in fetchEvents: ' + e);           
+            console.error(e);
         }
-
+        
         // Let them specify the max # of events to show
         let eNum = parseInt(num);
         if (isNaN(eNum)) {
             eNum = DEF_NUM;
         }
 
-        // Get rid of any events we don't want to show up
-        const fResult = result.filter(o => {
-            if (o.type === 3 && o.nameKey.includes("HERO")) return false;
-            if (!o.nameKey || !o.descKey) return false;
-            if (!moment().subtract(10, 'd').isBefore(moment(Math.max(...Array.from(o.instanceList, t => t.startTime))))) return false;
-            return true;
-        });
+        const fields = [];
+        const sortedEvents = botClient.events.sort((p, c) => parseInt(Math.min(...Array.from(p.schedule, t => t.start))) - parseInt(Math.min(...Array.from(c.schedule, t => t.start))));
+        for (const event of sortedEvents) {
+            if (event.name.endsWith('MODS')) continue;
+            if (event.name.endsWith('_NAME')) event.name = event.name.replace(/_NAME$/, '');
+            event.name = event.name
+                .replace(/\\n/g, '')
+                .replace(/\[.*?\]/g, ' ')
+                .replace(/[^a-zA-Z0-9\s'-]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toProperCase();
 
-        // Filter out event dates from the past 
-        fResult.forEach(o => {
-            o.instanceList = o.instanceList.filter(p => {
-                if (!moment().isBefore(moment(p.endTime))) return false;
+            if (event.name.startsWith('Fleet')) continue;
+            // Filter out event dates from the past 
+            event.schedule = event.schedule.filter(p => {
+                if (!moment().isBefore(moment(p.end))) return false;
                 return true;
             });
-        });
 
-        // Sort all the events so the closest ones show first
-        const sResult = fResult.sort((p, c) => parseInt(Math.min(...Array.from(p.instanceList, t => t.startTime))) - parseInt(Math.min(...Array.from(c.instanceList, t => t.startTime))));
+            // Sort the dates in the event
+            event.schedule = event.schedule.sort((p, c) => p.start - c.start);
 
-        for (let ix = 0; ix < sResult.length && fields.length < eNum; ix++) {
-            let nameKey = sResult[ix].nameKey;
-            const descKey = sResult[ix].descKey;
-            let schedule = '';
-            const sortedEvents = sResult[ix].instanceList.sort((p, c) => p.startTime - c.startTime);
-            for (let s = 0; s < sortedEvents.length; ++s) {
-                schedule += `\`${moment(sortedEvents[s].startTime).format('DD/MM/YYYY')}\`\n`;
-            }
-
-            if (schedule.length) { 
-                let keyVals = null;
-                try {
-                    keyVals = await client.sqlQuery(`CALL getEventText(?, ?, ?)`, [nameKey, descKey, lang]);
-                    keyVals = keyVals[0];
-
-                    if (!keyVals || !keyVals.length) { 
-                        continue; 
+            let enVal = '';
+            if (event.schedule.length) {
+                if (fields.length >= eNum) break;
+                event.schedule.forEach((d, ix) => {
+                    if (ix === 0) {
+                        enVal += '`' + moment(d.start).format('DD/MM/YYYY') + '`';
+                    } else {
+                        enVal += '\n`' + moment(d.start).format('DD/MM/YYYY') + '`';
                     }
-                } catch (e) {
-                    console.error(e);
-                }
-
-                const field = {};
-                field.value = '';                
-                for (const keyval of keyVals) {
-                    nameKey = nameKey.replace(keyval.id, JSON.parse(keyval.text)).replace(/(\[[/|\S]*\])/g, '');
-                    nameKey = nameKey.split("\\n")[0];
-                    if (nameKey.match(/\sMODS/)) { 
-                        nameKey = null; 
-                        break; 
-                    }                    
-                }
-                if (!nameKey) { continue; }
-                field.name = nameKey;
-                field.value += schedule+'`------------------------------`';
-                field.inline = true; 
-
-                fields.push(field);
+                });
+                fields.push({
+                    name: event.name,
+                    value: enVal + '\n`------------------------------`',
+                    inline: true
+                });
             }
         }
 
-        return message.channel.send({embed: {
-            author: {
-                name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
-            },
-            color: 0x0f0f0f,
-            description: message.language.get('COMMAND_CURRENTEVENTS_DESC', eNum),
-            fields: fields
-        }});
-
-        async function fetchEvents() {
-            return new Promise( async (resolve, reject) => {
-                try {             
-                    const rpc = require(`${process.cwd()}/${client.config.swgohAPILoc}/swgohAPI/index.js`);
-                    const iData = await rpc.initialDataRequest();
-                    resolve( iData.gameEventList );
-                } catch (e) {     
-                    reject(e);    
-                }                 
-            });                                                                                                                                                                     
-        } 
+        if (fields.length) {
+            return message.channel.send({embed: {
+                author: {
+                    name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
+                },
+                color: 0x0f0f0f,
+                description: message.language.get('COMMAND_CURRENTEVENTS_DESC', eNum),
+                fields: fields
+            }});
+        } else {
+            return message.send('No events at this time');
+        }
     }
 }
 

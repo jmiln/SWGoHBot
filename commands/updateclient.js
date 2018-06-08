@@ -20,8 +20,8 @@ class UpdateClient extends Command {
         }
 
         try {
-            if (client.config.swgohLoc && client.config.swgohLoc !== "") {
-                let result = await client.swgohAPI.updateData({force:true});
+            if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
+                let result = await client.swgohAPI.updateRawClient({force: true});
                 result = !result ? 'Client is already up-to-date' : 'Client has been updated';
                 msg.edit(result);
             } else {

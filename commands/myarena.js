@@ -12,7 +12,6 @@ class MyArena extends Command {
     }
 
     async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
-        let result, playerName;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
             return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY'));
@@ -23,7 +22,7 @@ class MyArena extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US', -1);
+            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US', 1);
         } catch (e) {
             console.log('Broke getting player in myarena: ' + e);
         }
@@ -35,26 +34,31 @@ class MyArena extends Command {
         if (player.arena.ship.squad.length) {
             const sArena = [];
             player.arena.ship.squad.forEach((ship, ix) => {
-                sArena.push(`\`${sPositions[ix]}\` ${client.ships.find(s => s.uniqueName === ship.name).name}`);
+                let sName = client.ships.find(s => s.uniqueName === ship.name || s.name.replace(/[\W_]+/g,"").toLowerCase() === ship.name.replace(/[\W_]+/g,"").toLowerCase());
+                sName = sName ? sName.name : 'Undefined';
+                sArena.push(`\`${sPositions[ix]}\` ${sName}`);
             });
             fields.push({
                 name: message.language.get('COMMAND_MYARENA_FLEET', player.arena.ship.rank),
-                value: sArena.join('\n') + '\n\`------------------------------\`',
+                value: sArena.join('\n') + '\n`------------------------------`',
                 inline: true
             });
         }
 
         const cArena = [];
         player.arena.char.squad.forEach((char, ix) => {
-            cArena.push(`\`${positions[ix]}\` ${client.characters.find(c => c.uniqueName === char.name).name}`);
+            let cName = client.characters.find(c => c.uniqueName === char.name || c.name.replace(/[\W_]+/g,"") === char.name.replace(/[\W_]+/g,""));
+            if (!cName) console.log(char);
+            cName = cName ? cName.name : 'Undefined';
+            cArena.push(`\`${positions[ix]}\` ${cName}`);
         });
         fields.push({
             name: message.language.get('COMMAND_MYARENA_ARENA', player.arena.char.rank),
-            value: cArena.join('\n') + '\n\`------------------------------\`',
+            value: cArena.join('\n') + '\n`------------------------------`',
             inline: true
         });
 
-        
+
         return message.channel.send({embed: {
             author: {
                 name: message.language.get('COMMAND_MYARENA_EMBED_HEADER', player.name)
