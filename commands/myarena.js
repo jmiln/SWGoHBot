@@ -22,7 +22,7 @@ class MyArena extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US', 1);
+            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US');
         } catch (e) {
             console.log('Broke getting player in myarena: ' + e);
         }

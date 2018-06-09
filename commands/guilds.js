@@ -64,8 +64,7 @@ class Guilds extends Command {
 
             if (acType) {
                 try {
-                    const player = await client.swgohAPI.getPlayer(userID, 'ENG_US');
-                    console.log('Player: ' + player);
+                    const player = await client.swgohAPI.getPlayer(userID, 'ENG_US', 6);
                     userID = player.guildName;
                 } catch (e) {
                     console.error(e);
@@ -74,8 +73,7 @@ class Guilds extends Command {
 
             let guild = null;
             try {
-                const swData = require('../swgohAPI/swgohService/swgohData');
-                guild = await swData.query('getGuildRoster', {guildName: userID});
+                guild = await client.swgohAPI.report('getGuildRoster', {guildName: userID});
             } catch (e) {
                 console.log('ERROR: ' + e);
             }

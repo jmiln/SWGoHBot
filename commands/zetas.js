@@ -1,6 +1,5 @@
 const Command = require('../base/Command');
 const moment = require('moment');
-const {inspect} = require('util');
 
 class Zetas extends Command {
     constructor(client) {
@@ -38,7 +37,7 @@ class Zetas extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US', 3);
+            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US', 6);
         } catch (e) {
             console.log('Error: Broke while trying to get player data in zetas: ' + e);
             return msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
@@ -81,11 +80,7 @@ class Zetas extends Command {
         }
         
         const lastUpdated = moment.duration(Math.abs(moment(player.updated).diff(moment()))).format("d [days], h [hrs], m [min]");
-        // TODO Make sure things are updatin/ not updating as they should
-        // console.log(inspect(player))
-        // console.log(`Then ${player.updated} vs Now ${moment()} $:$ ${moment().diff(moment(player.updated))} $:$  ${lastUpdated}`)
 
-        // console.log(lastUpdated)
         msg.edit({embed: {
             color: 0x000000,
             author: author,

@@ -79,7 +79,7 @@ class MyMods extends Command {
 
         let mods;
         try {
-            mods = await client.swgohAPI.getPlayerMods(allyCode, 'ENG_US');
+            mods = await client.swgohAPI.getPlayerMods(allyCode, 'ENG_US', 6);
         } catch (e) {
             console.log(e);
         }

@@ -13,7 +13,16 @@ class CurrentEvents extends Command {
     }
 
     async run(client, message, [num]) {
+        const FLEET_CHALLENGES = ['shipevent_PRELUDE_ACKBAR', 'shipevent_PRELUDE_MACEWINDU', 'shipevent_PRELUDE_TARKIN', 'shipevent_SC01UPGRADE', 'shipevent_SC02TRAINING', 'shipevent_SC03TRAINING', 'shipevent_SC03ABILITY'];
+        const MOD_CHALLENGES = ['restrictedmodbattle_set_1', 'restrictedmodbattle_set_2', 'restrictedmodbattle_set_3', 'restrictedmodbattle_set_4', 'restrictedmodbattle_set_5', 'restrictedmodbattle_set_6', 'restrictedmodbattle_set_7', 'restrictedmodbattle_set_8'];
+        const DAILY_CHALLENGES = ['challenge_XP', 'challenge_CREDIT', 'challenge_ABILITYUPGRADEMATERIALS', 'challenge_EQUIPMENT_AGILITY', 'challenge_EQUIPMENT_INTELLIGENCE', 'challenge_EQUIPMENT_STRENGTH'];
+        // const HEISTS = ['EVENT_CREDIT_HEIST_GETAWAY_V2'];
+        
         const DEF_NUM = 10;
+        // const lang = 'ger_de';
+        // const lang = 'ita_it';
+        // const lang = 'por_br';
+        // const lang = 'jpn_jp';
         const lang = 'ENG_US';
     
         let botClient = null;
@@ -29,20 +38,15 @@ class CurrentEvents extends Command {
             eNum = DEF_NUM;
         }
 
-        const fields = [];
-        const sortedEvents = botClient.events.sort((p, c) => parseInt(Math.min(...Array.from(p.schedule, t => t.start))) - parseInt(Math.min(...Array.from(c.schedule, t => t.start))));
-        for (const event of sortedEvents) {
-            if (event.name.endsWith('MODS')) continue;
-            if (event.name.endsWith('_NAME')) event.name = event.name.replace(/_NAME$/, '');
-            event.name = event.name
-                .replace(/\\n/g, '')
-                .replace(/\[.*?\]/g, ' ')
-                .replace(/[^a-zA-Z0-9\s'-]+/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim()
-                .toProperCase();
+        const evOut = [];
+        for (const event of botClient.events) {
+            if (FLEET_CHALLENGES.includes(event.id) ||
+                MOD_CHALLENGES.includes(event.id) ||
+                DAILY_CHALLENGES.includes(event.id)) {
+                delete botClient.event;
+                continue;
+            }
 
-            if (event.name.startsWith('Fleet')) continue;
             // Filter out event dates from the past 
             event.schedule = event.schedule.filter(p => {
                 if (!moment().isBefore(moment(p.end))) return false;
@@ -51,22 +55,35 @@ class CurrentEvents extends Command {
 
             // Sort the dates in the event
             event.schedule = event.schedule.sort((p, c) => p.start - c.start);
+            // console.log(`ID: ${event.id}, Name: ${event.name}`);
+            evOut.push(event);
+        }
 
-            let enVal = '';
+        const fields = [];
+        let desc = '`------------------------------`';
+        let count = 0;
+        const sortedEvents = evOut.sort((p, c) => parseInt(Math.min(...Array.from(p.schedule, t => t.start))) - parseInt(Math.min(...Array.from(c.schedule, t => t.start))));
+        for (const event of sortedEvents) {
+
+            if (count >= eNum) break;
             if (event.schedule.length) {
-                if (fields.length >= eNum) break;
-                event.schedule.forEach((d, ix) => {
-                    if (ix === 0) {
-                        enVal += '`' + moment(d.start).format('DD/MM/YYYY') + '`';
-                    } else {
-                        enVal += '\n`' + moment(d.start).format('DD/MM/YYYY') + '`';
-                    }
-                });
-                fields.push({
-                    name: event.name,
-                    value: enVal + '\n`------------------------------`',
-                    inline: true
-                });
+                count ++;
+                // Expanded view
+                // let enVal = '';
+                // if (event.schedule.length) {
+                //     if (fields.length >= eNum) break;
+                //     event.schedule.forEach((d, ix) => {
+                //         enVal += `${ix === 0 ? '' : '\n'}\`` + moment(d.start).format('DD/MM/YYYY') + '`';
+                //     });
+                //     fields.push({
+                //         name: event.name,
+                //         value: enVal + '\n`------------------------------`',
+                //         inline: true
+                //     });
+                // }
+
+                // Condensed view
+                desc += `\n\`${moment(event.schedule[0].start).format('M-DD')} |\` **${event.name}**`;
             }
         }
 
@@ -76,8 +93,16 @@ class CurrentEvents extends Command {
                     name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
                 },
                 color: 0x0f0f0f,
-                description: message.language.get('COMMAND_CURRENTEVENTS_DESC', eNum),
+                description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count),
                 fields: fields
+            }});
+        } else if (desc.length) {
+            return message.channel.send({embed: {
+                author: {
+                    name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
+                },
+                color: 0x0f0f0f,
+                description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count) + '\n' + desc + '\n`------------------------------`'
             }});
         } else {
             return message.send('No events at this time');

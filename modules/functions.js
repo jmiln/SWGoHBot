@@ -580,15 +580,16 @@ module.exports = (client) => {
         }  else if (client.isAllyCode(user)) {
             return [user.replace(/[^\d]*/g, '')];
         }  else {
-            user = user.toLowerCase();
-            const acArr = [];
-            const results = await client.sqlQuery("CALL getAllyFromName( ? );", [user]);
-            if (results && results[0] && results[0].length) {
-                results[0].forEach(r => {
-                    acArr.push(r.allyCode);
+            const outArr = [];
+            const results = await client.swgohAPI.report( 'getPlayerProfile', { "name": user } );
+            if (results.length > 1) {
+                results.forEach(p => {
+                    outArr.push(p.allyCode);
                 });
+            } else {
+                outArr.push(results[0].allyCode);
             }
-            return acArr;
+            return outArr;
         }
     };
 
