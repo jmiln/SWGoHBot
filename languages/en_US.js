@@ -459,9 +459,9 @@ module.exports = class extends Language {
                 "header": 'INFORMATION',
                 "desc": ` \nCurrently running on **${guilds}** servers \n`,
                 "links": {
-                    "Invite me": "Invite the bot [here](http://swgohbot.com/invite)",
-                    "Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is [here](https://discord.gg/FfwGvhr)",
-                    "Support the Bot": "The bot's code is on github [here](https://github.com/jmiln/SWGoHBot), and is open to contributions. I also have a Patreon [here](https://www.patreon.com/swgohbot) if you're interested."
+                    "Invite me": "Invite the bot http://swgohbot.com/invite",
+                    "Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is https://discord.gg/FfwGvhr",
+                    "Support the Bot": "The bot's code is on github https://github.com/jmiln/SWGoHBot, and is open to contributions. \n\nI also have a Patreon https://www.patreon.com/swgohbot if you're interested."
                 }
             }),
             COMMAND_INFO_HELP: {

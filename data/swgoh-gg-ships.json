@@ -162,6 +162,15 @@
         "combat_type": 2
     },
     {
+        "name": "Lando's Millennium Falcon",
+        "base_id": "MILLENNIUMFALCONPRISTINE",
+        "url": "https://swgoh.gg/ships/landos-millennium-falcon/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_mil_fal_pristine.png",
+        "power": 58245,
+        "description": "Devastating Scoundrel attacker that becomes more threatening after each ally reinforcement",
+        "combat_type": 2
+    },
+    {
         "name": "Millennium Falcon (Ep VII)",
         "base_id": "MILLENNIUMFALCONEP7",
         "url": "https://swgoh.gg/ships/millennium-falcon-ep-vii/",

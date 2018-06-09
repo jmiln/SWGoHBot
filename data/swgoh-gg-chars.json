@@ -910,6 +910,16 @@
         "combat_type": 1
     },
     {
+        "name": "L3-37",
+        "base_id": "L3_37",
+        "pk": 279,
+        "url": "https://swgoh.gg/characters/l3-37/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_l337.png",
+        "power": 19929,
+        "description": "Droid Tank that can dispel allies and has multiple ways to increase her stats permanently",
+        "combat_type": 1
+    },
+    {
         "name": "Lando Calrissian",
         "base_id": "ADMINISTRATORLANDO",
         "pk": 4,
@@ -1487,6 +1497,16 @@
         "image": "//swgoh.gg/static/img/assets/tex.charui_han_young.png",
         "power": 19929,
         "description": "Scoundrel Attacker who becomes more deadly over time",
+        "combat_type": 1
+    },
+    {
+        "name": "Young Lando Calrissian",
+        "base_id": "YOUNGLANDO",
+        "pk": 277,
+        "url": "https://swgoh.gg/characters/young-lando-calrissian/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_younglando.png",
+        "power": 19929,
+        "description": "Scoundrel Attacker that takes advantage of debuffed enemies and deals ever-increasing damage",
         "combat_type": 1
     },
     {
