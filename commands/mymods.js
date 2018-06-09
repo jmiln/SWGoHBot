@@ -83,7 +83,7 @@ class MyMods extends Command {
         } catch (e) {
             console.log(e);
         }
-        const charMods = mods.mods.filter(m => (m.characterName.replace(/[^a-zA-Z ]/g, '') === character.name.replace(/[^a-zA-Z ]/g, '') || m.characterName === character.uniqueName));
+        const charMods = mods.mods.filter(m => (m.characterName.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() === character.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() || m.characterName === character.uniqueName));
 
         const slots = {};
 
