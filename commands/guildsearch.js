@@ -38,14 +38,19 @@ class GuildSearch extends Command {
             userID = userID[0];
         } else {
             // If they're just looking for a character for themselves, get the char
-            searchChar = [userID].concat(searchChar).join(' ');
+            searchChar = [userID].concat(searchChar);
             userID = await client.getAllyCode(message, message.author.id);
         }
-        const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships);
-        let character;
-        if (!searchChar) {
+
+        if (!searchChar.length) {
             return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_MISSING_CHAR'));
         } 
+        
+        searchChar = searchChar.join(' ');
+        
+        const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships);
+        
+        let character;
         
         if (chars.length === 0) {
             return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_NO_RESULTS', searchChar));

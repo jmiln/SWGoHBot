@@ -105,7 +105,7 @@ class MyMods extends Command {
                     statStr = parseFloat(statStr).toFixed(2) + '%';
                 }
                 const t = mod[`secondaryType_${ix}`].replace('%', '').trim();
-                statStr += ' ' + modTypes[t.toUpperCase()];
+                statStr += ' ' + t;
                 slots[mod.slot].stats.push(statStr);
             }
         });
