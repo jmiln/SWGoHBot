@@ -154,7 +154,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';arenarank <currentRank>',
+                        usage: ';arenarank <currentRank> [battleCount]',
                         args: {}
                     }
                 ]
