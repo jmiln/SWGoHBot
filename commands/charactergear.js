@@ -57,6 +57,18 @@ class Charactergear extends Command {
             return message.channel.send(message.language.get('COMMAND_CHARGEAR_INVALID_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
         }
 
+        if (!chars || chars.length === 0) {
+            return message.channel.send(message.language.get('BASE_SWGOH_NO_CHAR_FOUND', searchName));
+        } else if (chars.length > 1) {
+            const charL = [];
+            const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
+            charS.forEach(c => {
+                charL.push(c.name);
+            });
+            return message.channel.send(message.language.get('BASE_SWGOH_CHAR_LIST', charL.join('\n')));
+        }
+
+
         if (gearLvl === '') {
             chars.forEach(character => {
                 const allGear = {};
