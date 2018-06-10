@@ -23,7 +23,7 @@ class Zetas extends Command {
         let allyCode;
         if (!allyCodes.length) {
             // Tell em no match found
-            return message.channel.send("I didn't find any results for that user");
+            return message.channel.send("That user is not registered. `;help register` for more info");
         } else if (allyCodes.length > 1) {
             // Tell em there's too many
             return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific');
@@ -33,61 +33,63 @@ class Zetas extends Command {
 
         const msg = await message.channel.send(message.language.get('BASE_SWGOH_PLS_WAIT_FETCH', 'zetas'));
 
-        let results = await client.sqlQuery('CALL getZetasFromAlly( ? )', [allyCode]);
+
+
+        let player;
+        try {
+            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US', 6);
+        } catch (e) {
+            console.log('Error: Broke while trying to get player data in zetas: ' + e);
+            return msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
+        }
 
         const zetas = {};
-        let playerName, lastUpdated;
-        if (results) {
-            results = results[0];
-            let count = 0;
-            results.forEach((row, ix) => {
-                if (ix === 0) {
-                    playerName = row.Name;
-                    lastUpdated = moment.duration(Math.abs(moment(row.updated).diff(moment()))).format("d [days], h [hrs], m [min]");
-                }
-                row.Character = row.Character.replace(/[\\"]/g, '');
-                count += 1;
-                row.aName = `\`[${row.ID.toUpperCase()[0]}]\` ${row.aName.replace(/"/g, '')}`;
-                if (zetas.hasOwnProperty(row.Character)) {
-                    zetas[row.Character].push(row.aName);
-                } else {
-                    zetas[row.Character] = [row.aName];
+        let count = 0;
+        player.roster.forEach(char => {
+            char.skills.forEach(skill => {
+                if (skill.isZeta && skill.tier === 8) {
+                    count++;
+                    if (!zetas[char.name]) {
+                        zetas[char.name] = ['`[' + skill.type.charAt(0) + ']` ' + skill.name];
+                    } else {
+                        zetas[char.name].push('`[' + skill.type.charAt(0) + ']` ' + skill.name);
+                    }
                 }
             });
-            const fields = [];
-            const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);
-            sorted.forEach(character => {
-                fields.push({
-                    name: `(${zetas[character].length}) ${character}`,
-                    value: zetas[character].join('\n') + '\n`' + '-'.repeat(30) + '`',
-                    inline: true
-                });
+        });
+
+        const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);
+        const fields = [];
+        sorted.forEach(character => {
+            fields.push({
+                name: `(${zetas[character].length}) ${character}`,
+                value: zetas[character].join('\n') + '\n`' + '-'.repeat(33) + '`',
+                inline: true
             });
-            const auth = message.guild.members.get(userID);
-            const author = {name: `${playerName}'s Zetas (${count})`};
-            if (auth) {
-                author.icon_url = auth.user.avatarURL;
-            } else {
-                author.name = `${playerName ? playerName : client.users.get(userID).username}'s Zetas (${count})`;
-            }
-            let desc;
-            if (fields.length === 0) {
-                desc = message.language.get('COMMAND_ZETA_NO_ZETAS');
-            } else {
-                desc = message.language.get('COMMAND_ZETA_OUT_DESC');
-            }
-            msg.edit({embed: {
-                color: 0x000000,
-                author: author,
-                description: desc, 
-                fields: fields,
-                footer: {
-                    text: message.language.get('BASE_SWGOH_LAST_UPDATED', lastUpdated)
-                }
-            }});
+        });
+        const auth = message.guild.members.get(userID);
+        const author = {name: `${player.name}'s Zetas (${count})`};
+        if (auth) {
+            author.icon_url = auth.user.avatarURL;
+        } 
+        let desc;
+        if (fields.length === 0) {
+            desc = message.language.get('COMMAND_ZETA_NO_ZETAS');
         } else {
-            msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
+            desc = message.language.get('COMMAND_ZETA_OUT_DESC');
         }
+        
+        const lastUpdated = moment.duration(Math.abs(moment(player.updated).diff(moment()))).format("d [days], h [hrs], m [min]");
+
+        msg.edit({embed: {
+            color: 0x000000,
+            author: author,
+            description: desc, 
+            fields: fields,
+            footer: {
+                text: message.language.get('BASE_SWGOH_LAST_UPDATED', lastUpdated)
+            }
+        }});
     }
 }
 

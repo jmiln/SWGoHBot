@@ -81,8 +81,9 @@ client.allyCodes = client.sequelize.define('allyCodes', {
 const init = async () => {
 
     // If we have the magic, use it
-    if (client.config.swgohLoc && client.config.swgohLoc !== "") {
-        client.swgohAPI = require(`./${client.config.swgohLoc}/swgoh.js`);
+    if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
+        const swgohService = require('./'+client.config.swgohAPILoc);
+        client.swgohAPI = new swgohService(client.config.swgohSettings);
     }
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.

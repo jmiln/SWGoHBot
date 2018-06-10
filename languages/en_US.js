@@ -104,6 +104,23 @@ module.exports = class extends Language {
                     args: {}
                 };
             },
+            BASE_MOD_TYPES: {
+                SQUARE:  'Square',
+                ARROW:   'Arrow',
+                DIAMOND: 'Diamond',
+                TRIANGLE:'Triangle',
+                CIRCLE:  'Circle',
+                CROSS:   'Cross',
+                ACCURACY:   'Accuracy',
+                CRITCHANCE: 'Crit Chance',
+                CRITDAMAGE: 'Crit Damage',
+                DEFENSE:    'Defense',
+                HEALTH:     'Health',
+                OFFENSE:    'Offense',
+                POTENCY:    'Potency',
+                SPEED:      'Speed',
+                TENACITY:   'Tenacity'
+            },
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
@@ -216,43 +233,17 @@ module.exports = class extends Language {
                 ]
             },
 
-            // CharacterMods Command
-            COMMAND_CHARMODS_STAT_NAMES: ({
-                'UNIT_STAT_MAX_HEALTH_PERCENT_ADDITIVE': '% Health',
-                'UNIT_STAT_MAX_HEALTH': ' Health',
-                'UNIT_STAT_ACCURACY': '% Potency',
-                'UNIT_STAT_CRITICAL_CHANCE_PERCENT_ADDITIVE': '% Crit Chance',
-                'UNIT_STAT_MAX_SHIELD_PERCENT_ADDITIVE': '% Protection',
-                'UNIT_STAT_MAX_SHIELD': ' Protection',
-                'UNIT_STAT_CRITICAL_DAMAGE': '% Crit Dmg',
-                'UNIT_STAT_DEFENSE_PERCENT_ADDITIVE': '% Defense',
-                'UNIT_STAT_DEFENSE': ' Defense',
-                'UNIT_STAT_OFFENSE_PERCENT_ADDITIVE': '% Offense',
-                'UNIT_STAT_OFFENSE': ' Offense',
-                'UNIT_STAT_RESISTANCE': '% Tenacity',
-                'UNIT_STAT_SPEED': ' Speed',
-                'UNIT_STAT_EVASION_NEGATE_PERCENT_ADDITIVE': '% Accuracy',
-                'UNIT_STAT_CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE': '% Crit Avoidance'
-            }),
-            COMMAND_CHARMODS_MOD_TYPES: ({
-                'icon_buff_health': 'Health',
-                'icon_buff_accuracy': 'Potency',
-                'icon_buff_speed': 'Speed',
-                'icon_buff_critical_damage': 'Crit Damage',
-                'icon_buff_crit_chance': 'Crit Chance',
-                'icon_buff_armor': 'Defense',
-                'icon_tenacity': 'Tenacity'
-            }),
-            COMMAND_CHARMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
-            COMMAND_CHARMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
-            COMMAND_CHARMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
-            COMMAND_CHARMODS_HELP: ({
+            // MyMods Command
+            COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
+            COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
+            COMMAND_MYMODS_HELP: ({
                 description: "Shows the mods that you have equipped on the selected character.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';charactermods [user] <character>',
+                        usage: ';mymods [user] <character>',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "character": "The character you want to search for."
@@ -468,9 +459,9 @@ module.exports = class extends Language {
                 "header": 'INFORMATION',
                 "desc": ` \nCurrently running on **${guilds}** servers \n`,
                 "links": {
-                    "Invite me": "Invite the bot [here](http://swgohbot.com/invite)",
-                    "Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is [here](https://discord.gg/FfwGvhr)",
-                    "Support the Bot": "The bot's code is on github [here](https://github.com/jmiln/SWGoHBot), and is open to contributions. I also have a Patreon [here](https://www.patreon.com/swgohbot) if you're interested."
+                    "Invite me": "Invite the bot http://swgohbot.com/invite",
+                    "Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is https://discord.gg/FfwGvhr",
+                    "Support the Bot": "The bot's code is on github https://github.com/jmiln/SWGoHBot, and is open to contributions. \n\nI also have a Patreon https://www.patreon.com/swgohbot if you're interested."
                 }
             }),
             COMMAND_INFO_HELP: {
@@ -687,6 +678,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
             COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
+            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [
@@ -702,9 +694,10 @@ module.exports = class extends Language {
                     {
                         action: "Update",
                         actionDesc: 'Update/ resync your SWGoH data.',
-                        usage: ';register update <user>',
+                        usage: ';register update <user> [-guild]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "user": "The person you're adding. (me | userID | mention)",
+                            "-guild": "Tell it to pull/ update your whole guild (-g | -guild | -guilds)"
                         }
                     },
                     {

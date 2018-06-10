@@ -4372,6 +4372,7 @@
         "uniqueName": "CHIRRUTIMWE",
         "aliases": [
             "Chirrut Imwe",
+            "Chirrut Îmwe",
             "Chirrut"
         ],
         "url": "https://swgoh.gg/characters/chirrut-imwe/",
@@ -12029,7 +12030,8 @@
         "uniqueName": "GRANDADMIRALTHRAWN",
         "aliases": [
             "Grand Admiral Thrawn",
-            "Thrawn"
+            "Thrawn",
+            "GAT"
         ],
         "url": "https://swgoh.gg/characters/grand-admiral-thrawn/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_thrawn.png",
@@ -32188,6 +32190,387 @@
             "Tenacity": 39,
             "Health Steal": 10,
             "Protection": 32,
+            "activation": 25
+        }
+    },
+    {
+        "name": "L3-37",
+        "uniqueName": "L3_37",
+        "aliases": [
+            "L3-37"
+        ],
+        "nameVariant": [
+            "L3-37"
+        ],
+        "url": "https://swgoh.gg/characters/l3-37/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_l337.png",
+        "side": "light",
+        "factions": [
+            "Droid",
+            "Scoundrel",
+            "Tank"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 2 BioTech Implant",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 Loronar Power Cell",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 5 Loronar Power Cell",
+                "Mk 2 BioTech Implant",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 BAW Armor Mod",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 4": [
+                "Mk 1 Chedak Comlink",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 2 Chiewab Hypo Syringe",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 6 BAW Armor Mod"
+            ],
+            "Gear 5": [
+                "Mk 6 Loronar Power Cell",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 4 Nubian Security Scanner",
+                "Mk 6 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 6": [
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 6 TaggeCo Holo Lens"
+            ],
+            "Gear 7": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 6 Nubian Security Scanner"
+            ],
+            "Gear 8": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 2 Sienar Holo Projector"
+            ],
+            "Gear 9": [
+                "Mk 8 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Nubian Design Tech",
+                "Mk 5 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 10": [
+                "Mk 9 Fabritech Data Pad",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 9 Neuro-Saav Electrobinoculars",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 6 Nubian Security Scanner",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 8 Loronar Power Cell"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Armor Plating",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Daring Advance": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Defense Down for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Spark of Hope": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy and gain Taunt for 1 turn.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "For the Droids": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of L3-37's turns, if L3-37 didn't take damage from an enemy since her last turn she becomes Prepared. Whenever another Droid or Scoundrel ally takes damage, L3-37 gains 15% Turn Meter. Whenever L3-37 takes damage from an attack, she dispels debuffs from a random debuffed Scoundrel ally. The first time each other Droid ally is reduced to 1% Health, they equalize Health with L3-37.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Self Modification": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "L3-37 has +25% Max Protection. When L3-37 becomes Prepared, she gains Taunt for 1 turn. At the start of each encounter, L3-37 becomes Prepared. At the start of battle, L3-37 gains the Enhance MK I special ability.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 1249,
+            "Agility": 987,
+            "Intelligence": 726,
+            "Speed": 97,
+            "Physical Damage": 2796,
+            "Physical Critical Rating": 554,
+            "Special Damage": 1792,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 48,
+            "Resistance Penetration": 0,
+            "Potency": 37,
+            "Health": 32222,
+            "Armor": 330,
+            "Resistance": 192,
+            "Tenacity": 32,
+            "Health Steal": 10,
+            "Protection": 38,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Young Lando Calrissian",
+        "uniqueName": "YOUNGLANDO",
+        "aliases": [
+            "Young Lando Calrissian"
+        ],
+        "nameVariant": [
+            "Young Lando Calrissian"
+        ],
+        "url": "https://swgoh.gg/characters/young-lando-calrissian/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_younglando.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Scoundrel"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 Arakyd Droid Caller",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 2 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 1 Nubian Design Tech",
+                "Mk 3 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 4 BlasTech Weapon Mod",
+                "Mk 4 BAW Armor Mod",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 4": [
+                "Mk 2 Chedak Comlink",
+                "Mk 4 BioTech Implant",
+                "Mk 1 Chedak Comlink",
+                "Mk 3 Chiewab Hypo Syringe",
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 2 Sienar Holo Projector"
+            ],
+            "Gear 5": [
+                "Mk 3 SoroSuub Keypad",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 4 TaggeCo Holo Lens",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Nubian Design Tech",
+                "Mk 2 Czerka Stun Cuffs"
+            ],
+            "Gear 6": [
+                "Mk 2 Nubian Security Scanner",
+                "Mk 3 Merr-Sonn Shield Generator",
+                "Mk 5 BioTech Implant",
+                "Mk 3 Merr-Sonn Thermal Detonator",
+                "Mk 7 Loronar Power Cell",
+                "Mk 8 BlasTech Weapon Mod"
+            ],
+            "Gear 7": [
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 5 BioTech Implant",
+                "Mk 2 Athakam Medpac",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 6 Nubian Security Scanner",
+                "Mk 6 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 6 BAW Armor Mod",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 5 CEC Fusion Furnace"
+            ],
+            "Gear 9": [
+                "Mk 2 Sienar Holo Projector",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 4 Chedak Comlink"
+            ],
+            "Gear 10": [
+                "Mk 4 Chedak Comlink",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 6 Nubian Design Tech",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 6 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 11": [
+                "Mk 4 Sienar Holo Projector",
+                "Mk 5 Chedak Comlink",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 6 A/KT Stun Gun"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Bayonet",
+                "Unknown Gear",
+                "Unknown Gear",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Silent Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Potency Down for 2 turns, this ability deals 25% more damage for each Prepared ally. If it's Young Lando Calrissian's turn, enemies can't gain buffs or bonus Turn Meter during this attack. This attack can't be Countered.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Hot Hand": {
+                "type": "Special",
+                "abilityCooldown": "14",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict Ability Block for 1 turn. At the end of each turn, there is a 50% chance for each debuffed enemy to reduce the cooldown of this ability by 1.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Dealer's Choice": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Dispel target other ally, then grant them Stealth and Potency Up for 2 turns. Young Lando Calrissian gains 50% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Perfect Timing": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "If Young Lando Calrissian is buffed he has +15% Critical Chance and +15% Critical Damage. Additionally, if Young Lando Calrissian is Prepared he has +15% Critical Chance and +15% Critical Damage. At the start of Young Lando Calrissian's turn, he has a 40% chance to become Prepared. Additionally, for each debuffed enemy, he has 50% chance each to become Prepared.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 19929,
+            "Strength": 752,
+            "Agility": 1220,
+            "Intelligence": 600,
+            "Speed": 141,
+            "Physical Damage": 2875,
+            "Physical Critical Rating": 749,
+            "Special Damage": 1588,
+            "Special Critical Rating": 25,
+            "Armor Penetration": 187,
+            "Resistance Penetration": 5,
+            "Potency": 38,
+            "Health": 24436,
+            "Armor": 204,
+            "Resistance": 89,
+            "Tenacity": 31,
+            "Health Steal": 15,
+            "Protection": 29,
             "activation": 25
         }
     }

@@ -13,102 +13,100 @@ class CurrentEvents extends Command {
     }
 
     async run(client, message, [num]) {
+        const FLEET_CHALLENGES = ['shipevent_PRELUDE_ACKBAR', 'shipevent_PRELUDE_MACEWINDU', 'shipevent_PRELUDE_TARKIN', 'shipevent_SC01UPGRADE', 'shipevent_SC02TRAINING', 'shipevent_SC03TRAINING', 'shipevent_SC03ABILITY'];
+        const MOD_CHALLENGES = ['restrictedmodbattle_set_1', 'restrictedmodbattle_set_2', 'restrictedmodbattle_set_3', 'restrictedmodbattle_set_4', 'restrictedmodbattle_set_5', 'restrictedmodbattle_set_6', 'restrictedmodbattle_set_7', 'restrictedmodbattle_set_8'];
+        const DAILY_CHALLENGES = ['challenge_XP', 'challenge_CREDIT', 'challenge_ABILITYUPGRADEMATERIALS', 'challenge_EQUIPMENT_AGILITY', 'challenge_EQUIPMENT_INTELLIGENCE', 'challenge_EQUIPMENT_STRENGTH'];
+        // const HEISTS = ['EVENT_CREDIT_HEIST_GETAWAY_V2'];
+        
         const DEF_NUM = 10;
+        // const lang = 'ger_de';
+        // const lang = 'ita_it';
+        // const lang = 'por_br';
+        // const lang = 'jpn_jp';
         const lang = 'ENG_US';
-        let result = null;              
-        const fields = [];
+    
+        let botClient = null;
         try {
-            result = await fetchEvents();
+            botClient = await client.swgohAPI.getClient(lang);
         } catch (e) {
-            return console.error('Error in fetchEvents: ' + e);           
+            console.error(e);
         }
-
+        
         // Let them specify the max # of events to show
         let eNum = parseInt(num);
         if (isNaN(eNum)) {
             eNum = DEF_NUM;
         }
 
-        // Get rid of any events we don't want to show up
-        const fResult = result.filter(o => {
-            if (o.type === 3 && o.nameKey.includes("HERO")) return false;
-            if (!o.nameKey || !o.descKey) return false;
-            if (!moment().subtract(10, 'd').isBefore(moment(Math.max(...Array.from(o.instanceList, t => t.startTime))))) return false;
-            return true;
-        });
-
-        // Filter out event dates from the past 
-        fResult.forEach(o => {
-            o.instanceList = o.instanceList.filter(p => {
-                if (!moment().isBefore(moment(p.endTime))) return false;
-                return true;
-            });
-        });
-
-        // Sort all the events so the closest ones show first
-        const sResult = fResult.sort((p, c) => parseInt(Math.min(...Array.from(p.instanceList, t => t.startTime))) - parseInt(Math.min(...Array.from(c.instanceList, t => t.startTime))));
-
-        for (let ix = 0; ix < sResult.length && fields.length < eNum; ix++) {
-            let nameKey = sResult[ix].nameKey;
-            const descKey = sResult[ix].descKey;
-            let schedule = '';
-            const sortedEvents = sResult[ix].instanceList.sort((p, c) => p.startTime - c.startTime);
-            for (let s = 0; s < sortedEvents.length; ++s) {
-                schedule += `\`${moment(sortedEvents[s].startTime).format('DD/MM/YYYY')}\`\n`;
+        const evOut = [];
+        for (const event of botClient.events) {
+            if (FLEET_CHALLENGES.includes(event.id) ||
+                MOD_CHALLENGES.includes(event.id) ||
+                DAILY_CHALLENGES.includes(event.id)) {
+                delete botClient.event;
+                continue;
             }
 
-            if (schedule.length) { 
-                let keyVals = null;
-                try {
-                    keyVals = await client.sqlQuery(`CALL getEventText(?, ?, ?)`, [nameKey, descKey, lang]);
-                    keyVals = keyVals[0];
+            // Filter out event dates from the past 
+            event.schedule = event.schedule.filter(p => {
+                if (!moment().isBefore(moment(p.end))) return false;
+                return true;
+            });
 
-                    if (!keyVals || !keyVals.length) { 
-                        continue; 
-                    }
-                } catch (e) {
-                    console.error(e);
-                }
+            // Sort the dates in the event
+            event.schedule = event.schedule.sort((p, c) => p.start - c.start);
+            // console.log(`ID: ${event.id}, Name: ${event.name}`);
+            evOut.push(event);
+        }
 
-                const field = {};
-                field.value = '';                
-                for (const keyval of keyVals) {
-                    nameKey = nameKey.replace(keyval.id, JSON.parse(keyval.text)).replace(/(\[[/|\S]*\])/g, '');
-                    nameKey = nameKey.split("\\n")[0];
-                    if (nameKey.match(/\sMODS/)) { 
-                        nameKey = null; 
-                        break; 
-                    }                    
-                }
-                if (!nameKey) { continue; }
-                field.name = nameKey;
-                field.value += schedule+'`------------------------------`';
-                field.inline = true; 
+        const fields = [];
+        let desc = '`------------------------------`';
+        let count = 0;
+        const sortedEvents = evOut.sort((p, c) => parseInt(Math.min(...Array.from(p.schedule, t => t.start))) - parseInt(Math.min(...Array.from(c.schedule, t => t.start))));
+        for (const event of sortedEvents) {
 
-                fields.push(field);
+            if (count >= eNum) break;
+            if (event.schedule.length) {
+                count ++;
+                // Expanded view
+                // let enVal = '';
+                // if (event.schedule.length) {
+                //     if (fields.length >= eNum) break;
+                //     event.schedule.forEach((d, ix) => {
+                //         enVal += `${ix === 0 ? '' : '\n'}\`` + moment(d.start).format('DD/MM/YYYY') + '`';
+                //     });
+                //     fields.push({
+                //         name: event.name,
+                //         value: enVal + '\n`------------------------------`',
+                //         inline: true
+                //     });
+                // }
+
+                // Condensed view
+                desc += `\n\`${moment(event.schedule[0].start).format('M-DD')} |\` **${event.name}**`;
             }
         }
 
-        return message.channel.send({embed: {
-            author: {
-                name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
-            },
-            color: 0x0f0f0f,
-            description: message.language.get('COMMAND_CURRENTEVENTS_DESC', eNum),
-            fields: fields
-        }});
-
-        async function fetchEvents() {
-            return new Promise( async (resolve, reject) => {
-                try {             
-                    const rpc = require(`${process.cwd()}/${client.config.swgohAPILoc}/swgohService/swgohAPI/index.js`);//core/swgoh.rpc.js`);
-                    const iData = await rpc.initialDataRequest();
-                    resolve( iData.gameEventList );
-                } catch (e) {     
-                    reject(e);    
-                }                 
-            });                                                                                                                                                                     
-        } 
+        if (fields.length) {
+            return message.channel.send({embed: {
+                author: {
+                    name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
+                },
+                color: 0x0f0f0f,
+                description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count),
+                fields: fields
+            }});
+        } else if (desc.length) {
+            return message.channel.send({embed: {
+                author: {
+                    name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
+                },
+                color: 0x0f0f0f,
+                description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count) + '\n' + desc + '\n`------------------------------`'
+            }});
+        } else {
+            return message.send('No events at this time');
+        }
     }
 }
 
