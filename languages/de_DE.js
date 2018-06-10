@@ -104,6 +104,23 @@ module.exports = class extends Language {
                     args: {}
                 };
             },
+            BASE_MOD_TYPES: {
+                SQUARE:  'Viereck',
+                ARROW:   'Pfeil',
+                DIAMOND: 'Diamant',
+                TRIANGLE:'Dreieck',
+                CIRCLE:  'Kreis',
+                CROSS:   'Kreuz',
+                ACCURACY:   'Praezision',
+                CRITCHANCE: 'Krit Chance',
+                CRITDAMAGE: 'Krit Schaden',
+                DEFENSE:    'Abwehr',
+                HEALTH:     'Gesundheit',
+                OFFENSE:    'Angriff',
+                POTENCY:    'Effektivitaet',
+                SPEED:      'Tempo',
+                TENACITY:   'Zaehigkeit'
+            },
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}${usage}\``,
