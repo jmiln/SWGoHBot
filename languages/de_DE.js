@@ -694,9 +694,10 @@ module.exports = class extends Language {
                     {
                         action: "Update",
                         actionDesc: 'Aktualisiert / synchronisiert die SWGoH Daten.',
-                        usage: ';register update <user>',
+                        usage: ';register update <user> [-guild]',
                         args: {
-                            "user": "Das Discordprofil das du aktualisieren moechtest. (me | userID | mention)"
+                            "user": "Das Discordprofil das du aktualisieren moechtest. (me | userID | mention)",
+                            "-guild": "Setzen um die Daten der kompletten Gilde zu aktualisieren (-g | -guild | -guilds)"
                         }
                     },
                     {
