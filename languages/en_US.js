@@ -678,6 +678,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
             COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
+            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [
@@ -693,9 +694,10 @@ module.exports = class extends Language {
                     {
                         action: "Update",
                         actionDesc: 'Update/ resync your SWGoH data.',
-                        usage: ';register update <user>',
+                        usage: ';register update <user> [-guild]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "user": "The person you're adding. (me | userID | mention)",
+                            "-guild": "Tell it to pull/ update your whole guild (-g | -guild | -guilds)"
                         }
                     },
                     {
