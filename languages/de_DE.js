@@ -104,6 +104,23 @@ module.exports = class extends Language {
                     args: {}
                 };
             },
+            BASE_MOD_TYPES: {
+                SQUARE:  'Viereck',
+                ARROW:   'Pfeil',
+                DIAMOND: 'Diamant',
+                TRIANGLE:'Dreieck',
+                CIRCLE:  'Kreis',
+                CROSS:   'Kreuz',
+                ACCURACY:   'Praezision',
+                CRITCHANCE: 'Krit Chance',
+                CRITDAMAGE: 'Krit Schaden',
+                DEFENSE:    'Abwehr',
+                HEALTH:     'Gesundheit',
+                OFFENSE:    'Angriff',
+                POTENCY:    'Effektivitaet',
+                SPEED:      'Tempo',
+                TENACITY:   'Zaehigkeit'
+            },
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}${usage}\``,
@@ -216,43 +233,17 @@ module.exports = class extends Language {
                 ]
             },
 
-            // CharacterMods Command
-            COMMAND_CHARMODS_STAT_NAMES: ({
-                'UNIT_STAT_MAX_HEALTH_PERCENT_ADDITIVE': '% Gesundheit',
-                'UNIT_STAT_MAX_HEALTH': ' Gesundheit',
-                'UNIT_STAT_ACCURACY': '% Effektivitaet',
-                'UNIT_STAT_CRITICAL_CHANCE_PERCENT_ADDITIVE': '% Krit Chance',
-                'UNIT_STAT_MAX_SHIELD_PERCENT_ADDITIVE': '% Schutz',
-                'UNIT_STAT_MAX_SHIELD': ' Schutz',
-                'UNIT_STAT_CRITICAL_DAMAGE': '% Krit Schaden',
-                'UNIT_STAT_DEFENSE_PERCENT_ADDITIVE': '% Abwehr',
-                'UNIT_STAT_DEFENSE': ' Abwehr',
-                'UNIT_STAT_OFFENSE_PERCENT_ADDITIVE': '% Angriff',
-                'UNIT_STAT_OFFENSE': ' Angriff',
-                'UNIT_STAT_RESISTANCE': '% Zaehigkeit',
-                'UNIT_STAT_SPEED': ' Tempo',
-                'UNIT_STAT_EVASION_NEGATE_PERCENT_ADDITIVE': '% Praezision',
-                'UNIT_STAT_CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE': '% Krit Ausweichen'
-            }),
-            COMMAND_CHARMODS_MOD_TYPES: ({
-                'icon_buff_health': 'Gesundheit',
-                'icon_buff_accuracy': 'Effektivitaet',
-                'icon_buff_speed': 'Tempo',
-                'icon_buff_critical_damage': 'Krit Schaden',
-                'icon_buff_crit_chance': 'Krit Chance',
-                'icon_buff_armor': 'Abwehr',
-                'icon_tenacity': 'Zaehigkeit'
-            }),
-            COMMAND_CHARMODS_NO_MODS: (charName) => `Entschuldigung, aber ich konnte keine Mods finden fuer ${charName}`,
-            COMMAND_CHARMODS_MISSING_MODS: `Entschuldigung, aber ich kann aktuell keine Mods finden. Bitte warte etwas und versuche es erneut.`,
-            COMMAND_CHARMODS_LAST_UPDATED: (lastUpdated) => `Mods zuletzt aktualisiert: ${lastUpdated} ago`,
-            COMMAND_CHARMODS_HELP: ({
+            // MyMods Command
+            COMMAND_MYMODS_NO_MODS: (charName) => `Entschuldigung, aber ich konnte keine Mods finden für dein ${charName}`,
+            COMMAND_MYMODS_MISSING_MODS: `Entschuldigung, aber ich kann aktuell keine Mods finden. Bitte warte etwas und versuche es erneut.`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods zuletzt aktualisiert: ${lastUpdated}`,
+ +            COMMAND_MYMODS_HELP: ({
                 description: "Zeigt die ausgestatteten Mods eines bestimmten Charakters an.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';charactermods [user] <Charakter>',
+                        usage: ';mymods [user] <Charakter>',
                         args: {
                             "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchst."
@@ -468,9 +459,9 @@ module.exports = class extends Language {
                 "header": 'INFORMATION',
                 "desc": ` \nLaeuft zur Zeit auf **${guilds}** server \n`,
                 "links": {
-                    "Einladung": "Lade den Bot ein [here](http://swgohbot.com/invite)",
-                    "Support Server": "Wenn du eine Frage hast oder einfach nur vorbeischauen moechtest, der Bot support server lautet [here](https://discord.gg/FfwGvhr)",
-                    "Support the Bot": "Der Quellcode des Bots ist auf github [here](https://github.com/jmiln/SWGoHBot), und es kann beigetragen werden. Ich habe ausserdem ein Patreon [here](https://www.patreon.com/swgohbot) falls du interessiert bist."
+                    "Einladung": "Lade den Bot ein http://swgohbot.com/invite",
+                    "Support Server": "Wenn du eine Frage hast oder einfach nur vorbeischauen moechtest, der Bot support server lautet https://discord.gg/FfwGvhr",
+                    "Support the Bot": "Der Quellcode des Bots ist auf github https://github.com/jmiln/SWGoHBot, und es kann beigetragen werden. \n\nEs gibt ausserdem ein Patreon https://www.patreon.com/swgohbot falls du interessiert bist."
                 }
             }),
             COMMAND_INFO_HELP: {
@@ -687,6 +678,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
             COMMAND_REGISTER_UPDATE_FAILURE: 'Etwas ist fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profil aktualisiert fuer \`${user}\`.`,
+            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Gilde aktualisiert fuer \`${guild}\`.`,
             COMMAND_REGISTER_HELP: {
                 description: "Registriert einen Buendniscode zu einer Discord ID, und synchronisiert ein SWGoH Profil.",
                 actions: [
@@ -702,9 +694,10 @@ module.exports = class extends Language {
                     {
                         action: "Update",
                         actionDesc: 'Aktualisiert / synchronisiert die SWGoH Daten.',
-                        usage: ';register update <user>',
+                        usage: ';register update <user> [-guild]',
                         args: {
-                            "user": "Das Discordprofil das du aktualisieren moechtest. (me | userID | mention)"
+                            "user": "Das Discordprofil das du aktualisieren moechtest. (me | userID | mention)",
+                            "-guild": "Setzen um die Daten der kompletten Gilde zu aktualisieren (-g | -guild | -guilds)"
                         }
                     },
                     {
