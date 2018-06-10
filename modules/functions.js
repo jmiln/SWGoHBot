@@ -586,7 +586,7 @@ module.exports = (client) => {
                 results.forEach(p => {
                     outArr.push(p.allyCode);
                 });
-            } else {
+            } else if (results.length ===  1) {
                 outArr.push(results[0].allyCode);
             }
             return outArr;
