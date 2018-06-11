@@ -89,7 +89,7 @@ class GuildSearch extends Command {
             const charL = member.roster.filter(c => (c.name === character.name || c.name === character.uniqueName));
 
             const thisStar = charL.length ? charL[0].rarity : 0;
-            const uStr = thisStar > 0 ? `\`g${charL[0].gear}\` ${member.name}` : member.name;
+            const uStr = thisStar > 0 ? `\`${charL[0].level} g${charL[0].gear}\` ${member.name}` : member.name;
             if (!charOut[thisStar]) {
                 charOut[thisStar] = [uStr];
             } else {
