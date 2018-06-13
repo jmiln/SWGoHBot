@@ -44,7 +44,7 @@ class Event extends Command {
         const level = options.level;
 
         const maxSize = 1800;
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildSettings = await client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
 
         const EVENTS_PER_PAGE = 5;
@@ -168,7 +168,7 @@ class Event extends Command {
                 eventName = args.splice(0,1)[0];
 
                 // Check if that name/ event already exists
-                const exists = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
+                const exists = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
                 if (exists) {
@@ -239,7 +239,7 @@ class Event extends Command {
                     repeatDays: dayList
                 };
                 client.scheduleEvent(newEvent);
-                await client.guildEvents.create(newEvent)
+                await client.database.models.eventDBs.create(newEvent)
                     .then(() => {
                         msgOut = message.language.get('COMMAND_EVENT_CREATED', eventName, momentTZ.tz(eventDT, guildConf.timezone).format('MMM Do YYYY [at] H:mm'));  
                         if (!msgOut.trim()) {
@@ -256,7 +256,7 @@ class Event extends Command {
                 const array = [];
                 if (args[0]) {
                     // If they are looking to show a specific event
-                    const guildEvents = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${args[0]}`}});
+                    const guildEvents = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${args[0]}`}});
                     if (!guildEvents) {
                         return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', args[1]));
                     }
@@ -287,7 +287,7 @@ class Event extends Command {
                     }
                 } else {     
                     // Grab all events for this guild
-                    const guildEvents = await client.guildEvents.findAll({where: {eventID: { $like: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
+                    const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { $like: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
                     const eventList = [];
                     guildEvents.forEach(event => {
                         eventList.push(event.dataValues);
@@ -370,7 +370,7 @@ class Event extends Command {
                 const eventID = `${message.guild.id}-${eventName}`;
                
                 // Check if that name/ event exists
-                const exists = await client.guildEvents.findOne({where: {eventID: eventID}})
+                const exists = await client.database.models.eventDBs.findOne({where: {eventID: eventID}})
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
                 if (exists) {
@@ -383,7 +383,7 @@ class Event extends Command {
                 if (!args[0]) return message.channel.send(message.language.get('COMMAND_EVENT_TRIGGER_NEED_NAME')).then(msg => msg.delete(10000)).catch(console.error);
                 eventName = args[0];
 
-                const exists = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
+                const exists = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
 
@@ -391,7 +391,7 @@ class Event extends Command {
                 if (!exists) {
                     return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', eventName)).then(msg => msg.delete(10000)).catch(console.error);
                 } else {
-                    const events = await client.guildEvents.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
+                    const events = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
                     const event = events.dataValues;
                     var channel = '';
                     var announceMessage = `**${eventName}**\n${event.eventMessage}`;

@@ -702,10 +702,10 @@ module.exports = class extends Language {
                     },
                     {
                         action: "Remove",
-                        actionDesc: 'Unlink your Discord profile to a SWGoH account',
+                        actionDesc: 'Unlink your Discord profile from a SWGoH account',
                         usage: ';register remove <user>',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "user": "You, this is to unlink it if you have the wrong ally code. (me | userID | mention)"
                         }
                     }
                 ]

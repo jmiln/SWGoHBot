@@ -43,7 +43,7 @@ class Showconf extends Command {
             guildName = message.guild.name;
         }
 
-        const guildConf = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildConf = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
 
         var array = [];
         if (guildConf) {

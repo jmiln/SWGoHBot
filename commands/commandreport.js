@@ -15,7 +15,7 @@ class CommandReport extends Command {
     }
 
     async run(client, message) { // eslint-disable-line no-unused-vars
-        const commands = await client.commandLogs.findAll({
+        const commands = await client.database.modules.commands.findAll({
             where: {
                 updatedAt: {
                     [Op.gte]: moment().subtract(10, 'days').toDate()

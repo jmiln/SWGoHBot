@@ -8,7 +8,7 @@ module.exports = async (client, guild) => {
 
     if (!exists) {
         // Adding a new row to the DB
-        client.guildSettings.create({
+        client.database.models.settings.create({
             guildID: guild.id,
             adminRole: defSet.adminRole,
             enableWelcome: defSet.enableWelcome,

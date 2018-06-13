@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
     if (!message.guild) {
         guildSettings = client.config.defaultSettings;
     } else {
-        guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
+        guildSettings = await client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
     }
     
@@ -100,7 +100,7 @@ module.exports = async (client, message) => {
             }
         }
         if (client.config.logs.logComs) {
-            client.commandLogs.create({
+            client.database.models.commands.create({
                 id: `${cmd.help.name}-${message.author.id}-${message.id}`,
                 commandText: args.join(' ')
             });

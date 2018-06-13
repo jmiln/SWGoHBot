@@ -15,7 +15,7 @@ class Setconf extends Command {
 
     async run(client, message, args) {    
         const config = client.config;
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildSettings = await client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
         const langList = Object.keys(client.languages);
         const defSet = client.config.defaultSettings;
@@ -71,7 +71,7 @@ class Setconf extends Command {
                             return message.channel.send(message.language.get('COMMAND_SETCONF_ADMINROLE_NOT_IN_CONFIG', roleName)).then(msg => msg.delete(4000)).catch(console.error);
                         }
                     }
-                    client.guildSettings.update({adminRole: roleArray}, {where: {guildID: message.guild.id}});
+                    client.database.models.settings.update({adminRole: roleArray}, {where: {guildID: message.guild.id}});
                     return message.channel.send(message.language.get('COMMAND_SETCONF_ADMINROLE_SUCCESS', roleName, (args[1] === 'add' ? 'added to' : 'removed from')));
                 case "enablewelcome":
                     if (onVar.includes(value.toLowerCase())) {
@@ -85,7 +85,7 @@ class Setconf extends Command {
                     } else {
                         return message.reply(message.language.get('COMMAND_INVALID_BOOL')).then(msg => msg.delete(4000)).catch(console.error);
                     }
-                    client.guildSettings.update({enableWelcome: boolVar}, {where: {guildID: message.guild.id}});
+                    client.database.models.settings.update({enableWelcome: boolVar}, {where: {guildID: message.guild.id}});
                     break;
                 case "welcomemessage":
                     // A messy way to keep all the line returns in there
@@ -94,7 +94,7 @@ class Setconf extends Command {
                         const newStr = msg.replace(/\n/g, ' ##n##').split(/\s+/);
                         value = newStr.splice(2).join(' ').replace(/##n##/g, '\n');
                     }
-                    client.guildSettings.update({welcomeMessage: value}, {where: {guildID: message.guild.id}});
+                    client.database.models.settings.update({welcomeMessage: value}, {where: {guildID: message.guild.id}});
                     break;
                 case "useembeds":
                     if (onVar.includes(value.toLowerCase())) {
@@ -104,11 +104,11 @@ class Setconf extends Command {
                     } else {
                         return message.reply(message.language.get('COMMAND_INVALID_BOOL')).then(msg => msg.delete(4000)).catch(console.error);
                     }
-                    client.guildSettings.update({useEmbeds: boolVar}, {where: {guildID: message.guild.id}});
+                    client.database.models.settings.update({useEmbeds: boolVar}, {where: {guildID: message.guild.id}});
                     break;
                 case "timezone":
                     if (moment.tz.zone(value)) { // Valid time zone
-                        client.guildSettings.update({timezone: value}, {where: {guildID: message.guild.id}});
+                        client.database.models.settings.update({timezone: value}, {where: {guildID: message.guild.id}});
                     } else { // Not so valid
                         return message.reply(message.language.get('COMMAND_SETCONF_TIMEZONE_NEED_ZONE')).then(msg => msg.delete(10000)).catch(console.error);
                     }
@@ -118,9 +118,9 @@ class Setconf extends Command {
                         const newChannel = message.guild.channels.find('name', value);
                         if (!newChannel) return message.channel.send(message.language.get('COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN', value)).then(msg => msg.delete(4000)).catch(console.error);
                         if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return message.channel.send(message.language.get('COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS'));
-                        client.guildSettings.update({announceChan: value}, {where: {guildID: message.guild.id}});
+                        client.database.models.settings.update({announceChan: value}, {where: {guildID: message.guild.id}});
                     } else {
-                        client.guildSettings.update({announceChan: ''}, {where: {guildID: message.guild.id}});
+                        client.database.models.settings.update({announceChan: ''}, {where: {guildID: message.guild.id}});
                     }
                     break;
                 case "useeventpages": 
@@ -131,21 +131,21 @@ class Setconf extends Command {
                     } else {
                         return message.reply(message.language.get('COMMAND_INVALID_BOOL')).then(msg => msg.delete(4000)).catch(console.error);
                     }
-                    client.guildSettings.update({useEventPages: boolVar}, {where: {guildID: message.guild.id}});
+                    client.database.models.settings.update({useEventPages: boolVar}, {where: {guildID: message.guild.id}});
                     break;
                 case "language":
                     if (langList.includes(value)) {
-                        client.guildSettings.update({language: value}, {where: {guildID: message.guild.id}});
+                        client.database.models.settings.update({language: value}, {where: {guildID: message.guild.id}});
                         tempLang = value;
                     } else {
                         return message.channel.send(message.language.get('COMMAND_SETCONF_INVALID_LANG', value, langList.join(', '))).then(msg => msg.delete(15000)).catch(console.error);
                     }
                     break;
                 case "reset":
-                    await client.guildSettings.destroy({where: {guildID: message.guild.id}})
+                    await client.database.models.settings.destroy({where: {guildID: message.guild.id}})
                         .then(() => {})
                         .catch(error => { client.log('ERROR',`Broke in setconf reset delete: ${error}`); });
-                    client.guildSettings.create({
+                    client.database.models.settings.create({
                         guildID: message.guild.id,
                         adminRole: defSet.adminRole,
                         enableWelcome: defSet.enableWelcome,

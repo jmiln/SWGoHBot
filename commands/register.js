@@ -135,7 +135,7 @@ class Register extends Command {
                 if (!exists) {
                     message.channel.send('You were not linked to a SWGoH account.');
                 } else {
-                    await client.allyCodes.destroy({where: {id: userID}})
+                    await client.database.models.allyCodes.destroy({where: {id: userID}})
                         .then(() => {
                             message.channel.send('Successfully unlinked.');
                         })

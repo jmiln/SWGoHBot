@@ -2,12 +2,12 @@ const {inspect} = require('util');
 module.exports = async (client, member) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
-    const guildSettings = await client.guildSettings.findOne({where: {guildID: guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
+    const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ['adminRole', 'enableWelcome', 'useEmbeds', 'welcomeMessage', 'timezone', 'announceChan']});
     const guildConf = guildSettings.dataValues;
 
     // Make sure the config option exists. Should not need this, but just in case
     if (!guildConf['announceChan']) {
-        client.guildSettings.update({announceChan: ''}, {where: {guildID: guild.id}});
+        client.database.modules.settings.update({announceChan: ''}, {where: {guildID: guild.id}});
     }
 
     // Our welcome message has a bit of a placeholder, let's fix
