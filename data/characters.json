@@ -3916,7 +3916,7 @@
             ]
         },
         "mods": {
-            "leader": {
+            "CC-2224 Cody leader": {
                 "sets": [
                     "Speed x4",
                     "Critical Chance x2",
@@ -3930,7 +3930,7 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             },
-            "attacker": {
+            "CC-2224 Cody attacker": {
                 "sets": [
                     "Critical Damage x4",
                     "Critical Chance x2",
@@ -4580,7 +4580,7 @@
             ]
         },
         "mods": {
-            "General": {
+            "Chirrut Imwe": {
                 "sets": [
                     "Critical Damage x4",
                     "Critical Chance x2",
@@ -6087,7 +6087,7 @@
             ]
         },
         "mods": {
-            "General": {
+            "CT-21-0408 Echo": {
                 "sets": [
                     "Critical Damage x4",
                     "Critical Chance x2",
@@ -6301,7 +6301,7 @@
             ]
         },
         "mods": {
-            "Raid w/ clones": {
+            "CT-5555 Fives Raid w/ clones": {
                 "sets": [
                     "Critical Damage x4",
                     "Critical Chance x2",
@@ -6315,7 +6315,7 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             },
-            "GK Lead": {
+            "CT-5555 Fives GK Lead": {
                 "sets": [
                     "Speed x4",
                     "Health x2",
@@ -6527,7 +6527,7 @@
             ]
         },
         "mods": {
-            "leader": {
+            "CT-7567 Rex leader": {
                 "sets": [
                     "Speed x4",
                     "Health x2",
@@ -6541,7 +6541,7 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             },
-            "support": {
+            "CT-7567 Rex support": {
                 "sets": [
                     "Speed x4",
                     "Health x2",
@@ -31803,7 +31803,22 @@
             "Scoundrel",
             "Support"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        },
         "gear": {
             "Gear 1": [
                 "Mk 1 Nubian Security Scanner",
@@ -32019,7 +32034,22 @@
             "Attacker",
             "Scoundrel"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [
@@ -32210,7 +32240,22 @@
             "Scoundrel",
             "Tank"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [
@@ -32400,7 +32445,22 @@
             "Attacker",
             "Scoundrel"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [
