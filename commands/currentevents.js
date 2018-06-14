@@ -59,8 +59,6 @@ class CurrentEvents extends Command {
                 continue;
             }
 
-            console.log(filter);
-
             if (filter.length) {
                 if (filter.indexOf(event.id) < 0) {
                     delete botClient.event;
