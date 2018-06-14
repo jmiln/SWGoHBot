@@ -2,40 +2,60 @@
 module.exports = (Sequelize, database) => {
     // Models
     database.define('settings', {
-        guildID: { 
+        guildID: {          // The guild's ID
             type: Sequelize.TEXT, 
             primaryKey: true 
         },
-        adminRole: {
+        prefix: {           // The guild's prefix
+            type: Sequelize.TEXT,
+            defaultValue: ';'
+        },
+        adminRole: {        // Admin roles
             type: Sequelize.ARRAY(Sequelize.TEXT),
             defaultValue: ['Administrator']
         },
-        enableWelcome: {
+        enableWelcome: {    // Toggle welcome message on/ off
             type: Sequelize.BOOLEAN,
             defaultValue: false
         },
-        welcomeMessage: {
+        welcomeMessage: {   // Welcome message
             type: Sequelize.TEXT,
             defaultValue: "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D"
         },
-        useEmbeds: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: true
-        },
-        timezone: {
-            type: Sequelize.TEXT,
-            defaultValue: 'GMT'
-        },
-        announceChan: {
-            type: Sequelize.TEXT
-        },
-        useEventPages: {
+        enablePart: {       // Toggle parting message on/ off
             type: Sequelize.BOOLEAN,
             defaultValue: false
         },
-        language: {
+        partMessage: {      // Parting message
+            type: Sequelize.TEXT,
+            defaultValue: "Goodbye {{user}}, thanks for stopping by!"
+        },
+        useEmbeds: {        // Use embeds? (Only turned off on one guild)
+            type: Sequelize.BOOLEAN,
+            defaultValue: true
+        },
+        timezone: {         // Guild's timezone
+            type: Sequelize.TEXT,
+            defaultValue: 'GMT'
+        },
+        announceChan: {     // Announcement channel
+            type: Sequelize.TEXT
+        },
+        useEventPages: {    // Paginate events
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        eventCountdown: {   // Custom countdowns (Minutes)
+            type: Sequelize.ARRAY(Sequelize.INTEGER),
+            defaultValue: [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5]
+        },
+        language: {         // Command strings language
             type: Sequelize.TEXT,
             defaultValue: "en_US"
+        },
+        swgohLanguage: {    // Live-data language 
+            type: Sequelize.TEXT,
+            defaultValue: "ENG_US"
         }
     });
 

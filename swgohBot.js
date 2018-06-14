@@ -42,6 +42,28 @@ client.database = new Sequelize(client.config.database.data, client.config.datab
 
 client.database.authenticate().then(async () => {
     await require('./modules/models')(Sequelize, client.database);
+
+    // Get all the models
+    const rawAttr = client.database.models.settings.rawAttributes;
+    const rawNames = Object.keys(rawAttr);
+
+    // Got through them all
+    for (let ix = 0; ix < rawNames.length; ix++) {
+        // Try getting each column
+        await client.database.models.settings.findAll({limit: 1, attributes: [rawNames[ix]]})
+        // If it doesn't exist, it'll throw an error, then it will add them
+            .catch(async () => {
+                console.log('Adding column ' + rawNames[ix] + ' to settings.');
+                await client.database.queryInterface.addColumn('settings',
+                    rawAttr[rawNames[ix]].fieldName,
+                    {
+                        type: rawAttr[rawNames[ix]].type,
+                        defaultValue: rawAttr[rawNames[ix]].defaultValue !== null ? rawAttr[rawNames[ix]].defaultValue : null
+                    }
+                );
+            });
+    }
+
     init();
     client.login(client.config.token).then(() => {
         const guildList = client.guilds.keyArray();
