@@ -9,21 +9,26 @@ class CurrentEvents extends Command {
             category: "SWGoH",
             aliases: ['cevents', 'ce'],
             permissions: ['EMBED_LINKS'],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
+            flags: {
+                heists: {
+                    aliases: ['$', 'heist']
+                },
+                heroic: {
+                    aliases: ['hero']
+                }
+            }
         });
     }
 
-    async run(client, message, [num]) {
+    async run(client, message, [num], options) {
         const FLEET_CHALLENGES = ['shipevent_PRELUDE_ACKBAR', 'shipevent_PRELUDE_MACEWINDU', 'shipevent_PRELUDE_TARKIN', 'shipevent_SC01UPGRADE', 'shipevent_SC02TRAINING', 'shipevent_SC03TRAINING', 'shipevent_SC03ABILITY'];
         const MOD_CHALLENGES = ['restrictedmodbattle_set_1', 'restrictedmodbattle_set_2', 'restrictedmodbattle_set_3', 'restrictedmodbattle_set_4', 'restrictedmodbattle_set_5', 'restrictedmodbattle_set_6', 'restrictedmodbattle_set_7', 'restrictedmodbattle_set_8'];
         const DAILY_CHALLENGES = ['challenge_XP', 'challenge_CREDIT', 'challenge_ABILITYUPGRADEMATERIALS', 'challenge_EQUIPMENT_AGILITY', 'challenge_EQUIPMENT_INTELLIGENCE', 'challenge_EQUIPMENT_STRENGTH'];
-        // const HEISTS = ['EVENT_CREDIT_HEIST_GETAWAY_V2'];
-        
+        const HEISTS = ['EVENT_CREDIT_HEIST_GETAWAY_V2', 'EVENT_TRAINING_DROID_SMUGGLING'];
+        const HEROIC = ['progressionevent_PIECES_AND_PLANS', 'progressionevent_GRANDMASTERS_TRAINING', 'EVENT_HERO_SCAVENGERREY'];
+
         const DEF_NUM = 10;
-        // const lang = 'ger_de';
-        // const lang = 'ita_it';
-        // const lang = 'por_br';
-        // const lang = 'jpn_jp';
-        const lang = 'ENG_US';
+        const lang = message.guildSettings.swgohLanguage;
     
         let botClient = null;
         try {
@@ -38,13 +43,29 @@ class CurrentEvents extends Command {
             eNum = DEF_NUM;
         }
 
+        let filter = [];
         const evOut = [];
+        if (options.flags.heists) {
+            filter = filter.concat(HEISTS);
+        }
+        if (options.flags.heroic) {
+            filter = filter.concat(HEROIC);
+        }
         for (const event of botClient.events) {
             if (FLEET_CHALLENGES.includes(event.id) ||
                 MOD_CHALLENGES.includes(event.id) ||
                 DAILY_CHALLENGES.includes(event.id)) {
                 delete botClient.event;
                 continue;
+            }
+
+            console.log(filter);
+
+            if (filter.length) {
+                if (filter.indexOf(event.id) < 0) {
+                    delete botClient.event;
+                    continue;
+                }
             }
 
             // Filter out event dates from the past 
@@ -96,7 +117,7 @@ class CurrentEvents extends Command {
                 description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count),
                 fields: fields
             }});
-        } else if (desc.length) {
+        } else if (count > 0) {
             return message.channel.send({embed: {
                 author: {
                     name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
