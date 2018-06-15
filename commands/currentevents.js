@@ -59,6 +59,7 @@ class CurrentEvents extends Command {
                 continue;
             }
 
+            console.log(event.id);
             if (filter.length) {
                 if (filter.indexOf(event.id) < 0) {
                     delete botClient.event;
@@ -72,38 +73,40 @@ class CurrentEvents extends Command {
                 return true;
             });
 
-            // Sort the dates in the event
-            event.schedule = event.schedule.sort((p, c) => p.start - c.start);
-            // console.log(`ID: ${event.id}, Name: ${event.name}`);
-            evOut.push(event);
+            // Put each event in the array
+            event.schedule.forEach(s => {
+                evOut.push({
+                    name: event.name,
+                    date: s.start
+                })
+            })
         }
 
         const fields = [];
         let desc = '`------------------------------`';
         let count = 0;
-        const sortedEvents = evOut.sort((p, c) => parseInt(Math.min(...Array.from(p.schedule, t => t.start))) - parseInt(Math.min(...Array.from(c.schedule, t => t.start))));
+
+        // Sort all the events
+        const sortedEvents = evOut.sort((p, c) => p.date - c.date);
         for (const event of sortedEvents) {
-
             if (count >= eNum) break;
-            if (event.schedule.length) {
-                count ++;
-                // Expanded view
-                // let enVal = '';
-                // if (event.schedule.length) {
-                //     if (fields.length >= eNum) break;
-                //     event.schedule.forEach((d, ix) => {
-                //         enVal += `${ix === 0 ? '' : '\n'}\`` + moment(d.start).format('DD/MM/YYYY') + '`';
-                //     });
-                //     fields.push({
-                //         name: event.name,
-                //         value: enVal + '\n`------------------------------`',
-                //         inline: true
-                //     });
-                // }
+            count ++;
+            // Expanded view
+            // let enVal = '';
+            // if (event.schedule.length) {
+            //     if (fields.length >= eNum) break;
+            //     event.schedule.forEach((d, ix) => {
+            //         enVal += `${ix === 0 ? '' : '\n'}\`` + moment(d.start).format('DD/MM/YYYY') + '`';
+            //     });
+            //     fields.push({
+            //         name: event.name,
+            //         value: enVal + '\n`------------------------------`',
+            //         inline: true
+            //     });
+            // }
 
-                // Condensed view
-                desc += `\n\`${moment(event.schedule[0].start).format('M-DD')} |\` **${event.name}**`;
-            }
+            // Condensed view
+            desc += `\n\`${moment(event.date).format('M-DD')} |\` **${event.name}**`;
         }
 
         if (fields.length) {
