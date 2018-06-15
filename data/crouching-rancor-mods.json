@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2018-06-08 20:00:01.000000",
+        "date": "2018-06-13 20:00:02.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -263,7 +263,7 @@
         },
         {
             "name": "CC-2224 Cody leader",
-            "cname": "CC-2224 Cody",
+            "cname": "'CC-2224 Cody'",
             "set1": "SPE",
             "set2": "CC",
             "set3": "",
@@ -279,7 +279,7 @@
         },
         {
             "name": "CC-2224 Cody attacker",
-            "cname": "CC-2224 Cody",
+            "cname": "'CC-2224 Cody'",
             "set1": "CD",
             "set2": "CC",
             "set3": "",
@@ -327,7 +327,7 @@
         },
         {
             "name": "Chirrut Imwe",
-            "cname": "Chirrut Imwe",
+            "cname": "Chirrut Îmwe",
             "set1": "CD",
             "set2": "CC",
             "set3": "",
@@ -391,7 +391,7 @@
         },
         {
             "name": "CT-21-0408 Echo",
-            "cname": "CT-21-0408 Echo",
+            "cname": "'CT-21-0408 Echo'",
             "set1": "CD",
             "set2": "CC",
             "set3": "",
@@ -407,7 +407,7 @@
         },
         {
             "name": "CT-5555 Fives Raid w/ clones",
-            "cname": "CT-5555 Fives",
+            "cname": "'CT-5555 Fives'",
             "set1": "CD",
             "set2": "CC",
             "set3": "",
@@ -423,7 +423,7 @@
         },
         {
             "name": "CT-7567 Rex leader",
-            "cname": "CT-7567 Rex",
+            "cname": "'CT-7567 Rex'",
             "set1": "SPE",
             "set2": "HP",
             "set3": "",
@@ -439,7 +439,7 @@
         },
         {
             "name": "CT-7567 Rex support",
-            "cname": "CT-7567 Rex",
+            "cname": "'CT-7567 Rex'",
             "set1": "SPE",
             "set2": "HP",
             "set3": "",
@@ -918,8 +918,8 @@
             "crew": "0"
         },
         {
-            "name": "IG-100 Magna Guard",
-            "cname": "IG-100 Magna Guard",
+            "name": "IG-100 MagnaGuard",
+            "cname": "IG-100 MagnaGuard",
             "set1": "OFF",
             "set2": "POT",
             "set3": "",
@@ -2682,7 +2682,7 @@
         },
         {
             "name": "CT-5555 Fives GK Lead",
-            "cname": "CT-5555 Fives",
+            "cname": "'CT-5555 Fives'",
             "set1": "SPE",
             "set2": "HP",
             "set3": "",
@@ -3093,6 +3093,70 @@
             "circle": "Protection",
             "cross": "Offense",
             "short": "yhs",
+            "families": "scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "Qi'Ra",
+            "cname": "Qi'Ra",
+            "set1": "SPE",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "",
+            "families": "scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "Enfys Nest",
+            "cname": "Enfys Nest",
+            "set1": "SPE",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "en",
+            "families": "scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "L3-37",
+            "cname": "L3-37",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "short": "",
+            "families": "scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "Young Lando Calrissian",
+            "cname": "Young Lando Calrissian",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "ylc",
             "families": "scoundrel",
             "crew": "0"
         }

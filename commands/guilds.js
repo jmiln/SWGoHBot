@@ -80,7 +80,7 @@ class Guilds extends Command {
             if (!guild || !guild.length) {
                 return message.channel.send('I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.');
             }
-            const sortedGuild = guild.sort((p, c) => p.gpFull > c.gpFull ? 1 : -1);
+            const sortedGuild = guild.sort((p, c) => c.gpFull - p.gpFull);
 
             let totalGP = 0; 
             const users = [];
