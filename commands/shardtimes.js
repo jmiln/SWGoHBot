@@ -42,19 +42,19 @@ class Shardtimes extends Command {
         // DB ID will be guild.id-channel.id
         const shardID = `${message.guild.id}-${message.channel.id}`;
 
-        const exists = await client.shardTimes.findOne({where: {id: shardID}})
+        const exists = await client.database.models.shardtimes.findOne({where: {id: shardID}})
             .then(token => token != null)
             .then(isUnique => isUnique);
 
         let shardTimes = {};
 
         if (!exists) {
-            await client.shardTimes.create({
+            await client.database.models.shardtimes.create({
                 id: shardID,
                 times: shardTimes
             });
         } else {
-            const tempT = await client.shardTimes.findOne({where: {id: shardID}});
+            const tempT = await client.database.models.shardtimes.findOne({where: {id: shardID}});
             shardTimes = tempT.dataValues.times;
         }
 
@@ -108,7 +108,7 @@ class Shardtimes extends Command {
                     "timezone": timezone,
                     "flag": flag
                 };
-                await client.shardTimes.update({times: shardTimes}, {where: {id: shardID}})
+                await client.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
                     .then(() => {
                         return message.channel.send(message.language.get('COMMAND_SHARDTIMES_USER_ADDED'));
                     })
@@ -129,7 +129,7 @@ class Shardtimes extends Command {
             } 
             if (shardTimes.hasOwnProperty(userID)) {
                 delete shardTimes[userID];
-                await client.shardTimes.update({times: shardTimes}, {where: {id: shardID}})
+                await client.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
                     .then(() => {
                         return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_SUCCESS'));
                     })
