@@ -27,7 +27,7 @@ class Changelog extends Command {
         }
 
         // Adds it to the db with an auto-incrementing ID
-        client.database.modules.changelogs.create({
+        client.database.models.changelogs.create({
             logText: logMsg
         });
     }
