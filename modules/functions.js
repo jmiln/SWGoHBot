@@ -595,7 +595,6 @@ module.exports = (client) => {
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
         let ix = 0;
-        let guildConf;
         const nowTime = momentTZ().subtract(2, 'h').unix();
         const events = await client.database.models.eventDBs.findAll();
 
@@ -647,7 +646,7 @@ module.exports = (client) => {
                     if (!client.evCountdowns[event.eventID]) {
                         client.evCountdowns[event.eventID] = [sID];
                     } else {
-                         client.evCountdowns[event.eventID].push(sID);
+                        client.evCountdowns[event.eventID].push(sID);
                     }
                     client.schedule.scheduleJob(sID, parseInt(newTime) , function() {
                         client.countdownAnnounce(event);                    
@@ -778,7 +777,6 @@ module.exports = (client) => {
         if (repTime || repDay) {
             await client.database.models.eventDBs.update(newEvent, {where: {eventID: event.eventID}})
                 .then(async () => {
-                    console.log('Rescheduling event: ' + event + '\n\n With guildConf: ' + guildConf);
                     client.scheduleEvent(newEvent, guildConf.eventCountdown);
                 })
                 .catch(error => { client.log('ERROR', "Broke trying to replace event: " + error); });
