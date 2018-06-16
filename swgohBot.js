@@ -31,7 +31,8 @@ client.reloadLanguages();
 client.commands = new Collection();
 client.aliases = new Collection();
 
-// client.seqTypeBool = Sequelize.BOOLEAN;
+client.evCountdowns = {};
+
 client.database = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
     host: client.config.database.host,
     dialect: 'postgres',
@@ -106,7 +107,6 @@ const init = async () => {
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
-        // This line is awesome by the way. Just sayin'.
         client.on(eventName, event.bind(null, client));
         delete require.cache[require.resolve(`./events/${file}`)];
     });

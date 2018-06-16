@@ -81,7 +81,6 @@ class Event extends Command {
                 return message.channel.send(message.language.get('COMMAND_EVENT_INVALID_PERMS'));
             }
         }
-        // const specialArgs = ['-r', '--rep', '--repeat', '--repeatDay', '--repeatday', '--repday', '--schedule', '--chan', '--channel', '-c', '--countdown', '-d', '--cd'];
         switch (action) {
             case "create": {
                 let repeatTime = options.subArgs['repeat'];
@@ -238,7 +237,7 @@ class Event extends Command {
                     },
                     repeatDays: dayList
                 };
-                client.scheduleEvent(newEvent);
+                client.scheduleEvent(newEvent, guildConf.eventCountdown);
                 await client.database.models.eventDBs.create(newEvent)
                     .then(() => {
                         msgOut = message.language.get('COMMAND_EVENT_CREATED', eventName, momentTZ.tz(eventDT, guildConf.timezone).format('MMM Do YYYY [at] H:mm'));  
@@ -258,7 +257,7 @@ class Event extends Command {
                     // If they are looking to show a specific event
                     const guildEvents = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${args[0]}`}});
                     if (!guildEvents) {
-                        return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', args[1]));
+                        return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', args[0]));
                     }
                     const thisEvent = guildEvents.dataValues; 
                     if (thisEvent) {
@@ -269,7 +268,8 @@ class Event extends Command {
                         
                         let eventString = message.language.get('COMMAND_EVENT_TIME', eventName, eventDate);
                         eventString += message.language.get('COMMAND_EVENT_TIME_LEFT', momentTZ.duration(momentTZ().diff(momentTZ(parseInt(thisEvent.eventDT)), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
-                        if (thisEvent.eventChan !== '') {
+                        if (thisEvent.eventCha && nthisEvent.eventChan !== '') {
+                            console.log(thisEvent);
                             eventString += message.language.get('COMMAND_EVENT_CHAN', thisEvent.eventChan);
                         }
                         if (thisEvent['repeatDays'].length > 0) {
@@ -283,7 +283,8 @@ class Event extends Command {
                         }
                         return message.channel.send(eventString);
                     } else {
-                        return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', args[1]));
+                        console.log(args);
+                        return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', args[0]));
                     }
                 } else {     
                     // Grab all events for this guild

@@ -303,7 +303,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_TOO_BIG:(charCount) => `Sorry, but either your event's name or message is too big. Please trim it down by at least ${charCount} characters.`,
 
             // Event Command (View)
-            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \n\nEvent Time: ${eventDate}\n`,
+            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
             COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Time Remaining: ${timeLeft}\n`,
             COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,
@@ -777,6 +777,12 @@ module.exports = class extends Language {
                         args: {}
                     },
                     {
+                        action: "prefix",
+                        actionDesc: 'Set the bot\'s prefix for your server.',
+                        usage: ';setconf prefix <prefix>',
+                        args: {}
+                    },
+                    {
                         action: "adminRole",
                         actionDesc: 'The role that you want to be able to modify bot settings or set up events',
                         usage: ';setconf adminRole <add|remove> <role>',
@@ -798,6 +804,20 @@ module.exports = class extends Language {
                         args: {
                             '{{user}}':  "gets replaced with the new user's name.",
                             '{{userMention}}': "makes it mention the new user there."
+                        }
+                    },
+                    {
+                        action: "enablePart",
+                        actionDesc: 'Toggles the parting message on/ off.',
+                        usage: ';setconf enablePart <true|false>',
+                        args: {}
+                    },
+                    {
+                        action: "partMessage",
+                        actionDesc: 'The part message to send if you have it enabled (Special variables below)',
+                        usage: ';setconf partMessage <message>',
+                        args: {
+                            '{{user}}':  "gets replaced with the new user's name.",
                         }
                     },
                     {
@@ -825,11 +845,32 @@ module.exports = class extends Language {
                         args: {}
                     },
                     {
-                        action: "reset",
-                        actionDesc: 'Resets the config back to default (ONLY use this if you are sure)',
-                        usage: ';setconf reset',
+                        action: "eventCountdown",
+                        actionDesc: 'The time that you want a countdown message to appear',
+                        usage: ';setconf eventCountdown <add|remove> <time>',
+                        args: {
+                            'add':  'Add a time to the list',
+                            'remove': 'Remove a time from the list'
+                        }
+                    },
+                    {
+                        action: "language",
+                        actionDesc: 'Set the bot to use any supported language for the command output.',
+                        usage: ';setconf language <lang>',
                         args: {}
-                    }
+                    },
+                    {
+                        action: "swgohLanguage",
+                        actionDesc: 'Sets the bot to use any supported language for the game data output.',
+                        usage: ';setconf swgohLanguage <lang>',
+                        args: {}
+                    },
+                    // {
+                    //     action: "reset",
+                    //     actionDesc: 'Resets the config back to default (ONLY use this if you are sure)',
+                    //     usage: ';setconf reset',
+                    //     args: {}
+                    // }
                 ]
             },
 

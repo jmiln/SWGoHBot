@@ -15,6 +15,7 @@ class MyMods extends Command {
 
     async run(client, message, [userID, ...searchChar]) { // eslint-disable-line no-unused-vars
         const modTypes = message.language.get('BASE_MOD_TYPES');
+        const lang = message.guildSettings.swgoghLanguage;
         // TODO Figure out why the mod icons aren's working
         // const STATMOD_SLOT_01 = client.emojis.find("name", "modSquare");
         // const STATMOD_SLOT_02 = client.emojis.find("name", "modArrow");
@@ -69,7 +70,7 @@ class MyMods extends Command {
         if (!client.users.get(userID)) {
             return message.channel.send(message.language.get('BASE_SWGOH_NO_USER'));
         }
-        const ally = await client.allyCodes.findOne({where: {id: userID}});
+        const ally = await client.database.models.allyCodes.findOne({where: {id: userID}});
         if (!ally) {
             return message.channel.send(message.language.get('BASE_SWGOH_NOT_REG', client.users.get(userID).tag));
         }
@@ -79,7 +80,7 @@ class MyMods extends Command {
 
         let mods;
         try {
-            mods = await client.swgohAPI.getPlayerMods(allyCode, 'ENG_US', 6);
+            mods = await client.swgohAPI.getPlayerMods(allyCode, lang, 6);
         } catch (e) {
             console.log(e);
         }

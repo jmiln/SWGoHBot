@@ -595,51 +595,61 @@ module.exports = (client) => {
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
         let ix = 0;
+        let guildConf;
         const nowTime = momentTZ().subtract(2, 'h').unix();
         const events = await client.database.models.eventDBs.findAll();
 
         const eventList = [];
-        events.forEach(event => {
+        for (let i = 0; i < events.length; i++ ) {
+            const event = events[i];
             const eventNameID = event.eventID.split('-');
             const guildID = eventNameID[0];
             
             // Make sure it only loads events for it's shard
             if (client.guilds.keyArray().includes(guildID)) {
-                eventList.push(event.dataValues);
+                const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+                const guildConf = guildSettings.dataValues;
+                eventList.push([event.dataValues, guildConf]);
             }
-        });
+        }
 
         if (eventList.length > 0) {
-            eventList.forEach(async event => {
+            for (let i = 0; i < eventList.length; i++ ) {
+                const [event, guildConf] = eventList[i];
                 // If it's past when it was supposed to announce
-                if (event.eventDT < nowTime) {
+                if (event.eventDT < nowTime*1000) {
                     await client.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
-                        .then(() => {})
                         .catch(error => { client.log('ERROR',`Broke trying to delete zombies ${error}`); });
                 } else {
                     ix++;
-                    client.scheduleEvent(event);
+                    client.scheduleEvent(event, guildConf.eventCountdown);
                 }
-            });
+            }
         }
         console.log(`Loaded ${ix} events`);
     };
 
     // Actually schedule em here
-    client.scheduleEvent = async (event) => {
+    client.scheduleEvent = async (event, countdown) => {
         client.schedule.scheduleJob(event.eventID, parseInt(event.eventDT), function() {
             client.eventAnnounce(event);
         });
     
-        if (event.countdown === 'true' || event.countdown === 'yes' || event.countdown === true) {
-            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5 ];
-            const nowTime = momentTZ().unix();
+        if (countdown.length && (event.countdown === 'true' || event.countdown === 'yes' || event.countdown === true)) {
+            const timesToCountdown = countdown;
+            const nowTime = momentTZ().unix() * 1000;
             timesToCountdown.forEach(time => {
                 const cdTime = time * 60;
                 const evTime = event.eventDT / 1000;
                 const newTime = (evTime-cdTime-60) * 1000; 
-                if (newTime > nowTime) {
-                    client.schedule.scheduleJob(`${event.eventID}-CD${time}`, parseInt(newTime) , function() {
+                if (newTime > nowTime) {    // If the countdown is between now and the event
+                    const sID = `${event.eventID}-CD${time}`;
+                    if (!client.evCountdowns[event.eventID]) {
+                        client.evCountdowns[event.eventID] = [sID];
+                    } else {
+                         client.evCountdowns[event.eventID].push(sID);
+                    }
+                    client.schedule.scheduleJob(sID, parseInt(newTime) , function() {
                         client.countdownAnnounce(event);                    
                     });
                 }
@@ -661,15 +671,10 @@ module.exports = (client) => {
                 client.log('ERROR',`Broke deleting an event ${error}`); 
             });
 
-        if (event.countdown === 'true' || event.countdown === 'yes') {
-            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5 ];
-            const nowTime = momentTZ().unix();
-            timesToCountdown.forEach(time => {
-                const cdTime = time * 60;
-                const evTime = event.eventDT / 1000;
-                const newTime = (evTime-cdTime-60) * 1000; 
-                if (newTime > nowTime) {
-                    const eventToDel = client.schedule.scheduledJobs[`${eventID}-CD${time}`];
+        if (client.evCountdowns[event.eventID] && (event.countdown === 'true' || event.countdown === 'yes')) {
+            client.evCountdowns[event.eventID].forEach(time => {
+                const eventToDel = client.schedule.scheduledJobs[time];
+                if (eventToDel) {
                     eventToDel.cancel();
                 }
             });
@@ -718,7 +723,7 @@ module.exports = (client) => {
         }
 
         // Announce the event
-        var announceMessage = `**${eventName}**\n\n${event.eventMessage}`;
+        var announceMessage = `**${eventName}**\n${event.eventMessage}`;
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
                 try {
@@ -773,7 +778,8 @@ module.exports = (client) => {
         if (repTime || repDay) {
             await client.database.models.eventDBs.update(newEvent, {where: {eventID: event.eventID}})
                 .then(async () => {
-                    client.scheduleEvent(newEvent);
+                    console.log('Rescheduling event: ' + event + '\n\n With guildConf: ' + guildConf);
+                    client.scheduleEvent(newEvent, guildConf.eventCountdown);
                 })
                 .catch(error => { client.log('ERROR', "Broke trying to replace event: " + error); });
         } else {

@@ -94,7 +94,7 @@ class Setconf extends Command {
                         } else {
                             return message.reply(message.language.get('COMMAND_SETCONF_ARRAY_MISSING_OPT'));
                         }
-                        client.database.models.settings.update({[key]: valArray}, {where: {guildID: message.guild.id}});
+                        client.database.models.settings.update({[key]: [...new Set(valArray)]}, {where: {guildID: message.guild.id}});
                         return message.channel.send(message.language.get('COMMAND_SETCONF_ARRAY_SUCCESS', key, value, (action === 'add' ? 'added to' : 'removed from')));
                     }
                     case 'BOOLEAN':
@@ -145,7 +145,7 @@ class Setconf extends Command {
                         } else {
                             return message.reply(message.language.get('COMMAND_SETCONF_ARRAY_MISSING_OPT'));
                         }
-                        client.database.models.settings.update({[key]: valArray}, {where: {guildID: message.guild.id}});
+                        client.database.models.settings.update({[key]: [...new Set(valArray.sort((p,c) => p - c))]}, {where: {guildID: message.guild.id}});
                         return message.channel.send(message.language.get('COMMAND_SETCONF_ARRAY_SUCCESS', key, value, (action === 'add' ? 'added to' : 'removed from')));
                     }
                     default: 

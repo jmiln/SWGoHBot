@@ -18,6 +18,7 @@ class GuildSearch extends Command {
 
     async run(client, message, [userID, ...searchChar], options) { // eslint-disable-line no-unused-vars
         let starLvl = null;
+        const lang = message.guildSettings.swgohLanguage;
         // If there's enough elements in searchChar, and it's in the format of a numer*
         if (searchChar.length > 0 && searchChar[searchChar.length-1].match(/\d\*/)) {
             starLvl = parseInt(searchChar.pop().replace('*', ''));
@@ -66,7 +67,7 @@ class GuildSearch extends Command {
         }
         
         try {
-            const player = await client.swgohAPI.getPlayer(userID, 'ENG_US', 6);
+            const player = await client.swgohAPI.getPlayer(userID, lang, 6);
             userID = player.guildName;
         } catch (e) {
             console.error(e);

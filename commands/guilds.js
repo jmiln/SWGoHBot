@@ -19,6 +19,8 @@ class Guilds extends Command {
         // Basic, with no args, shows the top ## guilds (Based on how many have registered)
         // <allyCode | mention | guildName >
         
+        const lang = message.guildSettings.swgohLanguage;
+            
         // Shows your guild's total GP, average GP, and a list of your members
         // Not trying to get any specific guild, show em the top ones
         if (!userID) {
@@ -63,7 +65,7 @@ class Guilds extends Command {
 
             if (acType) {
                 try {
-                    const player = await client.swgohAPI.getPlayer(userID, 'ENG_US', 6);
+                    const player = await client.swgohAPI.getPlayer(userID, lang, 6);
                     userID = player.guildName;
                 } catch (e) {
                     console.error(e);
