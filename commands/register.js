@@ -66,26 +66,26 @@ class Register extends Command {
                     // Sync up their swgoh account
                     message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
                         try {
-                        await client.swgohAPI.getPlayer(allyCode, 'ENG_US').then(async (u) => {
-                            if (!u) {
-                                await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
-                            } else {
-                                console.log(u);
-                                await client.allyCodes.create({
-                                    id: userID,
-                                    allyCode: allyCode
-                                })
-                                    .then(async () => {
-                                        await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
+                            await client.swgohAPI.getPlayer(allyCode, 'ENG_US').then(async (u) => {
+                                if (!u) {
+                                    await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
+                                } else {
+                                    await client.database.models.allyCodes.create({
+                                        id: userID,
+                                        allyCode: allyCode
                                     })
-                                    .catch(e => {
-                                        msg.edit('Something went wrong. Please notify the proper authorities.');
-                                        client.log('REGISTER', 'Broke while trying to link new user: ' + e);
-                                    });
-                            }
-                        });
+                                        .then(async () => {
+                                            await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
+                                        })
+                                        .catch(e => {
+                                            msg.edit('Something went wrong. Please notify the proper authorities.');
+                                            client.log('REGISTER', 'Broke while trying to link new user: ' + e);
+                                        });
+                                }
+                            });
                         } catch (e) {
                             msg.edit('Invalid ally code. Please make sure you enter the correct code.');
+                            console.log('ERROR: Incorrect Ally Code: ' + e);
                         }
                     });
                 } else {
