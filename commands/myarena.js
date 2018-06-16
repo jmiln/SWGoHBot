@@ -1,4 +1,5 @@
 const Command = require('../base/Command');
+const {inspect} = require('util');
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 class MyArena extends Command {
@@ -46,7 +47,9 @@ class MyArena extends Command {
 
         const cArena = [];
         player.arena.char.squad.forEach((char, ix) => {
-            cArena.push(`\`${positions[ix]}\` ${char.name}`);
+            const thisChar = player.roster.filter(c => c.id === char.id)[0];        // Get the character
+            const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
+            cArena.push(`\`${positions[ix]}\` ${'z'.repeat(thisZ.length)}${char.name}`);
         });
         fields.push({
             name: message.language.get('COMMAND_MYARENA_ARENA', player.arena.char.rank),
