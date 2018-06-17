@@ -42,7 +42,9 @@ class Setconf extends Command {
                         } else {
                             value = value.join(' ').replace(/\n\s+/g, '\n');
                         }
-                        if (key === 'language') {
+                        if (key === 'prefix' && value.indexOf(' ') > -1) {
+                            return message.channel.send(message.language.get('COMMAND_SETCONF_PREFIX_TOO_LONG'));
+                        } else if (key === 'language') {
                             if (!langList.includes(value)) {
                                 return message.channel.send(message.language.get('COMMAND_SETCONF_INVALID_LANG', value, langList.join(', '))).then(msg => msg.delete(15000)).catch(console.error);
                             }
