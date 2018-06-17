@@ -764,8 +764,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_WELCOME_NEED_CHAN: `Entschuldige, aber der Ankuendigungskanal ist nicht definiert oder nicht mehr gueltig.\nSetze \`announceChan\` auf einen gueltigen Kanal und versuche es erneut\``,
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an`,
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.`,
-           
+            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.`,        
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
             COMMAND_SETCONF_RESET: `Die Konfiguration wurde zurueckgesetzt`,
             COMMAND_SETCONF_HELP: {
@@ -775,6 +774,12 @@ module.exports = class extends Language {
                         action: "",
                         actionDesc: '',
                         usage: ';setconf <Schluessel> <Wert>',
+                        args: {}
+                    },
+                    {
+                        action: "prefix",
+                        actionDesc: 'Setzt den Praefix fuer den Server',
+                        usage: ';setconf prefix <prefix>',
                         args: {}
                     },
                     {
@@ -802,6 +807,20 @@ module.exports = class extends Language {
                         }
                     },
                     {
+                        action: "enablePart",
+                        actionDesc: 'Schaltet die Abschiedsnachricht an/ aus.',
+                        usage: ';setconf enablePart <true|false>',
+                        args: {}
+                    },
+                    {
+                        action: "partMessage",
+                        actionDesc: 'Die Abschiedsnachricht die gesendet wird, sofern diese eingeschaltet wurde (spezielle Variablen siehe unten)',
+                        usage: ';setconf partMessage <Nachricht>',
+                        args: {
+                            '{{user}}':  "wird ersetzt durch den Usernamen.",
+                        }
+                    },
+                    {
                         action: "useEmbeds",
                         actionDesc: 'Schaltet ein bzw. aus, ob die Ausgabe einiger Kommandos eingebettet werden soll.',
                         usage: ';setconf useEmbeds <true|false>',
@@ -826,11 +845,32 @@ module.exports = class extends Language {
                         args: {}
                     },
                     {
-                        action: "reset",
-                        actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn du dir sicher bist)',
-                        usage: ';setconf reset',
+                        action: "eventCountdown",
+                        actionDesc: 'Die Intervalle in denen eine Countdown Nachricht erscheinen soll',
+                        usage: ';setconf eventCountdown <add|remove> <Zeit>',
+                        args: {
+                            'add':  'Fuegt ein Zeitintervall hinzu',
+                            'remove': 'Entfernt ein Zeitintervall aus der Liste'
+                        }
+                    },
+                    {
+                        action: "language",
+                        actionDesc: 'Stellt die Sprache ein die der Bot fuer die Kommandoausgabe nutzen soll.',
+                        usage: ';setconf language <Sprache>',
                         args: {}
-                    }
+                    },
+                    {
+                        action: "swgohLanguage",
+                        actionDesc: 'Stellt die Sprache ein die der Bot fuer die Spieldatenausgabe nutzen soll.',
+                        usage: ';setconf swgohLanguage <Sprache>',
+                        args: {}
+                    },
+                    // {
+                    // action: "reset",
+                    // actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn du dir sicher bist)',
+                    // usage: ';setconf reset',
+                    // args: {}
+                    // }
                 ]
             },
 
