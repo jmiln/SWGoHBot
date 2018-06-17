@@ -705,7 +705,7 @@ module.exports = class extends Language {
                         actionDesc: 'Trennt die Verbindung des Discordprofils mit dem SWGoH account',
                         usage: ';register remove <user>',
                         args: {
-                            "user": "Das Discordprofil dessen Verbindung du trennen moechtest. (me | userID | mention)"
+                            "user": "Das Discordprofil dessen Verbindung du trennen moechtest (falscher Verbuendetencode). (me | userID | mention)"
                         }
                     }
                 ]
@@ -750,19 +750,21 @@ module.exports = class extends Language {
             COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anfuehrer dieses Servers hat die Konfiguration nicht eingestellt.`,
             COMMAND_SETCONF_MISSING_OPTION: `Du musst eine Konfig-Option auswaehlen zum aendern.`,
             COMMAND_SETCONF_MISSING_VALUE: `Zum aendern dieser Option musst du einen Wert angeben.`,
-            COMMAND_SETCONF_ADMINROLE_MISSING_OPT: 'Es muss `add` oder `remove` benutzt werden.',
+            COMMAND_SETCONF_ARRAY_MISSING_OPT: 'Du mussr `add` oder `remove` verwenden.',
+            COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Entschuldige, aber \`${value}\` ist nicht gesetzt in \`${key}\`.`,
+            COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` wurde ${action} dein \`${key}\`.`,
+            COMMAND_SETCONF_NO_KEY: (prefix) => `Dieser Wert ist nicht in der Konfiguration. Siehe "${prefix}showconf", oder "${prefix}setconf help" fuer eine Liste`,
+            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Gildenkonfiguration fuer ${key} wurde geaendert in:\n\`${value}\``,
+            COMMAND_SETCONF_NO_SETTINGS: `Keine Gildeneinstellungen gefunden.`,
+ 
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Du musst eine Rolle definieren ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Entschuldige, aber ich kann die Rolle nicht finden ${roleName}. Bitte erneut versuchen.`,
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Entschuldige, aber ${roleName} ist bereits vorhanden.`,
-            COMMAND_SETCONF_ADMINROLE_NOT_IN_CONFIG: (roleName) => `Entschuldige, aber ${roleName} ist nicht in deiner Konfig.`,
-            COMMAND_SETCONF_ADMINROLE_SUCCESS: (roleName, action) => `Die Rolle ${roleName} wurde ${action === 'add' ? 'hinzugefuegt' : 'entfernt'} von den Admin-Rollen.`,
+           
             COMMAND_SETCONF_WELCOME_NEED_CHAN: `Entschuldige, aber der Ankuendigungskanal ist nicht definiert oder nicht mehr gueltig.\nSetze \`announceChan\` auf einen gueltigen Kanal und versuche es erneut\``,
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an`,
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.`,
-            COMMAND_SETCONF_NO_KEY: (prefix) => `Dieser Schluessel ist nicht in der Konfiguration. Schaue in "${prefix}showconf", oder "${prefix}setconf help" fuer eine Uebersicht`,
-            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Gildenkonfiguration ${key} geaendert auf:\n\`${value}\``,
-            COMMAND_SETCONF_NO_SETTINGS: `Keine Gildeneinstellungen gefunden.`,
+            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.`,        
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
             COMMAND_SETCONF_RESET: `Die Konfiguration wurde zurueckgesetzt`,
             COMMAND_SETCONF_HELP: {
@@ -772,6 +774,12 @@ module.exports = class extends Language {
                         action: "",
                         actionDesc: '',
                         usage: ';setconf <Schluessel> <Wert>',
+                        args: {}
+                    },
+                    {
+                        action: "prefix",
+                        actionDesc: 'Setzt den Praefix fuer den Server',
+                        usage: ';setconf prefix <prefix>',
                         args: {}
                     },
                     {
@@ -799,6 +807,20 @@ module.exports = class extends Language {
                         }
                     },
                     {
+                        action: "enablePart",
+                        actionDesc: 'Schaltet die Abschiedsnachricht an/ aus.',
+                        usage: ';setconf enablePart <true|false>',
+                        args: {}
+                    },
+                    {
+                        action: "partMessage",
+                        actionDesc: 'Die Abschiedsnachricht die gesendet wird, sofern diese eingeschaltet wurde (spezielle Variablen siehe unten)',
+                        usage: ';setconf partMessage <Nachricht>',
+                        args: {
+                            '{{user}}':  "wird ersetzt durch den Usernamen.",
+                        }
+                    },
+                    {
                         action: "useEmbeds",
                         actionDesc: 'Schaltet ein bzw. aus, ob die Ausgabe einiger Kommandos eingebettet werden soll.',
                         usage: ';setconf useEmbeds <true|false>',
@@ -823,11 +845,32 @@ module.exports = class extends Language {
                         args: {}
                     },
                     {
-                        action: "reset",
-                        actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn du dir sicher bist)',
-                        usage: ';setconf reset',
+                        action: "eventCountdown",
+                        actionDesc: 'Die Intervalle in denen eine Countdown Nachricht erscheinen soll',
+                        usage: ';setconf eventCountdown <add|remove> <Zeit>',
+                        args: {
+                            'add':  'Fuegt ein Zeitintervall hinzu',
+                            'remove': 'Entfernt ein Zeitintervall aus der Liste'
+                        }
+                    },
+                    {
+                        action: "language",
+                        actionDesc: 'Stellt die Sprache ein die der Bot fuer die Kommandoausgabe nutzen soll.',
+                        usage: ';setconf language <Sprache>',
                         args: {}
-                    }
+                    },
+                    {
+                        action: "swgohLanguage",
+                        actionDesc: 'Stellt die Sprache ein die der Bot fuer die Spieldatenausgabe nutzen soll.',
+                        usage: ';setconf swgohLanguage <Sprache>',
+                        args: {}
+                    },
+                    // {
+                    // action: "reset",
+                    // actionDesc: 'Setzt die Konfiguration auf die Standardwerte zurueck (ACHTUNG nur benutzen, wenn du dir sicher bist)',
+                    // usage: ';setconf reset',
+                    // args: {}
+                    // }
                 ]
             },
 
