@@ -557,6 +557,44 @@ module.exports = class extends Language {
                 ]
             },
 
+            // MyProfile Command
+            COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
+            COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
+            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
+            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Guild:** ${guildName}\n**Level:** ${level}\n**Arena rank:** ${charRank}\n**Ship rank:** ${shipRank}`,
+            COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
+                header: `Characters (${charList.length})`,
+                stats: [
+                    `Char GP  :: ${gpChar}`,
+                    `7 Star   :: ${charList.filter(c => c.rarity === 7).length}`,
+                    `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
+                    `Gear 12  :: ${charList.filter(c => c.gear === 12).length}`,
+                    `Gear 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                    `Zetas    :: ${zetaCount}`
+                ].join('\n')
+            }),
+            COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
+                header: `Ships (${shipList.length})`,
+                stats: [
+                    `Ship GP :: ${gpShip}`,
+                    `7 Star  :: ${shipList.filter(s => s.rarity === 7).length}`,
+                    `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
+                ].join('\n')
+            }),
+            COMMAND_MYPROFILE_HELP: {
+                description: "Show user's current arena ranks and their squads.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';myarena [user]',
+                        args: {
+                            "user": "The person you're checking. (me | userID | mention)"
+                        }
+                    }
+                ]
+            },
+
             // Nickname Command
             COMMAND_NICKNAME_SUCCESS: `I have changed my nickname.`,
             COMMAND_NICKNAME_FAILURE: `Sorry, but I don't have permission to change that.`,
@@ -760,7 +798,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `You must specify a role to ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Sorry, but I cannot find the role ${roleName}. Please try again.`,
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Sorry, but ${roleName} is already there.`,
-            
+            COMMAND_SETCONF_PREFIX_TOO_LONG: 'Sorry, but you cannot have spaces in your prefix',
             COMMAND_SETCONF_WELCOME_NEED_CHAN: `Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``,
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,

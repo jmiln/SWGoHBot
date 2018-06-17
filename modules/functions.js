@@ -536,6 +536,14 @@ module.exports = (client) => {
     };
 
     /*
+     * Return a duration string
+     */
+    client.duration = (time, message=null) => {
+        const lang = message ? message.language : client.languages[client.config.defaultSettings.language];
+        return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime('DAY', 'PLURAL')}], h [${lang.getTime('HOUR', 'SHORT_PLURAL')}], m [${lang.getTime('MINUTE', 'SHORT_SING')}]`);
+    }
+
+    /*
      * isUserID
      * Check if a string of numbers is a valid user.
      */
