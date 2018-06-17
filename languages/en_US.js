@@ -582,12 +582,12 @@ module.exports = class extends Language {
                 ].join('\n')
             }),
             COMMAND_MYPROFILE_HELP: {
-                description: "Show user's current arena ranks and their squads.",
+                description: "Show user's general stats.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';myarena [user]',
+                        usage: ';myprofile [user]',
                         args: {
                             "user": "The person you're checking. (me | userID | mention)"
                         }
