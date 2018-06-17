@@ -1,10 +1,8 @@
 const momentTZ = require('moment-timezone');
 const Fuse = require("fuse-js-latest");
 require('moment-duration-format');
-const mysql = require('mysql');
 const {promisify, inspect} = require('util');      // eslint-disable-line no-unused-vars
 const moment = require('moment');       // eslint-disable-line no-unused-vars
-const { Op } = require('sequelize');    // eslint-disable-line no-unused-vars
 const fs = require('fs');    // eslint-disable-line no-unused-vars
 const readdir = promisify(require("fs").readdir);       // eslint-disable-line no-unused-vars
 const request = require('request-promise-native');
@@ -174,7 +172,7 @@ module.exports = (client) => {
      * Sends a message to the set announcement channel
      */
     client.announceMsg = async (guild, announceMsg, channel='') => {
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: guild.id}, attributes: ['announceChan']});
+        const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ['announceChan']});
         const guildConf = guildSettings.dataValues;
         let guildChannel;
 
@@ -564,7 +562,7 @@ module.exports = (client) => {
         if (!user || user === 'me') {
             uID = message.author.id;
             try {
-                uAC = await client.allyCodes.findOne({where: {id: uID}});
+                uAC = await client.database.models.allyCodes.findOne({where: {id: uID}});
                 return [uAC.dataValues.allyCode];
             } catch (e) {
                 return [];
@@ -572,7 +570,7 @@ module.exports = (client) => {
         } else if (client.isUserID(user)) {
             uID = user.replace(/[^\d]*/g, '');
             try {
-                uAC = await client.allyCodes.findOne({where: {id: uID}});
+                uAC = await client.database.models.allyCodes.findOne({where: {id: uID}});
                 return [uAC.dataValues.allyCode];
             } catch (e) {
                 return [];
@@ -594,77 +592,63 @@ module.exports = (client) => {
     };
 
 
-    // Get the output from a query
-    client.sqlQuery = async (query, args) => {
-        return new Promise((resolve, reject) => {
-            const connection = mysql.createConnection(client.config.mySqlDB);
-
-            connection.query(query, args, function(err, results) {
-                connection.end();
-                try {
-                    if (err) {
-                        console.log('Error in sqlQuery: ' + err);
-                        resolve(false);
-                    } else {
-                        resolve(results);
-                    }
-                } catch (e) {
-                    reject(e);
-                }
-            });
-        });
-    };
-
-
-
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
         let ix = 0;
         const nowTime = momentTZ().subtract(2, 'h').unix();
-        const events = await client.guildEvents.findAll();
+        const events = await client.database.models.eventDBs.findAll();
 
         const eventList = [];
-        events.forEach(event => {
+        for (let i = 0; i < events.length; i++ ) {
+            const event = events[i];
             const eventNameID = event.eventID.split('-');
             const guildID = eventNameID[0];
             
             // Make sure it only loads events for it's shard
             if (client.guilds.keyArray().includes(guildID)) {
-                eventList.push(event.dataValues);
+                const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+                const guildConf = guildSettings.dataValues;
+                eventList.push([event.dataValues, guildConf]);
             }
-        });
+        }
 
         if (eventList.length > 0) {
-            eventList.forEach(async event => {
+            for (let i = 0; i < eventList.length; i++ ) {
+                const [event, guildConf] = eventList[i];
                 // If it's past when it was supposed to announce
-                if (event.eventDT < nowTime) {
-                    await client.guildEvents.destroy({where: {eventID: event.eventID}})
-                        .then(() => {})
+                if (event.eventDT < nowTime*1000) {
+                    await client.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
                         .catch(error => { client.log('ERROR',`Broke trying to delete zombies ${error}`); });
                 } else {
                     ix++;
-                    client.scheduleEvent(event);
+                    client.scheduleEvent(event, guildConf.eventCountdown);
                 }
-            });
+            }
         }
         console.log(`Loaded ${ix} events`);
     };
 
     // Actually schedule em here
-    client.scheduleEvent = async (event) => {
+    client.scheduleEvent = async (event, countdown) => {
         client.schedule.scheduleJob(event.eventID, parseInt(event.eventDT), function() {
             client.eventAnnounce(event);
         });
     
-        if (event.countdown === 'true' || event.countdown === 'yes' || event.countdown === true) {
-            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5 ];
-            const nowTime = momentTZ().unix();
+        if (countdown.length && (event.countdown === 'true' || event.countdown === 'yes' || event.countdown === true)) {
+            const timesToCountdown = countdown;
+            const nowTime = momentTZ().unix() * 1000;
             timesToCountdown.forEach(time => {
                 const cdTime = time * 60;
                 const evTime = event.eventDT / 1000;
                 const newTime = (evTime-cdTime-60) * 1000; 
-                if (newTime > nowTime) {
-                    client.schedule.scheduleJob(`${event.eventID}-CD${time}`, parseInt(newTime) , function() {
+                if (newTime > nowTime) {    // If the countdown is between now and the event
+                    const sID = `${event.eventID}-CD${time}`;
+                    if (!client.evCountdowns[event.eventID]) {
+                        client.evCountdowns[event.eventID] = [sID];
+                    } else {
+                        client.evCountdowns[event.eventID].push(sID);
+                    }
+                    client.schedule.scheduleJob(sID, parseInt(newTime) , function() {
                         client.countdownAnnounce(event);                    
                     });
                 }
@@ -674,9 +658,9 @@ module.exports = (client) => {
 
     // Delete em here as needed
     client.deleteEvent = async (eventID) => {
-        const event = await client.guildEvents.findOne({where: {eventID: eventID}});
+        const event = await client.database.models.eventDBs.findOne({where: {eventID: eventID}});
 
-        await client.guildEvents.destroy({where: {eventID: eventID}})
+        await client.database.models.eventDBs.destroy({where: {eventID: eventID}})
             .then(() => {
                 const eventToDel = client.schedule.scheduledJobs[eventID];
                 if (!eventToDel) console.log('Broke trying to delete: ' + event);
@@ -686,15 +670,10 @@ module.exports = (client) => {
                 client.log('ERROR',`Broke deleting an event ${error}`); 
             });
 
-        if (event.countdown === 'true' || event.countdown === 'yes') {
-            const timesToCountdown = [ 2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5 ];
-            const nowTime = momentTZ().unix();
-            timesToCountdown.forEach(time => {
-                const cdTime = time * 60;
-                const evTime = event.eventDT / 1000;
-                const newTime = (evTime-cdTime-60) * 1000; 
-                if (newTime > nowTime) {
-                    const eventToDel = client.schedule.scheduledJobs[`${eventID}-CD${time}`];
+        if (client.evCountdowns[event.eventID] && (event.countdown === 'true' || event.countdown === 'yes')) {
+            client.evCountdowns[event.eventID].forEach(time => {
+                const eventToDel = client.schedule.scheduledJobs[time];
+                if (eventToDel) {
                     eventToDel.cancel();
                 }
             });
@@ -707,7 +686,7 @@ module.exports = (client) => {
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join('-');
     
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
         var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format(`h [${client.languages[guildConf.language].getTime('HOUR', 'SHORT_SING')}], m [${client.languages[guildConf.language].getTime('MINUTE', 'SHORT_SING')}]`);
@@ -729,7 +708,7 @@ module.exports = (client) => {
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join('-');
     
-        const guildSettings = await client.guildSettings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
         let repTime = false, repDay = false;
@@ -743,7 +722,7 @@ module.exports = (client) => {
         }
 
         // Announce the event
-        var announceMessage = `**${eventName}**\n\n${event.eventMessage}`;
+        var announceMessage = `**${eventName}**\n${event.eventMessage}`;
         if (guildConf["announceChan"] != "" || event.eventChan !== '') {
             if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
                 try {
@@ -796,14 +775,14 @@ module.exports = (client) => {
         }  
 
         if (repTime || repDay) {
-            await client.guildEvents.update(newEvent, {where: {eventID: event.eventID}})
+            await client.database.models.eventDBs.update(newEvent, {where: {eventID: event.eventID}})
                 .then(async () => {
-                    client.scheduleEvent(newEvent);
+                    client.scheduleEvent(newEvent, guildConf.eventCountdown);
                 })
                 .catch(error => { client.log('ERROR', "Broke trying to replace event: " + error); });
         } else {
             // Just destroy it
-            await client.guildEvents.destroy({where: {eventID: event.eventID}})
+            await client.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
                 .then(async () => {})
                 .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
         }

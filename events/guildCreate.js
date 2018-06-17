@@ -2,13 +2,13 @@ module.exports = async (client, guild) => {
     // Get the default config settings
     const defSet = client.config.defaultSettings;
 
-    const exists = await client.guildSettings.findOne({where: {guildID: guild.id}})
+    const exists = await client.database.models.settings.findOne({where: {guildID: guild.id}})
         .then(token => token !== null)
         .then(isUnique => isUnique);
 
     if (!exists) {
         // Adding a new row to the DB
-        client.guildSettings.create({
+        client.database.models.settings.create({
             guildID: guild.id,
             adminRole: defSet.adminRole,
             enableWelcome: defSet.enableWelcome,

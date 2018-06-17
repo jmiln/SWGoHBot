@@ -12,6 +12,7 @@ class MyArena extends Command {
     }
 
     async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
+        const lang = message.guildSettings.swgoghLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
             return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY'));
@@ -22,7 +23,7 @@ class MyArena extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US');
+            player = await client.swgohAPI.getPlayer(allyCode, lang);
         } catch (e) {
             console.log('Broke getting player in myarena: ' + e);
         }
@@ -34,9 +35,7 @@ class MyArena extends Command {
         if (player.arena.ship.squad.length) {
             const sArena = [];
             player.arena.ship.squad.forEach((ship, ix) => {
-                let sName = client.ships.find(s => s.uniqueName === ship.name || s.name.replace(/[\W_]+/g,"").toLowerCase() === ship.name.replace(/[\W_]+/g,"").toLowerCase());
-                sName = sName ? sName.name : 'Undefined';
-                sArena.push(`\`${sPositions[ix]}\` ${sName}`);
+                sArena.push(`\`${sPositions[ix]}\` ${ship.name}`);
             });
             fields.push({
                 name: message.language.get('COMMAND_MYARENA_FLEET', player.arena.ship.rank),
@@ -47,10 +46,7 @@ class MyArena extends Command {
 
         const cArena = [];
         player.arena.char.squad.forEach((char, ix) => {
-            let cName = client.characters.find(c => c.uniqueName === char.name || c.name.replace(/[\W_]+/g,"") === char.name.replace(/[\W_]+/g,""));
-            if (!cName) console.log(char);
-            cName = cName ? cName.name : 'Undefined';
-            cArena.push(`\`${positions[ix]}\` ${cName}`);
+            cArena.push(`\`${positions[ix]}\` ${char.name}`);
         });
         fields.push({
             name: message.language.get('COMMAND_MYARENA_ARENA', player.arena.char.rank),

@@ -31,55 +31,58 @@ client.reloadLanguages();
 client.commands = new Collection();
 client.aliases = new Collection();
 
-client.seqTypeBool = Sequelize.BOOLEAN;
-client.sequelize = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
+client.evCountdowns = {};
+
+client.database = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
     host: client.config.database.host,
     dialect: 'postgres',
     logging: false,
     operatorAliases: false
 });
-client.guildSettings = client.sequelize.define('settings', {
-    guildID: { type: Sequelize.TEXT, primaryKey: true },
-    adminRole: Sequelize.ARRAY(Sequelize.TEXT),
-    enableWelcome: Sequelize.BOOLEAN,
-    welcomeMessage: Sequelize.TEXT,
-    useEmbeds: Sequelize.BOOLEAN,
-    timezone: Sequelize.TEXT,
-    announceChan: Sequelize.TEXT,
-    useEventPages: Sequelize.BOOLEAN,
-    language: Sequelize.TEXT
-});
-client.guildEvents = client.sequelize.define('eventDBs', {
-    eventID: { type: Sequelize.TEXT, primaryKey: true }, // guildID-eventName
-    eventDT: Sequelize.TEXT,
-    eventMessage: Sequelize.TEXT,
-    eventChan: Sequelize.TEXT,
-    countdown: Sequelize.TEXT,
-    repeat: Sequelize.JSONB,
-    repeatDays: Sequelize.ARRAY(Sequelize.TEXT)
-});
-client.commandLogs = client.sequelize.define('commands', {
-    id: { type: Sequelize.TEXT, primaryKey: true },  // commandName-userID-messageID
-    commandText: Sequelize.TEXT
-});
-client.changelogs = client.sequelize.define('changelogs', {
-    logText: Sequelize.TEXT
-});
-client.shardTimes = client.sequelize.define('shardtimes', {
-    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id or guild.id-channel.id
-    times: {type: Sequelize.JSONB, defaultValue: {} }
-});
-client.polls = client.sequelize.define('polls', {
-    id: { type: Sequelize.TEXT, primaryKey: true },  // guild.id-channel.id
-    poll: Sequelize.JSONB
-});
-client.allyCodes = client.sequelize.define('allyCodes', {
-    id: {type: Sequelize.TEXT, primaryKey: true},   // userID
-    allyCode: Sequelize.BIGINT
+
+
+client.database.authenticate().then(async () => {
+    await require('./modules/models')(Sequelize, client.database);
+
+    // Get all the models
+    const rawAttr = client.database.models.settings.rawAttributes;
+    const rawNames = Object.keys(rawAttr);
+
+    // Got through them all
+    for (let ix = 0; ix < rawNames.length; ix++) {
+        // Try getting each column
+        await client.database.models.settings.findAll({limit: 1, attributes: [rawNames[ix]]})
+        // If it doesn't exist, it'll throw an error, then it will add them
+            .catch(async () => {
+                console.log('Adding column ' + rawNames[ix] + ' to settings.');
+                await client.database.queryInterface.addColumn('settings',
+                    rawAttr[rawNames[ix]].fieldName,
+                    {
+                        type: rawAttr[rawNames[ix]].type,
+                        defaultValue: rawAttr[rawNames[ix]].defaultValue !== null ? rawAttr[rawNames[ix]].defaultValue : null
+                    }
+                );
+            });
+    }
+
+    init();
+    client.login(client.config.token).then(() => {
+        const guildList = client.guilds.keyArray();
+        for (let ix = 0; ix < guildList.length; ix++) {
+            client.database.models.settings.findOrBuild({
+                where: {
+                    guildID: guildList[ix]
+                }
+            }).spread((gModel, initialized) => {
+                if (initialized) {
+                    return gModel.save();
+                }
+            }).catch((e) =>  console.log('Error: ' + e));
+        }
+    }).catch((e) => console.error(e));
 });
 
 const init = async () => {
-
     // If we have the magic, use it
     if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
         const swgohService = require('./'+client.config.swgohAPILoc);
@@ -104,13 +107,9 @@ const init = async () => {
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
-        // This line is awesome by the way. Just sayin'.
         client.on(eventName, event.bind(null, client));
         delete require.cache[require.resolve(`./events/${file}`)];
     });
-
-    // Here we login the client.
-    client.login(client.config.token);
 };
 
 client.on('error', (err) => {
@@ -144,7 +143,7 @@ if (!client.shard || client.shard.id === 0) {
     }, 2 * 60 * 1000);
 }
 
-init();
+// init();
 
 function getModType(type) {
     switch (type) {

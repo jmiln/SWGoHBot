@@ -18,6 +18,7 @@ class GuildSearch extends Command {
 
     async run(client, message, [userID, ...searchChar], options) { // eslint-disable-line no-unused-vars
         let starLvl = null;
+        const lang = message.guildSettings.swgohLanguage;
         // If there's enough elements in searchChar, and it's in the format of a numer*
         if (searchChar.length > 0 && searchChar[searchChar.length-1].match(/\d\*/)) {
             starLvl = parseInt(searchChar.pop().replace('*', ''));
@@ -66,7 +67,7 @@ class GuildSearch extends Command {
         }
         
         try {
-            const player = await client.swgohAPI.getPlayer(userID, 'ENG_US', 6);
+            const player = await client.swgohAPI.getPlayer(userID, lang, 6);
             userID = player.guildName;
         } catch (e) {
             console.error(e);
@@ -89,7 +90,12 @@ class GuildSearch extends Command {
             const charL = member.roster.filter(c => (c.name === character.name || c.name === character.uniqueName));
 
             const thisStar = charL.length ? charL[0].rarity : 0;
-            const uStr = thisStar > 0 ? `\`${charL[0].level} g${charL[0].gear}\` ${member.name}` : member.name;
+            if (charL.length && charL[0].gp) {
+                console.log('GOT GP: ' + charL[0]);
+            } else if (member.name === 'Reaper1395') {
+                console.log(charL[0]);
+            }
+            const uStr = thisStar > 0 ? `\`${charL[0].level} g${charL[0].gear} ${charL[0].gp ? charL[0].gp + 'GP' : ''}\` ${member.name}` : member.name;
             if (!charOut[thisStar]) {
                 charOut[thisStar] = [uStr];
             } else {

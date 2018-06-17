@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
     if (!message.guild) {
         guildSettings = client.config.defaultSettings;
     } else {
-        guildSettings = await client.guildSettings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
+        guildSettings = await client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
     }
     
@@ -30,11 +30,11 @@ module.exports = async (client, message) => {
 
     // If the message is just mentioning the bot, tell them what the prefix is
     if (message.content === client.user.toString() || (message.guild && message.content === message.guild.me.toString())) {
-        return message.channel.send(`The prefix is \`${client.config.prefix}\`.`);
+        return message.channel.send(`The prefix is \`${message.guildSettings.prefix}\`.`);
     }
 
     // Also good practice to ignore any message that does not start with our prefix, which is set in the configuration file.
-    if (message.content.indexOf(client.config.prefix) !== 0) return;
+    if (message.content.indexOf(message.guildSettings.prefix) !== 0) return;
 
     // Splits on line returns, then on spaces to preserve the line returns
     const nArgs = message.content.split(/(\n+)/);
@@ -45,7 +45,7 @@ module.exports = async (client, message) => {
     });
 
     // Get the command name/ remove it from the args
-    const command = args.shift().slice(client.config.prefix.length).toLowerCase();
+    const command = args.shift().slice(message.guildSettings.prefix.length).toLowerCase();
 
     // Get the user or member's permission level from the elevation
     const level = client.permlevel(message);
@@ -100,7 +100,7 @@ module.exports = async (client, message) => {
             }
         }
         if (client.config.logs.logComs) {
-            client.commandLogs.create({
+            client.database.models.commands.create({
                 id: `${cmd.help.name}-${message.author.id}-${message.id}`,
                 commandText: args.join(' ')
             });

@@ -16,7 +16,7 @@ class Poll extends Command {
             return message.channel.send(message.language.get('COMMAND_POLL_NO_ARG'));
         }
         const pollID = `${message.guild.id}-${message.channel.id}`;
-        const exists = await client.polls.findOne({where: {id: pollID}})
+        const exists = await client.database.models.polls.findOne({where: {id: pollID}})
             .then(token => token != null)
             .then(isUnique => isUnique);
         const optsJoin = opts.join(' ').split('|');
@@ -30,7 +30,7 @@ class Poll extends Command {
         };
 
         if (exists) {
-            const tempP = await client.polls.findOne({where: {id: pollID}});
+            const tempP = await client.database.models.polls.findOne({where: {id: pollID}});
             poll = tempP.dataValues.poll;
         }
 
@@ -60,7 +60,7 @@ class Poll extends Command {
                     });
                     poll.options = optsJoin;
                 }
-                await client.polls.create({
+                await client.database.models.polls.create({
                     id: pollID,
                     poll: poll
                 })
@@ -89,7 +89,7 @@ class Poll extends Command {
                     return message.channel.send(message.language.get('COMMAND_POLL_NO_POLL'));
                 } else {
                     // Delete the current poll
-                    await client.polls.destroy({where: {id: pollID}})
+                    await client.database.models.polls.destroy({where: {id: pollID}})
                         .then(() => {
                             return message.channel.send(message.language.get('COMMAND_POLL_FINAL', pollCheck(poll)));
                         })
@@ -116,7 +116,7 @@ class Poll extends Command {
                             voted = poll.votes[message.author.id];
                         }
                         poll.votes[message.author.id] = opt;
-                        await client.polls.update({poll: poll}, {where: {id: pollID}})
+                        await client.database.models.polls.update({poll: poll}, {where: {id: pollID}})
                             .then(() => {
                                 if (voted !== -1) {
                                     return message.channel.send(message.language.get('COMMAND_POLL_CHANGED_OPT', poll.options[voted], poll.options[opt]));

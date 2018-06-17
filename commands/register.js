@@ -34,9 +34,9 @@ class Register extends Command {
                     if (userID !== message.author.id) {
                         if (level < 3) {
                             return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
-                        } else if (!message.guild.members.has(userID) && action === 'add') {  // If they are trying to add someone that is not in their server
+                        } else if (!message.guild.members.has(userID) && action === 'add' && level < 3) {  // If they are trying to add someone that is not in their server
                             return message.channel.send('You can only add users that are in your server.');
-                        } else if (!message.guild.members.has(userID) && action === 'remove' && level < 4) {   // If they are trying to remove someone else 
+                        } else if (!message.guild.members.has(userID) && action === 'remove' && level < 8) {   // If they are trying to remove someone else 
                             return message.channel.send('You cannot remove other people');
                         }
                     }
@@ -45,7 +45,7 @@ class Register extends Command {
                     return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_USER'));
                 }
             }
-            exists = await client.allyCodes.findOne({where: {id: userID}})
+            exists = await client.database.models.allyCodes.findOne({where: {id: userID}})
                 .then(token => token != null)
                 .then(isUnique => isUnique);
         }
@@ -65,22 +65,28 @@ class Register extends Command {
                 if (!exists) {
                     // Sync up their swgoh account
                     message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
-                        await client.swgohAPI.getPlayer(allyCode, 'ENG_US').then(async (u) => {
-                            if (!u) {
-                                await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
-                            } else {
-                                await client.allyCodes.create({
-                                    id: userID,
-                                    allyCode: allyCode
-                                })
-                                    .then(async () => {
-                                        await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
+                        try {
+                            await client.swgohAPI.getPlayer(allyCode, 'ENG_US').then(async (u) => {
+                                if (!u) {
+                                    await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
+                                } else {
+                                    await client.database.models.allyCodes.create({
+                                        id: userID,
+                                        allyCode: allyCode
                                     })
-                                    .catch(e => {
-                                        client.log('REGISTER', 'Broke while trying to link new user: ' + e);
-                                    });
-                            }
-                        });
+                                        .then(async () => {
+                                            await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
+                                        })
+                                        .catch(e => {
+                                            msg.edit('Something went wrong. Please notify the proper authorities.');
+                                            client.log('REGISTER', 'Broke while trying to link new user: ' + e);
+                                        });
+                                }
+                            });
+                        } catch (e) {
+                            msg.edit('Invalid ally code. Please make sure you enter the correct code.');
+                            console.log('ERROR: Incorrect Ally Code: ' + e);
+                        }
                     });
                 } else {
                     return message.channel.send('You are already registered! Please use `;register update <user>`.');
@@ -135,7 +141,7 @@ class Register extends Command {
                 if (!exists) {
                     message.channel.send('You were not linked to a SWGoH account.');
                 } else {
-                    await client.allyCodes.destroy({where: {id: userID}})
+                    await client.database.models.allyCodes.destroy({where: {id: userID}})
                         .then(() => {
                             message.channel.send('Successfully unlinked.');
                         })

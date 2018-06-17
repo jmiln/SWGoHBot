@@ -10,17 +10,17 @@ module.exports = async (client, member) => {
         client.database.models.settings.update({announceChan: ''}, {where: {guildID: guild.id}});
     }
 
-    // Our welcome message has a bit of a placeholder, let's fix
-    if (guildConf.enableWelcome && guildConf.welcomeMessage !== "" && guildConf.announceChan !== "") { // If they have it turned on, and it's not empty
-        const welcomeMessage = guildConf.welcomeMessage
-            .replace(/{{user}}/gi, member.user.username)
-            .replace(/{{usermention}}/gi, member.user)
+    // Our message has a bit of a placeholder, let's fix
+    if (guildConf.enablePart && guildConf.partMessage !== "" && guildConf.announceChan !== "") { // If they have it turned on, and it's not empty
+        const partMessage = guildConf.partMessage
+            .replace(/{{user}}/gi, member.displayName)
+            .replace(/{{usermention}}/gi, member.id)
             .replace(/{{server}}/gi, member.guild.name)
             .replace(/{{prefix}}/gi, client.config.prefix);
         try {
-            client.announceMsg(guild, welcomeMessage);
+            client.announceMsg(guild, partMessage);
         } catch (e) {
-            client.log('ERROR', `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
+            client.log('ERROR', `Error sending partMessage:\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
         } 
     }
 };

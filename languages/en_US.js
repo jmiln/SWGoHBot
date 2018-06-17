@@ -303,7 +303,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_TOO_BIG:(charCount) => `Sorry, but either your event's name or message is too big. Please trim it down by at least ${charCount} characters.`,
 
             // Event Command (View)
-            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \n\nEvent Time: ${eventDate}\n`,
+            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
             COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Time Remaining: ${timeLeft}\n`,
             COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,
@@ -702,10 +702,10 @@ module.exports = class extends Language {
                     },
                     {
                         action: "Remove",
-                        actionDesc: 'Unlink your Discord profile to a SWGoH account',
+                        actionDesc: 'Unlink your Discord profile from a SWGoH account',
                         usage: ';register remove <user>',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "user": "You, this is to unlink it if you have the wrong ally code. (me | userID | mention)"
                         }
                     }
                 ]
@@ -750,19 +750,21 @@ module.exports = class extends Language {
             COMMAND_SETCONF_MISSING_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.`,
             COMMAND_SETCONF_MISSING_OPTION: `You must select a config option to change.`,
             COMMAND_SETCONF_MISSING_VALUE: `You must give a value to change that option to.`,
-            COMMAND_SETCONF_ADMINROLE_MISSING_OPT: 'You must use `add` or `remove`.',
+            COMMAND_SETCONF_ARRAY_MISSING_OPT: 'You must use `add` or `remove`.',
+            COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Sorry, but \`${value}\` is not set in \`${key}\`.`,
+            COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` has been ${action} your \`${key}\`.`,
+            COMMAND_SETCONF_NO_KEY: (prefix) => `This key is not in the configuration. Look in "${prefix}showconf", or "${prefix}setconf help" for a list`,
+            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Guild configuration item ${key} has been changed to:\n\`${value}\``,
+            COMMAND_SETCONF_NO_SETTINGS: `No guild settings found.`,
+
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `You must specify a role to ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Sorry, but I cannot find the role ${roleName}. Please try again.`,
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Sorry, but ${roleName} is already there.`,
-            COMMAND_SETCONF_ADMINROLE_NOT_IN_CONFIG: (roleName) => `Sorry, but ${roleName} is not in your config.`,
-            COMMAND_SETCONF_ADMINROLE_SUCCESS: (roleName, action) => `The role ${roleName} has been ${action} your admin roles.`,
+            
             COMMAND_SETCONF_WELCOME_NEED_CHAN: `Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``,
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Sorry, but I don't have permission to send message there. Please either change the perms, or choose another channel.`,
-            COMMAND_SETCONF_NO_KEY: (prefix) => `This key is not in the configuration. Look in "${prefix}showconf", or "${prefix}setconf help" for a list`,
-            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Guild configuration item ${key} has been changed to:\n\`${value}\``,
-            COMMAND_SETCONF_NO_SETTINGS: `No guild settings found.`,
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Sorry, but ${value} is not a currently supported language. \nCurrently supported languages are: \`${langList}\``,
             COMMAND_SETCONF_RESET: `Your config has been reset`,
             COMMAND_SETCONF_HELP: {
@@ -772,6 +774,12 @@ module.exports = class extends Language {
                         action: "",
                         actionDesc: '',
                         usage: ';setconf <key> <value>',
+                        args: {}
+                    },
+                    {
+                        action: "prefix",
+                        actionDesc: 'Set the bot\'s prefix for your server.',
+                        usage: ';setconf prefix <prefix>',
                         args: {}
                     },
                     {
@@ -799,6 +807,20 @@ module.exports = class extends Language {
                         }
                     },
                     {
+                        action: "enablePart",
+                        actionDesc: 'Toggles the parting message on/ off.',
+                        usage: ';setconf enablePart <true|false>',
+                        args: {}
+                    },
+                    {
+                        action: "partMessage",
+                        actionDesc: 'The part message to send if you have it enabled (Special variables below)',
+                        usage: ';setconf partMessage <message>',
+                        args: {
+                            '{{user}}':  "gets replaced with the new user's name.",
+                        }
+                    },
+                    {
                         action: "useEmbeds",
                         actionDesc: 'Toggles whether or not to use embeds as the output for some commands.',
                         usage: ';setconf useEmbeds <true|false>',
@@ -823,11 +845,32 @@ module.exports = class extends Language {
                         args: {}
                     },
                     {
-                        action: "reset",
-                        actionDesc: 'Resets the config back to default (ONLY use this if you are sure)',
-                        usage: ';setconf reset',
+                        action: "eventCountdown",
+                        actionDesc: 'The time that you want a countdown message to appear',
+                        usage: ';setconf eventCountdown <add|remove> <time>',
+                        args: {
+                            'add':  'Add a time to the list',
+                            'remove': 'Remove a time from the list'
+                        }
+                    },
+                    {
+                        action: "language",
+                        actionDesc: 'Set the bot to use any supported language for the command output.',
+                        usage: ';setconf language <lang>',
                         args: {}
-                    }
+                    },
+                    {
+                        action: "swgohLanguage",
+                        actionDesc: 'Sets the bot to use any supported language for the game data output.',
+                        usage: ';setconf swgohLanguage <lang>',
+                        args: {}
+                    },
+                    // {
+                    //     action: "reset",
+                    //     actionDesc: 'Resets the config back to default (ONLY use this if you are sure)',
+                    //     usage: ';setconf reset',
+                    //     args: {}
+                    // }
                 ]
             },
 
