@@ -705,7 +705,7 @@ module.exports = class extends Language {
                         actionDesc: 'Trennt die Verbindung des Discordprofils mit dem SWGoH account',
                         usage: ';register remove <user>',
                         args: {
-                            "user": "Das Discordprofil dessen Verbindung du trennen moechtest. (me | userID | mention)"
+                            "user": "Das Discordprofil dessen Verbindung du trennen moechtest (falscher Verbuendetencode). (me | userID | mention)"
                         }
                     }
                 ]
