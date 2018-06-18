@@ -1,32 +1,32 @@
 const Language = require('../base/Language');
 const DAYSOFWEEK = {
     SUNDAY: {
-        SHORT: 'Sun',
-        LONG: 'Sunday'
+        SHORT: '일',
+        LONG: '일요일'
     },
     MONDAY: {
-        SHORT: 'Mon',
-        LONG: 'Monday'
+        SHORT: '월',
+        LONG: '월요일'
     },
     TUESDAY: {
-        SHORT: 'Tue',
-        LONG: 'Tuesday'
+        SHORT: '화',
+        LONG: '화요일'
     },
     WEDNESDAY: {
-        SHORT: 'Wed',
-        LONG: 'Wednesday'
+        SHORT: '수',
+        LONG: '수요일'
     },
     THURSDAY: {
-        SHORT: 'Thu',
-        LONG: 'Thursday'
+        SHORT: '목',
+        LONG: '목요일'
     },
     FRIDAY: {
-        SHORT: 'Fri',
-        LONG: 'Friday'
+        SHORT: '금',
+        LONG: '금요일'
     },
     SATURDAY: {
-        SHORT: 'Sat',
-        LONG: 'Saturday'
+        SHORT: '토',
+        LONG: '토요일'
     }
 };
 const TIMES = {
