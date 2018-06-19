@@ -273,12 +273,12 @@ module.exports = class extends Language {
             //COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
             COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `잘못된 캐릭터 입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
             //COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
-            COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### 필요 장비 전체 리스트 ### \n${gearString}`,
+            COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### 필요 장비 전체 목록 ### \n${gearString}`,
             //COMMAND_CHARGEAR_GEAR_NA: 'This gear has not been entered yet',
-            COMMAND_CHARGEAR_GEAR_NA: '이 장비 리스트는 아직 입력이 안되었습니다',
+            COMMAND_CHARGEAR_GEAR_NA: '이 장비 목록은 아직 입력이 안되었습니다',
             COMMAND_CHARACTERGEAR_HELP: {
                 //description: "Shows the gear requirements for the specified character/ lvl.",
-                description: "특정 캐릭터/레벨에 필요한 장비 리스트를 보여줍니다",
+                description: "특정 캐릭터/레벨에 필요한 장비 목록을 보여줍니다",
                 actions: [
                     {
                         action: "",
@@ -306,7 +306,7 @@ module.exports = class extends Language {
                         usage: ';mymods [user] <character>',
                         args: {
                             //"user": "The person you're adding. (me | userID | mention)",
-                            "user": "캐릭터를 소유하고 있는 유저 (me | userID | mention)",
+                            "user": "캐릭터를 소유하고 있는 사용자 (me | userID | mention)",
                             //"character": "The character you want to search for."
                             "character": "모드를 알고 싶은 캐릭터"
                         }}
@@ -445,13 +445,13 @@ module.exports = class extends Language {
                     {
                         action: "View",
                         //actionDesc: 'View your current event listings.',
-                        actionDesc: '현재 이벤트 리스트를 보여줍니다',
+                        actionDesc: '현재 이벤트 목록를 보여줍니다',
                         usage: ';event view [eventName]',
                         args: {
                             //"--min": "Lets you view the events without the event message",
-                            "--min": "이벤트 메시지를 제외한 이벤트 리스트를 보여줍니다",
+                            "--min": "이벤트 메시지를 제외한 이벤트 목록을 보여줍니다",
                             //"--page <page#>": "Lets you select a page of events to view"
-                            "--page <page#>": "이벤트 리스트에서 보고 싶은 페이지를 선택합니다"
+                            "--page <page#>": "이벤트 목록에서 보고 싶은 페이지를 선택합니다"
                         }}
                     },
                     {
@@ -464,7 +464,7 @@ module.exports = class extends Language {
                     {
                         action: "Trigger",
                         //actionDesc: 'Trigger an event in the specified channel, leaves the event alone.',
-                        actionDesc: '특정 채널에서 이벤트를 시작합니다',
+                        actionDesc: '지정된 채널에서 이벤트를 시작합니다',
                         usage: ';event trigger <eventName>',
                         args: {}
                     }
@@ -472,70 +472,95 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `Invalid faction, usage is \`${prefix}${usage}\``,
-            COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
+            //COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `Invalid faction, usage is \`${prefix}${usage}\``,
+            COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `잘못된 팩션입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# ${searchName} 팩션에 소속된 캐릭터들 입니다 # \n${charString}`,
+            //COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
+            COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# ${searchName} 팩션에 소속된 캐릭터들 입니다 # \n${charString}`,
             COMMAND_FACTION_HELP: {
-                description: "Shows the list of characters in the specified faction.",
+                //description: "Shows the list of characters in the specified faction.",
+                description: "지정된 팩션에 소속된 캐릭터들을 보여줍니다",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: 'faction <faction>',
                         args: {
-                            "faction": "The faction you want to see the roster of. \nKeep in mind, this is as shown in game, so it's rebel, not rebels"
+                            //"faction": "The faction you want to see the roster of. \nKeep in mind, this is as shown in game, so it's rebel, not rebels"
+                            "faction": "소속원들을 확인하고 싶은 팩션 이름. \n게임 내에서 나오는 이름과 같습니다. 예로 저항군은 rebels가 아니라 rebel을 씁니다"
                         }
                     }
                 ]
             },
 
             // Guilds Command
-            COMMAND_GUILDS_MORE_INFO: 'For more info on a specific guild:',
+            //COMMAND_GUILDS_MORE_INFO: 'For more info on a specific guild:',
+            COMMAND_GUILDS_MORE_INFO: '지정된 길드에 대한 추가 정보:',
             COMMAND_GUILDS_HELP: {
-                description: "Shows the top guilds and everyone that's registered in yours.",
+                //description: "Shows the top guilds and everyone that's registered in yours.",
+                description: "최고 길드들의  목록과 사용자 길드에 소속된 인원 목록.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';guild [user]',
                         args: {
-                            "user": "A way to identify the guild. (mention | allyCode | guildName)"
+                            //"user": "A way to identify the guild. (mention | allyCode | guildName)"
+                            "user": "길드를 확인하기 위한 사용자 아이디. (mention | allyCode | guildName)"
                         }
                     }
                 ]
             },
 
             // GuildSearch Command
-            COMMAND_GUILDSEARCH_BAD_STAR: 'You can only choose a star level from 1-7',
-            COMMAND_GUILDSEARCH_MISSING_CHAR: 'You need to enter a character to check for',
-            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `I did not find any results for ${character}`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            //COMMAND_GUILDSEARCH_BAD_STAR: 'You can only choose a star level from 1-7',
+            COMMAND_GUILDSEARCH_BAD_STAR: '1-7 까지만 선택할 수 있습니다',
+            //COMMAND_GUILDSEARCH_MISSING_CHAR: 'You need to enter a character to check for',
+            COMMAND_GUILDSEARCH_MISSING_CHAR: '확인을 원하는 캐릭터의 이름을 입력하십시오',
+            //COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `I did not find any results for ${character}`,
+            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `${character}에 대한 결과가 없습니다`,
+            //COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `검색 결과가 너무 많습니다. 조금 더 자세하게 검색해주십시오. \n가장 비슷한 결과는 다음과 같습니다.\n\`\`\`${chars}\`\`\``,
+            //COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Star (${num}) ${setNum.length > 0 ? setNum : ''}`,
             COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Star (${num}) ${setNum.length > 0 ? setNum : ''}`,
-            COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `No one in your guild seems to have this character at ${starLvl} stars.`,
-            COMMAND_GUILDSEARCH_NO_CHAR: `No one in your guild seems to have this character.`,
+            //COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `No one in your guild seems to have this character at ${starLvl} stars.`,
+            COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `${starLvl}성 캐릭터를 가진 사람이 길드 내에 없습니다.`,
+            //COMMAND_GUILDSEARCH_NO_CHAR: `No one in your guild seems to have this character.`,
+            COMMAND_GUILDSEARCH_NO_CHAR: `길드내에 이 캐릭터를 가진 사람이 없습니다.`,
             COMMAND_GUILDSEARCH_HELP: {
-                description: "Shows the star level of the selected character for everyone in the guild.",
+                //description: "Shows the star level of the selected character for everyone in the guild.",
+                description: "길드 내에서 지정된 캐릭터를 가진 사람들의 목록을 보여줍니다",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';guildsearch [user] <character> [-ships] [starLvl]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "character": "The character you want to search for.",
-                            "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
-                            "starLvl": "Select the star level you want to see."
+                            //"user": "The person you're adding. (me | userID | mention)",
+                            "user": "사용자를 지정할 경우 (me | userID | mention)",
+                            //"character": "The character you want to search for.",
+                            "character": "찾고 싶은 캐릭터 이름.",
+                            //"-ships": "Search for ships, you can use `-s, -ship, or -ships`",
+                            "-ships": "함성을 찾고 싶은 경우 다음을 사용하십시오 `-s, -ship, or -ships`",
+                            //"starLvl": "Select the star level you want to see."
+                            "starLvl": "몇성 짜리를 찾을 지 지정할 경우."
                         }
                     }
                 ]
             },
 
             // Heists Command
-            COMMAND_HEISTS_HEADER: "SWGoH Heists Schedule",
-            COMMAND_HEISTS_CREDIT: (date) => `**Credits** : ${date}\n`,
-            COMMAND_HEISTS_DROID: (date) => `**Droids**  : ${date}\n`,
-            COMMAND_HEISTS_NOT_SCHEDULED: "`Not scheduled`",
+            //COMMAND_HEISTS_HEADER: "SWGoH Heists Schedule",
+            COMMAND_HEISTS_HEADER: "SWGoH 강탈 일정",
+            //COMMAND_HEISTS_CREDIT: (date) => `**Credits** : ${date}\n`,
+            COMMAND_HEISTS_CREDIT: (date) => `**크레딧** : ${date}\n`,
+            //COMMAND_HEISTS_DROID: (date) => `**Droids**  : ${date}\n`,
+            COMMAND_HEISTS_DROID: (date) => `**드로이드**  : ${date}\n`,
+            //COMMAND_HEISTS_NOT_SCHEDULED: "`Not scheduled`",
+            COMMAND_HEISTS_NOT_SCHEDULED: "`일정 없음`",
             COMMAND_HEISTS_HELP: {
-                description: "Shows any upcoming heists.",
+                //description: "Shows any upcoming heists.",
+                description: "강탈 일정을 보여줍니다.",
                 actions: [
                     {
                         action: "",
@@ -548,10 +573,13 @@ module.exports = class extends Language {
 
 
             // Help Command
-            COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
-            COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
+            //COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
+            COMMAND_HELP_HEADER: (prefix) => `= 명령어 목록 =\n\n[자세한 내용은 다음 명령을 사용하십시오. ${prefix}help <commandname>]\n`,
+            //COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
+            COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \n별명:: ${command.conf.aliases.join(", ")}\n사용법:: ${prefix}${command.help.usage}`,
             COMMAND_HELP_HELP: {
-                description: "Displays info about available commands.",
+                //description: "Displays info about available commands.",
+                description: "사용 가능한 명령어에 대한 정보를 보여줍니다",
                 actions: [
                     {
                         action: "",
@@ -559,6 +587,7 @@ module.exports = class extends Language {
                         usage: ';help [command]',
                         args: {
                             "command": "The command you want to look up info on."
+                            "command": "자세한 정보를 알고 싶은 명령어."
                         }
                     }
                 ]
@@ -566,16 +595,22 @@ module.exports = class extends Language {
 
             // Info Command
             COMMAND_INFO_OUTPUT: (guilds) => ({
-                "header": 'INFORMATION',
-                "desc": ` \nCurrently running on **${guilds}** servers \n`,
+                //"header": 'INFORMATION',
+                "header": '정보',
+                //"desc": ` \nCurrently running on **${guilds}** servers \n`,
+                "desc": ` \n현재 **${guilds}** 서버에서 운영중 \n`,
                 "links": {
-                    "Invite me": "Invite the bot http://swgohbot.com/invite",
-                    "Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is https://discord.gg/FfwGvhr",
-                    "Support the Bot": "The bot's code is on github https://github.com/jmiln/SWGoHBot, and is open to contributions. \n\nI also have a Patreon https://www.patreon.com/swgohbot if you're interested."
+                    //"Invite me": "Invite the bot http://swgohbot.com/invite",
+                    "Invite me": "이 로봇을 초대하세요 http://swgohbot.com/invite",
+                    //"Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is https://discord.gg/FfwGvhr",
+                    "Support Server": "질문이 있거나, 도움을 주고 싶거나 혹은 그냥 들려보고 싶은 경우 지원 서버는 여기로 방문하세요 https://discord.gg/FfwGvhr",
+                    //"Support the Bot": "The bot's code is on github https://github.com/jmiln/SWGoHBot, and is open to contributions. \n\nI also have a Patreon https://www.patreon.com/swgohbot if you're interested."
+                    "Support the Bot": "로봇의 원본 소스는 github에 있습니다 https://github.com/jmiln/SWGoHBot, 도움은 언제나 환영합니다. \n\n혹시 관심이 있으시면 patreon도 들려보세요 https://www.patreon.com/swgohbot."
                 }
             }),
             COMMAND_INFO_HELP: {
-                description: "Shows useful links pertaining to the bot.",
+                //description: "Shows useful links pertaining to the bot.",
+                description: "로봇과 관련있는 정보들",
                 actions: [
                     {
                         action: "",
@@ -586,56 +621,87 @@ module.exports = class extends Language {
                 ]
             },
 
-            COMMAND_MODS_CRIT_CHANCE_SET: "Crit. Chance x2",
-            COMMAND_MODS_CRIT_DAMAGE_SET: "Crit. Damage x4",
-            COMMAND_MODS_SPEED_SET: "Speed x4",
-            COMMAND_MODS_TENACITY_SET: "Tenacity x2",
-            COMMAND_MODS_OFFENSE_SET: "Offense x4",
-            COMMAND_MODS_POTENCY_SET: "Potency x2",
-            COMMAND_MODS_HEALTH_SET: "Health x2",
-            COMMAND_MODS_DEFENSE_SET: "Defense x2",
+            //COMMAND_MODS_CRIT_CHANCE_SET: "Crit. Chance x2",
+            COMMAND_MODS_CRIT_CHANCE_SET: "치명타 확률 x2",
+            //COMMAND_MODS_CRIT_DAMAGE_SET: "Crit. Damage x4",
+            COMMAND_MODS_CRIT_DAMAGE_SET: "치명타 피해 x4",
+            //COMMAND_MODS_SPEED_SET: "Speed x4",
+            COMMAND_MODS_SPEED_SET: "속도 x4",
+            //COMMAND_MODS_TENACITY_SET: "Tenacity x2",
+            COMMAND_MODS_TENACITY_SET: "인내 x2",
+            //COMMAND_MODS_OFFENSE_SET: "Offense x4",
+            COMMAND_MODS_OFFENSE_SET: "공력력 x4",
+            //COMMAND_MODS_POTENCY_SET: "Potency x2",
+            COMMAND_MODS_POTENCY_SET: "효력 x2",
+            //COMMAND_MODS_HEALTH_SET: "Health x2",
+            COMMAND_MODS_HEALTH_SET: "체력 x2",
+            //COMMAND_MODS_DEFENSE_SET: "Defense x2",
+            COMMAND_MODS_DEFENSE_SET: "방어력 x2",
             COMMAND_MODS_EMPTY_SET: " ",
 
-            COMMAND_MODS_ACCURACY_STAT: "Accuracy",
-            COMMAND_MODS_CRIT_CHANCE_STAT: "Crit. Chance",
-            COMMAND_MODS_CRIT_DAMAGE_STAT: "Crit. Damage",
-            COMMAND_MODS_DEFENSE_STAT: "Defense",
-            COMMAND_MODS_HEALTH_STAT: "Health",
-            COMMAND_MODS_OFFENSE_STAT: "Offense",
-            COMMAND_MODS_PROTECTION_STAT: "Protection",
-            COMMAND_MODS_POTENCY_STAT: "Potency",
-            COMMAND_MODS_SPEED_STAT: "Speed",
-            COMMAND_MODS_TENACITY_STAT: "Tenacity",
-            COMMAND_MODS_UNKNOWN: "Unknown",
+            //COMMAND_MODS_ACCURACY_STAT: "Accuracy",
+            COMMAND_MODS_ACCURACY_STAT: "정확도",
+            //COMMAND_MODS_CRIT_CHANCE_STAT: "Crit. Chance",
+            COMMAND_MODS_CRIT_CHANCE_STAT: "치명타 확률",
+            //COMMAND_MODS_CRIT_DAMAGE_STAT: "Crit. Damage",
+            COMMAND_MODS_CRIT_DAMAGE_STAT: "치명타 피해",
+            //COMMAND_MODS_DEFENSE_STAT: "Defense",
+            COMMAND_MODS_DEFENSE_STAT: "방어력",
+            //COMMAND_MODS_HEALTH_STAT: "Health",
+            COMMAND_MODS_HEALTH_STAT: "체력",
+            //COMMAND_MODS_OFFENSE_STAT: "Offense",
+            COMMAND_MODS_OFFENSE_STAT: "공격력",
+            //COMMAND_MODS_PROTECTION_STAT: "Protection",
+            COMMAND_MODS_PROTECTION_STAT: "보호",
+            //COMMAND_MODS_POTENCY_STAT: "Potency",
+            COMMAND_MODS_POTENCY_STAT: "효력",
+            //COMMAND_MODS_SPEED_STAT: "Speed",
+            COMMAND_MODS_SPEED_STAT: "속도",
+            //COMMAND_MODS_TENACITY_STAT: "Tenacity",
+            COMMAND_MODS_TENACITY_STAT: "인내",
+            //COMMAND_MODS_UNKNOWN: "Unknown",
+            COMMAND_MODS_UNKNOWN: "불명",
 
             // Mods Command
-            COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
+            //COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
+            COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `캐릭터 이름이 필요합니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            //COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
+            COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `잘못된 캐릭터입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            //COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Square:   ${square}\`\n\`Arrow:    ${arrow}\`\n\`Diamond:  ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Square:   ${square}\`\n\`Arrow:    ${arrow}\`\n\`Diamond:  ${diamond}\`\n`,
+            //COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangle: ${triangle}\`\n\`Circle:   ${circle}\`\n\`Cross:    ${cross}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangle: ${triangle}\`\n\`Circle:   ${circle}\`\n\`Cross:    ${cross}\`\n`,
-            COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
+            //COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
+            COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### 세트 ###**\n${modSetString}\n**### 주능력치 ###**\n${modPrimaryString}`,
+            //COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Square:   ${square}  \n* Arrow:    ${arrow} \n* Diamond:  ${diamond}\n`,
             COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Square:   ${square}  \n* Arrow:    ${arrow} \n* Diamond:  ${diamond}\n`,
+            //COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triangle: ${triangle}\n* Circle:   ${circle}\n* Cross:    ${cross}`,
             COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triangle: ${triangle}\n* Circle:   ${circle}\n* Cross:    ${cross}`,
-            COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`,
-            COMMAND_NO_MODSETS: "No mod sets for this character",
+            //COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`,
+            COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### 세트 ### \n${modSetString}\n### 주능력치 ###\n${modPrimaryString}`,
+            //COMMAND_NO_MODSETS: "No mod sets for this character",
+            COMMAND_NO_MODSETS: "이 캐릭터에 모드 세트가 없습니다",
             COMMAND_MODS_HELP: {
-                description: "Shows some suggested mods for the specified character.",
+                //description: "Shows some suggested mods for the specified character.",
+                description: "지정된 캐릭터에 추천하는 모드를 보여줍니다.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: 'mods <character>',
                         args: {
-                            "character": "The character you want to show the mods for"
+                            "character": "모드를 보기 원하는 캐릭터 이름"
                         }
                     }
                 ]
             },
 
             // Modsets command
-            COMMAND_MODSETS_OUTPUT: `* Critical Chance:  2\n* Critical Damage:  4\n* Defense:  2\n* Health:   2\n* Offense:  4\n* Potency:  2\n* Speed:    4\n* Tenacity: 2`,
+            //COMMAND_MODSETS_OUTPUT: `* Critical Chance:  2\n* Critical Damage:  4\n* Defense:  2\n* Health:   2\n* Offense:  4\n* Potency:  2\n* Speed:    4\n* Tenacity: 2`,
+            COMMAND_MODSETS_OUTPUT: `* 치명타 확률:  2\n* 치명타 피해:  4\n* 방어력:  2\n* 체력:   2\n* 공격력:  4\n* 효력:  2\n* 속도:    4\n* 인내: 2`,
             COMMAND_MODSETS_HELP: {
-                description: "Shows how many of each kind of mod you need for a set.",
+                //description: "Shows how many of each kind of mod you need for a set.",
+                description: "세트를 구성하기 위해 필요한 모드의 갯수를 보여줍니다.",
                 actions: [
                     {
                         action: "",
@@ -647,14 +713,21 @@ module.exports = class extends Language {
             },
 
             // MyArena Command
-            COMMAND_MYARENA_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
-            COMMAND_MYARENA_NO_CHAR: 'Something went wrong, I could not get your characters.',
-            COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rank: ${rank})`,
-            COMMAND_MYARENA_FLEET: (rank) => `Ship Arena (Rank: ${rank})`,
-            COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
-            COMMAND_MYARENA_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
+            //COMMAND_MYARENA_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
+            COMMAND_MYARENA_NO_USER: (user) => `죄송하지만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
+            //COMMAND_MYARENA_NO_CHAR: 'Something went wrong, I could not get your characters.',
+            COMMAND_MYARENA_NO_CHAR: '뭔가 문제가 생겨서 캐릭터 자료를 가져올 수가 없습니다.',
+            //COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rank: ${rank})`,
+            COMMAND_MYARENA_ARENA: (rank) => `분대 아레나 (순위: ${rank})`,
+            //COMMAND_MYARENA_FLEET: (rank) => `Ship Arena (Rank: ${rank})`,
+            COMMAND_MYARENA_FLEET: (rank) => `함대 아레나 (순위: ${rank})`,
+            //COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
+            COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}의 아레나`,
+            //COMMAND_MYARENA_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
+            COMMAND_MYARENA_EMBED_FOOTER: (date) => `아레나 정보 시점: ${date}`,
             COMMAND_MYARENA_HELP: {
-                description: "Show user's current arena ranks and their squads.",
+                //description: "Show user's current arena ranks and their squads.",
+                description: "사용자의 아레나 순위와 팀 구성을 보여줍니다.",
                 actions: [
                     {
                         action: "",
@@ -662,16 +735,21 @@ module.exports = class extends Language {
                         usage: ';myarena [user]',
                         args: {
                             "user": "The person you're checking. (me | userID | mention)"
+                            "user": "확인하고 싶은 사용자. (me | userID | mention)"
                         }
                     }
                 ]
             },
 
             // MyProfile Command
-            COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
-            COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
-            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
-            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Guild:** ${guildName}\n**Level:** ${level}\n**Arena rank:** ${charRank}\n**Ship rank:** ${shipRank}`,
+            //COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
+            COMMAND_MYPROFILE_NO_USER: (user) => `죄송하지만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
+            //COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
+            COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}의 프로파일 (${allyCode})`,
+            //COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
+            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `아레나 정보 시점: ${date}`,
+            //COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Guild:** ${guildName}\n**Level:** ${level}\n**Arena rank:** ${charRank}\n**Ship rank:** ${shipRank}`,
+            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**길드:** ${guildName}\n**레벨:** ${level}\n**분대 아레나 순위:** ${charRank}\n**암대 아레나 순위:** ${shipRank}`,
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Characters (${charList.length})`,
                 stats: [
@@ -686,87 +764,117 @@ module.exports = class extends Language {
             COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
                 header: `Ships (${shipList.length})`,
                 stats: [
-                    `Ship GP :: ${gpShip}`,
+                    //`Ship GP :: ${gpShip}`,
+                    `함대 GP :: ${gpShip}`,
                     `7 Star  :: ${shipList.filter(s => s.rarity === 7).length}`,
                     `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
                 ].join('\n')
             }),
             COMMAND_MYPROFILE_HELP: {
-                description: "Show user's general stats.",
+                //description: "Show user's general stats.",
+                description: "사용자의 현재 상태를 보여줍니다",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';myprofile [user]',
                         args: {
-                            "user": "The person you're checking. (me | userID | mention)"
+                            //"user": "The person you're checking. (me | userID | mention)"
+                            "user": "확인하고 싶은 사용자. (me | userID | mention)"
                         }
                     }
                 ]
             },
 
             // Nickname Command
-            COMMAND_NICKNAME_SUCCESS: `I have changed my nickname.`,
-            COMMAND_NICKNAME_FAILURE: `Sorry, but I don't have permission to change that.`,
-            COMMAND_NICKNAME_TOO_LONG: 'Sorry, but a name can only contain up to 32 characters.',
+            //COMMAND_NICKNAME_SUCCESS: `I have changed my nickname.`,
+            COMMAND_NICKNAME_SUCCESS: `별명을 바꿨습니다.`,
+            //COMMAND_NICKNAME_FAILURE: `Sorry, but I don't have permission to change that.`,
+            COMMAND_NICKNAME_FAILURE: `죄송하지만 별명을 바꿀 권한이 없습니다.`,
+            //COMMAND_NICKNAME_TOO_LONG: 'Sorry, but a name can only contain up to 32 characters.',
+            COMMAND_NICKNAME_TOO_LONG: '죄송하지만 이름은 32자 이내여야 합니다.',
             COMMAND_NICKNAME_HELP: {
-                description: "Changes the bot's nickname on the server.",
+                //description: "Changes the bot's nickname on the server.",
+                description: "서버에서 사용하는 로봇의 별명을 변경합니다.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';nickname <name>',
                         args: {
-                            "name": "The name you're wanting to change it to. Leave it blank to reset it to default."
+                            //"name": "The name you're wanting to change it to. Leave it blank to reset it to default."
+                            "name": "바꾸고 싶은 별명. 기본 값을 사용하시려면 공백으로 남겨두십시오."
                         }
                     }
                 ]
             },
 
             // Polls Command
-            COMMAND_POLL_NO_ARG: 'You need to provide either an option to vote on, or an action (create/view/etc).',
-            COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
-            COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
-            COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
-            COMMAND_POLL_TOO_MANY_OPT: "You can only have up to 10 options to vote on.",
-            COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n\n${poll}`,
-            COMMAND_POLL_NO_POLL: "There is no poll in progress",
-            COMMAND_POLL_FINAL: (poll) => `Final results for ${poll}`,
-            COMMAND_POLL_FINAL_ERROR: (question) => `I couldn't delete **${question}**, please try again.`,
-            COMMAND_POLL_INVALID_OPTION: "That is not a valid option.",
-            COMMAND_POLL_SAME_OPT: (opt) => `You have already chosen **${opt}**`,
-            COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `You have changed your choice from **${oldOpt}** to **${newOpt}**`,
-            COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
+            //COMMAND_POLL_NO_ARG: 'You need to provide either an option to vote on, or an action (create/view/etc).',
+            COMMAND_POLL_NO_ARG: '투표하기 위한 선택지를 입력하거나, 명령(create/view/etc)을 입력하십시오.',
+            //COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
+            COMMAND_POLL_ALREADY_RUNNING: "죄송하지만 한번에 하나의 투표만 가능합니다. 현재 진행중인 투표를 먼저 종료하십시오.",
+            //COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
+            COMMAND_POLL_MISSING_QUESTION: "무엇을 투표할지 지정하여야 합니다.",
+            //COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
+            COMMAND_POLL_TOO_FEW_OPT: "투표할 선택지가 적어도 2개 이상이어야 합니다.",
+            //COMMAND_POLL_TOO_MANY_OPT: "You can only have up to 10 options to vote on.",
+            COMMAND_POLL_TOO_MANY_OPT: "투표할 선택지는 최대 10까지만 기능합니다.",
+            //COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n\n${poll}`,
+            COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** 가 새로운 투표를 시작하였습니다:\n다음 명령으로 투표하십시오 \`${prefix}poll <choice>\`\n\n${poll}`,
+            //COMMAND_POLL_NO_POLL: "There is no poll in progress",
+            COMMAND_POLL_NO_POLL: "현재 진행중인 투표가 없습니다",
+            //COMMAND_POLL_FINAL: (poll) => `Final results for ${poll}`,
+            COMMAND_POLL_FINAL: (poll) => `${poll}에 대한 최종 결과입니다`,
+            //COMMAND_POLL_FINAL_ERROR: (question) => `I couldn't delete **${question}**, please try again.`,
+            COMMAND_POLL_FINAL_ERROR: (question) => `**${question}**를 지울 수가 없습니다. 다시 시도해보십시오.`,
+            //COMMAND_POLL_INVALID_OPTION: "That is not a valid option.",
+            COMMAND_POLL_INVALID_OPTION: "적절한 옵션이 아닙니다",
+            //COMMAND_POLL_SAME_OPT: (opt) => `You have already chosen **${opt}**`,
+            COMMAND_POLL_SAME_OPT: (opt) => `이미 **${opt}**를 선택하셨습니다`,
+            //COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `You have changed your choice from **${oldOpt}** to **${newOpt}**`,
+            COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `**${oldOpt}**에서 **${newOpt}**로 선택을 변경하셨습니다`,
+            //COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
+            COMMAND_POLL_REGISTERED: (opt) => `**${opt}** 선택이 등록되었습니다`,
+            //COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
             COMMAND_POLL_HELP: {
-                description: "Lets you start a poll with multiple options.",
+                //description: "Lets you start a poll with multiple options.",
+                description: "여러개의 선택지를 가진 투표를 시작합니다",
                 actions: [
                     {
                         action: "Create",
-                        actionDesc: 'Create a new poll',
+                        //actionDesc: 'Create a new poll',
+                        actionDesc: '새로운 투표를 시작합니다',
                         usage: ';poll create <question> | <opt1> | <opt2> | [...] | [opt10]',
                         args: {
-                            "question": "The question that you're wanting feedback on.",
-                            "opt": "The options that people can choose from"
+                            //"question": "The question that you're wanting feedback on.",
+                            "question": "결과를 얻고 싶은 질문.",
+                            //"opt": "The options that people can choose from"
+                            "opt": "사용자들이 선택할 수 있는 선택지"
                         }
                     },
                     {
                         action: "Vote",
-                        actionDesc: 'Vote on the option that you choose',
+                        //actionDesc: 'Vote on the option that you choose',
+                        actionDesc: '원하는 선택지에 투표합니다',
                         usage: ';poll <choice>',
                         args: {
                             "choice": "The option that you choose."
+                            "choice": "당신이 고른 선택지"
                         }
                     },
                     {
                         action: "View",
-                        actionDesc: 'See what the current tally of votes is.',
+                        //actionDesc: 'See what the current tally of votes is.',
+                        actionDesc: '현재 투표의 진행상황을 보여줍니다.',
                         usage: ';poll view',
                         args: {}
                     },
                     {
                         action: "Close",
-                        actionDesc: 'End the poll and show the final tally.',
+                        //actionDesc: 'End the poll and show the final tally.',
+                        actionDesc: '투표를 종료하고 최종 결과를 보여줍니다.',
                         usage: ';poll close',
                         args: {}
                     }
@@ -775,6 +883,8 @@ module.exports = class extends Language {
 
             // Raidteams Command
             COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
             COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
             COMMAND_RAIDTEAMS_PHASE_SOLO: 'Solo',
             COMMAND_RAIDTEAMS_PHASE_ONE: 'Phase 1',
