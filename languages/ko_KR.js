@@ -72,30 +72,48 @@ module.exports = class extends Language {
         this.getTime = getTime;
         this.language = {
             // Default in case it can't find one.
-            BASE_DEFAULT_MISSING: 'Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.',
+            //BASE_DEFAULT_MISSING: 'Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.',
+            BASE_DEFAULT_MISSING: '없는 단어를 사용하려고 합니다. 수정을 위해 알려주시면 감사하겠습니다.',
 
             // Base swgohBot.js file
-            BASE_LAST_EVENT_NOTIFICATION: `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`,
+            //BASE_LAST_EVENT_NOTIFICATION: `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`,
+            BASE_LAST_EVENT_NOTIFICATION: `\n\n이번 이벤트의 마지막입니다. 이 안내를 계속 받으시려면, 새 이벤트를 만드세요.`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
+            BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\n${timeToGo} 시간 내로 시작합니다`,
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: `Sorry, but that user is not registered. Please go register with \`;register add <user> <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register add @${user} <allycode>\``,
-            BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
-            BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
-            BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
-            BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
-            BASE_SWGOH_NO_ACCT: `Something went wrong, please make sure your account is synced correctly.`,
-            BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
-            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : 'data'}`,
+            //BASE_SWGOH_NO_ALLY: `Sorry, but that user is not registered. Please go register with \`;register add <user> <allycode>\``,
+            BASE_SWGOH_NO_ALLY: `죄송하지만 그 사용자는 등록되어있지 않습니다. 다음 명령을 사용하여 등록해주십시오 \`;register add <user> <allycode>\``,
+            //BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register add @${user} <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user) => `죄송하지만 그 사용자는 등록되어있지 않습니다. 다음 명령을 사용하여 등록해주십시오 \`;register add @${user} <allycode>\``,
+            //BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
+            BASE_SWGOH_NO_USER: `죄송하지만 그 사용자는 등록되어있지 않습니다.`,
+            //BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
+            BASE_SWGOH_MISSING_CHAR: '확인할 캐릭터를 입력하여 주십시오',
+            //BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
+            BASE_SWGOH_NO_CHAR_FOUND: (character) => `${character}에 대한 결과를 찾을 수 없습니다`,
+            //BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_CHAR_LIST: (chars) => `검색 결과가 너무 많습니다. 조금 더 자세하게 검색해주십시오. \n가장 비슷한 결과는 다음과 같습니다.\n\`\`\`${chars}\`\`\``,
+            //BASE_SWGOH_NO_ACCT: `Something went wrong, please make sure your account is synced correctly.`,
+            BASE_SWGOH_NO_ACCT: `뭔가 잘못됐는데요. 계정이 정확히 연동됐는지 확인해주십시오.`,
+            //BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
+            BASE_SWGOH_LAST_UPDATED: (date) => `${date} 일 전에 마지막으로 업데이트되었습니다`,
+            //BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : 'data'}`,
+            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `${dType ? dType : 'data'}를 가져오기까지 잠시만 기다려주십시오`,
 
             // Generic (Not tied to a command)
-            COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
-            COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
-            COMMAND_MISSING_PERMS: `Sorry, but you don't have the correct permissions to use that.`,
-            BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
+            //COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
+            COMMAND_EXTENDED_HELP: (command) => `**${command.help.name}에 대한 더 자세한 도움말** \n**사용법**: ${command.help.usage} \n${command.help.extended}`,
+            //COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
+            COMMAND_INVALID_BOOL: `잘못된 값입니다. true 혹은 false를 사용해주십시오`,
+            //COMMAND_MISSING_PERMS: `Sorry, but you don't have the correct permissions to use that.`,
+            COMMAND_MISSING_PERMS: `죄송하지만 적합한 권한이 없습니다.`,
+            //BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
+            BASE_COMMAND_UNAVAILABLE: "이 명령어는 개인 메시지로는 사용할 수 없습니다. 길드 내에서 이 명령어를 사용하시기 바랍니다.",
             BASE_COMMAND_HELP_HEADER: (name) => `Help for ${name}`,
+            BASE_COMMAND_HELP_HEADER: (name) => `${name}에 대한 도움말`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Continued help for ${name}`,
+            BASE_COMMAND_HELP_HEADER_CONT: (name) => `${name}에 대한 도움말(계속)`,
             BASE_COMMAND_HELP_HELP: (name) => {
                 return {
                     action: "Show help",
@@ -111,25 +129,31 @@ module.exports = class extends Language {
                 TRIANGLE:'Triangle',
                 CIRCLE:  'Circle',
                 CROSS:   'Cross',
-                ACCURACY:   'Accuracy',
-                CRITCHANCE: 'Crit Chance',
-                CRITDAMAGE: 'Crit Damage',
-                DEFENSE:    'Defense',
-                HEALTH:     'Health',
-                OFFENSE:    'Offense',
-                POTENCY:    'Potency',
-                SPEED:      'Speed',
-                TENACITY:   'Tenacity'
+                ACCURACY:   '명중률',
+                CRITCHANCE: '치명타 확률',
+                CRITDAMAGE: '치명타 피해',
+                DEFENSE:    '방어력',
+                HEALTH:     '체력',
+                OFFENSE:    '공격력',
+                POTENCY:    '효력',
+                SPEED:      '속도',
+                TENACITY:   '인내'
             },
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
-            COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
-            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}     **Max ability mat needed:**  ${mat}\n${cdString}${aDesc}`,
-            COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Ability type: ${type}\n* Max ability mat needed: ${tier}\n* Description: ${aDesc}\n\n`,
+            //COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `캐릭터가 필요합니다. 다음과 같이 사용하십시오 \`${prefix}${usage}\``,
+            //COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `잘못된 캐릭터입니다. 다음과 같이 사용하십시오 \`${prefix}${usage}\``,
+            //COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
+            COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**기술 쿨다운:** ${aCooldown}\n`,
+            //COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}     **Max ability mat needed:**  ${mat}\n${cdString}${aDesc}`,
+            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**능력치 종류:** ${aType}     **필요한 능력 재료 최고치:**  ${mat}\n${cdString}${aDesc}`,
+            //COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Ability type: ${type}\n* Max ability mat needed: ${tier}\n* Description: ${aDesc}\n\n`,
+            COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* 능력치 종류: ${type}\n* 필요한 능력 재료 최고치: ${tier}\n* 설명: ${aDesc}\n\n`,
             COMMAND_ABILITIES_HELP: {
-                description: "Shows the abilities for the specified character.",
+                //description: "Shows the abilities for the specified character.",
+                description: "특정 캐릭터의 기술을 보여줍니다.",
                 actions: [
                     {
                         action: "",
@@ -141,16 +165,25 @@ module.exports = class extends Language {
             },
 
             // Activities Command
-            COMMAND_ACTIVITIES_SUNDAY: `== Before Reset == \nComplete Arena Battles \nSave Cantina Energy \nSave Normal Energy\n\n== After Reset == \nSpend Cantina Energy \nSave Normal Energy`,
-            COMMAND_ACTIVITIES_MONDAY: `== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \n\n== After Reset == \nSpend Normal Energy on Light Side Battles `,
-            COMMAND_ACTIVITIES_TUESDAY: `== Before Reset == \nSpend Normal Energy on Light Side Battles \nSave All Kinds of Energy\n\n== After Reset == \nSpend All Kinds of Energy \nSave Normal Energy`,
-            COMMAND_ACTIVITIES_WEDNESDAY: `== Before Reset == \nSpend All Kinds of Energy \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Hard Mode Battles`,
-            COMMAND_ACTIVITIES_THURSDAY: `== Before Reset == \nSpend Normal Energy on Hard Mode Battles \nSave Challenges\n\n== After Reset == \nComplete Challenges \nSave Normal Energy`,
-            COMMAND_ACTIVITIES_FRIDAY: `== Before Reset == \nComplete Challenges \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Dark Side Battles`,
-            COMMAND_ACTIVITIES_SATURDAY: `== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy\n\n== After Reset == \nComplete Arena Battles \nSave Cantina Energy`,
-            COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Invalid day, usage is \`${prefix}${usage}\``,
+            //COMMAND_ACTIVITIES_SUNDAY: `== Before Reset == \nComplete Arena Battles \nSave Cantina Energy \nSave Normal Energy\n\n== After Reset == \nSpend Cantina Energy \nSave Normal Energy`,
+            COMMAND_ACTIVITIES_SUNDAY: `== 리셋 전 == \n아레나 전투 완료 \n칸티나 사용 안함 \n일반 에너지 사용 안함\n\n== 리셋 후 == \n칸티나 에너지 사용 \n일반 에너지 사용 안함`,
+            //COMMAND_ACTIVITIES_MONDAY: `== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \n\n== After Reset == \nSpend Normal Energy on Light Side Battles `,
+            COMMAND_ACTIVITIES_MONDAY: `== 리셋 전 == \n칸티나 에너지 사용 \n일반 에너지 사용 안함 \n\n== 리셋 후 == \n라이트 사이드 전투에 일반 에너지 사용 `,
+            //COMMAND_ACTIVITIES_TUESDAY: `== Before Reset == \nSpend Normal Energy on Light Side Battles \nSave All Kinds of Energy\n\n== After Reset == \nSpend All Kinds of Energy \nSave Normal Energy`,
+            COMMAND_ACTIVITIES_TUESDAY: `== 리셋 전 == \n라이트 사이드 전투에 일반 에너지 사용 \n모든 종류의 에너지 사용 안함\n\n== 리셋 후 == \n모든 종류의 에너지 사용 \n일반 에너지 사용 안함`,
+            //COMMAND_ACTIVITIES_WEDNESDAY: `== Before Reset == \nSpend All Kinds of Energy \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Hard Mode Battles`,
+            COMMAND_ACTIVITIES_WEDNESDAY: `== 리셋 전 == \n모든 종류의 에너지 사용 \n일반 에너지 사용 안함\n\n== 리셋 후 == \n어려움 전투에 일반 에너지 사용`,
+            //COMMAND_ACTIVITIES_THURSDAY: `== Before Reset == \nSpend Normal Energy on Hard Mode Battles \nSave Challenges\n\n== After Reset == \nComplete Challenges \nSave Normal Energy`,
+            COMMAND_ACTIVITIES_THURSDAY: `== 리셋 전 == \n어려움 전투에 일반 에너지 사용 \n챌린지 안함\n\n== 리셋 후 == \n챌린지 완료 \n일반 에너지 사용 안함`,
+            //COMMAND_ACTIVITIES_FRIDAY: `== Before Reset == \nComplete Challenges \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Dark Side Battles`,
+            COMMAND_ACTIVITIES_FRIDAY: `== 리셋 전 == \n챌린지 완료 \n일반 에너지 사용 안함\n\n== 리셋 후 == \n다크 사이드 전투에 일반 에너지 사용`,
+            //COMMAND_ACTIVITIES_SATURDAY: `== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy\n\n== After Reset == \nComplete Arena Battles \nSave Cantina Energy`,
+            COMMAND_ACTIVITIES_SATURDAY: `== 리셋 전 == \n다크 사이드 전투에 일반 에너지 사용 \n아레나 전투 안함 \n칸티나 에너지 사용 안함\n\n== 리셋 후 == \n아레나 전투 완료 \n컨티나 에너지 사용 안함`,
+            //COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Invalid day, usage is \`${prefix}${usage}\``,
+            COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `잘못된 요일입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
             COMMAND_ACTIVITIES_HELP: {
-                description: "Shows the daily guild activites.",
+                //description: "Shows the daily guild activites.",
+                description: "요일별 길드 활동을 알려줍니다",
                 actions: [
                     {
                         action: "",
@@ -162,11 +195,15 @@ module.exports = class extends Language {
             },
 
             // Arenarank Command
-            COMMAND_ARENARANK_INVALID_NUMBER: `You need to enter a valid rank number`,
-            COMMAND_ARENARANK_BEST_RANK: `You've already gotten as far as you can, congrats!`,
-            COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `From rank ${currentRank}, in ${battleCount} battle${plural} ${est}\nThe best you can get is ${rankList}`,
+            //COMMAND_ARENARANK_INVALID_NUMBER: `You need to enter a valid rank number`,
+            COMMAND_ARENARANK_INVALID_NUMBER: `정확한 등수를 입력해야 합니다`,
+            //COMMAND_ARENARANK_BEST_RANK: `You've already gotten as far as you can, congrats!`,
+            COMMAND_ARENARANK_BEST_RANK: `최고까지 올라가셨네요. 축하합니다!`,
+            //COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `From rank ${currentRank}, in ${battleCount} battle${plural} ${est}\nThe best you can get is ${rankList}`,
+            COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `현재 ${currentRank}위에서 , ${battleCount} 번의 전투로 ${est}\n최선은 다음과 같습니다 ${rankList}`,
             COMMAND_ARENARANK_HELP: {
-                description: "Shows the (approximate) highest rank you can get if you win every arena battle.",
+                ㅗㅗdescription: "Shows the (approximate) highest rank you can get if you win every arena battle.",
+                description: "아레나 전투를 전부 이길 경우 오를 수 있는 최고 순위(추정)를 보여줍니다",
                 actions: [
                     {
                         action: "",
@@ -178,19 +215,32 @@ module.exports = class extends Language {
             },
 
             // Challenges Command
-            COMMAND_CHALLENGES_TRAINING: "Training Droids",
-            COMMAND_CHALLENGES_ABILITY : "Ability Mats",
-            COMMAND_CHALLENGES_BOUNTY  : "Bounty Hunter",
-            COMMAND_CHALLENGES_AGILITY : "Agility Gear",
-            COMMAND_CHALLENGES_STRENGTH: "Strength Gear",
-            COMMAND_CHALLENGES_TACTICS : "Tactics Gear",
-            COMMAND_CHALLENGES_SHIP_ENHANCEMENT: "Ship Enhancement Droids",
-            COMMAND_CHALLENGES_SHIP_BUILDING   : "Ship Building Materials",
-            COMMAND_CHALLENGES_SHIP_ABILITY    : "Ship Ability Materials",
-            COMMAND_CHALLENGES_MISSING_DAY: 'You need to specify a day',
-            COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `Invalid date, usage is \`${prefix}${usage}\``,
+            //COMMAND_CHALLENGES_TRAINING: "Training Droids",
+            //COMMAND_CHALLENGES_TRAINING: "Training droid",
+            COMMAND_CHALLENGES_TRAINING: "훈련 드로이드",
+            //COMMAND_CHALLENGES_ABILITY : "Ability mat",
+            COMMAND_CHALLENGES_ABILITY : "능력 재료",
+            //COMMAND_CHALLENGES_BOUNTY  : "Bounty Hunte",
+            COMMAND_CHALLENGES_BOUNTY  : "현상금 사냥꾼",
+            //COMMAND_CHALLENGES_AGILITY : "Agility Gear",
+            COMMAND_CHALLENGES_AGILITY : "민첩 장비",
+            //COMMAND_CHALLENGES_STRENGTH: "Strength Gear",
+            COMMAND_CHALLENGES_STRENGTH: "힘 장비",
+            //COMMAND_CHALLENGES_TACTICS : "Tactics Gear",
+            COMMAND_CHALLENGES_TACTICS : "전술 장비",
+            //COMMAND_CHALLENGES_SHIP_ENHANCEMENT: "Ship Enhancement Droids",
+            COMMAND_CHALLENGES_SHIP_ENHANCEMENT: "함선 강화 드로이드",
+            //COMMAND_CHALLENGES_SHIP_BUILDING   : "Ship Building Materials",
+            COMMAND_CHALLENGES_SHIP_BUILDING   : "함선 제작 재료",
+            //COMMAND_CHALLENGES_SHIP_ABILITY    : "Ship Ability Materials",
+            COMMAND_CHALLENGES_SHIP_ABILITY    : "함선 능력 재료",
+            //COMMAND_CHALLENGES_MISSING_DAY: 'You need to specify a day',
+            COMMAND_CHALLENGES_MISSING_DAY: '특정 요일을 정해주십시오',
+            //COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `Invalid date, usage is \`${prefix}${usage}\``,
+            COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `잘못된 요일입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
             COMMAND_CHALLENGES_HELP: {
-                description: "Shows the daily guild challenges.",
+                //description: "Shows the daily guild challenges.",
+                description: "요일별 길드 챌린지를 보여줍니다.",
                 actions: [
                     {
                         action: "",
@@ -203,26 +253,32 @@ module.exports = class extends Language {
 
             // Changelog Command (Help)
             COMMAND_CHANGELOG_HELP: {
-                description: "Adds a changelog to the db, and sends it to the changelog channel.",
+                //description: "Adds a changelog to the db, and sends it to the changelog channel.",
+                description: "변경 기록을 DB에 남기고, 변경 기록 채널로 알립니다.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: 'changelog <message>',
                         args: {
-                            "message": "Use [Updated], [Fixed], [Removed], and [Added] to organize the changes."
+                            "message": "변경 내용을 정리하기 위해 다음을 사용하십시오 [Updated], [Fixed], [Removed], [Added]"
                         }
                     }
                 ]
             },
 
             // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
-            COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
-            COMMAND_CHARGEAR_GEAR_NA: 'This gear has not been entered yet',
+            //COMMAND_CHARGEAR_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
+            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix, usage) => `캐릭터가 필요합니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            //COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
+            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `잘못된 캐릭터 입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            //COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
+            COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### 필요 장비 전체 리스트 ### \n${gearString}`,
+            //COMMAND_CHARGEAR_GEAR_NA: 'This gear has not been entered yet',
+            COMMAND_CHARGEAR_GEAR_NA: '이 장비 리스트는 아직 입력이 안되었습니다',
             COMMAND_CHARACTERGEAR_HELP: {
-                description: "Shows the gear requirements for the specified character/ lvl.",
+                //description: "Shows the gear requirements for the specified character/ lvl.",
+                description: "특정 캐릭터/레벨에 필요한 장비 리스트를 보여줍니다",
                 actions: [
                     {
                         action: "",
@@ -234,27 +290,34 @@ module.exports = class extends Language {
             },
 
             // MyMods Command
-            COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
-            COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
-            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
+            //COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
+            COMMAND_MYMODS_NO_MODS: (charName) => `죄송합니다만 ${charName}에 대한 모드를 못 찾겠습니다`,
+            //COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
+            COMMAND_MYMODS_MISSING_MODS: `죄송합니다만 당장은 모드를 찾을 수가 없습니다. 잠시 후에 다시 시도해보시기 바랍니다.`,
+            //COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `최근 모드 수정: ${lastUpdated} 일 전`,
             COMMAND_MYMODS_HELP: ({
-                description: "Shows the mods that you have equipped on the selected character.",
+                //description: "Shows the mods that you have equipped on the selected character.",
+                description: "지정된 캐릭터가 사용하고 있는 모드를 보여줍니다",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';mymods [user] <character>',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "character": "The character you want to search for."
-                        }
+                            //"user": "The person you're adding. (me | userID | mention)",
+                            "user": "캐릭터를 소유하고 있는 유저 (me | userID | mention)",
+                            //"character": "The character you want to search for."
+                            "character": "모드를 알고 싶은 캐릭터"
+                        }}
                     }
                 ]
             }),
 
             // Command Report Command
             COMMAND_COMMANDREPORT_HELP: ({
-                description: "Shows a list of all the commands that have been run in the last 10 days.",
+                //description: "Shows a list of all the commands that have been run in the last 10 days.",
+                description: "지난 10일 동안 실행된 모든 명령어를 보여줍니다",
                 actions: [
                     {
                         action: "",
@@ -266,95 +329,142 @@ module.exports = class extends Language {
             }),
 
             // Current Events Command
-            COMMAND_CURRENTEVENTS_HEADER: "SWGoH Events Schedule",
-            COMMAND_CURRENTEVENTS_DESC: (num) => `Next ${num} events.\nNote: *Dates are subject to change.*`,
+            //COMMAND_CURRENTEVENTS_HEADER: "SWGoH Events Schedule",
+            COMMAND_CURRENTEVENTS_HEADER: "SWGoH 이벤트 일정",
+            //COMMAND_CURRENTEVENTS_DESC: (num) => `Next ${num} events.\nNote: *Dates are subject to change.*`,
+            COMMAND_CURRENTEVENTS_DESC: (num) => `다음 ${num} 개의 이벤트.\n주의: *날자는 변경 가능성이 있습니다.*`,
             COMMAND_CURRENTEVENTS_HELP: {
-                description: "Shows any upcoming events.",
+                //description: "Shows any upcoming events.",
+                description: "다가올 이벤트를 보여줍니다",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';currentevents [num]',
                         args: {
-                            "num": "The max number of events you want to show"
+                            //"num": "The max number of events you want to show"
+                            "num": "보고 싶은 이벤트 갯수(최대값)"
                         }
                     }
                 ]
             },
 
             // Event Command (Create)
-            COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
-            COMMAND_EVENT_INVALID_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`,
-            COMMAND_EVENT_ONE_REPEAT: 'Sorry, but you cannot use both `repeat` and `repeatDay` in one event. Please pick one or the other',
-            COMMAND_EVENT_INVALID_REPEAT: `The repeat is in the wrong format. Example: \`5d3h8m\` for 5 days, 3 hours, and 8 minutes`,
-            COMMAND_EVENT_USE_COMMAS: `Please use comma seperated numbers for repeatDay. Example: \`1,2,1,3,4\``,
-            COMMAND_EVENT_INVALID_CHAN: `This channel is invalid, please try again`,
-            COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `I don't have permission to send messages in ${channel}, please choose one where I can`,
-            COMMAND_EVENT_NEED_CHAN: `ERROR: I need to configure a channel to send this to. Configure \`announceChan\` to be able to make events.`,
-            COMMAND_EVENT_NEED_NAME: `You must give a name for your event.`,
-            COMMAND_EVENT_EVENT_EXISTS: `That event name already exists. Cannot add it again.`,
-            COMMAND_EVENT_NEED_DATE: `You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`,
-            COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`,
-            COMMAND_EVENT_NEED_TIME: `You must give a time for your event.`,
-            COMMAND_EVEMT_INVALID_TIME: `You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`,
-            COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`,
-            COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` created for ${eventDate}`,
-            COMMAND_EVENT_NO_CREATE: `I couldn't set that event, please try again.`,
+            //COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
+            COMMAND_EVENT_INVALID_ACTION: (actions) => `다음과 같은 일을 할 수 있습니다 \`${actions}\`.`,
+            //COMMAND_EVENT_INVALID_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`,
+            COMMAND_EVENT_INVALID_PERMS: `죄송합니다만 관리자가 아니시거나, 서버 관리자가 적절한 설정을 하지 못했습니다.\n관리자 역할이 설정되어 있지 않으면 이벤트를 추가하거나 삭제할 수 없습니다.`,
+            //COMMAND_EVENT_ONE_REPEAT: 'Sorry, but you cannot use both `repeat` and `repeatDay` in one event. Please pick one or the other',
+            COMMAND_EVENT_ONE_REPEAT: '죄송하지만 하나의 이벤트에서 `repeat`나 `repeatDay`를 동시에 사용할 수 없습니다. 둘중 하나를 선택하십시오'
+            //COMMAND_EVENT_INVALID_REPEAT: `The repeat is in the wrong format. Example: \`5d3h8m\` for 5 days, 3 hours, and 8 minutes`,
+            COMMAND_EVENT_INVALID_REPEAT: `반복을 지정하는 형식이 잘못되었습니다. 예: \`5d3h8m\` 5일 3시간 8분`,
+            //COMMAND_EVENT_USE_COMMAS: `Please use comma seperated numbers for repeatDay. Example: \`1,2,1,3,4\``,
+            COMMAND_EVENT_USE_COMMAS: `repeadDay에서 콤마를 사용하여 숫자를 분리해주십시오. 예: \`1,2,1,3,4\``,
+            //COMMAND_EVENT_INVALID_CHAN: `This channel is invalid, please try again`,
+            COMMAND_EVENT_INVALID_CHAN: `이 채널은 유효하지 않습니다. 다시 시도해주십시오`,
+            //COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `I don't have permission to send messages in ${channel}, please choose one where I can`,
+            COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `${channel} 채널에 메시지를 보낼 권한이 없습니다. 권한이 있는 채널을 선택해주십시오`,
+            //COMMAND_EVENT_NEED_CHAN: `ERROR: I need to configure a channel to send this to. Configure \`announceChan\` to be able to make events.`,
+            COMMAND_EVENT_NEED_CHAN: `ERROR: 이 내용을 보낼 채널을 설정하셔야 합니다. 이벤트를 만드시려면 \`announceChan\`을 설정해주십시오.`,
+            //COMMAND_EVENT_NEED_NAME: `You must give a name for your event.`,
+            COMMAND_EVENT_NEED_NAME: `이벤트에 이름을 지정해야 합니다.`,
+            //COMMAND_EVENT_EVENT_EXISTS: `That event name already exists. Cannot add it again.`,
+            COMMAND_EVENT_EVENT_EXISTS: `같은 이벤트 이름이 이미 존재합니다. 중복은 불가능합니다.`,
+            //COMMAND_EVENT_NEED_DATE: `You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`,
+            COMMAND_EVENT_NEED_DATE: `이벤트에는 날자를 지정해야 합니다. 다음의 형식을 사용해주십시오 \`DD/MM/YYYY\`.`,
+            //COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`,
+            COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate}는 잘못된 날자형식입니다. 다음의 형식을 사용해주십시오 \`DD/MM/YYYY\`.`,
+            //COMMAND_EVENT_NEED_TIME: `You must give a time for your event.`,
+            COMMAND_EVENT_NEED_TIME: `이벤트에는 시간을 지정해야 합니다`,
+            //COMMAND_EVEMT_INVALID_TIME: `You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`,
+            COMMAND_EVEMT_INVALID_TIME: `이벤트에는 적절한 시간을 지정해야 합니다. 다음의 형식을 사용해주십시오 \`HH:MM\` 24시간 형식입니다. 오전, 오후는 사용하지 않습니다`,
+            //COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`,
+            COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `과거 날자에 이벤트를 만들 수 없습니다. ${eventDATE}는 ${nowDATE} 보다 이전입니다`,
+            //COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` created for ${eventDate}`,
+            COMMAND_EVENT_CREATED: (eventName, eventDate) => `\`${eventName}\` 이벤트가 ${eventDate}에 설정되었습니다`,
+            //COMMAND_EVENT_NO_CREATE: `I couldn't set that event, please try again.`,
+            COMMAND_EVENT_NO_CREATE: `이벤트 설정이 실패하였습니다. 다시 시도해주십시오`,
             COMMAND_EVENT_TOO_BIG:(charCount) => `Sorry, but either your event's name or message is too big. Please trim it down by at least ${charCount} characters.`,
+            COMMAND_EVENT_TOO_BIG:(charCount) => `죄송합니다만 이벤트 이름이나 메시지가 너무 깁니다. 적어도 ${charCount} 글자는 짧게 해주셔야 합니다.`,
 
             // Event Command (View)
-            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
-            COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Time Remaining: ${timeLeft}\n`,
-            COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
-            COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,
-            COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Repeating every ${eventDays} days, ${eventHours} hours, and ${eventMins} minutes\n`,
-            COMMAND_EVENT_MESSAGE: (eventMsg) => `Event Message: \n\`\`\`md\n${eventMsg}\`\`\``,
-            COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Sorry, but I cannot find the event \`${eventName}\``,
-            COMMAND_EVENT_NO_EVENT: `You don't currently have any events scheduled.`,
-            COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}) Showing page ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,
-            COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}): \n${eventKeys}`,
+            //COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
+            COMMAND_EVENT_TIME_LEFT: (timeLeft) => `남은 시간: ${timeLeft}\n`,
+            //COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
+            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \n이벤트 시간: ${eventDate}\n`,
+            //COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
+            COMMAND_EVENT_CHAN: (eventChan) => `채널로 전송중입니다: ${eventChan}\n`,
+            //COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,
+            COMMAND_EVENT_SCHEDULE: (repeatDays) => `반복 일정: ${repeatDays}\n`,
+            //COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Repeating every ${eventDays} days, ${eventHours} hours, and ${eventMins} minutes\n`,
+            COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `매 ${eventDays} 일, ${eventHours} 시간  ${eventMins} 분 마다 반복합니다\n`,
+            //COMMAND_EVENT_MESSAGE: (eventMsg) => `Event Message: \n\`\`\`md\n${eventMsg}\`\`\``,
+            COMMAND_EVENT_MESSAGE: (eventMsg) => `이벤트 메시지: \n\`\`\`md\n${eventMsg}\`\`\``,
+            //COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Sorry, but I cannot find the event \`${eventName}\``,
+            COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `해당 이벤트를 찾을 수 없습니다 \`${eventName}\``,
+            //COMMAND_EVENT_NO_EVENT: `You don't currently have any events scheduled.`,
+            COMMAND_EVENT_NO_EVENT: `현재 계획된 이벤트가 없습니다.`,
+            //COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}) Showing page ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,
+            COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `이벤트 일정입니다 \n(총 ${eventCount} 개 이벤트) ${PAGE_SELECTED} 페이지/${PAGES_NEEDED}: \n${eventKeys}`,
+            //COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}): \n${eventKeys}`,
+            COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `이벤트 일정입니다 \n(총 ${eventCount} 개 이벤트): \n${eventKeys}`,
 
             // Event Command (Delete)
-            COMMAND_EVENT_DELETE_NEED_NAME: `You must give an event name to delete.`,
-            COMMAND_EVENT_DOES_NOT_EXIST: `That event does not exist.`,
-            COMMAND_EVENT_DELETED: (eventName) => `Deleted event: ${eventName}`,
+            //COMMAND_EVENT_DELETE_NEED_NAME: `You must give an event name to delete.`,
+            COMMAND_EVENT_DELETE_NEED_NAME: `삭제하려는 이벤트 이름을 적으십시오`,
+            //COMMAND_EVENT_DOES_NOT_EXIST: `That event does not exist.`,
+            COMMAND_EVENT_DOES_NOT_EXIST: `그런 이벤트가 없습니다`,
+            //COMMAND_EVENT_DELETED: (eventName) => `Deleted event: ${eventName}`,
+            COMMAND_EVENT_DELETED: (eventName) => `삭제된 이벤트: ${eventName}`,
 
             // Event Command (Trigger)
-            COMMAND_EVENT_TRIGGER_NEED_NAME: `You must give an event name to trigger.`,
+            //COMMAND_EVENT_TRIGGER_NEED_NAME: `You must give an event name to trigger.`,
+            COMMAND_EVENT_TRIGGER_NEED_NAME: `시작하려는 이벤트 이름을 적으십시오`,
 
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
-                description: "Used to make, check, or delete an event.",
+                //description: "Used to make, check, or delete an event.",
+                description: "이벤트의 생성, 삭제, 확인에 사용됩니다",
                 actions: [
                     {
                         action: "Create",
-                        actionDesc: 'Create a new event listing',
+                        //actionDesc: 'Create a new event listing',
+                        actionDesc: '새로운 이벤트를 생성합니다',
                         usage: ';event create <eventName> <eventDay> <eventTime> [eventMessage]',
                         args: {
-                            "--repeat <repeatTime>": "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
-                            "--repeatDay <schedule>": "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
-                            "--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
-                            "--countdown": "Adds a countdown to when your event will trigger."
+                            //"--repeat <repeatTime>": "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
+                            "--repeat <repeatTime>": "00d00h00m 형식으로 이벤트 지속 시간을 설정합니다. 지정된 시간이 지나면 반복 시작됩니다",
+                            //"--repeatDay <schedule>": "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
+                            "--repeatDay <schedule>": "0,0,0,0,0 형식으로 지정된 날자 이후에 반복됩니다",
+                            //"--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
+                            "--channel <channelName>": "이벤트가 방송할 채널을 설정합니다",
+                            //"--countdown": "Adds a countdown to when your event will trigger."
+                            "--countdown": "이벤트가 시작되는 카운트다운을 설정합니다"
                         }
                     },
                     {
                         action: "View",
-                        actionDesc: 'View your current event listings.',
+                        //actionDesc: 'View your current event listings.',
+                        actionDesc: '현재 이벤트 리스트를 보여줍니다',
                         usage: ';event view [eventName]',
                         args: {
-                            "--min": "Lets you view the events without the event message",
-                            "--page <page#>": "Lets you select a page of events to view"
-                        }
+                            //"--min": "Lets you view the events without the event message",
+                            "--min": "이벤트 메시지를 제외한 이벤트 리스트를 보여줍니다",
+                            //"--page <page#>": "Lets you select a page of events to view"
+                            "--page <page#>": "이벤트 리스트에서 보고 싶은 페이지를 선택합니다"
+                        }}
                     },
                     {
                         action: "Delete",
-                        actionDesc: 'Delete an event.',
+                        //actionDesc: 'Delete an event.',
+                        actionDesc: '이벤트를 삭제합니다',
                         usage: ';event delete <eventName>',
                         args: {}
                     },
                     {
                         action: "Trigger",
-                        actionDesc: 'Trigger an event in the specified channel, leaves the event alone.',
+                        //actionDesc: 'Trigger an event in the specified channel, leaves the event alone.',
+                        actionDesc: '특정 채널에서 이벤트를 시작합니다',
                         usage: ';event trigger <eventName>',
                         args: {}
                     }
