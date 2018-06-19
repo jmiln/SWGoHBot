@@ -1,6 +1,6 @@
 const Command = require('../base/Command');
-const moment = require('moment');
-const {inspect} = require('util');
+// const moment = require('moment');
+// const {inspect} = require('util');
 
 class MyProfile extends Command {
     constructor(client) {
@@ -36,7 +36,7 @@ class MyProfile extends Command {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
             zetaCount += thisZ.length;
         });
-        const charOut = message.language.get('COMMAND_MYPROFILE_SHIPS', player.gpChar.toLocaleString(), charList, zetaCount)
+        const charOut = message.language.get('COMMAND_MYPROFILE_CHARS', player.gpChar.toLocaleString(), charList, zetaCount);
         fields.push({
             name: charOut.header,
             value: [
@@ -44,7 +44,7 @@ class MyProfile extends Command {
                 charOut.stats,
                 '```'
             ].join('\n')
-        })
+        });
 
         const shipList = player.roster.filter(u => u.type === 'ship');
         const shipOut = message.language.get('COMMAND_MYPROFILE_SHIPS', player.gpShip.toLocaleString(), shipList);
@@ -55,7 +55,7 @@ class MyProfile extends Command {
                 shipOut.stats,
                 '```'
             ].join('\n')
-        })
+        });
 
         return message.channel.send({embed: {
             author: {
