@@ -93,11 +93,11 @@ module.exports = class extends Language {
             //BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `${character}에 대한 결과를 찾을 수 없습니다`,
             //BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
-            BASE_SWGOH_CHAR_LIST: (chars) => `검색 결과가 너무 많습니다. 조금 더 자세하게 검색해주십시오. \n가장 비슷한 결과는 다음과 같습니다.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_CHAR_LIST: (chars) => `검색 결과가 너무 많습니다. 검색어를 조금 더 자세히 지정해주십시오. \n가장 비슷한 결과는 다음과 같습니다.\n\`\`\`${chars}\`\`\``,
             //BASE_SWGOH_NO_ACCT: `Something went wrong, please make sure your account is synced correctly.`,
-            BASE_SWGOH_NO_ACCT: `뭔가 잘못됐는데요. 계정이 정확히 연동됐는지 확인해주십시오.`,
+            BASE_SWGOH_NO_ACCT: `문제가 발생했습니다. 계정이 정확히 연동됐는지 확인해주십시오.`,
             //BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
-            BASE_SWGOH_LAST_UPDATED: (date) => `${date} 일 전에 마지막으로 업데이트되었습니다`,
+            BASE_SWGOH_LAST_UPDATED: (date) => `${date} 일 전에 마지막으로 갱신되었습니다`,
             //BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : 'data'}`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `${dType ? dType : 'data'}를 가져오기까지 잠시만 기다려주십시오`,
 
@@ -958,9 +958,9 @@ module.exports = class extends Language {
             //COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
             COMMAND_REGISTER_UPDATE_FAILURE: '문제가 생겼습니다. 동맹 코드가 맞는지 확인하여주십시오',
             //COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
-            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `\`${user}\`에 대한 프로파일이 업데이트되었습니다.`,
+            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `\`${user}\`에 대한 프로파일이 갱신되었습니다.`,
             //COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,
-            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `\`${guild}\`에 대한 길드가 업데이트되었습니다.`,
+            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `\`${guild}\`에 대하여 길드가 갱신되었습니다.`,
             COMMAND_REGISTER_HELP: {
                 //description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 description: "사용자의 디스코드 아이디에 동맹 코드를 등록하고, SWGoH의 프로파일과 동기화합니다.",
@@ -980,13 +980,13 @@ module.exports = class extends Language {
                     {
                         action: "Update",
                         //actionDesc: 'Update/ resync your SWGoH data.',
-                        actionDesc: '사용자의 SWGoH 자료를 업데이트하거나 재동기화 합니다.',
+                        actionDesc: '사용자의 SWGoH 자료를 갱신하거나 재동기화 합니다.',
                         usage: ';register update <user> [-guild]',
                         args: {
                             //"user": "The person you're adding. (me | userID | mention)",
                             "user": "연동하고 싶은 사용자. (me | userID | mention)",
                             //"-guild": "Tell it to pull/ update your whole guild (-g | -guild | -guilds)"
-                            "-guild": "사용자의 길드 전체에 대해서 업데이트 (-g | -guild | -guilds)"
+                            "-guild": "사용자의 길드 전체 자료를 갱신 (-g | -guild | -guilds)"
                         }
                     },
                     {
@@ -1085,7 +1085,8 @@ module.exports = class extends Language {
             //COMMAND_SETCONF_RESET: `Your config has been reset`,
             COMMAND_SETCONF_RESET: `설정이 초기화되었습니다`,
             COMMAND_SETCONF_HELP: {
-                description: "Used to set the bot's config settings.",
+                //description: "Used to set the bot's config settings.",
+                description: "로봇을 설정하는데 사용됩니다.",
                 actions: [
                     {
                         action: "",
@@ -1095,90 +1096,110 @@ module.exports = class extends Language {
                     },
                     {
                         action: "prefix",
-                        actionDesc: 'Set the bot\'s prefix for your server.',
+                        //actionDesc: 'Set the bot\'s prefix for your server.',
+                        actionDesc: '서버에서 사용할 로봇의 접두사(prefix)를 설정합니다.',
                         usage: ';setconf prefix <prefix>',
                         args: {}
                     },
                     {
                         action: "adminRole",
                         actionDesc: 'The role that you want to be able to modify bot settings or set up events',
+                        actionDesc: '로봇 설정을 변경하거나 이벤트 설정을 하기 위한 역할',
                         usage: ';setconf adminRole <add|remove> <role>',
                         args: {
-                            'add':  'Add a role to the list',
-                            'remove': 'Remove a role from the list'
+                            //'add':  'Add a role to the list',
+                            'add':  '목록에 역할을 추가',
+                            //'remove': 'Remove a role from the list'
+                            'remove': '목록에서 역할을 제거'
                         }
                     },
                     {
                         action: "enableWelcome",
-                        actionDesc: 'Toggles the welcome message on/ off.',
+                        //actionDesc: 'Toggles the welcome message on/ off.',
+                        actionDesc: '환영 인사를 키거나 끕니다.',
                         usage: ';setconf enableWelcome <true|false>',
                         args: {}
                     },
                     {
                         action: "welcomeMessage",
-                        actionDesc: 'The welcome message to send if you have it enabled (Special variables below)',
+                        //actionDesc: 'The welcome message to send if you have it enabled (Special variables below)',
+                        actionDesc: '환영 인사말을 켰을 경우에 사용할 인사말',
                         usage: ';setconf welcomeMessage <message>',
                         args: {
-                            '{{user}}':  "gets replaced with the new user's name.",
-                            '{{userMention}}': "makes it mention the new user there."
+                            //'{{user}}':  "gets replaced with the new user's name.",
+                            '{{user}}':  "새로운 사용자의 이름",
+                            //'{{userMention}}': "makes it mention the new user there."
+                            '{{userMention}}': "새로운 사용자를 언급."
                         }
                     },
                     {
                         action: "enablePart",
-                        actionDesc: 'Toggles the parting message on/ off.',
+                        //actionDesc: 'Toggles the parting message on/ off.',
+                        actionDesc: '서버 탈퇴 인사말을 키거나 끕니다.',
                         usage: ';setconf enablePart <true|false>',
                         args: {}
                     },
                     {
                         action: "partMessage",
-                        actionDesc: 'The part message to send if you have it enabled (Special variables below)',
+                        //actionDesc: 'The part message to send if you have it enabled (Special variables below)',
+                        actionDesc: '탈퇴 인사말을 켰을 때 사용할 인사말',
                         usage: ';setconf partMessage <message>',
                         args: {
-                            '{{user}}':  "gets replaced with the new user's name.",
+                            //'{{user}}':  "gets replaced with the new user's name.",
+                            '{{user}}':  "떠나는 사용자의 이름으로 변경됨",
                         }
                     },
                     {
                         action: "useEmbeds",
-                        actionDesc: 'Toggles whether or not to use embeds as the output for some commands.',
+                        //actionDesc: 'Toggles whether or not to use embeds as the output for some commands.',
+                        actionDesc: '몇몇 명령어의 결과로 임베드(embed)를 사용할지 말지 결정.',
                         usage: ';setconf useEmbeds <true|false>',
                         args: {}
                     },
                     {
                         action: "timezone",
-                        actionDesc: 'Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.',
+                        //actionDesc: 'Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.',
+                        actionDesc: '시간 관련한 모든 명령어가 사용할 타임존을 설정합니다. 타임존 목록이 필요한 경우 다음을 확인하십시오 https://goo.gl/Vqwe49.',
                         usage: ';setconf timezone <timezone>',
                         args: {}
                     },
                     {
                         action: "announceChan",
-                        actionDesc: 'Sets the name of your announcements channel for events etc. Make sure it has permission to send them there.',
+                        //actionDesc: 'Sets the name of your announcements channel for events etc. Make sure it has permission to send them there.',
+                        actionDesc: '이벤트 등에 사용할 안내 채널의 이름을 정합니다. 안내할 권한이 있는지 확인하십시오.',
                         usage: ';setconf announceChan <channelName>',
                         args: {}
                     },
                     {
                         action: "useEventPages",
-                        actionDesc: 'Sets it so event view shows in pages, rather than super spammy.',
+                        //actionDesc: 'Sets it so event view shows in pages, rather than super spammy.',
+                        actionDesc: '이벤트가 페이지 단위로 보이도록 합니다.',
                         usage: ';setconf useEventPages <true|false>',
                         args: {}
                     },
                     {
                         action: "eventCountdown",
-                        actionDesc: 'The time that you want a countdown message to appear',
+                        //actionDesc: 'The time that you want a countdown message to appear',
+                        actionDesc: '카운트다운이 표시되는 시간을 설정합니다',
                         usage: ';setconf eventCountdown <add|remove> <time>',
                         args: {
-                            'add':  'Add a time to the list',
-                            'remove': 'Remove a time from the list'
+                            //'add':  'Add a time to the list',
+                            'add':  '지정한 시간을 목록에 추가',
+                            //'remove': 'Remove a time from the list'
+                            'remove': '지정한 시간을 목록에서 제거'
                         }
                     },
                     {
                         action: "language",
-                        actionDesc: 'Set the bot to use any supported language for the command output.',
+                        //actionDesc: 'Set the bot to use any supported language for the command output.',
+                        actionDesc: '명령어의 결과로 사용될 언어를 지정합니다.',
                         usage: ';setconf language <lang>',
                         args: {}
                     },
                     {
                         action: "swgohLanguage",
-                        actionDesc: 'Sets the bot to use any supported language for the game data output.',
+                        //actionDesc: 'Sets the bot to use any supported language for the game data output.',
+                        actionDesc: '게임 자료의 결과로 사용될 언어를 지정합니다.',
                         usage: ';setconf swgohLanguage <lang>',
                         args: {}
                     },
@@ -1192,42 +1213,62 @@ module.exports = class extends Language {
             },
 
             // Shard times command
-            COMMAND_SHARDTIMES_MISSING_USER: `I need a user, please enter "me", mention someone here, or input their Discord ID.`,
-            COMMAND_SHARDTIMES_MISSING_ROLE: `Sorry, but you can only add yourself unless you have an admin role.`,
-            COMMAND_SHARDTIMES_INVALID_USER: `Invalid user, please enter "me", mention someone here, or input their discord ID.`,
-            COMMAND_SHARDTIMES_MISSING_TIMEZONE: `You need to enter a timezone.`,
-            COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
-            COMMAND_SHARDTIMES_USER_ADDED: `User successfully added!`,
-            COMMAND_SHARDTIMES_USER_NOT_ADDED: `Something went wrong when with adding this user. Please try again.`,
-            COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Sorry, but you can only remove yourself unless you have an admin role.`,
-            COMMAND_SHARDTIMES_REM_SUCCESS: `User successfully removed!`,
-            COMMAND_SHARDTIMES_REM_FAIL: `Something went wrong when removing this user. Please try again.`,
-            COMMAND_SHARDTIMES_REM_MISSING: `Sorry, but that user does not seem to be here.`,
-            COMMAND_SHARDTIMES_SHARD_HEADER: `Shard payouts in:`,
+            //COMMAND_SHARDTIMES_MISSING_USER: `I need a user, please enter "me", mention someone here, or input their Discord ID.`,
+            COMMAND_SHARDTIMES_MISSING_USER: `사용자가 필요합니다. "me", 다른 사용자이름, 또는 디스코드 아이디를 입력하십시오.`,
+            //COMMAND_SHARDTIMES_MISSING_ROLE: `Sorry, but you can only add yourself unless you have an admin role.`,
+            COMMAND_SHARDTIMES_MISSING_ROLE: `관리자 권한이 없는 경우 본인만 추가할 수 있습니다.`,
+            //COMMAND_SHARDTIMES_INVALID_USER: `Invalid user, please enter "me", mention someone here, or input their discord ID.`,
+            COMMAND_SHARDTIMES_INVALID_USER: `잘못된 사용자입니다. "me", 다른 사용자이름, 또는 디스코드 아이디를 입력하십시오.`,
+            //COMMAND_SHARDTIMES_MISSING_TIMEZONE: `You need to enter a timezone.`,
+            COMMAND_SHARDTIMES_MISSING_TIMEZONE: `'타임존 지정이 필요합니다'.`,
+            //COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
+            COMMAND_SHARDTIMES_INVALID_TIMEZONE: `잘못된 타임존입니다. 다음 사이트를 확인하십시오 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \n원하는 항목을 찾고, TZ 칼럼에 있는 내용을 입력하십시오`,
+            //COMMAND_SHARDTIMES_USER_ADDED: `User successfully added!`,
+            COMMAND_SHARDTIMES_USER_ADDED: `사용자 추가가 성공하였습니다!`,
+            //COMMAND_SHARDTIMES_USER_NOT_ADDED: `Something went wrong when with adding this user. Please try again.`,
+            COMMAND_SHARDTIMES_USER_NOT_ADDED: `사용자 추가에 문제가 생겼습니다. 다시 시도해주십시오.`,
+            //COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Sorry, but you can only remove yourself unless you have an admin role.`,
+            COMMAND_SHARDTIMES_REM_MISSING_PERMS: `관리자 권한이 없는 경우 본인만 삭제할 수 있습니다.`,
+            //COMMAND_SHARDTIMES_REM_SUCCESS: `User successfully removed!`,
+            COMMAND_SHARDTIMES_REM_SUCCESS: `사용자 제거에 성공하였습니다!`,
+            //COMMAND_SHARDTIMES_REM_FAIL: `Something went wrong when removing this user. Please try again.`,
+            COMMAND_SHARDTIMES_REM_FAIL: `사용자 제거에 문제가 생겼습니다. 다시 시도해주십시오.`,
+            //COMMAND_SHARDTIMES_REM_MISSING: `Sorry, but that user does not seem to be here.`,
+            COMMAND_SHARDTIMES_REM_MISSING: `죄송하지만 지정한 사용자가 없습니다.`,
+            //COMMAND_SHARDTIMES_SHARD_HEADER: `Shard payouts in:`,
+            COMMAND_SHARDTIMES_SHARD_HEADER: `아레나 보상시간:`,
             COMMAND_SHARDTIMES_HELP: {
-                description: "Lists the time until the payouts of anyone registered.",
+                //description: "Lists the time until the payouts of anyone registered.",
+                description: "등록된 사용자들의 보상시간 목록.",
                 actions: [
                     {
                         action: "Add",
-                        actionDesc: 'Add a user to the shard tracker',
+                        //actionDesc: 'Add a user to the shard tracker',
+                        actionDesc: '보상시간 추적기에 사용자를 추가',
                         usage: ';shardtimes add <user> <timezone> [flag/emoji]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "timezone": "The zone that your account is based in",
-                            "flag/emoji": "An optional emoji if you want it to show by your name"
+                            //"user": "The person you're adding. (me | userID | mention)",
+                            "user": "추가할 사용자 이름. (me | userID | mention)",
+                            //"timezone": "The zone that your account is based in",
+                            "timezone": "사용자의 타임존",
+                            //"flag/emoji": "An optional emoji if you want it to show by your name"
+                            "flag/emoji": "사용자 이름과 같이 표시되는 그림문자"
                         }
                     },
                     {
                         action: "Remove",
-                        actionDesc: 'Remove a user from the tracker',
+                        //actionDesc: 'Remove a user from the tracker',
+                        actionDesc: '보상시간 추적기에서 사용자를 제거',
                         usage: ';shardtimes remove <user>',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)"
+                            "user": "제거할 사용자 이름. (me | userID | mention)"
                         }
                     },
                     {
                         action: "View",
-                        actionDesc: 'Look at all the tracked times for you and your shardmates',
+                        //actionDesc: 'Look at all the tracked times for you and your shardmates',
+                        actionDesc: '보상시간 추적기에 등록된 모든 사용자의 보상시간 목록',
                         usage: ';shardtimes view',
                         args: {}
                     }
@@ -1235,32 +1276,42 @@ module.exports = class extends Language {
             },
 
             // Ships Command
-            COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Need a character or ship. Usage is \`${prefix}${usage}\``,
-            COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `Invalid character or ship. Usage is \`${prefix}${usage}\``,
-            COMMAND_SHIPS_TOO_MANY: `I found more than one result from that search. Please try to be more specific.`,
-            COMMAND_SHIPS_CREW: 'Crew',
-            COMMAND_SHIPS_FACTIONS: 'Factions',
-            COMMAND_SHIPS_ABILITIES: (abilities) => `**Ability Type:** ${abilities.type}   **Ability Cooldown:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
-            COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * Abilities *\n`,
-            COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
+            //COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Need a character or ship. Usage is \`${prefix}${usage}\``,
+            COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `캐릭터나 함선 이름이 필요합니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            //COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `Invalid character or ship. Usage is \`${prefix}${usage}\``,
+            COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `잘못된 이름입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            //COMMAND_SHIPS_TOO_MANY: `I found more than one result from that search. Please try to be more specific.`,
+            COMMAND_SHIPS_TOO_MANY: `검색 결과가 너무 많습니다. 검색어를 조금 더 자세히 지정해주십시오.`,
+            //COMMAND_SHIPS_CREW: 'Crew',
+            COMMAND_SHIPS_CREW: '승무원',
+            //COMMAND_SHIPS_FACTIONS: 'Factions',
+            COMMAND_SHIPS_FACTIONS: '팩션',
+            //COMMAND_SHIPS_ABILITIES: (abilities) => `**Ability Type:** ${abilities.type}   **Ability Cooldown:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
+            COMMAND_SHIPS_ABILITIES: (abilities) => `**능력 종류:** ${abilities.type}   **능력 쿨다운:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
+            //COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * Abilities *\n`,
+            COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * 능력 목록 *\n`,
+            //COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
+            COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\n능력 종류: ${abilities.type}   능력 쿨다운: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
             COMMAND_SHIPS_HELP: {
-                description: "Shows info about the selected ship.",
+                description: "지정한 함선에 대한 정보를 보여줍니다.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: 'ship <ship|pilot>',
                         args: {
-                            "ship|pilot": "The ship or pilot for the ship you want info on."
+                            "ship|pilot": "정보를 보기 원하는 함선이나 파일럿."
                         }
                     }
                 ]
             },
 
             // Showconf Command
-            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`${configKeys}\`\`\``,
+            //COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`${configKeys}\`\`\``,
+            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `${serverName}에 설정된 내용입니다: \`\`\`${configKeys}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
-                description: "Shows the current configs for your server.",
+                //description: "Shows the current configs for your server.",
+                description: "서버 설정을 보여줍니다.",
                 actions: [
                     {
                         action: "",
@@ -1272,7 +1323,8 @@ module.exports = class extends Language {
             },
 
             // Stats Command
-            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= STATISTICS (${shardID}) =\n
+            //COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= STATISTICS (${shardID}) =\n
+            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= 통계 (${shardID}) =\n
 • Mem Usage  :: ${memUsage} MB
 • CPU Load   :: ${cpuLoad}%
 • Uptime     :: ${uptime}
@@ -1281,7 +1333,8 @@ module.exports = class extends Language {
 • Channels   :: ${channels}
 • Source     :: https://github.com/jmiln/SWGoHBot`,
             COMMAND_STATS_HELP: {
-                description: "Shows the bot's stats.",
+                //description: "Shows the bot's stats.",
+                description: "로봇의 상태를 보여줍니다.",
                 actions: [
                     {
                         action: "",
@@ -1294,7 +1347,8 @@ module.exports = class extends Language {
 
             // Test command (in .gitignore)
             COMMAND_TEST_HELP: {
-                description: "A command to test things out.",
+                //description: "A command to test things out.",
+                description: "테스트를 위한 명령입니다.",
                 actions: [
                     {
                         action: "",
@@ -1306,12 +1360,17 @@ module.exports = class extends Language {
             },
 
             // Time Command
-            COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time} in ${zone} time`,
-            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time ${time} in ${zone} time`,
-            COMMAND_TIME_NO_ZONE: (time) => `Current time is: ${time} UTC time`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `Current time is: ${time} in ${zone} time`,
+            //COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time} in ${zone} time`,
+            COMMAND_TIME_CURRENT: (time, zone) => `현재 시간: ${time} 타임존 ${zone}`,
+            //COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time ${time} in ${zone} time`,
+            COMMAND_TIME_INVALID_ZONE: (time, zone) => `잘못된 타임존입니다. 현재 시간은 길드 타임존 ${zone}에서 ${time} 입니다`,
+            //COMMAND_TIME_NO_ZONE: (time) => `Current time is: ${time} UTC time`,
+            COMMAND_TIME_NO_ZONE: (time) => `현재 시간: ${time} UTC`,
+            //COMMAND_TIME_WITH_ZONE: (time, zone) => `Current time is: ${time} in ${zone} time`,
+            COMMAND_TIME_WITH_ZONE: (time, zone) => `현재시간: ${time} 타임존 ${zone}`,
             COMMAND_TIME_HELP: {
-                description: "Used to check the time with the guild's configured timezone.",
+                //description: "Used to check the time with the guild's configured timezone.",
+                description: "길드에 설정된 타임존에서 현재 시간을 확인합니다.",
                 actions: [
                     {
                         action: "",
@@ -1319,26 +1378,34 @@ module.exports = class extends Language {
                         usage: ';time [timezone]',
                         args: {
                             "timezone": "Optional if you want to see what time it is elsewhere"
+                            "timezone": "다른 지역의 시간을 알고 싶을 때 지정합니다"
                         }
                     }
                 ]
             },
 
             // Updatechar Command
-            COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Sorry, but ${arg} isn't a valid argument. Try one of these: ${usableArgs}`,
-            COMMAND_UPDATECHAR_NEED_CHAR: `You need to specify a character to update.`,
-            COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Sorry, but your search for '${charName}' did not find any results. Please try again.`,
+            //COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Sorry, but ${arg} isn't a valid argument. Try one of these: ${usableArgs}`,
+            COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `죄송합니다만 ${arg} 은(는) 유효한 항목이 아닙니다. 다음 목록 중 하나를 사용하십시오: ${usableArgs}`,
+            //COMMAND_UPDATECHAR_NEED_CHAR: `You need to specify a character to update.`,
+            COMMAND_UPDATECHAR_NEED_CHAR: `갱신 하려는 캐릭터를 지정해야 합니다.`,
+            //COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Sorry, but your search for '${charName}' did not find any results. Please try again.`,
+            COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `죄송합니다만 '${charName}'에 대한 검색 결과가 없습니다. 다시 시도해주십시오.`,
             COMMAND_UPDATECHAR_HELP: {
-                description: "Update the info on a specified character.",
+                //description: "Update the info on a specified character.",
+                description: "지정한 캐릭터에 대한 정보를 갱신합니다.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';updatechar [gear|info|mods] [charater]',
                         args: {
-                            "gear": "Update the gear for the character.",
-                            "info": "Update the info for the character (Image link, abilities etc.)",
-                            "mods": "Update the mods from crouchingrancor.com"
+                            //"gear": "Update the gear for the character.",
+                            "gear": "캐릭터의 장비 정보 갱신.",
+                            //"info": "Update the info for the character (Image link, abilities etc.)",
+                            "info": "캐릭터에 대한 정보 갱신 (Image link, abilities etc.)",
+                            //"mods": "Update the mods from crouchingrancor.com"
+                            "mods": "crouchingrancor.com으로부터 모드 자료 갱신"
                         }
                     }
                 ]
@@ -1346,7 +1413,8 @@ module.exports = class extends Language {
 
             // UpdateClient Command
             COMMAND_UPDATECLIENT_HELP: {
-                description: "Update the client for the SWGoHAPI.",
+                //description: "Update the client for the SWGoHAPI.",
+                description: "SWGoHAPI를 위한 클라이언트 갱신.",
                 actions: [
                     {
                         action: "",
@@ -1358,11 +1426,15 @@ module.exports = class extends Language {
             },
 
             // Zetas Command
-            COMMAND_ZETA_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
-            COMMAND_ZETA_NO_ZETAS: 'You don\'t seem to have any abilities zetad.',
-            COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${'-'.repeat(30)}\``,
+            //COMMAND_ZETA_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
+            COMMAND_ZETA_NO_USER: `죄송하지만 사용자를 찾을 수 없습니다.`,
+            //COMMAND_ZETA_NO_ZETAS: 'You don\'t seem to have any abilities zetad.',
+            COMMAND_ZETA_NO_ZETAS: '제타를 준 캐릭터가 없습니다.',
+            //COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${'-'.repeat(30)}\``,
+            COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` 리더 | \`[S]\` 특별 | \`[U]\` 고유\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
-                description: "Show the abilities that you have put zetas on.",
+                //description: "Show the abilities that you have put zetas on.",
+                description: "제타를 적용한 능력을 보여줍니다",
                 actions: [
                     {
                         action: "",
@@ -1370,6 +1442,7 @@ module.exports = class extends Language {
                         usage: ';zeta [user]',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)"
+                            "user": "제타를 확인하려는 사용자. (me | userID | mention)"
                         }
                     }
                 ]
