@@ -73,21 +73,21 @@ module.exports = class extends Language {
         this.language = {
             // Default in case it can't find one.
             //BASE_DEFAULT_MISSING: 'Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.',
-            BASE_DEFAULT_MISSING: '없는 단어를 사용하려고 합니다. 수정을 위해 알려주시면 감사하겠습니다.',
+            BASE_DEFAULT_MISSING: '없는 단어를 사용하려고 합니다. 이 메시지를 보시면, 수정할 수 있도록 알려주시면 감사하겠습니다.',
 
             // Base swgohBot.js file
             //BASE_LAST_EVENT_NOTIFICATION: `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`,
             BASE_LAST_EVENT_NOTIFICATION: `\n\n이번 이벤트의 마지막입니다. 이 안내를 계속 받으시려면, 새 이벤트를 만드세요.`,
-            BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
+            //BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\n${timeToGo} 시간 내로 시작합니다`,
 
             // Base swgohAPI
             //BASE_SWGOH_NO_ALLY: `Sorry, but that user is not registered. Please go register with \`;register add <user> <allycode>\``,
-            BASE_SWGOH_NO_ALLY: `죄송하지만 그 사용자는 등록되어있지 않습니다. 다음 명령을 사용하여 등록해주십시오 \`;register add <user> <allycode>\``,
+            BASE_SWGOH_NO_ALLY: `죄송합니다만 사용자가 등록되어있지 않습니다. 다음 명령을 사용하여 등록해주십시오 \`;register add <user> <allycode>\``,
             //BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register add @${user} <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user) => `죄송하지만 그 사용자는 등록되어있지 않습니다. 다음 명령을 사용하여 등록해주십시오 \`;register add @${user} <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user) => `죄송합니다만 사용자가 등록되어있지 않습니다. 다음 명령을 사용하여 등록해주십시오 \`;register add @${user} <allycode>\``,
             //BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
-            BASE_SWGOH_NO_USER: `죄송하지만 그 사용자는 등록되어있지 않습니다.`,
+            BASE_SWGOH_NO_USER: `죄송합니다만 사용자가 등록되어있지 않습니다.`,
             //BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
             BASE_SWGOH_MISSING_CHAR: '확인할 캐릭터를 입력하여 주십시오',
             //BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
@@ -107,7 +107,7 @@ module.exports = class extends Language {
             //COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
             COMMAND_INVALID_BOOL: `잘못된 값입니다. true 혹은 false를 사용해주십시오`,
             //COMMAND_MISSING_PERMS: `Sorry, but you don't have the correct permissions to use that.`,
-            COMMAND_MISSING_PERMS: `죄송하지만 적합한 권한이 없습니다.`,
+            COMMAND_MISSING_PERMS: `죄송합니다만 적합한 권한이 없습니다.`,
             //BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
             BASE_COMMAND_UNAVAILABLE: "이 명령어는 개인 메시지로는 사용할 수 없습니다. 길드 내에서 이 명령어를 사용하시기 바랍니다.",
             BASE_COMMAND_HELP_HEADER: (name) => `Help for ${name}`,
@@ -146,11 +146,11 @@ module.exports = class extends Language {
             //COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
             COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `잘못된 캐릭터입니다. 다음과 같이 사용하십시오 \`${prefix}${usage}\``,
             //COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
-            COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**기술 쿨다운:** ${aCooldown}\n`,
+            COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**능력 쿨다운:** ${aCooldown}\n`,
             //COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}     **Max ability mat needed:**  ${mat}\n${cdString}${aDesc}`,
-            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**능력치 종류:** ${aType}     **필요한 능력 재료 최고치:**  ${mat}\n${cdString}${aDesc}`,
+            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**능력 종류:** ${aType}     **필요한 최상위 능력 재료:**  ${mat}\n${cdString}${aDesc}`,
             //COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Ability type: ${type}\n* Max ability mat needed: ${tier}\n* Description: ${aDesc}\n\n`,
-            COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* 능력치 종류: ${type}\n* 필요한 능력 재료 최고치: ${tier}\n* 설명: ${aDesc}\n\n`,
+            COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* 능력 종류: ${type}\n* 필요한 최상위 능력 재료: ${tier}\n* 설명: ${aDesc}\n\n`,
             COMMAND_ABILITIES_HELP: {
                 //description: "Shows the abilities for the specified character.",
                 description: "특정 캐릭터의 기술을 보여줍니다.",
@@ -198,11 +198,11 @@ module.exports = class extends Language {
             //COMMAND_ARENARANK_INVALID_NUMBER: `You need to enter a valid rank number`,
             COMMAND_ARENARANK_INVALID_NUMBER: `정확한 등수를 입력해야 합니다`,
             //COMMAND_ARENARANK_BEST_RANK: `You've already gotten as far as you can, congrats!`,
-            COMMAND_ARENARANK_BEST_RANK: `최고까지 올라가셨네요. 축하합니다!`,
+            COMMAND_ARENARANK_BEST_RANK: `올라갈 수 있는 한계까지 도달하셨습니다. 축하합니다!`,
             //COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `From rank ${currentRank}, in ${battleCount} battle${plural} ${est}\nThe best you can get is ${rankList}`,
-            COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `현재 ${currentRank}위에서 , ${battleCount} 번의 전투로 ${est}\n최선은 다음과 같습니다 ${rankList}`,
+            COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `현재 ${currentRank} 위에서 , ${battleCount} 번의 전투로 ${est}\n최선은 다음과 같습니다 ${rankList}`,
             COMMAND_ARENARANK_HELP: {
-                ㅗㅗdescription: "Shows the (approximate) highest rank you can get if you win every arena battle.",
+                //description: "Shows the (approximate) highest rank you can get if you win every arena battle.",
                 description: "아레나 전투를 전부 이길 경우 오를 수 있는 최고 순위(추정)를 보여줍니다",
                 actions: [
                     {
@@ -235,7 +235,7 @@ module.exports = class extends Language {
             //COMMAND_CHALLENGES_SHIP_ABILITY    : "Ship Ability Materials",
             COMMAND_CHALLENGES_SHIP_ABILITY    : "함선 능력 재료",
             //COMMAND_CHALLENGES_MISSING_DAY: 'You need to specify a day',
-            COMMAND_CHALLENGES_MISSING_DAY: '특정 요일을 정해주십시오',
+            COMMAND_CHALLENGES_MISSING_DAY: '특정 요일을 지정해주십시오',
             //COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `Invalid date, usage is \`${prefix}${usage}\``,
             COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `잘못된 요일입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
             COMMAND_CHALLENGES_HELP: {
@@ -275,7 +275,7 @@ module.exports = class extends Language {
             //COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### 필요 장비 전체 목록 ### \n${gearString}`,
             //COMMAND_CHARGEAR_GEAR_NA: 'This gear has not been entered yet',
-            COMMAND_CHARGEAR_GEAR_NA: '이 장비 목록은 아직 입력이 안되었습니다',
+            COMMAND_CHARGEAR_GEAR_NA: '이 장비 목록은 아직 입력이 되어있지 않습니다',
             COMMAND_CHARACTERGEAR_HELP: {
                 //description: "Shows the gear requirements for the specified character/ lvl.",
                 description: "특정 캐릭터/레벨에 필요한 장비 목록을 보여줍니다",
@@ -291,7 +291,7 @@ module.exports = class extends Language {
 
             // MyMods Command
             //COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
-            COMMAND_MYMODS_NO_MODS: (charName) => `죄송합니다만 ${charName}에 대한 모드를 못 찾겠습니다`,
+            COMMAND_MYMODS_NO_MODS: (charName) => `죄송합니다만 ${charName}가 사용하고 있는 모드가 없습니다`,
             //COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
             COMMAND_MYMODS_MISSING_MODS: `죄송합니다만 당장은 모드를 찾을 수가 없습니다. 잠시 후에 다시 시도해보시기 바랍니다.`,
             //COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
@@ -308,7 +308,7 @@ module.exports = class extends Language {
                             //"user": "The person you're adding. (me | userID | mention)",
                             "user": "캐릭터를 소유하고 있는 사용자 (me | userID | mention)",
                             //"character": "The character you want to search for."
-                            "character": "모드를 알고 싶은 캐릭터"
+                            "character": "모드를 확인하려는 캐릭터"
                         }}
                     }
                 ]
@@ -355,7 +355,7 @@ module.exports = class extends Language {
             //COMMAND_EVENT_INVALID_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`,
             COMMAND_EVENT_INVALID_PERMS: `죄송합니다만 관리자가 아니시거나, 서버 관리자가 적절한 설정을 하지 않은 상태입니다.\n관리자 역할이 설정되어 있지 않으면 이벤트를 추가하거나 삭제할 수 없습니다.`,
             //COMMAND_EVENT_ONE_REPEAT: 'Sorry, but you cannot use both `repeat` and `repeatDay` in one event. Please pick one or the other',
-            COMMAND_EVENT_ONE_REPEAT: '죄송하지만 하나의 이벤트에서 `repeat`나 `repeatDay`를 동시에 사용할 수 없습니다. 둘중 하나를 선택하십시오'
+            COMMAND_EVENT_ONE_REPEAT: '죄송합니다만 하나의 이벤트에서 `repeat`와 `repeatDay`를 동시에 사용할 수 없습니다. 둘중 하나를 선택하십시오'
             //COMMAND_EVENT_INVALID_REPEAT: `The repeat is in the wrong format. Example: \`5d3h8m\` for 5 days, 3 hours, and 8 minutes`,
             COMMAND_EVENT_INVALID_REPEAT: `반복을 지정하는 형식이 잘못되었습니다. 예: \`5d3h8m\` 5일 3시간 8분`,
             //COMMAND_EVENT_USE_COMMAS: `Please use comma seperated numbers for repeatDay. Example: \`1,2,1,3,4\``,
@@ -377,14 +377,14 @@ module.exports = class extends Language {
             //COMMAND_EVENT_NEED_TIME: `You must give a time for your event.`,
             COMMAND_EVENT_NEED_TIME: `이벤트에는 시간을 지정해야 합니다`,
             //COMMAND_EVEMT_INVALID_TIME: `You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`,
-            COMMAND_EVEMT_INVALID_TIME: `이벤트에는 적절한 시간을 지정해야 합니다. 다음의 형식을 사용해주십시오 \`HH:MM\` 24시간 형식입니다. 오전, 오후는 사용하지 않습니다`,
+            COMMAND_EVEMT_INVALID_TIME: `이벤트에는 시간을 지정해야 합니다. 다음의 형식을 사용해주십시오 \`HH:MM\` 24시간 형식입니다. 오전, 오후는 사용하지 않습니다`,
             //COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`,
             COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `과거 날자에 이벤트를 만들 수 없습니다. ${eventDATE}는 ${nowDATE} 보다 이전입니다`,
             //COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` created for ${eventDate}`,
             COMMAND_EVENT_CREATED: (eventName, eventDate) => `\`${eventName}\` 이벤트가 ${eventDate}에 설정되었습니다`,
             //COMMAND_EVENT_NO_CREATE: `I couldn't set that event, please try again.`,
             COMMAND_EVENT_NO_CREATE: `이벤트 설정이 실패하였습니다. 다시 시도해주십시오`,
-            COMMAND_EVENT_TOO_BIG:(charCount) => `Sorry, but either your event's name or message is too big. Please trim it down by at least ${charCount} characters.`,
+            //COMMAND_EVENT_TOO_BIG:(charCount) => `Sorry, but either your event's name or message is too big. Please trim it down by at least ${charCount} characters.`,
             COMMAND_EVENT_TOO_BIG:(charCount) => `죄송합니다만 이벤트 이름이나 메시지가 너무 깁니다. 적어도 ${charCount} 글자는 짧게 해주셔야 합니다.`,
 
             // Event Command (View)
@@ -437,7 +437,7 @@ module.exports = class extends Language {
                             //"--repeatDay <schedule>": "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
                             "--repeatDay <schedule>": "0,0,0,0,0 형식으로 지정된 날자 이후에 반복됩니다",
                             //"--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
-                            "--channel <channelName>": "이벤트가 안내할 채널을 설정합니다",
+                            "--channel <channelName>": "이벤트를 안내할 채널을 설정합니다",
                             //"--countdown": "Adds a countdown to when your event will trigger."
                             "--countdown": "이벤트가 시작되는 카운트다운을 설정합니다"
                         }
@@ -474,7 +474,6 @@ module.exports = class extends Language {
             // Faction Command
             //COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `Invalid faction, usage is \`${prefix}${usage}\``,
             COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `잘못된 팩션입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
-            COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# ${searchName} 팩션에 소속된 캐릭터들 입니다 # \n${charString}`,
             //COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# ${searchName} 팩션에 소속된 캐릭터들 입니다 # \n${charString}`,
             COMMAND_FACTION_HELP: {
@@ -586,7 +585,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';help [command]',
                         args: {
-                            "command": "The command you want to look up info on."
+                            //"command": "The command you want to look up info on."
                             "command": "자세한 정보를 알고 싶은 명령어."
                         }
                     }
@@ -603,7 +602,7 @@ module.exports = class extends Language {
                     //"Invite me": "Invite the bot http://swgohbot.com/invite",
                     "Invite me": "이 로봇을 초대하세요 http://swgohbot.com/invite",
                     //"Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is https://discord.gg/FfwGvhr",
-                    "Support Server": "질문이 있거나, 도움을 주고 싶거나 혹은 그냥 들려보고 싶은 경우 지원 서버는 여기로 방문하세요 https://discord.gg/FfwGvhr",
+                    "Support Server": "질문이 있거나, 도움을 주고 싶거나 혹은 그냥 들려보고 싶은 경우 지원 서버는 여기에 있습니다 https://discord.gg/FfwGvhr",
                     //"Support the Bot": "The bot's code is on github https://github.com/jmiln/SWGoHBot, and is open to contributions. \n\nI also have a Patreon https://www.patreon.com/swgohbot if you're interested."
                     "Support the Bot": "로봇의 원본 소스는 github에 있습니다 https://github.com/jmiln/SWGoHBot, 도움은 언제나 환영합니다. \n\n혹시 관심이 있으시면 patreon도 들려보세요 https://www.patreon.com/swgohbot."
                 }
@@ -714,7 +713,7 @@ module.exports = class extends Language {
 
             // MyArena Command
             //COMMAND_MYARENA_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
-            COMMAND_MYARENA_NO_USER: (user) => `죄송하지만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
+            COMMAND_MYARENA_NO_USER: (user) => `죄송합니다만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
             //COMMAND_MYARENA_NO_CHAR: 'Something went wrong, I could not get your characters.',
             COMMAND_MYARENA_NO_CHAR: '문제가 생겼습니다. 캐릭터 자료를 가져올 수가 없습니다.',
             //COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rank: ${rank})`,
@@ -734,7 +733,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';myarena [user]',
                         args: {
-                            "user": "The person you're checking. (me | userID | mention)"
+                            //"user": "The person you're checking. (me | userID | mention)"
                             "user": "확인하고 싶은 사용자. (me | userID | mention)"
                         }
                     }
@@ -743,7 +742,7 @@ module.exports = class extends Language {
 
             // MyProfile Command
             //COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
-            COMMAND_MYPROFILE_NO_USER: (user) => `죄송하지만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
+            COMMAND_MYPROFILE_NO_USER: (user) => `죄송합니다만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
             //COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}의 프로파일 (${allyCode})`,
             //COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
@@ -790,9 +789,9 @@ module.exports = class extends Language {
             //COMMAND_NICKNAME_SUCCESS: `I have changed my nickname.`,
             COMMAND_NICKNAME_SUCCESS: `별명을 바꿨습니다.`,
             //COMMAND_NICKNAME_FAILURE: `Sorry, but I don't have permission to change that.`,
-            COMMAND_NICKNAME_FAILURE: `죄송하지만 별명을 바꿀 권한이 없습니다.`,
+            COMMAND_NICKNAME_FAILURE: `죄송합니다만 별명을 바꿀 권한이 없습니다.`,
             //COMMAND_NICKNAME_TOO_LONG: 'Sorry, but a name can only contain up to 32 characters.',
-            COMMAND_NICKNAME_TOO_LONG: '죄송하지만 이름은 32자 이내여야 합니다.',
+            COMMAND_NICKNAME_TOO_LONG: '죄송합니다만 이름은 32자 이내여야 합니다.',
             COMMAND_NICKNAME_HELP: {
                 //description: "Changes the bot's nickname on the server.",
                 description: "서버에서 사용하는 로봇의 별명을 변경합니다.",
@@ -813,7 +812,7 @@ module.exports = class extends Language {
             //COMMAND_POLL_NO_ARG: 'You need to provide either an option to vote on, or an action (create/view/etc).',
             COMMAND_POLL_NO_ARG: '투표하기 위한 선택지를 입력하거나, 명령(create/view/etc)을 입력하십시오.',
             //COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
-            COMMAND_POLL_ALREADY_RUNNING: "죄송하지만 한번에 하나의 투표만 가능합니다. 현재 진행중인 투표를 먼저 종료하십시오.",
+            COMMAND_POLL_ALREADY_RUNNING: "죄송합니다만 한번에 하나의 투표만 가능합니다. 현재 진행중인 투표를 먼저 종료하십시오.",
             //COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
             COMMAND_POLL_MISSING_QUESTION: "무엇을 투표할지 지정하여야 합니다.",
             //COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
@@ -860,7 +859,7 @@ module.exports = class extends Language {
                         actionDesc: '원하는 선택지에 투표합니다',
                         usage: ';poll <choice>',
                         args: {
-                            "choice": "The option that you choose."
+                            //"choice": "The option that you choose."
                             "choice": "당신이 고른 선택지"
                         }
                     },
@@ -935,7 +934,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';randomchar [numberOfChars]',
                         args: {
-                            "numberOfChars": "The number of characters that you want chosen"
+                            //"numberOfChars": "The number of characters that you want chosen"
                             "numberOfChars": "랜덤하게 보여줄 캐릭터의 숫자"
                         }
                     }
@@ -1103,7 +1102,7 @@ module.exports = class extends Language {
                     },
                     {
                         action: "adminRole",
-                        actionDesc: 'The role that you want to be able to modify bot settings or set up events',
+                        //actionDesc: 'The role that you want to be able to modify bot settings or set up events',
                         actionDesc: '로봇 설정을 변경하거나 이벤트 설정을 하기 위한 역할',
                         usage: ';setconf adminRole <add|remove> <role>',
                         args: {
@@ -1159,7 +1158,7 @@ module.exports = class extends Language {
                     {
                         action: "timezone",
                         //actionDesc: 'Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.',
-                        actionDesc: '시간 관련한 모든 명령어가 사용할 타임존을 설정합니다. 타임존 목록이 필요한 경우 다음을 확인하십시오 https://goo.gl/Vqwe49.',
+                        actionDesc: '시간 관련한 모든 명령어에 적용되는 타임존을 설정합니다. 타임존 목록이 필요한 경우 다음을 확인하십시오 https://goo.gl/Vqwe49.',
                         usage: ';setconf timezone <timezone>',
                         args: {}
                     },
@@ -1192,14 +1191,14 @@ module.exports = class extends Language {
                     {
                         action: "language",
                         //actionDesc: 'Set the bot to use any supported language for the command output.',
-                        actionDesc: '명령어의 결과로 사용될 언어를 지정합니다.',
+                        actionDesc: '명령어의 결과가 표시될 언어를 지정합니다.',
                         usage: ';setconf language <lang>',
                         args: {}
                     },
                     {
                         action: "swgohLanguage",
                         //actionDesc: 'Sets the bot to use any supported language for the game data output.',
-                        actionDesc: '게임 자료의 결과로 사용될 언어를 지정합니다.',
+                        actionDesc: '게임 자료의 결과가 표시될 언어를 지정합니다.',
                         usage: ';setconf swgohLanguage <lang>',
                         args: {}
                     },
@@ -1224,7 +1223,7 @@ module.exports = class extends Language {
             //COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
             COMMAND_SHARDTIMES_INVALID_TIMEZONE: `잘못된 타임존입니다. 다음 사이트를 확인하십시오 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \n원하는 항목을 찾고, TZ 칼럼에 있는 내용을 입력하십시오`,
             //COMMAND_SHARDTIMES_USER_ADDED: `User successfully added!`,
-            COMMAND_SHARDTIMES_USER_ADDED: `사용자 추가가 성공하였습니다!`,
+            COMMAND_SHARDTIMES_USER_ADDED: `사용자 추가에 성공하였습니다!`,
             //COMMAND_SHARDTIMES_USER_NOT_ADDED: `Something went wrong when with adding this user. Please try again.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: `사용자 추가에 문제가 생겼습니다. 다시 시도해주십시오.`,
             //COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Sorry, but you can only remove yourself unless you have an admin role.`,
@@ -1234,7 +1233,7 @@ module.exports = class extends Language {
             //COMMAND_SHARDTIMES_REM_FAIL: `Something went wrong when removing this user. Please try again.`,
             COMMAND_SHARDTIMES_REM_FAIL: `사용자 제거에 문제가 생겼습니다. 다시 시도해주십시오.`,
             //COMMAND_SHARDTIMES_REM_MISSING: `Sorry, but that user does not seem to be here.`,
-            COMMAND_SHARDTIMES_REM_MISSING: `죄송하지만 지정한 사용자가 없습니다.`,
+            COMMAND_SHARDTIMES_REM_MISSING: `죄송합니다만 지정한 사용자가 없습니다.`,
             //COMMAND_SHARDTIMES_SHARD_HEADER: `Shard payouts in:`,
             COMMAND_SHARDTIMES_SHARD_HEADER: `아레나 보상시간:`,
             COMMAND_SHARDTIMES_HELP: {
@@ -1377,7 +1376,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';time [timezone]',
                         args: {
-                            "timezone": "Optional if you want to see what time it is elsewhere"
+                            //"timezone": "Optional if you want to see what time it is elsewhere"
                             "timezone": "다른 지역의 시간을 알고 싶을 때 지정합니다"
                         }
                     }
@@ -1427,7 +1426,7 @@ module.exports = class extends Language {
 
             // Zetas Command
             //COMMAND_ZETA_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
-            COMMAND_ZETA_NO_USER: `죄송하지만 사용자를 찾을 수 없습니다.`,
+            COMMAND_ZETA_NO_USER: `죄송합니다만 사용자를 찾을 수 없습니다.`,
             //COMMAND_ZETA_NO_ZETAS: 'You don\'t seem to have any abilities zetad.',
             COMMAND_ZETA_NO_ZETAS: '제타를 준 캐릭터가 없습니다.',
             //COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${'-'.repeat(30)}\``,
@@ -1441,7 +1440,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';zeta [user]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            //"user": "The person you're adding. (me | userID | mention)"
                             "user": "제타를 확인하려는 사용자. (me | userID | mention)"
                         }
                     }
