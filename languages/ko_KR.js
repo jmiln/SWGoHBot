@@ -716,7 +716,7 @@ module.exports = class extends Language {
             //COMMAND_MYARENA_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
             COMMAND_MYARENA_NO_USER: (user) => `죄송하지만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
             //COMMAND_MYARENA_NO_CHAR: 'Something went wrong, I could not get your characters.',
-            COMMAND_MYARENA_NO_CHAR: '뭔가 문제가 생겨서 캐릭터 자료를 가져올 수가 없습니다.',
+            COMMAND_MYARENA_NO_CHAR: '문제가 생겼습니다. 캐릭터 자료를 가져올 수가 없습니다.',
             //COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rank: ${rank})`,
             COMMAND_MYARENA_ARENA: (rank) => `분대 아레나 (순위: ${rank})`,
             //COMMAND_MYARENA_FLEET: (rank) => `Ship Arena (Rank: ${rank})`,
@@ -882,39 +882,53 @@ module.exports = class extends Language {
             },
 
             // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+            //COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `잘못된 레이드 입니다. 사용법은 다음과 같습니다 \`${prefix}${help.usage}\`\n**예:** \`${prefix}${help.example}\``,
+            //COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `잘못된 레이드 입니다. 사용법은 다음과 같습니다 \`${prefix}${help.usage}\`\n**예:** \`${prefix}${help.example}\``,
+            //COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `잘못된 페이즈 입니다. 사용법은 다음과 같습니다 \`${prefix}${help.usage}\`\n**예:** \`${prefix}${help.example}\``,
+            //COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `잘못된 페이즈 입니다. 사용법은 다음과 같습니다 \`${prefix}${help.usage}\`\n**예:** \`${prefix}${help.example}\``,
             COMMAND_RAIDTEAMS_PHASE_SOLO: 'Solo',
             COMMAND_RAIDTEAMS_PHASE_ONE: 'Phase 1',
             COMMAND_RAIDTEAMS_PHASE_TWO: 'Phase 2',
             COMMAND_RAIDTEAMS_PHASE_THREE: 'Phase 3',
             COMMAND_RAIDTEAMS_PHASE_FOUR: 'Phase 4',
-            COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Characters:** \`${charList}\``,
-            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Showing teams for ${currentPhase}`,
-            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `Cannot find any teams under \`${currentPhase}\``,
-            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Showing teams for ${currentPhase}\n\n`,
-            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Characters: ${charList}\n`,
+            //COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Characters:** \`${charList}\``,
+            COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**캐릭터:** \`${charList}\``,
+            //COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Showing teams for ${currentPhase}`,
+            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `S${currentPhase}에 사용되는 팀 목록`,
+            //COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `Cannot find any teams under \`${currentPhase}\``,
+            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `\`${currentPhase}\`에 맞는 팀을 찾을 수 없습니다`,
+            //COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Showing teams for ${currentPhase}\n\n`,
+            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* ${currentPhase}에 사용되는 팀 목록\n\n`,
+            //COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Characters: ${charList}\n`,
+            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* 캐릭터: ${charList}\n`,
             COMMAND_RAIDTEAMS_HELP: {
-                description: "Shows some teams that work well for each raid.",
+                //description: "Shows some teams that work well for each raid.",
+                description: "각 레이드에서 유용한 팀 목록을 보여줍니다.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';raidteams <raid> <phase>',
                         args: {
-                            "raid": "The raid that you want to see teams for. (aat|pit|sith)",
-                            "phase": "The phase of the raid you want to see. (p1|p2|p3|p4|solo)"
+                            //"raid": "The raid that you want to see teams for. (aat|pit|sith)",
+                            "raid": "유용한 팀 목록을 보고 싶은 레이드 이름. (aat|pit|sith)",
+                            //"phase": "The phase of the raid you want to see. (p1|p2|p3|p4|solo)"
+                            "phase": "레이드에서 유용한 팀 목록을 보고 싶은 페이즈. (p1|p2|p3|p4|solo)"
                         }
                     }
                 ]
             },
 
             // Randomchar Command
-            COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Sorry, but you need a number from 1-${maxChar} there.`,
+            //COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Sorry, but you need a number from 1-${maxChar} there.`,
+            COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `죄송합니다만, 1-${maxChar} 까지의 숫자를 사용해주십시오.`,
             COMMAND_RANDOMCHAR_HELP: {
-                description: "Picks up to 5 random characters to form a squad.",
+                //description: "Picks up to 5 random characters to form a squad.",
+                description: "팀을 구성하기 위한 캐릭터를 랜덤하게 보여줍니다.",
                 actions: [
                     {
                         action: "",
@@ -922,48 +936,67 @@ module.exports = class extends Language {
                         usage: ';randomchar [numberOfChars]',
                         args: {
                             "numberOfChars": "The number of characters that you want chosen"
+                            "numberOfChars": "랜덤하게 보여줄 캐릭터의 숫자"
                         }
                     }
                 ]
             },
 
             // Register Command
-            COMMAND_REGISTER_MISSING_ARGS: 'You need to supply a userID (mention or ID), and an ally code',
-            COMMAND_REGISTER_MISSING_ALLY: 'You need to enter an ally code to link your account to.',
-            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
-            COMMAND_REGISTER_PLEASE_WAIT: 'Please wait while I sync your data.',
-            COMMAND_REGISTER_FAILURE: 'Registration failed, please make sure your ally code is correct.',
-            COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
-            COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
-            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
-            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,
+            //COMMAND_REGISTER_MISSING_ARGS: 'You need to supply a userID (mention or ID), and an ally code',
+            COMMAND_REGISTER_MISSING_ARGS: '사용자 아이디와 동맹 코드가 필요합니다',
+            //COMMAND_REGISTER_MISSING_ALLY: 'You need to enter an ally code to link your account to.',
+            COMMAND_REGISTER_MISSING_ALLY: '계정을 연동하려면 동맹 코드를 입력해야 합니다.',
+            //COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
+            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `죄송합니다만 ${allyCode} 는 유효한 동맹코드가 아닙니다`,
+            //COMMAND_REGISTER_PLEASE_WAIT: 'Please wait while I sync your data.',
+            COMMAND_REGISTER_PLEASE_WAIT: '계정 자료를 동기화 하는 동안 잠시 기다려주십시오.',
+            //COMMAND_REGISTER_FAILURE: 'Registration failed, please make sure your ally code is correct.',
+            COMMAND_REGISTER_FAILURE: '등록이 실패하였습니다. 동맹 코드가 맞는지 확인하여주십시오',
+            //COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
+            COMMAND_REGISTER_SUCCESS: (user) => ` \`${user}\` 등록이 성공하였습니다!`,
+            //COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
+            COMMAND_REGISTER_UPDATE_FAILURE: '문제가 생겼습니다. 동맹 코드가 맞는지 확인하여주십시오',
+            //COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
+            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `\`${user}\`에 대한 프로파일이 업데이트되었습니다.`,
+            //COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,
+            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `\`${guild}\`에 대한 길드가 업데이트되었습니다.`,
             COMMAND_REGISTER_HELP: {
-                description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
+                //description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
+                description: "사용자의 디스코드 아이디에 동맹 코드를 등록하고, SWGoH의 프로파일과 동기화합니다.",
                 actions: [
                     {
                         action: "Add",
-                        actionDesc: 'Link your Discord profile to a SWGoH account',
+                        //actionDesc: 'Link your Discord profile to a SWGoH account',
+                        actionDesc: '사용자의 디스코드 아이디에 SWGoH 계정을 등록합니다',
                         usage: ';register add <user> <allyCode>',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "allyCode": "Your ally code from in-game."
+                            //"user": "The person you're adding. (me | userID | mention)",
+                            "user": "등록하고 싶은 사용자. (me | userID | mention)",
+                            //"allyCode": "Your ally code from in-game."
+                            "allyCode": "게임 내에서 사용되는 동맹코드."
                         }
                     },
                     {
                         action: "Update",
-                        actionDesc: 'Update/ resync your SWGoH data.',
+                        //actionDesc: 'Update/ resync your SWGoH data.',
+                        actionDesc: '사용자의 SWGoH 자료를 업데이트하거나 재동기화 합니다.',
                         usage: ';register update <user> [-guild]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "-guild": "Tell it to pull/ update your whole guild (-g | -guild | -guilds)"
+                            //"user": "The person you're adding. (me | userID | mention)",
+                            "user": "연동하고 싶은 사용자. (me | userID | mention)",
+                            //"-guild": "Tell it to pull/ update your whole guild (-g | -guild | -guilds)"
+                            "-guild": "사용자의 길드 전체에 대해서 업데이트 (-g | -guild | -guilds)"
                         }
                     },
                     {
                         action: "Remove",
-                        actionDesc: 'Unlink your Discord profile from a SWGoH account',
+                        //actionDesc: 'Unlink your Discord profile from a SWGoH account',
+                        actionDesc: '디스코드 아이디와 SWGoH 계정의 연동을 해제합니다',
                         usage: ';register remove <user>',
                         args: {
-                            "user": "You, this is to unlink it if you have the wrong ally code. (me | userID | mention)"
+                            //"user": "You, this is to unlink it if you have the wrong ally code. (me | userID | mention)"
+                            "user": "계정 연동을 해제하려는 사용자. (me | userID | mention)"
                         }
                     }
                 ]
@@ -972,18 +1005,23 @@ module.exports = class extends Language {
 
 
             // Reload Command
-            COMMAND_RELOAD_INVALID_CMD: (cmd) => `I cannot find the command: ${cmd}`,
-            COMMAND_RELOAD_SUCCESS: (cmd) => `Successfully reloaded: ${cmd}`,
-            COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Command reload failed: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
+            //COMMAND_RELOAD_INVALID_CMD: (cmd) => `I cannot find the command: ${cmd}`,
+            COMMAND_RELOAD_INVALID_CMD: (cmd) => `명령어를 찾을 수 없습니다: ${cmd}`,
+            //COMMAND_RELOAD_SUCCESS: (cmd) => `Successfully reloaded: ${cmd}`,
+            COMMAND_RELOAD_SUCCESS: (cmd) => `성공적으로 리로드(reload)되었습니다: ${cmd}`,
+            //COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Command reload failed: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
+            COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `리로드(reload)가 실패하였습니다: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
             COMMAND_RELOAD_HELP: {
-                description: "Reloads the command file, if it's been updated or modified.",
+                //description: "Reloads the command file, if it's been updated or modified.",
+                description: "명령어 파일이 수정된 경우 리로드(reload)합니다.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';reload <command>',
                         args: {
-                            "command": "The command you're wanting to reload."
+                            //"command": "The command you're wanting to reload."
+                            "command": "리로드(reload)하려는 명령어."
                         }
                     }
                 ]
