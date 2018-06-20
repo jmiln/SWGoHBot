@@ -1008,12 +1008,12 @@ module.exports = class extends Language {
             //COMMAND_RELOAD_INVALID_CMD: (cmd) => `I cannot find the command: ${cmd}`,
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `명령어를 찾을 수 없습니다: ${cmd}`,
             //COMMAND_RELOAD_SUCCESS: (cmd) => `Successfully reloaded: ${cmd}`,
-            COMMAND_RELOAD_SUCCESS: (cmd) => `성공적으로 리로드(reload)되었습니다: ${cmd}`,
+            COMMAND_RELOAD_SUCCESS: (cmd) => `명령어를 다시 읽어들이는데 성공하였습니다: ${cmd}`,
             //COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Command reload failed: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
-            COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `리로드(reload)가 실패하였습니다: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
+            COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `명령어를 다시 읽어들이는데 실패하였습니다: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
             COMMAND_RELOAD_HELP: {
                 //description: "Reloads the command file, if it's been updated or modified.",
-                description: "명령어 파일이 수정된 경우 리로드(reload)합니다.",
+                description: "명령어 파일이 수정된 경우 다시 읽어들입니다.",
                 actions: [
                     {
                         action: "",
@@ -1021,7 +1021,7 @@ module.exports = class extends Language {
                         usage: ';reload <command>',
                         args: {
                             //"command": "The command you're wanting to reload."
-                            "command": "리로드(reload)하려는 명령어."
+                            "command": "다시 읽어들이려는 명령어."
                         }
                     }
                 ]
@@ -1029,14 +1029,16 @@ module.exports = class extends Language {
 
             // Reload Data Command
             COMMAND_RELOADDATA_HELP: {
-                description: "Reloads the selected file(s).",
+                //description: "Reloads the selected file(s).",
+                description: "지정한 파일(들)을 다시 읽어들입니다.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';reloaddata <option>',
                         args: {
-                            "option": "What you're wanting to reload ( commands | data | events | function )."
+                            //"option": "What you're wanting to reload ( commands | data | events | function )."
+                            "option": "다시 읽어들이고 싶은 내용 ( commands | data | events | function )."
                         }
                     }
                 ]
