@@ -362,7 +362,7 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `Ungueltige Fraktion, das Kommando lautet: \`${prefix}${usage}\``,
+            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Ungueltige Fraktion, das Kommando lautet: \`${prefix}faction <Fraktion>\``,
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Charakter gehoert zur Fraktion: ${searchName} # \n${charString}`,
             COMMAND_FACTION_HELP: {
                 description: "Zeigt die Liste der Charaktere der spezifizierten Fraktion an.",
