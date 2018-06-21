@@ -557,6 +557,44 @@ module.exports = class extends Language {
                 ]
             },
 
+             // MyProfile Command
+             COMMAND_MYPROFILE_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden fuer ${user}. Bitte sicherstellen dass der Account synchronisiert ist`,
+             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
+             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arenadaten vom: ${date}`,
+             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}`,
+             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
+                 header: `Charaktere (${charList.length})`,
+                 stats: [
+                     `Char GM  :: ${gpChar}`,
+                     `7 Sterne   :: ${charList.filter(c => c.rarity === 7).length}`,
+                     `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
+                     `Ausruestungsstufe 12  :: ${charList.filter(c => c.gear === 12).length}`,
+                     `Ausruestungsstufe 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                     `Zetas    :: ${zetaCount}`
+                 ].join('\n')
+             }),
+             COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
+                 header: `Flotten (${shipList.length})`,
+                 stats: [
+                     `Flotten GM :: ${gpShip}`,
+                     `7 Sterne  :: ${shipList.filter(s => s.rarity === 7).length}`,
+                     `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
+                 ].join('\n')
+             }),
+             COMMAND_MYPROFILE_HELP: {
+                 description: "Zeigt allgemeine Werte eines Spielers.",
+                 actions: [
+                     {
+                         action: "",
+                         actionDesc: '',
+                         usage: ';myprofile [user]',
+                         args: {
+                             "user": "Die Person die du sehen moechtest. (me | userID | mention)"
+                         }
+                     }
+                 ]
+             },
+
             // Nickname Command
             COMMAND_NICKNAME_SUCCESS: `Ich habe meinen nickname geaendert.`,
             COMMAND_NICKNAME_FAILURE: `Entschuldige, aber ich habe keine Berechtigung das zu aendern.`,
