@@ -499,8 +499,8 @@ module.exports = class extends Language {
             COMMAND_MODS_UNKNOWN: "Unbekannt",
 
             // Mods Command
-            COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
+            COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <CharakterName>\``,
+            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix} mods <CharakterName>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
