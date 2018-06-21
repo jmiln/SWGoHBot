@@ -956,8 +956,8 @@ module.exports = class extends Language {
             },
 
             // Ships Command
-            COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Benoetigt Charakter oder Schiff. Der Befehl lautet: \`${prefix}${usage}\``,
-            COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter oder Schiff. Der Befehl lautet: \`${prefix}${usage}\``,
+            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `Benoetigt Charakter oder Schiff. Der Befehl lautet: \`${prefix}ship <Schiff|Pilot\``,
+            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter oder Schiff. Der Befehl lautet: \`${prefix}ship <Schiff|Pilot\``,
             COMMAND_SHIPS_TOO_MANY: `Es wurde mehr als ein Ergebnis gefunden. Bitte spezifizieren Sie Ihre Suche genauer.`,
             COMMAND_SHIPS_CREW: 'Crew',
             COMMAND_SHIPS_FACTIONS: 'Fraktionen',
