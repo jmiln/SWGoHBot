@@ -817,7 +817,7 @@ module.exports = class extends Language {
                     {
                         action: "prefix",
                         actionDesc: 'Setzt den Praefix fuer den Server',
-                        usage: ';setconf prefix <prefix>',
+                        usage: ';setconf prefix <Praefix>',
                         args: {}
                     },
                     {
