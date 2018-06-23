@@ -123,8 +123,8 @@ module.exports = class extends Language {
             },
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}${usage}\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter. Verwendung \`${prefix}${usage}\``,
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Verwendung \`${prefix}abilities <CharakterName>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Abklingzeit Faehigkeit:** ${aCooldown}\n`,
             COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Faehigkeiten-Typ:** ${aType}     **Max Faehigkeit Mat benoetigt:** ${mat}\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Faehigkeiten-Typ: ${type}\n* Max Faehigkeit Mat benoetigt: ${tier}\n* Beschreibung: ${aDesc}\n\n`,
@@ -217,8 +217,8 @@ module.exports = class extends Language {
             },
 
             // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix, usage) => `Benoetigt Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
+            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Benoetigt Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [SternLvl]\``,
+            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [SternLvl]\``,
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### Komplette benoetigte Ausruestung ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: 'Diese Ausruestung wurde nicht eingefuegt',
             COMMAND_CHARACTERGEAR_HELP: {
@@ -362,7 +362,7 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `Ungueltige Fraktion, das Kommando lautet: \`${prefix}${usage}\``,
+            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Ungueltige Fraktion, das Kommando lautet: \`${prefix}faction <Fraktion>\``,
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Charakter gehoert zur Fraktion: ${searchName} # \n${charString}`,
             COMMAND_FACTION_HELP: {
                 description: "Zeigt die Liste der Charaktere der spezifizierten Fraktion an.",
@@ -499,8 +499,8 @@ module.exports = class extends Language {
             COMMAND_MODS_UNKNOWN: "Unbekannt",
 
             // Mods Command
-            COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}${usage}\``,
+            COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <CharakterName>\``,
+            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix} mods <CharakterName>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
@@ -556,6 +556,44 @@ module.exports = class extends Language {
                     }
                 ]
             },
+
+             // MyProfile Command
+             COMMAND_MYPROFILE_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden fuer ${user}. Bitte sicherstellen dass der Account synchronisiert ist`,
+             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
+             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arenadaten vom: ${date}`,
+             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}`,
+             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
+                 header: `Charaktere (${charList.length})`,
+                 stats: [
+                     `Char GM  :: ${gpChar}`,
+                     `7 Sterne   :: ${charList.filter(c => c.rarity === 7).length}`,
+                     `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
+                     `Ausruestungsstufe 12  :: ${charList.filter(c => c.gear === 12).length}`,
+                     `Ausruestungsstufe 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                     `Zetas    :: ${zetaCount}`
+                 ].join('\n')
+             }),
+             COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
+                 header: `Flotten (${shipList.length})`,
+                 stats: [
+                     `Flotten GM :: ${gpShip}`,
+                     `7 Sterne  :: ${shipList.filter(s => s.rarity === 7).length}`,
+                     `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
+                 ].join('\n')
+             }),
+             COMMAND_MYPROFILE_HELP: {
+                 description: "Zeigt allgemeine Werte eines Spielers.",
+                 actions: [
+                     {
+                         action: "",
+                         actionDesc: '',
+                         usage: ';myprofile [user]',
+                         args: {
+                             "user": "Die Person die du sehen moechtest. (me | userID | mention)"
+                         }
+                     }
+                 ]
+             },
 
             // Nickname Command
             COMMAND_NICKNAME_SUCCESS: `Ich habe meinen nickname geaendert.`,
@@ -750,7 +788,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anfuehrer dieses Servers hat die Konfiguration nicht eingestellt.`,
             COMMAND_SETCONF_MISSING_OPTION: `Du musst eine Konfig-Option auswaehlen zum aendern.`,
             COMMAND_SETCONF_MISSING_VALUE: `Zum aendern dieser Option musst du einen Wert angeben.`,
-            COMMAND_SETCONF_ARRAY_MISSING_OPT: 'Du mussr `add` oder `remove` verwenden.',
+            COMMAND_SETCONF_ARRAY_MISSING_OPT: 'Du musst `add` oder `remove` verwenden.',
             COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Entschuldige, aber \`${value}\` ist nicht gesetzt in \`${key}\`.`,
             COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` wurde ${action} dein \`${key}\`.`,
             COMMAND_SETCONF_NO_KEY: (prefix) => `Dieser Wert ist nicht in der Konfiguration. Siehe "${prefix}showconf", oder "${prefix}setconf help" fuer eine Liste`,
@@ -760,7 +798,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Du musst eine Rolle definieren ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Entschuldige, aber ich kann die Rolle nicht finden ${roleName}. Bitte erneut versuchen.`,
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Entschuldige, aber ${roleName} ist bereits vorhanden.`,
-           
+            COMMAND_SETCONF_PREFIX_TOO_LONG: 'Entschuldigung, aber es duerfen keine Leerzeichen im Praefix verwendet werden',
             COMMAND_SETCONF_WELCOME_NEED_CHAN: `Entschuldige, aber der Ankuendigungskanal ist nicht definiert oder nicht mehr gueltig.\nSetze \`announceChan\` auf einen gueltigen Kanal und versuche es erneut\``,
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an`,
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
@@ -779,7 +817,7 @@ module.exports = class extends Language {
                     {
                         action: "prefix",
                         actionDesc: 'Setzt den Praefix fuer den Server',
-                        usage: ';setconf prefix <prefix>',
+                        usage: ';setconf prefix <Praefix>',
                         args: {}
                     },
                     {
@@ -918,8 +956,8 @@ module.exports = class extends Language {
             },
 
             // Ships Command
-            COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Benoetigt Charakter oder Schiff. Der Befehl lautet: \`${prefix}${usage}\``,
-            COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `Ungueltiger Charakter oder Schiff. Der Befehl lautet: \`${prefix}${usage}\``,
+            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `Benoetigt Charakter oder Schiff. Der Befehl lautet: \`${prefix}ship <Schiff|Pilot\``,
+            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter oder Schiff. Der Befehl lautet: \`${prefix}ship <Schiff|Pilot\``,
             COMMAND_SHIPS_TOO_MANY: `Es wurde mehr als ein Ergebnis gefunden. Bitte spezifizieren Sie Ihre Suche genauer.`,
             COMMAND_SHIPS_CREW: 'Crew',
             COMMAND_SHIPS_FACTIONS: 'Fraktionen',
