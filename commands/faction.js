@@ -29,7 +29,7 @@ class Faction extends Command {
         const factionChars = [];
 
         if (searchName === "") {
-            return message.channel.send(message.language.get('COMMAND_FACTION_INVALID_CHAR', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_FACTION_INVALID_CHAR', message.guildSettings.prefix));
         }
         for (var ix = 0; ix < charList.length; ix++) {
             var character = charList[ix];
@@ -60,7 +60,7 @@ class Faction extends Command {
                 return message.channel.send(message.language.get('COMMAND_FACTION_CODE_OUT', searchName.toProperCase(),charString), { code: 'md' });
             }
         } else {
-            return message.channel.send(message.language.get('COMMAND_FACTION_INVALID_CHAR', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_FACTION_INVALID_CHAR', message.guildSettings.prefix));
         }
     }
 }

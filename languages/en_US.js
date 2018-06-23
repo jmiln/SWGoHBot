@@ -123,8 +123,8 @@ module.exports = class extends Language {
             },
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}abilities <characterName>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
             COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}     **Max ability mat needed:**  ${mat}\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Ability type: ${type}\n* Max ability mat needed: ${tier}\n* Description: ${aDesc}\n\n`,
@@ -217,8 +217,8 @@ module.exports = class extends Language {
             },
 
             // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
+            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [starLvl]\``,
+            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [starLvl]\``,
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: 'This gear has not been entered yet',
             COMMAND_CHARACTERGEAR_HELP: {
@@ -362,7 +362,7 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `Invalid faction, usage is \`${prefix}${usage}\``,
+            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Invalid faction, usage is \`${prefix}faction <faction>\``,
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
             COMMAND_FACTION_HELP: {
                 description: "Shows the list of characters in the specified faction.",
@@ -499,8 +499,8 @@ module.exports = class extends Language {
             COMMAND_MODS_UNKNOWN: "Unknown",
 
             // Mods Command
-            COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `Need a character. Usage is \`${prefix}${usage}\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `Invalid character. Usage is \`${prefix}${usage}\``,
+            COMMAND_MODS_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}mods <characterName>\``,
+            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}mods <characterName>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Square:   ${square}\`\n\`Arrow:    ${arrow}\`\n\`Diamond:  ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangle: ${triangle}\`\n\`Circle:   ${circle}\`\n\`Cross:    ${cross}\`\n`,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
@@ -550,6 +550,44 @@ module.exports = class extends Language {
                         action: "",
                         actionDesc: '',
                         usage: ';myarena [user]',
+                        args: {
+                            "user": "The person you're checking. (me | userID | mention)"
+                        }
+                    }
+                ]
+            },
+
+            // MyProfile Command
+            COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
+            COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
+            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
+            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Guild:** ${guildName}\n**Level:** ${level}\n**Arena rank:** ${charRank}\n**Ship rank:** ${shipRank}`,
+            COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
+                header: `Characters (${charList.length})`,
+                stats: [
+                    `Char GP  :: ${gpChar}`,
+                    `7 Star   :: ${charList.filter(c => c.rarity === 7).length}`,
+                    `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
+                    `Gear 12  :: ${charList.filter(c => c.gear === 12).length}`,
+                    `Gear 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                    `Zetas    :: ${zetaCount}`
+                ].join('\n')
+            }),
+            COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
+                header: `Ships (${shipList.length})`,
+                stats: [
+                    `Ship GP :: ${gpShip}`,
+                    `7 Star  :: ${shipList.filter(s => s.rarity === 7).length}`,
+                    `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
+                ].join('\n')
+            }),
+            COMMAND_MYPROFILE_HELP: {
+                description: "Show user's general stats.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';myprofile [user]',
                         args: {
                             "user": "The person you're checking. (me | userID | mention)"
                         }
@@ -760,7 +798,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `You must specify a role to ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Sorry, but I cannot find the role ${roleName}. Please try again.`,
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Sorry, but ${roleName} is already there.`,
-            
+            COMMAND_SETCONF_PREFIX_TOO_LONG: 'Sorry, but you cannot have spaces in your prefix',
             COMMAND_SETCONF_WELCOME_NEED_CHAN: `Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``,
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,
@@ -918,8 +956,8 @@ module.exports = class extends Language {
             },
 
             // Ships Command
-            COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `Need a character or ship. Usage is \`${prefix}${usage}\``,
-            COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `Invalid character or ship. Usage is \`${prefix}${usage}\``,
+            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `Need a character or ship. Usage is \`${prefix}ship <ship|pilot>\``,
+            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `Invalid character or ship. Usage is \`${prefix}ship <ship|pilot>\``,
             COMMAND_SHIPS_TOO_MANY: `I found more than one result from that search. Please try to be more specific.`,
             COMMAND_SHIPS_CREW: 'Crew',
             COMMAND_SHIPS_FACTIONS: 'Factions',

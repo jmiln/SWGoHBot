@@ -3,30 +3,6 @@ require('moment-duration-format');
 // const {inspect} = require('util');
 const Command = require('../base/Command');
 
-
-exports.conf = {
-    enabled: true,
-    guildOnly: false,
-    aliases: ['shard'],
-    permLevel: 0,
-    permissions: ['EMBED_LINKS']
-};
-
-exports.help = {
-    name: 'shardtimes',
-    category: 'Misc',
-    description: 'Lists the time til payout of anyone registered.',
-    usage: `shardtimes add <me|userID|mention> <timezone> [flag/emoji]
-;shardtimes remove <me|userID|mention>
-;shardtimes [view]`,
-    example: `;shardtimes`,
-    extended: `\`\`\`asciidoc
-add     - Add a user to the list of names
-remove  - Remove a user from the list
-view    - View the list. Also works with no arg.\`\`\``
-};
-
-
 class Shardtimes extends Command {
     constructor(client) {
         super(client, {

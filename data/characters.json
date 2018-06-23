@@ -581,20 +581,20 @@
             }
         },
         "stats": {
-            "Power": 17523,
+            "Power": 17943,
             "Strength": 1027,
-            "Agility": 1072,
+            "Agility": 1112,
             "Intelligence": 583,
-            "Speed": 105,
-            "Physical Damage": 2648,
-            "Physical Critical Rating": 938,
+            "Speed": 117,
+            "Physical Damage": 2904,
+            "Physical Critical Rating": 1039,
             "Special Damage": 1464,
             "Special Critical Rating": 30,
-            "Armor Penetration": 129,
+            "Armor Penetration": 229,
             "Resistance Penetration": 0,
             "Potency": 23,
-            "Health": 23102,
-            "Armor": 285,
+            "Health": 27102,
+            "Armor": 288,
             "Resistance": 110,
             "Tenacity": 33,
             "Health Steal": 35,
@@ -32631,6 +32631,186 @@
             "Tenacity": 31,
             "Health Steal": 15,
             "Protection": 29,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Range Trooper",
+        "uniqueName": "RANGETROOPER",
+        "aliases": [
+            "Range Trooper"
+        ],
+        "nameVariant": [
+            "Range Trooper"
+        ],
+        "url": "https://swgoh.gg/characters/range-trooper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperranger.png",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Imperial Trooper",
+            "Support"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 2 Arakyd Droid Caller",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 2 SoroSuub Keypad",
+                "Mk 4 BlasTech Weapon Mod",
+                "Mk 3 Nubian Security Scanner",
+                "Mk 4 Loronar Power Cell",
+                "Mk 1 Chedak Comlink",
+                "Mk 6 Fabritech Data Pad"
+            ],
+            "Gear 4": [
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 5 BioTech Implant",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 6 BAW Armor Mod",
+                "Mk 4 Nubian Security Scanner"
+            ],
+            "Gear 5": [
+                "Mk 3 Nubian Security Scanner",
+                "Mk 4 Loronar Power Cell",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 6 BAW Armor Mod",
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 4 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 6": [
+                "Mk 4 Fabritech Data Pad",
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 Nubian Security Scanner",
+                "Mk 5 Nubian Design Tech"
+            ],
+            "Gear 7": [
+                "Mk 4 Nubian Design Tech",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 6 Merr-Sonn Shield Generator"
+            ],
+            "Gear 8": [
+                "Mk 4 Nubian Security Scanner",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 5 CEC Fusion Furnace"
+            ],
+            "Gear 9": [
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 9 BlasTech Weapon Mod",
+                "Mk 4 Chedak Comlink"
+            ],
+            "Gear 10": [
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 8 BioTech Implant"
+            ],
+            "Gear 11": [
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 6 A/KT Stun Gun"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Thermal Detonator",
+                "Mk 12 ArmaTek Stun Gun",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Take Aim": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy. This attack deals 30% more damage if Range Trooper is buffed.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Steady": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "All Empire allies gain Protection Up (40%) for 3 turns. All Imperial Trooper allies Recover 30% Protection and gain Retribution for 3 turns. Then, another random ally attacks and Range Trooper assists them.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Power In Numbers": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Range Trooper has +70% Tenacity while he is buffed. While Range Trooper is active, Imperial Trooper allies have +50% chance to call another buffed Imperial Trooper ally to Assist when they use an ability during their turn, doing 20% less damage.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 17368,
+            "Strength": 1335,
+            "Agility": 810,
+            "Intelligence": 857,
+            "Speed": 139,
+            "Physical Damage": 3166,
+            "Physical Critical Rating": 690,
+            "Special Damage": 2296,
+            "Special Critical Rating": 10,
+            "Armor Penetration": 139,
+            "Resistance Penetration": 15,
+            "Potency": 28,
+            "Health": 31730,
+            "Armor": 398,
+            "Resistance": 152,
+            "Tenacity": 42,
+            "Health Steal": 15,
+            "Protection": 33,
             "activation": 25
         }
     }

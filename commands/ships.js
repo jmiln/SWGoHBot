@@ -28,15 +28,15 @@ class Ships extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.get('COMMAND_SHIPS_NEED_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_SHIPS_NEED_CHARACTER', message.guildSettings.prefix));
         }
 
         // Find any characters that match that
         const ships = client.findChar(searchName, shipList);
         if (ships.length <= 0) {
-            return message.channel.send(message.language.get('COMMAND_SHIPS_INVALID_CHARACTER', config.prefix, this.help.usage)).then(msg => msg.delete(4000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_SHIPS_INVALID_CHARACTER', message.guildSettings.prefix));
         } else if (ships.length > 1) {
-            return message.channel.send(message.language.get('COMMAND_SHIPS_TOO_MANY')).then(msg => msg.delete(10000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_SHIPS_TOO_MANY'));
         }
 
         const ship = ships[0];
