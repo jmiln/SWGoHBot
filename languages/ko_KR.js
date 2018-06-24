@@ -31,28 +31,28 @@ const DAYSOFWEEK = {
 };
 const TIMES = {
     DAY: {
-        PLURAL: 'days',
-        SING: 'day',
-        SHORT_PLURAL: 'ds',
-        SHORT_SING: 'd'
+        PLURAL: '일',
+        SING: '일',
+        SHORT_PLURAL: '일',
+        SHORT_SING: '일'
     },
     HOUR: {
-        PLURAL: 'hours',
-        SING: 'hour',
-        SHORT_PLURAL: 'hrs',
-        SHORT_SING: 'hr'
+        PLURAL: '시간',
+        SING: '시간',
+        SHORT_PLURAL: '시간',
+        SHORT_SING: '시간'
     },
     MINUTE: {
-        PLURAL: 'minutes',
-        SING: 'minute',
-        SHORT_PLURAL: 'mins',
-        SHORT_SING: 'min'
+        PLURAL: '분',
+        SING: '분',
+        SHORT_PLURAL: '분',
+        SHORT_SING: '분'
     },
     SECOND: {
-        PLURAL: 'seconds',
-        SING: 'second',
-        SHORT_PLURAL: 'secs',
-        SHORT_SING: 'sec'
+        PLURAL: '초',
+        SING: '초',
+        SHORT_PLURAL: '초',
+        SHORT_SING: '초'
     }
 };
 
@@ -86,7 +86,7 @@ module.exports = class extends Language {
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `${character}에 대한 결과를 찾을 수 없습니다`,
             BASE_SWGOH_CHAR_LIST: (chars) => `검색 결과가 너무 많습니다. 검색어를 조금 더 자세히 지정해주십시오. \n가장 비슷한 결과는 다음과 같습니다.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: `문제가 발생했습니다. 계정이 정확히 연동됐는지 확인해주십시오.`,
-            BASE_SWGOH_LAST_UPDATED: (date) => `${date} 일 전에 마지막으로 갱신되었습니다`,
+            BASE_SWGOH_LAST_UPDATED: (date) => `${date} 전에 마지막으로 갱신되었습니다`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `${dType ? dType : 'data'}를 가져오기까지 잠시만 기다려주십시오`,
 
             // Generic (Not tied to a command)
@@ -99,7 +99,7 @@ module.exports = class extends Language {
             BASE_COMMAND_HELP_HELP: (name) => {
                 return {
                     action: "Show help",
-                    actionDesc: "Show this message",
+                    actionDesc: "이 메시지를 보여줍니다",
                     usage: `;${name} help`,
                     args: {}
                 };
@@ -123,8 +123,8 @@ module.exports = class extends Language {
             },
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix, usage) => `캐릭터가 필요합니다. 다음과 같이 사용하십시오 \`${prefix}${usage}\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix, usage) => `잘못된 캐릭터입니다. 다음과 같이 사용하십시오 \`${prefix}${usage}\``,
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `캐릭터가 필요합니다. 다음과 같이 사용하십시오. \`${prefix}abilities <characterName>\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `잘못된 캐릭터입니다. 다음과 같이 사용하십시오. \`${prefix}abilities <characterName>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**능력 쿨다운:** ${aCooldown}\n`,
             COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**능력 종류:** ${aType}     **필요한 최상위 능력 재료:**  ${mat}\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* 능력 종류: ${type}\n* 필요한 최상위 능력 재료: ${tier}\n* 설명: ${aDesc}\n\n`,
@@ -163,7 +163,7 @@ module.exports = class extends Language {
 
             // Arenarank Command
             COMMAND_ARENARANK_INVALID_NUMBER: `정확한 등수를 입력해야 합니다`,
-            COMMAND_ARENARANK_BEST_RANK: `올라갈 수 있는 한계까지 도달하셨습니다. 축하합니다!`,
+            COMMAND_ARENARANK_BEST_RANK: `최고 등수입니다. 축하합니다!`,
             COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `현재 ${currentRank} 위에서 , ${battleCount} 번의 전투로 ${est}\n최선은 다음과 같습니다 ${rankList}`,
             COMMAND_ARENARANK_HELP: {
                 description: "아레나 전투를 전부 이길 경우 오를 수 있는 최고 순위(추정)를 보여줍니다",
@@ -217,8 +217,8 @@ module.exports = class extends Language {
             },
 
             // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix, usage) => `캐릭터가 필요합니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix, usage) => `잘못된 캐릭터 입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `캐릭터가 필요합니다. 사용법은 다음과 같습니다. \`${prefix}charactergear <character> [starLvl]\``,
+            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `잘못된 캐릭터 입니다. 사용법은 다음과 같습니다. \`${prefix}charactergear <character> [starLvl]\``,
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### 필요 장비 전체 목록 ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: '이 장비 목록은 아직 입력이 되어있지 않습니다',
             COMMAND_CHARACTERGEAR_HELP: {
@@ -236,7 +236,7 @@ module.exports = class extends Language {
             // MyMods Command
             COMMAND_MYMODS_NO_MODS: (charName) => `죄송합니다만 ${charName}가 사용하고 있는 모드가 없습니다`,
             COMMAND_MYMODS_MISSING_MODS: `죄송합니다만 당장은 모드를 찾을 수가 없습니다. 잠시 후에 다시 시도해보시기 바랍니다.`,
-            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `최근 모드 수정: ${lastUpdated} 일 전`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `최근 모드 수정: ${lastUpdated} 전`,
             COMMAND_MYMODS_HELP: ({
                 description: "지정된 캐릭터가 사용하고 있는 모드를 보여줍니다",
                 actions: [
@@ -362,7 +362,7 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix, usage) => `잘못된 팩션입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            COMMAND_FACTION_INVALID_CHAR: (prefix) => `잘못된 팩션입니다. 사용법은 다음과 같습니다 \`${prefix}faction <faction>\``,
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# ${searchName} 팩션에 소속된 캐릭터들 입니다 # \n${charString}`,
             COMMAND_FACTION_HELP: {
                 description: "지정된 팩션에 소속된 캐릭터들을 보여줍니다",
@@ -460,7 +460,7 @@ module.exports = class extends Language {
                 "desc": ` \n현재 **${guilds}** 서버에서 운영중 \n`,
                 "links": {
                     "Invite me": "이 로봇을 초대하세요 http://swgohbot.com/invite",
-                    "Support Server": "질문이 있거나, 도움을 주고 싶거나 혹은 그냥 들려보고 싶은 경우 지원 서버는 여기에 있습니다 https://discord.gg/FfwGvhr",
+                    "Support Server": "질문이 있는 경우, 도움을 주고 싶은 경우 혹은 그냥 들려보고 싶은 경우 여기로 들려보세요. https://discord.gg/FfwGvhr",
                     "Support the Bot": "로봇의 원본 소스는 github에 있습니다 https://github.com/jmiln/SWGoHBot, 도움은 언제나 환영합니다. \n\n혹시 관심이 있으시면 patreon도 들려보세요 https://www.patreon.com/swgohbot."
                 }
             }),
@@ -499,8 +499,8 @@ module.exports = class extends Language {
             COMMAND_MODS_UNKNOWN: "불명",
 
             // Mods Command
-            COMMAND_MODS_NEED_CHARACTER: (prefix, usage) => `캐릭터 이름이 필요합니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix, usage) => `잘못된 캐릭터입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            COMMAND_MODS_NEED_CHARACTER: (prefix) => `캐릭터 이름이 필요합니다. 사용법은 다음과 같습니다 \`${prefix}mods <characterName>\``,
+            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `잘못된 캐릭터입니다. 사용법은 다음과 같습니다 \`${prefix}mods <characterName>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Square:   ${square}\`\n\`Arrow:    ${arrow}\`\n\`Diamond:  ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangle: ${triangle}\`\n\`Circle:   ${circle}\`\n\`Cross:    ${cross}\`\n`,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### 세트 ###**\n${modSetString}\n**### 주능력치 ###**\n${modPrimaryString}`,
@@ -523,7 +523,7 @@ module.exports = class extends Language {
             },
 
             // Modsets command
-            COMMAND_MODSETS_OUTPUT: `* 치명타 확률:  2\n* 치명타 피해:  4\n* 방어력:  2\n* 체력:   2\n* 공격력:  4\n* 효력:  2\n* 속도:    4\n* 인내: 2`,
+            COMMAND_MODSETS_OUTPUT: `* 치명타 확률:  2\n* 치명타 피해:  4\n* 방어력:  2\n* 체력:    2\n* 공격력:  4\n* 효력:    2\n* 속도:    4\n* 인내:    2`,
             COMMAND_MODSETS_HELP: {
                 description: "세트를 구성하기 위해 필요한 모드의 갯수를 보여줍니다.",
                 actions: [
@@ -576,7 +576,7 @@ module.exports = class extends Language {
             COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
                 header: `Ships (${shipList.length})`,
                 stats: [
-                    `함대 GP :: ${gpShip}`,
+                    `Ship GP :: ${gpShip}`,
                     `7 Star  :: ${shipList.filter(s => s.rarity === 7).length}`,
                     `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
                 ].join('\n')
@@ -956,8 +956,8 @@ module.exports = class extends Language {
             },
 
             // Ships Command
-            COMMAND_SHIPS_NEED_CHARACTER: (prefix, usage) => `캐릭터나 함선 이름이 필요합니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
-            COMMAND_SHIPS_INVALID_CHARACTER: (prefix, usage) => `잘못된 이름입니다. 사용법은 다음과 같습니다 \`${prefix}${usage}\``,
+            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `캐릭터나 함선 이름이 필요합니다. 사용법은 다음과 같습니다 \`${prefix}ship <ship|pilot>\``,
+            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `잘못된 이름입니다. 사용법은 다음과 같습니다 \`${prefix}ship <ship|pilot>\``,
             COMMAND_SHIPS_TOO_MANY: `검색 결과가 너무 많습니다. 검색어를 조금 더 자세히 지정해주십시오.`,
             COMMAND_SHIPS_CREW: '승무원',
             COMMAND_SHIPS_FACTIONS: '팩션',
