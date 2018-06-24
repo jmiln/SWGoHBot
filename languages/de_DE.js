@@ -267,7 +267,7 @@ module.exports = class extends Language {
 
             // Current Events Command
             COMMAND_CURRENTEVENTS_HEADER: "SWGoH Events Plan",
-            COMMAND_CURRENTEVENTS_DESC: (num) => `Die naechste ${num} Events.\nNotiz: *Die Termine koennen sich ggf. noch aendern.*`,
+            COMMAND_CURRENTEVENTS_DESC: (num) => `Die naechsten ${num} Events.\nNotiz: *Die Termine koennen sich ggf. noch aendern.*`,
             COMMAND_CURRENTEVENTS_HELP: {
                 description: "Zeigt die naechsten geplanten Events an.",
                 actions: [
