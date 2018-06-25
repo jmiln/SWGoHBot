@@ -672,7 +672,7 @@ module.exports = class extends Language {
             COMMAND_RAIDTEAMS_PHASE_THREE: 'Phase 3',
             COMMAND_RAIDTEAMS_PHASE_FOUR: 'Phase 4',
             COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**캐릭터:** \`${charList}\``,
-            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `S${currentPhase}에 사용되는 팀 목록`,
+            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `${currentPhase}에 사용되는 팀 목록`,
             COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `\`${currentPhase}\`에 맞는 팀을 찾을 수 없습니다`,
             COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* ${currentPhase}에 사용되는 팀 목록\n\n`,
             COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* 캐릭터: ${charList}\n`,
