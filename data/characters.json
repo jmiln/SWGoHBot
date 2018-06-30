@@ -32651,7 +32651,22 @@
             "Imperial Trooper",
             "Support"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [

@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2018-06-23 20:00:01.000000",
+        "date": "2018-06-29 20:00:02.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -3158,6 +3158,22 @@
             "cross": "Offense",
             "short": "ylc",
             "families": "scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "Range Trooper",
+            "cname": "Range Trooper",
+            "set1": "SPE",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "RT",
+            "families": "empire ; imperial trooper",
             "crew": "0"
         }
     ]
