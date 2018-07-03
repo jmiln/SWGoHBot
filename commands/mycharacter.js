@@ -72,7 +72,7 @@ class MyCharacter extends Command {
         let player = null;
         try {
             player = await client.swgohAPI.getPlayer( allyCode, lang, 6 );
-        } catch(e) {
+        } catch (e) {
             console.error(e);
         }
 
@@ -80,7 +80,7 @@ class MyCharacter extends Command {
 
         thisChar.forEach(c => {
             let gearStr = ['   [0]  [3]', '[1]        [4]', '   [2]  [5]'].join('\n');
-            let abilities = {
+            const abilities = {
                 basic: [],
                 special: [],
                 leader: [],
@@ -103,15 +103,15 @@ class MyCharacter extends Command {
                     // Unmaxed ability
                     a.tier = 'Lvl ' + a.tier;
                 }
-                abilities[`${a.type.toLowerCase()}`].push(`\`${a.tier} [${a.type.charAt(0)}]\` ${a.name}`)
-            })
+                abilities[`${a.type.toLowerCase()}`].push(`\`${a.tier} [${a.type.charAt(0)}]\` ${a.name}`);
+            });
             const abilitiesOut = abilities.basic
                 .concat(abilities.special)
                 .concat(abilities.leader)
-                .concat(abilities.unique)
+                .concat(abilities.unique);
             const mods = {};
             const sets = {};
-            console.log(c.mods)
+            // console.log(c.mods);
             c.mods.forEach(m => {
                 if (!sets[m.set]) {
                     sets[m.set] = {};
@@ -121,8 +121,8 @@ class MyCharacter extends Command {
                     sets[m.set].count += 1;
                     sets[m.set].lvls.push(m.level);
                 }
-                if (['Critical Chance', 'Critical Damage', 'Potency'].includes(m.primaryBonusType)) {
-                    m.primaryBonusType = m.primaryBonusType + ' %'
+                if (m.primaryBonusValue.indexOf('%') > -1 && (m.primaryBonusType.indexOf('%') === -1)) {
+                    m.primaryBonusType = m.primaryBonusType + ' %';
                 }
                 if (!mods[m.primaryBonusType]) {
                     mods[m.primaryBonusType] = parseFloat(m.primaryBonusValue);
@@ -131,7 +131,7 @@ class MyCharacter extends Command {
                 }
                 for (let ix = 1; ix <= 4; ix++) {
                     if (!m[`secondaryType_${ix}`].length) break;
-                    if (m[`secondaryType_${ix}`] === 'Critical Chance' || m[`secondaryType_${ix}`] === 'Potency') {
+                    if (m[`secondaryValue_${ix}`].indexOf('%') && m[`secondaryType_${ix}`].indexOf('%') === -1) {
                         m[`secondaryType_${ix}`] = m[`secondaryType_${ix}`] + ' %';
                     }
                     if (!mods[m[`secondaryType_${ix}`]]) {
@@ -146,18 +146,15 @@ class MyCharacter extends Command {
                 const set = sets[s];
 
                 // If there are not enough of the set to form a full set, don't bother
-                console.log('Count: ' + set.count);
                 if (set.count < modsetBonuses[s].set) return;
 
                 // See how manny sets there are
                 const setNum = parseInt(set.count / modsetBonuses[s].set);
-                console.log('SetNum: ' + setNum);
 
                 // Count the max lvl ones
                 for (let ix = setNum; ix > 0; ix--) {
                     const maxCount = set.lvls.filter(lvl => lvl === 15).length;
                     const underMax = set.lvls.filter(lvl => lvl < 15).length;
-                    console.log('maxCount: ' + maxCount);
                     // If there are not enough maxed ones, just put the min bonus in
                     let remCount = 0;
                     if (maxCount < modsetBonuses[s].set) {
@@ -191,15 +188,15 @@ class MyCharacter extends Command {
                             set.lvls.splice(set.lvls.indexOf(15), 1);
                         }
                     }
-                    console.log(set)
+                    // console.log(set);
                 }
             });
-            let setOut = [];
-            for (let s in setBonuses) {
+            const setOut = [];
+            for (const s in setBonuses) {
                 setOut.push(`+${setBonuses[s]}% ${s}`);
             }
 
-            let modOut = [];
+            const modOut = [];
             const sMods = Object.keys(mods).sort((p, c) => p > c ? 1 : -1);
             sMods.forEach(m => {
                 if (m.endsWith('%')) {
@@ -207,7 +204,7 @@ class MyCharacter extends Command {
                 } else {
                     modOut.push(`+${mods[m]} **${m}**`);
                 }
-            })
+            });
 
             message.channel.send({embed: {
                 author: {
@@ -233,8 +230,7 @@ class MyCharacter extends Command {
                         value: modOut.length ? modOut.join('\n') : 'No mod stats'
                     }
                 ]
-            }})
-
+            }});
         });
     }
 }
