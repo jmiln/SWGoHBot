@@ -84,14 +84,15 @@ class MyCharacter extends Command {
                 basic: [],
                 special: [],
                 leader: [],
-                unique: []
+                unique: [],
+                contract: []
             };
             c.equipped.forEach(e => {
                 gearStr = gearStr.replace(e.slot, 'X');
             });
             gearStr = gearStr.replace(/[0-9]/g, '   ');
             c.skills.forEach(a => {
-                if (a.tier === 8) {
+                if (a.tier === 8 || (a.tier === 3 && a.type === 'Contract')) {
                     if (a.isZeta) {
                         // Maxed Zeta ability
                         a.tier = 'Max ✦';
@@ -103,12 +104,17 @@ class MyCharacter extends Command {
                     // Unmaxed ability
                     a.tier = 'Lvl ' + a.tier;
                 }
-                abilities[`${a.type.toLowerCase()}`].push(`\`${a.tier} [${a.type.charAt(0)}]\` ${a.name}`);
+                try {
+                    abilities[`${a.type.toLowerCase()}`].push(`\`${a.tier} [${a.type.charAt(0)}]\` ${a.name}`);
+                } catch (e) {
+                    console.log('ERROR: bad ability type: ' + inspect(a));
+                }
             });
             const abilitiesOut = abilities.basic
                 .concat(abilities.special)
                 .concat(abilities.leader)
-                .concat(abilities.unique);
+                .concat(abilities.unique)
+                .concat(abilities.contract);
             const mods = {};
             const sets = {};
             // console.log(c.mods);
