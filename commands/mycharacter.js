@@ -131,7 +131,7 @@ class MyCharacter extends Command {
                 }
                 for (let ix = 1; ix <= 4; ix++) {
                     if (!m[`secondaryType_${ix}`].length) break;
-                    if (m[`secondaryValue_${ix}`].indexOf('%') && m[`secondaryType_${ix}`].indexOf('%') === -1) {
+                    if (m[`secondaryValue_${ix}`].indexOf('%') > -1 && m[`secondaryType_${ix}`].indexOf('%') === -1) {
                         m[`secondaryType_${ix}`] = m[`secondaryType_${ix}`] + ' %';
                     }
                     if (!mods[m[`secondaryType_${ix}`]]) {
