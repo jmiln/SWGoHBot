@@ -541,7 +541,24 @@ module.exports = (client) => {
     client.duration = (time, message=null) => {
         const lang = message ? message.language : client.languages[client.config.defaultSettings.language];
         return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime('DAY', 'PLURAL')}], h [${lang.getTime('HOUR', 'SHORT_PLURAL')}], m [${lang.getTime('MINUTE', 'SHORT_SING')}]`);
-    }
+    };
+
+    /*
+     * Get the current guild count
+     */
+    client.guildCount = async () => {
+        let guilds = 0;
+        if (client.shard && client.shard.count > 0) {
+            await client.shard.fetchClientValues('guilds.size')
+                .then(results => {
+                    guilds =  results.reduce((prev, val) => prev + val, 0);
+                })
+                .catch(console.error);
+            return guilds;
+        } else {
+            return client.guilds.size;
+        }
+    };
 
     /*
      * isUserID
