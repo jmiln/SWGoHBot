@@ -233,7 +233,6 @@ module.exports = class extends Language {
                 ]
             },
 
-
             // Command Report Command
             COMMAND_COMMANDREPORT_HELP: ({
                 description: "Zeigt eine Liste aller Befehle an, die in den letzten 10 Tagen ausgefuehrt wurden.",
