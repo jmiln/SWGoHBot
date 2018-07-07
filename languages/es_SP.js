@@ -72,8 +72,7 @@ module.exports = class extends Language {
         this.getTime = getTime;
         this.language = {
             // Default in case it can't find one.
-            BASE_DEFAULT_MISSING: '
-Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por favor reportarlo así podrá ser reparado.',
+            BASE_DEFAULT_MISSING: 'Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por favor reportarlo así podrá ser reparado.',
 
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: `\n\nEsta es la última instancia de este evento. Para continuar recibiendo este aviso, crea un nuevo evento.`,
