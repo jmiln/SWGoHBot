@@ -113,7 +113,7 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 CIRCLE: 'Círculo',
                 CROSS:   'Cruz',
                 ACCURACY:   'Potencia',
-                CRITCHANCE: 'Probabilidad de crítico,
+                CRITCHANCE: 'Probabilidad de crítico',
                 CRITDAMAGE: 'Daño crítico',
                 DEFENSE:    'Defensa',
                 HEALTH:     'Salud',
