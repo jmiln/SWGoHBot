@@ -233,25 +233,6 @@ module.exports = class extends Language {
                 ]
             },
 
-            // MyMods Command
-            COMMAND_MYMODS_NO_MODS: (charName) => `Entschuldigung, aber ich konnte keine Mods finden für dein ${charName}`,
-            COMMAND_MYMODS_MISSING_MODS: `Entschuldigung, aber ich kann aktuell keine Mods finden. Bitte warte etwas und versuche es erneut.`,
-            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods zuletzt aktualisiert: ${lastUpdated}`,
-            COMMAND_MYMODS_HELP: ({
-                description: "Zeigt die ausgestatteten Mods eines bestimmten Charakters an.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';mymods [user] <Charakter>',
-                        args: {
-                            "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
-                            "character": "Der Charakter nach dem du suchst."
-                        }
-                    }
-                ]
-            }),
-
             // Command Report Command
             COMMAND_COMMANDREPORT_HELP: ({
                 description: "Zeigt eine Liste aller Befehle an, die in den letzten 10 Tagen ausgefuehrt wurden.",
@@ -557,6 +538,41 @@ module.exports = class extends Language {
                 ]
             },
 
+           // MyCharacter Command
+           COMMAND_MYCHARACTER_HELP: ({
+               description: "Zeigt die Werte eines ausgewaehlten Charakters an.",
+               actions: [
+                   {
+                       action: "",
+                       actionDesc: '',
+                       usage: ';mycharacter [user] <character>',
+                       args: {
+                           "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
+                           "character": "Der Charakter nach dem du suchen moechtest."
+                       }
+                   }
+               ]
+           }),
+
+            // MyMods Command
+            COMMAND_MYMODS_NO_MODS: (charName) => `Entschuldigung, aber ich konnte keine Mods finden für dein ${charName}`,
+            COMMAND_MYMODS_MISSING_MODS: `Entschuldigung, aber ich kann aktuell keine Mods finden. Bitte warte etwas und versuche es erneut.`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods zuletzt aktualisiert: ${lastUpdated}`,
+            COMMAND_MYMODS_HELP: ({
+                description: "Zeigt die ausgestatteten Mods eines bestimmten Charakters an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';mymods [user] <character>',
+                        args: {
+                            "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
+                            "character": "Der Charakter nach dem du suchst."
+                        }
+                    }
+                ]
+            }),
+
              // MyProfile Command
              COMMAND_MYPROFILE_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden fuer ${user}. Bitte sicherstellen dass der Account synchronisiert ist`,
              COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
@@ -664,8 +680,8 @@ module.exports = class extends Language {
             },
 
             // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Ungueltiger Raid, Verwendung lautet \`${prefix}${help.usage}\`\n**Beispiel:** \`${prefix}${help.example}\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Ungueltige Phase, Verwendung lautet \`${prefix}${help.usage}\`\n**Beispiel:** \`${prefix}${help.example}\``,
+            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Ungueltiger Raid, Verwendung lautet \`${prefix}raidteams <raid> <phase>\`\n**Beispiel:** \`${prefix}raidteams pit p3\``,
+            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Ungueltige Phase, Verwendung lautet \`${prefix}raidteams <raid> <phase>\`\n**Beispiel:** \`${prefix}raidteams pit p3\``,
             COMMAND_RAIDTEAMS_PHASE_SOLO: 'Solo',
             COMMAND_RAIDTEAMS_PHASE_ONE: 'Phase 1',
             COMMAND_RAIDTEAMS_PHASE_TWO: 'Phase 2',
