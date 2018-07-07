@@ -72,19 +72,21 @@ module.exports = class extends Language {
         this.getTime = getTime;
         this.language = {
             // En el caso de no poder encontrar uno.
-            BASE_DEFAULT_MISSING: 'Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.',
+            BASE_DEFAULT_MISSING: '
+Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por favor reportarlo así podrá ser reparado.',
 
             // Base swgohBot.js file
-            BASE_LAST_EVENT_NOTIFICATION: `\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.`,
-            BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
+            BASE_LAST_EVENT_NOTIFICATION: `\n\nEsta es la última instancia de este evento. Para continuar recibiendo este aviso, crea un nuevo evento.`,
+            BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nEmpieza en ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: `Sorry, but that user is not registered. Please go register with \`;register add <user> <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register add @${user} <allycode>\``,
-            BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
-            BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
-            BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
-            BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_NO_ALLY: `Lo siento, pero este usuario no está registrado. Por favor regístrate con  \`;register add <user> <códigoaliado>\``,
+            BASE_SWGOH_NOT_REG: (user) => `Lo siento, pero este usuario no está registrado. Por favor regístrate con \`;register add @${user} < códigoaliado>\``,
+            BASE_SWGOH_NO_USER: `Lo siento, pero no tengo este usuario listado en ningún sitio.`,
+            BASE_SWGOH_MISSING_CHAR: 'Necesitas introducir un personaje para comprobar',
+            BASE_SWGOH_NO_CHAR_FOUND: (character) => `No encuentro ningún resultado para ${character}`,
+            BASE_SWGOH_CHAR_LIST: (chars) => `Tu búsqueda ha obtenido demasiados resultados, por favor se mas especifico. \nAqui tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
+
             BASE_SWGOH_NO_ACCT: `Something went wrong, please make sure your account is synced correctly.`,
             BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : 'data'}`,
