@@ -680,7 +680,7 @@ module.exports = class extends Language {
             },
 
             // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Invalid raid, usage is \`${prefix} <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
+            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Invalid raid, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
             COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Invalid phase, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
             COMMAND_RAIDTEAMS_PHASE_SOLO: 'Solo',
             COMMAND_RAIDTEAMS_PHASE_ONE: 'Phase 1',
