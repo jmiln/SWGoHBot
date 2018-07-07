@@ -31,7 +31,7 @@ const DAYSOFWEEK = {
 };
 const TIMES = {
     DAY: {
-        PLURAL: 'Dias',
+        PLURAL: 'Días',
         SING: 'Día',
         SHORT_PLURAL: 'DS',
         SHORT_SING: 'D'
@@ -71,7 +71,7 @@ module.exports = class extends Language {
         this.getDay = getDay;
         this.getTime = getTime;
         this.language = {
-            // En el caso de no poder encontrar uno.
+            // Default in case it can't find one.
             BASE_DEFAULT_MISSING: '
 Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por favor reportarlo así podrá ser reparado.',
 
@@ -123,7 +123,7 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 TENACITY:   'Tenacidad'
             },
 
-            // Comando habilidades
+            // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}abilities <NombrePersonaje>\``,
             COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Personaje inválido. Su uso es \`${prefix}abilities <NombrePersonaje>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Tiempo de Refresco:** ${aCooldown}\n`,
@@ -141,7 +141,7 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 ]
             },
 
-            // Comando actividades
+            // Activities Command
             COMMAND_ACTIVITIES_SUNDAY: `== Antes del Refresco == \nCompletar las batallas de Arena \n Ahorrar Energía de la Cantina  \nAhorrar Energía Normal\n\n== Después del Refresco == \nGastar Energía de la Cantina \nAhorrar Energía Normal`,
             COMMAND_ACTIVITIES_MONDAY: `== Antes del Refresco == \nGastar Energía de la Cantina \nAhorrar Energía Normal \n\n== Después del Refresco == \nGastar Energía Normal en Batallas del Lado Luminoso`,
             COMMAND_ACTIVITIES_TUESDAY: `== Antes del Refresco == \nGastar energía normal en Batallas del Lado Luminoso \n Ahorrar Todo Tipo de Energía\n\n== Después del Refresco == \n Gastar Todo Tipo de Energía \n Ahorrar Energía Normal`,
@@ -178,10 +178,10 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 ]
             },
 
-            // Comando desafios
+            // Challenges Command
             COMMAND_CHALLENGES_TRAINING: "Droides de entrenamiento",
             COMMAND_CHALLENGES_ABILITY : "Materiales de habilidad",
-            COMMAND_CHALLENGES_BOUNTY  : "Cazarrecompensas",
+            COMMAND_CHALLENGES_BOUNTY  : "Cazar recompensas",
             COMMAND_CHALLENGES_AGILITY : "Equipo de Agi",
             COMMAND_CHALLENGES_STRENGTH: "Equipo de Fue",
             COMMAND_CHALLENGES_TACTICS : "Equipo de Tac",
@@ -202,7 +202,7 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 ]
             },
 
-            // Comando de Registro de cambios (Ayuda)
+            // Changelog Command (Help)
             COMMAND_CHANGELOG_HELP: {
                 description: "Añade un cambio a la base de datos y lo envía al canal de registro de cambios.",
                 actions: [
@@ -217,11 +217,11 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 ]
             },
 
-            // Comando del equipo del personaje
+            // Character gear Command
             COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}charactergear <personaje> [NivelEstrella]\``,
             COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Personaje invalido. Su uso es \`${prefix}charactergear <personaje> [NivelEstrella]\``,
-            COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
-            COMMAND_CHARGEAR_GEAR_NA: 'This gear has not been entered yet',
+            COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### Gear necesario ### \n${gearString}`,
+            COMMAND_CHARGEAR_GEAR_NA: 'Este gear aún no se ha establecido',
             COMMAND_CHARACTERGEAR_HELP: {
                 description: "Muestra los requisitos de equipo para el personaje especifico/ lvl.",
                 actions: [
@@ -247,7 +247,7 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 ]
             }),
 
-            // Comando Eventos Actuales
+            // Current Events Command
             COMMAND_CURRENTEVENTS_HEADER: "Eventos SWGOH Planificados",
             COMMAND_CURRENTEVENTS_DESC: (num) => `Siguientes ${num} eventos.\nNota: *Las Fechas están sujetas a cambios.*`,
             COMMAND_CURRENTEVENTS_HELP: {
@@ -258,85 +258,85 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                         actionDesc: '',
                         usage: ';currentevents [num]',
                         args: {
-                            "num": "El máximo número de eventos que quieres que te muestre"
+                            "num": "El número máximo de eventos que quieres que te muestre"
                         }
                     }
                 ]
             },
 
             // Event Command (Create)
-            COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
-            COMMAND_EVENT_INVALID_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.`,
-            COMMAND_EVENT_ONE_REPEAT: 'Sorry, but you cannot use both `repeat` and `repeatDay` in one event. Please pick one or the other',
-            COMMAND_EVENT_INVALID_REPEAT: `The repeat is in the wrong format. Example: \`5d3h8m\` for 5 days, 3 hours, and 8 minutes`,
-            COMMAND_EVENT_USE_COMMAS: `Please use comma seperated numbers for repeatDay. Example: \`1,2,1,3,4\``,
-            COMMAND_EVENT_INVALID_CHAN: `This channel is invalid, please try again`,
-            COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `I don't have permission to send messages in ${channel}, please choose one where I can`,
-            COMMAND_EVENT_NEED_CHAN: `ERROR: I need to configure a channel to send this to. Configure \`announceChan\` to be able to make events.`,
-            COMMAND_EVENT_NEED_NAME: `You must give a name for your event.`,
-            COMMAND_EVENT_EVENT_EXISTS: `That event name already exists. Cannot add it again.`,
-            COMMAND_EVENT_NEED_DATE: `You must give a date for your event. Accepted format is \`DD/MM/YYYY\`.`,
-            COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`,
-            COMMAND_EVENT_NEED_TIME: `You must give a time for your event.`,
-            COMMAND_EVEMT_INVALID_TIME: `You must give a valid time for your event. Accepted format is \`HH:MM\`, using a 24 hour clock. So no AM or PM`,
-            COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`,
-            COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` created for ${eventDate}`,
-            COMMAND_EVENT_NO_CREATE: `I couldn't set that event, please try again.`,
-            COMMAND_EVENT_TOO_BIG:(charCount) => `Sorry, but either your event's name or message is too big. Please trim it down by at least ${charCount} characters.`,
+            COMMAND_EVENT_INVALID_ACTION: (actions) => `Las acciones validas són \`${actions}\`.`,
+            COMMAND_EVENT_INVALID_PERMS: `Lo siento, pero tal vez no eres administrador, o el líder de tu servidor no ha establecido bien la configuración. \nNo puedes añadir o eliminar un evento a no ser que tengas configurado el rol de administrador.`,
+            COMMAND_EVENT_ONE_REPEAT: 'Lo siento, pero no puedes usar ambos `repeat` and `repeatDay` en un mismo evento. Por favor selecciona una u otra opción',
+            COMMAND_EVENT_INVALID_REPEAT: `La repetición está en un formato erróneo. Ejemplo: \`5d3h8m\` para 5 días, 3 horas y 8 minutos`,
+            COMMAND_EVENT_USE_COMMAS: `Por favor, usa una coma separada de los números para el repeatDay. Ejemplo: \`1,2,1,3,4\``,
+            COMMAND_EVENT_INVALID_CHAN: `Este canal es invalido, por favor prueba de nuevo`,
+            COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `No tengo permisos para enviar mensajes en ${channel}, por favor selecciona uno donde pueda`,
+            COMMAND_EVENT_NEED_CHAN: `ERROR: Necesito configurar un canal donde poder enviar-lo. Configura \`announceChan\` para ser capaz de crear eventos.`,
+            COMMAND_EVENT_NEED_NAME: `Debes de dar un nombre a tu evento.`,
+            COMMAND_EVENT_EVENT_EXISTS: `El nombre de este evento ya existe. No se puede añadir de nuevo.`,
+            COMMAND_EVENT_NEED_DATE: `Debes dar una fecha para tu evento. El formato Aceptado es \`DD/MM/YYYY\`.`,
+            COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} no es una fecha valida. El formato Aceptado es \`DD/MM/YYYY\`.`,
+            COMMAND_EVENT_NEED_TIME: `Debes dar un tiempo a tu evento.`,
+            COMMAND_EVEMT_INVALID_TIME: `Debes dar un tiempo correcto para tu evento. El formato Aceptado es \`HH:MM\`, using a 24 hour clock. So no AM or PM`,
+            COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `No puedes establecer un evento en el pasado. ${eventDATE} es anterior ${nowDATE}`,
+            COMMAND_EVENT_CREATED: (eventName, eventDate) => `Evento \`${eventName}\` creado para ${eventDate}`,
+            COMMAND_EVENT_NO_CREATE: `No he podido establecer este evento, por favor prueba de nuevo.`,
+            COMMAND_EVENT_TOO_BIG:(charCount) => `Lo siento, pero el nombre o mensaje de tu evento es demasiado largo. Por favor recórtalo al menos hasta ${charCount} caracteres.`,
 
             // Event Command (View)
-            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
-            COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Time Remaining: ${timeLeft}\n`,
-            COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
-            COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,
-            COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Repeating every ${eventDays} days, ${eventHours} hours, and ${eventMins} minutes\n`,
-            COMMAND_EVENT_MESSAGE: (eventMsg) => `Event Message: \n\`\`\`md\n${eventMsg}\`\`\``,
-            COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Sorry, but I cannot find the event \`${eventName}\``,
-            COMMAND_EVENT_NO_EVENT: `You don't currently have any events scheduled.`,
-            COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}) Showing page ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,
-            COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? 's' : ''}): \n${eventKeys}`,
+            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \Tiempo del Evento: ${eventDate}\n`,
+            COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Tiempo Restante: ${timeLeft}\n`,
+            COMMAND_EVENT_CHAN: (eventChan) => `Enviándolo al canal: ${eventChan}\n`,
+            COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repetir horario: ${repeatDays}\n`,
+            COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Repitiendo cada ${eventDays} días, ${eventHours} horas y ${eventMins} minutos\n`,
+            COMMAND_EVENT_MESSAGE: (eventMsg) => `Mensaje Evento: \n\`\`\`md\n${eventMsg}\`\`\``,
+            COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Lo siento, pero no he podido encontrar el evento \`${eventName}\``,
+            COMMAND_EVENT_NO_EVENT: `Actualmente no tienes ningún evento programado.`,
+            COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Aquí tienes el Evento Programado de tu servidor \n(${eventCount} eventos totales${eventCount > 1 ? 's' : ''}) Mostrando página ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,
+            COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `Aquí esta el evento programado de tu servidor \n(${eventCount} eventos totales${eventCount > 1 ? 's' : ''}): \n${eventKeys}`,
 
             // Event Command (Delete)
-            COMMAND_EVENT_DELETE_NEED_NAME: `You must give an event name to delete.`,
-            COMMAND_EVENT_DOES_NOT_EXIST: `That event does not exist.`,
-            COMMAND_EVENT_DELETED: (eventName) => `Deleted event: ${eventName}`,
+            COMMAND_EVENT_DELETE_NEED_NAME: `Debes de dar un nombre al evento a eliminar.`,
+            COMMAND_EVENT_DOES_NOT_EXIST: `Este evento no existe.`,
+            COMMAND_EVENT_DELETED: (eventName) => `Evento eliminado: ${eventName}`,
 
             // Event Command (Trigger)
-            COMMAND_EVENT_TRIGGER_NEED_NAME: `You must give an event name to trigger.`,
+            COMMAND_EVENT_TRIGGER_NEED_NAME: ` Debes  indicar el nombre del evento para iniciarlo.`,
 
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
-                description: "Used to make, check, or delete an event.",
+                description: "Se usa para crear, comprobar o eliminar un evento.",
                 actions: [
                     {
                         action: "Create",
-                        actionDesc: 'Create a new event listing',
+                        actionDesc: 'Crear una nueva lista del evento',
                         usage: ';event create <eventName> <eventDay> <eventTime> [eventMessage]',
                         args: {
-                            "--repeat <repeatTime>": "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
-                            "--repeatDay <schedule>": "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
-                            "--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
-                            "--countdown": "Adds a countdown to when your event will trigger."
+                            "--repeat <repeatTime>": "Te permite establecer una duración con el formato 00d00h00m. Se repetirá después de que el tiempo haya pasado.",
+                            "--repeatDay <schedule>": "Te permite establecer una repetición en los días con el formato 0,0,0,0,0.",
+                            "--channel <channelName>": "Te permite especificar un canal para el evento donde anunciarse.",
+                            "--countdown": "Añade un contador cuando tu evento se va a iniciar."
                         }
                     },
                     {
                         action: "View",
-                        actionDesc: 'View your current event listings.',
+                        actionDesc: 'Ver tu lista actual de eventos.',
                         usage: ';event view [eventName]',
                         args: {
-                            "--min": "Lets you view the events without the event message",
-                            "--page <page#>": "Lets you select a page of events to view"
+                            "--min": "Te permite ver los eventos sin el mensaje de un evento.",
+                            "--page <page#>": "Te permite seleccionar una página donde ver los eventos"
                         }
                     },
                     {
                         action: "Delete",
-                        actionDesc: 'Delete an event.',
-                        usage: ';event delete <eventName>',
+                        actionDesc: 'Eliminar un evento.',
+                        usage: ';Eliminación de un evento <eventName>',
                         args: {}
                     },
                     {
                         action: "Trigger",
-                        actionDesc: 'Trigger an event in the specified channel, leaves the event alone.',
+                        actionDesc: 'Inicia un evento en el canal especificado y deja el otro evento solo.',
                         usage: ';event trigger <eventName>',
                         args: {}
                     }
@@ -344,70 +344,70 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Invalid faction, usage is \`${prefix}faction <faction>\``,
-            COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
+            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Facción invalida, su uso es \`${prefix}faction <faction>\``,
+            COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# caracteres en la ${searchName} facción# \n${charString}`,
             COMMAND_FACTION_HELP: {
-                description: "Shows the list of characters in the specified faction.",
+                description: "Muestra la lista de personajes en una especificada facción.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: 'faction <faction>',
                         args: {
-                            "faction": "The faction you want to see the roster of. \nKeep in mind, this is as shown in game, so it's rebel, not rebels"
+                            "faction": "La facción de la cual quieres ver la lista. \nTen en mente, esto es como se muestra en el juego, así que es rebel no rebeldes"
                         }
                     }
                 ]
             },
 
             // Guilds Command
-            COMMAND_GUILDS_MORE_INFO: 'For more info on a specific guild:',
+            COMMAND_GUILDS_MORE_INFO: 'Para más información de un Gremio específico:',
             COMMAND_GUILDS_HELP: {
-                description: "Shows the top guilds and everyone that's registered in yours.",
+                description: "Muestra los Gremios más TOPS y todas las personas que están registradas en el tuyo.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';guild [user]',
                         args: {
-                            "user": "A way to identify the guild. (mention | allyCode | guildName)"
+                            "user": "La manera de identificar un gremio. (mention | allyCode | guildName)"
                         }
                     }
                 ]
             },
 
             // GuildSearch Command
-            COMMAND_GUILDSEARCH_BAD_STAR: 'You can only choose a star level from 1-7',
-            COMMAND_GUILDSEARCH_MISSING_CHAR: 'You need to enter a character to check for',
-            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `I did not find any results for ${character}`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
-            COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Star (${num}) ${setNum.length > 0 ? setNum : ''}`,
-            COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `No one in your guild seems to have this character at ${starLvl} stars.`,
-            COMMAND_GUILDSEARCH_NO_CHAR: `No one in your guild seems to have this character.`,
+            COMMAND_GUILDSEARCH_BAD_STAR: 'Solo puedes seleccionar una estrella del nivel 1 al 7',
+            COMMAND_GUILDSEARCH_MISSING_CHAR: 'Necesitas introducir un personaje para la busqueda',
+            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `No he encontrado ningún resultado de ${character}`,
+            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `La búsqueda se ha encontrado con demasiados resultados, por favor se más especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
+            COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Estrella (${num}) ${setNum.length > 0 ? setNum : ''}`,
+            COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `Parece que nadie de tu gremio tiene un personaje con ${starLvl} estrellas.`,
+            COMMAND_GUILDSEARCH_NO_CHAR: `Nadie de tu gremio parece tener este personaje.`,
             COMMAND_GUILDSEARCH_HELP: {
-                description: "Shows the star level of the selected character for everyone in the guild.",
+                description: "Muestra el nivel de estrellas del personaje seleccionado de todas las personas del gremio.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';guildsearch [user] <character> [-ships] [starLvl]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "character": "The character you want to search for.",
-                            "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
-                            "starLvl": "Select the star level you want to see."
+                            "user": "La persona la cual estas añadiendo. (me | userID | mention)",
+                            "character": "El personaje el cual quieres realizar la busqueda.",
+                            "-ships": "Busqueda de naves, puedes usar `-s, -ship, or -ships`",
+                            "starLvl": "Selecciona el nivel de estrella que quieres ver."
                         }
                     }
                 ]
             },
 
             // Heists Command
-            COMMAND_HEISTS_HEADER: "SWGoH Heists Schedule",
-            COMMAND_HEISTS_CREDIT: (date) => `**Credits** : ${date}\n`,
-            COMMAND_HEISTS_DROID: (date) => `**Droids**  : ${date}\n`,
-            COMMAND_HEISTS_NOT_SCHEDULED: "`Not scheduled`",
+            COMMAND_HEISTS_HEADER: "SWGOH Robo de Créditos Programado",
+            COMMAND_HEISTS_CREDIT: (date) => `**Créditos** : ${date}\n`,
+            COMMAND_HEISTS_DROID: (date) => `**Droides**  : ${date}\n`,
+            COMMAND_HEISTS_NOT_SCHEDULED: "`No Programado`",
             COMMAND_HEISTS_HELP: {
-                description: "Shows any upcoming heists.",
+                description: "Muestra los próximos Desafíos de Robos.",
                 actions: [
                     {
                         action: "",
@@ -420,17 +420,17 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
 
 
             // Help Command
-            COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
-            COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
+            COMMAND_HELP_HEADER: (prefix) => `= ListaComando =\n\n[Use ${prefix}help <ListaComando> para detalles]\n`,
+            COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUso:: ${prefix}${command.help.usage}`,
             COMMAND_HELP_HELP: {
-                description: "Displays info about available commands.",
+                description: "Muestra la información sobre los comandos disponibles.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';help [command]',
+                        usage: ';help [Comando]',
                         args: {
-                            "command": "The command you want to look up info on."
+                            "Comando": "El comando el cual quieres saber información."
                         }
                     }
                 ]
@@ -439,15 +439,15 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
             // Info Command
             COMMAND_INFO_OUTPUT: (guilds) => ({
                 "header": 'INFORMATION',
-                "desc": ` \nCurrently running on **${guilds}** servers \n`,
+                "desc": ` \nActualmente en proceso en **${guilds}** servidores \n`,
                 "links": {
-                    "Invite me": "Invite the bot http://swgohbot.com/invite",
-                    "Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is https://discord.gg/FfwGvhr",
-                    "Support the Bot": "The bot's code is on github https://github.com/jmiln/SWGoHBot, and is open to contributions. \n\nI also have a Patreon https://www.patreon.com/swgohbot if you're interested."
+                    "Invite me": "Invita al bot http://swgohbot.com/invite",
+                    "Support Server": "Si tienes alguna pregunta, quieres ayudar, o simplemente unirte, el soporte del bot eshttps://discord.gg/FfwGvhr",
+                    "Support the Bot": "El código del bot está en github https://github.com/jmiln/SWGoHBot y está abierto a contribuciones. \n\nI también tiene un patrocinador https://www.patreon.com/swgohbot por si estás interesado."
                 }
             }),
             COMMAND_INFO_HELP: {
-                description: "Shows useful links pertaining to the bot.",
+                description: "Muestra links útiles pertinentes del bot.",
                 actions: [
                     {
                         action: "",
@@ -458,56 +458,56 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 ]
             },
 
-            COMMAND_MODS_CRIT_CHANCE_SET: "Crit. Chance x2",
-            COMMAND_MODS_CRIT_DAMAGE_SET: "Crit. Damage x4",
-            COMMAND_MODS_SPEED_SET: "Speed x4",
-            COMMAND_MODS_TENACITY_SET: "Tenacity x2",
-            COMMAND_MODS_OFFENSE_SET: "Offense x4",
-            COMMAND_MODS_POTENCY_SET: "Potency x2",
-            COMMAND_MODS_HEALTH_SET: "Health x2",
-            COMMAND_MODS_DEFENSE_SET: "Defense x2",
+            COMMAND_MODS_CRIT_CHANCE_SET: "Prob. Crítico x2",
+            COMMAND_MODS_CRIT_DAMAGE_SET: "Daño. Crítico x4",
+            COMMAND_MODS_SPEED_SET: "Velocidad x4",
+            COMMAND_MODS_TENACITY_SET: "Tenacidad x2",
+            COMMAND_MODS_OFFENSE_SET: "Ataque x4",
+            COMMAND_MODS_POTENCY_SET: "Potencia x2",
+            COMMAND_MODS_HEALTH_SET: "Salud x2",
+            COMMAND_MODS_DEFENSE_SET: "Defensa x2",
             COMMAND_MODS_EMPTY_SET: " ",
 
-            COMMAND_MODS_ACCURACY_STAT: "Accuracy",
-            COMMAND_MODS_CRIT_CHANCE_STAT: "Crit. Chance",
-            COMMAND_MODS_CRIT_DAMAGE_STAT: "Crit. Damage",
-            COMMAND_MODS_DEFENSE_STAT: "Defense",
-            COMMAND_MODS_HEALTH_STAT: "Health",
-            COMMAND_MODS_OFFENSE_STAT: "Offense",
-            COMMAND_MODS_PROTECTION_STAT: "Protection",
-            COMMAND_MODS_POTENCY_STAT: "Potency",
-            COMMAND_MODS_SPEED_STAT: "Speed",
-            COMMAND_MODS_TENACITY_STAT: "Tenacity",
-            COMMAND_MODS_UNKNOWN: "Unknown",
+            COMMAND_MODS_ACCURACY_STAT: "Evasión. Crítico",
+            COMMAND_MODS_CRIT_CHANCE_STAT: "Prob. Crítico",
+            COMMAND_MODS_CRIT_DAMAGE_STAT: "Daño. Crítico",
+            COMMAND_MODS_DEFENSE_STAT: "Defensa",
+            COMMAND_MODS_HEALTH_STAT: "Salud",
+            COMMAND_MODS_OFFENSE_STAT: "Ataque",
+            COMMAND_MODS_PROTECTION_STAT: "Protección",
+            COMMAND_MODS_POTENCY_STAT: "Potencia",
+            COMMAND_MODS_SPEED_STAT: "Velocidad",
+            COMMAND_MODS_TENACITY_STAT: "Tenacidad",
+            COMMAND_MODS_UNKNOWN: "Desconocido",
 
             // Mods Command
-            COMMAND_MODS_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}mods <characterName>\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}mods <characterName>\``,
-            COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Square:   ${square}\`\n\`Arrow:    ${arrow}\`\n\`Diamond:  ${diamond}\`\n`,
-            COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangle: ${triangle}\`\n\`Circle:   ${circle}\`\n\`Cross:    ${cross}\`\n`,
-            COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
-            COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Square:   ${square}  \n* Arrow:    ${arrow} \n* Diamond:  ${diamond}\n`,
-            COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triangle: ${triangle}\n* Circle:   ${circle}\n* Cross:    ${cross}`,
-            COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Sets ### \n${modSetString}\n### Primaries ###\n${modPrimaryString}`,
-            COMMAND_NO_MODSETS: "No mod sets for this character",
+            COMMAND_MODS_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}mods <characterName>\``,
+            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Personaje inválido. Su uso es \`${prefix}mods <characterName>\``,
+            COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Cuadrado:   ${square}\`\n\`Flecha:    ${arrow}\`\n\`Diamante:  ${diamond}\`\n`,
+            COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangulo: ${triangle}\`\n\`Circulo:   ${circle}\`\n\`Cruz:    ${cross}\`\n`,
+            COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primarios ###**\n${modPrimaryString}`,
+            COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Cuadrado:   ${square}  \n* Flecha:    ${arrow} \n* Diamante:  ${diamond}\n`,
+            COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triangulo: ${triangle}\n* Circlulo:   ${circle}\n* Cruz:    ${cross}`,
+            COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Sets ### \n${modSetString}\n### Primarios ###\n${modPrimaryString}`,
+            COMMAND_NO_MODSETS: "No hay mods establecidos en este personaje",
             COMMAND_MODS_HELP: {
-                description: "Shows some suggested mods for the specified character.",
+                description: "Muestra los mods sugeridos para el personaje especificado.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: 'mods <character>',
                         args: {
-                            "character": "The character you want to show the mods for"
+                            "character": "El personaje el cual quieres mostrar sus mods"
                         }
                     }
                 ]
             },
 
             // Modsets command
-            COMMAND_MODSETS_OUTPUT: `* Critical Chance:  2\n* Critical Damage:  4\n* Defense:  2\n* Health:   2\n* Offense:  4\n* Potency:  2\n* Speed:    4\n* Tenacity: 2`,
+            COMMAND_MODSETS_OUTPUT: `* Prob. Crítico:  2\n* Daño. Crítico:  4\n* Defensa:  2\n* Salud:   2\n* Ataque:  4\n* Potencia:  2\n* Velocidad:    4\n* Tenacidad: 2`,
             COMMAND_MODSETS_HELP: {
-                description: "Shows how many of each kind of mod you need for a set.",
+                description: "Muestra cuantos mods de cada tipo necesitas para un Set.",
                 actions: [
                     {
                         action: "",
@@ -517,7 +517,6 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                     }
                 ]
             },
-
             // MyArena Command
             COMMAND_MYARENA_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
             COMMAND_MYARENA_NO_CHAR: 'Something went wrong, I could not get your characters.',
