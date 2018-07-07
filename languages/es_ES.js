@@ -85,151 +85,150 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
             BASE_SWGOH_NO_USER: `Lo siento, pero no tengo este usuario listado en ningún sitio.`,
             BASE_SWGOH_MISSING_CHAR: 'Necesitas introducir un personaje para comprobar',
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `No encuentro ningún resultado para ${character}`,
-            BASE_SWGOH_CHAR_LIST: (chars) => `Tu búsqueda ha obtenido demasiados resultados, por favor se mas especifico. \nAqui tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
-
-            BASE_SWGOH_NO_ACCT: `Something went wrong, please make sure your account is synced correctly.`,
-            BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
-            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : 'data'}`,
+            BASE_SWGOH_CHAR_LIST: (chars) => `Tu búsqueda ha obtenido demasiados resultados, por favor se mas especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_NO_ACCT: `Algo ha salido mal, por favor comprueba que tu cuenta se haya sincronizado correctamente.`,
+            BASE_SWGOH_LAST_UPDATED: (date) => `Última actualización ${date} pasada`,
+            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Por favor espera mientras obtengo tu ${dType ? dType : 'data'}`,
 
             // Generic (Not tied to a command)
-            COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
-            COMMAND_INVALID_BOOL: `Invalid value, try true or false`,
-            COMMAND_MISSING_PERMS: `Sorry, but you don't have the correct permissions to use that.`,
-            BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
-            BASE_COMMAND_HELP_HEADER: (name) => `Help for ${name}`,
-            BASE_COMMAND_HELP_HEADER_CONT: (name) => `Continued help for ${name}`,
+            COMMAND_EXTENDED_HELP: (command) => `**Ayuda extendida para ${command.help.name}** \n**Uso**: ${command.help.usage} \n${command.help.extended}`,
+            COMMAND_INVALID_BOOL: `Valor invalido, prueba con true o false`,
+            COMMAND_MISSING_PERMS: `Lo siento, pero no tienes los suficientes permisos para hacer esto.`,
+            BASE_COMMAND_UNAVAILABLE: "Este comando no está disponible vía mensaje privado. Por favor, utiliza este comando en un gremio.",
+            BASE_COMMAND_HELP_HEADER: (name) => `Ayuda para ${name}`,
+            BASE_COMMAND_HELP_HEADER_CONT: (name) => `Ayuda continuada para ${name}`,
             BASE_COMMAND_HELP_HELP: (name) => {
                 return {
-                    action: "Show help",
-                    actionDesc: "Show this message",
+                    action: "Ayuda",
+                    actionDesc: "Muestra este mensaje",
                     usage: `;${name} help`,
                     args: {}
                 };
             },
             BASE_MOD_TYPES: {
-                SQUARE:  'Square',
-                ARROW:   'Arrow',
-                DIAMOND: 'Diamond',
-                TRIANGLE:'Triangle',
-                CIRCLE:  'Circle',
-                CROSS:   'Cross',
-                ACCURACY:   'Accuracy',
-                CRITCHANCE: 'Crit Chance',
-                CRITDAMAGE: 'Crit Damage',
-                DEFENSE:    'Defense',
-                HEALTH:     'Health',
-                OFFENSE:    'Offense',
-                POTENCY:    'Potency',
-                SPEED:      'Speed',
-                TENACITY:   'Tenacity'
+                SQUARE: 'Cuadrado',
+                ARROW:   'Flecha',
+                DIAMOND: 'Diamante',
+                TRIANGLE: 'Triangulo',
+                CIRCLE: 'Círculo',
+                CROSS:   'Cruz',
+                ACCURACY:   'Potencia',
+                CRITCHANCE: 'Probabilidad de crítico,
+                CRITDAMAGE: 'Daño crítico',
+                DEFENSE:    'Defensa',
+                HEALTH:     'Salud',
+                OFFENSE:    'Ataque',
+                POTENCY:    'Potencia',
+                SPEED:      'Velocidad',
+                TENACITY:   'Tenacidad'
             },
 
-            // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}abilities <characterName>\``,
-            COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
-            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}     **Max ability mat needed:**  ${mat}\n${cdString}${aDesc}`,
-            COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Ability type: ${type}\n* Max ability mat needed: ${tier}\n* Description: ${aDesc}\n\n`,
+            // Comando habilidades
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}abilities <NombrePersonaje>\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Personaje inválido. Su uso es \`${prefix}abilities <NombrePersonaje>\``,
+            COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Tiempo de Refresco:** ${aCooldown}\n`,
+            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Tipo de habilidad:** ${aType}     **Material necesario para la habilidad máxima:**  ${mat}\n${cdString}${aDesc}`,
+            COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Tipo de habilidad: ${type}\n* Material necesario para la habilidad máxima: ${tier}\n* Descripción: ${aDesc}\n\n`,
             COMMAND_ABILITIES_HELP: {
-                description: "Shows the abilities for the specified character.",
+                description: "Muestra las habilidades del personaje especificado.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';abilities <characterName>',
+                        usage: ';abilities <Nombrepersonaje>',
                         args: {}
                     }
                 ]
             },
 
-            // Activities Command
-            COMMAND_ACTIVITIES_SUNDAY: `== Before Reset == \nComplete Arena Battles \nSave Cantina Energy \nSave Normal Energy\n\n== After Reset == \nSpend Cantina Energy \nSave Normal Energy`,
-            COMMAND_ACTIVITIES_MONDAY: `== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \n\n== After Reset == \nSpend Normal Energy on Light Side Battles `,
-            COMMAND_ACTIVITIES_TUESDAY: `== Before Reset == \nSpend Normal Energy on Light Side Battles \nSave All Kinds of Energy\n\n== After Reset == \nSpend All Kinds of Energy \nSave Normal Energy`,
-            COMMAND_ACTIVITIES_WEDNESDAY: `== Before Reset == \nSpend All Kinds of Energy \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Hard Mode Battles`,
-            COMMAND_ACTIVITIES_THURSDAY: `== Before Reset == \nSpend Normal Energy on Hard Mode Battles \nSave Challenges\n\n== After Reset == \nComplete Challenges \nSave Normal Energy`,
-            COMMAND_ACTIVITIES_FRIDAY: `== Before Reset == \nComplete Challenges \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Dark Side Battles`,
-            COMMAND_ACTIVITIES_SATURDAY: `== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy\n\n== After Reset == \nComplete Arena Battles \nSave Cantina Energy`,
-            COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Invalid day, usage is \`${prefix}${usage}\``,
+            // Comando actividades
+            COMMAND_ACTIVITIES_SUNDAY: `== Antes del Refresco == \nCompletar las batallas de Arena \n Ahorrar Energía de la Cantina  \nAhorrar Energía Normal\n\n== Después del Refresco == \nGastar Energía de la Cantina \nAhorrar Energía Normal`,
+            COMMAND_ACTIVITIES_MONDAY: `== Antes del Refresco == \nGastar Energía de la Cantina \nAhorrar Energía Normal \n\n== Después del Refresco == \nGastar Energía Normal en Batallas del Lado Luminoso`,
+            COMMAND_ACTIVITIES_TUESDAY: `== Antes del Refresco == \nGastar energía normal en Batallas del Lado Luminoso \n Ahorrar Todo Tipo de Energía\n\n== Después del Refresco == \n Gastar Todo Tipo de Energía \n Ahorrar Energía Normal`,
+            COMMAND_ACTIVITIES_WEDNESDAY: `== Antes del Refresco == \nGastar Todo Tipo de Energia \nAhorrar Energía Normal\n\n== Después del Refresco == \nGastar Energía Normal en Batallas Difíciles`,
+            COMMAND_ACTIVITIES_THURSDAY: `== Antes del Refresco == \nGastar Energía Normal en Batallas Difíciles \nAhorrar Desafíos\n\n== Después del Refresco == \nCompletar los Desafíos \nAhorrar Energía Normal`,
+            COMMAND_ACTIVITIES_FRIDAY: `== Antes del Refresco == \nCompletar los Desafíos \nAhorrar Energía Normal\n\n== Después del Refresco == \nGastar Energía Normal en Batallas del Lado Oscuro`,
+            COMMAND_ACTIVITIES_SATURDAY: `== Antes del Refresco == \nGastar Energía Normal en Batallas del Lado Oscuro \nAhorrar Batallas de Arena \nAhorrar Energía de Cantina\n\n== Después del Reseteo == \nCompletar batallas de Arena \nAhorrar Energía de Cantina`,
+            COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Día Invalido, su uso es \`${prefix}${usage}\``,
             COMMAND_ACTIVITIES_HELP: {
-                description: "Shows the daily guild activites.",
+                description: "Muestra las actividades diarias del gremio.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';activities [dayOfWeek]',
+                        usage: ';activities [DíaDeLaSemana]',
                         args: {}
                     }
                 ]
             },
 
             // Arenarank Command
-            COMMAND_ARENARANK_INVALID_NUMBER: `You need to enter a valid rank number`,
-            COMMAND_ARENARANK_BEST_RANK: `You've already gotten as far as you can, congrats!`,
-            COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `From rank ${currentRank}, in ${battleCount} battle${plural} ${est}\nThe best you can get is ${rankList}`,
+            COMMAND_ARENARANK_INVALID_NUMBER: `Necesitas introducir un número del ranking valido`,
+            COMMAND_ARENARANK_BEST_RANK: `Ya has llegado lo más lejos que puedes posible, felicidades!`,
+            COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `Del Ranking ${currentRank}, in ${battleCount} battle${plural} ${est}\nEl mejor que puedes obtener es ${rankList}`,
             COMMAND_ARENARANK_HELP: {
-                description: "Shows the (approximate) highest rank you can get if you win every arena battle.",
+                description: "Muestra el (aproximadamente) mejor rango que puedes obtener si ganas cada batalla de arena.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';arenarank <currentRank> [battleCount]',
+                        usage: ';arenarank <Rankingactual> [Contador Batallas]',
                         args: {}
                     }
                 ]
             },
 
-            // Challenges Command
-            COMMAND_CHALLENGES_TRAINING: "Training Droids",
-            COMMAND_CHALLENGES_ABILITY : "Ability Mats",
-            COMMAND_CHALLENGES_BOUNTY  : "Bounty Hunter",
-            COMMAND_CHALLENGES_AGILITY : "Agility Gear",
-            COMMAND_CHALLENGES_STRENGTH: "Strength Gear",
-            COMMAND_CHALLENGES_TACTICS : "Tactics Gear",
-            COMMAND_CHALLENGES_SHIP_ENHANCEMENT: "Ship Enhancement Droids",
-            COMMAND_CHALLENGES_SHIP_BUILDING   : "Ship Building Materials",
-            COMMAND_CHALLENGES_SHIP_ABILITY    : "Ship Ability Materials",
-            COMMAND_CHALLENGES_MISSING_DAY: 'You need to specify a day',
-            COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `Invalid date, usage is \`${prefix}${usage}\``,
+            // Comando desafios
+            COMMAND_CHALLENGES_TRAINING: "Droides de entrenamiento",
+            COMMAND_CHALLENGES_ABILITY : "Materiales de habilidad",
+            COMMAND_CHALLENGES_BOUNTY  : "Cazarrecompensas",
+            COMMAND_CHALLENGES_AGILITY : "Equipo de Agi",
+            COMMAND_CHALLENGES_STRENGTH: "Equipo de Fue",
+            COMMAND_CHALLENGES_TACTICS : "Equipo de Tac",
+            COMMAND_CHALLENGES_SHIP_ENHANCEMENT: "Droides de mejora de nave",
+            COMMAND_CHALLENGES_SHIP_BUILDING   : "Materiales de construcción de nave",
+            COMMAND_CHALLENGES_SHIP_ABILITY    : "Materiales de habilidad de nave",
+            COMMAND_CHALLENGES_MISSING_DAY: 'Necesitas especificar un día',
+            COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `Fecha invalida, su uso \`${prefix}${usage}\``,
             COMMAND_CHALLENGES_HELP: {
-                description: "Shows the daily guild challenges.",
+                description: "Muestra las actividades diarias del gremio.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';challenges <dayOfWeek>',
+                        usage: ';challenges <DíaDeLaSemana>',
                         args: {}
                     }
                 ]
             },
 
-            // Changelog Command (Help)
+            // Comando de Registro de cambios (Ayuda)
             COMMAND_CHANGELOG_HELP: {
-                description: "Adds a changelog to the db, and sends it to the changelog channel.",
+                description: "Añade un cambio a la base de datos y lo envía al canal de registro de cambios.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: 'changelog <message>',
+                        usage: 'changelog <mensaje>',
                         args: {
-                            "message": "Use [Updated], [Fixed], [Removed], and [Added] to organize the changes."
+                            "mensaje": "Utiliza [Updated], [Fixed], [Removed], y [Added] para organizar los cambios."
                         }
                     }
                 ]
             },
 
-            // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [starLvl]\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [starLvl]\``,
+            // Comando del equipo del personaje
+            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}charactergear <personaje> [NivelEstrella]\``,
+            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Personaje invalido. Su uso es \`${prefix}charactergear <personaje> [NivelEstrella]\``,
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: 'This gear has not been entered yet',
             COMMAND_CHARACTERGEAR_HELP: {
-                description: "Shows the gear requirements for the specified character/ lvl.",
+                description: "Muestra los requisitos de equipo para el personaje especifico/ lvl.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: 'charactergear <character> [gearLvl]',
+                        usage: 'charactergear <personaje> [EquipoLvl]',
                         args: {}
                     }
                 ]
@@ -237,7 +236,7 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
 
             // Command Report Command
             COMMAND_COMMANDREPORT_HELP: ({
-                description: "Shows a list of all the commands that have been run in the last 10 days.",
+                description: "Muestra una lista de todos los comandos que has usado en los últimos 10 días.",
                 actions: [
                     {
                         action: "",
@@ -248,18 +247,18 @@ Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por fa
                 ]
             }),
 
-            // Current Events Command
-            COMMAND_CURRENTEVENTS_HEADER: "SWGoH Events Schedule",
-            COMMAND_CURRENTEVENTS_DESC: (num) => `Next ${num} events.\nNote: *Dates are subject to change.*`,
+            // Comando Eventos Actuales
+            COMMAND_CURRENTEVENTS_HEADER: "Eventos SWGOH Planificados",
+            COMMAND_CURRENTEVENTS_DESC: (num) => `Siguientes ${num} eventos.\nNota: *Las Fechas están sujetas a cambios.*`,
             COMMAND_CURRENTEVENTS_HELP: {
-                description: "Shows any upcoming events.",
+                description: "Muestra cualquier próximo evento.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';currentevents [num]',
                         args: {
-                            "num": "The max number of events you want to show"
+                            "num": "El máximo número de eventos que quieres que te muestre"
                         }
                     }
                 ]
