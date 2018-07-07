@@ -18,12 +18,10 @@ class Raidteams extends Command {
 
         // Make sure the args are all there
         if (typeof args[0] === 'undefined' || args[0] === null || args[0] === "") {
-            return client.helpOut(message, this);
-            // return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_RAID', config.prefix, this)).then(msg => msg.delete(10000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_RAID', config.prefix));
         }
         if (typeof args[1] === 'undefined' || args[1] === null || args[1] === "") {
-            return client.helpOut(message, this);
-            // return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_PHASE', (config.prefix, this))).then(msg => msg.delete(10000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_PHASE', config.prefix));
         }
 
         // Remove anything that's not a letter for the raid name
@@ -101,7 +99,7 @@ class Raidteams extends Command {
                                 }
                             });
                         } else {
-                            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_NO_TEAMS', currentPhase)).then(msg => msg.delete(10000)).catch(console.error);
+                            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_NO_TEAMS', currentPhase));
                         }
                     } else { // Embeds are disabled
                         let outString = message.language.get('COMMAND_RAIDTEAMS_CODE_TEAMS', raid.name, currentPhase);
@@ -117,17 +115,17 @@ class Raidteams extends Command {
                         if (foundPhase) {
                             return message.channel.send(outString, { code: 'md', split: true });
                         } else {
-                            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_NO_TEAMS', currentPhase)).then(msg => msg.delete(10000)).catch(console.error);
+                            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_NO_TEAMS', currentPhase));
                         }
                     }
                 }
             }
 
             if (found === false) {
-                return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_RAID', config.prefix, this.help)).then(msg => msg.delete(10000)).catch(console.error);
+                return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_RAID', config.prefix));
             }
         } else {
-            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_PHASE', config.prefix, this.help)).then(msg => msg.delete(10000)).catch(console.error);
+            return message.channel.send(message.language.get('COMMAND_RAIDTEAMS_INVALID_PHASE', config.prefix));
         }
     }
 }

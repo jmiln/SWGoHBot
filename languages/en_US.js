@@ -233,25 +233,6 @@ module.exports = class extends Language {
                 ]
             },
 
-            // MyMods Command
-            COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
-            COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
-            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
-            COMMAND_MYMODS_HELP: ({
-                description: "Shows the mods that you have equipped on the selected character.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';mymods [user] <character>',
-                        args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "character": "The character you want to search for."
-                        }
-                    }
-                ]
-            }),
-
             // Command Report Command
             COMMAND_COMMANDREPORT_HELP: ({
                 description: "Shows a list of all the commands that have been run in the last 10 days.",
@@ -557,6 +538,41 @@ module.exports = class extends Language {
                 ]
             },
 
+            // MyCharacter Command
+            COMMAND_MYCHARACTER_HELP: ({
+                description: "Shows the general stats about the selected character.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';mycharacter [user] <character>',
+                        args: {
+                            "user": "The person you're checking. (me | userID | mention)",
+                            "character": "The character you want to search for."
+                        }
+                    }
+                ]
+            }),
+
+            // MyMods Command
+            COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
+            COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
+            COMMAND_MYMODS_HELP: ({
+                description: "Shows the mods that you have equipped on the selected character.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';mymods [user] <character>',
+                        args: {
+                            "user": "The person you're checking. (me | userID | mention)",
+                            "character": "The character you want to search for."
+                        }
+                    }
+                ]
+            }),
+
             // MyProfile Command
             COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
@@ -664,8 +680,8 @@ module.exports = class extends Language {
             },
 
             // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix, help) => `Invalid raid, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix, help) => `Invalid phase, usage is \`${prefix}${help.usage}\`\n**Example:** \`${prefix}${help.example}\``,
+            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Invalid raid, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
+            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Invalid phase, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
             COMMAND_RAIDTEAMS_PHASE_SOLO: 'Solo',
             COMMAND_RAIDTEAMS_PHASE_ONE: 'Phase 1',
             COMMAND_RAIDTEAMS_PHASE_TWO: 'Phase 2',

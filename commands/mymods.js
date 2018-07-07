@@ -15,7 +15,7 @@ class MyMods extends Command {
 
     async run(client, message, [userID, ...searchChar]) { // eslint-disable-line no-unused-vars
         const modTypes = message.language.get('BASE_MOD_TYPES');
-        const lang = message.guildSettings.swgoghLanguage;
+        const lang = message.guildSettings.swgohLanguage;
         // TODO Figure out why the mod icons aren's working
         // const STATMOD_SLOT_01 = client.emojis.find("name", "modSquare");
         // const STATMOD_SLOT_02 = client.emojis.find("name", "modArrow");
@@ -91,10 +91,11 @@ class MyMods extends Command {
         charMods.forEach(mod => {
             slots[mod.slot] = {
                 stats: [],
-                type: modTypes[mod.set.toUpperCase()],
+                type: mod.set.replace('-', ' ').toProperCase(),
                 lvl: mod.level,
                 pip: mod.pips
             };
+            
             // Add the primary in
             slots[mod.slot].stats.push(`${mod.primaryBonusValue.replace('+', '')} ${mod.primaryBonusType.replace('%', '')}`);
 
@@ -115,7 +116,7 @@ class MyMods extends Command {
         Object.keys(slots).forEach(mod => {
             const stats = slots[mod].stats;
             fields.push({
-                name: `${modTypes[mod.toUpperCase()]} ${slots[mod].type} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                name: `${slots[mod].type} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
                 value: `**${stats.shift()}**\n${stats.join('\n')}\n\`${'-'.repeat(28)}\``,
                 inline: true
             });

@@ -21,14 +21,20 @@ const config = {
 
     // The default per-guild settings
     "defaultSettings": {
+        "prefix": ";",
         "adminRole": ["Administrator"],
         "enableWelcome": false,
         "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
+        "enablePart": false,
+        "partMessage": "Goodbye {{user}}, thanks for stopping by!",
         "useEmbeds": true,
         "timezone": "America/Los_Angeles",
         "announceChan": "",
         "useEventPages": false,
-        "language": "en_US"
+        "eventCountdown": [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5],
+        "language": "en_US",
+        "swgohLanguage": "ENG_US"
+
     },
 
     // If you want to send error/ create/ delete message to a log channel
@@ -45,13 +51,8 @@ const config = {
     },
 
     // Need Bill's magic stuffs for this
-    // "swgohLoc": "",
-    // "mySqlDB": {
-    //     "host"     : "",
-    //     "user"     : "",
-    //     "password" : "",
-    //     "database" : ""
-    // },
+    // "swgohAPILoc": "",
+    // "swgohSettings": {},
     //
     // Need a Patreon account for this
     // "patreon": {                                                                 │50     //     "host"     : "",

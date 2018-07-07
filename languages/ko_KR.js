@@ -76,7 +76,7 @@ module.exports = class extends Language {
 
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: `\n\n이번 이벤트의 마지막입니다. 이 안내를 계속 받으시려면, 새 이벤트를 만드세요.`,
-            BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\n${timeToGo} 시간 내로 시작합니다`,
+            BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\n${timeToGo} 내로 시작합니다`,
 
             // Base swgohAPI
             BASE_SWGOH_NO_ALLY: `죄송합니다만 사용자가 등록되어있지 않습니다. 다음 명령을 사용하여 등록해주십시오 \`;register add <user> <allycode>\``,
@@ -164,7 +164,7 @@ module.exports = class extends Language {
             // Arenarank Command
             COMMAND_ARENARANK_INVALID_NUMBER: `정확한 등수를 입력해야 합니다`,
             COMMAND_ARENARANK_BEST_RANK: `최고 등수입니다. 축하합니다!`,
-            COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `현재 ${currentRank} 위에서 , ${battleCount} 번의 전투로 ${est}\n최선은 다음과 같습니다 ${rankList}`,
+            COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `현재 ${currentRank} 위에서 , ${battleCount} 번의 전투로 ${est}\n다음과 같이 진행할 수 있습니다. \n${rankList}`,
             COMMAND_ARENARANK_HELP: {
                 description: "아레나 전투를 전부 이길 경우 오를 수 있는 최고 순위(추정)를 보여줍니다",
                 actions: [
@@ -412,7 +412,7 @@ module.exports = class extends Language {
                         args: {
                             "user": "사용자를 지정할 경우 (me | userID | mention)",
                             "character": "찾고 싶은 캐릭터 이름.",
-                            "-ships": "함성을 찾고 싶은 경우 다음을 사용하십시오 `-s, -ship, or -ships`",
+                            "-ships": "함선을 찾고 싶은 경우 다음을 사용하십시오 `-s, -ship, or -ships`",
                             "starLvl": "몇성 짜리를 찾을 지 지정할 경우."
                         }
                     }
