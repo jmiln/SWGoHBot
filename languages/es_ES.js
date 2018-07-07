@@ -1,58 +1,58 @@
 const Language = require('../base/Language');
 const DAYSOFWEEK = {
     SUNDAY: {
-        SHORT: 'Sun',
-        LONG: 'Sunday'
+        SHORT: 'Do',
+        LONG: 'Domingo'
     },
     MONDAY: {
-        SHORT: 'Mon',
-        LONG: 'Monday'
+        SHORT: 'Lu',
+        LONG: 'Lunes'
     },
     TUESDAY: {
-        SHORT: 'Tue',
-        LONG: 'Tuesday'
+        SHORT: 'Ma',
+        LONG: 'Martes'
     },
     WEDNESDAY: {
-        SHORT: 'Wed',
-        LONG: 'Wednesday'
+        SHORT: 'Mi',
+        LONG: 'Miércoles'
     },
     THURSDAY: {
-        SHORT: 'Thu',
-        LONG: 'Thursday'
+        SHORT: 'Ju',
+        LONG: 'Jueves'
     },
     FRIDAY: {
-        SHORT: 'Fri',
-        LONG: 'Friday'
+        SHORT: 'Vi',
+        LONG: 'Viernes'
     },
     SATURDAY: {
-        SHORT: 'Sat',
-        LONG: 'Saturday'
+        SHORT: 'Sa',
+        LONG: 'Sábado'
     }
 };
 const TIMES = {
     DAY: {
-        PLURAL: 'days',
-        SING: 'day',
-        SHORT_PLURAL: 'ds',
-        SHORT_SING: 'd'
+        PLURAL: 'Dias',
+        SING: 'Día',
+        SHORT_PLURAL: 'DS',
+        SHORT_SING: 'D'
     },
     HOUR: {
-        PLURAL: 'hours',
-        SING: 'hour',
-        SHORT_PLURAL: 'hrs',
-        SHORT_SING: 'hr'
+        PLURAL: 'Horas',
+        SING: 'Hora',
+        SHORT_PLURAL: 'Hrs',
+        SHORT_SING: 'Hr'
     },
     MINUTE: {
-        PLURAL: 'minutes',
-        SING: 'minute',
-        SHORT_PLURAL: 'mins',
-        SHORT_SING: 'min'
+        PLURAL: 'Minutos',
+        SING: 'minuto',
+        SHORT_PLURAL: 'Mins',
+        SHORT_SING: 'Min'
     },
     SECOND: {
-        PLURAL: 'seconds',
-        SING: 'second',
-        SHORT_PLURAL: 'secs',
-        SHORT_SING: 'sec'
+        PLURAL: 'Segundos',
+        SING: 'Segundo',
+        SHORT_PLURAL: 'Segs',
+        SHORT_SING: 'Seg'
     }
 };
 
@@ -71,7 +71,7 @@ module.exports = class extends Language {
         this.getDay = getDay;
         this.getTime = getTime;
         this.language = {
-            // Default in case it can't find one.
+            // En el caso de no poder encontrar uno.
             BASE_DEFAULT_MISSING: 'Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.',
 
             // Base swgohBot.js file
