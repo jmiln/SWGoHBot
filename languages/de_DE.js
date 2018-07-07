@@ -233,24 +233,6 @@ module.exports = class extends Language {
                 ]
             },
 
-            // MyMods Command
-            COMMAND_MYMODS_NO_MODS: (charName) => `Entschuldigung, aber ich konnte keine Mods finden für dein ${charName}`,
-            COMMAND_MYMODS_MISSING_MODS: `Entschuldigung, aber ich kann aktuell keine Mods finden. Bitte warte etwas und versuche es erneut.`,
-            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods zuletzt aktualisiert: ${lastUpdated}`,
-            COMMAND_MYMODS_HELP: ({
-                description: "Zeigt die ausgestatteten Mods eines bestimmten Charakters an.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';mymods [user] <Charakter>',
-                        args: {
-                            "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
-                            "character": "Der Charakter nach dem du suchst."
-                        }
-                    }
-                ]
-            }),
 
             // Command Report Command
             COMMAND_COMMANDREPORT_HELP: ({
