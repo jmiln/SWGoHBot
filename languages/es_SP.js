@@ -637,8 +637,7 @@ ${shipRank}`,
 
             // Polls Command
             COMMAND_POLL_NO_ARG: 'Necesitas proporcionar al menos una opción para votar o bien una acción (create/view/etc).',
-            COMMAND_POLL_ALREADY_RUNNING: "Lo siento, pero solo puedes realizar una encuesta a la vez. 
-Por favor primero termina la encuesta actual.",
+            COMMAND_POLL_ALREADY_RUNNING: "Lo siento, pero solo puedes realizar una encuesta a la vez. Por favor primero termina la encuesta actual.",
             COMMAND_POLL_MISSING_QUESTION: "Necesitas especificar algo para votar.",
             COMMAND_POLL_TOO_FEW_OPT: "Necesitas tener al menos 2 opciones para votar.",
             COMMAND_POLL_TOO_MANY_OPT: "Sólo puedes tener hasta 10 opciones para votar.",
@@ -740,8 +739,7 @@ number from 1-${maxChar} ahí.`,
             },
 
             // Register Command
-            COMMAND_REGISTER_MISSING_ARGS: 'Necesitas proporcionar un id de usuario (mención o ID), 
-y un código de aliado',
+            COMMAND_REGISTER_MISSING_ARGS: 'Necesitas proporcionar un id de usuario (mención o ID), y un código de aliado',
             COMMAND_REGISTER_MISSING_ALLY: 'Necesitas proporcionar un código de aliado para vincularlo con tu cuenta.',
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Lo siento, pero ${allyCode} no es un código de aliado válido`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Por favor espera un poco mientras sincronizo tus datos.',
@@ -776,8 +774,7 @@ y un código de aliado',
                         actionDesc: 'Desvincula tu perfil de Discord de tu cuenta de SWGoH.',
                         usage: ';register remove <usuario>',
                         args: {
-                            "usuario": "Tu, esto desvincula en caso de que hayas usado un código de aliado erróneo. (me | userID | 
-mención)"
+                            "usuario": "Lo desvincula en caso de que hayas usado un código de aliado erróneo. (me | userID | mención)"
                         }
                     }
                 ]
@@ -813,8 +810,7 @@ ${cmd}\n\`\`\`${stackTrace}\`\`\``,
                         actionDesc: '',
                         usage: ';reloaddata <opción>',
                         args: {
-                            "opción": "Lo que deseas recargar ( commands | data | events | 
-function )."
+                            "opción": "Lo que deseas recargar ( commands | data | events | function )."
                         }
                     }
                 ]
@@ -914,15 +910,13 @@ para enviar un mensaje ahí. Por favor cambia los permisos o bien elige otro can
                     },
                     {
                         action: "timezone",
-                        actionDesc: 'Establece la zona horaria el cual deseas que todos los comandos relacionados con los horarios los usen. 
-Mira aquí si necesitas una lista https://goo.gl/Vqwe49.',
+                        actionDesc: 'Establece la zona horaria el cual deseas que todos los comandos relacionados con los horarios los usen. Mira aquí si necesitas una lista https://goo.gl/Vqwe49.',
                         usage: ';setconf timezone <zonaHoraria>',
                         args: {}
                     },
                     {
                         action: "announceChan",
-                        actionDesc: 'Establece el nombre del canal de anuncios para eventos, etc. Asegúrate 
-de que tenga permisos para enviar mensajes ahí.',
+                        actionDesc: 'Establece el nombre del canal de anuncios para eventos, etc. Asegúrate de que tenga permisos para enviar mensajes ahí.',
                         usage: ';setconf announceChan <NombreDelCanal>',
                         args: {}
                     },
