@@ -72,7 +72,8 @@ module.exports = class extends Language {
         this.getTime = getTime;
         this.language = {
             // Default in case it can't find one.
-            BASE_DEFAULT_MISSING: 'Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por favor reportarlo así podrá ser reparado.',
+            BASE_DEFAULT_MISSING: '
+Se está intentando utilizar una cadena inexistente. Si ves este mensaje, por favor reportarlo así podrá ser reparado.',
 
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: `\n\nEsta es la última instancia de este evento. Para continuar recibiendo este aviso, crea un nuevo evento.`,
@@ -516,22 +517,23 @@ module.exports = class extends Language {
                     }
                 ]
             },
-            // MyArena Command
-            COMMAND_MYARENA_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
-            COMMAND_MYARENA_NO_CHAR: 'Something went wrong, I could not get your characters.',
-            COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rank: ${rank})`,
-            COMMAND_MYARENA_FLEET: (rank) => `Ship Arena (Rank: ${rank})`,
+                        // MyArena Command
+            COMMAND_MYARENA_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para 
+${user}. Por favor asegúrate que esa cuenta esté sincronizada.`,
+            COMMAND_MYARENA_NO_CHAR: 'Algo ha salido mal, no puedo obtener tus personajes.',
+            COMMAND_MYARENA_ARENA: (rank) => `Arena de Escuadrones (Puesto: ${rank})`,
+            COMMAND_MYARENA_FLEET: (rank) => `Arena de Flotas (Puesto: ${rank})`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
-            COMMAND_MYARENA_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
+            COMMAND_MYARENA_EMBED_FOOTER: (date) => `información de la Arena actualizada: ${date}`,
             COMMAND_MYARENA_HELP: {
-                description: "Show user's current arena ranks and their squads.",
+                description: " Muestra el puesto actual del jugador en la Arena y sus escuadrones.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';myarena [user]',
                         args: {
-                            "user": "The person you're checking. (me | userID | mention)"
+                            "user": "El usuario que se desea ver. (me | userID | mention)"
                         }
                     }
                 ]
@@ -539,139 +541,147 @@ module.exports = class extends Language {
 
             // MyCharacter Command
             COMMAND_MYCHARACTER_HELP: ({
-                description: "Shows the general stats about the selected character.",
+                description: "Muestra las estadísticas del personaje seleccionado.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';mycharacter [user] <character>',
+                        usage: ';mycharacter [usuario] <personaje>',
                         args: {
-                            "user": "The person you're checking. (me | userID | mention)",
-                            "character": "The character you want to search for."
+                            "usuario": "El usuario que se desea ver. (me | userID | mention)",
+                            "personaje": "El personaje que se desea buscar."
                         }
                     }
                 ]
             }),
 
             // MyMods Command
-            COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
-            COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
-            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
+            COMMAND_MYMODS_NO_MODS: (charName) => `Lo siento, pero no he podido encontrar ningún mod para ${charName}`,
+            COMMAND_MYMODS_MISSING_MODS: `Lo siento, pero no he podido encontrar tus mods en este momento. 
+Por favor espera un poco e intenta de nuevo.`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: 
+${lastUpdated} ago`,
             COMMAND_MYMODS_HELP: ({
-                description: "Shows the mods that you have equipped on the selected character.",
+                description: "Muestra los mods que tienes equipados en el personaje seleccionado.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';mymods [user] <character>',
+                        usage: ';mymods [usuario] <personaje>',
                         args: {
-                            "user": "The person you're checking. (me | userID | mention)",
-                            "character": "The character you want to search for."
+                            "usuario": "El usuario que se desea cer. (me | userID | mention)",
+                            "personaje": "El personaje que se desea buscar."
                         }
                     }
                 ]
             }),
 
             // MyProfile Command
-            COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
-            COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
-            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
-            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Guild:** ${guildName}\n**Level:** ${level}\n**Arena rank:** ${charRank}\n**Ship rank:** ${shipRank}`,
+            COMMAND_MYPROFILE_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para 
+${user}. Por favor asegúrese que esa cuenta esté sincronizada.`,
+            COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `Perfil de ${playerName} (${allyCode})`,
+            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `información de la Arena actualizada: ${date}`,
+            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gremio:** 
+${guildName}\n**Nivel:** ${level}\n**Puesto en Arena:** ${charRank}\n**Posición de Naves:** 
+${shipRank}`,
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
-                header: `Characters (${charList.length})`,
+                header: `Personajes (${charList.length})`,
                 stats: [
-                    `Char GP  :: ${gpChar}`,
-                    `7 Star   :: ${charList.filter(c => c.rarity === 7).length}`,
-                    `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
-                    `Gear 12  :: ${charList.filter(c => c.gear === 12).length}`,
-                    `Gear 11  :: ${charList.filter(c => c.gear === 11).length}`,
-                    `Zetas    :: ${zetaCount}`
+                    `PG de PJ.  :: ${gpChar}`,
+                    `7 Estrellas   :: ${charList.filter(c => c.rarity === 7).length}`,
+                    `nvl 85   :: ${charList.filter(c => c.level === 85).length}`,
+                    `Equipo 12  :: ${charList.filter(c => c.gear === 12).length}`,
+                    `Equipo 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                    `Equipo    :: ${zetaCount}`
                 ].join('\n')
             }),
             COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
-                header: `Ships (${shipList.length})`,
+                header: `Naves (${shipList.length})`,
                 stats: [
-                    `Ship GP :: ${gpShip}`,
-                    `7 Star  :: ${shipList.filter(s => s.rarity === 7).length}`,
-                    `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
+                    `PG de Naves :: ${gpShip}`,
+                    `7 Estrellas  :: ${shipList.filter(s => s.rarity === 7).length}`,
+                    `nvl 85  :: ${shipList.filter(s => s.level === 85).length}`
                 ].join('\n')
             }),
             COMMAND_MYPROFILE_HELP: {
-                description: "Show user's general stats.",
+                description: "Muestra las estadísticas generales del usuario.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';myprofile [user]',
+                        usage: ';myprofile [usuario]',
                         args: {
-                            "user": "The person you're checking. (me | userID | mention)"
+                            "usuario": "El usuario que se desea ver. (me | userID | mention)"
                         }
                     }
                 ]
             },
 
             // Nickname Command
-            COMMAND_NICKNAME_SUCCESS: `I have changed my nickname.`,
-            COMMAND_NICKNAME_FAILURE: `Sorry, but I don't have permission to change that.`,
-            COMMAND_NICKNAME_TOO_LONG: 'Sorry, but a name can only contain up to 32 characters.',
+            COMMAND_NICKNAME_SUCCESS: `He cambiado mi nombre.`,
+            COMMAND_NICKNAME_FAILURE: `Lo siento, pero no tengo permiso para cambiar eso.`,
+            COMMAND_NICKNAME_TOO_LONG: 'Lo siento, pero el nombre solo puede tener hasta 32 caracteres de longitud.',
             COMMAND_NICKNAME_HELP: {
-                description: "Changes the bot's nickname on the server.",
+                description: "Cambia el nombre del bot en el servidor.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';nickname <name>',
+                        usage: ';nickname <nombre>',
                         args: {
-                            "name": "The name you're wanting to change it to. Leave it blank to reset it to default."
+                            "nombre": "El nombre que deseas asignarle al bot. Dejalo en blanco para restablecer el nombre por defecto."
                         }
                     }
                 ]
             },
 
             // Polls Command
-            COMMAND_POLL_NO_ARG: 'You need to provide either an option to vote on, or an action (create/view/etc).',
-            COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
-            COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
-            COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
-            COMMAND_POLL_TOO_MANY_OPT: "You can only have up to 10 options to vote on.",
-            COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n\n${poll}`,
-            COMMAND_POLL_NO_POLL: "There is no poll in progress",
-            COMMAND_POLL_FINAL: (poll) => `Final results for ${poll}`,
-            COMMAND_POLL_FINAL_ERROR: (question) => `I couldn't delete **${question}**, please try again.`,
-            COMMAND_POLL_INVALID_OPTION: "That is not a valid option.",
-            COMMAND_POLL_SAME_OPT: (opt) => `You have already chosen **${opt}**`,
-            COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `You have changed your choice from **${oldOpt}** to **${newOpt}**`,
-            COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
-            COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
+            COMMAND_POLL_NO_ARG: 'Necesitas proporcionar al menos una opción para votar o bien una acción (create/view/etc).',
+            COMMAND_POLL_ALREADY_RUNNING: "Lo siento, pero solo puedes realizar una encuesta a la vez. 
+Por favor primero termina la encuesta actual.",
+            COMMAND_POLL_MISSING_QUESTION: "Necesitas especificar algo para votar.",
+            COMMAND_POLL_TOO_FEW_OPT: "Necesitas tener al menos 2 opciones para votar.",
+            COMMAND_POLL_TOO_MANY_OPT: "Sólo puedes tener hasta 10 opciones para votar.",
+            COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** ha iniciado una nueva encuesta:\nVota con \`${prefix}poll <opción>\`\n\n${poll}`,
+            COMMAND_POLL_NO_POLL: "No hay ninguna encuesta en progreso.",
+            COMMAND_POLL_FINAL: (poll) => `Resultados funales para ${poll}`,
+            COMMAND_POLL_FINAL_ERROR: (question) => `No he podido eliminar la pregunta **${question}**, 
+por favor intentalo de nuevo.`,
+            COMMAND_POLL_INVALID_OPTION: "No es una opción válida.",
+            COMMAND_POLL_SAME_OPT: (opt) => `Ya has elegido la opción **${opt}**`,
+            COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Has cambiado tu voto de **${oldOpt}** a **${newOpt}**`,
+            COMMAND_POLL_REGISTERED: (opt) => `Voto por **${opt}** registrado`,
+            COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: 
+**${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
             COMMAND_POLL_HELP: {
-                description: "Lets you start a poll with multiple options.",
+                description: "Te permite comenzar una encuesta con múltiples opciones.",
                 actions: [
                     {
                         action: "Create",
-                        actionDesc: 'Create a new poll',
-                        usage: ';poll create <question> | <opt1> | <opt2> | [...] | [opt10]',
+                        actionDesc: 'Crea una nueva encuesta',
+                        usage: ';poll create <pregunta> | <opt1> | <opt2> | [...] | [opt10]',
                         args: {
-                            "question": "The question that you're wanting feedback on.",
-                            "opt": "The options that people can choose from"
+                            "pregunta": "La pregunta de la cual esperas una respuesta.",
+                            "opt": "Las opciones las cuales se puede escoger."
                         }
                     },
                     {
                         action: "Vote",
-                        actionDesc: 'Vote on the option that you choose',
-                        usage: ';poll <choice>',
+                        actionDesc: 'Vota la opción de tu elección.',
+                        usage: ';poll <opción>',
                         args: {
-                            "choice": "The option that you choose."
+                            "opción": "La opción que eliges."
                         }
                     },
                     {
                         action: "View",
-                        actionDesc: 'See what the current tally of votes is.',
+                        actionDesc: 'Ver cuál es el total de votos actual.',
                         usage: ';poll view',
                         args: {}
                     },
                     {
                         action: "Close",
-                        actionDesc: 'End the poll and show the final tally.',
+                        actionDesc: 'Termina la encuesta y muestra el conteo final.',
                         usage: ';poll close',
                         args: {}
                     }
@@ -679,86 +689,95 @@ module.exports = class extends Language {
             },
 
             // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Invalid raid, usage is \`${prefix} <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Invalid phase, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
+            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Raid inválido, su uso es \`${prefix}raidteams 
+<raid> <fase>\`\n**Ejemplo:** \`${prefix}raidteams pit p3\``,
+            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Fase inválida, su uso es 
+\`${prefix}raidteams <raid> <fase>\`\n**Ejemplo:** \`${prefix}raidteams pit p3\``,
             COMMAND_RAIDTEAMS_PHASE_SOLO: 'Solo',
-            COMMAND_RAIDTEAMS_PHASE_ONE: 'Phase 1',
-            COMMAND_RAIDTEAMS_PHASE_TWO: 'Phase 2',
-            COMMAND_RAIDTEAMS_PHASE_THREE: 'Phase 3',
-            COMMAND_RAIDTEAMS_PHASE_FOUR: 'Phase 4',
-            COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Characters:** \`${charList}\``,
-            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Showing teams for ${currentPhase}`,
-            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `Cannot find any teams under \`${currentPhase}\``,
-            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Showing teams for ${currentPhase}\n\n`,
-            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Characters: ${charList}\n`,
+            COMMAND_RAIDTEAMS_PHASE_ONE: 'Fase 1',
+            COMMAND_RAIDTEAMS_PHASE_TWO: 'Fase 2',
+            COMMAND_RAIDTEAMS_PHASE_THREE: 'Fase 3',
+            COMMAND_RAIDTEAMS_PHASE_FOUR: 'Fase 4',
+            COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Personajes:** \`${charList}\``,
+            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Mostrando equipos para 
+${currentPhase}`,
+            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `No he podido encontrar ningún equipo para  
+\`${currentPhase}\``,
+            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * 
+\n\n* Mostrando equipos para ${currentPhase}\n\n`,
+            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} 
+### \n* Personajes: ${charList}\n`,
             COMMAND_RAIDTEAMS_HELP: {
-                description: "Shows some teams that work well for each raid.",
+                description: "Muestra algunos equipos que funcionan bien para cada Raid.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';raidteams <raid> <phase>',
+                        usage: ';raidteams <raid> <fase>',
                         args: {
-                            "raid": "The raid that you want to see teams for. (aat|pit|sith)",
-                            "phase": "The phase of the raid you want to see. (p1|p2|p3|p4|solo)"
+                            "raid": "La Raid la cual desear ver los equipos. (aat|pit|sith)",
+                            "fase": "La fase la cual desear ver. (p1|p2|p3|p4|solo)"
                         }
                     }
                 ]
             },
 
             // Randomchar Command
-            COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Sorry, but you need a number from 1-${maxChar} there.`,
+            COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Lo siento, pero necesitas un número entre
+number from 1-${maxChar} ahí.`,
             COMMAND_RANDOMCHAR_HELP: {
-                description: "Picks up to 5 random characters to form a squad.",
+                description: "Elige hasta 5 personajes al azar para crear un escuadron.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';randomchar [numberOfChars]',
+                        usage: ';randomchar [númeroDePersonajes]',
                         args: {
-                            "numberOfChars": "The number of characters that you want chosen"
+                            "númeroDePersonajes": "El número de personajes que deseas que se elijan."
                         }
                     }
                 ]
             },
 
             // Register Command
-            COMMAND_REGISTER_MISSING_ARGS: 'You need to supply a userID (mention or ID), and an ally code',
-            COMMAND_REGISTER_MISSING_ALLY: 'You need to enter an ally code to link your account to.',
-            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
-            COMMAND_REGISTER_PLEASE_WAIT: 'Please wait while I sync your data.',
-            COMMAND_REGISTER_FAILURE: 'Registration failed, please make sure your ally code is correct.',
-            COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
-            COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
-            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
-            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,
+            COMMAND_REGISTER_MISSING_ARGS: 'Necesitas proporcionar un id de usuario (mención o ID), 
+y un código de aliado',
+            COMMAND_REGISTER_MISSING_ALLY: 'Necesitas proporcionar un código de aliado para vincularlo con tu cuenta.',
+            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Lo siento, pero ${allyCode} no es un código de aliado válido`,
+            COMMAND_REGISTER_PLEASE_WAIT: 'Por favor espera un poco mientras sincronizo tus datos.',
+            COMMAND_REGISTER_FAILURE: 'Registro fallido, por favor asegurate que tu código de aliado sea correcto.',
+            COMMAND_REGISTER_SUCCESS: (user) => `El registro de \`${user}\` ha sido exitoso!`,
+            COMMAND_REGISTER_UPDATE_FAILURE: 'Algo salió mal, asegurate que tu código de aliado registrado sea correcto.',
+            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Perfil de \`${user}\` actualizado.`,
+            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Gremio \`${guild}\` actualizado.`,
             COMMAND_REGISTER_HELP: {
-                description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
+                description: "Registra tu código de aliado con tu ID de Discord y sincroniza tu perfil en SWGoH.",
                 actions: [
                     {
                         action: "Add",
-                        actionDesc: 'Link your Discord profile to a SWGoH account',
-                        usage: ';register add <user> <allyCode>',
+                        actionDesc: 'Vincula tu perfil en Discord con tu cuenta de SWGoH.',
+                        usage: ';register add <usuario> <CódigoDeAliado>',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "allyCode": "Your ally code from in-game."
+                            "usuario": "El usuario que se desea agregar. (me | userID | mention)",
+                            "CódigoDeAliado": "Tu código de aliado dentro del juego."
                         }
                     },
                     {
                         action: "Update",
-                        actionDesc: 'Update/ resync your SWGoH data.',
-                        usage: ';register update <user> [-guild]',
+                        actionDesc: 'Actualiza/resincroniza tu información de SWGoH.',
+                        usage: ';register update <usuario> [-guild]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "-guild": "Tell it to pull/ update your whole guild (-g | -guild | -guilds)"
+                            "usuario": "El usuario que quieres agregar. (me | userID | mention)",
+                            "-guild": "Actualiza la información del gremio entero. (-g | -guild | -guilds)"
                         }
                     },
                     {
                         action: "Remove",
-                        actionDesc: 'Unlink your Discord profile from a SWGoH account',
-                        usage: ';register remove <user>',
+                        actionDesc: 'Desvincula tu perfil de Discord de tu cuenta de SWGoH.',
+                        usage: ';register remove <usuario>',
                         args: {
-                            "user": "You, this is to unlink it if you have the wrong ally code. (me | userID | mention)"
+                            "usuario": "Tu, esto desvincula en caso de que hayas usado un código de aliado erróneo. (me | userID | 
+mención)"
                         }
                     }
                 ]
@@ -767,18 +786,19 @@ module.exports = class extends Language {
 
 
             // Reload Command
-            COMMAND_RELOAD_INVALID_CMD: (cmd) => `I cannot find the command: ${cmd}`,
-            COMMAND_RELOAD_SUCCESS: (cmd) => `Successfully reloaded: ${cmd}`,
-            COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Command reload failed: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
+            COMMAND_RELOAD_INVALID_CMD: (cmd) => `No he podido encontrar el comando: ${cmd}`,
+            COMMAND_RELOAD_SUCCESS: (cmd) => `Recargado con éxito: ${cmd}`,
+            COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Recarga del comando fallida: 
+${cmd}\n\`\`\`${stackTrace}\`\`\``,
             COMMAND_RELOAD_HELP: {
-                description: "Reloads the command file, if it's been updated or modified.",
+                description: "Vuelve a cargar el archivo del comando, si ha sido actualizado o modificado.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';reload <command>',
+                        usage: ';reload <comando>',
                         args: {
-                            "command": "The command you're wanting to reload."
+                            "comando": "El comando que deseas volver a cargar."
                         }
                     }
                 ]
@@ -786,42 +806,55 @@ module.exports = class extends Language {
 
             // Reload Data Command
             COMMAND_RELOADDATA_HELP: {
-                description: "Reloads the selected file(s).",
+                description: "Recarga el/los archivo(s) seleccionado(s).",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';reloaddata <option>',
+                        usage: ';reloaddata <opción>',
                         args: {
-                            "option": "What you're wanting to reload ( commands | data | events | function )."
+                            "opción": "Lo que deseas recargar ( commands | data | events | 
+function )."
                         }
                     }
                 ]
             },
 
             // Setconf Command
-            COMMAND_SETCONF_MISSING_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.`,
-            COMMAND_SETCONF_MISSING_OPTION: `You must select a config option to change.`,
-            COMMAND_SETCONF_MISSING_VALUE: `You must give a value to change that option to.`,
-            COMMAND_SETCONF_ARRAY_MISSING_OPT: 'You must use `add` or `remove`.',
-            COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Sorry, but \`${value}\` is not set in \`${key}\`.`,
-            COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` has been ${action} your \`${key}\`.`,
-            COMMAND_SETCONF_NO_KEY: (prefix) => `This key is not in the configuration. Look in "${prefix}showconf", or "${prefix}setconf help" for a list`,
-            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Guild configuration item ${key} has been changed to:\n\`${value}\``,
-            COMMAND_SETCONF_NO_SETTINGS: `No guild settings found.`,
+            COMMAND_SETCONF_MISSING_PERMS: `Lo siento, pero o bien no eres un Admin o el líder de tu servidor no ha inicializado las configuraciones.`,
+            COMMAND_SETCONF_MISSING_OPTION: `Necesitas seleccionar la opción de configuración la cual deseas cambiar.`,
+            COMMAND_SETCONF_MISSING_VALUE: `Necesitas asignar un valor para cambiar la opción.`,
+            COMMAND_SETCONF_ARRAY_MISSING_OPT: 'Debes usar `add` o `remove`.',
+            COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Lo siento, pero \`${value}\` 
+no está establecida en \`${key}\`.`,
+            COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` ha sido 
+${action} por tu \`${key}\`.`,
+            COMMAND_SETCONF_NO_KEY: (prefix) => `Este comando no está en la configuración. Echa un ojo en "${prefix}showconf", o "${prefix}setconf help" para ver una lista`,
+            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `El elemento de la configuración del Gremio
+${key} ha sido cambiado a:\n\`${value}\``,
+            COMMAND_SETCONF_NO_SETTINGS: `Configuración del gremio no encontrada.`,
 
-            COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `You must specify a role to ${opt}.`,
-            COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Sorry, but I cannot find the role ${roleName}. Please try again.`,
-            COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Sorry, but ${roleName} is already there.`,
-            COMMAND_SETCONF_PREFIX_TOO_LONG: 'Sorry, but you cannot have spaces in your prefix',
-            COMMAND_SETCONF_WELCOME_NEED_CHAN: `Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set \`announceChan\` to a valid channel and try again.\``,
-            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Sorry, but I don't have permission to send message there. Please either change the perms, or choose another channel.`,
-            COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Sorry, but ${value} is not a currently supported language. \nCurrently supported languages are: \`${langList}\``,
-            COMMAND_SETCONF_RESET: `Your config has been reset`,
+            COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Debes especificar un rol a  
+${opt}.`,
+            COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Lo siento, pero no he podido encontrar el rol ${roleName}. Por favor inténtalo de nuevo .`,
+            COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Lo siento, pero 
+${roleName} ya se encuentra actualmente.`,
+            COMMAND_SETCONF_PREFIX_TOO_LONG: 'Lo siento, pero no puedes tener espacio en tu prefijo.',
+            COMMAND_SETCONF_WELCOME_NEED_CHAN: `Lo siento, pero tu canal de eventos o bien no ha sido establecida o ya no es actualmente válida.
+\nEstablécelo con \`announceChan\` en un canal válido e 
+inténtalo de nuevo.\``,
+            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Zona horaria inválida, mira aquí 
+https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites,
+luego introduce lo que aparece en la columna TZ.`,
+            COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Lo siento, pero no 
+he podido encontrar el canal ${chanName}. Intentalo de nuevo.`,
+            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Lo siento, pero no tengo permiso 
+para enviar un mensaje ahí. Por favor cambia los permisos o bien elige otro canal.`,
+            COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Lo siento, pero ${value} no es un lenguaje soportado actualmente.
+\nLos lenguajes soportados actualmente son: \`${langList}\``,
+            COMMAND_SETCONF_RESET: `Tu configuración ha sido restablecida.`,
             COMMAND_SETCONF_HELP: {
-                description: "Used to set the bot's config settings.",
+                description: "Se usa para establecer los ajustes de configuración del bot.",
                 actions: [
                     {
                         action: "",
@@ -831,96 +864,98 @@ module.exports = class extends Language {
                     },
                     {
                         action: "prefix",
-                        actionDesc: 'Set the bot\'s prefix for your server.',
+                        actionDesc: 'Establece el prefijo del bot en tu Servidor.',
                         usage: ';setconf prefix <prefix>',
                         args: {}
                     },
                     {
                         action: "adminRole",
-                        actionDesc: 'The role that you want to be able to modify bot settings or set up events',
-                        usage: ';setconf adminRole <add|remove> <role>',
+                        actionDesc: 'El rol el cual deseas que sea capaz de modificar los ajustes del bot o establecer eventos.',
+                        usage: ';setconf adminRole <add|remove> <rol>',
                         args: {
-                            'add':  'Add a role to the list',
-                            'remove': 'Remove a role from the list'
+                            'add':  'Agrega un rol a la lista.',
+                            'remove': 'Elimina un rol de la lista.'
                         }
                     },
                     {
                         action: "enableWelcome",
-                        actionDesc: 'Toggles the welcome message on/ off.',
+                        actionDesc: 'Activa/desactiva el mensaje de bienvenida.',
                         usage: ';setconf enableWelcome <true|false>',
                         args: {}
                     },
                     {
                         action: "welcomeMessage",
-                        actionDesc: 'The welcome message to send if you have it enabled (Special variables below)',
-                        usage: ';setconf welcomeMessage <message>',
+                        actionDesc: 'El mensaje de bienvenida para enviar si tienes la opción activada. (Variables especiales abajo).',
+                        usage: ';setconf welcomeMessage <mensaje>',
                         args: {
-                            '{{user}}':  "gets replaced with the new user's name.",
-                            '{{userMention}}': "makes it mention the new user there."
+                            '{{user}}':  "Es remplazado con el nombre del nuevo usuario.",
+                            '{{userMention}}': "Menciona al nuevo usuario de ahí."
                         }
                     },
                     {
                         action: "enablePart",
-                        actionDesc: 'Toggles the parting message on/ off.',
+                        actionDesc: 'Activa/desactiva el mensaje de despedida.',
                         usage: ';setconf enablePart <true|false>',
                         args: {}
                     },
                     {
                         action: "partMessage",
-                        actionDesc: 'The part message to send if you have it enabled (Special variables below)',
-                        usage: ';setconf partMessage <message>',
+                        actionDesc: 'El mensaje de despedida a enviar si tienes la opción activada. (Variables especiales abajo)',
+                        usage: ';setconf partMessage <mensaje>',
                         args: {
-                            '{{user}}':  "gets replaced with the new user's name.",
+                            '{{user}}':  "Es remplazado con el nombre del nuevo usuario.",
                         }
                     },
                     {
                         action: "useEmbeds",
-                        actionDesc: 'Toggles whether or not to use embeds as the output for some commands.',
+                        actionDesc: 'Activa/desactiva el uso de mensajes establecidos como salida para algunos comandos.',
                         usage: ';setconf useEmbeds <true|false>',
                         args: {}
                     },
                     {
                         action: "timezone",
-                        actionDesc: 'Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.',
-                        usage: ';setconf timezone <timezone>',
+                        actionDesc: 'Establece la zona horaria el cual deseas que todos los comandos relacionados con los horarios los usen. 
+Mira aquí si necesitas una lista https://goo.gl/Vqwe49.',
+                        usage: ';setconf timezone <zonaHoraria>',
                         args: {}
                     },
                     {
                         action: "announceChan",
-                        actionDesc: 'Sets the name of your announcements channel for events etc. Make sure it has permission to send them there.',
-                        usage: ';setconf announceChan <channelName>',
+                        actionDesc: 'Establece el nombre del canal de anuncios para eventos, etc. Asegúrate 
+de que tenga permisos para enviar mensajes ahí.',
+                        usage: ';setconf announceChan <NombreDelCanal>',
                         args: {}
                     },
                     {
                         action: "useEventPages",
-                        actionDesc: 'Sets it so event view shows in pages, rather than super spammy.',
+                        actionDesc: 'Establece que los eventos se muestren en páginas en vez de "Mega-Spammeados XD".',
                         usage: ';setconf useEventPages <true|false>',
                         args: {}
                     },
                     {
                         action: "eventCountdown",
-                        actionDesc: 'The time that you want a countdown message to appear',
-                        usage: ';setconf eventCountdown <add|remove> <time>',
+                        actionDesc: 'El horario en el que deseas que aparezca un mensaje de cuenta atrás.',
+                        usage: ';setconf eventCountdown <add|remove> <horario>',
                         args: {
-                            'add':  'Add a time to the list',
-                            'remove': 'Remove a time from the list'
+                            'add':  'Agrega un horario a la lista.',
+                            'remove': 'Elimina un horario de la lista.'
                         }
                     },
                     {
                         action: "language",
-                        actionDesc: 'Set the bot to use any supported language for the command output.',
+                        actionDesc: 'Establece el bot para usarlo en cualquier lenguaje soportado para la salida de comandos.',
                         usage: ';setconf language <lang>',
                         args: {}
                     },
                     {
                         action: "swgohLanguage",
-                        actionDesc: 'Sets the bot to use any supported language for the game data output.',
+                        actionDesc: 'Configura el bot para usar cualquier lenguaje soportado para la información de salida del juego.',
                         usage: ';setconf swgohLanguage <lang>',
                         args: {}
                     },
                     // {
                     //     action: "reset",
-                    //     actionDesc: 'Resets the config back to default (ONLY use this if you are sure)',
+                    //     actionDesc: 'Resetea la configuración de vuelta por defecto (Solo si estás seguro)',
                     //     usage: ';setconf reset',
                     //     args: {}
                     // }
@@ -928,42 +963,43 @@ module.exports = class extends Language {
             },
 
             // Shard times command
-            COMMAND_SHARDTIMES_MISSING_USER: `I need a user, please enter "me", mention someone here, or input their Discord ID.`,
-            COMMAND_SHARDTIMES_MISSING_ROLE: `Sorry, but you can only add yourself unless you have an admin role.`,
-            COMMAND_SHARDTIMES_INVALID_USER: `Invalid user, please enter "me", mention someone here, or input their discord ID.`,
-            COMMAND_SHARDTIMES_MISSING_TIMEZONE: `You need to enter a timezone.`,
-            COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column`,
-            COMMAND_SHARDTIMES_USER_ADDED: `User successfully added!`,
-            COMMAND_SHARDTIMES_USER_NOT_ADDED: `Something went wrong when with adding this user. Please try again.`,
-            COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Sorry, but you can only remove yourself unless you have an admin role.`,
-            COMMAND_SHARDTIMES_REM_SUCCESS: `User successfully removed!`,
-            COMMAND_SHARDTIMES_REM_FAIL: `Something went wrong when removing this user. Please try again.`,
-            COMMAND_SHARDTIMES_REM_MISSING: `Sorry, but that user does not seem to be here.`,
-            COMMAND_SHARDTIMES_SHARD_HEADER: `Shard payouts in:`,
+            COMMAND_SHARDTIMES_MISSING_USER: `Necesito un usuario, por favor introduce "me", menciona a alguien aquí o introduce su ID del Discord.`,
+            COMMAND_SHARDTIMES_MISSING_ROLE: `Lo siento, pero solo puedes agregarte a ti mismo a menos que tengas un rol de Admin.`,
+            COMMAND_SHARDTIMES_INVALID_USER: `Usuario inválido, por favor introduce "me", menciona a alguien aquí o introduce su ID del Discord.`,
+            COMMAND_SHARDTIMES_MISSING_TIMEZONE: `Necesitas ingresar una zona horaria.`,
+            COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Zona horaria inválida, busca aquí 
+https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites,
+después introduce lo que aparece en la columna TZ.`,
+            COMMAND_SHARDTIMES_USER_ADDED: `Usuario agregado con éxito!`,
+            COMMAND_SHARDTIMES_USER_NOT_ADDED: `Algo salió mal mientras se agregaba este usuario. Por favor inténtalo de nuevo.`,
+            COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Lo siento, pero solo te puedes eliminar a ti mismo a menos que tengas un rol de Admin.`,
+            COMMAND_SHARDTIMES_REM_SUCCESS: `Usuario eliminado con éxito!`,
+            COMMAND_SHARDTIMES_REM_FAIL: `Algo salió mal mientras se eliminaba este usuario. Por favor inténtalo de nuevo.`,
+            COMMAND_SHARDTIMES_REM_MISSING: `Lo siento, pero este usuario parece no estar aquí.`,
+            COMMAND_SHARDTIMES_SHARD_HEADER: `Recompensa de fragmentos en:`,
             COMMAND_SHARDTIMES_HELP: {
-                description: "Lists the time until the payouts of anyone registered.",
+                description: "Muestra una lista con el tiempo restante hasta el cobro de recompensas de cualquier usuario registrado.",
                 actions: [
                     {
                         action: "Add",
-                        actionDesc: 'Add a user to the shard tracker',
-                        usage: ';shardtimes add <user> <timezone> [flag/emoji]',
+                        actionDesc: 'Agrega un usuario al rastreador de fragmentos.',
+                        usage: ';Tiempo de cobro añade <usuario> <zonaHoraria> [flag/emoji]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "timezone": "The zone that your account is based in",
-                            "flag/emoji": "An optional emoji if you want it to show by your name"
-                        }
+                            "usuario": "El usuario que se desea agregar. (me | userID | mention)",
+                            "zonaHoraria": "La zona horaria en la que se encuentra tu cuenta",
+                            "bandera/emoji": "(Opcional) muestra un emoji de tu elección al lado de tu nombre."}
                     },
                     {
                         action: "Remove",
-                        actionDesc: 'Remove a user from the tracker',
-                        usage: ';shardtimes remove <user>',
+                        actionDesc: 'Elimina el rastreador de un usuario.',
+                        usage: ';Eliminar tiempo de cobro <usuario>',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "usuario": "El usuario que estás añadiendo. (me | userID | mention)"
                         }
                     },
                     {
                         action: "View",
-                        actionDesc: 'Look at all the tracked times for you and your shardmates',
+                        actionDesc: 'Muestra todos los horarios marcados para ti y tus compañeros.',
                         usage: ';shardtimes view',
                         args: {}
                     }
@@ -971,32 +1007,36 @@ module.exports = class extends Language {
             },
 
             // Ships Command
-            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `Need a character or ship. Usage is \`${prefix}ship <ship|pilot>\``,
-            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `Invalid character or ship. Usage is \`${prefix}ship <ship|pilot>\``,
-            COMMAND_SHIPS_TOO_MANY: `I found more than one result from that search. Please try to be more specific.`,
-            COMMAND_SHIPS_CREW: 'Crew',
-            COMMAND_SHIPS_FACTIONS: 'Factions',
-            COMMAND_SHIPS_ABILITIES: (abilities) => `**Ability Type:** ${abilities.type}   **Ability Cooldown:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
-            COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * Abilities *\n`,
-            COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nAbility Type: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
+            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `Se Necesita un personaje o una nave. Su uso es 
+\`${prefix}ship <nave|piloto>\``,
+            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `Personaje o nave inválida. Su uso es 
+\`${prefix}ship <nave|piloto>\``,
+            COMMAND_SHIPS_TOO_MANY: `He encontrado más de un resultado en esta búsqueda. Por favor intenta ser más específico.`,
+            COMMAND_SHIPS_CREW: 'Tripulación',
+            COMMAND_SHIPS_FACTIONS: 'Facciones',
+            COMMAND_SHIPS_ABILITIES: (abilities) => `**Tipo de Habilidad:** ${abilities.type}   **Tiempo restante de habilidad:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
+            COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * Habilidades *\n`,
+            COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} 
+###\nAbility Tipo: ${abilities.type}   Ability Cooldown: 
+${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
             COMMAND_SHIPS_HELP: {
-                description: "Shows info about the selected ship.",
+                description: "Presenta información sobre la nave seleccionada.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: 'ship <ship|pilot>',
+                        usage: 'ship <nave|piloto>',
                         args: {
-                            "ship|pilot": "The ship or pilot for the ship you want info on."
+                            "nave|piloto": "La nave o el piloto de la nave del que deseas mostrar información."
                         }
                     }
                 ]
             },
 
             // Showconf Command
-            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`${configKeys}\`\`\``,
+            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `La siguiente es la configuración actual de ${serverName}: \`\`\`${configKeys}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
-                description: "Shows the current configs for your server.",
+                description: "´Muestra la configuración actual de tu servidor.",
                 actions: [
                     {
                         action: "",
@@ -1008,16 +1048,17 @@ module.exports = class extends Language {
             },
 
             // Stats Command
-            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= STATISTICS (${shardID}) =\n
-• Mem Usage  :: ${memUsage} MB
-• CPU Load   :: ${cpuLoad}%
-• Uptime     :: ${uptime}
-• Users      :: ${users}
-• Servers    :: ${servers}
-• Channels   :: ${channels}
-• Source     :: https://github.com/jmiln/SWGoHBot`,
+            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, 
+shardID) => `= ESTADÍSTICAS (${shardID}) =\n
+• Uso de Mem.    :: ${memUsage} MB
+• Carga CPU      :: ${cpuLoad}%
+• Tiempo Activo. :: ${uptime}
+• Usuarios       :: ${users}
+• Servidores     :: ${servers}
+• Canales        :: ${channels}
+• Link         :: https://github.com/jmiln/SWGoHBot`,
             COMMAND_STATS_HELP: {
-                description: "Shows the bot's stats.",
+                description: "Muestra las estadísticas del bot.",
                 actions: [
                     {
                         action: "",
@@ -1030,7 +1071,7 @@ module.exports = class extends Language {
 
             // Test command (in .gitignore)
             COMMAND_TEST_HELP: {
-                description: "A command to test things out.",
+                description: "Un comando para poner a prueba las cosas.",
                 actions: [
                     {
                         action: "",
@@ -1042,39 +1083,42 @@ module.exports = class extends Language {
             },
 
             // Time Command
-            COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time} in ${zone} time`,
-            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time ${time} in ${zone} time`,
-            COMMAND_TIME_NO_ZONE: (time) => `Current time is: ${time} UTC time`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `Current time is: ${time} in ${zone} time`,
+            COMMAND_TIME_CURRENT: (time, zone) => `La hora actual es: ${time} en ${zone}`,
+            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Zona horaria inválida, esta es la hora de tu gremio  ${time} en ${zone}`,
+            COMMAND_TIME_NO_ZONE: (time) => `La hora actual es: ${time} UTC`,
+            COMMAND_TIME_WITH_ZONE: (time, zone) => `La hora actual es: ${time} en ${zone} 
+time`,
             COMMAND_TIME_HELP: {
-                description: "Used to check the time with the guild's configured timezone.",
+                description: "´Permite comprobar el tiempo con la zona horaria configurada del gremio.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';time [timezone]',
+                        usage: ';time [zonaHoraria]',
                         args: {
-                            "timezone": "Optional if you want to see what time it is elsewhere"
+                            "timezone": "Opcional si deseas conocer que tiempo es en cualquier otro sitio."
                         }
                     }
                 ]
             },
 
             // Updatechar Command
-            COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Sorry, but ${arg} isn't a valid argument. Try one of these: ${usableArgs}`,
-            COMMAND_UPDATECHAR_NEED_CHAR: `You need to specify a character to update.`,
-            COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Sorry, but your search for '${charName}' did not find any results. Please try again.`,
+            COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Lo siento, pero ${arg} no es un argumento válido. 
+Prueba con alguno de estos: ${usableArgs}`,
+            COMMAND_UPDATECHAR_NEED_CHAR: `Necesitas especificar un personaje el cual actualizar.`,
+            COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Lo siento, pero la búsqueda para 
+'${charName}' no ha producido ningún resultado. Por favor inténtalo de nuevo.`,
             COMMAND_UPDATECHAR_HELP: {
-                description: "Update the info on a specified character.",
+                description: "Actualiza la información de un personaje en específico.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';updatechar [gear|info|mods] [charater]',
                         args: {
-                            "gear": "Update the gear for the character.",
-                            "info": "Update the info for the character (Image link, abilities etc.)",
-                            "mods": "Update the mods from crouchingrancor.com"
+                            "gear": "Actualiza el equipo (gear) del personaje.",
+                            "info": "Actualiza la información del personaje (Enlace de la imagen, habilidades, etc.)",
+                            "mods": "Actualiza los mods desde crouchingrancor.com"
                         }
                     }
                 ]
@@ -1082,7 +1126,7 @@ module.exports = class extends Language {
 
             // UpdateClient Command
             COMMAND_UPDATECLIENT_HELP: {
-                description: "Update the client for the SWGoHAPI.",
+                description: "Actualiza el cliente para SWGoHAPI.",
                 actions: [
                     {
                         action: "",
@@ -1094,18 +1138,19 @@ module.exports = class extends Language {
             },
 
             // Zetas Command
-            COMMAND_ZETA_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
-            COMMAND_ZETA_NO_ZETAS: 'You don\'t seem to have any abilities zetad.',
-            COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${'-'.repeat(30)}\``,
+            COMMAND_ZETA_NO_USER: `Lo siento, pero no tengo a ese usuario enlistado en ninguna parte.`,
+            COMMAND_ZETA_NO_ZETAS: 'Parece que no tienes ninguna habilidad con Zeta',
+            COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Líder | \`[E]\` Especial | 
+\`[U]\` Única\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
-                description: "Show the abilities that you have put zetas on.",
+                description: "Muestra las habilidades en las que has puesto unas zetas.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';zeta [user]',
+                        usage: ';zeta [usuario]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "usuario": "El usuario que estas añadiendo. (me | userID | mention)"
                         }
                     }
                 ]
@@ -1113,3 +1158,5 @@ module.exports = class extends Language {
         };
     }
 };
+
+
