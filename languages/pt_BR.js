@@ -72,14 +72,14 @@ module.exports = class extends Language {
         this.getTime = getTime;
         this.language = {
             // Default in case it can't find one.
-			BASE_DEFAULT_MISSING: 'Tentativa de usar uma string inexistente. Se você receber esta mensagem, por favor avise para que seja consertado.',
+            BASE_DEFAULT_MISSING: 'Tentativa de usar uma string inexistente. Se você receber esta mensagem, por favor avise para que seja consertado.',
 
             // Base swgohBot.js file
-			BASE_LAST_EVENT_NOTIFICATION: `\n\nEsta é a última ocorrência desse evento. Para continuar recebendo este alerta, crie um novo evento.`,
+            BASE_LAST_EVENT_NOTIFICATION: `\n\nEsta é a última ocorrência desse evento. Para continuar recebendo este alerta, crie um novo evento.`,
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nComeçando em ${timeToGo}`,
 
             // Base swgohAPI
-			BASE_SWGOH_NO_ALLY: `Desculpe-me, mas o usuário não está registrado. Por favor faça o registro utilizando o comando \`;register add <user> <código de aliança>\``,
+            BASE_SWGOH_NO_ALLY: `Desculpe-me, mas o usuário não está registrado. Por favor faça o registro utilizando o comando \`;register add <user> <código de aliança>\``,
             BASE_SWGOH_NOT_REG: (user) => `Desculpe-me, mas o usuário não está registrado. Por favor faça o registro utilizando o comando \`;register add @${user} <código de aliança>\``,
             BASE_SWGOH_NO_USER: `Desculpe-me, mas não tenho esse usuário listado em nenhum lugar.`,
             BASE_SWGOH_MISSING_CHAR: 'Você precisa dizer qual personagem quer verificar',
