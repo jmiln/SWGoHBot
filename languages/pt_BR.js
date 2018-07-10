@@ -419,7 +419,7 @@ module.exports = class extends Language {
 
 
             // Help Command
-            COMMAND_HELP_HEADER: (prefix) => `= Lista de Comandos =\n\n[Use ${prefix}help <nome do comando> for details]\n`,
+            COMMAND_HELP_HEADER: (prefix) => `= Lista de Comandos =\n\n[Use ${prefix}help <nome do comando> para detalhes]\n`,
             COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nApelidos:: ${command.conf.aliases.join(", ")}\nUso:: ${prefix}${command.help.usage}`,
             COMMAND_HELP_HELP: {
                 description: "Exibe informação dos comandos disponíveis.",
@@ -482,11 +482,11 @@ module.exports = class extends Language {
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix) => `Necessita de um personagem. Uso correto é \`${prefix}mods <nome de personagem>\``,
             COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Personagem inválido. Uso correto é \`${prefix}mods <nome de personagem>\``,
-            COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Quadrado:   ${square}\`\n\`Seta:    ${arrow}\`\n\`Diamante:  ${diamond}\`\n`,
-            COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triângulo: ${triangle}\`\n\`Círculo:   ${circle}\`\n\`Cruz:    ${cross}\`\n`,
+            COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrado:  ${square}\`\n\`Seta:      ${arrow}\`\n\`Diamante:  ${diamond}\`\n`,
+            COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triângulo: ${triangle}\`\n\`Círculo:   ${circle}\`\n\`Cruz:      ${cross}\`\n`,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Conjuntos ###**\n${modSetString}\n**### Atributos Primários ###**\n${modPrimaryString}`,
-            COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) => `* Quadrado:   ${square}  \n* Seta:    ${arrow} \n* Diamante:  ${diamond}\n`,
-            COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triângulo: ${triangle}\n* Círculo:   ${circle}\n* Cruz:    ${cross}`,
+            COMMAND_MODS_CODE_STRING1: (square, arrow, diamond) =>  `* Quadrado:   ${square}  \n* Seta:       ${arrow} \n* Diamante:   ${diamond}\n`,
+            COMMAND_MODS_CODE_STRING2: (triangle, circle, cross) => `* Triângulo:  ${triangle}\n* Círculo:    ${circle}\n* Cruz:       ${cross}`,
             COMMAND_MODS_CODE_OUTPUT: (charName, modSetString, modPrimaryString) => ` * ${charName} * \n### Conjuntos ### \n${modSetString}\n### Atributos Primários ###\n${modPrimaryString}`,
             COMMAND_NO_MODSETS: "Nenhum conjunto de modificadores definidos para esse personagem.",
             COMMAND_MODS_HELP: {
