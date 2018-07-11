@@ -394,11 +394,13 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guildsearch [user] <character> [-ships] [starLvl]',
+                        usage: ';guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "character": "The character you want to search for.",
                             "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
+                            "-reverse": "Reverse the chosen sort",
+                            "-sort": "Choose either name or gp to sort by",
                             "starLvl": "Select the star level you want to see."
                         }
                     }
