@@ -316,7 +316,9 @@ module.exports = class extends Language {
                         usage: ';event create <eventName> <eventDay> <eventTime> [eventMessage]',
                         args: {
                             "--repeat <repeatTime>": "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
-                            "--repeatDay <schedule>": "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
+                            "--repeatDay <schedule>": ["Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
+                                "Example: `-repeatDay 1,2,3` would repeat the event 1 day after the original event triggers, then 2 days after that, then 3 after that"
+                            ].join('\n'),
                             "--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
                             "--countdown": "Adds a countdown to when your event will trigger."
                         }
