@@ -18,7 +18,7 @@ class Zetas extends Command {
         if (!userID || userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
             const allyCodes = await client.getAllyCode(message, userID);
             if (!allyCodes.length) {
-                return message.channel.send('I cannot find a that user.');
+                return message.channel.send(message.language.get('BASE_SWGOH_NO_USER', message.guildSettings.prefix));
             }
             allyCode = allyCodes[0];
         } else {
