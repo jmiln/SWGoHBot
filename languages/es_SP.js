@@ -86,7 +86,7 @@ module.exports = class extends Language {
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `No encuentro ningún resultado para ${character}`,
             BASE_SWGOH_CHAR_LIST: (chars) => `Tu búsqueda ha obtenido demasiados resultados, por favor se mas especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: `Algo ha salido mal, por favor comprueba que tu cuenta se haya sincronizado correctamente.`,
-            BASE_SWGOH_LAST_UPDATED: (date) => `Última actualización ${date} pasada`,
+            BASE_SWGOH_LAST_UPDATED: (date) => `Última actualización hace ${date} min`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Por favor espera mientras obtengo tu ${dType ? dType : 'data'}`,
 
             // Generic (Not tied to a command)
@@ -166,7 +166,7 @@ module.exports = class extends Language {
             COMMAND_ARENARANK_BEST_RANK: `Ya has llegado lo más lejos que puedes posible, felicidades!`,
             COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `Del Ranking ${currentRank}, in ${battleCount} battle${plural} ${est}\nEl mejor que puedes obtener es ${rankList}`,
             COMMAND_ARENARANK_HELP: {
-                description: "Muestra el (aproximadamente) mejor rango que puedes obtener si ganas cada batalla de arena.",
+                description: "Muestra (aproximadamente) el mejor rango que puedes obtener si ganas cada batalla de arena.",
                 actions: [
                     {
                         action: "",
@@ -222,7 +222,7 @@ module.exports = class extends Language {
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### Gear necesario ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: 'Este gear aún no se ha establecido',
             COMMAND_CHARACTERGEAR_HELP: {
-                description: "Muestra los requisitos de equipo para el personaje especifico/ lvl.",
+                description: "Muestra el gear (equipo) necesario para el personaje seleccionado.",
                 actions: [
                     {
                         action: "",
@@ -250,7 +250,7 @@ module.exports = class extends Language {
             COMMAND_CURRENTEVENTS_HEADER: "Eventos SWGOH Planificados",
             COMMAND_CURRENTEVENTS_DESC: (num) => `Siguientes ${num} eventos.\nNota: *Las Fechas están sujetas a cambios.*`,
             COMMAND_CURRENTEVENTS_HELP: {
-                description: "Muestra cualquier próximo evento.",
+                description: "Muestra cualquier evento próximo.",
                 actions: [
                     {
                         action: "",
@@ -346,14 +346,14 @@ module.exports = class extends Language {
             COMMAND_FACTION_INVALID_CHAR: (prefix) => `Facción invalida, su uso es \`${prefix}faction <faction>\``,
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# caracteres en la ${searchName} facción# \n${charString}`,
             COMMAND_FACTION_HELP: {
-                description: "Muestra la lista de personajes en una especificada facción.",
+                description: "Muestra una lista de personajes de una facción especificada.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: 'faction <faction>',
                         args: {
-                            "faction": "La facción de la cual quieres ver la lista. \nTen en mente, esto es como se muestra en el juego, así que es rebel no rebeldes"
+                            "faction": "La facción  la cual quieres ver su lista. \nTen en mente, esto es como se muestra en el juego, así que es rebel no rebeldes"
                         }
                     }
                 ]
@@ -384,7 +384,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `Parece que nadie de tu gremio tiene un personaje con ${starLvl} estrellas.`,
             COMMAND_GUILDSEARCH_NO_CHAR: `Nadie de tu gremio parece tener este personaje.`,
             COMMAND_GUILDSEARCH_HELP: {
-                description: "Muestra el nivel de estrellas del personaje seleccionado de todas las personas del gremio.",
+                description: "Muestra el nivel de estrellas del personaje seleccionado, de TODAS las personas del gremio.",
                 actions: [
                     {
                         action: "",
@@ -419,7 +419,7 @@ module.exports = class extends Language {
 
 
             // Help Command
-            COMMAND_HELP_HEADER: (prefix) => `= ListaComando =\n\n[Use ${prefix}help <ListaComando> para detalles]\n`,
+            COMMAND_HELP_HEADER: (prefix) => `= ComandoDeseado =\n\n[Usa ${prefix}help <ComandoDeseado> para más detalles]\n`,
             COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUso:: ${prefix}${command.help.usage}`,
             COMMAND_HELP_HELP: {
                 description: "Muestra la información sobre los comandos disponibles.",
@@ -441,12 +441,12 @@ module.exports = class extends Language {
                 "desc": ` \nActualmente en proceso en **${guilds}** servidores \n`,
                 "links": {
                     "Invite me": "Invita al bot http://swgohbot.com/invite",
-                    "Support Server": "Si tienes alguna pregunta, quieres ayudar, o simplemente unirte, el soporte del bot eshttps://discord.gg/FfwGvhr",
+                    "Support Server": "Si tienes alguna pregunta, quieres ayudar, o simplemente unirte, el soporte del bot es https://discord.gg/FfwGvhr",
                     "Support the Bot": "El código del bot está en github https://github.com/jmiln/SWGoHBot y está abierto a contribuciones. \n\nI también tiene un patrocinador https://www.patreon.com/swgohbot por si estás interesado."
                 }
             }),
             COMMAND_INFO_HELP: {
-                description: "Muestra links útiles pertinentes del bot.",
+                description: "Muestra los links útiles pertinentes del bot.",
                 actions: [
                     {
                         action: "",
@@ -525,7 +525,7 @@ ${user}. Por favor asegúrate que esa cuenta esté sincronizada.`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
             COMMAND_MYARENA_EMBED_FOOTER: (date) => `información de la Arena actualizada: ${date}`,
             COMMAND_MYARENA_HELP: {
-                description: " Muestra el puesto actual del jugador en la Arena y sus escuadrones.",
+                description: " Muestra el puesto actual del jugador en Arena y sus escuadrones.",
                 actions: [
                     {
                         action: "",
@@ -561,7 +561,7 @@ Por favor espera un poco e intenta de nuevo.`,
             COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: 
 ${lastUpdated} ago`,
             COMMAND_MYMODS_HELP: ({
-                description: "Muestra los mods que tienes equipados en el personaje seleccionado.",
+                description: "Muestra los mods que tienes equipados el personaje seleccionado.",
                 actions: [
                     {
                         action: "",
@@ -628,7 +628,7 @@ ${shipRank}`,
                         actionDesc: '',
                         usage: ';nickname <nombre>',
                         args: {
-                            "nombre": "El nombre que deseas asignarle al bot. Dejalo en blanco para restablecer el nombre por defecto."
+                            "nombre": "El nombre que deseas asignarle al bot. Déjalo en blanco para restablecer el nombre por defecto."
                         }
                     }
                 ]
@@ -652,7 +652,7 @@ por favor intentalo de nuevo.`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: 
 **${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
             COMMAND_POLL_HELP: {
-                description: "Te permite comenzar una encuesta con múltiples opciones.",
+                description: "Te permite empezar una encuesta con múltiples opciones.",
                 actions: [
                     {
                         action: "Create",
@@ -706,7 +706,7 @@ ${currentPhase}`,
             COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} 
 ### \n* Personajes: ${charList}\n`,
             COMMAND_RAIDTEAMS_HELP: {
-                description: "Muestra algunos equipos que funcionan bien para cada Raid.",
+                description: "Muestra algunos equipos que funcionan bien para cada tipo de raid.",
                 actions: [
                     {
                         action: "",
@@ -909,7 +909,7 @@ para enviar un mensaje ahí. Por favor cambia los permisos o bien elige otro can
                     },
                     {
                         action: "timezone",
-                        actionDesc: 'Establece la zona horaria el cual deseas que todos los comandos relacionados con los horarios los usen. Mira aquí si necesitas una lista https://goo.gl/Vqwe49.',
+                        actionDesc: 'Establece la zona horaria la cual deseas que todos los comandos relacionados con los horarios los usen. Mira aquí si necesitas una lista https://goo.gl/Vqwe49.',
                         usage: ';setconf timezone <zonaHoraria>',
                         args: {}
                     },
@@ -971,7 +971,7 @@ después introduce lo que aparece en la columna TZ.`,
             COMMAND_SHARDTIMES_REM_MISSING: `Lo siento, pero este usuario parece no estar aquí.`,
             COMMAND_SHARDTIMES_SHARD_HEADER: `Recompensa de fragmentos en:`,
             COMMAND_SHARDTIMES_HELP: {
-                description: "Muestra una lista con el tiempo restante hasta el cobro de recompensas de cualquier usuario registrado.",
+                description: "Muestra una lista con el tiempo restante hasta el próximo cobro de recompensas de cualquier usuario registrado.",
                 actions: [
                     {
                         action: "Add",
@@ -1013,14 +1013,14 @@ después introduce lo que aparece en la columna TZ.`,
 ###\nAbility Tipo: ${abilities.type}   Ability Cooldown: 
 ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
             COMMAND_SHIPS_HELP: {
-                description: "Presenta información sobre la nave seleccionada.",
+                description: "Muestra información sobre la nave seleccionada.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: 'ship <nave|piloto>',
                         args: {
-                            "nave|piloto": "La nave o el piloto de la nave del que deseas mostrar información."
+                            "nave|piloto": "La nave o el piloto de la nave la cual deseas mostrar información."
                         }
                     }
                 ]
@@ -1029,7 +1029,7 @@ ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
             // Showconf Command
             COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `La siguiente es la configuración actual de ${serverName}: \`\`\`${configKeys}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
-                description: "´Muestra la configuración actual de tu servidor.",
+                description: "Muestra la configuración actual de tu servidor.",
                 actions: [
                     {
                         action: "",
@@ -1082,7 +1082,7 @@ shardID) => `= ESTADÍSTICAS (${shardID}) =\n
             COMMAND_TIME_WITH_ZONE: (time, zone) => `La hora actual es: ${time} en ${zone} 
 time`,
             COMMAND_TIME_HELP: {
-                description: "´Permite comprobar el tiempo con la zona horaria configurada del gremio.",
+                description: "Permite comprobar el tiempo de la zona horaria configurada del gremio.",
                 actions: [
                     {
                         action: "",
@@ -1136,14 +1136,14 @@ Prueba con alguno de estos: ${usableArgs}`,
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Líder | \`[E]\` Especial | 
 \`[U]\` Única\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
-                description: "Muestra las habilidades en las que has puesto unas zetas.",
+                description: "Muestra las habilidades de las zetas que tienes.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
                         usage: ';zeta [usuario]',
                         args: {
-                            "usuario": "El usuario que estas añadiendo. (me | userID | mention)"
+                            "usuario": "El usuario que estás añadiendo. (me | userID | mention)"
                         }
                     }
                 ]
@@ -1151,5 +1151,6 @@ Prueba con alguno de estos: ${usableArgs}`,
         };
     }
 };
+
 
 
