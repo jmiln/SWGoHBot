@@ -268,7 +268,7 @@ class Event extends Command {
                         
                         let eventString = message.language.get('COMMAND_EVENT_TIME', eventName, eventDate);
                         eventString += message.language.get('COMMAND_EVENT_TIME_LEFT', momentTZ.duration(momentTZ().diff(momentTZ(parseInt(thisEvent.eventDT)), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
-                        if (thisEvent.eventCha && nthisEvent.eventChan !== '') {
+                        if (thisEvent.eventChan && thisEvent.eventChan !== '') {
                             console.log(thisEvent);
                             eventString += message.language.get('COMMAND_EVENT_CHAN', thisEvent.eventChan);
                         }

@@ -149,7 +149,9 @@ function getFlags(cFlags, cSubArgs, args) {
         if (!found[0]) {
             for (let ix = 0; ix < cSubArgs[key].aliases.length; ix++) {
                 found = checkForArgs(cSubArgs[key].aliases[ix], args);
-                break;
+                if (found[0]) {
+                    break;
+                } 
             }
         }
         if (found[0]) {
