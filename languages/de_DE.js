@@ -79,15 +79,18 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add <user> <buendniscode>\``,
-            BASE_SWGOH_NOT_REG: (user) => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <buendniscode>\``,
-            BASE_SWGOH_NO_USER: `Entschuldigung, aber ich habe diesen User nirgends gelistet.`,
+            BASE_SWGOH_NO_ALLY: (prefix=';') => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add <user> <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user, prefix=';') => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <allycode>\``,
+            BASE_SWGOH_NO_USER: (prefix) => `Entschuldigung, aber ich habe diesen User nirgends gelistet. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=';') => `Ich kann für diesen User keine Gilde finden. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NO_GUILD: 'Ich kann für diese Gilde keinen User finden.\nBitte sicherstellen, dass der Name korrekt geschrieben ist und dass die Gross- und Kleinschreibung stimmt.',
             BASE_SWGOH_MISSING_CHAR: 'Du musst einen Charakter angeben',
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `Kein Ergebnis gefunden fuer ${character}`,
             BASE_SWGPH_CHAR_LIST: (chars) => `Deine Suche ergab zu viele Treffer, bitte sei spezifischer. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: `Etwas ist schief gegangen, bitte sicherstellen dass dein Account korrekt synchronisiert wurde.`,
             BASE_SWGOH_LAST_UPDATED: (date) => `Zuletzt aktualisiert vor ${date}`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Bitte warten waehrend ich aktualisiere ${dType ? dType : 'Daten'}`,
+            BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
@@ -313,7 +316,9 @@ module.exports = class extends Language {
                         usage: ';event create <eventName> <eventTag> <eventZeit> [eventNachricht]',
                         args: {
                             "--repeat <WiederholZeit>": "Setzt die Dauer / ein Intervall im Format 00d00h00m. Wird nach Ablauf der Dauer in dem angegebenen Intervall wiederholt.",
-                            "--repeatDay <planwerte>": "Setzt eine Wiederholung in bestimmten Tagen im Format 0,0,0,0,0.",
+                            "--repeatDay <Intervall>": ["Setzt eine Wiederholung in bestimmten Tagen im Format 0,0,0,0,0.",
+                                "Beispiel: `-repeatDay 1,2,3` wiederholt das Event 1 Tag nach dem ursprünglichen Termin, dann nach 2 Tagen und nach 3 Tagen"
+                            ].join('\n'),
                             "--channel <KanalName>": "Setzt einen spezifischen Kanal fuer die Ankuendigung.",
                             "--countdown": "Fuegt dem Event ein Countdown hinzu. Der Parameter - yes ist die einzige gueltige Option."
                         }
@@ -377,23 +382,27 @@ module.exports = class extends Language {
 
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: 'Du kannst nur ein Sternen-Level von 1-7 waehlen',
+            COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Entschuldigung, aber \`${sortType}\` ist keine gueltige Sortierreihenfolge. Nur \`${filters.join(', ')}\` ist moeglich.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'Du musst einen Charakter angeben',
             COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `Ich habe keine Ergebnisse gefunden fuer ${character}`,
             COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Deine Suche hat zu viele Treffer ergeben. Bitte spezifizieren. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
-            COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Sterne (${num}) ${setNum.length > 0 ? setNum : ''}`,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `Niemand in deiner Gilde scheint diesen Charakter auf ${starLvl} Sterne zu haben.`,
             COMMAND_GUILDSEARCH_NO_CHAR: `Niemand in deiner Gilde scheint diesen Charakter zu haben.`,
+            COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Nicht aktiviert (${count})`,
+            COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Zeigt den Stern-Level des gewaehlten Charakters von allen Gildenmitgliedern an.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guildsearch [user] <charakter> [starLvl]',
+                        usage: ';guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]',
                         args: {
                             "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest.",
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
+                            "-reverse": "Kehrt die Sortierreihenfolge um",
+                            "-sort": "Waehle entweder eine Sortierung nach Name oder GM",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
                     }
@@ -481,7 +490,7 @@ module.exports = class extends Language {
 
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <CharakterName>\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix} mods <CharakterName>\``,
+            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}mods <CharakterName>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
@@ -728,10 +737,15 @@ module.exports = class extends Language {
             COMMAND_REGISTER_MISSING_ALLY: 'Du musst einen Buendniscode angeben mit dem du das Konto verknuepfen willst.',
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger Buendniscode`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Bitte warten waehrend ich die Daten synchronisiere.',
+            COMMAND_REGISTER_ADD_NO_SERVER: 'Du kannst nur User angeben die auf dem Discord Server vorhanden sind.',
+            COMMAND_REGISTER_ALREADY_ADDED: (prefix=';') => `Dieser User ist bereits registriert! Bitte verwende \`${prefix}register update <user>\`.`,
             COMMAND_REGISTER_FAILURE: 'Registrierung fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
             COMMAND_REGISTER_UPDATE_FAILURE: 'Etwas ist fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profil aktualisiert fuer \`${user}\`.`,
+            COMMAND_REGISTER_CANNOT_REMOVE: (prefix = ';') => `Du kannst keine anderen User entfernen. Falls sie die Gilde verlassen haben nutze \`${prefix}register update <user>\`.`,
+            COMMAND_REGISTER_NOT_LINKED: 'Du bist mit keinem SWGoH Profil verlinkt.',
+            COMMAND_REGISTER_REMOVE_SUCCESS: 'Erfolgreich getrennt.',
             COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Gilde aktualisiert fuer \`${guild}\`.`,
             COMMAND_REGISTER_HELP: {
                 description: "Registriert einen Buendniscode zu einer Discord ID, und synchronisiert ein SWGoH Profil.",
