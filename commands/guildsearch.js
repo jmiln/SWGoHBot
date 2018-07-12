@@ -138,7 +138,7 @@ class GuildSearch extends Command {
                 gpStr = charL[0].gp ? parseInt(charL[0].gp).toLocaleString() : '';
             }
             
-            const uStr = thisStar > 0 ? `**\`[⛭${charL[0].gear < 10 ? charL[0].gear + ' ' : charL[0].gear } | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.name}` : member.name;
+            const uStr = thisStar > 0 ? `**\`[⚙${charL[0].gear < 10 ? charL[0].gear + ' ' : charL[0].gear } | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.name}` : member.name;
             if (!charOut[thisStar]) {
                 charOut[thisStar] = [uStr];
             } else {
