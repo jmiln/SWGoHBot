@@ -35,9 +35,9 @@ class Register extends Command {
                         if (level < 3) {
                             return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
                         } else if (!message.guild.members.has(userID) && action === 'add' && level < 3) {  // If they are trying to add someone that is not in their server
-                            return message.channel.send('You can only add users that are in your server.');
+                            return message.channel.send(message.language.get('COMMAND_REGISTER_ADD_NO_SERVER'));
                         } else if (!message.guild.members.has(userID) && action === 'remove' && level < 8) {   // If they are trying to remove someone else 
-                            return message.channel.send('You cannot remove other people');
+                            return message.channel.send(message.language.get('COMMAND_REGISTER_CANNOT_REMOVE', message.guildSettings.prefix));
                         }
                     }
                 } else {
@@ -89,7 +89,7 @@ class Register extends Command {
                         }
                     });
                 } else {
-                    return message.channel.send('You are already registered! Please use `;register update <user>`.');
+                    return message.channel.send(message.language.get('COMMAND_REGISTER_ALREADY_ADDED'));
                 }
                 break;
             case 'update': {
@@ -139,11 +139,11 @@ class Register extends Command {
             }
             case 'remove':
                 if (!exists) {
-                    message.channel.send('You were not linked to a SWGoH account.');
+                    message.channel.send(message.language.get('COMMAND_REGISTER_NOT_LINKED'));
                 } else {
                     await client.database.models.allyCodes.destroy({where: {id: userID}})
                         .then(() => {
-                            message.channel.send('Successfully unlinked.');
+                            message.channel.send(message.language.get('COMMAND_REGISTER_REMOVE_SUCCESS'));
                         })
                         .catch((e) => {
                             client.log('REGISTER', 'Broke trying to unlink: ' + e);

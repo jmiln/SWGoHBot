@@ -14,7 +14,7 @@ class MyMods extends Command {
     }
 
     async run(client, message, [userID, ...searchChar]) { // eslint-disable-line no-unused-vars
-        const modTypes = message.language.get('BASE_MOD_TYPES');
+        // const modTypes = message.language.get('BASE_MOD_TYPES');
         const lang = message.guildSettings.swgohLanguage;
         // TODO Figure out why the mod icons aren's working
         // const STATMOD_SLOT_01 = client.emojis.find("name", "modSquare");

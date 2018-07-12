@@ -46,19 +46,19 @@ class Setconf extends Command {
                             return message.channel.send(message.language.get('COMMAND_SETCONF_PREFIX_TOO_LONG'));
                         } else if (key === 'language') {
                             if (!langList.includes(value)) {
-                                return message.channel.send(message.language.get('COMMAND_SETCONF_INVALID_LANG', value, langList.join(', '))).then(msg => msg.delete(15000)).catch(console.error);
+                                return message.channel.send(message.language.get('COMMAND_SETCONF_INVALID_LANG', value, langList.join(', ')));
                             }
                         } else if (key === 'swgohLanguage') {
                             if (!swgohLangList.includes(value)) {
-                                return message.channel.send(message.language.get('COMMAND_SETCONF_INVALID_LANG', value, swgohLangList.join(', '))).then(msg => msg.delete(15000)).catch(console.error);
+                                return message.channel.send(message.language.get('COMMAND_SETCONF_INVALID_LANG', value, swgohLangList.join(', ')));
                             }
                         } else if (key === 'timezone') {
                             if (!moment.tz.zone(value)) { // Valid time zone
-                                return message.reply(message.language.get('COMMAND_SETCONF_TIMEZONE_NEED_ZONE')).then(msg => msg.delete(10000)).catch(console.error);
+                                return message.reply(message.language.get('COMMAND_SETCONF_TIMEZONE_NEED_ZONE'));
                             }
                         } else if (key === 'announceChan') {
                             const newChannel = message.guild.channels.find('name', value);
-                            if (!newChannel) return message.channel.send(message.language.get('COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN', value)).then(msg => msg.delete(4000)).catch(console.error);
+                            if (!newChannel) return message.channel.send(message.language.get('COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN', value));
                             if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return message.channel.send(message.language.get('COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS'));
                         }
                         client.database.models.settings.update({[key]: value}, {where: {guildID: message.guild.id}});
@@ -105,7 +105,7 @@ class Setconf extends Command {
                         } else if (offVar.includes(value[0].toLowerCase())) {
                             value = false;
                         } else {
-                            return message.channel.send(message.language.get('COMMAND_INVALID_BOOL')).then(msg => msg.delete(4000)).catch(console.error);
+                            return message.channel.send(message.language.get('COMMAND_INVALID_BOOL'));
                         }
                         client.database.models.settings.update({[key]: value}, {where: {guildID: message.guild.id}});
                         return message.channel.send('Value for `' + key + '` changed to `' + value + '`');
@@ -156,7 +156,7 @@ class Setconf extends Command {
                 }
             } else {
                 // No such key
-                return message.reply(message.language.get('COMMAND_SETCONF_NO_KEY', guildConf.prefix)).then(msg => msg.delete(4000)).catch(console.error);
+                return message.reply(message.language.get('COMMAND_SETCONF_NO_KEY', guildConf.prefix));
             }
         }
 

@@ -6,11 +6,20 @@ class GuildSearch extends Command {
         super(client, {
             name: 'guildsearch',
             category: "SWGoH",
-            aliases: ['search'],
+            aliases: ['search', 'gs'],
             permissions: ['EMBED_LINKS'],
             flags: {
                 'ships': {
                     aliases: ['s', 'ship']
+                },
+                reverse: {
+                    aliases: ['rev']
+                }
+            },
+            subArgs: {
+                sort: {
+                    aliases: [],
+                    default: 'name'
                 }
             }
         });
@@ -18,8 +27,11 @@ class GuildSearch extends Command {
 
     async run(client, message, [userID, ...searchChar], options) { // eslint-disable-line no-unused-vars
         let starLvl = null;
-        const lang = message.guildSettings.swgohLanguage;
-        // If there's enough elements in searchChar, and it's in the format of a numer*
+        const sortType = options.subArgs.sort.toLowerCase();
+        const reverse = options.flags.reverse;
+        // const lang = message.guildSettings.swgohLanguage;
+
+        // If there's enough elements in searchChar, and it's in the format of a number*
         if (searchChar.length > 0 && searchChar[searchChar.length-1].match(/\d\*/)) {
             starLvl = parseInt(searchChar.pop().replace('*', ''));
             if (starLvl < 1 || starLvl > 7) {
@@ -34,7 +46,7 @@ class GuildSearch extends Command {
         if (userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
             userID = await client.getAllyCode(message, userID);
             if (!userID.length) {
-                return message.channel.send('I cannot find a guild for that user.');
+                return message.channel.send(message.language.get('BASE_SWGOH_NO_GUILD_FOR_USER', message.guildSettings.prefix));
             }
             userID = userID[0];
         } else {
@@ -66,8 +78,9 @@ class GuildSearch extends Command {
             character = chars[0];
         }
         
+        let player = null;
         try {
-            const player = await client.swgohAPI.getPlayer(userID, lang, 6);
+            player = await client.swgohAPI.getPlayer(userID, 'ENG_US', 6);
             userID = player.guildName;
         } catch (e) {
             console.error(e);
@@ -81,21 +94,51 @@ class GuildSearch extends Command {
         }
 
         if (!guild || !guild.length) {
-            return message.channel.send('I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.');
+            return message.channel.send(message.language.get('BASE_SWGOH_NO_GUILD'));
         }
-        const sortedGuild = guild.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
+
+        let maxZ = 0;
+        for (const member of guild) {
+            member.roster = member.roster.filter(c => (c.name === character.name || c.name === character.uniqueName));
+            if (member.roster[0] && member.roster[0].zetas) {
+                if (member.roster[0].zetas.length > maxZ) {
+                    maxZ = member.roster[0].zetas.length;
+                }
+            }
+        }
+
+        let sortedGuild = [];
+        if (sortType === 'name') {
+            // Sort by name
+            if (!reverse) {
+                sortedGuild = guild.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
+            } else {
+                sortedGuild = guild.sort((p, c) => p.name.toLowerCase() < c.name.toLowerCase() ? 1 : -1);
+            }
+        } else if (sortType === 'gp') {
+            // Sort by gp
+            if (!reverse) {
+                sortedGuild = guild.sort((p, c) => (p.roster[0] && c.roster[0]) ? p.roster[0].gp - c.roster[0].gp : -1);
+            } else {
+                sortedGuild = guild.sort((p, c) => (p.roster[0] && c.roster[0]) ? c.roster[0].gp - p.roster[0].gp : -1);
+            }
+        } else {
+            return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_BAD_SORT', sortType, ['name', 'gp']));
+        }
 
         const charOut = {};
         for (const member of sortedGuild) {
-            const charL = member.roster.filter(c => (c.name === character.name || c.name === character.uniqueName));
+            const charL = member.roster;
 
             const thisStar = charL.length ? charL[0].rarity : 0;
-            if (charL.length && charL[0].gp) {
-                console.log('GOT GP: ' + charL[0]);
-            } else if (member.name === 'Reaper1395') {
-                console.log(charL[0]);
+            let zetas = '', gpStr = '', zLen = 0;
+            if (thisStar) {
+                zLen = charL[0].zetas ? charL[0].zetas.length : 0;
+                zetas = ' | ' + '+'.repeat(zLen) + ' '.repeat(maxZ - zLen);
+                gpStr = charL[0].gp ? parseInt(charL[0].gp).toLocaleString() : '';
             }
-            const uStr = thisStar > 0 ? `\`${charL[0].level} g${charL[0].gear} ${charL[0].gp ? charL[0].gp + 'GP' : ''}\` ${member.name}` : member.name;
+            
+            const uStr = thisStar > 0 ? `**\`[⛭${charL[0].gear < 10 ? charL[0].gear + ' ' : charL[0].gear } | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.name}` : member.name;
             if (!charOut[thisStar]) {
                 charOut[thisStar] = [uStr];
             } else {
@@ -104,18 +147,23 @@ class GuildSearch extends Command {
         }
 
         const fields = [];
-        Object.keys(charOut).forEach(star => {
+        const outArr = reverse ? Object.keys(charOut).reverse() : Object.keys(charOut);
+        outArr.forEach(star => {
             if (star >= starLvl) {
-                fields.push({
-                    name: star === '0' ? `Not Activated (${charOut[star].length})` : `${star} Star (${charOut[star].length})`,
-                    value: charOut[star].join('\n')
+                const msgArr = client.msgArray(charOut[star], '\n', 1000);
+                msgArr.forEach((msg, ix) => {
+                    const name = star === '0' ? message.language.get('COMMAND_GUILDSEARCH_NOT_ACTIVATED', charOut[star].length) : message.language.get('COMMAND_GUILDSEARCH_STAR_HEADER', star, charOut[star].length);
+                    fields.push({
+                        name: msgArr.length > 1 ? name + ` (${ix+1}/${msgArr.length})` : name,
+                        value: msgArr[ix]
+                    });
                 });
             }
         });
 
         message.channel.send({embed: {
             author: {
-                name: `${userID}'s ${character.name}`
+                name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', userID, character.name)
             },
             fields: fields
         }});

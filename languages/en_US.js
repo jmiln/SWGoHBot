@@ -79,15 +79,18 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: `Sorry, but that user is not registered. Please go register with \`;register add <user> <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user) => `Sorry, but that user is not registered. Please go register with \`;register add @${user} <allycode>\``,
-            BASE_SWGOH_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
+            BASE_SWGOH_NO_ALLY: (prefix=';') => `Sorry, but that user is not registered. Please go register with \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user, prefix=';') => `Sorry, but that user is not registered. Please go register with \`${prefix}register add @${user} <allycode>\``,
+            BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=';') => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NO_GUILD: 'I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.',
             BASE_SWGOH_MISSING_CHAR: 'You need to enter a character to check for',
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
             BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: `Something went wrong, please make sure your account is synced correctly.`,
             BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : 'data'}`,
+            BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
@@ -313,7 +316,9 @@ module.exports = class extends Language {
                         usage: ';event create <eventName> <eventDay> <eventTime> [eventMessage]',
                         args: {
                             "--repeat <repeatTime>": "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
-                            "--repeatDay <schedule>": "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
+                            "--repeatDay <schedule>": ["Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
+                                "Example: `-repeatDay 1,2,3` would repeat the event 1 day after the original event triggers, then 2 days after that, then 3 after that"
+                            ].join('\n'),
                             "--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
                             "--countdown": "Adds a countdown to when your event will trigger."
                         }
@@ -377,23 +382,27 @@ module.exports = class extends Language {
 
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: 'You can only choose a star level from 1-7',
+            COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Sorry, but \`${sortType}\` is not a supported sorting method. Only \`${filters.join(', ')}\` supported.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'You need to enter a character to check for',
             COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `I did not find any results for ${character}`,
             COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
-            COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Star (${num}) ${setNum.length > 0 ? setNum : ''}`,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `No one in your guild seems to have this character at ${starLvl} stars.`,
             COMMAND_GUILDSEARCH_NO_CHAR: `No one in your guild seems to have this character.`,
+            COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Not Activated (${count})`,
+            COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Star (${count})`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guildsearch [user] <character> [-ships] [starLvl]',
+                        usage: ';guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "character": "The character you want to search for.",
                             "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
+                            "-reverse": "Reverse the chosen sort",
+                            "-sort": "Choose either name or gp to sort by",
                             "starLvl": "Select the star level you want to see."
                         }
                     }
@@ -728,10 +737,15 @@ module.exports = class extends Language {
             COMMAND_REGISTER_MISSING_ALLY: 'You need to enter an ally code to link your account to.',
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Please wait while I sync your data.',
+            COMMAND_REGISTER_ADD_NO_SERVER: 'You can only add users that are in your server.',
+            COMMAND_REGISTER_ALREADY_ADDED: (prefix=';') => `That user is already registered! Please use \`${prefix}register update <user>\`.`,
             COMMAND_REGISTER_FAILURE: 'Registration failed, please make sure your ally code is correct.',
             COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
             COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
+            COMMAND_REGISTER_CANNOT_REMOVE: (prefix = ';') => `You cannot remove other people. If they left your guild, try \`${prefix}register update <user>\`.`,
+            COMMAND_REGISTER_NOT_LINKED: 'You are not linked to a SWGoH account.',
+            COMMAND_REGISTER_REMOVE_SUCCESS: 'Successfully unlinked.',
             COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
