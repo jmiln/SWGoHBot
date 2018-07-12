@@ -80,6 +80,16 @@
         "combat_type": 1
     },
     {
+        "name": "Bastila Shan",
+        "base_id": "BASTILASHAN",
+        "pk": 284,
+        "url": "https://swgoh.gg/characters/bastila-shan/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bastilashan.png",
+        "power": 21133,
+        "description": "Strong Jedi Support that grants allies an overwhelming first turn with her Leader ability",
+        "combat_type": 1
+    },
+    {
         "name": "Baze Malbus",
         "base_id": "BAZEMALBUS",
         "pk": 216,
@@ -847,6 +857,16 @@
         "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_guardian_01.png",
         "power": 17368,
         "description": "Tenacious Jedi tank with crippling debuffs and natural recovery at low Health",
+        "combat_type": 1
+    },
+    {
+        "name": "Jolee Bindo",
+        "base_id": "JOLEEBINDO",
+        "pk": 283,
+        "url": "https://swgoh.gg/characters/jolee-bindo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_joleebindo.png",
+        "power": 21133,
+        "description": "Potent Jedi Healer with high durability and resistance to disruption",
         "combat_type": 1
     },
     {
