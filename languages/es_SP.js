@@ -284,7 +284,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_TOO_BIG:(charCount) => `Lo siento, pero el nombre o mensaje de tu evento es demasiado largo. Por favor recórtalo al menos hasta ${charCount} caracteres.`,
 
             // Event Command (View)
-            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \Tiempo del Evento: ${eventDate}\n`,
+            COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nTiempo del Evento: ${eventDate}\n`,
             COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Tiempo Restante: ${timeLeft}\n`,
             COMMAND_EVENT_CHAN: (eventChan) => `Enviándolo al canal: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repetir horario: ${repeatDays}\n`,
@@ -516,9 +516,8 @@ module.exports = class extends Language {
                     }
                 ]
             },
-                        // MyArena Command
-            COMMAND_MYARENA_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para 
-${user}. Por favor asegúrate que esa cuenta esté sincronizada.`,
+            // MyArena Command
+            COMMAND_MYARENA_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para ${user}. Por favor asegúrate que esa cuenta esté sincronizada.`,
             COMMAND_MYARENA_NO_CHAR: 'Algo ha salido mal, no puedo obtener tus personajes.',
             COMMAND_MYARENA_ARENA: (rank) => `Arena de Escuadrones (Puesto: ${rank})`,
             COMMAND_MYARENA_FLEET: (rank) => `Arena de Flotas (Puesto: ${rank})`,
@@ -1041,8 +1040,7 @@ ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
             },
 
             // Stats Command
-            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, 
-shardID) => `= ESTADÍSTICAS (${shardID}) =\n
+            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= ESTADÍSTICAS (${shardID}) =\n
 • Uso de Mem.    :: ${memUsage} MB
 • Carga CPU      :: ${cpuLoad}%
 • Tiempo Activo. :: ${uptime}
