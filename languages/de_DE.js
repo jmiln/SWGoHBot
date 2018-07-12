@@ -79,8 +79,8 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: (prefix=';') => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add <user> <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user, prefix=';') => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`;register add @${user} <allycode>\``,
+            BASE_SWGOH_NO_ALLY: (prefix=';') => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user, prefix=';') => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}register add @${user} <allycode>\``,
             BASE_SWGOH_NO_USER: (prefix) => `Entschuldigung, aber ich habe diesen User nirgends gelistet. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
             BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=';') => `Ich kann für diesen User keine Gilde finden. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
             BASE_SWGOH_NO_GUILD: 'Ich kann für diese Gilde keinen User finden.\nBitte sicherstellen, dass der Name korrekt geschrieben ist und dass die Gross- und Kleinschreibung stimmt.',
@@ -547,21 +547,21 @@ module.exports = class extends Language {
                 ]
             },
 
-           // MyCharacter Command
-           COMMAND_MYCHARACTER_HELP: ({
-               description: "Zeigt die Werte eines ausgewaehlten Charakters an.",
-               actions: [
-                   {
-                       action: "",
-                       actionDesc: '',
-                       usage: ';mycharacter [user] <character>',
-                       args: {
-                           "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
-                           "character": "Der Charakter nach dem du suchen moechtest."
-                       }
-                   }
-               ]
-           }),
+            // MyCharacter Command
+            COMMAND_MYCHARACTER_HELP: ({
+                description: "Zeigt die Werte eines ausgewaehlten Charakters an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';mycharacter [user] <character>',
+                        args: {
+                            "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
+                            "character": "Der Charakter nach dem du suchen moechtest."
+                        }
+                    }
+                ]
+            }),
 
             // MyMods Command
             COMMAND_MYMODS_NO_MODS: (charName) => `Entschuldigung, aber ich konnte keine Mods finden für dein ${charName}`,
@@ -582,43 +582,43 @@ module.exports = class extends Language {
                 ]
             }),
 
-             // MyProfile Command
-             COMMAND_MYPROFILE_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden fuer ${user}. Bitte sicherstellen dass der Account synchronisiert ist`,
-             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
-             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arenadaten vom: ${date}`,
-             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}`,
-             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
-                 header: `Charaktere (${charList.length})`,
-                 stats: [
-                     `Char GM  :: ${gpChar}`,
-                     `7 Sterne   :: ${charList.filter(c => c.rarity === 7).length}`,
-                     `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
-                     `Ausruestungsstufe 12  :: ${charList.filter(c => c.gear === 12).length}`,
-                     `Ausruestungsstufe 11  :: ${charList.filter(c => c.gear === 11).length}`,
-                     `Zetas    :: ${zetaCount}`
-                 ].join('\n')
-             }),
-             COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
-                 header: `Flotten (${shipList.length})`,
-                 stats: [
-                     `Flotten GM :: ${gpShip}`,
-                     `7 Sterne  :: ${shipList.filter(s => s.rarity === 7).length}`,
-                     `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
-                 ].join('\n')
-             }),
-             COMMAND_MYPROFILE_HELP: {
-                 description: "Zeigt allgemeine Werte eines Spielers.",
-                 actions: [
-                     {
-                         action: "",
-                         actionDesc: '',
-                         usage: ';myprofile [user]',
-                         args: {
-                             "user": "Die Person die du sehen moechtest. (me | userID | mention)"
-                         }
-                     }
-                 ]
-             },
+            // MyProfile Command
+            COMMAND_MYPROFILE_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden fuer ${user}. Bitte sicherstellen dass der Account synchronisiert ist`,
+            COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
+            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arenadaten vom: ${date}`,
+            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}`,
+            COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
+                header: `Charaktere (${charList.length})`,
+                stats: [
+                    `Char GM  :: ${gpChar}`,
+                    `7 Sterne   :: ${charList.filter(c => c.rarity === 7).length}`,
+                    `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
+                    `Ausruestungsstufe 12  :: ${charList.filter(c => c.gear === 12).length}`,
+                    `Ausruestungsstufe 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                    `Zetas    :: ${zetaCount}`
+                ].join('\n')
+            }),
+            COMMAND_MYPROFILE_SHIPS: (gpShip, shipList) => ({
+                header: `Flotten (${shipList.length})`,
+                stats: [
+                    `Flotten GM :: ${gpShip}`,
+                    `7 Sterne  :: ${shipList.filter(s => s.rarity === 7).length}`,
+                    `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
+                ].join('\n')
+            }),
+            COMMAND_MYPROFILE_HELP: {
+                description: "Zeigt allgemeine Werte eines Spielers.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';myprofile [user]',
+                        args: {
+                            "user": "Die Person die du sehen moechtest. (me | userID | mention)"
+                        }
+                    }
+                ]
+            },
 
             // Nickname Command
             COMMAND_NICKNAME_SUCCESS: `Ich habe meinen nickname geaendert.`,
