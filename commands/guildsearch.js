@@ -29,7 +29,7 @@ class GuildSearch extends Command {
         let starLvl = null;
         const sortType = options.subArgs.sort.toLowerCase();
         const reverse = options.flags.reverse;
-        const lang = message.guildSettings.swgohLanguage;
+        // const lang = message.guildSettings.swgohLanguage;
 
         // If there's enough elements in searchChar, and it's in the format of a number*
         if (searchChar.length > 0 && searchChar[searchChar.length-1].match(/\d\*/)) {
@@ -147,7 +147,7 @@ class GuildSearch extends Command {
         }
 
         const fields = [];
-        let outArr = reverse ? Object.keys(charOut).reverse() : Object.keys(charOut);
+        const outArr = reverse ? Object.keys(charOut).reverse() : Object.keys(charOut);
         outArr.forEach(star => {
             if (star >= starLvl) {
                 const msgArr = client.msgArray(charOut[star], '\n', 1000);
@@ -157,7 +157,7 @@ class GuildSearch extends Command {
                         name: msgArr.length > 1 ? name + ` (${ix+1}/${msgArr.length})` : name,
                         value: msgArr[ix]
                     });
-               })
+                });
             }
         });
 

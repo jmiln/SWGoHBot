@@ -8,17 +8,18 @@ class Language {
     get(str, ...args) {
         if (!this.language[str]) {
             const defLang = this.client.languages[this.client.config.defaultSettings.language];
-            // If it isn't in the configured language's file, use the main one (probably en_US)
-            if (!defLang[str]) {
-                return 'MISSING STRING: ' + str;
+            let res = '';
+            try {
+                if (!args.length) {
+                    res = defLang.get(str);
+                } else {
+                    res = defLang.get(str, ...args);
+                }
+            } catch (e) {
+                res = 'MISSING STRING: ' + str;
             }
-            if (!args.length) {
-                return defLang.get(str);
-            } else {
-                return defLang.get(str, ...args);
-            }
+            return res;
         } else {
-            // console.log(args)
             return (args.length > 0 && typeof this.language[str] === 'function') ? this.language[str](...args) : this.language[str];
         }
     }
