@@ -32828,5 +32828,409 @@
             "Protection": 33,
             "activation": 25
         }
+    },
+    {
+        "name": "Bastila Shan",
+        "uniqueName": "BASTILASHAN",
+        "aliases": [
+            "Bastila Shan"
+        ],
+        "nameVariant": [
+            "Bastila Shan"
+        ],
+        "url": "https://swgoh.gg/characters/bastila-shan/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bastilashan.png",
+        "side": "light",
+        "factions": [
+            "Jedi",
+            "Old Republic",
+            "Support"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 BioTech Implant",
+                "Mk 1 BioTech Implant"
+            ],
+            "Gear 2": [
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 3 Fabritech Data Pad",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 BAW Armor Mod",
+                "Mk 4 BAW Armor Mod",
+                "Mk 2 A/KT Stun Gun",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 4": [
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Nubian Security Scanner",
+                "Mk 6 Loronar Power Cell",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 5": [
+                "Mk 4 A/KT Stun Gun",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Loronar Power Cell",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 2 Athakam Medpac",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 7": [
+                "Mk 3 Athakam Medpac",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Nubian Design Tech"
+            ],
+            "Gear 8": [
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 3 SoroSuub Keypad",
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 6 BioTech Implant"
+            ],
+            "Gear 9": [
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Athakam Medpac",
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 Athakam Medpac",
+                "Mk 3 Nubian Design Tech"
+            ],
+            "Gear 10": [
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 3 Nubian Design Tech"
+            ],
+            "Gear 11": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 6 A/KT Stun Gun",
+                "Mk 4 Merr-Sonn Shield Generator",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 10 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Tactical Data",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Fusion Furnace",
+                "Mk 12 ArmaTek Data Pad",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Jedi Assault": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Special damage to target enemy and inflict Ability Block for 1 turn. This attack deals 20% more damage and has +20% Potency for each active Jedi ally.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Rally": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Bastila Dispels all debuffs from herself and another target ally. They both gain Offense, Defense, Speed, Accuracy, and Critical Chance Up for 3 turns, then Bastila calls that ally to Assist.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Subvert Defenses": {
+                "type": "Special",
+                "abilityCooldown": "2",
+                "abilityDesc": "Deal Special damage to target enemy, Dispel all buffs on them, and Stun them for 1 turn.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Initiative": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of the battle, Jedi allies gain 15% Turn Meter and Protection Up (200%, can't be Dispelled), and Jedi Tank allies gain Taunt for 1 turn. While Jedi allies have Protection Up, they have +150% Tenacity and deal 35% more damage.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Legendary Battle Meditation": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of Bastila's turn, she recovers 2% Protection for each buff she has and all other allies gain 3% Turn Meter (doubled for Jedi) and Legendary Battle Meditation for 1 turn.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 21133,
+            "Strength": 1195,
+            "Agility": 701,
+            "Intelligence": 1176,
+            "Speed": 132,
+            "Physical Damage": 2057,
+            "Physical Critical Rating": 470,
+            "Special Damage": 3368,
+            "Special Critical Rating": 75,
+            "Armor Penetration": 5,
+            "Resistance Penetration": 60,
+            "Potency": 7,
+            "Health": 46315,
+            "Armor": 314,
+            "Resistance": 291,
+            "Tenacity": 36,
+            "Health Steal": 30,
+            "Protection": 43,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Jolee Bindo",
+        "uniqueName": "JOLEEBINDO",
+        "aliases": [
+            "Jolee Bindo"
+        ],
+        "nameVariant": [
+            "Jolee Bindo"
+        ],
+        "url": "https://swgoh.gg/characters/jolee-bindo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_joleebindo.png",
+        "side": "light",
+        "factions": [
+            "Healer",
+            "Jedi",
+            "Old Republic"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Fabritech Data Pad",
+                "Mk 1 Fabritech Data Pad"
+            ],
+            "Gear 2": [
+                "Mk 1 Fabritech Data Pad",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 2 BlasTech Weapon Mod",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 3 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 4 BlasTech Weapon Mod",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 4": [
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 3 Fabritech Data Pad",
+                "Mk 4 BAW Armor Mod",
+                "Mk 6 Loronar Power Cell",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 Merr-Sonn Shield Generator"
+            ],
+            "Gear 5": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Loronar Power Cell",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 7 Loronar Power Cell"
+            ],
+            "Gear 6": [
+                "Mk 6 Fabritech Data Pad",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 2 Carbanti Sensor Array",
+                "Mk 7 Loronar Power Cell",
+                "Mk 8 BlasTech Weapon Mod"
+            ],
+            "Gear 7": [
+                "Mk 2 Chedak Comlink",
+                "Mk 4 Nubian Design Tech",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 6 Nubian Security Scanner",
+                "Mk 3 Athakam Medpac"
+            ],
+            "Gear 8": [
+                "Mk 4 BioTech Implant",
+                "Mk 6 Loronar Power Cell",
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Arakyd Droid Caller"
+            ],
+            "Gear 9": [
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 6 BioTech Implant",
+                "Mk 6 Nubian Security Scanner",
+                "Mk 4 Chedak Comlink"
+            ],
+            "Gear 10": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 5 Athakam Medpac",
+                "Mk 3 Zaltin Bacta Gel"
+            ],
+            "Gear 11": [
+                "Mk 10 TaggeCo Holo Lens",
+                "Mk 5 Athakam Medpac",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 9 BAW Armor Mod",
+                "Mk 8 Loronar Power Cell"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Thermal Detonator",
+                "Mk 12 ArmaTek Fusion Furnace",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "No Other Options": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and recover 30% Health. If this attack deals any damage, reduce the cooldowns of Jolee's other abilities by 1.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Eh, You Do It": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Another target ally Assists. Heal that ally for 30% of Jolee's Max Health, then all other Jedi allies recover half that amount.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "That Looks Pretty Bad": {
+                "type": "Special",
+                "abilityCooldown": "5",
+                "abilityDesc": "Dispel all debuffs on target ally and they recover 40% Health. Then, Revive all defeated Jedi allies at 80% Health and grant those allies Crit Immunity for 5 turns.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
+            },
+            "Don't Interrupt Me!": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Jolee has +100% Tenacity and is immune to Turn Meter reduction effects. In addition, at the start of the battle, he gains bonus Critical Avoidance equal to half of his Tenacity.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Experience and Wisdom": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Jolee has +30% Max Health. Whenever he uses an ability that targets an ally, he grants that ally Protection Up for 2 turns equal to 30% of his Max Health.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 21133,
+            "Strength": 1131,
+            "Agility": 666,
+            "Intelligence": 1112,
+            "Speed": 123,
+            "Physical Damage": 2316,
+            "Physical Critical Rating": 507,
+            "Special Damage": 2976,
+            "Special Critical Rating": 90,
+            "Armor Penetration": 35,
+            "Resistance Penetration": 5,
+            "Potency": 20,
+            "Health": 34473,
+            "Armor": 495,
+            "Resistance": 304,
+            "Tenacity": 39,
+            "Health Steal": 10,
+            "Protection": 33,
+            "activation": 25
+        }
     }
 ]
