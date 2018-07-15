@@ -743,7 +743,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
             COMMAND_REGISTER_UPDATE_FAILURE: 'Something went wrong, make sure your registered ally code is correct',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
-            COMMAND_REGISTER_CANNOT_REMOVE: (prefix = ';') => `You cannot remove other people. If they left your guild, try \`${prefix}register update <user>\`.`,
+            COMMAND_REGISTER_CANNOT_REMOVE: (prefix=';') => `You cannot remove other people. If they left your guild, try \`${prefix}register update <user>\`.`,
             COMMAND_REGISTER_NOT_LINKED: 'You are not linked to a SWGoH account.',
             COMMAND_REGISTER_REMOVE_SUCCESS: 'Successfully unlinked.',
             COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,

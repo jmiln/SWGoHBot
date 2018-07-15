@@ -89,7 +89,7 @@ class Register extends Command {
                         }
                     });
                 } else {
-                    return message.channel.send(message.language.get('COMMAND_REGISTER_ALREADY_ADDED'));
+                    return message.channel.send(message.language.get('COMMAND_REGISTER_ALREADY_ADDED', message.guildSettings.prefix));
                 }
                 break;
             case 'update': {
