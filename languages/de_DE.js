@@ -743,7 +743,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_SUCCESS: 'Registrierung erfolgreich!',
             COMMAND_REGISTER_UPDATE_FAILURE: 'Etwas ist fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profil aktualisiert fuer \`${user}\`.`,
-            COMMAND_REGISTER_CANNOT_REMOVE: (prefix = ';') => `Du kannst keine anderen User entfernen. Falls sie die Gilde verlassen haben nutze \`${prefix}register update <user>\`.`,
+            COMMAND_REGISTER_CANNOT_REMOVE: (prefix=';') => `Du kannst keine anderen User entfernen. Falls sie die Gilde verlassen haben nutze \`${prefix}register update <user>\`.`,
             COMMAND_REGISTER_NOT_LINKED: 'Du bist mit keinem SWGoH Profil verlinkt.',
             COMMAND_REGISTER_REMOVE_SUCCESS: 'Erfolgreich getrennt.',
             COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Gilde aktualisiert fuer \`${guild}\`.`,
