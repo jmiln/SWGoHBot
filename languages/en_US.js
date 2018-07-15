@@ -99,6 +99,7 @@ module.exports = class extends Language {
             BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
             BASE_COMMAND_HELP_HEADER: (name) => `Help for ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Continued help for ${name}`,
+            BASE_CONT_STRING: '(cont)',
             BASE_COMMAND_HELP_HELP: (name) => {
                 return {
                     action: "Show help",
@@ -408,24 +409,6 @@ module.exports = class extends Language {
                     }
                 ]
             },
-
-            // Heists Command
-            COMMAND_HEISTS_HEADER: "SWGoH Heists Schedule",
-            COMMAND_HEISTS_CREDIT: (date) => `**Credits** : ${date}\n`,
-            COMMAND_HEISTS_DROID: (date) => `**Droids**  : ${date}\n`,
-            COMMAND_HEISTS_NOT_SCHEDULED: "`Not scheduled`",
-            COMMAND_HEISTS_HELP: {
-                description: "Shows any upcoming heists.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';heists',
-                        args: {}
-                    }
-                ]
-            },
-
 
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
@@ -1018,6 +1001,27 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';showconf',
                         args: {}
+                    }
+                ]
+            },
+
+            // Squads Command
+            COMMAND_SQUADS_NO_LIST: (list) => `Please select a category from the following list: \n\`${list}\``,
+            COMMAND_SQUADS_SHOW_LIST: (name, list) => `Within ${name}, please chose the number corresponding with the phase you want to see: \n${list}`,
+            COMMAND_SQUADS_FIELD_HEADER: 'Squads/ Characters',
+            COMMAND_SQUAD_INVALID_PHASE: (list) => `Invalid phase number, please choose from the following: \n${list}`,
+            COMMAND_SQUADS_HELP: {
+                description: "Shows characters/ squads that are useful for various events.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';squads [user] <event> <phaseNum>',
+                        args: {
+                            "user": "The person you're adding. (me | userID | mention)",
+                            "event": "The event that you want to see teams for. (aat|pit|sith|etc.)",
+                            "phase": "The number associated with the phase you want to see"
+                        }
                     }
                 ]
             },

@@ -10,7 +10,6 @@ class Charactergear extends Command {
     }
 
     run(client, message, args) {
-        const config = client.config;
         const charList = client.characters;
 
 

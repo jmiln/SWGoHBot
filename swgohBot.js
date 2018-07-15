@@ -16,10 +16,12 @@ client.config = require('./config.js');
 client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
 client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
 client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
+client.squads = JSON.parse(fs.readFileSync("data/squads.json"));
 client.patrons = [];
 const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE = "./data/swgoh-gg-ships.json";
+const SWGoH_Help_SQUAD_CACHE = "./data/squads.json";
 const UNKNOWN = "Unknown";
 
 require("./modules/functions.js")(client);
@@ -234,12 +236,18 @@ async function updateRemoteData() {
         await updateCharacterMods(currentCharacters);
     }
 
+    if (await updateIfChanged(SWGoH_Help_SQUAD_CACHE, 'https://swgoh.help/data/squads.json')) {
+        console.log('UpdatedRemoteData', 'Detected a squad change from swgoh.help.');
+    }
+
     console.log('UpdateRemoteData', 'Finished processing remote updates');
     if (currentSnapshot !== JSON.stringify(currentCharacters)) {
         console.log('UpdateRemoteData', 'Changes detected in character data, saving updates and reloading');
         saveFile("./data/characters.json", currentCharacters);
         client.characters = currentCharacters;
     }
+
+
 }
 
 // async function updateShips() {
