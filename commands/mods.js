@@ -10,7 +10,6 @@ class Mods extends Command {
     }
 
     run(client, message, args) {
-        const config = client.config;
         const charList = client.characters;
 
         const getLocalizedModString = function(key) {
@@ -101,12 +100,21 @@ class Mods extends Command {
 
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
-        if (chars.length <= 0) {
+        if (!chars || chars.length <= 0) {
             return message.channel.send(message.language.get('COMMAND_MODS_INVALID_CHARACTER', message.guildSettings.prefix));
+        } else if (chars.length > 1) {
+            const charL = [];
+            const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
+            charS.forEach(c => {
+                charL.push(c.name);
+            });
+            return message.channel.send(message.language.get('BASE_SWGOH_CHAR_LIST', charL.join('\n')));
         }
 
+
+
         chars.forEach(character => {
-            if (embeds) { // if Embeds are enabled
+            if (embeds) { // If Embeds are enabled
                 const fields = [];
                 const characterMods = getCharacterMods(character);
                 for (var modSet in characterMods) {
