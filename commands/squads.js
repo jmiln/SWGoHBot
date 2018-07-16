@@ -31,7 +31,10 @@ class Squads extends Command {
         if (!list) {
             // No list, show em the possible ones
             return message.channel.send(message.language.get('COMMAND_SQUADS_NO_LIST', lists.join(', ')));
-        } else if (lists.includes(list)) {
+        } else {
+            list = list.toLowerCase();
+        } 
+        if (lists.includes(list)) {
             if (!phase) {
                 // They've chosen a list, show em the phase list 
                 const outList = squadList[list].phase.map((p, ix) => 
