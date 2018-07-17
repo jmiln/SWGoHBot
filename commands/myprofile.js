@@ -28,7 +28,7 @@ class MyProfile extends Command {
         } catch (e) {
             console.log('Broke getting player in myprofile: ' + e);
         }
-         
+
         const fields = [];
         const charList = player.roster.filter(u => u.type === 'char');
         let zetaCount = 0;
@@ -40,7 +40,7 @@ class MyProfile extends Command {
         fields.push({
             name: charOut.header,
             value: [
-                '```asciidoc', 
+                '```asciidoc',
                 charOut.stats,
                 '```'
             ].join('\n')
@@ -51,7 +51,7 @@ class MyProfile extends Command {
         fields.push({
             name: shipOut.header,
             value: [
-                '```asciidoc', 
+                '```asciidoc',
                 shipOut.stats,
                 '```'
             ].join('\n')
@@ -61,7 +61,8 @@ class MyProfile extends Command {
             author: {
                 name: message.language.get('COMMAND_MYPROFILE_EMBED_HEADER', player.name, player.allyCode),
             },
-            description: message.language.get('COMMAND_MYPROFILE_DESC', player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank),
+            //added just pure player total GP to display. not sure if in the correct place tho.
+            description: message.language.get('COMMAND_MYPROFILE_DESC', player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, player.gpFull),
             footer: {
                 text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
             },
@@ -71,4 +72,3 @@ class MyProfile extends Command {
 }
 
 module.exports = MyProfile;
-
