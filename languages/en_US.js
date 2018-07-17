@@ -569,7 +569,7 @@ module.exports = class extends Language {
             COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
-            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Guild:** ${guildName}\n**Level:** ${level}\n**Arena rank:** ${charRank}\n**Ship rank:** ${shipRank}`,
+            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank, gpFull) => `**Guild:** ${guildName}\n**Level:** ${level}\n**Arena rank:** ${charRank}\n**Ship rank:** ${shipRank}\n**Total GP:** ${gpFull}`,
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Characters (${charList.length})`,
                 stats: [
@@ -1132,4 +1132,3 @@ module.exports = class extends Language {
         };
     }
 };
-
