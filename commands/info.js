@@ -11,17 +11,8 @@ class Info extends Command {
     }
 
     async run(client, message) {
-        let guilds = 0;
-        if (client.shard && client.shard.count > 0) {
-            await client.shard.fetchClientValues('guilds.size')
-                .then(results => {
-                    guilds = results.reduce((prev, val) => prev + val, 0).toLocaleString();
-                })
-                .catch(console.error);
-        } else {
-            guilds = client.guilds.size.toLocaleString();
-        }
-        const content = message.language.get('COMMAND_INFO_OUTPUT', guilds);
+        const guilds = await client.guildCount();
+        const content = message.language.get('COMMAND_INFO_OUTPUT', guilds, message.guildSettings.prefix);
         const fields = [];
         Object.keys(content.links).forEach(link => {
             fields.push({
@@ -35,7 +26,8 @@ class Info extends Command {
                 name: content.header
             },
             description: content.desc,
-            fields: fields
+            fields: fields,
+            color: Math.floor(Math.random()*16777215)
         }});
     }
 }
