@@ -1,13 +1,26 @@
 [
     {
-        "name" : "Ahsoka Tano's Jedi Starfighter",
+        "name": "Ahsoka Tano's Jedi Starfighter",
         "uniqueName": "JEDISTARFIGHTERAHSOKATANO",
-        "aliases" : ["Ahsoka", "Ahsoka Tano", "Ahsoka Tano's Jedi Starfighter", "Starfigter", "Jedi", "Jedi Starfighter"],
-        "crew" : ["Ahsoka Tano"],
-        "url" : "https://swgoh.gg/units/ships/ahsoka-tanos-jedi-starfighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_jedi_fighter_ahsoka.png",
+        "aliases": [
+            "Ahsoka",
+            "Ahsoka Tano",
+            "Ahsoka Tano's Jedi Starfighter",
+            "Starfigter",
+            "Jedi",
+            "Jedi Starfighter"
+        ],
+        "crew": [
+            "Ahsoka Tano"
+        ],
+        "url": "https://swgoh.gg/ships/ahsoka-tanos-jedi-starfighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_fighter_ahsoka.png",
         "side": "light",
-        "factions" : ["attacker", "jedi", "galactic republic"],
+        "factions": [
+            "attacker",
+            "jedi",
+            "galactic republic"
+        ],
         "abilities": {
             "Reflexive Shot": {
                 "type": "Basic",
@@ -27,14 +40,26 @@
         }
     },
     {
-        "name" : "Biggs Darklighter's X-Wing",
+        "name": "Biggs Darklighter's X-Wing",
         "uniqueName": "XWINGRED3",
-        "aliases" : ["Biggs", "Red3", "XWing", "X Wing", "Biggs X-Wing", "Biggs Darklighters X-Wing"],
-        "crew" : ["Biggs Darklighter"],
-        "url" : "https://swgoh.gg/units/ships/biggs-darklighters-x-wing/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_xwing_red3.png",
+        "aliases": [
+            "Biggs",
+            "Red3",
+            "XWing",
+            "X Wing",
+            "Biggs X-Wing",
+            "Biggs Darklighters X-Wing"
+        ],
+        "crew": [
+            "Biggs Darklighter"
+        ],
+        "url": "https://swgoh.gg/ships/biggs-darklighters-x-wing/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_xwing_red3.png",
         "side": "light",
-        "factions" : ["tank", "rebel"],
+        "factions": [
+            "tank",
+            "rebel"
+        ],
         "abilities": {
             "Hit The Mark": {
                 "type": "Basic",
@@ -54,14 +79,26 @@
         }
     },
     {
-        "name" : "Bistan's U-Wing",
+        "name": "Bistan's U-Wing",
         "uniqueName": "UWINGSCARIF",
-        "aliases" : ["Bistan", "SRP", "UWing", "U Wing", "Bistans UWing"],
-        "crew" : ["Bistan", "Scarif Rebel Pathfinder"],
-        "url" : "https://swgoh.gg/units/ships/bistans-u-wing/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_uwing.png",
+        "aliases": [
+            "Bistan",
+            "SRP",
+            "UWing",
+            "U Wing",
+            "Bistans UWing"
+        ],
+        "crew": [
+            "Bistan",
+            "Scarif Rebel Pathfinder"
+        ],
+        "url": "https://swgoh.gg/ships/bistans-u-wing/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_uwing.png",
         "side": "light",
-        "factions" : ["support", "rebel"],
+        "factions": [
+            "support",
+            "rebel"
+        ],
         "abilities": {
             "Opening Move": {
                 "type": "Basic",
@@ -86,14 +123,28 @@
         }
     },
     {
-        "name" : "Cassian's U-Wing",
+        "name": "Cassian's U-Wing",
         "uniqueName": "UWINGROGUEONE",
-        "aliases" : ["Cassian", "UWing", "U Wing", "Cassians UWing", "K2S0", "Jyn"],
-        "crew" : ["Cassian Andor", "K-2SO", "Jyn Erso"],
-        "url" : "https://swgoh.gg/units/ships/cassians-u-wing/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_uwing_hero.png",
+        "aliases": [
+            "Cassian",
+            "UWing",
+            "U Wing",
+            "Cassians UWing",
+            "K2S0",
+            "Jyn"
+        ],
+        "crew": [
+            "Cassian Andor",
+            "K-2SO",
+            "Jyn Erso"
+        ],
+        "url": "https://swgoh.gg/ships/cassians-u-wing/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_uwing_hero.png",
         "side": "light",
-        "factions" : ["support", "rebel"],
+        "factions": [
+            "support",
+            "rebel"
+        ],
         "abilities": {
             "Trailblazer": {
                 "type": "Basic",
@@ -123,14 +174,23 @@
         }
     },
     {
-        "name" : "Chimaera",
+        "name": "Chimaera",
         "uniqueName": "CAPITALCHIMAERA",
-        "aliases" : ["Chimaera", "Grand Admiral Thrawn", "Thrawn"],
-        "crew" : ["Grand Admiral Thrawn"],
-        "url" : "https://swgoh.gg/ships/chimaera/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_chimaera.png",
+        "aliases": [
+            "Chimaera",
+            "Grand Admiral Thrawn",
+            "Thrawn"
+        ],
+        "crew": [
+            "Grand Admiral Thrawn"
+        ],
+        "url": "https://swgoh.gg/ships/chimaera/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chimaera.png",
         "side": "dark",
-        "factions" : ["capital ship", "empire"],
+        "factions": [
+            "capital ship",
+            "empire"
+        ],
         "abilities": {
             "Calculated Strike": {
                 "type": "Basic",
@@ -160,14 +220,25 @@
         }
     },
     {
-        "name" : "Clone Sergeant's ARC-170",
+        "name": "Clone Sergeant's ARC-170",
         "uniqueName": "ARC170CLONESERGEANT",
-        "aliases" : ["Clone Sergeant", "ARC170", "Clone Sergeant's ARC-170", "Clone Trooper"],
-        "crew" : ["Clone Sergeant P1"],
-        "url" : "https://swgoh.gg/units/ships/clone-sergeants-arc-170/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_arc170.png",
+        "aliases": [
+            "Clone Sergeant",
+            "ARC170",
+            "Clone Sergeant's ARC-170",
+            "Clone Trooper"
+        ],
+        "crew": [
+            "Clone Sergeant P1"
+        ],
+        "url": "https://swgoh.gg/ships/clone-sergeants-arc-170/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_arc170.png",
         "side": "light",
-        "factions" : ["tank", "clone trooper", "galactic republic"],
+        "factions": [
+            "tank",
+            "clone trooper",
+            "galactic republic"
+        ],
         "abilities": {
             "Wing Cannons": {
                 "type": "Basic",
@@ -187,14 +258,25 @@
         }
     },
     {
-        "name" : "Endurance",
+        "name": "Endurance",
         "uniqueName": "CAPITALJEDICRUISER",
-        "aliases" : ["Mace", "Mace Windu", "Venator", "Endurance"],
-        "crew" : ["Mace Windu"],
-        "url" : "https://swgoh.gg/units/ships/endurance/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_venator.png",
+        "aliases": [
+            "Mace",
+            "Mace Windu",
+            "Venator",
+            "Endurance"
+        ],
+        "crew": [
+            "Mace Windu"
+        ],
+        "url": "https://swgoh.gg/ships/endurance/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_venator.png",
         "side": "light",
-        "factions" : ["capital ship", "jedi", "galactic republic"],
+        "factions": [
+            "capital ship",
+            "jedi",
+            "galactic republic"
+        ],
         "abilities": {
             "Strike True": {
                 "type": "Basic",
@@ -224,14 +306,24 @@
         }
     },
     {
-        "name" : "Executrix",
+        "name": "Executrix",
         "uniqueName": "CAPITALSTARDESTROYER",
-        "aliases" : ["Moff", "Tarkin", "Grand Moff", "Executrix"],
-        "crew" : ["Grand Moff Tarkin"],
-        "url" : "https://swgoh.gg/units/ships/executrix/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_stardestroyer.png",
+        "aliases": [
+            "Moff",
+            "Tarkin",
+            "Grand Moff",
+            "Executrix"
+        ],
+        "crew": [
+            "Grand Moff Tarkin"
+        ],
+        "url": "https://swgoh.gg/ships/executrix/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_stardestroyer.png",
         "side": "dark",
-        "factions" : ["capital ship", "empire"],
+        "factions": [
+            "capital ship",
+            "empire"
+        ],
         "abilities": {
             "Turbolaser Batteries": {
                 "type": "Basic",
@@ -261,14 +353,26 @@
         }
     },
     {
-        "name" : "First Order SF Tie Fighter",
+        "name": "First Order SF Tie Fighter",
         "uniqueName": "TIEFIGHTERFOSF",
-        "aliases" : ["FO TIE Fighter", "First Order SF Tie Fighter", "Special Forces", "SF Tie Fighter", "First Order", "FOSFTP"],
-        "crew" : ["First Order SF TIE Pilot"],
-        "url" : "https://swgoh.gg/units/ships/first-order-sf-tie-fighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_fosf_tie_fighter.png",
+        "aliases": [
+            "FO TIE Fighter",
+            "First Order SF Tie Fighter",
+            "Special Forces",
+            "SF Tie Fighter",
+            "First Order",
+            "FOSFTP"
+        ],
+        "crew": [
+            "First Order SF TIE Pilot"
+        ],
+        "url": "https://swgoh.gg/ships/first-order-sf-tie-fighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_fosf_tie_fighter.png",
         "side": "dark",
-        "factions" : ["attacker", "first order"],
+        "factions": [
+            "attacker",
+            "first order"
+        ],
         "abilities": {
             "L-s9.6 Laser Cannons": {
                 "type": "Basic",
@@ -288,14 +392,24 @@
         }
     },
     {
-        "name" : "First Order Tie Fighter",
+        "name": "First Order Tie Fighter",
         "uniqueName": "TIEFIGHTERFIRSTORDER",
-        "aliases" : ["FO TIE Fighter", "First Order Tie Fighter", "First Order", "FOTP"],
-        "crew" : ["First Order TIE Pilot"],
-        "url" : "https://swgoh.gg/units/ships/first-order-tie-fighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_firstorder_tiefighter.png",
+        "aliases": [
+            "FO TIE Fighter",
+            "First Order Tie Fighter",
+            "First Order",
+            "FOTP"
+        ],
+        "crew": [
+            "First Order TIE Pilot"
+        ],
+        "url": "https://swgoh.gg/ships/first-order-tie-fighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorder_tiefighter.png",
         "side": "dark",
-        "factions" : ["attacker", "first order"],
+        "factions": [
+            "attacker",
+            "first order"
+        ],
         "abilities": {
             "Target Acquired": {
                 "type": "Basic",
@@ -315,14 +429,25 @@
         }
     },
     {
-        "name" : "Gauntlet Starfighter",
+        "name": "Gauntlet Starfighter",
         "uniqueName": "GAUNTLETSTARFIGHTER",
-        "aliases" : ["Gauntlet", "Gar", "Commando", "Gauntlet Starfighter"],
-        "crew" : ["Gar Saxon", "Imperial Super Commando"],
-        "url" : "https://swgoh.gg/units/ships/gauntlet-starfighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_gauntlet.png",
+        "aliases": [
+            "Gauntlet",
+            "Gar",
+            "Commando",
+            "Gauntlet Starfighter"
+        ],
+        "crew": [
+            "Gar Saxon",
+            "Imperial Super Commando"
+        ],
+        "url": "https://swgoh.gg/ships/gauntlet-starfighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_gauntlet.png",
         "side": "dark",
-        "factions" : ["support", "empire"],
+        "factions": [
+            "support",
+            "empire"
+        ],
         "abilities": {
             "Gauntlet Assault": {
                 "type": "Basic",
@@ -347,14 +472,25 @@
         }
     },
     {
-        "name" : "Geonosian Soldier's Starfighter",
+        "name": "Geonosian Soldier's Starfighter",
         "uniqueName": "GEONOSIANSTARFIGHTER1",
-        "aliases" : ["Geonosian Soldier", "GenSol", "Geonosian Starfighter", "Geonosian Soldiers Starfighter"],
-        "crew" : ["Geonosian Soldier"],
-        "url" : "https://swgoh.gg/units/ships/geonosian-soldiers-starfighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_soldier.png",
+        "aliases": [
+            "Geonosian Soldier",
+            "GenSol",
+            "Geonosian Starfighter",
+            "Geonosian Soldiers Starfighter"
+        ],
+        "crew": [
+            "Geonosian Soldier"
+        ],
+        "url": "https://swgoh.gg/ships/sun-facs-geonosian-starfighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_soldier.png",
         "side": "dark",
-        "factions" : ["attacker", "geonosian", "separatist"],
+        "factions": [
+            "attacker",
+            "geonosian",
+            "separatist"
+        ],
         "abilities": {
             "Front Line": {
                 "type": "Basic",
@@ -371,17 +507,33 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal physical damage to target enemy and call a random ally to assist.  Inflict Evasion Down for 2 turns if chosen ally is Separtist.  Target Lock: Both attackers deal 25% more damage."
             }
-        }
+        },
+        "nameVariant": [
+            "Geonosian Soldier's Starfighter",
+            "Sun Fac's Geonosian Starfighter"
+        ]
     },
     {
-        "name" : "Geonosian Spy's Starfighter",
+        "name": "Geonosian Spy's Starfighter",
         "uniqueName": "GEONOSIANSTARFIGHTER3",
-        "aliases" : ["Geonosian Spy", "Geonosian Starfighter", "Geonosian Spys Starfighter", "Spy", "Genspy"],
-        "crew" : ["Geonosian Spy"],
-        "url" : "https://swgoh.gg/units/ships/geonosian-spys-starfighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_spy.png",
+        "aliases": [
+            "Geonosian Spy",
+            "Geonosian Starfighter",
+            "Geonosian Spys Starfighter",
+            "Spy",
+            "Genspy"
+        ],
+        "crew": [
+            "Geonosian Spy"
+        ],
+        "url": "https://swgoh.gg/ships/geonosian-spys-starfighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_spy.png",
         "side": "dark",
-        "factions" : ["attacker", "geonosian", "separatist"],
+        "factions": [
+            "attacker",
+            "geonosian",
+            "separatist"
+        ],
         "abilities": {
             "Undermine": {
                 "type": "Basic",
@@ -401,14 +553,27 @@
         }
     },
     {
-        "name" : "Ghost",
+        "name": "Ghost",
         "uniqueName": "GHOST",
-        "aliases" : ["Ghost", "Hera", "Zeb", "Kanan"],
-        "crew" : ["Hera Syndulla", "Garazeb 'Zeb' Orrelios", "Kanan Jarrus"],
-        "url" : "https://swgoh.gg/units/ships/ghost/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_ghost.png",
+        "aliases": [
+            "Ghost",
+            "Hera",
+            "Zeb",
+            "Kanan"
+        ],
+        "crew": [
+            "Hera Syndulla",
+            "Garazeb 'Zeb' Orrelios",
+            "Kanan Jarrus"
+        ],
+        "url": "https://swgoh.gg/ships/ghost/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ghost.png",
         "side": "light",
-        "factions" : ["attacker", "rebel", "phoenix"],
+        "factions": [
+            "attacker",
+            "rebel",
+            "phoenix"
+        ],
         "abilities": {
             "MS-2B Twin Laser Canon": {
                 "type": "Basic",
@@ -438,14 +603,23 @@
         }
     },
     {
-        "name" : "Home One",
+        "name": "Home One",
         "uniqueName": "CAPITALMONCALAMARICRUISER",
-        "aliases" : ["Ackbar", "Home One", "Liberty"],
-        "crew" : ["Admiral Ackbar"],
-        "url" : "https://swgoh.gg/units/ships/home-one/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_moncalamarilibertycruiser.png",
+        "aliases": [
+            "Ackbar",
+            "Home One",
+            "Liberty"
+        ],
+        "crew": [
+            "Admiral Ackbar"
+        ],
+        "url": "https://swgoh.gg/ships/home-one/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_moncalamarilibertycruiser.png",
         "side": "light",
-        "factions" : ["capital ship", "rebel"],
+        "factions": [
+            "capital ship",
+            "rebel"
+        ],
         "abilities": {
             "Mon Cal Cannons": {
                 "type": "Basic",
@@ -475,14 +649,23 @@
         }
     },
     {
-        "name" : "Imperial TIE Fighter",
-        "aliases" : ["TIE Fighter", "Imperial TIE Fighter", "TFP"],
+        "name": "Imperial TIE Fighter",
+        "aliases": [
+            "TIE Fighter",
+            "Imperial TIE Fighter",
+            "TFP"
+        ],
         "uniqueName": "TIEFIGHTERIMPERIAL",
-        "crew" : ["TIE Fighter Pilot"],
-        "url" : "https://swgoh.gg/units/ships/imperial-tie-fighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_tiefighter.png",
+        "crew": [
+            "TIE Fighter Pilot"
+        ],
+        "url": "https://swgoh.gg/ships/imperial-tie-fighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tiefighter.png",
         "side": "dark",
-        "factions" : ["attacker", "empire"],
+        "factions": [
+            "attacker",
+            "empire"
+        ],
         "abilities": {
             "L-S1 Laser Canon": {
                 "type": "Basic",
@@ -502,41 +685,49 @@
         }
     },
     {
-        "name" : "Jedi Consular's Starfighter",
+        "name": "Jedi Consular's Starfighter",
         "uniqueName": "JEDISTARFIGHTERCONSULAR",
-        "aliases" : ["Jedi Consular", "Consular", "Jedi", "Jedi Starfighter"],
-        "crew" : ["Jedi Consular"],
-        "url" : "https://swgoh.gg/units/ships/jedi-consulars-starfighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_jedi_fighter.png",
-        "side": "light",
-        "factions" : ["support", "jedi", "galactic republic"],
-        "abilities": {
-            "Republic Defender": {
-                "type": "Basic",
-                "abilityCooldown": "0",
-                "abilityDesc": "Deal physical damage to target enemy with a 70% chance to gain Defense Up for 2 turns.  Target Lock: Grant another random ally Defense Up for 2 turns."
-            },
-            "Guarded Assault": {
-                "type": "Special",
-                "abilityCooldown": "4",
-                "abilityDesc": "Deal special damage to target enemy and call target ally to assist (if able.)  Jedi Consular's Starfights and the assisting ally gain Protection Up (40%) for 2 turns."
-            },
-            "Stabilize": {
-                "type": "Crew",
-                "abilityCooldown": "3",
-                "abilityDesc": "Target ally recovers 65% protection.  If that ally is Republic they recover an additional 25% protection."
-            }
+        "aliases": [
+            "Jedi Consular's Starfighter"
+        ],
+        "nameVariant": [
+            "Jedi Consular's Starfighter"
+        ],
+        "crew": ["Jedi Consular"],
+        "url": "https://swgoh.gg/ships/jedi-consulars-starfighter/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     },
     {
-        "name" : "Kylo Ren's Command Shuttle",
+        "name": "Kylo Ren's Command Shuttle",
         "uniqueName": "COMMANDSHUTTLE",
-        "aliases" : ["Kylo", "Command Shuttle", "Kylo Rens Command Shuttle", "Phasma", "FOST"],
-        "crew" : ["Kylo Ren", "Captain Phasma", "First Order Stormtrooper"],
-        "url" : "https://swgoh.gg/units/ships/kylo-rens-command-shuttle/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_upsilon_shuttle_kylo.png",
+        "aliases": [
+            "Kylo",
+            "Command Shuttle",
+            "Kylo Rens Command Shuttle",
+            "Phasma",
+            "FOST"
+        ],
+        "crew": [
+            "Kylo Ren",
+            "Captain Phasma",
+            "First Order Stormtrooper"
+        ],
+        "url": "https://swgoh.gg/ships/kylo-rens-command-shuttle/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_upsilon_shuttle_kylo.png",
         "side": "dark",
-        "factions" : ["first order", "support"],
+        "factions": [
+            "first order",
+            "support"
+        ],
         "abilities": {
             "Defensive Fire": {
                 "type": "Basic",
@@ -566,10 +757,38 @@
         }
     },
     {
-        "name" : "Millennium Falcon (Ep VII)",
-        "aliases" : ["Millenium Falcon", "Millennium Falcon Ep VII", "Falcon", "Rey", "Finn"],
+        "name": "Lando's Millennium Falcon",
+        "uniqueName": "MILLENNIUMFALCONPRISTINE",
+        "aliases": [
+            "Lando's Millennium Falcon"
+        ],
+        "nameVariant": [
+            "Lando's Millennium Falcon"
+        ],
+        "crew": [],
+        "url": "https://swgoh.gg/ships/landos-millennium-falcon/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        }
+    },
+    {
+        "name": "Millennium Falcon (Ep VII)",
+        "uniqueName": "MILLENNIUMFALCONEP7",
+        "aliases": [
+            "Millennium Falcon (Ep VII)"
+        ],
+        "nameVariant": [
+            "Millennium Falcon (Ep VII)"
+        ],
         "crew" : ["Rey", "Finn"],
-        "url" : "https://swgoh.gg/units/ships/millennium-falcon-ep-vii/",
+        "url": "https://swgoh.gg/ships/millennium-falcon-ep-vii/",
         "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
         "side": "light",
         "factions" : ["resistance", "attacker"],
@@ -595,7 +814,6 @@
                 "abilityDesc": "Deal physical damage to all enemies then lose all buffs.  This attack hits each enemy again for each buff lost this way (maximum 3.)  Hits after the first deal 50% less damage."
             }
         }
-
     },
     {
         "name" : "Phantom II",
@@ -635,14 +853,25 @@
         }
     },
     {
-        "name" : "Plo Koon's Jedi Starfighter",
+        "name": "Plo Koon's Jedi Starfighter",
         "uniqueName": "BLADEOFDORIN",
-        "aliases" : ["Plo", "Plo Koon", "Jedi", "Jedi Starfighter"],
-        "crew" : ["Plo Koon"],
-        "url" : "https://swgoh.gg/units/ships/plo-koons-jedi-starfighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_jedi_fighter_bladeofdorin.png",
+        "aliases": [
+            "Plo",
+            "Plo Koon",
+            "Jedi",
+            "Jedi Starfighter"
+        ],
+        "crew": [
+            "Plo Koon"
+        ],
+        "url": "https://swgoh.gg/ships/plo-koons-jedi-starfighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_fighter_bladeofdorin.png",
         "side": "light",
-        "factions" : ["jedi", "galactic republic", "support"],
+        "factions": [
+            "jedi",
+            "galactic republic",
+            "support"
+        ],
         "abilities": {
             "Coordinated Assault": {
                 "type": "Basic",
@@ -662,14 +891,25 @@
         }
     },
     {
-        "name" : "Poe Dameron's X-wing",
+        "name": "Poe Dameron's X-wing",
         "uniqueName": "XWINGBLACKONE",
-        "aliases" : ["Poe", "Black Leader", "Poe Damerons XWing", "XWing", "X Wing"],
-        "crew" : ["Poe Dameron"],
-        "url" : "https://swgoh.gg/units/ships/poe-damerons-x-wing/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_xwing_blackone.png",
+        "aliases": [
+            "Poe",
+            "Black Leader",
+            "Poe Damerons XWing",
+            "XWing",
+            "X Wing"
+        ],
+        "crew": [
+            "Poe Dameron"
+        ],
+        "url": "https://swgoh.gg/ships/poe-damerons-x-wing/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_xwing_blackone.png",
         "side": "light",
-        "factions" : ["resistance", "attacker"],
+        "factions": [
+            "resistance",
+            "attacker"
+        ],
         "abilities": {
             "Cover All Angles": {
                 "type": "Basic",
@@ -689,14 +929,24 @@
         }
     },
     {
-        "name" : "Resistance X-wing",
+        "name": "Resistance X-wing",
         "uniqueName": "XWINGRESISTANCE",
-        "aliases" : ["Resistance XWing", "XWing", "X Wing", "R1"],
-        "crew" : ["Resistance Pilot"],
-        "url" : "https://swgoh.gg/units/ships/resistance-x-wing/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_xwing_resistance.png",
+        "aliases": [
+            "Resistance XWing",
+            "XWing",
+            "X Wing",
+            "R1"
+        ],
+        "crew": [
+            "Resistance Pilot"
+        ],
+        "url": "https://swgoh.gg/ships/resistance-x-wing/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_xwing_resistance.png",
         "side": "light",
-        "factions" : ["support", "resistance"],
+        "factions": [
+            "support",
+            "resistance"
+        ],
         "abilities": {
             "Hot Pursuit": {
                 "type": "Basic",
@@ -716,14 +966,24 @@
         }
     },
     {
-        "name" : "Rex's ARC-170",
+        "name": "Rex's ARC-170",
         "uniqueName": "ARC170REX",
-        "aliases" : ["Rex", "ARC", "Rexs ARC170"],
-        "crew" : ["CT-7567 Rex"],
-        "url" : "https://swgoh.gg/units/ships/rexs-arc-170/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_arc170_02.png",
+        "aliases": [
+            "Rex",
+            "ARC",
+            "Rexs ARC170"
+        ],
+        "crew": [
+            "CT-7567 Rex"
+        ],
+        "url": "https://swgoh.gg/ships/rexs-arc-170/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_arc170_02.png",
         "side": "light",
-        "factions" : ["galactic republic", "tank", "clone trooper"],
+        "factions": [
+            "galactic republic",
+            "tank",
+            "clone trooper"
+        ],
         "abilities": {
             "Hair Trigger": {
                 "type": "Basic",
@@ -743,14 +1003,22 @@
         }
     },
     {
-        "name" : "Scimitar",
+        "name": "Scimitar",
         "uniqueName": "SITHINFILTRATOR",
-        "aliases" : ["Maul", "Scimitar"],
-        "crew" : ["Darth Maul"],
-        "url" : "https://swgoh.gg/units/ships/scimitar/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_sithinfiltrator.png",
+        "aliases": [
+            "Maul",
+            "Scimitar"
+        ],
+        "crew": [
+            "Darth Maul"
+        ],
+        "url": "https://swgoh.gg/ships/scimitar/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithinfiltrator.png",
         "side": "dark",
-        "factions" : ["sith", "support"],
+        "factions": [
+            "sith",
+            "support"
+        ],
         "abilities": {
             "Dread Cannons": {
                 "type": "Basic",
@@ -770,14 +1038,25 @@
         }
     },
     {
-        "name" : "Slave-I",
+        "name": "Slave-I",
         "uniqueName": "SLAVE1",
-        "aliases" : ["Slave", "Slave I", "Boba", "Boba Fett", "Fett"],
-        "crew" : ["Boba Fett"],
-        "url" : "https://swgoh.gg/units/ships/slave-i/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_slave1.png",
+        "aliases": [
+            "Slave",
+            "Slave I",
+            "Boba",
+            "Boba Fett",
+            "Fett"
+        ],
+        "crew": [
+            "Boba Fett"
+        ],
+        "url": "https://swgoh.gg/ships/slave-i/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_slave1.png",
         "side": "dark",
-        "factions" : ["attacker", "scoundrel"],
+        "factions": [
+            "attacker",
+            "scoundrel"
+        ],
         "abilities": {
             "Rotating Twin Blaster Cannons": {
                 "type": "Basic",
@@ -797,14 +1076,25 @@
         }
     },
     {
-        "name" : "Sun Fac's Genosian Starfighter",
+        "name": "Sun Fac's Genosian Starfighter",
         "uniqueName": "GEONOSIANSTARFIGHTER2",
-        "aliases" : ["Sun Fac", "Geonosian Starfighter", "Geonosian", "Sun Fac's Genosian Starfighter"],
-        "crew" : ["Sun Fac"],
-        "url" : "https://swgoh.gg/units/ships/sun-facs-geonosian-starfighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_sunfac.png",
+        "aliases": [
+            "Sun Fac",
+            "Geonosian Starfighter",
+            "Geonosian",
+            "Sun Fac's Genosian Starfighter"
+        ],
+        "crew": [
+            "Sun Fac"
+        ],
+        "url": "https://swgoh.gg/ships/geonosian-soldiers-starfighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_sunfac.png",
         "side": "dark",
-        "factions" : ["separatist", "tank", "genosian"],
+        "factions": [
+            "separatist",
+            "tank",
+            "genosian"
+        ],
         "abilities": {
             "Air Superiority": {
                 "type": "Basic",
@@ -821,17 +1111,32 @@
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal physical damage to target enemy.  If the target is buffed also stun them for 1 turn."
             }
-        }
+        },
+        "nameVariant": [
+            "Sun Fac's Genosian Starfighter",
+            "Geonosian Soldier's Starfighter"
+        ]
     },
     {
-        "name" : "Tie Advanced x1",
+        "name": "Tie Advanced x1",
         "uniqueName": "TIEADVANCED",
-        "aliases" : ["Tie Advanced", "x1", "Darth Vader", "Vader"],
-        "crew" : ["Darth Vader"],
-        "url" : "https://swgoh.gg/units/ships/tie-advanced-x1/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_tieadvanced.png",
+        "aliases": [
+            "Tie Advanced",
+            "x1",
+            "Darth Vader",
+            "Vader"
+        ],
+        "crew": [
+            "Darth Vader"
+        ],
+        "url": "https://swgoh.gg/ships/tie-advanced-x1/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tieadvanced.png",
         "side": "dark",
-        "factions" : ["empire", "attacker", "sith"],
+        "factions": [
+            "empire",
+            "attacker",
+            "sith"
+        ],
         "abilities": {
             "Deadly Accuracy": {
                 "type": "Basic",
@@ -851,14 +1156,25 @@
         }
     },
     {
-        "name" : "Tie Reaper",
+        "name": "Tie Reaper",
         "uniqueName": "TIEREAPER",
-        "aliases" : ["Tie Reaper", "Reaper", "Death Trooper", "Shore Trooper"],
-        "crew" : ["Death Trooper", "Shore Trooper"],
-        "url" : "https://swgoh.gg/units/ships/tie-reaper/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_tiereaper.png",
+        "aliases": [
+            "Tie Reaper",
+            "Reaper",
+            "Death Trooper",
+            "Shore Trooper"
+        ],
+        "crew": [
+            "Death Trooper",
+            "Shore Trooper"
+        ],
+        "url": "https://swgoh.gg/ships/tie-reaper/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tiereaper.png",
         "side": "dark",
-        "factions" : ["empire", "support"],
+        "factions": [
+            "empire",
+            "support"
+        ],
         "abilities": {
             "Defensive Battery": {
                 "type": "Basic",
@@ -883,14 +1199,24 @@
         }
     },
     {
-        "name" : "Tie Silencer",
+        "name": "Tie Silencer",
         "uniqueName": "TIESILENCER",
-        "aliases" : ["Tie Silencer", "Kylo Ren Unmasked", "Kylo Ren", "Kylo"],
-        "crew" : ["Kylo Ren Unmasked"],
-        "url" : "https://swgoh.gg/units/ships/tie-silencer/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_tie_silencer.png",
+        "aliases": [
+            "Tie Silencer",
+            "Kylo Ren Unmasked",
+            "Kylo Ren",
+            "Kylo"
+        ],
+        "crew": [
+            "Kylo Ren Unmasked"
+        ],
+        "url": "https://swgoh.gg/ships/tie-silencer/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tie_silencer.png",
         "side": "dark",
-        "factions" : ["first order", "attacker"],
+        "factions": [
+            "first order",
+            "attacker"
+        ],
         "abilities": {
             "Disruptive Advance": {
                 "type": "Basic",
@@ -910,14 +1236,24 @@
         }
     },
     {
-        "name" : "Umbaran Starfighter",
+        "name": "Umbaran Starfighter",
         "uniqueName": "UMBARANSTARFIGHTER",
-        "aliases" : ["Umbaran Starfighter", "Umbaran", "Fives"],
-        "crew" : ["CT-5555 Fives"],
-        "url" : "https://swgoh.gg/units/ships/umbaran-starfighter/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_umbaran_star_fighter.png",
+        "aliases": [
+            "Umbaran Starfighter",
+            "Umbaran",
+            "Fives"
+        ],
+        "crew": [
+            "CT-5555 Fives"
+        ],
+        "url": "https://swgoh.gg/ships/umbaran-starfighter/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_umbaran_star_fighter.png",
         "side": "light",
-        "factions" : ["galactic replublic", "tank", "clone trooper"],
+        "factions": [
+            "galactic replublic",
+            "tank",
+            "clone trooper"
+        ],
         "abilities": {
             "Plasma Weapons": {
                 "type": "Basic",
@@ -937,14 +1273,25 @@
         }
     },
     {
-        "name" : "Wedge Antilles's X-Wing",
+        "name": "Wedge Antilles's X-Wing",
         "uniqueName": "XWINGRED2",
-        "aliases" : ["Red Two", "Wedge", "X Wing", "XWing", "Wedge Antilless XWing"],
-        "crew" : ["Wedge Antilles"],
-        "url" : "https://swgoh.gg/units/ships/wedge-antilless-x-wing/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_xwing_red2.png",
+        "aliases": [
+            "Red Two",
+            "Wedge",
+            "X Wing",
+            "XWing",
+            "Wedge Antilless XWing"
+        ],
+        "crew": [
+            "Wedge Antilles"
+        ],
+        "url": "https://swgoh.gg/ships/wedge-antilless-x-wing/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_xwing_red2.png",
         "side": "light",
-        "factions" : ["rebel", "attacker"],
+        "factions": [
+            "rebel",
+            "attacker"
+        ],
         "abilities": {
             "KX9 Laser Cannons": {
                 "type": "Basic",
@@ -964,4 +1311,3 @@
         }
     }
 ]
-

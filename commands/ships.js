@@ -11,7 +11,6 @@ class Ships extends Command {
     }
 
     run(client, message, args) {
-        const config = client.config;
         const shipList = client.ships;
 
         // Remove any junk from the name
@@ -32,11 +31,12 @@ class Ships extends Command {
         }
 
         // Find any characters that match that
-        const ships = client.findChar(searchName, shipList);
+        const ships = client.findChar(searchName, shipList, true);
         if (ships.length <= 0) {
             return message.channel.send(message.language.get('COMMAND_SHIPS_INVALID_CHARACTER', message.guildSettings.prefix));
         } else if (ships.length > 1) {
-            return message.channel.send(message.language.get('COMMAND_SHIPS_TOO_MANY'));
+            console.log(ships);
+            return message.channel.send(message.language.get('BASE_SWGOH_CHAR_LIST', ships.map(s => `${s.name}${s.crew.length ? '\n' + s.crew.map(c => '- ' + c).join('\n') + '\n' : '\n'}`).join('\n')));
         }
 
         const ship = ships[0];
@@ -44,19 +44,30 @@ class Ships extends Command {
         if (embeds) { // if Embeds are enabled
             const fields = [];
 
-            fields.push({
-                "name": message.language.get('COMMAND_SHIPS_CREW'),
-                "value": ship['crew'].join(', ').toProperCase()
-            });
-            fields.push({
-                "name": message.language.get('COMMAND_SHIPS_FACTIONS'),
-                "value": ship['factions'].join(', ').toProperCase()
-            });
-            for (var ability in ship.abilities) {
-                const abilities = ship.abilities[ability];
+            if (ship.crew.length) {
                 fields.push({
-                    "name": ability,
-                    "value": message.language.get('COMMAND_SHIPS_ABILITIES', abilities)
+                    "name": message.language.get('COMMAND_SHIPS_CREW'),
+                    "value": ship['crew'].join(', ').toProperCase()
+                });
+            }
+            if (ship.factions.length) {
+                fields.push({
+                    "name": message.language.get('COMMAND_SHIPS_FACTIONS'),
+                    "value": ship['factions'].join(', ').toProperCase()
+                });
+            }
+            if (Object.keys(ship.abilities).length) {
+                for (var ability in ship.abilities) {
+                    fields.push({
+                        "name": ability,
+                        "value": message.language.get('COMMAND_SHIPS_ABILITIES', ship.abilities[ability])
+                    });
+                }
+            }
+            if (!fields.length) {
+                fields.push({
+                    "name": 'Error',
+                    "value": 'Sorry, but this ship has not been fully updated yet.'
                 });
             }
             message.channel.send({

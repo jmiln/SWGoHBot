@@ -125,11 +125,9 @@ client.on('error', (err) => {
 // Make it so it only checks for new characters on the main shard
 if (!client.shard || client.shard.id === 0) {
     // ## Here down is to update any characters that need it ##
-    // Run it one minute after the bot boots
-    setTimeout(updateRemoteData,        1 * 60 * 1000);
-    // Check every 12 hours to see if any mods have been changed
-    setInterval(updateRemoteData, 12 * 60 * 60 * 1000);
-    //                               hr   min  sec  mSec
+    setTimeout(updateRemoteData,        1 * 60 * 1000);  // Run it a min after start
+    setInterval(updateRemoteData, 12 * 60 * 60 * 1000);  // Then every 12 hours after
+    //                            hr   min  sec  mSec
 
     // Set the patron's goh data to be reloaded
     setTimeout(client.reloadPatrons,    1 * 60 * 1000);   // Load em a min after start
@@ -217,12 +215,15 @@ async function updateRemoteData() {
     // https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=true
 
     const currentCharacters = client.characters;
-    const currentSnapshot = JSON.stringify(currentCharacters);
+    const currentCharSnapshot = JSON.stringify(currentCharacters);
+
+    const currentShips = client.ships;
+    const currentShipSnapshot = JSON.stringify(currentShips);
 
     console.log('UpdateRemoteData', 'Checking for updates to remote data sources');
     if (await updateIfChanged(GG_SHIPS_CACHE, 'https://swgoh.gg/api/ships/')) {
         console.log('UpdateRemoteData', 'Detected a change in ships from swgoh.gg');
-        // await updateShips();
+        await updateShips(currentShips);
     }
 
     if (await updateIfChanged(GG_CHAR_CACHE, 'https://swgoh.gg/api/characters/')) {
@@ -241,10 +242,15 @@ async function updateRemoteData() {
     }
 
     console.log('UpdateRemoteData', 'Finished processing remote updates');
-    if (currentSnapshot !== JSON.stringify(currentCharacters)) {
+    if (currentCharSnapshot !== JSON.stringify(currentCharacters)) {
         console.log('UpdateRemoteData', 'Changes detected in character data, saving updates and reloading');
-        saveFile("./data/characters.json", currentCharacters);
+        saveFile("./data/characters.json", currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
         client.characters = currentCharacters;
+    }
+    if (currentShipSnapshot !== JSON.stringify(currentShips)) {
+        console.log('UpdateRemoteData', 'Changes detected in ship data, saving updates and reloading');
+        saveFile("./data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
+        client.ships = currentShips;
     }
 
 
@@ -260,6 +266,75 @@ async function updateRemoteData() {
 //         // TODO - check for new ships / reconcile data source differences
 //     }
 // }
+
+async function updateShips(currentShips) {
+    const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE));
+
+    for (var ggShipKey in ggShipList) {
+        const ggShip = ggShipList[ggShipKey];
+        let found = false;
+        for (var currentShipKey in currentShips) {
+            const currentShip = currentShips[currentShipKey];
+
+            // attempt to match in increasing uniqueness- base_id, url, then name variants
+            if (currentShip.uniqueName && currentShip.uniqueName !== UNKNOWN) {
+                if (currentShip.uniqueName === ggShip.base_id) {
+                    found = true;
+                }
+            } else if (currentShip.url && currentShip.url !== UNKNOWN) {
+                if (ggShip.url === currentShip.url) {
+                    found = true;
+                }
+            } else if (isSameCharacter(currentShip, ggShip)) {
+                found = true;
+            }
+
+            if (found) {
+                let updated = false;
+
+                // character discovered from another source that wasn't yet added to swgoh.gg
+                if (!currentShip.url || currentShip.url === UNKNOWN || ggShip.url !== currentShip.url) {
+                    console.log('UpdateRemoteData', 'Automatically reconciling ' + currentShip.name + "'s swgoh.gg url");
+                    currentShip.url = ggShip.url;
+                    updated = true;
+                }
+                if (currentShip.uniqueName !== ggShip.base_id) {
+                    console.log('UpdateRemoteData', 'Automatically reconciling ' + currentShip.name + "'s swgoh.gg base_id");
+                    currentShip.uniqueName = ggShip.base_id;
+                    updated = true;
+                }
+                if (!isSameCharacter(currentShip, ggShip)) {
+                    console.log('UpdateRemoteData', 'Automatically reconciling ' + currentShip.name + "'s swgoh.gg name variants");
+                    if (!currentShip.nameVariant) {
+                        currentShip.nameVariant = [];
+                    }
+                    currentShip.nameVariant.push(ggShip.name);
+                    updated = true;
+                }
+
+                //updated = true; // force an update of everything
+
+                if (updated) {
+                    console.log('Updated: ' + ggShip.name);
+                    // some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
+                    // await ggShipGrab(currentShip);
+                }
+                break;
+            }
+        }
+
+        if (!found) {
+            console.log('Adding: ' + ggShip.name);
+            console.log('UpdateRemoteData', 'New ship discovered from swgoh.gg: ' + ggShip.name);
+            const newShip = createEmptyShip(ggShip.name, ggShip.url, ggShip.base_id);
+
+            currentShips.push(newShip);
+
+            // queue an update to fill in the empty character's details from swgoh.gg
+            // await ggShipGrab(newCharacter);
+        }
+    }
+}
 
 function getCleanString(input) {
     const cleanReg = /['-\s]/g;
@@ -505,6 +580,23 @@ function createEmptyChar(name, url, uniqueName) {
     };
 }
 
+function createEmptyShip(name, url, uniqueName) {
+    return {
+        "name": name,
+        "uniqueName": uniqueName,
+        "aliases": [name], // common community names
+        "nameVariant": [name], // names used by remote data sources, for unique matches
+        "crew": [],
+        "url": url,
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {
+        },
+        "shardLocations": getEmptyShardLocations()
+    };
+}
+
 async function ggGrab(character) {
     //console.log('ggGrab', 'Fetching: "' + character.url + '"');
     const charGrab = await snekfetch.get(character.url);
@@ -699,7 +791,6 @@ async function ggGrab(character) {
 
     console.log('ggGrab', 'Finished fetching swgoh.gg data for ' + character.name);
 }
-
 
 const mk3 = '<img src="//swgoh.gg/static/img/assets/tex.skill_pentagon_white.png" style="width: 25px;">';
 const omega = '<img src="//swgoh.gg/static/img/assets/tex.skill_pentagon_gold.png" style="width: 25px;">';

@@ -428,13 +428,13 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: (guilds) => ({
+            COMMAND_INFO_OUTPUT: (guilds, prefix) => ({
                 "header": 'INFORMATION',
-                "desc": ` \nCurrently running on **${guilds}** servers \n`,
+                "desc": ` \nCurrently running on **${guilds}** servers \nCurrent prefix: \`${prefix}\``,
                 "links": {
-                    "Invite me": "Invite the bot http://swgohbot.com/invite",
-                    "Support Server": "If you have a question, want to pitch in, or just want to come by, the bot support server is https://discord.gg/FfwGvhr",
-                    "Support the Bot": "The bot's code is on github https://github.com/jmiln/SWGoHBot, and is open to contributions. \n\nI also have a Patreon https://www.patreon.com/swgohbot if you're interested."
+                    "Add me to your server": "- http://swgohbot.com/invite",
+
+                    "Support the Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
             }),
             COMMAND_INFO_HELP: {
@@ -1027,14 +1027,22 @@ module.exports = class extends Language {
             },
 
             // Stats Command
-            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= STATISTICS (${shardID}) =\n
-• Mem Usage  :: ${memUsage} MB
-• CPU Load   :: ${cpuLoad}%
-• Uptime     :: ${uptime}
-• Users      :: ${users}
-• Servers    :: ${servers}
-• Channels   :: ${channels}
-• Source     :: https://github.com/jmiln/SWGoHBot`,
+            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID, botLangs, players, guilds, gohLangs, updated) => [
+                `= STATISTICS (${shardID}) =`,
+                `• Mem Usage  :: ${memUsage} MB`,
+                `• CPU Load   :: ${cpuLoad}%`,
+                `• Uptime     :: ${uptime}`,
+                `• Users      :: ${users}`,
+                `• Servers    :: ${servers}`,
+                `• Channels   :: ${channels}`,
+                `• Languages  :: ${botLangs}`,
+                '• Source     :: https://github.com/jmiln/SWGoHBot\n',
+                '= SWGoH Stats =',
+                `• Registered Players :: ${players}`,
+                `• Registered Guilds  :: ${guilds}`,
+                `• Available Languages:: ${gohLangs}`,
+                `• Client updated     :: ${updated}`
+            ].join('\n'),
             COMMAND_STATS_HELP: {
                 description: "Shows the bot's stats.",
                 actions: [
