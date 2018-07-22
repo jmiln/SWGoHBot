@@ -61,7 +61,7 @@ class GuildSearch extends Command {
         
         searchChar = searchChar.join(' ');
         
-        const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships);
+        const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
         
         let character;
         
