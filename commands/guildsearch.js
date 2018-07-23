@@ -27,9 +27,8 @@ class GuildSearch extends Command {
 
     async run(client, message, [userID, ...searchChar], options) { // eslint-disable-line no-unused-vars
         let starLvl = null;
-        const sortType = options.subArgs.sort.toLowerCase();
+        const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : 'name';
         const reverse = options.flags.reverse;
-        // const lang = message.guildSettings.swgohLanguage;
 
         // If there's enough elements in searchChar, and it's in the format of a number*
         if (searchChar.length > 0 && searchChar[searchChar.length-1].match(/\d\*/)) {
