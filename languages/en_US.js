@@ -947,7 +947,7 @@ module.exports = class extends Language {
                         usage: ';shardtimes add <user> <timezone> [flag/emoji]',
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
-                            "timezone": "The zone that your account is based in",
+                            "timezone": "The zone that your account is based in, Use this list:\n https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
                             "flag/emoji": "An optional emoji if you want it to show by your name"
                         }
                     },
