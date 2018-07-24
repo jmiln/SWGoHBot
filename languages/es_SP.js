@@ -81,13 +81,15 @@ module.exports = class extends Language {
             // Base swgohAPI
             BASE_SWGOH_NO_ALLY: `Lo siento, pero este usuario no está registrado. Por favor regístrate con  \`;register add <user> <códigoaliado>\``,
             BASE_SWGOH_NOT_REG: (user) => `Lo siento, pero este usuario no está registrado. Por favor regístrate con \`;register add @${user} < códigoaliado>\``,
-            BASE_SWGOH_NO_USER: `Lo siento, pero no tengo este usuario listado en ningún sitio.`,
+            BASE_SWGOH_NO_USER: `Lo siento, pero no tengo este usuario listado en ningún sitio. Por favor comprueba que te has registrado con \`${prefix}register add <user> <códigoaliado>\``,
+            BASE_SWGOH_NO_GUILD: 'No he podido encontrar ningún usuario para este gremio. \nPor favor comprueba que hayas escrito el nombre correctamente(Mayúsculas incluidas).',
             BASE_SWGOH_MISSING_CHAR: 'Necesitas introducir un personaje para comprobar',
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `No encuentro ningún resultado para ${character}`,
             BASE_SWGOH_CHAR_LIST: (chars) => `Tu búsqueda ha obtenido demasiados resultados, por favor se mas especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: `Algo ha salido mal, por favor comprueba que tu cuenta se haya sincronizado correctamente.`,
             BASE_SWGOH_LAST_UPDATED: (date) => `Última actualización hace ${date} min`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Por favor espera mientras obtengo tu ${dType ? dType : 'data'}`,
+            BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Ayuda extendida para ${command.help.name}** \n**Uso**: ${command.help.usage} \n${command.help.extended}`,
@@ -96,6 +98,7 @@ module.exports = class extends Language {
             BASE_COMMAND_UNAVAILABLE: "Este comando no está disponible vía mensaje privado. Por favor, utiliza este comando en un gremio.",
             BASE_COMMAND_HELP_HEADER: (name) => `Ayuda para ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Ayuda continuada para ${name}`,
+            BASE_CONT_STRING: '(cont)',
             BASE_COMMAND_HELP_HELP: (name) => {
                 return {
                     action: "Ayuda",
@@ -108,7 +111,7 @@ module.exports = class extends Language {
                 SQUARE: 'Cuadrado',
                 ARROW:   'Flecha',
                 DIAMOND: 'Diamante',
-                TRIANGLE: 'Triangulo',
+                TRIANGLE: 'Triángulo',
                 CIRCLE: 'Círculo',
                 CROSS:   'Cruz',
                 ACCURACY:   'Potencia',
@@ -148,7 +151,7 @@ module.exports = class extends Language {
             COMMAND_ACTIVITIES_THURSDAY: `== Antes del Refresco == \nGastar Energía Normal en Batallas Difíciles \nAhorrar Desafíos\n\n== Después del Refresco == \nCompletar los Desafíos \nAhorrar Energía Normal`,
             COMMAND_ACTIVITIES_FRIDAY: `== Antes del Refresco == \nCompletar los Desafíos \nAhorrar Energía Normal\n\n== Después del Refresco == \nGastar Energía Normal en Batallas del Lado Oscuro`,
             COMMAND_ACTIVITIES_SATURDAY: `== Antes del Refresco == \nGastar Energía Normal en Batallas del Lado Oscuro \nAhorrar Batallas de Arena \nAhorrar Energía de Cantina\n\n== Después del Reseteo == \nCompletar batallas de Arena \nAhorrar Energía de Cantina`,
-            COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Día Invalido, su uso es \`${prefix}${usage}\``,
+            COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Día inválido, su uso es \`${prefix}${usage}\``,
             COMMAND_ACTIVITIES_HELP: {
                 description: "Muestra las actividades diarias del gremio.",
                 actions: [
@@ -180,7 +183,7 @@ module.exports = class extends Language {
             // Challenges Command
             COMMAND_CHALLENGES_TRAINING: "Droides de entrenamiento",
             COMMAND_CHALLENGES_ABILITY : "Materiales de habilidad",
-            COMMAND_CHALLENGES_BOUNTY  : "Cazar recompensas",
+            COMMAND_CHALLENGES_BOUNTY  : "Cazarecompensas",
             COMMAND_CHALLENGES_AGILITY : "Equipo de Agi",
             COMMAND_CHALLENGES_STRENGTH: "Equipo de Fue",
             COMMAND_CHALLENGES_TACTICS : "Equipo de Tac",
@@ -377,6 +380,7 @@ module.exports = class extends Language {
 
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: 'Solo puedes seleccionar una estrella del nivel 1 al 7',
+            COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Lo Siento, pero \`${sortType}\` no es un metodo de clasificación admitido. Solo \`${filters.join(', ')}\` esta permitido.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'Necesitas introducir un personaje para la busqueda',
             COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `No he encontrado ningún resultado de ${character}`,
             COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `La búsqueda se ha encontrado con demasiados resultados, por favor se más especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
