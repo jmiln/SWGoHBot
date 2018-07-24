@@ -559,10 +559,8 @@ module.exports = class extends Language {
 
             // MyMods Command
             COMMAND_MYMODS_NO_MODS: (charName) => `Lo siento, pero no he podido encontrar ningún mod para ${charName}`,
-            COMMAND_MYMODS_MISSING_MODS: `Lo siento, pero no he podido encontrar tus mods en este momento. 
-Por favor espera un poco e intenta de nuevo.`,
-            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: 
-${lastUpdated} ago`,
+            COMMAND_MYMODS_MISSING_MODS: `Lo siento, pero no he podido encontrar tus mods en este momento. Por favor espera un poco e intenta de nuevo.`,
+            COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
             COMMAND_MYMODS_HELP: ({
                 description: "Muestra los mods que tienes equipados el personaje seleccionado.",
                 actions: [
@@ -579,13 +577,10 @@ ${lastUpdated} ago`,
             }),
 
             // MyProfile Command
-            COMMAND_MYPROFILE_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para 
-${user}. Por favor asegúrese que esa cuenta esté sincronizada.`,
+            COMMAND_MYPROFILE_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para ${user}. Por favor asegúrese que esa cuenta esté sincronizada.`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `Perfil de ${playerName} (${allyCode})`,
             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `información de la Arena actualizada: ${date}`,
-            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gremio:** 
-${guildName}\n**Nivel:** ${level}\n**Puesto en Arena:** ${charRank}\n**Posición de Naves:** 
-${shipRank}`,
+            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gremio:** ${guildName}\n**Nivel:** ${level}\n**Puesto en Arena:** ${charRank}\n**Posición de Naves:** ${shipRank}`,
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Personajes (${charList.length})`,
                 stats: [
@@ -646,14 +641,12 @@ ${shipRank}`,
             COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** ha iniciado una nueva encuesta:\nVota con \`${prefix}poll <opción>\`\n\n${poll}`,
             COMMAND_POLL_NO_POLL: "No hay ninguna encuesta en progreso.",
             COMMAND_POLL_FINAL: (poll) => `Resultados funales para ${poll}`,
-            COMMAND_POLL_FINAL_ERROR: (question) => `No he podido eliminar la pregunta **${question}**, 
-por favor intentalo de nuevo.`,
+            COMMAND_POLL_FINAL_ERROR: (question) => `No he podido eliminar la pregunta **${question}**, por favor intentalo de nuevo.`,
             COMMAND_POLL_INVALID_OPTION: "No es una opción válida.",
             COMMAND_POLL_SAME_OPT: (opt) => `Ya has elegido la opción **${opt}**`,
             COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Has cambiado tu voto de **${oldOpt}** a **${newOpt}**`,
             COMMAND_POLL_REGISTERED: (opt) => `Voto por **${opt}** registrado`,
-            COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: 
-**${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
+            COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? '' : 's'}**\n`,
             COMMAND_POLL_HELP: {
                 description: "Te permite empezar una encuesta con múltiples opciones.",
                 actions: [
@@ -676,7 +669,7 @@ por favor intentalo de nuevo.`,
                     },
                     {
                         action: "View",
-                        actionDesc: 'Ver cuál es el total de votos actual.',
+                        actionDesc: 'Ver cuál el total de votos actual.',
                         usage: ';poll view',
                         args: {}
                     },
@@ -690,24 +683,18 @@ por favor intentalo de nuevo.`,
             },
 
             // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Raid inválido, su uso es \`${prefix}raidteams 
-<raid> <fase>\`\n**Ejemplo:** \`${prefix}raidteams pit p3\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Fase inválida, su uso es 
-\`${prefix}raidteams <raid> <fase>\`\n**Ejemplo:** \`${prefix}raidteams pit p3\``,
+            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Raid inválido, su uso es \`${prefix}raidteams <raid> <fase>\`\n**Ejemplo:** \`${prefix}raidteams pit p3\``,
+            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Fase inválida, su uso es \`${prefix}raidteams <raid> <fase>\`\n**Ejemplo:** \`${prefix}raidteams pit p3\``,
             COMMAND_RAIDTEAMS_PHASE_SOLO: 'Solo',
-            COMMAND_RAIDTEAMS_PHASE_ONE: 'Fase 1',
-            COMMAND_RAIDTEAMS_PHASE_TWO: 'Fase 2',
-            COMMAND_RAIDTEAMS_PHASE_THREE: 'Fase 3',
-            COMMAND_RAIDTEAMS_PHASE_FOUR: 'Fase 4',
+            COMMAND_RAIDTEAMS_PHASE_ONE: 'Phase 1',
+            COMMAND_RAIDTEAMS_PHASE_TWO: 'Phase 2',
+            COMMAND_RAIDTEAMS_PHASE_THREE: 'Phase 3',
+            COMMAND_RAIDTEAMS_PHASE_FOUR: 'Phase 4',
             COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Personajes:** \`${charList}\``,
-            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Mostrando equipos para 
-${currentPhase}`,
-            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `No he podido encontrar ningún equipo para  
-\`${currentPhase}\``,
-            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * 
-\n\n* Mostrando equipos para ${currentPhase}\n\n`,
-            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} 
-### \n* Personajes: ${charList}\n`,
+            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Mostrando equipos para ${currentPhase}`,
+            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `No he podido encontrar ningún equipo para \`${currentPhase}\``,
+            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Mostrando equipos para ${currentPhase}\n\n`,
+            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Personajes: ${charList}\n`,
             COMMAND_RAIDTEAMS_HELP: {
                 description: "Muestra algunos equipos que funcionan bien para cada tipo de raid.",
                 actions: [
@@ -745,10 +732,15 @@ number from 1-${maxChar} ahí.`,
             COMMAND_REGISTER_MISSING_ALLY: 'Necesitas proporcionar un código de aliado para vincularlo con tu cuenta.',
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Lo siento, pero ${allyCode} no es un código de aliado válido`,
             COMMAND_REGISTER_PLEASE_WAIT: 'Por favor espera un poco mientras sincronizo tus datos.',
+            COMMAND_REGISTER_ADD_NO_SERVER: 'Solo puedes añadir los usuarios que esten en tu servidor.',
+            COMMAND_REGISTER_ALREADY_ADDED: (prefix=';') => `Este usuario ya esta registrado! Por favor usa \`${prefix}register update <usuario>\`.`,
             COMMAND_REGISTER_FAILURE: 'Registro fallido, por favor asegurate que tu código de aliado sea correcto.',
             COMMAND_REGISTER_SUCCESS: (user) => `El registro de \`${user}\` ha sido exitoso!`,
             COMMAND_REGISTER_UPDATE_FAILURE: 'Algo salió mal, asegurate que tu código de aliado registrado sea correcto.',
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Perfil de \`${user}\` actualizado.`,
+            COMMAND_REGISTER_CANNOT_REMOVE: (prefix=';') => `No puedes eliminar otras personas. Si han abandonado tu gremio, prueba \`${prefix}register update <usuario>\`.`,
+            COMMAND_REGISTER_NOT_LINKED: 'No tienes la cuenta vinculada a SWGoH.',
+            COMMAND_REGISTER_REMOVE_SUCCESS: 'Desvinculación con éxito.',
             COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Gremio \`${guild}\` actualizado.`,
             COMMAND_REGISTER_HELP: {
                 description: "Registra tu código de aliado con tu ID de Discord y sincroniza tu perfil en SWGoH.",
@@ -787,8 +779,7 @@ number from 1-${maxChar} ahí.`,
             // Reload Command
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `No he podido encontrar el comando: ${cmd}`,
             COMMAND_RELOAD_SUCCESS: (cmd) => `Recargado con éxito: ${cmd}`,
-            COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Recarga del comando fallida: 
-${cmd}\n\`\`\`${stackTrace}\`\`\``,
+            COMMAND_RELOAD_FAILURE: (cmd, stackTrace) => `Recarga del comando fallida: ${cmd}\n\`\`\`${stackTrace}\`\`\``,
             COMMAND_RELOAD_HELP: {
                 description: "Vuelve a cargar el archivo del comando, si ha sido actualizado o modificado.",
                 actions: [
@@ -823,33 +814,21 @@ ${cmd}\n\`\`\`${stackTrace}\`\`\``,
             COMMAND_SETCONF_MISSING_OPTION: `Necesitas seleccionar la opción de configuración la cual deseas cambiar.`,
             COMMAND_SETCONF_MISSING_VALUE: `Necesitas asignar un valor para cambiar la opción.`,
             COMMAND_SETCONF_ARRAY_MISSING_OPT: 'Debes usar `add` o `remove`.',
-            COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Lo siento, pero \`${value}\` 
-no está establecida en \`${key}\`.`,
-            COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` ha sido 
-${action} por tu \`${key}\`.`,
+            COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Lo siento, pero \`${value}\` no está establecida en \`${key}\`.`,
+            COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` ha sido ${action} por tu \`${key}\`.`,
             COMMAND_SETCONF_NO_KEY: (prefix) => `Este comando no está en la configuración. Echa un ojo en "${prefix}showconf", o "${prefix}setconf help" para ver una lista`,
-            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `El elemento de la configuración del Gremio
-${key} ha sido cambiado a:\n\`${value}\``,
+            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `El elemento de la configuración del Gremio${key} ha sido cambiado a:\n\`${value}\``,
             COMMAND_SETCONF_NO_SETTINGS: `Configuración del gremio no encontrada.`,
 
-            COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Debes especificar un rol a  
-${opt}.`,
+            COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Debes especificar un rol a  ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Lo siento, pero no he podido encontrar el rol ${roleName}. Por favor inténtalo de nuevo .`,
-            COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Lo siento, pero 
-${roleName} ya se encuentra actualmente.`,
+            COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Lo siento, pero ${roleName} ya se encuentra actualmente.`,
             COMMAND_SETCONF_PREFIX_TOO_LONG: 'Lo siento, pero no puedes tener espacio en tu prefijo.',
-            COMMAND_SETCONF_WELCOME_NEED_CHAN: `Lo siento, pero tu canal de eventos o bien no ha sido establecida o ya no es actualmente válida.
-\nEstablécelo con \`announceChan\` en un canal válido e 
-inténtalo de nuevo.\``,
-            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Zona horaria inválida, mira aquí 
-https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites,
-luego introduce lo que aparece en la columna TZ.`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Lo siento, pero no 
-he podido encontrar el canal ${chanName}. Intentalo de nuevo.`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Lo siento, pero no tengo permiso 
-para enviar un mensaje ahí. Por favor cambia los permisos o bien elige otro canal.`,
-            COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Lo siento, pero ${value} no es un lenguaje soportado actualmente.
-\nLos lenguajes soportados actualmente son: \`${langList}\``,
+            COMMAND_SETCONF_WELCOME_NEED_CHAN: `Lo siento, pero tu canal de eventos o bien no ha sido establecida o ya no es actualmente válida.\nEstablécelo con \`announceChan\` en un canal válido e inténtalo de nuevo.\``,
+            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Zona horaria inválida, mira aquí https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites, luego introduce lo que aparece en la columna TZ.`,
+            COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Lo siento, pero no he podido encontrar el canal ${chanName}. Intentalo de nuevo.`,
+            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Lo siento, pero no tengo permiso para enviar un mensaje ahí. Por favor cambia los permisos o bien elige otro canal.`,
+            COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Lo siento, pero ${value} no es un lenguaje soportado actualmente. \nLos lenguajes soportados actualmente son: \`${langList}\``,
             COMMAND_SETCONF_RESET: `Tu configuración ha sido restablecida.`,
             COMMAND_SETCONF_HELP: {
                 description: "Se usa para establecer los ajustes de configuración del bot.",
@@ -963,9 +942,7 @@ para enviar un mensaje ahí. Por favor cambia los permisos o bien elige otro can
             COMMAND_SHARDTIMES_MISSING_ROLE: `Lo siento, pero solo puedes agregarte a ti mismo a menos que tengas un rol de Admin.`,
             COMMAND_SHARDTIMES_INVALID_USER: `Usuario inválido, por favor introduce "me", menciona a alguien aquí o introduce su ID del Discord.`,
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: `Necesitas ingresar una zona horaria.`,
-            COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Zona horaria inválida, busca aquí 
-https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites,
-después introduce lo que aparece en la columna TZ.`,
+            COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Zona horaria inválida, busca aquí https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites, después introduce lo que aparece en la columna TZ.`,
             COMMAND_SHARDTIMES_USER_ADDED: `Usuario agregado con éxito!`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: `Algo salió mal mientras se agregaba este usuario. Por favor inténtalo de nuevo.`,
             COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Lo siento, pero solo te puedes eliminar a ti mismo a menos que tengas un rol de Admin.`,
@@ -1003,18 +980,14 @@ después introduce lo que aparece en la columna TZ.`,
             },
 
             // Ships Command
-            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `Se Necesita un personaje o una nave. Su uso es 
-\`${prefix}ship <nave|piloto>\``,
-            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `Personaje o nave inválida. Su uso es 
-\`${prefix}ship <nave|piloto>\``,
+            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `Se Necesita un personaje o una nave. Su uso es \`${prefix}ship <nave|piloto>\``,
+            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `Personaje o nave inválida. Su uso es \`${prefix}ship <nave|piloto>\``,
             COMMAND_SHIPS_TOO_MANY: `He encontrado más de un resultado en esta búsqueda. Por favor intenta ser más específico.`,
             COMMAND_SHIPS_CREW: 'Tripulación',
             COMMAND_SHIPS_FACTIONS: 'Facciones',
             COMMAND_SHIPS_ABILITIES: (abilities) => `**Tipo de Habilidad:** ${abilities.type}   **Tiempo restante de habilidad:** ${abilities.abilityCooldown} \n${abilities.abilityDesc}`,
             COMMAND_SHIPS_CODE_ABILITES_HEADER: ` * Habilidades *\n`,
-            COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} 
-###\nAbility Tipo: ${abilities.type}   Ability Cooldown: 
-${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
+            COMMAND_SHIPS_CODE_ABILITIES: (abilityName, abilities) => `### ${abilityName} ###\nAbility Tipo: ${abilities.type}   Ability Cooldown: ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
             COMMAND_SHIPS_HELP: {
                 description: "Muestra información sobre la nave seleccionada.",
                 actions: [
@@ -1043,6 +1016,26 @@ ${abilities.abilityCooldown}\n${abilities.abilityDesc}\n\n`,
                 ]
             },
 
+            // Squads Command
+            COMMAND_SQUADS_NO_LIST: (list) => `Por favor selecciona una categoria de la siguiente lista: \n\`${list}\``,
+            COMMAND_SQUADS_SHOW_LIST: (name, list) => `Dentro ${name}, por favor selecciona el número correspondiente a la fase que quieres ver: \n${list}`,
+            COMMAND_SQUADS_FIELD_HEADER: 'Escuadrón/ Personajes',
+            COMMAND_SQUAD_INVALID_PHASE: (list) => `Número de fase inválido, por favor selecciona uno de los siguientes: \n${list}`,
+            COMMAND_SQUADS_HELP: {
+                description: "Muestra los personajes/ escuadrones que son útiles para varios eventos.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';squads [user] <event> <phaseNum>',
+                        args: {
+                            "user": "La persona la cual añades. (me | userID | mention)",
+                            "event": "El evento el cual quieres ver sus equipos. (aat|pit|sith|etc.)",
+                            "phase": "El número asociado a la fase la cual quieres ver"
+                        }
+                    }
+                ]
+            },
             // Stats Command
             COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= ESTADÍSTICAS (${shardID}) =\n
 • Uso de Mem.    :: ${memUsage} MB
@@ -1098,11 +1091,9 @@ time`,
             },
 
             // Updatechar Command
-            COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Lo siento, pero ${arg} no es un argumento válido. 
-Prueba con alguno de estos: ${usableArgs}`,
+            COMMAND_UPDATECHAR_INVALID_OPT: (arg, usableArgs) => `Lo siento, pero ${arg} no es un argumento válido. Prueba con alguno de estos: ${usableArgs}`,
             COMMAND_UPDATECHAR_NEED_CHAR: `Necesitas especificar un personaje el cual actualizar.`,
-            COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Lo siento, pero la búsqueda para 
-'${charName}' no ha producido ningún resultado. Por favor inténtalo de nuevo.`,
+            COMMAND_UPDATECHAR_WRONG_CHAR: (charName) => `Lo siento, pero la búsqueda para '${charName}' no ha producido ningún resultado. Por favor inténtalo de nuevo.`,
             COMMAND_UPDATECHAR_HELP: {
                 description: "Actualiza la información de un personaje en específico.",
                 actions: [
@@ -1135,8 +1126,7 @@ Prueba con alguno de estos: ${usableArgs}`,
             // Zetas Command
             COMMAND_ZETA_NO_USER: `Lo siento, pero no tengo a ese usuario enlistado en ninguna parte.`,
             COMMAND_ZETA_NO_ZETAS: 'Parece que no tienes ninguna habilidad con Zeta',
-            COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Líder | \`[E]\` Especial | 
-\`[U]\` Única\n\`${'-'.repeat(30)}\``,
+            COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Líder | \`[E]\` Especial | \`[U]\` Única\n\`${'-'.repeat(30)}\``,
             COMMAND_ZETAS_HELP: {
                 description: "Muestra las habilidades de las zetas que tienes.",
                 actions: [
@@ -1145,7 +1135,7 @@ Prueba con alguno de estos: ${usableArgs}`,
                         actionDesc: '',
                         usage: ';zeta [usuario]',
                         args: {
-                            "usuario": "El usuario que estás añadiendo. (me | userID | mention)"
+                            "usuario": "El usuario el cual estás añadiendo. (me | userID | mention)"
                         }
                     }
                 ]
