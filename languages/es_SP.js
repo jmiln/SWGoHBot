@@ -82,6 +82,7 @@ module.exports = class extends Language {
             BASE_SWGOH_NO_ALLY: `Lo siento, pero este usuario no está registrado. Por favor regístrate con  \`;register add <user> <códigoaliado>\``,
             BASE_SWGOH_NOT_REG: (user) => `Lo siento, pero este usuario no está registrado. Por favor regístrate con \`;register add @${user} < códigoaliado>\``,
             BASE_SWGOH_NO_USER: `Lo siento, pero no tengo este usuario listado en ningún sitio. Por favor comprueba que te has registrado con \`${prefix}register add <user> <códigoaliado>\``,
+            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=';') => `No he podido encontrar un gremio para este usuario. Por favor comprueba que esta registrado con \`${prefix}register add <usario> <códigoaliado>\``,
             BASE_SWGOH_NO_GUILD: 'No he podido encontrar ningún usuario para este gremio. \nPor favor comprueba que hayas escrito el nombre correctamente(Mayúsculas incluidas).',
             BASE_SWGOH_MISSING_CHAR: 'Necesitas introducir un personaje para comprobar',
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `No encuentro ningún resultado para ${character}`,
