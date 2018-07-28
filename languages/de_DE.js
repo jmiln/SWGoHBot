@@ -99,6 +99,7 @@ module.exports = class extends Language {
             BASE_COMMAND_UNAVAILABLE: "Dieser Befehl ist ueber Privatnachrichten nicht verfuegbar. Bitte fuehre diesen Befehl innerhalb eines Gildenservers aus.",
             BASE_COMMAND_HELP_HEADER: (name) => `Hilfe fuer ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Fortgesetzte Hilfe fuer ${name}`,
+            BASE_CONT_STRING: '(cont)',
             BASE_COMMAND_HELP_HELP: (name) => {
                 return {
                     action: "Help",
@@ -409,24 +410,6 @@ module.exports = class extends Language {
                 ]
             },
 
-            // Heists Command
-            COMMAND_HEISTS_HEADER: "SWGoH Raub Planung",
-            COMMAND_HEISTS_CREDIT: (date) => `**Credits** : ${date}\n`,
-            COMMAND_HEISTS_DROID: (date) => `**Droiden**  : ${date}\n`,
-            COMMAND_HEISTS_NOT_SCHEDULED: "`Nicht geplant`",
-            COMMAND_HEISTS_HELP: {
-                description: "Zeigt alle kommenden Raub-Events an.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';heists',
-                        args: {}
-                    }
-                ]
-            },
-
-
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\n[Benutze ${prefix}Help <Kommandoname> fuer Details]\n`,
             COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\n Befehl:: ${prefix}${command.help.usage}`,
@@ -445,13 +428,13 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: (guilds) => ({
+            COMMAND_INFO_OUTPUT: (guilds, prefix) => ({
                 "header": 'INFORMATION',
-                "desc": ` \nLaeuft zur Zeit auf **${guilds}** server \n`,
+                "desc": ` \nLaeuft zur Zeit auf **${guilds}** server \nAktueller Praefix: \`${prefix}\``,
                 "links": {
-                    "Einladung": "Lade den Bot ein http://swgohbot.com/invite",
-                    "Support Server": "Wenn du eine Frage hast oder einfach nur vorbeischauen moechtest, der Bot support server lautet https://discord.gg/FfwGvhr",
-                    "Support the Bot": "Der Quellcode des Bots ist auf github https://github.com/jmiln/SWGoHBot, und es kann beigetragen werden. \n\nEs gibt ausserdem ein Patreon https://www.patreon.com/swgohbot falls du interessiert bist."
+                    "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
+
+                    "Unterstuetze den Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
             }),
             COMMAND_INFO_HELP: {
@@ -586,7 +569,7 @@ module.exports = class extends Language {
             COMMAND_MYPROFILE_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden fuer ${user}. Bitte sicherstellen dass der Account synchronisiert ist`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arenadaten vom: ${date}`,
-            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}`,
+            COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank, gpFull) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}\n**Gesamt GM:** ${gpFull}`,
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Charaktere (${charList.length})`,
                 stats: [
@@ -964,7 +947,7 @@ module.exports = class extends Language {
                         usage: ';shardtimes add <Benutzer> <Zeitzone> [Emoji]',
                         args: {
                             "Benutzer": "Der Benutzer, der hinzugefuegt wird. (me | userID | mention)",
-                            "Zeitzone": "Die Zeitzone, die fuer Dich gilt.",
+                            "Zeitzone": "Die Zeitzone, die fuer Dich gilt. Verwende diese Liste:\n https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
                             "Emoji": "OPTIONAL: Ein Emoji, das neben dem Namen angezeigt wird."
                         }
                     },
@@ -1022,16 +1005,45 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Squads Command
+             COMMAND_SQUADS_NO_LIST: (list) => `Bitte waehle eine Kategorie aus folgender Liste: \n\`${list}\``,
+             COMMAND_SQUADS_SHOW_LIST: (name, list) => `In ${name}, bitte waehle die Nummer entsprechend der Phase die du sehen moechtest: \n${list}`,
+             COMMAND_SQUADS_FIELD_HEADER: 'Teams/ Charaktere',
+             COMMAND_SQUAD_INVALID_PHASE: (list) => `Ungueltige Phase, bitte waehle eine Nummer aus folgender Liste: \n${list}`,
+             COMMAND_SQUADS_HELP: {
+                 description: "Zeigt Charaktere/Teams die fuer verschiedene Events nuetzlich sind.",
+                 actions: [
+                     {
+                         action: "",
+                         actionDesc: '',
+                         usage: ';squads [user] <event> <phaseNum>',
+                         args: {
+                             "user": "Die Person die du sehen moechtest. (me | userID | mention)",
+                             "event": "Das Event fuer das du Teams sehen moechtest, (aat|pit|sith|etc.)",
+                             "phase": "Die Nummer zur Phase die du sehen moechtest"
+                         }
+                     }
+                 ]
+             },
+
             // Stats Command
-            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= Statisken (${shardID}) =\n
-• Speicherauslastung  :: ${memUsage} MB
-• CPU Auslastung      :: ${cpuLoad}%
-• Uptime              :: ${uptime}
-• Anwender            :: ${users}
-• Server              :: ${servers}
-• Kanaele             :: ${channels}
-• Quelle               :: https://github.com/jmiln/SWGoHBot`,
-            COMMAND_STATS_HELP: {
+            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID, botLangs, players, guilds, gohLangs, updated) => [
+                 `= STATISTIKEN (${shardID}) =`,
+                 `• Speicherauslastung  :: ${memUsage} MB`,
+                 `• CPU Auslastung      :: ${cpuLoad}%`,
+                 `• Uptime              :: ${uptime}`,
+                 `• Anwender            :: ${users}`,
+                 `• Server              :: ${servers}`,
+                 `• Kanaele             :: ${channels}`,
+                 `• Sprachen            :: ${botLangs}`,
+                 '• Quelle              :: https://github.com/jmiln/SWGoHBot\n',
+                 '= SWGoH Statistik =',
+                 `• Registrierte Spieler :: ${players}`,
+                 `• Registrierte Gilden  :: ${guilds}`,
+                 `• Verfuegbare Sprachen :: ${gohLangs}`,
+                 `• Client aktualisiert  :: ${updated}`
+             ].join('\n'),
+             COMMAND_STATS_HELP: {
                 description: "Zeigt die Statistiken des Bots an.",
                 actions: [
                     {
@@ -1128,5 +1140,3 @@ module.exports = class extends Language {
         };
     }
 };
-
-
