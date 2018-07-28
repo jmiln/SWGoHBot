@@ -99,6 +99,7 @@ module.exports = class extends Language {
             BASE_COMMAND_UNAVAILABLE: "Dieser Befehl ist ueber Privatnachrichten nicht verfuegbar. Bitte fuehre diesen Befehl innerhalb eines Gildenservers aus.",
             BASE_COMMAND_HELP_HEADER: (name) => `Hilfe fuer ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Fortgesetzte Hilfe fuer ${name}`,
+            BASE_CONT_STRING: '(cont)',
             BASE_COMMAND_HELP_HELP: (name) => {
                 return {
                     action: "Help",
