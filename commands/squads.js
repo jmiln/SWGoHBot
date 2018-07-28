@@ -98,11 +98,11 @@ class Squads extends Command {
                     try {
                         const ch = player.roster.filter(char => char.charID === c.split(':')[0])[0];
                         if (!ch) {
-                            outStr += '`✗|✗|✗`';
+                            outStr += '`✗|✗|✗` ' + client.characters.filter(char => char.uniqueName === c.split(':')[0])[0].name + '\n';
                         } else {
                             outStr += ch.rarity >= stars ? '`✓|' : '`✗|';
                             outStr += ch.gear   >= gear  ? '✓|' : '✗|';
-                            outStr += ch.level  >= level ? '✓`' : '✗`';
+                            outStr += ch.level  >= level ? '✓` ' : '✗` ';
                             outStr += ch.name+ '\n';
                         }
                     } catch (e) {
