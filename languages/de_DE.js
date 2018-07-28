@@ -1027,15 +1027,23 @@ module.exports = class extends Language {
              },
 
             // Stats Command
-            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= Statisken (${shardID}) =\n
-• Speicherauslastung  :: ${memUsage} MB
-• CPU Auslastung      :: ${cpuLoad}%
-• Uptime              :: ${uptime}
-• Anwender            :: ${users}
-• Server              :: ${servers}
-• Kanaele             :: ${channels}
-• Quelle               :: https://github.com/jmiln/SWGoHBot`,
-            COMMAND_STATS_HELP: {
+            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID, botLangs, players, guilds, gohLangs, updated) => [
+                 `= STATISTIKEN (${shardID}) =`,
+                 `• Speicherauslastung  :: ${memUsage} MB`,
+                 `• CPU Auslastung      :: ${cpuLoad}%`,
+                 `• Uptime              :: ${uptime}`,
+                 `• Anwender            :: ${users}`,
+                 `• Server              :: ${servers}`,
+                 `• Kanaele             :: ${channels}`,
+                 `• Sprachen            :: ${botLangs}`,
+                 '• Quelle              :: https://github.com/jmiln/SWGoHBot\n',
+                 '= SWGoH Statistik =',
+                 `• Registrierte Spieler :: ${players}`,
+                 `• Registrierte Gilden  :: ${guilds}`,
+                 `• Verfuegbare Sprachen :: ${gohLangs}`,
+                 `• Client aktualisiert  :: ${updated}`
+             ].join('\n'),
+             COMMAND_STATS_HELP: {
                 description: "Zeigt die Statistiken des Bots an.",
                 actions: [
                     {
