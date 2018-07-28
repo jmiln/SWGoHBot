@@ -1005,6 +1005,27 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Squads Command
+             COMMAND_SQUADS_NO_LIST: (list) => `Bitte waehle eine Kategorie aus folgender Liste: \n\`${list}\``,
+             COMMAND_SQUADS_SHOW_LIST: (name, list) => `In ${name}, bitte waehle die Nummer entsprechend der Phase die du sehen moechtest: \n${list}`,
+             COMMAND_SQUADS_FIELD_HEADER: 'Teams/ Charaktere',
+             COMMAND_SQUAD_INVALID_PHASE: (list) => `Ungueltige Phase, bitte waehle eine Nummer aus folgender Liste: \n${list}`,
+             COMMAND_SQUADS_HELP: {
+                 description: "Zeigt Charaktere/Teams die fuer verschiedene Events nuetzlich sind.",
+                 actions: [
+                     {
+                         action: "",
+                         actionDesc: '',
+                         usage: ';squads [user] <event> <phaseNum>',
+                         args: {
+                             "user": "Die Person die du sehen moechtest. (me | userID | mention)",
+                             "event": "Das Event fuer das du Teams sehen moechtest, (aat|pit|sith|etc.)",
+                             "phase": "Die Nummer zur Phase die du sehen moechtest"
+                         }
+                     }
+                 ]
+             },
+
             // Stats Command
             COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= Statisken (${shardID}) =\n
 • Speicherauslastung  :: ${memUsage} MB
