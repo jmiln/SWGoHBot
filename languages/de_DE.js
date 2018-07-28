@@ -410,24 +410,6 @@ module.exports = class extends Language {
                 ]
             },
 
-            // Heists Command
-            COMMAND_HEISTS_HEADER: "SWGoH Raub Planung",
-            COMMAND_HEISTS_CREDIT: (date) => `**Credits** : ${date}\n`,
-            COMMAND_HEISTS_DROID: (date) => `**Droiden**  : ${date}\n`,
-            COMMAND_HEISTS_NOT_SCHEDULED: "`Nicht geplant`",
-            COMMAND_HEISTS_HELP: {
-                description: "Zeigt alle kommenden Raub-Events an.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';heists',
-                        args: {}
-                    }
-                ]
-            },
-
-
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\n[Benutze ${prefix}Help <Kommandoname> fuer Details]\n`,
             COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\n Befehl:: ${prefix}${command.help.usage}`,
