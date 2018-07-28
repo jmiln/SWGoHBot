@@ -428,13 +428,13 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: (guilds) => ({
+            COMMAND_INFO_OUTPUT: (guilds, prefix) => ({
                 "header": 'INFORMATION',
-                "desc": ` \nLaeuft zur Zeit auf **${guilds}** server \n`,
+                "desc": ` \nLaeuft zur Zeit auf **${guilds}** server \nAktueller Praefix: \`${prefix}\``,
                 "links": {
-                    "Einladung": "Lade den Bot ein http://swgohbot.com/invite",
-                    "Support Server": "Wenn du eine Frage hast oder einfach nur vorbeischauen moechtest, der Bot support server lautet https://discord.gg/FfwGvhr",
-                    "Support the Bot": "Der Quellcode des Bots ist auf github https://github.com/jmiln/SWGoHBot, und es kann beigetragen werden. \n\nEs gibt ausserdem ein Patreon https://www.patreon.com/swgohbot falls du interessiert bist."
+                    "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
+
+                    "Unterstuetze den Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
             }),
             COMMAND_INFO_HELP: {
