@@ -55,7 +55,7 @@ module.exports = (client) => {
     };
 
     // This finds any character that matches the search, and returns them in an array
-    client.findChar = (searchName, charList) => {
+    client.findChar = (searchName, charList, ship=false) => {
         const options = {
             tokenize: true,
             matchAllTokens: true,
@@ -79,6 +79,7 @@ module.exports = (client) => {
         }
 
         // If there's not an exact name match, fuzzy search it
+        if (ship) options.keys.push('crew');
         const fuse = new Fuse(charList, options);
         let chars = fuse.search(searchName);
         if (chars.length >= 1) {
@@ -86,6 +87,7 @@ module.exports = (client) => {
         }
 
         // If it's not exact, send back the big mess
+        if (ship) options2.keys.push('crew');
         const fuse2 = new Fuse(charList, options2);
         chars = fuse2.search(searchName);
         return chars;

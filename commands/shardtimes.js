@@ -7,7 +7,7 @@ class Shardtimes extends Command {
     constructor(client) {
         super(client, {
             name: 'shardtimes',
-            aliases: ['shard', 'payout'],
+            aliases: ['shard', 'st', 'payout', 'po'],
             guildOnly: true,
             category: 'Misc'
         });

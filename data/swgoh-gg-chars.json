@@ -1380,6 +1380,16 @@
         "combat_type": 1
     },
     {
+        "name": "T3-M4",
+        "base_id": "T3_M4",
+        "pk": 286,
+        "url": "https://swgoh.gg/characters/t3-m4/",
+        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "power": 23329,
+        "description": "Offensive Droid who supports a Droid team with extra stats and debuffs the enemy team",
+        "combat_type": 1
+    },
+    {
         "name": "Talia",
         "base_id": "TALIA",
         "pk": 197,

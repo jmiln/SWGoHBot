@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2018-07-11 20:00:01.000000",
+        "date": "2018-07-25 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -1875,7 +1875,7 @@
             "cross": "Offense / Potency",
             "short": "sa",
             "families": "sith",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Darth Nihilus",
@@ -3174,6 +3174,38 @@
             "cross": "Offense",
             "short": "RT",
             "families": "empire ; imperial trooper",
+            "crew": "0"
+        },
+        {
+            "name": "Bastila Shan",
+            "cname": "Bastila Shan",
+            "set1": "SPE",
+            "set2": "POT",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense / Protection",
+            "circle": "Protection",
+            "cross": "Offense / Protection",
+            "short": "BS",
+            "families": "jedi",
+            "crew": "0"
+        },
+        {
+            "name": "Jolee Bindo",
+            "cname": "Jolee Bido",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health / Protection",
+            "circle": "Protection",
+            "cross": "Health / Protection",
+            "short": "BS",
+            "families": "jedi",
             "crew": "0"
         }
     ]

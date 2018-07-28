@@ -39,7 +39,7 @@ class Mods extends Command {
             const valueArray = [];
 
             for (const index in keyArray) {
-                const  key = keyArray[index];
+                const  key = keyArray[index].trim();
                 let localizationKey = "COMMAND_MODS_UNKNOWN";
 
                 if (localizationKeyMap[key]) {
