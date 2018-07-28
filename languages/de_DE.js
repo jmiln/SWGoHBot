@@ -947,7 +947,7 @@ module.exports = class extends Language {
                         usage: ';shardtimes add <Benutzer> <Zeitzone> [Emoji]',
                         args: {
                             "Benutzer": "Der Benutzer, der hinzugefuegt wird. (me | userID | mention)",
-                            "Zeitzone": "Die Zeitzone, die fuer Dich gilt.",
+                            "Zeitzone": "Die Zeitzone, die fuer Dich gilt. Verwende diese Liste:\n https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
                             "Emoji": "OPTIONAL: Ein Emoji, das neben dem Namen angezeigt wird."
                         }
                     },
