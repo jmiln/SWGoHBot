@@ -1010,6 +1010,16 @@
         "combat_type": 1
     },
     {
+        "name": "Mission Vao",
+        "base_id": "MISSIONVAO",
+        "pk": 287,
+        "url": "https://swgoh.gg/characters/mission-vao/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_mission.png",
+        "power": 20349,
+        "description": "Slippery Scoundrel Attacker who blinds her enemies",
+        "combat_type": 1
+    },
+    {
         "name": "Mob Enforcer",
         "base_id": "HUMANTHUG",
         "pk": 2,
@@ -1384,7 +1394,7 @@
         "base_id": "T3_M4",
         "pk": 286,
         "url": "https://swgoh.gg/characters/t3-m4/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_t3m4.png",
         "power": 23329,
         "description": "Offensive Droid who supports a Droid team with extra stats and debuffs the enemy team",
         "combat_type": 1
@@ -1547,6 +1557,16 @@
         "image": "//swgoh.gg/static/img/assets/tex.charui_younglando.png",
         "power": 20349,
         "description": "Scoundrel Attacker that takes advantage of debuffed enemies and deals ever-increasing damage",
+        "combat_type": 1
+    },
+    {
+        "name": "Zaalbar",
+        "base_id": "ZAALBAR",
+        "pk": 288,
+        "url": "https://swgoh.gg/characters/zaalbar/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_zaalbar.png",
+        "power": 20349,
+        "description": "Versatile Scoundrel Tank with a powerful AoE attack and reactive Taunt",
         "combat_type": 1
     },
     {

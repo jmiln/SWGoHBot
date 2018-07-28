@@ -693,7 +693,9 @@
         "nameVariant": [
             "Jedi Consular's Starfighter"
         ],
-        "crew": ["Jedi Consular"],
+        "crew": [
+            "Jedi Consular"
+        ],
         "url": "https://swgoh.gg/ships/jedi-consulars-starfighter/",
         "avatarURL": "",
         "side": "",
@@ -787,11 +789,17 @@
         "nameVariant": [
             "Millennium Falcon (Ep VII)"
         ],
-        "crew" : ["Rey", "Finn"],
+        "crew": [
+            "Rey",
+            "Finn"
+        ],
         "url": "https://swgoh.gg/ships/millennium-falcon-ep-vii/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
         "side": "light",
-        "factions" : ["resistance", "attacker"],
+        "factions": [
+            "resistance",
+            "attacker"
+        ],
         "abilities": {
             "Quad Laser": {
                 "type": "Basic",
@@ -816,14 +824,28 @@
         }
     },
     {
-        "name" : "Phantom II",
+        "name": "Phantom II",
         "uniqueName": "PHANTOM2",
-        "aliases" : ["Phantom", "Phantom II", "Sabine", "Chopper", "Ezra"],
-        "crew" : ["Sabine Wren", "Chopper", "Ezra Bridger"],
-        "url" : "https://swgoh.gg/units/ships/phantom-ii/",
-        "avatarURL" : "https://swgoh.gg/static/img/assets/tex.charui_phantom2.png",
+        "aliases": [
+            "Phantom",
+            "Phantom II",
+            "Sabine",
+            "Chopper",
+            "Ezra"
+        ],
+        "crew": [
+            "Sabine Wren",
+            "Chopper",
+            "Ezra Bridger"
+        ],
+        "url": "https://swgoh.gg/ships/phantom-ii/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_phantom2.png",
         "side": "light",
-        "factions" : ["rebel", "phoenix", "attacker"],
+        "factions": [
+            "rebel",
+            "phoenix",
+            "attacker"
+        ],
         "abilities": {
             "Slip Away": {
                 "type": "Basic",
@@ -1035,6 +1057,28 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Target ally gains Protection Up (50%) and Retribution for 2 turns and all other allies gain stealth for 2 turns."
             }
+        }
+    },
+    {
+        "name": "Sith Fighter",
+        "uniqueName": "SITHFIGHTER",
+        "aliases": [
+            "Sith Fighter"
+        ],
+        "nameVariant": [
+            "Sith Fighter"
+        ],
+        "crew": [],
+        "url": "https://swgoh.gg/ships/sith-fighter/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
         }
     },
     {
