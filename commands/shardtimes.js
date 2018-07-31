@@ -15,7 +15,7 @@ class Shardtimes extends Command {
 
     async run(client, message, args, options) {
         const level = options.level;
-        // DB ID will be guild.id-channel.id
+        // Shard ID will be guild.id-channel.id
         const shardID = `${message.guild.id}-${message.channel.id}`;
 
         const exists = await client.database.models.shardtimes.findOne({where: {id: shardID}})
@@ -45,63 +45,64 @@ class Shardtimes extends Command {
         if (action === 'add') {
             // If it's an admin, let them register other users, else let em register themselves
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
-            if (!userID) {
-                // Send the message with all the times (Closest first)
-                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_USER'));
-            } else { 
-                if (userID === 'me') {
-                    userID = message.author.id;
-                } else if (userID.match(/\d{17,18}/)) {
-                    userID = userID.replace(/[^\d]*/g, '');
-                    // If they are trying to add someone else and they don't have the right perms, stop em
-                    if (userID !== message.author.id && level < 3) {
-                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
-                    }
-                } else {
-                    // Bad name, grumblin time
-                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_USER'));
-                }
-                
-                if (!timezone) {
-                    // Grumble that they need a timezone, then give the wiki list
-                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_TIMEZONE'));
-                } else {
-                    if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
-                        // Grumble that it's an invalid tz
-                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_TIMEZONE'));
-                    } 
-                }
-                if (flag.length > 0) {
-                    flag = flag[0];
-                    if (flag.match(/<:.+:\d+>/)) {
-                        flag = flag.replace(/<:.*:/, '').replace(/>$/, '');
-                    }
-                } else {
-                    flag = '';
-                }
-                
-                shardTimes[`${userID}`] = {
-                    "timezone": timezone,
-                    "flag": flag
-                };
-                await client.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
-                    .then(() => {
-                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_USER_ADDED'));
-                    })
-                    .catch(() => {
-                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_USER_NOT_ADDED'));
-                    });
+            let type = 'id';
+            if (userID !== message.author.id && userID !== message.author.username && level < 3) {
+                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_MISSING_PERMS'));
             }
-        } else if (action === 'remove' || action === 'rem') {
-            // Get the json object, remove the user if available, then resave if it changed
             if (userID === 'me') {
                 userID = message.author.id;
             } else if (userID.match(/\d{17,18}/)) {
-                userID = userID.replace(/[\\|<|@|!]*(\d{17,18})[>]*/g,'$1');
-                // If they are trying to remove someone else and they don't have the right perms, stop em
-                if (userID !== message.author.id && level < 3) {
-                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_MISSING_PERMS'));
+                userID = userID.replace(/[^\d]*/g, '');
+            } else {
+                type = 'name';
+            }
+            
+            if (!timezone) {
+                // Grumble that they need a timezone, then give the wiki list
+                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_TIMEZONE'));
+            } else {
+                if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
+                    // Grumble that it's an invalid tz
+                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_INVALID_TIMEZONE'));
+                } 
+            }
+            if (flag.length > 0) {
+                flag = flag[0];
+                if (flag.match(/<:.+:\d+>/)) {
+                    flag = flag.replace(/<:.*:/, '').replace(/>$/, '');
                 }
+            } else {
+                flag = '';
+            }
+            let tempUser = null;
+            if (exists && shardTimes[`${userID}`]) {
+                tempUser = shardTimes[`${userID}`];
+            }
+            shardTimes[`${userID}`] = {
+                "type": type,
+                "timezone": timezone,
+                "flag": flag
+            };
+            await client.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
+                .then(() => {
+                    if (tempUser) {
+                        return message.channel.send(message.language.get('COMMAND_SHARDTIMES_USER_MOVED', tempUser.timezone, shardTimes[`${userID}`].timezone));
+                    }
+                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_USER_ADDED'));
+                })
+                .catch(() => {
+                    return message.channel.send(message.language.get('COMMAND_SHARDTIMES_USER_NOT_ADDED'));
+                });
+        } else if (action === 'remove' || action === 'rem') {
+            // Get the json object, remove the user if available, then resave if it changed
+            if (userID !== message.author.id && userID !== message.author.username && level < 3) {
+                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_MISSING_PERMS'));
+            }
+            if (userID === 'me') {
+                userID = message.author.id;
+            } else if (userID.match(/\d{17,18}/)) {
+                // If they are trying to remove someone else and they don't have the right perms, stop em
+                userID = userID.replace(/[\\|<|@|!]*(\d{17,18})[>]*/g,'$1');
             } 
             if (shardTimes.hasOwnProperty(userID)) {
                 delete shardTimes[userID];
@@ -138,8 +139,14 @@ class Shardtimes extends Command {
                         userFlag = shardTimes[user].flag;
                     }
                     const maxLen = 20;
-                    const thisUser = message.guild.members.get(user);
-                    const userName = thisUser ? `${thisUser.displayName}` : `${client.users.get(user) ? client.users.get(user).username : 'Unknown'}`;
+                    let userName = 'Unknown';
+                    if (!shardTimes[user].type || shardTimes[user].type === 'id') {
+                        const thisUser = message.guild.members.get(user);
+                        userName = '**' + (thisUser ? `${thisUser.displayName}` : `${client.users.get(user) ? client.users.get(user).username : 'Unknown'}`) + '**';
+                    } else {
+                        // Type is name, don't try looking it up
+                        userName = user;
+                    }
                     const uName = userName.length > maxLen ? userName.substring(0, maxLen) : userName;
                     times.push(`${shardTimes[user].flag != '' ? userFlag : ""}${uName}`);
                 });
