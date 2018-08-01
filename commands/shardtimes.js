@@ -46,15 +46,15 @@ class Shardtimes extends Command {
             // If it's an admin, let them register other users, else let em register themselves
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
             let type = 'id';
-            if (userID !== message.author.id && userID !== message.author.username && level < 3) {
-                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_MISSING_PERMS'));
-            }
             if (userID === 'me') {
                 userID = message.author.id;
             } else if (userID.match(/\d{17,18}/)) {
                 userID = userID.replace(/[^\d]*/g, '');
             } else {
                 type = 'name';
+            }
+            if (userID !== message.author.id && userID !== message.author.username && level < 3) {
+                return message.channel.send(message.language.get('COMMAND_SHARDTIMES_REM_MISSING_PERMS'));
             }
             
             if (!timezone) {
