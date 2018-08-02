@@ -21870,6 +21870,197 @@
         "defaultMods": {}
     },
     {
+        "name": "Mission Vao",
+        "uniqueName": "MISSIONVAO",
+        "aliases": [
+            "Mission Vao"
+        ],
+        "nameVariant": [
+            "Mission Vao"
+        ],
+        "url": "https://swgoh.gg/characters/mission-vao/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Old Republic",
+            "Scoundrel"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 BlasTech Weapon Mod"
+            ],
+            "Gear 2": [
+                "Mk 1 Sienar Holo Projector",
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 BioTech Implant",
+                "Mk 3 Loronar Power Cell",
+                "Mk 2 CEC Fusion Furnace"
+            ],
+            "Gear 3": [
+                "Mk 5 BioTech Implant",
+                "Mk 2 Chedak Comlink",
+                "Mk 3 CEC Fusion Furnace",
+                "Mk 5 Fabritech Data Pad",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 4": [
+                "Mk 4 Nubian Security Scanner",
+                "Mk 6 Fabritech Data Pad",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 2 Chedak Comlink",
+                "Mk 3 BioTech Implant"
+            ],
+            "Gear 5": [
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 2 Athakam Medpac",
+                "Mk 2 Chiewab Hypo Syringe",
+                "Mk 5 BioTech Implant"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 5 BioTech Implant"
+            ],
+            "Gear 7": [
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 4 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 6 Chiewab Hypo Syringe"
+            ],
+            "Gear 9": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 10": [
+                "Mk 4 Carbanti Sensor Array",
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 10 TaggeCo Holo Lens",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 5 Chedak Comlink",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 8 BioTech Implant",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 7 Nubian Security Scanner"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Key Pad",
+                "Mk 12 ArmaTek Holo Lens",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Don't Blink": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to inflict Daze for 2 turns. Mission gains 10% Turn Meter if target enemy was debuffed.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Street Smarts": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Mission Dispels all debuffs on herself, gains 50% Turn Meter and Stealth for 1 turn. Mission and Zaalbar gain Protection Up (50%) for 2 turns. Inflict Blind on target enemy for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Now You See Me": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Mission has +80% Potency and inflicts Damage Over Time on target enemy for 2 turns when she uses an ability, which can't be Evaded. When an enemy Resists, Mission gains +20% Potency (stacking) until she inflicts a Damage Over Time effect.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Me and Big Z Forever": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Mission has +50% Offense. If Zaalbar is present, he also gains this bonus. Once per turn, Mission Assists when Zaalbar uses an ability. When Zaalbar takes damage from an attack, Mission gains 10% Offense (stacking) for 2 turns. When Mission deals damage to an enemy, Zaalbar recovers 10% Health.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 20349,
+            "Strength": 780,
+            "Agility": 1390,
+            "Intelligence": 695,
+            "Speed": 146,
+            "Physical Damage": 3042,
+            "Physical Critical Rating": 1018,
+            "Special Damage": 1819,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 112,
+            "Resistance Penetration": 0,
+            "Potency": 42,
+            "Health": 28287,
+            "Armor": 274,
+            "Resistance": 175,
+            "Tenacity": 40,
+            "Health Steal": 10,
+            "Protection": 33,
+            "activation": 25
+        }
+    },
+    {
         "name": "Mob Enforcer",
         "uniqueName": "HUMANTHUG",
         "aliases": [
@@ -33230,6 +33421,197 @@
             "Tenacity": 31,
             "Health Steal": 15,
             "Protection": 29,
+            "activation": 25
+        }
+    },
+    {
+        "name": "Zaalbar",
+        "uniqueName": "ZAALBAR",
+        "aliases": [
+            "Zaalbar"
+        ],
+        "nameVariant": [
+            "Zaalbar"
+        ],
+        "url": "https://swgoh.gg/characters/zaalbar/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "side": "light",
+        "factions": [
+            "Old Republic",
+            "Scoundrel",
+            "Tank"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Fabritech Data Pad",
+                "Mk 1 Arakyd Droid Caller",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 1 Sienar Holo Projector",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 3 BAW Armor Mod",
+                "Mk 3 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Loronar Power Cell",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 4 BAW Armor Mod",
+                "Mk 4 Loronar Power Cell",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 4": [
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 6 Loronar Power Cell",
+                "Mk 3 BlasTech Weapon Mod"
+            ],
+            "Gear 5": [
+                "Mk 2 Athakam Medpac",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 3 Nubian Design Tech",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 4 Nubian Design Tech"
+            ],
+            "Gear 6": [
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 5 Nubian Security Scanner"
+            ],
+            "Gear 7": [
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Athakam Medpac",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Athakam Medpac",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 9": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Athakam Medpac",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 6 TaggeCo Holo Lens"
+            ],
+            "Gear 10": [
+                "Mk 4 Sienar Holo Projector",
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 4 Chedak Comlink",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 8 BioTech Implant",
+                "Mk 5 A/KT Stun Gun"
+            ],
+            "Gear 11": [
+                "Mk 6 A/KT Stun Gun",
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 8 BioTech Implant",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "MK 8 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Fusion Furnace",
+                "Mk 12 ArmaTek Key Pad",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Stalwart Ally": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage and inflict 2 Damage Over Time effects on target enemy for 2 turns. Zaalbar recovers 10% Health.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Power Blast": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to all enemies and gain Taunt for 3 turns. On a Critical Hit, inflict Armor Shred on target enemy for rest of the battle.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Wookiee Toughness": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Zaalbar gains 20% Defense (stacking) each time he takes damage from an attack for 1 turn.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Mission's Guardian": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Zaalbar has +25% Critical Avoidance. If Mission is present, she also gains this bonus. When any other ally falls below 100% Health, Zaalbar gains Taunt and Retribution for 2 turns. At the start of each of his turns, Zaalbar and Mission recover 10% Protection for each Damage Over Time effect on enemies.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 20349,
+            "Strength": 1544,
+            "Agility": 765,
+            "Intelligence": 725,
+            "Speed": 118,
+            "Physical Damage": 3115,
+            "Physical Critical Rating": 534,
+            "Special Damage": 2185,
+            "Special Critical Rating": 70,
+            "Armor Penetration": 34,
+            "Resistance Penetration": 0,
+            "Potency": 24,
+            "Health": 44582,
+            "Armor": 500,
+            "Resistance": 294,
+            "Tenacity": 47,
+            "Health Steal": 10,
+            "Protection": 47,
             "activation": 25
         }
     },

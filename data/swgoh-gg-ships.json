@@ -234,6 +234,15 @@
         "combat_type": 2
     },
     {
+        "name": "Sith Fighter",
+        "base_id": "SITHFIGHTER",
+        "url": "https://swgoh.gg/ships/sith-fighter/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_sithfighter.png",
+        "power": 43117,
+        "description": "Agile Sith Attacker that bypasses enemy defenses",
+        "combat_type": 2
+    },
+    {
         "name": "Slave I",
         "base_id": "SLAVE1",
         "url": "https://swgoh.gg/ships/slave-i/",

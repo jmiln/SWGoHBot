@@ -2010,7 +2010,7 @@
                         "name": "",
                         "note": "Two ships must be Ghost and Phantom II",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALMONCALAMARICRUISER",
                             "GHOST",
@@ -2400,7 +2400,7 @@
                         "name": "SHIP COMBAT MISSION",
                         "note": "",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALJEDICRUISER",
                             "CAPITALMONCALAMARICRUISER",
@@ -2489,7 +2489,7 @@
                         "name": "SHIP COMBAT MISSION",
                         "note": "",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALJEDICRUISER",
                             "CAPITALMONCALAMARICRUISER",
@@ -2578,7 +2578,7 @@
                         "name": "SHIP COMBAT MISSION",
                         "note": "",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALJEDICRUISER",
                             "CAPITALMONCALAMARICRUISER",
@@ -2666,7 +2666,7 @@
                         "name": "SHIP COMBAT MISSION",
                         "note": "",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALJEDICRUISER",
                             "CAPITALMONCALAMARICRUISER",
@@ -2884,7 +2884,7 @@
                         "name": "SHIP COMBAT MISSION",
                         "note": "DARK SIDE SHIPS",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALCHIMAERA",
                             "CAPITALSTARDESTROYER",
@@ -2969,7 +2969,7 @@
                         "name": "SHIP COMBAT MISSION",
                         "note": "DARK SIDE SHIPS",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALSTARDESTROYER",
                             "TIEFIGHTERFOSF",
@@ -2991,7 +2991,7 @@
                         "name": "SHIP SPECIAL MISSION",
                         "note": "CHIMERA REQUIRED. REWARD: 20 GET",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALCHIMAERA",
                             "TIEFIGHTERFOSF",
@@ -3067,7 +3067,7 @@
                         "name": "SHIP COMBAT MISSION",
                         "note": "DARK SIDE SHIPS",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALCHIMAERA",
                             "CAPITALSTARDESTROYER",
@@ -3159,7 +3159,7 @@
                         "name": "SHIP COMBAT MISSION",
                         "note": "DARK SIDE SHIPS",
                         "url": "",
-                        "shippy": "true",
+                        "ships": true,
                         "team": [
                             "CAPITALCHIMAERA",
                             "CAPITALSTARDESTROYER",
