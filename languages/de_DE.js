@@ -932,6 +932,7 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: `Bitte eine Zeitzone eintragen.`,
             COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Ungueltige Zeitzone, bitte hier pruefen https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nwelche benoetigt wird, dann eintragen, was in der TZ-Spalte gennant wird`,
             COMMAND_SHARDTIMES_USER_ADDED: `Benutzer erfolgreich hinzugefuegt!`,
+            COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `User aktualisiert von ${from} nach ${to}.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: `Etwas lief schief beim Benutzer hinzufuegen, bitte erneut probieren.`,
             COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Du kannst nur Dich selbst entfernen, es sei denn Du hast Adminrechte.`,
             COMMAND_SHARDTIMES_REM_SUCCESS: `Benutzer erfolgreich entfernt!`,
