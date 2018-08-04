@@ -76,20 +76,10 @@ class GuildSearch extends Command {
         } else {
             character = chars[0];
         }
-        
-        // let player = null;
-        // try {
-        //     player = await client.swgohAPI.getPlayer(userID, 'ENG_US', 6);
-        //     userID = player.guildName;
-        // } catch (e) {
-        //     console.error(e);
-        // }
 
         let guild = null;
         try {
-            // guild = await client.swgohAPI.report('getGuildRoster', {guildName: userID});
             guild = await client.swgohAPI.fetchGuild(userID, 'gg');
-            // console.log(guild);
         } catch (e) {
             console.log('ERROR: ' + e);
         }

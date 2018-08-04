@@ -49,18 +49,8 @@ class Guilds extends Command {
             return message.channel.send("I currently do not support looking up guilds by name, please use an ally code, or mention someone that has registered.");
         }
 
-        // if (acType) {
-        //     try {
-        //         const player = await client.swgohAPI.getPlayer(userID, lang, 6);
-        //         userID = player.guildName;
-        //     } catch (e) {
-        //         console.error(e);
-        //     }
-        // }
-
         let guild = null;
         try {
-            // guild = await client.swgohAPI.report('getGuildRoster', {guildName: userID});
             guild = await client.swgohAPI.fetchGuild(userID, 'details', lang);
         } catch (e) {
             console.log('ERROR: ' + e);
