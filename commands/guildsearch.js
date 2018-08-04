@@ -26,14 +26,14 @@ class GuildSearch extends Command {
     }
 
     async run(client, message, [userID, ...searchChar], options) { // eslint-disable-line no-unused-vars
-        let starLvl = null;
+        let starLvl = 0;
         const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : 'name';
         const reverse = options.flags.reverse;
 
         // If there's enough elements in searchChar, and it's in the format of a number*
         if (searchChar.length > 0 && searchChar[searchChar.length-1].match(/\d\*/)) {
             starLvl = parseInt(searchChar.pop().replace('*', ''));
-            if (starLvl < 1 || starLvl > 7) {
+            if (starLvl < 0 || starLvl > 7) {
                 return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_BAD_STAR'));
             }
         }
@@ -77,32 +77,54 @@ class GuildSearch extends Command {
             character = chars[0];
         }
         
-        let player = null;
-        try {
-            player = await client.swgohAPI.getPlayer(userID, 'ENG_US', 6);
-            userID = player.guildName;
-        } catch (e) {
-            console.error(e);
-        }
+        // let player = null;
+        // try {
+        //     player = await client.swgohAPI.getPlayer(userID, 'ENG_US', 6);
+        //     userID = player.guildName;
+        // } catch (e) {
+        //     console.error(e);
+        // }
 
         let guild = null;
         try {
-            guild = await client.swgohAPI.report('getGuildRoster', {guildName: userID});
+            // guild = await client.swgohAPI.report('getGuildRoster', {guildName: userID});
+            guild = await client.swgohAPI.fetchGuild(userID, 'gg');
+            // console.log(guild);
         } catch (e) {
             console.log('ERROR: ' + e);
         }
 
-        if (!guild || !guild.length) {
+        if (!guild) {
             return message.channel.send(message.language.get('BASE_SWGOH_NO_GUILD'));
         }
 
+        // Get the list of people with that character
+        const guildChar = guild[character.uniqueName];
+        
+        // Fill in everyone that does not have it since everyone is guaranteed to have jedi consular
+        guild['JEDIKNIGHTCONSULAR'].forEach(j => {
+            // If they have both the targeted character and consular, get em
+            const filtered = guildChar.filter(p => p.player === j.player);
+
+            // If they don't, it'll be a 0 length array, so fill it in with 0 stats
+            if (!filtered.length) {
+                guildChar.push({
+                    id: j.id,           // Ally code
+                    gear_level: 0,
+                    power: 0,
+                    level: 0,
+                    combat_type: 1,
+                    rarity: 0,
+                    player: j.player,   // Player name
+                    zetas: []
+                });
+            }
+        });
+
         let maxZ = 0;
-        for (const member of guild) {
-            member.roster = member.roster.filter(c => (c.name === character.name || c.name === character.uniqueName));
-            if (member.roster[0] && member.roster[0].zetas) {
-                if (member.roster[0].zetas.length > maxZ) {
-                    maxZ = member.roster[0].zetas.length;
-                }
+        for (const member of guildChar) {
+            if (member.zetas.length > maxZ) {
+                maxZ = member.zetas.length;
             }
         }
 
@@ -110,16 +132,16 @@ class GuildSearch extends Command {
         if (sortType === 'name') {
             // Sort by name
             if (!reverse) {
-                sortedGuild = guild.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
+                sortedGuild = guildChar.sort((p, c) => p.player.toLowerCase() > c.player.toLowerCase() ? 1 : -1);
             } else {
-                sortedGuild = guild.sort((p, c) => p.name.toLowerCase() < c.name.toLowerCase() ? 1 : -1);
+                sortedGuild = guildChar.sort((p, c) => p.player.toLowerCase() < c.player.toLowerCase() ? 1 : -1);
             }
         } else if (sortType === 'gp') {
             // Sort by gp
             if (!reverse) {
-                sortedGuild = guild.sort((p, c) => (p.roster[0] && c.roster[0]) ? p.roster[0].gp - c.roster[0].gp : -1);
+                sortedGuild = guildChar.sort((p, c) => p.power - c.power);
             } else {
-                sortedGuild = guild.sort((p, c) => (p.roster[0] && c.roster[0]) ? c.roster[0].gp - p.roster[0].gp : -1);
+                sortedGuild = guildChar.sort((p, c) => c.power - p.power);
             }
         } else {
             return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_BAD_SORT', sortType, ['name', 'gp']));
@@ -127,21 +149,15 @@ class GuildSearch extends Command {
 
         const charOut = {};
         for (const member of sortedGuild) {
-            const charL = member.roster;
-
-            const thisStar = charL.length ? charL[0].rarity : 0;
-            let zetas = '', gpStr = '', zLen = 0;
-            if (thisStar) {
-                zLen = charL[0].zetas ? charL[0].zetas.length : 0;
-                zetas = ' | ' + '+'.repeat(zLen) + ' '.repeat(maxZ - zLen);
-                gpStr = charL[0].gp ? parseInt(charL[0].gp).toLocaleString() : '';
-            }
+            const gearStr = '⚙' + member.gear_level + ' '.repeat(2 - member.gear_level.toString().length);
+            const zetas = ' | ' + '+'.repeat(member.zetas.length) + ' '.repeat(maxZ - member.zetas.length);
+            const gpStr = member.power.toLocaleString();
             
-            const uStr = thisStar > 0 ? `**\`[⚙${charL[0].gear < 10 ? charL[0].gear + ' ' : charL[0].gear } | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.name}` : member.name;
-            if (!charOut[thisStar]) {
-                charOut[thisStar] = [uStr];
+            const uStr = member.rarity > 0 ? `**\`[${gearStr} | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.player}` : member.player;
+            if (!charOut[member.rarity]) {
+                charOut[member.rarity] = [uStr];
             } else {
-                charOut[thisStar].push(uStr);
+                charOut[member.rarity].push(uStr);
             }
         }
 
@@ -151,7 +167,7 @@ class GuildSearch extends Command {
             if (star >= starLvl) {
                 const msgArr = client.msgArray(charOut[star], '\n', 1000);
                 msgArr.forEach((msg, ix) => {
-                    const name = star === '0' ? message.language.get('COMMAND_GUILDSEARCH_NOT_ACTIVATED', charOut[star].length) : message.language.get('COMMAND_GUILDSEARCH_STAR_HEADER', star, charOut[star].length);
+                    const name = star === 0 ? message.language.get('COMMAND_GUILDSEARCH_NOT_ACTIVATED', charOut[star].length) : message.language.get('COMMAND_GUILDSEARCH_STAR_HEADER', star, charOut[star].length);
                     fields.push({
                         name: msgArr.length > 1 ? name + ` (${ix+1}/${msgArr.length})` : name,
                         value: msgArr[ix]

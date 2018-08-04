@@ -30,9 +30,9 @@ class CurrentEvents extends Command {
         const DEF_NUM = 10;
         const lang = message.guildSettings.swgohLanguage;
     
-        let botClient = null;
+        let gohEvents = null;
         try {
-            botClient = await client.swgohAPI.getClient(lang);
+            gohEvents = await client.swgohAPI.fetchData('events', null, lang);
         } catch (e) {
             console.error(e);
         }
@@ -51,17 +51,17 @@ class CurrentEvents extends Command {
         if (options.flags.heroic) {
             filter = filter.concat(HEROIC);
         }
-        for (const event of botClient.events) {
+        for (const event of gohEvents) {
             if (FLEET_CHALLENGES.includes(event.id) ||
                 MOD_CHALLENGES.includes(event.id) ||
                 DAILY_CHALLENGES.includes(event.id)) {
-                delete botClient.event;
+                delete gohEvents.event;
                 continue;
             }
 
             if (filter.length) {
                 if (filter.indexOf(event.id) < 0) {
-                    delete botClient.event;
+                    delete gohEvents.event;
                     continue;
                 }
             }
@@ -75,10 +75,10 @@ class CurrentEvents extends Command {
             // Put each event in the array
             event.schedule.forEach(s => {
                 evOut.push({
-                    name: event.name,
+                    name: (HEROIC.includes(event.id) || event.id === 'EVENT_CREDIT_HEIST_GETAWAY_V2') ? `**${event.name}**` : event.name,
                     date: s.start
-                })
-            })
+                });
+            });
         }
 
         const fields = [];
@@ -105,7 +105,7 @@ class CurrentEvents extends Command {
             // }
 
             // Condensed view
-            desc += `\n\`${moment(event.date).format('M-DD')} |\` **${event.name}**`;
+            desc += `\n\`${moment(event.date).format('M-DD')} |\` ${event.name}`;
         }
 
         if (fields.length) {

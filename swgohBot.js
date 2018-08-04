@@ -85,11 +85,15 @@ client.database.authenticate().then(async () => {
 });
 
 const init = async () => {
-    // If we have the magic, use it
-    if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
-        const swgohService = require('./'+client.config.swgohAPILoc);
-        client.swgohAPI = new swgohService(client.config.swgohSettings);
+    if (client.config.api_swgoh_help) {
+        const SwgohHelp = require('api-swgoh-help');
+        client.swgohAPI = new SwgohHelp(client.config.api_swgoh_help);
     }
+    // If we have the magic, use it
+    // if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
+    //     const swgohService = require('./'+client.config.swgohAPILoc);
+    //     client.swgohAPI = new swgohService(client.config.swgohSettings);
+    // }
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
