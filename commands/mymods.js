@@ -90,7 +90,7 @@ class MyMods extends Command {
         charMods.forEach(mod => {
             slots[mod.slot] = {
                 stats: [],
-                type: mod.set.replace('-', ' ').toProperCase(),
+                type: mod.set.replace('-', ' ').replace('critchance', 'crit chance').toProperCase(),
                 lvl: mod.level,
                 pip: mod.pips
             };
@@ -115,7 +115,7 @@ class MyMods extends Command {
         Object.keys(slots).forEach(mod => {
             const stats = slots[mod].stats;
             fields.push({
-                name: `${icons[mod.toUpperCase()]} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                name: `${icons[mod.toUpperCase()]} ${slots[mod].type} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
                 value: `**${stats.shift()}**\n${stats.join('\n')}\n\`${'-'.repeat(28)}\``,
                 inline: true
             });
