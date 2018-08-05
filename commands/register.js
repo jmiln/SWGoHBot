@@ -93,7 +93,10 @@ class Register extends Command {
                 }
                 break;
             case 'update': {
-                return message.channel.send('Sorry, but this has been disabled. Your profile will update hourly');
+                return message.channel.send(["Sorry, but this has been disabled.",
+                    "Your profile data will stay the same for an hour after a sync, then will update",
+                    "when you use a command that uses that data after the hour is up"
+                ].join('\n'));
             //     if (!userID || userID === "me") {
             //         userID = message.author.id;
             //     } else if (userID.match(/\d{17,18}/)) {
