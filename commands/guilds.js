@@ -30,10 +30,7 @@ class Guilds extends Command {
 
         // let acType = true;
         
-        
-        // TODO Change it to have a "please wait" message while it works
-
-
+        const msg = await message.channel.send("Please wait while I update your guild's info.");
 
         // Get the user's ally code from the message or psql db
         if (userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
@@ -46,7 +43,7 @@ class Guilds extends Command {
             // Or, if they don't have one of those, try getting the guild by name
             // userID += args.length ? ' ' + args.join(' ') : '';
             // acType = false;
-            return message.channel.send("I currently do not support looking up guilds by name, please use an ally code, or mention someone that has registered.");
+            return msg.edit("I currently do not support looking up guilds by name, please use an ally code, or mention someone that has registered.");
         }
 
         let guild = null;
@@ -57,7 +54,7 @@ class Guilds extends Command {
         }
 
         if (!guild || !guild.roster.length) {
-            return message.channel.send('I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.');
+            return msg.edit('I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.');
         }
         const sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
 
@@ -65,7 +62,7 @@ class Guilds extends Command {
         sortedGuild.forEach(p => {
             users.push(`\`[${' '.repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
         });
-        message.channel.send({embed: {
+        return msg.edit({embed: {
             author: {
                 name: `${users.length} Players in ${guild.name}`
             },

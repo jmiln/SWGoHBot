@@ -71,7 +71,7 @@ class MyCharacter extends Command {
 
         let player = null;
         try {
-            player = await client.swgohAPI.getPlayer( allyCode, lang, 6 );
+            player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
         } catch (e) {
             console.error(e);
         }

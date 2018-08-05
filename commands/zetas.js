@@ -49,7 +49,7 @@ class Zetas extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US', 6);
+            player = await client.swgohAPI.fetchPlayer(allyCode, null, 'ENG_US');
         } catch (e) {
             console.log('Error: Broke while trying to get player data in zetas: ' + e);
             return msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));

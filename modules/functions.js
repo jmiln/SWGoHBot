@@ -6,6 +6,7 @@ const moment = require('moment');       // eslint-disable-line no-unused-vars
 const fs = require('fs');    // eslint-disable-line no-unused-vars
 const readdir = promisify(require("fs").readdir);       // eslint-disable-line no-unused-vars
 const request = require('request-promise-native');
+const Discord = require('discord.js');
 
 module.exports = (client) => {
     // The scheduler for events
@@ -561,6 +562,57 @@ module.exports = (client) => {
             return client.guilds.size;
         }
     };
+
+    /*
+     * Find an emoji by ID
+     * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
+     */
+    client.findEmoji = (id) => {
+        const temp = client.emojis.get(id);
+        if (!temp) return false;
+
+        // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
+        const emoji = Object.assign({}, temp);
+        // Circular references can't be returned outside of eval, so change it to the id
+        if (emoji.guild) emoji.guild = emoji.guild.id;
+        // A new object will be construted, so simulate raw data by adding this property back
+        emoji.require_colons = emoji.requiresColons;
+
+        return emoji;
+    };
+
+
+    /*
+     * Use the findEmoji() to check all shards if sharded
+     * If sharded, also use the example from
+     * https://discordjs.guide/#/sharding/extended?id=using-functions-continued
+     */
+    client.getEmoji = (id) => {
+        if (client.shard && client.shard.count > 0) {
+            return client.shard.broadcastEval(`this.findEmoji('${id}');`)//.call(this, '${id}')`)
+                .then(emojiArray => {
+                    // Locate a non falsy result, which will be the emoji in question
+                    const foundEmoji = emojiArray.find(emoji => emoji);
+                    if (!foundEmoji) return false;
+
+                    // console.log(client.guilds.get(foundEmoji.guild));
+
+                    // Reconstruct an emoji object as required by discord.js
+                    try {
+                        if (!client.guilds.has(foundEmoji.guild)) return false;
+                        // Only works if on the same shard, so kinda pointless at this point
+                        return new Discord.Emoji(client.guilds.get(foundEmoji.guild), foundEmoji);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                });
+        } else {
+            const emoji = client.findEmoji(id);
+            if (!emoji) return false;
+            return new Discord.Emoji(client.guilds.get(emoji.guild), emoji);
+        }
+    };
+
 
     /*
      * isUserID

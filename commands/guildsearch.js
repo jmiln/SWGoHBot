@@ -77,6 +77,14 @@ class GuildSearch extends Command {
             character = chars[0];
         }
 
+        let player = null;
+        try {
+            player = await client.swgohAPI.fetchPlayer(userID);
+        } catch (e) {
+            console.log('ERROR: ' + e);
+        }
+
+
         let guild = null;
         try {
             guild = await client.swgohAPI.fetchGuild(userID, 'gg');
@@ -168,7 +176,7 @@ class GuildSearch extends Command {
 
         message.channel.send({embed: {
             author: {
-                name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', userID, character.name)
+                name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', player.guildName, character.name)
             },
             fields: fields
         }});

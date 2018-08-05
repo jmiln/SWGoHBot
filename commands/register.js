@@ -93,49 +93,50 @@ class Register extends Command {
                 }
                 break;
             case 'update': {
-                if (!userID || userID === "me") {
-                    userID = message.author.id;
-                } else if (userID.match(/\d{17,18}/)) {
-                    userID = userID.replace(/[^\d]*/g, '');
-                } else {
-                    name = userID; 
-                    name += allyCode ? ' ' + allyCode : '';
-                    name += args.length ? ' ' + args.join(' ') : '';
-                }
-                const allyCodes = await client.getAllyCode(message, name ? name.trim() : userID);
-                let ac;
-                if (!allyCodes.length) {
-                    // Tell em no match found
-                    return message.channel.send("I didn't find any results for that user");
-                } else if (allyCodes.length > 1) {
-                    // Tell em there's too many
-                    return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific, or use their ally code, Discord userID, or mention them.');
-                } else {
-                    ac = allyCodes[0];
-                }
-
-                await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
-                    if (options.flags.guild) {
-                        await client.swgohAPI.updateGuild(ac, 'ENG_US').then(async () => {
-                            await client.swgohAPI.getPlayer(ac, 'ENG_US').then(async (u) => {
-                                if (!u) {
-                                    await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
-                                } else {
-                                    await msg.edit(message.language.get('COMMAND_REGISTER_GUPDATE_SUCCESS', u.guildName));
-                                }
-                            });
-                        });
-                    } else {
-                        await client.swgohAPI.getPlayer(ac, 'ENG_US').then(async (u) => {
-                            if (!u) {
-                                await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
-                            } else {
-                                await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_SUCCESS', u.name));
-                            }
-                        });
-                    }
-                });
-                break;
+                return message.channel.send('Sorry, but this has been disabled. Your profile will update hourly');
+            //     if (!userID || userID === "me") {
+            //         userID = message.author.id;
+            //     } else if (userID.match(/\d{17,18}/)) {
+            //         userID = userID.replace(/[^\d]|)}>#g, '');
+            //     } else {
+            //         name = userID; 
+            //         name += allyCode ? ' ' + allyCode : '';
+            //         name += args.length ? ' ' + args.join(' ') : '';
+            //     }
+            //     const allyCodes = await client.getAllyCode(message, name ? name.trim() : userID);
+            //     let ac;
+            //     if (!allyCodes.length) {
+            //         // Tell em no match found
+            //         return message.channel.send("I didn't find any results for that user");
+            //     } else if (allyCodes.length > 1) {
+            //         // Tell em there's too many
+            //         return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific, or use their ally code, Discord userID, or mention them.');
+            //     } else {
+            //         ac = allyCodes[0];
+            //     }
+            //
+            //     await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
+            //         if (options.flags.guild) {
+            //             await client.swgohAPI.updateGuild(ac, 'ENG_US').then(async () => {
+            //                 await client.swgohAPI.getPlayer(ac, 'ENG_US').then(async (u) => {
+            //                     if (!u) {
+            //                         await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
+            //                     } else {
+            //                         await msg.edit(message.language.get('COMMAND_REGISTER_GUPDATE_SUCCESS', u.guildName));
+            //                     }
+            //                 });
+            //             });
+            //         } else {
+            //             await client.swgohAPI.getPlayer(ac, 'ENG_US').then(async (u) => {
+            //                 if (!u) {
+            //                     await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
+            //                 } else {
+            //                     await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_SUCCESS', u.name));
+            //                 }
+            //             });
+            //         }
+            //     });
+            //     break;
             }
             case 'remove':
                 if (!exists) {
