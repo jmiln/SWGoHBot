@@ -2005,6 +2005,20 @@
                 "triangle": "Offense / Protection",
                 "circle": "Protection",
                 "cross": "Offense / Protection"
+            },
+            "Bastila Shan": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Protection",
+                "circle": "Protection",
+                "cross": "Offense/ Protection",
+                "source": "Crouching Rancor"
             }
         },
         "defaultMods": {},
@@ -18626,7 +18640,8 @@
             "Jolee Bindo"
         ],
         "nameVariant": [
-            "Jolee Bindo"
+            "Jolee Bindo",
+            "Jolee Bido"
         ],
         "url": "https://swgoh.gg/characters/jolee-bindo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_joleebindo.png",
@@ -18636,7 +18651,22 @@
             "Jedi",
             "Old Republic"
         ],
-        "mods": {},
+        "mods": {
+            "Jolee Bindo": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Protection",
+                "cross": "Health/ Protection",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [

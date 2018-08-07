@@ -86,14 +86,22 @@ client.database.authenticate().then(async () => {
 
 const init = async () => {
     if (client.config.api_swgoh_help) {
+        // Set up the caching
+        const MongoClient = require('mongodb').MongoClient;
+        client.mongo = await MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true } );
+        client.cache = await require('./modules/cache.js')(client.mongo);
+
+        // Load up the api connector/ helpers
         const SwgohHelp = require('api-swgoh-help');
-        client.swgohAPI = new SwgohHelp(client.config.api_swgoh_help);
+        client.swgoh = new SwgohHelp(client.config.api_swgoh_help);
+        client.swgohAPI = require('./modules/swapi.js')(client);
     }
     // If we have the magic, use it
     // if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
     //     const swgohService = require('./'+client.config.swgohAPILoc);
     //     client.swgohAPI = new swgohService(client.config.swgohSettings);
     // }
+
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");

@@ -19,16 +19,13 @@ class Guilds extends Command {
         // Basic, with no args, shows the top ## guilds (Based on how many have registered)
         // <allyCode | mention | guildName >
         
-        const lang = message.guildSettings.swgohLanguage;
+        // const lang = message.guildSettings.swgohLanguage;
             
         // Shows your guild's total GP, average GP, and a list of your members
         // Not trying to get any specific guild, show em the top ones
         if (!userID) {
             userID = 'me';
         } 
-        // console.log(userID);
-
-        // let acType = true;
         
         const msg = await message.channel.send("Please wait while I update your guild's info.");
 
@@ -48,7 +45,8 @@ class Guilds extends Command {
 
         let guild = null;
         try {
-            guild = await client.swgohAPI.fetchGuild(userID, 'details', lang);
+            // guild = await client.swgohAPI.fetchGuild(userID, 'details', lang);
+            guild = await client.swgohAPI.guild(userID);
         } catch (e) {
             console.log('ERROR: ' + e);
         }

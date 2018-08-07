@@ -79,7 +79,8 @@ class MyMods extends Command {
         let mods;
         try {
             // mods = await client.swgohAPI.fetchPlayer(allyCode, 'mods', lang);
-            mods = await client.swgohAPI.fetchPlayer(allyCode, 'mods');
+            // mods = await client.swgohAPI.fetchPlayer(allyCode, 'mods');
+            mods = await client.swgohAPI.mods(allyCode);
         } catch (e) {
             console.log(e);
         }

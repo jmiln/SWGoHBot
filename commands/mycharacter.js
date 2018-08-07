@@ -71,7 +71,8 @@ class MyCharacter extends Command {
 
         let player = null;
         try {
-            player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
+            // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
+            player = await client.swgohAPI.player(allyCode, lang);
         } catch (e) {
             console.error(e);
         }
@@ -79,6 +80,7 @@ class MyCharacter extends Command {
         const thisChar = player.roster.filter(c => (c.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() === character.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() || c.name === character.uniqueName));
 
         thisChar.forEach(c => {
+            console.log(c);
             let gearStr = ['   [0]  [3]', '[1]        [4]', '   [2]  [5]'].join('\n');
             const abilities = {
                 basic: [],

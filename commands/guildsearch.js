@@ -52,6 +52,10 @@ class GuildSearch extends Command {
             // If they're just looking for a character for themselves, get the char
             searchChar = [userID].concat(searchChar);
             userID = await client.getAllyCode(message, message.author.id);
+            if (!userID.length) {
+                return message.channel.send(message.language.get('BASE_SWGOH_NO_GUILD_FOR_USER', message.guildSettings.prefix));
+            }
+            userID = userID[0];
         }
 
         if (!searchChar.length) {
@@ -79,7 +83,7 @@ class GuildSearch extends Command {
 
         let player = null;
         try {
-            player = await client.swgohAPI.fetchPlayer(userID);
+            player = await client.swgohAPI.player(userID);
         } catch (e) {
             console.log('ERROR: ' + e);
         }
@@ -87,7 +91,7 @@ class GuildSearch extends Command {
 
         let guild = null;
         try {
-            guild = await client.swgohAPI.fetchGuild(userID, 'gg');
+            guild = await client.swgohAPI.guildGG(userID);
         } catch (e) {
             console.log('ERROR: ' + e);
         }
@@ -151,7 +155,10 @@ class GuildSearch extends Command {
             const zetas = ' | ' + '+'.repeat(member.zetas.length) + ' '.repeat(maxZ - member.zetas.length);
             const gpStr = member.power.toLocaleString();
             
-            const uStr = member.rarity > 0 ? `**\`[${gearStr} | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.player}` : member.player;
+            let uStr = member.rarity > 0 ? `**\`[${gearStr} | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.player}` : member.player;
+
+            uStr = client.expandSpaces(uStr);
+
             if (!charOut[member.rarity]) {
                 charOut[member.rarity] = [uStr];
             } else {

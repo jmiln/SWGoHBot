@@ -24,7 +24,8 @@ class MyProfile extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
+            // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
+            player = await client.swgohAPI.player(allyCode, lang);
         } catch (e) {
             console.log('Broke getting player in myprofile: ' + e);
         }

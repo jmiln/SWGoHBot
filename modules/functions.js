@@ -632,6 +632,20 @@ module.exports = (client) => {
         return match ? true : false;
     };
 
+    // Expand multiple spaces to have zero width spaces between so 
+    // Discord doesn't collapse em
+    client.expandSpaces = (str) => {
+        let outStr = '';
+        str.split(/([\s]{2,})/).forEach(e => {
+            if (e.match(/[\s]{2,}/)) {
+                outStr += e.split('').join('\u200B');
+            } else {
+                outStr += e;
+            }
+        });
+        return outStr;
+    };
+
     // Get the ally code of someone that's registered
     client.getAllyCode = async (message, user) => {
         if (user) {
@@ -657,16 +671,18 @@ module.exports = (client) => {
         }  else if (client.isAllyCode(user)) {
             return [user.replace(/[^\d]*/g, '')];
         }  else {
-            const outArr = [];
-            const results = await client.swgohAPI.report( 'getPlayerProfile', { "name": user } );
-            if (results.length > 1) {
-                results.forEach(p => {
-                    outArr.push(p.allyCode);
-                });
-            } else if (results.length ===  1) {
-                outArr.push(results[0].allyCode);
-            }
-            return outArr;
+            // TODO  Get this working
+            return [];
+            // const outArr = [];
+            // const results = await client.swgohAPI.report( 'getPlayerProfile', { "name": user } );
+            // if (results.length > 1) {
+            //     results.forEach(p => {
+            //         outArr.push(p.allyCode);
+            //     });
+            // } else if (results.length ===  1) {
+            //     outArr.push(results[0].allyCode);
+            // }
+            // return outArr;
         }
     };
 
@@ -865,6 +881,24 @@ module.exports = (client) => {
                 .then(async () => {})
                 .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
         }
+    };
+
+    // Convert from milliseconds
+    client.convertMS = (milliseconds) => {
+        var day, hour, minute, seconds;
+        seconds = Math.floor(milliseconds / 1000);
+        minute = Math.floor(seconds / 60);
+        seconds = seconds % 60;
+        hour = Math.floor(minute / 60);
+        minute = minute % 60;
+        day = Math.floor(hour / 24);
+        hour = hour % 24;
+        return {
+            day: day,
+            hour: hour,
+            minute: minute,
+            seconds: seconds
+        };
     };
 
     

@@ -17,7 +17,7 @@ class Register extends Command {
     async run(client, message, [action, userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
         const level = options.level;
         const acts = ['add', 'update', 'remove'];
-        let exists, name;
+        let exists;
         if (!action || !acts.includes(action.toLowerCase())) {
             return client.helpOut(message, this);
         }
@@ -66,7 +66,7 @@ class Register extends Command {
                     // Sync up their swgoh account
                     message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
                         try {
-                            await client.swgohAPI.getPlayer(allyCode, 'ENG_US').then(async (u) => {
+                            await client.swgohAPI.player(allyCode, 'ENG_US').then(async (u) => {
                                 if (!u) {
                                     await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
                                 } else {
