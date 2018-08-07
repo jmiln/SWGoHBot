@@ -62,7 +62,6 @@ class MyProfile extends Command {
             author: {
                 name: message.language.get('COMMAND_MYPROFILE_EMBED_HEADER', player.name, player.allyCode),
             },
-            //added just pure player total GP to display. not sure if in the correct place tho.
             description: message.language.get('COMMAND_MYPROFILE_DESC', player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, player.gpFull.toLocaleString()),
             footer: {
                 text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))

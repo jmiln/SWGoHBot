@@ -127,7 +127,10 @@ class MyMods extends Command {
                 name: `${mods.name}'s ${character.name}`,
                 icon_url: character.avatarURL
             },
-            fields: fields
+            fields: fields,
+            footer: {
+                text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(mods.updated, message))
+            }
         }});
     }
 }

@@ -80,8 +80,7 @@ class MyCharacter extends Command {
         const thisChar = player.roster.filter(c => (c.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() === character.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() || c.name === character.uniqueName));
 
         thisChar.forEach(c => {
-            console.log(c);
-            let gearStr = ['   [0]  [3]', '[1]        [4]', '   [2]  [5]'].join('\n');
+            let gearStr = ['   [0]  [3]', '[1]       [4]', '   [2]  [5]'].join('\n');
             const abilities = {
                 basic: [],
                 special: [],
@@ -92,7 +91,8 @@ class MyCharacter extends Command {
             c.equipped.forEach(e => {
                 gearStr = gearStr.replace(e.slot, 'X');
             });
-            gearStr = gearStr.replace(/[0-9]/g, '   ');
+            gearStr = gearStr.replace(/[0-9]/g, '  ');
+            gearStr = client.expandSpaces(gearStr);
             c.skills.forEach(a => {
                 if (a.tier === 8 || (a.tier === 3 && a.type === 'Contract')) {
                     if (a.isZeta) {
@@ -119,7 +119,6 @@ class MyCharacter extends Command {
                 .concat(abilities.contract);
             const mods = {};
             const sets = {};
-            // console.log(c.mods);
             c.mods.forEach(m => {
                 if (!sets[m.set]) {
                     sets[m.set] = {};
@@ -196,7 +195,6 @@ class MyCharacter extends Command {
                             set.lvls.splice(set.lvls.indexOf(15), 1);
                         }
                     }
-                    // console.log(set);
                 }
             });
             const setOut = [];
@@ -237,7 +235,10 @@ class MyCharacter extends Command {
                         name: 'Mod stats',
                         value: modOut.length ? modOut.join('\n') : 'No mod stats'
                     }
-                ]
+                ],
+                footer: {
+                    text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
+                }
             }});
         });
     }
