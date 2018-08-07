@@ -21911,7 +21911,7 @@
             "Mission Vao"
         ],
         "url": "https://swgoh.gg/characters/mission-vao/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_mission.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -22074,7 +22074,7 @@
             "Power": 20349,
             "Strength": 780,
             "Agility": 1390,
-            "Intelligence": 695,
+            "Intelligence": 0,
             "Speed": 146,
             "Physical Damage": 3042,
             "Physical Critical Rating": 1018,
@@ -29968,7 +29968,7 @@
             "T3-M4"
         ],
         "url": "https://swgoh.gg/characters/t3-m4/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_t3m4.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -33466,7 +33466,7 @@
             "Zaalbar"
         ],
         "url": "https://swgoh.gg/characters/zaalbar/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zaalbar.png",
         "side": "light",
         "factions": [
             "Old Republic",
