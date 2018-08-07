@@ -32,7 +32,9 @@ class CurrentEvents extends Command {
     
         let gohEvents = null;
         try {
-            gohEvents = await client.swgohAPI.fetchData('events', null, lang);
+            gohEvents = await client.swgohAPI.events(lang);
+            gohEvents = gohEvents.events;
+            // console.log(gohEvents.map(e => e.name).join('\n'));
         } catch (e) {
             console.error(e);
         }

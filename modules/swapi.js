@@ -4,12 +4,14 @@ module.exports = (client) => {
 
     const playerCooldown = 2;
     const guildCooldown = 6;
+    const eventCooldown = 12;
 
     return {
         player: player,
         mods: mods,
         guild: guild,
-        guildGG: guildGG
+        guildGG: guildGG,
+        events: events
     };
 
     async function mods( allycode ) {
@@ -115,6 +117,30 @@ module.exports = (client) => {
             }
             // console.log('From Cache: ' + guildGG);
             return guildGG;      
+        } catch (e) { 
+            throw e; 
+        }            
+    }
+
+    async function events( lang='ENG_US' ) {
+        try {
+            /** Get events from cache */
+            let events = await cache.get('swapi', 'events', {lang:lang});
+
+            /** Check if existance and expiration */
+            if ( !events || !events[0] || isExpired(events[0].updated, eventCooldown) ) { 
+                /** If not found or expired, fetch new from API and save to cache */
+                events = await swgoh.fetchData('events', null, lang);
+                events = {
+                    lang: lang, 
+                    events: events
+                };
+                events = await cache.put('swapi', 'events', {lang:lang}, events);
+            } else {
+                /** If found and valid, serve from cache */
+                events = events[0];
+            }
+            return events;
         } catch (e) { 
             throw e; 
         }            
