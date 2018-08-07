@@ -31,7 +31,6 @@ module.exports = (client) => {
             } else {
                 /** If found and valid, serve from cache */
                 mods = mods[0];
-                console.log('Got mods old');
             }
             return mods;
         } catch (e) { 
@@ -115,7 +114,6 @@ module.exports = (client) => {
                 /** If found and valid, serve from cache */
                 guildGG = guildGG[0];
             }
-            // console.log('From Cache: ' + guildGG);
             return guildGG;      
         } catch (e) { 
             throw e; 
