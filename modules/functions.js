@@ -920,7 +920,7 @@ module.exports = (client) => {
             for (let ix=0; ix < patronIDs.length; ix++) {
                 const allyCodes = await client.getAllyCode(null, patronIDs[ix].toString());
                 if (allyCodes.length) {
-                    await client.swgohAPI.updatePlayer(allyCodes[0]);
+                    await client.swgohAPI.player(allyCodes[0]);
                 }
             }
         }
