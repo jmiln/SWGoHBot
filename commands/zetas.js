@@ -61,14 +61,16 @@ class Zetas extends Command {
         const zetas = {};
         let count = 0;
         player.roster.forEach(char => {
+            // If they are not looking for a specific character, check em all
             if (!character || character.uniqueName === char.defId) {
                 char.skills.forEach(skill => {
                     if (skill.isZeta && skill.tier === 8) {
                         count++;
+                        // If the character is not already listed, add it
                         if (!zetas[char.name]) {
-                            zetas[char.name] = ['`[' + skill.type.charAt(0) + ']` ' + skill.name];
+                            zetas[char.name] = ['`[' + skill.defId.charAt(0) + ']` ' + skill.name];
                         } else {
-                            zetas[char.name].push('`[' + skill.type.charAt(0) + ']` ' + skill.name);
+                            zetas[char.name].push('`[' + skill.defId.charAt(0) + ']` ' + skill.name);
                         }
                     }
                 });
