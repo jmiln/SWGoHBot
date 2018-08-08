@@ -31,8 +31,8 @@ class GuildSearch extends Command {
         const reverse = options.flags.reverse;
 
         // If there's enough elements in searchChar, and it's in the format of a number*
-        if (searchChar.length > 0 && searchChar[searchChar.length-1].match(/\d\*/)) {
-            starLvl = parseInt(searchChar.pop().replace('*', ''));
+        if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {
+            starLvl = parseInt(searchChar.pop());
             if (starLvl < 0 || starLvl > 7) {
                 return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_BAD_STAR'));
             }
