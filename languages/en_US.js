@@ -797,6 +797,23 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Resources Command
+            COMMAND_RESOURCES_HEADER: 'SWGoH Resources',
+            COMMAND_RESOURCES_INVALID_CATEGORY: (list) => `Invalid category. Please choose from one of these: \`${list}\``,
+            COMMAND_RESOURCES_HELP: {
+                description: "Shows useful SWGoH resources.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';resources <category>',
+                        args: {
+                            "category": "One of the available categories. (Bots, Game Changers, Websites)"
+                        }
+                    }
+                ]
+            },
+
             // Setconf Command
             COMMAND_SETCONF_MISSING_PERMS: `Sorry, but either you're not an admin, or your server leader has not set up the configs.`,
             COMMAND_SETCONF_MISSING_OPTION: `You must select a config option to change.`,

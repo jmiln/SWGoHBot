@@ -16,14 +16,13 @@ class Resources extends Command {
         const resources = client.resources;
         let categories = Object.keys(resources);
         if (!cat.length) {
-            console.log(categories);
-            return message.channel.send('Invalid category. Please choose from one of these: `' + categories.join(', ') + '`');
+            return message.channel.send(message.language.get('COMMAND_RESOURCES_INVALID_CATEGORY', categories.join(', ')));
         }
         cat = cat.join(' ');
-        categories = categories.filter(c => c.toLowerCase() === cat.toLowerCase());
-        if (!categories.length) {
-            return message.channel.send('Invalid category. Please choose from one of these: `' + categories.join(', ') + '`');
+        if (!categories.filter(c => c.toLowerCase() === cat.toLowerCase()).length) {
+            return message.channel.send(message.language.get('COMMAND_RESOURCES_INVALID_CATEGORY', categories.join(', ')));
         } 
+        categories = categories.filter(c => c.toLowerCase() === cat.toLowerCase());
         const category = categories[0];
         const fieldArr = [];
         Object.keys(resources[category]).forEach(res => {
@@ -56,7 +55,7 @@ class Resources extends Command {
         });
         return message.channel.send({embed: {
             author: {
-                name: "SWGoH Resources"
+                name: message.language.get('COMMAND_RESOURCES_HEADER')
             },
             fields: fields
         }});
