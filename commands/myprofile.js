@@ -16,7 +16,7 @@ class MyProfile extends Command {
         const lang = message.guildSettings.swgoghLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY'));
+            return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY', message.guildSettings.prefix));
         } else if (allyCodes.length > 1) {
             return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific');
         }

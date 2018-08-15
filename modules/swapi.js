@@ -26,7 +26,7 @@ module.exports = (client) => {
             /** Check if existance and expiration */
             if ( !mods || !mods[0] || isExpired(mods[0].updated, playerCooldown) ) { 
                 /** If not found or expired, fetch new from API and save to cache */
-                mods = await swgoh.fetchPlayer(allycode, 'mods');
+                mods = await swgoh.fetchPlayer(allycode, 'mods', 'ENG_US');
                 mods = await cache.put('swapi', 'mods', {allyCode:allycode}, mods);
             } else {
                 /** If found and valid, serve from cache */
@@ -76,10 +76,10 @@ module.exports = (client) => {
             /** Check if existance and expiration */
             if ( !guild || !guild[0] || isExpired(guild[0].updated, guildCooldown) ) { 
                 /** If not found or expired, fetch new from API and save to cache */
-                guild = await swgoh.fetchGuild(allycode, 'details');
+                guild = await swgoh.fetchGuild(allycode, 'details', 'ENG_US');
                 guild = await cache.put('swapi', 'guilds', {name:guild.name}, guild);
 
-                let roster = await swgoh.fetchGuild(allycode, 'roster');
+                let roster = await swgoh.fetchGuild(allycode, 'roster', 'ENG_US');
                 for ( const p of roster ) {
                     cache.put('swapi', 'players', {allyCode:p.allyCode}, p);
                 }
@@ -146,6 +146,6 @@ module.exports = (client) => {
 
     function isExpired( updated, cooldown ) {
         const diff = client.convertMS( new Date() - new Date(updated) );
-        return diff.hour >= cooldown;    
+        return diff.day > 0 || diff.hour >= cooldown;    
     }
 };

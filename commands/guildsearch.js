@@ -180,12 +180,14 @@ class GuildSearch extends Command {
                 });
             }
         });
-
         message.channel.send({embed: {
             author: {
                 name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', player.guildName, character.name)
             },
-            fields: fields
+            fields: fields,
+            footer: {
+                text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(guild.updated, message))
+            }
         }});
     }
 }

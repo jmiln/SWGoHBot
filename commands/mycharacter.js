@@ -107,7 +107,7 @@ class MyCharacter extends Command {
                     a.tier = 'Lvl ' + a.tier;
                 }
                 try {
-                    abilities[`${a.type.toLowerCase()}`].push(`\`${a.tier} [${a.type.charAt(0)}]\` ${a.name}`);
+                    abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.name}`);
                 } catch (e) {
                     console.log('ERROR: bad ability type: ' + inspect(a));
                 }
