@@ -1026,7 +1026,7 @@ module.exports = class extends Language {
             // Squads Command
              COMMAND_SQUADS_NO_LIST: (list) => `Bitte waehle eine Kategorie aus folgender Liste: \n\`${list}\``,
              COMMAND_SQUADS_SHOW_LIST: (name, list) => `In ${name}, bitte waehle die Nummer entsprechend der Phase die du sehen moechtest: \n${list}`,
-             COMMAND_SQUADS_FIELD_HEADER: 'Teams/ Charaktere',
+             COMMAND_SQUADS_FIELD_HEADER: 'Teams / Charaktere',
              COMMAND_SQUAD_INVALID_PHASE: (list) => `Ungueltige Phase, bitte waehle eine Nummer aus folgender Liste: \n${list}`,
              COMMAND_SQUADS_HELP: {
                  description: "Zeigt Charaktere/Teams die fuer verschiedene Events nuetzlich sind.",
