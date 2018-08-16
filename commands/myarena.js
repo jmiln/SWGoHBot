@@ -1,5 +1,5 @@
 const Command = require('../base/Command');
-const {inspect} = require('util');
+const {inspect} = require('util'); // eslint-disable-line no-unused-vars
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 class MyArena extends Command {
@@ -16,7 +16,7 @@ class MyArena extends Command {
         const lang = message.guildSettings.swgoghLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY'));
+            return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY', message.guildSettings.prefix));
         } else if (allyCodes.length > 1) {
             return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific');
         }
@@ -24,7 +24,8 @@ class MyArena extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.getPlayer(allyCode, lang);
+            // player = await client.swgohAPI.getPlayer(allyCode, lang);
+            player = await client.swgohAPI.player(allyCode, lang);
         } catch (e) {
             console.log('Broke getting player in myarena: ' + e);
         }
@@ -36,6 +37,10 @@ class MyArena extends Command {
         if (player.arena.ship.squad.length) {
             const sArena = [];
             player.arena.ship.squad.forEach((ship, ix) => {
+                if (ship.name === ship.name.toUpperCase()) {    // If it's the ID, get the name
+                    const filt = client.ships.filter(s => s.uniqueName === ship.name);
+                    ship.name = filt.length ? filt[0].name : ship.name;
+                }
                 sArena.push(`\`${sPositions[ix]}\` ${ship.name}`);
             });
             fields.push({
@@ -49,6 +54,10 @@ class MyArena extends Command {
         player.arena.char.squad.forEach((char, ix) => {
             const thisChar = player.roster.filter(c => c.id === char.id)[0];        // Get the character
             const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
+            if (char.name === char.name.toUpperCase()) {
+                const filt = client.characters.filter(c => c.uniqueName === char.name);
+                char.name = filt.length ? filt[0].name : char.name;
+            }
             cArena.push(`\`${positions[ix]}\` ${'z'.repeat(thisZ.length)}${char.name}`);
         });
         fields.push({
@@ -63,7 +72,7 @@ class MyArena extends Command {
                 name: message.language.get('COMMAND_MYARENA_EMBED_HEADER', player.name)
             },
             footer: {
-                text: message.language.get('COMMAND_MYARENA_EMBED_FOOTER', new Date().toISOString().replace(/T/g,' ').replace(/\..*/g,''))
+                text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
             },
             fields: fields
         }});

@@ -14,24 +14,23 @@ class MyMods extends Command {
     }
 
     async run(client, message, [userID, ...searchChar]) { // eslint-disable-line no-unused-vars
-        // const modTypes = message.language.get('BASE_MOD_TYPES');
-        const lang = message.guildSettings.swgohLanguage;
-        // TODO Figure out why the mod icons aren's working
-        // const STATMOD_SLOT_01 = client.emojis.find("name", "modSquare");
-        // const STATMOD_SLOT_02 = client.emojis.find("name", "modArrow");
-        // const STATMOD_SLOT_03 = client.emojis.find("name", "modDiamond");
-        // const STATMOD_SLOT_04 = client.emojis.find("name", "modTriangle");
-        // const STATMOD_SLOT_05 = client.emojis.find("name", "modCircle");
-        // const STATMOD_SLOT_06 = client.emojis.find("name", "modCross");
-        //
-        // const icons = {
-        //     'SQUARE':   STATMOD_SLOT_01 ? STATMOD_SLOT_01 : "Square",
-        //     'ARROW':    STATMOD_SLOT_02 ? STATMOD_SLOT_02 : "Arrow",
-        //     'DIAMOND':  STATMOD_SLOT_03 ? STATMOD_SLOT_03 : "Diamond",
-        //     'TRIANGLE': STATMOD_SLOT_04 ? STATMOD_SLOT_04 : "Triangle",
-        //     'CIRCLE':   STATMOD_SLOT_05 ? STATMOD_SLOT_05 : "Circle",
-        //     'CROSS':    STATMOD_SLOT_06 ? STATMOD_SLOT_06 : "Cross"
-        // };
+        // const lang = message.guildSettings.swgohLanguage;
+
+        const STATMOD_SLOT_01 = await client.getEmoji('362066327101243392');
+        const STATMOD_SLOT_02 = await client.getEmoji('362066325474115605');
+        const STATMOD_SLOT_03 = await client.getEmoji('362066326925082637');
+        const STATMOD_SLOT_04 = await client.getEmoji('362066327168352257');
+        const STATMOD_SLOT_05 = await client.getEmoji('362066326996385812');
+        const STATMOD_SLOT_06 = await client.getEmoji('362066327516610570');
+
+        const icons = {
+            'SQUARE':   STATMOD_SLOT_01 ? STATMOD_SLOT_01 : "Square",
+            'ARROW':    STATMOD_SLOT_02 ? STATMOD_SLOT_02 : "Arrow",
+            'DIAMOND':  STATMOD_SLOT_03 ? STATMOD_SLOT_03 : "Diamond",
+            'TRIANGLE': STATMOD_SLOT_04 ? STATMOD_SLOT_04 : "Triangle",
+            'CIRCLE':   STATMOD_SLOT_05 ? STATMOD_SLOT_05 : "Circle",
+            'CROSS':    STATMOD_SLOT_06 ? STATMOD_SLOT_06 : "Cross"
+        };
 
         if (searchChar) searchChar = searchChar.join(' ');
 
@@ -48,6 +47,16 @@ class MyMods extends Command {
             searchChar = searchChar.trim();
             userID = message.author.id;
         }
+
+        if (!client.users.get(userID)) {
+            return message.channel.send(message.language.get('BASE_SWGOH_NO_USER'));
+        }
+        const ally = await client.database.models.allyCodes.findOne({where: {id: userID}});
+        if (!ally) {
+            return message.channel.send(message.language.get('BASE_SWGOH_NOT_REG', client.users.get(userID).tag));
+        }
+        const allyCode = ally.dataValues.allyCode;
+
         const chars = client.findChar(searchChar, client.characters);
         let character;
         if (!searchChar) {
@@ -67,20 +76,11 @@ class MyMods extends Command {
             character = chars[0];
         }
 
-        if (!client.users.get(userID)) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NO_USER'));
-        }
-        const ally = await client.database.models.allyCodes.findOne({where: {id: userID}});
-        if (!ally) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NOT_REG', client.users.get(userID).tag));
-        }
-        const allyCode = ally.dataValues.allyCode;
-
-
-
         let mods;
         try {
-            mods = await client.swgohAPI.getPlayerMods(allyCode, lang, 6);
+            // mods = await client.swgohAPI.fetchPlayer(allyCode, 'mods', lang);
+            // mods = await client.swgohAPI.fetchPlayer(allyCode, 'mods');
+            mods = await client.swgohAPI.mods(allyCode);
         } catch (e) {
             console.log(e);
         }
@@ -91,7 +91,7 @@ class MyMods extends Command {
         charMods.forEach(mod => {
             slots[mod.slot] = {
                 stats: [],
-                type: mod.set.replace('-', ' ').toProperCase(),
+                type: mod.set.replace('-', ' ').replace('critchance', 'crit chance').toProperCase(),
                 lvl: mod.level,
                 pip: mod.pips
             };
@@ -116,7 +116,7 @@ class MyMods extends Command {
         Object.keys(slots).forEach(mod => {
             const stats = slots[mod].stats;
             fields.push({
-                name: `${slots[mod].type} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                name: `${icons[mod.toUpperCase()]} ${slots[mod].type} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
                 value: `**${stats.shift()}**\n${stats.join('\n')}\n\`${'-'.repeat(28)}\``,
                 inline: true
             });
@@ -127,7 +127,10 @@ class MyMods extends Command {
                 name: `${mods.name}'s ${character.name}`,
                 icon_url: character.avatarURL
             },
-            fields: fields
+            fields: fields,
+            footer: {
+                text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(mods.updated, message))
+            }
         }});
     }
 }

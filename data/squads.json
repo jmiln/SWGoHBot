@@ -1474,7 +1474,7 @@
                         "url": "",
                         "team": [
                             "KYLORENUNMASKED:L",
-                            "KYLOREN:U",
+                            "KYLOREN:S",
                             "FIRSTORDERTROOPER:U",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDEREXECUTIONER"
@@ -1538,7 +1538,7 @@
                         "note": "4%-6% [1,440,000-2,160,000]",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L",
+                            "COMMANDERLUKESKYWALKER",
                             "HANSOLO:U1",
                             "DEATHTROOPER",
                             "SABINEWRENS3",
@@ -1550,7 +1550,7 @@
                         "note": "4%-6% [1,440,000-2,160,000]",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L",
+                            "COMMANDERLUKESKYWALKER",
                             "HANSOLO:U1",
                             "DEATHTROOPER",
                             "PAO",
@@ -1562,7 +1562,7 @@
                         "note": "4%-6% [1,440,000-2,160,000]",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L",
+                            "COMMANDERLUKESKYWALKER",
                             "HANSOLO:U1",
                             "DEATHTROOPER",
                             "ANAKINKNIGHT",
@@ -1574,7 +1574,7 @@
                         "note": "4%-6% [1,440,000-2,160,000]",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L",
+                            "COMMANDERLUKESKYWALKER",
                             "HANSOLO:U1",
                             "DEATHTROOPER",
                             "SABINEWRENS3",
@@ -1586,7 +1586,7 @@
                         "note": "4%-6% [1,440,000-2,160,000]",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L",
+                            "COMMANDERLUKESKYWALKER",
                             "HANSOLO:U1",
                             "DEATHTROOPER",
                             "PAO",
@@ -1598,7 +1598,7 @@
                         "note": "4%-6% [1,440,000-2,160,000]",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L",
+                            "COMMANDERLUKESKYWALKER",
                             "HANSOLO:U1",
                             "DEATHTROOPER",
                             "ANAKINKNIGHT",
@@ -1877,6 +1877,7 @@
                             "EMPERORPALPATINE",
                             "GARSAXON",
                             "VEERS",
+                            "COLONELSTARCK",
                             "GRANDADMIRALTHRAWN",
                             "GRANDMOFFTARKIN",
                             "IMPERIALPROBEDROID",
@@ -3287,7 +3288,7 @@
                         "url": "",
                         "team": [
                             "HERASYNDULLAS3:S",
-                            "CHOPPERS3:S",
+                            "CHOPPERS3",
                             "EZRABRIDGERS3:S",
                             "ZEBS3:S",
                             "KANANJARRUSS3:S",
@@ -3455,7 +3456,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "GRANDADMIRALTHRAWN",
+                            "GRANDADMIRALTHRAWN:L:U",
                             "EMPERORPALPATINE:L",
                             "R2D2_LEGENDARY:U1:U2",
                             "BB8:U1",

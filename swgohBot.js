@@ -15,8 +15,9 @@ client.config = require('./config.js');
 // Attach the character and team files to the client so I don't have to reopen em each time
 client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
 client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
-client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
+// client.teams = JSON.parse(fs.readFileSync("data/teams.json"));
 client.squads = JSON.parse(fs.readFileSync("data/squads.json"));
+client.resources = JSON.parse(fs.readFileSync("data/resources.json"));
 client.patrons = [];
 const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";
@@ -85,11 +86,23 @@ client.database.authenticate().then(async () => {
 });
 
 const init = async () => {
-    // If we have the magic, use it
-    if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
-        const swgohService = require('./'+client.config.swgohAPILoc);
-        client.swgohAPI = new swgohService(client.config.swgohSettings);
+    if (client.config.api_swgoh_help) {
+        // Set up the caching
+        const MongoClient = require('mongodb').MongoClient;
+        client.mongo = await MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true } );
+        client.cache = await require('./modules/cache.js')(client.mongo);
+
+        // Load up the api connector/ helpers
+        const SwgohHelp = require('api-swgoh-help');
+        client.swgoh = new SwgohHelp(client.config.api_swgoh_help);
+        client.swgohAPI = require('./modules/swapi.js')(client);
     }
+    // If we have the magic, use it
+    // if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
+    //     const swgohService = require('./'+client.config.swgohAPILoc);
+    //     client.swgohAPI = new swgohService(client.config.swgohSettings);
+    // }
+
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");

@@ -71,7 +71,8 @@ class MyCharacter extends Command {
 
         let player = null;
         try {
-            player = await client.swgohAPI.getPlayer( allyCode, lang, 6 );
+            // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
+            player = await client.swgohAPI.player(allyCode, lang);
         } catch (e) {
             console.error(e);
         }
@@ -79,7 +80,7 @@ class MyCharacter extends Command {
         const thisChar = player.roster.filter(c => (c.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() === character.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() || c.name === character.uniqueName));
 
         thisChar.forEach(c => {
-            let gearStr = ['   [0]  [3]', '[1]        [4]', '   [2]  [5]'].join('\n');
+            let gearStr = ['   [0]  [3]', '[1]       [4]', '   [2]  [5]'].join('\n');
             const abilities = {
                 basic: [],
                 special: [],
@@ -90,7 +91,8 @@ class MyCharacter extends Command {
             c.equipped.forEach(e => {
                 gearStr = gearStr.replace(e.slot, 'X');
             });
-            gearStr = gearStr.replace(/[0-9]/g, '   ');
+            gearStr = gearStr.replace(/[0-9]/g, '  ');
+            gearStr = client.expandSpaces(gearStr);
             c.skills.forEach(a => {
                 if (a.tier === 8 || (a.tier === 3 && a.type === 'Contract')) {
                     if (a.isZeta) {
@@ -105,7 +107,7 @@ class MyCharacter extends Command {
                     a.tier = 'Lvl ' + a.tier;
                 }
                 try {
-                    abilities[`${a.type.toLowerCase()}`].push(`\`${a.tier} [${a.type.charAt(0)}]\` ${a.name}`);
+                    abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.name}`);
                 } catch (e) {
                     console.log('ERROR: bad ability type: ' + inspect(a));
                 }
@@ -117,7 +119,6 @@ class MyCharacter extends Command {
                 .concat(abilities.contract);
             const mods = {};
             const sets = {};
-            // console.log(c.mods);
             c.mods.forEach(m => {
                 if (!sets[m.set]) {
                     sets[m.set] = {};
@@ -194,7 +195,6 @@ class MyCharacter extends Command {
                             set.lvls.splice(set.lvls.indexOf(15), 1);
                         }
                     }
-                    // console.log(set);
                 }
             });
             const setOut = [];
@@ -235,7 +235,10 @@ class MyCharacter extends Command {
                         name: 'Mod stats',
                         value: modOut.length ? modOut.join('\n') : 'No mod stats'
                     }
-                ]
+                ],
+                footer: {
+                    text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
+                }
             }});
         });
     }

@@ -450,6 +450,16 @@
         "combat_type": 1
     },
     {
+        "name": "Embo",
+        "base_id": "EMBO",
+        "pk": 290,
+        "url": "https://swgoh.gg/characters/embo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_embo.png",
+        "power": 23329,
+        "description": "Deadly Bounty Hunter Attacker that consumes his Protection to boost his damage",
+        "combat_type": 1
+    },
+    {
         "name": "Emperor Palpatine",
         "base_id": "EMPERORPALPATINE",
         "pk": 180,

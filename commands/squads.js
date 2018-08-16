@@ -20,12 +20,12 @@ class Squads extends Command {
             list = user;
         } else {
             try {
-                player = await client.swgohAPI.getPlayer(allyCodes[0], lang);
+                player = await client.swgohAPI.player(allyCodes[0], lang);
             } catch (e) {
                 console.log('Broke getting player in squads: ' + e);
             }
         }
-        // console.log(player.roster);
+        // console.log(player.roster.filter(c => c.name.includes('Anakin')));
 
         const lists = Object.keys(squadList).filter(l => !['psummary', 'gsummary'].includes(l));
 
@@ -96,14 +96,16 @@ class Squads extends Command {
             } else {
                 characters.forEach(c => {
                     try {
-                        const ch = player.roster.filter(char => char.charID === c.split(':')[0])[0];
+                        const ch = player.roster.filter(char => char.defId === c.split(':')[0])[0];
                         if (!ch) {
                             outStr += '`✗|✗|✗` ' + client.characters.filter(char => char.uniqueName === c.split(':')[0])[0].name + '\n';
+                        } else if (ch.rarity >= stars && ch.gear >= gear && ch.level >= level) {
+                            outStr += '`✓|✓|✓` **' + ch.name + '**\n'; 
                         } else {
                             outStr += ch.rarity >= stars ? '`✓|' : '`✗|';
                             outStr += ch.gear   >= gear  ? '✓|' : '✗|';
                             outStr += ch.level  >= level ? '✓` ' : '✗` ';
-                            outStr += ch.name+ '\n';
+                            outStr += ch.name + '\n';
                         }
                     } catch (e) {
                         console.log(c + ': ' + e);

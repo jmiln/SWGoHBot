@@ -1977,7 +1977,9 @@
         "name": "Bastila Shan",
         "uniqueName": "BASTILASHAN",
         "aliases": [
-            "Bastila Shan"
+            "Bastila Shan",
+            "Bastilla",
+            "Shan"
         ],
         "nameVariant": [
             "Bastila Shan"
@@ -2003,6 +2005,20 @@
                 "triangle": "Offense / Protection",
                 "circle": "Protection",
                 "cross": "Offense / Protection"
+            },
+            "Bastila Shan": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Protection",
+                "circle": "Protection",
+                "cross": "Offense/ Protection",
+                "source": "Crouching Rancor"
             }
         },
         "defaultMods": {},
@@ -8653,8 +8669,8 @@
                 "Mk 12 ArmaTek Tactical Data",
                 "Mk 12 ArmaTek Visor",
                 "Mk 12 ArmaTek Cybernetics",
-                "Unknown Gear",
-                "Unknown Gear",
+                "Mk 12 ArmaTek Thermal Detonator",
+                "Mk 12 ArmaTek Stun Gun",
                 "Unknown Gear"
             ]
         },
@@ -9984,6 +10000,208 @@
             "Eeth Koth"
         ],
         "defaultMods": {}
+    },
+    {
+        "name": "Embo",
+        "uniqueName": "EMBO",
+        "aliases": [
+            "Embo"
+        ],
+        "nameVariant": [
+            "Embo"
+        ],
+        "url": "https://swgoh.gg/characters/embo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_embo.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Scoundrel"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BioTech Implant",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 3 BAW Armor Mod",
+                "Mk 3 Loronar Power Cell",
+                "Mk 3 BAW Armor Mod"
+            ],
+            "Gear 3": [
+                "Mk 4 Loronar Power Cell",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 5 BioTech Implant",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 BlasTech Weapon Mod"
+            ],
+            "Gear 4": [
+                "Mk 2 Sienar Holo Projector",
+                "Mk 2 Sienar Holo Projector",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 5 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 5": [
+                "Mk 6 BAW Armor Mod",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 6 Fabritech Data Pad",
+                "Mk 4 Nubian Design Tech",
+                "Mk 5 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 6": [
+                "Mk 2 Athakam Medpac",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 5 SoroSuub Keypad"
+            ],
+            "Gear 7": [
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 3 Chedak Comlink",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 8": [
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad"
+            ],
+            "Gear 9": [
+                "Mk 4 Athakam Medpac",
+                "Mk 6 Nubian Design Tech",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 10": [
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 8 BioTech Implant",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 9 BlasTech Weapon Mod",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 9 Fabritech Data Pad"
+            ],
+            "Gear 11": [
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 8 BioTech Implant",
+                "Mk 9 BlasTech Weapon Mod",
+                "Mk 4 Czerka Stun Cuffs"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Key Pad",
+                "Mk 12 ArmaTek Holo Lens",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Dismantling Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Dispel all buffs and deal Physical damage to target enemy.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Kyuzo War Helmet": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to target enemy. This attack deals bonus damage equal to 35% of Embo's Max Protection. Then, Embo loses 50% Protection.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "The Quiet Assassin": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "All Bounty Hunters gain +50% Counter Chance and +50% Health Steal. When a Bounty Hunter ally scores a Critical Hit during their turn, they gain Offense Up for 1 turn. When Embo is in the Leader slot, and not the Ally slot, the following Contract is active:",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Way of the Kyuzo": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Embo can't be Critically Hit. Embo also has +30% Offense when he has Protection and +30% Critical Chance when he has no Protection. When Embo receives damage from an enemy's attack, if he has no Protection, he gains Foresight for 2 turns.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Embo's Payout": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever Embo receives Rewards from a Contract, he also gains the following Payout. (Contracts are granted by certain Bounty Hunter Leader Abilities.)",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 22,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 23329,
+            "Strength": 850,
+            "Agility": 1243,
+            "Intelligence": 678,
+            "Speed": 152,
+            "Physical Damage": 3088,
+            "Physical Critical Rating": 911,
+            "Special Damage": 1732,
+            "Special Critical Rating": 40,
+            "Armor Penetration": 114,
+            "Resistance Penetration": 0,
+            "Potency": 36,
+            "Health": 27786,
+            "Armor": 271,
+            "Resistance": 188,
+            "Tenacity": 40,
+            "Health Steal": 15,
+            "Protection": 32,
+            "activation": 25
+        }
     },
     {
         "name": "Emperor Palpatine",
@@ -18624,7 +18842,8 @@
             "Jolee Bindo"
         ],
         "nameVariant": [
-            "Jolee Bindo"
+            "Jolee Bindo",
+            "Jolee Bido"
         ],
         "url": "https://swgoh.gg/characters/jolee-bindo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_joleebindo.png",
@@ -18634,7 +18853,22 @@
             "Jedi",
             "Old Republic"
         ],
-        "mods": {},
+        "mods": {
+            "Jolee Bindo": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Protection",
+                "cross": "Health/ Protection",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [
@@ -21879,7 +22113,7 @@
             "Mission Vao"
         ],
         "url": "https://swgoh.gg/characters/mission-vao/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_mission.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -22042,7 +22276,7 @@
             "Power": 20349,
             "Strength": 780,
             "Agility": 1390,
-            "Intelligence": 695,
+            "Intelligence": 0,
             "Speed": 146,
             "Physical Damage": 3042,
             "Physical Critical Rating": 1018,
@@ -29936,7 +30170,7 @@
             "T3-M4"
         ],
         "url": "https://swgoh.gg/characters/t3-m4/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_t3m4.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -33434,7 +33668,7 @@
             "Zaalbar"
         ],
         "url": "https://swgoh.gg/characters/zaalbar/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zaalbar.png",
         "side": "light",
         "factions": [
             "Old Republic",

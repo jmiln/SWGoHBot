@@ -16,7 +16,7 @@ class MyProfile extends Command {
         const lang = message.guildSettings.swgoghLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY'));
+            return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY', message.guildSettings.prefix));
         } else if (allyCodes.length > 1) {
             return message.channel.send('Found ' + allyCodes.length + ' matches. Please try being more specific');
         }
@@ -24,7 +24,8 @@ class MyProfile extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.getPlayer(allyCode, lang, 6);
+            // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
+            player = await client.swgohAPI.player(allyCode, lang);
         } catch (e) {
             console.log('Broke getting player in myprofile: ' + e);
         }
@@ -61,7 +62,6 @@ class MyProfile extends Command {
             author: {
                 name: message.language.get('COMMAND_MYPROFILE_EMBED_HEADER', player.name, player.allyCode),
             },
-            //added just pure player total GP to display. not sure if in the correct place tho.
             description: message.language.get('COMMAND_MYPROFILE_DESC', player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, player.gpFull.toLocaleString()),
             footer: {
                 text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))

@@ -24,8 +24,11 @@ class Zetas extends Command {
         } else {
             // If they're just looking for a character for themselves, get the char
             searchChar = [userID].concat(searchChar);
-            allyCode = await client.getAllyCode(message, message.author.id);
-            userID = message.author.id;
+            const allyCodes = await client.getAllyCode(message, message.author.id);
+            if (!allyCodes.length) {
+                return message.channel.send(message.language.get('BASE_SWGOH_NO_USER', message.guildSettings.prefix));
+            }
+            allyCode = allyCodes[0];
         }
         
         searchChar = searchChar.join(' ');
@@ -49,7 +52,7 @@ class Zetas extends Command {
 
         let player;
         try {
-            player = await client.swgohAPI.getPlayer(allyCode, 'ENG_US', 6);
+            player = await client.swgohAPI.player(allyCode);
         } catch (e) {
             console.log('Error: Broke while trying to get player data in zetas: ' + e);
             return msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
@@ -58,14 +61,20 @@ class Zetas extends Command {
         const zetas = {};
         let count = 0;
         player.roster.forEach(char => {
-            if (!character || character.name === char.name) {
+            // If they are not looking for a specific character, check em all
+            if (!character || character.uniqueName === char.defId) {
+                if (char.name === char.name.toUpperCase()) {
+                    const filt = client.characters.filter(c => c.uniqueName === char.name);
+                    char.name = filt.length ? filt[0].name : char.name;
+                }
                 char.skills.forEach(skill => {
                     if (skill.isZeta && skill.tier === 8) {
                         count++;
+                        // If the character is not already listed, add it
                         if (!zetas[char.name]) {
-                            zetas[char.name] = ['`[' + skill.type.charAt(0) + ']` ' + skill.name];
+                            zetas[char.name] = ['`[' + skill.defId.charAt(0) + ']` ' + skill.name];
                         } else {
-                            zetas[char.name].push('`[' + skill.type.charAt(0) + ']` ' + skill.name);
+                            zetas[char.name].push('`[' + skill.defId.charAt(0) + ']` ' + skill.name);
                         }
                     }
                 });
@@ -84,16 +93,13 @@ class Zetas extends Command {
             desc.push('`;zeta <character>` for more info.');
         } else {
             author.name = `${player.name}'s ${character.name} (${count})`;
+            author.icon_url = character.avatarURL;
             if (!zetas[sorted[0]] || zetas[sorted[0]].length === 0) {
                 desc.push(message.language.get('COMMAND_ZETA_NO_ZETAS'));
             } else {
                 desc.push(zetas[sorted[0]].join('\n'));
             }
         }
-        const auth = message.guild.members.get(userID);
-        if (auth) {
-            author.icon_url = auth.user.avatarURL;
-        } 
         
         const lastUpdated = moment.duration(Math.abs(moment(player.updated).diff(moment()))).format("d [days], h [hrs], m [min]");
 

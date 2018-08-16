@@ -368,7 +368,7 @@ module.exports = class extends Language {
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: 'For more info on a specific guild:',
             COMMAND_GUILDS_HELP: {
-                description: "Shows the top guilds and everyone that's registered in yours.",
+                description: "Shows everyone that's in your guild/ some basic stats.",
                 actions: [
                     {
                         action: "",
@@ -792,6 +792,23 @@ module.exports = class extends Language {
                         usage: ';reloaddata <option>',
                         args: {
                             "option": "What you're wanting to reload ( commands | data | events | function )."
+                        }
+                    }
+                ]
+            },
+
+            // Resources Command
+            COMMAND_RESOURCES_HEADER: 'SWGoH Resources',
+            COMMAND_RESOURCES_INVALID_CATEGORY: (list) => `Invalid category. Please choose from one of these: \`${list}\``,
+            COMMAND_RESOURCES_HELP: {
+                description: "Shows useful SWGoH resources.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';resources <category>',
+                        args: {
+                            "category": "One of the available categories. (Bots, Game Changers, Websites)"
                         }
                     }
                 ]

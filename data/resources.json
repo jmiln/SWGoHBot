@@ -1,0 +1,75 @@
+{
+    "Bots": {
+        "AP-5R": {
+            "Desc": "Useful player reporting and stats",
+            "Discord": "https://discord.gg/4GJ8Ty2",
+            "Invite": "https://discordapp.com/oauth2/authorize?client_id=355873395164053512&scope=bot&permissions=511040"
+        },
+        "Crouching Rancor": {
+            "Desc": "Useful SWGoH tools and calculators",
+            "Discord": "https://discord.gg/nyWgbU3",
+            "Invite": "https://discordapp.com/oauth2/authorize?client_id=436693905736466432&permissions=0&scope=bot"
+        },
+        "DSR Bot": {
+            "Desc": "Shows teams and player readiness for the sith raid",
+            "Invite": "https://discordapp.com/oauth2/authorize?client_id=436693905736466432&permissions=0&scope=bot"
+        },
+        "MouseBot": {
+            "Desc": "Reports on player's rosters, and has some calculators",
+            "Discord": "https://discord.gg/VFUatwk",
+            "Invite": "https://discordapp.com/api/oauth2/authorize?client_id=213381103287926785&permissions=1879395392&scope=bot"
+        },
+        "SWGoHBot": {
+            "Desc": "Overall SWGoH utilities bot",
+            "Discord": "https://discord.gg/FfwGvhr",
+            "Website": "https://swgohbot.com",
+            "Invite": "https://swgohbot.com/invite"
+        }
+    },
+    "Game Changers": {
+        "AhnaldT101": {
+            "YouTube": "https://www.youtube.com/user/AhnaldT101",
+            "Discord": "https://discord.gg/kwr5jzv",
+            "Other Links": {
+                "Hall of Fame": "http://www.swgohub.com/",
+                "Ships Hall of Fame": "http://www.swgohub.com/ranking_tables/ships"
+            }
+        }
+    },
+    "Websites": {
+        "Crouching Rancor": {
+            "Desc": "Mod suggestions for your characters and other tools",
+            "Site": "http://apps.crouchingrancor.com/"
+        },
+        "Echo Base": {
+            "Desc": "Super useful webapp/ bot for territory battle planning.",
+            "Site": "https://echobase.app/"
+        },
+        "Mods Optimizer": {
+            "Desc": "Find the best mods for your characters",
+            "Site": "https://mods-optimizer.swgoh.grandivory.com/"
+        },
+        "SWGoH.gg": {
+            "Desc": "Database of everything SWGoH and more!",
+            "Site": "https://swgoh.gg/"
+        },
+        "SWGoH.help": {
+            "Desc": "The successor to http://petebutler.co.uk/mrpi/",
+            "Site": "https://swgoh.help/",
+            "Discord": "https://discord.gg/hGjtStC"
+        },
+        "SWGoH.life": {
+            "Desc": "A collection of useful tools and info",
+            "Site": "http://www.swgoh.life/"
+        },
+        "SWGoH Forumns": {
+            "Desc": "The official forumns for SWGoH",
+            "Site": "https://forums.galaxy-of-heroes.starwars.ea.com/",
+            "Other Links": {
+                "Acronyms": "https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh",
+                "More Acronyms": "https://forums.galaxy-of-heroes.starwars.ea.com/discussion/117965/resource-community-the-players-handbook-on-acronyms-in-swgoh",
+                "Guide Index": "https://forums.galaxy-of-heroes.starwars.ea.com/discussion/152788/guides-index" 
+            }
+        }
+    }
+}
