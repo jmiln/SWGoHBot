@@ -419,6 +419,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Not Activated (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Star (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Please wait while I search your guild's roster.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character.",
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
                 actions: [

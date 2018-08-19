@@ -87,7 +87,7 @@ class GuildSearch extends Command {
         try {
             player = await client.swgohAPI.player(userID);
         } catch (e) {
-            console.log('ERROR: ' + e);
+            console.log('ERROR(GS) getting player: ' + e);
         }
 
 
@@ -95,7 +95,7 @@ class GuildSearch extends Command {
         try {
             guild = await client.swgohAPI.guildGG(userID);
         } catch (e) {
-            console.log('ERROR: ' + e);
+            console.log('ERROR(GS) getting guild: ' + e);
         }
 
         if (!guild) {
@@ -104,6 +104,18 @@ class GuildSearch extends Command {
 
         // Get the list of people with that character
         const guildChar = guild[character.uniqueName];
+
+        if (!guildChar || guildChar.length === 0) {
+            return msg.edit({embed: {
+                author: {
+                    name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', player.guildName, character.name)
+                },
+                description: message.language.get('COMMAND_GUILDSEARCH_NO_CHARACTER'),
+                footer: {
+                    text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(guild.updated, message))
+                }
+            }});
+        }
         
         // Fill in everyone that does not have it since everyone is guaranteed to have jedi consular
         guild['JEDIKNIGHTCONSULAR'].forEach(j => {

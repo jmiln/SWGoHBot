@@ -191,7 +191,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "KYLOREN",
                             "PHASMA",
                             "FIRSTORDEROFFICERMALE",
@@ -203,7 +203,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "KYLOREN",
                             "GRANDADMIRALTHRAWN",
                             "FIRSTORDEROFFICERMALE",
@@ -215,7 +215,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "KYLOREN",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
@@ -227,7 +227,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "ASAJVENTRESS:L",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "MOTHERTALZIN",
                             "DAKA",
                             "NIGHTSISTERSPIRIT",
@@ -570,11 +570,11 @@
                         ]
                     },
                     {
-                        "name": "ZYLO:S",
+                        "name": "ZYLO",
                         "note": "",
                         "url": "",
                         "team": [
-                            "KYLOREN"
+                            "KYLOREN:specialskill_KYLOREN02"
                         ]
                     },
                     {
@@ -1000,9 +1000,9 @@
                         "note": "4%-10% [1,862,000-4,655,000]",
                         "url": "https://youtu.be/8ebER5Sm1ok",
                         "team": [
-                            "REYJEDITRAINING:L",
-                            "BB8:U1",
-                            "R2D2_LEGENDARY:U2",
+                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
+                            "BB8:uniqueskill_BB801",
+                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
                             "RESISTANCETROOPER",
                             "REY"
                         ]
@@ -1012,9 +1012,9 @@
                         "note": "4%-10% [1,862,000-4,655,000]",
                         "url": "",
                         "team": [
-                            "REYJEDITRAINING:L",
-                            "BB8:U1",
-                            "VISASMARR:U1",
+                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
+                            "BB8:uniqueskill_BB801",
+                            "VISASMARR:uniqueskill_VISASMARR01",
                             "REY",
                             "RESISTANCETROOPER"
                         ]
@@ -1024,11 +1024,11 @@
                         "note": "4%-10% [1,862,000-4,655,000]",
                         "url": "",
                         "team": [
-                            "REYJEDITRAINING:L",
-                            "BB8:U1",
-                            "R2D2_LEGENDARY:U2",
+                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
+                            "BB8:uniqueskill_BB801",
+                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
                             "RESISTANCETROOPER",
-                            "HERMITYODA:S"
+                            "HERMITYODA:specialskill_HERMITYODA02"
                         ]
                     },
                     {
@@ -1036,11 +1036,11 @@
                         "note": "4%-10% [1,862,000-4,655,000]",
                         "url": "",
                         "team": [
-                            "REYJEDITRAINING:L",
-                            "BB8:U1",
-                            "VISASMARR:U1",
+                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
+                            "BB8:uniqueskill_BB801",
+                            "VISASMARR:uniqueskill_VISASMARR01",
                             "RESISTANCETROOPER",
-                            "HERMITYODA:S"
+                            "HERMITYODA:specialskill_HERMITYODA02"
                         ]
                     },
                     {
@@ -1048,11 +1048,11 @@
                         "note": "4%-12% [1,862,000-5,586,000] - Hermit Yoda zeta recommended, but optional",
                         "url": "https://www.youtube.com/watch?v=dpwuA_gao48",
                         "team": [
-                            "GRANDMASTERYODA:L:S",
+                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
                             "HERMITYODA",
-                            "VISASMARR:U1",
+                            "VISASMARR:uniqueskill_VISASMARR01",
                             "QUIGONJINN",
-                            "EZRABRIDGERS3:S"
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
                         ]
                     },
                     {
@@ -1101,11 +1101,11 @@
                         "note": "2%-4% [1,040,000-2,080,000]",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L",
-                            "HERMITYODA:S",
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "SCARIFREBEL",
-                            "SABINEWRENS3:S",
-                            "EZRABRIDGERS3:S"
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
                         ]
                     },
                     {
@@ -1114,10 +1114,10 @@
                         "url": "",
                         "team": [
                             "PRINCESSLEIA",
-                            "HERMITYODA:S",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "SCARIFREBEL",
-                            "SABINEWRENS3:S",
-                            "EZRABRIDGERS3:S"
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
                         ]
                     },
                     {
@@ -1126,9 +1126,9 @@
                         "url": "",
                         "team": [
                             "PRINCESSLEIA",
-                            "HERMITYODA:S",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "SCARIFREBEL",
-                            "SABINEWRENS3:S",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
                             "GRANDADMIRALTHRAWN"
                         ]
                     },
@@ -1138,10 +1138,10 @@
                         "url": "",
                         "team": [
                             "PRINCESSLEIA",
-                            "HERMITYODA:S",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "GENERALKENOBI",
-                            "SABINEWRENS3:S",
-                            "EZRABRIDGERS3:S"
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
                         ]
                     },
                     {
@@ -1150,9 +1150,9 @@
                         "url": "",
                         "team": [
                             "PRINCESSLEIA",
-                            "HERMITYODA:S",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "GENERALKENOBI",
-                            "SABINEWRENS3:S",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
                             "GRANDADMIRALTHRAWN"
                         ]
                     },
@@ -1161,8 +1161,8 @@
                         "note": "1%-2% [520,000-1,040,000]",
                         "url": "",
                         "team": [
-                            "VEERS:U1",
-                            "GRANDADMIRALTHRAWN:U1",
+                            "VEERS:uniqueskill_VEERS01",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
                             "DEATHTROOPER",
                             "SHORETROOPER",
                             "COLONELSTARCK"
@@ -1174,9 +1174,9 @@
                         "url": "",
                         "team": [
                             "GENERALKENOBI",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "HERMITYODA:S",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "WAMPA"
                         ]
                     },
@@ -1186,9 +1186,9 @@
                         "url": "",
                         "team": [
                             "GENERALKENOBI",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "HERMITYODA:S",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "PRINCESSLEIA"
                         ]
                     },
@@ -1198,9 +1198,9 @@
                         "url": "",
                         "team": [
                             "GENERALKENOBI",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "BARRISSOFFEE:U1",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "WAMPA"
                         ]
                     },
@@ -1210,9 +1210,9 @@
                         "url": "",
                         "team": [
                             "GENERALKENOBI",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "BARRISSOFFEE:U1",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "PRINCESSLEIA"
                         ]
                     },
@@ -1222,9 +1222,9 @@
                         "url": "",
                         "team": [
                             "BOBAFETT",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "HERMITYODA:S",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "WAMPA"
                         ]
                     },
@@ -1234,9 +1234,9 @@
                         "url": "",
                         "team": [
                             "BOBAFETT",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "HERMITYODA:S",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "PRINCESSLEIA"
                         ]
                     },
@@ -1246,9 +1246,9 @@
                         "url": "",
                         "team": [
                             "BOBAFETT",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "BARRISSOFFEE:U1",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "WAMPA"
                         ]
                     },
@@ -1258,9 +1258,9 @@
                         "url": "",
                         "team": [
                             "BOBAFETT",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "BARRISSOFFEE:U1",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "PRINCESSLEIA"
                         ]
                     },
@@ -1270,9 +1270,9 @@
                         "url": "",
                         "team": [
                             "OLDBENKENOBI",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "HERMITYODA:S",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "WAMPA"
                         ]
                     },
@@ -1282,9 +1282,9 @@
                         "url": "",
                         "team": [
                             "OLDBENKENOBI",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "HERMITYODA:S",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "PRINCESSLEIA"
                         ]
                     },
@@ -1294,9 +1294,9 @@
                         "url": "",
                         "team": [
                             "OLDBENKENOBI",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "BARRISSOFFEE:U1",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "WAMPA"
                         ]
                     },
@@ -1306,9 +1306,9 @@
                         "url": "",
                         "team": [
                             "OLDBENKENOBI",
-                            "GRANDADMIRALTHRAWN:U1",
-                            "SABINEWRENS3:S",
-                            "BARRISSOFFEE:U1",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "PRINCESSLEIA"
                         ]
                     },
@@ -1353,11 +1353,11 @@
                         "note": "0.5%-7% [260,000-3,640,000]",
                         "url": "",
                         "team": [
-                            "HERASYNDULLAS3:S",
-                            "EZRABRIDGERS3:S",
-                            "KANANJARRUSS3:S",
-                            "SABINEWRENS3:S",
-                            "ZEBS3:S"
+                            "HERASYNDULLAS3:specialskill_HERASYNDULLAS301",
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301",
+                            "KANANJARRUSS3:specialskill_KANANJARRUSS302",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "ZEBS3:specialskill_ZEBS301"
                         ]
                     },
                     {
@@ -1378,7 +1378,7 @@
                         "url": "",
                         "team": [
                             "ADMIRALACKBAR",
-                            "HERMITYODA:S",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "GENERALKENOBI",
                             "GRANDADMIRALTHRAWN",
                             "PRINCESSLEIA"
@@ -1425,7 +1425,7 @@
                         "note": "0.5%-1% [260,000-520,000]",
                         "url": "",
                         "team": [
-                            "CHIEFCHIRPA:L",
+                            "CHIEFCHIRPA:leaderskill_CHIEFCHIRPA",
                             "WICKET",
                             "EWOKELDER",
                             "EWOKSCOUT",
@@ -1437,7 +1437,7 @@
                         "note": "0.5%-1% [260,000-520,000]",
                         "url": "",
                         "team": [
-                            "MAUL:L",
+                            "MAUL:leaderskill_MAUL",
                             "DARTHNIHILUS",
                             "DARTHSION",
                             "SITHTROOPER",
@@ -1473,9 +1473,9 @@
                         "note": "1%-2% [520,000-1,040,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
-                            "KYLOREN:S",
-                            "FIRSTORDERTROOPER:U",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
+                            "KYLOREN:specialskill_KYLOREN02",
+                            "FIRSTORDERTROOPER:uniqueskill_FIRSTORDERTROOPER01",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDEREXECUTIONER"
                         ]
@@ -1485,11 +1485,11 @@
                         "note": "2%-6% [1,040,000-3,120,000] - GMY Special & DN Unique recommended zetas",
                         "url": "",
                         "team": [
-                            "DARTHTRAYA:L:U",
-                            "DARTHSION:U",
+                            "DARTHTRAYA:leaderskill_DARTHTRAYA:uniqueskill_DARTHTRAYA01",
+                            "DARTHSION:uniqueskill_DARTHSION01",
                             "DARTHNIHILUS",
                             "GRANDMASTERYODA",
-                            "HERMITYODA:S"
+                            "HERMITYODA:specialskill_HERMITYODA02"
                         ]
                     },
                     {
@@ -1497,10 +1497,10 @@
                         "note": "2%-6% [1,040,000-3,120,000] - Optional Zetas: STH unique & Young Lando Unique",
                         "url": "",
                         "team": [
-                            "QIRA:U",
-                            "YOUNGHAN:U",
+                            "QIRA:uniqueskill_QIRA01",
+                            "YOUNGHAN:uniqueskill_YOUNGHAN01",
                             "YOUNGLANDO",
-                            "YOUNGCHEWBACCA:U",
+                            "YOUNGCHEWBACCA:uniqueskill_YOUNGCHEWBACCA02",
                             "STORMTROOPERHAN"
                         ]
                     },
@@ -1521,11 +1521,11 @@
                         "note": "%TBD%",
                         "url": "",
                         "team": [
-                            "GRANDMASTERYODA:L:U",
-                            "HERMITYODA:S:U",
+                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
+                            "HERMITYODA:specialskill_HERMITYODA02:uniqueskill_HERMITYODA02",
                             "GENERALKENOBI",
                             "AAYLASECURA",
-                            "EZRABRIDGERS3:S"
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
                         ]
                     }
                 ]
@@ -1539,7 +1539,7 @@
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
-                            "HANSOLO:U1",
+                            "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
                             "SABINEWRENS3",
                             "CHIRRUTIMWE"
@@ -1551,7 +1551,7 @@
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
-                            "HANSOLO:U1",
+                            "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
                             "PAO",
                             "CHIRRUTIMWE"
@@ -1563,7 +1563,7 @@
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
-                            "HANSOLO:U1",
+                            "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
                             "ANAKINKNIGHT",
                             "CHIRRUTIMWE"
@@ -1575,7 +1575,7 @@
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
-                            "HANSOLO:U1",
+                            "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
                             "SABINEWRENS3",
                             "CT7567"
@@ -1587,7 +1587,7 @@
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
-                            "HANSOLO:U1",
+                            "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
                             "PAO",
                             "CT7567"
@@ -1599,7 +1599,7 @@
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
-                            "HANSOLO:U1",
+                            "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
                             "ANAKINKNIGHT",
                             "CT7567"
@@ -1610,7 +1610,7 @@
                         "note": "3%-4% [1,080,000-1,440,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDEREXECUTIONER",
@@ -1622,7 +1622,7 @@
                         "note": "3%-4% [1,080,000-1,440,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDEREXECUTIONER",
@@ -1634,7 +1634,7 @@
                         "note": "3%-4% [1,080,000-1,440,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDERTIEPILOT",
@@ -1646,7 +1646,7 @@
                         "note": "3%-4% [1,080,000-1,440,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDERTIEPILOT",
@@ -1658,7 +1658,7 @@
                         "note": "4%-8% [1,440,000-2,880,000]",
                         "url": "",
                         "team": [
-                            "ASAJVENTRESS:L",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "MOTHERTALZIN",
                             "DAKA",
                             "NIGHTSISTERACOLYTE",
@@ -1685,7 +1685,7 @@
                             "BOBAFETT",
                             "PRINCESSLEIA",
                             "ANAKINKNIGHT",
-                            "COUNTDOOKU:U1",
+                            "COUNTDOOKU:uniqueskill_COUNTDOOKU01",
                             "GENERALKENOBI"
                         ]
                     }
@@ -1699,9 +1699,9 @@
                         "note": "4%-8% [480,000-16,600,000] - Zombie should be weak as possible",
                         "url": "https://youtu.be/hMctm_0RYwA",
                         "team": [
-                            "ASAJVENTRESS:L:U1",
-                            "MOTHERTALZIN:U1",
-                            "DAKA:U1",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
+                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01",
+                            "DAKA:uniqueskill_DAKA01",
                             "TALIA",
                             "NIGHTSISTERZOMBIE"
                         ]
@@ -1711,8 +1711,8 @@
                         "note": "4%-8% [480,000-960,000]",
                         "url": "",
                         "team": [
-                            "ASAJVENTRESS:L:U1",
-                            "DAKA:U1",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
+                            "DAKA:uniqueskill_DAKA01",
                             "TALIA",
                             "NIGHTSISTERACOLYTE",
                             "NIGHTSISTERINITIATE"
@@ -1723,11 +1723,11 @@
                         "note": "4%-8% [480,000-960,000]",
                         "url": "",
                         "team": [
-                            "ASAJVENTRESS:L",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "DAKA",
                             "TALIA",
                             "NIGHTSISTERACOLYTE",
-                            "MOTHERTALZIN:U1"
+                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01"
                         ]
                     },
                     {
@@ -1735,10 +1735,10 @@
                         "note": "4%-8% [480,000-960,000]",
                         "url": "",
                         "team": [
-                            "ASAJVENTRESS:L",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "DAKA",
                             "NIGHTSISTERACOLYTE",
-                            "MOTHERTALZIN:U1",
+                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01",
                             "NIGHTSISTERZOMBIE"
                         ]
                     },
@@ -1747,8 +1747,8 @@
                         "note": "4%-8% [480,000-960,000]",
                         "url": "",
                         "team": [
-                            "MOTHERTALZIN:U1",
-                            "ASAJVENTRESS:U1",
+                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01",
+                            "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "DAKA",
                             "NIGHTSISTERACOLYTE",
                             "NIGHTSISTERZOMBIE"
@@ -1759,8 +1759,8 @@
                         "note": "4%-8% [480,000-960,000]",
                         "url": "",
                         "team": [
-                            "MOTHERTALZIN:U1",
-                            "ASAJVENTRESS:U1",
+                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01",
+                            "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "DAKA",
                             "NIGHTSISTERACOLYTE",
                             "TALIA"
@@ -1776,7 +1776,7 @@
                         "note": "1%-4% [96,000-384,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDEREXECUTIONER",
@@ -1788,7 +1788,7 @@
                         "note": "1%-4% [96,000-384,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDEREXECUTIONER",
@@ -1800,7 +1800,7 @@
                         "note": "1%-2% [96,000-192,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
                             "KYLOREN",
@@ -1812,7 +1812,7 @@
                         "note": "1%-2% [96,000-192,000]",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEROFFICERMALE",
                             "KYLOREN",
@@ -2040,12 +2040,12 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEREXECUTIONER",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDERSPECIALFORCESPILOT",
-                            "KYLOREN:S"
+                            "KYLOREN:specialskill_KYLOREN02"
                         ]
                     }
                 ]
@@ -2058,10 +2058,10 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L:U2",
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
                             "BAZEMALBUS",
                             "CHIRRUTIMWE",
-                            "R2D2_LEGENDARY",
+                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
                             "HANSOLO"
                         ]
                     },
@@ -2070,9 +2070,9 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:L:U2",
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
                             "HANSOLO",
-                            "R2D2_LEGENDARY",
+                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
                             "BIGGSDARKLIGHTER",
                             "WEDGEANTILLES"
                         ]
@@ -2088,8 +2088,8 @@
                         "url": "",
                         "team": [
                             "GENERALKENOBI",
-                            "BARRISSOFFEE:U1",
-                            "HERMITYODA:S",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "EZRABRIDGERS3",
                             "OLDBENKENOBI"
                         ]
@@ -2099,9 +2099,9 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "QUIGONJINN:L",
-                            "BARRISSOFFEE:U1",
-                            "HERMITYODA:S",
+                            "QUIGONJINN:leaderskill_QUIGONJINN",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "EZRABRIDGERS3",
                             "OLDBENKENOBI"
                         ]
@@ -2139,9 +2139,9 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "EMPERORPALPATINE:L:U1",
-                            "BARRISSOFFEE:U1",
-                            "HERMITYODA:S",
+                            "EMPERORPALPATINE:leaderskill_EMPERORPALPATINE:uniqueskill_EMPERORPALPATINE01",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "EZRABRIDGERS3",
                             "OLDBENKENOBI"
                         ]
@@ -2151,9 +2151,9 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "QUIGONJINN:L",
-                            "BARRISSOFFEE:U1",
-                            "HERMITYODA:S",
+                            "QUIGONJINN:leaderskill_QUIGONJINN",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
+                            "HERMITYODA:specialskill_HERMITYODA02",
                             "EZRABRIDGERS3",
                             "OLDBENKENOBI"
                         ]
@@ -3252,13 +3252,13 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "GRANDADMIRALTHRAWN:L:U",
-                            "EMPERORPALPATINE:L:U",
-                            "R2D2_LEGENDARY:U1:U2",
-                            "BB8:U1:U2",
-                            "COMMANDERLUKESKYWALKER:L:U1:U2",
-                            "REYJEDITRAINING:L:U1:U2",
-                            "GRANDMASTERYODA:L:S"
+                            "GRANDADMIRALTHRAWN:leaderskill_GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "EMPERORPALPATINE:leaderskill_EMPERORPALPATINE:uniqueskill_EMPERORPALPATINE01",
+                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
+                            "BB8:uniqueskill_BB801:uniqueskill_BB802",
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER01:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING:uniqueskill_REYJEDITRAINING01:uniqueskill_REYJEDITRAINING02",
+                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03"
                         ]
                     }
                 ]
@@ -3271,14 +3271,14 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "JYNERSO:U",
+                            "JYNERSO:leaderskill_JYNERSO:uniqueskill_JYNERSO01",
                             "BAZEMALBUS",
                             "CHIRRUTIMWE",
                             "BISTAN",
-                            "BODHIROOK:U",
-                            "CASSIANANDOR:U",
-                            "K2SO:U",
-                            "PAO:U",
+                            "BODHIROOK:uniqueskill_BODHIROOK01",
+                            "CASSIANANDOR:uniqueskill_CASSIANANDOR01",
+                            "K2SO:uniqueskill_K2SO02",
+                            "PAO:uniqueskill_PAO01",
                             "SCARIFREBEL"
                         ]
                     },
@@ -3287,12 +3287,12 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "HERASYNDULLAS3:S",
+                            "HERASYNDULLAS3:specialskill_HERASYNDULLAS301",
                             "CHOPPERS3",
-                            "EZRABRIDGERS3:S",
-                            "ZEBS3:S",
-                            "KANANJARRUSS3:S",
-                            "SABINEWRENS3:S"
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301",
+                            "ZEBS3:specialskill_ZEBS301",
+                            "KANANJARRUSS3:specialskill_KANANJARRUSS302",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302"
                         ]
                     },
                     {
@@ -3300,8 +3300,8 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "HOTHHAN:U",
-                            "HOTHLEIA:U",
+                            "HOTHHAN:uniqueskill_HOTHHAN01",
+                            "HOTHLEIA:uniqueskill_HOTHLEIA01",
                             "HOTHREBELSCOUT",
                             "HOTHREBELSOLDIER"
                         ]
@@ -3316,12 +3316,12 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "BOSSK:L:U",
-                            "BOBAFETT:U",
-                            "GREEDO:S",
+                            "BOSSK:leaderskill_BOSSK:uniqueskill_BOSSK01",
+                            "BOBAFETT:uniqueskill_BOBAFETT01",
+                            "GREEDO:specialskill_GREEDO02",
                             "CADBANE",
-                            "DENGAR:L:U",
-                            "IG88:U",
+                            "DENGAR:uniqueskill_DENGAR01",
+                            "IG88:uniqueskill_IG8801",
                             "ZAMWESELL"
                         ]
                     },
@@ -3330,13 +3330,13 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "VEERS:U",
-                            "COLONELSTARCK:U",
-                            "DEATHTROOPER:U",
+                            "VEERS:uniqueskill_VEERS01",
+                            "COLONELSTARCK:uniqueskill_COLONELSTARCK01",
+                            "DEATHTROOPER:uniqueskill_DEATHTROOPER01",
                             "MAGMATROOPER",
                             "SHORETROOPER",
                             "SNOWTROOPER",
-                            "STORMTROOPER:U",
+                            "STORMTROOPER:uniqueskill_STORMTROOPER01",
                             "RANGETROOPER"
                         ]
                     },
@@ -3345,8 +3345,8 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "VADER:L:U",
-                            "IMPERIALPROBEDROID:U"
+                            "VADER:leaderskill_VADER:uniqueskill_VADER01",
+                            "IMPERIALPROBEDROID:uniqueskill_IMPERIALPROBEDROID01"
                         ]
                     }
                 ]
@@ -3359,9 +3359,9 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "AMILYNHOLDO:U",
-                            "MAUL:L",
-                            "ENFYSNEST:U"
+                            "AMILYNHOLDO:uniqueskill_AMILYNHOLDO01",
+                            "MAUL:leaderskill_MAUL",
+                            "ENFYSNEST:uniqueskill_ENFYSNEST01"
                         ]
                     },
                     {
@@ -3370,7 +3370,7 @@
                         "url": "",
                         "team": [
                             "SHORETROOPER",
-                            "DARTHSION:U",
+                            "DARTHSION:uniqueskill_DARTHSION01",
                             "SITHTROOPER"
                         ]
                     },
@@ -3379,8 +3379,8 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "BARRISSOFFEE:U1",
-                            "VISASMARR:U"
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
+                            "VISASMARR:uniqueskill_VISASMARR01"
                         ]
                     },
                     {
@@ -3388,7 +3388,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "FINN:L"
+                            "FINN:leaderskill_FINN"
                         ]
                     }
                 ]
@@ -3401,14 +3401,14 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "MOTHERTALZIN:U1:L",
-                            "ASAJVENTRESS:L:U1",
+                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01:leaderskill_MOTHERTALZIN",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "NIGHTSISTERSPIRIT",
                             "NIGHTSISTERZOMBIE",
-                            "DAKA:U1",
+                            "DAKA:uniqueskill_DAKA01",
                             "TALIA",
                             "NIGHTSISTERACOLYTE",
-                            "NIGHTSISTERINITIATE:U"
+                            "NIGHTSISTERINITIATE:uniqueskill_NIGHTSISTERINITIATE01"
                         ]
                     },
                     {
@@ -3416,14 +3416,14 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "KYLORENUNMASKED:L:U",
-                            "KYLOREN:S",
-                            "FIRSTORDERTROOPER:U",
-                            "FIRSTORDERTIEPILOT:U",
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED:uniqueskill_KYLORENUNMASKED01",
+                            "KYLOREN:specialskill_KYLOREN02",
+                            "FIRSTORDERTROOPER:uniqueskill_FIRSTORDERTROOPER01",
+                            "FIRSTORDERTIEPILOT:uniqueskill_FIRSTORDERTIEPILOT01",
                             "FIRSTORDEREXECUTIONER",
                             "FIRSTORDEROFFICERMALE",
                             "FIRSTORDERSPECIALFORCESPILOT",
-                            "PHASMA:L"
+                            "PHASMA:leaderskill_PHASMA"
                         ]
                     },
                     {
@@ -3431,11 +3431,11 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "WAMPA:S:U2",
-                            "HERMITYODA:S:U",
+                            "WAMPA:specialskill_WAMPA02:uniqueskill_WAMPA02",
+                            "HERMITYODA:specialskill_HERMITYODA02:uniqueskill_HERMITYODA02",
                             "GENERALKENOBI",
-                            "HANSOLO:U",
-                            "DARTHTRAYA:L:U"
+                            "HANSOLO:uniqueskill_HANSOLO01",
+                            "DARTHTRAYA:leaderskill_DARTHTRAYA:uniqueskill_DARTHTRAYA01"
                         ]
                     }
                 ]
@@ -3456,13 +3456,13 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "GRANDADMIRALTHRAWN:L:U",
-                            "EMPERORPALPATINE:L",
-                            "R2D2_LEGENDARY:U1:U2",
-                            "BB8:U1",
-                            "COMMANDERLUKESKYWALKER:L:U2",
-                            "REYJEDITRAINING:L",
-                            "GRANDMASTERYODA:L"
+                            "GRANDADMIRALTHRAWN:leaderskill_GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "EMPERORPALPATINE:leaderskill_EMPERORPALPATINE:uniqueskill_EMPERORPALPATINE01",
+                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
+                            "BB8:uniqueskill_BB801",
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
+                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA"
                         ]
                     }
                 ]
@@ -3491,12 +3491,12 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "HERASYNDULLAS3:S",
+                            "HERASYNDULLAS3:specialskill_HERASYNDULLAS301",
                             "CHOPPERS3",
-                            "EZRABRIDGERS3:S",
-                            "ZEBS3:S",
-                            "KANANJARRUSS3:S",
-                            "SABINEWRENS3:S"
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301",
+                            "ZEBS3:specialskill_ZEBS301",
+                            "KANANJARRUSS3:specialskill_KANANJARRUSS302",
+                            "SABINEWRENS3:specialskill_SABINEWRENS302"
                         ]
                     },
                     {
@@ -3582,8 +3582,8 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "BARRISSOFFEE:U1",
-                            "VISASMARR:U"
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
+                            "VISASMARR:uniqueskill_VISASMARR01"
                         ]
                     },
                     {
@@ -3591,7 +3591,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "FINN:L"
+                            "FINN:leaderskill_FINN"
                         ]
                     }
                 ]
@@ -3604,11 +3604,11 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "MOTHERTALZIN:U1:L",
-                            "ASAJVENTRESS:L:U1",
+                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01:leaderskill_MOTHERTALZIN",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "NIGHTSISTERSPIRIT",
                             "NIGHTSISTERZOMBIE",
-                            "DAKA:U1",
+                            "DAKA:uniqueskill_DAKA01",
                             "TALIA",
                             "NIGHTSISTERACOLYTE",
                             "NIGHTSISTERINITIATE"
@@ -3635,9 +3635,9 @@
                         "url": "",
                         "team": [
                             "WAMPA",
-                            "HERMITYODA:S:U",
+                            "HERMITYODA:specialskill_HERMITYODA02:uniqueskill_HERMITYODA02",
                             "GENERALKENOBI",
-                            "HANSOLO:U",
+                            "HANSOLO:uniqueskill_HANSOLO01",
                             "DARTHTRAYA"
                         ]
                     }

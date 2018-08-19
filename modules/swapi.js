@@ -129,7 +129,7 @@ module.exports = (client) => {
                         allycode: allycode, 
                         language: lang
                     });
-                    const allies = guild[0].roster.map(p => p.allyCode);
+                    const allies = guild.roster.map(p => p.allyCode);
                     guildGG = await swgoh.fetchUnits({
                         allycodes: allies,
                         mods: false
