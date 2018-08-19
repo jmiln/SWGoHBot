@@ -17,11 +17,11 @@ class Stats extends Command {
         let users = 0;
         let channels = 0;
 
-        const playerCount = await client.swgohAPI.report('countCollection', {collection:'players', distinct:'allyCode'}, 'ENG_US');
-        const guildCount = await client.swgohAPI.report('countCollection', {collection:'players', distinct:'guildName'}, 'ENG_US');
-        const languageCount = await client.swgohAPI.report('countCollection', {collection:'localization', distinct:'language'}, 'ENG_US');
-        let lastUpdated = await client.swgohAPI.report('getLastUpdated', {collection:'localization', match:{ 'language':'ENG_US' }}, 'ENG_US');
-        lastUpdated = moment(lastUpdated[0].updated).format('ddd, MMM Do YYYY');
+        const playerCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'players', distinct:'allyCode'}, 'ENG_US');
+        const guildCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'players', distinct:'guildName'}, 'ENG_US');
+        const languageCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'localization', distinct:'language'}, 'ENG_US');
+        let lastUpdated = "N/A"; //await client.swgohAPI.report('getLastUpdated', {collection:'localization', match:{ 'language':'ENG_US' }}, 'ENG_US');
+        // lastUpdated = moment(lastUpdated[0].updated).format('ddd, MMM Do YYYY');
 
         if (client.shard && client.shard.count > 0) {
             await client.shard.fetchClientValues('channels.size')

@@ -81,6 +81,8 @@ class GuildSearch extends Command {
             character = chars[0];
         }
 
+        const msg = await message.channel.send(message.language.get('COMMAND_GUILDSEARCH_PLEASE_WAIT'));
+
         let player = null;
         try {
             player = await client.swgohAPI.player(userID);
@@ -97,8 +99,8 @@ class GuildSearch extends Command {
         }
 
         if (!guild) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NO_GUILD'));
-        }
+            return msg.edit(message.language.get('BASE_SWGOH_NO_GUILD'));
+        } 
 
         // Get the list of people with that character
         const guildChar = guild[character.uniqueName];
@@ -111,14 +113,15 @@ class GuildSearch extends Command {
             // If they don't, it'll be a 0 length array, so fill it in with 0 stats
             if (!filtered.length) {
                 guildChar.push({
-                    id: j.id,           // Ally code
-                    gear_level: 0,
-                    power: 0,
+                    player: j.player,       // Player name
+                    allyCode: j.allyCode,         // Ally code
+                    gearLevel: 0,
+                    gp: 0,
                     level: 0,
-                    combat_type: 1,
-                    rarity: 0,
-                    player: j.player,   // Player name
-                    zetas: []
+                    starLevel: 0,
+                    zetas: [],
+                    gear: [],
+                    type: j.type
                 });
             }
         });
@@ -141,28 +144,28 @@ class GuildSearch extends Command {
         } else if (sortType === 'gp') {
             // Sort by gp
             if (!reverse) {
-                sortedGuild = guildChar.sort((p, c) => p.power - c.power);
+                sortedGuild = guildChar.sort((p, c) => p.gp - c.gp);
             } else {
-                sortedGuild = guildChar.sort((p, c) => c.power - p.power);
+                sortedGuild = guildChar.sort((p, c) => c.gp - p.gp);
             }
         } else {
-            return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_BAD_SORT', sortType, ['name', 'gp']));
+            return msg.edit(message.language.get('COMMAND_GUILDSEARCH_BAD_SORT', sortType, ['name', 'gp']));
         }
 
         const charOut = {};
         for (const member of sortedGuild) {
-            const gearStr = '⚙' + member.gear_level + ' '.repeat(2 - member.gear_level.toString().length);
+            const gearStr = '⚙' + member.gearLevel + ' '.repeat(2 - member.gearLevel.toString().length);
             const zetas = ' | ' + '+'.repeat(member.zetas.length) + ' '.repeat(maxZ - member.zetas.length);
-            const gpStr = member.power.toLocaleString();
+            const gpStr = parseInt(member.gp).toLocaleString();
             
-            let uStr = member.rarity > 0 ? `**\`[${gearStr} | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.player}` : member.player;
+            let uStr = member.starLevel > 0 ? `**\`[${gearStr} | ${gpStr + ' '.repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ''}]\`** ${member.player}` : member.player;
 
             uStr = client.expandSpaces(uStr);
 
-            if (!charOut[member.rarity]) {
-                charOut[member.rarity] = [uStr];
+            if (!charOut[member.starLevel]) {
+                charOut[member.starLevel] = [uStr];
             } else {
-                charOut[member.rarity].push(uStr);
+                charOut[member.starLevel].push(uStr);
             }
         }
 
@@ -180,7 +183,7 @@ class GuildSearch extends Command {
                 });
             }
         });
-        message.channel.send({embed: {
+        msg.edit({embed: {
             author: {
                 name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', player.guildName, character.name)
             },

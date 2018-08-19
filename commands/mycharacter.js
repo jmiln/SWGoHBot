@@ -25,6 +25,8 @@ class MyCharacter extends Command {
             'Potency': { setName: 'Potency %', set: 2, min: 5, max: 10 },
             'Speed': { setName: 'Speed %', set: 4, min: 5, max: 10 }
         };
+        const modSetNames = message.language.get('BASE_MODSETS_FROM_GAME');
+        const modStatNames = message.language.get('BASE_MODS_FROM_GAME');
 
         if (searchChar) searchChar = searchChar.join(' ');
 
@@ -94,6 +96,7 @@ class MyCharacter extends Command {
             gearStr = gearStr.replace(/[0-9]/g, '  ');
             gearStr = client.expandSpaces(gearStr);
             c.skills.forEach(a => {
+                a.type = a.id.split('_')[0].replace('skill', '').toProperCase();
                 if (a.tier === 8 || (a.tier === 3 && a.type === 'Contract')) {
                     if (a.isZeta) {
                         // Maxed Zeta ability
@@ -120,6 +123,7 @@ class MyCharacter extends Command {
             const mods = {};
             const sets = {};
             c.mods.forEach(m => {
+                m.set = modSetNames[m.set];
                 if (!sets[m.set]) {
                     sets[m.set] = {};
                     sets[m.set].count = 1;
@@ -128,9 +132,7 @@ class MyCharacter extends Command {
                     sets[m.set].count += 1;
                     sets[m.set].lvls.push(m.level);
                 }
-                if (m.primaryBonusValue.indexOf('%') > -1 && (m.primaryBonusType.indexOf('%') === -1)) {
-                    m.primaryBonusType = m.primaryBonusType + ' %';
-                }
+                mods[m.primaryBonusType] = modStatNames[mods[m.primaryBonusType]];
                 if (!mods[m.primaryBonusType]) {
                     mods[m.primaryBonusType] = parseFloat(m.primaryBonusValue);
                 } else {
@@ -138,6 +140,7 @@ class MyCharacter extends Command {
                 }
                 for (let ix = 1; ix <= 4; ix++) {
                     if (!m[`secondaryType_${ix}`].length) break;
+                    m[`secondaryType_${ix}`] = modStatNames[m[`secondaryType_${ix}`]];
                     if (m[`secondaryValue_${ix}`].indexOf('%') > -1 && m[`secondaryType_${ix}`].indexOf('%') === -1) {
                         m[`secondaryType_${ix}`] = m[`secondaryType_${ix}`] + ' %';
                     }
@@ -203,6 +206,16 @@ class MyCharacter extends Command {
             }
 
             const modOut = [];
+            Object.keys(mods).forEach(m => {
+                if (m === m.toUpperCase()) {
+                    if (mods[modStatNames[m]]) {
+                        mods[modStatNames[m]] += mods[m];
+                    } else {
+                        mods[modStatNames[m]] = mods[m];
+                    }
+                    delete(mods[m]);
+                }
+            });
             const sMods = Object.keys(mods).sort((p, c) => p > c ? 1 : -1);
             sMods.forEach(m => {
                 if (m.endsWith('%')) {

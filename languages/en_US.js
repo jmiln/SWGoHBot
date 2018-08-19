@@ -125,6 +125,33 @@ module.exports = class extends Language {
                 SPEED:      'Speed',
                 TENACITY:   'Tenacity'
             },
+            BASE_MODSETS_FROM_GAME: {
+                1: "Health",
+                2: "Offense",
+                3: "Defense",
+                4: "Speed",
+                5: "Crit Chance",
+                6: "Crit Damage",
+                7: "Potency",
+                8: "Tenacity"
+            },
+            BASE_MODS_FROM_GAME: {
+                'UNITSTATACCURACY': "Accuracy %",
+                'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Crit Chance %",
+                'UNITSTATCRITICALDAMAGE': "Crit Damage %",
+                'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Crit Avoidance",
+                'UNITSTATDEFENSE': "Defense",
+                'UNITSTATDEFENSEPERCENTADDITIVE': "Defence %",
+                'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Potency %",
+                'UNITSTATMAXHEALTH': "Health",
+                'UNITSTATMAXHEALTHPERCENTADDITIVE': "Health %",
+                'UNITSTATMAXSHIELD': "Protection",
+                'UNITSTATMAXSHIELDPERCENTADDITIVE': "Protection %",
+                'UNITSTATOFFENSE': "Offense",
+                'UNITSTATOFFENSEPERCENTADDITIVE': "Offense %",
+                'UNITSTATRESISTANCE': "Tenacity %",
+                'UNITSTATSPEED': "Speed"
+            },
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
@@ -391,6 +418,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NO_CHAR: `No one in your guild seems to have this character.`,
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Not Activated (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Star (${count})`,
+            COMMAND_GUILDSEARCH_PLEASE_WAIT: "Please wait while I search your guild's roster.",
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
                 actions: [

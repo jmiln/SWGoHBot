@@ -6,6 +6,7 @@ class CurrentEvents extends Command {
     constructor(client) {
         super(client, {
             name: 'currentevents',
+            enabled: false,
             category: "SWGoH",
             aliases: ['cevents', 'ce'],
             permissions: ['EMBED_LINKS'],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
@@ -28,12 +29,16 @@ class CurrentEvents extends Command {
         const HEROIC = ['progressionevent_PIECES_AND_PLANS', 'progressionevent_GRANDMASTERS_TRAINING', 'EVENT_HERO_SCAVENGERREY'];
 
         const DEF_NUM = 10;
-        const lang = message.guildSettings.swgohLanguage;
+        // const lang = message.guildSettings.swgohLanguage;
     
         let gohEvents = null;
         try {
-            gohEvents = await client.swgohAPI.events(lang);
-            gohEvents = gohEvents.events;
+            // gohEvents = await client.swgohAPI.events(lang);
+            // gohEvents = await client.swgoh.fetchAPI('/swgoh/events');
+            // const {inspect} = require('util');
+            // console.log("Before: " + inspect(gohEvents));
+            // gohEvents = gohEvents.events;
+            // console.log("After: }" + gohEvents);
             // console.log(gohEvents.map(e => e.name).join('\n'));
         } catch (e) {
             console.error(e);
@@ -128,7 +133,7 @@ class CurrentEvents extends Command {
                 description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count) + '\n' + desc + '\n`------------------------------`'
             }});
         } else {
-            return message.send('No events at this time');
+            return message.channel.send('No events at this time');
         }
     }
 }

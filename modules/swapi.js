@@ -8,39 +8,48 @@ module.exports = (client) => {
 
     return {
         player: player,
-        mods: mods,
+        // mods: mods,
         guild: guild,
         guildGG: guildGG,
         events: events
     };
 
-    async function mods( allycode ) {
-        try {
-
-            if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
-            allycode = parseInt(allycode);
-
-            /** Get player from cache */
-            let mods = await cache.get('swapi', 'mods', {allyCode:allycode});
-
-            /** Check if existance and expiration */
-            if ( !mods || !mods[0] || isExpired(mods[0].updated, playerCooldown) ) { 
-                /** If not found or expired, fetch new from API and save to cache */
-                mods = await swgoh.fetchPlayer(allycode, 'mods', 'ENG_US');
-                mods = await cache.put('swapi', 'mods', {allyCode:allycode}, mods);
-            } else {
-                /** If found and valid, serve from cache */
-                mods = mods[0];
-            }
-            return mods;
-        } catch (e) { 
-            throw e; 
-        }            
-    }
+    // Decommissioned for now
+    // async function mods( allycode ) {
+    //     try {
+    //
+    //         if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
+    //         allycode = parseInt(allycode);
+    //
+    //         #<{(|* Get player from cache |)}>#
+    //         let mods = await cache.get('swapi', 'mods', {allyCode:allycode});
+    //
+    //         #<{(|* Check if existance and expiration |)}>#
+    //         if ( !mods || !mods[0] || isExpired(mods[0].updated, playerCooldown) ) { 
+    //             #<{(|* If not found or expired, fetch new from API and save to cache |)}>#
+    //             // mods = await swgoh.fetchPlayer(allycode, 'mods', 'ENG_US');
+    //             mods = await swgoh.fetchPlayer({
+    //                 allycodes: [allycode], 
+    //                 language: 'ENG_US',
+    //                 project:{
+    //                     mods:1,
+    //                 }
+    //             });
+    //             const {inspect} = require('util');
+    //             console.log(inspect(mods, {depth: 5}));
+    //             // mods = await cache.put('swapi', 'mods', {allyCode:allycode}, mods);
+    //         } else {
+    //             #<{(|* If found and valid, serve from cache |)}>#
+    //             mods = mods[0];
+    //         }
+    //         return mods;
+    //     } catch (e) { 
+    //         throw e; 
+    //     }            
+    // }
 
     async function player( allycode, lang='ENG_US' ) {
         try {
-
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
             allycode = parseInt(allycode);
 
@@ -50,7 +59,10 @@ module.exports = (client) => {
             /** Check if existance and expiration */
             if ( !player || !player[0] || isExpired(player[0].updated, playerCooldown) ) { 
                 /** If not found or expired, fetch new from API and save to cache */
-                player = await swgoh.fetchPlayer(allycode, null, lang);
+                player = await swgoh.fetchPlayer({
+                    allycode: allycode, 
+                    language: lang
+                });
                 player = await cache.put('swapi', 'players', {allyCode:allycode}, player);
             } else {
                 /** If found and valid, serve from cache */
@@ -62,7 +74,7 @@ module.exports = (client) => {
         }            
     }
 
-    async function guild( allycode ) {
+    async function guild( allycode, lang='ENG_US', update=false ) {
         try {
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
             allycode = parseInt(allycode);
@@ -76,14 +88,17 @@ module.exports = (client) => {
             /** Check if existance and expiration */
             if ( !guild || !guild[0] || isExpired(guild[0].updated, guildCooldown) ) { 
                 /** If not found or expired, fetch new from API and save to cache */
-                guild = await swgoh.fetchGuild(allycode, 'details', 'ENG_US');
+                guild = await swgoh.fetchGuild({
+                    allycode: allycode, 
+                    language: lang
+                });
                 guild = await cache.put('swapi', 'guilds', {name:guild.name}, guild);
 
-                let roster = await swgoh.fetchGuild(allycode, 'roster', 'ENG_US');
-                for ( const p of roster ) {
-                    cache.put('swapi', 'players', {allyCode:p.allyCode}, p);
+                if (update) {
+                    for ( const p of guild.roster ) {
+                        await this.player(p.allyCode.toString());
+                    }
                 }
-                roster = null;
             } else {
                 /** If found and valid, serve from cache */
                 guild = guild[0];
@@ -94,7 +109,7 @@ module.exports = (client) => {
         }            
     }
 
-    async function guildGG( allycode ) {
+    async function guildGG( allycode, lang='ENG_US' ) {
         try {
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
             allycode = parseInt(allycode);
@@ -108,8 +123,26 @@ module.exports = (client) => {
             /** Check if existance and expiration */
             if ( !guildGG || !guildGG[0] || isExpired(guildGG[0].updated, guildCooldown) ) { 
                 /** If not found or expired, fetch new from API and save to cache */
-                guildGG = await swgoh.fetchGuild(allycode, 'gg');
-                guildGG = await cache.put('swapi', 'guildGG', {name:player[0].guildName}, guildGG);
+                let guild  = await cache.get('swapi', 'guilds', {name:player[0].guildName});
+                if ( !guild || !guild[0] || isExpired(guild[0].updated, guildCooldown) ) { 
+                    guild = await swgoh.fetchGuild({
+                        allycode: allycode, 
+                        language: lang
+                    });
+                    const allies = guild[0].roster.map(p => p.allyCode);
+                    guildGG = await swgoh.fetchUnits({
+                        allycodes: allies,
+                        mods: false
+                    });
+                    guildGG = await cache.put('swapi', 'guildGG', {name:player[0].guildName}, guildGG);
+                } else {
+                    const allies = guild[0].roster.map(p => p.allyCode);
+                    guildGG = await swgoh.fetchUnits({
+                        allycodes: allies,
+                        mods: false
+                    });
+                    guildGG = await cache.put('swapi', 'guildGG', {name:player[0].guildName}, guildGG);
+                }
             } else {
                 /** If found and valid, serve from cache */
                 guildGG = guildGG[0];
@@ -123,12 +156,24 @@ module.exports = (client) => {
     async function events( lang='ENG_US' ) {
         try {
             /** Get events from cache */
-            let events = await cache.get('swapi', 'events', {lang:lang});
+            // let events = await cache.get('swapi', 'events', {lang:lang});
+            let events;
 
             /** Check if existance and expiration */
             if ( !events || !events[0] || isExpired(events[0].updated, eventCooldown) ) { 
                 /** If not found or expired, fetch new from API and save to cache */
-                events = await swgoh.fetchData('events', null, lang);
+                const {inspect} = require('util');
+                try {
+                    events =  await swgoh.fetchAPI('/swgoh/events', '');
+                    // events = await swgoh.fetchData('events');
+                    // events = await swgoh.fetchData({
+                    //     collection: "events",
+                    //     language: lang
+                    // });
+                    console.log("EventsOut: " + inspect(events));
+                } catch (e) {
+                    console.log("Could not get events");
+                }
                 events = {
                     lang: lang, 
                     events: events
@@ -136,6 +181,7 @@ module.exports = (client) => {
                 events = await cache.put('swapi', 'events', {lang:lang}, events);
             } else {
                 /** If found and valid, serve from cache */
+                console.log(events);
                 events = events[0];
             }
             return events;

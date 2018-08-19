@@ -13,7 +13,7 @@ class MyProfile extends Command {
     }
 
     async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
-        const lang = message.guildSettings.swgoghLanguage;
+        // const lang = message.guildSettings.swgoghLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
             return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY', message.guildSettings.prefix));
@@ -24,14 +24,13 @@ class MyProfile extends Command {
 
         let player;
         try {
-            // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
-            player = await client.swgohAPI.player(allyCode, lang);
+            player = await client.swgohAPI.player(allyCode);
         } catch (e) {
             console.log('Broke getting player in myprofile: ' + e);
         }
 
         const fields = [];
-        const charList = player.roster.filter(u => u.type === 'char');
+        const charList = player.roster.filter(u => u.type === 'CHARACTER');
         let zetaCount = 0;
         charList.forEach(char => {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
@@ -47,7 +46,7 @@ class MyProfile extends Command {
             ].join('\n')
         });
 
-        const shipList = player.roster.filter(u => u.type === 'ship');
+        const shipList = player.roster.filter(u => u.type === 'SHIP');
         const shipOut = message.language.get('COMMAND_MYPROFILE_SHIPS', player.gpShip.toLocaleString(), shipList);
         fields.push({
             name: shipOut.header,
