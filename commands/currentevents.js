@@ -34,12 +34,7 @@ class CurrentEvents extends Command {
         let gohEvents = null;
         try {
             // gohEvents = await client.swgohAPI.events(lang);
-            // gohEvents = await client.swgoh.fetchAPI('/swgoh/events');
-            // const {inspect} = require('util');
-            // console.log("Before: " + inspect(gohEvents));
             // gohEvents = gohEvents.events;
-            // console.log("After: }" + gohEvents);
-            // console.log(gohEvents.map(e => e.name).join('\n'));
         } catch (e) {
             console.error(e);
         }
