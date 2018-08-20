@@ -368,7 +368,7 @@ module.exports = class extends Language {
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: 'Fuer mehr Info zu einer spezifischen Gilde:',
             COMMAND_GUILDS_HELP: {
-                description: "Zeigt die Top Gilden und jeden der in deiner registriert ist an.",
+                description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
                 actions: [
                     {
                         action: "",
@@ -472,8 +472,8 @@ module.exports = class extends Language {
             COMMAND_MODS_UNKNOWN: "Unbekannt",
 
             // Mods Command
-            COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <CharakterName>\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}mods <CharakterName>\``,
+            COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <Charaktername auf englisch>\``,
+            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}mods <Charaktername auf englisch>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
@@ -487,7 +487,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';mods <Charakter>',
+                        usage: ';mods <Charaktername auf englisch>',
                         args: {
                             "Charakter": "Der Charakter fuer den Du Mods anzeigen willst"
                         }
@@ -797,28 +797,45 @@ module.exports = class extends Language {
                 ]
             },
 
-            // Setconf Command
-            COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anfuehrer dieses Servers hat die Konfiguration nicht eingestellt.`,
-            COMMAND_SETCONF_MISSING_OPTION: `Du musst eine Konfig-Option auswaehlen zum aendern.`,
-            COMMAND_SETCONF_MISSING_VALUE: `Zum aendern dieser Option musst du einen Wert angeben.`,
-            COMMAND_SETCONF_ARRAY_MISSING_OPT: 'Du musst `add` oder `remove` verwenden.',
-            COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Entschuldige, aber \`${value}\` ist nicht gesetzt in \`${key}\`.`,
-            COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` wurde ${action} dein \`${key}\`.`,
-            COMMAND_SETCONF_NO_KEY: (prefix) => `Dieser Wert ist nicht in der Konfiguration. Siehe "${prefix}showconf", oder "${prefix}setconf help" fuer eine Liste`,
-            COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Gildenkonfiguration fuer ${key} wurde geaendert in:\n\`${value}\``,
-            COMMAND_SETCONF_NO_SETTINGS: `Keine Gildeneinstellungen gefunden.`,
+            // Resources Command
+             COMMAND_RESOURCES_HEADER: 'SWGoH Quellen',
+             COMMAND_RESOURCES_INVALID_CATEGORY: (list) => `Ungueltige Kategorie. Bitte waehle eine der folgenden aus: \`${list}\``,
+             COMMAND_RESOURCES_HELP: {
+                 description: "Zeigt nuetzliche SWGoH-Quellen an.",
+                 actions: [
+                     {
+                         action: "",
+                         actionDesc: '',
+                         usage: ';resources <Kategorie>',
+                         args: {
+                             "Kategorie": "Eine der verfuegbaren Kategorien (Bots, Game Changers, Websites)."
+                         }
+                     }
+                 ]
+             },
+
+             // Setconf Command
+             COMMAND_SETCONF_MISSING_PERMS: `Entschuldige, aber entweder bist du kein Admin oder der Anfuehrer dieses Servers hat die Konfiguration nicht eingestellt.`,
+             COMMAND_SETCONF_MISSING_OPTION: `Du musst eine Konfig-Option auswaehlen zum aendern.`,
+             COMMAND_SETCONF_MISSING_VALUE: `Zum aendern dieser Option musst du einen Wert angeben.`,
+             COMMAND_SETCONF_ARRAY_MISSING_OPT: 'Du musst `add` oder `remove` verwenden.',
+             COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Entschuldige, aber \`${value}\` ist nicht gesetzt in \`${key}\`.`,
+             COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` wurde ${action} dein \`${key}\`.`,
+             COMMAND_SETCONF_NO_KEY: (prefix) => `Dieser Wert ist nicht in der Konfiguration. Siehe "${prefix}showconf", oder "${prefix}setconf help" fuer eine Liste`,
+             COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Gildenkonfiguration fuer ${key} wurde geaendert in:\n\`${value}\``,
+             COMMAND_SETCONF_NO_SETTINGS: `Keine Gildeneinstellungen gefunden.`,
  
-            COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Du musst eine Rolle definieren ${opt}.`,
-            COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Entschuldige, aber ich kann die Rolle nicht finden ${roleName}. Bitte erneut versuchen.`,
-            COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Entschuldige, aber ${roleName} ist bereits vorhanden.`,
-            COMMAND_SETCONF_PREFIX_TOO_LONG: 'Entschuldigung, aber es duerfen keine Leerzeichen im Praefix verwendet werden',
-            COMMAND_SETCONF_WELCOME_NEED_CHAN: `Entschuldige, aber der Ankuendigungskanal ist nicht definiert oder nicht mehr gueltig.\nSetze \`announceChan\` auf einen gueltigen Kanal und versuche es erneut\``,
-            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.`,        
-            COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
-            COMMAND_SETCONF_RESET: `Die Konfiguration wurde zurueckgesetzt`,
-            COMMAND_SETCONF_HELP: {
+             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Du musst eine Rolle definieren ${opt}.`,
+             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Entschuldige, aber ich kann die Rolle nicht finden ${roleName}. Bitte erneut versuchen.`,
+             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Entschuldige, aber ${roleName} ist bereits vorhanden.`,
+             COMMAND_SETCONF_PREFIX_TOO_LONG: 'Entschuldigung, aber es duerfen keine Leerzeichen im Praefix verwendet werden',
+             COMMAND_SETCONF_WELCOME_NEED_CHAN: `Entschuldige, aber der Ankuendigungskanal ist nicht definiert oder nicht mehr gueltig.\nSetze \`announceChan\` auf einen gueltigen Kanal und versuche es erneut\``,
+             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: `Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an`,
+             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
+             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: `Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.`,        
+             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
+             COMMAND_SETCONF_RESET: `Die Konfiguration wurde zurueckgesetzt`,
+             COMMAND_SETCONF_HELP: {
                 description: "Zum Bearbeiten der Einstellungen des Bots.",
                 actions: [
                     {
@@ -1009,7 +1026,7 @@ module.exports = class extends Language {
             // Squads Command
              COMMAND_SQUADS_NO_LIST: (list) => `Bitte waehle eine Kategorie aus folgender Liste: \n\`${list}\``,
              COMMAND_SQUADS_SHOW_LIST: (name, list) => `In ${name}, bitte waehle die Nummer entsprechend der Phase die du sehen moechtest: \n${list}`,
-             COMMAND_SQUADS_FIELD_HEADER: 'Teams/ Charaktere',
+             COMMAND_SQUADS_FIELD_HEADER: 'Teams / Charaktere',
              COMMAND_SQUAD_INVALID_PHASE: (list) => `Ungueltige Phase, bitte waehle eine Nummer aus folgender Liste: \n${list}`,
              COMMAND_SQUADS_HELP: {
                  description: "Zeigt Charaktere/Teams die fuer verschiedene Events nuetzlich sind.",
