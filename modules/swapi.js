@@ -50,6 +50,7 @@ module.exports = (client) => {
 
     async function player( allycode, lang='ENG_US' ) {
         try {
+            if (allycode) allycode = allycode.toString();
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
             allycode = parseInt(allycode);
 
@@ -76,6 +77,7 @@ module.exports = (client) => {
 
     async function guild( allycode, lang='ENG_US', update=false ) {
         try {
+            if (allycode) allycode = allycode.toString();
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
             allycode = parseInt(allycode);
 
@@ -111,6 +113,7 @@ module.exports = (client) => {
 
     async function guildGG( allycode, lang='ENG_US' ) {
         try {
+            if (allycode) allycode = allycode.toString();
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
             allycode = parseInt(allycode);
 

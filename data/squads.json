@@ -983,6 +983,59 @@
                         ]
                     }
                 ]
+            },
+            {
+                "name": "MULTIPLE PHASES",
+                "squads": [
+                    {
+                        "name": "EZRADICATOR",
+                        "note": "Full HAAT solo",
+                        "url": "https://youtu.be/Q0ed4dYTXDY",
+                        "team": [
+                            "ADMIRALACKBAR",
+                            "BB8:uniqueskill_BB801",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HERMITYODA",
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
+                        ]
+                    },
+                    {
+                        "name": "WAMPANADER",
+                        "note": "Full HAAT solo",
+                        "url": "https://youtu.be/vF6OJNWmDTA",
+                        "team": [
+                            "VADER:leaderskill_VADER",
+                            "WAMPA:uniqueskill_WAMPA02",
+                            "GRANDADMIRALTHRAWN",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "BB8:uniqueskill_BB801"
+                        ]
+                    },
+                    {
+                        "name": "ABC",
+                        "note": "Part of P2 through P4",
+                        "url": "https://youtu.be/BlgDKYa6kjI",
+                        "team": [
+                            "ADMIRALACKBAR",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "BB8:uniqueskill_BB801",
+                            "GRANDADMIRALTHRAWN",
+                            "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01"
+                        ]
+                    },
+                    {
+                        "name": "YOLO SOLO",
+                        "note": "Full HAAT solo",
+                        "url": "https://youtu.be/GVoikNZWUx4",
+                        "team": [
+                            "ADMIRALACKBAR",
+                            "BB8:uniqueskill_BB801",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HERMITYODA",
+                            "YOUNGHAN"
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -1540,6 +1593,18 @@
                         "team": [
                             "COMMANDERLUKESKYWALKER",
                             "HANSOLO:uniqueskill_HANSOLO01",
+                            "DEATHTROOPER",
+                            "SABINEWRENS3",
+                            "CHIRRUTIMWE"
+                        ]
+                    },
+                    {
+                        "name": "[α] FLAMING HOT GREEDO MIX",
+                        "note": "8%-12% [2,880,000-4,320,000]",
+                        "url": "",
+                        "team": [
+                            "BOBAFETT",
+                            "GREEDO",
                             "DEATHTROOPER",
                             "SABINEWRENS3",
                             "CHIRRUTIMWE"
