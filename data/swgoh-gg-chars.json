@@ -60,6 +60,16 @@
         "combat_type": 1
     },
     {
+        "name": "Aurra Sing",
+        "base_id": "AURRA_SING",
+        "pk": 294,
+        "url": "https://swgoh.gg/characters/aurra-sing/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_aurrasing.png",
+        "power": 24114,
+        "description": "Deadly Bounty Hunter that has increased damage while Stealthed",
+        "combat_type": 1
+    },
+    {
         "name": "B2 Super Battle Droid",
         "base_id": "B2SUPERBATTLEDROID",
         "pk": 195,
@@ -165,8 +175,8 @@
         "pk": 121,
         "url": "https://swgoh.gg/characters/cad-bane/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_cadbane.png",
-        "power": 17943,
-        "description": "High damage attacker with a powerful stun and bonuses against Jedi characters.",
+        "power": 18937,
+        "description": "Bounty Hunter Support with a powerful Stun and bonuses against Jedi characters",
         "combat_type": 1
     },
     {

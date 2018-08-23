@@ -1284,6 +1284,219 @@
         "defaultMods": {}
     },
     {
+        "name": "Aurra Sing",
+        "uniqueName": "AURRA_SING",
+        "aliases": [
+            "Aurra Sing"
+        ],
+        "nameVariant": [
+            "Aurra Sing"
+        ],
+        "url": "https://swgoh.gg/characters/aurra-sing/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_aurrasing.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Scoundrel"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 Loronar Power Cell",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 3 BioTech Implant",
+                "Mk 3 BioTech Implant",
+                "Mk 2 Chedak Comlink",
+                "Mk 4 Loronar Power Cell",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 1 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 4": [
+                "Mk 3 BioTech Implant",
+                "Mk 5 BAW Armor Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 6 BAW Armor Mod",
+                "Mk 4 Nubian Security Scanner"
+            ],
+            "Gear 5": [
+                "Mk 3 BioTech Implant",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 4 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 6": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 A/KT Stun Gun",
+                "Mk 1 Carbanti Sensor Array",
+                "Mk 4 CEC Fusion Furnace"
+            ],
+            "Gear 7": [
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 6 BioTech Implant"
+            ],
+            "Gear 8": [
+                "Mk 4 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 5 Chiewab Hypo Syringe",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 5 CEC Fusion Furnace"
+            ],
+            "Gear 9": [
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 6 Nubian Design Tech"
+            ],
+            "Gear 10": [
+                "Mk 4 Sienar Holo Projector",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 4 Chedak Comlink",
+                "Mk 8 BioTech Implant",
+                "Mk 5 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 11": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 8 BioTech Implant",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 6 A/KT Stun Gun"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Holo Lens",
+                "Mk 12 ArmaTek Stun Gun",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Weakening Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy with a 70% chance to Stun the enemy for 1 turn. If the target was debuffed, Aurra Sing gains 20% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Hustle": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Aurra Sing gains Critical Chance Up and Offense Up for 3 turns and deals +35% more damage with her next ability. If Aurra Sing was already Stealthed, she takes a bonus turn.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Snipers Expertise": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to target enemy. If the target is Toppled, this attack deals 200% more damage and this ability's cooldown is reset. (Only Raid Bosses can be Toppled.)",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
+            },
+            "Game Plan": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Bounty Hunter and Scoundrel allies have +30% Offense while Stealthed. At the start of battle, and whenever a Bounty Hunter ally defeats an enemy, all Bounty Hunter Attacker allies gain Stealth for 2 turns. When Aurra Sing is in the Leader slot, and not the Ally slot, the following Contract is active:",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Relentless Killer": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Aurra Sing has +40% Critical Damage. This bonus is doubled while Stealthed. Whenever a Bounty Hunter ally defeats an enemy, Aurra Sing gains 10% Critical Chance (stacking) for the rest of the battle.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Aurra Sing's Payout": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever Aurra Sing receives a Reward from a Contract, she also gains the following Payout. (Contracts are granted by certain Bounty Hunter Leader Abilities.)",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 22,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 24114,
+            "Strength": 1163,
+            "Agility": 780,
+            "Intelligence": 639,
+            "Speed": 159,
+            "Physical Damage": 2810,
+            "Physical Critical Rating": 737,
+            "Special Damage": 1554,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 284,
+            "Resistance Penetration": 0,
+            "Potency": 28,
+            "Health": 34834,
+            "Armor": 255,
+            "Resistance": 103,
+            "Tenacity": 38,
+            "Health Steal": 10,
+            "Protection": 35,
+            "activation": 25
+        }
+    },
+    {
         "name": "B2 Super Battle Droid",
         "uniqueName": "B2SUPERBATTLEDROID",
         "aliases": [
@@ -1432,22 +1645,22 @@
             }
         },
         "stats": {
-            "Power": 16948,
-            "Strength": 1150,
-            "Agility": 638,
+            "Power": 17368,
+            "Strength": 1250,
+            "Agility": 678,
             "Intelligence": 805,
-            "Speed": 111,
-            "Physical Damage": 2419,
-            "Physical Critical Rating": 295,
+            "Speed": 123,
+            "Physical Damage": 2774,
+            "Physical Critical Rating": 396,
             "Special Damage": 2222,
             "Special Critical Rating": 0,
             "Armor Penetration": 41,
             "Resistance Penetration": 5,
             "Potency": 53,
-            "Health": 28207,
-            "Armor": 366,
+            "Health": 32007,
+            "Armor": 473,
             "Resistance": 431,
-            "Tenacity": 53,
+            "Tenacity": 63,
             "Health Steal": 15,
             "Protection": 37,
             "activation": 80
@@ -1455,12 +1668,8 @@
         "shardLocations": {
             "dark": [],
             "light": [],
-            "cantina": [
-                "6-D"
-            ],
-            "shops": [
-                "Guild Shipments"
-            ]
+            "cantina": [],
+            "shops": []
         },
         "mods": {
             "B2 with HK-47 lead": {
@@ -4573,22 +4782,22 @@
             "Gun Slinger": {
                 "type": "Basic",
                 "abilityCooldown": "0",
-                "abilityDesc": "Deal Physical damage to target enemy with a 55% chance to attack again. Cad Bane has a 50% chance to gain 15% Turn Meter with each attack.",
+                "abilityDesc": "Deal Physical damage to target enemy with a 65% chance to attack again. Inflict Accuracy Down on target enemy for 2 turns. Cad Bane gains 15% Turn Meter for each Critical Hit.",
                 "tier": "omega",
                 "cost": {
-                    "mk3": 24,
-                    "omega": 5,
+                    "mk3": 0,
+                    "omega": 0,
                     "zeta": 0
                 }
             },
             "Stun Glove": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Deal unavoidable Physical damage to target enemy and Stun for 1 turn. In addition, remove 40% Turn Meter, or 100% Turn Meter if the target is a Jedi.",
+                "abilityDesc": "Deal Physical damage to target enemy, dispel all buffs on them and Stun them for 1 turn. In addition, remove 50% Turn Meter, doubled against Jedi enemies. If the target is debuffed, remove 25% of their Max Protection (stacking). This attack can't be Evaded.",
                 "tier": "omega",
                 "cost": {
-                    "mk3": 19,
-                    "omega": 5,
+                    "mk3": 0,
+                    "omega": 0,
                     "zeta": 0
                 }
             },
@@ -4611,6 +4820,39 @@
                 "cost": {
                     "mk3": 16,
                     "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "At Your Service": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Bounty Hunter allies have +100% Potency and gain Advantage for 2 turns when they inflict a debuff. When Cad Bane is in the Leader slot, and not the Ally slot, the following Contract is active:",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 0,
+                    "omega": 0,
+                    "zeta": 0
+                }
+            },
+            "For The Right Price": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Cad Bane has +30% Critical Chance and +30% Critical Damage. When Cad Bane inflicts a debuff, he recovers 5% Max Health and 5% Max Protection. When Cad Bane scores a Critical Hit, he has a 50% chance to reduce his cooldowns by 1.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 0,
+                    "omega": 0,
+                    "zeta": 0
+                }
+            },
+            "Cad Bane's Payout": {
+                "type": " · · Level 3 ",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever Cad Bane receives Rewards from a Contract, he also gains the following Payout. (Contracts are granted by certain Bounty Hunter Leader Abilities.)",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 0,
+                    "omega": 0,
                     "zeta": 0
                 }
             }
