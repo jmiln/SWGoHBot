@@ -241,7 +241,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: 'changelog <message>',
                         args: {
-                            "message": "Use [Updated], [Fixed], [Removed], and [Added] to organize the changes."
+                            "message": "Use [Updated], [Changed], [Fixed], [Removed], and [Added] to organize the changes."
                         }
                     }
                 ]
