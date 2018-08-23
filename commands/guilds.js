@@ -36,7 +36,7 @@ class Guilds extends Command {
         if (userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
             userID = await client.getAllyCode(message, userID);
             if (!userID.length) {
-                return msg.edit(message.language.get('COMMAND_GUILDS_NO_GUILD'));
+                return msg.edit(message.language.get('COMMAND_GUILDS_REG_NEEDED'));
             }
             userID = userID[0];
         } else {
