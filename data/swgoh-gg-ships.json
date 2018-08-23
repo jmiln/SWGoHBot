@@ -135,6 +135,15 @@
         "combat_type": 2
     },
     {
+        "name": "Hound's Tooth",
+        "base_id": "HOUNDSTOOTH",
+        "url": "https://swgoh.gg/ships/hounds-tooth/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_houndstooth.png",
+        "power": 61179,
+        "description": "Sustainable Bounty Hunter Tank that debilitates enemies",
+        "combat_type": 2
+    },
+    {
         "name": "Imperial TIE Fighter",
         "base_id": "TIEFIGHTERIMPERIAL",
         "url": "https://swgoh.gg/ships/imperial-tie-fighter/",
