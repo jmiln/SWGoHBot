@@ -101,10 +101,9 @@ class Squads extends Command {
                             outStr += client.characters.filter(char => char.uniqueName === c.split(':')[0])[0].name + '\n';
                         } else {
                             outStr += client.ships.filter(ship => ship.uniqueName === c.split(':')[0])[0].name + '\n';
-                            if (!outStr.length) console.log(c);
                         }
                     } catch (e) {
-                        console.log(c + ': ' + e);
+                        console.log("Squad broke: " + c + ': ' + e);
                     }
                 });
             } else {
@@ -132,7 +131,7 @@ class Squads extends Command {
                             outStr += ch.name + '\n';
                         }
                     } catch (e) {
-                        console.log(c + ': ' + e);
+                        console.log("Squad broke: " + c + ': ' + e);
                     }
                 });
             }
