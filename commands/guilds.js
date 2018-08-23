@@ -77,7 +77,7 @@ class Guilds extends Command {
                 fields: [
                     {
                         name: message.language.get('COMMAND_GUILDS_GUILD_GP_HEADER'),
-                        value: client.codeBlock(message.language.get('COMMAND_GUILDS_GUILD_GP', guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocalseString()))
+                        value: client.codeBlock(message.language.get('COMMAND_GUILDS_GUILD_GP', guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
                     }
                 ]
             }});
