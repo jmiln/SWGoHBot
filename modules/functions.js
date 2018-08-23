@@ -535,7 +535,7 @@ module.exports = (client) => {
      * CODE BLOCK MAKER
      * Makes a codeblock with the specified lang for highlighting.
      */
-    client.codeBlock = (lang, str) => {
+    client.codeBlock = (str, lang='') => {
         return `\`\`\`${lang}\n${str}\`\`\``;
     };
 

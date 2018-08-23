@@ -394,15 +394,37 @@ module.exports = class extends Language {
 
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: 'For more info on a specific guild:',
+            COMMAND_GUILDS_NO_GUILD: 'I cannot find that guild.',
+            COMMAND_GUILDS_PLEASE_WAIT: "Please wait while I update your guild's info.",
+            COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Players in ${guild}`,
+            COMMAND_GUILDS_GUILD_GP_HEADER: 'Registered Guild GP',
+            COMMAND_GUILDS_GUILD_GP: (total, average) => `Total GP: ${total}\nAverage : ${average}`,
+            COMMAND_GUILDS_DESC: "Guild Description",
+            COMMAND_GUILDS_MSG: "Chat Announcement",
+            COMMAND_GUILDS_RAID_STRINGS: {
+                header:    "Raids",
+                rancor:    "Rancor: ",
+                aat:       "AAT:    ",
+                sith_raid: "Sith:   ",
+                heroic:    "Heroic"
+            },
+            COMMAND_GUILDS_STAT_HEADER: "Stats",
+            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+                `Members:      ${members}/50`,
+                `Required Lvl: ${lvl}`,
+                `Total GP:     ${gp}`
+            ].join('\n'),
+            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members`,
             COMMAND_GUILDS_HELP: {
                 description: "Shows everyone that's in your guild/ some basic stats.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guild [user]',
+                        usage: ';guild [user] [-roster]',
                         args: {
-                            "user": "A way to identify the guild. (mention | allyCode | guildName)"
+                            "user": "A way to identify the guild. (mention | allyCode | guildName)",
+                            "-roster": "Show a list of all the members of the guild"
                         }
                     }
                 ]
