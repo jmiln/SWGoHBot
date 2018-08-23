@@ -88,9 +88,16 @@ class Guilds extends Command {
             desc += (guild.message && guild.message.length) ? `**${message.language.get('COMMAND_GUILDS_MSG')}:**\n\`${guild.message}\`` : '';
 
             const raidStr = message.language.get('COMMAND_GUILDS_RAID_STRINGS');
-            let raids = `${raidStr.rancor}${guild.raid.rancor.includes('HEROIC') ? raidStr.heroic : guild.raid.rancor.replace('DIFF0', 'T')}\n`;
-            raids    += `${raidStr.aat}${guild.raid.aat.includes('HEROIC') ? raidStr.heroic : guild.raid.aat.replace('DIFF0', 'T')}\n`;
-            raids    += `${raidStr.sith_raid}${guild.raid.sith_raid.includes('HEROIC') ? raidStr.heroic : guild.raid.sith_raid.replace('DIFF0', 'T')}`;
+            let raids = '';
+
+            if (Object.keys(guild.raid).length) {
+                Object.keys(guild.raid).forEach(r => {
+                    raids += `${raidStr[r]}${guild.raid[r].includes('HEROIC') ? raidStr.heroic : guild.raid[r].replace('DIFF0', 'T')}\n`;
+                });
+            } else {
+                raids = 'No raids available';
+            }
+
             fields.push({
                 name: raidStr.header,
                 value: client.codeBlock(raids),
