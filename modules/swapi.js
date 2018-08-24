@@ -64,6 +64,7 @@ module.exports = (client) => {
                     allycode: allycode, 
                     language: lang
                 });
+                if (player._id) delete player._id;
                 player = await cache.put('swapi', 'players', {allyCode:allycode}, player);
             } else {
                 /** If found and valid, serve from cache */
@@ -71,6 +72,7 @@ module.exports = (client) => {
             }
             return player;
         } catch (e) { 
+            console.log('SWAPI Broke getting player: ' + e);
             throw e; 
         }            
     }
@@ -94,6 +96,8 @@ module.exports = (client) => {
                     allycode: allycode, 
                     language: lang
                 });
+
+                if (guild._id) delete guild._id;  // Delete this since it's always whining about it being different
                 guild = await cache.put('swapi', 'guilds', {name:guild.name}, guild);
 
                 if (update) {
@@ -107,6 +111,7 @@ module.exports = (client) => {
             }
             return guild;      
         } catch (e) { 
+            console.log('SWAPI Broke getting guild: ' + e);
             throw e; 
         }            
     }
@@ -132,20 +137,14 @@ module.exports = (client) => {
                         allycode: allycode, 
                         language: lang
                     });
-                    const allies = guild.roster.map(p => p.allyCode);
-                    guildGG = await swgoh.fetchUnits({
-                        allycodes: allies,
-                        mods: false
-                    });
-                    guildGG = await cache.put('swapi', 'guildGG', {name:player[0].guildName}, guildGG);
-                } else {
-                    const allies = guild[0].roster.map(p => p.allyCode);
-                    guildGG = await swgoh.fetchUnits({
-                        allycodes: allies,
-                        mods: false
-                    });
-                    guildGG = await cache.put('swapi', 'guildGG', {name:player[0].guildName}, guildGG);
                 }
+                const allies = guild[0].roster.map(p => p.allyCode);
+                guildGG = await swgoh.fetchUnits({
+                    allycodes: allies,
+                    mods: false
+                });
+                if (guildGG._id) delete guildGG._id;
+                guildGG = await cache.put('swapi', 'guildGG', {name:player[0].guildName}, guildGG);
             } else {
                 /** If found and valid, serve from cache */
                 guildGG = guildGG[0];

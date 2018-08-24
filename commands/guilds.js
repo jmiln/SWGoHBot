@@ -90,7 +90,7 @@ class Guilds extends Command {
             const raidStr = message.language.get('COMMAND_GUILDS_RAID_STRINGS');
             let raids = '';
 
-            if (Object.keys(guild.raid).length) {
+            if (guild.raid && Object.keys(guild.raid).length) {
                 Object.keys(guild.raid).forEach(r => {
                     raids += `${raidStr[r]}${guild.raid[r].includes('HEROIC') ? raidStr.heroic : guild.raid[r].replace('DIFF0', 'T')}\n`;
                 });
