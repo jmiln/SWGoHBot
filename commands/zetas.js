@@ -64,7 +64,10 @@ class Zetas extends Command {
             // If they are not looking for a specific character, check em all
             if (!character || character.uniqueName === char.defId) {
                 if (!char.name) {
-                    char.name = client.characters.filter(c => c.uniqueName === char.defId)[0].name;
+                    const tmp = client.characters.filter(c => c.uniqueName === char.defId);
+                    if (tmp.length) {
+                        char.name = tmp[0].name;
+                    }
                 }
                 char.skills.forEach(skill => {
                     if (skill.isZeta && skill.tier === 8) {
