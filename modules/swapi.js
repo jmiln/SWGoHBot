@@ -111,7 +111,7 @@ module.exports = (client) => {
             }
             return guild;      
         } catch (e) { 
-            console.log('SWAPI Broke getting guild: ' + e);
+            console.log('SWAPI(guild) Broke getting guild: ' + e);
             throw e; 
         }            
     }
@@ -137,8 +137,15 @@ module.exports = (client) => {
                         allycode: allycode, 
                         language: lang
                     });
+                    if (guild._id) delete guild._id;  // Delete this since it's always whining about it being different
+                    guild = await cache.put('swapi', 'guilds', {name:guild.name}, guild);
                 }
-                const allies = guild[0].roster.map(p => p.allyCode);
+                let allies;
+                if (typeof allies === Array) {
+                    allies = guild[0].roster.map(p => p.allyCode);
+                } else {
+                    allies = guild.roster.map(p => p.allyCode);
+                }
                 guildGG = await swgoh.fetchUnits({
                     allycodes: allies,
                     mods: false
