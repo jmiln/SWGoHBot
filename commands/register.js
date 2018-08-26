@@ -128,7 +128,7 @@ class Register extends Command {
                             });
                         });
                     } else {
-                        const cooldown = client.getCooldown(message.author.id);
+                        const cooldown = client.getPlayerCooldown(message.author.id);
                         await client.swgohAPI.player(ac, null, cooldown).then(async (u) => {
                             if (!u) {
                                 await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));

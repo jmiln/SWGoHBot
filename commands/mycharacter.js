@@ -71,7 +71,7 @@ class MyCharacter extends Command {
         }
         const allyCode = ally.dataValues.allyCode;
 
-        const cooldown = client.getCooldown(message.author.id);
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let player = null;
         try {
             // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);

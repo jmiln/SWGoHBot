@@ -68,7 +68,7 @@ class MyMods extends Command {
             character = chars[0];
         }
 
-        const cooldown = client.getcooldown(message.author.id);
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let player;
         try {
             player = await client.swgohAPI.player(allyCode, null, cooldown);

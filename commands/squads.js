@@ -28,7 +28,7 @@ class Squads extends Command {
             phase = list;
             list = user;
         } else {
-            const cooldown = client.getCooldown(message.author.id);
+            const cooldown = client.getPlayerCooldown(message.author.id);
             try {
                 player = await client.swgohAPI.player(allyCodes[0], lang, cooldown);
             } catch (e) {

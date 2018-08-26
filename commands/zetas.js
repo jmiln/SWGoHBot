@@ -50,7 +50,7 @@ class Zetas extends Command {
         
         const msg = await message.channel.send(message.language.get('BASE_SWGOH_PLS_WAIT_FETCH', 'zetas'));
 
-        const cooldown = client.getCooldown(message.author.id);
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let player;
         try {
             player = await client.swgohAPI.player(allyCode, null, cooldown);
