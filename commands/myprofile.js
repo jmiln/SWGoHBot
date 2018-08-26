@@ -22,9 +22,10 @@ class MyProfile extends Command {
         }
         const allyCode = allyCodes[0];
 
+        const cooldown = client.getCooldown(message.author.id);
         let player;
         try {
-            player = await client.swgohAPI.player(allyCode);
+            player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log('Broke getting player in myprofile: ' + e);
         }

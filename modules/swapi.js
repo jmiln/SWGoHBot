@@ -48,7 +48,14 @@ module.exports = (client) => {
     //     }            
     // }
 
-    async function player( allycode, lang='ENG_US' ) {
+    async function player( allycode, lang, cooldown) {
+        lang = lang ? lang : 'ENG_US';
+        if (cooldown) {
+            if (cooldown > playerCooldown) cooldown = playerCooldown;
+            if (cooldown < 1) cooldown = 1;
+        } else {
+            cooldown = playerCooldown;
+        }
         try {
             if (allycode) allycode = allycode.toString();
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error('Please provide a valid allycode'); }
@@ -58,7 +65,7 @@ module.exports = (client) => {
             let player = await cache.get('swapi', 'players', {allyCode:allycode});
 
             /** Check if existance and expiration */
-            if ( !player || !player[0] || isExpired(player[0].updated, playerCooldown) ) { 
+            if ( !player || !player[0] || isExpired(player[0].updated, cooldown) ) { 
                 /** If not found or expired, fetch new from API and save to cache */
                 player = await swgoh.fetchPlayer({
                     allycode: allycode, 

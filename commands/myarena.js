@@ -22,10 +22,11 @@ class MyArena extends Command {
         }
         const allyCode = allyCodes[0];
 
+        const cooldown = client.getCooldown(message.author.id);
         let player;
         try {
             // player = await client.swgohAPI.getPlayer(allyCode, lang);
-            player = await client.swgohAPI.player(allyCode, lang);
+            player = await client.swgohAPI.player(allyCode, lang, cooldown);
         } catch (e) {
             console.log('Broke getting player in myarena: ' + e);
         }

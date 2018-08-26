@@ -68,44 +68,15 @@ class MyMods extends Command {
             character = chars[0];
         }
 
+        const cooldown = client.getcooldown(message.author.id);
         let player;
         try {
-            // mods = await client.swgohAPI.fetchPlayer(allyCode, 'mods', lang);
-            // mods = await client.swgohAPI.fetchPlayer(allyCode, 'mods');
-            // mods = await client.swgohAPI.mods(allyCode);
-            player = await client.swgohAPI.player(allyCode);
+            player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log(e);
         }
 
-        // const modTypes = [];
-        // player.roster.forEach(c => {
-        //     c.mods.forEach(m => {
-        //         if (!modTypes.includes(m.primaryBonusType)) {
-        //             console.log(m.primaryBonusType + ": " + m.primaryBonusValue);
-        //         }
-        //         for (let ix = 1; ix <= 4; ix++) {
-        //             if (m[`secondaryType_${ix}`]) {
-        //                 if (!modTypes.includes(m[`secondaryType_${ix}`])) {
-        //                     // modTypes.push(m[`secondaryType_${ix}`] + ": " + m[`secondaryValue_${ix}`]);
-        //                     console.log(m[`secondaryType_${ix}`] + ": " + m[`secondaryValue_${ix}`]);
-        //                 }
-        //             }
-        //         }
-        //     });
-        // });
-        // console.log(modTypes.sort());
-
-        // const types = await client.swgoh.fetchData({
-        //     collection: 'statModSets',
-        //     language: 'ENG_US'
-        // });
-        // console.log(types);
-
-        // const charMods = mods.mods.filter(m => (m.characterName.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() === character.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() || m.characterName === character.uniqueName));
         const charMods = player.roster.filter(c => c.defId === character.uniqueName)[0].mods;
-
-        // console.log(charMods);
 
         const slots = {};
 

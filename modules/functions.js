@@ -906,24 +906,17 @@ module.exports = (client) => {
     // Reload the SWGoH data for all patrons
     client.reloadPatrons = async () => {
         client.patrons = await client.getPatrons();
-        let patronIDs = (client.config.vipList && client.config.vipList.length) ? client.config.vipList : [];
-        if (!patronIDs.indexOf(client.config.ownerid)) {
-            patronIDs.push(client.config.ownerid);
-        }
-        client.patrons.forEach(patron => {
-            if (patron.discordID) {
-                patronIDs.push(patron.discordID.toString());
-            }
-        });
-        patronIDs = [...new Set(patronIDs)];
-        console.log('Reloading Patrons (' + patronIDs.length + ')');
-        if (patronIDs.length) {
-            for (let ix=0; ix < patronIDs.length; ix++) {
-                const allyCodes = await client.getAllyCode(null, patronIDs[ix].toString());
-                if (allyCodes.length) {
-                    await client.swgohAPI.player(allyCodes[0]);
-                }
-            }
+        console.log('Reloaded ' + client.patrons.length + ' active patrons');
+    };
+
+    // Get the cooldown
+    client.getPlayerCooldown = (author) => {
+        const patron = client.patrons.find(u => u.discordID === author);
+        // If they are not a patron, their cooldown is the default
+        if (!patron) {
+            return 2;
+        } else { // If they are, they have a 1 hr cache time, Yay
+            return 1;
         }
     };
 
@@ -962,25 +955,27 @@ module.exports = (client) => {
                     pledges.forEach(pledge => {
                         const user = users.filter(user => user.id === pledge.relationships.patron.data.id)[0];
                         patrons.push({
-                            id: pledge.relationships.patron.data.id,
-                            full_name: user.attributes.full_name,
-                            vanity: user.attributes.vanity,
-                            email: user.attributes.email,
-                            discordID: user.attributes.social_connections.discord ? user.attributes.social_connections.discord.user_id : null,
-                            amount_cents: pledge.attributes.amount_cents,
-                            created_at: pledge.attributes.created_at,
-                            declined_since: pledge.attributes.declined_since,
-                            patron_pays_fees: pledge.attributes.patron_pays_fees,
-                            pledge_cap_cents: pledge.attributes.pledge_cap_cents,
-                            image_url: user.attributes.image_url
+                            id:                 pledge.relationships.patron.data.id,
+                            full_name:          user.attributes.full_name,
+                            vanity:             user.attributes.vanity,
+                            email:              user.attributes.email,
+                            discordID:          user.attributes.social_connections.discord ? user.attributes.social_connections.discord.user_id : null,
+                            amount_cents:       pledge.attributes.amount_cents,
+                            created_at:         pledge.attributes.created_at,
+                            declined_since:     pledge.attributes.declined_since,
+                            patron_pays_fees:   pledge.attributes.patron_pays_fees,
+                            pledge_cap_cents:   pledge.attributes.pledge_cap_cents,
+                            image_url:          user.attributes.image_url
                         });
                     });
 
+                    // Filter out inactive patrons
                     patrons = patrons.filter(patron => !patron.declined_since);
 
                     resolve(patrons);
                 }
             } catch (e) {
+                console.log("Error getting patrons: " + e);
                 reject(e);
             }
         });
