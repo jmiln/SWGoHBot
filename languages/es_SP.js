@@ -125,6 +125,33 @@ module.exports = class extends Language {
                 SPEED:      'Velocidad',
                 TENACITY:   'Tenacidad'
             },
+            BASE_MODSETS_FROM_GAME: {
+                1: "Salud",
+                2: "Ataque",
+                3: "Defensa",
+                4: "Velocidad",
+                5: "Probabilidad de crítico",
+                6: "Daño crítico",
+                7: "Potencia",
+                8: "Tenacidad"
+            },
+            BASE_MODS_FROM_GAME: {
+                'UNITSTATACCURACY': "Potencia %",
+                'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Probabilidad de crítico %",
+                'UNITSTATCRITICALDAMAGE': "Daño crítico %",
+                'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Probabilidad de evasión",
+                'UNITSTATDEFENSE': "Defensa",
+                'UNITSTATDEFENSEPERCENTADDITIVE': "Defensa %",
+                'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Potencia %",
+                'UNITSTATMAXHEALTH': "Salud",
+                'UNITSTATMAXHEALTHPERCENTADDITIVE': "Salud %",
+                'UNITSTATMAXSHIELD': "Protección",
+                'UNITSTATMAXSHIELDPERCENTADDITIVE': "Protección %",
+                'UNITSTATOFFENSE': "Ataque",
+                'UNITSTATOFFENSEPERCENTADDITIVE': "Ataque %",
+                'UNITSTATRESISTANCE': "Tenacidad %",
+                'UNITSTATSPEED': "Velocidad"
+            },    
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}abilities <NombrePersonaje>\``,
@@ -318,6 +345,8 @@ module.exports = class extends Language {
                         args: {
                             "--repeat <repeatTime>": "Te permite establecer una duración con el formato 00d00h00m. Se repetirá después de que el tiempo haya pasado.",
                             "--repeatDay <schedule>": "Te permite establecer una repetición en los días con el formato 0,0,0,0,0.",
+                               "Ejemplo: `-repeatDay 1,2,3` Repetiria el evento un dia después de que acabe, entonces 2 dias después, entonces 3 después"
+                            ].join('\n'),
                             "--channel <channelName>": "Te permite especificar un canal para el evento donde anunciarse.",
                             "--countdown": "Añade un contador cuando tu evento se va a iniciar."
                         }
@@ -364,16 +393,39 @@ module.exports = class extends Language {
             },
 
             // Guilds Command
-            COMMAND_GUILDS_MORE_INFO: 'Para más información de un Gremio específico:',
+            COMMAND_GUILDS_MORE_INFO: 'Para más información sobre un gremio especifico:',
+            COMMAND_GUILDS_NO_GUILD: 'No he podido encontrar este gremio.',
+            COMMAND_GUILDS_PLEASE_WAIT: "Por favor espera mientras sincronizo la información Please wait while I update your guild's info.",
+            COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Players in ${guild}`,
+            COMMAND_GUILDS_GUILD_GP_HEADER: 'Registered Guild GP',
+            COMMAND_GUILDS_GUILD_GP: (total, average) => `Total GP: ${total}\nAverage : ${average}`,
+            COMMAND_GUILDS_DESC: "Guild Description",
+            COMMAND_GUILDS_MSG: "Chat Announcement",
+            COMMAND_GUILDS_REG_NEEDED: "I can't find a guild for that user. Please make sure the ally code is correct.",
+            COMMAND_GUILDS_RAID_STRINGS: {
+                header:    "Raids",
+                rancor:    "Rancor: ",
+                aat:       "AAT:    ",
+                sith_raid: "Sith:   ",
+                heroic:    "Heroic"
+            },
+            COMMAND_GUILDS_STAT_HEADER: "Stats",
+            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+                `Members:      ${members}/50`,
+                `Required Lvl: ${lvl}`,
+                `Total GP:     ${gp}`
+            ].join('\n'),
+            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members`,
             COMMAND_GUILDS_HELP: {
-                description: "Muestra los Gremios más TOPS y todas las personas que están registradas en el tuyo.",
+                description: "Shows everyone that's in your guild/ some basic stats.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guild [user]',
+                        usage: ';guild [user] [-roster]',
                         args: {
-                            "user": "La manera de identificar un gremio. (mention | allyCode | guildName)"
+                            "user": "A way to identify the guild. (mention | allyCode | guildName)",
+                            "-roster": "Show a list of all the members of the guild"
                         }
                     }
                 ]
