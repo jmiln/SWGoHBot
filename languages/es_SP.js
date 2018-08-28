@@ -344,7 +344,7 @@ module.exports = class extends Language {
                         usage: ';event create <eventName> <eventDay> <eventTime> [eventMessage]',
                         args: {
                             "--repeat <repeatTime>": "Te permite establecer una duración con el formato 00d00h00m. Se repetirá después de que el tiempo haya pasado.",
-                            "--repeatDay <schedule>": "Te permite establecer una repetición en los días con el formato 0,0,0,0,0.",
+                            "--repeatDay <schedule>": ["Te permite establecer una repetición en los días con el formato 0,0,0,0,0.",
                                "Ejemplo: `-repeatDay 1,2,3` Repetiria el evento un dia después de que acabe, entonces 2 dias después, entonces 3 después"
                             ].join('\n'),
                             "--channel <channelName>": "Te permite especificar un canal para el evento donde anunciarse.",
