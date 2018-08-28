@@ -125,6 +125,33 @@ module.exports = class extends Language {
                 SPEED:      'Velocidad',
                 TENACITY:   'Tenacidad'
             },
+            BASE_MODSETS_FROM_GAME: {
+                1: "Salud",
+                2: "Ataque",
+                3: "Defensa",
+                4: "Velocidad",
+                5: "Probabilidad de crítico",
+                6: "Daño crítico",
+                7: "Potencia",
+                8: "Tenacidad"
+            },
+            BASE_MODS_FROM_GAME: {
+                'UNITSTATACCURACY': "Potencia %",
+                'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Probabilidad de crítico %",
+                'UNITSTATCRITICALDAMAGE': "Daño crítico %",
+                'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Probabilidad de evasión",
+                'UNITSTATDEFENSE': "Defensa",
+                'UNITSTATDEFENSEPERCENTADDITIVE': "Defensa %",
+                'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Potencia %",
+                'UNITSTATMAXHEALTH': "Salud",
+                'UNITSTATMAXHEALTHPERCENTADDITIVE': "Salud %",
+                'UNITSTATMAXSHIELD': "Protección",
+                'UNITSTATMAXSHIELDPERCENTADDITIVE': "Protección %",
+                'UNITSTATOFFENSE': "Ataque",
+                'UNITSTATOFFENSEPERCENTADDITIVE': "Ataque %",
+                'UNITSTATRESISTANCE': "Tenacidad %",
+                'UNITSTATSPEED': "Velocidad"
+            },    
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}abilities <NombrePersonaje>\``,
@@ -317,7 +344,9 @@ module.exports = class extends Language {
                         usage: ';event create <eventName> <eventDay> <eventTime> [eventMessage]',
                         args: {
                             "--repeat <repeatTime>": "Te permite establecer una duración con el formato 00d00h00m. Se repetirá después de que el tiempo haya pasado.",
-                            "--repeatDay <schedule>": "Te permite establecer una repetición en los días con el formato 0,0,0,0,0.",
+                            "--repeatDay <schedule>": ["Te permite establecer una repetición en los días con el formato 0,0,0,0,0.",
+                               "Ejemplo: `-repeatDay 1,2,3` Repetiria el evento un dia después de que acabe, entonces 2 dias después, entonces 3 después"
+                            ].join('\n'),
                             "--channel <channelName>": "Te permite especificar un canal para el evento donde anunciarse.",
                             "--countdown": "Añade un contador cuando tu evento se va a iniciar."
                         }
@@ -364,16 +393,39 @@ module.exports = class extends Language {
             },
 
             // Guilds Command
-            COMMAND_GUILDS_MORE_INFO: 'Para más información de un Gremio específico:',
+            COMMAND_GUILDS_MORE_INFO: 'Para más información sobre un gremio especifico:',
+            COMMAND_GUILDS_NO_GUILD: 'No he podido encontrar este gremio.',
+            COMMAND_GUILDS_PLEASE_WAIT: "Por favor espera mientras sincronizo la información de tu gremio.",
+            COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Miembros de ${guild}`,
+            COMMAND_GUILDS_GUILD_GP_HEADER: 'Gremio PG Registrado',
+            COMMAND_GUILDS_GUILD_GP: (total, average) => `PG Total: ${total}\nMedia : ${average}`,
+            COMMAND_GUILDS_DESC: "Descripción del Gremio",
+            COMMAND_GUILDS_MSG: "Chat Announcement",
+            COMMAND_GUILDS_REG_NEEDED: "No he podido encontrar información del gremio para este usuario. Por favor comprueba que el código de aliado sea correcto.",
+            COMMAND_GUILDS_RAID_STRINGS: {
+                header:    "Raids",
+                rancor:    "Rancor: ",
+                aat:       "AAT:    ",
+                sith_raid: "Sith:   ",
+                heroic:    "Heroico"
+            },
+            COMMAND_GUILDS_STAT_HEADER: "Estadísticas",
+            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+                `Members:      ${members}/50`,
+                `Required Lvl: ${lvl}`,
+                `Total GP:     ${gp}`
+            ].join('\n'),
+            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` para mostrar los miembros de tu gremio`,
             COMMAND_GUILDS_HELP: {
-                description: "Muestra los Gremios más TOPS y todas las personas que están registradas en el tuyo.",
+                description: "Muestra todos los que estan en tu gremio/ algunas estadísticas básicas.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guild [user]',
+                        usage: ';guild [user] [-roster]',
                         args: {
-                            "user": "La manera de identificar un gremio. (mention | allyCode | guildName)"
+                            "user": "Una manera para identificar el gremio. (mention | allyCode | guildName)",
+                            "-roster": "Muestra una lista de todos los miembros del gremio"
                         }
                     }
                 ]
@@ -384,10 +436,13 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Lo Siento, pero \`${sortType}\` no es un metodo de clasificación admitido. Solo \`${filters.join(', ')}\` esta permitido.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: 'Necesitas introducir un personaje para la busqueda',
             COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `No he encontrado ningún resultado de ${character}`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `La búsqueda se ha encontrado con demasiados resultados, por favor se más especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
-            COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum='') => `${tier} Estrella (${num}) ${setNum.length > 0 ? setNum : ''}`,
+            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `La búsqueda ha encontrado demasiados resultados, por favor se más especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `Parece que nadie de tu gremio tiene un personaje con ${starLvl} estrellas.`,
             COMMAND_GUILDSEARCH_NO_CHAR: `Nadie de tu gremio parece tener este personaje.`,
+            COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Sin Activar (${count})`,
+            COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} estrella (${count})`,
+            COMMAND_GUILDSEARCH_PLEASE_WAIT: "Por favor espera mientras busco la información de tu gremio.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER: "Parece que nadie de tu gremio tiene este personaje.",
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Muestra el nivel de estrellas del personaje seleccionado, de TODAS las personas del gremio.",
                 actions: [
@@ -399,29 +454,13 @@ module.exports = class extends Language {
                             "user": "La persona la cual estas añadiendo. (me | userID | mention)",
                             "character": "El personaje el cual quieres realizar la busqueda.",
                             "-ships": "Busqueda de naves, puedes usar `-s, -ship, or -ships`",
+                            "-reverse": "Invierte el orden escogido",
+                            "-sort": "Escoge ya sea el nombre o pg para ordenar",
                             "starLvl": "Selecciona el nivel de estrella que quieres ver."
                         }
                     }
                 ]
             },
-
-            // Heists Command
-            COMMAND_HEISTS_HEADER: "SWGOH Robo de Créditos Programado",
-            COMMAND_HEISTS_CREDIT: (date) => `**Créditos** : ${date}\n`,
-            COMMAND_HEISTS_DROID: (date) => `**Droides**  : ${date}\n`,
-            COMMAND_HEISTS_NOT_SCHEDULED: "`No Programado`",
-            COMMAND_HEISTS_HELP: {
-                description: "Muestra los próximos Desafíos de Robos.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: '',
-                        usage: ';heists',
-                        args: {}
-                    }
-                ]
-            },
-
 
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= ComandoDeseado =\n\n[Usa ${prefix}help <ComandoDeseado> para más detalles]\n`,
@@ -521,6 +560,7 @@ module.exports = class extends Language {
                     }
                 ]
             },
+                
             // MyArena Command
             COMMAND_MYARENA_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para ${user}. Por favor asegúrate que esa cuenta esté sincronizada.`,
             COMMAND_MYARENA_NO_CHAR: 'Algo ha salido mal, no puedo obtener tus personajes.',
@@ -712,8 +752,7 @@ module.exports = class extends Language {
             },
 
             // Randomchar Command
-            COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Lo siento, pero necesitas un número entre
-number from 1-${maxChar} ahí.`,
+            COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Lo siento, pero necesitas un número del 1-${maxChar} ahí.`,
             COMMAND_RANDOMCHAR_HELP: {
                 description: "Elige hasta 5 personajes al azar para crear un escuadron.",
                 actions: [
@@ -810,6 +849,23 @@ number from 1-${maxChar} ahí.`,
                 ]
             },
 
+            // Resources Command
+            COMMAND_RESOURCES_HEADER: 'Recursos SWGoH',
+            COMMAND_RESOURCES_INVALID_CATEGORY: (list) => `Categoria inválida. Por favor selecciona una de estas: \`${list}\``,
+            COMMAND_RESOURCES_HELP: {
+                description: "Muestra herramientas útiles de SWGoH.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: '',
+                        usage: ';herramientas <category>',
+                        args: {
+                            "category": "Una de las categorias disponibles. (Bots, Game Changers, Websites)"
+                        }
+                    }
+                ]
+            },
+                
             // Setconf Command
             COMMAND_SETCONF_MISSING_PERMS: `Lo siento, pero o bien no eres un Admin o el líder de tu servidor no ha inicializado las configuraciones.`,
             COMMAND_SETCONF_MISSING_OPTION: `Necesitas seleccionar la opción de configuración la cual deseas cambiar.`,
@@ -945,6 +1001,7 @@ number from 1-${maxChar} ahí.`,
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: `Necesitas ingresar una zona horaria.`,
             COMMAND_SHARDTIMES_INVALID_TIMEZONE: `Zona horaria inválida, busca aquí https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites, después introduce lo que aparece en la columna TZ.`,
             COMMAND_SHARDTIMES_USER_ADDED: `Usuario agregado con éxito!`,
+            COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `Usuario actualizado de ${from} a ${to}.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: `Algo salió mal mientras se agregaba este usuario. Por favor inténtalo de nuevo.`,
             COMMAND_SHARDTIMES_REM_MISSING_PERMS: `Lo siento, pero solo te puedes eliminar a ti mismo a menos que tengas un rol de Admin.`,
             COMMAND_SHARDTIMES_REM_SUCCESS: `Usuario eliminado con éxito!`,
@@ -961,7 +1018,8 @@ number from 1-${maxChar} ahí.`,
                         args: {
                             "usuario": "El usuario que se desea agregar. (me | userID | mention)",
                             "zonaHoraria": "La zona horaria en la que se encuentra tu cuenta",
-                            "bandera/emoji": "(Opcional) muestra un emoji de tu elección al lado de tu nombre."}
+                            "bandera/emoji": "(Opcional) muestra un emoji de tu elección al lado de tu nombre."
+                        }
                     },
                     {
                         action: "Remove",
@@ -1037,15 +1095,24 @@ number from 1-${maxChar} ahí.`,
                     }
                 ]
             },
+                
             // Stats Command
-            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID) => `= ESTADÍSTICAS (${shardID}) =\n
-• Uso de Mem.    :: ${memUsage} MB
-• Carga CPU      :: ${cpuLoad}%
-• Tiempo Activo. :: ${uptime}
-• Usuarios       :: ${users}
-• Servidores     :: ${servers}
-• Canales        :: ${channels}
-• Link         :: https://github.com/jmiln/SWGoHBot`,
+            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID, botLangs, players, guilds, gohLangs, updated) => [
+                `= STATISTICS (${shardID}) =`,
+                `• Uso Memoria  :: ${memUsage} MB`,
+                `• Carga CPU   :: ${cpuLoad}%`,
+                `• Tiempo Activo     :: ${uptime}`,
+                `• Usuarios      :: ${users}`,
+                `• Servidores    :: ${servers}`,
+                `• Canales   :: ${channels}`,
+                `• Lenguajes  :: ${botLangs}`,
+                '• Link     :: https://github.com/jmiln/SWGoHBot\n',
+                '= SWGoH Stats =',
+                `• Usuarios Registrados :: ${players}`,
+                `• Gremios Registrados  :: ${guilds}`,
+                `• Idiomas Disponibles:: ${gohLangs}`,
+                `• Cliente Actualizado     :: ${updated}`
+            ].join('\n'),
             COMMAND_STATS_HELP: {
                 description: "Muestra las estadísticas del bot.",
                 actions: [
@@ -1075,8 +1142,7 @@ number from 1-${maxChar} ahí.`,
             COMMAND_TIME_CURRENT: (time, zone) => `La hora actual es: ${time} en ${zone}`,
             COMMAND_TIME_INVALID_ZONE: (time, zone) => `Zona horaria inválida, esta es la hora de tu gremio  ${time} en ${zone}`,
             COMMAND_TIME_NO_ZONE: (time) => `La hora actual es: ${time} UTC`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `La hora actual es: ${time} en ${zone} 
-time`,
+            COMMAND_TIME_WITH_ZONE: (time, zone) => `La hora actual es: ${time} en ${zone} time`,
             COMMAND_TIME_HELP: {
                 description: "Permite comprobar el tiempo de la zona horaria configurada del gremio.",
                 actions: [
