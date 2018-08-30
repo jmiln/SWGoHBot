@@ -38,11 +38,8 @@ class MyArena extends Command {
         if (player.arena.ship.squad.length) {
             const sArena = [];
             player.arena.ship.squad.forEach((ship, ix) => {
-                if (ship.name === ship.name.toUpperCase()) {    // If it's the ID, get the name
-                    const filt = client.ships.filter(s => s.uniqueName === ship.name);
-                    ship.name = filt.length ? filt[0].name : ship.name;
-                }
-                sArena.push(`\`${sPositions[ix]}\` ${ship.name}`);
+                const thisShip = player.roster.find(s => s.defId === ship.defId);
+                sArena.push(`\`${sPositions[ix]}\` ${thisShip.name}`);
             });
             fields.push({
                 name: message.language.get('COMMAND_MYARENA_FLEET', player.arena.ship.rank),
@@ -53,13 +50,9 @@ class MyArena extends Command {
 
         const cArena = [];
         player.arena.char.squad.forEach((char, ix) => {
-            const thisChar = player.roster.filter(c => c.id === char.id)[0];        // Get the character
+            const thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
             const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
-            if (char.name === char.name.toUpperCase()) {
-                const filt = client.characters.filter(c => c.uniqueName === char.name);
-                char.name = filt.length ? filt[0].name : char.name;
-            }
-            cArena.push(`\`${positions[ix]}\` ${'z'.repeat(thisZ.length)}${char.name}`);
+            cArena.push(`\`${positions[ix]}\` ${'z'.repeat(thisZ.length)}${thisChar.name}`);
         });
         fields.push({
             name: message.language.get('COMMAND_MYARENA_ARENA', player.arena.char.rank),

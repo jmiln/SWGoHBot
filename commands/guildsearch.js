@@ -83,16 +83,6 @@ class GuildSearch extends Command {
 
         const msg = await message.channel.send(message.language.get('COMMAND_GUILDSEARCH_PLEASE_WAIT'));
 
-        const cooldown = client.getPlayerCooldown(message.author.id);
-
-        let player = null;
-        try {
-            player = await client.swgohAPI.player(userID, 'ENG_US', cooldown);
-        } catch (e) {
-            console.log('ERROR(GS) getting player: ' + e);
-        }
-
-
         let guild = null;
         try {
             guild = await client.swgohAPI.guildGG(userID);
@@ -105,12 +95,12 @@ class GuildSearch extends Command {
         } 
 
         // Get the list of people with that character
-        const guildChar = guild[character.uniqueName];
+        const guildChar = guild.roster[character.uniqueName];
 
         if (!guildChar || guildChar.length === 0) {
             return msg.edit({embed: {
                 author: {
-                    name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', player.guildName, character.name)
+                    name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', guild.name, character.name)
                 },
                 description: message.language.get('COMMAND_GUILDSEARCH_NO_CHARACTER'),
                 footer: {
@@ -120,7 +110,7 @@ class GuildSearch extends Command {
         }
         
         // Fill in everyone that does not have it since everyone is guaranteed to have jedi consular
-        guild['JEDIKNIGHTCONSULAR'].forEach(j => {
+        guild.roster['JEDIKNIGHTCONSULAR'].forEach(j => {
             // If they have both the targeted character and consular, get em
             const filtered = guildChar.filter(p => p.player === j.player);
 
@@ -199,7 +189,7 @@ class GuildSearch extends Command {
         });
         msg.edit({embed: {
             author: {
-                name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', player.guildName, character.name)
+                name: message.language.get('BASE_SWGOH_NAMECHAR_HEADER', guild.name, character.name)
             },
             fields: fields,
             footer: {

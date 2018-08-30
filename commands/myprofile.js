@@ -29,6 +29,9 @@ class MyProfile extends Command {
         } catch (e) {
             console.log('Broke getting player in myprofile: ' + e);
         }
+        const gpFull = player.stats.find(s => s.nameKey === 'STAT_GALACTIC_POWER_ACQUIRED_NAME').value;
+        const gpChar = player.stats.find(s => s.nameKey === 'STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME').value;
+        const gpShip = player.stats.find(s => s.nameKey === 'STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME').value;
 
         const fields = [];
         const charList = player.roster.filter(u => u.type === 'CHARACTER');
@@ -37,7 +40,7 @@ class MyProfile extends Command {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
             zetaCount += thisZ.length;
         });
-        const charOut = message.language.get('COMMAND_MYPROFILE_CHARS', player.gpChar.toLocaleString(), charList, zetaCount);
+        const charOut = message.language.get('COMMAND_MYPROFILE_CHARS', gpChar.toLocaleString(), charList, zetaCount);
         fields.push({
             name: charOut.header,
             value: [
@@ -48,7 +51,7 @@ class MyProfile extends Command {
         });
 
         const shipList = player.roster.filter(u => u.type === 'SHIP');
-        const shipOut = message.language.get('COMMAND_MYPROFILE_SHIPS', player.gpShip.toLocaleString(), shipList);
+        const shipOut = message.language.get('COMMAND_MYPROFILE_SHIPS', gpShip.toLocaleString(), shipList);
         fields.push({
             name: shipOut.header,
             value: [
@@ -62,7 +65,7 @@ class MyProfile extends Command {
             author: {
                 name: message.language.get('COMMAND_MYPROFILE_EMBED_HEADER', player.name, player.allyCode),
             },
-            description: message.language.get('COMMAND_MYPROFILE_DESC', player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, player.gpFull.toLocaleString()),
+            description: message.language.get('COMMAND_MYPROFILE_DESC', player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, gpFull.toLocaleString()),
             footer: {
                 text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
             },
