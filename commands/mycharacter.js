@@ -63,7 +63,7 @@ class MyCharacter extends Command {
         }
 
         if (!client.users.get(userID)) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NO_USER'));
+            return message.channel.send(message.language.get('BASE_SWGOH_NO_USER', message.guildSettings.prefix));
         }
         const ally = await client.database.models.allyCodes.findOne({where: {id: userID}});
         if (!ally) {

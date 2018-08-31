@@ -1,3 +1,4 @@
+const {inspect} = require('util');
 module.exports = (client) => {
     const swgoh = client.swgoh;
     const cache = client.cache;
@@ -42,6 +43,10 @@ module.exports = (client) => {
                     player = player[0];
                 }
 
+                if (!player || !player.roster || !player.name) {
+                    throw new Error('Broke getting player: ' + inspect(player));
+                }
+
                 if (player._id) delete player._id;
                 player = await cache.put('swapi', 'players', {allyCode:allycode}, player);
             } else {
@@ -75,6 +80,11 @@ module.exports = (client) => {
                     language: lang,
                     enums: true
                 });
+
+                if (!guild || !guild.roster || !guild.name) {
+                    throw new Error('Broke getting guild: ' + inspect(guild));
+                }
+
                 if (guild._id) delete guild._id;  // Delete this since it's always whining about it being different
                 guild = await cache.put('swapi', 'guilds', {name:guild.name}, guild);
 
@@ -115,6 +125,11 @@ module.exports = (client) => {
                     enums: true,
                     units: true
                 });
+
+                if (!guildGG || !guildGG.roster || !guildGG.name) {
+                    throw new Error('Broke getting guildGG: ' + inspect(guildGG));
+                }
+
                 if (guildGG._id) delete guildGG._id;  // Delete this since it's always whining about it being different
                 guildGG = await cache.put('swapi', 'guildGG', {name:guildGG.name}, guildGG);
             } else {
