@@ -6,6 +6,7 @@ class CurrentEvents extends Command {
     constructor(client) {
         super(client, {
             name: 'currentevents',
+            // enabled: false,
             category: "SWGoH",
             aliases: ['cevents', 'ce'],
             permissions: ['EMBED_LINKS'],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
@@ -34,11 +35,10 @@ class CurrentEvents extends Command {
         try {
             gohEvents = await client.swgohAPI.events(lang);
             gohEvents = gohEvents.events;
-            // console.log(gohEvents.map(e => e.name).join('\n'));
         } catch (e) {
             console.error(e);
         }
-        
+
         // Let them specify the max # of events to show
         let eNum = parseInt(num);
         if (isNaN(eNum)) {
@@ -56,7 +56,8 @@ class CurrentEvents extends Command {
         for (const event of gohEvents) {
             if (FLEET_CHALLENGES.includes(event.id) ||
                 MOD_CHALLENGES.includes(event.id) ||
-                DAILY_CHALLENGES.includes(event.id)) {
+                DAILY_CHALLENGES.includes(event.id) ||
+                event.id.includes('MOD_SALVAGE')) {
                 delete gohEvents.event;
                 continue;
             }
@@ -69,16 +70,20 @@ class CurrentEvents extends Command {
             }
 
             // Filter out event dates from the past 
-            event.schedule = event.schedule.filter(p => {
-                if (!moment().isBefore(moment(p.end))) return false;
+            event.schedule = event.instances.filter(p => {
+                if (!moment().isBefore(moment(p.endTime))) return false;
                 return true;
             });
 
             // Put each event in the array
             event.schedule.forEach(s => {
+                event.nameKey = event.nameKey
+                    .replace(/\\n/g, ' ')
+                    .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,'')
+                    .toProperCase();
                 evOut.push({
-                    name: (HEROIC.includes(event.id) || event.id === 'EVENT_CREDIT_HEIST_GETAWAY_V2') ? `**${event.name}**` : event.name,
-                    date: s.start
+                    name: (HEROIC.includes(event.id) || event.id === 'EVENT_CREDIT_HEIST_GETAWAY_V2') ? `**${event.nameKey}**` : event.nameKey,
+                    date: s.startTime
                 });
             });
         }
@@ -128,7 +133,7 @@ class CurrentEvents extends Command {
                 description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count) + '\n' + desc + '\n`------------------------------`'
             }});
         } else {
-            return message.send('No events at this time');
+            return message.channel.send('No events at this time');
         }
     }
 }

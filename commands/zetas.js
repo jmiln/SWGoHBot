@@ -50,9 +50,10 @@ class Zetas extends Command {
         
         const msg = await message.channel.send(message.language.get('BASE_SWGOH_PLS_WAIT_FETCH', 'zetas'));
 
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let player;
         try {
-            player = await client.swgohAPI.player(allyCode);
+            player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log('Error: Broke while trying to get player data in zetas: ' + e);
             return msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
@@ -63,18 +64,20 @@ class Zetas extends Command {
         player.roster.forEach(char => {
             // If they are not looking for a specific character, check em all
             if (!character || character.uniqueName === char.defId) {
-                if (char.name === char.name.toUpperCase()) {
-                    const filt = client.characters.filter(c => c.uniqueName === char.name);
-                    char.name = filt.length ? filt[0].name : char.name;
+                if (!char.name) {
+                    const tmp = client.characters.filter(c => c.uniqueName === char.defId);
+                    if (tmp.length) {
+                        char.name = tmp[0].name;
+                    }
                 }
                 char.skills.forEach(skill => {
                     if (skill.isZeta && skill.tier === 8) {
                         count++;
                         // If the character is not already listed, add it
                         if (!zetas[char.name]) {
-                            zetas[char.name] = ['`[' + skill.defId.charAt(0) + ']` ' + skill.name];
+                            zetas[char.name] = ['`[' + skill.id.charAt(0) + ']` ' + skill.name];
                         } else {
-                            zetas[char.name].push('`[' + skill.defId.charAt(0) + ']` ' + skill.name);
+                            zetas[char.name].push('`[' + skill.id.charAt(0) + ']` ' + skill.name);
                         }
                     }
                 });

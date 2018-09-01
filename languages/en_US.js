@@ -125,6 +125,33 @@ module.exports = class extends Language {
                 SPEED:      'Speed',
                 TENACITY:   'Tenacity'
             },
+            BASE_MODSETS_FROM_GAME: {
+                1: "Health",
+                2: "Offense",
+                3: "Defense",
+                4: "Speed",
+                5: "Crit Chance",
+                6: "Crit Damage",
+                7: "Potency",
+                8: "Tenacity"
+            },
+            BASE_MODS_FROM_GAME: {
+                'UNITSTATACCURACY': "Accuracy %",
+                'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Crit Chance %",
+                'UNITSTATCRITICALDAMAGE': "Crit Damage %",
+                'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Crit Avoidance",
+                'UNITSTATDEFENSE': "Defense",
+                'UNITSTATDEFENSEPERCENTADDITIVE': "Defence %",
+                'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Potency %",
+                'UNITSTATMAXHEALTH': "Health",
+                'UNITSTATMAXHEALTHPERCENTADDITIVE': "Health %",
+                'UNITSTATMAXSHIELD': "Protection",
+                'UNITSTATMAXSHIELDPERCENTADDITIVE': "Protection %",
+                'UNITSTATOFFENSE': "Offense",
+                'UNITSTATOFFENSEPERCENTADDITIVE': "Offense %",
+                'UNITSTATRESISTANCE': "Tenacity %",
+                'UNITSTATSPEED': "Speed"
+            },
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
@@ -214,7 +241,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: 'changelog <message>',
                         args: {
-                            "message": "Use [Updated], [Fixed], [Removed], and [Added] to organize the changes."
+                            "message": "Use [Updated], [Changed], [Fixed], [Removed], and [Added] to organize the changes."
                         }
                     }
                 ]
@@ -367,15 +394,38 @@ module.exports = class extends Language {
 
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: 'For more info on a specific guild:',
+            COMMAND_GUILDS_NO_GUILD: 'I cannot find that guild.',
+            COMMAND_GUILDS_PLEASE_WAIT: "Please wait while I update your guild's info.",
+            COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Players in ${guild}`,
+            COMMAND_GUILDS_GUILD_GP_HEADER: 'Registered Guild GP',
+            COMMAND_GUILDS_GUILD_GP: (total, average) => `Total GP: ${total}\nAverage : ${average}`,
+            COMMAND_GUILDS_DESC: "Guild Description",
+            COMMAND_GUILDS_MSG: "Chat Announcement",
+            COMMAND_GUILDS_REG_NEEDED: "I can't find a guild for that user. Please make sure the ally code is correct.",
+            COMMAND_GUILDS_RAID_STRINGS: {
+                header:    "Raids",
+                rancor:    "Rancor: ",
+                aat:       "AAT:    ",
+                sith_raid: "Sith:   ",
+                heroic:    "Heroic"
+            },
+            COMMAND_GUILDS_STAT_HEADER: "Stats",
+            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+                `Members:      ${members}/50`,
+                `Required Lvl: ${lvl}`,
+                `Total GP:     ${gp}`
+            ].join('\n'),
+            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members`,
             COMMAND_GUILDS_HELP: {
                 description: "Shows everyone that's in your guild/ some basic stats.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guild [user]',
+                        usage: ';guild [user] [-roster]',
                         args: {
-                            "user": "A way to identify the guild. (mention | allyCode | guildName)"
+                            "user": "A way to identify the guild. (mention | allyCode | guildName)",
+                            "-roster": "Show a list of all the members of the guild"
                         }
                     }
                 ]
@@ -391,6 +441,8 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NO_CHAR: `No one in your guild seems to have this character.`,
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Not Activated (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Star (${count})`,
+            COMMAND_GUILDSEARCH_PLEASE_WAIT: "Please wait while I search your guild's roster.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character.",
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
                 actions: [

@@ -5,11 +5,14 @@ class Guilds extends Command {
         super(client, {
             name: 'guilds',
             category: "SWGoH",
-            aliases: ['guild'],
+            aliases: ['guild', 'g'],
             permissions: ['EMBED_LINKS'],
             flags: {
                 'min': {
                     aliases: ['minimal', 'minimize', 'm']
+                },
+                'roster': {
+                    aliases: ['r']
                 }
             }
         });
@@ -27,13 +30,13 @@ class Guilds extends Command {
             userID = 'me';
         } 
         
-        const msg = await message.channel.send("Please wait while I update your guild's info.");
+        const msg = await message.channel.send(message.language.get('COMMAND_GUILDS_PLEASE_WAIT'));
 
         // Get the user's ally code from the message or psql db
         if (userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
             userID = await client.getAllyCode(message, userID);
             if (!userID.length) {
-                return message.channel.send('I cannot find a guild for that user.');
+                return msg.edit(message.language.get('COMMAND_GUILDS_REG_NEEDED'));
             }
             userID = userID[0];
         } else {
@@ -48,30 +51,81 @@ class Guilds extends Command {
             // guild = await client.swgohAPI.fetchGuild(userID, 'details', lang);
             guild = await client.swgohAPI.guild(userID);
         } catch (e) {
-            console.log('ERROR: ' + e);
+            console.log('ERROR(guilds): ' + e);
         }
 
-        if (!guild || !guild.roster.length) {
-            return msg.edit('I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.');
-        }
-        const sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
+        if (!guild) {
+            return msg.edit(message.language.get('COMMAND_GUILDS_NO_GUILD'));
+        } 
 
-        const users = [];
-        sortedGuild.forEach(p => {
-            users.push(`\`[${' '.repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
-        });
-        return msg.edit({embed: {
-            author: {
-                name: `${users.length} Players in ${guild.name}`
-            },
-            description: options.flags.min ? '' : users.join('\n'),
-            fields: [
-                {
-                    name: 'Registered Guild GP',
-                    value: '```Total GP: ' + guild.gp.toLocaleString() + '\nAverage : ' + Math.floor(guild.gp/users.length).toLocaleString() + '```'
+        if (options.flags.roster) {
+            // Display the roster with gp etc
+            if (!guild.roster.length) {
+                return msg.edit(message.language.get('COMMAND_GUILDS_NO_GUILD'));
+            }
+            const sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
+
+            const users = [];
+            sortedGuild.forEach(p => {
+                users.push(`\`[${' '.repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
+            });
+            return msg.edit({embed: {
+                author: {
+                    name: message.language.get('COMMAND_GUILDS_USERS_IN_GUILD', users.length, guild.name)
+                },
+                description: options.flags.min ? '' : users.join('\n'),
+                fields: [
+                    {
+                        name: message.language.get('COMMAND_GUILDS_GUILD_GP_HEADER'),
+                        value: client.codeBlock(message.language.get('COMMAND_GUILDS_GUILD_GP', guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
+                    }
+                ]
+            }});
+        } else {
+            // Show basic stats. info about the guild
+            const fields = [];
+            let desc = guild.desc ? `**${message.language.get('COMMAND_GUILDS_DESC')}:**\n\`${guild.desc}\`\n` : '';
+            desc += (guild.message && guild.message.length) ? `**${message.language.get('COMMAND_GUILDS_MSG')}:**\n\`${guild.message}\`` : '';
+
+            const raidStr = message.language.get('COMMAND_GUILDS_RAID_STRINGS');
+            let raids = '';
+
+            if (guild.raid && Object.keys(guild.raid).length) {
+                Object.keys(guild.raid).forEach(r => {
+                    raids += `${raidStr[r]}${guild.raid[r].includes('HEROIC') ? raidStr.heroic : guild.raid[r].replace('DIFF0', 'T')}\n`;
+                });
+            } else {
+                raids = 'No raids available';
+            }
+
+            fields.push({
+                name: raidStr.header,
+                value: client.codeBlock(raids),
+                inline: true
+            });
+    
+            const stats = message.language.get('COMMAND_GUILDS_STAT_STRINGS', guild.members, guild.required, guild.gp.toLocaleString());
+            fields.push({
+                name: message.language.get('COMMAND_GUILDS_STAT_HEADER'),
+                value: client.codeBlock(stats),
+                inline: true
+            });
+
+            fields.push({
+                name: '-',
+                value: message.language.get('COMMAND_GUILDS_FOOTER', message.guildSettings.prefix)
+            });
+            return msg.edit({embed: {
+                author: {
+                    name: guild.name
+                },
+                description: desc.length ? desc : '',
+                fields: fields.length ? fields : [],
+                footer: {
+                    text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(guild.updated, message))
                 }
-            ]
-        }});
+            }});
+        }
     }
 }
 

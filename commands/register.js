@@ -93,10 +93,6 @@ class Register extends Command {
                 }
                 break;
             case 'update': {
-                // return message.channel.send(["Sorry, but this has been disabled.",
-                //     "Your profile data will stay the same for 2 hours after a sync, then will update",
-                //     "when you use a command that uses that data after that time is up"
-                // ].join('\n'));
                 let name;
                 if (!userID || userID === "me") {
                     userID = message.author.id;
@@ -132,7 +128,8 @@ class Register extends Command {
                             });
                         });
                     } else {
-                        await client.swgohAPI.player(ac).then(async (u) => {
+                        const cooldown = client.getPlayerCooldown(message.author.id);
+                        await client.swgohAPI.player(ac, null, cooldown).then(async (u) => {
                             if (!u) {
                                 await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
                             } else {

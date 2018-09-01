@@ -13,7 +13,7 @@ class MyProfile extends Command {
     }
 
     async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
-        const lang = message.guildSettings.swgoghLanguage;
+        // const lang = message.guildSettings.swgoghLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
             return message.channel.send(message.language.get('BASE_SWGOH_NO_ALLY', message.guildSettings.prefix));
@@ -22,22 +22,25 @@ class MyProfile extends Command {
         }
         const allyCode = allyCodes[0];
 
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let player;
         try {
-            // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
-            player = await client.swgohAPI.player(allyCode, lang);
+            player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log('Broke getting player in myprofile: ' + e);
         }
+        const gpFull = player.stats.find(s => s.nameKey === 'STAT_GALACTIC_POWER_ACQUIRED_NAME').value;
+        const gpChar = player.stats.find(s => s.nameKey === 'STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME').value;
+        const gpShip = player.stats.find(s => s.nameKey === 'STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME').value;
 
         const fields = [];
-        const charList = player.roster.filter(u => u.type === 'char');
+        const charList = player.roster.filter(u => u.type === 'CHARACTER');
         let zetaCount = 0;
         charList.forEach(char => {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
             zetaCount += thisZ.length;
         });
-        const charOut = message.language.get('COMMAND_MYPROFILE_CHARS', player.gpChar.toLocaleString(), charList, zetaCount);
+        const charOut = message.language.get('COMMAND_MYPROFILE_CHARS', gpChar.toLocaleString(), charList, zetaCount);
         fields.push({
             name: charOut.header,
             value: [
@@ -47,8 +50,8 @@ class MyProfile extends Command {
             ].join('\n')
         });
 
-        const shipList = player.roster.filter(u => u.type === 'ship');
-        const shipOut = message.language.get('COMMAND_MYPROFILE_SHIPS', player.gpShip.toLocaleString(), shipList);
+        const shipList = player.roster.filter(u => u.type === 'SHIP');
+        const shipOut = message.language.get('COMMAND_MYPROFILE_SHIPS', gpShip.toLocaleString(), shipList);
         fields.push({
             name: shipOut.header,
             value: [
@@ -62,7 +65,7 @@ class MyProfile extends Command {
             author: {
                 name: message.language.get('COMMAND_MYPROFILE_EMBED_HEADER', player.name, player.allyCode),
             },
-            description: message.language.get('COMMAND_MYPROFILE_DESC', player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, player.gpFull.toLocaleString()),
+            description: message.language.get('COMMAND_MYPROFILE_DESC', player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, gpFull.toLocaleString()),
             footer: {
                 text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
             },

@@ -649,6 +649,28 @@
         }
     },
     {
+        "name": "Hound's Tooth",
+        "uniqueName": "HOUNDSTOOTH",
+        "aliases": [
+            "Hound's Tooth"
+        ],
+        "nameVariant": [
+            "Hound's Tooth"
+        ],
+        "crew": [],
+        "url": "https://swgoh.gg/ships/hounds-tooth/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        }
+    },
+    {
         "name": "Imperial TIE Fighter",
         "aliases": [
             "TIE Fighter",

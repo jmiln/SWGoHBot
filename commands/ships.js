@@ -35,7 +35,6 @@ class Ships extends Command {
         if (ships.length <= 0) {
             return message.channel.send(message.language.get('COMMAND_SHIPS_INVALID_CHARACTER', message.guildSettings.prefix));
         } else if (ships.length > 1) {
-            console.log(ships);
             return message.channel.send(message.language.get('BASE_SWGOH_CHAR_LIST', ships.map(s => `${s.name}${s.crew.length ? '\n' + s.crew.map(c => '- ' + c).join('\n') + '\n' : '\n'}`).join('\n')));
         }
 

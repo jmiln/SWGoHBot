@@ -99,7 +99,7 @@ module.exports = async (client, message) => {
                     subArgs: flagArgs.subArgs
                 });
             } catch (err) {
-                client.log('ERROR', `I broke: ${err}`, cmd.help.name.toProperCase());
+                client.log('ERROR(msg)', `I broke with ${cmd.name}: ${err}`, cmd.help.name.toProperCase());
             }
         }
         if (client.config.logs.logComs) {

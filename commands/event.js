@@ -269,7 +269,6 @@ class Event extends Command {
                         let eventString = message.language.get('COMMAND_EVENT_TIME', eventName, eventDate);
                         eventString += message.language.get('COMMAND_EVENT_TIME_LEFT', momentTZ.duration(momentTZ().diff(momentTZ(parseInt(thisEvent.eventDT)), 'minutes') * -1, 'minutes').format("d [days], h [hrs], m [min]"));
                         if (thisEvent.eventChan && thisEvent.eventChan !== '') {
-                            console.log(thisEvent);
                             eventString += message.language.get('COMMAND_EVENT_CHAN', thisEvent.eventChan);
                         }
                         if (thisEvent['repeatDays'].length > 0) {
@@ -283,7 +282,6 @@ class Event extends Command {
                         }
                         return message.channel.send(eventString);
                     } else {
-                        console.log(args);
                         return message.channel.send(message.language.get('COMMAND_EVENT_UNFOUND_EVENT', args[0]));
                     }
                 } else {     
