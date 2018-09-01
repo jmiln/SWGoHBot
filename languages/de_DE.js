@@ -243,7 +243,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: 'changelog <Nachricht>',
                         args: {
-                            "Nachricht": "Benutze [Updated], [Fixed], [Removed], und [Added] um die Aenderungen zu organisieren."
+                            "Nachricht": "Benutze [Updated], [Changed], [Fixed], [Removed], und [Added] um die Aenderungen zu organisieren."
                         }
                     }
                 ]
