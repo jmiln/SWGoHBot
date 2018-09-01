@@ -403,6 +403,7 @@ module.exports = class extends Language {
              COMMAND_GUILDS_GUILD_GP: (total, average) => `Gesamt GM: ${total}\nDurchschnitt : ${average}`,
              COMMAND_GUILDS_DESC: "Gilde Beschreibung",
              COMMAND_GUILDS_MSG: "Chat Ankuendigung",
+             COMMAND_GUILDS_REG_NEEDED: "Ich kann keine Gilde fuer diesen User finden. Bitte sicherstellen dass der Buendniscode korrekt ist.",
              COMMAND_GUILDS_RAID_STRINGS: {
                  header:    "Raids",
                  rancor:    "Rancor: ",
