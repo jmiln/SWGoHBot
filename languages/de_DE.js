@@ -396,15 +396,37 @@ module.exports = class extends Language {
 
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: 'Fuer mehr Info zu einer spezifischen Gilde:',
+            COMMAND_GUILDS_NO_GUILD: 'Ich kann diese Gilde nicht finden.',
+             COMMAND_GUILDS_PLEASE_WAIT: "Bitte warten waehrend ich die Info zu deiner Gilde aktualisiere",
+             COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Spieler bei ${guild}`,
+             COMMAND_GUILDS_GUILD_GP_HEADER: 'Registrierte GM',
+             COMMAND_GUILDS_GUILD_GP: (total, average) => `Gesamt GM: ${total}\nDurchschnitt : ${average}`,
+             COMMAND_GUILDS_DESC: "Gilde Beschreibung",
+             COMMAND_GUILDS_MSG: "Chat Ankuendigung",
+             COMMAND_GUILDS_RAID_STRINGS: {
+                 header:    "Raids",
+                 rancor:    "Rancor: ",
+                 aat:       "AAT:    ",
+                 sith_raid: "Sith:   ",
+                 heroic:    "Heroisch"
+             },
+             COMMAND_GUILDS_STAT_HEADER: "Statistiken",
+             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+                 `Members:      ${members}/50`,
+                 `Erforderliches Lvl: ${lvl}`,
+                 `Gesamt GM:     ${gp}`
+             ].join('\n'),
+             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` eine Liste der Gildenmitglieder`,
             COMMAND_GUILDS_HELP: {
                 description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guild [user]',
+                        usage: ';guild [user] [-roster]',
                         args: {
-                            "user": "Zur Identifizierung der Gilde. (mention | allyCode | guildName)"
+                            "user": "Zur Identifizierung der Gilde. (mention | allyCode | guildName)",
+                            "-roster": "Zeigt eine Liste aller Gildenmitglieder dieser Gilde an"   
                         }
                     }
                 ]
