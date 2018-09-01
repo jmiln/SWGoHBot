@@ -22,10 +22,9 @@ class Guilds extends Command {
         // Basic, with no args, shows the top ## guilds (Based on how many have registered)
         // <allyCode | mention | guildName >
         
-        // const lang = message.guildSettings.swgohLanguage;
-            
         // Shows your guild's total GP, average GP, and a list of your members
         // Not trying to get any specific guild, show em the top ones
+        let acType = true;
         if (!userID) {
             userID = 'me';
         } 
@@ -41,15 +40,19 @@ class Guilds extends Command {
             userID = userID[0];
         } else {
             // Or, if they don't have one of those, try getting the guild by name
-            // userID += args.length ? ' ' + args.join(' ') : '';
-            // acType = false;
-            return msg.edit("I currently do not support looking up guilds by name, please use an ally code, or mention someone that has registered.");
+            userID += args.length ? ' ' + args.join(' ') : '';
+            acType = false;
+            // return msg.edit("I currently do not support looking up guilds by name, please use an ally code, or mention someone that has registered.");
         }
 
         let guild = null;
         try {
             // guild = await client.swgohAPI.fetchGuild(userID, 'details', lang);
-            guild = await client.swgohAPI.guild(userID);
+            if (acType) {
+                guild = await client.swgohAPI.guild(userID);
+            } else {
+                guild = await client.swgohAPI.guildByName(userID);
+            }
         } catch (e) {
             console.log('ERROR(guilds): ' + e);
         }

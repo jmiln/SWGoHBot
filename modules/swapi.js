@@ -10,6 +10,7 @@ module.exports = (client) => {
     return {
         player: player,
         guild: guild,
+        guildByName: guildByName,
         guildGG: guildGG,
         events: events
     };
@@ -98,6 +99,20 @@ module.exports = (client) => {
                 guild = guild[0];
             }
             return guild;      
+        } catch (e) { 
+            console.log('SWAPI(guild) Broke getting guild: ' + e);
+            throw e; 
+        }            
+    }
+
+    async function guildByName( gName ) {
+        try {
+            const guild  = await cache.get('swapi', 'guilds', {name:gName});
+
+            if ( !guild || !guild[0] ) { 
+                return null;
+            } 
+            return guild[0];      
         } catch (e) { 
             console.log('SWAPI(guild) Broke getting guild: ' + e);
             throw e; 
