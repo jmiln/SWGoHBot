@@ -108,6 +108,7 @@ module.exports = class extends Language {
                     args: {}
                 };
             },
+
             BASE_MOD_TYPES: {
                 SQUARE:  'Viereck',
                 ARROW:   'Pfeil',
@@ -125,6 +126,34 @@ module.exports = class extends Language {
                 SPEED:      'Tempo',
                 TENACITY:   'Zaehigkeit'
             },
+
+            BASE_MODSETS_FROM_GAME: {
+                 1: "Gesundheit",
+                 2: "Angriff",
+                 3: "Abwehr",
+                 4: "Tempo",
+                 5: "Krit Chance",
+                 6: "Krit Schaden",
+                 7: "Effektivitaet",
+                 8: "Zaehigkeit"
+             },
+             BASE_MODS_FROM_GAME: {
+                 'UNITSTATACCURACY': "Praezision %",
+                 'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Krit Chance %",
+                 'UNITSTATCRITICALDAMAGE': "Krit Schaden %",
+                 'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Krit Ausweichen",
+                 'UNITSTATDEFENSE': "Abwehr",
+                 'UNITSTATDEFENSEPERCENTADDITIVE': "Abwehr %",
+                 'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Effektivitaet %",
+                 'UNITSTATMAXHEALTH': "Gesundheit",
+                 'UNITSTATMAXHEALTHPERCENTADDITIVE': "Gesundheit %",
+                 'UNITSTATMAXSHIELD': "Schutz",
+                 'UNITSTATMAXSHIELDPERCENTADDITIVE': "Schutz %",
+                 'UNITSTATOFFENSE': "Angriff",
+                 'UNITSTATOFFENSEPERCENTADDITIVE': "Angriff %",
+                 'UNITSTATRESISTANCE': "Zaehigkeit %",
+                 'UNITSTATSPEED': "Tempo"
+             },
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
