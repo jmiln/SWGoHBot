@@ -71,7 +71,7 @@ class Squads extends Command {
                 const outArr = client.msgArray(sqArray, '\n', 1000);
                 outArr.forEach((sq, ix) => {
                     fields.push({
-                        name: player.name + "'s " + message.language.get('COMMAND_SQUADS_FIELD_HEADER') + (ix === 0 ? '' : ' ' + message.language.get('BASE_CONT_STRING')),
+                        name: (player ? player.name + "'s " : "") + message.language.get('COMMAND_SQUADS_FIELD_HEADER') + (ix === 0 ? '' : ' ' + message.language.get('BASE_CONT_STRING')),
                         value: sq
                     });
                 });
