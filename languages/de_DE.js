@@ -108,6 +108,7 @@ module.exports = class extends Language {
                     args: {}
                 };
             },
+
             BASE_MOD_TYPES: {
                 SQUARE:  'Viereck',
                 ARROW:   'Pfeil',
@@ -125,6 +126,34 @@ module.exports = class extends Language {
                 SPEED:      'Tempo',
                 TENACITY:   'Zaehigkeit'
             },
+
+            BASE_MODSETS_FROM_GAME: {
+                 1: "Gesundheit",
+                 2: "Angriff",
+                 3: "Abwehr",
+                 4: "Tempo",
+                 5: "Krit Chance",
+                 6: "Krit Schaden",
+                 7: "Effektivitaet",
+                 8: "Zaehigkeit"
+             },
+             BASE_MODS_FROM_GAME: {
+                 'UNITSTATACCURACY': "Praezision %",
+                 'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Krit Chance %",
+                 'UNITSTATCRITICALDAMAGE': "Krit Schaden %",
+                 'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Krit Ausweichen",
+                 'UNITSTATDEFENSE': "Abwehr",
+                 'UNITSTATDEFENSEPERCENTADDITIVE': "Abwehr %",
+                 'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Effektivitaet %",
+                 'UNITSTATMAXHEALTH': "Gesundheit",
+                 'UNITSTATMAXHEALTHPERCENTADDITIVE': "Gesundheit %",
+                 'UNITSTATMAXSHIELD': "Schutz",
+                 'UNITSTATMAXSHIELDPERCENTADDITIVE': "Schutz %",
+                 'UNITSTATOFFENSE': "Angriff",
+                 'UNITSTATOFFENSEPERCENTADDITIVE': "Angriff %",
+                 'UNITSTATRESISTANCE': "Zaehigkeit %",
+                 'UNITSTATSPEED': "Tempo"
+             },
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
@@ -214,7 +243,7 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: 'changelog <Nachricht>',
                         args: {
-                            "Nachricht": "Benutze [Updated], [Fixed], [Removed], und [Added] um die Aenderungen zu organisieren."
+                            "Nachricht": "Benutze [Updated], [Changed], [Fixed], [Removed], und [Added] um die Aenderungen zu organisieren."
                         }
                     }
                 ]
@@ -367,15 +396,38 @@ module.exports = class extends Language {
 
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: 'Fuer mehr Info zu einer spezifischen Gilde:',
+            COMMAND_GUILDS_NO_GUILD: 'Ich kann diese Gilde nicht finden.',
+             COMMAND_GUILDS_PLEASE_WAIT: "Bitte warten waehrend ich die Info zu deiner Gilde aktualisiere",
+             COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Spieler bei ${guild}`,
+             COMMAND_GUILDS_GUILD_GP_HEADER: 'Registrierte GM',
+             COMMAND_GUILDS_GUILD_GP: (total, average) => `Gesamt GM: ${total}\nDurchschnitt : ${average}`,
+             COMMAND_GUILDS_DESC: "Gilde Beschreibung",
+             COMMAND_GUILDS_MSG: "Chat Ankuendigung",
+             COMMAND_GUILDS_REG_NEEDED: "Ich kann keine Gilde fuer diesen User finden. Bitte sicherstellen dass der Buendniscode korrekt ist.",
+             COMMAND_GUILDS_RAID_STRINGS: {
+                 header:    "Raids",
+                 rancor:    "Rancor: ",
+                 aat:       "AAT:    ",
+                 sith_raid: "Sith:   ",
+                 heroic:    "Heroisch"
+             },
+             COMMAND_GUILDS_STAT_HEADER: "Statistiken",
+             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+                 `Members:      ${members}/50`,
+                 `Erforderliches Lvl: ${lvl}`,
+                 `Gesamt GM:     ${gp}`
+             ].join('\n'),
+             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` eine Liste der Gildenmitglieder`,
             COMMAND_GUILDS_HELP: {
                 description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
                 actions: [
                     {
                         action: "",
                         actionDesc: '',
-                        usage: ';guild [user]',
+                        usage: ';guild [user] [-roster]',
                         args: {
-                            "user": "Zur Identifizierung der Gilde. (mention | allyCode | guildName)"
+                            "user": "Zur Identifizierung der Gilde. (mention | allyCode | guildName)",
+                            "-roster": "Zeigt eine Liste aller Gildenmitglieder dieser Gilde an"   
                         }
                     }
                 ]
@@ -391,6 +443,8 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NO_CHAR: `Niemand in deiner Gilde scheint diesen Charakter zu haben.`,
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Nicht aktiviert (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
+            COMMAND_GUILDSEARCH_PLEASE_WAIT: "Bitte warten waehrend ich die Sammlung deiner Gilde durchsuche.",
+             COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in deiner Gilde diesen Charakter.",
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Zeigt den Stern-Level des gewaehlten Charakters von allen Gildenmitgliedern an.",
                 actions: [

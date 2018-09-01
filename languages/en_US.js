@@ -141,7 +141,7 @@ module.exports = class extends Language {
                 'UNITSTATCRITICALDAMAGE': "Crit Damage %",
                 'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Crit Avoidance",
                 'UNITSTATDEFENSE': "Defense",
-                'UNITSTATDEFENSEPERCENTADDITIVE': "Defence %",
+                'UNITSTATDEFENSEPERCENTADDITIVE': "Defense %",
                 'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Potency %",
                 'UNITSTATMAXHEALTH': "Health",
                 'UNITSTATMAXHEALTHPERCENTADDITIVE': "Health %",
