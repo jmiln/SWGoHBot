@@ -420,6 +420,8 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NO_CHAR: `Niemand in deiner Gilde scheint diesen Charakter zu haben.`,
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Nicht aktiviert (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
+            COMMAND_GUILDSEARCH_PLEASE_WAIT: "Bitte warten waehrend ich die Sammlung deiner Gilde durchsuche.",
+             COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in deiner Gilde diesen Charakter.",
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Zeigt den Stern-Level des gewaehlten Charakters von allen Gildenmitgliedern an.",
                 actions: [
