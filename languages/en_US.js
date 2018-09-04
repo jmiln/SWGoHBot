@@ -136,13 +136,13 @@ module.exports = class extends Language {
                 8: "Tenacity"
             },
             BASE_MODS_FROM_GAME: {
-                'UNITSTATACCURACY': "Accuracy %",
+                'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Accuracy %",
                 'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Crit Chance %",
                 'UNITSTATCRITICALDAMAGE': "Crit Damage %",
                 'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Crit Avoidance",
                 'UNITSTATDEFENSE': "Defense",
                 'UNITSTATDEFENSEPERCENTADDITIVE': "Defense %",
-                'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Potency %",
+                'UNITSTATACCURACY': "Potency %",
                 'UNITSTATMAXHEALTH': "Health",
                 'UNITSTATMAXHEALTHPERCENTADDITIVE': "Health %",
                 'UNITSTATMAXSHIELD': "Protection",
