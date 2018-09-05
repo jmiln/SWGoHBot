@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2018-08-29 20:00:01.000000",
+        "date": "2018-09-04 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -3062,7 +3062,7 @@
             "cross": "Protection",
             "short": "",
             "families": "scoundrel ; bounty hunter",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Vandor Chewbacca",
@@ -3189,7 +3189,7 @@
             "circle": "Protection",
             "cross": "Offense / Protection",
             "short": "BS",
-            "families": "jedi",
+            "families": "jedi ; old republic",
             "crew": "0"
         },
         {
@@ -3205,7 +3205,103 @@
             "circle": "Protection",
             "cross": "Health / Protection",
             "short": "BS",
-            "families": "jedi",
+            "families": "jedi ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "T3-M4 with HK-47",
+            "cname": "T3-M4",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Critical Damage",
+            "circle": "Protection",
+            "cross": "Offense / Protection",
+            "short": "BS",
+            "families": "droid ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "T3-M4",
+            "cname": "T3-M4",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "short": "BS",
+            "families": "droid ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "Zaalbar",
+            "cname": "Zaalbar",
+            "set1": "SPE",
+            "set2": "POT",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "short": "BS",
+            "families": "scoundrel ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "Mission Vao",
+            "cname": "Mission Vao",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Critical Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "BS",
+            "families": "scoundrel ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "Embo",
+            "cname": "Embo",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage / Crit. Chance",
+            "circle": "Protection",
+            "cross": "Offense / Protection",
+            "short": "BS",
+            "families": "scoundrel ; bounty hunter",
+            "crew": "0"
+        },
+        {
+            "name": "Aurra Sing",
+            "cname": "Aurra Sing",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "BS",
+            "families": "scoundrel ; bounty hunter",
             "crew": "0"
         }
     ]
