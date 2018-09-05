@@ -47,6 +47,7 @@ client.database = new Sequelize(client.config.database.data, client.config.datab
 client.database.authenticate().then(async () => {
     await require('./modules/models')(Sequelize, client.database);
 
+
     // Get all the models
     const rawAttr = client.database.models.settings.rawAttributes;
     const rawNames = Object.keys(rawAttr);
@@ -96,6 +97,9 @@ const init = async () => {
         const SwgohHelp = require('api-swgoh-help');
         client.swgoh = new SwgohHelp(client.config.api_swgoh_help);
         client.swgohAPI = require('./modules/swapi.js')(client);
+
+        // Load up the zeta recommendstions
+        client.zetaRec = await client.swgohAPI.zetaRec();
     }
     // If we have the magic, use it
     // if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
