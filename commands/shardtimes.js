@@ -9,11 +9,16 @@ class Shardtimes extends Command {
             name: 'shardtimes',
             aliases: ['shard', 'st', 'payout', 'po'],
             guildOnly: true,
-            category: 'Misc'
+            category: 'Misc',
+            flags: {
+                'ships': {
+                    aliases: ['ship']
+                }
+            }
         });
     }
 
-    async run(client, message, args, options) {
+    async run(client, message, [action, userID, timezone, ...flag], options) {
         const level = options.level;
         // Shard ID will be guild.id-channel.id
         const shardID = `${message.guild.id}-${message.channel.id}`;
@@ -35,13 +40,10 @@ class Shardtimes extends Command {
         }
 
         let timeToAdd = 18;
-        if (args.includes('-ship')) {
-            args.splice(args.indexOf('-ship'), 1);
+        if (options.flags.ships) {
             timeToAdd = 19;
         }
         
-        let [action, userID, timezone, ...flag] = args;  // eslint-disable-line prefer-const 
-
         if (action === 'add') {
             // If it's an admin, let them register other users, else let em register themselves
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]

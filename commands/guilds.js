@@ -47,7 +47,6 @@ class Guilds extends Command {
 
         let guild = null;
         try {
-            // guild = await client.swgohAPI.fetchGuild(userID, 'details', lang);
             if (acType) {
                 guild = await client.swgohAPI.guild(userID);
             } else {
