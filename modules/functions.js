@@ -11,6 +11,9 @@ const Discord = require('discord.js');
 module.exports = (client) => {
     // The scheduler for events
     client.schedule = require("node-schedule");
+
+    // A zero-width-space
+    client.zws = '\u200B';
     
     /*
         PERMISSION LEVEL FUNCTION

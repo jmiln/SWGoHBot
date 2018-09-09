@@ -1018,7 +1018,7 @@
                         "team": [
                             "ADMIRALACKBAR",
                             "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
-                            "BB8:uniqueskill_BB801",
+                            "BB8",
                             "GRANDADMIRALTHRAWN",
                             "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01"
                         ]
@@ -1050,6 +1050,7 @@
                 "squads": [
                     {
                         "name": "[α] RJT REY R2",
+                        "main": true,
                         "note": "4%-10% [1,862,000-4,655,000]",
                         "url": "https://youtu.be/8ebER5Sm1ok",
                         "team": [
@@ -1062,6 +1063,7 @@
                     },
                     {
                         "name": "[α] RJT REY VISAS",
+                        "main": true,
                         "note": "4%-10% [1,862,000-4,655,000]",
                         "url": "",
                         "team": [
@@ -1098,6 +1100,7 @@
                     },
                     {
                         "name": "[α] YODALICIOUS",
+                        "main": true,
                         "note": "4%-12% [1,862,000-5,586,000] - Hermit Yoda zeta recommended, but optional",
                         "url": "https://www.youtube.com/watch?v=dpwuA_gao48",
                         "team": [
@@ -1223,6 +1226,7 @@
                     },
                     {
                         "name": "[α] GK HW",
+                        "main": true,
                         "note": "2%-4% [1,040,000-2,080,000]",
                         "url": "",
                         "team": [
@@ -1235,6 +1239,7 @@
                     },
                     {
                         "name": "[α] GK HL",
+                        "main": true,
                         "note": "2%-4% [1,040,000-2,080,000]",
                         "url": "",
                         "team": [
@@ -1270,7 +1275,8 @@
                         ]
                     },
                     {
-                        "name": "[α] BOBA HW",
+                        "name": "[α] BEAST MODE",
+                        "main": true,
                         "note": "2%-4% [1,040,000-2,080,000]",
                         "url": "",
                         "team": [
@@ -1587,21 +1593,23 @@
                 "name": "PHASE 3 - DARTH TRAYA &amp; 3 LIGHTSABERS",
                 "squads": [
                     {
-                        "name": "[α] CHEX MIX SAB",
+                        "name": "[α] CHEX MIX PAO",
+                        "main": true,
                         "note": "4%-6% [1,440,000-2,160,000]",
-                        "url": "",
+                        "url": "https://youtu.be/lzq1TwKyAH4",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
                             "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
-                            "SABINEWRENS3",
+                            "PAO",
                             "CHIRRUTIMWE"
                         ]
                     },
                     {
                         "name": "[α] FLAMING HOT GREEDO MIX",
+                        "main": true,
                         "note": "8%-12% [2,880,000-4,320,000]",
-                        "url": "",
+                        "url": "https://youtu.be/eveb8nYD2qk",
                         "team": [
                             "BOBAFETT",
                             "GREEDO",
@@ -1611,14 +1619,40 @@
                         ]
                     },
                     {
-                        "name": "[α] CHEX MIX PAO",
+                        "name": "[α] NIGHTSISTERS",
+                        "main": true,
+                        "note": "4%-8% [6,440,000-15,880,000]",
+                        "url": "https://youtu.be/j2YVGV38hiU",
+                        "team": [
+                            "MOTHERTALZIN:leaderskill_MOTHERTALZIN",
+                            "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
+                            "DAKA",
+                            "NIGHTSISTERACOLYTE",
+                            "NIGHTSISTERZOMBIE"
+                        ]
+                    },
+                    {
+                        "name": "[α] AURRA HUNTERS",
+                        "main": true,
+                        "note": "4%-8% [2,880,000-6,320,000]",
+                        "url": "https://youtu.be/e23uAhlvOQk",
+                        "team": [
+                            "AURRA_SING:leaderskill_AURRA_SING",
+                            "BOBAFETT:uniqueskill_BOBAFETT01",
+                            "DENGAR",
+                            "EMBO",
+                            "ENFYSNEST"
+                        ]
+                    },
+                    {
+                        "name": "[α] CHEX MIX SAB",
                         "note": "4%-6% [1,440,000-2,160,000]",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
                             "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
-                            "PAO",
+                            "SABINEWRENS3",
                             "CHIRRUTIMWE"
                         ]
                     },
@@ -1761,6 +1795,7 @@
                 "squads": [
                     {
                         "name": "[α] NS 1.0",
+                        "main": true,
                         "note": "4%-8% [480,000-16,600,000] - Zombie should be weak as possible",
                         "url": "https://youtu.be/hMctm_0RYwA",
                         "team": [
@@ -1838,6 +1873,7 @@
                 "squads": [
                     {
                         "name": "[α] FO 1.0",
+                        "main": true,
                         "note": "1%-4% [96,000-384,000]",
                         "url": "",
                         "team": [
@@ -1850,6 +1886,7 @@
                     },
                     {
                         "name": "[α] FO 2.0",
+                        "main": true,
                         "note": "1%-4% [96,000-384,000]",
                         "url": "",
                         "team": [
@@ -1862,6 +1899,7 @@
                     },
                     {
                         "name": "[β] FO 3.0",
+                        "main": true,
                         "note": "1%-2% [96,000-192,000]",
                         "url": "",
                         "team": [
@@ -1874,6 +1912,7 @@
                     },
                     {
                         "name": "[β] FO 4.0",
+                        "main": true,
                         "note": "1%-2% [96,000-192,000]",
                         "url": "",
                         "team": [
@@ -3426,7 +3465,8 @@
                         "team": [
                             "AMILYNHOLDO:uniqueskill_AMILYNHOLDO01",
                             "MAUL:leaderskill_MAUL",
-                            "ENFYSNEST:uniqueskill_ENFYSNEST01"
+                            "ENFYSNEST:uniqueskill_ENFYSNEST01",
+                            "LOGRAY:uniqueskill_LOGRAY01"
                         ]
                     },
                     {

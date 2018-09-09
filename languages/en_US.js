@@ -136,13 +136,13 @@ module.exports = class extends Language {
                 8: "Tenacity"
             },
             BASE_MODS_FROM_GAME: {
-                'UNITSTATACCURACY': "Accuracy %",
+                'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Accuracy %",
                 'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Crit Chance %",
                 'UNITSTATCRITICALDAMAGE': "Crit Damage %",
                 'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Crit Avoidance",
                 'UNITSTATDEFENSE': "Defense",
                 'UNITSTATDEFENSEPERCENTADDITIVE': "Defense %",
-                'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Potency %",
+                'UNITSTATACCURACY': "Potency %",
                 'UNITSTATMAXHEALTH': "Health",
                 'UNITSTATMAXHEALTHPERCENTADDITIVE': "Health %",
                 'UNITSTATMAXSHIELD': "Protection",
@@ -152,6 +152,7 @@ module.exports = class extends Language {
                 'UNITSTATRESISTANCE': "Tenacity %",
                 'UNITSTATSPEED': "Speed"
             },
+            BASE_LEVEL_SHORT: 'lvl',
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
@@ -1194,6 +1195,10 @@ module.exports = class extends Language {
             COMMAND_ZETA_NO_USER: `Sorry, but I don't have that user listed anywhere.`,
             COMMAND_ZETA_NO_ZETAS: 'You don\'t seem to have any abilities zetad.',
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${'-'.repeat(30)}\``,
+            COMMAND_ZETA_MORE_INFO: '`;zeta <character>` for more info.',
+            COMMAND_ZETA_REC_BAD_FILTER: (filters) => `Invalid filter, please try one of \`${filters}\``,
+            COMMAND_ZETA_REC_HEADER: 'Available filters:',
+            COMMAND_ZETA_REC_AUTH: (zetaLen, pName) => `Top ${zetaLen}zetas for ${pName}`,
             COMMAND_ZETAS_HELP: {
                 description: "Show the abilities that you have put zetas on.",
                 actions: [
@@ -1202,7 +1207,16 @@ module.exports = class extends Language {
                         actionDesc: '',
                         usage: ';zeta [user]',
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "user": "The person you're checking. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Recommend",
+                        actionDesc: "See some recommended zetas for various parts of the game",
+                        usage: ";zeta -r [user] [filter]",
+                        args: {
+                            "user": "The person you're checking. (me | userID | mention)",
+                            "filter": "See ranked zetas according to one of the filters"
                         }
                     }
                 ]

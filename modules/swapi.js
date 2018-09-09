@@ -4,14 +4,16 @@ module.exports = (client) => {
     const cache = client.cache;
 
     const playerCooldown = 2;
-    const guildCooldown = 6;
-    const eventCooldown = 12;
+    const guildCooldown  = 6;
+    const eventCooldown  = 12;
+    const zetaCooldown   = 7 * 24; // 7 days
 
     return {
         player: player,
         guild: guild,
         guildByName: guildByName,
         guildGG: guildGG,
+        zetaRec: zetaRec,
         events: events
     };
 
@@ -152,6 +154,42 @@ module.exports = (client) => {
                 guildGG = guildGG[0];
             }
             return guildGG;      
+        } catch (e) { 
+            throw e; 
+        }            
+    }
+
+    async function zetaRec( lang='ENG_US' ) {
+        try {
+            let zetas = await cache.get('swapi', 'zetaRec', {lang:lang});
+
+            /** Check if existance and expiration */
+            if ( !zetas || !zetas[0] || !zetas[0].zetas || isExpired(zetas[0].zetas.updated, zetaCooldown) ) { 
+                /** If not found or expired, fetch new from API and save to cache */
+                try {
+                    zetas =  await swgoh.fetchAPI('/swgoh/zetas', {
+                        language: lang,
+                        enums: true,
+                        "project": {
+                            zetas: 1,
+                            credits: 1,
+                            updated: 1
+                        }
+                    });
+                } catch (e) {
+                    console.log("[SWGoHAPI] Could not get zetas");
+                }
+                zetas = {
+                    lang: lang, 
+                    zetas: zetas
+                };
+                zetas = await cache.put('swapi', 'zetaRec', {lang:lang}, zetas);
+                zetas = zetas.zetas;
+            } else {
+                /** If found and valid, serve from cache */
+                zetas = zetas[0].zetas;
+            }
+            return zetas;
         } catch (e) { 
             throw e; 
         }            
