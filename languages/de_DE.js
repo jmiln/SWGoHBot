@@ -138,13 +138,13 @@ module.exports = class extends Language {
                  8: "Zaehigkeit"
              },
              BASE_MODS_FROM_GAME: {
-                 'UNITSTATACCURACY': "Praezision %",
+                 'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Praezision %",
                  'UNITSTATCRITICALCHANCEPERCENTADDITIVE': "Krit Chance %",
                  'UNITSTATCRITICALDAMAGE': "Krit Schaden %",
                  'UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE': "Krit Ausweichen",
                  'UNITSTATDEFENSE': "Abwehr",
                  'UNITSTATDEFENSEPERCENTADDITIVE': "Abwehr %",
-                 'UNITSTATEVASIONNEGATEPERCENTADDITIVE': "Effektivitaet %",
+                 'UNITSTATACCURACY': "Effektivitaet %",
                  'UNITSTATMAXHEALTH': "Gesundheit",
                  'UNITSTATMAXHEALTHPERCENTADDITIVE': "Gesundheit %",
                  'UNITSTATMAXSHIELD': "Schutz",
@@ -154,6 +154,8 @@ module.exports = class extends Language {
                  'UNITSTATRESISTANCE': "Zaehigkeit %",
                  'UNITSTATSPEED': "Tempo"
              },
+             BASE_LEVEL_SHORT: 'lvl',
+
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
@@ -1196,6 +1198,10 @@ module.exports = class extends Language {
             COMMAND_ZETA_NO_USER: `Entschuldigung, aber diesen User kann ich nicht finden.`,
             COMMAND_ZETA_NO_ZETAS: 'Keine Faehigkeiten mit Zeta gefunden.',
             COMMAND_ZETA_OUT_DESC: `\`${'-'.repeat(30)}\`\n\`[L]\` Anfuehrer | \`[S]\` Spezial | \`[U]\` Einzigartig\n\`${'-'.repeat(30)}\``,
+            COMMAND_ZETA_MORE_INFO: '`;zeta <character>` fuer mehr Info.',
+            COMMAND_ZETA_REC_BAD_FILTER: (filters) => `Ungueltiger Filter, bitte einen von diesen verwenden \`${filters}\``,
+            COMMAND_ZETA_REC_HEADER: 'Verfuegbare Filter:',
+            COMMAND_ZETA_REC_AUTH: (zetaLen, pName) => `Top ${zetaLen}zetas fuer ${pName}`,
             COMMAND_ZETAS_HELP: {
                 description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft wurden.",
                 actions: [
@@ -1205,6 +1211,15 @@ module.exports = class extends Language {
                         usage: ';zeta [user]',
                         args: {
                             "user": "Das Discordprofil vom Spieler den du sehen moechtest. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Empfehlung",
+                        actionDesc: "Empfohlene Zetas fuer verschiedene Bereiche im Spiel",
+                        usage: ";zeta -r [user] [filter]",
+                        args: {
+                            "user": "Das Discordprofil vom Spieler den du sehen moechtest. (me | userID | mention)",
+                            "filter": "Zeigt die empfohlenen Zetas in Abhaengigkeit des verwendeten Filters an"
                         }
                     }
                 ]
