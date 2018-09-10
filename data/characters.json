@@ -9,7 +9,7 @@
         "nameVariant": [
             "Aayla Secura"
         ],
-        "url": "https://swgoh.gg/characters/aayla-secura/",
+        "url": "http://swgoh.gg/characters/aayla-secura/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_aaylasecura.png",
         "side": "light",
         "factions": [
@@ -221,7 +221,7 @@
         "nameVariant": [
             "Admiral Ackbar"
         ],
-        "url": "https://swgoh.gg/characters/admiral-ackbar/",
+        "url": "http://swgoh.gg/characters/admiral-ackbar/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ackbaradmiral.png",
         "side": "light",
         "factions": [
@@ -432,7 +432,7 @@
         "nameVariant": [
             "Ahsoka Tano"
         ],
-        "url": "https://swgoh.gg/characters/ahsoka-tano/",
+        "url": "http://swgoh.gg/characters/ahsoka-tano/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ahsoka.png",
         "side": "light",
         "factions": [
@@ -644,9 +644,10 @@
             "FAT"
         ],
         "nameVariant": [
+            "Ahsoka Tano Fulcrum",
             "Ahsoka Tano (Fulcrum)"
         ],
-        "url": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/",
+        "url": "http://swgoh.gg/characters/ahsoka-tano-fulcrum/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ahsokaadult.png",
         "side": "light",
         "factions": [
@@ -854,7 +855,7 @@
         "nameVariant": [
             "Amilyn Holdo"
         ],
-        "url": "https://swgoh.gg/characters/amilyn-holdo/",
+        "url": "http://swgoh.gg/characters/amilyn-holdo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_holdo.png",
         "side": "light",
         "factions": [
@@ -1064,7 +1065,7 @@
         "nameVariant": [
             "Asajj Ventress"
         ],
-        "url": "https://swgoh.gg/characters/asajj-ventress/",
+        "url": "http://swgoh.gg/characters/asajj-ventress/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ventress.png",
         "side": "dark",
         "factions": [
@@ -1284,7 +1285,7 @@
         "nameVariant": [
             "Aurra Sing"
         ],
-        "url": "https://swgoh.gg/characters/aurra-sing/",
+        "url": "http://swgoh.gg/characters/aurra-sing/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_aurrasing.png",
         "side": "dark",
         "factions": [
@@ -1514,7 +1515,7 @@
         "nameVariant": [
             "B2 Super Battle Droid"
         ],
-        "url": "https://swgoh.gg/characters/b2-super-battle-droid/",
+        "url": "http://swgoh.gg/characters/b2-super-battle-droid/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b2.png",
         "side": "dark",
         "factions": [
@@ -1728,7 +1729,7 @@
         "nameVariant": [
             "BB-8"
         ],
-        "url": "https://swgoh.gg/characters/bb-8/",
+        "url": "http://swgoh.gg/characters/bb-8/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bb8.png",
         "side": "light",
         "factions": [
@@ -1990,7 +1991,7 @@
         "nameVariant": [
             "Barriss Offee"
         ],
-        "url": "https://swgoh.gg/characters/barriss-offee/",
+        "url": "http://swgoh.gg/characters/barriss-offee/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_barriss_light.png",
         "side": "light",
         "factions": [
@@ -2204,7 +2205,7 @@
         "nameVariant": [
             "Bastila Shan"
         ],
-        "url": "https://swgoh.gg/characters/bastila-shan/",
+        "url": "http://swgoh.gg/characters/bastila-shan/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bastilashan.png",
         "side": "light",
         "factions": [
@@ -2422,7 +2423,7 @@
         "nameVariant": [
             "Baze Malbus"
         ],
-        "url": "https://swgoh.gg/characters/baze-malbus/",
+        "url": "http://swgoh.gg/characters/baze-malbus/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bazemalbus.png",
         "side": "light",
         "factions": [
@@ -2644,7 +2645,7 @@
         "nameVariant": [
             "Biggs Darklighter"
         ],
-        "url": "https://swgoh.gg/characters/biggs-darklighter/",
+        "url": "http://swgoh.gg/characters/biggs-darklighter/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_biggs.png",
         "side": "light",
         "factions": [
@@ -2846,7 +2847,7 @@
         "nameVariant": [
             "Bistan"
         ],
-        "url": "https://swgoh.gg/characters/bistan/",
+        "url": "http://swgoh.gg/characters/bistan/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bistan.png",
         "side": "light",
         "factions": [
@@ -3058,7 +3059,7 @@
         "nameVariant": [
             "Boba Fett"
         ],
-        "url": "https://swgoh.gg/characters/boba-fett/",
+        "url": "http://swgoh.gg/characters/boba-fett/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bobafett.png",
         "side": "dark",
         "factions": [
@@ -3321,7 +3322,7 @@
         "nameVariant": [
             "Bodhi Rook"
         ],
-        "url": "https://swgoh.gg/characters/bodhi-rook/",
+        "url": "http://swgoh.gg/characters/bodhi-rook/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bodhi.png",
         "side": "light",
         "factions": [
@@ -3531,7 +3532,7 @@
         "nameVariant": [
             "Bossk"
         ],
-        "url": "https://swgoh.gg/characters/bossk/",
+        "url": "http://swgoh.gg/characters/bossk/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bossk.png",
         "side": "dark",
         "factions": [
@@ -3757,12 +3758,14 @@
         "uniqueName": "CC2224",
         "aliases": [
             "CC-2224 \"Cody\"",
+            "CC-2224 Cody",
             "Cody"
         ],
         "nameVariant": [
+            "'CC-2224 Cody'",
             "CC-2224 \"Cody\""
         ],
-        "url": "https://swgoh.gg/characters/cc-2224-cody/",
+        "url": "http://swgoh.gg/characters/cc-2224-cody/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_cody.png",
         "side": "light",
         "factions": [
@@ -3984,9 +3987,10 @@
             "Echo"
         ],
         "nameVariant": [
+            "'CT-21-0408 Echo'",
             "CT-21-0408 \"Echo\""
         ],
-        "url": "https://swgoh.gg/characters/ct-21-0408-echo/",
+        "url": "http://swgoh.gg/characters/ct-21-0408-echo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_echo.png",
         "side": "light",
         "factions": [
@@ -4194,9 +4198,10 @@
             "Fives"
         ],
         "nameVariant": [
+            "'CT-5555 Fives'",
             "CT-5555 \"Fives\""
         ],
-        "url": "https://swgoh.gg/characters/ct-5555-fives/",
+        "url": "http://swgoh.gg/characters/ct-5555-fives/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_fives.png",
         "side": "light",
         "factions": [
@@ -4419,9 +4424,10 @@
             "Rex"
         ],
         "nameVariant": [
+            "'CT-7567 Rex'",
             "CT-7567 \"Rex\""
         ],
-        "url": "https://swgoh.gg/characters/ct-7567-rex/",
+        "url": "http://swgoh.gg/characters/ct-7567-rex/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclone_rex.png",
         "side": "light",
         "factions": [
@@ -4645,7 +4651,7 @@
         "nameVariant": [
             "Cad Bane"
         ],
-        "url": "https://swgoh.gg/characters/cad-bane/",
+        "url": "http://swgoh.gg/characters/cad-bane/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cadbane.png",
         "side": "dark",
         "factions": [
@@ -4866,7 +4872,7 @@
         "nameVariant": [
             "Captain Han Solo"
         ],
-        "url": "https://swgoh.gg/characters/captain-han-solo/",
+        "url": "http://swgoh.gg/characters/captain-han-solo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hoth_han.png",
         "side": "light",
         "factions": [
@@ -5089,7 +5095,7 @@
         "nameVariant": [
             "Captain Phasma"
         ],
-        "url": "https://swgoh.gg/characters/captain-phasma/",
+        "url": "http://swgoh.gg/characters/captain-phasma/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_phasma.png",
         "side": "dark",
         "factions": [
@@ -5297,7 +5303,7 @@
         "nameVariant": [
             "Cassian Andor"
         ],
-        "url": "https://swgoh.gg/characters/cassian-andor/",
+        "url": "http://swgoh.gg/characters/cassian-andor/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cassian.png",
         "side": "light",
         "factions": [
@@ -5507,7 +5513,7 @@
         "nameVariant": [
             "Chief Chirpa"
         ],
-        "url": "https://swgoh.gg/characters/chief-chirpa/",
+        "url": "http://swgoh.gg/characters/chief-chirpa/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_chirpa.png",
         "side": "light",
         "factions": [
@@ -5715,7 +5721,7 @@
         "nameVariant": [
             "Chief Nebit"
         ],
-        "url": "https://swgoh.gg/characters/chief-nebit/",
+        "url": "http://swgoh.gg/characters/chief-nebit/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_nebit.png",
         "side": "light",
         "factions": [
@@ -5923,7 +5929,7 @@
         "nameVariant": [
             "Chirrut Îmwe"
         ],
-        "url": "https://swgoh.gg/characters/chirrut-imwe/",
+        "url": "http://swgoh.gg/characters/chirrut-imwe/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chirrut.png",
         "side": "light",
         "factions": [
@@ -6143,7 +6149,7 @@
         "nameVariant": [
             "Chopper"
         ],
-        "url": "https://swgoh.gg/characters/chopper/",
+        "url": "http://swgoh.gg/characters/chopper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chopper.png",
         "side": "light",
         "factions": [
@@ -6355,7 +6361,7 @@
         "nameVariant": [
             "Clone Sergeant - Phase I"
         ],
-        "url": "https://swgoh.gg/characters/clone-sergeant-phase-i/",
+        "url": "http://swgoh.gg/characters/clone-sergeant-phase-i/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperclonegreen.png",
         "side": "light",
         "factions": [
@@ -6558,7 +6564,7 @@
         "nameVariant": [
             "Clone Wars Chewbacca"
         ],
-        "url": "https://swgoh.gg/characters/clone-wars-chewbacca/",
+        "url": "http://swgoh.gg/characters/clone-wars-chewbacca/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chewbacca.png",
         "side": "light",
         "factions": [
@@ -6772,7 +6778,7 @@
         "nameVariant": [
             "Colonel Starck"
         ],
-        "url": "https://swgoh.gg/characters/colonel-starck/",
+        "url": "http://swgoh.gg/characters/colonel-starck/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_colonel_stark.png",
         "side": "dark",
         "factions": [
@@ -6984,7 +6990,7 @@
         "nameVariant": [
             "Commander Luke Skywalker"
         ],
-        "url": "https://swgoh.gg/characters/commander-luke-skywalker/",
+        "url": "http://swgoh.gg/characters/commander-luke-skywalker/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_lukebespin.png",
         "side": "light",
         "factions": [
@@ -7226,7 +7232,7 @@
         "nameVariant": [
             "Coruscant Underworld Police"
         ],
-        "url": "https://swgoh.gg/characters/coruscant-underworld-police/",
+        "url": "http://swgoh.gg/characters/coruscant-underworld-police/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_coruscantpolice.png",
         "side": "light",
         "factions": [
@@ -7423,7 +7429,7 @@
         "nameVariant": [
             "Count Dooku"
         ],
-        "url": "https://swgoh.gg/characters/count-dooku/",
+        "url": "http://swgoh.gg/characters/count-dooku/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dooku.png",
         "side": "dark",
         "factions": [
@@ -7649,7 +7655,7 @@
         "nameVariant": [
             "Darth Maul"
         ],
-        "url": "https://swgoh.gg/characters/darth-maul/",
+        "url": "http://swgoh.gg/characters/darth-maul/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_maul.png",
         "side": "dark",
         "factions": [
@@ -7858,7 +7864,7 @@
         "nameVariant": [
             "Darth Nihilus"
         ],
-        "url": "https://swgoh.gg/characters/darth-nihilus/",
+        "url": "http://swgoh.gg/characters/darth-nihilus/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nihilus.png",
         "side": "dark",
         "factions": [
@@ -8092,7 +8098,7 @@
         "nameVariant": [
             "Darth Sidious"
         ],
-        "url": "https://swgoh.gg/characters/darth-sidious/",
+        "url": "http://swgoh.gg/characters/darth-sidious/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sidious.png",
         "side": "dark",
         "factions": [
@@ -8300,7 +8306,7 @@
         "nameVariant": [
             "Darth Sion"
         ],
-        "url": "https://swgoh.gg/characters/darth-sion/",
+        "url": "http://swgoh.gg/characters/darth-sion/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sion.png",
         "side": "dark",
         "factions": [
@@ -8520,7 +8526,7 @@
         "nameVariant": [
             "Darth Traya"
         ],
-        "url": "https://swgoh.gg/characters/darth-traya/",
+        "url": "http://swgoh.gg/characters/darth-traya/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_traya.png",
         "side": "dark",
         "factions": [
@@ -8737,7 +8743,7 @@
         "nameVariant": [
             "Darth Vader"
         ],
-        "url": "https://swgoh.gg/characters/darth-vader/",
+        "url": "http://swgoh.gg/characters/darth-vader/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_vader.png",
         "side": "dark",
         "factions": [
@@ -8999,7 +9005,7 @@
         "nameVariant": [
             "Dathcha"
         ],
-        "url": "https://swgoh.gg/characters/dathcha/",
+        "url": "http://swgoh.gg/characters/dathcha/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_dathcha.png",
         "side": "light",
         "factions": [
@@ -9210,7 +9216,7 @@
         "nameVariant": [
             "Death Trooper"
         ],
-        "url": "https://swgoh.gg/characters/death-trooper/",
+        "url": "http://swgoh.gg/characters/death-trooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperdeath.png",
         "side": "dark",
         "factions": [
@@ -9446,7 +9452,7 @@
         "nameVariant": [
             "Dengar"
         ],
-        "url": "https://swgoh.gg/characters/dengar/",
+        "url": "http://swgoh.gg/characters/dengar/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_dengar.png",
         "side": "dark",
         "factions": [
@@ -9692,7 +9698,7 @@
         "nameVariant": [
             "Director Krennic"
         ],
-        "url": "https://swgoh.gg/characters/director-krennic/",
+        "url": "http://swgoh.gg/characters/director-krennic/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_krennic.png",
         "side": "dark",
         "factions": [
@@ -9954,7 +9960,7 @@
         "nameVariant": [
             "Eeth Koth"
         ],
-        "url": "https://swgoh.gg/characters/eeth-koth/",
+        "url": "http://swgoh.gg/characters/eeth-koth/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_eethkoth.png",
         "side": "light",
         "factions": [
@@ -10162,7 +10168,7 @@
         "nameVariant": [
             "Embo"
         ],
-        "url": "https://swgoh.gg/characters/embo/",
+        "url": "http://swgoh.gg/characters/embo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_embo.png",
         "side": "dark",
         "factions": [
@@ -10382,7 +10388,7 @@
         "nameVariant": [
             "Emperor Palpatine"
         ],
-        "url": "https://swgoh.gg/characters/emperor-palpatine/",
+        "url": "http://swgoh.gg/characters/emperor-palpatine/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_palpatineemperor.png",
         "side": "dark",
         "factions": [
@@ -10614,7 +10620,7 @@
         "nameVariant": [
             "Enfys Nest"
         ],
-        "url": "https://swgoh.gg/characters/enfys-nest/",
+        "url": "http://swgoh.gg/characters/enfys-nest/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_enfys.png",
         "side": "light",
         "factions": [
@@ -10819,7 +10825,7 @@
         "nameVariant": [
             "Ewok Elder"
         ],
-        "url": "https://swgoh.gg/characters/ewok-elder/",
+        "url": "http://swgoh.gg/characters/ewok-elder/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_chief.png",
         "side": "light",
         "factions": [
@@ -11018,7 +11024,7 @@
         "nameVariant": [
             "Ewok Scout"
         ],
-        "url": "https://swgoh.gg/characters/ewok-scout/",
+        "url": "http://swgoh.gg/characters/ewok-scout/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_scout.png",
         "side": "light",
         "factions": [
@@ -11214,7 +11220,7 @@
         "nameVariant": [
             "Ezra Bridger"
         ],
-        "url": "https://swgoh.gg/characters/ezra-bridger/",
+        "url": "http://swgoh.gg/characters/ezra-bridger/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ezra_s3.png",
         "side": "light",
         "factions": [
@@ -11426,7 +11432,7 @@
         "nameVariant": [
             "Finn"
         ],
-        "url": "https://swgoh.gg/characters/finn/",
+        "url": "http://swgoh.gg/characters/finn/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_finnjakku.png",
         "side": "light",
         "factions": [
@@ -11655,7 +11661,7 @@
         "nameVariant": [
             "First Order Executioner"
         ],
-        "url": "https://swgoh.gg/characters/first-order-executioner/",
+        "url": "http://swgoh.gg/characters/first-order-executioner/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorder_executioner.png",
         "side": "dark",
         "factions": [
@@ -11852,7 +11858,7 @@
         "nameVariant": [
             "First Order Officer"
         ],
-        "url": "https://swgoh.gg/characters/first-order-officer/",
+        "url": "http://swgoh.gg/characters/first-order-officer/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorderofficer.png",
         "side": "dark",
         "factions": [
@@ -12050,7 +12056,7 @@
         "nameVariant": [
             "First Order SF TIE Pilot"
         ],
-        "url": "https://swgoh.gg/characters/first-order-sf-tie-pilot/",
+        "url": "http://swgoh.gg/characters/first-order-sf-tie-pilot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstorder_pilot.png",
         "side": "dark",
         "factions": [
@@ -12245,7 +12251,7 @@
         "nameVariant": [
             "First Order Stormtrooper"
         ],
-        "url": "https://swgoh.gg/characters/first-order-stormtrooper/",
+        "url": "http://swgoh.gg/characters/first-order-stormtrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstordertrooper.png",
         "side": "dark",
         "factions": [
@@ -12443,7 +12449,7 @@
         "nameVariant": [
             "First Order TIE Pilot"
         ],
-        "url": "https://swgoh.gg/characters/first-order-tie-pilot/",
+        "url": "http://swgoh.gg/characters/first-order-tie-pilot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_firstordertiepilot.png",
         "side": "dark",
         "factions": [
@@ -12640,7 +12646,7 @@
         "nameVariant": [
             "Gamorrean Guard"
         ],
-        "url": "https://swgoh.gg/characters/gamorrean-guard/",
+        "url": "http://swgoh.gg/characters/gamorrean-guard/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_gamorreanguard.png",
         "side": "dark",
         "factions": [
@@ -12836,7 +12842,7 @@
         "nameVariant": [
             "Gar Saxon"
         ],
-        "url": "https://swgoh.gg/characters/gar-saxon/",
+        "url": "http://swgoh.gg/characters/gar-saxon/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_gar_saxon.png",
         "side": "dark",
         "factions": [
@@ -13042,9 +13048,10 @@
             "Zeb"
         ],
         "nameVariant": [
+            "'Garazeb Zeb Orrelios'",
             "Garazeb \"Zeb\" Orrelios"
         ],
-        "url": "https://swgoh.gg/characters/garazeb-zeb-orrelios/",
+        "url": "http://swgoh.gg/characters/garazeb-zeb-orrelios/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zeb_s3.png",
         "side": "light",
         "factions": [
@@ -13268,7 +13275,7 @@
         "nameVariant": [
             "General Grievous"
         ],
-        "url": "https://swgoh.gg/characters/general-grievous/",
+        "url": "http://swgoh.gg/characters/general-grievous/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_grievous.png",
         "side": "dark",
         "factions": [
@@ -13503,7 +13510,7 @@
         "nameVariant": [
             "General Kenobi"
         ],
-        "url": "https://swgoh.gg/characters/general-kenobi/",
+        "url": "http://swgoh.gg/characters/general-kenobi/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwangeneral.png",
         "side": "light",
         "factions": [
@@ -13720,7 +13727,7 @@
         "nameVariant": [
             "General Veers"
         ],
-        "url": "https://swgoh.gg/characters/general-veers/",
+        "url": "http://swgoh.gg/characters/general-veers/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_veers.png",
         "side": "dark",
         "factions": [
@@ -13930,7 +13937,7 @@
         "nameVariant": [
             "Geonosian Soldier"
         ],
-        "url": "https://swgoh.gg/characters/geonosian-soldier/",
+        "url": "http://swgoh.gg/characters/geonosian-soldier/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_soldier.png",
         "side": "dark",
         "factions": [
@@ -14129,7 +14136,7 @@
         "nameVariant": [
             "Geonosian Spy"
         ],
-        "url": "https://swgoh.gg/characters/geonosian-spy/",
+        "url": "http://swgoh.gg/characters/geonosian-spy/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_spy.png",
         "side": "dark",
         "factions": [
@@ -14330,7 +14337,7 @@
         "nameVariant": [
             "Grand Admiral Thrawn"
         ],
-        "url": "https://swgoh.gg/characters/grand-admiral-thrawn/",
+        "url": "http://swgoh.gg/characters/grand-admiral-thrawn/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_thrawn.png",
         "side": "dark",
         "factions": [
@@ -14577,7 +14584,7 @@
         "nameVariant": [
             "Grand Master Yoda"
         ],
-        "url": "https://swgoh.gg/characters/grand-master-yoda/",
+        "url": "http://swgoh.gg/characters/grand-master-yoda/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_yodagrandmaster.png",
         "side": "light",
         "factions": [
@@ -14796,7 +14803,7 @@
         "nameVariant": [
             "Grand Moff Tarkin"
         ],
-        "url": "https://swgoh.gg/characters/grand-moff-tarkin/",
+        "url": "http://swgoh.gg/characters/grand-moff-tarkin/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tarkinadmiral.png",
         "side": "dark",
         "factions": [
@@ -15016,7 +15023,7 @@
         "nameVariant": [
             "Greedo"
         ],
-        "url": "https://swgoh.gg/characters/greedo/",
+        "url": "http://swgoh.gg/characters/greedo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_greedo.png",
         "side": "dark",
         "factions": [
@@ -15248,7 +15255,7 @@
         "nameVariant": [
             "HK-47"
         ],
-        "url": "https://swgoh.gg/characters/hk-47/",
+        "url": "http://swgoh.gg/characters/hk-47/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hk47.png",
         "side": "dark",
         "factions": [
@@ -15455,7 +15462,7 @@
         "nameVariant": [
             "Han Solo"
         ],
-        "url": "https://swgoh.gg/characters/han-solo/",
+        "url": "http://swgoh.gg/characters/han-solo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_han.png",
         "side": "light",
         "factions": [
@@ -15661,7 +15668,7 @@
         "nameVariant": [
             "Hera Syndulla"
         ],
-        "url": "https://swgoh.gg/characters/hera-syndulla/",
+        "url": "http://swgoh.gg/characters/hera-syndulla/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_hera_s3.png",
         "side": "light",
         "factions": [
@@ -15876,7 +15883,7 @@
         "nameVariant": [
             "Hermit Yoda"
         ],
-        "url": "https://swgoh.gg/characters/hermit-yoda/",
+        "url": "http://swgoh.gg/characters/hermit-yoda/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_yodahermit.png",
         "side": "light",
         "factions": [
@@ -16094,7 +16101,7 @@
         "nameVariant": [
             "Hoth Rebel Scout"
         ],
-        "url": "https://swgoh.gg/characters/hoth-rebel-scout/",
+        "url": "http://swgoh.gg/characters/hoth-rebel-scout/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelhothscout.png",
         "side": "light",
         "factions": [
@@ -16296,7 +16303,7 @@
         "nameVariant": [
             "Hoth Rebel Soldier"
         ],
-        "url": "https://swgoh.gg/characters/hoth-rebel-soldier/",
+        "url": "http://swgoh.gg/characters/hoth-rebel-soldier/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelhoth.png",
         "side": "light",
         "factions": [
@@ -16496,7 +16503,7 @@
         "nameVariant": [
             "IG-100 MagnaGuard"
         ],
-        "url": "https://swgoh.gg/characters/ig-100-magnaguard/",
+        "url": "http://swgoh.gg/characters/ig-100-magnaguard/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_magnaguard.png",
         "side": "dark",
         "factions": [
@@ -16699,7 +16706,7 @@
         "nameVariant": [
             "IG-86 Sentinel Droid"
         ],
-        "url": "https://swgoh.gg/characters/ig-86-sentinel-droid/",
+        "url": "http://swgoh.gg/characters/ig-86-sentinel-droid/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ig86.png",
         "side": "dark",
         "factions": [
@@ -16901,7 +16908,7 @@
         "nameVariant": [
             "IG-88"
         ],
-        "url": "https://swgoh.gg/characters/ig-88/",
+        "url": "http://swgoh.gg/characters/ig-88/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ig88.png",
         "side": "dark",
         "factions": [
@@ -17123,7 +17130,7 @@
         "nameVariant": [
             "Ima-Gun Di"
         ],
-        "url": "https://swgoh.gg/characters/ima-gun-di/",
+        "url": "http://swgoh.gg/characters/ima-gun-di/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_imagundi.png",
         "side": "light",
         "factions": [
@@ -17338,7 +17345,7 @@
         "nameVariant": [
             "Imperial Probe Droid"
         ],
-        "url": "https://swgoh.gg/characters/imperial-probe-droid/",
+        "url": "http://swgoh.gg/characters/imperial-probe-droid/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_probedroid.png",
         "side": "dark",
         "factions": [
@@ -17545,7 +17552,7 @@
         "nameVariant": [
             "Imperial Super Commando"
         ],
-        "url": "https://swgoh.gg/characters/imperial-super-commando/",
+        "url": "http://swgoh.gg/characters/imperial-super-commando/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_imperial_super_commando.png",
         "side": "dark",
         "factions": [
@@ -17743,7 +17750,7 @@
         "nameVariant": [
             "Jawa"
         ],
-        "url": "https://swgoh.gg/characters/jawa/",
+        "url": "http://swgoh.gg/characters/jawa/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_jawa.png",
         "side": "light",
         "factions": [
@@ -17942,7 +17949,7 @@
         "nameVariant": [
             "Jawa Engineer"
         ],
-        "url": "https://swgoh.gg/characters/jawa-engineer/",
+        "url": "http://swgoh.gg/characters/jawa-engineer/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_engineer.png",
         "side": "light",
         "factions": [
@@ -18149,7 +18156,7 @@
         "nameVariant": [
             "Jawa Scavenger"
         ],
-        "url": "https://swgoh.gg/characters/jawa-scavenger/",
+        "url": "http://swgoh.gg/characters/jawa-scavenger/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jawa_scavenger.png",
         "side": "light",
         "factions": [
@@ -18356,7 +18363,7 @@
         "nameVariant": [
             "Jedi Consular"
         ],
-        "url": "https://swgoh.gg/characters/jedi-consular/",
+        "url": "http://swgoh.gg/characters/jedi-consular/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_consular_03.png",
         "side": "light",
         "factions": [
@@ -18560,7 +18567,7 @@
         "nameVariant": [
             "Jedi Knight Anakin"
         ],
-        "url": "https://swgoh.gg/characters/jedi-knight-anakin/",
+        "url": "http://swgoh.gg/characters/jedi-knight-anakin/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_anakinknight.png",
         "side": "light",
         "factions": [
@@ -18773,7 +18780,7 @@
         "nameVariant": [
             "Jedi Knight Guardian"
         ],
-        "url": "https://swgoh.gg/characters/jedi-knight-guardian/",
+        "url": "http://swgoh.gg/characters/jedi-knight-guardian/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_guardian_01.png",
         "side": "light",
         "factions": [
@@ -18974,7 +18981,7 @@
             "Jolee Bindo",
             "Jolee Bido"
         ],
-        "url": "https://swgoh.gg/characters/jolee-bindo/",
+        "url": "http://swgoh.gg/characters/jolee-bindo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_joleebindo.png",
         "side": "light",
         "factions": [
@@ -19191,7 +19198,7 @@
         "nameVariant": [
             "Jyn Erso"
         ],
-        "url": "https://swgoh.gg/characters/jyn-erso/",
+        "url": "http://swgoh.gg/characters/jyn-erso/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jyn.png",
         "side": "light",
         "factions": [
@@ -19428,7 +19435,7 @@
         "nameVariant": [
             "K-2SO"
         ],
-        "url": "https://swgoh.gg/characters/k-2so/",
+        "url": "http://swgoh.gg/characters/k-2so/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_k2so.png",
         "side": "light",
         "factions": [
@@ -19652,7 +19659,7 @@
         "nameVariant": [
             "Kanan Jarrus"
         ],
-        "url": "https://swgoh.gg/characters/kanan-jarrus/",
+        "url": "http://swgoh.gg/characters/kanan-jarrus/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kanan_s3.png",
         "side": "light",
         "factions": [
@@ -19876,7 +19883,7 @@
         "nameVariant": [
             "Kit Fisto"
         ],
-        "url": "https://swgoh.gg/characters/kit-fisto/",
+        "url": "http://swgoh.gg/characters/kit-fisto/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kitfisto.png",
         "side": "light",
         "factions": [
@@ -20087,7 +20094,7 @@
         "nameVariant": [
             "Kylo Ren"
         ],
-        "url": "https://swgoh.gg/characters/kylo-ren/",
+        "url": "http://swgoh.gg/characters/kylo-ren/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kyloren.png",
         "side": "dark",
         "factions": [
@@ -20297,9 +20304,10 @@
             "Matt"
         ],
         "nameVariant": [
+            "Kylo Ren Unmasked",
             "Kylo Ren (Unmasked)"
         ],
-        "url": "https://swgoh.gg/characters/kylo-ren-unmasked/",
+        "url": "http://swgoh.gg/characters/kylo-ren-unmasked/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_kylo_unmasked.png",
         "side": "dark",
         "factions": [
@@ -20532,7 +20540,7 @@
         "nameVariant": [
             "L3-37"
         ],
-        "url": "https://swgoh.gg/characters/l3-37/",
+        "url": "http://swgoh.gg/characters/l3-37/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_l337.png",
         "side": "light",
         "factions": [
@@ -20740,7 +20748,7 @@
         "nameVariant": [
             "Lando Calrissian"
         ],
-        "url": "https://swgoh.gg/characters/lando-calrissian/",
+        "url": "http://swgoh.gg/characters/lando-calrissian/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_landobespin.png",
         "side": "light",
         "factions": [
@@ -20951,7 +20959,7 @@
         "nameVariant": [
             "Lobot"
         ],
-        "url": "https://swgoh.gg/characters/lobot/",
+        "url": "http://swgoh.gg/characters/lobot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_lobot.png",
         "side": "light",
         "factions": [
@@ -21159,7 +21167,7 @@
         "nameVariant": [
             "Logray"
         ],
-        "url": "https://swgoh.gg/characters/logray/",
+        "url": "http://swgoh.gg/characters/logray/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_logray.png",
         "side": "light",
         "factions": [
@@ -21365,9 +21373,10 @@
             "Farmboy"
         ],
         "nameVariant": [
+            "Luke Skywalker Farmboy",
             "Luke Skywalker (Farmboy)"
         ],
-        "url": "https://swgoh.gg/characters/luke-skywalker-farmboy/",
+        "url": "http://swgoh.gg/characters/luke-skywalker-farmboy/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_luke_ep4.png",
         "side": "light",
         "factions": [
@@ -21579,7 +21588,7 @@
         "nameVariant": [
             "Luminara Unduli"
         ],
-        "url": "https://swgoh.gg/characters/luminara-unduli/",
+        "url": "http://swgoh.gg/characters/luminara-unduli/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_luminara.png",
         "side": "light",
         "factions": [
@@ -21791,7 +21800,7 @@
         "nameVariant": [
             "Mace Windu"
         ],
-        "url": "https://swgoh.gg/characters/mace-windu/",
+        "url": "http://swgoh.gg/characters/mace-windu/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_macewindu.png",
         "side": "light",
         "factions": [
@@ -22005,7 +22014,7 @@
         "nameVariant": [
             "Magmatrooper"
         ],
-        "url": "https://swgoh.gg/characters/magmatrooper/",
+        "url": "http://swgoh.gg/characters/magmatrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm_magma.png",
         "side": "dark",
         "factions": [
@@ -22202,7 +22211,7 @@
         "nameVariant": [
             "Mission Vao"
         ],
-        "url": "https://swgoh.gg/characters/mission-vao/",
+        "url": "http://swgoh.gg/characters/mission-vao/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_mission.png",
         "side": "light",
         "factions": [
@@ -22408,7 +22417,7 @@
         "nameVariant": [
             "Mob Enforcer"
         ],
-        "url": "https://swgoh.gg/characters/mob-enforcer/",
+        "url": "http://swgoh.gg/characters/mob-enforcer/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_thug_female_01.png",
         "side": "dark",
         "factions": [
@@ -22605,7 +22614,7 @@
         "nameVariant": [
             "Mother Talzin"
         ],
-        "url": "https://swgoh.gg/characters/mother-talzin/",
+        "url": "http://swgoh.gg/characters/mother-talzin/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsisters_talzin.png",
         "side": "dark",
         "factions": [
@@ -22837,7 +22846,7 @@
         "nameVariant": [
             "Nightsister Acolyte"
         ],
-        "url": "https://swgoh.gg/characters/nightsister-acolyte/",
+        "url": "http://swgoh.gg/characters/nightsister-acolyte/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_acolyte.png",
         "side": "dark",
         "factions": [
@@ -23035,7 +23044,7 @@
         "nameVariant": [
             "Nightsister Initiate"
         ],
-        "url": "https://swgoh.gg/characters/nightsister-initiate/",
+        "url": "http://swgoh.gg/characters/nightsister-initiate/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_initiate.png",
         "side": "dark",
         "factions": [
@@ -23242,7 +23251,7 @@
         "nameVariant": [
             "Nightsister Spirit"
         ],
-        "url": "https://swgoh.gg/characters/nightsister-spirit/",
+        "url": "http://swgoh.gg/characters/nightsister-spirit/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsisters_wraith.png",
         "side": "dark",
         "factions": [
@@ -23438,7 +23447,7 @@
         "nameVariant": [
             "Nightsister Zombie"
         ],
-        "url": "https://swgoh.gg/characters/nightsister-zombie/",
+        "url": "http://swgoh.gg/characters/nightsister-zombie/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsisters_zombie.png",
         "side": "dark",
         "factions": [
@@ -23634,7 +23643,7 @@
         "nameVariant": [
             "Nute Gunray"
         ],
-        "url": "https://swgoh.gg/characters/nute-gunray/",
+        "url": "http://swgoh.gg/characters/nute-gunray/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nutegunray.png",
         "side": "dark",
         "factions": [
@@ -23841,9 +23850,10 @@
             "Old Ben"
         ],
         "nameVariant": [
+            "Obi-Wan Kenobi Old Ben",
             "Obi-Wan Kenobi (Old Ben)"
         ],
-        "url": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
+        "url": "http://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_obiwanep4.png",
         "side": "light",
         "factions": [
@@ -24065,7 +24075,7 @@
         "nameVariant": [
             "Old Daka"
         ],
-        "url": "https://swgoh.gg/characters/old-daka/",
+        "url": "http://swgoh.gg/characters/old-daka/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_daka.png",
         "side": "dark",
         "factions": [
@@ -24288,7 +24298,7 @@
         "nameVariant": [
             "Pao"
         ],
-        "url": "https://swgoh.gg/characters/pao/",
+        "url": "http://swgoh.gg/characters/pao/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_pao.png",
         "side": "light",
         "factions": [
@@ -24497,7 +24507,7 @@
         "nameVariant": [
             "Paploo"
         ],
-        "url": "https://swgoh.gg/characters/paploo/",
+        "url": "http://swgoh.gg/characters/paploo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_paploo.png",
         "side": "light",
         "factions": [
@@ -24706,7 +24716,7 @@
         "nameVariant": [
             "Plo Koon"
         ],
-        "url": "https://swgoh.gg/characters/plo-koon/",
+        "url": "http://swgoh.gg/characters/plo-koon/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_plokoon.png",
         "side": "light",
         "factions": [
@@ -24916,7 +24926,7 @@
         "nameVariant": [
             "Poe Dameron"
         ],
-        "url": "https://swgoh.gg/characters/poe-dameron/",
+        "url": "http://swgoh.gg/characters/poe-dameron/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_poe.png",
         "side": "light",
         "factions": [
@@ -25127,7 +25137,7 @@
         "nameVariant": [
             "Poggle the Lesser"
         ],
-        "url": "https://swgoh.gg/characters/poggle-the-lesser/",
+        "url": "http://swgoh.gg/characters/poggle-the-lesser/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_poggle.png",
         "side": "dark",
         "factions": [
@@ -25338,7 +25348,7 @@
         "nameVariant": [
             "Princess Leia"
         ],
-        "url": "https://swgoh.gg/characters/princess-leia/",
+        "url": "http://swgoh.gg/characters/princess-leia/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_leia_princess.png",
         "side": "light",
         "factions": [
@@ -25547,7 +25557,7 @@
         "nameVariant": [
             "Qi'ra"
         ],
-        "url": "https://swgoh.gg/characters/qira/",
+        "url": "http://swgoh.gg/characters/qira/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_qira.png",
         "side": "light",
         "factions": [
@@ -25767,7 +25777,7 @@
         "nameVariant": [
             "Qui-Gon Jinn"
         ],
-        "url": "https://swgoh.gg/characters/qui-gon-jinn/",
+        "url": "http://swgoh.gg/characters/qui-gon-jinn/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_quigon.png",
         "side": "light",
         "factions": [
@@ -25977,7 +25987,7 @@
         "nameVariant": [
             "R2-D2"
         ],
-        "url": "https://swgoh.gg/characters/r2-d2/",
+        "url": "http://swgoh.gg/characters/r2-d2/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_astromech_r2d2.png",
         "side": "light",
         "factions": [
@@ -26224,7 +26234,7 @@
         "nameVariant": [
             "Range Trooper"
         ],
-        "url": "https://swgoh.gg/characters/range-trooper/",
+        "url": "http://swgoh.gg/characters/range-trooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperranger.png",
         "side": "dark",
         "factions": [
@@ -26422,7 +26432,7 @@
         "nameVariant": [
             "Rebel Officer Leia Organa"
         ],
-        "url": "https://swgoh.gg/characters/rebel-officer-leia-organa/",
+        "url": "http://swgoh.gg/characters/rebel-officer-leia-organa/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_leiahoth.png",
         "side": "light",
         "factions": [
@@ -26627,7 +26637,7 @@
         "nameVariant": [
             "Resistance Pilot"
         ],
-        "url": "https://swgoh.gg/characters/resistance-pilot/",
+        "url": "http://swgoh.gg/characters/resistance-pilot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_resistancepilot.png",
         "side": "light",
         "factions": [
@@ -26824,7 +26834,7 @@
         "nameVariant": [
             "Resistance Trooper"
         ],
-        "url": "https://swgoh.gg/characters/resistance-trooper/",
+        "url": "http://swgoh.gg/characters/resistance-trooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_resistancetrooper.png",
         "side": "light",
         "factions": [
@@ -27032,13 +27042,15 @@
         "uniqueName": "REYJEDITRAINING",
         "aliases": [
             "Rey (Jedi Training)",
+            "Rey Jedi Training",
             "JTR",
             "RJT"
         ],
         "nameVariant": [
-            "Rey (Jedi Training)"
+            "Rey (Jedi Training)",
+            "Rey Jedi Training"
         ],
-        "url": "https://swgoh.gg/characters/rey-jedi-training/",
+        "url": "http://swgoh.gg/characters/rey-jedi-training/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rey_tlj.png",
         "side": "light",
         "factions": [
@@ -27275,12 +27287,14 @@
         "uniqueName": "REY",
         "aliases": [
             "Rey (Scavenger)",
+            "Rey Scavenger",
             "Scav"
         ],
         "nameVariant": [
-            "Rey (Scavenger)"
+            "Rey (Scavenger)",
+            "Rey Scavenger"
         ],
-        "url": "https://swgoh.gg/characters/rey-scavenger/",
+        "url": "http://swgoh.gg/characters/rey-scavenger/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_reyjakku.png",
         "side": "light",
         "factions": [
@@ -27490,7 +27504,7 @@
         "nameVariant": [
             "Rose Tico"
         ],
-        "url": "https://swgoh.gg/characters/rose-tico/",
+        "url": "http://swgoh.gg/characters/rose-tico/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rose.png",
         "side": "light",
         "factions": [
@@ -27725,7 +27739,7 @@
         "nameVariant": [
             "Royal Guard"
         ],
-        "url": "https://swgoh.gg/characters/royal-guard/",
+        "url": "http://swgoh.gg/characters/royal-guard/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_royalguard.png",
         "side": "dark",
         "factions": [
@@ -27924,7 +27938,7 @@
         "nameVariant": [
             "Sabine Wren"
         ],
-        "url": "https://swgoh.gg/characters/sabine-wren/",
+        "url": "http://swgoh.gg/characters/sabine-wren/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sabine_s3.png",
         "side": "light",
         "factions": [
@@ -28134,7 +28148,7 @@
         "nameVariant": [
             "Savage Opress"
         ],
-        "url": "https://swgoh.gg/characters/savage-opress/",
+        "url": "http://swgoh.gg/characters/savage-opress/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_savageopress.png",
         "side": "dark",
         "factions": [
@@ -28370,7 +28384,7 @@
         "nameVariant": [
             "Scarif Rebel Pathfinder"
         ],
-        "url": "https://swgoh.gg/characters/scarif-rebel-pathfinder/",
+        "url": "http://swgoh.gg/characters/scarif-rebel-pathfinder/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebel_scarif.png",
         "side": "light",
         "factions": [
@@ -28571,7 +28585,7 @@
         "nameVariant": [
             "Shoretrooper"
         ],
-        "url": "https://swgoh.gg/characters/shoretrooper/",
+        "url": "http://swgoh.gg/characters/shoretrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_troopershore.png",
         "side": "dark",
         "factions": [
@@ -28769,7 +28783,7 @@
         "nameVariant": [
             "Sith Assassin"
         ],
-        "url": "https://swgoh.gg/characters/sith-assassin/",
+        "url": "http://swgoh.gg/characters/sith-assassin/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithassassin.png",
         "side": "dark",
         "factions": [
@@ -28967,7 +28981,7 @@
         "nameVariant": [
             "Sith Marauder"
         ],
-        "url": "https://swgoh.gg/characters/sith-marauder/",
+        "url": "http://swgoh.gg/characters/sith-marauder/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithmarauder.png",
         "side": "dark",
         "factions": [
@@ -29178,7 +29192,7 @@
         "nameVariant": [
             "Sith Trooper"
         ],
-        "url": "https://swgoh.gg/characters/sith-trooper/",
+        "url": "http://swgoh.gg/characters/sith-trooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithtrooper.png",
         "side": "dark",
         "factions": [
@@ -29388,7 +29402,7 @@
         "nameVariant": [
             "Snowtrooper"
         ],
-        "url": "https://swgoh.gg/characters/snowtrooper/",
+        "url": "http://swgoh.gg/characters/snowtrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_troopersnow.png",
         "side": "dark",
         "factions": [
@@ -29589,7 +29603,7 @@
         "nameVariant": [
             "Stormtrooper"
         ],
-        "url": "https://swgoh.gg/characters/stormtrooper/",
+        "url": "http://swgoh.gg/characters/stormtrooper/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm.png",
         "side": "dark",
         "factions": [
@@ -29804,7 +29818,7 @@
         "nameVariant": [
             "Stormtrooper Han"
         ],
-        "url": "https://swgoh.gg/characters/stormtrooper-han/",
+        "url": "http://swgoh.gg/characters/stormtrooper-han/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_trooperstorm_han.png",
         "side": "light",
         "factions": [
@@ -30013,7 +30027,7 @@
         "nameVariant": [
             "Sun Fac"
         ],
-        "url": "https://swgoh.gg/characters/sun-fac/",
+        "url": "http://swgoh.gg/characters/sun-fac/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_geonosian_sunfac.png",
         "side": "dark",
         "factions": [
@@ -30223,7 +30237,7 @@
         "nameVariant": [
             "T3-M4"
         ],
-        "url": "https://swgoh.gg/characters/t3-m4/",
+        "url": "http://swgoh.gg/characters/t3-m4/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_t3m4.png",
         "side": "light",
         "factions": [
@@ -30455,7 +30469,7 @@
         "nameVariant": [
             "TIE Fighter Pilot"
         ],
-        "url": "https://swgoh.gg/characters/tie-fighter-pilot/",
+        "url": "http://swgoh.gg/characters/tie-fighter-pilot/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tiepilot.png",
         "side": "dark",
         "factions": [
@@ -30653,7 +30667,7 @@
         "nameVariant": [
             "Talia"
         ],
-        "url": "https://swgoh.gg/characters/talia/",
+        "url": "http://swgoh.gg/characters/talia/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_nightsister_talia.png",
         "side": "dark",
         "factions": [
@@ -30866,7 +30880,7 @@
         "nameVariant": [
             "Teebo"
         ],
-        "url": "https://swgoh.gg/characters/teebo/",
+        "url": "http://swgoh.gg/characters/teebo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_teebo.png",
         "side": "light",
         "factions": [
@@ -31076,7 +31090,7 @@
         "nameVariant": [
             "Tusken Raider"
         ],
-        "url": "https://swgoh.gg/characters/tusken-raider/",
+        "url": "http://swgoh.gg/characters/tusken-raider/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tuskenraider.png",
         "side": "dark",
         "factions": [
@@ -31276,7 +31290,7 @@
         "nameVariant": [
             "Tusken Shaman"
         ],
-        "url": "https://swgoh.gg/characters/tusken-shaman/",
+        "url": "http://swgoh.gg/characters/tusken-shaman/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tuskenshaman.png",
         "side": "dark",
         "factions": [
@@ -31476,7 +31490,7 @@
         "nameVariant": [
             "URoRRuR'R'R"
         ],
-        "url": "https://swgoh.gg/characters/urorrurrr/",
+        "url": "http://swgoh.gg/characters/urorrurrr/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_urorrurrr.png",
         "side": "dark",
         "factions": [
@@ -31684,7 +31698,7 @@
         "nameVariant": [
             "Ugnaught"
         ],
-        "url": "https://swgoh.gg/characters/ugnaught/",
+        "url": "http://swgoh.gg/characters/ugnaught/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ugnaught.png",
         "side": "light",
         "factions": [
@@ -31879,7 +31893,7 @@
         "nameVariant": [
             "Vandor Chewbacca"
         ],
-        "url": "https://swgoh.gg/characters/vandor-chewbacca/",
+        "url": "http://swgoh.gg/characters/vandor-chewbacca/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chewbacca_vandor.png",
         "side": "light",
         "factions": [
@@ -32086,7 +32100,7 @@
         "nameVariant": [
             "Veteran Smuggler Chewbacca"
         ],
-        "url": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
+        "url": "http://swgoh.gg/characters/veteran-smuggler-chewbacca/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tfa_chewbacca.png",
         "side": "light",
         "factions": [
@@ -32295,7 +32309,7 @@
         "nameVariant": [
             "Veteran Smuggler Han Solo"
         ],
-        "url": "https://swgoh.gg/characters/veteran-smuggler-han-solo/",
+        "url": "http://swgoh.gg/characters/veteran-smuggler-han-solo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_tfa_han.png",
         "side": "light",
         "factions": [
@@ -32502,7 +32516,7 @@
         "nameVariant": [
             "Visas Marr"
         ],
-        "url": "https://swgoh.gg/characters/visas-marr/",
+        "url": "http://swgoh.gg/characters/visas-marr/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_visas.png",
         "side": "light",
         "factions": [
@@ -32708,7 +32722,7 @@
         "nameVariant": [
             "Wampa"
         ],
-        "url": "https://swgoh.gg/characters/wampa/",
+        "url": "http://swgoh.gg/characters/wampa/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_wampa.png",
         "side": "dark",
         "factions": [
@@ -32923,7 +32937,7 @@
         "nameVariant": [
             "Wedge Antilles"
         ],
-        "url": "https://swgoh.gg/characters/wedge-antilles/",
+        "url": "http://swgoh.gg/characters/wedge-antilles/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_rebelpilot_wedge.png",
         "side": "light",
         "factions": [
@@ -33133,7 +33147,7 @@
         "nameVariant": [
             "Wicket"
         ],
-        "url": "https://swgoh.gg/characters/wicket/",
+        "url": "http://swgoh.gg/characters/wicket/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_ewok_wicket.png",
         "side": "light",
         "factions": [
@@ -33340,7 +33354,7 @@
         "nameVariant": [
             "Young Han Solo"
         ],
-        "url": "https://swgoh.gg/characters/young-han-solo/",
+        "url": "http://swgoh.gg/characters/young-han-solo/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_han_young.png",
         "side": "light",
         "factions": [
@@ -33545,7 +33559,7 @@
         "nameVariant": [
             "Young Lando Calrissian"
         ],
-        "url": "https://swgoh.gg/characters/young-lando-calrissian/",
+        "url": "http://swgoh.gg/characters/young-lando-calrissian/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_younglando.png",
         "side": "light",
         "factions": [
@@ -33750,7 +33764,7 @@
         "nameVariant": [
             "Zaalbar"
         ],
-        "url": "https://swgoh.gg/characters/zaalbar/",
+        "url": "http://swgoh.gg/characters/zaalbar/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zaalbar.png",
         "side": "light",
         "factions": [
@@ -33956,7 +33970,7 @@
         "nameVariant": [
             "Zam Wesell"
         ],
-        "url": "https://swgoh.gg/characters/zam-wesell/",
+        "url": "http://swgoh.gg/characters/zam-wesell/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_zamwesell.png",
         "side": "dark",
         "factions": [

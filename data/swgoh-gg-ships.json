@@ -2,316 +2,753 @@
     {
         "name": "Ahsoka Tano's Jedi Starfighter",
         "base_id": "JEDISTARFIGHTERAHSOKATANO",
-        "url": "https://swgoh.gg/ships/ahsoka-tanos-jedi-starfighter/",
+        "url": "http://swgoh.gg/ships/ahsoka-tanos-jedi-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_fighter_ahsoka.png",
-        "power": 47294,
+        "power": 49137,
         "description": "Versatile Jedi Attacker that uses dispels and buffs to adapt to the battle",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Galactic Republic",
+            "Jedi"
+        ],
+        "ability_classes": [
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Up",
+            "Reset Cooldown"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Biggs Darklighter's X-wing",
         "base_id": "XWINGRED3",
-        "url": "https://swgoh.gg/ships/biggs-darklighters-x-wing/",
+        "url": "http://swgoh.gg/ships/biggs-darklighters-x-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_xwing_red3.png",
-        "power": 46000,
+        "power": 47843,
         "description": "Heroic Rebel Tank that can exploit Target Lock for Taunts and Assists",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Rebel"
+        ],
+        "ability_classes": [
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false
     },
     {
         "name": "Bistan's U-wing",
         "base_id": "UWINGSCARIF",
-        "url": "https://swgoh.gg/ships/bistans-u-wing/",
+        "url": "http://swgoh.gg/ships/bistans-u-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_uwing.png",
-        "power": 54989,
+        "power": 57201,
         "description": "Elusive Rebel Support that boosts ally Turn Meter while using Stealth and Target Lock",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Rebel",
+            "Rogue One"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Gain Turn Meter",
+            "Stealth",
+            "Tenacity Down"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "Cassian's U-wing",
         "base_id": "UWINGROGUEONE",
-        "url": "https://swgoh.gg/ships/cassians-u-wing/",
+        "url": "http://swgoh.gg/ships/cassians-u-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_uwing_hero.png",
-        "power": 65341,
+        "power": 67553,
         "description": "Evasive Rebel Support ship that turns the tide of battle with Stealth and Turn Meter manipulation",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Rebel",
+            "Rogue One"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Counter",
+            "Defense Down",
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Down"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "Chimaera",
         "base_id": "CAPITALCHIMAERA",
-        "url": "https://swgoh.gg/ships/chimaera/",
+        "url": "http://swgoh.gg/ships/chimaera/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_chimaera.png",
-        "power": 58388,
+        "power": 60231,
         "description": "Tactical Empire Capital Ship that shuts down enemy Capital Ships and manipulates the flow of battle",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Defense Down",
+            "Defense Up",
+            "Foresight",
+            "Heal",
+            "Offense Down",
+            "Offense Up",
+            "Remove Turn Meter",
+            "Speed Down"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true
     },
     {
         "name": "Clone Sergeant's ARC-170",
         "base_id": "ARC170CLONESERGEANT",
-        "url": "https://swgoh.gg/ships/clone-sergeants-arc-170/",
+        "url": "http://swgoh.gg/ships/clone-sergeants-arc-170/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_arc170.png",
-        "power": 46000,
+        "power": 47843,
         "description": "Reliable Clone Tank that both inflicts and exploits Target Lock",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Clone Trooper",
+            "Galactic Republic"
+        ],
+        "ability_classes": [
+            "Defense Up",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false
     },
     {
         "name": "Endurance",
         "base_id": "CAPITALJEDICRUISER",
-        "url": "https://swgoh.gg/ships/endurance/",
+        "url": "http://swgoh.gg/ships/endurance/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_venator.png",
-        "power": 46269,
+        "power": 48112,
         "description": "Defensive Jedi Capital Ship that uses Valor to gain a huge Speed advantage",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Galactic Republic",
+            "Jedi"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Gain Turn Meter",
+            "Taunt"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true
     },
     {
         "name": "Executrix",
         "base_id": "CAPITALSTARDESTROYER",
-        "url": "https://swgoh.gg/ships/executrix/",
+        "url": "http://swgoh.gg/ships/executrix/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_stardestroyer.png",
-        "power": 58388,
+        "power": 60231,
         "description": "Aggressive Empire Capital Ship that crushes debuffed enemies",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Expose",
+            "Gain Turn Meter",
+            "Offense Up",
+            "Stun",
+            "Tenacity Down"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true
     },
     {
         "name": "First Order SF TIE Fighter",
         "base_id": "TIEFIGHTERFOSF",
-        "url": "https://swgoh.gg/ships/first-order-sf-tie-fighter/",
+        "url": "http://swgoh.gg/ships/first-order-sf-tie-fighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_fosf_tie_fighter.png",
-        "power": 46000,
+        "power": 47843,
         "description": "Superior First Order Attacker that has multiple offensive capabilities and inflicts multiple debuffs",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "First Order"
+        ],
+        "ability_classes": [
+            "AoE",
+            "DoT"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "First Order TIE Fighter",
         "base_id": "TIEFIGHTERFIRSTORDER",
-        "url": "https://swgoh.gg/ships/first-order-tie-fighter/",
+        "url": "http://swgoh.gg/ships/first-order-tie-fighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_firstorder_tiefighter.png",
-        "power": 50941,
+        "power": 52784,
         "description": "Aggressive First Order Attacker with reliable Target Lock and rapid-fire Special ability",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "First Order"
+        ],
+        "ability_classes": [
+            "Bonus Attack",
+            "Gain Turn Meter"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Gauntlet Starfighter",
         "base_id": "GAUNTLETSTARFIGHTER",
-        "url": "https://swgoh.gg/ships/gauntlet-starfighter/",
+        "url": "http://swgoh.gg/ships/gauntlet-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_gauntlet.png",
-        "power": 58237,
+        "power": 60449,
         "description": "Reliable Empire Support that dispels ally debuffs and prevents enemy buffs",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire"
+        ],
+        "ability_classes": [
+            "Heal"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "Geonosian Soldier's Starfighter",
         "base_id": "GEONOSIANSTARFIGHTER2",
-        "url": "https://swgoh.gg/ships/geonosian-soldiers-starfighter/",
+        "url": "http://swgoh.gg/ships/geonosian-soldiers-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_soldier.png",
-        "power": 46000,
+        "power": 47843,
         "description": "Aggressive Separatist Attacker that can Assist allies automatically",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Geonosian",
+            "Separatist"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Gain Turn Meter",
+            "Offense Up",
+            "Remove Turn Meter"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Geonosian Spy's Starfighter",
         "base_id": "GEONOSIANSTARFIGHTER3",
-        "url": "https://swgoh.gg/ships/geonosian-spys-starfighter/",
+        "url": "http://swgoh.gg/ships/geonosian-spys-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_spy.png",
-        "power": 46000,
+        "power": 47843,
         "description": "Elusive Separatist Attacker that uses Stealth for both offense and defense",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Geonosian",
+            "Separatist"
+        ],
+        "ability_classes": [
+            "Stealth",
+            "Taunt"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Ghost",
         "base_id": "GHOST",
-        "url": "https://swgoh.gg/ships/ghost/",
+        "url": "http://swgoh.gg/ships/ghost/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_ghost.png",
-        "power": 62659,
+        "power": 64871,
         "description": "Elusive Rebel attacker that reduces enemy Potency and wreaks havok with Rebel allies",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Cargo Ship",
+            "Phoenix",
+            "Rebel"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Speed Down",
+            "Stealth"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Home One",
         "base_id": "CAPITALMONCALAMARICRUISER",
-        "url": "https://swgoh.gg/ships/home-one/",
+        "url": "http://swgoh.gg/ships/home-one/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_moncalamarilibertycruiser.png",
-        "power": 46269,
+        "power": 48112,
         "description": "Versatile Rebel Capital Ship that uses Advantage and bonus attacks to turn the tide",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Rebel"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "AoE",
+            "Assist",
+            "Dispel",
+            "Gain Turn Meter",
+            "Reset Cooldown"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true
     },
     {
         "name": "Hound's Tooth",
         "base_id": "HOUNDSTOOTH",
-        "url": "https://swgoh.gg/ships/hounds-tooth/",
+        "url": "http://swgoh.gg/ships/hounds-tooth/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_houndstooth.png",
-        "power": 61179,
+        "power": 63021,
         "description": "Sustainable Bounty Hunter Tank that debilitates enemies",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Bounty Hunter",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Counter",
+            "Dispel",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false
     },
     {
         "name": "Imperial TIE Fighter",
         "base_id": "TIEFIGHTERIMPERIAL",
-        "url": "https://swgoh.gg/ships/imperial-tie-fighter/",
+        "url": "http://swgoh.gg/ships/imperial-tie-fighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_tiefighter.png",
-        "power": 46000,
+        "power": 47843,
         "description": "Evasive Empire Attacker that both inflicts and exploits Target Lock",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire"
+        ],
+        "ability_classes": [
+            "Buff Immunity",
+            "Foresight",
+            "Remove Turn Meter"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Jedi Consular's Starfighter",
         "base_id": "JEDISTARFIGHTERCONSULAR",
-        "url": "https://swgoh.gg/ships/jedi-consulars-starfighter/",
+        "url": "http://swgoh.gg/ships/jedi-consulars-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_fighter.png",
-        "power": 46000,
+        "power": 47843,
         "description": "Defensive Jedi Support that can rapidly restore ally Protection",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Galactic Republic",
+            "Jedi"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Defense Up",
+            "Heal"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "Kylo Ren's Command Shuttle",
         "base_id": "COMMANDSHUTTLE",
-        "url": "https://swgoh.gg/ships/kylo-rens-command-shuttle/",
+        "url": "http://swgoh.gg/ships/kylo-rens-command-shuttle/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_upsilon_shuttle_kylo.png",
-        "power": 61953,
+        "power": 64164,
         "description": "Durable First Order Support with unparalleled ability to manipulate allied Turn Meter",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "First Order"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Dispel",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Remove Turn Meter"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "Lando's Millennium Falcon",
         "base_id": "MILLENNIUMFALCONPRISTINE",
-        "url": "https://swgoh.gg/ships/landos-millennium-falcon/",
+        "url": "http://swgoh.gg/ships/landos-millennium-falcon/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_mil_fal_pristine.png",
-        "power": 59379,
+        "power": 61590,
         "description": "Devastating Scoundrel attacker that becomes more threatening after each ally reinforcement",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Cargo Ship",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Counter",
+            "Dispel"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Millennium Falcon (Ep VII)",
         "base_id": "MILLENNIUMFALCONEP7",
-        "url": "https://swgoh.gg/ships/millennium-falcon-ep-vii/",
+        "url": "http://swgoh.gg/ships/millennium-falcon-ep-vii/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
-        "power": 62262,
+        "power": 64473,
         "description": "Daring Resistance freighter that can turn the tide by sacrificing buffs",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Cargo Ship",
+            "Resistance"
+        ],
+        "ability_classes": [
+            "Counter",
+            "Gain Turn Meter"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Phantom II",
         "base_id": "PHANTOM2",
-        "url": "https://swgoh.gg/ships/phantom-ii/",
+        "url": "http://swgoh.gg/ships/phantom-ii/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_phantom2.png",
-        "power": 60683,
+        "power": 62894,
         "description": "Evasive Rebel attacker that provides as a decoy for the Ghost while applying buffs to allies",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Cargo Ship",
+            "Phoenix",
+            "Rebel"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "Dispel",
+            "Foresight",
+            "Offense Up",
+            "Stealth",
+            "Taunt"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Plo Koon's Jedi Starfighter",
         "base_id": "BLADEOFDORIN",
-        "url": "https://swgoh.gg/ships/plo-koons-jedi-starfighter/",
+        "url": "http://swgoh.gg/ships/plo-koons-jedi-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_jedi_fighter_bladeofdorin.png",
-        "power": 47294,
+        "power": 49137,
         "description": "Versatile Jedi Support with powerful Republic buffs and a targeted ally Taunt",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Galactic Republic",
+            "Jedi"
+        ],
+        "ability_classes": [
+            "Dispel",
+            "Taunt"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "Poe Dameron's X-wing",
         "base_id": "XWINGBLACKONE",
-        "url": "https://swgoh.gg/ships/poe-damerons-x-wing/",
+        "url": "http://swgoh.gg/ships/poe-damerons-x-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_xwing_blackone.png",
-        "power": 47294,
+        "power": 49137,
         "description": "Heroic Resistance Attacker that can exploit Turn Meter and punish enemies without Protection",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Resistance"
+        ],
+        "ability_classes": [
+            "Daze",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter",
+            "Offense Up"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Resistance X-wing",
         "base_id": "XWINGRESISTANCE",
-        "url": "https://swgoh.gg/ships/resistance-x-wing/",
+        "url": "http://swgoh.gg/ships/resistance-x-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_xwing_resistance.png",
-        "power": 45528,
+        "power": 47370,
         "description": "Aggressive Resistance Support that shuts down enemies with Expose, Target Lock, and Daze",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Resistance"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Daze",
+            "Dispel",
+            "Expose",
+            "Remove Turn Meter"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "Rex's ARC-170",
         "base_id": "ARC170REX",
-        "url": "https://swgoh.gg/ships/rexs-arc-170/",
+        "url": "http://swgoh.gg/ships/rexs-arc-170/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_arc170_02.png",
-        "power": 47294,
+        "power": 49137,
         "description": "Defensive Clone Tank that can inflict Target Lock and boost ally Protection and Tenacity",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Clone Trooper",
+            "Galactic Republic"
+        ],
+        "ability_classes": [
+            "Remove Turn Meter"
+        ],
+        "role": "Tank",
+        "capital_ship": false
     },
     {
         "name": "Scimitar",
         "base_id": "SITHINFILTRATOR",
-        "url": "https://swgoh.gg/ships/scimitar/",
+        "url": "http://swgoh.gg/ships/scimitar/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_sithinfiltrator.png",
-        "power": 52707,
+        "power": 54550,
         "description": "Deadly Sith Support that can Stealth allies to set up devastating attacks",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Sith"
+        ],
+        "ability_classes": [
+            "Remove Turn Meter",
+            "Stealth"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "Sith Fighter",
         "base_id": "SITHFIGHTER",
-        "url": "https://swgoh.gg/ships/sith-fighter/",
+        "url": "http://swgoh.gg/ships/sith-fighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_sithfighter.png",
-        "power": 43117,
+        "power": 44960,
         "description": "Agile Sith Attacker that bypasses enemy defenses",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Sith"
+        ],
+        "ability_classes": [
+            "Foresight",
+            "Gain Turn Meter",
+            "Healing Immunity"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Slave I",
         "base_id": "SLAVE1",
-        "url": "https://swgoh.gg/ships/slave-i/",
+        "url": "http://swgoh.gg/ships/slave-i/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_slave1.png",
-        "power": 56238,
+        "power": 58080,
         "description": "Deadly Bounty Hunter Attacker that inflicts and exploits Target Lock for high area-of-effect damage",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Bounty Hunter",
+            "Cargo Ship",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Counter",
+            "Gain Turn Meter",
+            "Taunt"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Sun Fac's Geonosian Starfighter",
         "base_id": "GEONOSIANSTARFIGHTER1",
-        "url": "https://swgoh.gg/ships/sun-facs-geonosian-starfighter/",
+        "url": "http://swgoh.gg/ships/sun-facs-geonosian-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_geonosis_fighter_sunfac.png",
-        "power": 47294,
+        "power": 49137,
         "description": "Punishing Separatist Tank that automatically Taunts against buffed enemies",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Geonosian",
+            "Separatist"
+        ],
+        "ability_classes": [
+            "Gain Turn Meter",
+            "Remove Turn Meter",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false
     },
     {
         "name": "TIE Advanced x1",
         "base_id": "TIEADVANCED",
-        "url": "https://swgoh.gg/ships/tie-advanced-x1/",
+        "url": "http://swgoh.gg/ships/tie-advanced-x1/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_tieadvanced.png",
-        "power": 59412,
+        "power": 61255,
         "description": "Fearsome Empire Attacker that shuts enemies down with stacking debuffs and permanent Target Locks",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire",
+            "Sith"
+        ],
+        "ability_classes": [
+            "AoE",
+            "DoT",
+            "Gain Turn Meter",
+            "Offense Down"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "TIE Reaper",
         "base_id": "TIEREAPER",
-        "url": "https://swgoh.gg/ships/tie-reaper/",
+        "url": "http://swgoh.gg/ships/tie-reaper/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_tiereaper.png",
-        "power": 58237,
+        "power": 60449,
         "description": "Defensive Empire Support that Dispels, delays cooldowns, and removes Turn Meter from the enemy Capital Ship",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Defense Down",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Remove Turn Meter"
+        ],
+        "role": "Support",
+        "capital_ship": false
     },
     {
         "name": "TIE Silencer",
         "base_id": "TIESILENCER",
-        "url": "https://swgoh.gg/ships/tie-silencer/",
+        "url": "http://swgoh.gg/ships/tie-silencer/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_tie_silencer.png",
-        "power": 59412,
+        "power": 61255,
         "description": "Superior First Order Attacker that gains unlimited speed and deals massive damage",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "First Order"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter",
+            "Reduce Cooldowns",
+            "Stun"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     },
     {
         "name": "Umbaran Starfighter",
         "base_id": "UMBARANSTARFIGHTER",
-        "url": "https://swgoh.gg/ships/umbaran-starfighter/",
+        "url": "http://swgoh.gg/ships/umbaran-starfighter/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_umbaran_star_fighter.png",
-        "power": 52707,
+        "power": 54550,
         "description": "Risky Clone Tank that inflicts great damage and debuffs, but grants Turn Meter to enemies",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Clone Trooper",
+            "Galactic Republic"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Counter",
+            "Defense Down",
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Remove Turn Meter"
+        ],
+        "role": "Tank",
+        "capital_ship": false
     },
     {
         "name": "Wedge Antilles's X-wing",
         "base_id": "XWINGRED2",
-        "url": "https://swgoh.gg/ships/wedge-antilless-x-wing/",
+        "url": "http://swgoh.gg/ships/wedge-antilless-x-wing/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_xwing_red2.png",
-        "power": 47294,
+        "power": 49137,
         "description": "Aggressive Rebel Attacker that overwhelms enemies with debuffs",
-        "combat_type": 2
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Rebel"
+        ],
+        "ability_classes": [
+            "Buff Immunity",
+            "DoT",
+            "Gain Turn Meter",
+            "Healing Immunity"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
     }
 ]
