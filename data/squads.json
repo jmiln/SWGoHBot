@@ -993,7 +993,7 @@
                         "url": "https://youtu.be/Q0ed4dYTXDY",
                         "team": [
                             "ADMIRALACKBAR",
-                            "BB8:uniqueskill_BB801",
+                            "BB8",
                             "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
                             "HERMITYODA",
                             "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
@@ -1008,7 +1008,7 @@
                             "WAMPA:uniqueskill_WAMPA02",
                             "GRANDADMIRALTHRAWN",
                             "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
-                            "BB8:uniqueskill_BB801"
+                            "BB8"
                         ]
                     },
                     {
@@ -1029,7 +1029,7 @@
                         "url": "https://youtu.be/GVoikNZWUx4",
                         "team": [
                             "ADMIRALACKBAR",
-                            "BB8:uniqueskill_BB801",
+                            "BB8",
                             "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
                             "HERMITYODA",
                             "YOUNGHAN"
@@ -3550,7 +3550,7 @@
     "gsummary": {
         "name": "GUILD SUMMARY",
         "rarity": 7,
-        "gear": 12,
+        "gear": 10,
         "level": 85,
         "phase": [
             {
