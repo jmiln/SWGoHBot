@@ -5,7 +5,6 @@ class Zetas extends Command {
     constructor(client) {
         super(client, {
             name: 'zetas',
-            guildOnly: true,
             category: "SWGoH",
             aliases: ['zeta', 'z'],
             permissions: ['EMBED_LINKS'],
