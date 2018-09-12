@@ -1375,5 +1375,27 @@
                 "abilityDesc": "Deal physical damage to target enemy.  Deals 10% additonal damage for each detrimental effect on the target.  Target Lock: Inflict 3 Damage Over Time effects for 2 turns."
             }
         }
+    },
+    {
+        "name": "Xanadu Blood",
+        "uniqueName": "XANADUBLOOD",
+        "aliases": [
+            "Xanadu Blood"
+        ],
+        "nameVariant": [
+            "Xanadu Blood"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/xanadu-blood/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        }
     }
 ]

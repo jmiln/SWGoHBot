@@ -332,6 +332,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Bounty Hunter",
+            "Cargo Ship",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -749,6 +750,29 @@
             "Healing Immunity"
         ],
         "role": "Attacker",
+        "capital_ship": false
+    },
+    {
+        "name": "Xanadu Blood",
+        "base_id": "XANADUBLOOD",
+        "url": "http://swgoh.gg/ships/xanadu-blood/",
+        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "power": 51373,
+        "description": "Debilitating Bounty Hunter Support that shuts down enemy offenses",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Bounty Hunter",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Bonus Attack",
+            "Counter",
+            "Defense Down"
+        ],
+        "role": "Support",
         "capital_ship": false
     }
 ]
