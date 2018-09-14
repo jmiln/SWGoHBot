@@ -7755,7 +7755,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "AoE",
@@ -11242,7 +11243,8 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "Counter",
@@ -12978,6 +12980,167 @@
             "Dispel",
             "Gain Turn Meter",
             "Offense Down"
+        ],
+        "role": "Attacker"
+    },
+    {
+        "name": "Jango Fett",
+        "base_id": "JANGOFETT",
+        "pk": 298,
+        "url": "http://swgoh.gg/characters/jango-fett/",
+        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "power": 24933,
+        "description": "Notorious Bounty Hunter that exploits debuffed foes and inflicts Burning",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "001",
+                    "001",
+                    "005",
+                    "005",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "019",
+                    "017",
+                    "015",
+                    "028",
+                    "025",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "004",
+                    "028",
+                    "049",
+                    "053",
+                    "060",
+                    "061"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "061",
+                    "051",
+                    "056",
+                    "068",
+                    "073",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "076",
+                    "060",
+                    "074",
+                    "089",
+                    "079",
+                    "086"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "079",
+                    "089",
+                    "079",
+                    "086",
+                    "091",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "108",
+                    "092",
+                    "097",
+                    "110",
+                    "109",
+                    "113"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "092",
+                    "109",
+                    "106",
+                    "103",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "103",
+                    "112",
+                    "113",
+                    "126",
+                    "125",
+                    "116"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "103",
+                    "144",
+                    "109",
+                    "145",
+                    "138",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "117",
+                    "117",
+                    "129",
+                    "140",
+                    "134",
+                    "153"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "159",
+                    "164",
+                    "168",
+                    "170",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Bounty Hunter",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Dispel",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Critical",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Revive",
+            "Taunt"
         ],
         "role": "Attacker"
     },
@@ -15174,7 +15337,8 @@
         "alignment": "Light Side",
         "categories": [
             "Droid",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "Counter",
@@ -18948,7 +19112,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "AoE",
@@ -20695,7 +20860,6 @@
         "ability_classes": [
             "AoE",
             "Counter",
-            "Dispel",
             "Expose",
             "Offense Up",
             "Reduce Cooldowns"
@@ -23657,7 +23821,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "Advantage",
@@ -23812,7 +23977,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "AoE",
@@ -23970,7 +24136,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "Ability Block",
@@ -24749,7 +24916,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "Assist",
@@ -24903,7 +25071,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "ability_classes": [
             "Ability Block",
@@ -25076,7 +25245,7 @@
         "pk": 208,
         "url": "http://swgoh.gg/characters/zam-wesell/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_zamwesell.png",
-        "power": 18762,
+        "power": 22737,
         "description": "Lightning fast Scoundrel attacker that inflicts Evasion Down and detonates bombs.",
         "combat_type": 1,
         "gear_levels": [
@@ -25220,11 +25389,11 @@
         ],
         "ability_classes": [
             "AoE",
+            "Counter",
             "Dispel",
             "Evasion Down",
-            "Evasion Up",
-            "Expose",
             "Gain Turn Meter",
+            "Stealth",
             "Thermal Detonator"
         ],
         "role": "Attacker"

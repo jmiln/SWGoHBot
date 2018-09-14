@@ -5,7 +5,6 @@ class Zetas extends Command {
     constructor(client) {
         super(client, {
             name: 'zetas',
-            guildOnly: true,
             category: "SWGoH",
             aliases: ['zeta', 'z'],
             permissions: ['EMBED_LINKS'],
@@ -137,6 +136,7 @@ class Zetas extends Command {
                 if (myZetas.length >= 5) {
                     break;
                 }
+                if (zetaSort[ix][sortBy] === 0) continue;
                 const char = player.roster.find(c => zetaSort[ix].toon === c.name);
                 let skill = null;
                 if (char) {

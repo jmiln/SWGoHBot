@@ -17742,6 +17742,219 @@
         }
     },
     {
+        "name": "Jango Fett",
+        "uniqueName": "JANGOFETT",
+        "aliases": [
+            "Jango Fett"
+        ],
+        "nameVariant": [
+            "Jango Fett"
+        ],
+        "url": "http://swgoh.gg/characters/jango-fett/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Scoundrel"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 1 SoroSuub Keypad",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 6 BlasTech Weapon Mod"
+            ],
+            "Gear 4": [
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 5 BioTech Implant",
+                "Mk 3 Chiewab Hypo Syringe",
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 6 BAW Armor Mod"
+            ],
+            "Gear 5": [
+                "Mk 6 Fabritech Data Pad",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 6 BAW Armor Mod",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 6 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 6": [
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller"
+            ],
+            "Gear 7": [
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 6 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 3 Chedak Comlink",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 5 CEC Fusion Furnace"
+            ],
+            "Gear 9": [
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 6 Nubian Design Tech",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 4 Chedak Comlink"
+            ],
+            "Gear 10": [
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 8 BioTech Implant",
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 9 BAW Armor Mod",
+                "Mk 9 BioTech Implant"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Cybernetics",
+                "Mk 12 ArmaTek Fusion Furnace",
+                "Mk 12 ArmaTek Holo Lens",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Unscrupulous Gunfire": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and gain 15% Offense for each enemy suffering a debuff during this attack. If the target enemy was suffering a debuff, Jango Fett attacks again.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Shrapnel Blast": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to target enemy and to a random enemy. Inflict Healing Immunity and Stagger to target enemy for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Conflagration": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Inflict Burning for 3 turns then deal Physical damage to all enemies. This attack can't be Evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Anything to Get Ahead": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Scoundrel allies have +30 Speed. Enemies have -20% Potency for each debuff on all Bounty Hunter allies and -40% Tenacity. Enemies that are Burning can't gain bonus Turn Meter. Bounty Hunters have +35% Offense while they have Bounty Hunter's Resolve. When Jango Fett is in the Leader slot, and not the Ally slot, the following Contract is active:",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Notorious Reputation": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Jango Fett has +100% Defense Penetration and +50% Max Health. Enemies defeated on his turn cannot be Revived.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Jango Fett's Payout": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever Jango Fett receives Rewards from a Contract, he also gains the following Payout. (Contracts are granted by certain Bounty Hunter Leader Abilities.)",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 22,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
+            "activation": 25
+        }
+    },
+    {
         "name": "Jawa",
         "uniqueName": "JAWA",
         "aliases": [
