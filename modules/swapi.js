@@ -94,7 +94,6 @@ module.exports = (client) => {
                 if (Array.isArray(player)) { player = player[0]; }
                 if (Array.isArray(barePlayer)) { barePlayer = barePlayer[0]; }
 
-                console.log(player);
                 try {
                     playerStats = await swgoh.rosterStats(barePlayer.roster, ["withModCalc","gameStyle"]);
                 } catch (error) {
