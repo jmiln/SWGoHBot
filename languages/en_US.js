@@ -152,6 +152,37 @@ module.exports = class extends Language {
                 'UNITSTATRESISTANCE': "Tenacity %",
                 'UNITSTATSPEED': "Speed"
             },
+            BASE_STAT_NAMES: {
+                PRIMARY:    "Primary Attributes",
+                STRENGTH:   "Strength",
+                AGILITY:    "Agility",
+                TACTICS:    "Intelligence",
+                GENERAL:    "General",
+                HEALTH:     "Health",
+                PROTECTION: "Protection",
+                SPEED:      "Speed",
+                CRITDMG:    "Critical Damage",
+                POTENCY:    "Potency",
+                TENACITY:   "Tenacity",
+                HPSTEAL:    "Health Steal",
+                DEFENSEPEN: "Defense Pen",
+                PHYSOFF:    "Physical Offense",
+                PHYSDMG:    "Physical Damage",
+                PHYSCRIT:   "Physical Crit Chance",
+                ARMORPEN:   "Armor Pen",
+                ACCURACY:   "Accuracy",
+                PHYSSURV:   "Physical Survivability",
+                ARMOR:      "Armor",
+                DODGECHANCE:"Dodge Chance",
+                CRITAVOID:  "Critical Avoidance",
+                SPECOFF:    "Special Offense",
+                SPECDMG:    "Special Damage",
+                SPECCRIT:   "Special Crit Chance",
+                RESPEN:     "Resistance Pen",
+                SPECSURV:   "Special Survivability",
+                RESISTANCE: "Resistance",
+                DEFLECTION: "Deflection Chance"
+            },
             BASE_LEVEL_SHORT: 'lvl',
 
             // Abilities Command
@@ -1199,6 +1230,11 @@ module.exports = class extends Language {
             COMMAND_ZETA_REC_BAD_FILTER: (filters) => `Invalid filter, please try one of \`${filters}\``,
             COMMAND_ZETA_REC_HEADER: 'Available filters:',
             COMMAND_ZETA_REC_AUTH: (zetaLen, pName) => `Top ${zetaLen}zetas for ${pName}`,
+            COMMAND_ZETA_CONFLICTING_FLAGS: "Sorry, but you cannot use the -r and -g flags together.",
+            COMMAND_ZETA_WAIT_GUILD: "Please wait while I look through your guild's zetas",
+            COMMAND_ZETA_ZETAS_HEADER: (name, count) => `${name}'s Zetas (${count})`,
+            COMMAND_ZETA_GUILD_HEADER: (name) => `${name}'s Zetas'`,
+            COMMAND_ZETA_GUILD_CHAR_HEADER: (name) => `${name}'s Zetas'`,
             COMMAND_ZETAS_HELP: {
                 description: "Show the abilities that you have put zetas on.",
                 actions: [
@@ -1213,10 +1249,20 @@ module.exports = class extends Language {
                     {
                         action: "Recommend",
                         actionDesc: "See some recommended zetas for various parts of the game",
-                        usage: ";zeta -r [user] [filter]",
+                        usage: ";zeta -r [-h] [user] [filter]",
                         args: {
+                            "-h": "Tell it to only give you 7* characters. (Ex. If you want to only look for characters viable for a heroic raid)",
                             "user": "The person you're checking. (me | userID | mention)",
                             "filter": "See ranked zetas according to one of the filters"
+                        }
+                    },
+                    {
+                        action: "Guild",
+                        actionDesc: "See overall zetas for your guild, or per-character (WARNING: This can be really spammy)",
+                        usage: ";zeta -g [user] [character]",
+                        args: {
+                            "user": "The person's guild that you're checking. (me | userID | mention)",
+                            "character": "The character that you want to see the guild's zetas for"
                         }
                     }
                 ]
