@@ -12988,7 +12988,7 @@
         "base_id": "JANGOFETT",
         "pk": 298,
         "url": "http://swgoh.gg/characters/jango-fett/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jangofett.png",
         "power": 24933,
         "description": "Notorious Bounty Hunter that exploits debuffed foes and inflicts Burning",
         "combat_type": 1,
