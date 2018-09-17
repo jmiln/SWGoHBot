@@ -14,20 +14,6 @@ class MyCharacter extends Command {
     }
 
     async run(client, message, [userID, ...searchChar]) {
-        const lang = 'ENG_US';
-        const modsetBonuses = {
-            'Health': { setName: 'Health %', set: 2, min: 2.5, max: 5 },
-            'Defense': { setName: 'Defense %', set: 2, min: 2.5, max: 5 },
-            'Crit Damage': { setName: 'Critical Damage %', set: 4, min: 15, max: 30 },
-            'Crit Chance': { setName: 'Critical Chance %', set: 2, min: 2.5, max: 5 },
-            'Tenacity': { setName: 'Tenacity %', set: 2, min: 5, max: 10 },
-            'Offense': { setName: 'Offense %', set: 4, min: 5, max: 10 },
-            'Potency': { setName: 'Potency %', set: 2, min: 5, max: 10 },
-            'Speed': { setName: 'Speed %', set: 4, min: 5, max: 10 }
-        };
-        const modSetNames = message.language.get('BASE_MODSETS_FROM_GAME');
-        const modStatNames = message.language.get('BASE_MODS_FROM_GAME');
-
         if (searchChar) searchChar = searchChar.join(' ');
 
         // Need to get the allycode from the db, then use that
@@ -75,186 +61,174 @@ class MyCharacter extends Command {
         let player = null;
         try {
             // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
-            player = await client.swgohAPI.player(allyCode, lang, cooldown);
+            player = await client.swgohAPI.unitStats(allyCode, cooldown);
         } catch (e) {
             console.error(e);
         }
 
-        const thisChar = player.roster.filter(c => (c.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() === character.name.replace('Î', 'I').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase() || c.name === character.uniqueName));
-
-        thisChar.forEach(c => {
-            let gearStr = ['   [0]  [3]', '[1]       [4]', '   [2]  [5]'].join('\n');
-            const abilities = {
-                basic: [],
-                special: [],
-                leader: [],
-                unique: [],
-                contract: []
-            };
-            c.equipped.forEach(e => {
-                gearStr = gearStr.replace(e.slot, 'X');
-            });
-            gearStr = gearStr.replace(/[0-9]/g, '  ');
-            gearStr = client.expandSpaces(gearStr);
-            c.skills.forEach(a => {
-                a.type = a.id.split('_')[0].replace('skill', '').toProperCase();
-                if (a.tier === 8 || (a.tier === 3 && a.type === 'Contract')) {
-                    if (a.isZeta) {
-                        // Maxed Zeta ability
-                        a.tier = 'Max ✦';
-                    } else {
-                        // Maxed Omega ability
-                        a.tier = 'Max ⭓';
-                    }
-                } else {
-                    // Unmaxed ability
-                    a.tier = 'Lvl ' + a.tier;
-                }
-                try {
-                    abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.name}`);
-                } catch (e) {
-                    console.log('ERROR: bad ability type: ' + inspect(a));
-                }
-            });
-            const abilitiesOut = abilities.basic
-                .concat(abilities.special)
-                .concat(abilities.leader)
-                .concat(abilities.unique)
-                .concat(abilities.contract);
-            const mods = {};
-            const sets = {};
-            c.mods.forEach(m => {
-                m.set = modSetNames[m.set];
-                if (!sets[m.set]) {
-                    sets[m.set] = {};
-                    sets[m.set].count = 1;
-                    sets[m.set].lvls = [m.level];
-                } else {
-                    sets[m.set].count += 1;
-                    sets[m.set].lvls.push(m.level);
-                }
-                mods[m.primaryBonusType] = modStatNames[mods[m.primaryBonusType]];
-                if (!mods[m.primaryBonusType]) {
-                    mods[m.primaryBonusType] = parseFloat(m.primaryBonusValue);
-                } else {
-                    mods[m.primaryBonusType] += parseFloat(m.primaryBonusValue);
-                }
-                for (let ix = 1; ix <= 4; ix++) {
-                    if (!m[`secondaryType_${ix}`].length) break;
-                    m[`secondaryType_${ix}`] = modStatNames[m[`secondaryType_${ix}`]];
-                    if (m[`secondaryValue_${ix}`].indexOf('%') > -1 && m[`secondaryType_${ix}`].indexOf('%') === -1) {
-                        m[`secondaryType_${ix}`] = m[`secondaryType_${ix}`] + ' %';
-                    }
-                    if (!mods[m[`secondaryType_${ix}`]]) {
-                        mods[m[`secondaryType_${ix}`]] = parseFloat(m[`secondaryValue_${ix}`]);
-                    } else {
-                        mods[m[`secondaryType_${ix}`]] += parseFloat(m[`secondaryValue_${ix}`]);
-                    }
-                }
-            });
-            const setBonuses = {};
-            Object.keys(sets).forEach(s => {
-                const set = sets[s];
-
-                // If there are not enough of the set to form a full set, don't bother
-                if (set.count < modsetBonuses[s].set) return;
-
-                // See how manny sets there are
-                const setNum = parseInt(set.count / modsetBonuses[s].set);
-
-                // Count the max lvl ones
-                for (let ix = setNum; ix > 0; ix--) {
-                    const maxCount = set.lvls.filter(lvl => lvl === 15).length;
-                    const underMax = set.lvls.filter(lvl => lvl < 15).length;
-                    // If there are not enough maxed ones, just put the min bonus in
-                    let remCount = 0;
-                    if (maxCount < modsetBonuses[s].set) {
-                        if (!setBonuses[s]) {
-                            setBonuses[s] = modsetBonuses[s].min;
-                        } else {
-                            setBonuses[s] += modsetBonuses[s].min;
-                        }
-                        if (underMax >= modsetBonuses[s].set) {
-                            const tmp = set.lvls.filter(lvl => lvl < 15);
-                            for (let jx = 0; jx < modsetBonuses[s].set; jx++) {
-                                set.lvls.splice(set.lvls.indexOf(tmp[jx]), 1);
-                            }
-                        } else {
-                            const tmp = set.lvls.filter(lvl => lvl < 15);
-                            tmp.forEach(t => {
-                                set.lvls.splice(set.lvls.indexOf(t), 1);
-                                remCount += 1;
-                            });
-                            for (let jx = remCount; jx < modsetBonuses[s].set; jx++) {
-                                set.lvls.splice(0, 1);
-                            }
-                        }
-                    } else {
-                        if (!setBonuses[s]) {
-                            setBonuses[s] = modsetBonuses[s].max;
-                        } else {
-                            setBonuses[s] += modsetBonuses[s].max;
-                        }
-                        for (let jx = 0; jx < modsetBonuses[s].set; jx++) {
-                            set.lvls.splice(set.lvls.indexOf(15), 1);
-                        }
-                    }
-                }
-            });
-            const setOut = [];
-            for (const s in setBonuses) {
-                setOut.push(`+${setBonuses[s]}% ${s}`);
-            }
-
-            const modOut = [];
-            Object.keys(mods).forEach(m => {
-                if (m === m.toUpperCase()) {
-                    if (mods[modStatNames[m]]) {
-                        mods[modStatNames[m]] += mods[m];
-                    } else {
-                        mods[modStatNames[m]] = mods[m];
-                    }
-                    delete(mods[m]);
-                }
-            });
-            const sMods = Object.keys(mods).sort((p, c) => p > c ? 1 : -1);
-            sMods.forEach(m => {
-                if (m.endsWith('%')) {
-                    modOut.push(`+${mods[m].toFixed(2)}% **${m.replace('%', '')}**`);
-                } else {
-                    modOut.push(`+${mods[m]} **${m}**`);
-                }
-            });
-
-            message.channel.send({embed: {
-                author: {
-                    name: player.name + "'s " + c.name
-                }, 
-                description: 
-                    [
-                        `\`Lvl ${c.level} | ${c.rarity}* | ${parseInt(c.gp)} gp\``,
-                        `Gear: ${c.gear}`,
-                        `${gearStr}`
-                    ].join('\n'),
-                fields: [
-                    {
-                        name: 'Abilities',
-                        value: abilitiesOut.join('\n')
-                    },
-                    {
-                        name: 'Mod set bonuses',
-                        value: setOut.length ? setOut.join('\n') : 'No set bonuses'
-                    },
-                    {
-                        name: 'Mod stats',
-                        value: modOut.length ? modOut.join('\n') : 'No mod stats'
-                    }
-                ],
-                footer: {
-                    text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
-                }
-            }});
+        let thisChar = player.filter(c => c.unit.defId === character.uniqueName);
+        const stats = thisChar[0].stats;
+        thisChar = thisChar[0].unit;
+        let gearStr = ['   [0]  [3]', '[1]       [4]', '   [2]  [5]'].join('\n');
+        const abilities = {
+            basic: [],
+            special: [],
+            leader: [],
+            unique: [],
+            contract: []
+        };
+        thisChar.equipped.forEach(e => {
+            gearStr = gearStr.replace(e.slot, 'X');
         });
+        gearStr = gearStr.replace(/[0-9]/g, '  ');
+        gearStr = client.expandSpaces(gearStr);
+        thisChar.skills.forEach(a => {
+            a.type = a.id.split('_')[0].replace('skill', '').toProperCase();
+            if (a.tier === 8 || (a.tier === 3 && a.type === 'Contract')) {
+                if (a.isZeta) {
+                    // Maxed Zeta ability
+                    a.tier = 'Max ✦';
+                } else {
+                    // Maxed Omega ability
+                    a.tier = 'Max ⭓';
+                }
+            } else {
+                // Unmaxed ability
+                a.tier = 'Lvl ' + a.tier;
+            }
+            try {
+                abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.name}`);
+            } catch (e) {
+                console.log('ERROR[MC]: bad ability type: ' + inspect(a));
+            }
+        });
+        const abilitiesOut = abilities.basic
+            .concat(abilities.special)
+            .concat(abilities.leader)
+            .concat(abilities.unique)
+            .concat(abilities.contract);
+
+        const statNames = {
+            "Primary Attributes" : [
+                "Strength",
+                "Agility",
+                "Intelligence"
+            ],
+            "General": [
+                "Health",
+                "Protection",
+                "Speed",
+                "Critical Damage",
+                "Potency",
+                "Tenacity",
+                "Health Steal",
+                "Defense Penetration"
+            ],
+            "Physical Offense": [
+                "Physical Damage",
+                "Physical Critical Chance",
+                "Armor Penetration",
+                "Accuracy"
+            ],
+            "Physical Survivability": [
+                "Armor",
+                "Dodge Chance",
+                "Critical Avoidance"
+            ],
+            "Special Offense": [
+                "Special Damage",
+                "Special Critical Chance",
+                "Resistance Penetration",
+                "Accuracy"
+            ],
+            "Special Survivability": [
+                "Resistance",
+                "Deflection Chance",
+                "Critical Avoidance"
+            ]
+        };
+
+        const langStr = message.language.get('BASE_STAT_NAMES');
+        const langMap = {
+            "Primary Attributes":       "PRIMARY",    
+            "Strength":                 "STRENGTH",   
+            "Agility":                  "AGILITY",    
+            "Intelligence":             "TACTICS",    
+            "General":                  "GENERAL",    
+            "Health":                   "HEALTH",     
+            "Protection":               "PROTECTION", 
+            "Speed":                    "SPEED",      
+            "Critical Damage":          "CRITDMG",    
+            "Potency":                  "POTENCY",    
+            "Tenacity":                 "TENACITY",   
+            "Health Steal":             "HPSTEAL",    
+            "Defense Penetration":      "DEFENSEPEN", 
+            "Physical Offense":         "PHYSOFF",    
+            "Physical Damage":          "PHYSDMG",    
+            "Physical Critical Chance": "PHYSCRIT",   
+            "Armor Penetration":        "ARMORPEN",   
+            "Accuracy":                 "ACCURACY",   
+            "Physical Survivability":   "PHYSSURV",   
+            "Armor":                    "ARMOR",      
+            "Dodge Chance":             "DODGECHANCE",
+            "Critical Avoidance":       "CRITAVOID",  
+            "Special Offense":          "SPECOFF",    
+            "Special Damage":           "SPECDMG",    
+            "Special Critical Chance":  "SPECCRIT",   
+            "Resistance Penetration":   "RESPEN",     
+            "Special Survivability":    "SPECSURV",   
+            "Resistance":               "RESISTANCE", 
+            "Deflection Chance":        "DEFLECTION" 
+        };
+
+        const keys = Object.keys(stats.final);
+        const maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]].length), 0);
+        const statArr = [];
+        Object.keys(statNames).forEach(sn => {
+            let statStr = "== " + sn + " ==\n";
+            statNames[sn].forEach(s => {
+                if (!stats.final[s]) stats.final[s] = 0;
+                if (s === 'Dodge Chance' || s === 'Deflection Chance') {
+                    statStr += `${langStr[langMap[s]]}${' '.repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
+                } else {
+                    statStr += `${langStr[langMap[s]]}${' '.repeat(maxLen - langStr[langMap[s]].length)} :: `;
+                    const str = stats.final[s] % 1 === 0 ? stats.final[s] : (stats.final[s] * 100).toFixed(2)+'%';
+                    const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s]})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : '';
+                    statStr += str + ' '.repeat(7 - str.length) + modStr + '\n';
+                }
+            });
+            statArr.push(statStr);
+        });
+
+        const fields = [];
+        client.msgArray(statArr, '\n', 1000).forEach((m, ix) => {
+            fields.push({
+                name: ix === 0 ? 'Stats' : '-',
+                value: client.codeBlock(m, 'asciidoc')
+            });
+        });
+
+        message.channel.send({embed: {
+            author: {
+                name: thisChar.player + "'s " + character.name
+            }, 
+            description: 
+            [
+                `\`Lvl ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\``,
+                `Gear: ${thisChar.gear}`,
+                `${gearStr}`
+            ].join('\n'),
+            fields: [
+                {
+                    name: 'Abilities',
+                    value: abilitiesOut.join('\n')
+                }
+            ].concat(fields),
+            footer: {
+                text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
+            }
+        }});
+        
     }
 }
 

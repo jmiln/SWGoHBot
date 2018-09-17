@@ -17745,13 +17745,15 @@
         "name": "Jango Fett",
         "uniqueName": "JANGOFETT",
         "aliases": [
-            "Jango Fett"
+            "Jango Fett",
+            "Jango",
+            "JF"
         ],
         "nameVariant": [
             "Jango Fett"
         ],
         "url": "http://swgoh.gg/characters/jango-fett/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jangofett.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -17915,7 +17917,7 @@
                 }
             },
             "Jango Fett's Payout": {
-                "type": "Unique",
+                "type": "Contract",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever Jango Fett receives Rewards from a Contract, he also gains the following Payout. (Contracts are granted by certain Bounty Hunter Leader Abilities.)",
                 "tier": "omega",
@@ -34321,7 +34323,7 @@
             "See What Sticks": {
                 "type": "Special",
                 "abilityCooldown": "4",
-                "abilityDesc": "Place Thermal Detonators on all enemies that explode after 2 Turns with a 70% chance for Zam to gain Speed Up for 3 turns.",
+                "abilityDesc": "Place Thermal Detonators on all enemies that explode after 2 turns. Zam gains Speed Up for 3 turns.",
                 "tier": "omega",
                 "cost": {
                     "mk3": 19,
@@ -34332,7 +34334,7 @@
             "Electro-goggles": {
                 "type": "Special",
                 "abilityCooldown": "3",
-                "abilityDesc": "Inflict Evasion Down on all enemies for 4 turns and Expose the primary target for 2 turns with a 50% chance to gain 50% Turn Meter. This attack can't be Evaded.",
+                "abilityDesc": "Inflict Evasion Down on all enemies for 4 turns and a Thermal Detonator on all enemies that already had a Thermal Detonator for 2 turns. Zam recovers 10% Protection for each enemy with a Thermal Detonator. Zam gains 50% Turn Meter. This attack can't be Evaded.",
                 "tier": "omega",
                 "cost": {
                     "mk3": 19,
@@ -34343,11 +34345,33 @@
             "Shapeshifter": {
                 "type": "Unique",
                 "abilityCooldown": "0",
-                "abilityDesc": "Zam gains 18% Evasion. This bonus is doubled while she is suffering a negative status effect. Whenever Zam Evades an attack, she also dispels all negative status effects on herself. Whenever Zam is Critically Hit, she gains Evasion Up for 2 turns.",
-                "tier": "abilityMatMK3",
+                "abilityDesc": "At the start of battle, Zam gains:",
+                "tier": "zeta",
                 "cost": {
-                    "mk3": 16,
-                    "omega": 0,
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Having a Blast": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Bounty Hunter allies gain +25% Potency and recover 4% Health and Protection whenever an enemy is dealt damage by a Thermal Detonator. When a Bounty Hunter ally uses a Special ability, they inflict a Thermal Detonator on the selected target for 2 turns, which can't be Evaded. When Zam Wesell is in the Leader slot, and not the Ally slot, the following Contract is active:",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 14,
+                    "omega": 3,
+                    "zeta": 0
+                }
+            },
+            "Zam's Payout": {
+                "type": "Cooldown",
+                "abilityCooldown": "0",
+                "abilityDesc": "Whenever Zam receives Rewards from a Contract, she also gains the following Payout. (Contracts are granted by certain Bounty Hunter Leader Abilities.)",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 22,
+                    "omega": 5,
                     "zeta": 0
                 }
             }
@@ -34362,24 +34386,24 @@
             ]
         },
         "stats": {
-            "Power": 17943,
-            "Strength": 891,
-            "Agility": 1128,
-            "Intelligence": 668,
-            "Speed": 175,
-            "Physical Damage": 2764,
-            "Physical Critical Rating": 699,
-            "Special Damage": 1689,
-            "Special Critical Rating": 40,
-            "Armor Penetration": 206,
-            "Resistance Penetration": 5,
-            "Potency": 47,
-            "Health": 34532,
-            "Armor": 238,
-            "Resistance": 178,
-            "Tenacity": 43,
-            "Health Steal": 15,
-            "Protection": 19,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 50
         }
     }

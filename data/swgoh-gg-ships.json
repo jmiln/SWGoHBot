@@ -756,7 +756,7 @@
         "name": "Xanadu Blood",
         "base_id": "XANADUBLOOD",
         "url": "http://swgoh.gg/ships/xanadu-blood/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_xanadublood.png",
         "power": 51373,
         "description": "Debilitating Bounty Hunter Support that shuts down enemy offenses",
         "combat_type": 2,
