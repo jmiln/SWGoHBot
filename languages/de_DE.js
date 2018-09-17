@@ -1233,6 +1233,11 @@ module.exports = class extends Language {
             COMMAND_ZETA_REC_BAD_FILTER: (filters) => `Ungueltiger Filter, bitte einen von diesen verwenden \`${filters}\``,
             COMMAND_ZETA_REC_HEADER: 'Verfuegbare Filter:',
             COMMAND_ZETA_REC_AUTH: (zetaLen, pName) => `Top ${zetaLen}zetas fuer ${pName}`,
+            COMMAND_ZETA_CONFLICTING_FLAGS: "Entschuldigung, aber du kannst die beiden Schalter -r und -g nicht gleichzeitig verwenden.",
+            COMMAND_ZETA_WAIT_GUILD: "Bitte warten waehrend ich die Zetas deiner Gilde durchsuche",
+            COMMAND_ZETA_ZETAS_HEADER: (name, count) => `${name}'s Zetas (${count})`,
+            COMMAND_ZETA_GUILD_HEADER: (name) => `${name}'s Zetas'`,
+            COMMAND_ZETA_GUILD_CHAR_HEADER: (name) => `${name}'s Zetas'`,
             COMMAND_ZETAS_HELP: {
                 description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft wurden.",
                 actions: [
@@ -1247,10 +1252,20 @@ module.exports = class extends Language {
                     {
                         action: "Empfehlung",
                         actionDesc: "Empfohlene Zetas fuer verschiedene Bereiche im Spiel",
-                        usage: ";zeta -r [user] [filter]",
+                        usage: ";zeta -r [-h] [user] [filter]",
                         args: {
+                            "-h": "Gibt nur die 7* Charaktere aus. (Bspw. wenn du nur Charaktere fuer einen heroischen Raid suchst)",
                             "user": "Das Discordprofil vom Spieler den du sehen moechtest. (me | userID | mention)",
                             "filter": "Zeigt die empfohlenen Zetas in Abhaengigkeit des verwendeten Filters an"
+                        }
+                    },
+                    {
+                        action: "Gilde",
+                        actionDesc: "Zeigt eine Uebersicht der Zetas in deiner Gilde an, oder pro Charakter (WARNUNG: Das kann sehr spammy sein)",
+                        usage: ";zeta -g [user] [character]",
+                        args: {
+                            "user": "Die Gilde des Spielers den du sehen willst. (me | userID | mention)",
+                            "character": "Der Charakter der in der Gilde die Zetafaehigkeit hat"
                         }
                     }
                 ]
