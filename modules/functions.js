@@ -656,19 +656,26 @@ module.exports = (client) => {
             user = user.toString().trim();
         }
         let uID, uAC;
-        if (!user || user === 'me') {
-            uID = message.author.id;
-            try {
-                uAC = await client.database.models.allyCodes.findOne({where: {id: uID}});
-                return [uAC.dataValues.allyCode];
-            } catch (e) {
-                return [];
+        if (!user || user === 'me' || client.isUserID(user)) {
+            if (!user || user === 'me') {
+                uID = message.author.id;
+            } else {
+                uID = user.replace(/[^\d]*/g, '');
             }
-        } else if (client.isUserID(user)) {
-            uID = user.replace(/[^\d]*/g, '');
             try {
-                uAC = await client.database.models.allyCodes.findOne({where: {id: uID}});
-                return [uAC.dataValues.allyCode];
+                const exists = await client.database.models.allyCodes.findOne({where: {id: uID}})
+                    .then(token => token !== null)
+                    .then(isUnique => isUnique);
+                if (exists) {
+                    uAC = await client.database.models.allyCodes.findOne({where: {id: uID}});
+                    return [uAC.dataValues.allyCode]; 
+                } else {
+                    uAC = await client.swgohAPI.whois(user);
+                    if (uAC.get.length) {
+                        return [uAC.get[0].allyCode];
+                    }
+                    return [];
+                }
             } catch (e) {
                 return [];
             }

@@ -15,7 +15,9 @@ module.exports = (client) => {
         guildByName: guildByName,
         guildGG: guildGG,
         zetaRec: zetaRec,
-        events: events
+        events: events,
+        register: register,
+        whois: whois
     };
 
     async function player( allycode, lang, cooldown) {
@@ -288,6 +290,38 @@ module.exports = (client) => {
         } catch (e) {
             throw e;
         }
+    }
+
+    async function register(putArray) {
+        try {
+            const getArray = putArray.map(a => a[0]);
+
+            return await swgoh.fetchAPI('/registration', {
+                "put":putArray,
+                "get":getArray
+            });
+        } catch (e) {
+            throw e;
+        }	
+    }
+
+    async function whois( ids ) {
+        if (!Array.isArray(ids)) {
+            ids = [ids];
+        }
+        try {
+            if (!ids) { 
+                throw new Error('Please provide one or more allycodes or discordIds'); 
+            }
+
+            /** Get player from swapi cacher */
+            return await swgoh.fetchAPI('/registration', {
+                "get":ids
+            });
+
+        } catch (e) {
+            throw e;
+        }	
     }
 
     function isExpired( updated, cooldown ) {
