@@ -72,7 +72,7 @@ class Register extends Command {
                                 } else {
                                     await client.database.models.allyCodes.create({ id: userID, allyCode: allyCode })
                                         .then(async () => {
-                                            await client.register([
+                                            await client.swgohAPI.register([
                                                 [allyCode, userID]
                                             ]);
                                             await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
