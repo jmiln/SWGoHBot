@@ -54,7 +54,7 @@ class Zetas extends Command {
         }             
 
         let character = null;
-        if (searchChar) {
+        if (searchChar && !options.flags.r) {
             const chars = client.findChar(searchChar, client.characters);
             
             if (chars.length > 1) {
