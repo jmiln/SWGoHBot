@@ -672,6 +672,7 @@ module.exports = (client) => {
                 } else {
                     uAC = await client.swgohAPI.whois(user);
                     if (uAC.get.length) {
+                        await client.database.models.allyCodes.create({ id: uAC.get[0].discordId, allyCode: uAC.get[0].allycode });
                         return [uAC.get[0].allyCode];
                     }
                     return [];

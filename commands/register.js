@@ -70,11 +70,11 @@ class Register extends Command {
                                 if (!u) {
                                     await msg.edit(message.language.get('COMMAND_REGISTER_FAILURE'));
                                 } else {
-                                    await client.database.models.allyCodes.create({
-                                        id: userID,
-                                        allyCode: allyCode
-                                    })
+                                    await client.database.models.allyCodes.create({ id: userID, allyCode: allyCode })
                                         .then(async () => {
+                                            await client.register([
+                                                [allyCode, userID]
+                                            ]);
                                             await msg.edit(message.language.get('COMMAND_REGISTER_SUCCESS', u.name));
                                         })
                                         .catch(e => {
@@ -85,7 +85,7 @@ class Register extends Command {
                             });
                         } catch (e) {
                             msg.edit('Invalid ally code. Please make sure you enter the correct code.');
-                            console.log('ERROR: Incorrect Ally Code: ' + e);
+                            console.log('ERROR[REG]: Incorrect Ally Code: ' + e);
                         }
                     });
                 } else {
