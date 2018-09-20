@@ -152,6 +152,13 @@ class GuildSearch extends Command {
             } else {
                 sortedGuild = guildChar.sort((p, c) => c.gp - p.gp);
             }
+        } else if (sortType === 'gear') {
+            // Sort by gear
+            if (!reverse) {
+                sortedGuild = guildChar.sort((p, c) => p.gearLevel - c.gearLevel);
+            } else {
+                sortedGuild = guildChar.sort((p, c) => c.gearLevel - p.gearLevel);
+            }
         } else {
             return msg.edit(message.language.get('COMMAND_GUILDSEARCH_BAD_SORT', sortType, ['name', 'gp']));
         }

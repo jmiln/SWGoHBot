@@ -487,7 +487,7 @@ module.exports = class extends Language {
                             "character": "The character you want to search for.",
                             "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
                             "-reverse": "Reverse the chosen sort",
-                            "-sort": "Choose either name or gp to sort by",
+                            "-sort": "Choose either name, gear, or gp to sort by",
                             "starLvl": "Select the star level you want to see."
                         }
                     }
