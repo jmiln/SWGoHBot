@@ -137,7 +137,7 @@ module.exports = (client) => {
 
             /** Get player from cache */
             const player = await cache.get('swapi', 'players', {allyCode:allycode});
-            if ( !player || !player[0] ) { throw new Error('I don\'t know this player, try syncing them first'); }
+            if ( !player || !player[0] ) { throw new Error('I don\'t know this player, make sure they\'re registered first'); }
 
             let guild  = await cache.get('swapi', 'guilds', {name:player[0].guildName});
 
@@ -195,7 +195,7 @@ module.exports = (client) => {
 
             /** Get player from cache */
             const player = await cache.get('swapi', 'players', {allyCode:allycode});
-            if ( !player || !player[0] ) { throw new Error('I don\'t know this player, try syncing them first'); }
+            if ( !player || !player[0] ) { throw new Error('I don\'t know this player, make sure they\'re registered first'); }
 
             let guildGG  = await cache.get('swapi', 'guildGG', {name:player[0].guildName});
 
@@ -309,6 +309,7 @@ module.exports = (client) => {
         if (!Array.isArray(ids)) {
             ids = [ids];
         }
+        if (!ids.length) return [];
         try {
             if (!ids) { 
                 throw new Error('Please provide one or more allycodes or discordIds'); 

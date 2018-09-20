@@ -95,6 +95,7 @@ class MyMods extends Command {
 
             // Then all the secondaries
             for (let ix = 1; ix <= 4; ix++) {
+                if (!mod[`secondaryValue_${ix}`]) break;
                 let statStr = mod[`secondaryValue_${ix}`].replace('+', '');
                 if (!statStr.length) break;
                 if (statStr.indexOf('%') > -1) {

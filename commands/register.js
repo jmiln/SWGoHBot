@@ -117,25 +117,33 @@ class Register extends Command {
 
                 await message.channel.send(message.language.get('COMMAND_REGISTER_PLEASE_WAIT')).then(async msg => {
                     if (options.flags.guild) {
-                        // Get the player to make sure it's there
-                        await client.swgohAPI.player(ac).then(async () => {
-                            // Update the guild as a whole
-                            await client.swgohAPI.guild(ac).then(async (g) => {
-                                // Then finally update the .gg style roster
-                                await client.swgohAPI.guildGG(ac).then(async () => {
-                                    await msg.edit(message.language.get('COMMAND_REGISTER_GUPDATE_SUCCESS', g.name));
+                        try {
+                            // Get the player to make sure it's there
+                            await client.swgohAPI.player(ac).then(async () => {
+                                // Update the guild as a whole
+                                await client.swgohAPI.guild(ac).then(async (g) => {
+                                    // Then finally update the .gg style roster
+                                    await client.swgohAPI.guildGG(ac).then(async () => {
+                                        await msg.edit(message.language.get('COMMAND_REGISTER_GUPDATE_SUCCESS', g.name));
+                                    });
                                 });
                             });
-                        });
+                        } catch (e) {
+                            return msg.edit("Error: " + client.codeBlock(e));
+                        }
                     } else {
                         const cooldown = client.getPlayerCooldown(message.author.id);
-                        await client.swgohAPI.player(ac, null, cooldown).then(async (u) => {
-                            if (!u) {
-                                await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
-                            } else {
-                                await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_SUCCESS', u.name));
-                            }
-                        });
+                        try {
+                            await client.swgohAPI.player(ac, null, cooldown).then(async (u) => {
+                                if (!u) {
+                                    await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_FAILURE'));
+                                } else {
+                                    await msg.edit(message.language.get('COMMAND_REGISTER_UPDATE_SUCCESS', u.name));
+                                }
+                            });
+                        } catch (e) {
+                            return msg.edit("Error: " + client.codeBlock(e));
+                        }
                     }
                 });
                 break;

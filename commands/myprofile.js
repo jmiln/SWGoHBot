@@ -28,7 +28,9 @@ class MyProfile extends Command {
             player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log('Broke getting player in myprofile: ' + e);
+            return message.channel.send('ERROR: Please make sure you are registered with a valid ally code');
         }
+
         const gpFull = player.stats.find(s => s.nameKey === 'STAT_GALACTIC_POWER_ACQUIRED_NAME').value;
         const gpChar = player.stats.find(s => s.nameKey === 'STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME').value;
         const gpShip = player.stats.find(s => s.nameKey === 'STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME').value;

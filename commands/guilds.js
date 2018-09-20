@@ -54,6 +54,7 @@ class Guilds extends Command {
             }
         } catch (e) {
             console.log('ERROR(guilds): ' + e);
+            return msg.edit("Error: " + client.codeBlock(e));
         }
 
         if (!guild) {

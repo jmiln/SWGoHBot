@@ -670,9 +670,9 @@ module.exports = (client) => {
                     uAC = await client.database.models.allyCodes.findOne({where: {id: uID}});
                     return [uAC.dataValues.allyCode]; 
                 } else {
-                    uAC = await client.swgohAPI.whois(user);
+                    uAC = await client.swgohAPI.whois(uID);
                     if (uAC.get.length) {
-                        await client.database.models.allyCodes.create({ id: uAC.get[0].discordId, allyCode: uAC.get[0].allycode });
+                        await client.database.models.allyCodes.create({ id: uAC.get[0].discordId, allyCode: uAC.get[0].allyCode });
                         return [uAC.get[0].allyCode];
                     }
                     return [];

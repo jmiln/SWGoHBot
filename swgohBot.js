@@ -238,7 +238,8 @@ async function updateRemoteData() {
     const currentShipSnapshot = JSON.stringify(currentShips);
 
     console.log('UpdateRemoteData', 'Checking for updates to remote data sources');
-    if (await updateIfChanged(GG_SHIPS_CACHE, 'https://swgoh.gg/api/ships/')) {
+    if (await updateIfChanged(GG_SHIPS_CACHE, 'https://swgoh.gg/api/ships/?format=json')) {
+    // if (await updateIfChanged(GG_SHIPS_CACHE, 'https://swgoh.gg/api/ships/')) {
         console.log('UpdateRemoteData', 'Detected a change in ships from swgoh.gg');
         await updateShips(currentShips);
     }
