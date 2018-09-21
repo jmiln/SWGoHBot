@@ -13,6 +13,9 @@ class Guilds extends Command {
                 },
                 'roster': {
                     aliases: ['r']
+                },
+                'a': {
+                    aliases: ['allycodes']
                 }
             }
         });
@@ -66,11 +69,15 @@ class Guilds extends Command {
             if (!guild.roster.length) {
                 return msg.edit(message.language.get('COMMAND_GUILDS_NO_GUILD'));
             }
-            const sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
+            const sortedGuild = options.flags.a ? guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1) : guild.roster.sort((p, c) => c.gp - p.gp);
 
             const users = [];
             sortedGuild.forEach(p => {
-                users.push(`\`[${' '.repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
+                if (options.flags.a) {
+                    users.push(`\`[${p.allyCode}]\` - **${p.name}**`);
+                } else {
+                    users.push(`\`[${' '.repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
+                }
             });
             return msg.edit({embed: {
                 author: {

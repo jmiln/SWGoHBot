@@ -447,7 +447,7 @@ module.exports = class extends Language {
                 `Required Lvl: ${lvl}`,
                 `Total GP:     ${gp}`
             ].join('\n'),
-            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members`,
+            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members and their gp.\n\`${prefix}guild -roster -allycode\` for a list with their ally codes instead.`,
             COMMAND_GUILDS_HELP: {
                 description: "Shows everyone that's in your guild/ some basic stats.",
                 actions: [
