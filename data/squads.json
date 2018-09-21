@@ -1277,8 +1277,8 @@
                     {
                         "name": "[α] BEAST MODE",
                         "main": true,
-                        "note": "2%-4% [1,040,000-2,080,000]",
-                        "url": "",
+                        "note": "2%-4% [2,040,000-6,580,000]",
+                        "url": "https://youtu.be/kwlNr9YQ5Ts",
                         "team": [
                             "BOBAFETT",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
@@ -1934,6 +1934,28 @@
         "level": 80,
         "phase": [
             {
+                "name": "CHEWBACCA LEGENDARY",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "Upcoming Event",
+                        "url": "",
+                        "team": [
+                            "BOBAFETT",
+                            "BOSSK",
+                            "CADBANE",
+                            "IG88",
+                            "ZAMWESELL",
+                            "GREEDO",
+                            "DENGAR",
+                            "JANGOFETT",
+                            "AURRA_SING",
+                            "EMBO"
+                        ]
+                    }
+                ]
+            },
+            {
                 "name": "REY'S HERO'S JOURNEY",
                 "squads": [
                     {
@@ -2215,22 +2237,14 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "VADER",
-                            "DEATHTROOPER",
-                            "DIRECTORKRENNIC",
-                            "EMPERORPALPATINE",
-                            "GARSAXON",
-                            "VEERS",
-                            "GRANDADMIRALTHRAWN",
-                            "GRANDMOFFTARKIN",
-                            "IMPERIALPROBEDROID",
-                            "IMPERIALSUPERCOMMANDO",
-                            "MAGMATROOPER",
-                            "ROYALGUARD",
-                            "SHORETROOPER",
-                            "SNOWTROOPER",
-                            "STORMTROOPER",
-                            "TIEFIGHTERPILOT"
+                            "BASTILASHAN",
+                            "EZRABRIDGERS3",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "GRANDMASTERYODA",
+                            "GENERALKENOBI",
+                            "JOLEEBINDO",
+                            "QUIGONJINN",
+                            "OLDBENKENOBI"
                         ]
                     }
                 ]
