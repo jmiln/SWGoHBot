@@ -136,11 +136,11 @@ module.exports = (client) => {
             allycode = parseInt(allycode);
 
             /** Get player from cache */
-            const player = await cache.get('swapi', 'players', {allyCode:allycode});
-            if ( !player || !player[0] ) { throw new Error('I don\'t know this player, make sure they\'re registered first'); }
-            if (!player[0].guildName) throw new Error('Sorry, that player is not in a guild');
+            const player = await this.player(allycode);
+            if (!player) { throw new Error('I don\'t know this player, make sure they\'re registered first'); }
+            if (!player.guildName) throw new Error('Sorry, that player is not in a guild');
 
-            let guild  = await cache.get('swapi', 'guilds', {name:player[0].guildName});
+            let guild  = await cache.get('swapi', 'guilds', {name:player.guildName});
 
             /** Check if existance and expiration */
             if ( !guild || !guild[0] || isExpired(guild[0].updated, guildCooldown) ) {
@@ -195,11 +195,11 @@ module.exports = (client) => {
             allycode = parseInt(allycode);
 
             /** Get player from cache */
-            const player = await cache.get('swapi', 'players', {allyCode:allycode});
-            if ( !player || !player[0] ) { throw new Error('I don\'t know this player, make sure they\'re registered first'); }
-            if (!player[0].guildName) throw new Error('Sorry, that player is not in a guild');
+            const player = await this.player(allycode);
+            if (!player) { throw new Error('I don\'t know this player, make sure they\'re registered first'); }
+            if (!player.guildName) throw new Error('Sorry, that player is not in a guild');
 
-            let guildGG  = await cache.get('swapi', 'guildGG', {name:player[0].guildName});
+            let guildGG  = await cache.get('swapi', 'guildGG', {name:player.guildName});
 
             /** Check if existance and expiration */
             if ( !guildGG || !guildGG[0] || isExpired(guildGG[0].updated, guildCooldown) ) {

@@ -36,7 +36,7 @@ class Register extends Command {
                             return message.channel.send(message.language.get('COMMAND_SHARDTIMES_MISSING_ROLE'));
                         } else if (!message.guild.members.has(userID) && action === 'add' && level < 3) {  // If they are trying to add someone that is not in their server
                             return message.channel.send(message.language.get('COMMAND_REGISTER_ADD_NO_SERVER'));
-                        } else if (!message.guild.members.has(userID) && action === 'remove' && level < 8) {   // If they are trying to remove someone else 
+                        } else if (action === 'remove' && level < 8) {   // If they are trying to remove someone else 
                             return message.channel.send(message.language.get('COMMAND_REGISTER_CANNOT_REMOVE', message.guildSettings.prefix));
                         }
                     }
