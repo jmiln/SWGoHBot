@@ -138,6 +138,7 @@ module.exports = (client) => {
             /** Get player from cache */
             const player = await cache.get('swapi', 'players', {allyCode:allycode});
             if ( !player || !player[0] ) { throw new Error('I don\'t know this player, make sure they\'re registered first'); }
+            if (!player[0].guildName) throw new Error('Sorry, that player is not in a guild');
 
             let guild  = await cache.get('swapi', 'guilds', {name:player[0].guildName});
 
@@ -196,6 +197,7 @@ module.exports = (client) => {
             /** Get player from cache */
             const player = await cache.get('swapi', 'players', {allyCode:allycode});
             if ( !player || !player[0] ) { throw new Error('I don\'t know this player, make sure they\'re registered first'); }
+            if (!player[0].guildName) throw new Error('Sorry, that player is not in a guild');
 
             let guildGG  = await cache.get('swapi', 'guildGG', {name:player[0].guildName});
 
