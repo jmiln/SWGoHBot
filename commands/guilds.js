@@ -15,7 +15,7 @@ class Guilds extends Command {
                     aliases: ['r']
                 },
                 'a': {
-                    aliases: ['allycodes']
+                    aliases: ['allycodes', 'allycode']
                 }
             }
         });
