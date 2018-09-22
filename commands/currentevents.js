@@ -27,6 +27,8 @@ class CurrentEvents extends Command {
         const DAILY_CHALLENGES = ['challenge_XP', 'challenge_CREDIT', 'challenge_ABILITYUPGRADEMATERIALS', 'challenge_EQUIPMENT_AGILITY', 'challenge_EQUIPMENT_INTELLIGENCE', 'challenge_EQUIPMENT_STRENGTH'];
         const HEISTS = ['EVENT_CREDIT_HEIST_GETAWAY_V2', 'EVENT_TRAINING_DROID_SMUGGLING'];
         const HEROIC = ['progressionevent_PIECES_AND_PLANS', 'progressionevent_GRANDMASTERS_TRAINING', 'EVENT_HERO_SCAVENGERREY'];
+        const EXCLUDE_Strings = ['EVENT_ECONOMY_BH'];
+        // console.log(gohEvents.map(e => e.id));
 
         const DEF_NUM = 10;
         const lang = message.guildSettings.swgohLanguage;
@@ -46,6 +48,7 @@ class CurrentEvents extends Command {
         }
 
         let filter = [];
+        const excludeFilter = [];
         const evOut = [];
         if (options.flags.heists) {
             filter = filter.concat(HEISTS);
@@ -62,8 +65,21 @@ class CurrentEvents extends Command {
                 continue;
             }
 
+            EXCLUDE_Strings.forEach(e => {
+                if (event.id.includes(e)) {
+                    excludeFilter.push(event.id);
+                }
+            });
+
             if (filter.length) {
                 if (filter.indexOf(event.id) < 0) {
+                    delete gohEvents.event;
+                    continue;
+                }
+            }
+
+            if (excludeFilter.length) {
+                if (excludeFilter.indexOf(event.id) > -1) {
                     delete gohEvents.event;
                     continue;
                 }
