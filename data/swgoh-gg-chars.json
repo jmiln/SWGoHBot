@@ -3500,6 +3500,168 @@
         "role": "Attacker"
     },
     {
+        "name": "Chewbacca",
+        "base_id": "CHEWBACCALEGENDARY",
+        "pk": 300,
+        "url": "http://swgoh.gg/characters/chewbacca/",
+        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "power": null,
+        "description": "Mighty Rebel Attacker who Guards the weakest ally",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "001",
+                    "003",
+                    "005",
+                    "003",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "003",
+                    "022",
+                    "016",
+                    "021",
+                    "021",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "021",
+                    "043",
+                    "055",
+                    "050",
+                    "062",
+                    "055"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "039",
+                    "058",
+                    "060",
+                    "055",
+                    "063",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "021",
+                    "038",
+                    "041",
+                    "040",
+                    "064",
+                    "089"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "079",
+                    "084",
+                    "086",
+                    "075",
+                    "084",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "077",
+                    "055",
+                    "064",
+                    "092",
+                    "099",
+                    "110"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "110",
+                    "084",
+                    "082",
+                    "064",
+                    "092",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "125",
+                    "113",
+                    "117",
+                    "108",
+                    "118",
+                    "118"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "107",
+                    "129",
+                    "120",
+                    "138",
+                    "135",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "129",
+                    "145",
+                    "138",
+                    "139",
+                    "116",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "158",
+                    "160",
+                    "170",
+                    "171",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Rebel",
+            "Scoundrel",
+            "Smuggler"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Daze",
+            "Dispel",
+            "Offense Up",
+            "Reset Cooldown",
+            "Stun",
+            "Tenacity Down"
+        ],
+        "role": "Attacker"
+    },
+    {
         "name": "Chief Chirpa",
         "base_id": "CHIEFCHIRPA",
         "pk": 72,
