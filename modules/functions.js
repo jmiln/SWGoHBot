@@ -683,18 +683,16 @@ module.exports = (client) => {
         }  else if (client.isAllyCode(user)) {
             return [user.replace(/[^\d]*/g, '')];
         }  else {
-            // TODO  Get this working
-            return [];
-            // const outArr = [];
-            // const results = await client.swgohAPI.report( 'getPlayerProfile', { "name": user } );
-            // if (results.length > 1) {
-            //     results.forEach(p => {
-            //         outArr.push(p.allyCode);
-            //     });
-            // } else if (results.length ===  1) {
-            //     outArr.push(results[0].allyCode);
-            // }
-            // return outArr;
+            const outArr = [];
+            const results = await client.swgohAPI.playerByName(user);
+            if (results.length > 1) {
+                results.forEach(p => {
+                    outArr.push(p.allyCode);
+                });
+            } else if (results.length ===  1) {
+                outArr.push(results[0].allyCode);
+            }
+            return outArr;
         }
     };
 
@@ -983,7 +981,7 @@ module.exports = (client) => {
                     resolve(patrons);
                 }
             } catch (e) {
-                console.log("Error getting patrons: " + e);
+                console.log("Error getting patrons");
                 reject(e);
             }
         });

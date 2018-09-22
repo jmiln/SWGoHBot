@@ -37,7 +37,7 @@ module.exports = clientMongo => {
 
     }
 
-    async function get( database, collection, matchCondition ) {
+    async function get( database, collection, matchCondition, projection ) {
 
         try {
 
@@ -46,9 +46,9 @@ module.exports = clientMongo => {
 
             const dbo = await mongo.db( database );
 
-            //Try update or insert
             matchCondition = matchCondition || {};
-            return await dbo.collection(collection).find(matchCondition).toArray();
+            projection = projection || {};
+            return await dbo.collection(collection).find(matchCondition).project(projection).toArray();
 
         } catch (e) { 
             throw e; 

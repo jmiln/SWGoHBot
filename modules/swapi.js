@@ -10,6 +10,7 @@ module.exports = (client) => {
 
     return {
         player: player,
+        playerByName: playerByName,
         unitStats: unitStats,
         guild: guild,
         guildByName: guildByName,
@@ -59,6 +60,21 @@ module.exports = (client) => {
                 /** If found and valid, serve from cache */
                 player = player[0];
             }
+            return player;
+        } catch (e) {
+            console.log('SWAPI Broke getting player: ' + e);
+            throw e;
+        }
+    }
+
+    async function playerByName(name) {
+        try {
+            if (!name || !name.length) return null;
+            if (typeof name !== 'string') name = name.toString();
+
+            /** Try to get player's ally code from cache */
+            const player = await cache.get('swapi', 'players', {name:name}, {allyCode: 1, _id: 0});
+
             return player;
         } catch (e) {
             console.log('SWAPI Broke getting player: ' + e);
