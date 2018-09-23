@@ -88,6 +88,12 @@ class GuildSearch extends Command {
             guild = await client.swgohAPI.guildGG(userID);
         } catch (e) {
             console.log('ERROR(GS) getting guild: ' + e);
+            return message.channel.send({embed: {
+                author: {
+                    name: "Something Broke"
+                },
+                description: client.codeBlock(e) + 'Please try again in a bit.'
+            }});
         }
 
         if (!guild) {
