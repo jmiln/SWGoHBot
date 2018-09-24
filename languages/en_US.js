@@ -634,6 +634,10 @@ module.exports = class extends Language {
             COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
             COMMAND_MYMODS_MISSING_MODS: `Sorry, but I can't find your mods right now. Please wait a bit then try again.`,
             COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
+            COMMAND_MYMODS_WAIT: "Please wait while I check your roster.",
+            COMMAND_MYMODS_BAD_STAT: (stats) => `Sorry, but I can only sort by the following stats: ${stats}`,
+            COMMAND_MYMODS_HEADER_MODS: (name, stat) => `${name}'s Highest ${stat} Characters`,
+            COMMAND_MYMODS_HEADER_TOTAL: (name, stat) => `${name}'s Best ${stat} From Mods`,
             COMMAND_MYMODS_HELP: ({
                 description: "Shows the mods that you have equipped on the selected character.",
                 actions: [
@@ -644,6 +648,16 @@ module.exports = class extends Language {
                         args: {
                             "user": "The person you're checking. (me | userID | mention)",
                             "character": "The character you want to search for."
+                        }
+                    },
+                    {
+                        action: "Best stats",
+                        actionDesc: 'See your top 10 best characters based on stats',
+                        usage: ';mymods -best <filter>\n;mymods -total -best <filter>',
+                        args: {
+                            "-best": "See what the best stats are (-b)",
+                            "-total": "Sort by total stats instead of mod boosts (-t)",
+                            "filter": "One of the character's stats you want to see"
                         }
                     }
                 ]
