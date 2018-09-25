@@ -1,11 +1,11 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Randomchar extends Command {
     constructor(client) {
         super(client, {
-            name: 'randomchar',
-            aliases: ['rand', 'random'],
-            category: 'Star Wars'
+            name: "randomchar",
+            aliases: ["rand", "random"],
+            category: "Star Wars"
         });
     }
 
@@ -19,7 +19,7 @@ class Randomchar extends Command {
         if (args.length > 0) {
             count = parseInt(args[0]);
             if (isNaN(count) || count < 1 || count > MAX_CHARACTERS) {
-                return message.channel.send(message.language.get('COMMAND_RANDOMCHAR_INVALID_NUM', MAX_CHARACTERS));
+                return message.channel.send(message.language.get("COMMAND_RANDOMCHAR_INVALID_NUM", MAX_CHARACTERS));
             }
         } else {
             count = 1;
@@ -34,9 +34,9 @@ class Randomchar extends Command {
                 charOut.push(newChar);
             }
         }
-        const charString = charOut.join('\n');
+        const charString = charOut.join("\n");
 
-        message.channel.send('```\n' + charString + '```');
+        message.channel.send("```\n" + charString + "```");
     }
 }
 module.exports = Randomchar;

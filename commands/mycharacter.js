@@ -1,59 +1,59 @@
-const Command = require('../base/Command');
-const {promisify, inspect} = require('util');      // eslint-disable-line no-unused-vars
+const Command = require("../base/Command");
+const {promisify, inspect} = require("util");      // eslint-disable-line no-unused-vars
 
 class MyCharacter extends Command {
     constructor(client) {
         super(client, {
-            name: 'mycharacter',
+            name: "mycharacter",
             category: "Misc",
             enabled: true, 
-            aliases: ['mc', 'mychar'],
-            permissions: ['EMBED_LINKS'],   
+            aliases: ["mc", "mychar"],
+            permissions: ["EMBED_LINKS"],   
             permLevel: 0,
         });
     }
 
     async run(client, message, [userID, ...searchChar]) {
-        if (searchChar) searchChar = searchChar.join(' ');
+        if (searchChar) searchChar = searchChar.join(" ");
 
         // Need to get the allycode from the db, then use that
         if (!userID) {
-            return message.channel.send(message.language.get('BASE_SWGOH_MISSING_CHAR'));
+            return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
         } else if (userID === "me") {
             userID = message.author.id;
         } else if (userID.match(/\d{17,18}/)) {
-            userID = userID.replace(/[^\d]*/g, '');
+            userID = userID.replace(/[^\d]*/g, "");
         } else {
             // If they're just looking for a character for themselves, get the char
-            searchChar = userID + ' ' + searchChar;
+            searchChar = userID + " " + searchChar;
             searchChar = searchChar.trim();
             userID = message.author.id;
         }
         const chars = client.findChar(searchChar, client.characters);
         let character;
         if (!searchChar) {
-            return message.channel.send(message.language.get('BASE_SWGOH_MISSING_CHAR'));
+            return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
         }
 
         if (chars.length === 0) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NO_CHAR_FOUND', searchChar));
+            return message.channel.send(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         } else if (chars.length > 1) {
             const charL = [];
             const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
             charS.forEach(c => {
                 charL.push(c.name);
             });
-            return message.channel.send(message.language.get('BASE_SWGOH_CHAR_LIST', charL.join('\n')));
+            return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         } else {
             character = chars[0];
         }
 
         if (!client.users.get(userID)) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NO_USER', message.guildSettings.prefix));
+            return message.channel.send(message.language.get("BASE_SWGOH_NO_USER", message.guildSettings.prefix));
         }
         const ally = await client.database.models.allyCodes.findOne({where: {id: userID}});
         if (!ally) {
-            return message.channel.send(message.language.get('BASE_SWGOH_NOT_REG', client.users.get(userID).tag));
+            return message.channel.send(message.language.get("BASE_SWGOH_NOT_REG", client.users.get(userID).tag));
         }
         const allyCode = ally.dataValues.allyCode;
 
@@ -69,7 +69,7 @@ class MyCharacter extends Command {
         let thisChar = player.filter(c => c.unit.defId === character.uniqueName);
         const stats = thisChar[0].stats;
         thisChar = thisChar[0].unit;
-        let gearStr = ['   [0]  [3]', '[1]       [4]', '   [2]  [5]'].join('\n');
+        let gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
         const abilities = {
             basic: [],
             special: [],
@@ -78,28 +78,28 @@ class MyCharacter extends Command {
             contract: []
         };
         thisChar.equipped.forEach(e => {
-            gearStr = gearStr.replace(e.slot, 'X');
+            gearStr = gearStr.replace(e.slot, "X");
         });
-        gearStr = gearStr.replace(/[0-9]/g, '  ');
+        gearStr = gearStr.replace(/[0-9]/g, "  ");
         gearStr = client.expandSpaces(gearStr);
         thisChar.skills.forEach(a => {
-            a.type = a.id.split('_')[0].replace('skill', '').toProperCase();
-            if (a.tier === 8 || (a.tier === 3 && a.type === 'Contract')) {
+            a.type = a.id.split("_")[0].replace("skill", "").toProperCase();
+            if (a.tier === 8 || (a.tier === 3 && a.type === "Contract")) {
                 if (a.isZeta) {
                     // Maxed Zeta ability
-                    a.tier = 'Max ✦';
+                    a.tier = "Max ✦";
                 } else {
                     // Maxed Omega ability
-                    a.tier = 'Max ⭓';
+                    a.tier = "Max ⭓";
                 }
             } else {
                 // Unmaxed ability
-                a.tier = 'Lvl ' + a.tier;
+                a.tier = "Lvl " + a.tier;
             }
             try {
                 abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.name}`);
             } catch (e) {
-                console.log('ERROR[MC]: bad ability type: ' + inspect(a));
+                console.log("ERROR[MC]: bad ability type: " + inspect(a));
             }
         });
         const abilitiesOut = abilities.basic
@@ -148,7 +148,7 @@ class MyCharacter extends Command {
             ]
         };
 
-        const langStr = message.language.get('BASE_STAT_NAMES');
+        const langStr = message.language.get("BASE_STAT_NAMES");
         const langMap = {
             "Primary Attributes":       "PRIMARY",    
             "Strength":                 "STRENGTH",   
@@ -188,23 +188,23 @@ class MyCharacter extends Command {
             let statStr = "== " + sn + " ==\n";
             statNames[sn].forEach(s => {
                 if (!stats.final[s]) stats.final[s] = 0;
-                if (s === 'Dodge Chance' || s === 'Deflection Chance') {
-                    statStr += `${langStr[langMap[s]]}${' '.repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
+                if (s === "Dodge Chance" || s === "Deflection Chance") {
+                    statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
                 } else {
-                    statStr += `${langStr[langMap[s]]}${' '.repeat(maxLen - langStr[langMap[s]].length)} :: `;
-                    const str = stats.final[s] % 1 === 0 ? stats.final[s] : (stats.final[s] * 100).toFixed(2)+'%';
-                    const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s]})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : '';
-                    statStr += str + ' '.repeat(7 - str.length) + modStr + '\n';
+                    statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: `;
+                    const str = stats.final[s] % 1 === 0 ? stats.final[s] : (stats.final[s] * 100).toFixed(2)+"%";
+                    const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s]})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
+                    statStr += str + " ".repeat(7 - str.length) + modStr + "\n";
                 }
             });
             statArr.push(statStr);
         });
 
         const fields = [];
-        client.msgArray(statArr, '\n', 1000).forEach((m, ix) => {
+        client.msgArray(statArr, "\n", 1000).forEach((m, ix) => {
             fields.push({
-                name: ix === 0 ? 'Stats' : '-',
-                value: client.codeBlock(m, 'asciidoc')
+                name: ix === 0 ? "Stats" : "-",
+                value: client.codeBlock(m, "asciidoc")
             });
         });
 
@@ -217,15 +217,15 @@ class MyCharacter extends Command {
                 `\`Lvl ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\``,
                 `Gear: ${thisChar.gear}`,
                 `${gearStr}`
-            ].join('\n'),
+            ].join("\n"),
             fields: [
                 {
-                    name: 'Abilities',
-                    value: abilitiesOut.join('\n')
+                    name: "Abilities",
+                    value: abilitiesOut.join("\n")
                 }
             ].concat(fields),
             footer: {
-                text: message.language.get('BASE_SWGOH_LAST_UPDATED', client.duration(player.updated, message))
+                text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
             }
         }});
         

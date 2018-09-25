@@ -49,6 +49,10 @@
         "destructuring": "any",
         "ignoreReadBeforeAssign": false
       }
+    ],
+    "quotes": [
+        "error", 
+        "double"
     ]
   }
 }

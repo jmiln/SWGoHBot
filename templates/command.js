@@ -1,9 +1,9 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class CommandName extends Command {
     constructor(client) {
         super(client, {
-            name: '',
+            name: "",
             category: "",
             hidden: false,
             enabled: true, 
@@ -12,13 +12,13 @@ class CommandName extends Command {
             permissions: [],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
             permLevel: 0,
             flags: {            // Flags will be true or false, depending on whether they are in the message or not
-                'example': {
-                    aliases: ['ex']
+                "example": {
+                    aliases: ["ex"]
                 }
             },
             subArgs: {          // Subargs are like flags, but it will return the argument after it instead of a bool
-                'ex2': {
-                    aliases: ['ex1', 'ex3'],
+                "ex2": {
+                    aliases: ["ex1", "ex3"],
                     default: 0              // The default value for if it doesn't find one 
                 }
             }

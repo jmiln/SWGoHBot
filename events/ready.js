@@ -13,7 +13,7 @@ module.exports = async client => {
             require("../modules/botStats.js")(client);
         }
     }
-    client.log('Ready', readyString);
+    client.log("Ready", readyString);
 
     // Sets the status as the current server count and help command 
     const playingString =  `${client.config.prefix}help ~ swgohbot.com`;

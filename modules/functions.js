@@ -1,19 +1,19 @@
-const momentTZ = require('moment-timezone');
+const momentTZ = require("moment-timezone");
 const Fuse = require("fuse-js-latest");
-require('moment-duration-format');
-const {promisify, inspect} = require('util');      // eslint-disable-line no-unused-vars
-const moment = require('moment');       // eslint-disable-line no-unused-vars
-const fs = require('fs');    // eslint-disable-line no-unused-vars
+require("moment-duration-format");
+const {promisify, inspect} = require("util");      // eslint-disable-line no-unused-vars
+const moment = require("moment");       // eslint-disable-line no-unused-vars
+const fs = require("fs");    // eslint-disable-line no-unused-vars
 const readdir = promisify(require("fs").readdir);       // eslint-disable-line no-unused-vars
-const request = require('request-promise-native');
-const Discord = require('discord.js');
+const request = require("request-promise-native");
+const Discord = require("discord.js");
 
 module.exports = (client) => {
     // The scheduler for events
     client.schedule = require("node-schedule");
 
     // A zero-width-space
-    client.zws = '\u200B';
+    client.zws = "\u200B";
     
     /*
         PERMISSION LEVEL FUNCTION
@@ -33,13 +33,13 @@ module.exports = (client) => {
         const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
-        if (message.channel.type === 'text') {
+        if (message.channel.type === "text") {
             if (message.author.id === message.guild.owner.id) return permlvl = 4;
         }
 
         // Also giving them the permissions if they have the manage server role, 
         // since they can change anything else in the server, so no reason not to
-        if (message.member.hasPermission(['ADMINISTRATOR', 'MANAGE_GUILD'])) return permlvl = 3;
+        if (message.member.hasPermission(["ADMINISTRATOR", "MANAGE_GUILD"])) return permlvl = 3;
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
@@ -55,7 +55,7 @@ module.exports = (client) => {
     };
 
     client.myTime = () => {
-        return momentTZ.tz('US/Pacific').format('M/D/YYYY hh:mma');
+        return momentTZ.tz("US/Pacific").format("M/D/YYYY hh:mma");
     };
 
     // This finds any character that matches the search, and returns them in an array
@@ -68,7 +68,7 @@ module.exports = (client) => {
             keys: [ "name", "aliases" ]
         };
         const options2 = {
-            keys: ['name', 'aliases'],
+            keys: ["name", "aliases"],
             threshold: .1,
             distance: 4
         };
@@ -83,7 +83,7 @@ module.exports = (client) => {
         }
 
         // If there's not an exact name match, fuzzy search it
-        if (ship) options.keys.push('crew');
+        if (ship) options.keys.push("crew");
         const fuse = new Fuse(charList, options);
         let chars = fuse.search(searchName);
         if (chars.length >= 1) {
@@ -91,7 +91,7 @@ module.exports = (client) => {
         }
 
         // If it's not exact, send back the big mess
-        if (ship) options2.keys.push('crew');
+        if (ship) options2.keys.push("crew");
         const fuse2 = new Fuse(charList, options2);
         chars = fuse2.search(searchName);
         return chars;
@@ -102,7 +102,7 @@ module.exports = (client) => {
     // This find one character that matches the search, and returns it
     client.findCharByName = (searchName, charList) => {
         var options = {
-            keys: ['name'],
+            keys: ["name"],
             threshold: 0.0
         };
         const fuse = new Fuse(charList, options);
@@ -118,7 +118,7 @@ module.exports = (client) => {
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
         try {
             const chan = client.config.logs.channel;
-            const mess = `${prefix === '' ? '' : prefix + ' '}[${client.myTime()}] [${type}] ${msg}`.replace(/\n/g, '"|"');
+            const mess = `${prefix === "" ? "" : prefix + " "}[${client.myTime()}] [${type}] ${msg}`.replace(/\n/g, "\"|\"");
             const args = {code: codeType, split: true};
             // Sends the logs to the channel I have set up for it.
             if (client.config.logs.logToChannel) {
@@ -142,7 +142,7 @@ module.exports = (client) => {
     };
 
     client.sendMsg = (chanID, msg, options={}) => {
-        msg = msg.replace(/"\|"/g, '\n').replace(/\|:\|/g, "'");
+        msg = msg.replace(/"\|"/g, "\n").replace(/\|:\|/g, "'");
         client.channels.get(chanID).send(msg, options);
     };
 
@@ -151,14 +151,14 @@ module.exports = (client) => {
      *  Send a changelog message to the specified channel
      */
     client.sendChangelog = (clMessage) => {
-        clMessage = clMessage.replace(/\n/g, '"|"');
+        clMessage = clMessage.replace(/\n/g, "\"|\"");
         if (client.config.changelog.sendChangelogs) {
             const clChan = client.config.changelog.changelogChannel;
             if (client.channels.has(clChan)) {
                 client.sendMsg(clChan, clMessage);
             } else {
                 try {
-                    clMessage = clMessage.replace(/'/g, '|:|');
+                    clMessage = clMessage.replace(/'/g, "|:|");
                     client.shard.broadcastEval(`
                         const clMess = '${clMessage}';
                         if (this.channels.has('${clChan}')) {
@@ -177,18 +177,18 @@ module.exports = (client) => {
      * ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    client.announceMsg = async (guild, announceMsg, channel='') => {
-        const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ['announceChan']});
+    client.announceMsg = async (guild, announceMsg, channel="") => {
+        const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ["announceChan"]});
         const guildConf = guildSettings.dataValues;
         let guildChannel;
 
         let announceChan = guildConf.announceChan;
-        if (channel !== '') {
+        if (channel !== "") {
             announceChan = channel;
         }
 
-        if (guild.channels.exists('name', announceChan)) {
-            guildChannel = await guild.channels.find('name', announceChan);
+        if (guild.channels.exists("name", announceChan)) {
+            guildChannel = await guild.channels.find("name", announceChan);
             if (guildChannel.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                 await guildChannel.send(announceMsg).catch(console.error);
             } else {
@@ -206,7 +206,7 @@ module.exports = (client) => {
         try {
             const cmd = new (require(`../commands/${commandName}`))(client);
             if (cmd.help.category === "SWGoH" && !client.swgohAPI) {
-                return 'Unable to load command ${commandName}: no swgohAPI';
+                return "Unable to load command ${commandName}: no swgohAPI";
             } else if (!cmd.conf.enabled) {
                 return false;
             }
@@ -224,7 +224,7 @@ module.exports = (client) => {
      * Unloads the given command
      */
     client.unloadCommand = (command) => {
-        if (typeof command === 'string') {
+        if (typeof command === "string") {
             const commandName = command;
             if (client.commands.has(commandName)) {
                 command = client.commands.get(commandName);
@@ -272,7 +272,7 @@ module.exports = (client) => {
         client.commands.keyArray().forEach(c => {
             client.unloadCommand(c);
         });
-        const cmdFiles = await readdir('./commands/');
+        const cmdFiles = await readdir("./commands/");
         const coms = [], errArr = [];
         cmdFiles.forEach(async (f) => {
             try {
@@ -288,13 +288,13 @@ module.exports = (client) => {
                     }
                 }
             } catch (e) {
-                console.log('Error: ' + e);
+                console.log("Error: " + e);
                 errArr.push(f);
             }
         });
         const channel = client.channels.get(msgID);
         if (channel) {
-            channel.send(`Reloaded ${coms.length} commands, failed to reload ${errArr.length} commands.${errArr.length > 0 ? '\n```' + errArr.join('\n') + '```' : ''}`);
+            channel.send(`Reloaded ${coms.length} commands, failed to reload ${errArr.length} commands.${errArr.length > 0 ? "\n```" + errArr.join("\n") + "```" : ""}`);
         }
     };
 
@@ -316,7 +316,7 @@ module.exports = (client) => {
         });
         const channel = client.channels.get(msgID);
         if (channel) {
-            channel.send(`Reloaded ${ev.length} events, failed to reload ${errEv.length} events.${errEv.length > 0 ? '\n```' + errEv.join('\n') + '```' : ''}`);
+            channel.send(`Reloaded ${ev.length} events, failed to reload ${errEv.length} events.${errEv.length > 0 ? "\n```" + errEv.join("\n") + "```" : ""}`);
         }
     };
 
@@ -334,7 +334,7 @@ module.exports = (client) => {
             if (err) {
                 channel.send(`Something broke: ${err}`);
             } else {
-                channel.send(`Reloaded functions`);
+                channel.send("Reloaded functions");
             }
         }
     };
@@ -355,7 +355,7 @@ module.exports = (client) => {
             if (err) {
                 channel.send(`Something broke: ${err}`);
             } else {
-                channel.send(`Reloaded data files.`);
+                channel.send("Reloaded data files.");
             }
         }
     };
@@ -382,7 +382,7 @@ module.exports = (client) => {
             if (err) {
                 channel.send(`Something broke: ${err}`);
             } else {
-                channel.send(`Reloaded language files.`);
+                channel.send("Reloaded language files.");
             }
         }
     };
@@ -447,8 +447,8 @@ module.exports = (client) => {
 
         // If it's that error, don't bother showing it again
         try {
-            if (!errorMsg.startsWith('Error: RSV2 and RSV3 must be clear') && client.config.logs.logToChannel) {
-                client.channels.get(client.config.log(`\`\`\`inspect(errorMsg)\`\`\``,{split: true}));
+            if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && client.config.logs.logToChannel) {
+                client.channels.get(client.config.log("```inspect(errorMsg)```",{split: true}));
             }
         } catch (e) {
             // Don't bother doing anything
@@ -478,10 +478,10 @@ module.exports = (client) => {
         const language = message.language;
         const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
         const actions = help.actions.slice();
-        let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(', ') : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
+        let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(", ") : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
 
         // Stick the extra help bit in
-        actions.push(language.get('BASE_COMMAND_HELP_HELP', command.help.name.toLowerCase()));
+        actions.push(language.get("BASE_COMMAND_HELP_HELP", command.help.name.toLowerCase()));
         const actionArr = [];
 
         actions.forEach(action => {
@@ -493,9 +493,9 @@ module.exports = (client) => {
                     argString += `**${key}**  ${action.args[key]}\n`;
                 });
             }
-            if (action.action !== '') {
+            if (action.action !== "") {
                 outAct.name = action.action;
-                outAct.value = `${action.actionDesc === '' ? '' : action.actionDesc} \n\`\`\`${action.usage}\`\`\`${argString}\n`;
+                outAct.value = `${action.actionDesc === "" ? "" : action.actionDesc} \n\`\`\`${action.usage}\`\`\`${argString}\n`;
                 actionArr.push(outAct);
             } else {
                 headerString += `\`\`\`${action.usage}\`\`\`${argString}`;
@@ -504,7 +504,7 @@ module.exports = (client) => {
         message.channel.send({embed: {
             "color": 0x605afc,
             "author": {
-                "name": language.get('BASE_COMMAND_HELP_HEADER', command.help.name)
+                "name": language.get("BASE_COMMAND_HELP_HEADER", command.help.name)
             },
             "description": headerString,
             "fields": actionArr
@@ -517,7 +517,7 @@ module.exports = (client) => {
      *  Input an array of strings, and it will put them together so that it 
      *  doesn't exceed the 2000 character limit of Discord mesages.
      */
-    client.msgArray = (arr, join='\n', maxLen=1900) => {
+    client.msgArray = (arr, join="\n", maxLen=1900) => {
         const messages = [];
         arr.forEach((elem) => {
             if  (messages.length === 0) {
@@ -538,7 +538,7 @@ module.exports = (client) => {
      * CODE BLOCK MAKER
      * Makes a codeblock with the specified lang for highlighting.
      */
-    client.codeBlock = (str, lang='') => {
+    client.codeBlock = (str, lang="") => {
         return `\`\`\`${lang}\n${str}\`\`\``;
     };
 
@@ -547,7 +547,7 @@ module.exports = (client) => {
      */
     client.duration = (time, message=null) => {
         const lang = message ? message.language : client.languages[client.config.defaultSettings.language];
-        return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime('DAY', 'PLURAL')}], h [${lang.getTime('HOUR', 'SHORT_PLURAL')}], m [${lang.getTime('MINUTE', 'SHORT_SING')}]`);
+        return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
     };
 
     /*
@@ -556,7 +556,7 @@ module.exports = (client) => {
     client.guildCount = async () => {
         let guilds = 0;
         if (client.shard && client.shard.count > 0) {
-            await client.shard.fetchClientValues('guilds.size')
+            await client.shard.fetchClientValues("guilds.size")
                 .then(results => {
                     guilds =  results.reduce((prev, val) => prev + val, 0);
                 })
@@ -632,17 +632,17 @@ module.exports = (client) => {
      * Check if a string of numbers is a valid ally code.
      */
     client.isAllyCode = (aCode) => {
-        const match = aCode.replace(/[^\d]*/g, '').match(/\d{9}/);
+        const match = aCode.replace(/[^\d]*/g, "").match(/\d{9}/);
         return match ? true : false;
     };
 
     // Expand multiple spaces to have zero width spaces between so 
     // Discord doesn't collapse em
     client.expandSpaces = (str) => {
-        let outStr = '';
+        let outStr = "";
         str.split(/([\s]{2,})/).forEach(e => {
             if (e.match(/[\s]{2,}/)) {
-                outStr += e.split('').join('\u200B');
+                outStr += e.split("").join("\u200B");
             } else {
                 outStr += e;
             }
@@ -656,11 +656,11 @@ module.exports = (client) => {
             user = user.toString().trim();
         }
         let uID, uAC;
-        if (!user || user === 'me' || client.isUserID(user)) {
-            if (!user || user === 'me') {
+        if (!user || user === "me" || client.isUserID(user)) {
+            if (!user || user === "me") {
                 uID = message.author.id;
             } else {
-                uID = user.replace(/[^\d]*/g, '');
+                uID = user.replace(/[^\d]*/g, "");
             }
             try {
                 const exists = await client.database.models.allyCodes.findOne({where: {id: uID}})
@@ -681,7 +681,7 @@ module.exports = (client) => {
                 return [];
             }
         }  else if (client.isAllyCode(user)) {
-            return [user.replace(/[^\d]*/g, '')];
+            return [user.replace(/[^\d]*/g, "")];
         }  else {
             const outArr = [];
             const results = await client.swgohAPI.playerByName(user);
@@ -700,13 +700,13 @@ module.exports = (client) => {
     // Bunch of stuff for the events 
     client.loadAllEvents = async () => {
         let ix = 0;
-        const nowTime = momentTZ().subtract(2, 'h').unix();
+        const nowTime = momentTZ().subtract(2, "h").unix();
         const events = await client.database.models.eventDBs.findAll();
 
         const eventList = [];
         for (let i = 0; i < events.length; i++ ) {
             const event = events[i];
-            const eventNameID = event.eventID.split('-');
+            const eventNameID = event.eventID.split("-");
             const guildID = eventNameID[0];
             
             // Make sure it only loads events for it's shard
@@ -723,7 +723,7 @@ module.exports = (client) => {
                 // If it's past when it was supposed to announce
                 if (event.eventDT < nowTime*1000) {
                     await client.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
-                        .catch(error => { client.log('ERROR',`Broke trying to delete zombies ${error}`); });
+                        .catch(error => { client.log("ERROR",`Broke trying to delete zombies ${error}`); });
                 } else {
                     ix++;
                     client.scheduleEvent(event, guildConf.eventCountdown);
@@ -739,7 +739,7 @@ module.exports = (client) => {
             client.eventAnnounce(event);
         });
     
-        if (countdown.length && (event.countdown === 'true' || event.countdown === 'yes' || event.countdown === true)) {
+        if (countdown.length && (event.countdown === "true" || event.countdown === "yes" || event.countdown === true)) {
             const timesToCountdown = countdown;
             const nowTime = momentTZ().unix() * 1000;
             timesToCountdown.forEach(time => {
@@ -768,14 +768,14 @@ module.exports = (client) => {
         await client.database.models.eventDBs.destroy({where: {eventID: eventID}})
             .then(() => {
                 const eventToDel = client.schedule.scheduledJobs[eventID];
-                if (!eventToDel) console.log('Broke trying to delete: ' + event);
+                if (!eventToDel) console.log("Broke trying to delete: " + event);
                 eventToDel.cancel();
             })
             .catch(error => { 
-                client.log('ERROR',`Broke deleting an event ${error}`); 
+                client.log("ERROR",`Broke deleting an event ${error}`); 
             });
 
-        if (client.evCountdowns[event.eventID] && (event.countdown === 'true' || event.countdown === 'yes')) {
+        if (client.evCountdowns[event.eventID] && (event.countdown === "true" || event.countdown === "yes")) {
             client.evCountdowns[event.eventID].forEach(time => {
                 const eventToDel = client.schedule.scheduledJobs[time];
                 if (eventToDel) {
@@ -787,18 +787,18 @@ module.exports = (client) => {
     
     // To stick into node-schedule for each countdown event
     client.countdownAnnounce = async (event) => {
-        let eventName = event.eventID.split('-');
+        let eventName = event.eventID.split("-");
         const guildID = eventName.splice(0, 1)[0];
-        eventName = eventName.join('-');
+        eventName = eventName.join("-");
     
         const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
     
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), 'minutes') * -1, 'minutes').format(`h [${client.languages[guildConf.language].getTime('HOUR', 'SHORT_SING')}], m [${client.languages[guildConf.language].getTime('MINUTE', 'SHORT_SING')}]`);
-        var announceMessage = client.languages[guildConf.language].get('BASE_EVENT_STARTING_IN_MSG', eventName, timeToGo);
+        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), "minutes") * -1, "minutes").format(`h [${client.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${client.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
+        var announceMessage = client.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
     
-        if (guildConf["announceChan"] != "" || event.eventChan !== '') {
-            if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
+        if (guildConf["announceChan"] != "" || event.eventChan !== "") {
+            if (event["eventChan"] && event.eventChan !== "") { // If they've set a channel, use it
                 client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
             } else { // Else, use the default one from their settings
                 client.announceMsg(client.guilds.get(guildID), announceMessage);
@@ -809,9 +809,9 @@ module.exports = (client) => {
     // To stick into node-schedule for each full event
     client.eventAnnounce = async (event) => {
         // Parse out the eventName and guildName from the ID
-        let eventName = event.eventID.split('-');
+        let eventName = event.eventID.split("-");
         const guildID = eventName.splice(0, 1)[0];
-        eventName = eventName.join('-');
+        eventName = eventName.join("-");
     
         const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
@@ -820,20 +820,20 @@ module.exports = (client) => {
         let newEvent = {};
         const repDays = event.repeatDays;
 
-        if (event.countdown === 'yes') {
-            event.countdown = 'true';
-        } else if (event.countdown === 'no') {
-            event.countdown = 'false';
+        if (event.countdown === "yes") {
+            event.countdown = "true";
+        } else if (event.countdown === "no") {
+            event.countdown = "false";
         }
 
         // Announce the event
         var announceMessage = `**${eventName}**\n${event.eventMessage}`;
-        if (guildConf["announceChan"] != "" || event.eventChan !== '') {
-            if (event['eventChan'] && event.eventChan !== '') { // If they've set a channel, use it
+        if (guildConf["announceChan"] != "" || event.eventChan !== "") {
+            if (event["eventChan"] && event.eventChan !== "") { // If they've set a channel, use it
                 try {
                     client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
                 } catch (e) {
-                    client.log('ERROR', 'Broke trying to announce event with ID: ${event.eventID} \n${e}');
+                    client.log("ERROR", "Broke trying to announce event with ID: ${event.eventID} \n${e}");
                 }
             } else { // Else, use the default one from their settings
                 client.announceMsg(client.guilds.get(guildID), announceMessage);
@@ -846,11 +846,11 @@ module.exports = (client) => {
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
             if (repDays.length === 1) {
-                eventMsg += client.languages[guildConf.language].get('BASE_LAST_EVENT_NOTIFICATION');
+                eventMsg += client.languages[guildConf.language].get("BASE_LAST_EVENT_NOTIFICATION");
             }
             newEvent = {
                 "eventID": event.eventID,
-                "eventDT": (momentTZ(parseInt(event.eventDT)).add(parseInt(repDays.splice(0, 1)), 'd').unix()*1000),
+                "eventDT": (momentTZ(parseInt(event.eventDT)).add(parseInt(repDays.splice(0, 1)), "d").unix()*1000),
                 "eventMessage": eventMsg,
                 "eventChan": event.eventChan,
                 "countdown": event.countdown,
@@ -862,18 +862,18 @@ module.exports = (client) => {
                 "repeatDays": repDays
             };
             // Else if it's set to repeat 
-        } else if (event['repeat'] && (event.repeat['repeatDay'] !== 0 || event.repeat['repeatHour'] !== 0 || event.repeat['repeatMin'] !== 0)) { // At least one of em is more than 0
+        } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
             repTime = true;
             newEvent = {
                 "eventID": event.eventID,
-                "eventDT": (momentTZ(parseInt(event.eventDT)).add(event.repeat['repeatDay'], 'd').add(event.repeat['repeatHour'], 'h').add(event.repeat['repeatMin'], 'm').unix()*1000),
+                "eventDT": (momentTZ(parseInt(event.eventDT)).add(event.repeat["repeatDay"], "d").add(event.repeat["repeatHour"], "h").add(event.repeat["repeatMin"], "m").unix()*1000),
                 "eventMessage": event.eventMessage,
                 "eventChan": event.eventChan,
                 "countdown": event.countdown,
                 "repeat": {
-                    "repeatDay": event.repeat['repeatDay'],
-                    "repeatHour": event.repeat['repeatHour'],
-                    "repeatMin": event.repeat['repeatMin']
+                    "repeatDay": event.repeat["repeatDay"],
+                    "repeatHour": event.repeat["repeatHour"],
+                    "repeatMin": event.repeat["repeatMin"]
                 },
                 "repeatDays": []
             };
@@ -884,12 +884,12 @@ module.exports = (client) => {
                 .then(async () => {
                     client.scheduleEvent(newEvent, guildConf.eventCountdown);
                 })
-                .catch(error => { client.log('ERROR', "Broke trying to replace event: " + error); });
+                .catch(error => { client.log("ERROR", "Broke trying to replace event: " + error); });
         } else {
             // Just destroy it
             await client.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
                 .then(async () => {})
-                .catch(error => { client.log('ERROR',`Broke trying to delete old event ${error}`); });
+                .catch(error => { client.log("ERROR",`Broke trying to delete old event ${error}`); });
         }
     };
 
@@ -912,7 +912,7 @@ module.exports = (client) => {
     // Reload the SWGoH data for all patrons
     client.reloadPatrons = async () => {
         client.patrons = await client.getPatrons();
-        console.log('Reloaded ' + client.patrons.length + ' active patrons');
+        console.log("Reloaded " + client.patrons.length + " active patrons");
     };
 
     // Get the cooldown
@@ -936,26 +936,26 @@ module.exports = (client) => {
             try {
                 let response = await request({
                     headers: {
-                        Authorization: 'Bearer ' + patreon.creatorAccessToken
+                        Authorization: "Bearer " + patreon.creatorAccessToken
                     },
-                    uri: 'https://www.patreon.com/api/oauth2/api/current_user/campaigns',
+                    uri: "https://www.patreon.com/api/oauth2/api/current_user/campaigns",
                     json: true
                 });
 
                 if (response && response.data && response.data.length) {
                     response = await request({
                         headers: {
-                            Authorization: 'Bearer ' + patreon.creatorAccessToken
+                            Authorization: "Bearer " + patreon.creatorAccessToken
                         },
-                        uri: 'https://www.patreon.com/api/oauth2/api/campaigns/' + response.data[0].id + '/pledges',
+                        uri: "https://www.patreon.com/api/oauth2/api/campaigns/" + response.data[0].id + "/pledges",
                         json: true
                     });
 
                     const data = response.data;
                     const included = response.included;
 
-                    const pledges = data.filter(data => data.type === 'pledge');
-                    const users = included.filter(inc => inc.type === 'user');
+                    const pledges = data.filter(data => data.type === "pledge");
+                    const users = included.filter(inc => inc.type === "user");
 
                     let patrons = [];
                     pledges.forEach(pledge => {

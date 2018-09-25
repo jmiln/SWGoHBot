@@ -1,13 +1,13 @@
 const moment = require("moment");
 require("moment-duration-format");
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Stats extends Command {
     constructor(client) {
         super(client, {
-            name: 'stats',
+            name: "stats",
             permLevel: 3,
-            category: 'Admin'
+            category: "Admin"
         });
     }
 
@@ -20,16 +20,16 @@ class Stats extends Command {
         const playerCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'players', distinct:'allyCode'}, 'ENG_US');
         const guildCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'players', distinct:'guildName'}, 'ENG_US');
         const languageCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'localization', distinct:'language'}, 'ENG_US');
-        let lastUpdated = "N/A"; //await client.swgohAPI.report('getLastUpdated', {collection:'localization', match:{ 'language':'ENG_US' }}, 'ENG_US');
+        const lastUpdated = "N/A"; //await client.swgohAPI.report('getLastUpdated', {collection:'localization', match:{ 'language':'ENG_US' }}, 'ENG_US');
         // lastUpdated = moment(lastUpdated[0].updated).format('ddd, MMM Do YYYY');
 
         if (client.shard && client.shard.count > 0) {
-            await client.shard.fetchClientValues('channels.size')
+            await client.shard.fetchClientValues("channels.size")
                 .then(results => {
                     channels = results.reduce((prev, val) => prev + val, 0).toLocaleString();
                 })
                 .catch(console.error);
-            await client.shard.fetchClientValues('users.size')
+            await client.shard.fetchClientValues("users.size")
                 .then(results => {
                     users = results.reduce((prev, val) => prev + val, 0).toLocaleString();
                 })
@@ -39,7 +39,7 @@ class Stats extends Command {
             channels = client.channels.size.toLocaleString();
         }
 
-        await message.channel.send(message.language.get('COMMAND_STATS_OUTPUT', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
+        await message.channel.send(message.language.get("COMMAND_STATS_OUTPUT", (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
             Math.round(require("os").loadavg()[0] * 10000) / 100,
             duration,
             users,

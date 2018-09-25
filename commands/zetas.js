@@ -1,22 +1,22 @@
-const Command = require('../base/Command');
-const moment = require('moment');
+const Command = require("../base/Command");
+const moment = require("moment");
 
 class Zetas extends Command {
     constructor(client) {
         super(client, {
-            name: 'zetas',
+            name: "zetas",
             category: "SWGoH",
-            aliases: ['zeta', 'z'],
-            permissions: ['EMBED_LINKS'],
+            aliases: ["zeta", "z"],
+            permissions: ["EMBED_LINKS"],
             flags: {
-                'r': {
-                    aliases: ['rec', 'recommend', 'recommendations']
+                "r": {
+                    aliases: ["rec", "recommend", "recommendations"]
                 },
-                'g': {
-                    aliases: ['guild']
+                "g": {
+                    aliases: ["guild"]
                 },
-                'h': {
-                    aliases: ['heroic']
+                "h": {
+                    aliases: ["heroic"]
                 }
             }
         });
@@ -26,15 +26,15 @@ class Zetas extends Command {
         let allyCode;
 
         if (options.flags.g && options.flags.r) {
-            return message.channel.send(message.language.get('COMMAND_ZETA_CONFLICTING_FLAGS'));
+            return message.channel.send(message.language.get("COMMAND_ZETA_CONFLICTING_FLAGS"));
         }
 
-        const filters = ['pit', 'pvp', 'sith', 'tank', 'tb', 'tw'];
+        const filters = ["pit", "pvp", "sith", "tank", "tb", "tw"];
         // Need to get the allycode from the db, then use that
         if (!userID || userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
             const allyCodes = await client.getAllyCode(message, userID);
             if (!allyCodes.length) {
-                return message.channel.send(message.language.get('BASE_SWGOH_NO_USER', message.guildSettings.prefix));
+                return message.channel.send(message.language.get("BASE_SWGOH_NO_USER", message.guildSettings.prefix));
             }
             allyCode = allyCodes[0];
         } else {
@@ -42,15 +42,15 @@ class Zetas extends Command {
             searchChar = [userID].concat(searchChar);
             const allyCodes = await client.getAllyCode(message, message.author.id);
             if (!allyCodes.length) {
-                return message.channel.send(message.language.get('BASE_SWGOH_NO_USER', message.guildSettings.prefix));
+                return message.channel.send(message.language.get("BASE_SWGOH_NO_USER", message.guildSettings.prefix));
             }
             allyCode = allyCodes[0];
         }
         
-        searchChar = searchChar.join(' ').trim();
+        searchChar = searchChar.join(" ").trim();
         
         if (searchChar.length && options.flags.r && !filters.includes(searchChar.toLowerCase())) { 
-            return message.channel.send(message.language.get('COMMAND_ZETA_REC_BAD_FILTER', filters.join(', ')));
+            return message.channel.send(message.language.get("COMMAND_ZETA_REC_BAD_FILTER", filters.join(", ")));
         }             
 
         let character = null;
@@ -63,13 +63,13 @@ class Zetas extends Command {
                 charS.forEach(c => {
                     charL.push(c.name);
                 });
-                return message.channel.send(message.language.get('COMMAND_GUILDSEARCH_CHAR_LIST', charL.join('\n')));
+                return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
             } else if (chars.length === 1) {
                 character = chars[0];
             }
         }
         
-        const msg = await message.channel.send(options.flags.g ? message.language.get('COMMAND_ZETA_WAIT_GUILD') : message.language.get('BASE_SWGOH_PLS_WAIT_FETCH', 'zetas'));
+        const msg = await message.channel.send(options.flags.g ? message.language.get("COMMAND_ZETA_WAIT_GUILD") : message.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas"));
 
         const cooldown = client.getPlayerCooldown(message.author.id);
         let player;
@@ -77,8 +77,8 @@ class Zetas extends Command {
         try {
             player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
-            console.log('Error: Broke while trying to get player data in zetas: ' + e);
-            return msg.edit(message.language.get('BASE_SWGOH_NO_ACCT'));
+            console.log("Error: Broke while trying to get player data in zetas: " + e);
+            return msg.edit(message.language.get("BASE_SWGOH_NO_ACCT"));
         }
 
         if (!options.flags.r && !options.flags.g) {
@@ -99,9 +99,9 @@ class Zetas extends Command {
                             count++;
                             // If the character is not already listed, add it
                             if (!zetas[char.name]) {
-                                zetas[char.name] = ['`[' + skill.id.charAt(0) + ']` ' + skill.name];
+                                zetas[char.name] = ["`[" + skill.id.charAt(0) + "]` " + skill.name];
                             } else {
-                                zetas[char.name].push('`[' + skill.id.charAt(0) + ']` ' + skill.name);
+                                zetas[char.name].push("`[" + skill.id.charAt(0) + "]` " + skill.name);
                             }
                         }
                     });
@@ -111,20 +111,20 @@ class Zetas extends Command {
             const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);
             const desc = [], author = {};
             if (!character) {
-                author.name = message.language.get('COMMAND_ZETA_ZETAS_HEADER', player.name, count);
-                desc.push('`------------------------------`');
+                author.name = message.language.get("COMMAND_ZETA_ZETAS_HEADER", player.name, count);
+                desc.push("`------------------------------`");
                 sorted.forEach(character => {
                     desc.push(`\`(${zetas[character].length})\` ${character}`);
                 });
-                desc.push('`------------------------------`');
-                desc.push(message.language.get('COMMAND_ZETA_MORE_INFO'));
+                desc.push("`------------------------------`");
+                desc.push(message.language.get("COMMAND_ZETA_MORE_INFO"));
             } else {
                 author.name = `${player.name}'s ${character.name} (${count})`;
                 author.icon_url = character.avatarURL;
                 if (!zetas[sorted[0]] || zetas[sorted[0]].length === 0) {
-                    desc.push(message.language.get('COMMAND_ZETA_NO_ZETAS'));
+                    desc.push(message.language.get("COMMAND_ZETA_NO_ZETAS"));
                 } else {
-                    desc.push(zetas[sorted[0]].join('\n'));
+                    desc.push(zetas[sorted[0]].join("\n"));
                 }
             }
             
@@ -133,9 +133,9 @@ class Zetas extends Command {
             msg.edit({embed: {
                 color: 0x000000,
                 author: author,
-                description: desc.join('\n'), 
+                description: desc.join("\n"), 
                 footer: {
-                    text: message.language.get('BASE_SWGOH_LAST_UPDATED', lastUpdated)
+                    text: message.language.get("BASE_SWGOH_LAST_UPDATED", lastUpdated)
                 }
             }});
         } else if (options.flags.r) {
@@ -143,7 +143,7 @@ class Zetas extends Command {
             const zetas = client.zetaRec;
             const myZetas = [];
 
-            const sortBy = searchChar.length ? searchChar : 'versa';
+            const sortBy = searchChar.length ? searchChar : "versa";
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {
                 if (myZetas.length >= 5) {
@@ -165,16 +165,16 @@ class Zetas extends Command {
                 }
             }
 
-            let desc = message.language.get('COMMAND_ZETA_REC_HEADER');
-            desc += '\n`' + filters.join(', ') + '`\n`------------------------------`\n';
+            let desc = message.language.get("COMMAND_ZETA_REC_HEADER");
+            desc += "\n`" + filters.join(", ") + "`\n`------------------------------`\n";
             myZetas.forEach(z => {
-                desc += `**${z.name}**\n${z.toon}\n\`${message.language.get('BASE_LEVEL_SHORT')}${z.lvl} | ⚙${z.gearLvl} | ${z.star}*\`\n${client.zws}\n`;
+                desc += `**${z.name}**\n${z.toon}\n\`${message.language.get("BASE_LEVEL_SHORT")}${z.lvl} | ⚙${z.gearLvl} | ${z.star}*\`\n${client.zws}\n`;
             });
 
-            const zetaLen = `${myZetas.length} ${sortBy === 'versa' ? '' : sortBy + ' '}`;
+            const zetaLen = `${myZetas.length} ${sortBy === "versa" ? "" : sortBy + " "}`;
             return msg.edit({embed: {
                 author: {
-                    name: message.language.get('COMMAND_ZETA_REC_AUTH', zetaLen, player.name)
+                    name: message.language.get("COMMAND_ZETA_REC_AUTH", zetaLen, player.name)
                 },
                 description: desc
             }});
@@ -183,7 +183,7 @@ class Zetas extends Command {
             try {
                 guild = await client.swgohAPI.guild(player.allyCode);
                 // TODO  Lang this
-                if (!guild) return message.channel.send('Cannot find guild');
+                if (!guild) return message.channel.send("Cannot find guild");
 
                 const zetaList = {};
                 for (let p = 0; p < guild.roster.length; p++) {
@@ -213,7 +213,7 @@ class Zetas extends Command {
                     const zArr = [];
                     const sorted = Object.keys(zetaList).sort();
                     sorted.forEach(c => { 
-                        let zStr = '';
+                        let zStr = "";
                         zStr += `**${c}**\n`;
                         Object.keys(zetaList[c]).forEach(z => {
                             zStr += `**\`${zetaList[c][z].length}\`**: ${z}\n`;
@@ -221,7 +221,7 @@ class Zetas extends Command {
                         zArr.push(zStr);
                     });
                     const fields = [];
-                    const msgArr = client.msgArray(zArr, '', 1000);
+                    const msgArr = client.msgArray(zArr, "", 1000);
                     msgArr.forEach(m => {
                         fields.push({
                             name: "____",
@@ -233,7 +233,7 @@ class Zetas extends Command {
 
                     return msg.edit({embed: {
                         author: {
-                            name: message.language.get('COMMAND_ZETA_ZETAS_HEADER', guild.name)
+                            name: message.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
                         },
                         fields: fields
                     }});
@@ -242,9 +242,9 @@ class Zetas extends Command {
                     const zChar = zetaList[Object.keys(zetaList)[0]];
                     Object.keys(zChar).forEach(z => {
                         // Format the string/ embed
-                        const msgArr = client.msgArray(zChar[z].sort((p, c) => p.toLowerCase() > c.toLowerCase() ? 1 : -1), '\n', 700);
+                        const msgArr = client.msgArray(zChar[z].sort((p, c) => p.toLowerCase() > c.toLowerCase() ? 1 : -1), "\n", 700);
                         msgArr.forEach((m, ix) => {
-                            let msgCount = '';
+                            let msgCount = "";
                             if (msgArr.length > 1) msgCount = ` (${ix+1}/${msgArr.length})`;
                             fields.push({
                                 name: z + msgCount,

@@ -9,8 +9,8 @@ module.exports = (client) => {
             await post(`https://botsfordiscord.com/api/v1/bots/${client.user.id}`)
                 .set("Authorization", client.config.b4dToken)
                 .send({ server_count: guilds })
-                .catch(err => console.log('Broke trying to update botStats: ' + err));
-            console.log('Sending guild count to b4d: ' + guilds);
+                .catch(err => console.log("Broke trying to update botStats: " + err));
+            console.log("Sending guild count to b4d: " + guilds);
         } catch (error) {
             console.log(error);
         }

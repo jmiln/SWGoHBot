@@ -1,4 +1,4 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Abilities extends Command {
     constructor(client) {
@@ -6,21 +6,20 @@ class Abilities extends Command {
             name: "abilities",
             description: "",
             category: "Star Wars",
-            aliases: ['a']
+            aliases: ["a"]
         });
     }
 
     run(client, message, args) {
-        const config = client.config;
         const charList = client.characters;
 
-        const searchName = String(args.join(' ')).toLowerCase().replace(/[^\w\s]/gi, '');
+        const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
         let embeds = true;
     
         const guildConf = message.guildSettings;
         if (message.guild) {
-            if (guildConf['useEmbeds'] !== true || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+            if (guildConf["useEmbeds"] !== true || !message.channel.permissionsFor(client.user).has("EMBED_LINKS")) {
                 embeds = false;
             }
         }
@@ -31,13 +30,13 @@ class Abilities extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.get('COMMAND_ABILITIES_NEED_CHARACTER', message.guildSettings.prefix));
+            return message.channel.send(message.language.get("COMMAND_ABILITIES_NEED_CHARACTER", message.guildSettings.prefix));
         }
 
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
         if (chars.length <= 0) {
-            return message.channel.send(message.language.get('COMMAND_ABILITIES_INVALID_CHARACTER', message.guildSettings.prefix));        
+            return message.channel.send(message.language.get("COMMAND_ABILITIES_INVALID_CHARACTER", message.guildSettings.prefix));        
         }
 
         chars.forEach(character => {
@@ -47,20 +46,20 @@ class Abilities extends Command {
                     const abilities = character.abilities[ability];
                     
                     var mat = omega;
-                    if (abilities.tier === 'zeta') {
+                    if (abilities.tier === "zeta") {
                         mat = zeta;
-                    } else if (abilities.tier === 'abilityMatMK3') {
+                    } else if (abilities.tier === "abilityMatMK3") {
                         mat = abilityMatMK3;
                     }
 
                     var cooldownString = "";
                     if (abilities.abilityCooldown > 0) {
-                        cooldownString = message.language.get('COMMAND_ABILITIES_COOLDOWN', abilities.abilityCooldown);
+                        cooldownString = message.language.get("COMMAND_ABILITIES_COOLDOWN", abilities.abilityCooldown);
                     }
                 
                     fields.push({
                         "name": ability,
-                        "value": message.language.get('COMMAND_ABILITIES_ABILITY', abilities.type, mat, cooldownString, abilities.abilityDesc)
+                        "value": message.language.get("COMMAND_ABILITIES_ABILITY", abilities.type, mat, cooldownString, abilities.abilityDesc)
                     });
                 }
                 
@@ -79,9 +78,9 @@ class Abilities extends Command {
                 let abilityString = "";
                 for (const ability in character.abilities) {
                     const abilities = character.abilities[ability];
-                    abilityString += message.language.get('COMMAND_ABILITIES_ABILITY_CODE', ability, abilities.type, abilities.tier, abilities.abilityDesc);
+                    abilityString += message.language.get("COMMAND_ABILITIES_ABILITY_CODE", ability, abilities.type, abilities.tier, abilities.abilityDesc);
                 }
-                message.channel.send(` * ${character.name} * \n${abilityString}`, { code: 'md', split: true });
+                message.channel.send(` * ${character.name} * \n${abilityString}`, { code: "md", split: true });
             }
         });         
     }

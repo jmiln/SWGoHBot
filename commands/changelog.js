@@ -1,4 +1,4 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Changelog extends Command {
     constructor(client) {
@@ -10,18 +10,18 @@ class Changelog extends Command {
     }
 
     run(client, message) {
-        let logMsg = message.content.split(' ');
+        let logMsg = message.content.split(" ");
         logMsg.splice(0, 1);
-        logMsg = logMsg.join(' ');
+        logMsg = logMsg.join(" ");
 
         // If it's set up, send the changelog to a Discord channel
         if (client.config.changelog.sendChangelogs) {
             const clMessage = `[${client.myTime()}]\n${logMsg
-                .replace('[Fixed]',   '**[Fixed]**')
-                .replace('[Updated]', '**[Updated]**')
-                .replace('[Added]',   '**[Added]**')
-                .replace('[Removed]', '**[Removed]**')
-                .replace('[Changed]', '**[Changed]**')}`;
+                .replace("[Fixed]",   "**[Fixed]**")
+                .replace("[Updated]", "**[Updated]**")
+                .replace("[Added]",   "**[Added]**")
+                .replace("[Removed]", "**[Removed]**")
+                .replace("[Changed]", "**[Changed]**")}`;
 
             client.sendChangelog(clMessage);
         }

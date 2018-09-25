@@ -1,33 +1,33 @@
-const Command = require('../base/Command');
-const moment = require('moment');
+const Command = require("../base/Command");
+const moment = require("moment");
 
 // To get the dates of any upcoming events if any (Adapted from shittybill#3024's Scorpio) 
 class CurrentEvents extends Command {
     constructor(client) {
         super(client, {
-            name: 'currentevents',
+            name: "currentevents",
             // enabled: false,
             category: "SWGoH",
-            aliases: ['cevents', 'ce'],
-            permissions: ['EMBED_LINKS'],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
+            aliases: ["cevents", "ce"],
+            permissions: ["EMBED_LINKS"],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
             flags: {
                 heists: {
-                    aliases: ['$', 'heist']
+                    aliases: ["$", "heist"]
                 },
                 heroic: {
-                    aliases: ['hero']
+                    aliases: ["hero"]
                 }
             }
         });
     }
 
     async run(client, message, [num], options) {
-        const FLEET_CHALLENGES = ['shipevent_PRELUDE_ACKBAR', 'shipevent_PRELUDE_MACEWINDU', 'shipevent_PRELUDE_TARKIN', 'shipevent_SC01UPGRADE', 'shipevent_SC02TRAINING', 'shipevent_SC03TRAINING', 'shipevent_SC03ABILITY'];
-        const MOD_CHALLENGES = ['restrictedmodbattle_set_1', 'restrictedmodbattle_set_2', 'restrictedmodbattle_set_3', 'restrictedmodbattle_set_4', 'restrictedmodbattle_set_5', 'restrictedmodbattle_set_6', 'restrictedmodbattle_set_7', 'restrictedmodbattle_set_8'];
-        const DAILY_CHALLENGES = ['challenge_XP', 'challenge_CREDIT', 'challenge_ABILITYUPGRADEMATERIALS', 'challenge_EQUIPMENT_AGILITY', 'challenge_EQUIPMENT_INTELLIGENCE', 'challenge_EQUIPMENT_STRENGTH'];
-        const HEISTS = ['EVENT_CREDIT_HEIST_GETAWAY_V2', 'EVENT_TRAINING_DROID_SMUGGLING'];
-        const HEROIC = ['progressionevent_PIECES_AND_PLANS', 'progressionevent_GRANDMASTERS_TRAINING', 'EVENT_HERO_SCAVENGERREY'];
-        const EXCLUDE_Strings = ['EVENT_ECONOMY_BH'];
+        const FLEET_CHALLENGES = ["shipevent_PRELUDE_ACKBAR", "shipevent_PRELUDE_MACEWINDU", "shipevent_PRELUDE_TARKIN", "shipevent_SC01UPGRADE", "shipevent_SC02TRAINING", "shipevent_SC03TRAINING", "shipevent_SC03ABILITY"];
+        const MOD_CHALLENGES = ["restrictedmodbattle_set_1", "restrictedmodbattle_set_2", "restrictedmodbattle_set_3", "restrictedmodbattle_set_4", "restrictedmodbattle_set_5", "restrictedmodbattle_set_6", "restrictedmodbattle_set_7", "restrictedmodbattle_set_8"];
+        const DAILY_CHALLENGES = ["challenge_XP", "challenge_CREDIT", "challenge_ABILITYUPGRADEMATERIALS", "challenge_EQUIPMENT_AGILITY", "challenge_EQUIPMENT_INTELLIGENCE", "challenge_EQUIPMENT_STRENGTH"];
+        const HEISTS = ["EVENT_CREDIT_HEIST_GETAWAY_V2", "EVENT_TRAINING_DROID_SMUGGLING"];
+        const HEROIC = ["progressionevent_PIECES_AND_PLANS", "progressionevent_GRANDMASTERS_TRAINING", "EVENT_HERO_SCAVENGERREY"];
+        const EXCLUDE_Strings = ["EVENT_ECONOMY_BH"];
         // console.log(gohEvents.map(e => e.id));
 
         const DEF_NUM = 10;
@@ -60,7 +60,7 @@ class CurrentEvents extends Command {
             if (FLEET_CHALLENGES.includes(event.id) ||
                 MOD_CHALLENGES.includes(event.id) ||
                 DAILY_CHALLENGES.includes(event.id) ||
-                event.id.includes('MOD_SALVAGE')) {
+                event.id.includes("MOD_SALVAGE")) {
                 delete gohEvents.event;
                 continue;
             }
@@ -94,18 +94,18 @@ class CurrentEvents extends Command {
             // Put each event in the array
             event.schedule.forEach(s => {
                 event.nameKey = event.nameKey
-                    .replace(/\\n/g, ' ')
-                    .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,'')
+                    .replace(/\\n/g, " ")
+                    .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"")
                     .toProperCase();
                 evOut.push({
-                    name: (HEROIC.includes(event.id) || event.id === 'EVENT_CREDIT_HEIST_GETAWAY_V2') ? `**${event.nameKey}**` : event.nameKey,
+                    name: (HEROIC.includes(event.id) || event.id === "EVENT_CREDIT_HEIST_GETAWAY_V2") ? `**${event.nameKey}**` : event.nameKey,
                     date: s.startTime
                 });
             });
         }
 
         const fields = [];
-        let desc = '`------------------------------`';
+        let desc = "`------------------------------`";
         let count = 0;
 
         // Sort all the events
@@ -128,28 +128,28 @@ class CurrentEvents extends Command {
             // }
 
             // Condensed view
-            desc += `\n\`${moment(event.date).format('M-DD')} |\` ${event.name}`;
+            desc += `\n\`${moment(event.date).format("M-DD")} |\` ${event.name}`;
         }
 
         if (fields.length) {
             return message.channel.send({embed: {
                 author: {
-                    name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
+                    name: message.language.get("COMMAND_CURRENTEVENTS_HEADER") 
                 },
                 color: 0x0f0f0f,
-                description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count),
+                description: message.language.get("COMMAND_CURRENTEVENTS_DESC", count),
                 fields: fields
             }});
         } else if (count > 0) {
             return message.channel.send({embed: {
                 author: {
-                    name: message.language.get('COMMAND_CURRENTEVENTS_HEADER') 
+                    name: message.language.get("COMMAND_CURRENTEVENTS_HEADER") 
                 },
                 color: 0x0f0f0f,
-                description: message.language.get('COMMAND_CURRENTEVENTS_DESC', count) + '\n' + desc + '\n`------------------------------`'
+                description: message.language.get("COMMAND_CURRENTEVENTS_DESC", count) + "\n" + desc + "\n`------------------------------`"
             }});
         } else {
-            return message.channel.send('No events at this time');
+            return message.channel.send("No events at this time");
         }
     }
 }

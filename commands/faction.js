@@ -1,35 +1,34 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Faction extends Command {
     constructor(client) {
         super(client, {
-            name: 'faction',
-            aliases: ['factions'],
-            category: 'Star Wars'
+            name: "faction",
+            aliases: ["factions"],
+            category: "Star Wars"
         });
     }
 
     run(client, message, args) {
-        const config = client.config;
         const charList = client.characters;
 
         // Check if it should send as an embed or a code block
         const guildConf = message.guildSettings;
         let embeds = true;
         if (message.guild) {
-            if (guildConf['useEmbeds'] !== true || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+            if (guildConf["useEmbeds"] !== true || !message.channel.permissionsFor(client.user).has("EMBED_LINKS")) {
                 embeds = false;
             }
         }
 
-        const searchName = String(args.join(' ')).toLowerCase().replace(/[^\w\s]/gi, '');
+        const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
         let found = false;
 
         const factionChars = [];
 
         if (searchName === "") {
-            return message.channel.send(message.language.get('COMMAND_FACTION_INVALID_CHAR', message.guildSettings.prefix));
+            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
         }
         for (var ix = 0; ix < charList.length; ix++) {
             var character = charList[ix];
@@ -44,7 +43,7 @@ class Faction extends Command {
         }
         if (found) {
             if (embeds) { // if Embeds are enabled
-                var charString = factionChars.join('\n');
+                var charString = factionChars.join("\n");
                 const fields = [];
                 fields.push({
                     "name": searchName.toProperCase(),
@@ -56,11 +55,11 @@ class Faction extends Command {
                     }
                 });
             } else { // Embeds are disabled
-                charString = '* ' + factionChars.join('\n* ');
-                return message.channel.send(message.language.get('COMMAND_FACTION_CODE_OUT', searchName.toProperCase(),charString), { code: 'md' });
+                charString = "* " + factionChars.join("\n* ");
+                return message.channel.send(message.language.get("COMMAND_FACTION_CODE_OUT", searchName.toProperCase(),charString), { code: "md" });
             }
         } else {
-            return message.channel.send(message.language.get('COMMAND_FACTION_INVALID_CHAR', message.guildSettings.prefix));
+            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
         }
     }
 }
