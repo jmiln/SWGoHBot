@@ -17,8 +17,8 @@ class Guilds extends Command {
                 "a": {
                     aliases: ["allycodes", "allycode"]
                 },
-                "registered": {
-                    aliases: ["reg"]
+                "reg": {
+                    aliases: []
                 }
             }
         });
@@ -86,19 +86,28 @@ class Guilds extends Command {
                         // Make sure they're in the same server
                         if (message.guild && message.guild.members.has(c.id)) {
                             p.inGuild = true;
+                            p.dID = c.id;
                             break;
                         }
                     }                    
                 } 
                 if (options.flags.a) {
                     if (p.inGuild) {
-                        users.push(`\`[${p.allyCode}]\` - **${p.name}**`);
+                        if (options.flags.reg) {
+                            users.push(`\`[${p.allyCode}]\` - **${p.name}** (<@!${p.dID}>)`);
+                        } else {
+                            users.push(`\`[${p.allyCode}]\` - **${p.name}**`);
+                        }
                     } else {
                         users.push(`\`[${p.allyCode}]\` - ${p.name}`);
                     }
                 } else {
                     if (p.inGuild) {
-                        users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
+                        if (options.flags.reg) {
+                            users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}** (<@!${p.dID}>)`);
+                        } else {
+                            users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
+                        }
                     } else {
                         users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - ${p.name}`);
                     }

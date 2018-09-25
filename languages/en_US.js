@@ -454,10 +454,12 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guild [user] [-roster]",
+                        usage: ";guild [user]\n;guild [user] [-roster] [-allycode] [-reg]",
                         args: {
                             "user": "A way to identify the guild. (mention | allyCode | guildName)",
-                            "-roster": "Show a list of all the members of the guild"
+                            "-roster": "Show a list of all the members of the guild",
+                            "-allycode": "Show a member's ally codes instead of GP",
+                            "-reg": "Show the discord names of anyone registered & on the server next to their name."
                         }
                     }
                 ]
