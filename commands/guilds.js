@@ -16,6 +16,9 @@ class Guilds extends Command {
                 },
                 "a": {
                     aliases: ["allycodes", "allycode"]
+                },
+                "registered": {
+                    aliases: ["reg"]
                 }
             }
         });
@@ -72,13 +75,35 @@ class Guilds extends Command {
             const sortedGuild = options.flags.a ? guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1) : guild.roster.sort((p, c) => c.gp - p.gp);
 
             const users = [];
-            sortedGuild.forEach(p => {
+            for (const p of sortedGuild) {
+                // Check if the player is registered, then bold the name if so
+                const exists = await client.database.models.allyCodes.findOne({where: {allyCode: p.allyCode}})
+                    .then(token => token !== null)
+                    .then(isUnique => isUnique);
+                if (exists) {
+                    const codes = await client.database.models.allyCodes.findAll({where: {allyCode: p.allyCode}});
+                    for (const c of codes) {
+                        // Make sure they're in the same server
+                        if (message.guild && message.guild.members.has(c.id)) {
+                            p.inGuild = true;
+                            break;
+                        }
+                    }                    
+                } 
                 if (options.flags.a) {
-                    users.push(`\`[${p.allyCode}]\` - **${p.name}**`);
+                    if (p.inGuild) {
+                        users.push(`\`[${p.allyCode}]\` - **${p.name}**`);
+                    } else {
+                        users.push(`\`[${p.allyCode}]\` - ${p.name}`);
+                    }
                 } else {
-                    users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
+                    if (p.inGuild) {
+                        users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
+                    } else {
+                        users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - ${p.name}`);
+                    }
                 }
-            });
+            }
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
