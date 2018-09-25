@@ -1,12 +1,12 @@
 // const util = require('util');
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Ships extends Command {
     constructor(client) {
         super(client, {
-            name: 'ships',
-            aliases: ['s', 'ship'],
-            category: 'Star Wars'
+            name: "ships",
+            aliases: ["s", "ship"],
+            category: "Star Wars"
         });
     }
 
@@ -14,28 +14,28 @@ class Ships extends Command {
         const shipList = client.ships;
 
         // Remove any junk from the name
-        const searchName = args.join(' ');
+        const searchName = args.join(" ");
 
         // Check if it should send as an embed or a code block
         const guildConf = message.guildSettings;
         let embeds = true;
         if (message.guild) {
-            if (guildConf['useEmbeds'] !== true || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+            if (guildConf["useEmbeds"] !== true || !message.channel.permissionsFor(client.user).has("EMBED_LINKS")) {
                 embeds = false;
             }
         }
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.get('COMMAND_SHIPS_NEED_CHARACTER', message.guildSettings.prefix));
+            return message.channel.send(message.language.get("COMMAND_SHIPS_NEED_CHARACTER", message.guildSettings.prefix));
         }
 
         // Find any characters that match that
         const ships = client.findChar(searchName, shipList, true);
         if (ships.length <= 0) {
-            return message.channel.send(message.language.get('COMMAND_SHIPS_INVALID_CHARACTER', message.guildSettings.prefix));
+            return message.channel.send(message.language.get("COMMAND_SHIPS_INVALID_CHARACTER", message.guildSettings.prefix));
         } else if (ships.length > 1) {
-            return message.channel.send(message.language.get('BASE_SWGOH_CHAR_LIST', ships.map(s => `${s.name}${s.crew.length ? '\n' + s.crew.map(c => '- ' + c).join('\n') + '\n' : '\n'}`).join('\n')));
+            return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", ships.map(s => `${s.name}${s.crew.length ? "\n" + s.crew.map(c => "- " + c).join("\n") + "\n" : "\n"}`).join("\n")));
         }
 
         const ship = ships[0];
@@ -45,28 +45,28 @@ class Ships extends Command {
 
             if (ship.crew.length) {
                 fields.push({
-                    "name": message.language.get('COMMAND_SHIPS_CREW'),
-                    "value": ship['crew'].join(', ').toProperCase()
+                    "name": message.language.get("COMMAND_SHIPS_CREW"),
+                    "value": ship["crew"].join(", ").toProperCase()
                 });
             }
             if (ship.factions.length) {
                 fields.push({
-                    "name": message.language.get('COMMAND_SHIPS_FACTIONS'),
-                    "value": ship['factions'].join(', ').toProperCase()
+                    "name": message.language.get("COMMAND_SHIPS_FACTIONS"),
+                    "value": ship["factions"].join(", ").toProperCase()
                 });
             }
             if (Object.keys(ship.abilities).length) {
                 for (var ability in ship.abilities) {
                     fields.push({
                         "name": ability,
-                        "value": message.language.get('COMMAND_SHIPS_ABILITIES', ship.abilities[ability])
+                        "value": message.language.get("COMMAND_SHIPS_ABILITIES", ship.abilities[ability])
                     });
                 }
             }
             if (!fields.length) {
                 fields.push({
-                    "name": 'Error',
-                    "value": 'Sorry, but this ship has not been fully updated yet.'
+                    "name": "Error",
+                    "value": "Sorry, but this ship has not been fully updated yet."
                 });
             }
             message.channel.send({
@@ -81,19 +81,19 @@ class Ships extends Command {
                 }
             });
         } else { // Embeds are disabled
-            let shipString = '';
+            let shipString = "";
 
             shipString += ` * ${ship.name.toProperCase()} *\n`;
-            shipString += `${message.language.get('COMMAND_SHIPS_CREW')}: ${ship.crew.join(', ').toProperCase()}\n`;
-            shipString += `${message.language.get('COMMAND_SHIPS_FACTIONS')}: ${ship.factions.join(', ').toProperCase()}\n\n`;
-            shipString += message.language.get('COMMAND_SHIPS_CODE_ABILITES_HEADER');
+            shipString += `${message.language.get("COMMAND_SHIPS_CREW")}: ${ship.crew.join(", ").toProperCase()}\n`;
+            shipString += `${message.language.get("COMMAND_SHIPS_FACTIONS")}: ${ship.factions.join(", ").toProperCase()}\n\n`;
+            shipString += message.language.get("COMMAND_SHIPS_CODE_ABILITES_HEADER");
         
             for (var thisAbility in ship.abilities) {
                 const abilities = ship.abilities[thisAbility];
-                shipString += message.language.get('COMMAND_SHIPS_CODE_ABILITIES', ability, abilities);
+                shipString += message.language.get("COMMAND_SHIPS_CODE_ABILITIES", ability, abilities);
             }
 
-            return message.channel.send(shipString, { code: 'md', split: true });
+            return message.channel.send(shipString, { code: "md", split: true });
         }
     }
 }

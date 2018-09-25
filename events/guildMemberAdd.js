@@ -1,4 +1,4 @@
-const {inspect} = require('util');
+const {inspect} = require("util");
 module.exports = async (client, member) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
@@ -6,8 +6,8 @@ module.exports = async (client, member) => {
     const guildConf = guildSettings.dataValues;
 
     // Make sure the config option exists. Should not need this, but just in case
-    if (!guildConf['announceChan']) {
-        client.database.models.settings.update({announceChan: ''}, {where: {guildID: guild.id}});
+    if (!guildConf["announceChan"]) {
+        client.database.models.settings.update({announceChan: ""}, {where: {guildID: guild.id}});
     }
 
     // Our welcome message has a bit of a placeholder, let's fix
@@ -20,7 +20,7 @@ module.exports = async (client, member) => {
         try {
             client.announceMsg(guild, welcomeMessage);
         } catch (e) {
-            client.log('ERROR', `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
+            client.log("ERROR", `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
         } 
     }
 };

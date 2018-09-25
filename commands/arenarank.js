@@ -1,12 +1,12 @@
-const Command = require('../base/Command');
-const arenaJumps = require('../data/arenaJumps.js');
+const Command = require("../base/Command");
+const arenaJumps = require("../data/arenaJumps.js");
 
 class Arenarank extends Command {
     constructor(client) {
         super(client, {
             name: "arenarank",
-            category: 'Star Wars',
-            aliases: ['arena']
+            category: "Star Wars",
+            aliases: ["arena"]
         });
     }
 
@@ -14,11 +14,11 @@ class Arenarank extends Command {
         const currentRank = parseInt(args[0]);
         const rankHops = parseInt(args[1]) || 5;
         if (isNaN(currentRank) || !currentRank) {
-            return message.channel.send(message.language.get('COMMAND_ARENARANK_INVALID_NUMBER'));
+            return message.channel.send(message.language.get("COMMAND_ARENARANK_INVALID_NUMBER"));
         }
 
         // If they are rank 1, don't bother calculating anything
-        if (currentRank === 1) return message.channel.send(message.language.get('COMMAND_ARENARANK_BEST_RANK'));
+        if (currentRank === 1) return message.channel.send(message.language.get("COMMAND_ARENARANK_BEST_RANK"));
 
         // Mark em as estimates if needed
         let est = false;
@@ -33,7 +33,7 @@ class Arenarank extends Command {
             if (newRank === 1) break;
         }
 
-        return message.channel.send(message.language.get('COMMAND_ARENARANK_RANKLIST', currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? 's' : '', est ? '**(estimate)**' : '', arenaBattles.join(' → '))); 
+        return message.channel.send(message.language.get("COMMAND_ARENARANK_RANKLIST", currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? "s" : "", est ? "**(estimate)**" : "", arenaBattles.join(" → "))); 
 
 
         function findNextRank(currentRank) {

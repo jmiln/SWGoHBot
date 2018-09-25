@@ -1,12 +1,12 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Help extends Command {
     constructor(client) {
         super(client, {
-            name: 'help',
-            aliases: ['h'],
-            category: 'Misc',
-            permissions: ['EMBED_LINKS']
+            name: "help",
+            aliases: ["h"],
+            category: "Misc",
+            permissions: ["EMBED_LINKS"]
         });
     }
 
@@ -22,7 +22,7 @@ class Help extends Command {
             const commandList = client.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
             const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
 
-            let output = message.language.get('COMMAND_HELP_HEADER', config.prefix);
+            let output = message.language.get("COMMAND_HELP_HEADER", config.prefix);
 
             commandList.forEach(c => {
                 const cat = c.help.category.toProperCase();
@@ -37,7 +37,7 @@ class Help extends Command {
             sortedCat.forEach(category => {
                 output += `\n== ${category} ==\n${help[category]}`;
             });
-            message.channel.send(output, { code: 'asciidoc', split: {maxLength: 1500, char: '\n'} });
+            message.channel.send(output, { code: "asciidoc", split: {maxLength: 1500, char: "\n"} });
         } else { // Show the help for a specific command
             let command;
             if (client.commands.has(args[0])) {
@@ -45,7 +45,7 @@ class Help extends Command {
             } else if (client.aliases.has(args[0])) {
                 command = client.commands.get(client.aliases.get(args[0]));
             } else {
-                return message.channel.send(message.language.get('COMMAND_RELOAD_INVALID_CMD', args[0]));
+                return message.channel.send(message.language.get("COMMAND_RELOAD_INVALID_CMD", args[0]));
             }
             
             client.helpOut(message, command);

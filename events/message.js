@@ -43,7 +43,7 @@ module.exports = async (client, message) => {
     const nArgs = message.content.split(/(\n+)/);
     let args = [];
     nArgs.forEach(e => {
-        const ne = e.split(' ').filter(String);
+        const ne = e.split(" ").filter(String);
         args = args.concat(ne);    
     });
 
@@ -65,10 +65,10 @@ module.exports = async (client, message) => {
     // If the command exists, **AND** the user has permission, run it.
     if (cmd && level >= cmd.conf.permLevel) {
         if (message.guild) {
-            const defPerms = ['SEND_MESSAGES', 'VIEW_CHANNEL'];
-            if (args.length === 1 && args[0].toLowerCase() === 'help') {
+            const defPerms = ["SEND_MESSAGES", "VIEW_CHANNEL"];
+            if (args.length === 1 && args[0].toLowerCase() === "help") {
                 // If they want the help, it's embeds now, so they need that activated
-                defPerms.push('EMBED_LINKS');
+                defPerms.push("EMBED_LINKS");
             }
             // Merge the permission arrays to make sure it has at least the minimum
             const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
@@ -76,10 +76,10 @@ module.exports = async (client, message) => {
 
             if (missingPerms.length > 0) {
                 // If it can't send messages, don't bother trying
-                if (missingPerms.includes('SEND_MESSAGES')) return;
+                if (missingPerms.includes("SEND_MESSAGES")) return;
                 // Make it more readable
-                missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace('_', ' ').toProperCase();});
-                return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(', ')}\``);
+                missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace("_", " ").toProperCase();});
+                return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(", ")}\``);
             }
         }
 
@@ -89,7 +89,7 @@ module.exports = async (client, message) => {
         
         
         // If they're just looking for the help, don't bother going through the command
-        if (args.length === 1 && args[0].toLowerCase() === 'help') {
+        if (args.length === 1 && args[0].toLowerCase() === "help") {
             client.helpOut(message, cmd);
         } else {
             try {
@@ -99,13 +99,13 @@ module.exports = async (client, message) => {
                     subArgs: flagArgs.subArgs
                 });
             } catch (err) {
-                client.log('ERROR(msg)', `I broke with ${cmd.name}: ${err}`, cmd.help.name.toProperCase());
+                client.log("ERROR(msg)", `I broke with ${cmd.name}: ${err}`, cmd.help.name.toProperCase());
             }
         }
         if (client.config.logs.logComs) {
             client.database.models.commands.create({
                 id: `${cmd.help.name}-${message.author.id}-${message.id}`,
-                commandText: args.join(' ')
+                commandText: args.join(" ")
             });
         }
     }
@@ -113,10 +113,10 @@ module.exports = async (client, message) => {
 
 // Checks for any args that start with - or -- that match what the command is looking for
 function checkForArgs(key, args) {
-    if (args.includes('-'+key)) { 
-        return [true, '-'+key];
-    } else if (args.includes('--'+key)) {
-        return [true, '--'+key];
+    if (args.includes("-"+key)) { 
+        return [true, "-"+key];
+    } else if (args.includes("--"+key)) {
+        return [true, "--"+key];
     } else {
         return [false, null];
     }

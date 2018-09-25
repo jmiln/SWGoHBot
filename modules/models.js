@@ -1,18 +1,18 @@
 
 module.exports = (Sequelize, database) => {
     // Models
-    database.define('settings', {
+    database.define("settings", {
         guildID: {          // The guild's ID
             type: Sequelize.TEXT, 
             primaryKey: true 
         },
         prefix: {           // The guild's prefix
             type: Sequelize.TEXT,
-            defaultValue: ';'
+            defaultValue: ";"
         },
         adminRole: {        // Admin roles
             type: Sequelize.ARRAY(Sequelize.TEXT),
-            defaultValue: ['Administrator']
+            defaultValue: ["Administrator"]
         },
         enableWelcome: {    // Toggle welcome message on/ off
             type: Sequelize.BOOLEAN,
@@ -36,7 +36,7 @@ module.exports = (Sequelize, database) => {
         },
         timezone: {         // Guild's timezone
             type: Sequelize.TEXT,
-            defaultValue: 'GMT'
+            defaultValue: "GMT"
         },
         announceChan: {     // Announcement channel
             type: Sequelize.TEXT
@@ -59,7 +59,7 @@ module.exports = (Sequelize, database) => {
         }
     });
 
-    database.define('eventDBs', {
+    database.define("eventDBs", {
         eventID: {
             type: Sequelize.TEXT,
             primaryKey: true
@@ -84,7 +84,7 @@ module.exports = (Sequelize, database) => {
             type: Sequelize.ARRAY(Sequelize.TEXT)
         }
     });
-    database.define('commands', {
+    database.define("commands", {
         id: {
             type: Sequelize.TEXT,
             primaryKey: true
@@ -93,12 +93,12 @@ module.exports = (Sequelize, database) => {
             type: Sequelize.TEXT
         } 
     });
-    database.define('changelogs', {
+    database.define("changelogs", {
         logText: {
             type: Sequelize.TEXT
         }
     });
-    database.define('shardtimes', {
+    database.define("shardtimes", {
         id: {
             type: Sequelize.TEXT,
             primaryKey: true
@@ -108,7 +108,7 @@ module.exports = (Sequelize, database) => {
             defaultValue: {}
         }
     });
-    database.define('polls', {
+    database.define("polls", {
         id: {
             type: Sequelize.TEXT,
             primaryKey: true
@@ -118,7 +118,7 @@ module.exports = (Sequelize, database) => {
             defaultValue: {}
         }
     });
-    database.define('allyCodes', {
+    database.define("allyCodes", {
         id: {
             type: Sequelize.TEXT,
             primaryKey: true

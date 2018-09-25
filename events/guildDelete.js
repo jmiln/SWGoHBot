@@ -6,7 +6,7 @@ module.exports = async (client, guild) => {
     //     .catch(error => { client.log('ERROR',`Broke in guildDelete(settings) ${error}`); });
     
     // Log that the bot left
-    client.log('GuildDelete', `I left ${guild.name}(${guild.id})`, 'Log', 'diff', '-');
+    client.log("GuildDelete", `I left ${guild.name}(${guild.id})`, "Log", "diff", "-");
 
     // Sets the status as the current server count and help command
     // const playingString =  `${client.config.prefix}help ~ ${client.guilds.size} servers`;

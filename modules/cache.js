@@ -12,9 +12,9 @@ module.exports = clientMongo => {
 
         try {
 
-            if ( !database ) { throw new Error('No database specified to put'); }
-            if ( !collection ) { throw new Error('No collection specified to put'); }
-            if ( !saveObject ) { throw new Error('No object provided to put'); }
+            if ( !database ) { throw new Error("No database specified to put"); }
+            if ( !collection ) { throw new Error("No collection specified to put"); }
+            if ( !saveObject ) { throw new Error("No object provided to put"); }
 
             const dbo = await mongo.db( database );
 
@@ -37,18 +37,18 @@ module.exports = clientMongo => {
 
     }
 
-    async function get( database, collection, matchCondition ) {
+    async function get( database, collection, matchCondition, projection ) {
 
         try {
 
-            if ( !database ) { throw new Error('No database specified to get'); }
-            if ( !collection ) { throw new Error('No collection specified to get'); }
+            if ( !database ) { throw new Error("No database specified to get"); }
+            if ( !collection ) { throw new Error("No collection specified to get"); }
 
             const dbo = await mongo.db( database );
 
-            //Try update or insert
             matchCondition = matchCondition || {};
-            return await dbo.collection(collection).find(matchCondition).toArray();
+            projection = projection || {};
+            return await dbo.collection(collection).find(matchCondition).project(projection).toArray();
 
         } catch (e) { 
             throw e; 

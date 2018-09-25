@@ -1,19 +1,19 @@
-const util = require('util');
-const Command = require('../base/Command');
+const util = require("util");
+const Command = require("../base/Command");
 
 class Showconf extends Command {
     constructor(client) {
         super(client, {
-            name: 'showconf',
-            aliases: ['showconfs', 'showconfig', 'showconfigs'],
-            category: 'Admin',
+            name: "showconf",
+            aliases: ["showconfs", "showconfig", "showconfigs"],
+            category: "Admin",
             permLevel: 3
         });
     }
 
     async run(client, message, args, level) {
         let guildID = message.guild.id;
-        let guildName = '';
+        let guildName = "";
         // If I or an adminHelper adds a guild ID here, pull up that instead
         if (args[0] && level >= 9) {
             let found = false;
@@ -50,10 +50,10 @@ class Showconf extends Command {
             for (var key in guildConf.dataValues) {
                 array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
             }
-            var configKeys = array.join('\n');
-            return message.channel.send(message.language.get('COMMAND_SHOWCONF_OUTPUT', configKeys, guildName));
+            var configKeys = array.join("\n");
+            return message.channel.send(message.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName));
         } else {
-            console.log('Something broke in showconf');
+            console.log("Something broke in showconf");
         }
     }
 }

@@ -1,19 +1,19 @@
-const Sequelize = require('sequelize');
-const { inspect } = require('util');
-const momentTZ = require('moment-timezone');
+const Sequelize = require("sequelize");
+const { inspect } = require("util");
+const momentTZ = require("moment-timezone");
 
-const config = require('./config.json');
+const config = require("./config.json");
 
 /* eslint no-unused-vars: 0 */
 const init = async function() {
     const sequelize = new Sequelize(config.database.data, config.database.user, config.database.pass, {
         host: config.database.host,
-        dialect: 'postgres',
+        dialect: "postgres",
         logging: false,
         operatorAliases: false
     });
 
-    const guildSettings = sequelize.define('settings', {
+    const guildSettings = sequelize.define("settings", {
         guildID: { type: Sequelize.TEXT, primaryKey: true },
         adminRole: Sequelize.ARRAY(Sequelize.TEXT),
         enableWelcome: Sequelize.BOOLEAN,
@@ -25,12 +25,12 @@ const init = async function() {
         language: Sequelize.TEXT
     });
 
-    const events = sequelize.define('events', {
+    const events = sequelize.define("events", {
         guildID: { type: Sequelize.TEXT, primaryKey: true },
         events: Sequelize.JSONB
     });
 
-    const guildEvents = sequelize.define('eventDB', {
+    const guildEvents = sequelize.define("eventDB", {
         eventID: { type: Sequelize.TEXT, primaryKey: true },
         eventDT: Sequelize.TEXT,
         eventMessage: Sequelize.TEXT,
@@ -50,7 +50,7 @@ const init = async function() {
     // console.log('HERE: ' + inspect(oldEvents));
 
     oldEvents.forEach(async guild => {
-        const settings = await guildSettings.findOne({where: {guildID: guild.guildID}, attributes: ['timezone', 'language']});
+        const settings = await guildSettings.findOne({where: {guildID: guild.guildID}, attributes: ["timezone", "language"]});
         const guildConf = settings.dataValues;
 
         const gEvents = guild.events;
@@ -58,14 +58,14 @@ const init = async function() {
             const thisEvent = gEvents[eventName];
             const newEvent = {
                 "eventID": `${guild.guildID}-${eventName}`,
-                "eventDT": momentTZ.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, 'YYYY-MM-DD HH:mm', guildConf.timezone).unix()*1000,
+                "eventDT": momentTZ.tz(`${thisEvent.eventDay} ${thisEvent.eventTime}`, "YYYY-MM-DD HH:mm", guildConf.timezone).unix()*1000,
                 "eventMessage": thisEvent.eventMessage,
                 "eventChan": thisEvent.eventChan,
                 "countdown": thisEvent.countdown,
                 "repeat": {
-                    "repeatDay": thisEvent.repeat['repeatDay'],
-                    "repeatHour": thisEvent.repeat['repeatHour'],
-                    "repeatMin": thisEvent.repeat['repeatMin']
+                    "repeatDay": thisEvent.repeat["repeatDay"],
+                    "repeatHour": thisEvent.repeat["repeatHour"],
+                    "repeatMin": thisEvent.repeat["repeatMin"]
                 },
                 "repeatDays": thisEvent.repeatDays
             };

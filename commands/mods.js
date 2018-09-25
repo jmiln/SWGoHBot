@@ -1,11 +1,11 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Mods extends Command {
     constructor(client) {
         super(client, {
-            name: 'mods',
-            aliases: ['m', 'mod'],
-            category: 'Star Wars'
+            name: "mods",
+            aliases: ["m", "mod"],
+            category: "Star Wars"
         });
     }
 
@@ -82,33 +82,33 @@ class Mods extends Command {
         };
 
         // Remove any junk from the name
-        const searchName = args.join(' ');
+        const searchName = args.join(" ");
 
         // Check if it should send as an embed or a code block
         const guildConf = message.guildSettings;
         let embeds = true;
         if (message.guild) {
-            if (guildConf['useEmbeds'] !== true || !message.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+            if (guildConf["useEmbeds"] !== true || !message.channel.permissionsFor(client.user).has("EMBED_LINKS")) {
                 embeds = false;
             }
         }
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.get('COMMAND_MODS_NEED_CHARACTER', message.guildSettings.prefix));
+            return message.channel.send(message.language.get("COMMAND_MODS_NEED_CHARACTER", message.guildSettings.prefix));
         }
 
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
         if (!chars || chars.length <= 0) {
-            return message.channel.send(message.language.get('COMMAND_MODS_INVALID_CHARACTER', message.guildSettings.prefix));
+            return message.channel.send(message.language.get("COMMAND_MODS_INVALID_CHARACTER", message.guildSettings.prefix));
         } else if (chars.length > 1) {
             const charL = [];
             const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
             charS.forEach(c => {
                 charL.push(c.name);
             });
-            return message.channel.send(message.language.get('BASE_SWGOH_CHAR_LIST', charL.join('\n')));
+            return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
 
 
@@ -121,12 +121,12 @@ class Mods extends Command {
                     const mods = getLocalizedModAdvice(characterMods[modSet]);
                     const modSetString = "* " + mods.sets.join("\n* ");
 
-                    let modPrimaryString = message.language.get('COMMAND_MODS_EMBED_STRING1', mods.square, mods.arrow, mods.diamond);
-                    modPrimaryString += message.language.get('COMMAND_MODS_EMBED_STRING2', mods.triangle, mods.circle, mods.cross);
+                    let modPrimaryString = message.language.get("COMMAND_MODS_EMBED_STRING1", mods.square, mods.arrow, mods.diamond);
+                    modPrimaryString += message.language.get("COMMAND_MODS_EMBED_STRING2", mods.triangle, mods.circle, mods.cross);
 
                     fields.push({
                         "name": modSet,
-                        "value": message.language.get('COMMAND_MODS_EMBED_OUTPUT', modSetString, modPrimaryString),
+                        "value": message.language.get("COMMAND_MODS_EMBED_OUTPUT", modSetString, modPrimaryString),
                         "inline": true
                     });
                 }
@@ -138,12 +138,12 @@ class Mods extends Command {
                         "icon_url": character.avatarURL
                     },
                     "footer": {
-                        "icon_url": 'https://cdn.discordapp.com/attachments/329514150105448459/361268366180352002/crouchingRancor.png',
+                        "icon_url": "https://cdn.discordapp.com/attachments/329514150105448459/361268366180352002/crouchingRancor.png",
                         "text": "Mods via apps.crouchingrancor.com"
                     }
                 };
                 if (!fields.length) { // If there are no sets there
-                    embed.description = message.language.get('COMMAND_NO_MODSETS');
+                    embed.description = message.language.get("COMMAND_NO_MODSETS");
                 } else {
                     embed.fields = fields;
                 }
@@ -156,10 +156,10 @@ class Mods extends Command {
                     const mods = getLocalizedModAdvice(characterMods[modSet]);
                     const modSetString = "* " + mods.sets.join("\n* ");
 
-                    let modPrimaryString = message.language.get('COMMAND_MODS_CODE_STRING1', mods.square, mods.arrow, mods.diamond);
-                    modPrimaryString += message.language.get('COMMAND_MODS_CODE_STRING2', mods.triangle, mods.circle, mods.cross);
+                    let modPrimaryString = message.language.get("COMMAND_MODS_CODE_STRING1", mods.square, mods.arrow, mods.diamond);
+                    modPrimaryString += message.language.get("COMMAND_MODS_CODE_STRING2", mods.triangle, mods.circle, mods.cross);
 
-                    return message.channel.send(message.language.get('COMMAND_MODS_CODE_OUTPUT', character.name, modSetString, modPrimaryString), { code: 'md', split: true });
+                    return message.channel.send(message.language.get("COMMAND_MODS_CODE_OUTPUT", character.name, modSetString, modPrimaryString), { code: "md", split: true });
                 }
             }
         });

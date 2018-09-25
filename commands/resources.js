@@ -1,12 +1,12 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Resources extends Command {
     constructor(client) {
         super(client, {
-            name: 'resources',
+            name: "resources",
             category: "Misc",
             aliases: ["res"],
-            permissions: ['EMBED_LINKS'],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
+            permissions: ["EMBED_LINKS"],    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
             permLevel: 0
         });
     }
@@ -16,11 +16,11 @@ class Resources extends Command {
         const resources = client.resources;
         let categories = Object.keys(resources);
         if (!cat.length) {
-            return message.channel.send(message.language.get('COMMAND_RESOURCES_INVALID_CATEGORY', categories.join(', ')));
+            return message.channel.send(message.language.get("COMMAND_RESOURCES_INVALID_CATEGORY", categories.join(", ")));
         }
-        cat = cat.join(' ');
+        cat = cat.join(" ");
         if (!categories.filter(c => c.toLowerCase() === cat.toLowerCase()).length) {
-            return message.channel.send(message.language.get('COMMAND_RESOURCES_INVALID_CATEGORY', categories.join(', ')));
+            return message.channel.send(message.language.get("COMMAND_RESOURCES_INVALID_CATEGORY", categories.join(", ")));
         } 
         categories = categories.filter(c => c.toLowerCase() === cat.toLowerCase());
         const category = categories[0];
@@ -30,13 +30,13 @@ class Resources extends Command {
             let fieldVal = `**__${res}__**\n`;
             if (Object.keys(r) && Object.keys(r).length) {
                 Object.keys(r).forEach(k => {
-                    if (typeof r[k] === 'string' && r[k].length > 0) {
-                        if (k === 'Desc') {
-                            fieldVal += r[k] + '\n';
+                    if (typeof r[k] === "string" && r[k].length > 0) {
+                        if (k === "Desc") {
+                            fieldVal += r[k] + "\n";
                         } else {
                             fieldVal += `**${k}:** ${r[k]}\n`;
                         }
-                    } else if (typeof r[k] === 'object' && Object.keys(r[k]).length > 0) {
+                    } else if (typeof r[k] === "object" && Object.keys(r[k]).length > 0) {
                         fieldVal += `**${k}**\n`;
                         Object.keys(r[k]).forEach(name => {
                             fieldVal += ` - ${name}: ${r[k][name]}\n`;
@@ -46,7 +46,7 @@ class Resources extends Command {
             }
             fieldArr.push(fieldVal);
         });
-        const msgArr = client.msgArray(fieldArr, '\n', 1000);
+        const msgArr = client.msgArray(fieldArr, "\n", 1000);
         msgArr.forEach((msg, ix) => {
             fields.push({
                 "name": msgArr.length > 1 ? category + ` (${ix+1}/${msgArr.length})` : category,
@@ -55,7 +55,7 @@ class Resources extends Command {
         });
         return message.channel.send({embed: {
             author: {
-                name: message.language.get('COMMAND_RESOURCES_HEADER')
+                name: message.language.get("COMMAND_RESOURCES_HEADER")
             },
             fields: fields
         }});

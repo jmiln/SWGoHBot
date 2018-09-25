@@ -1,18 +1,18 @@
-const Command = require('../base/Command');
+const Command = require("../base/Command");
 
 class Info extends Command {
     constructor(client) {
         super(client, {
-            aliases: ['invite', 'inv'],
-            name: 'info',
-            category: 'Misc',
-            permissions: ['EMBED_LINKS']
+            aliases: ["invite", "inv"],
+            name: "info",
+            category: "Misc",
+            permissions: ["EMBED_LINKS"]
         });
     }
 
     async run(client, message) {
         const guilds = await client.guildCount();
-        const content = message.language.get('COMMAND_INFO_OUTPUT', guilds, message.guildSettings.prefix);
+        const content = message.language.get("COMMAND_INFO_OUTPUT", guilds, message.guildSettings.prefix);
         const fields = [];
         Object.keys(content.links).forEach(link => {
             fields.push({
