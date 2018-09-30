@@ -113,17 +113,25 @@ class Guilds extends Command {
                     }
                 }
             }
+            const fields = [];
+            if (!options.flags.min) {
+                const msgArray = client.msgArray(users, "\n", 1000);
+                msgArray.forEach((m, ix) => {
+                    fields.push({
+                        name: message.language.get('COMMAND_GUILDS_ROSTER_HEADER', ix+1, msgArray.length),
+                        value: m
+                    });
+                });
+            }
+            fields.push({
+                name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
+                value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
+            });
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
-                description: options.flags.min ? "" : users.join("\n"),
-                fields: [
-                    {
-                        name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
-                        value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
-                    }
-                ]
+                fields: fields
             }});
         } else {
             // Show basic stats. info about the guild
