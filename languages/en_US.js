@@ -434,7 +434,7 @@ module.exports = class extends Language {
             COMMAND_GUILDS_DESC: "Guild Description",
             COMMAND_GUILDS_MSG: "Chat Announcement",
             COMMAND_GUILDS_REG_NEEDED: "I can't find a guild for that user. Please make sure the ally code is correct.",
-            COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ixa}/${len})`
+            COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ixa}/${len})`,
             COMMAND_GUILDS_RAID_STRINGS: {
                 header:    "Raids",
                 rancor:    "Rancor: ",
