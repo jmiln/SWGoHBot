@@ -118,7 +118,7 @@ class Guilds extends Command {
                 const msgArray = client.msgArray(users, "\n", 1000);
                 msgArray.forEach((m, ix) => {
                     fields.push({
-                        name: message.language.get('COMMAND_GUILDS_ROSTER_HEADER', ix+1, msgArray.length),
+                        name: message.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArray.length),
                         value: m
                     });
                 });
