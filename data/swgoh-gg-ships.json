@@ -331,7 +331,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Cargo Ship",
             "Scoundrel"
         ],
@@ -341,6 +341,29 @@
             "Taunt"
         ],
         "role": "Tank",
+        "capital_ship": false
+    },
+    {
+        "name": "IG-2000",
+        "base_id": "IG2000",
+        "url": "http://swgoh.gg/ships/ig-2000/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ig2000.png",
+        "power": 56314,
+        "description": "Aggressive Bounty Hunter Attacker that deals massive damage to Breached enemies",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Bounty Hunters",
+            "Droid",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Bonus Attack",
+            "Offense Up",
+            "Stun"
+        ],
+        "role": "Attacker",
         "capital_ship": false
     },
     {
@@ -603,7 +626,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Cargo Ship",
             "Scoundrel"
         ],
@@ -762,7 +785,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [

@@ -652,16 +652,55 @@
         "name": "Hound's Tooth",
         "uniqueName": "HOUNDSTOOTH",
         "aliases": [
-            "Hound's Tooth"
+            "Hound's Tooth",
+            "Hounds",
+            "Hound"
         ],
         "nameVariant": [
             "Hound's Tooth"
         ],
-        "crew": [],
+        "crew": [
+            "Bossk"
+        ],
         "url": "http://swgoh.gg/ships/hounds-tooth/",
-        "avatarURL": "",
-        "side": "",
-        "factions": [],
+        "avatarURL": "http://swgoh.gg/static/img/assets/tex.charui_houndstooth.png",
+        "side": "dark",
+        "factions": [
+            "Tank",
+            "Bounty Hunters",
+            "Scoundrel",
+            "Cargo Ship"
+        ],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        }
+    },
+    {
+        "name": "IG-2000",
+        "uniqueName": "IG2000",
+        "aliases": [
+            "IG-2000",
+            "IG2000"
+        ],
+        "nameVariant": [
+            "IG-2000"
+        ],
+        "crew": [
+            "IG-88"
+        ],
+        "url": "http://swgoh.gg/ships/ig-2000/",
+        "avatarURL": "http://swgoh.gg/static/img/assets/tex.charui_ig2000.png",
+        "side": "dark",
+        "factions": [
+            "Bounty Hunters",
+            "Droid",
+            "Scoundrel",
+            "Attacker"
+        ],
         "abilities": {},
         "shardLocations": {
             "dark": [],
@@ -1385,11 +1424,17 @@
         "nameVariant": [
             "Xanadu Blood"
         ],
-        "crew": [],
+        "crew": [
+            "Cad Bane"
+        ],
         "url": "http://swgoh.gg/ships/xanadu-blood/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_xanadublood.png",
-        "side": "",
-        "factions": [],
+        "side": "dark",
+        "factions": [
+            "Bounty Hunters",
+            "Scoundrel",
+            "Support"
+        ],
         "abilities": {},
         "shardLocations": {
             "dark": [],

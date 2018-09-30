@@ -5521,7 +5521,22 @@
             "Scoundrel",
             "Smuggler"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [
@@ -17963,7 +17978,22 @@
             "Bounty Hunter",
             "Scoundrel"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [

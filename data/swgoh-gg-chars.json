@@ -1091,7 +1091,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -2359,7 +2359,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -2685,7 +2685,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -2846,7 +2846,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -3504,8 +3504,8 @@
         "base_id": "CHEWBACCALEGENDARY",
         "pk": 300,
         "url": "http://swgoh.gg/characters/chewbacca/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
-        "power": null,
+        "image": "//swgoh.gg/static/img/assets/tex.charui_chewbacca_ot.png",
+        "power": 24148,
         "description": "Mighty Rebel Attacker who Guards the weakest ally",
         "combat_type": 1,
         "gear_levels": [
@@ -7121,7 +7121,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -7601,7 +7601,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -11244,7 +11244,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -12660,7 +12660,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Droid",
             "Scoundrel"
         ],
@@ -13290,7 +13290,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -17559,7 +17559,7 @@
         "pk": 243,
         "url": "http://swgoh.gg/characters/nightsister-zombie/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_nightsisters_zombie.png",
-        "power": 18187,
+        "power": 18972,
         "description": "Vile Nightsister Tank who inflicts Tenacity Down and can't be stopped from reviving endlessly",
         "combat_type": 1,
         "gear_levels": [
@@ -17703,7 +17703,6 @@
         "ability_classes": [
             "Counter",
             "Dispel",
-            "Gain Turn Meter",
             "Revive",
             "Taunt",
             "Tenacity Down"
@@ -25546,7 +25545,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [

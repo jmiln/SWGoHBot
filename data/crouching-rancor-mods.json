@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2018-09-24 20:00:01.000000",
+        "date": "2018-09-29 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -227,7 +227,7 @@
             "cross": "Potency",
             "short": "cb",
             "families": "scoundrel ; bounty hunter",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Captain Phasma",
@@ -866,7 +866,7 @@
             "circle": "Protection",
             "cross": "Offense",
             "short": "hs",
-            "families": "scoundrel ; rebel",
+            "families": "scoundrel ; rebel ; smuggler",
             "crew": "0"
         },
         {
@@ -2306,7 +2306,7 @@
             "circle": "Protection",
             "cross": "Potency / Offense",
             "short": "vshs",
-            "families": "scoundrel",
+            "families": "scoundrel ; smuggler",
             "crew": "0"
         },
         {
@@ -2322,7 +2322,7 @@
             "circle": "Protection",
             "cross": "Offense / Potency",
             "short": "vsc",
-            "families": "scoundrel",
+            "families": "scoundrel ; smuggler",
             "crew": "0"
         },
         {
@@ -3077,7 +3077,7 @@
             "circle": "Health",
             "cross": "Health / Offense",
             "short": "vc",
-            "families": "scoundrel",
+            "families": "scoundrel ; smuggler",
             "crew": "0"
         },
         {
@@ -3093,7 +3093,7 @@
             "circle": "Protection",
             "cross": "Offense",
             "short": "yhs",
-            "families": "scoundrel",
+            "families": "scoundrel ; smuggler",
             "crew": "0"
         },
         {
@@ -3109,7 +3109,7 @@
             "circle": "Protection",
             "cross": "Offense",
             "short": "",
-            "families": "scoundrel",
+            "families": "scoundrel ; smuggler",
             "crew": "0"
         },
         {
@@ -3125,7 +3125,7 @@
             "circle": "Protection",
             "cross": "Offense",
             "short": "en",
-            "families": "scoundrel",
+            "families": "scoundrel ; smuggler",
             "crew": "0"
         },
         {
@@ -3141,8 +3141,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "short": "",
-            "families": "scoundrel",
-            "crew": "0"
+            "families": "scoundrel ; smuggler ; droid",
+            "crew": "1"
         },
         {
             "name": "Young Lando Calrissian",
@@ -3157,8 +3157,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "short": "ylc",
-            "families": "scoundrel",
-            "crew": "0"
+            "families": "scoundrel ; smuggler",
+            "crew": "1"
         },
         {
             "name": "Range Trooper",
@@ -3302,6 +3302,38 @@
             "cross": "Offense",
             "short": "BS",
             "families": "scoundrel ; bounty hunter",
+            "crew": "0"
+        },
+        {
+            "name": "Jango Fett",
+            "cname": "Jango Fett",
+            "set1": "Offense",
+            "set2": "POT",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense / Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "JF",
+            "families": "scoundrel ; bounty hunter",
+            "crew": "0"
+        },
+        {
+            "name": "Chewbacca",
+            "cname": "Chewbacca",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "Chewie",
+            "families": "scoundrel ; smuggler ; rebel",
             "crew": "0"
         }
     ]
