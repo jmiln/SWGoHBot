@@ -20,6 +20,12 @@ class Guilds extends Command {
                 "reg": {
                     aliases: []
                 }
+            },
+            subArgs: {
+                sort: {
+                    aliases: [],
+                    default: "gp"
+                }
             }
         });
     }
@@ -72,7 +78,12 @@ class Guilds extends Command {
             if (!guild.roster.length) {
                 return msg.edit(message.language.get("COMMAND_GUILDS_NO_GUILD"));
             }
-            const sortedGuild = options.flags.a ? guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1) : guild.roster.sort((p, c) => c.gp - p.gp);
+            let sortedGuild;
+            if (options.flags.a || options.subArgs.sort.toLowerCase() === "name") {
+                sortedGuild = guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
+            } else {
+                sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
+            }
 
             const users = [];
             for (const p of sortedGuild) {
