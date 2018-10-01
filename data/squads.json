@@ -1024,6 +1024,18 @@
                         ]
                     },
                     {
+                        "name": "QI'RA YOLO",
+                        "note": "Full HAAT solo",
+                        "url": "https://youtu.be/8JK0823K1G8",
+                        "team": [
+                            "QIRA",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "BB8",
+                            "GRANDADMIRALTHRAWN",
+                            "YOUNGHAN"
+                        ]
+                    },
+                    {
                         "name": "YOLO SOLO",
                         "note": "Full HAAT solo",
                         "url": "https://youtu.be/GVoikNZWUx4",
@@ -2154,15 +2166,15 @@
     },
     "twdefense": {
         "name": "TERRITORY WARS DEFENSE",
-        "rarity": 7,
-        "gear": 11,
+        "rarity": 6,
+        "gear": 10,
         "level": 85,
         "phase": [
             {
                 "name": "FIRST ORDER",
                 "squads": [
                     {
-                        "name": "",
+                        "name": "FO ONE",
                         "note": "",
                         "url": "",
                         "team": [
@@ -2170,7 +2182,18 @@
                             "FIRSTORDERTROOPER",
                             "FIRSTORDEREXECUTIONER",
                             "FIRSTORDEROFFICERMALE",
-                            "FIRSTORDERSPECIALFORCESPILOT",
+                            "KYLOREN:specialskill_KYLOREN02"
+                        ]
+                    },
+                    {
+                        "name": "FO TWO",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
+                            "FIRSTORDERTIEPILOT",
+                            "FIRSTORDEREXECUTIONER",
+                            "FIRSTORDEROFFICERMALE",
                             "KYLOREN:specialskill_KYLOREN02"
                         ]
                     }
@@ -2253,50 +2276,51 @@
                 "name": "DARK SIDE",
                 "squads": [
                     {
-                        "name": "TEAM ONE",
+                        "name": "TRAYA LEAD ONE",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "DARTHTRAYA:leaderskill_DARTHTRAYA:uniqueskill_DARTHTRAYA01",
+                            "DARTHSION:uniqueskill_DARTHSION01",
+                            "DARTHNIHILUS",
+                            "ENFYSNEST",
+                            "SITHTROOPER"
+                        ]
+                    },
+                    {
+                        "name": "TRAYA LEAD TWO",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "DARTHTRAYA:leaderskill_DARTHTRAYA:uniqueskill_DARTHTRAYA01",
+                            "DARTHSION:uniqueskill_DARTHSION01",
+                            "DARTHNIHILUS",
+                            "COUNTDOOKU",
+                            "SITHTROOPER"
+                        ]
+                    },
+                    {
+                        "name": "TRAYA LEAD THREE",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "DARTHTRAYA:leaderskill_DARTHTRAYA:uniqueskill_DARTHTRAYA01",
+                            "DARTHSION:uniqueskill_DARTHSION01",
+                            "DARTHNIHILUS",
+                            "GRANDADMIRALTHRAWN",
+                            "SITHTROOPER"
+                        ]
+                    },
+                    {
+                        "name": "EP LEAD",
                         "note": "",
                         "url": "",
                         "team": [
                             "EMPERORPALPATINE:leaderskill_EMPERORPALPATINE:uniqueskill_EMPERORPALPATINE01",
-                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
-                            "HERMITYODA:specialskill_HERMITYODA02",
-                            "EZRABRIDGERS3",
-                            "OLDBENKENOBI"
-                        ]
-                    },
-                    {
-                        "name": "TEAM TWO",
-                        "note": "",
-                        "url": "",
-                        "team": [
-                            "QUIGONJINN:leaderskill_QUIGONJINN",
-                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
-                            "HERMITYODA:specialskill_HERMITYODA02",
-                            "EZRABRIDGERS3",
-                            "OLDBENKENOBI"
-                        ]
-                    },
-                    {
-                        "name": "",
-                        "note": "",
-                        "url": "",
-                        "team": [
-                            "VADER",
-                            "DEATHTROOPER",
-                            "DIRECTORKRENNIC",
-                            "EMPERORPALPATINE",
-                            "GARSAXON",
-                            "VEERS",
-                            "GRANDADMIRALTHRAWN",
-                            "GRANDMOFFTARKIN",
-                            "IMPERIALPROBEDROID",
-                            "IMPERIALSUPERCOMMANDO",
-                            "MAGMATROOPER",
-                            "ROYALGUARD",
-                            "SHORETROOPER",
-                            "SNOWTROOPER",
-                            "STORMTROOPER",
-                            "TIEFIGHTERPILOT"
+                            "DARTHTRAYA:uniqueskill_DARTHTRAYA01",
+                            "DARTHSION:uniqueskill_DARTHSION01",
+                            "DARTHNIHILUS",
+                            "VADER"
                         ]
                     }
                 ]
@@ -3376,7 +3400,8 @@
                             "BB8:uniqueskill_BB801:uniqueskill_BB802",
                             "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER01:uniqueskill_COMMANDERLUKESKYWALKER02",
                             "REYJEDITRAINING:leaderskill_REYJEDITRAINING:uniqueskill_REYJEDITRAINING01:uniqueskill_REYJEDITRAINING02",
-                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03"
+                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
+                            "CHEWBACCALEGENDARY:uniqueskill_CHEWBACCALEGENDARY01:uniqueskill_CHEWBACCALEGENDARY02"
                         ]
                     }
                 ]
@@ -3440,7 +3465,10 @@
                             "CADBANE",
                             "DENGAR:uniqueskill_DENGAR01",
                             "IG88:uniqueskill_IG8801",
-                            "ZAMWESELL"
+                            "ZAMWESELL",
+                            "JANGOFETT",
+                            "AURRA_SING",
+                            "EMBO"
                         ]
                     },
                     {
@@ -3578,10 +3606,11 @@
                             "GRANDADMIRALTHRAWN:leaderskill_GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
                             "EMPERORPALPATINE:leaderskill_EMPERORPALPATINE:uniqueskill_EMPERORPALPATINE01",
                             "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
-                            "BB8:uniqueskill_BB801",
-                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
-                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
-                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA"
+                            "BB8:uniqueskill_BB801:uniqueskill_BB802",
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER01:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING:uniqueskill_REYJEDITRAINING01:uniqueskill_REYJEDITRAINING02",
+                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
+                            "CHEWBACCALEGENDARY:uniqueskill_CHEWBACCALEGENDARY01:uniqueskill_CHEWBACCALEGENDARY02"
                         ]
                     }
                 ]
@@ -3645,7 +3674,10 @@
                             "CADBANE",
                             "DENGAR",
                             "IG88",
-                            "ZAMWESELL"
+                            "ZAMWESELL",
+                            "JANGOFETT",
+                            "AURRA_SING",
+                            "EMBO"
                         ]
                     },
                     {
@@ -3683,7 +3715,8 @@
                         "team": [
                             "AMILYNHOLDO",
                             "MAUL",
-                            "ENFYSNEST"
+                            "ENFYSNEST",
+                            "LOGRAY"
                         ]
                     },
                     {
