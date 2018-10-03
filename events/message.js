@@ -29,7 +29,7 @@ module.exports = async (client, message) => {
     message.language = client.languages[guildSettings.language];
 
     // If the message is just mentioning the bot, tell them what the prefix is
-    if (message.content === client.user.toString() || (message.guild && message.content === message.guild.me.toString())) {
+    if (message.content === client.user.toString() || (message.guild && typeof message.guild.me !== "undefined" && message.content === message.guild.me.toString())) {
         return message.channel.send(`The prefix is \`${message.guildSettings.prefix}\`.`);
     }
 

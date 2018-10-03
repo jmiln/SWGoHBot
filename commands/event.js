@@ -318,7 +318,7 @@ class Event extends Command {
                         
                         let eventString = message.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
                         eventString += message.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
-                        if (event.eventChan !== "") {
+                        if (event.eventChan && event.eventChan !== "") {
                             eventString += message.language.get("COMMAND_EVENT_CHAN", event.eventChan);
                         }
                         if (event["repeatDays"].length > 0) {

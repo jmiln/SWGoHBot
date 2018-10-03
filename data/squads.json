@@ -2166,8 +2166,8 @@
     },
     "twdefense": {
         "name": "TERRITORY WARS DEFENSE",
-        "rarity": 6,
-        "gear": 10,
+        "rarity": 7,
+        "gear": 8,
         "level": 85,
         "phase": [
             {
@@ -2202,6 +2202,18 @@
             {
                 "name": "COMMANDER LUKE SKYWALKER LEAD",
                 "squads": [
+                    {
+                        "name": "",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "CHEWBACCALEGENDARY",
+                            "OLDBENKENOBI",
+                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
+                            "HANSOLO"
+                        ]
+                    },
                     {
                         "name": "",
                         "note": "",

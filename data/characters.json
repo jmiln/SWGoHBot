@@ -17981,7 +17981,7 @@
         "mods": {
             "General": {
                 "sets": [
-                    "",
+                    "Speed x4",
                     "Potency x2",
                     ""
                 ],
@@ -30720,6 +30720,20 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
+                "source": "Crouching Rancor"
+            },
+            "with HK-47 - alternate": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Critical Damage",
+                "circle": "Protection",
+                "cross": "Offense",
                 "source": "Crouching Rancor"
             }
         },

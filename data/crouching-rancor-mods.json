@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2018-09-29 20:00:01.000000",
+        "date": "2018-10-02 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -3220,7 +3220,7 @@
             "triangle": "Critical Damage",
             "circle": "Protection",
             "cross": "Offense / Protection",
-            "short": "BS",
+            "short": "",
             "families": "droid ; old republic",
             "crew": "0"
         },
@@ -3236,7 +3236,7 @@
             "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection",
-            "short": "BS",
+            "short": "",
             "families": "droid ; old republic",
             "crew": "0"
         },
@@ -3307,7 +3307,7 @@
         {
             "name": "Jango Fett",
             "cname": "Jango Fett",
-            "set1": "Offense",
+            "set1": "SPE",
             "set2": "POT",
             "set3": "",
             "square": "Offense",
@@ -3334,6 +3334,22 @@
             "cross": "Offense",
             "short": "Chewie",
             "families": "scoundrel ; smuggler ; rebel",
+            "crew": "0"
+        },
+        {
+            "name": "T3-M4 with HK-47 - alternate",
+            "cname": "T3-M4",
+            "set1": "OFF",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Critical Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "",
+            "families": "droid ; old republic",
             "crew": "0"
         }
     ]
