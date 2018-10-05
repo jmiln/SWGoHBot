@@ -5,7 +5,7 @@ module.exports = (client) => {
 
     const playerCooldown = 2;
     const guildCooldown  = 6;
-    const eventCooldown  = 12;
+    const eventCooldown  = 4;
     const zetaCooldown   = 7 * 24; // 7 days
 
     return {
@@ -40,22 +40,31 @@ module.exports = (client) => {
             /** Check if existance and expiration */
             if ( !player || !player[0] || isExpired(player[0].updated, cooldown) ) {
                 /** If not found or expired, fetch new from API and save to cache */
-                player = await swgoh.fetchPlayer({
-                    allycode: allycode,
-                    language: lang,
-                    enums: true
-                });
-
-                if (player[0]) {
-                    player = player[0];
+                let tempPlayer;
+                try {
+                    tempPlayer= await swgoh.fetchPlayer({
+                        allycode: allycode,
+                        language: lang,
+                        enums: true
+                    });
+                } catch (err) {
+                    // Probably API timeout
                 }
 
-                if (!player || !player.roster || !player.name) {
-                    throw new Error("Broke getting player: " + inspect(player));
+                if (tempPlayer[0]) {
+                    tempPlayer = tempPlayer[0];
                 }
 
-                if (player._id) delete player._id;
-                player = await cache.put("swapi", "players", {allyCode:allycode}, player);
+                if (!tempPlayer || !tempPlayer.roster || !tempPlayer.name) {
+                    if (!player || !player[0]) {
+                        throw new Error("Broke getting player: " + inspect(tempPlayer));
+                    } else {
+                        return player[0];
+                    }
+                }
+
+                if (tempPlayer._id) delete tempPlayer._id;
+                player = await cache.put("swapi", "players", {allyCode:allycode}, tempPlayer);
             } else {
                 /** If found and valid, serve from cache */
                 player = player[0];
@@ -163,21 +172,30 @@ module.exports = (client) => {
             /** Check if existance and expiration */
             if ( !guild || !guild[0] || isExpired(guild[0].updated, guildCooldown) ) {
                 /** If not found or expired, fetch new from API and save to cache */
-                guild = await swgoh.fetchGuild({
-                    allycode: allycode,
-                    language: lang,
-                    enums: true
-                });
-
-                if (!guild || !guild.roster || !guild.name) {
-                    throw new Error("Broke getting guild: " + inspect(guild));
+                let tempGuild;
+                try {
+                    tempGuild = await swgoh.fetchGuild({
+                        allycode: allycode,
+                        language: lang,
+                        enums: true
+                    });
+                } catch (err) {
+                    // Probably API timeout
                 }
 
-                if (guild._id) delete guild._id;  // Delete this since it's always whining about it being different
-                guild = await cache.put("swapi", "guilds", {name:guild.name}, guild);
+                if (!tempGuild || !tempGuild.roster || !tempGuild.name) {
+                    if (guild[0] && guild[0].roster) {
+                        return guild[0];
+                    } else {
+                        throw new Error("Broke getting tempGuild: " + inspect(tempGuild));
+                    }
+                }
+
+                if (tempGuild._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
+                guild = await cache.put("swapi", "guilds", {name: tempGuild.name}, tempGuild);
 
                 if (update) {
-                    for ( const p of guild.roster ) {
+                    for ( const p of tempGuild.roster ) {
                         await this.player(p.allyCode.toString());
                     }
                 }
@@ -222,19 +240,28 @@ module.exports = (client) => {
             /** Check if existance and expiration */
             if ( !guildGG || !guildGG[0] || isExpired(guildGG[0].updated, guildCooldown) ) {
                 /** If not found or expired, fetch new from API and save to cache */
-                guildGG = await swgoh.fetchGuild({
-                    allycode: allycode,
-                    language: lang,
-                    enums: true,
-                    units: true
-                });
-
-                if (!guildGG || !guildGG.roster || !guildGG.name) {
-                    throw new Error("Broke getting guildGG: " + inspect(guildGG));
+                let tempGuildGG;
+                try {
+                    tempGuildGG = await swgoh.fetchGuild({
+                        allycode: allycode,
+                        language: lang,
+                        enums: true,
+                        units: true
+                    });
+                } catch (err) {
+                    // Probably json error
                 }
 
-                if (guildGG._id) delete guildGG._id;  // Delete this since it's always whining about it being different
-                guildGG = await cache.put("swapi", "guildGG", {name:guildGG.name}, guildGG);
+                if (!tempGuildGG || !tempGuildGG.roster || !tempGuildGG.name) {
+                    if (!guildGG && !guildGG[0]) {
+                        throw new Error("Broke getting tempGuildGG: " + inspect(tempGuildGG));
+                    } else {
+                        return guildGG[0];
+                    }
+                }
+
+                if (tempGuildGG._id) delete tempGuildGG._id;  // Delete this since it's always whining about it being different
+                guildGG = await cache.put("swapi", "guildGG", {name:tempGuildGG.name}, tempGuildGG);
             } else {
                 /** If found and valid, serve from cache */
                 guildGG = guildGG[0];
@@ -322,7 +349,7 @@ module.exports = (client) => {
             });
         } catch (e) {
             throw e;
-        }	
+        }    
     }
 
     async function whois( ids ) {
@@ -342,7 +369,7 @@ module.exports = (client) => {
 
         } catch (e) {
             throw e;
-        }	
+        }    
     }
 
     function isExpired( updated, cooldown ) {

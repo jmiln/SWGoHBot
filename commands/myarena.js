@@ -30,6 +30,10 @@ class MyArena extends Command {
         } catch (e) {
             console.log("Broke getting player in myarena: " + e);
         }
+
+        if (!player.arena) {
+            return message.channel.send("Something broke when getting your info, please try again in a bit.");
+        }
          
         const fields = [];
         const positions = [ "L|", "2|", "3|", "4|", "5|" ];
