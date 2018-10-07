@@ -347,6 +347,7 @@ module.exports = (client) => {
             client.ships = await JSON.parse(fs.readFileSync("data/ships.json"));
             client.squads = await JSON.parse(fs.readFileSync("data/squads.json"));
             client.resources = await JSON.parse(fs.readFileSync("data/resources.json"));
+            client.arenaJumps = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
         } catch (e) {
             err = e;
         }
