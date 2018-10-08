@@ -180,23 +180,26 @@ module.exports = (client) => {
     client.announceMsg = async (guild, announceMsg, channel="") => {
         const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ["announceChan"]});
         const guildConf = guildSettings.dataValues;
-        let guildChannel;
 
         let announceChan = guildConf.announceChan;
         if (channel !== "") {
             announceChan = channel;
         }
+        // Try and get it by ID first
+        let chan = guild.channels.get(announceChan.replace(/[^0-9]/g, ""));
 
-        if (guild.channels.exists("name", announceChan)) {
-            guildChannel = await guild.channels.find("name", announceChan);
-            if (guildChannel.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                await guildChannel.send(announceMsg).catch(console.error);
-            } else {
-                return;
-            }
-        } else {
+        // If  that didn't work, try and get it by name
+        if (!chan) {
+            chan = guild.channels.find("name", announceChan);
+        }
+
+        // If that still didn't work, or if it doesn't have the base required perms, return
+        if (!chan || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
             return;
         }
+
+        // If everything is ok, go ahead and try sending the message
+        await chan.send(announceMsg).catch(console.error);
     };
 
     /*
