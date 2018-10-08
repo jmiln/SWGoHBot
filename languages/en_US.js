@@ -389,6 +389,9 @@ module.exports = class extends Language {
             // Event Command (Trigger)
             COMMAND_EVENT_TRIGGER_NEED_NAME: "You must give an event name to trigger.",
 
+            // Event Command (Other)
+            COMMAND_EVENT_TOO_MANY_EVENTS: "Sorry, but you can only have up to 50 events",
+
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
                 description: "Used to make, check, or delete an event.",
@@ -404,6 +407,14 @@ module.exports = class extends Language {
                             ].join("\n"),
                             "--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
                             "--countdown": "Adds a countdown to when your event will trigger."
+                        }
+                    },
+                    {
+                        action: "Create (JSON)",
+                        actionDesc: "Create a new event listing",
+                        usage: ";event create --json <codeBlock w/ json>",
+                        args: {
+                            "--json <codeBlock>": "Example: ```{\n    name: '',\n    time: '',\n    day:  '',\n    message: '',\n    repeatDay: [0, 0, 0],\n    repeat: '0d0h0m',\n    countdown: false,\n    channel: ''\n}```"
                         }
                     },
                     {

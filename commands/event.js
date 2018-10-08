@@ -86,6 +86,13 @@ class Event extends Command {
         }
         switch (action) {
             case "create": {
+                const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { $like: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
+                const evCount = guildEvents.length;
+                // If they have too many events, stop here
+                if (evCount >= 50) {
+                    // 50 should be fine, as at the time of making this, the most anyone has is 31
+                    return message.channel.send(message.language.get("COMMAND_EVENT_TOO_MANY_EVENTS"));
+                }
                 if (!options.flags.json) {
                     let repeatTime = options.subArgs["repeat"];
                     const repeatDays = options.subArgs["repeatDay"];
@@ -295,7 +302,6 @@ class Event extends Command {
                         // };
 
                         // TODO Maybe add in a special help for -json  ";ev -json -help" since it'll need more of a description
-                        // TODO Localize it all
                         const outArr = [];
                         const nameArr = [];
                         let evErr = false;
