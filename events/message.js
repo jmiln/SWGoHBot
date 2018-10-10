@@ -72,14 +72,16 @@ module.exports = async (client, message) => {
             }
             // Merge the permission arrays to make sure it has at least the minimum
             const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
-            const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
+            if (!message.channel.permissionsFor(client.user.id).has(perms)) {
+                const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
 
-            if (missingPerms.length > 0) {
-                // If it can't send messages, don't bother trying
-                if (missingPerms.includes("SEND_MESSAGES")) return;
-                // Make it more readable
-                missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace("_", " ").toProperCase();});
-                return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(", ")}\``);
+                if (missingPerms.length > 0) {
+                    // If it can't send messages, don't bother trying
+                    if (missingPerms.includes("SEND_MESSAGES")) return;
+                    // Make it more readable
+                    missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace("_", " ").toProperCase();});
+                    return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(", ")}\``);
+                }
             }
         }
 
