@@ -196,10 +196,10 @@ module.exports = (client) => {
         // If that still didn't work, or if it doesn't have the base required perms, return
         if (!chan || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
             return;
+        } else {
+            // If everything is ok, go ahead and try sending the message
+            await chan.send(announceMsg).catch(console.error);
         }
-
-        // If everything is ok, go ahead and try sending the message
-        await chan.send(announceMsg).catch(console.error);
     };
 
     /*

@@ -49,10 +49,12 @@ module.exports = (client) => {
                     });
                 } catch (err) {
                     // Probably API timeout
+                    tempPlayer = null;
                 }
 
-                if (tempPlayer[0]) {
+                if (tempPlayer && tempPlayer[0]) {
                     tempPlayer = tempPlayer[0];
+                    if (tempPlayer._id) delete tempPlayer._id;
                 }
 
                 if (!tempPlayer || !tempPlayer.roster || !tempPlayer.name) {
@@ -63,7 +65,6 @@ module.exports = (client) => {
                     }
                 }
 
-                if (tempPlayer._id) delete tempPlayer._id;
                 player = await cache.put("swapi", "players", {allyCode:allycode}, tempPlayer);
             } else {
                 /** If found and valid, serve from cache */

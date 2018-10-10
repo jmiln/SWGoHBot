@@ -159,7 +159,6 @@ class Event extends Command {
                             if (eventChan.startsWith("#")) {
                                 eventChan = eventChan.replace(/^#/, "");
                             }
-                            console.log(eventChan);
                             checkChan = message.guild.channels.find("name", eventChan);
                         }
                         if (!checkChan) {   // Make sure it"s a real channel
@@ -251,7 +250,7 @@ class Event extends Command {
                         eventID: `${message.guild.id}-${eventName}`,
                         eventDT: eventDT,
                         eventMessage: eventMessage,
-                        eventChan: eventChan.toString(),
+                        eventChan: eventChan ? eventChan.toString() : "",
                         countdown: countdownOn,
                         repeat: {
                             "repeatDay": repeatDay,
