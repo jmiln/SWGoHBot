@@ -1605,7 +1605,7 @@
                 "name": "PHASE 3 - DARTH TRAYA &amp; 3 LIGHTSABERS",
                 "squads": [
                     {
-                        "name": "[α] CHEX MIX PAO",
+                        "name": "[α] CHEX MIX",
                         "main": true,
                         "note": "4%-6% [1,440,000-2,160,000]",
                         "url": "https://youtu.be/lzq1TwKyAH4",
@@ -1618,9 +1618,35 @@
                         ]
                     },
                     {
+                        "name": "[α] CHEX MIX 2.0",
+                        "main": true,
+                        "note": "4%-8% [1,440,000-3,160,000]",
+                        "url": "",
+                        "team": [
+                            "COMMANDERLUKESKYWALKER",
+                            "HANSOLO:uniqueskill_HANSOLO01",
+                            "DEATHTROOPER",
+                            "PAO",
+                            "CHEWBACCALEGENDARY"
+                        ]
+                    },
+                    {
+                        "name": "[α] BOUNTY AND THE BEAST",
+                        "main": true,
+                        "note": "6%-12% [2,880,000-4,320,000]",
+                        "url": "https://youtu.be/3v9lcHKNOG8",
+                        "team": [
+                            "BOBAFETT",
+                            "GREEDO",
+                            "DEATHTROOPER",
+                            "SABINEWRENS3",
+                            "CHIRRUTIMWE"
+                        ]
+                    },
+                    {
                         "name": "[α] FLAMING HOT GREEDO MIX",
                         "main": true,
-                        "note": "8%-12% [2,880,000-4,320,000]",
+                        "note": "6%-12% [2,880,000-4,320,000]",
                         "url": "https://youtu.be/eveb8nYD2qk",
                         "team": [
                             "BOBAFETT",
@@ -1633,8 +1659,8 @@
                     {
                         "name": "[α] NIGHTSISTERS",
                         "main": true,
-                        "note": "4%-8% [6,440,000-15,880,000]",
-                        "url": "https://youtu.be/j2YVGV38hiU",
+                        "note": "8%-30% [3,440,000-11,880,000]",
+                        "url": "https://youtu.be/5m18b0yOcyA",
                         "team": [
                             "MOTHERTALZIN:leaderskill_MOTHERTALZIN",
                             "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
@@ -1646,7 +1672,7 @@
                     {
                         "name": "[α] AURRA HUNTERS",
                         "main": true,
-                        "note": "4%-8% [2,880,000-6,320,000]",
+                        "note": "6%-16% [2,880,000-6,320,000]",
                         "url": "https://youtu.be/e23uAhlvOQk",
                         "team": [
                             "AURRA_SING:leaderskill_AURRA_SING",
@@ -1946,15 +1972,38 @@
         "level": 80,
         "phase": [
             {
-                "name": "CHEWBACCA LEGENDARY",
+                "name": "AN ANCIENT JOURNEY OF REDEMPTION",
+                "anchor": "revan",
                 "squads": [
                     {
                         "name": "",
-                        "note": "Upcoming Event",
+                        "note": "Event starts Oct 18th.",
                         "url": "",
+                        "gear": "10",
+                        "level": "85",
+                        "team": [
+                            "BASTILASHAN:leaderskill_BASTILASHAN",
+                            "JOLEEBINDO",
+                            "T3_M4",
+                            "MISSIONVAO",
+                            "ZAALBAR"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "ONE FAMOUS WOOKIEE",
+                "anchor": "chewbacca",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "zBossk and Dengar make this event easier.",
+                        "url": "",
+                        "gear": "11",
+                        "level": "85",
                         "team": [
                             "BOBAFETT",
-                            "BOSSK",
+                            "BOSSK:leaderskill_BOSSK",
                             "CADBANE",
                             "IG88",
                             "ZAMWESELL",
@@ -1969,6 +2018,7 @@
             },
             {
                 "name": "REY'S HERO'S JOURNEY",
+                "anchor": "jtr",
                 "squads": [
                     {
                         "name": "",
@@ -1986,6 +2036,7 @@
             },
             {
                 "name": "LUKE SKYWALKER HERO'S JOURNEY",
+                "anchor": "cls",
                 "squads": [
                     {
                         "name": "",
@@ -2003,6 +2054,7 @@
             },
             {
                 "name": "DARING DROID",
+                "anchor": "r2d2",
                 "squads": [
                     {
                         "name": "",
@@ -2032,6 +2084,7 @@
             },
             {
                 "name": "PIECES &amp; PLANS",
+                "anchor": "bb8",
                 "squads": [
                     {
                         "name": "",
@@ -2052,6 +2105,7 @@
             },
             {
                 "name": "GRANDMASTER'S TRAINING",
+                "anchor": "yoda",
                 "squads": [
                     {
                         "name": "",
@@ -2082,6 +2136,7 @@
             },
             {
                 "name": "EMPEROR'S DEMISE",
+                "anchor": "palpatine",
                 "squads": [
                     {
                         "name": "",
@@ -2126,6 +2181,7 @@
             },
             {
                 "name": "ARTIST OF WAR",
+                "anchor": "thrawn",
                 "squads": [
                     {
                         "name": "",
@@ -2143,7 +2199,8 @@
                 ]
             },
             {
-                "name": "IMPERIAL CHIMERA",
+                "name": "IMPERIAL CHIMAERA",
+                "anchor": "chimaera",
                 "squads": [
                     {
                         "name": "",
@@ -2166,8 +2223,8 @@
     },
     "twdefense": {
         "name": "TERRITORY WARS DEFENSE",
-        "rarity": 7,
-        "gear": 8,
+        "rarity": 6,
+        "gear": 10,
         "level": 85,
         "phase": [
             {
@@ -2203,19 +2260,31 @@
                 "name": "COMMANDER LUKE SKYWALKER LEAD",
                 "squads": [
                     {
-                        "name": "",
+                        "name": "Old Ben",
                         "note": "",
                         "url": "",
                         "team": [
-                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
-                            "CHEWBACCALEGENDARY",
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HANSOLO",
+                            "BAZEMALBUS",
                             "OLDBENKENOBI",
-                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
-                            "HANSOLO"
+                            "CHIRRUTIMWE"
                         ]
                     },
                     {
-                        "name": "",
+                        "name": "Hoth Han",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HANSOLO",
+                            "BAZEMALBUS",
+                            "CHIRRUTIMWE",
+                            "HOTHHAN"
+                        ]
+                    },
+                    {
+                        "name": "Chaze",
                         "note": "",
                         "url": "",
                         "team": [
@@ -2227,7 +2296,7 @@
                         ]
                     },
                     {
-                        "name": "",
+                        "name": "Wiggs",
                         "note": "",
                         "url": "",
                         "team": [
@@ -2244,31 +2313,7 @@
                 "name": "JEDI",
                 "squads": [
                     {
-                        "name": "TEAM ONE",
-                        "note": "",
-                        "url": "",
-                        "team": [
-                            "GENERALKENOBI",
-                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
-                            "HERMITYODA:specialskill_HERMITYODA02",
-                            "EZRABRIDGERS3",
-                            "OLDBENKENOBI"
-                        ]
-                    },
-                    {
-                        "name": "TEAM TWO",
-                        "note": "",
-                        "url": "",
-                        "team": [
-                            "QUIGONJINN:leaderskill_QUIGONJINN",
-                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
-                            "HERMITYODA:specialskill_HERMITYODA02",
-                            "EZRABRIDGERS3",
-                            "OLDBENKENOBI"
-                        ]
-                    },
-                    {
-                        "name": "",
+                        "name": "zBASTILA ONE",
                         "note": "",
                         "url": "",
                         "team": [
@@ -2276,9 +2321,30 @@
                             "EZRABRIDGERS3",
                             "HERMITYODA:specialskill_HERMITYODA02",
                             "GRANDMASTERYODA",
-                            "GENERALKENOBI",
-                            "JOLEEBINDO",
-                            "QUIGONJINN",
+                            "OLDBENKENOBI"
+                        ]
+                    },
+                    {
+                        "name": "zBASTILA TWO",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "BASTILASHAN",
+                            "EZRABRIDGERS3",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "GRANDMASTERYODA",
+                            "GENERALKENOBI"
+                        ]
+                    },
+                    {
+                        "name": "RANDOM JEDI",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "QUIGONJINN:leaderskill_QUIGONJINN",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "EZRABRIDGERS3",
                             "OLDBENKENOBI"
                         ]
                     }
@@ -2324,6 +2390,19 @@
                         ]
                     },
                     {
+                        "name": "ZAUL LEAD ONE",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "MAUL:leaderskill_MAUL",
+                            "SAVAGEOPRESS",
+                            "DARTHSIDIOUS",
+                            "COUNTDOOKU",
+                            "SITHASSASSIN",
+                            "SITHMARAUDER"
+                        ]
+                    },
+                    {
                         "name": "EP LEAD",
                         "note": "",
                         "url": "",
@@ -2338,93 +2417,132 @@
                 ]
             },
             {
-                "name": "",
+                "name": "SCOUNDRELS",
                 "squads": [
                     {
-                        "name": "",
+                        "name": "I'LL FILL THIS IN LATER",
                         "note": "",
                         "url": "",
                         "team": [
-                            "AAYLASECURA",
-                            "AHSOKATANO",
-                            "BARRISSOFFEE",
-                            "EETHKOTH",
-                            "EZRABRIDGERS3",
-                            "GENERALKENOBI",
-                            "HERMITYODA",
-                            "IMAGUNDI",
-                            "JEDIKNIGHTCONSULAR",
-                            "ANAKINKNIGHT",
-                            "JEDIKNIGHTGUARDIAN",
-                            "KANANJARRUSS3",
-                            "KITFISTO",
-                            "LUMINARAUNDULI",
-                            "MACEWINDU",
-                            "OLDBENKENOBI",
-                            "PLOKOON",
-                            "QUIGONJINN"
+                            "QIRA"
                         ]
                     }
                 ]
             },
             {
-                "name": "",
+                "name": "ROGUE ONE",
                 "squads": [
                     {
-                        "name": "",
+                        "name": "zJYN",
                         "note": "",
                         "url": "",
                         "team": [
-                            "ADMIRALACKBAR",
-                            "FULCRUMAHSOKA",
-                            "BAZEMALBUS",
-                            "BIGGSDARKLIGHTER",
-                            "BISTAN",
-                            "BODHIROOK",
-                            "HOTHHAN",
-                            "CASSIANANDOR",
-                            "CHIRRUTIMWE",
-                            "CHOPPERS3",
-                            "COMMANDERLUKESKYWALKER",
-                            "EZRABRIDGERS3",
-                            "ZEBS3",
-                            "HANSOLO",
-                            "HERASYNDULLAS3",
-                            "HOTHREBELSCOUT",
-                            "HOTHREBELSOLDIER",
                             "JYNERSO",
-                            "K2SO",
-                            "KANANJARRUSS3",
-                            "ADMINISTRATORLANDO",
-                            "LOBOT",
-                            "LUKESKYWALKER",
-                            "OLDBENKENOBI",
-                            "PAO",
-                            "PRINCESSLEIA",
-                            "R2D2_LEGENDARY",
-                            "HOTHLEIA",
-                            "SABINEWRENS3",
-                            "SCARIFREBEL",
-                            "STORMTROOPERHAN",
-                            "WEDGEANTILLES"
+                            "CHIRRUTIMWE",
+                            "BAZEMALBUS",
+                            "CASSIANANDOR",
+                            "SCARIFREBEL"
                         ]
                     }
                 ]
             },
             {
-                "name": "",
+                "name": "BOUNTY HUNTERS",
                 "squads": [
                     {
-                        "name": "",
+                        "name": "zJANGO ONE",
                         "note": "",
                         "url": "",
                         "team": [
-                            "HERASYNDULLAS3",
-                            "CHOPPERS3",
-                            "EZRABRIDGERS3",
-                            "ZEBS3",
-                            "KANANJARRUSS3",
-                            "SABINEWRENS3"
+                            "JANGOFETT",
+                            "BOBAFETT",
+                            "AURRA_SING",
+                            "BOSSK",
+                            "CADBANE"
+                        ]
+                    },
+                    {
+                        "name": "zJANGO TWO",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "JANGOFETT",
+                            "BOBAFETT",
+                            "GREEDO",
+                            "BOSSK",
+                            "CADBANE"
+                        ]
+                    },
+                    {
+                        "name": "zJANGO THREE",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "JANGOFETT",
+                            "BOBAFETT",
+                            "GREEDO",
+                            "DENGAR",
+                            "CADBANE"
+                        ]
+                    },
+                    {
+                        "name": "zBOSSK ONE",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "BOSSK",
+                            "BOBAFETT",
+                            "GREEDO",
+                            "DENGAR",
+                            "CADBANE"
+                        ]
+                    },
+                    {
+                        "name": "zBOSSK TWO",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "BOSSK",
+                            "BOBAFETT",
+                            "GREEDO",
+                            "DENGAR",
+                            "CADBANE"
+                        ]
+                    },
+                    {
+                        "name": "zBOSSK THREE",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "BOSSK",
+                            "BOBAFETT",
+                            "ZAMWESELL",
+                            "DENGAR",
+                            "CADBANE"
+                        ]
+                    },
+                    {
+                        "name": "BOBA ONE",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "BOBAFETT",
+                            "BOSSK",
+                            "GREEDO",
+                            "DENGAR",
+                            "CADBANE"
+                        ]
+                    },
+                    {
+                        "name": "BOBA TWO",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "BOBAFETT",
+                            "ZAMWESELL",
+                            "GREEDO",
+                            "DENGAR",
+                            "CADBANE"
                         ]
                     }
                 ]
@@ -3638,12 +3756,12 @@
                             "JYNERSO",
                             "BAZEMALBUS",
                             "CHIRRUTIMWE",
+                            "CASSIANANDOR",
+                            "SCARIFREBEL",
                             "BISTAN",
                             "BODHIROOK",
-                            "CASSIANANDOR",
                             "K2SO",
-                            "PAO",
-                            "SCARIFREBEL"
+                            "PAO"
                         ]
                     },
                     {
