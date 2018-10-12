@@ -119,9 +119,9 @@ class Squads extends Command {
                             }
                         } else if (ch.rarity >= stars && ch.gear >= gear && ch.level >= level) {
                             if (!ships) {
-                                outStr += "`✓|✓|✓` **" + ch.name + "**\n"; 
+                                outStr += "`✓|✓|✓` **" + ch.nameKey + "**\n"; 
                             } else {
-                                outStr += "`✓|✓` **" + ch.name + "**\n"; 
+                                outStr += "`✓|✓` **" + ch.nameKey + "**\n"; 
                             }
                         } else {
                             outStr += ch.rarity >= stars ? "`✓|" : "`✗|";
@@ -129,7 +129,7 @@ class Squads extends Command {
                                 outStr += ch.gear   >= gear  ? "✓|" : "✗|";
                             }
                             outStr += ch.level  >= level ? "✓` " : "✗` ";
-                            outStr += ch.name + "\n";
+                            outStr += ch.nameKey + "\n";
                         }
                     } catch (e) {
                         console.log("Squad broke: " + c + ": " + e);
