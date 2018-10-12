@@ -43,6 +43,7 @@ class MyArena extends Command {
             const sArena = [];
             player.arena.ship.squad.forEach((ship, ix) => {
                 const thisShip = player.roster.find(s => s.defId === ship.defId);
+                if (thisShip.name && !thisShip.nameKey) thisShip.nameKey = thisShip.name;
                 sArena.push(`\`${sPositions[ix]}\` ${thisShip.nameKey}`);
             });
             fields.push({
@@ -56,6 +57,7 @@ class MyArena extends Command {
         player.arena.char.squad.forEach((char, ix) => {
             const thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
             const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
+            if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
             cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
         });
         fields.push({

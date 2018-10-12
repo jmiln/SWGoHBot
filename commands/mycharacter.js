@@ -60,10 +60,13 @@ class MyCharacter extends Command {
         const cooldown = client.getPlayerCooldown(message.author.id);
         let player = null;
         try {
-            // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
             player = await client.swgohAPI.unitStats(allyCode, cooldown);
         } catch (e) {
             console.error(e);
+            return message.channel.send({embed: {
+                author: {name: "Something Broke"},
+                description: client.codeBlock(e.message) + "Please try again in a bit"
+            }});
         }
 
         let thisChar = player.filter(c => c.unit.defId === character.uniqueName);
@@ -97,7 +100,7 @@ class MyCharacter extends Command {
                 a.tier = "Lvl " + a.tier;
             }
             try {
-                abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.name}`);
+                abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`);
             } catch (e) {
                 console.log("ERROR[MC]: bad ability type: " + inspect(a));
             }
@@ -181,8 +184,14 @@ class MyCharacter extends Command {
             "Deflection Chance":        "DEFLECTION" 
         };
 
-        const keys = Object.keys(stats.final);
-        const maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]].length), 0);
+        let keys = Object.keys(stats.final);
+        if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
+        let maxLen;
+        try {
+            maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]].length), 0);
+        } catch (e) {
+            console.log("[MC] Getting maxLen broke: " + e);
+        }
         const statArr = [];
         Object.keys(statNames).forEach(sn => {
             let statStr = "== " + sn + " ==\n";
@@ -191,7 +200,7 @@ class MyCharacter extends Command {
                 if (s === "Dodge Chance" || s === "Deflection Chance") {
                     statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
                 } else {
-                    statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: `;
+                    statStr += `${langStr[langMap[s]]}${` ${client.zws}`.repeat(maxLen - langStr[langMap[s]].length)} :: `;
                     const str = stats.final[s] % 1 === 0 ? stats.final[s] : (stats.final[s] * 100).toFixed(2)+"%";
                     const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s]})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
                     statStr += str + " ".repeat(7 - str.length) + modStr + "\n";

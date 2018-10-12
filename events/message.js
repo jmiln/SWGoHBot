@@ -72,7 +72,7 @@ module.exports = async (client, message) => {
             }
             // Merge the permission arrays to make sure it has at least the minimum
             const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
-            if (!message.channel.permissionsFor(client.user.id).has(perms)) {
+            if (message.guild && message.channel && !message.channel.permissionsFor(client.user.id).has(perms)) {
                 const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
 
                 if (missingPerms.length > 0) {

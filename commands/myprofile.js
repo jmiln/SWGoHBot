@@ -31,12 +31,32 @@ class MyProfile extends Command {
             return message.channel.send("ERROR: Please make sure you are registered with a valid ally code");
         }
 
-        const gpFull = player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;
-        const gpChar = player.stats.find(s => s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME").value;
-        const gpShip = player.stats.find(s => s.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME").value;
+        // const gpFull = player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;
+        // const gpChar = player.stats.find(s => s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME").value;
+        // const gpShip = player.stats.find(s => s.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME").value;
+        const gpFull = player.stats.find(s => s.nameKey === "Galactic Power:").value;
+        const gpChar = player.stats.find(s => s.nameKey === "Galactic Power (Characters):").value;
+        const gpShip = player.stats.find(s => s.nameKey === "Galactic Power (Ships):").value;
+
+        const rarityMap = {
+            "ONESTAR": 1,
+            "TWOSTAR": 2,
+            "THREESTAR": 3,
+            "FOURSTAR": 4,
+            "FIVESTAR": 5,
+            "SIXSTAR": 6,
+            "SEVENSTAR": 7
+        };
+
+        player.roster.forEach(c => {
+            if (!parseInt(c.rarity)) {
+                c.rarity = rarityMap[c.rarity];
+            }
+        });
 
         const fields = [];
-        const charList = player.roster.filter(u => u.type === "CHARACTER");
+        // const charList = player.roster.filter(u => u.type === "CHARACTER");
+        const charList = player.roster.filter(u => u.combatType === "CHARACTER");
         let zetaCount = 0;
         charList.forEach(char => {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
@@ -52,7 +72,8 @@ class MyProfile extends Command {
             ].join("\n")
         });
 
-        const shipList = player.roster.filter(u => u.type === "SHIP");
+        // const shipList = player.roster.filter(u => u.type === "SHIP");
+        const shipList = player.roster.filter(u => u.combatType === "SHIP");
         const shipOut = message.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList);
         fields.push({
             name: shipOut.header,

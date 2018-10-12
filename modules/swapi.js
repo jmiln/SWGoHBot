@@ -134,7 +134,7 @@ module.exports = (client) => {
                     const char = player.roster.find(u => u.defId === c.unit.defId);
                     c.unit.gp   = char.gp;
                     c.unit.skills = char.skills;
-                    c.unit.name = char.name;
+                    c.unit.name = char.nameKey;
                     c.unit.player = player.name;
                     delete c.unit.mods;
                 });
@@ -184,6 +184,11 @@ module.exports = (client) => {
                     // Probably API timeout
                 }
 
+                if (tempGuild && tempGuild[0]) {
+                    tempGuild = tempGuild[0];
+                    if (tempGuild._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
+                }
+
                 if (!tempGuild || !tempGuild.roster || !tempGuild.name) {
                     if (guild[0] && guild[0].roster) {
                         return guild[0];
@@ -192,7 +197,6 @@ module.exports = (client) => {
                     }
                 }
 
-                if (tempGuild._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
                 guild = await cache.put("swapi", "guilds", {name: tempGuild.name}, tempGuild);
 
                 if (update) {
@@ -253,6 +257,16 @@ module.exports = (client) => {
                     // Probably json error
                 }
 
+                if (tempGuildGG && tempGuildGG[0]) {
+                    tempGuildGG = tempGuildGG[0];
+                    if (tempGuildGG._id) delete tempGuildGG._id;  // Delete this since it's always whining about it being different
+                    Object.keys(tempGuildGG.roster).forEach(char => {
+                        tempGuildGG.roster[char].forEach(member => {
+                            member.mods = [];
+                        });
+                    });
+                }
+
                 if (!tempGuildGG || !tempGuildGG.roster || !tempGuildGG.name) {
                     if (!guildGG && !guildGG[0]) {
                         throw new Error("Broke getting tempGuildGG: " + inspect(tempGuildGG));
@@ -261,7 +275,6 @@ module.exports = (client) => {
                     }
                 }
 
-                if (tempGuildGG._id) delete tempGuildGG._id;  // Delete this since it's always whining about it being different
                 guildGG = await cache.put("swapi", "guildGG", {name:tempGuildGG.name}, tempGuildGG);
             } else {
                 /** If found and valid, serve from cache */
@@ -325,9 +338,13 @@ module.exports = (client) => {
                 } catch (e) {
                     console.log("[SWGoHAPI] Could not get events");
                 }
+                if (Array.isArray(events)) {
+                    events = events[0];
+                }
                 events = {
                     lang: lang,
-                    events: events
+                    events: events.events,
+                    updated: events.updated
                 };
                 events = await cache.put("swapi", "events", {lang:lang}, events);
             } else {
