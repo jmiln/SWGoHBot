@@ -96,6 +96,9 @@ class MyMods extends Command {
 
             const charMods = player.roster.filter(c => c.defId === character.uniqueName)[0].mods;
 
+            const {inspect} = require("util"); 
+            console.log(inspect(charMods, {depth: 5}));
+
             const slots = {};
 
             const sets = message.language.get("BASE_MODSETS_FROM_GAME");
@@ -110,22 +113,10 @@ class MyMods extends Command {
                 };
 
                 // Add the primary in
-                if (mod.primaryStat.value % 100000000 === 0) {
-                    mod.primaryStat.value = (mod.primaryStat.value / 100000000).toString();
-                } else {
-                    mod.primaryStat.value = (mod.primaryStat.value / 1000000).toFixed(2);
-                    mod.primaryStat.value = mod.primaryStat.value + "%";
-                }
                 slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace("+", "").replace("%", "")}`);
 
                 // Then all the secondaries
                 mod.secondaryStat.forEach(s => {
-                    if (s.value % 100000000 === 0) {
-                        s.value = (s.value / 100000000).toString();
-                    } else {
-                        s.value = (s.value / 1000000).toFixed(2);
-                        s.value = s.value + "%";
-                    }
                     const t = stats[s.unitStat].replace("%", "").trim();
 
                     let statStr = s.value;
