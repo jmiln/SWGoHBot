@@ -96,9 +96,6 @@ class MyMods extends Command {
 
             const charMods = player.roster.filter(c => c.defId === character.uniqueName)[0].mods;
 
-            const {inspect} = require("util"); 
-            console.log(inspect(charMods, {depth: 5}));
-
             const slots = {};
 
             const sets = message.language.get("BASE_MODSETS_FROM_GAME");
@@ -117,7 +114,11 @@ class MyMods extends Command {
 
                 // Then all the secondaries
                 mod.secondaryStat.forEach(s => {
-                    const t = stats[s.unitStat].replace("%", "").trim();
+                    let t = stats[s.unitStat];
+                    if (t.indexOf("%") > -1) { 
+                        t = t.replace("%", "").trim();
+                        s.value = s.value.toFixed(2) + "%";
+                    }
 
                     let statStr = s.value;
                     if (s.roll > 0) statStr = `(${s.roll}) ${statStr}`;
