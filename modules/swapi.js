@@ -10,6 +10,7 @@ module.exports = (client) => {
 
     return {
         player: player,
+        players: players,
         playerByName: playerByName,
         unitStats: unitStats,
         guild: guild,
@@ -75,6 +76,16 @@ module.exports = (client) => {
             console.log("SWAPI Broke getting player: " + e);
             throw e;
         }
+    }
+
+    async function players(allycodes) {
+        if (!Array.isArray(allycodes)) {
+            allycodes = [allycodes];
+        }
+
+        const players = await cache.get("swapi", "players", {allyCode:{ $in: allycodes}});
+
+        return players || [];
     }
 
     async function playerByName(name) {
@@ -240,42 +251,100 @@ module.exports = (client) => {
             if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
             if (!player.guildName) throw new Error("Sorry, that player is not in a guild");
 
-            let guildGG  = await cache.get("swapi", "guildGG", {name:player.guildName});
+            let guildGG  = await cache.get("swapi", "guildGG", {id:player.guildRefId});
 
             /** Check if existance and expiration */
             if ( !guildGG || !guildGG[0] || isExpired(guildGG[0].updated, guildCooldown) ) {
                 /** If not found or expired, fetch new from API and save to cache */
-                let tempGuildGG;
-                try {
-                    tempGuildGG = await swgoh.fetchGuild({
-                        allycode: allycode,
-                        language: lang,
-                        enums: true,
-                        units: true
-                    });
-                } catch (err) {
-                    // Probably json error
-                }
+                let guild = await client.cache.get("swapi", "guildGG", {id: player.guildRefId});
 
-                if (tempGuildGG && tempGuildGG[0]) {
-                    tempGuildGG = tempGuildGG[0];
-                    if (tempGuildGG._id) delete tempGuildGG._id;  // Delete this since it's always whining about it being different
-                    Object.keys(tempGuildGG.roster).forEach(char => {
-                        tempGuildGG.roster[char].forEach(member => {
-                            member.mods = [];
+                if (!guild || !guild[0] || isExpired(guild[0].updated , guildCooldown)) {
+                    let tempGuild;
+                    try {
+                        tempGuild = await swgoh.fetchGuild({
+                            allycode: allycode
                         });
-                    });
+                        if (Array.isArray(tempGuild)) {
+                            tempGuild = tempGuild[0];
+                        }
+                    } catch (err) {
+                        // Probably json api error
+                        console.log("Error in ggApi: " + err);
+                    }
+
+                    if (tempGuild && tempGuild.roster) {
+                        guild = tempGuild;
+                    }
+                } else {
+                    guild = guild[0];
                 }
 
-                if (!tempGuildGG || !tempGuildGG.roster || !tempGuildGG.name) {
-                    if (!guildGG && !guildGG[0]) {
-                        throw new Error("Broke getting tempGuildGG: " + inspect(tempGuildGG));
-                    } else {
-                        return guildGG[0];
+                const allyCodes = guild.roster.map(m => parseInt(m.allyCode));
+
+                const playerList = await client.swgohAPI.players(allyCodes);
+
+                const expiredPlayers = [];
+                playerList.forEach((p, ix) => {
+                    if (isExpired(p.updated, 2)) {
+                        expiredPlayers.push(p.allyCode);
+                    } 
+                    playerList.splice(ix, 1);
+                });
+
+                // If there are any players that are not in the db, add them too
+                const list = playerList.map(p => p.allyCode);
+                allyCodes.forEach(a => {
+                    if (!list.includes(a)) {
+                        expiredPlayers.push(a);
+                    }
+                });
+
+                let newPlayerList;
+                if (expiredPlayers.length > 0) {
+                    newPlayerList = await client.swgoh.fetchPlayer({
+                        allycode: expiredPlayers,
+                        language: lang,
+                        enums: true
+                    });
+                    for (const p of newPlayerList) {
+                        if (p._id) delete p._id;
+                        playerList.push(p);
+                        await client.cache.put("swapi", "players", {allyCode: p.allyCode}, p);
                     }
                 }
 
-                guildGG = await cache.put("swapi", "guildGG", {name:tempGuildGG.name}, tempGuildGG);
+                const gg = {};
+
+                gg.members = guild.desc;
+                gg.id = guild.id;
+                gg.name = guild.name;
+                gg.roster = {};
+                const pUpdate = [];
+                playerList.forEach((p) => {
+                    p.roster.forEach((ch) => {
+                        const char = {
+                            player: p.name,
+                            allyCode: p.allycode,
+                            starLevel: ch.rarity,
+                            level: ch.level,
+                            gearLevel: ch.gear,
+                            gear: ch.equipped.map(g => g.equipmentId),
+                            zetas: ch.skills.filter(s => s.isZeta === true && s.tier === 8),
+                            gp: ch.gp,
+                            type: ch.combatType
+                        };
+                        if (!gg.roster[ch.defId]) {
+                            gg.roster[ch.defId] = [char];
+                        } else {
+                            gg.roster[ch.defId].push(char);
+                        }
+                    });
+                    pUpdate.push(p.updated);
+                });
+
+                gg.updated = Math.min(...pUpdate);
+
+                guildGG = await cache.put("swapi", "guildGG", {id:gg.id}, gg);
             } else {
                 /** If found and valid, serve from cache */
                 guildGG = guildGG[0];
