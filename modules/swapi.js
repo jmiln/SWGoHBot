@@ -156,8 +156,7 @@ module.exports = (client) => {
                     stats: playerStats
                 };
 
-                playerStats = await cache.put("swapi", "playerStats", {allyCode: allycode, updated: player.updated}, stats);
-                playerStats = playerStats.stats;
+                playerStats = await cache.put("swapi", "playerStats", {allyCode: allycode}, stats);
             } else {
                 playerStats = playerStats[0];
             }
@@ -290,6 +289,7 @@ module.exports = (client) => {
                 const units = {};
                 rosters.forEach(player => {
                     Object.keys(player).forEach(unit => {
+                        if (unit.mods) player[unit].mods = [];
                         if (!units[unit]) {
                             units[unit] = [player[unit]];
                         } else {
