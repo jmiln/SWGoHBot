@@ -281,70 +281,31 @@ module.exports = (client) => {
 
                 const allyCodes = guild.roster.map(m => parseInt(m.allyCode));
 
-                const playerList = await client.swgohAPI.players(allyCodes);
-
-                const expiredPlayers = [];
-                playerList.forEach((p, ix) => {
-                    if (isExpired(p.updated, 2)) {
-                        expiredPlayers.push(p.allyCode);
-                    } 
-                    playerList.splice(ix, 1);
+                const rosters = await swgoh.fetchRoster({
+                    "allycodes": allyCodes,
+                    "language": lang,
+                    "enums": true
                 });
 
-                // If there are any players that are not in the db, add them too
-                const list = playerList.map(p => p.allyCode);
-                allyCodes.forEach(a => {
-                    if (!list.includes(a)) {
-                        expiredPlayers.push(a);
-                    }
-                });
-
-                let newPlayerList;
-                if (expiredPlayers.length > 0) {
-                    newPlayerList = await client.swgoh.fetchPlayer({
-                        allycode: expiredPlayers,
-                        language: lang,
-                        enums: true
+                const units = {};
+                rosters.forEach(player => {
+                    Object.keys(player).forEach(unit => {
+                        if (!units[unit]) {
+                            units[unit] = [player[unit]];
+                        } else {
+                            units[unit].push(player[unit]);
+                        }
                     });
-                    for (const p of newPlayerList) {
-                        if (p._id) delete p._id;
-                        playerList.push(p);
-                        await client.cache.put("swapi", "players", {allyCode: p.allyCode}, p);
-                    }
-                }
+                });
 
                 const gg = {};
 
                 gg.members = guild.desc;
                 gg.id = guild.id;
                 gg.name = guild.name;
-                gg.roster = {};
-                const pUpdate = [];
-                playerList.forEach((p) => {
-                    p.roster.forEach((ch) => {
-                        const char = {
-                            player: p.name,
-                            allyCode: p.allycode,
-                            starLevel: ch.rarity,
-                            level: ch.level,
-                            gearLevel: ch.gear,
-                            gear: ch.equipped.map(g => g.equipmentId),
-                            zetas: ch.skills.filter(s => s.isZeta === true && s.tier === 8),
-                            gp: ch.gp,
-                            type: ch.combatType
-                        };
-                        if (!gg.roster[ch.defId]) {
-                            gg.roster[ch.defId] = [char];
-                        } else {
-                            gg.roster[ch.defId].push(char);
-                        }
-                    });
-                    pUpdate.push(p.updated);
-                });
+                gg.roster = units;
 
-                gg.updated = Math.min(...pUpdate);
-
-                guildGG = await cache.put("swapi", "guildGG", {id:gg.id}, gg);
+                guildGG = await cache.put("swapi", "guildGG", {id:player.guildRefId}, gg);
             } else {
                 /** If found and valid, serve from cache */
                 guildGG = guildGG[0];
