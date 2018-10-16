@@ -159,7 +159,7 @@ module.exports = (client) => {
                 playerStats = await cache.put("swapi", "playerStats", {allyCode: allycode, updated: player.updated}, stats);
                 playerStats = playerStats.stats;
             } else {
-                playerStats = playerStats[0].stats;
+                playerStats = playerStats[0];
             }
             return playerStats;
         } catch (error) {

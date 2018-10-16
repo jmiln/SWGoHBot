@@ -65,7 +65,7 @@ class MyCharacter extends Command {
             }});
         }
 
-        let thisChar = player.filter(c => c.unit.defId === character.uniqueName);
+        let thisChar = player.stats.filter(c => c.unit.defId === character.uniqueName);
         const stats = thisChar[0].stats;
         thisChar = thisChar[0].unit;
         let gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
