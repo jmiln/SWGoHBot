@@ -19,16 +19,21 @@ class MyCharacter extends Command {
         // Need to get the allycode from the db, then use that
         if (!userID) {
             return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
-        } else if (userID === "me") {
-            userID = message.author.id;
-        } else if (userID.match(/\d{17,18}/)) {
-            userID = userID.replace(/[^\d]*/g, "");
-        } else {
+        } else if (userID !== "me" && !client.isAllyCode(userID) && !client.isUserID(userID)) {
             // If they're just looking for a character for themselves, get the char
             searchChar = userID + " " + searchChar;
             searchChar = searchChar.trim();
             userID = message.author.id;
         }
+        
+        const allyCodes = await client.getAllyCode(message, userID);
+        if (!allyCodes.length) {
+            return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
+        } else if (allyCodes.length > 1) {
+            return message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific");
+        }
+        userID = allyCodes[0];
+
         const chars = client.findChar(searchChar, client.characters);
         let character;
         if (!searchChar) {
@@ -48,19 +53,10 @@ class MyCharacter extends Command {
             character = chars[0];
         }
 
-        if (!client.users.get(userID)) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NO_USER", message.guildSettings.prefix));
-        }
-        const ally = await client.database.models.allyCodes.findOne({where: {id: userID}});
-        if (!ally) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NOT_REG", client.users.get(userID).tag));
-        }
-        const allyCode = ally.dataValues.allyCode;
-
         const cooldown = client.getPlayerCooldown(message.author.id);
         let player = null;
         try {
-            player = await client.swgohAPI.unitStats(allyCode, cooldown);
+            player = await client.swgohAPI.unitStats(userID, cooldown);
         } catch (e) {
             console.error(e);
             return message.channel.send({embed: {
@@ -203,7 +199,7 @@ class MyCharacter extends Command {
                     statStr += `${langStr[langMap[s]]}${` ${client.zws}`.repeat(maxLen - langStr[langMap[s]].length)} :: `;
                     const str = stats.final[s] % 1 === 0 ? stats.final[s] : (stats.final[s] * 100).toFixed(2)+"%";
                     const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s]})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
-                    statStr += str + " ".repeat(7 - str.length) + modStr + "\n";
+                    statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
                 }
             });
             statArr.push(statStr);
