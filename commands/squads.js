@@ -108,6 +108,9 @@ class Squads extends Command {
                     }
                 });
             } else {
+                if (!player || !player.roster) {
+                    return message.channel.send("Sorry, something broke whlie getting your info. Please try again.");
+                }
                 characters.forEach(c => {
                     try {
                         const ch = player.roster.filter(char => char.defId === c.split(":")[0])[0];
