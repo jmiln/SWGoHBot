@@ -289,7 +289,7 @@ module.exports = (client) => {
                 const units = {};
                 rosters.forEach(player => {
                     Object.keys(player).forEach(unit => {
-                        if (unit.mods) player[unit].mods = [];
+                        if (player[unit].mods) player[unit].mods = [];
                         if (!units[unit]) {
                             units[unit] = [player[unit]];
                         } else {
