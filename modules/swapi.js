@@ -250,67 +250,95 @@ module.exports = (client) => {
             if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
             if (!player.guildName) throw new Error("Sorry, that player is not in a guild");
 
-            let guildGG  = await cache.get("swapi", "guildGG", {id:player.guildRefId});
+            let guild = await client.cache.get("swapi", "guildGG", {id: player.guildRefId});
 
-            /** Check if existance and expiration */
-            if ( !guildGG || !guildGG[0] || isExpired(guildGG[0].updated, guildCooldown) ) {
-                /** If not found or expired, fetch new from API and save to cache */
-                let guild = await client.cache.get("swapi", "guildGG", {id: player.guildRefId});
-
-                if (!guild || !guild[0] || isExpired(guild[0].updated , guildCooldown)) {
-                    let tempGuild;
-                    try {
-                        tempGuild = await swgoh.fetchGuild({
-                            allycode: allycode
-                        });
-                        if (Array.isArray(tempGuild)) {
-                            tempGuild = tempGuild[0];
-                        }
-                    } catch (err) {
-                        // Probably json api error
-                        console.log("Error in ggApi: " + err);
+            if (!guild || !guild[0] || isExpired(guild[0].updated , guildCooldown)) {
+                let tempGuild;
+                try {
+                    tempGuild = await swgoh.fetchGuild({
+                        allycode: allycode
+                    });
+                    if (Array.isArray(tempGuild)) {
+                        tempGuild = tempGuild[0];
                     }
-
-                    if (tempGuild && tempGuild.roster) {
-                        guild = tempGuild;
-                    }
-                } else {
-                    guild = guild[0];
+                } catch (err) {
+                    // Probably json api error
+                    console.log("Error getting guild in ggApi: " + err);
                 }
 
-                const allyCodes = guild.roster.map(m => parseInt(m.allyCode));
-
-                const rosters = await swgoh.fetchRoster({
-                    "allycodes": allyCodes,
-                    "language": lang,
-                    "enums": true
-                });
-
-                const units = {};
-                rosters.forEach(player => {
-                    Object.keys(player).forEach(unit => {
-                        if (player[unit].mods) player[unit].mods = [];
-                        if (!units[unit]) {
-                            units[unit] = [player[unit]];
-                        } else {
-                            units[unit].push(player[unit]);
-                        }
-                    });
-                });
-
-                const gg = {};
-
-                gg.members = guild.desc;
-                gg.id = guild.id;
-                gg.name = guild.name;
-                gg.roster = units;
-
-                guildGG = await cache.put("swapi", "guildGG", {id:player.guildRefId}, gg);
+                if (tempGuild && tempGuild.roster) {
+                    guild = tempGuild;
+                }
             } else {
-                /** If found and valid, serve from cache */
-                guildGG = guildGG[0];
+                guild = guild[0];
             }
-            return guildGG;
+
+            const allyCodes = guild.roster.map(m => parseInt(m.allyCode));
+
+            const players = await cache.get("swapi", "pUnits", {allyCode:{ $in: allyCodes}});
+
+            const fresh = [];
+            players.forEach(p => {
+                // Take out anyone who's recent enough to not need to be updated
+                if (p && !isExpired(p.updated, guildCooldown)) {
+                    allyCodes.splice(allyCodes.indexOf(p.allyCode), 1);
+                    fresh.push(p);
+                } else {
+                    console.log(p);
+                }
+            });
+
+            const rosters = await swgoh.fetchRoster({
+                "allycodes": allyCodes,
+                "language": lang,
+                "enums": true,
+                "project": {
+                    "player": 1,
+                    "allycode": 1,
+                    "type": 1,
+                    "gp": 1,
+                    "starLevel": 1,
+                    "level": 1,
+                    "gearLevel": 1,
+                    "gear": 1,
+                    "zetas": 1,
+                    "mods": 0
+                }
+            });
+
+            for (const p of rosters) {
+                // Get the updated/ ally code from Jedi Consular since everyone is guaranteed to have him
+                const pNew = {
+                    allyCode: p.JEDIKNIGHTCONSULAR[0].allyCode,
+                    updated: p.JEDIKNIGHTCONSULAR[0].updated,
+                    roster: p
+                };
+                fresh.push(pNew);
+                await cache.put("swapi", "pUnits", {allyCode: p.allyCode}, pNew);
+            }
+
+            const roster = {};
+            fresh.forEach(p => {
+                Object.keys(p.roster).forEach(unit => {
+                    if (Array.isArray(p.roster[unit])) {
+                        p.roster[unit] = p.roster[unit][0];
+                    }
+                    if (!roster[unit]) {
+                        roster[unit] = [p.roster[unit]];
+                    } else {
+                        roster[unit].push(p.roster[unit]);
+                    }
+                });
+            });
+
+            const gg = {};
+
+            gg.members = guild.desc;
+            gg.id = guild.id;
+            gg.name = guild.name;
+            gg.roster = roster;
+
+            return gg;
         } catch (e) {
             throw e;
         }
