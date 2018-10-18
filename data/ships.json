@@ -40,6 +40,28 @@
         }
     },
     {
+        "name": "B-28 Extinction-class Bomber",
+        "uniqueName": "SITHBOMBER",
+        "aliases": [
+            "B-28 Extinction-class Bomber"
+        ],
+        "nameVariant": [
+            "B-28 Extinction-class Bomber"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/b-28-extinction-class-bomber/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        }
+    },
+    {
         "name": "Biggs Darklighter's X-Wing",
         "uniqueName": "XWINGRED3",
         "aliases": [

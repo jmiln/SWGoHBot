@@ -2260,6 +2260,18 @@
                 "name": "COMMANDER LUKE SKYWALKER LEAD",
                 "squads": [
                     {
+                        "name": "SRP",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HANSOLO",
+                            "BAZEMALBUS",
+                            "SCARIFREBEL",
+                            "CHIRRUTIMWE"
+                        ]
+                    },
+                    {
                         "name": "Old Ben",
                         "note": "",
                         "url": "",
@@ -2281,6 +2293,18 @@
                             "BAZEMALBUS",
                             "CHIRRUTIMWE",
                             "HOTHHAN"
+                        ]
+                    },
+                    {
+                        "name": "Princess Leia",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "BAZEMALBUS",
+                            "CHIRRUTIMWE",
+                            "PRINCESSLEIA",
+                            "HANSOLO"
                         ]
                     },
                     {
@@ -2504,7 +2528,7 @@
                         "team": [
                             "BOSSK",
                             "BOBAFETT",
-                            "GREEDO",
+                            "IG88",
                             "DENGAR",
                             "CADBANE"
                         ]

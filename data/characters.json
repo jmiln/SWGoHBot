@@ -19419,6 +19419,219 @@
         }
     },
     {
+        "name": "Jedi Knight Revan",
+        "uniqueName": "JEDIKNIGHTREVAN",
+        "aliases": [
+            "Jedi Knight Revan"
+        ],
+        "nameVariant": [
+            "Jedi Knight Revan"
+        ],
+        "url": "http://swgoh.gg/characters/jedi-knight-revan/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedirevan.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Jedi",
+            "Old Republic"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 BioTech Implant",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 Nubian Security Scanner"
+            ],
+            "Gear 2": [
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 1 Czerka Stun Cuffs",
+                "Mk 3 TaggeCo Holo Lens"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 Loronar Power Cell",
+                "Mk 2 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 4": [
+                "Mk 1 Carbanti Sensor Array",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Loronar Power Cell",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 A/KT Stun Gun"
+            ],
+            "Gear 5": [
+                "Mk 2 Carbanti Sensor Array",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 7 Loronar Power Cell",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Loronar Power Cell",
+                "Mk 4 BAW Armor Mod"
+            ],
+            "Gear 6": [
+                "Mk 4 A/KT Stun Gun",
+                "Mk 4 A/KT Stun Gun",
+                "Mk 5 Nubian Design Tech",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 2 Carbanti Sensor Array",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 7": [
+                "Mk 6 Merr-Sonn Shield Generator",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 4 A/KT Stun Gun",
+                "Mk 7 Loronar Power Cell",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 8": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 6 Nubian Security Scanner",
+                "Mk 4 A/KT Stun Gun"
+            ],
+            "Gear 9": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 10": [
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 9 Neuro-Saav Electrobinoculars",
+                "Mk 5 Athakam Medpac",
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 5 Athakam Medpac",
+                "Mk 10 TaggeCo Holo Lens"
+            ],
+            "Gear 11": [
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 4 Zaltin Bacta Gel"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Wrist Band",
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Wrist Band",
+                "Mk 12 ArmaTek Data Pad",
+                "Mk 12 ArmaTek Fusion Furnace",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Ferocious Charge": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Special damage to target enemy. This attack deals 25% more damage to Dark Side enemies. If the target is Marked, Revan gains 20% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Master Strategist": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Special damage to all enemies. Revan dispels all debuffs on Jedi and Old Republic allies, then Revan heals all Jedi and Old Republic allies by 10% for each Jedi and each Old Republic ally. Revan gains Critical Damage Up and Foresight for 3 turns. Swap Turn Meter with target other Jedi ally.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Direct Focus": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Inflict Buff Immunity and Marked on target enemy for 2 turns (these effects can't be Resisted, Copied or Dispelled). Increase target enemy's cooldowns by 1, reduce their Turn Meter by 50% and Stun them for 1 turn. This attack can't be Evaded. Call all Jedi allies to assist dealing 50% less damage.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 59,
+                    "omega": 16,
+                    "zeta": 20
+                }
+            },
+            "General of the Old Republic": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of battle, Jedi and Old Republic allies gain +5 Speed, +5% Crit Chance and +5% Offense for each Jedi and each Old Republic ally. At the start of battle, Jedi allies gain Tenacity Up for 1 turn. While Revan is in the leader slot and not the ally slot, units are immune to bonus Turn Meter effects from Leader abilities until the start of the first turn of battle.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
+            },
+            "Savior": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "While another Jedi ally is active, Revan ignores Taunt. The first time another Jedi ally would be reduced to 1% Health, if Jedi Knight Revan is active, they recover 100% of their Max Health and Protection, gain Critical Hit Immunity for 2 turns and take a Bonus Turn. While Revan is in the leader slot and not the ally slot, he can also be saved by Savior.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Hero": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Jedi Knight Revan is immune to Stun and Ability Block. Revan has +10% Tenacity, Health Steal, Max Health, Max Protection, Critical Hit Avoidance, Defense and Critical Damage. Other Light Side allies gain half these bonuses while Revan is active. These bonuses are doubled while Revan is in the leader slot and not the ally slot.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
+            "activation": 330
+        }
+    },
+    {
         "name": "Jolee Bindo",
         "uniqueName": "JOLEEBINDO",
         "aliases": [

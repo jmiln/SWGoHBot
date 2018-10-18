@@ -22,6 +22,28 @@
         "capital_ship": false
     },
     {
+        "name": "B-28 Extinction-class Bomber",
+        "base_id": "SITHBOMBER",
+        "url": "http://swgoh.gg/ships/b-28-extinction-class-bomber/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_b28extinctionclassbomber.png",
+        "power": 47843,
+        "description": "Aggressive Sith Tank with a passive Taunt and self-preservation tactics",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Sith"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Daze",
+            "Defense Up",
+            "Dispel",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false
+    },
+    {
         "name": "Biggs Darklighter's X-wing",
         "base_id": "XWINGRED3",
         "url": "http://swgoh.gg/ships/biggs-darklighters-x-wing/",
