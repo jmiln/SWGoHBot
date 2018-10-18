@@ -250,7 +250,7 @@ module.exports = (client) => {
             if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
             if (!player.guildName) throw new Error("Sorry, that player is not in a guild");
 
-            let guild = await client.cache.get("swapi", "guildGG", {id: player.guildRefId});
+            let guild = await client.cache.get("swapi", "guilds", {id: player.guildRefId});
 
             if (!guild || !guild[0] || isExpired(guild[0].updated , guildCooldown)) {
                 let tempGuild;
