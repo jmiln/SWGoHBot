@@ -39,7 +39,7 @@ class MyArena extends Command {
         const positions = [ "L|", "2|", "3|", "4|", "5|" ];
         const sPositions = [ "L|", "2|", "3|", "4|", "B|", "B|", "B|", "B|" ];
 
-        if (player.arena.ship.squad.length) {
+        if (player.arena.ship.squad && player.arena.ship.squad.length) {
             const sArena = [];
             player.arena.ship.squad.forEach((ship, ix) => {
                 const thisShip = player.roster.find(s => s.defId === ship.defId);
