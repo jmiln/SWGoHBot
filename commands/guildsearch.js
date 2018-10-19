@@ -124,6 +124,8 @@ class GuildSearch extends Command {
             }});
         }
         
+        const totalUnlocked = guildChar.length;
+
         // Fill in everyone that does not have it since everyone is guaranteed to have jedi consular
         guild.roster["JEDIKNIGHTCONSULAR"].forEach(j => {
             // If they have both the targeted character and consular, get em
@@ -180,7 +182,7 @@ class GuildSearch extends Command {
 
         const charOut = {};
         for (const member of sortedGuild) {
-            if (!parseInt(member.starLevel)) member.starLevel = rarityMap[member.starLevel];
+            if (isNaN(parseInt(member.starLevel))) member.starLevel = rarityMap[member.starLevel];
             const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
             const zetas = " | " + "+".repeat(member.zetas.length) + " ".repeat(maxZ - member.zetas.length);
             const gpStr = parseInt(member.gp).toLocaleString();
@@ -212,7 +214,7 @@ class GuildSearch extends Command {
         });
         msg.edit({embed: {
             author: {
-                name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name)
+                name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
             },
             fields: fields,
             footer: {

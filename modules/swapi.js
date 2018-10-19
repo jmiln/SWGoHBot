@@ -283,9 +283,7 @@ module.exports = (client) => {
                 if (p && !isExpired(p.updated, guildCooldown)) {
                     allyCodes.splice(allyCodes.indexOf(p.allyCode), 1);
                     fresh.push(p);
-                } else {
-                    console.log(p);
-                }
+                } 
             });
 
             const rosters = await swgoh.fetchRoster({
@@ -294,7 +292,7 @@ module.exports = (client) => {
                 "enums": true,
                 "project": {
                     "player": 1,
-                    "allycode": 1,
+                    "allyCode": 1,
                     "type": 1,
                     "gp": 1,
                     "starLevel": 1,
@@ -308,21 +306,23 @@ module.exports = (client) => {
 
             for (const p of rosters) {
                 // Get the updated/ ally code from Jedi Consular since everyone is guaranteed to have him
+                Object.keys(p).forEach(c => {
+                    if (Array.isArray(p[c])) {
+                        p[c] = p[c][0];
+                    }
+                });
                 const pNew = {
-                    allyCode: p.JEDIKNIGHTCONSULAR[0].allyCode,
-                    updated: p.JEDIKNIGHTCONSULAR[0].updated,
+                    allyCode: p.JEDIKNIGHTCONSULAR.allyCode,
+                    updated: p.JEDIKNIGHTCONSULAR.updated,
                     roster: p
                 };
                 fresh.push(pNew);
-                await cache.put("swapi", "pUnits", {allyCode: p.allyCode}, pNew);
+                await cache.put("swapi", "pUnits", {allyCode: pNew.allyCode}, pNew);
             }
 
             const roster = {};
             fresh.forEach(p => {
                 Object.keys(p.roster).forEach(unit => {
-                    if (Array.isArray(p.roster[unit])) {
-                        p.roster[unit] = p.roster[unit][0];
-                    }
                     if (!roster[unit]) {
                         roster[unit] = [p.roster[unit]];
                     } else {
