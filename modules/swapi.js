@@ -189,7 +189,7 @@ module.exports = (client) => {
             let guild  = await cache.get("swapi", "guilds", {name:player.guildName});
 
             /** Check if existance and expiration */
-            if ( !guild || !guild[0] || isExpired(guild[0].updated, guildCooldown) ) {
+            if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown) ) {
                 /** If not found or expired, fetch new from API and save to cache */
                 let tempGuild;
                 try {
@@ -261,7 +261,7 @@ module.exports = (client) => {
 
             let guild = await client.cache.get("swapi", "guilds", {id: player.guildRefId});
 
-            if (!guild || !guild[0] || isExpired(guild[0].updated , guildCooldown)) {
+            if (!guild || !guild[0] || isExpired(guild[0].updated , cooldown)) {
                 let tempGuild;
                 try {
                     tempGuild = await swgoh.fetchGuild({
