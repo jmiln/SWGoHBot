@@ -25,8 +25,8 @@ module.exports = (client) => {
     async function player( allycode, lang, cooldown) {
         lang = lang ? lang : "ENG_US";
         if (cooldown) {
-            if (cooldown > playerCooldown) cooldown = playerCooldown;
-            if (cooldown < 1) cooldown = 1;
+            if (cooldown.player > playerCooldown) cooldown = playerCooldown;
+            if (cooldown.player < 1) cooldown = 1;
         } else {
             cooldown = playerCooldown;
         }
@@ -105,8 +105,8 @@ module.exports = (client) => {
 
     async function unitStats(allycode, cooldown) {
         if (cooldown) {
-            if (cooldown > playerCooldown) cooldown = playerCooldown;
-            if (cooldown < 1) cooldown = 1;
+            if (cooldown.player > playerCooldown) cooldown = playerCooldown;
+            if (cooldown.player < 1) cooldown = 1;
         } else {
             cooldown = playerCooldown;
         }
@@ -167,7 +167,15 @@ module.exports = (client) => {
         }
     }
 
-    async function guild( allycode, lang="ENG_US", update=false ) {
+    async function guild( allycode, lang="ENG_US", cooldown ) {
+        lang = lang || "ENG_US";
+
+        if (cooldown) {
+            if (cooldown.guild > guildCooldown) cooldown = guildCooldown;
+            if (cooldown.guild < 3) cooldown = 3;
+        } else {
+            cooldown = guildCooldown;
+        }
         try {
             if (allycode) allycode = allycode.toString();
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
@@ -208,12 +216,6 @@ module.exports = (client) => {
                 }
 
                 guild = await cache.put("swapi", "guilds", {name: tempGuild.name}, tempGuild);
-
-                if (update) {
-                    for ( const p of tempGuild.roster ) {
-                        await this.player(p.allyCode.toString());
-                    }
-                }
             } else {
                 /** If found and valid, serve from cache */
                 guild = guild[0];
@@ -239,7 +241,14 @@ module.exports = (client) => {
         }
     }
 
-    async function guildGG( allycode, lang="ENG_US" ) {
+    async function guildGG( allycode, lang, cooldown ) {
+        lang = lang || "ENG_US";
+        if (cooldown) {
+            if (cooldown.guild > guildCooldown) cooldown = guildCooldown;
+            if (cooldown.guild < 3) cooldown = 3;
+        } else {
+            cooldown = guildCooldown;
+        }
         try {
             if (allycode) allycode = allycode.toString();
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
@@ -286,41 +295,45 @@ module.exports = (client) => {
                 } 
             });
 
-            const rosters = await swgoh.fetchRoster({
-                "allycodes": allyCodes,
-                "language": lang,
-                "enums": true,
-                "project": {
-                    "player": 1,
-                    "allyCode": 1,
-                    "type": 1,
-                    "gp": 1,
-                    "starLevel": 1,
-                    "level": 1,
-                    "gearLevel": 1,
-                    "gear": 1,
-                    "zetas": 1,
-                    "mods": 0
-                }
-            });
-
-            for (const p of rosters) {
-                // Get the updated/ ally code from Jedi Consular since everyone is guaranteed to have him
-                Object.keys(p).forEach(c => {
-                    if (Array.isArray(p[c])) {
-                        p[c] = p[c][0];
+            if (allyCodes.length > 0) {
+                const rosters = await swgoh.fetchRoster({
+                    "allycodes": allyCodes,
+                    "language": lang,
+                    "enums": true,
+                    "project": {
+                        "player": 1,
+                        "allyCode": 1,
+                        "type": 1,
+                        "gp": 1,
+                        "starLevel": 1,
+                        "level": 1,
+                        "gearLevel": 1,
+                        "gear": 1,
+                        "zetas": 1,
+                        "mods": 0
                     }
                 });
-                const pNew = {
-                    allyCode: p.JEDIKNIGHTCONSULAR.allyCode,
-                    updated: p.JEDIKNIGHTCONSULAR.updated,
-                    roster: p
-                };
-                fresh.push(pNew);
-                await cache.put("swapi", "pUnits", {allyCode: pNew.allyCode}, pNew);
+
+                for (const p of rosters) {
+                    // Get the updated/ ally code from Jedi Consular since everyone is guaranteed to have him
+                    Object.keys(p).forEach(c => {
+                        if (Array.isArray(p[c])) {
+                            p[c] = p[c][0];
+                        }
+                    });
+                    const pNew = {
+                        allyCode: p.JEDIKNIGHTCONSULAR.allyCode,
+                        updated: p.JEDIKNIGHTCONSULAR.updated,
+                        roster: p
+                    };
+                    fresh.push(pNew);
+                    await cache.put("swapi", "pUnits", {allyCode: pNew.allyCode}, pNew);
+                }
             }
 
+            const gg = {};
             const roster = {};
+            gg.updated = Math.max(...fresh.map(p => parseInt(p.updated)));
             fresh.forEach(p => {
                 Object.keys(p.roster).forEach(unit => {
                     if (!roster[unit]) {
@@ -331,7 +344,6 @@ module.exports = (client) => {
                 });
             });
 
-            const gg = {};
 
             gg.members = guild.desc;
             gg.id = guild.id;

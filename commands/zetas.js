@@ -181,7 +181,7 @@ class Zetas extends Command {
         } else if (options.flags.g) {
             let guild = null;
             try {
-                guild = await client.swgohAPI.guild(player.allyCode);
+                guild = await client.swgohAPI.guild(player.allyCode, null, cooldown);
                 // TODO  Lang this
                 if (!guild) return message.channel.send("Cannot find guild");
 

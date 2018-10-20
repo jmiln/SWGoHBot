@@ -922,11 +922,25 @@ module.exports = (client) => {
     // Get the cooldown
     client.getPlayerCooldown = (author) => {
         const patron = client.patrons.find(u => u.discordID === author);
-        // If they are not a patron, their cooldown is the default
         if (!patron) {
-            return 2;
-        } else { // If they are, they have a 1 hr cache time, Yay
-            return 1;
+            // If they are not a patron, their cooldown is the default
+            return {
+                player: 2,
+                guild:  6
+            };
+        } else if (patron.amount_cents >= 500) { 
+            // If they have the $5 tier or higher, they get shorted guild & player times
+            return {
+                player: 1,
+                guild:  3
+            };
+        } else {
+            // They have the $1 tier, so they get short player times
+            return {
+                player: 1,
+                guild:  6
+            };
+
         }
     };
 

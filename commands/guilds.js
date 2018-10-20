@@ -57,10 +57,11 @@ class Guilds extends Command {
             // return msg.edit("I currently do not support looking up guilds by name, please use an ally code, or mention someone that has registered.");
         }
 
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let guild = null;
         try {
             if (acType) {
-                guild = await client.swgohAPI.guild(userID);
+                guild = await client.swgohAPI.guild(userID, null, cooldown);
             } else {
                 guild = await client.swgohAPI.guildByName(userID);
             }

@@ -92,9 +92,10 @@ class GuildSearch extends Command {
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
 
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let guild = null;
         try {
-            guild = await client.swgohAPI.guildGG(userID);
+            guild = await client.swgohAPI.guildGG(userID, null, cooldown);
         } catch (e) {
             console.log("ERROR(GS) getting guild: " + e);
             return message.channel.send({embed: {
