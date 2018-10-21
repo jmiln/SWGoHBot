@@ -342,7 +342,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_NEED_NAME: "Du musst dem Event einen Namen geben.",
             COMMAND_EVENT_EVENT_EXISTS: "Dieser Eventname existiert bereits. Erneutes anlegen nicht moeglich.",
             COMMAND_EVENT_NEED_DATE: "Du musst ein Datum fuer dein Event angeben. Akzeptiertes Format ist `DD/MM/YYYY`.",
-            COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} iist kein gueltiges Datum. Akzeptiertes Format ist \`DD/MM/YYYY\`.`,
+            COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} ist kein gueltiges Datum. Akzeptiertes Format ist \`DD/MM/YYYY\`.`,
             COMMAND_EVENT_NEED_TIME: "Du musst fuer dein Event eine Zeit angeben.",
             COMMAND_EVEMT_INVALID_TIME: "Du musst fuer dein Event eine gueltige Zeit angeben. Akzeptiertes Format ist `HH:MM`, bei Nutzung vom 24 Stunden-Format. Aber nicht beim 12 Stunden-Format wie AM und PM",
             COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `Du kannst kein Event in der Vergangenheit anlegen. ${eventDATE} ist vor dem heutigen ${nowDATE}`,
