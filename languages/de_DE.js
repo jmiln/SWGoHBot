@@ -666,8 +666,8 @@ module.exports = class extends Language {
             COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods zuletzt aktualisiert: ${lastUpdated}`,
             COMMAND_MYMODS_WAIT: "Bitte warten waehrend ich deine Sammlung durchsuche.",
             COMMAND_MYMODS_BAD_STAT: (stats) => `Entschuldige, aber ich kann nur nach folgenden Werten sortieren: ${stats}`,
+            COMMAND_MYMODS_HEADER_TOTAL: (name, stat) => `${name}'s Beste ${stat} aus Mods`,
             COMMAND_MYMODS_HEADER_MODS: (name, stat) => `${name}'s Hoechste ${stat} Charaktere`,
-            COMMAND_MYMODS_HEADER_TOTAL: (name, stat) => `${name}'s Beste ${stat} von Mods`,
             COMMAND_MYMODS_HELP: ({
                 description: "Zeigt die ausgestatteten Mods eines bestimmten Charakters an.",
                 actions: [
