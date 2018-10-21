@@ -392,6 +392,9 @@ module.exports = class extends Language {
             // Event Command (Trigger)
             COMMAND_EVENT_TRIGGER_NEED_NAME: "Es muss ein Event angegeben werden.",
 
+            // Event Command (Other)
+             COMMAND_EVENT_TOO_MANY_EVENTS: "Entschuldige, aber du kannst nur bis zu 50 Events haben",
+
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
                 description: "Wird verwendet um ein Event zu erstellen, zu pruefen oder zu loeschen.",
@@ -406,7 +409,15 @@ module.exports = class extends Language {
                                 "Beispiel: `-repeatDay 1,2,3` wiederholt das Event 1 Tag nach dem ursprünglichen Termin, dann nach 2 Tagen und nach 3 Tagen"
                             ].join("\n"),
                             "--channel <KanalName>": "Setzt einen spezifischen Kanal fuer die Ankuendigung.",
-                            "--countdown": "Fuegt dem Event ein Countdown hinzu. Der Parameter - yes ist die einzige gueltige Option."
+                            "--countdown": "Fuegt dem Event ein Countdown hinzu."
+                        }
+                    },
+                    {
+                         action: "Create (JSON)",
+                         actionDesc: "Erstellt ein neues Event",
+                         usage: ";event create --json <codeBlock mit json>",
+                         args: {
+                             "--json <codeBlock>": "Beispiel: ```{\n    name: '',\n    time: '',\n    day:  '',\n    message: '',\n    repeatDay: [0, 0, 0],\n    repeat: '0d0h0m',\n    countdown: false,\n    channel: ''\n}```"
                         }
                     },
                     {
