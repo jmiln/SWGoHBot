@@ -25,8 +25,9 @@ module.exports = (client) => {
     async function player( allycode, lang, cooldown) {
         lang = lang ? lang : "ENG_US";
         if (cooldown) {
-            if (cooldown.player > playerCooldown) cooldown = playerCooldown;
-            if (cooldown.player < 1) cooldown = 1;
+            cooldown = cooldown.player;
+            if (cooldown > playerCooldown) cooldown = playerCooldown;
+            if (cooldown < 1) cooldown = 1;
         } else {
             cooldown = playerCooldown;
         }
@@ -105,8 +106,9 @@ module.exports = (client) => {
 
     async function unitStats(allycode, cooldown) {
         if (cooldown) {
-            if (cooldown.player > playerCooldown) cooldown = playerCooldown;
-            if (cooldown.player < 1) cooldown = 1;
+            cooldown = cooldown.player;
+            if (cooldown > playerCooldown) cooldown = playerCooldown;
+            if (cooldown < 1) cooldown = 1;
         } else {
             cooldown = playerCooldown;
         }
@@ -171,8 +173,9 @@ module.exports = (client) => {
         lang = lang || "ENG_US";
 
         if (cooldown) {
-            if (cooldown.guild > guildCooldown) cooldown = guildCooldown;
-            if (cooldown.guild < 3) cooldown = 3;
+            cooldown = cooldown.guild;
+            if (cooldown > guildCooldown) cooldown = guildCooldown;
+            if (cooldown < 3) cooldown = 3;
         } else {
             cooldown = guildCooldown;
         }
@@ -244,8 +247,9 @@ module.exports = (client) => {
     async function guildGG( allycode, lang, cooldown ) {
         lang = lang || "ENG_US";
         if (cooldown) {
-            if (cooldown.guild > guildCooldown) cooldown = guildCooldown;
-            if (cooldown.guild < 3) cooldown = 3;
+            cooldown = cooldown.guild;
+            if (cooldown > guildCooldown) cooldown = guildCooldown;
+            if (cooldown < 3) cooldown = 3;
         } else {
             cooldown = guildCooldown;
         }
