@@ -499,7 +499,7 @@ module.exports = class extends Language {
                             "-roster": "Zeigt eine Liste aller Gildenmitglieder dieser Gilde an",
                             "-allycode": "Zeigt den Buendniscode anstatt die GM eines Gieldenmitglieds an",
                             "-sort": "Waehle zwischen einer Sortierung nach Namen oder GM",
-                             "-reg": "Zeigt den Discordnamen neben dem registrierten Namen an."   
+                            "-reg": "Zeigt den Discordnamen neben dem registrierten Namen des Users auf dem Server an."   
                         }
                     }
                 ]
