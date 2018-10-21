@@ -331,7 +331,7 @@ module.exports = class extends Language {
 
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
-            COMMAND_EVENT_INVALID_PERMS: "Entschuldigung, aber entweder du bist kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.",
+            COMMAND_EVENT_INVALID_PERMS: "Entschuldigung, aber entweder bist du kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.",
             COMMAND_EVENT_ONE_REPEAT: "Entschuldigung, aber du kannst nicht `repeat` und `repeatDay` in einem Event nutzen. Bitte benutze nur eins der beiden.",
             COMMAND_EVENT_INVALID_REPEAT: "Die Wiederholung ist im falschen Format. Beispiel: ˋ5d3h8mˋ steht fuer 5 Tage 3 Stunden und 8 Minuten",
             COMMAND_EVENT_USE_COMMAS: "Bitte benutze Komma getrennte Nummern fuer repeatDay. Beispiel: `1,2,1,3,4`",
@@ -348,6 +348,29 @@ module.exports = class extends Language {
             COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` fuer ${eventDate} angelegt`,
             COMMAND_EVENT_NO_CREATE: "Event konnte nicht angelegt werden, bitte erneut versuchen.",
             COMMAND_EVENT_TOO_BIG:(charCount) => `Entschuldigung, aber entweder ist der Eventname oder die Eventnachricht zu lang. Bitte kuerze diese um mindestens ${charCount} Zeichen.`,
+
+            // Event Command (Create -json)
+             COMMAND_EVENT_JSON_INVALID_NAME: "Ungueltiger oder fehlender Eventname",
+             COMMAND_EVENT_JSON_NO_SPACES: "Eventname darf keine Leerzeichen enthalten. Du kannst stattdessen entweder _ oder - verwenden.",
+             COMMAND_EVENT_JSON_EXISTS: "Es existiert bereits ein Event mit diesem Namen",
+             COMMAND_EVENT_JSON_DUPLICATE: "Du kannst keine 2 Events mit dem gleichen Namen erstellen",
+             COMMAND_EVENT_JSON_MISSING_DAY: "Datum fehlt (DD/MM/YYYY)",
+             COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Ungueltiger Tag (${day}). Muss in diesem Format sein DD/MM/YYYY`,
+             COMMAND_EVENT_JSON_MISSING_TIME: "Uhrzeit fehlt (HH:MM)",
+             COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Ungueltige Uhrzeit (${time}). Muss in diesem Format sein HH:MM`,
+             COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Ungueltiger Kanal (${chan}), falsche ID oder Kanal ist auf diesem Server nicht vorhanden`,
+             COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Ungueltiger Kanal (${chan}). Ich habe keine Berechtigung um dort zu schreiben.`,
+             COMMAND_EVENT_JSON_NO_2X_REPEAT: "Du kannst repeat & repeatDay nicht gleichzeitig verwenden",
+             COMMAND_EVENT_JSON_BAD_NUM: "Alle Ziffern in repeatDay muessen groesser als 0 sein",
+             COMMAND_EVENT_JSON_BAD_FORMAT: "RepeatDay muss einen Bereich von Tagen definieren (Bspw: `[1,2,5,1,4]`)",
+             COMMAND_EVENT_JSON_COUNTDOWN_BOOL: "Countdown muss entweder wahr oder falsch sein",
+             COMMAND_EVENT_JSON_ERROR_LIST: (num, list) => `Event #${num}    ERROR(s)\n${list}`,
+             COMMAND_EVENT_JSON_EVENT_VALID: (num, name, time, day) => `Event #{num} gueltig\nName: ${name}\nZeit: ${time} am ${day}`,
+             COMMAND_EVENT_JSON_ERR_NOT_ADDED: (list) => `**Eines oder mehrere Events haben Fehler, also wurde keines hinzugefuegt:**${list}`,
+             COMMAND_EVENT_JSON_EV_ADD_ERROR: (name, msg) => `Fehler beim erstellen von Event \`${name}\` ${msg}`,
+             COMMAND_EVENT_JSON_YES_NO: (errCount, errLog, addCount, addLog) => `**${errCount} Events die nicht erstellt werden konnten**\n${errLog}\n**${addCount} Hinzugefuegt**\n${addLog}`,
+             COMMAND_EVENT_JSON_ADDED: (count, log) => `**${count} Events die erfolgreich erstellt wurden:**\n${log}`,
+             COMMAND_EVENT_JSON_BAD_JSON: "Wenn du den Parameter `-json` verwendest, muss ein gueltiger json innerhalb des Codeblocks stehen",
 
             // Event Command (View)
             COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Zeit: ${eventDate}\n`,
