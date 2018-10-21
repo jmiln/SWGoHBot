@@ -6,7 +6,7 @@ module.exports = (client) => {
     async function updateStats() {
         try {
             const guilds = await client.guildCount();
-            await post(`https://botsfordiscord.com/api/v1/bots/${client.user.id}`)
+            await post(`https://botsfordiscord.com/api/bot/${client.user.id}`)
                 .set("Authorization", client.config.b4dToken)
                 .send({ server_count: guilds })
                 .catch(err => console.log("Broke trying to update botStats: " + err));

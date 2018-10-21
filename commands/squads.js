@@ -108,6 +108,9 @@ class Squads extends Command {
                     }
                 });
             } else {
+                if (!player || !player.roster) {
+                    return message.channel.send("Sorry, something broke whlie getting your info. Please try again.");
+                }
                 characters.forEach(c => {
                     try {
                         const ch = player.roster.filter(char => char.defId === c.split(":")[0])[0];
@@ -119,9 +122,9 @@ class Squads extends Command {
                             }
                         } else if (ch.rarity >= stars && ch.gear >= gear && ch.level >= level) {
                             if (!ships) {
-                                outStr += "`✓|✓|✓` **" + ch.name + "**\n"; 
+                                outStr += "`✓|✓|✓` **" + ch.nameKey + "**\n"; 
                             } else {
-                                outStr += "`✓|✓` **" + ch.name + "**\n"; 
+                                outStr += "`✓|✓` **" + ch.nameKey + "**\n"; 
                             }
                         } else {
                             outStr += ch.rarity >= stars ? "`✓|" : "`✗|";
@@ -129,7 +132,7 @@ class Squads extends Command {
                                 outStr += ch.gear   >= gear  ? "✓|" : "✗|";
                             }
                             outStr += ch.level  >= level ? "✓` " : "✗` ";
-                            outStr += ch.name + "\n";
+                            outStr += ch.nameKey + "\n";
                         }
                     } catch (e) {
                         console.log("Squad broke: " + c + ": " + e);

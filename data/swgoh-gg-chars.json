@@ -1091,7 +1091,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -2359,7 +2359,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -2685,7 +2685,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -2846,7 +2846,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -3504,8 +3504,8 @@
         "base_id": "CHEWBACCALEGENDARY",
         "pk": 300,
         "url": "http://swgoh.gg/characters/chewbacca/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
-        "power": null,
+        "image": "//swgoh.gg/static/img/assets/tex.charui_chewbacca_ot.png",
+        "power": 24148,
         "description": "Mighty Rebel Attacker who Guards the weakest ally",
         "combat_type": 1,
         "gear_levels": [
@@ -7121,7 +7121,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -7601,7 +7601,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -11244,7 +11244,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -12660,7 +12660,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Droid",
             "Scoundrel"
         ],
@@ -13290,7 +13290,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -14242,6 +14242,175 @@
             "Offense Down"
         ],
         "role": "Tank"
+    },
+    {
+        "name": "Jedi Knight Revan",
+        "base_id": "JEDIKNIGHTREVAN",
+        "pk": 302,
+        "url": "http://swgoh.gg/characters/jedi-knight-revan/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_jedirevan.png",
+        "power": 27129,
+        "description": "Fabled Jedi leader who controls the battle with a wide mix of powerful abilities",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "003",
+                    "002",
+                    "009",
+                    "004",
+                    "011",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "011",
+                    "028",
+                    "032",
+                    "034",
+                    "020",
+                    "028"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "055",
+                    "060",
+                    "048",
+                    "055",
+                    "054",
+                    "060"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "071",
+                    "055",
+                    "068",
+                    "054",
+                    "050",
+                    "059"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "083",
+                    "080",
+                    "088",
+                    "068",
+                    "054",
+                    "050"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "095",
+                    "095",
+                    "090",
+                    "091",
+                    "083",
+                    "102"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "107",
+                    "108",
+                    "108",
+                    "095",
+                    "088",
+                    "102"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "117",
+                    "111",
+                    "102",
+                    "108",
+                    "100",
+                    "095"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "111",
+                    "117",
+                    "108",
+                    "099",
+                    "109",
+                    "098"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "131",
+                    "135",
+                    "130",
+                    "140",
+                    "130",
+                    "136"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "143",
+                    "131",
+                    "111",
+                    "117",
+                    "108",
+                    "150"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "163",
+                    "158",
+                    "163",
+                    "169",
+                    "168",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Jedi",
+            "Old Republic"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Advantage",
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Counter",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Leader: Assist",
+            "Reduce Cooldowns",
+            "Stun",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Attacker"
     },
     {
         "name": "Jolee Bindo",
@@ -17559,7 +17728,7 @@
         "pk": 243,
         "url": "http://swgoh.gg/characters/nightsister-zombie/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_nightsisters_zombie.png",
-        "power": 18187,
+        "power": 18972,
         "description": "Vile Nightsister Tank who inflicts Tenacity Down and can't be stopped from reviving endlessly",
         "combat_type": 1,
         "gear_levels": [
@@ -17703,7 +17872,6 @@
         "ability_classes": [
             "Counter",
             "Dispel",
-            "Gain Turn Meter",
             "Revive",
             "Taunt",
             "Tenacity Down"
@@ -25546,7 +25714,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "ability_classes": [

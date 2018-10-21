@@ -100,6 +100,7 @@ class MyMods extends Command {
 
             const sets = message.language.get("BASE_MODSETS_FROM_GAME");
             const stats = message.language.get("BASE_MODS_FROM_GAME");
+
             charMods.forEach(mod => {
                 slots[mod.slot] = {
                     stats: [],
@@ -109,20 +110,21 @@ class MyMods extends Command {
                 };
 
                 // Add the primary in
-                slots[mod.slot].stats.push(`${mod.primaryBonusValue.replace("+", "")} ${stats[mod.primaryBonusType].replace("%", "")}`);
+                slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace("+", "").replace("%", "")}`);
 
                 // Then all the secondaries
-                for (let ix = 1; ix <= 4; ix++) {
-                    if (!mod[`secondaryValue_${ix}`]) break;
-                    let statStr = mod[`secondaryValue_${ix}`].replace("+", "");
-                    if (!statStr.length) break;
-                    if (statStr.indexOf("%") > -1) {
-                        statStr = parseFloat(statStr).toFixed(2) + "%";
+                mod.secondaryStat.forEach(s => {
+                    let t = stats[s.unitStat];
+                    if (t.indexOf("%") > -1) { 
+                        t = t.replace("%", "").trim();
+                        s.value = s.value.toFixed(2) + "%";
                     }
-                    const t = stats[mod[`secondaryType_${ix}`]].replace("%", "").trim();
-                    statStr += " " + t;
+
+                    let statStr = s.value;
+                    if (s.roll > 0) statStr = `(${s.roll}) ${statStr}`;
+                    statStr +=  " " + t;
                     slots[mod.slot].stats.push(statStr);
-                }
+                });
             });
 
             const fields = [];

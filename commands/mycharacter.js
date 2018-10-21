@@ -19,16 +19,21 @@ class MyCharacter extends Command {
         // Need to get the allycode from the db, then use that
         if (!userID) {
             return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
-        } else if (userID === "me") {
-            userID = message.author.id;
-        } else if (userID.match(/\d{17,18}/)) {
-            userID = userID.replace(/[^\d]*/g, "");
-        } else {
+        } else if (userID !== "me" && !client.isAllyCode(userID) && !client.isUserID(userID)) {
             // If they're just looking for a character for themselves, get the char
             searchChar = userID + " " + searchChar;
             searchChar = searchChar.trim();
             userID = message.author.id;
         }
+        
+        const allyCodes = await client.getAllyCode(message, userID);
+        if (!allyCodes.length) {
+            return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
+        } else if (allyCodes.length > 1) {
+            return message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific");
+        }
+        userID = allyCodes[0];
+
         const chars = client.findChar(searchChar, client.characters);
         let character;
         if (!searchChar) {
@@ -48,25 +53,19 @@ class MyCharacter extends Command {
             character = chars[0];
         }
 
-        if (!client.users.get(userID)) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NO_USER", message.guildSettings.prefix));
-        }
-        const ally = await client.database.models.allyCodes.findOne({where: {id: userID}});
-        if (!ally) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NOT_REG", client.users.get(userID).tag));
-        }
-        const allyCode = ally.dataValues.allyCode;
-
         const cooldown = client.getPlayerCooldown(message.author.id);
         let player = null;
         try {
-            // player = await client.swgohAPI.fetchPlayer(allyCode, null, lang);
-            player = await client.swgohAPI.unitStats(allyCode, cooldown);
+            player = await client.swgohAPI.unitStats(userID, cooldown);
         } catch (e) {
             console.error(e);
+            return message.channel.send({embed: {
+                author: {name: "Something Broke"},
+                description: client.codeBlock(e.message) + "Please try again in a bit"
+            }});
         }
 
-        let thisChar = player.filter(c => c.unit.defId === character.uniqueName);
+        let thisChar = player.stats.filter(c => c.unit.defId === character.uniqueName);
         const stats = thisChar[0].stats;
         thisChar = thisChar[0].unit;
         let gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
@@ -97,7 +96,7 @@ class MyCharacter extends Command {
                 a.tier = "Lvl " + a.tier;
             }
             try {
-                abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.name}`);
+                abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`);
             } catch (e) {
                 console.log("ERROR[MC]: bad ability type: " + inspect(a));
             }
@@ -181,8 +180,14 @@ class MyCharacter extends Command {
             "Deflection Chance":        "DEFLECTION" 
         };
 
-        const keys = Object.keys(stats.final);
-        const maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]].length), 0);
+        let keys = Object.keys(stats.final);
+        if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
+        let maxLen;
+        try {
+            maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]].length), 0);
+        } catch (e) {
+            console.log("[MC] Getting maxLen broke: " + e);
+        }
         const statArr = [];
         Object.keys(statNames).forEach(sn => {
             let statStr = "== " + sn + " ==\n";
@@ -191,10 +196,10 @@ class MyCharacter extends Command {
                 if (s === "Dodge Chance" || s === "Deflection Chance") {
                     statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
                 } else {
-                    statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: `;
+                    statStr += `${langStr[langMap[s]]}${` ${client.zws}`.repeat(maxLen - langStr[langMap[s]].length)} :: `;
                     const str = stats.final[s] % 1 === 0 ? stats.final[s] : (stats.final[s] * 100).toFixed(2)+"%";
                     const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s]})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
-                    statStr += str + " ".repeat(7 - str.length) + modStr + "\n";
+                    statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
                 }
             });
             statArr.push(statStr);

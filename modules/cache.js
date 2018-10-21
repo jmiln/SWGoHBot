@@ -18,9 +18,11 @@ module.exports = clientMongo => {
 
             const dbo = await mongo.db( database );
 
-            //set updated time to now
-            saveObject.updated = new Date();
-            saveObject.updated = saveObject.updated.getTime();
+            if (!saveObject.updated) {
+                //set updated time to now
+                saveObject.updated = new Date();
+                saveObject.updated = saveObject.updated.getTime();
+            }
 
             //Try update or insert
             matchCondition = matchCondition || {};

@@ -78,13 +78,14 @@ class Register extends Command {
                                             await msg.edit(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
                                         })
                                         .catch(e => {
-                                            msg.edit("Something went wrong. Please notify the proper authorities.");
+                                            msg.edit("Something went wrong. " + e.message);
                                             client.log("REGISTER", "Broke while trying to link new user: " + e);
                                         });
                                 }
                             });
                         } catch (e) {
-                            msg.edit("Invalid ally code. Please make sure you enter the correct code.");
+                            msg.edit("Something broke. Make sure you've got the correct ally code" + client.codeBlock(e.message));
+                            // msg.edit("Invalid ally code. Please make sure you enter the correct code.");
                             console.log("ERROR[REG]: Incorrect Ally Code: " + e);
                         }
                     });

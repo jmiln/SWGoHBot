@@ -91,6 +91,7 @@ module.exports = class extends Language {
             BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : "data"}`,
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
+            BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
@@ -346,6 +347,29 @@ module.exports = class extends Language {
             COMMAND_EVENT_NO_CREATE: "I couldn't set that event, please try again.",
             COMMAND_EVENT_TOO_BIG:(charCount) => `Sorry, but either your event's name or message is too big. Please trim it down by at least ${charCount} characters.`,
 
+            // Event Command (Create -json)
+            COMMAND_EVENT_JSON_INVALID_NAME: "Invalid or missing event name",
+            COMMAND_EVENT_JSON_NO_SPACES: "Event name cannot contain spaces. You can use _ or - instead.",
+            COMMAND_EVENT_JSON_EXISTS: "There is already an event with this name",
+            COMMAND_EVENT_JSON_DUPLICATE: "You cannot make 2 events with the same name",
+            COMMAND_EVENT_JSON_MISSING_DAY: "Missing event date (DD/MM/YYYY)",
+            COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Invalid Day (${day}). Must be in the format DD/MM/YYYY`,
+            COMMAND_EVENT_JSON_MISSING_TIME: "Missing event time (HH:MM)",
+            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Invalid time (${time}). Must be in format of HH:MM`,
+            COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Invalid channel (${chan}), wrong ID or channel is not in this server`,
+            COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Invalid channel (${chan}). I do not have permissions to post there.`,
+            COMMAND_EVENT_JSON_NO_2X_REPEAT: "You cannot have both repeat & repeatDay",
+            COMMAND_EVENT_JSON_BAD_NUM: "All numbers must be above 0 in repeatDay",
+            COMMAND_EVENT_JSON_BAD_FORMAT: "RepeatDay must be in the form of an array (Ex: `[1,2,5,1,4]`)",
+            COMMAND_EVENT_JSON_COUNTDOWN_BOOL: "Countdown must be either true or false",
+            COMMAND_EVENT_JSON_ERROR_LIST: (num, list) => `Event #${num}    ERROR(s)\n${list}`,
+            COMMAND_EVENT_JSON_EVENT_VALID: (num, name, time, day) => `Event #{num} valid\nName: ${name}\nTime: ${time} on ${day}`,
+            COMMAND_EVENT_JSON_ERR_NOT_ADDED: (list) => `**One or more of your events has an error, so none have been added:**${list}`,
+            COMMAND_EVENT_JSON_EV_ADD_ERROR: (name, msg) => `Failed to create event \`${name}\` ${msg}`,
+            COMMAND_EVENT_JSON_YES_NO: (errCount, errLog, addCount, addLog) => `**${errCount} Events failed to add**\n${errLog}\n**${addCount} Added**\n${addLog}`,
+            COMMAND_EVENT_JSON_ADDED: (count, log) => `**${count} Events added successfully:**\n${log}`,
+            COMMAND_EVENT_JSON_BAD_JSON: "If you're using the `-json` flag, you need valid json inside a code block",
+
             // Event Command (View)
             COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
             COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Time Remaining: ${timeLeft}\n`,
@@ -366,6 +390,9 @@ module.exports = class extends Language {
             // Event Command (Trigger)
             COMMAND_EVENT_TRIGGER_NEED_NAME: "You must give an event name to trigger.",
 
+            // Event Command (Other)
+            COMMAND_EVENT_TOO_MANY_EVENTS: "Sorry, but you can only have up to 50 events",
+
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
                 description: "Used to make, check, or delete an event.",
@@ -381,6 +408,14 @@ module.exports = class extends Language {
                             ].join("\n"),
                             "--channel <channelName>": "Lets you set a specific channel for the event to announce on.",
                             "--countdown": "Adds a countdown to when your event will trigger."
+                        }
+                    },
+                    {
+                        action: "Create (JSON)",
+                        actionDesc: "Create a new event listing",
+                        usage: ";event create --json <codeBlock w/ json>",
+                        args: {
+                            "--json <codeBlock>": "Example: ```{\n    name: '',\n    time: '',\n    day:  '',\n    message: '',\n    repeatDay: [0, 0, 0],\n    repeat: '0d0h0m',\n    countdown: false,\n    channel: ''\n}```"
                         }
                     },
                     {
@@ -434,6 +469,7 @@ module.exports = class extends Language {
             COMMAND_GUILDS_DESC: "Guild Description",
             COMMAND_GUILDS_MSG: "Chat Announcement",
             COMMAND_GUILDS_REG_NEEDED: "I can't find a guild for that user. Please make sure the ally code is correct.",
+            COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ix}/${len})`,
             COMMAND_GUILDS_RAID_STRINGS: {
                 header:    "Raids",
                 rancor:    "Rancor: ",
@@ -454,11 +490,12 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guild [user]\n;guild [user] [-roster] [-allycode] [-reg]",
+                        usage: ";guild [user]\n;guild [user] [-roster] [-sort] [-reg]\n;guild [user] [-roster] [-allycode] [-reg]",
                         args: {
                             "user": "A way to identify the guild. (mention | allyCode | guildName)",
                             "-roster": "Show a list of all the members of the guild",
                             "-allycode": "Show a member's ally codes instead of GP",
+                            "-sort": "Choose either name or gp to sort by",
                             "-reg": "Show the discord names of anyone registered & on the server next to their name."
                         }
                     }
@@ -638,8 +675,8 @@ module.exports = class extends Language {
             COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
             COMMAND_MYMODS_WAIT: "Please wait while I check your roster.",
             COMMAND_MYMODS_BAD_STAT: (stats) => `Sorry, but I can only sort by the following stats: ${stats}`,
-            COMMAND_MYMODS_HEADER_MODS: (name, stat) => `${name}'s Highest ${stat} Characters`,
-            COMMAND_MYMODS_HEADER_TOTAL: (name, stat) => `${name}'s Best ${stat} From Mods`,
+            COMMAND_MYMODS_HEADER_TOTAL: (name, stat) => `${name}'s Highest ${stat} Characters`,
+            COMMAND_MYMODS_HEADER_MODS: (name, stat) => `${name}'s Best ${stat} From Mods`,
             COMMAND_MYMODS_HELP: ({
                 description: "Shows the mods that you have equipped on the selected character.",
                 actions: [

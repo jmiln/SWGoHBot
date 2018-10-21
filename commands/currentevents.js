@@ -28,7 +28,6 @@ class CurrentEvents extends Command {
         const HEISTS = ["EVENT_CREDIT_HEIST_GETAWAY_V2", "EVENT_TRAINING_DROID_SMUGGLING"];
         const HEROIC = ["progressionevent_PIECES_AND_PLANS", "progressionevent_GRANDMASTERS_TRAINING", "EVENT_HERO_SCAVENGERREY"];
         const EXCLUDE_Strings = ["EVENT_ECONOMY_BH"];
-        // console.log(gohEvents.map(e => e.id));
 
         const DEF_NUM = 10;
         const lang = message.guildSettings.swgohLanguage;
@@ -40,6 +39,9 @@ class CurrentEvents extends Command {
         } catch (e) {
             console.error(e);
         }
+
+        // console.log(gohEvents);
+        // console.log(gohEvents.map(e => e.id));
 
         // Let them specify the max # of events to show
         let eNum = parseInt(num);
@@ -86,7 +88,7 @@ class CurrentEvents extends Command {
             }
 
             // Filter out event dates from the past 
-            event.schedule = event.instances.filter(p => {
+            event.schedule = event.instanceList.filter(p => {
                 if (!moment().isBefore(moment(p.endTime))) return false;
                 return true;
             });

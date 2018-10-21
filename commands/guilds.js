@@ -20,6 +20,12 @@ class Guilds extends Command {
                 "reg": {
                     aliases: []
                 }
+            },
+            subArgs: {
+                sort: {
+                    aliases: [],
+                    default: "gp"
+                }
             }
         });
     }
@@ -51,10 +57,11 @@ class Guilds extends Command {
             // return msg.edit("I currently do not support looking up guilds by name, please use an ally code, or mention someone that has registered.");
         }
 
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let guild = null;
         try {
             if (acType) {
-                guild = await client.swgohAPI.guild(userID);
+                guild = await client.swgohAPI.guild(userID, null, cooldown);
             } else {
                 guild = await client.swgohAPI.guildByName(userID);
             }
@@ -72,7 +79,12 @@ class Guilds extends Command {
             if (!guild.roster.length) {
                 return msg.edit(message.language.get("COMMAND_GUILDS_NO_GUILD"));
             }
-            const sortedGuild = options.flags.a ? guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1) : guild.roster.sort((p, c) => c.gp - p.gp);
+            let sortedGuild;
+            if (options.flags.a || options.subArgs.sort.toLowerCase() === "name") {
+                sortedGuild = guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
+            } else {
+                sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
+            }
 
             const users = [];
             for (const p of sortedGuild) {
@@ -113,17 +125,25 @@ class Guilds extends Command {
                     }
                 }
             }
+            const fields = [];
+            if (!options.flags.min) {
+                const msgArray = client.msgArray(users, "\n", 1000);
+                msgArray.forEach((m, ix) => {
+                    fields.push({
+                        name: message.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArray.length),
+                        value: m
+                    });
+                });
+            }
+            fields.push({
+                name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
+                value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
+            });
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
-                description: options.flags.min ? "" : users.join("\n"),
-                fields: [
-                    {
-                        name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
-                        value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
-                    }
-                ]
+                fields: fields
             }});
         } else {
             // Show basic stats. info about the guild

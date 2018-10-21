@@ -30,16 +30,21 @@ class MyArena extends Command {
         } catch (e) {
             console.log("Broke getting player in myarena: " + e);
         }
-         
+
+        if (!player.arena) {
+            return message.channel.send("Something broke when getting your info, please try again in a bit.");
+        }         
+
         const fields = [];
         const positions = [ "L|", "2|", "3|", "4|", "5|" ];
         const sPositions = [ "L|", "2|", "3|", "4|", "B|", "B|", "B|", "B|" ];
 
-        if (player.arena.ship.squad.length) {
+        if (player.arena.ship.squad && player.arena.ship.squad.length) {
             const sArena = [];
             player.arena.ship.squad.forEach((ship, ix) => {
                 const thisShip = player.roster.find(s => s.defId === ship.defId);
-                sArena.push(`\`${sPositions[ix]}\` ${thisShip.name}`);
+                if (thisShip.name && !thisShip.nameKey) thisShip.nameKey = thisShip.name;
+                sArena.push(`\`${sPositions[ix]}\` ${thisShip.nameKey}`);
             });
             fields.push({
                 name: message.language.get("COMMAND_MYARENA_FLEET", player.arena.ship.rank),
@@ -52,7 +57,8 @@ class MyArena extends Command {
         player.arena.char.squad.forEach((char, ix) => {
             const thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
             const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
-            cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.name}`);
+            if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
+            cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
         });
         fields.push({
             name: message.language.get("COMMAND_MYARENA_ARENA", player.arena.char.rank),

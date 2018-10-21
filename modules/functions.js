@@ -180,22 +180,25 @@ module.exports = (client) => {
     client.announceMsg = async (guild, announceMsg, channel="") => {
         const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ["announceChan"]});
         const guildConf = guildSettings.dataValues;
-        let guildChannel;
 
         let announceChan = guildConf.announceChan;
         if (channel !== "") {
             announceChan = channel;
         }
+        // Try and get it by ID first
+        let chan = guild.channels.get(announceChan.replace(/[^0-9]/g, ""));
 
-        if (guild.channels.exists("name", announceChan)) {
-            guildChannel = await guild.channels.find("name", announceChan);
-            if (guildChannel.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                await guildChannel.send(announceMsg).catch(console.error);
-            } else {
-                return;
-            }
-        } else {
+        // If  that didn't work, try and get it by name
+        if (!chan) {
+            chan = guild.channels.find("name", announceChan);
+        }
+
+        // If that still didn't work, or if it doesn't have the base required perms, return
+        if (!chan || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
             return;
+        } else {
+            // If everything is ok, go ahead and try sending the message
+            await chan.send(announceMsg).catch(console.error);
         }
     };
 
@@ -347,6 +350,7 @@ module.exports = (client) => {
             client.ships = await JSON.parse(fs.readFileSync("data/ships.json"));
             client.squads = await JSON.parse(fs.readFileSync("data/squads.json"));
             client.resources = await JSON.parse(fs.readFileSync("data/resources.json"));
+            client.arenaJumps = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
         } catch (e) {
             err = e;
         }
@@ -918,11 +922,25 @@ module.exports = (client) => {
     // Get the cooldown
     client.getPlayerCooldown = (author) => {
         const patron = client.patrons.find(u => u.discordID === author);
-        // If they are not a patron, their cooldown is the default
-        if (!patron) {
-            return 2;
-        } else { // If they are, they have a 1 hr cache time, Yay
-            return 1;
+        if (patron.amount_cents >= 500) { 
+            // If they have the $5 tier or higher, they get shorted guild & player times
+            return {
+                player: 1,
+                guild:  3
+            };
+        } else if (patron.amount_cents >= 100) { 
+            // They have the $1 tier, so they get short player times
+            return {
+                player: 1,
+                guild:  6
+            };
+
+        } else {
+            // If they are not a patron, their cooldown is the default
+            return {
+                player: 2,
+                guild:  6
+            };
         }
     };
 

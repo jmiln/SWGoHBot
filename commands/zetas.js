@@ -88,20 +88,20 @@ class Zetas extends Command {
             player.roster.forEach(char => {
                 // If they are not looking for a specific character, check em all
                 if (!character || character.uniqueName === char.defId) {
-                    if (!char.name) {
+                    if (!char.nameKey) {
                         const tmp = client.characters.filter(c => c.uniqueName === char.defId);
                         if (tmp.length) {
-                            char.name = tmp[0].name;
+                            char.nameKey = tmp[0].name;
                         }
                     }
                     char.skills.forEach(skill => {
-                        if (skill.isZeta && skill.tier === 8) {
+                        if (skill && skill.isZeta && skill.tier === 8) {
                             count++;
                             // If the character is not already listed, add it
-                            if (!zetas[char.name]) {
-                                zetas[char.name] = ["`[" + skill.id.charAt(0) + "]` " + skill.name];
+                            if (!zetas[char.nameKey]) {
+                                zetas[char.nameKey] = ["`[" + skill.id.charAt(0) + "]` " + skill.nameKey];
                             } else {
-                                zetas[char.name].push("`[" + skill.id.charAt(0) + "]` " + skill.name);
+                                zetas[char.nameKey].push("`[" + skill.id.charAt(0) + "]` " + skill.nameKey);
                             }
                         }
                     });
@@ -150,14 +150,14 @@ class Zetas extends Command {
                     break;
                 }
                 if (zetaSort[ix][sortBy] === 0) continue;
-                const char = player.roster.find(c => zetaSort[ix].toon === c.name);
+                const char = player.roster.find(c => zetaSort[ix].toon === c.nameKey);
                 let skill = null;
                 if (char) {
-                    skill = char.skills.find(a => a.name === zetaSort[ix].name);
-                }
+                    skill = char.skills.find(a => a.nameKey === zetaSort[ix].name);
+                } 
                 if (skill && skill.tier < 8 && char.level >= 80) {
                     if (options.flags.h && char.rarity < 7) continue; 
-                    skill.toon = char.name;
+                    skill.toon = char.nameKey;
                     skill.gearLvl = char.gear;
                     skill.lvl = char.level;
                     skill.star = char.rarity;
@@ -168,7 +168,7 @@ class Zetas extends Command {
             let desc = message.language.get("COMMAND_ZETA_REC_HEADER");
             desc += "\n`" + filters.join(", ") + "`\n`------------------------------`\n";
             myZetas.forEach(z => {
-                desc += `**${z.name}**\n${z.toon}\n\`${message.language.get("BASE_LEVEL_SHORT")}${z.lvl} | ⚙${z.gearLvl} | ${z.star}*\`\n${client.zws}\n`;
+                desc += `**${z.nameKey}**\n${z.toon}\n\`${message.language.get("BASE_LEVEL_SHORT")}${z.lvl} | ⚙${z.gearLvl} | ${z.star}*\`\n${client.zws}\n`;
             });
 
             const zetaLen = `${myZetas.length} ${sortBy === "versa" ? "" : sortBy + " "}`;
@@ -181,7 +181,7 @@ class Zetas extends Command {
         } else if (options.flags.g) {
             let guild = null;
             try {
-                guild = await client.swgohAPI.guild(player.allyCode);
+                guild = await client.swgohAPI.guild(player.allyCode, null, cooldown);
                 // TODO  Lang this
                 if (!guild) return message.channel.send("Cannot find guild");
 

@@ -29,6 +29,15 @@ class GuildSearch extends Command {
         let starLvl = 0;
         const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
         const reverse = options.flags.reverse;
+        const rarityMap = {
+            "ONESTAR": 1,
+            "TWOSTAR": 2,
+            "THREESTAR": 3,
+            "FOURSTAR": 4,
+            "FIVESTAR": 5,
+            "SIXSTAR": 6,
+            "SEVENSTAR": 7
+        };
 
         // If there's enough elements in searchChar, and it's in the format of a number*
         if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {
@@ -83,9 +92,10 @@ class GuildSearch extends Command {
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
 
+        const cooldown = client.getPlayerCooldown(message.author.id);
         let guild = null;
         try {
-            guild = await client.swgohAPI.guildGG(userID);
+            guild = await client.swgohAPI.guildGG(userID, null, cooldown);
         } catch (e) {
             console.log("ERROR(GS) getting guild: " + e);
             return message.channel.send({embed: {
@@ -115,6 +125,8 @@ class GuildSearch extends Command {
             }});
         }
         
+        const totalUnlocked = guildChar.length;
+
         // Fill in everyone that does not have it since everyone is guaranteed to have jedi consular
         guild.roster["JEDIKNIGHTCONSULAR"].forEach(j => {
             // If they have both the targeted character and consular, get em
@@ -171,6 +183,7 @@ class GuildSearch extends Command {
 
         const charOut = {};
         for (const member of sortedGuild) {
+            if (isNaN(parseInt(member.starLevel))) member.starLevel = rarityMap[member.starLevel];
             const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
             const zetas = " | " + "+".repeat(member.zetas.length) + " ".repeat(maxZ - member.zetas.length);
             const gpStr = parseInt(member.gp).toLocaleString();
@@ -202,7 +215,7 @@ class GuildSearch extends Command {
         });
         msg.edit({embed: {
             author: {
-                name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name)
+                name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
             },
             fields: fields,
             footer: {
