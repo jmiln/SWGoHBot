@@ -383,7 +383,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Event konnte nicht gefunden werden \`${eventName}\``,
             COMMAND_EVENT_NO_EVENT: "Es gibt aktuell keine geplanten Events.",
             COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Hier ist der Eventplan \n(${eventCount} Gesamtevents: ${eventCount > 1 ? "s" : ""}) Seite ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,
-            COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `Hier ist der Eventplan \n(${eventCount} Gesamtevents: ${eventCount > 1 ? "s" : ""}): \n${eventKeys}`,
+            COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `Hier ist der Eventplan \n(${eventCount} Events): \n${eventKeys}`,
 
             // Event Command (Delete)
             COMMAND_EVENT_DELETE_NEED_NAME: "Es muss ein Eventname zum loeschen angegeben werden.",
