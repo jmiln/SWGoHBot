@@ -458,11 +458,12 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guild [user]\n;guild [user] [-roster] [-allycode] [-reg]",
+                        usage: ";guild [user]\n;guild [user] [-roster] [-sort] [-reg]\n;guild [user] [-roster] [-allycode] [-reg]",
                         args: {
                             "user": "Zur Identifizierung der Gilde. (mention | allyCode | guildName)",
                             "-roster": "Zeigt eine Liste aller Gildenmitglieder dieser Gilde an",
                             "-allycode": "Zeigt den Buendniscode anstatt die GM eines Gieldenmitglieds an",
+                            "-sort": "Waehle zwischen einer Sortierung nach Namen oder GM",
                              "-reg": "Zeigt den Discordnamen neben dem registrierten Namen an."   
                         }
                     }
