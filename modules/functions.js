@@ -922,6 +922,12 @@ module.exports = (client) => {
     // Get the cooldown
     client.getPlayerCooldown = (author) => {
         const patron = client.patrons.find(u => u.discordID === author);
+        if (!patron) {
+            return {
+                player: 2,
+                guild:  6
+            };
+        }
         if (patron.amount_cents >= 500) { 
             // If they have the $5 tier or higher, they get shorted guild & player times
             return {
