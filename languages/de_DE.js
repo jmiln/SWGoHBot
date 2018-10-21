@@ -490,7 +490,7 @@ module.exports = class extends Language {
                             "character": "Der Charakter nach dem du suchen moechtest.",
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "-reverse": "Kehrt die Sortierreihenfolge um",
-                            "-sort": "Waehle entweder eine Sortierung nach Name oder GM",
+                            "-sort": "Waehle entweder eine Sortierung nach Name, Ausruestung oder GM",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
                     }
