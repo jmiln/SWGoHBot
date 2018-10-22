@@ -276,7 +276,7 @@ module.exports = (client) => {
                     }
                 } catch (err) {
                     // Probably json api error
-                    console.log("Error getting guild in ggApi: " + err);
+                    console.log("Error getting guild in ggApi: " + err.message);
                 }
 
                 if (tempGuild && tempGuild.roster) {
@@ -379,6 +379,9 @@ module.exports = (client) => {
                     });
                 } catch (e) {
                     console.log("[SWGoHAPI] Could not get zetas");
+                }
+                if (Array.isArray(zetas)) {
+                    zetas = zetas[0];
                 }
                 zetas = {
                     lang: lang,
