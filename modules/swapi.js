@@ -117,23 +117,31 @@ module.exports = (client) => {
             if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
             allycode = parseInt(allycode);
 
-            let expiredDate = new Date();
-            expiredDate = expiredDate.setHours(expiredDate.getHours() - cooldown);
-
             let playerStats = null;
 
-            playerStats = await cache.get("swapi", "playerStats", {allyCode:allycode, updated:{ $gte:expiredDate }});
+            playerStats = await cache.get("swapi", "playerStats", {allyCode:allycode});
 
-            if (!playerStats || !playerStats[0]) {
+            if (!playerStats || !playerStats[0] || isExpired(playerStats[0].updated, cooldown)) {
                 let player, barePlayer;
                 try {
                     player = await this.player(allycode);
+                    if (Array.isArray(player)) { player = player[0]; }
                     barePlayer = await swgoh.fetchPlayer({allycode: allycode});
+                    if (Array.isArray(barePlayer)) { barePlayer = barePlayer[0]; }
                 } catch (error) {
-                    throw new Error("Error getting player in unitStats: " + error);
+                    console.log("Error getting player in unitStats: " + error);
+                    // throw new Error("Error getting player in unitStats: " + error);
                 }
-                if (Array.isArray(player)) { player = player[0]; }
-                if (Array.isArray(barePlayer)) { barePlayer = barePlayer[0]; }
+
+                if (!player || !barePlayer) {
+                    if (!playerStats || !playerStats[0]) {
+                        throw new Error("I could not get your info right now.");
+                    } else {
+                        // It has the old player stats
+                        return playerStats[0];
+                    }
+                }
+
                 // Strip out the ships since you can't get the stats for em yet
                 barePlayer.roster = barePlayer.roster.filter(c => c.crew.length === 0);
 
@@ -378,7 +386,7 @@ module.exports = (client) => {
                         }
                     });
                 } catch (e) {
-                    console.log("[SWGoHAPI] Could not get zetas");
+                    console.log("[SWGoHAPI] Could not get zeta recs: " + e.message);
                 }
                 if (Array.isArray(zetas)) {
                     zetas = zetas[0];

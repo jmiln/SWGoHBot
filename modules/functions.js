@@ -772,8 +772,11 @@ module.exports = (client) => {
         await client.database.models.eventDBs.destroy({where: {eventID: eventID}})
             .then(() => {
                 const eventToDel = client.schedule.scheduledJobs[eventID];
-                if (!eventToDel) console.log("Broke trying to delete: " + event);
-                eventToDel.cancel();
+                if (!eventToDel) {
+                    console.log("Could not find scheduled event to delete: " + event);
+                } else {
+                    eventToDel.cancel();
+                }
             })
             .catch(error => { 
                 client.log("ERROR",`Broke deleting an event ${error}`); 

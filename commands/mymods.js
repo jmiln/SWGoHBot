@@ -201,7 +201,19 @@ class MyMods extends Command {
                 return msg.edit(message.language.get("COMMAND_MYMODS_BAD_STAT", client.codeBlock(Object.keys(checkableStats).join("\n"))));
             }
             const statToCheck = options.subArgs.b;
-            const stats = await client.swgohAPI.unitStats(allyCode, cooldown);
+            let stats;
+            try { 
+                stats = await client.swgohAPI.unitStats(allyCode, cooldown);
+            } catch (e) {
+                return msg.edit({embed: {
+                    author: {name: "Something Broke"},
+                    description: client.codeBlock(e.message) + "Please try again in a bit"
+                }});
+            }
+
+            if (stats && stats.stats) {
+                stats = stats.stats;
+            }
 
             stats.forEach(c => {
                 if (c.stats.final && !c.stats.final[statToCheck]) {
