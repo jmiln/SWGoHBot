@@ -210,8 +210,10 @@ class MyMods extends Command {
                     description: client.codeBlock(e.message) + "Please try again in a bit"
                 }});
             }
-
+            
+            let updated;
             if (stats && stats.stats) {
+                updated = stats.updated;
                 stats = stats.stats;
             }
 
@@ -254,7 +256,10 @@ class MyMods extends Command {
             }
             return msg.edit({embed: {
                 author: author,
-                description: "==============================\n" + outStr + "=============================="
+                description: "==============================\n" + outStr + "==============================",
+                footer: {
+                    text: updated ? message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(updated, message)) : ""
+                }
             }});
         }
     }
