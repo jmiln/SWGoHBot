@@ -342,6 +342,25 @@ module.exports = (client) => {
         }
     };
 
+    // Reload the swapi file
+    client.reloadSwapi = async (msgID) => {
+        let err = false;
+        try {
+            delete require.cache[require.resolve("../modules/swapi.js")];
+            client.swgohAPI = require("../modules/swapi.js")(client);
+        } catch (e) {
+            err = e;
+        }
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            if (err) {
+                channel.send(`Something broke: ${err}`);
+            } else {
+                channel.send("Reloaded swapi");
+            }
+        }
+    };
+
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async (msgID) => {
         let err = false;

@@ -41,6 +41,14 @@ class ReloadData extends Command {
                     client.reloadFunctions(id);
                 }
                 break;
+            case "api":
+            case "swapi": // Reload the swapi file
+                if (client.shard && client.shard.count > 0) {
+                    client.shard.broadcastEval(`this.reloadSwapi('${id}'); `);
+                } else {
+                    client.reloadSwapi(id);
+                }
+                break;
             case "data": // Reload the character/ ship data files
                 if (client.shard && client.shard.count > 0) {
                     client.shard.broadcastEval(`this.reloadDataFiles('${id}'); `);
