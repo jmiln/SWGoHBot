@@ -272,7 +272,6 @@ module.exports = (client) => {
             if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
 
             let guild = await client.cache.get("swapi", "guilds", {id: player.guildRefId});
-            console.log("Guild Before: " + guild);
 
             if (!guild || !guild[0] || isExpired(guild[0].updated , cooldown)) {
                 let tempGuild;
@@ -297,7 +296,6 @@ module.exports = (client) => {
             } else {
                 guild = guild[0];
             }
-
 
             if (!guild || !guild.roster) {
                 console.log(guild);
