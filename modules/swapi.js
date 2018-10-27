@@ -252,7 +252,7 @@ module.exports = (client) => {
         }
     }
 
-    async function guildGG( allycode, lang, cooldown ) {
+    async function guildGG( allyCodes, lang, cooldown ) {
         lang = lang || "ENG_US";
         if (cooldown) {
             cooldown = cooldown.guild;
@@ -262,48 +262,6 @@ module.exports = (client) => {
             cooldown = guildCooldown;
         }
         try {
-            if (allycode) allycode = allycode.toString();
-            if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
-            allycode = parseInt(allycode);
-
-            /** Get player from cache */
-            const player = await this.player(allycode);
-            if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
-            if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
-
-            let guild = await client.cache.get("swapi", "guilds", {id: player.guildRefId});
-
-            if (!guild || !guild[0] || isExpired(guild[0].updated , cooldown)) {
-                let tempGuild;
-                try {
-                    tempGuild = await swgoh.fetchGuild({
-                        allycode: allycode
-                    });
-                    if (Array.isArray(tempGuild)) {
-                        tempGuild = tempGuild[0];
-                    }
-                } catch (err) {
-                    // Probably json api error
-                    console.log("Error getting guild in ggApi: " + err.message);
-                }
-
-                if (tempGuild && tempGuild.roster) {
-                    guild = tempGuild;
-                } else if (guild[0] && guild[0].roster) {
-                    // If it can't get it fresh, give em the old one if it's there
-                    guild = guild[0];
-                }
-            } else {
-                guild = guild[0];
-            }
-
-            if (!guild || !guild.roster) {
-                console.log(guild);
-                throw new Error("Sorry, but I cannot get your guild's roster right now, please try again later");
-            }
-
-            const allyCodes = guild.roster.map(m => parseInt(m.allyCode));
-
             const players = await cache.get("swapi", "pUnits", {allyCode:{ $in: allyCodes}});
 
             const fresh = [];
