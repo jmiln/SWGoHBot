@@ -222,7 +222,8 @@ module.exports = (client) => {
                     if (guild[0] && guild[0].roster) {
                         return guild[0];
                     } else {
-                        throw new Error("Broke getting tempGuild: " + inspect(tempGuild));
+                        console.log("Broke getting tempGuild: " + inspect(tempGuild))
+                        throw new Error("Could not find your guild. The API is likely overflowing.");
                     }
                 }
 

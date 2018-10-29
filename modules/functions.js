@@ -596,7 +596,7 @@ module.exports = (client) => {
      */
     client.findEmoji = (id) => {
         const temp = client.emojis.get(id);
-        if (!temp) return false;
+        if (!temp) return null;
 
         // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
         const emoji = Object.assign({}, temp);
@@ -616,22 +616,20 @@ module.exports = (client) => {
      */
     client.getEmoji = (id) => {
         if (client.shard && client.shard.count > 0) {
-            return client.shard.broadcastEval(`this.findEmoji('${id}');`)//.call(this, '${id}')`)
+            return client.shard.broadcastEval(`this.findEmoji('${id}');`)
                 .then(emojiArray => {
                     // Locate a non falsy result, which will be the emoji in question
                     const foundEmoji = emojiArray.find(emoji => emoji);
                     if (!foundEmoji) return false;
 
-                    // console.log(client.guilds.get(foundEmoji.guild));
+                    console.log(client.guilds.get(foundEmoji.guild));
 
-                    // Reconstruct an emoji object as required by discord.js
-                    try {
-                        if (!client.guilds.has(foundEmoji.guild)) return false;
-                        // Only works if on the same shard, so kinda pointless at this point
-                        return new Discord.Emoji(client.guilds.get(foundEmoji.guild), foundEmoji);
-                    } catch (e) {
-                        console.log(e);
-                    }
+                    return client.rest.makeRequest("get", Discord.Constants.Endpoints.Guild(foundEmoji.guild).toString(), true)
+                        .then(raw => {
+                            const guild = new Discord.Guild(client, raw);
+                            const emoji = new Discord.Emoji(guild, foundEmoji);
+                            return emoji;
+                        });
                 });
         } else {
             const emoji = client.findEmoji(id);
