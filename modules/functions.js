@@ -622,8 +622,6 @@ module.exports = (client) => {
                     const foundEmoji = emojiArray.find(emoji => emoji);
                     if (!foundEmoji) return false;
 
-                    console.log(client.guilds.get(foundEmoji.guild));
-
                     return client.rest.makeRequest("get", Discord.Constants.Endpoints.Guild(foundEmoji.guild).toString(), true)
                         .then(raw => {
                             const guild = new Discord.Guild(client, raw);
