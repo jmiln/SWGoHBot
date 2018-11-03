@@ -86,11 +86,13 @@ module.exports = class extends Language {
             BASE_SWGOH_NO_GUILD: "Ich kann für diese Gilde keinen User finden.\nBitte sicherstellen, dass der Name korrekt geschrieben ist und dass die Gross- und Kleinschreibung stimmt.",
             BASE_SWGOH_MISSING_CHAR: "Du musst einen Charakter angeben",
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `Kein Ergebnis gefunden fuer ${character}`,
-            BASE_SWGPH_CHAR_LIST: (chars) => `Deine Suche ergab zu viele Treffer, bitte sei spezifischer. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_CHAR_LIST: (chars) => `Deine Suche ergab zu viele Treffer, bitte sei spezifischer. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: "Etwas ist schief gegangen, bitte sicherstellen dass dein Account korrekt synchronisiert wurde.",
             BASE_SWGOH_LAST_UPDATED: (date) => `Zuletzt aktualisiert vor ${date}`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Bitte warten waehrend ich aktualisiere ${dType ? dType : "Daten"}`,
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
+            BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
+            BASE_SWGOH_LOCKED_CHAR: "Entschuldige, aber sieht so aus als ob du diesen Charakter noch nicht freigeschalten hast",
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
@@ -108,7 +110,6 @@ module.exports = class extends Language {
                     args: {}
                 };
             },
-
             BASE_MOD_TYPES: {
                 SQUARE:  "Viereck",
                 ARROW:   "Pfeil",
@@ -126,7 +127,6 @@ module.exports = class extends Language {
                 SPEED:      "Tempo",
                 TENACITY:   "Zaehigkeit"
             },
-
             BASE_MODSETS_FROM_GAME: {
                 1: "Gesundheit",
                 2: "Angriff",
@@ -186,7 +186,8 @@ module.exports = class extends Language {
                 DEFLECTION: "Ablenkungschance"
             },
             BASE_LEVEL_SHORT: "lvl",
-
+            BASE_GEAR_SHORT: "Ausruestung",
+            BASE_SOMETHING_BROKE: "Etwas funktioniert nicht",
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
@@ -331,7 +332,7 @@ module.exports = class extends Language {
 
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
-            COMMAND_EVENT_INVALID_PERMS: "Entschuldigung, aber entweder du bist kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.",
+            COMMAND_EVENT_INVALID_PERMS: "Entschuldigung, aber entweder bist du kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.",
             COMMAND_EVENT_ONE_REPEAT: "Entschuldigung, aber du kannst nicht `repeat` und `repeatDay` in einem Event nutzen. Bitte benutze nur eins der beiden.",
             COMMAND_EVENT_INVALID_REPEAT: "Die Wiederholung ist im falschen Format. Beispiel: ˋ5d3h8mˋ steht fuer 5 Tage 3 Stunden und 8 Minuten",
             COMMAND_EVENT_USE_COMMAS: "Bitte benutze Komma getrennte Nummern fuer repeatDay. Beispiel: `1,2,1,3,4`",
@@ -341,13 +342,36 @@ module.exports = class extends Language {
             COMMAND_EVENT_NEED_NAME: "Du musst dem Event einen Namen geben.",
             COMMAND_EVENT_EVENT_EXISTS: "Dieser Eventname existiert bereits. Erneutes anlegen nicht moeglich.",
             COMMAND_EVENT_NEED_DATE: "Du musst ein Datum fuer dein Event angeben. Akzeptiertes Format ist `DD/MM/YYYY`.",
-            COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} iist kein gueltiges Datum. Akzeptiertes Format ist \`DD/MM/YYYY\`.`,
+            COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} ist kein gueltiges Datum. Akzeptiertes Format ist \`DD/MM/YYYY\`.`,
             COMMAND_EVENT_NEED_TIME: "Du musst fuer dein Event eine Zeit angeben.",
             COMMAND_EVEMT_INVALID_TIME: "Du musst fuer dein Event eine gueltige Zeit angeben. Akzeptiertes Format ist `HH:MM`, bei Nutzung vom 24 Stunden-Format. Aber nicht beim 12 Stunden-Format wie AM und PM",
             COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `Du kannst kein Event in der Vergangenheit anlegen. ${eventDATE} ist vor dem heutigen ${nowDATE}`,
             COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` fuer ${eventDate} angelegt`,
             COMMAND_EVENT_NO_CREATE: "Event konnte nicht angelegt werden, bitte erneut versuchen.",
             COMMAND_EVENT_TOO_BIG:(charCount) => `Entschuldigung, aber entweder ist der Eventname oder die Eventnachricht zu lang. Bitte kuerze diese um mindestens ${charCount} Zeichen.`,
+
+            // Event Command (Create -json)
+             COMMAND_EVENT_JSON_INVALID_NAME: "Ungueltiger oder fehlender Eventname",
+             COMMAND_EVENT_JSON_NO_SPACES: "Eventname darf keine Leerzeichen enthalten. Du kannst stattdessen entweder _ oder - verwenden.",
+             COMMAND_EVENT_JSON_EXISTS: "Es existiert bereits ein Event mit diesem Namen",
+             COMMAND_EVENT_JSON_DUPLICATE: "Du kannst keine 2 Events mit dem gleichen Namen erstellen",
+             COMMAND_EVENT_JSON_MISSING_DAY: "Datum fehlt (DD/MM/YYYY)",
+             COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Ungueltiger Tag (${day}). Muss in diesem Format sein DD/MM/YYYY`,
+             COMMAND_EVENT_JSON_MISSING_TIME: "Uhrzeit fehlt (HH:MM)",
+             COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Ungueltige Uhrzeit (${time}). Muss in diesem Format sein HH:MM`,
+             COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Ungueltiger Kanal (${chan}), falsche ID oder Kanal ist auf diesem Server nicht vorhanden`,
+             COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Ungueltiger Kanal (${chan}). Ich habe keine Berechtigung um dort zu schreiben.`,
+             COMMAND_EVENT_JSON_NO_2X_REPEAT: "Du kannst repeat & repeatDay nicht gleichzeitig verwenden",
+             COMMAND_EVENT_JSON_BAD_NUM: "Alle Ziffern in repeatDay muessen groesser als 0 sein",
+             COMMAND_EVENT_JSON_BAD_FORMAT: "RepeatDay muss einen Bereich von Tagen definieren (Bspw: `[1,2,5,1,4]`)",
+             COMMAND_EVENT_JSON_COUNTDOWN_BOOL: "Countdown muss entweder wahr oder falsch sein",
+             COMMAND_EVENT_JSON_ERROR_LIST: (num, list) => `Event #${num}    ERROR(s)\n${list}`,
+             COMMAND_EVENT_JSON_EVENT_VALID: (num, name, time, day) => `Event #{num} gueltig\nName: ${name}\nZeit: ${time} am ${day}`,
+             COMMAND_EVENT_JSON_ERR_NOT_ADDED: (list) => `**Eines oder mehrere Events haben Fehler, also wurde keines hinzugefuegt:**${list}`,
+             COMMAND_EVENT_JSON_EV_ADD_ERROR: (name, msg) => `Fehler beim erstellen von Event \`${name}\` ${msg}`,
+             COMMAND_EVENT_JSON_YES_NO: (errCount, errLog, addCount, addLog) => `**${errCount} Events die nicht erstellt werden konnten**\n${errLog}\n**${addCount} Hinzugefuegt**\n${addLog}`,
+             COMMAND_EVENT_JSON_ADDED: (count, log) => `**${count} Events die erfolgreich erstellt wurden:**\n${log}`,
+             COMMAND_EVENT_JSON_BAD_JSON: "Wenn du den Parameter `-json` verwendest, muss ein gueltiger json innerhalb des Codeblocks stehen",
 
             // Event Command (View)
             COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Zeit: ${eventDate}\n`,
@@ -359,7 +383,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Event konnte nicht gefunden werden \`${eventName}\``,
             COMMAND_EVENT_NO_EVENT: "Es gibt aktuell keine geplanten Events.",
             COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Hier ist der Eventplan \n(${eventCount} Gesamtevents: ${eventCount > 1 ? "s" : ""}) Seite ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,
-            COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `Hier ist der Eventplan \n(${eventCount} Gesamtevents: ${eventCount > 1 ? "s" : ""}): \n${eventKeys}`,
+            COMMAND_EVENT_SHOW: (eventCount, eventKeys) => `Hier ist der Eventplan \n(${eventCount} Events): \n${eventKeys}`,
 
             // Event Command (Delete)
             COMMAND_EVENT_DELETE_NEED_NAME: "Es muss ein Eventname zum loeschen angegeben werden.",
@@ -368,6 +392,9 @@ module.exports = class extends Language {
 
             // Event Command (Trigger)
             COMMAND_EVENT_TRIGGER_NEED_NAME: "Es muss ein Event angegeben werden.",
+
+            // Event Command (Other)
+             COMMAND_EVENT_TOO_MANY_EVENTS: "Entschuldige, aber du kannst nur bis zu 50 Events haben",
 
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
@@ -383,7 +410,15 @@ module.exports = class extends Language {
                                 "Beispiel: `-repeatDay 1,2,3` wiederholt das Event 1 Tag nach dem ursprünglichen Termin, dann nach 2 Tagen und nach 3 Tagen"
                             ].join("\n"),
                             "--channel <KanalName>": "Setzt einen spezifischen Kanal fuer die Ankuendigung.",
-                            "--countdown": "Fuegt dem Event ein Countdown hinzu. Der Parameter - yes ist die einzige gueltige Option."
+                            "--countdown": "Fuegt dem Event ein Countdown hinzu."
+                        }
+                    },
+                    {
+                         action: "Create (JSON)",
+                         actionDesc: "Erstellt ein neues Event",
+                         usage: ";event create --json <codeBlock mit json>",
+                         args: {
+                             "--json <codeBlock>": "Beispiel: ```{\n    name: '',\n    time: '',\n    day:  '',\n    message: '',\n    repeatDay: [0, 0, 0],\n    repeat: '0d0h0m',\n    countdown: false,\n    channel: ''\n}```"
                         }
                     },
                     {
@@ -437,6 +472,7 @@ module.exports = class extends Language {
             COMMAND_GUILDS_DESC: "Gilde Beschreibung",
             COMMAND_GUILDS_MSG: "Chat Ankuendigung",
             COMMAND_GUILDS_REG_NEEDED: "Ich kann keine Gilde fuer diesen User finden. Bitte sicherstellen dass der Buendniscode korrekt ist.",
+            COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ix}/${len})`,
             COMMAND_GUILDS_RAID_STRINGS: {
                 header:    "Raids",
                 rancor:    "Rancor: ",
@@ -450,17 +486,20 @@ module.exports = class extends Language {
                 `Erforderliches Lvl: ${lvl}`,
                 `Gesamt GM:     ${gp}`
             ].join("\n"),
-            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` eine Liste der Gildenmitglieder`,
+            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` eine Liste der Gildenmitglieder und ihrer GM.\n\`${prefix}guild -roster -allycode\` fuer eine Liste mit ihren Buendniscodes. `,
             COMMAND_GUILDS_HELP: {
                 description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guild [user] [-roster]",
+                        usage: ";guild [user]\n;guild [user] [-roster] [-sort] [-reg]\n;guild [user] [-roster] [-allycode] [-reg]",
                         args: {
                             "user": "Zur Identifizierung der Gilde. (mention | allyCode | guildName)",
-                            "-roster": "Zeigt eine Liste aller Gildenmitglieder dieser Gilde an"   
+                            "-roster": "Zeigt eine Liste aller Gildenmitglieder dieser Gilde an",
+                            "-allycode": "Zeigt den Buendniscode anstatt die GM eines Gieldenmitglieds an",
+                            "-sort": "Waehle zwischen einer Sortierung nach Namen oder GM",
+                            "-reg": "Zeigt den Discordnamen neben dem registrierten Namen des Users auf dem Server an."   
                         }
                     }
                 ]
@@ -490,7 +529,7 @@ module.exports = class extends Language {
                             "character": "Der Charakter nach dem du suchen moechtest.",
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "-reverse": "Kehrt die Sortierreihenfolge um",
-                            "-sort": "Waehle entweder eine Sortierung nach Name oder GM",
+                            "-sort": "Waehle entweder eine Sortierung nach Name, Ausruestung oder GM",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
                     }
@@ -618,6 +657,7 @@ module.exports = class extends Language {
             },
 
             // MyCharacter Command
+            COMMAND_MYCHARACTER_ABILITIES: "Faehigkeiten",
             COMMAND_MYCHARACTER_HELP: ({
                 description: "Zeigt die Werte eines ausgewaehlten Charakters an.",
                 actions: [
@@ -637,6 +677,10 @@ module.exports = class extends Language {
             COMMAND_MYMODS_NO_MODS: (charName) => `Entschuldigung, aber ich konnte keine Mods finden für dein ${charName}`,
             COMMAND_MYMODS_MISSING_MODS: "Entschuldigung, aber ich kann aktuell keine Mods finden. Bitte warte etwas und versuche es erneut.",
             COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods zuletzt aktualisiert: ${lastUpdated}`,
+            COMMAND_MYMODS_WAIT: "Bitte warten waehrend ich deine Sammlung durchsuche.",
+            COMMAND_MYMODS_BAD_STAT: (stats) => `Entschuldige, aber ich kann nur nach folgenden Werten sortieren: ${stats}`,
+            COMMAND_MYMODS_HEADER_TOTAL: (name, stat) => `${name}'s Beste ${stat} aus Mods`,
+            COMMAND_MYMODS_HEADER_MODS: (name, stat) => `${name}'s Hoechste ${stat} Charaktere`,
             COMMAND_MYMODS_HELP: ({
                 description: "Zeigt die ausgestatteten Mods eines bestimmten Charakters an.",
                 actions: [
@@ -648,6 +692,16 @@ module.exports = class extends Language {
                             "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchst."
                         }
+                    },
+                    {
+                         action: "Beste Werte",
+                         actionDesc: 'Zeigt deine Top 10 Charaktere fuer den jeweiligen Wert an',
+                         usage: ';mymods -best <filter>\n;mymods -total -best <filter>',
+                         args: {
+                             "-best": "Zeigt die besten Werte an (-b)",
+                             "-total": "Sortiert nach Gesamtwert anstatt nach mod boost (-t)",
+                             "filter": "Einer der Charakterwerte die du sehen moechtest"
+                         }
                     }
                 ]
             }),
