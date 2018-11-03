@@ -40,6 +40,28 @@
         }
     },
     {
+        "name": "Anakin's Eta-2 Starfighter",
+        "uniqueName": "JEDISTARFIGHTERANAKIN",
+        "aliases": [
+            "Anakin's Eta-2 Starfighter"
+        ],
+        "nameVariant": [
+            "Anakin's Eta-2 Starfighter"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/anakins-eta-2-starfighter/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        }
+    },
+    {
         "name": "B-28 Extinction-class Bomber",
         "uniqueName": "SITHBOMBER",
         "aliases": [

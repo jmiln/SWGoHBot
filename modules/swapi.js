@@ -211,7 +211,9 @@ module.exports = (client) => {
                     });
                 } catch (err) {
                     // Probably API timeout
+                    console.log("[SWAPI-guild] Couldn't update guild for: " + player.name);
                 }
+                // console.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
 
                 if (tempGuild && tempGuild[0]) {
                     tempGuild = tempGuild[0];
@@ -222,7 +224,7 @@ module.exports = (client) => {
                     if (guild[0] && guild[0].roster) {
                         return guild[0];
                     } else {
-                        console.log("Broke getting tempGuild: " + inspect(tempGuild))
+                        console.log("Broke getting tempGuild: " + inspect(tempGuild));
                         throw new Error("Could not find your guild. The API is likely overflowing.");
                     }
                 }

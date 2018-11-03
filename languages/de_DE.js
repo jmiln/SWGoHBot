@@ -351,27 +351,27 @@ module.exports = class extends Language {
             COMMAND_EVENT_TOO_BIG:(charCount) => `Entschuldigung, aber entweder ist der Eventname oder die Eventnachricht zu lang. Bitte kuerze diese um mindestens ${charCount} Zeichen.`,
 
             // Event Command (Create -json)
-             COMMAND_EVENT_JSON_INVALID_NAME: "Ungueltiger oder fehlender Eventname",
-             COMMAND_EVENT_JSON_NO_SPACES: "Eventname darf keine Leerzeichen enthalten. Du kannst stattdessen entweder _ oder - verwenden.",
-             COMMAND_EVENT_JSON_EXISTS: "Es existiert bereits ein Event mit diesem Namen",
-             COMMAND_EVENT_JSON_DUPLICATE: "Du kannst keine 2 Events mit dem gleichen Namen erstellen",
-             COMMAND_EVENT_JSON_MISSING_DAY: "Datum fehlt (DD/MM/YYYY)",
-             COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Ungueltiger Tag (${day}). Muss in diesem Format sein DD/MM/YYYY`,
-             COMMAND_EVENT_JSON_MISSING_TIME: "Uhrzeit fehlt (HH:MM)",
-             COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Ungueltige Uhrzeit (${time}). Muss in diesem Format sein HH:MM`,
-             COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Ungueltiger Kanal (${chan}), falsche ID oder Kanal ist auf diesem Server nicht vorhanden`,
-             COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Ungueltiger Kanal (${chan}). Ich habe keine Berechtigung um dort zu schreiben.`,
-             COMMAND_EVENT_JSON_NO_2X_REPEAT: "Du kannst repeat & repeatDay nicht gleichzeitig verwenden",
-             COMMAND_EVENT_JSON_BAD_NUM: "Alle Ziffern in repeatDay muessen groesser als 0 sein",
-             COMMAND_EVENT_JSON_BAD_FORMAT: "RepeatDay muss einen Bereich von Tagen definieren (Bspw: `[1,2,5,1,4]`)",
-             COMMAND_EVENT_JSON_COUNTDOWN_BOOL: "Countdown muss entweder wahr oder falsch sein",
-             COMMAND_EVENT_JSON_ERROR_LIST: (num, list) => `Event #${num}    ERROR(s)\n${list}`,
-             COMMAND_EVENT_JSON_EVENT_VALID: (num, name, time, day) => `Event #{num} gueltig\nName: ${name}\nZeit: ${time} am ${day}`,
-             COMMAND_EVENT_JSON_ERR_NOT_ADDED: (list) => `**Eines oder mehrere Events haben Fehler, also wurde keines hinzugefuegt:**${list}`,
-             COMMAND_EVENT_JSON_EV_ADD_ERROR: (name, msg) => `Fehler beim erstellen von Event \`${name}\` ${msg}`,
-             COMMAND_EVENT_JSON_YES_NO: (errCount, errLog, addCount, addLog) => `**${errCount} Events die nicht erstellt werden konnten**\n${errLog}\n**${addCount} Hinzugefuegt**\n${addLog}`,
-             COMMAND_EVENT_JSON_ADDED: (count, log) => `**${count} Events die erfolgreich erstellt wurden:**\n${log}`,
-             COMMAND_EVENT_JSON_BAD_JSON: "Wenn du den Parameter `-json` verwendest, muss ein gueltiger json innerhalb des Codeblocks stehen",
+            COMMAND_EVENT_JSON_INVALID_NAME: "Ungueltiger oder fehlender Eventname",
+            COMMAND_EVENT_JSON_NO_SPACES: "Eventname darf keine Leerzeichen enthalten. Du kannst stattdessen entweder _ oder - verwenden.",
+            COMMAND_EVENT_JSON_EXISTS: "Es existiert bereits ein Event mit diesem Namen",
+            COMMAND_EVENT_JSON_DUPLICATE: "Du kannst keine 2 Events mit dem gleichen Namen erstellen",
+            COMMAND_EVENT_JSON_MISSING_DAY: "Datum fehlt (DD/MM/YYYY)",
+            COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Ungueltiger Tag (${day}). Muss in diesem Format sein DD/MM/YYYY`,
+            COMMAND_EVENT_JSON_MISSING_TIME: "Uhrzeit fehlt (HH:MM)",
+            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Ungueltige Uhrzeit (${time}). Muss in diesem Format sein HH:MM`,
+            COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Ungueltiger Kanal (${chan}), falsche ID oder Kanal ist auf diesem Server nicht vorhanden`,
+            COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Ungueltiger Kanal (${chan}). Ich habe keine Berechtigung um dort zu schreiben.`,
+            COMMAND_EVENT_JSON_NO_2X_REPEAT: "Du kannst repeat & repeatDay nicht gleichzeitig verwenden",
+            COMMAND_EVENT_JSON_BAD_NUM: "Alle Ziffern in repeatDay muessen groesser als 0 sein",
+            COMMAND_EVENT_JSON_BAD_FORMAT: "RepeatDay muss einen Bereich von Tagen definieren (Bspw: `[1,2,5,1,4]`)",
+            COMMAND_EVENT_JSON_COUNTDOWN_BOOL: "Countdown muss entweder wahr oder falsch sein",
+            COMMAND_EVENT_JSON_ERROR_LIST: (num, list) => `Event #${num}    ERROR(s)\n${list}`,
+            COMMAND_EVENT_JSON_EVENT_VALID: (num, name, time, day) => `Event #{num} gueltig\nName: ${name}\nZeit: ${time} am ${day}`,
+            COMMAND_EVENT_JSON_ERR_NOT_ADDED: (list) => `**Eines oder mehrere Events haben Fehler, also wurde keines hinzugefuegt:**${list}`,
+            COMMAND_EVENT_JSON_EV_ADD_ERROR: (name, msg) => `Fehler beim erstellen von Event \`${name}\` ${msg}`,
+            COMMAND_EVENT_JSON_YES_NO: (errCount, errLog, addCount, addLog) => `**${errCount} Events die nicht erstellt werden konnten**\n${errLog}\n**${addCount} Hinzugefuegt**\n${addLog}`,
+            COMMAND_EVENT_JSON_ADDED: (count, log) => `**${count} Events die erfolgreich erstellt wurden:**\n${log}`,
+            COMMAND_EVENT_JSON_BAD_JSON: "Wenn du den Parameter `-json` verwendest, muss ein gueltiger json innerhalb des Codeblocks stehen",
 
             // Event Command (View)
             COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Zeit: ${eventDate}\n`,
@@ -394,7 +394,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_TRIGGER_NEED_NAME: "Es muss ein Event angegeben werden.",
 
             // Event Command (Other)
-             COMMAND_EVENT_TOO_MANY_EVENTS: "Entschuldige, aber du kannst nur bis zu 50 Events haben",
+            COMMAND_EVENT_TOO_MANY_EVENTS: "Entschuldige, aber du kannst nur bis zu 50 Events haben",
 
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
@@ -414,11 +414,11 @@ module.exports = class extends Language {
                         }
                     },
                     {
-                         action: "Create (JSON)",
-                         actionDesc: "Erstellt ein neues Event",
-                         usage: ";event create --json <codeBlock mit json>",
-                         args: {
-                             "--json <codeBlock>": "Beispiel: ```{\n    name: '',\n    time: '',\n    day:  '',\n    message: '',\n    repeatDay: [0, 0, 0],\n    repeat: '0d0h0m',\n    countdown: false,\n    channel: ''\n}```"
+                        action: "Create (JSON)",
+                        actionDesc: "Erstellt ein neues Event",
+                        usage: ";event create --json <codeBlock mit json>",
+                        args: {
+                            "--json <codeBlock>": "Beispiel: ```{\n    name: '',\n    time: '',\n    day:  '',\n    message: '',\n    repeatDay: [0, 0, 0],\n    repeat: '0d0h0m',\n    countdown: false,\n    channel: ''\n}```"
                         }
                     },
                     {
@@ -694,14 +694,14 @@ module.exports = class extends Language {
                         }
                     },
                     {
-                         action: "Beste Werte",
-                         actionDesc: 'Zeigt deine Top 10 Charaktere fuer den jeweiligen Wert an',
-                         usage: ';mymods -best <filter>\n;mymods -total -best <filter>',
-                         args: {
-                             "-best": "Zeigt die besten Werte an (-b)",
-                             "-total": "Sortiert nach Gesamtwert anstatt nach mod boost (-t)",
-                             "filter": "Einer der Charakterwerte die du sehen moechtest"
-                         }
+                        action: "Beste Werte",
+                        actionDesc: 'Zeigt deine Top 10 Charaktere fuer den jeweiligen Wert an',
+                        usage: ';mymods -best <filter>\n;mymods -total -best <filter>',
+                        args: {
+                            "-best": "Zeigt die besten Werte an (-b)",
+                            "-total": "Sortiert nach Gesamtwert anstatt nach mod boost (-t)",
+                            "filter": "Einer der Charakterwerte die du sehen moechtest"
+                        }
                     }
                 ]
             }),
@@ -965,7 +965,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_NO_KEY: (prefix) => `Dieser Wert ist nicht in der Konfiguration. Siehe "${prefix}showconf", oder "${prefix}setconf help" fuer eine Liste`,
             COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Gildenkonfiguration fuer ${key} wurde geaendert in:\n\`${value}\``,
             COMMAND_SETCONF_NO_SETTINGS: "Keine Gildeneinstellungen gefunden.",
- 
+
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `Du musst eine Rolle definieren ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Entschuldige, aber ich kann die Rolle nicht finden ${roleName}. Bitte erneut versuchen.`,
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Entschuldige, aber ${roleName} ist bereits vorhanden.`,
