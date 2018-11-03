@@ -110,7 +110,6 @@ module.exports = class extends Language {
                     args: {}
                 };
             },
-
             BASE_MOD_TYPES: {
                 SQUARE:  "Viereck",
                 ARROW:   "Pfeil",
