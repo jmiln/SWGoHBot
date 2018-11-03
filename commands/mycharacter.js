@@ -5,7 +5,7 @@ class MyCharacter extends Command {
     constructor(client) {
         super(client, {
             name: "mycharacter",
-            category: "Misc",
+            category: "SWGoH",
             enabled: true, 
             aliases: ["mc", "mychar"],
             permissions: ["EMBED_LINKS"],   
