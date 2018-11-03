@@ -342,6 +342,25 @@ module.exports = (client) => {
         }
     };
 
+    // Reload the swapi file
+    client.reloadSwapi = async (msgID) => {
+        let err = false;
+        try {
+            delete require.cache[require.resolve("../modules/swapi.js")];
+            client.swgohAPI = require("../modules/swapi.js")(client);
+        } catch (e) {
+            err = e;
+        }
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            if (err) {
+                channel.send(`Something broke: ${err}`);
+            } else {
+                channel.send("Reloaded swapi");
+            }
+        }
+    };
+
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async (msgID) => {
         let err = false;
@@ -577,7 +596,7 @@ module.exports = (client) => {
      */
     client.findEmoji = (id) => {
         const temp = client.emojis.get(id);
-        if (!temp) return false;
+        if (!temp) return null;
 
         // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
         const emoji = Object.assign({}, temp);
@@ -597,22 +616,18 @@ module.exports = (client) => {
      */
     client.getEmoji = (id) => {
         if (client.shard && client.shard.count > 0) {
-            return client.shard.broadcastEval(`this.findEmoji('${id}');`)//.call(this, '${id}')`)
+            return client.shard.broadcastEval(`this.findEmoji('${id}');`)
                 .then(emojiArray => {
                     // Locate a non falsy result, which will be the emoji in question
                     const foundEmoji = emojiArray.find(emoji => emoji);
                     if (!foundEmoji) return false;
 
-                    // console.log(client.guilds.get(foundEmoji.guild));
-
-                    // Reconstruct an emoji object as required by discord.js
-                    try {
-                        if (!client.guilds.has(foundEmoji.guild)) return false;
-                        // Only works if on the same shard, so kinda pointless at this point
-                        return new Discord.Emoji(client.guilds.get(foundEmoji.guild), foundEmoji);
-                    } catch (e) {
-                        console.log(e);
-                    }
+                    return client.rest.makeRequest("get", Discord.Constants.Endpoints.Guild(foundEmoji.guild).toString(), true)
+                        .then(raw => {
+                            const guild = new Discord.Guild(client, raw);
+                            const emoji = new Discord.Emoji(guild, foundEmoji);
+                            return emoji;
+                        });
                 });
         } else {
             const emoji = client.findEmoji(id);
@@ -772,8 +787,11 @@ module.exports = (client) => {
         await client.database.models.eventDBs.destroy({where: {eventID: eventID}})
             .then(() => {
                 const eventToDel = client.schedule.scheduledJobs[eventID];
-                if (!eventToDel) console.log("Broke trying to delete: " + event);
-                eventToDel.cancel();
+                if (!eventToDel) {
+                    console.log("Could not find scheduled event to delete: " + event);
+                } else {
+                    eventToDel.cancel();
+                }
             })
             .catch(error => { 
                 client.log("ERROR",`Broke deleting an event ${error}`); 
@@ -922,6 +940,12 @@ module.exports = (client) => {
     // Get the cooldown
     client.getPlayerCooldown = (author) => {
         const patron = client.patrons.find(u => u.discordID === author);
+        if (!patron) {
+            return {
+                player: 2,
+                guild:  6
+            };
+        }
         if (patron.amount_cents >= 500) { 
             // If they have the $5 tier or higher, they get shorted guild & player times
             return {

@@ -94,59 +94,73 @@ class MyMods extends Command {
                 console.log(e);
             }
 
-            const charMods = player.roster.filter(c => c.defId === character.uniqueName)[0].mods;
+            let charMods = player.roster.filter(c => c.defId === character.uniqueName);
 
-            const slots = {};
+            if (charMods && charMods.length > 0) {
+                charMods = charMods[0].mods;
+                const slots = {};
 
-            const sets = message.language.get("BASE_MODSETS_FROM_GAME");
-            const stats = message.language.get("BASE_MODS_FROM_GAME");
+                const sets = message.language.get("BASE_MODSETS_FROM_GAME");
+                const stats = message.language.get("BASE_MODS_FROM_GAME");
 
-            charMods.forEach(mod => {
-                slots[mod.slot] = {
-                    stats: [],
-                    type: sets[mod.set],
-                    lvl: mod.level,
-                    pip: mod.pips
-                };
+                charMods.forEach(mod => {
+                    slots[mod.slot] = {
+                        stats: [],
+                        type: sets[mod.set],
+                        lvl: mod.level,
+                        pip: mod.pips
+                    };
 
-                // Add the primary in
-                slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace("+", "").replace("%", "")}`);
+                    // Add the primary in
+                    slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace("+", "").replace("%", "")}`);
 
-                // Then all the secondaries
-                mod.secondaryStat.forEach(s => {
-                    let t = stats[s.unitStat];
-                    if (t.indexOf("%") > -1) { 
-                        t = t.replace("%", "").trim();
-                        s.value = s.value.toFixed(2) + "%";
+                    // Then all the secondaries
+                    mod.secondaryStat.forEach(s => {
+                        let t = stats[s.unitStat];
+                        if (t.indexOf("%") > -1) { 
+                            t = t.replace("%", "").trim();
+                            s.value = s.value.toFixed(2) + "%";
+                        }
+
+                        let statStr = s.value;
+                        if (s.roll > 0) statStr = `(${s.roll}) ${statStr}`;
+                        statStr +=  " " + t;
+                        slots[mod.slot].stats.push(statStr);
+                    });
+                });
+
+                const fields = [];
+                Object.keys(slots).forEach(mod => {
+                    const stats = slots[mod].stats;
+                    fields.push({
+                        name: `${icons[`STATMOD_SLOT_0${mod}`]} ${slots[mod].type} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                        value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(28)}\``,
+                        inline: true
+                    });
+                });
+
+                msg.edit({embed: {
+                    author: {
+                        name: `${player.name}'s ${character.name}`,
+                        icon_url: character.avatarURL
+                    },
+                    fields: fields,
+                    footer: {
+                        text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
                     }
-
-                    let statStr = s.value;
-                    if (s.roll > 0) statStr = `(${s.roll}) ${statStr}`;
-                    statStr +=  " " + t;
-                    slots[mod.slot].stats.push(statStr);
-                });
-            });
-
-            const fields = [];
-            Object.keys(slots).forEach(mod => {
-                const stats = slots[mod].stats;
-                fields.push({
-                    name: `${icons[`STATMOD_SLOT_0${mod}`]} ${slots[mod].type} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
-                    value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(28)}\``,
-                    inline: true
-                });
-            });
-
-            msg.edit({embed: {
-                author: {
-                    name: `${player.name}'s ${character.name}`,
-                    icon_url: character.avatarURL
-                },
-                fields: fields,
-                footer: {
-                    text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
-                }
-            }});
+                }}); 
+            } else {
+                // They don't have the character
+                msg.edit({embed: {
+                    author: {
+                        name: player.name + "'s " + character.name
+                    },
+                    description: message.language.get("BASE_SWGOH_MISSING_CHAR"),
+                    footer: {
+                        text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
+                    }
+                }});
+            }
         } else {
             const checkableStats = {
                 "Health": {
@@ -201,7 +215,21 @@ class MyMods extends Command {
                 return msg.edit(message.language.get("COMMAND_MYMODS_BAD_STAT", client.codeBlock(Object.keys(checkableStats).join("\n"))));
             }
             const statToCheck = options.subArgs.b;
-            const stats = await client.swgohAPI.unitStats(allyCode, cooldown);
+            let stats;
+            try { 
+                stats = await client.swgohAPI.unitStats(allyCode, cooldown);
+            } catch (e) {
+                return msg.edit({embed: {
+                    author: {name: "Something Broke"},
+                    description: client.codeBlock(e.message) + "Please try again in a bit"
+                }});
+            }
+            
+            let updated;
+            if (stats && stats.stats) {
+                updated = stats.updated;
+                stats = stats.stats;
+            }
 
             stats.forEach(c => {
                 if (c.stats.final && !c.stats.final[statToCheck]) {
@@ -242,7 +270,10 @@ class MyMods extends Command {
             }
             return msg.edit({embed: {
                 author: author,
-                description: "==============================\n" + outStr + "=============================="
+                description: "==============================\n" + outStr + "==============================",
+                footer: {
+                    text: updated ? message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(updated, message)) : ""
+                }
             }});
         }
     }

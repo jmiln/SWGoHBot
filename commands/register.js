@@ -124,7 +124,8 @@ class Register extends Command {
                                 // Update the guild as a whole
                                 await client.swgohAPI.guild(ac).then(async (g) => {
                                     // Then finally update the .gg style roster
-                                    await client.swgohAPI.guildGG(ac).then(async () => {
+                                    const codes = g.roster.map(m => m.allyCode);
+                                    await client.swgohAPI.guildGG(codes).then(async () => {
                                         await msg.edit(message.language.get("COMMAND_REGISTER_GUPDATE_SUCCESS", g.name));
                                     });
                                 });

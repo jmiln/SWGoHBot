@@ -95,23 +95,43 @@ class GuildSearch extends Command {
         const cooldown = client.getPlayerCooldown(message.author.id);
         let guild = null;
         try {
-            guild = await client.swgohAPI.guildGG(userID, null, cooldown);
+            guild = await client.swgohAPI.guild(userID, null, cooldown);
         } catch (e) {
             console.log("ERROR(GS) getting guild: " + e);
             return message.channel.send({embed: {
                 author: {
-                    name: "Something Broke"
+                    name: "Something Broke getting your guild's roster"
+                },
+                description: client.codeBlock(e) + "Please try again in a bit."
+            }});
+        }
+        let gRoster;
+        if (!guild || !guild.roster || !guild.roster.length) {
+            return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+        } else {
+            msg.edit("Found guild `" + guild.name + "`!");
+            gRoster = guild.roster.map(m => m.allyCode);
+        }
+
+        if (!gRoster.length) {
+            return msg.edit("I can't find any players in the requested guild.");
+        }
+
+        let guildGG;
+        try {
+            guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+        } catch (e) {
+            console.log("ERROR(GS) getting guild: " + e);
+            return message.channel.send({embed: {
+                author: {
+                    name: "Something Broke while getting your guild's characters"
                 },
                 description: client.codeBlock(e) + "Please try again in a bit."
             }});
         }
 
-        if (!guild) {
-            return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
-        } 
-
         // Get the list of people with that character
-        const guildChar = guild.roster[character.uniqueName];
+        const guildChar = guildGG.roster[character.uniqueName];
 
         if (!guildChar || guildChar.length === 0) {
             return msg.edit({embed: {
@@ -128,15 +148,15 @@ class GuildSearch extends Command {
         const totalUnlocked = guildChar.length;
 
         // Fill in everyone that does not have it since everyone is guaranteed to have jedi consular
-        guild.roster["JEDIKNIGHTCONSULAR"].forEach(j => {
-            // If they have both the targeted character and consular, get em
+        guildGG.roster["JEDIKNIGHTCONSULAR"].forEach(j => {
+            // If they have both the targeted character and consular, ignore them
             const filtered = guildChar.filter(p => p.player === j.player);
 
             // If they don't, it'll be a 0 length array, so fill it in with 0 stats
             if (!filtered.length) {
                 guildChar.push({
                     player: j.player,       // Player name
-                    allyCode: j.allyCode,         // Ally code
+                    allyCode: j.allyCode,   // Ally code
                     gearLevel: 0,
                     gp: 0,
                     level: 0,
@@ -213,13 +233,15 @@ class GuildSearch extends Command {
                 });
             }
         });
+
+        const updated = client.duration(guildGG.updated, message);
         msg.edit({embed: {
             author: {
                 name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
             },
             fields: fields,
             footer: {
-                text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message))
+                text: message.language.get("BASE_SWGOH_LAST_UPDATED", updated)
             }
         }});
     }
