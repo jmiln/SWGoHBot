@@ -189,7 +189,6 @@ module.exports = class extends Language {
             BASE_GEAR_SHORT: "Ausruestung",
             BASE_SOMETHING_BROKE: "Etwas funktioniert nicht",
 
-
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
             COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Verwendung \`${prefix}abilities <CharakterName>\``,
