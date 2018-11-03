@@ -127,7 +127,6 @@ module.exports = class extends Language {
                 SPEED:      "Tempo",
                 TENACITY:   "Zaehigkeit"
             },
-
             BASE_MODSETS_FROM_GAME: {
                 1: "Gesundheit",
                 2: "Angriff",
