@@ -92,6 +92,7 @@ module.exports = class extends Language {
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Bitte warten waehrend ich aktualisiere ${dType ? dType : "Daten"}`,
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
             BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
+            BASE_SWGOH_MISSING_CHAR: "Entschuldige, aber sieht so aus als ob du diesen Charakter noch nicht freigeschalten hast",
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
@@ -187,6 +188,8 @@ module.exports = class extends Language {
                 DEFLECTION: "Ablenkungschance"
             },
             BASE_LEVEL_SHORT: "lvl",
+            BASE_GEAR_SHORT: "Ausruestung",
+            BASE_SOMETHING_BROKE: "Etwas funktioniert nicht",
 
 
             // Abilities Command
@@ -657,6 +660,7 @@ module.exports = class extends Language {
             },
 
             // MyCharacter Command
+            COMMAND_MYCHARACTER_ABILITIES: "Faehigkeiten",
             COMMAND_MYCHARACTER_HELP: ({
                 description: "Zeigt die Werte eines ausgewaehlten Charakters an.",
                 actions: [
