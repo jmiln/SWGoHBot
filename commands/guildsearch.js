@@ -170,9 +170,12 @@ class GuildSearch extends Command {
 
         // Can get the order from abilities table => skillReferenceList
         let maxZ = 0;
-        for (const member of guildChar) {
-            if (member.zetas.length > maxZ) {
-                maxZ = member.zetas.length;
+        const zetas = [];
+        const apiChar = await client.swgohAPI.getCharacter(character.uniqueName);
+        for (const ab of apiChar.skillReferenceList) {
+            if (ab.cost.AbilityMatZeta > 0) {
+                maxZ = maxZ + 1;
+                zetas.push(ab.skillId);
             }
         }
 
@@ -204,12 +207,21 @@ class GuildSearch extends Command {
 
         const charOut = {};
         for (const member of sortedGuild) {
+            console.log(member.zetas);
             if (isNaN(parseInt(member.starLevel))) member.starLevel = rarityMap[member.starLevel];
             const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
-            const zetas = " | " + "+".repeat(member.zetas.length) + " ".repeat(maxZ - member.zetas.length);
+            let z = " | ";
+            zetas.forEach((zeta, ix) => {
+                const pZeta = member.zetas.find(pz => pz === zeta);
+                if (!pZeta) {
+                    z += " ";
+                } else {
+                    z += (ix + 1).toString();
+                }
+            });
             const gpStr = parseInt(member.gp).toLocaleString();
             
-            let uStr = member.starLevel > 0 ? `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ""}]\`** ${member.player}` : member.player;
+            let uStr = member.starLevel > 0 ? `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}` : member.player;
 
             uStr = client.expandSpaces(uStr);
 
