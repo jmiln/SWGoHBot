@@ -474,7 +474,9 @@ module.exports = (client) => {
                     });
                 } catch (err) {
                     // Probably API timeout
+                    console.log("[SWAPI-guild] Couldn't update guild for: " + player.name);
                 }
+                // console.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
 
                 if (tempGuild && tempGuild[0]) {
                     tempGuild = tempGuild[0];

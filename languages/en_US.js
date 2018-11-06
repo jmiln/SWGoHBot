@@ -92,7 +92,7 @@ module.exports = class extends Language {
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : "data"}`,
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
             BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
-            BASE_SWGOH_MISSING_CHAR: "Sorry, but it looks like you don't have this character unlocked",
+            BASE_SWGOH_LOCKED_CHAR: "Sorry, but it looks like you don't have this character unlocked",
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,

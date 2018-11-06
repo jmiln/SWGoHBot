@@ -3064,7 +3064,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "mods": {
@@ -3267,7 +3267,7 @@
                 }
             },
             "Boba Fett's Payout": {
-                "type": "Unique",
+                "type": " · · Level 3 ",
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever Boba Fett receives Rewards from a Contract, he also gains the following Payout. (Contracts are granted by certain Bounty Hunter Leader Abilities.)",
                 "tier": "omega",
@@ -3291,24 +3291,24 @@
             ]
         },
         "stats": {
-            "Power": 21918,
-            "Strength": 770,
-            "Agility": 1320,
-            "Intelligence": 660,
-            "Speed": 159,
-            "Physical Damage": 3206,
-            "Physical Critical Rating": 852,
-            "Special Damage": 1687,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 203,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 49,
-            "Health": 27193,
-            "Armor": 224,
-            "Resistance": 188,
-            "Tenacity": 45,
-            "Health Steal": 10,
-            "Protection": 19,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 80
         }
     },

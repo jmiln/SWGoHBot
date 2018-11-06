@@ -247,7 +247,7 @@ class MyCharacter extends Command {
                 author: {
                     name: pName + "'s " + character.name
                 },
-                description: message.language.get("BASE_SWGOH_MISSING_CHAR"),
+                description: message.language.get("BASE_SWGOH_LOCKED_CHAR"),
                 footer: {
                     text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
                 }
