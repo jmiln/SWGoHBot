@@ -168,6 +168,7 @@ class GuildSearch extends Command {
             }
         });
 
+        // Can get the order from abilities table => skillReferenceList
         let maxZ = 0;
         for (const member of guildChar) {
             if (member.zetas.length > maxZ) {

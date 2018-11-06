@@ -1,0 +1,80 @@
+{
+    "SKILLRECIPE_BASIC_T7": {
+        "Credits": 85000,
+        "AbilityMatMk1": 45,
+        "AbilityMatMk2": 38,
+        "AbilityMatMk3": 24,
+        "AbilityMatOmega": 5, 
+        "AbilityMatZeta": 0
+    },
+    "SKILLRECIPE_SPECIAL_T7": {
+        "Credits": 155800,
+        "AbilityMatMk1": 34,
+        "AbilityMatMk2": 29,
+        "AbilityMatMk3": 19,
+        "AbilityMatOmega": 5,
+        "AbilityMatZeta": 0
+    },
+    "SKILLRECIPE_SPECIAL_T7_ZETA": {
+        "Credits": 220400,
+        "AbilityMatMk1": 34,
+        "AbilityMatMk2": 29,
+        "AbilityMatMk3": 59,
+        "AbilityMatOmega": 16,
+        "AbilityMatZeta": 20
+    },
+    "SKILLRECIPE_PASSIVE_T7": {
+        "Credits": 135200,
+        "AbilityMatMk1": 30,
+        "AbilityMatMk2": 25,
+        "AbilityMatMk3": 16,
+        "AbilityMatOmega": 5,
+        "AbilityMatZeta": 0
+    },
+    "SKILLRECIPE_PASSIVE_T7_ZETA": {
+        "Credits": 179800,
+        "AbilityMatMk1": 30,
+        "AbilityMatMk2": 25,
+        "AbilityMatMk3": 46,
+        "AbilityMatOmega": 13,
+        "AbilityMatZeta": 20
+    },
+    "SKILLRECIPE_LEADER_T7": {
+        "Credits": 99200,
+        "AbilityMatMk1": 26,
+        "AbilityMatMk2": 21,
+        "AbilityMatMk3": 14,
+        "AbilityMatOmega": 3,
+        "AbilityMatZeta": 0
+    },
+    "SKILLRECIPE_LEADER_T7_ZETA": {
+        "Credits": 153000,
+        "AbilityMatMk1": 26,
+        "AbilityMatMk2": 21,
+        "AbilityMatMk3": 34,
+        "AbilityMatOmega": 10,
+        "AbilityMatZeta": 20
+    },
+    "SKILLRECIPE_CONTRACT_T2": {
+        "Credits": 168100,
+        "AbilityMatMk1": 40,
+        "AbilityMatMk2": 34,
+        "AbilityMatMk3": 22,
+        "AbilityMatOmega": 5,
+        "AbilityMatZeta": 0
+    },
+    "SHIPSKILLRECIPE_BASIC_T7": {
+    },
+    "SHIPSKILLRECIPE_SPECIAL_T7": {
+    },
+    "SHIPSKILLRECIPE_PASSIVE_T7": {
+    },
+    "SHIPSKILLRECIPE_HARDWARE_SYSTEMS_T2": {
+    },
+    "FLEETCOMMANDERSKILLRECIPE_BASIC_T7": {
+    },
+    "FLEETCOMMANDERSKILLRECIPE_SPECIAL_T7": {
+    },
+    "FLEETCOMMANDERSKILLRECIPE_PASSIVE_T7": {
+    }
+}

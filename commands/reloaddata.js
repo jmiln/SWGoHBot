@@ -13,6 +13,7 @@ class ReloadData extends Command {
 
     async run(client, message, [action, ...args], options) { // eslint-disable-line no-unused-vars
         const id = message.channel.id;
+        const swgohLangList = ["CHS_CN", "CHT_CN", "ENG_US", "FRE_FR", "GER_DE", "IND_ID", "ITA_IT", "JPN_JP", "KOR_KR", "POR_BR", "RUS_RU", "SPA_XM", "THA_TH", "TUR_TR"];
         switch (action) {
             case "com":
             case "commands": // Reloads all the commands, 
@@ -65,6 +66,19 @@ class ReloadData extends Command {
                     client.reloadLanguages(id);
                 }
                 break;
+            case "swlang": 
+                // Do this first since it's just the basic skeleton
+                await client.swgohAPI.character(null, true);
+                for (const lang of swgohLangList) {
+                    await client.swgohAPI.abilities([], lang, true);
+                    await client.swgohAPI.gear([], lang, true);
+                    await client.swgohAPI.recipes([], lang, true);
+                    await client.swgohAPI.materials([], lang, true);
+                    message.channel.send("Updated local data for " + lang);
+                }
+                message.channel.send("API Language update complete");
+                break;
+
             default:
                 return message.channel.send("You can only choose `commands, events, functions, languages, or data.`");
 
