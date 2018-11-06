@@ -70,7 +70,7 @@ class Abilities extends Command {
                 cooldownString = message.language.get("COMMAND_ABILITIES_COOLDOWN", ability.cooldown);
             }
 
-            const msgArr = client.msgArray(message.language.get("COMMAND_ABILITIES_ABILITY", type, costStr, cooldownString, ability.desc).split(" "), " ", 1000);
+            const msgArr = client.msgArray(client.expandSpaces(message.language.get("COMMAND_ABILITIES_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
 
             msgArr.forEach((m, ix) => {
                 if (ix === 0) {
