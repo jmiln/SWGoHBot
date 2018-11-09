@@ -1121,7 +1121,9 @@ module.exports = class extends Language {
                         action: "View",
                         actionDesc: "Look at all the tracked times for you and your shardmates",
                         usage: ";shardtimes view",
-                        args: {}
+                        args: {
+                            "-ships": "View the times for fleet payout instead (-ship | -s)"
+                        }
                     }
                 ]
             },

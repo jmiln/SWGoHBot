@@ -12,7 +12,7 @@ class Shardtimes extends Command {
             category: "Misc",
             flags: {
                 "ships": {
-                    aliases: ["ship"]
+                    aliases: ["ship", "s"]
                 }
             },
             subArgs: {

@@ -23,6 +23,14 @@
         "AbilityMatOmega": 16,
         "AbilityMatZeta": 20
     },
+    "SKILLRECIPE_PASSIVE_T6": {
+        "Credits": 548000,
+        "AbilityMatMk1": 30,
+        "AbilityMatMk2": 25,
+        "AbilityMatMk3": 16,
+        "AbilityMatOmega": 0,
+        "AbilityMatZeta": 0
+    },
     "SKILLRECIPE_PASSIVE_T7": {
         "Credits": 135200,
         "AbilityMatMk1": 30,

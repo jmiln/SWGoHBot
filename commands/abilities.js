@@ -54,14 +54,18 @@ class Abilities extends Command {
             });
 
             const costs = [];
-            if (ability.cost.AbilityMatZeta > 0) {
-                costs.push(`${ability.cost.AbilityMatZeta} ${zeta}`);
-            } 
-            if (ability.cost.AbilityMatOmega > 0) {
-                costs.push(`${ability.cost.AbilityMatOmega} ${omega}`);
-            } 
-            if (ability.cost.AbilityMatMk3 > 0) {
-                costs.push(`${ability.cost.AbilityMatMk3} ${abilityMatMK3}`);
+            if (ability.cost) {
+                if (ability.cost.AbilityMatZeta > 0) {
+                    costs.push(`${ability.cost.AbilityMatZeta} ${zeta}`);
+                } 
+                if (ability.cost.AbilityMatOmega > 0) {
+                    costs.push(`${ability.cost.AbilityMatOmega} ${omega}`);
+                } 
+                if (ability.cost.AbilityMatMk3 > 0) {
+                    costs.push(`${ability.cost.AbilityMatMk3} ${abilityMatMK3}`);
+                }
+            } else {
+                console.log(ability);
             }
             const costStr = costs.length > 0 ? costs.join(" | ") : "";
 
