@@ -293,8 +293,12 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "charactergear <character> [gearLvl]",
-                        args: {}
+                        usage: "charactergear [user] <character> [gearLvl]",
+                        args: {
+                            "user": "The person you want to see the gear for. (me | userID | mention)",
+                            "character": "The character you want to see the gear for",
+                            "gearLvl": "If you just want to see the gear for a certain gear level"
+                        }
                     }
                 ]
             },
@@ -1114,7 +1118,7 @@ module.exports = class extends Language {
                         actionDesc: "Remove a user from the tracker",
                         usage: ";shardtimes remove <user>",
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "user": "The person you're removing. (me | userID | mention)"
                         }
                     },
                     {
