@@ -173,7 +173,7 @@ class GuildSearch extends Command {
         const zetas = [];
         const apiChar = await client.swgohAPI.getCharacter(character.uniqueName);
         for (const ab of apiChar.skillReferenceList) {
-            if (ab.cost.AbilityMatZeta > 0) {
+            if (ab.cost && ab.cost.AbilityMatZeta > 0) {
                 maxZ = maxZ + 1;
                 zetas.push(ab.skillId);
             }
@@ -207,7 +207,6 @@ class GuildSearch extends Command {
 
         const charOut = {};
         for (const member of sortedGuild) {
-            console.log(member.zetas);
             if (isNaN(parseInt(member.starLevel))) member.starLevel = rarityMap[member.starLevel];
             const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
             let z = " | ";
@@ -221,7 +220,16 @@ class GuildSearch extends Command {
             });
             const gpStr = parseInt(member.gp).toLocaleString();
             
-            let uStr = member.starLevel > 0 ? `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}` : member.player;
+            let uStr;
+            if (member.starLevel > 0) {
+                if (options.flags.ships) {
+                    uStr = `**\`[Lvl ${member.level} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}`;
+                } else {
+                    uStr = `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}`;
+                }
+            } else {
+                uStr = member.player;
+            }
 
             uStr = client.expandSpaces(uStr);
 
@@ -247,7 +255,7 @@ class GuildSearch extends Command {
             }
         });
 
-        const updated = client.duration(guildGG.updated, message);
+        const updated = client.duration(guild.updated, message);
         msg.edit({embed: {
             author: {
                 name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
