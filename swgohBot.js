@@ -18,6 +18,7 @@ client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
 client.squads = JSON.parse(fs.readFileSync("data/squads.json"));
 client.resources = JSON.parse(fs.readFileSync("data/resources.json"));
 client.arenaJumps = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
+client.acronyms = JSON.parse(fs.readFileSync("data/acronyms.json"));
 client.patrons = [];
 const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";

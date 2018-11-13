@@ -206,6 +206,29 @@ module.exports = class extends Language {
                 ]
             },
 
+            //Acronym Command
+            COMMAND_ACRONYMS_INVALID: (prefix) => `Acronym lookup provided not available for blank`,
+            COMMAND_ACRONYMS_NOT_FOUND: (prefix) => `Acronym could not be found`,
+            COMMAND_ACRONYMS_FOUND: (acronyms, meanings) => { 
+                let message = "";
+                for (let i = 0; i < acronyms.length; i++) {
+                    if (message !== "") message += `\n`;
+                    message += `**${acronyms[i]}**: ${meanings[i]}`;
+                }
+                return message;
+            },
+            COMMAND_ACRONYMS_HELP: {
+                description: "Helps to provide a lookup for the acronyms commonly used in Star Wars: Galaxy of Heros.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";acronym acronymToLookUp|orMultiple",
+                        args: {}
+                    }
+                ]
+            },
+
             // Activities Command
             COMMAND_ACTIVITIES_SUNDAY:    "== Before Reset == \nComplete Arena Battles \nSave Cantina Energy \nSave Normal Energy\n\n== After Reset == \nSpend Cantina Energy \nSave Normal Energy",
             COMMAND_ACTIVITIES_MONDAY:    "== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \n\n== After Reset == \nSpend Normal Energy on Light Side Battles ",
