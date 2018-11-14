@@ -22,7 +22,7 @@ class Acronyms extends Command {
             return message.channel.send(message.language.get("COMMAND_ACRONYMS_INVALID", acronyms.join(", ")));
         }
 
-        const lookupList = acronym.split("|").map(a => a.toLowerCase());
+        const lookupList = acronym.split("|").map(a => a.trim().toLowerCase());
         
         const matchingItems = acronyms.filter(acr => lookupList.includes(acr.toLowerCase()));
         
