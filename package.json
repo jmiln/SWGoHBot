@@ -5,7 +5,7 @@
     "main": "swgohBot.js",
     "scripts": {
         "lint": "eslint",
-        "start": "nodemon swgohBot.js"
+        "start": "node swgohBot.js"
     },
     "author": "Jeff",
     "license": "MIT",
@@ -34,8 +34,5 @@
     },
     "engines": {
         "node": "^8.4.0"
-    },
-    "devDependencies": {
-        "nodemon": "^1.18.6"
     }
 }
