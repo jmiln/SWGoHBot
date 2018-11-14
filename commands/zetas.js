@@ -1,5 +1,4 @@
 const Command = require("../base/Command");
-const moment = require("moment");
 
 class Zetas extends Command {
     constructor(client) {
@@ -128,15 +127,12 @@ class Zetas extends Command {
                 }
             }
             
-            const lastUpdated = moment.duration(Math.abs(moment(player.updated).diff(moment()))).format("d [days], h [hrs], m [min]");
-
+            const footer = client.updatedFooter(player.updated, message, "player", cooldown);
             msg.edit({embed: {
                 color: 0x000000,
                 author: author,
                 description: desc.join("\n"), 
-                footer: {
-                    text: message.language.get("BASE_SWGOH_LAST_UPDATED", lastUpdated)
-                }
+                footer: footer
             }});
         } else if (options.flags.r) {
             // Zeta recommendations
@@ -172,11 +168,13 @@ class Zetas extends Command {
             });
 
             const zetaLen = `${myZetas.length} ${sortBy === "versa" ? "" : sortBy + " "}`;
+            const footer = client.updatedFooter(player.updated, message, "player", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_ZETA_REC_AUTH", zetaLen, player.name)
                 },
-                description: desc
+                description: desc,
+                footer: footer
             }});
         } else if (options.flags.g) {
             let guild = null;
@@ -199,17 +197,18 @@ class Zetas extends Command {
                         for (let s = 0; s < char.skills.length; s++) {
                             const skill = char.skills[s];
                             if (!skill.isZeta || skill.tier < 8) continue;
-                            const tmp = zetaList[char.name] || {};
-                            if (!tmp[skill.name]) {
-                                tmp[skill.name] = [member.name];
+                            const tmp = zetaList[char.nameKey] || {};
+                            if (!tmp[skill.nameKey]) {
+                                tmp[skill.nameKey] = [member.name];
                             } else {
-                                tmp[skill.name].push(member.name);
+                                tmp[skill.nameKey].push(member.name);
                             }
-                            zetaList[char.name] = tmp;
+                            zetaList[char.nameKey] = tmp;
                         }
                     }
                 }
                 if (!searchChar.length) {
+                    // Just want to see all zetas for the guild
                     const zArr = [];
                     const sorted = Object.keys(zetaList).sort();
                     sorted.forEach(c => { 
@@ -231,13 +230,16 @@ class Zetas extends Command {
 
                     });
 
+                    const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
                     return msg.edit({embed: {
                         author: {
                             name: message.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
                         },
-                        fields: fields
+                        fields: fields,
+                        footer: footer
                     }});
                 } else {
+                    // Want to see all zetas in the guild for a certain character
                     const fields = [];
                     const zChar = zetaList[Object.keys(zetaList)[0]];
                     Object.keys(zChar).forEach(z => {
@@ -253,11 +255,13 @@ class Zetas extends Command {
                             });
                         });
                     });
+                    const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
                     return msg.edit({embed: {
                         author: {
                             name: `${guild.name}'s ${character.name} zetas`
                         },
-                        fields: fields
+                        fields: fields,
+                        footer: footer
                     }});
                 }
 

@@ -13,7 +13,7 @@ class MyArena extends Command {
     }
 
     async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
-        const lang = message.guildSettings.swgoghLanguage;
+        const lang = message.guildSettings.swgohLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
             return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
@@ -66,15 +66,13 @@ class MyArena extends Command {
             inline: true
         });
 
-
+        const footer = client.updatedFooter(player.updated, message, "player", cooldown);
         return message.channel.send({embed: {
             author: {
                 name: message.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name)
             },
-            footer: {
-                text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
-            },
-            fields: fields
+            fields: fields,
+            footer: footer
         }});
     }
 }

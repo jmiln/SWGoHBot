@@ -121,7 +121,8 @@ class Charactergear extends Command {
             }
         } else {
             // Looking for a player's remaining needed gear
-            const player = await client.swgohAPI.player(userID);
+            const cooldown = client.getPlayerCooldown(message.author.id);
+            const player = await client.swgohAPI.player(userID, message.guildSettings.swgohLanguage, cooldown);
             const char = await client.swgohAPI.getCharacter(character.uniqueName);
             const playerChar = player.roster.find(c => c.defId === character.uniqueName);
 
@@ -133,7 +134,6 @@ class Charactergear extends Command {
                 // Need to filter out the gear that they already have assigned to the character, then show them what's left
 
                 const gearList = char.unitTierList.filter(t => t.tier >= playerChar.gear);
-                console.log(gearList);
 
                 const fields = [];
                 gearList.forEach((g, ix) => {
@@ -160,14 +160,13 @@ class Charactergear extends Command {
                         });
                     }
                 });
+                const footer = client.updatedFooter(player.updated, message, "player", cooldown);
                 message.channel.send({embed: {
                     author: {
                         name: `${player.name}'s ${character.name} needs:`
                     },
                     fields: fields,
-                    footer: {
-                        text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
-                    }
+                    footer: footer
                 }});
             }
         }

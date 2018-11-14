@@ -139,11 +139,13 @@ class Guilds extends Command {
                 name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
                 value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
             });
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
-                fields: fields
+                fields: fields,
+                footer: footer
             }});
         } else {
             // Show basic stats. info about the guild
@@ -179,15 +181,14 @@ class Guilds extends Command {
                 name: "-",
                 value: message.language.get("COMMAND_GUILDS_FOOTER", message.guildSettings.prefix)
             });
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: guild.name
                 },
                 description: desc.length ? desc : "",
                 fields: fields.length ? fields : [],
-                footer: {
-                    text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message))
-                }
+                footer: footer
             }});
         }
     }

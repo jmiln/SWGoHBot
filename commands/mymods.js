@@ -94,6 +94,8 @@ class MyMods extends Command {
                 console.log(e);
             }
 
+            const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+
             let charMods = player.roster.filter(c => c.defId === character.uniqueName);
 
             if (charMods && charMods.length > 0) {
@@ -145,9 +147,7 @@ class MyMods extends Command {
                         icon_url: character.avatarURL
                     },
                     fields: fields,
-                    footer: {
-                        text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
-                    }
+                    footer: footer 
                 }}); 
             } else {
                 // They don't have the character
@@ -156,9 +156,7 @@ class MyMods extends Command {
                         name: player.name + "'s " + character.name
                     },
                     description: message.language.get("BASE_SWGOH_LOCKED_CHAR"),
-                    footer: {
-                        text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
-                    }
+                    footer: footer 
                 }});
             }
         } else {

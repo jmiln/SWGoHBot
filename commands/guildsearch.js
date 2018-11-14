@@ -255,15 +255,13 @@ class GuildSearch extends Command {
             }
         });
 
-        const updated = client.duration(guild.updated, message);
+        const footer = client.updatedFooter(guildGG.updated, message, "guild", cooldown);
         msg.edit({embed: {
             author: {
                 name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
             },
             fields: fields,
-            footer: {
-                text: message.language.get("BASE_SWGOH_LAST_UPDATED", updated)
-            }
+            footer: footer
         }});
     }
 }

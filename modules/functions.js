@@ -566,6 +566,31 @@ module.exports = (client) => {
     };
 
     /*
+     * LAST UPDATED FOOTER
+     * Simple one to make the "Last updated ____ " footers
+     */
+    client.updatedFooter = (updated, message=null, type="player", userCooldown) => {
+        const baseCooldown = { player: 2, guild: 6 };
+        const minCooldown = { player: 1, guild: 3 };
+
+        if (!userCooldown) userCooldown = baseCooldown;
+        let between = client.convertMS(new Date() - new Date(updated));
+
+        if (between.hour >= minCooldown[type] && between.hour < userCooldown[type]) {
+            // If the data is between the shorter time they'd get from patreon, and the 
+            // time they'd get without, stick the patreon link in the footer
+            between = " | patreon.com/swgohbot";
+        } else {
+            // Otherwise, if it's too new, too old, or they already have the faster 
+            // times, don't add it in
+            between = "";
+        }
+        return {
+            text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(updated, message)) + between
+        };
+    };
+
+    /*
      * Return a duration string
      */
     client.duration = (time, message=null) => {

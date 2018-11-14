@@ -83,16 +83,14 @@ class MyProfile extends Command {
                 "```"
             ].join("\n")
         });
-
+        const footer = client.updatedFooter(player.updated, message, "player", cooldown);
         return message.channel.send({embed: {
             author: {
                 name: message.language.get("COMMAND_MYPROFILE_EMBED_HEADER", player.name, player.allyCode),
             },
             description: message.language.get("COMMAND_MYPROFILE_DESC", player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, gpFull.toLocaleString()),
-            footer: {
-                text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
-            },
-            fields: fields
+            fields: fields,
+            footer: footer
         }});
     }
 }

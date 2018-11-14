@@ -71,6 +71,7 @@ class MyCharacter extends Command {
         if (player && player.stats) {
             pName = player.stats[0].unit.player;
         }
+        const footer = client.updatedFooter(player.updated, message, "player", cooldown);
 
         let thisChar = player.stats.filter(c => c.unit.defId === character.uniqueName);
         if (thisChar && thisChar[0]) {
@@ -237,9 +238,7 @@ class MyCharacter extends Command {
                         value: abilitiesOut.join("\n")
                     }
                 ].concat(fields),
-                footer: {
-                    text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
-                }
+                footer: footer
             }});
         } else {
             // You don't have the character
@@ -248,12 +247,9 @@ class MyCharacter extends Command {
                     name: pName + "'s " + character.name
                 },
                 description: message.language.get("BASE_SWGOH_LOCKED_CHAR"),
-                footer: {
-                    text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(player.updated, message))
-                }
+                footer: footer
             }});
         }
-        
     }
 }
 
