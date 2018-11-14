@@ -23,11 +23,7 @@ class Acronyms extends Command {
         }
 
         const lookupList = acronym.map(a => a.trim().toLowerCase());
-        
         const matchingItems = acronyms.filter(acr => lookupList.includes(acr.toLowerCase()));
-        
-        console.log(matchingItems, lookupList);
-
 
         if (!matchingItems.length) {
             return message.channel.send(message.language.get("COMMAND_ACRONYMS_NOT_FOUND", acronyms.join(", ")));
@@ -46,8 +42,6 @@ class Acronyms extends Command {
              */
             acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymsLookup[matchingItems[i]]}`;
         }
-
-        console.log(acronymMeaningMessage);
 
         return message.channel.send(acronymMeaningMessage);
     }
