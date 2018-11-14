@@ -14,7 +14,7 @@ class Acronyms extends Command {
         });
     }
 
-    async run(client, message, [ acronym ], options) { // eslint-disable-line no-unused-vars
+    async run(client, message, [ ...acronym ], options) { // eslint-disable-line no-unused-vars
         const acronymsLookup = client.acronyms;
         const acronyms = Object.keys(acronymsLookup);
 
@@ -22,7 +22,7 @@ class Acronyms extends Command {
             return message.channel.send(message.language.get("COMMAND_ACRONYMS_INVALID", acronyms.join(", ")));
         }
 
-        const lookupList = acronym.split("|").map(a => a.trim().toLowerCase());
+        const lookupList = acronym.map(a => a.trim().toLowerCase());
         
         const matchingItems = acronyms.filter(acr => lookupList.includes(acr.toLowerCase()));
         
@@ -33,14 +33,23 @@ class Acronyms extends Command {
             return message.channel.send(message.language.get("COMMAND_ACRONYMS_NOT_FOUND", acronyms.join(", ")));
         } 
         
-        const acronymMeanings = [];
-        matchingItems.forEach(item => {
-            acronymMeanings.push(acronymsLookup[item]);
-        });
+        let acronymMeaningMessage = "";
+        for (let i = 0; i < matchingItems.length; i++) {
+            if (acronymMeaningMessage !== "") {
+                acronymMeaningMessage += "\n";
+            }
+            /* 
+             * TODO
+             * This next line won't translate well, as is. BUT we could move this to 
+             * const acronymMeaning = message.language.get("COMMAND_ACRONYM_" + matchingItems[i]);
+             * acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymMeaning}`;
+             */
+            acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymsLookup[matchingItems[i]]}`;
+        }
 
-        console.log(matchingItems, acronymMeanings);
+        console.log(acronymMeaningMessage);
 
-        return message.channel.send(message.language.get("COMMAND_ACRONYMS_FOUND", matchingItems, acronymMeanings));
+        return message.channel.send(acronymMeaningMessage);
     }
 }
 
