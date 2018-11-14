@@ -491,6 +491,7 @@ module.exports = class extends Language {
                 `Total GP:     ${gp}`
             ].join("\n"),
             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members and their gp.\n\`${prefix}guild -roster -allycode\` for a list with their ally codes instead.`,
+            COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName}'s Territory War Summary`,
             COMMAND_GUILDS_HELP: {
                 description: "Shows everyone that's in your guild/ some basic stats.",
                 actions: [
@@ -504,6 +505,15 @@ module.exports = class extends Language {
                             "-allycode": "Show a member's ally codes instead of GP",
                             "-sort": "Choose either name or gp to sort by",
                             "-reg": "Show the discord names of anyone registered & on the server next to their name."
+                        }
+                    },
+                    {
+                        action: "Territory War Summary",
+                        actionDesc: "Show a general overview of some impoortant characters for the specified guild",
+                        usage: ";guild [user] -twsummary",
+                        args: {
+                            "user": "A way to identify the guild. (mention | allyCode | guildName)",
+                            "-twsummary": "To tell it to show the summary  (-tw)"
                         }
                     }
                 ]

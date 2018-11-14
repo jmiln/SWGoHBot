@@ -231,7 +231,7 @@ class Guilds extends Command {
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
-                    name: guild.name + "'s Territory War Summary"
+                    name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
                 },
                 description: charOut.join("\n"),
                 footer: footer
