@@ -19,6 +19,9 @@ class Guilds extends Command {
                 },
                 "reg": {
                     aliases: []
+                },
+                twsummary: {
+                    aliases: ["tw"]
                 }
             },
             subArgs: {
@@ -145,6 +148,92 @@ class Guilds extends Command {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
                 fields: fields,
+                footer: footer
+            }});
+        } else if (options.flags.twsummary) {
+            // Spit out a general summary of guild characters and such related to tw
+            let gRoster ;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                gRoster = guild.roster.map(m => m.allyCode);
+            }
+
+            let guildGG;
+            try {
+                guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e); 
+                return message.channel.send({embed: {
+                    author: {
+                        name: "Something Broke while getting your guild's characters"
+                    },  
+                    description: client.codeBlock(e) + "Please try again in a bit."
+                }});
+            }
+            // Possibly put this in the guildConf so guilds can have custom lists?
+            const guildChecklist = [
+                "Light Side",
+                ["COMMANDERLUKESKYWALKER",  "CLS"],
+                ["R2D2_LEGENDARY",          "R2-D2"],
+                ["HANSOLO",                 "Han Solo"],
+                ["REYJEDITRAINING",         "Rey (JT)"],
+                ["BB8",                     "BB-8"],
+                
+                ["JEDIKNIGHTREVAN",         "Jedi Revan"],
+                ["BASTILASHAN",             "Bastila"],
+                ["GENERALKENOBI",           "Gen. Kenobi"],
+                ["GRANDMASTERYODA",         "GM Yoda"],
+                ["HERMITYODA",              "Hermit Yoda"],
+
+                ["ENFYSNEST",               "Enfys Nest"],
+
+                "Dark Side",
+                ["BOSSK",                   "Bossk"],
+                ["MAUL",                    "Darth Maul"],
+                ["DARTHSION",               "Darth Sion"],
+                ["DARTHTRAYA",              "Darth Traya"],
+                ["KYLORENUNMASKED",         "Kylo Unmask"],
+                ["VEERS",                   "Gen. Veers"],
+                ["EMPERORPALPATINE",        "Palpatine"],
+                ["MOTHERTALZIN",            "Talzin"],
+                ["GRANDADMIRALTHRAWN",      "Thrawn"],
+                ["WAMPA",                   "Wampa"],
+    
+                "Ships",
+                ["CAPITALCHIMAERA",         "Chimaera"],
+                ["CAPITALJEDICRUISER",      "Endurance"],
+                ["CAPITALSTARDESTROYER",    "Executrix"],
+                ["CAPITALMONCALAMARICRUISER", "Home One"]
+            ];
+
+            const allNames = guildChecklist.map(c => c[1]);
+            const longest = allNames.reduce((long, str) => Math.max(long, str.length), 0);
+
+            let charOut = [];
+            charOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total G12  G11   7*\`**`);
+            charOut.push("**`==============================`**");
+            guildChecklist.forEach((char, ix) => {
+                if (Array.isArray(char)) {
+                    const roster = guildGG.roster[char[0]];
+                    const total = roster.length;
+                    const g12 = roster.filter(c => c.gearLevel === 12).length;
+                    const g11 = roster.filter(c => c.gearLevel === 11).length;
+                    const sevenStar = roster.filter(c => c.starLevel === 7).length;
+                    const name = allNames[ix];
+                    charOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
+                } else {
+                    charOut.push(`\n**${char}**`);
+                }
+            });
+            charOut = charOut.map(c => client.expandSpaces(c));
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            return msg.edit({embed: {
+                author: {
+                    name: guild.name + "'s Territory War Summary"
+                },
+                description: charOut.join("\n"),
                 footer: footer
             }});
         } else {
