@@ -19,7 +19,7 @@ class Acronyms extends Command {
         const acronyms = Object.keys(acronymsLookup);
 
         if (!acronym.length) {
-            return message.channel.send(message.language.get("COMMAND_ACRONYMS_INVALID");
+            return message.channel.send(message.language.get("COMMAND_ACRONYMS_INVALID"));
         }
 
         const lookupList = acronym.map(a => a.trim().toLowerCase());
