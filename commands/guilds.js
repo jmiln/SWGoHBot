@@ -175,19 +175,17 @@ class Guilds extends Command {
             // Possibly put this in the guildConf so guilds can have custom lists?
             const guildChecklist = [
                 "Light Side",
-                ["COMMANDERLUKESKYWALKER",  "CLS"],
-                ["R2D2_LEGENDARY",          "R2-D2"],
-                ["HANSOLO",                 "Han Solo"],
-                ["REYJEDITRAINING",         "Rey (JT)"],
-                ["BB8",                     "BB-8"],
-                
-                ["JEDIKNIGHTREVAN",         "Jedi Revan"],
                 ["BASTILASHAN",             "Bastila"],
+                ["BB8",                     "BB-8"],
+                ["COMMANDERLUKESKYWALKER",  "CLS"],
+                ["ENFYSNEST",               "Enfys Nest"],
                 ["GENERALKENOBI",           "Gen. Kenobi"],
                 ["GRANDMASTERYODA",         "GM Yoda"],
+                ["HANSOLO",                 "Han Solo"],
                 ["HERMITYODA",              "Hermit Yoda"],
-
-                ["ENFYSNEST",               "Enfys Nest"],
+                ["JEDIKNIGHTREVAN",         "Jedi Revan"],
+                ["R2D2_LEGENDARY",          "R2-D2"],
+                ["REYJEDITRAINING",         "Rey (JT)"],
 
                 "Dark Side",
                 ["BOSSK",                   "Bossk"],
