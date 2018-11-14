@@ -366,10 +366,11 @@ module.exports = (client) => {
         let err = false;
         try {
             client.characters = await JSON.parse(fs.readFileSync("data/characters.json"));
-            client.ships = await JSON.parse(fs.readFileSync("data/ships.json"));
-            client.squads = await JSON.parse(fs.readFileSync("data/squads.json"));
-            client.resources = await JSON.parse(fs.readFileSync("data/resources.json"));
+            client.ships      = await JSON.parse(fs.readFileSync("data/ships.json"));
+            client.squads     = await JSON.parse(fs.readFileSync("data/squads.json"));
+            client.resources  = await JSON.parse(fs.readFileSync("data/resources.json"));
             client.arenaJumps = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
+            client.acronyms   = await JSON.parse(fs.readFileSync("data/acronyms.json"));
         } catch (e) {
             err = e;
         }

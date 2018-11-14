@@ -19,14 +19,14 @@ class Acronyms extends Command {
         const acronyms = Object.keys(acronymsLookup);
 
         if (!acronym.length) {
-            return message.channel.send(message.language.get("COMMAND_ACRONYMS_INVALID", acronyms.join(", ")));
+            return message.channel.send(message.language.get("COMMAND_ACRONYMS_INVALID");
         }
 
         const lookupList = acronym.map(a => a.trim().toLowerCase());
         const matchingItems = acronyms.filter(acr => lookupList.includes(acr.toLowerCase()));
 
         if (!matchingItems.length) {
-            return message.channel.send(message.language.get("COMMAND_ACRONYMS_NOT_FOUND", acronyms.join(", ")));
+            return message.channel.send(message.language.get("COMMAND_ACRONYMS_NOT_FOUND"));
         } 
         
         let acronymMeaningMessage = "";
