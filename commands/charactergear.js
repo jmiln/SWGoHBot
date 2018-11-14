@@ -14,8 +14,8 @@ class Charactergear extends Command {
         // If there's enough elements in searchChar, and it's in the format of a number*
         if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {                                                                                               
             gearLvl = parseInt(searchChar.pop());
-            if (gearLvl < 0 || gearLvl > 7) {
-                return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"));
+            if (gearLvl < 0 || gearLvl > 12) {
+                return message.channel.send(message.language.get("COMMAND_CHARGEAR_INVALID_GEAR"));
             }   
         }  
 
