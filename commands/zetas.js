@@ -21,34 +21,20 @@ class Zetas extends Command {
         });
     }
 
-    async run(client, message, [userID, ...searchChar], options) { // eslint-disable-line no-unused-vars
-        let allyCode;
-
+    async run(client, message, args, options) { // eslint-disable-line no-unused-vars
         if (options.flags.g && options.flags.r) {
             return message.channel.send(message.language.get("COMMAND_ZETA_CONFLICTING_FLAGS"));
         }
 
         const filters = ["pit", "pvp", "sith", "tank", "tb", "tw"];
-        // Need to get the allycode from the db, then use that
-        if (!userID || userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
-            const allyCodes = await client.getAllyCode(message, userID);
-            if (!allyCodes.length) {
-                return message.channel.send(message.language.get("BASE_SWGOH_NO_USER", message.guildSettings.prefix));
-            }
-            allyCode = allyCodes[0];
-        } else {
-            // If they're just looking for a character for themselves, get the char
-            searchChar = [userID].concat(searchChar);
-            const allyCodes = await client.getAllyCode(message, message.author.id);
-            if (!allyCodes.length) {
-                return message.channel.send(message.language.get("BASE_SWGOH_NO_USER", message.guildSettings.prefix));
-            }
-            allyCode = allyCodes[0];
+
+        const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
+
+        if (err) {
+            return message.channel.send("**Error:** `" + err + "`");
         }
         
-        searchChar = searchChar.join(" ").trim();
-        
-        if (searchChar.length && options.flags.r && !filters.includes(searchChar.toLowerCase())) { 
+        if (searchChar && searchChar.length && options.flags.r && !filters.includes(searchChar.toLowerCase())) { 
             return message.channel.send(message.language.get("COMMAND_ZETA_REC_BAD_FILTER", filters.join(", ")));
         }             
 
@@ -65,6 +51,9 @@ class Zetas extends Command {
                 return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
             } else if (chars.length === 1) {
                 character = chars[0];
+            } else {
+                // No character found
+                return message.channel.send(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             }
         }
         
@@ -81,7 +70,7 @@ class Zetas extends Command {
         }
 
         if (!options.flags.r && !options.flags.g) {
-
+            // Just want to see your own zetas
             const zetas = {};
             let count = 0;
             player.roster.forEach(char => {

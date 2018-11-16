@@ -24,7 +24,7 @@ class MyMods extends Command {
         });
     }
 
-    async run(client, message, [userID, ...searchChar], options) { // eslint-disable-line no-unused-vars
+    async run(client, message, args, options) { // eslint-disable-line no-unused-vars
         // const lang = message.guildSettings.swgohLanguage;
         const cooldown = client.getPlayerCooldown(message.author.id);
         const icons = {
@@ -36,36 +36,13 @@ class MyMods extends Command {
             STATMOD_SLOT_06: await client.getEmoji("362066327516610570") || "Cross"
         };
 
-        if (searchChar) searchChar = searchChar.join(" ");
+        const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
 
-        // Need to get the allycode from the db, then use that
-        if (!userID) {
-            if (!options.subArgs.b) {
-                return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
-            } else {
-                userID = message.author.id;
-            }
-        } else if (userID === "me") {
-            userID = message.author.id;
-        } else if (client.isAllyCode(userID) || client.isUserID(userID)) {
-            userID = userID.replace(/[^\d]*/g, "");
-        } else {
-            // If they're just looking for a character for themselves, get the char
-            searchChar = userID + " " + searchChar;
-            searchChar = searchChar.trim();
-            userID = message.author.id;
+        if (err) {
+            return message.channel.send("**Error:** `" + err + "`");
         }
 
         const msg = await message.channel.send(message.language.get("COMMAND_MYMODS_WAIT"));
-
-        const allyCodes = await client.getAllyCode(message, userID);
-        if (!allyCodes.length) {
-            return msg.edit(message.language.get("BASE_SWGOH_NOT_REG", client.users.get(userID).tag));
-        } else if (allyCodes.length > 1) {
-            return msg.edit("Found " + allyCodes.length + " matches. Please make sure your code is correct.");
-        }
-
-        const allyCode = allyCodes[0];
 
         if (!options.subArgs.b) {
             let character;
@@ -92,6 +69,11 @@ class MyMods extends Command {
                 player = await client.swgohAPI.player(allyCode, null, cooldown);
             } catch (e) {
                 console.log(e);
+            }
+
+            if (!player) {
+                // TODO Lang this
+                return msg.edit("Sorry, but I could not load your profile at this time.");
             }
 
             const footer = client.updatedFooter(player.updated, message, "player", cooldown);

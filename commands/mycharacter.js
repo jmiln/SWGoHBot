@@ -13,26 +13,12 @@ class MyCharacter extends Command {
         });
     }
 
-    async run(client, message, [userID, ...searchChar]) {
-        if (searchChar) searchChar = searchChar.join(" ");
+    async run(client, message, args) {
+        const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
 
-        // Need to get the allycode from the db, then use that
-        if (!userID) {
-            return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
-        } else if (userID !== "me" && !client.isAllyCode(userID) && !client.isUserID(userID)) {
-            // If they're just looking for a character for themselves, get the char
-            searchChar = userID + " " + searchChar;
-            searchChar = searchChar.trim();
-            userID = message.author.id;
+        if (err) {
+            return message.channel.send("**Error:** `" + err + "`");
         }
-        
-        const allyCodes = await client.getAllyCode(message, userID);
-        if (!allyCodes.length) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
-        } else if (allyCodes.length > 1) {
-            return message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific");
-        }
-        userID = allyCodes[0];
 
         const chars = client.findChar(searchChar, client.characters);
         let character;
@@ -59,7 +45,7 @@ class MyCharacter extends Command {
         let pName;
         let player = null;
         try {
-            player = await client.swgohAPI.unitStats(userID, cooldown);
+            player = await client.swgohAPI.unitStats(allyCode, cooldown);
         } catch (e) {
             console.error(e);
             return msg.edit({embed: {
