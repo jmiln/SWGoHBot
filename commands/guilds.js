@@ -257,7 +257,6 @@ class Guilds extends Command {
                 inline: true
             });
     
-            console.log(guild.roster);
             let guildCharGP = 0;
             let guildShipGP = 0;
             guild.roster.forEach(m => {

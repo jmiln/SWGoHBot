@@ -1583,6 +1583,169 @@
         "role": "Support"
     },
     {
+        "name": "Bastila Shan (Fallen)",
+        "base_id": "BASTILASHANDARK",
+        "pk": 305,
+        "url": "http://swgoh.gg/characters/bastila-shan-fallen/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bastilashan_dark.png",
+        "power": 21952,
+        "description": "Strong Sith Support who inflicts a large number of debuffs including Shock, Stun and Corrupted Battle Meditation",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "003",
+                    "003",
+                    "010",
+                    "010",
+                    "009",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "015",
+                    "015",
+                    "020",
+                    "020",
+                    "032",
+                    "027"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "054",
+                    "027",
+                    "027",
+                    "059",
+                    "059",
+                    "024"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "068",
+                    "077",
+                    "077",
+                    "072",
+                    "065",
+                    "047"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "095",
+                    "083",
+                    "080",
+                    "089",
+                    "091",
+                    "047"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "077",
+                    "068",
+                    "090",
+                    "098",
+                    "091",
+                    "095"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "080",
+                    "089",
+                    "098",
+                    "089",
+                    "077"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "088",
+                    "117",
+                    "111",
+                    "109",
+                    "088",
+                    "094"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "088",
+                    "105",
+                    "088",
+                    "088",
+                    "122",
+                    "122"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "080",
+                    "143",
+                    "132",
+                    "117",
+                    "098",
+                    "143"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "124",
+                    "124",
+                    "142",
+                    "143",
+                    "149",
+                    "146"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "161",
+                    "163",
+                    "168",
+                    "169",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Old Republic",
+            "Sith"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Counter",
+            "Defense Down",
+            "Evasion Down",
+            "Expose",
+            "Foresight",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Speed Down",
+            "Stun"
+        ],
+        "role": "Support"
+    },
+    {
         "name": "Baze Malbus",
         "base_id": "BAZEMALBUS",
         "pk": 216,
@@ -2862,6 +3025,165 @@
             "Thermal Detonator"
         ],
         "role": "Support"
+    },
+    {
+        "name": "Canderous Ordo",
+        "base_id": "CANDEROUSORDO",
+        "pk": 307,
+        "url": "http://swgoh.gg/characters/canderous-ordo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_canderous.png",
+        "power": 21168,
+        "description": "Powerful attacker who can make short work of enemy Tanks",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "005",
+                    "005",
+                    "001",
+                    "003",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "028",
+                    "034",
+                    "016",
+                    "021",
+                    "017",
+                    "001"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "055",
+                    "045",
+                    "060",
+                    "050",
+                    "036",
+                    "015"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "006",
+                    "074",
+                    "056",
+                    "055",
+                    "036",
+                    "024"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "075",
+                    "081",
+                    "074",
+                    "051",
+                    "058",
+                    "055"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "097",
+                    "092",
+                    "092",
+                    "091",
+                    "086",
+                    "050"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "118",
+                    "117",
+                    "112",
+                    "108",
+                    "113",
+                    "086"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "118",
+                    "117",
+                    "112",
+                    "108",
+                    "113",
+                    "086"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "126",
+                    "119",
+                    "112",
+                    "092",
+                    "102",
+                    "075"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "139",
+                    "129",
+                    "136",
+                    "119",
+                    "011",
+                    "092"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "142",
+                    "153",
+                    "139",
+                    "131",
+                    "012",
+                    "086"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "160",
+                    "165",
+                    "159",
+                    "171",
+                    "166",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Old Republic",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Bonus Attack",
+            "DoT",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Taunt",
+            "Tenacity Down"
+        ],
+        "role": "Attacker"
     },
     {
         "name": "Captain Han Solo",

@@ -256,6 +256,12 @@ module.exports = (client) => {
 
         const char = await this.character(defId);
 
+        if (!char) {
+            throw new Error("[SWGoH-API getCharacter] Missing Character");
+        } else if (!char.skillReferenceList) {
+            throw new Error("[SWGoH-API getCharacter] Missing character abilities");
+        }
+
         for (const s of char.skillReferenceList) {
             let skill = await this.abilities([s.skillId], lang);
             if (Array.isArray(skill)) {

@@ -2414,6 +2414,211 @@
         }
     },
     {
+        "name": "Bastila Shan (Fallen)",
+        "uniqueName": "BASTILASHANDARK",
+        "aliases": [
+            "Bastila Shan (Fallen)",
+            "Bastila Fallen",
+            "BSF",
+            "Fallen"
+        ],
+        "nameVariant": [
+            "Bastila Shan (Fallen)"
+        ],
+        "url": "http://swgoh.gg/characters/bastila-shan-fallen/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bastilashan_dark.png",
+        "side": "dark",
+        "factions": [
+            "Old Republic",
+            "Sith",
+            "Support"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 BioTech Implant",
+                "Mk 1 BioTech Implant"
+            ],
+            "Gear 2": [
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 1 Czerka Stun Cuffs",
+                "Mk 1 Czerka Stun Cuffs",
+                "Mk 2 SoroSuub Keypad",
+                "Mk 3 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 5 Loronar Power Cell",
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 3 Neuro-Saav Electrobinoculars",
+                "Mk 3 A/KT Stun Gun",
+                "Mk 3 A/KT Stun Gun",
+                "Mk 2 Merr-Sonn Shield Generator"
+            ],
+            "Gear 4": [
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Nubian Design Tech",
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Merr-Sonn Thermal Detonator",
+                "Mk 6 Loronar Power Cell",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 5": [
+                "Mk 4 A/KT Stun Gun",
+                "Mk 2 Carbanti Sensor Array",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Merr-Sonn Shield Generator"
+            ],
+            "Gear 6": [
+                "Mk 4 Nubian Design Tech",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Nubian Design Tech",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 A/KT Stun Gun"
+            ],
+            "Gear 7": [
+                "Mk 3 Athakam Medpac",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 Nubian Design Tech"
+            ],
+            "Gear 8": [
+                "Mk 7 Loronar Power Cell",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 Loronar Power Cell",
+                "Mk 6 BioTech Implant"
+            ],
+            "Gear 9": [
+                "Mk 7 Loronar Power Cell",
+                "Mk 3 Athakam Medpac",
+                "Mk 7 Loronar Power Cell",
+                "Mk 7 Loronar Power Cell",
+                "Mk 8 BAW Armor Mod",
+                "Mk 8 BAW Armor Mod"
+            ],
+            "Gear 10": [
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 5 Carbanti Sensor Array",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 7 Neuro-Saav Electrobinoculars",
+                "Mk 6 CEC Fusion Furnace"
+            ],
+            "Gear 11": [
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 9 TaggeCo Holo Lens",
+                "Mk 6 A/KT Stun Gun",
+                "Mk 6 CEC Fusion Furnace",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 10 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Tactical Data",
+                "Mk 12 ArmaTek Wrist Band",
+                "Mk 12 ArmaTek Fusion Furnace",
+                "Mk 12 ArmaTek Data Pad",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Sith Assault": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Special damage to target enemy and inflict Ability Block for 1 turn. This attack deals 10% more damage and has +10% Critical Chance for each active Sith ally.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Wild Lightning": {
+                "type": "Special",
+                "abilityCooldown": "2",
+                "abilityDesc": "Deal Special damage to target enemy and Shock them for 3 turns. If the target already had Shock deal bonus Special damage to all other enemies. This bonus damage cannot be countered. This ability can't be evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Fear": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Stun target enemy for 1 turn with an 80% chance to Stun another random enemy (can't be evaded). When each of these Stuns expire, inflict Offense Down, Defense Down, Evasion Down, Speed Down, Expose and Stagger for 2 turns. These effects can't be resisted.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Corrupted Battle Meditation": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of Bastila's turn, all enemies lose 3% Turn Meter (doubled against non-Jedi and non-Sith) and are inflicted with Corrupted Battle Meditation for 1 turn. Then she recovers 1% Protection for each debuff on enemies.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Sith Apprentice": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Bastila and the character in the leader slot have +50% Defense and Tenacity and gain Foresight for one turn at the start of battle. If Bastila's leader is Sith, whenever an enemy is inflicted with Deathmark, Shock or Marked, they both gain 5% Offense (stacking up to 100%) for the rest of battle. This ability does not apply to characters in the ally slot.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
+            "activation": 25
+        }
+    },
+    {
         "name": "Baze Malbus",
         "uniqueName": "BAZEMALBUS",
         "aliases": [
@@ -4859,6 +5064,197 @@
             "Health Steal": 10,
             "Protection": 37,
             "activation": 50
+        }
+    },
+    {
+        "name": "Canderous Ordo",
+        "uniqueName": "CANDEROUSORDO",
+        "aliases": [
+            "Canderous Ordo"
+        ],
+        "nameVariant": [
+            "Canderous Ordo"
+        ],
+        "url": "http://swgoh.gg/characters/canderous-ordo/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_canderous.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Old Republic",
+            "Scoundrel"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 1 Sienar Holo Projector",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 1 BlasTech Weapon Mod"
+            ],
+            "Gear 3": [
+                "Mk 4 Fabritech Data Pad",
+                "Mk 2 A/KT Stun Gun",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 4 BAW Armor Mod",
+                "Mk 3 BioTech Implant",
+                "Mk 2 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 4": [
+                "Mk 1 Loronar Power Cell",
+                "Mk 6 BAW Armor Mod",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 3 BioTech Implant",
+                "Mk 2 Merr-Sonn Shield Generator"
+            ],
+            "Gear 5": [
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 2 Athakam Medpac",
+                "Mk 6 BAW Armor Mod",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 1 Chedak Comlink",
+                "Mk 4 Fabritech Data Pad"
+            ],
+            "Gear 6": [
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 4 BAW Armor Mod"
+            ],
+            "Gear 7": [
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 6 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 8": [
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 6 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 9": [
+                "Mk 6 Nubian Design Tech",
+                "Mk 4 Carbanti Sensor Array",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 6 TaggeCo Holo Lens"
+            ],
+            "Gear 10": [
+                "Mk 4 Sienar Holo Projector",
+                "Mk 8 BioTech Implant",
+                "Mk 10 TaggeCo Holo Lens",
+                "Mk 4 Carbanti Sensor Array",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 4 Arakyd Droid Caller"
+            ],
+            "Gear 11": [
+                "Mk 6 A/KT Stun Gun",
+                "Mk 9 BioTech Implant",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 6 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Stun Gun",
+                "Mk 12 ArmaTek Thermal Detonator",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Interminable Assault": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage and attack again. If the enemy had Protection before this attack, Canderous attacks for a third time and inflicts Tenacity Down for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Overwhelming Firepower": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to all enemies and inflict Offense Down for 2 turns. This attack ignores Defense.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Mandalorian Veteran": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "At the start of battle, Canderous gains 10% Health Steal and Potency for each Old Republic and Scoundrel ally. Whenever Canderous deals damage to an enemy, he inflicts a Damage Over Time effect for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "I Like a Challenge": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Canderous deals 50% more damage with Interminable Assault and Overwhelming Firepower to enemies who are Taunting, Deathmarked or Marked. Whenever an enemy with a Damage Over Time effect is damaged by an attack, Canderous gains 8% Turn Meter. When an enemy gains Taunt, or becomes Deathmarked or Marked, Canderous gains Critical Chance Up and Critical Damage Up for 2 turns.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
+            "activation": 25
         }
     },
     {
