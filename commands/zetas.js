@@ -34,7 +34,7 @@ class Zetas extends Command {
             return message.channel.send("**Error:** `" + err + "`");
         }
         
-        if (searchChar && searchChar.length && options.flags.r && !filters.includes(searchChar.toLowerCase())) { 
+        if (searchChar && options.flags.r && !filters.includes(searchChar.toLowerCase())) { 
             return message.channel.send(message.language.get("COMMAND_ZETA_REC_BAD_FILTER", filters.join(", ")));
         }             
 
@@ -128,7 +128,7 @@ class Zetas extends Command {
             const zetas = client.zetaRec;
             const myZetas = [];
 
-            const sortBy = searchChar.length ? searchChar : "versa";
+            const sortBy = searchChar ? searchChar : "versa";
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {
                 if (myZetas.length >= 5) {
