@@ -207,8 +207,8 @@ module.exports = class extends Language {
             },
 
             //Acronym Command
-            COMMAND_ACRONYMS_INVALID: `Acronym lookup provided not available for blank`,
-            COMMAND_ACRONYMS_NOT_FOUND: `Acronym could not be found`,
+            COMMAND_ACRONYMS_INVALID: "Acronym lookup provided not available for blank",
+            COMMAND_ACRONYMS_NOT_FOUND: "Acronym could not be found",
             COMMAND_ACRONYMS_HELP: {
                 description: "Helps to provide a lookup for the acronyms commonly used in Star Wars: Galaxy of Heros.",
                 actions: [
@@ -500,9 +500,11 @@ module.exports = class extends Language {
                 heroic:    "Heroic"
             },
             COMMAND_GUILDS_STAT_HEADER: "Stats",
-            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
                 `Members:      ${members}/50`,
                 `Required Lvl: ${lvl}`,
+                `Est. char gp: ${charGP}`,
+                `Est. ship gp: ${shipGP}`,
                 `Total GP:     ${gp}`
             ].join("\n"),
             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members and their gp.\n\`${prefix}guild -roster -allycode\` for a list with their ally codes instead.`,

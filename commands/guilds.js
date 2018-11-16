@@ -257,7 +257,20 @@ class Guilds extends Command {
                 inline: true
             });
     
-            const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS", guild.members, guild.required, guild.gp.toLocaleString());
+            console.log(guild.roster);
+            let guildCharGP = 0;
+            let guildShipGP = 0;
+            guild.roster.forEach(m => {
+                guildCharGP += m.gpChar;
+                guildShipGP += m.gpShip;
+            });
+            const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS", 
+                guild.members, 
+                guild.required, 
+                guild.gp.toLocaleString(),
+                guildCharGP.toLocaleString(),
+                guildShipGP.toLocaleString()
+            );
             fields.push({
                 name: message.language.get("COMMAND_GUILDS_STAT_HEADER"),
                 value: client.codeBlock(stats),
