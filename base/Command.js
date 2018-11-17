@@ -53,7 +53,7 @@ class Command {
         } else if (userID !== "me" && !this.client.isAllyCode(userID) && !this.client.isUserID(userID)) {
             // No valid user, so return it all as a character, and 
             // use the message's author as the user
-            out.searchChar = userID + " " + searchChar.join(" ").trim();
+            out.searchChar = (userID + " " + searchChar.join(" ")).trim();
             userID = message.author.id;
         } else {
             // There was a valid user first, so use that and the rest
