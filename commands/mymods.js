@@ -36,7 +36,7 @@ class MyMods extends Command {
             STATMOD_SLOT_06: await client.getEmoji("362066327516610570") || "Cross"
         };
 
-        const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
+        const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
         if (err) {
             return message.channel.send("**Error:** `" + err + "`");
@@ -178,7 +178,7 @@ class MyMods extends Command {
                 }
             };
             let found = false;
-            if (searchChar.length) options.subArgs.b = options.subArgs.b + " " + searchChar;
+            if (searchChar && searchChar.length) options.subArgs.b = options.subArgs.b + " " + searchChar;
             if (Object.keys(checkableStats).filter(c => c.toLowerCase() === options.subArgs.b.toLowerCase()).length > 0) {
                 options.subArgs.b =  options.subArgs.b.toProperCase();
                 found = true;
