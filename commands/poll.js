@@ -215,6 +215,19 @@ class Poll extends Command {
                 }
                 break;
             }
+            case "me": {
+                if (poll.question && poll.question.length) {
+                    try {
+                        await message.author.send(message.language.get("COMMAND_POLL_ME1", poll.pollID, pollCheck(poll)));
+                        return message.author.send(message.language.get("COMMAND_POLL_ME2", message.guildSettings.prefix, poll.pollID));
+                    } catch (e) {
+                        return message.channel.send(message.language.get("BASE_CANNOT_DM"));
+                    }
+                } else {
+                    // no poll active
+                    return message.channel.send(message.language.get("COMMAND_POLL_NO_POLL"));
+                }
+            }
             default: {
                 // Help
                 return;

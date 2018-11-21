@@ -98,6 +98,7 @@ module.exports = class extends Language {
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
             COMMAND_INVALID_BOOL: "Invalid value, try true or false",
             COMMAND_MISSING_PERMS: "Sorry, but you don't have the correct permissions to use that.",
+            BASE_CANNOT_DM: "Sorry, but I could not send you a message. Please make sure you have it set to let people in this server send you messages.",
             BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
             BASE_COMMAND_HELP_HEADER: (name) => `Help for ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Continued help for ${name}`,
@@ -816,6 +817,8 @@ module.exports = class extends Language {
             COMMAND_POLL_REMOTE_OPTS: "Only actions available for remote polls are voting on or checking a poll.",
             COMMAND_POLL_DM_USE: (prefix) => `Sorry, but if you want to use this command in a DM, you need to provide a poll ID with \`${prefix}poll -poll <pollID>\``,
             COMMAND_POLL_DM_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice> -poll ${id}\`  to vote`,
+            COMMAND_POLL_ME1: (pollID, poll) => `Here are the options for poll ${pollID}\n${poll}\nCopy the message below and change \`<choice>\` to the option you want`,
+            COMMAND_POLL_ME2: (prefix, pollID) => `${prefix}poll -poll ${pollID} <choice>`,
             COMMAND_POLL_HELP: {
                 description: "Lets you start a poll with multiple options.",
                 actions: [
@@ -852,10 +855,11 @@ module.exports = class extends Language {
                     {
                         action: "Remote View/ Vote",
                         actionDesc: "Vote on or view a poll from outside the channel it's linked to.",
-                        usage: ";poll view -poll <poll> \n;poll vote <choice> -poll <poll>",
+                        usage: ";poll view -poll <poll> \n;poll vote <choice> -poll <poll>\n;poll me",
                         args: {
                             "pollID": "The ID of the poll you want to interact with",
-                            "choice": "The option that you choose."
+                            "choice": "The option that you choose.",
+                            "me": "This will send you the current options to vote on, and an an example you can copy/ paste to vote"
                         }
                     }
                 ]
