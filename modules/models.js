@@ -116,6 +116,10 @@ module.exports = (Sequelize, database) => {
         poll: {
             type: Sequelize.JSONB,
             defaultValue: {}
+        },
+        pollId: {
+            type: Sequelize.INTEGER,
+            autoIncrement: true
         }
     });
     database.define("allyCodes", {

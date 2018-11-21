@@ -4,9 +4,19 @@ class Poll extends Command {
     constructor(client) {
         super(client, {
             name: "poll",
-            guildOnly: true,
             category: "Misc",
-            aliases: ["vote"]
+            aliases: ["vote"],
+            flags: {
+                anon: {
+                    aliases: ["anonymous"]
+                }
+            },
+            subArgs: {
+                pollID: {
+                    aliases: ["poll"],
+                    default: null
+                }
+            }
         });
     }
 
@@ -15,25 +25,69 @@ class Poll extends Command {
         if (!action) {
             return message.channel.send(message.language.get("COMMAND_POLL_NO_ARG"));
         }
-        const pollID = `${message.guild.id}-${message.channel.id}`;
-        const exists = await client.database.models.polls.findOne({where: {id: pollID}})
-            .then(token => token != null)
-            .then(isUnique => isUnique);
-        const optsJoin = opts.join(" ").split("|");
-
         let poll = { // ID = guildID-channelID
             "question": "",
             "options": [],
             "votes": {
                 // userID: vote#
-            }
+            },
+            "anon": false
         };
+        const optsJoin = opts.join(" ").split("|");
+        let pollID;
+        let exists = false;
+        // If subArgs.poll is there, get that instead, and check if it's for a channel 
+        // that the user has access to
+        if (options.subArgs.pollID) {
+            // If they're using the auto-incrementing ID to vote from anywhere
+            exists = await client.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}})
+                .then(token => token != null)
+                .then(isUnique => isUnique);
 
-        if (exists) {
-            const tempP = await client.database.models.polls.findOne({where: {id: pollID}});
-            poll = tempP.dataValues.poll;
+            if (exists) {
+                const tempP = await client.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}});
+                const thisPoll = tempP.dataValues;
+                poll = thisPoll.poll;
+                poll.pollID = thisPoll.pollId;
+                pollID = thisPoll.id;
+                const [guildID, chanID] = pollID.split("-");
+
+                // If they do not have access to the channel, tell em so/ don't let them interact with the poll (see/ vote)
+                if (client.guilds.has(guildID) && client.guilds.get(guildID).channels.has(chanID)) {
+                    const perms = client.guilds.get(guildID).channels.get(chanID).permissionsFor(message.author.id);
+                    if (!perms || !perms.has("READ_MESSAGES")) {
+                        // The guild and channel exist, but the message author cannot see it
+                        return message.channel.send(message.language.get("COMMAND_POLL_NO_ACCESS"));
+                    }
+                }
+                if (message.guild && message.guild.id !== guildID) {
+                    // Make it so remote voting is only usable within DMs or in the same guild
+                    return message.channel.send("Sorry, but you must be in a DM or in the same server to vote remotely.");
+                }
+            } else {
+                return message.channel.send(message.language.get("COMMAND_POLL_INVALID_ID"));
+            }
+            const actions = ["view", "check"];
+            if (!actions.includes(action.toLowerCase()) && !action.match(/\d/)) {
+                return message.channel.send(message.language.get("COMMAND_POLL_REMOTE_OPTS"));
+            }
+            // If they get past all the stuff before here, they should be good to go
+        } else if (!message.guild) {
+            // If they're trying to use this in a DM
+            return message.channel.send(message.language.get("COMMAND_POLL_DM_USE", message.guildSettings.prefix));
+        } else {
+            // If they're just voting on the channel's poll
+            pollID = `${message.guild.id}-${message.channel.id}`;
+            exists = await client.database.models.polls.findOne({where: {id: pollID}})
+                .then(token => token != null)
+                .then(isUnique => isUnique);
+
+            if (exists) {
+                const tempP = await client.database.models.polls.findOne({where: {id: pollID}});
+                poll = tempP.dataValues.poll;
+                poll.pollID = tempP.dataValues.pollId;
+            }
         }
-
         switch (action) {
             case "start":
             case "create": {
@@ -49,23 +103,33 @@ class Poll extends Command {
                 } else {
                     poll.question = optsJoin[0];
                     optsJoin.splice(0,1);
+                    if (poll.question.length >= 256) {
+                        return message.channel.send(message.language.get("COMMAND_POLL_TITLE_TOO_LONG"));
+                    }
                 }
                 if (optsJoin.length < 2) {
                     return message.channel.send(message.language.get("COMMAND_POLL_TOO_FEW_OPT"));
                 } else if (optsJoin.length > 10) {
                     return message.channel.send(message.language.get("COMMAND_POLL_TOO_MANY_OPT"));
                 } else {
-                    optsJoin.forEach((opt, ix) => {
-                        optsJoin[ix] = opt.replace(/^\s*/, "").replace(/\s*$/, "");
-                    });
-                    poll.options = optsJoin;
+                    poll.options = optsJoin.map(opt => opt.trim());
+                }
+                if (options.flags.anon) {
+                    poll.anon = true;
                 }
                 await client.database.models.polls.create({
                     id: pollID,
                     poll: poll
                 })
-                    .then(() => {
-                        return message.channel.send(message.language.get("COMMAND_POLL_CREATED", message.author.username, client.config.prefix, pollCheck(poll)));
+                    .then((thisPoll) => {
+                        poll.pollID = thisPoll.dataValues.pollId;
+                        return message.channel.send(message.language.get("COMMAND_POLL_CREATED", message.author.tag, message.guildSettings.prefix), {embed: {
+                            author: {
+                                name: poll.question
+                            },
+                            description: pollCheck(poll),
+                            footer: getFooter(poll)
+                        }});
                     });               
                 break;
             } 
@@ -75,8 +139,24 @@ class Poll extends Command {
                 if (!exists) {
                     return message.channel.send(message.language.get("COMMAND_POLL_NO_POLL"));
                 } else {
-                    const outString = pollCheck(poll);
-                    return message.channel.send(outString);
+                    if (poll.question.length > 256) {
+                        // Should not happen, but just in case
+                        return message.channel.send({embed: {
+                            author: {
+                                name: "Current Poll"
+                            },
+                            description: `**${poll.question}**\n\n${pollCheck(poll)}`,
+                            footer: getFooter(poll)
+                        }});
+                    } else {
+                        return message.channel.send({embed: {
+                            author: {
+                                name: poll.question
+                            },
+                            description: pollCheck(poll),
+                            footer: getFooter(poll)
+                        }});
+                    }
                 }
             }
             case "close":
@@ -91,9 +171,16 @@ class Poll extends Command {
                     // Delete the current poll
                     await client.database.models.polls.destroy({where: {id: pollID}})
                         .then(() => {
-                            return message.channel.send(message.language.get("COMMAND_POLL_FINAL", pollCheck(poll)));
+                            // Then send a message showing the final results
+                            return message.channel.send({embed: {
+                                author: {
+                                    name: message.language.get("COMMAND_POLL_FINAL", "")
+                                },
+                                description: `**${poll.question}**\n${pollCheck(poll, true)}`
+                            }});
                         })
                         .catch(() => { 
+                            // Or, if it breaks, tell them that it broke
                             return message.channel.send(message.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
                         });
                 }
@@ -134,20 +221,35 @@ class Poll extends Command {
             }
         }
 
-        function pollCheck(poll) {
+        function pollCheck(poll, showRes=false) {
             const voteCount = {};
+            const totalVotes = Object.keys(poll.votes).length || 1;
             poll.options.forEach((opt, ix) => {
                 voteCount[ix] = 0;
             });
             Object.keys(poll.votes).forEach(voter => {
                 voteCount[poll.votes[voter]] += 1;
             });
-            
-            let outString = `**${poll.question}**\n`;
+            let outString = ""; 
             Object.keys(voteCount).forEach(opt => {
-                outString += message.language.get("COMMAND_POLL_CHOICE", opt, voteCount[opt], poll.options[opt]);
+                const percent = Math.floor((voteCount[opt] / totalVotes) * 30);
+                outString += `\`[${opt}]\` **${poll.options[opt]}**\n`;
+                if (!poll.anon || showRes) {
+                    // If the poll is not set to anonymous, or it's told to show the results (for closing the poll)
+                    outString += `**\`[${"#".repeat(percent)}${"-".repeat(30-percent)}]\`**(${voteCount[opt]})\n`;
+                }
             });
             return outString;
+        }
+
+        function getFooter(poll) {
+            const footer = {};
+            if (message.guild) {
+                footer.text = client.expandSpaces(message.language.get("COMMAND_POLL_FOOTER", poll.pollID, message.guildSettings.prefix));
+            } else {
+                footer.text = client.expandSpaces(message.language.get("COMMAND_POLL_DM_FOOTER", poll.pollID, message.guildSettings.prefix));
+            }
+            return footer;
         }
     }
 }

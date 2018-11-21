@@ -795,11 +795,12 @@ module.exports = class extends Language {
 
             // Polls Command
             COMMAND_POLL_NO_ARG: "You need to provide either an option to vote on, or an action (create/view/etc).",
+            COMMAND_POLL_TITLE_TOO_LONG: "Sorry, but your title/ question must be fewer than 256 characters.",
             COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
             COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
             COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
             COMMAND_POLL_TOO_MANY_OPT: "You can only have up to 10 options to vote on.",
-            COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n\n${poll}`,
+            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n`,
             COMMAND_POLL_NO_POLL: "There is no poll in progress",
             COMMAND_POLL_FINAL: (poll) => `Final results for ${poll}`,
             COMMAND_POLL_FINAL_ERROR: (question) => `I couldn't delete **${question}**, please try again.`,
@@ -808,16 +809,24 @@ module.exports = class extends Language {
             COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `You have changed your choice from **${oldOpt}** to **${newOpt}**`,
             COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? "" : "s"}**\n`,
+            COMMAND_POLL_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice>\` to vote`,
+            // Remote poll strings
+            COMMAND_POLL_INVALID_ID: "A poll with this ID does not exist.",
+            COMMAND_POLL_NO_ACCESS: "Sorry, but you don't have access to that poll.",
+            COMMAND_POLL_REMOTE_OPTS: "Only actions available for remote polls are voting on or checking a poll.",
+            COMMAND_POLL_DM_USE: (prefix) => `Sorry, but if you want to use this command in a DM, you need to provide a poll ID with \`${prefix}poll -pollId <pollID>\``,
+            COMMAND_POLL_DM_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice> -pollID ${id}\`  to vote`,
             COMMAND_POLL_HELP: {
                 description: "Lets you start a poll with multiple options.",
                 actions: [
                     {
                         action: "Create",
                         actionDesc: "Create a new poll",
-                        usage: ";poll create <question> | <opt1> | <opt2> | [...] | [opt10]",
+                        usage: ";poll create [-anonymous] <question> | <opt1> | <opt2> | [...] | [opt10]",
                         args: {
                             "question": "The question that you're wanting feedback on.",
-                            "opt": "The options that people can choose from"
+                            "opt": "The options that people can choose from.",
+                            "-anonymous": "If this flag is included, the current votes will not be shown until the poll is closed."
                         }
                     },
                     {
@@ -830,15 +839,24 @@ module.exports = class extends Language {
                     },
                     {
                         action: "View",
-                        actionDesc: "See what the current tally of votes is.",
+                        actionDesc: "See what the channel's current poll and it's options are.",
                         usage: ";poll view",
                         args: {}
                     },
                     {
                         action: "Close",
-                        actionDesc: "End the poll and show the final tally.",
+                        actionDesc: "End the channel's current poll and show the final tally.",
                         usage: ";poll close",
                         args: {}
+                    },
+                    {
+                        action: "Remote View/ Vote",
+                        actionDesc: "Vote on or view a poll from outside the channel it's linked to.",
+                        usage: ";poll view -pollID <pollID> \n;poll vote <choice> -pollID <pollID>",
+                        args: {
+                            "pollID": "The ID of the poll you want to interact with",
+                            "choice": "The option that you choose."
+                        }
                     }
                 ]
             },
