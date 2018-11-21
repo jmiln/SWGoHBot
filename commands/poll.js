@@ -45,7 +45,7 @@ class Poll extends Command {
                 .then(isUnique => isUnique);
 
             if (exists) {
-                const tempP = await client.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}});
+                const tempP = await client.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}, attributes: ["id", "poll", "pollId"]});
                 const thisPoll = tempP.dataValues;
                 poll = thisPoll.poll;
                 poll.pollID = thisPoll.pollId;

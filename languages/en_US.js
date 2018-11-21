@@ -814,8 +814,8 @@ module.exports = class extends Language {
             COMMAND_POLL_INVALID_ID: "A poll with this ID does not exist.",
             COMMAND_POLL_NO_ACCESS: "Sorry, but you don't have access to that poll.",
             COMMAND_POLL_REMOTE_OPTS: "Only actions available for remote polls are voting on or checking a poll.",
-            COMMAND_POLL_DM_USE: (prefix) => `Sorry, but if you want to use this command in a DM, you need to provide a poll ID with \`${prefix}poll -pollId <pollID>\``,
-            COMMAND_POLL_DM_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice> -pollID ${id}\`  to vote`,
+            COMMAND_POLL_DM_USE: (prefix) => `Sorry, but if you want to use this command in a DM, you need to provide a poll ID with \`${prefix}poll -poll <pollID>\``,
+            COMMAND_POLL_DM_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice> -poll ${id}\`  to vote`,
             COMMAND_POLL_HELP: {
                 description: "Lets you start a poll with multiple options.",
                 actions: [
@@ -826,7 +826,7 @@ module.exports = class extends Language {
                         args: {
                             "question": "The question that you're wanting feedback on.",
                             "opt": "The options that people can choose from.",
-                            "-anonymous": "If this flag is included, the current votes will not be shown until the poll is closed."
+                            "-anonymous": "If this flag is included, the current votes will not be shown until the poll is closed. (-anon)"
                         }
                     },
                     {
@@ -852,7 +852,7 @@ module.exports = class extends Language {
                     {
                         action: "Remote View/ Vote",
                         actionDesc: "Vote on or view a poll from outside the channel it's linked to.",
-                        usage: ";poll view -pollID <pollID> \n;poll vote <choice> -pollID <pollID>",
+                        usage: ";poll view -poll <poll> \n;poll vote <choice> -poll <poll>",
                         args: {
                             "pollID": "The ID of the poll you want to interact with",
                             "choice": "The option that you choose."
