@@ -115,12 +115,21 @@ class Zetas extends Command {
                     desc.push(zetas[sorted[0]].join("\n"));
                 }
             }
+
+            const fields = [];
+            if (player.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: player.warnings.join("\n")
+                });
+            }
             
             const footer = client.updatedFooter(player.updated, message, "player", cooldown);
             msg.edit({embed: {
                 color: 0x000000,
                 author: author,
                 description: desc.join("\n"), 
+                fields: fields,
                 footer: footer
             }});
         } else if (options.flags.r) {
@@ -157,12 +166,20 @@ class Zetas extends Command {
             });
 
             const zetaLen = `${myZetas.length} ${sortBy === "versa" ? "" : sortBy + " "}`;
+            const fields = [];
+            if (player.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: player.warnings.join("\n")
+                });
+            }
             const footer = client.updatedFooter(player.updated, message, "player", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_ZETA_REC_AUTH", zetaLen, player.name)
                 },
                 description: desc,
+                fields: fields,
                 footer: footer
             }});
         } else if (options.flags.g) {
@@ -171,12 +188,19 @@ class Zetas extends Command {
                 guild = await client.swgohAPI.guild(player.allyCode, null, cooldown);
                 // TODO  Lang this
                 if (!guild) return message.channel.send("Cannot find guild");
+                if (!guild.roster) return message.channel.send("Cannot find your guild's roster");
 
                 const zetaList = {};
                 for (let p = 0; p < guild.roster.length; p++) {
-                    const member = await client.swgohAPI.player(guild.roster[p].allyCode);
+                    let member;
+                    try {
+                        member = await client.swgohAPI.player(guild.roster[p].allyCode);
+                    } catch (e) {
+                        console.log("Broke getting: " + guild.roster[p].name);
+                        continue;
+                    }
                     if (!member) continue;
-                    if (searchChar.length) {
+                    if (searchChar && searchChar.length) {
                         member.roster = member.roster.filter(c => c.defId === character.uniqueName);
                     }
                     if (!member.roster.length) continue;
@@ -196,7 +220,7 @@ class Zetas extends Command {
                         }
                     }
                 }
-                if (!searchChar.length) {
+                if (!searchChar || !searchChar.length) {
                     // Just want to see all zetas for the guild
                     const zArr = [];
                     const sorted = Object.keys(zetaList).sort();
@@ -218,6 +242,13 @@ class Zetas extends Command {
                         });
 
                     });
+
+                    if (guild.warnings) {
+                        fields.push({
+                            name: "Warnings",
+                            value: guild.warnings.join("\n")
+                        });
+                    }
 
                     const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
                     return msg.edit({embed: {
@@ -244,6 +275,14 @@ class Zetas extends Command {
                             });
                         });
                     });
+
+                    if (guild.warnings) {
+                        fields.push({
+                            name: "Warnings",
+                            value: guild.warnings.join("\n")
+                        });
+                    }
+
                     const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
                     return msg.edit({embed: {
                         author: {
@@ -253,10 +292,8 @@ class Zetas extends Command {
                         footer: footer
                     }});
                 }
-
-
             } catch (e) {
-                console.error(e);
+                msg.edit(e.message);
             }
         } 
     }
