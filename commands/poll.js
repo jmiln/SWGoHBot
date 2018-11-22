@@ -192,8 +192,8 @@ class Poll extends Command {
                 if (!exists) {
                     return message.channel.send(message.language.get("COMMAND_POLL_NO_POLL"));
                 } else {
-                    const opt = Math.abs(parseInt(action)-1);
-                    if (poll.options.length < opt) {
+                    const opt = Math.abs(parseInt(action)) - 1;
+                    if (poll.options.length <= opt || opt < 0) {
                         return message.channel.send(message.language.get("COMMAND_POLL_INVALID_OPTION"));
                     } else {
                         let voted = -1;
