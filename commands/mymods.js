@@ -248,9 +248,19 @@ class MyMods extends Command {
                 // ${playerName}'s Best ${stat} From Mods
                 author.name = message.language.get("COMMAND_MYMODS_HEADER_MODS", stats[0].unit.player, options.subArgs.b);
             }
+
+            const fields = [];
+            if (player.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: player.warnings.join("\n")
+                });
+            }
+
             return msg.edit({embed: {
                 author: author,
                 description: "==============================\n" + outStr + "==============================",
+                fields: fields,
                 footer: {
                     text: updated ? message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(updated, message)) : ""
                 }

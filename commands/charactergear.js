@@ -160,6 +160,12 @@ class Charactergear extends Command {
                         });
                     }
                 });
+                if (player.warnings) {
+                    fields.push({
+                        name: "Warnings",
+                        value: player.warnings.join("\n")
+                    });
+                }
                 const footer = client.updatedFooter(player.updated, message, "player", cooldown);
                 message.channel.send({embed: {
                     author: {

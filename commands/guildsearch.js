@@ -234,6 +234,18 @@ class GuildSearch extends Command {
                 });
             }
         });
+        if (guild.warnings) {
+            fields.push({
+                name: "Guild Roster Warnings",
+                value: guild.warnings.join("\n")
+            });
+        }
+        if (guildGG.warnings) {
+            fields.push({
+                name: "Guild Character Warnings",
+                value: guildGG.warnings.join("\n")
+            });
+        }
 
         const footer = client.updatedFooter(guildGG.updated, message, "guild", cooldown);
         msg.edit({embed: {

@@ -66,6 +66,13 @@ class MyArena extends Command {
             inline: true
         });
 
+        if (player.warnings) {
+            fields.push({
+                name: "Warnings",
+                value: player.warnings.join("\n")
+            });
+        }
+
         const footer = client.updatedFooter(player.updated, message, "player", cooldown);
         return message.channel.send({embed: {
             author: {

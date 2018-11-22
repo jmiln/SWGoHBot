@@ -76,6 +76,13 @@ class Squads extends Command {
                 });
                 let footer = "";
                 if (player && cooldown) {
+                    if (player.warnings) {
+                        fields.push({
+                            name: "Warnings",
+                            value: player.warnings.join("\n")
+                        });
+                    }
+
                     footer = client.updatedFooter(player.updated, message, "player", cooldown);
                 }
                 return message.channel.send({embed: {

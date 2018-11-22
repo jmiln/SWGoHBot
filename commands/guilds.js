@@ -142,6 +142,12 @@ class Guilds extends Command {
                 name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
                 value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
             });
+            if (guild.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: guild.warnings.join("\n")
+                });
+            }
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
@@ -226,12 +232,21 @@ class Guilds extends Command {
                 }
             });
             charOut = charOut.map(c => client.expandSpaces(c));
-            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+
+            const fields = [];
+            if (guildGG.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: guildGG.warnings.join("\n")
+                });
+            }
+            const footer = client.updatedFooter(guildGG.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
                 },
                 description: charOut.join("\n"),
+                fields: fields,
                 footer: footer
             }});
         } else {
@@ -280,6 +295,14 @@ class Guilds extends Command {
                 name: "-",
                 value: message.language.get("COMMAND_GUILDS_FOOTER", message.guildSettings.prefix)
             });
+
+            if (guild.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: guild.warnings.join("\n")
+                });
+            }
+
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {

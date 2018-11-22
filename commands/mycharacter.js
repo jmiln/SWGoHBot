@@ -208,6 +208,13 @@ class MyCharacter extends Command {
                 });
             });
 
+            if (player.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: player.warnings.join("\n")
+                });
+            }
+
             return msg.edit({embed: {
                 author: {
                     name: thisChar.player + "'s " + character.name
