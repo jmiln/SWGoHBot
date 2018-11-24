@@ -524,6 +524,15 @@ module.exports = class extends Language {
                             "-sort": "Waehle zwischen einer Sortierung nach Namen oder GM",
                             "-reg": "Zeigt den Discordnamen neben dem registrierten Namen des Users auf dem Server an."   
                         }
+                    },
+                    {
+                        action: "Territorialkrieg Uebersicht",
+                        actionDesc: "Zeigt eine allgemeine Uebersicht von wichtigen Charakteren einer spezifizierten Gilde an",
+                        usage: ";guild [user] -twsummary",
+                        args: {
+                            "user": "Zur Identifikation der Gilde (mention | allyCode | guildName)",
+                            "-twsummary": "Zeigt die Uebersicht an  (-tw)"
+                        }
                     }
                 ]
             },
