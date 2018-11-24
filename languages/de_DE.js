@@ -1175,7 +1175,9 @@ module.exports = class extends Language {
                         action: "View",
                         actionDesc: "Zeigt alle Zeiten fuer Dich und Deiner Splitter-Gefaehrten an.",
                         usage: ";shardtimes view",
-                        args: {}
+                        args: {
+                            "-ships": "Zeigt die Zeiten fuer den Flotten payout an (-ship | -s)"
+                        }
                     }
                 ]
             },
