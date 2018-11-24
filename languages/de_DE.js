@@ -207,6 +207,21 @@ module.exports = class extends Language {
                 ]
             },
 
+            //Acronym Command
+            COMMAND_ACRONYMS_INVALID: "Akronym Suche ungueltig fuer blank",
+            COMMAND_ACRONYMS_NOT_FOUND: "Akronym konnte nicht gefunden werden",
+            COMMAND_ACRONYMS_HELP: {
+                description: "Hilfe um nach gebraeuchlichen Akronymen in Star Wars: Galaxy of Heroes zu suchen.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";acronym zu suchendes Akronym\n;acronym oder mehrere Akronyme",
+                        args: {}
+                    }
+                ]
+            },
+
             // Activities Command
             COMMAND_ACTIVITIES_SUNDAY: "== Bis Reset == \nArena Kaempfe kaempfen \nCantina Energie sparen \nNormale Energie sparen\n\n== Nach Reset == \nCantina Energie verwenden \nNormale Energie sparen",
             COMMAND_ACTIVITIES_MONDAY: "== Bis Reset == \nCantina Energie ausgeben \nNormale Energie sparen \n\n== Nach Reset == \nNormale Energie fuer Kaempfe der hellen Seite verwenden ",
