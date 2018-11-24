@@ -796,11 +796,12 @@ module.exports = class extends Language {
 
             // Polls Command
             COMMAND_POLL_NO_ARG: "Es muss eine waehlbare Option oder eine Aktion angegeben werden (create/view/etc).",
+            COMMAND_POLL_TITLE_TOO_LONG: "Entschuldigung, aber der Titel/die Frage darf maximal 255 Zeichen lang sein.",
             COMMAND_POLL_ALREADY_RUNNING: "Entschuldigung, aber Sie koennen nur eine Umfrage zur gleichen Zeit durchfuehren. Bitte beenden Sie zuerst die aktuelle Umfrage.",
             COMMAND_POLL_MISSING_QUESTION: "Sie muessen etwas angeben, über das abgestimmt werden soll.",
             COMMAND_POLL_TOO_FEW_OPT: "Sie muessen mindestens 2 Optionen zur Wahl stellen.",
             COMMAND_POLL_TOO_MANY_OPT: "Sie koennen max. bis zu 10 Optionen zur Wahl stellen.",
-            COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n\n${poll}`,
+            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n\n${poll}`,
             COMMAND_POLL_NO_POLL: "Es wird aktuell keine Umfrage durchgefuehrt",
             COMMAND_POLL_FINAL: (poll) => `Endergebnisse fuer ${poll}`,
             COMMAND_POLL_FINAL_ERROR: (question) => `Loeschen fehlgeschlagen **${question}**, bitte erneut versuchen.`,
@@ -809,16 +810,26 @@ module.exports = class extends Language {
             COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Sie haben Ihre Auswahl von **${oldOpt}** zu **${newOpt}** geaendert`,
             COMMAND_POLL_REGISTERED: (opt) => `Wahl fuer **${opt}** gespeichert`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice} **${optCount} vote${optCount === 1 ? "" : "s"}**\n`,
+            COMMAND_POLL_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice>\` zum voten`,
+            // Remote poll strings
+            COMMAND_POLL_INVALID_ID: "Eine Umfrage mit dieser ID existiert nicht.",
+            COMMAND_POLL_NO_ACCESS: "Entschuldige, aber du hast keinen Zugriff auf diese Umfrage.",
+            COMMAND_POLL_REMOTE_OPTS: "Die einzigen gueltigen Aktionen fuer remote Umfragen sind voting oder eine Umfrage pruefen.",
+            COMMAND_POLL_DM_USE: (prefix) => `Entschuldige, aber wenn du diesen Befehl in einer PN nutzen moechtest, musst du eine Umfrage ID wie folgt angeben. \`${prefix}poll -poll <UmfrageID>\``,
+            COMMAND_POLL_DM_FOOTER: (id, prefix) => `Umfrage ID: ${id}  -  \`${prefix}poll <choice> -poll ${id}\`  zum voten`,
+            COMMAND_POLL_ME1: (pollID, poll) => `Hier sind die gueltigen Optionen fuer die Umfrage ${pollID}\n${poll}\nKopiere die unten stehende Nachricht und aendere \`<Auswahl>\` auf die Option die du waehlen moechtest`,
+            COMMAND_POLL_ME2: (prefix, pollID) => `${prefix}poll -poll ${pollID} <Auswahl>`,
             COMMAND_POLL_HELP: {
                 description: "Startet Deine Umfrage mit mehreren Optionen.",
                 actions: [
                     {
                         action: "Create",
                         actionDesc: "Erstelle eine neue Umfrage",
-                        usage: ";poll create <Frage> | <Opt1> | <Opt2> | [...] | [Opt10]",
+                        usage: ";poll create [-anonymous] <Frage> | <Opt1> | <Opt2> | [...] | [Opt10]",
                         args: {
                             "Frage": "Deine Frage, zu der Du Feedback erwartest.",
-                            "Opt": "Die Optionen, von denen die Teilnehmer auswaehlen koennen"
+                            "Opt": "Die Optionen, von denen die Teilnehmer auswaehlen koennen",
+                            "-anonymous": "Wenn diese Option eingefuegt wird, dann werden die Abstimmungsergebnisse nicht angezeigt bis die Umfrage beendet wird. (-anon)"
                         }
                     },
                     {
