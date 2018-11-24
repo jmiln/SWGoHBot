@@ -98,6 +98,7 @@ module.exports = class extends Language {
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
             COMMAND_INVALID_BOOL: "Ungueltiger Wert, versuche true oder false",
             COMMAND_MISSING_PERMS: "Entschuldigung, aber Sie haben nicht die richtigen Berechtigungen, um das zu verwenden.",
+            BASE_CANNOT_DM: "Entschuldigung, aber ich konnte Dir keine Nachricht senden. Bitte pruefe Deine Einstellungen, ob du es erlaubt hast, dass Leute auf diesem Server Dir Nachrichten senden duerfen.", 
             BASE_COMMAND_UNAVAILABLE: "Dieser Befehl ist ueber Privatnachrichten nicht verfuegbar. Bitte fuehre diesen Befehl innerhalb eines Gildenservers aus.",
             BASE_COMMAND_HELP_HEADER: (name) => `Hilfe fuer ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Fortgesetzte Hilfe fuer ${name}`,
