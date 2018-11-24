@@ -501,14 +501,17 @@ module.exports = class extends Language {
                 heroic:    "Heroisch"
             },
             COMMAND_GUILDS_STAT_HEADER: "Statistiken",
-            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
                 `Members:      ${members}/50`,
                 `Erforderliches Lvl: ${lvl}`,
+                `Gesch. Char GM: ${charGP}`,
+                `Gesch. Shiff GM: ${shipGP}`,
                 `Gesamt GM:     ${gp}`
             ].join("\n"),
             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` eine Liste der Gildenmitglieder und ihrer GM.\n\`${prefix}guild -roster -allycode\` fuer eine Liste mit ihren Buendniscodes. `,
+            COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName} Territorialkrieg Uebersicht`,
             COMMAND_GUILDS_HELP: {
-                description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
+                description: "Zeigt dir jeden in Deiner Gilde und grundsätzliche Statistiken an.",
                 actions: [
                     {
                         action: "",
