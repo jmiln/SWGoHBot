@@ -842,15 +842,25 @@ module.exports = class extends Language {
                     },
                     {
                         action: "View",
-                        actionDesc: "Sieh Dir die aktuellen Ergebnisse an.",
+                        actionDesc: "Sieh Dir die aktuellen Ergebnisse und Optionen fuer die Umfrage in diesem Kanal an.",
                         usage: ";poll view",
                         args: {}
                     },
                     {
                         action: "Close",
-                        actionDesc: "Beende die Umfrage und zeige das finale Ergebnis.",
+                        actionDesc: "Beende die Umfrage in diesem Kanal und zeige das finale Ergebnis an.",
                         usage: ";poll close",
                         args: {}
+                    },
+                    {
+                        action: "Remote View/ Vote",
+                        actionDesc: "Stimme ab oder sieh Dir den Status zu einer Umfrage an die mit einem bestimmten Kanal verknuepft ist.",
+                        usage: ";poll view -poll <Umfrage> \n;poll vote <Auswahl> -poll <Umfrage>\n;poll me",
+                        args: {
+                            "pollID": "Die ID der Umfrage die du sehen oder verwenden moechtest",
+                            "Auswahl": "Die Auswahl die du treffen moechtest.",
+                            "me": "Sendet Dir die zur Verfuegung stehenden Optionen die du auswaehlen kannst und ein Beispiel welches du kopieren / fuer das du abstimmen kannst"
+                        }
                     }
                 ]
             },
