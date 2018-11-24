@@ -299,8 +299,9 @@ module.exports = class extends Language {
             },
 
             // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Benoetigt Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [SternLvl]\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [SternLvl]\``,
+            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Benoetigt Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [GearLvl]\``,
+            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [GearLvl]\``,
+            COMMAND_CHARGEAR_INVALID_GEAR: "Ungueltiges Gearlevel. Gueltige Gearlevel liegen zwischen 1 & 12.",
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### Komplette benoetigte Ausruestung ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: "Diese Ausruestung wurde nicht eingefuegt",
             COMMAND_CHARACTERGEAR_HELP: {
