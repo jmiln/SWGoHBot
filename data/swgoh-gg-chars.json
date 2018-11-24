@@ -154,7 +154,10 @@
             "Leader: +Tenacity",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Admiral Ackbar",
@@ -313,7 +316,10 @@
             "Leader: +Tenacity",
             "Leader: Assist"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "CAPITALMONCALAMARICRUISER",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Ahsoka Tano",
@@ -469,7 +475,10 @@
             "Heal",
             "Leader: +Evasion"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "JEDISTARFIGHTERAHSOKATANO",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Ahsoka Tano (Fulcrum)",
@@ -626,7 +635,10 @@
             "Gain Turn Meter",
             "Taunt"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Amilyn Holdo",
@@ -784,7 +796,10 @@
             "Foresight",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Asajj Ventress",
@@ -944,7 +959,10 @@
             "Remove Turn Meter",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Aurra Sing",
@@ -1102,7 +1120,10 @@
             "Stealth",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "B2 Super Battle Droid",
@@ -1260,7 +1281,10 @@
             "Evasion Down",
             "Gain Turn Meter"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Barriss Offee",
@@ -1420,7 +1444,10 @@
             "Leader: Healing",
             "Remove Turn Meter"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Bastila Shan",
@@ -1580,7 +1607,176 @@
             "Stun",
             "Taunt"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Bastila Shan (Fallen)",
+        "base_id": "BASTILASHANDARK",
+        "pk": 305,
+        "url": "http://swgoh.gg/characters/bastila-shan-fallen/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_bastilashan_dark.png",
+        "power": 21952,
+        "description": "Strong Sith Support who inflicts a large number of debuffs including Shock, Stun and Corrupted Battle Meditation",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "003",
+                    "003",
+                    "010",
+                    "010",
+                    "009",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "015",
+                    "015",
+                    "020",
+                    "020",
+                    "032",
+                    "027"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "054",
+                    "027",
+                    "027",
+                    "059",
+                    "059",
+                    "024"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "068",
+                    "077",
+                    "077",
+                    "072",
+                    "065",
+                    "047"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "095",
+                    "083",
+                    "080",
+                    "089",
+                    "091",
+                    "047"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "077",
+                    "068",
+                    "090",
+                    "098",
+                    "091",
+                    "095"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "080",
+                    "089",
+                    "098",
+                    "089",
+                    "077"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "088",
+                    "117",
+                    "111",
+                    "109",
+                    "088",
+                    "094"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "088",
+                    "105",
+                    "088",
+                    "088",
+                    "122",
+                    "122"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "080",
+                    "143",
+                    "132",
+                    "117",
+                    "098",
+                    "143"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "124",
+                    "124",
+                    "142",
+                    "143",
+                    "149",
+                    "146"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "161",
+                    "163",
+                    "168",
+                    "169",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Old Republic",
+            "Sith"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Counter",
+            "Defense Down",
+            "Evasion Down",
+            "Expose",
+            "Foresight",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Speed Down",
+            "Stun"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Baze Malbus",
@@ -1739,7 +1935,10 @@
             "Speed Down",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "BB-8",
@@ -1903,7 +2102,10 @@
             "Taunt",
             "Tenacity Down"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Biggs Darklighter",
@@ -2057,7 +2259,10 @@
             "Evasion Up",
             "Gain Turn Meter"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "XWINGRED3",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Bistan",
@@ -2212,7 +2417,10 @@
             "Gain Turn Meter",
             "Remove Turn Meter"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "UWINGSCARIF",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Boba Fett",
@@ -2380,7 +2588,10 @@
             "Taunt",
             "Thermal Detonator"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "SLAVE1",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Bodhi Rook",
@@ -2538,7 +2749,10 @@
             "Offense Up",
             "Remove Turn Meter"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Bossk",
@@ -2699,7 +2913,10 @@
             "Stun",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "HOUNDSTOOTH",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Cad Bane",
@@ -2861,7 +3078,172 @@
             "Stun",
             "Thermal Detonator"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "XANADUBLOOD",
+        "ship_slot": 0,
+        "activate_shard_count": 50
+    },
+    {
+        "name": "Canderous Ordo",
+        "base_id": "CANDEROUSORDO",
+        "pk": 307,
+        "url": "http://swgoh.gg/characters/canderous-ordo/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_canderous.png",
+        "power": 21168,
+        "description": "Powerful attacker who can make short work of enemy Tanks",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "005",
+                    "005",
+                    "001",
+                    "003",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "028",
+                    "034",
+                    "016",
+                    "021",
+                    "017",
+                    "001"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "055",
+                    "045",
+                    "060",
+                    "050",
+                    "036",
+                    "015"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "006",
+                    "074",
+                    "056",
+                    "055",
+                    "036",
+                    "024"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "075",
+                    "081",
+                    "074",
+                    "051",
+                    "058",
+                    "055"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "097",
+                    "092",
+                    "092",
+                    "091",
+                    "086",
+                    "050"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "118",
+                    "117",
+                    "112",
+                    "108",
+                    "113",
+                    "086"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "118",
+                    "117",
+                    "112",
+                    "108",
+                    "113",
+                    "086"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "126",
+                    "119",
+                    "112",
+                    "092",
+                    "102",
+                    "075"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "139",
+                    "129",
+                    "136",
+                    "119",
+                    "011",
+                    "092"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "142",
+                    "153",
+                    "139",
+                    "131",
+                    "012",
+                    "086"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "160",
+                    "165",
+                    "159",
+                    "171",
+                    "166",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Old Republic",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Bonus Attack",
+            "DoT",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Taunt",
+            "Tenacity Down"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Captain Han Solo",
@@ -3017,7 +3399,10 @@
             "Gain Turn Meter",
             "Revive"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Captain Phasma",
@@ -3176,7 +3561,10 @@
             "Leader: Assist",
             "Speed Down"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "COMMANDSHUTTLE",
+        "ship_slot": 1,
+        "activate_shard_count": 50
     },
     {
         "name": "Cassian Andor",
@@ -3340,7 +3728,10 @@
             "Speed Down",
             "Tenacity Up"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "UWINGROGUEONE",
+        "ship_slot": 0,
+        "activate_shard_count": 50
     },
     {
         "name": "CC-2224 \"Cody\"",
@@ -3497,7 +3888,10 @@
             "Leader: +Defense",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Chewbacca",
@@ -3659,7 +4053,10 @@
             "Stun",
             "Tenacity Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Chief Chirpa",
@@ -3815,7 +4212,10 @@
             "Heal",
             "Leader: Assist"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Chief Nebit",
@@ -3970,7 +4370,10 @@
             "Stealth",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Chirrut Îmwe",
@@ -4126,7 +4529,10 @@
             "Dispel",
             "Tenacity Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Chopper",
@@ -4287,7 +4693,10 @@
             "Stun",
             "Taunt"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "PHANTOM2",
+        "ship_slot": 2,
+        "activate_shard_count": 25
     },
     {
         "name": "Clone Sergeant - Phase I",
@@ -4443,7 +4852,10 @@
             "Offense Up",
             "Remove Turn Meter"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "ARC170CLONESERGEANT",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Clone Wars Chewbacca",
@@ -4601,7 +5013,10 @@
             "Remove Turn Meter",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Colonel Starck",
@@ -4758,7 +5173,10 @@
             "Gain Turn Meter",
             "Remove Turn Meter"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Commander Luke Skywalker",
@@ -4920,7 +5338,10 @@
             "Taunt",
             "Tenacity Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Coruscant Underworld Police",
@@ -5075,7 +5496,10 @@
             "Offense Down",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 10
     },
     {
         "name": "Count Dooku",
@@ -5234,7 +5658,10 @@
             "Offense Up",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "CT-21-0408 \"Echo\"",
@@ -5390,7 +5817,10 @@
             "Dispel",
             "Dispel - All Enemies"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "CT-5555 \"Fives\"",
@@ -5548,7 +5978,10 @@
             "Leader: +Defense",
             "Speed Down"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "UMBARANSTARFIGHTER",
+        "ship_slot": 0,
+        "activate_shard_count": 50
     },
     {
         "name": "CT-7567 \"Rex\"",
@@ -5705,7 +6138,10 @@
             "Remove Turn Meter",
             "Tenacity Up"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "ARC170REX",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Darth Maul",
@@ -5865,7 +6301,10 @@
             "Stealth",
             "Taunt"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "SITHINFILTRATOR",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Darth Nihilus",
@@ -6024,7 +6463,10 @@
             "Reduce Cooldowns",
             "Revive"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Darth Sidious",
@@ -6181,7 +6623,10 @@
             "Healing Immunity",
             "Leader: +Critical"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Darth Sion",
@@ -6337,7 +6782,10 @@
             "Revive",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Darth Traya",
@@ -6496,7 +6944,10 @@
             "Reduce Cooldowns",
             "Tenacity Down"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Darth Vader",
@@ -6656,7 +7107,10 @@
             "Remove Turn Meter",
             "Speed Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "TIEADVANCED",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Dathcha",
@@ -6814,7 +7268,10 @@
             "Stealth",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Death Trooper",
@@ -6974,7 +7431,10 @@
             "Revive",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "TIEREAPER",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Dengar",
@@ -7137,7 +7597,10 @@
             "Tenacity Up",
             "Thermal Detonator"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Director Krennic",
@@ -7297,7 +7760,10 @@
             "Stun",
             "Tenacity Down"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Eeth Koth",
@@ -7454,7 +7920,10 @@
             "Leader: +Defense",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Embo",
@@ -7610,7 +8079,10 @@
             "Foresight",
             "Offense Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Emperor Palpatine",
@@ -7770,7 +8242,10 @@
             "Offense Up",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Enfys Nest",
@@ -7936,7 +8411,10 @@
             "Taunt",
             "Tenacity Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Ewok Elder",
@@ -8092,7 +8570,10 @@
             "Heal",
             "Revive"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Ewok Scout",
@@ -8246,7 +8727,10 @@
             "Gain Turn Meter",
             "Remove Turn Meter"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 10
     },
     {
         "name": "Ezra Bridger",
@@ -8405,7 +8889,10 @@
             "Gain Turn Meter",
             "Reset Cooldown"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "PHANTOM2",
+        "ship_slot": 1,
+        "activate_shard_count": 25
     },
     {
         "name": "Finn",
@@ -8565,7 +9052,10 @@
             "Leader: Foresight",
             "Stun"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "MILLENNIUMFALCONEP7",
+        "ship_slot": 1,
+        "activate_shard_count": 80
     },
     {
         "name": "First Order Executioner",
@@ -8722,7 +9212,10 @@
             "Remove Turn Meter",
             "Reset Cooldown"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "First Order Officer",
@@ -8879,7 +9372,10 @@
             "Remove Turn Meter",
             "Tenacity Up"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "First Order SF TIE Pilot",
@@ -9035,7 +9531,10 @@
             "Defense Down",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "TIEFIGHTERFOSF",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "First Order Stormtrooper",
@@ -9194,7 +9693,10 @@
             "Speed Down",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "COMMANDSHUTTLE",
+        "ship_slot": 2,
+        "activate_shard_count": 25
     },
     {
         "name": "First Order TIE Pilot",
@@ -9350,7 +9852,10 @@
             "Foresight",
             "Offense Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "TIEFIGHTERFIRSTORDER",
+        "ship_slot": 0,
+        "activate_shard_count": 10
     },
     {
         "name": "Gamorrean Guard",
@@ -9505,7 +10010,10 @@
             "Expose",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Gar Saxon",
@@ -9662,7 +10170,10 @@
             "Reduce Cooldowns",
             "Speed Down"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "GAUNTLETSTARFIGHTER",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Garazeb \"Zeb\" Orrelios",
@@ -9820,7 +10331,10 @@
             "Stun",
             "Tenacity Up"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "GHOST",
+        "ship_slot": 2,
+        "activate_shard_count": 25
     },
     {
         "name": "General Grievous",
@@ -9980,7 +10494,10 @@
             "Remove Turn Meter",
             "Taunt"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "General Kenobi",
@@ -10144,7 +10661,10 @@
             "Stealth",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "General Veers",
@@ -10302,7 +10822,10 @@
             "Leader: +Speed",
             "Offense Up"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Geonosian Soldier",
@@ -10457,7 +10980,10 @@
             "Gain Turn Meter",
             "Offense Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "GEONOSIANSTARFIGHTER2",
+        "ship_slot": 0,
+        "activate_shard_count": 10
     },
     {
         "name": "Geonosian Spy",
@@ -10614,7 +11140,10 @@
             "Gain Turn Meter",
             "Stealth"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "GEONOSIANSTARFIGHTER3",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Grand Admiral Thrawn",
@@ -10774,7 +11303,10 @@
             "Speed Down",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "CAPITALCHIMAERA",
+        "ship_slot": 0,
+        "activate_shard_count": 145
     },
     {
         "name": "Grand Master Yoda",
@@ -10937,7 +11469,10 @@
             "Taunt",
             "Tenacity Up"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Grand Moff Tarkin",
@@ -11097,7 +11632,10 @@
             "Offense Down",
             "Remove Turn Meter"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "CAPITALSTARDESTROYER",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Greedo",
@@ -11257,7 +11795,10 @@
             "Stun",
             "Thermal Detonator"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Han Solo",
@@ -11416,7 +11957,10 @@
             "Stun",
             "Taunt"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Hera Syndulla",
@@ -11574,7 +12118,10 @@
             "Reduce Cooldowns",
             "Revive"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "GHOST",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Hermit Yoda",
@@ -11734,7 +12281,10 @@
             "Reset Cooldown",
             "Stealth"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "HK-47",
@@ -11895,7 +12445,10 @@
             "Revive",
             "Speed Down"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Hoth Rebel Scout",
@@ -12048,7 +12601,10 @@
             "Gain Turn Meter",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Hoth Rebel Soldier",
@@ -12203,7 +12759,10 @@
             "Offense Down",
             "Taunt"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "IG-100 MagnaGuard",
@@ -12361,7 +12920,10 @@
             "Offense Up",
             "Remove Turn Meter"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "IG-86 Sentinel Droid",
@@ -12513,7 +13075,10 @@
         "ability_classes": [
             "Assist"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 10
     },
     {
         "name": "IG-88",
@@ -12672,7 +13237,10 @@
             "Healing Immunity",
             "Leader: +Critical"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "IG2000",
+        "ship_slot": 0,
+        "activate_shard_count": 50
     },
     {
         "name": "Ima-Gun Di",
@@ -12828,7 +13396,10 @@
             "Defense Down",
             "Leader: +Defense"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Imperial Probe Droid",
@@ -12986,7 +13557,10 @@
             "Remove Turn Meter",
             "Revive"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Imperial Super Commando",
@@ -13143,7 +13717,10 @@
             "Gain Turn Meter",
             "Offense Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "GAUNTLETSTARFIGHTER",
+        "ship_slot": 1,
+        "activate_shard_count": 25
     },
     {
         "name": "Jango Fett",
@@ -13304,7 +13881,10 @@
             "Revive",
             "Taunt"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Jawa",
@@ -13459,7 +14039,10 @@
             "Speed Down",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Jawa Engineer",
@@ -13614,7 +14197,10 @@
             "Revive",
             "Thermal Detonator"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Jawa Scavenger",
@@ -13773,7 +14359,10 @@
             "Tenacity Down",
             "Thermal Detonator"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Jedi Consular",
@@ -13927,7 +14516,10 @@
             "Heal",
             "Reduce Cooldowns"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "JEDISTARFIGHTERCONSULAR",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Jedi Knight Anakin",
@@ -14085,7 +14677,10 @@
             "Gain Turn Meter",
             "Offense Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "JEDISTARFIGHTERANAKIN",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Jedi Knight Guardian",
@@ -14241,7 +14836,10 @@
             "Defense Up",
             "Offense Down"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Jedi Knight Revan",
@@ -14410,7 +15008,10 @@
             "Taunt",
             "Tenacity Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Jolee Bindo",
@@ -14566,7 +15167,10 @@
             "Gain Turn Meter",
             "Revive"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Jyn Erso",
@@ -14725,7 +15329,10 @@
             "Revive",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "UWINGROGUEONE",
+        "ship_slot": 1,
+        "activate_shard_count": 80
     },
     {
         "name": "K-2SO",
@@ -14884,7 +15491,10 @@
             "Offense Down",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "UWINGROGUEONE",
+        "ship_slot": 2,
+        "activate_shard_count": 50
     },
     {
         "name": "Kanan Jarrus",
@@ -15044,7 +15654,10 @@
             "Offense Down",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "GHOST",
+        "ship_slot": 1,
+        "activate_shard_count": 25
     },
     {
         "name": "Kit Fisto",
@@ -15202,7 +15815,10 @@
             "Leader: +Defense",
             "Leader: +Tenacity"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Kylo Ren",
@@ -15361,7 +15977,10 @@
             "Reset Cooldown",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "COMMANDSHUTTLE",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Kylo Ren (Unmasked)",
@@ -15520,7 +16139,10 @@
             "Taunt",
             "Tenacity Down"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "TIESILENCER",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "L3-37",
@@ -15679,7 +16301,10 @@
             "Taunt",
             "Tenacity Up"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "MILLENNIUMFALCONPRISTINE",
+        "ship_slot": 1,
+        "activate_shard_count": 25
     },
     {
         "name": "Lando Calrissian",
@@ -15834,7 +16459,10 @@
             "Leader: +Speed",
             "Reset Cooldown"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Lobot",
@@ -15990,7 +16618,10 @@
             "Heal",
             "Leader: +Speed"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Logray",
@@ -16151,7 +16782,10 @@
             "Remove Turn Meter",
             "Tenacity Up"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Luke Skywalker (Farmboy)",
@@ -16311,7 +16945,10 @@
             "Speed Down",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Luminara Unduli",
@@ -16469,7 +17106,10 @@
             "Leader: +Max Health",
             "Leader: Healing"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Mace Windu",
@@ -16627,7 +17267,10 @@
             "Leader: +Critical",
             "Leader: +Max Health"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "CAPITALJEDICRUISER",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Magmatrooper",
@@ -16782,7 +17425,10 @@
             "Gain Turn Meter",
             "Remove Turn Meter"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 10
     },
     {
         "name": "Mission Vao",
@@ -16940,7 +17586,10 @@
             "Gain Turn Meter",
             "Stealth"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Mob Enforcer",
@@ -17095,7 +17744,10 @@
             "Offense Up",
             "Thermal Detonator"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Mother Talzin",
@@ -17254,7 +17906,10 @@
             "Leader: Assist",
             "Revive"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Nightsister Acolyte",
@@ -17408,7 +18063,10 @@
             "Gain Turn Meter",
             "Stealth"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Nightsister Initiate",
@@ -17562,7 +18220,10 @@
             "Counter",
             "DoT"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 10
     },
     {
         "name": "Nightsister Spirit",
@@ -17720,7 +18381,10 @@
             "Speed Down",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Nightsister Zombie",
@@ -17876,7 +18540,10 @@
             "Taunt",
             "Tenacity Down"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Nute Gunray",
@@ -18032,7 +18699,10 @@
             "Stealth",
             "Thermal Detonator"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Obi-Wan Kenobi (Old Ben)",
@@ -18194,7 +18864,10 @@
             "Remove Turn Meter",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Old Daka",
@@ -18353,7 +19026,10 @@
             "Revive",
             "Stun"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Pao",
@@ -18510,7 +19186,10 @@
             "Offense Up",
             "Reduce Cooldowns"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Paploo",
@@ -18668,7 +19347,10 @@
             "Stealth",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Plo Koon",
@@ -18827,7 +19509,10 @@
             "Offense Up",
             "Stealth"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "BLADEOFDORIN",
+        "ship_slot": 0,
+        "activate_shard_count": 50
     },
     {
         "name": "Poe Dameron",
@@ -18983,7 +19668,10 @@
             "Remove Turn Meter",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "XWINGBLACKONE",
+        "ship_slot": 0,
+        "activate_shard_count": 50
     },
     {
         "name": "Poggle the Lesser",
@@ -19138,7 +19826,10 @@
             "Gain Turn Meter",
             "Offense Up"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Princess Leia",
@@ -19295,7 +19986,10 @@
             "Offense Up",
             "Stealth"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Qi'ra",
@@ -19457,7 +20151,10 @@
             "Leader: +Speed",
             "Offense Down"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Qui-Gon Jinn",
@@ -19618,7 +20315,10 @@
             "Offense Up",
             "Remove Turn Meter"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "R2-D2",
@@ -19780,7 +20480,10 @@
             "Stealth",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Range Trooper",
@@ -19934,7 +20637,10 @@
             "Assist",
             "Counter"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Rebel Officer Leia Organa",
@@ -20093,7 +20799,10 @@
             "Leader: +Tenacity",
             "Leader: Foresight"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Resistance Pilot",
@@ -20247,7 +20956,10 @@
             "Foresight",
             "Gain Turn Meter"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "XWINGRESISTANCE",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Resistance Trooper",
@@ -20402,7 +21114,10 @@
             "Gain Turn Meter",
             "Speed Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Rey (Jedi Training)",
@@ -20568,7 +21283,10 @@
             "Remove Turn Meter",
             "Speed Down"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Rey (Scavenger)",
@@ -20722,7 +21440,10 @@
             "Foresight",
             "Offense Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "MILLENNIUMFALCONEP7",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Rose Tico",
@@ -20881,7 +21602,10 @@
             "Stun",
             "Tenacity Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Royal Guard",
@@ -21037,7 +21761,10 @@
             "Stun",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 10
     },
     {
         "name": "Sabine Wren",
@@ -21194,7 +21921,10 @@
             "Offense Up",
             "Reduce Cooldowns"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "PHANTOM2",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Savage Opress",
@@ -21352,7 +22082,10 @@
             "Offense Down",
             "Offense Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Scarif Rebel Pathfinder",
@@ -21510,7 +22243,10 @@
             "Revive",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "UWINGSCARIF",
+        "ship_slot": 1,
+        "activate_shard_count": 25
     },
     {
         "name": "Shoretrooper",
@@ -21666,7 +22402,10 @@
             "Heal",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "TIEREAPER",
+        "ship_slot": 1,
+        "activate_shard_count": 50
     },
     {
         "name": "Sith Assassin",
@@ -21825,7 +22564,10 @@
             "Stun",
             "Tenacity Up"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "SITHFIGHTER",
+        "ship_slot": 0,
+        "activate_shard_count": 50
     },
     {
         "name": "Sith Marauder",
@@ -21979,7 +22721,10 @@
             "Gain Turn Meter",
             "Offense Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "SITHBOMBER",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Sith Trooper",
@@ -22136,7 +22881,10 @@
             "Offense Down",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Snowtrooper",
@@ -22291,7 +23039,10 @@
             "AoE",
             "Gain Turn Meter"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 10
     },
     {
         "name": "Stormtrooper",
@@ -22446,7 +23197,10 @@
             "Remove Turn Meter",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Stormtrooper Han",
@@ -22602,7 +23356,10 @@
             "Remove Turn Meter",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Sun Fac",
@@ -22759,7 +23516,10 @@
             "Remove Turn Meter",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "GEONOSIANSTARFIGHTER1",
+        "ship_slot": 0,
+        "activate_shard_count": 50
     },
     {
         "name": "T3-M4",
@@ -22921,7 +23681,10 @@
             "Taunt",
             "Tenacity Up"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Talia",
@@ -23077,7 +23840,10 @@
             "Leader: +Evasion",
             "Leader: +Max Health"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Teebo",
@@ -23232,7 +23998,10 @@
             "Remove Turn Meter",
             "Stealth"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "TIE Fighter Pilot",
@@ -23389,7 +24158,10 @@
             "Gain Turn Meter",
             "Tenacity Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "TIEFIGHTERIMPERIAL",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Tusken Raider",
@@ -23542,7 +24314,10 @@
             "Assist",
             "Remove Turn Meter"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Tusken Shaman",
@@ -23696,7 +24471,10 @@
             "Gain Turn Meter",
             "Offense Up"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     },
     {
         "name": "Ugnaught",
@@ -23849,7 +24627,10 @@
             "Gain Turn Meter",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "URoRRuR'R'R",
@@ -24004,7 +24785,10 @@
             "Offense Up",
             "Stun"
         ],
-        "role": "Support"
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Vandor Chewbacca",
@@ -24160,7 +24944,10 @@
             "Counter",
             "Revive"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Veteran Smuggler Chewbacca",
@@ -24319,7 +25106,10 @@
             "Speed Down",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Veteran Smuggler Han Solo",
@@ -24478,7 +25268,10 @@
             "Reset Cooldown",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Visas Marr",
@@ -24632,7 +25425,10 @@
             "Dispel",
             "Revive"
         ],
-        "role": "Healer"
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Wampa",
@@ -24790,7 +25586,10 @@
             "Healing Immunity",
             "Stun"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Wedge Antilles",
@@ -24944,7 +25743,10 @@
             "Defense Down",
             "Leader: +Max Health"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "XWINGRED2",
+        "ship_slot": 0,
+        "activate_shard_count": 80
     },
     {
         "name": "Wicket",
@@ -25099,7 +25901,10 @@
             "Gain Turn Meter",
             "Stealth"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Young Han Solo",
@@ -25254,7 +26059,10 @@
             "Counter",
             "Speed Down"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Young Lando Calrissian",
@@ -25411,7 +26219,10 @@
             "Gain Turn Meter",
             "Stealth"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "MILLENNIUMFALCONPRISTINE",
+        "ship_slot": 0,
+        "activate_shard_count": 25
     },
     {
         "name": "Zaalbar",
@@ -25567,7 +26378,10 @@
             "DoT",
             "Taunt"
         ],
-        "role": "Tank"
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Zam Wesell",
@@ -25726,6 +26540,9 @@
             "Stealth",
             "Thermal Detonator"
         ],
-        "role": "Attacker"
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 50
     }
 ]

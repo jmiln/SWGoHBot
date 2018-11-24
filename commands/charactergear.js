@@ -9,55 +9,47 @@ class Charactergear extends Command {
         });
     }
 
-    run(client, message, args) {
-        const charList = client.characters;
+    async run(client, message, [userID, ...searchChar]) {
+        let gearLvl = 0;
+        // If there's enough elements in searchChar, and it's in the format of a number*
+        if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {                                                                                               
+            gearLvl = parseInt(searchChar.pop());
+            if (gearLvl < 0 || gearLvl > 12) {
+                return message.channel.send(message.language.get("COMMAND_CHARGEAR_INVALID_GEAR"));
+            }   
+        }  
 
-
-        // The current max possible gear level
-        const MAX_GEAR = 12;
-
-        // Figure out where the gear level is in the command, and grab it
-        let gearLvl = "";
-        if (!args[0]) return message.channel.send(message.language.get("COMMAND_CHARGEAR_NEED_CHARACTER", message.guildSettings.prefix));
-
-        if (args[1]) {
-            gearLvl = parseInt(args[args.length - 1].replace(/\D/g, ""));
-            if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(gearLvl) ) {
-                gearLvl = "";
-            } else {
-                // There is a valid gear level being requested
-                gearLvl = "Gear " + gearLvl;
-                args.splice(args.length - 1);
+        // Need to get the allycode from the db, then use that
+        if (!userID) {
+            return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
+        } else if (userID !== "me" && !client.isAllyCode(userID) && !client.isUserID(userID)) {
+            // If they're just looking for a character for themselves, get the char
+            searchChar = userID + " " + searchChar;
+            searchChar = searchChar.trim();
+            userID = null;
+        } 
+        if (userID) {
+            const allyCodes = await client.getAllyCode(message, userID);
+            if (!allyCodes.length) {
+                return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
+            } else if (allyCodes.length > 1) {
+                return message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific");
             }
-        } else {
-            gearLvl = "";
+            userID = allyCodes[0];
         }
 
-        // Remove any junk from the name
-        const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
-
-        // Check if it should send as an embed or a code block
-        const guildConf = message.guildSettings;
-        let embeds = true;
-        if (message.guild) {
-            if (guildConf["useEmbeds"] !== true || !message.channel.permissionsFor(client.user).has("EMBED_LINKS")) {
-                embeds = false;
-            }
+        if (Array.isArray(searchChar)) {
+            searchChar = searchChar.join(" ");
         }
-
-        // Make sure they gave a character to find
-        if (searchName === "") {
-            return message.channel.send(message.language.get("COMMAND_CHARGEAR_NEED_CHARACTER", message.guildSettings.prefix));
+ 
+        if (!searchChar || !searchChar.length) {
+            return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
         }
-
-        // Find any characters that match that
-        const chars = client.findChar(searchName, charList);
-        if (!chars || chars.length <= 0) {
-            return message.channel.send(message.language.get("COMMAND_CHARGEAR_INVALID_CHARACTER", message.guildSettings.prefix));
-        }
-
-        if (!chars || chars.length === 0) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchName));
+        const chars = client.findChar(searchChar, client.characters);
+ 
+        let character;
+        if (chars.length === 0) {
+            return message.channel.send(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         } else if (chars.length > 1) {
             const charL = [];
             const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
@@ -65,19 +57,35 @@ class Charactergear extends Command {
                 charL.push(c.name);
             });
             return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+        } else {                                                                                                                                                                        
+            character = chars[0];
         }
 
+        // The current max possible gear level
+        const MAX_GEAR = 12;
 
-        if (gearLvl === "") {
-            chars.forEach(character => {
+        if (!userID) {
+            // Figure out where the gear level is in the command, and grab it
+            if (gearLvl) {
+                if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(gearLvl) ) {
+                    gearLvl = "";
+                } else {
+                    // There is a valid gear level being requested
+                    gearLvl = "Gear " + gearLvl;
+                }
+            } else {
+                gearLvl = "";
+            }
+
+            if (!gearLvl.length) {
                 const allGear = {};
 
                 for (var level in character.gear) {
                     const thisLvl = character.gear[level];
                     for (var ix = 0; ix < thisLvl.length; ix++) {
-                        if (!allGear[thisLvl[ix]]) { // If it"s not been checked yet
+                        if (!allGear[thisLvl[ix]]) { // If it's not been checked yet
                             allGear[thisLvl[ix]] = 1;
-                        } else { // It"s already in there
+                        } else { // It's already in there
                             allGear[thisLvl[ix]] = allGear[thisLvl[ix]] + 1;
                         }
                     }
@@ -91,12 +99,10 @@ class Charactergear extends Command {
                     code: "md",
                     split: true
                 });
-            });
-        } else {
-            // Format and send the requested data back
-            chars.forEach(character => {
-                const thisGear = character.gear[gearLvl];
-                if (embeds) { // if Embeds are enabled
+            } else {
+                // Format and send the requested data back
+                chars.forEach(character => {
+                    const thisGear = character.gear[gearLvl];
                     message.channel.send({
                         embed: {
                             "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
@@ -111,12 +117,64 @@ class Charactergear extends Command {
                             }]
                         }
                     });
-                } else { // Embeds are disabled
-                    message.channel.send(` * ${character.name} * \n### ${gearLvl} ### \n* ${character.gear[gearLvl].join("\n* ")}`, {
-                        code: "md"
+                });
+            }
+        } else {
+            // Looking for a player's remaining needed gear
+            const cooldown = client.getPlayerCooldown(message.author.id);
+            const player = await client.swgohAPI.player(userID, message.guildSettings.swgohLanguage, cooldown);
+            const char = await client.swgohAPI.getCharacter(character.uniqueName);
+            const playerChar = player.roster.find(c => c.defId === character.uniqueName);
+
+            if (!playerChar) {
+                // They don't have it unlocked, so send the whole list
+                
+            } else {
+                // They do have the character unlocked.
+                // Need to filter out the gear that they already have assigned to the character, then show them what's left
+
+                const gearList = char.unitTierList.filter(t => t.tier >= playerChar.gear);
+
+                const fields = [];
+                gearList.forEach((g, ix) => {
+                    // Take out any that are already equipped
+                    if (g.tier === playerChar.gear) {
+                        const toRemove = playerChar.equipped.map(eq => eq.slot);
+                        while (toRemove.length) {
+                            g.equipmentSetList.splice(toRemove.pop(), 1);
+                        }
+                    }
+                    // Take out the unknown ones
+                    if (g.equipmentSetList.indexOf("???????") > -1) {
+                        g.equipmentSetList.splice(g.equipmentSetList.indexOf("???????"), 1);
+                    }
+                    if (g.tier === 12 && ix === 0 && g.equipmentSetList.length === 0) {
+                        fields.push({
+                            name: "Congrats!",
+                            value: "Look like you have the gear maxed out for " + character.name
+                        });
+                    } else {
+                        fields.push({
+                            name: `Gear Lvl ${g.tier}`,
+                            value: g.equipmentSetList.join("\n")
+                        });
+                    }
+                });
+                if (player.warnings) {
+                    fields.push({
+                        name: "Warnings",
+                        value: player.warnings.join("\n")
                     });
                 }
-            });
+                const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+                message.channel.send({embed: {
+                    author: {
+                        name: `${player.name}'s ${character.name} needs:`
+                    },
+                    fields: fields,
+                    footer: footer
+                }});
+            }
         }
     }
 }

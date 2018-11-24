@@ -12,7 +12,7 @@ class Shardtimes extends Command {
             category: "Misc",
             flags: {
                 "ships": {
-                    aliases: ["ship"]
+                    aliases: ["ship", "s"]
                 }
             },
             subArgs: {
@@ -165,10 +165,10 @@ class Shardtimes extends Command {
                         userFlag = shardTimes[user].flag;
                     }
                     const maxLen = 20;
-                    let uName = "Unknown";
+                    let uName = "";
                     if (!shardTimes[user].type || shardTimes[user].type === "id") {
                         const thisUser = message.guild.members.get(user);
-                        const userName = thisUser ? `${thisUser.displayName}` : `${client.users.get(user) ? client.users.get(user).username : "Unknown"}`;
+                        const userName = thisUser ? `${thisUser.displayName}` : `${client.users.get(user) ? client.users.get(user).username : user}`;
                         uName = "**" + (userName.length > maxLen ? userName.substring(0, maxLen) : userName) + "**";
                     } else {
                         // Type is name, don't try looking it up

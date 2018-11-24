@@ -98,6 +98,7 @@ module.exports = class extends Language {
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
             COMMAND_INVALID_BOOL: "Invalid value, try true or false",
             COMMAND_MISSING_PERMS: "Sorry, but you don't have the correct permissions to use that.",
+            BASE_CANNOT_DM: "Sorry, but I could not send you a message. Please make sure you have it set to let people in this server send you messages.",
             BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
             BASE_COMMAND_HELP_HEADER: (name) => `Help for ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Continued help for ${name}`,
@@ -193,8 +194,7 @@ module.exports = class extends Language {
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
             COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}abilities <characterName>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
-            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}     **Max ability mat needed:**  ${mat}\n${cdString}${aDesc}`,
-            COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Ability type: ${type}\n* Max ability mat needed: ${tier}\n* Description: ${aDesc}\n\n`,
+            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}\n**Ability mats needed:     ${mat}**\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_HELP: {
                 description: "Shows the abilities for the specified character.",
                 actions: [
@@ -207,14 +207,29 @@ module.exports = class extends Language {
                 ]
             },
 
+            //Acronym Command
+            COMMAND_ACRONYMS_INVALID: "Acronym lookup provided not available for blank",
+            COMMAND_ACRONYMS_NOT_FOUND: "Acronym could not be found",
+            COMMAND_ACRONYMS_HELP: {
+                description: "Helps to provide a lookup for the acronyms commonly used in Star Wars: Galaxy of Heros.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";acronym acronymToLookUp\n;acronym orMultiple acronyms",
+                        args: {}
+                    }
+                ]
+            },
+
             // Activities Command
-            COMMAND_ACTIVITIES_SUNDAY: "== Before Reset == \nComplete Arena Battles \nSave Cantina Energy \nSave Normal Energy\n\n== After Reset == \nSpend Cantina Energy \nSave Normal Energy",
-            COMMAND_ACTIVITIES_MONDAY: "== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \n\n== After Reset == \nSpend Normal Energy on Light Side Battles ",
-            COMMAND_ACTIVITIES_TUESDAY: "== Before Reset == \nSpend Normal Energy on Light Side Battles \nSave All Kinds of Energy\n\n== After Reset == \nSpend All Kinds of Energy \nSave Normal Energy",
+            COMMAND_ACTIVITIES_SUNDAY:    "== Before Reset == \nComplete Arena Battles \nSave Cantina Energy \nSave Normal Energy\n\n== After Reset == \nSpend Cantina Energy \nSave Normal Energy",
+            COMMAND_ACTIVITIES_MONDAY:    "== Before Reset == \nSpend Cantina Energy \nSave Normal Energy \n\n== After Reset == \nSpend Normal Energy on Light Side Battles ",
+            COMMAND_ACTIVITIES_TUESDAY:   "== Before Reset == \nSpend Normal Energy on Light Side Battles \nSave All Kinds of Energy\n\n== After Reset == \nSpend All Kinds of Energy \nSave Normal Energy",
             COMMAND_ACTIVITIES_WEDNESDAY: "== Before Reset == \nSpend All Kinds of Energy \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Hard Mode Battles",
-            COMMAND_ACTIVITIES_THURSDAY: "== Before Reset == \nSpend Normal Energy on Hard Mode Battles \nSave Challenges\n\n== After Reset == \nComplete Challenges \nSave Normal Energy",
-            COMMAND_ACTIVITIES_FRIDAY: "== Before Reset == \nComplete Challenges \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Dark Side Battles",
-            COMMAND_ACTIVITIES_SATURDAY: "== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy\n\n== After Reset == \nComplete Arena Battles \nSave Cantina Energy",
+            COMMAND_ACTIVITIES_THURSDAY:  "== Before Reset == \nSpend Normal Energy on Hard Mode Battles \nSave Challenges\n\n== After Reset == \nComplete Challenges \nSave Normal Energy",
+            COMMAND_ACTIVITIES_FRIDAY:    "== Before Reset == \nComplete Challenges \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Dark Side Battles",
+            COMMAND_ACTIVITIES_SATURDAY:  "== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy\n\n== After Reset == \nComplete Arena Battles \nSave Cantina Energy",
             COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Invalid day, usage is \`${prefix}${usage}\``,
             COMMAND_ACTIVITIES_HELP: {
                 description: "Shows the daily guild activites.",
@@ -284,8 +299,9 @@ module.exports = class extends Language {
             },
 
             // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [starLvl]\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [starLvl]\``,
+            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
+            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
+            COMMAND_CHARGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are betweem 1 & 12.",
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: "This gear has not been entered yet",
             COMMAND_CHARACTERGEAR_HELP: {
@@ -294,8 +310,12 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "charactergear <character> [gearLvl]",
-                        args: {}
+                        usage: "charactergear [user] <character> [gearLvl]",
+                        args: {
+                            "user": "The person you want to see the gear for. (me | userID | mention)",
+                            "character": "The character you want to see the gear for",
+                            "gearLvl": "If you just want to see the gear for a certain gear level"
+                        }
                     }
                 ]
             },
@@ -481,12 +501,15 @@ module.exports = class extends Language {
                 heroic:    "Heroic"
             },
             COMMAND_GUILDS_STAT_HEADER: "Stats",
-            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
                 `Members:      ${members}/50`,
                 `Required Lvl: ${lvl}`,
+                `Est. char gp: ${charGP}`,
+                `Est. ship gp: ${shipGP}`,
                 `Total GP:     ${gp}`
             ].join("\n"),
             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members and their gp.\n\`${prefix}guild -roster -allycode\` for a list with their ally codes instead.`,
+            COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName}'s Territory War Summary`,
             COMMAND_GUILDS_HELP: {
                 description: "Shows everyone that's in your guild/ some basic stats.",
                 actions: [
@@ -500,6 +523,15 @@ module.exports = class extends Language {
                             "-allycode": "Show a member's ally codes instead of GP",
                             "-sort": "Choose either name or gp to sort by",
                             "-reg": "Show the discord names of anyone registered & on the server next to their name."
+                        }
+                    },
+                    {
+                        action: "Territory War Summary",
+                        actionDesc: "Show a general overview of some impoortant characters for the specified guild",
+                        usage: ";guild [user] -twsummary",
+                        args: {
+                            "user": "A way to identify the guild. (mention | allyCode | guildName)",
+                            "-twsummary": "To tell it to show the summary  (-tw)"
                         }
                     }
                 ]
@@ -764,11 +796,12 @@ module.exports = class extends Language {
 
             // Polls Command
             COMMAND_POLL_NO_ARG: "You need to provide either an option to vote on, or an action (create/view/etc).",
+            COMMAND_POLL_TITLE_TOO_LONG: "Sorry, but your title/ question must be fewer than 256 characters.",
             COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
             COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
             COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
             COMMAND_POLL_TOO_MANY_OPT: "You can only have up to 10 options to vote on.",
-            COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n\n${poll}`,
+            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n`,
             COMMAND_POLL_NO_POLL: "There is no poll in progress",
             COMMAND_POLL_FINAL: (poll) => `Final results for ${poll}`,
             COMMAND_POLL_FINAL_ERROR: (question) => `I couldn't delete **${question}**, please try again.`,
@@ -777,16 +810,26 @@ module.exports = class extends Language {
             COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `You have changed your choice from **${oldOpt}** to **${newOpt}**`,
             COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? "" : "s"}**\n`,
+            COMMAND_POLL_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice>\` to vote`,
+            // Remote poll strings
+            COMMAND_POLL_INVALID_ID: "A poll with this ID does not exist.",
+            COMMAND_POLL_NO_ACCESS: "Sorry, but you don't have access to that poll.",
+            COMMAND_POLL_REMOTE_OPTS: "Only actions available for remote polls are voting on or checking a poll.",
+            COMMAND_POLL_DM_USE: (prefix) => `Sorry, but if you want to use this command in a DM, you need to provide a poll ID with \`${prefix}poll -poll <pollID>\``,
+            COMMAND_POLL_DM_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice> -poll ${id}\`  to vote`,
+            COMMAND_POLL_ME1: (pollID, poll) => `Here are the options for poll ${pollID}\n${poll}\nCopy the message below and change \`<choice>\` to the option you want`,
+            COMMAND_POLL_ME2: (prefix, pollID) => `${prefix}poll -poll ${pollID} <choice>`,
             COMMAND_POLL_HELP: {
                 description: "Lets you start a poll with multiple options.",
                 actions: [
                     {
                         action: "Create",
                         actionDesc: "Create a new poll",
-                        usage: ";poll create <question> | <opt1> | <opt2> | [...] | [opt10]",
+                        usage: ";poll create [-anonymous] <question> | <opt1> | <opt2> | [...] | [opt10]",
                         args: {
                             "question": "The question that you're wanting feedback on.",
-                            "opt": "The options that people can choose from"
+                            "opt": "The options that people can choose from.",
+                            "-anonymous": "If this flag is included, the current votes will not be shown until the poll is closed. (-anon)"
                         }
                     },
                     {
@@ -799,15 +842,25 @@ module.exports = class extends Language {
                     },
                     {
                         action: "View",
-                        actionDesc: "See what the current tally of votes is.",
+                        actionDesc: "See what the channel's current poll and it's options are.",
                         usage: ";poll view",
                         args: {}
                     },
                     {
                         action: "Close",
-                        actionDesc: "End the poll and show the final tally.",
+                        actionDesc: "End the channel's current poll and show the final tally.",
                         usage: ";poll close",
                         args: {}
+                    },
+                    {
+                        action: "Remote View/ Vote",
+                        actionDesc: "Vote on or view a poll from outside the channel it's linked to.",
+                        usage: ";poll view -poll <poll> \n;poll vote <choice> -poll <poll>\n;poll me",
+                        args: {
+                            "pollID": "The ID of the poll you want to interact with",
+                            "choice": "The option that you choose.",
+                            "me": "This will send you the current options to vote on, and an an example you can copy/ paste to vote"
+                        }
                     }
                 ]
             },
@@ -1115,14 +1168,16 @@ module.exports = class extends Language {
                         actionDesc: "Remove a user from the tracker",
                         usage: ";shardtimes remove <user>",
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)"
+                            "user": "The person you're removing. (me | userID | mention)"
                         }
                     },
                     {
                         action: "View",
                         actionDesc: "Look at all the tracked times for you and your shardmates",
                         usage: ";shardtimes view",
-                        args: {}
+                        args: {
+                            "-ships": "View the times for fleet payout instead (-ship | -s)"
+                        }
                     }
                 ]
             },

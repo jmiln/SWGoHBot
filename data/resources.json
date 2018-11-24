@@ -19,8 +19,13 @@
             "Discord": "https://discord.gg/VFUatwk",
             "Invite": "https://discordapp.com/api/oauth2/authorize?client_id=213381103287926785&permissions=1879395392&scope=bot"
         },
-        "SWGoHBot": {
+        "Scorpio": {
             "Desc": "Overall SWGoH utilities bot",
+            "Discord": "https://discord.gg/XB4DKCt",
+            "Invite": "https://discordapp.com/oauth2/authorize?client_id=410451793751834625&scope=bot&permissions=515136"
+        },
+        "SWGoHBot": {
+            "Desc": "Another overall SWGoH utilities bot",
             "Discord": "https://discord.gg/FfwGvhr",
             "Website": "https://swgohbot.com",
             "Invite": "https://swgohbot.com/invite"

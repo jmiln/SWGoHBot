@@ -19,6 +19,9 @@ class Guilds extends Command {
                 },
                 "reg": {
                     aliases: []
+                },
+                twsummary: {
+                    aliases: ["tw"]
                 }
             },
             subArgs: {
@@ -139,11 +142,112 @@ class Guilds extends Command {
                 name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
                 value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
             });
+            if (guild.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: guild.warnings.join("\n")
+                });
+            }
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
-                fields: fields
+                fields: fields,
+                footer: footer
+            }});
+        } else if (options.flags.twsummary) {
+            // Spit out a general summary of guild characters and such related to tw
+            let gRoster ;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                gRoster = guild.roster.map(m => m.allyCode);
+            }
+
+            let guildGG;
+            try {
+                guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e); 
+                return message.channel.send({embed: {
+                    author: {
+                        name: "Something Broke while getting your guild's characters"
+                    },  
+                    description: client.codeBlock(e) + "Please try again in a bit."
+                }});
+            }
+            // Possibly put this in the guildConf so guilds can have custom lists?
+            const guildChecklist = [
+                "Light Side",
+                ["BASTILASHAN",             "Bastila"],
+                ["BB8",                     "BB-8"],
+                ["COMMANDERLUKESKYWALKER",  "CLS"],
+                ["ENFYSNEST",               "Enfys Nest"],
+                ["GENERALKENOBI",           "Gen. Kenobi"],
+                ["GRANDMASTERYODA",         "GM Yoda"],
+                ["HANSOLO",                 "Han Solo"],
+                ["HERMITYODA",              "Hermit Yoda"],
+                ["JEDIKNIGHTREVAN",         "Jedi Revan"],
+                ["R2D2_LEGENDARY",          "R2-D2"],
+                ["REYJEDITRAINING",         "Rey (JT)"],
+
+                "Dark Side",
+                ["BOSSK",                   "Bossk"],
+                ["MAUL",                    "Darth Maul"],
+                ["DARTHSION",               "Darth Sion"],
+                ["DARTHTRAYA",              "Darth Traya"],
+                ["KYLORENUNMASKED",         "Kylo Unmask"],
+                ["VEERS",                   "Gen. Veers"],
+                ["EMPERORPALPATINE",        "Palpatine"],
+                ["MOTHERTALZIN",            "Talzin"],
+                ["GRANDADMIRALTHRAWN",      "Thrawn"],
+                ["WAMPA",                   "Wampa"],
+    
+                "Ships",
+                ["CAPITALCHIMAERA",         "Chimaera"],
+                ["CAPITALJEDICRUISER",      "Endurance"],
+                ["CAPITALSTARDESTROYER",    "Executrix"],
+                ["CAPITALMONCALAMARICRUISER", "Home One"]
+            ];
+
+            const allNames = guildChecklist.map(c => c[1]);
+            const longest = allNames.reduce((long, str) => Math.max(long, str.length), 0);
+
+            let charOut = [];
+            charOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total G12  G11   7*\`**`);
+            charOut.push("**`==============================`**");
+            guildChecklist.forEach((char, ix) => {
+                if (Array.isArray(char)) {
+                    const roster = guildGG.roster[char[0]];
+                    const total = roster.length;
+                    const g12 = roster.filter(c => c.gearLevel === 12).length;
+                    const g11 = roster.filter(c => c.gearLevel === 11).length;
+                    const sevenStar = roster.filter(c => c.starLevel === 7).length;
+                    const name = allNames[ix];
+                    charOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
+                } else {
+                    charOut.push(`\n**${char}**`);
+                }
+            });
+            charOut = charOut.map(c => client.expandSpaces(c));
+
+            const fields = [];
+            if (guildGG.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: guildGG.warnings.join("\n")
+                });
+            }
+            const footer = client.updatedFooter(guildGG.updated, message, "guild", cooldown);
+            return msg.edit({embed: {
+                author: {
+                    name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
+                },
+                description: charOut.join("\n"),
+                fields: fields,
+                footer: footer
             }});
         } else {
             // Show basic stats. info about the guild
@@ -168,7 +272,19 @@ class Guilds extends Command {
                 inline: true
             });
     
-            const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS", guild.members, guild.required, guild.gp.toLocaleString());
+            let guildCharGP = 0;
+            let guildShipGP = 0;
+            guild.roster.forEach(m => {
+                guildCharGP += m.gpChar;
+                guildShipGP += m.gpShip;
+            });
+            const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS", 
+                guild.members, 
+                guild.required, 
+                guild.gp.toLocaleString(),
+                guildCharGP.toLocaleString(),
+                guildShipGP.toLocaleString()
+            );
             fields.push({
                 name: message.language.get("COMMAND_GUILDS_STAT_HEADER"),
                 value: client.codeBlock(stats),
@@ -179,15 +295,22 @@ class Guilds extends Command {
                 name: "-",
                 value: message.language.get("COMMAND_GUILDS_FOOTER", message.guildSettings.prefix)
             });
+
+            if (guild.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: guild.warnings.join("\n")
+                });
+            }
+
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: guild.name
                 },
                 description: desc.length ? desc : "",
                 fields: fields.length ? fields : [],
-                footer: {
-                    text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message))
-                }
+                footer: footer
             }});
         }
     }

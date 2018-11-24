@@ -24,19 +24,18 @@ class Squads extends Command {
             allyCodes = await client.getAllyCode(message, user);
         }
         let player = null;
+        let cooldown = null;
         if (!allyCodes || !allyCodes.length || allyCodes.length > 1) {
             phase = list;
             list = user;
         } else {
-            const cooldown = client.getPlayerCooldown(message.author.id);
+            cooldown = client.getPlayerCooldown(message.author.id);
             try {
                 player = await client.swgohAPI.player(allyCodes[0], lang, cooldown);
             } catch (e) {
                 console.log("Broke getting player in squads: " + e);
             }
         }
-        // console.log(player.roster.filter(c => c.name.includes('Anakin')));
-
 
         if (!list) {
             // No list, show em the possible ones
@@ -75,12 +74,24 @@ class Squads extends Command {
                         value: sq
                     });
                 });
+                let footer = "";
+                if (player && cooldown) {
+                    if (player.warnings) {
+                        fields.push({
+                            name: "Warnings",
+                            value: player.warnings.join("\n")
+                        });
+                    }
+
+                    footer = client.updatedFooter(player.updated, message, "player", cooldown);
+                }
                 return message.channel.send({embed: {
                     author: {
                         name: squadList[list].name.toProperCase().replace(/aat/gi, "AAT")
                     },
                     description: `**${squadList[list].phase[phase].name}**\n${squadList[list].rarity}* ${shipEv ? "" : `| g${squadList[list].gear}`} | lvl${squadList[list].level}`,
                     fields: fields,
+                    footer: footer,
                     color: 0x00FF00
                 }});
             } else {

@@ -25,7 +25,7 @@ class GuildSearch extends Command {
         });
     }
 
-    async run(client, message, [userID, ...searchChar], options) { // eslint-disable-line no-unused-vars
+    async run(client, message, args, options) { // eslint-disable-line no-unused-vars
         let starLvl = 0;
         const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
         const reverse = options.flags.reverse;
@@ -39,39 +39,19 @@ class GuildSearch extends Command {
             "SEVENSTAR": 7
         };
 
-        // If there's enough elements in searchChar, and it's in the format of a number*
-        if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {
-            starLvl = parseInt(searchChar.pop());
+        // If there's enough elements in args, and it's in the format of a number*
+        if (args.length && !isNaN(parseInt(args[args.length-1]))) {
+            starLvl = parseInt(args.pop());
             if (starLvl < 0 || starLvl > 7) {
                 return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"));
             }
         }
         
-        // Need to get the allycode from the db, then use that
-        if (!userID) {
-            return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_MISSING_CHAR"));
-        }
-        if (userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
-            userID = await client.getAllyCode(message, userID);
-            if (!userID.length) {
-                return message.channel.send(message.language.get("BASE_SWGOH_NO_GUILD_FOR_USER", message.guildSettings.prefix));
-            }
-            userID = userID[0];
-        } else {
-            // If they're just looking for a character for themselves, get the char
-            searchChar = [userID].concat(searchChar);
-            userID = await client.getAllyCode(message, message.author.id);
-            if (!userID.length) {
-                return message.channel.send(message.language.get("BASE_SWGOH_NO_GUILD_FOR_USER", message.guildSettings.prefix));
-            }
-            userID = userID[0];
-        }
+        const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
 
-        if (!searchChar.length) {
-            return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_MISSING_CHAR"));
-        } 
-        
-        searchChar = searchChar.join(" ");
+        if (err) {
+            return message.channel.send("**Error:** `" + err + "`");
+        }
         
         const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
         
@@ -95,7 +75,7 @@ class GuildSearch extends Command {
         const cooldown = client.getPlayerCooldown(message.author.id);
         let guild = null;
         try {
-            guild = await client.swgohAPI.guild(userID, null, cooldown);
+            guild = await client.swgohAPI.guild(allyCode, null, cooldown);
         } catch (e) {
             console.log("ERROR(GS) getting guild: " + e);
             return message.channel.send({embed: {
@@ -168,10 +148,14 @@ class GuildSearch extends Command {
             }
         });
 
+        // Can get the order from abilities table => skillReferenceList
         let maxZ = 0;
-        for (const member of guildChar) {
-            if (member.zetas.length > maxZ) {
-                maxZ = member.zetas.length;
+        const zetas = [];
+        const apiChar = await client.swgohAPI.getCharacter(character.uniqueName);
+        for (const ab of apiChar.skillReferenceList) {
+            if (ab.cost && ab.cost.AbilityMatZeta > 0) {
+                maxZ = maxZ + 1;
+                zetas.push(ab.skillId);
             }
         }
 
@@ -205,10 +189,27 @@ class GuildSearch extends Command {
         for (const member of sortedGuild) {
             if (isNaN(parseInt(member.starLevel))) member.starLevel = rarityMap[member.starLevel];
             const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
-            const zetas = " | " + "+".repeat(member.zetas.length) + " ".repeat(maxZ - member.zetas.length);
+            let z = " | ";
+            zetas.forEach((zeta, ix) => {
+                const pZeta = member.zetas.find(pz => pz === zeta);
+                if (!pZeta) {
+                    z += " ";
+                } else {
+                    z += (ix + 1).toString();
+                }
+            });
             const gpStr = parseInt(member.gp).toLocaleString();
             
-            let uStr = member.starLevel > 0 ? `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? zetas : ""}]\`** ${member.player}` : member.player;
+            let uStr;
+            if (member.starLevel > 0) {
+                if (options.flags.ships) {
+                    uStr = `**\`[Lvl ${member.level} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}`;
+                } else {
+                    uStr = `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}`;
+                }
+            } else {
+                uStr = member.player;
+            }
 
             uStr = client.expandSpaces(uStr);
 
@@ -233,16 +234,26 @@ class GuildSearch extends Command {
                 });
             }
         });
+        if (guild.warnings) {
+            fields.push({
+                name: "Guild Roster Warnings",
+                value: guild.warnings.join("\n")
+            });
+        }
+        if (guildGG.warnings) {
+            fields.push({
+                name: "Guild Character Warnings",
+                value: guildGG.warnings.join("\n")
+            });
+        }
 
-        const updated = client.duration(guildGG.updated, message);
+        const footer = client.updatedFooter(guildGG.updated, message, "guild", cooldown);
         msg.edit({embed: {
             author: {
                 name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
             },
             fields: fields,
-            footer: {
-                text: message.language.get("BASE_SWGOH_LAST_UPDATED", updated)
-            }
+            footer: footer
         }});
     }
 }
