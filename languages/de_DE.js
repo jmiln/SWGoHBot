@@ -310,8 +310,12 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "charactergear <Charakter> [Gearlevel]",
-                        args: {}
+                        usage: "charactergear [user] <Charakter> [Gearlevel]",
+                        args: {
+                            "user": "Den Spieler dessen Ausruestung du sehen moechtest (me | userID | mention)",
+                            "Charakter": "Den Charakter dessen Ausruestung du sehen moechtest",
+                            "Gearlevel": "Wenn du nur die Ausruestung fuer ein bestimmtes Gearlevel sehen moechtest"
+}
                     }
                 ]
             },
