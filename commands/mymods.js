@@ -250,10 +250,10 @@ class MyMods extends Command {
             }
 
             const fields = [];
-            if (player.warnings) {
+            if (stats.warnings) {
                 fields.push({
                     name: "Warnings",
-                    value: player.warnings.join("\n")
+                    value: stats.warnings.join("\n")
                 });
             }
 
