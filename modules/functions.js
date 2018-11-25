@@ -544,6 +544,7 @@ module.exports = (client) => {
     client.msgArray = (arr, join="\n", maxLen=1900) => {
         const messages = [];
         arr.forEach((elem) => {
+            elem = client.expandSpaces(elem);
             if  (messages.length === 0) {
                 messages.push(elem);
             } else {
