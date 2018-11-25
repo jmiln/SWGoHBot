@@ -39,7 +39,12 @@ class MyMods extends Command {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
         if (err) {
-            return message.channel.send("**Error:** `" + err + "`");
+            return message.channel.send({embed: {
+                author: {
+                    name: "Error"
+                }, 
+                description: client.codeBlock(err)
+            }});
         }
 
         const msg = await message.channel.send(message.language.get("COMMAND_MYMODS_WAIT"));
