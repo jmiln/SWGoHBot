@@ -683,6 +683,86 @@ module.exports = (client) => {
         return match ? true : false;
     };
 
+    /*
+     * makeTable
+     * Makes a table-like format given an array of objects
+     *
+     * headers: object of columnName: columnHeader 
+     *  (columnHeader is empty string if you want it not in a codeBlock)
+     *  {
+     *      columnKey: {
+     *          value: "",
+     *          startWith: "",
+     *          endWith: "",
+     *          align: "center"     (Also supports left & right)
+     *      }
+     *  }
+     * rows: The data to fill in
+     */
+    client.makeTable = (headers, rows) => {
+        if (!headers || !rows) throw new Error("Need both headers and rows");
+        const max = {};
+        Object.keys(headers).forEach((h, ix) => {
+            max[h] = Math.max(...rows.map(v => v[h].toString().length));
+            // Add a bit to allow for padding
+            if (ix === 0) max[h] = max[h] + 1;
+            else max[h] = max[h] + 2;
+        });
+        console.log(max);
+
+        let header = "";
+        Object.keys(headers).forEach(h => {
+            const headerMax = max[h];
+            const head = headers[h];
+            if (head && head.value.length) {
+                const pad = headerMax - head.value.length;
+                const padBefore = Math.floor(pad/2);
+                const padAfter = pad-padBefore;
+                header += head.startWith ? head.startWith : "";
+                header += " ".repeat(padBefore) + head.value + " ".repeat(padAfter);
+                header += head.endWith ? head.endWith : "";
+            } else {
+                header += head.startWith ? head.startWith : "";
+                console.log(headerMax);
+                header += " ".repeat(headerMax+1);
+                header += head.endWith ? head.endWith : "";
+            }
+        });
+
+        const out = [client.expandSpaces("**" + header + "**")];
+        rows.forEach(r => {
+            let row = "";
+            Object.keys(r).forEach(h => {
+                const rowMax = max[h];
+                const head = headers[h];
+                const value = r[h];
+                if (value && value.toString().length) {
+                    const pad = rowMax - value.toString().length;
+                    row += head.startWith ? head.startWith : "";
+                    if (!head.align || (head.align && head.align === "center")) {
+                        const padBefore = Math.floor(pad/2);
+                        const padAfter = pad-padBefore;
+                        row += " ".repeat(padBefore) + value + " ".repeat(padAfter);
+                    } else if (head.align === "left") {
+                        row += " " + value + " ".repeat(pad-1);
+                    } else if (head.align === "right") {
+                        row += " ".repeat(pad) + value;
+                    } else {
+                        throw new Error("Invalid alignment");
+                    }
+                    row += head.endWith ? head.endWith : "";
+                } else {
+                    row += head.startWith ? head.startWith : "";
+                    row += " ".repeat(rowMax);
+                    row += head.endWith ? head.endWith : "";
+                }
+            });
+            out.push(client.expandSpaces(row.replace(/\s*$/, "")));
+        });
+
+        return out;
+    };
+
     // Expand multiple spaces to have zero width spaces between so 
     // Discord doesn't collapse em
     client.expandSpaces = (str) => {

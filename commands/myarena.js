@@ -8,11 +8,16 @@ class MyArena extends Command {
             name: "myarena",
             category: "SWGoH",
             aliases: ["ma", "userarena", "ua"],
-            permissions: ["EMBED_LINKS"]    // Starts with ['SEND_MESSAGES', 'VIEW_CHANNEL'] so don't need to add them
+            permissions: ["EMBED_LINKS"],
+            flags: {
+                stats: {
+                    aliases: ["s"]
+                }
+            }
         });
     }
 
-    async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
+    async run(client, message, [user], options) { // eslint-disable-line no-unused-vars
         const lang = message.guildSettings.swgohLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
@@ -39,7 +44,7 @@ class MyArena extends Command {
         const positions = [ "L|", "2|", "3|", "4|", "5|" ];
         const sPositions = [ "L|", "2|", "3|", "4|", "B|", "B|", "B|", "B|" ];
 
-        if (player.arena.ship.squad && player.arena.ship.squad.length) {
+        if (!options.flags.stats && player.arena.ship.squad && player.arena.ship.squad.length) {
             const sArena = [];
             player.arena.ship.squad.forEach((ship, ix) => {
                 const thisShip = player.roster.find(s => s.defId === ship.defId);
@@ -53,18 +58,57 @@ class MyArena extends Command {
             });
         }
 
-        const cArena = [];
-        player.arena.char.squad.forEach((char, ix) => {
-            const thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
-            const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
-            if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
-            cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
-        });
-        fields.push({
-            name: message.language.get("COMMAND_MYARENA_ARENA", player.arena.char.rank),
-            value: cArena.join("\n") + "\n`------------------------------`",
-            inline: true
-        });
+        let desc = "";
+        if (!options.flags.stats) {
+            const cArena = [];
+            player.arena.char.squad.forEach((char, ix) => {
+                const thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
+                const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
+                if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
+                cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
+            });
+            fields.push({
+                name: message.language.get("COMMAND_MYARENA_ARENA", player.arena.char.rank),
+                value: cArena.join("\n") + "\n`------------------------------`",
+                inline: true
+            });
+        } else {
+            let playerStats = null;
+            try {
+                playerStats = await client.swgohAPI.unitStats(allyCode, cooldown);
+            } catch (e) {
+                console.error(e);
+                return message.channel.send({embed: {
+                    author: {name: message.language.get("BASE_SOMETHING_BROKE")},
+                    description: client.codeBlock(e.message) + "Please try again in a bit"
+                }});
+            }
+            const chars = [];
+            player.arena.char.squad.forEach((char, ix) => {
+                const thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
+                const thisCharStats = playerStats.stats.find(c => c.unit.defId === char.defId);        // Get the character
+                const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
+                if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
+                const cName = `${"z".repeat(thisZ.length)}${thisChar.nameKey}`;
+                const speed = thisCharStats.stats.final.Speed;
+                const health = thisCharStats.stats.final.Health;
+                const prot = thisCharStats.stats.final.Protection;
+                chars.push({
+                    pos: positions[ix],
+                    speed: speed,
+                    health: health,
+                    prot: prot,
+                    name: cName
+                });
+            });
+            desc = client.makeTable({
+                pos: {value: "", startWith: "`"},
+                speed:{value:  "Spd", startWith: "[", endWith: "|"},
+                health: {value: "HP", endWith: "|"},
+                prot: {value: "Prot", endWith: "]`"},
+                name: {value: "", align: "left"}
+            }, chars).join("\n");
+        }
 
         if (player.warnings) {
             fields.push({
@@ -78,6 +122,7 @@ class MyArena extends Command {
             author: {
                 name: message.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name)
             },
+            description: desc,
             fields: fields,
             footer: footer
         }});
