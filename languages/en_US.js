@@ -301,7 +301,7 @@ module.exports = class extends Language {
             // Character gear Command
             COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
             COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
-            COMMAND_CHARGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are betweem 1 & 12.",
+            COMMAND_CHARGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are between 1 & 12.",
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: "This gear has not been entered yet",
             COMMAND_CHARACTERGEAR_HELP: {
@@ -527,7 +527,7 @@ module.exports = class extends Language {
                     },
                     {
                         action: "Territory War Summary",
-                        actionDesc: "Show a general overview of some impoortant characters for the specified guild",
+                        actionDesc: "Show a general overview of some important characters for the specified guild",
                         usage: ";guild [user] -twsummary",
                         args: {
                             "user": "A way to identify the guild. (mention | allyCode | guildName)",
