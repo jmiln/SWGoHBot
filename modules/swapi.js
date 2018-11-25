@@ -2,7 +2,7 @@ const {inspect} = require("util");
 module.exports = (client) => {
     const swgoh = client.swgoh;
     const cache = client.cache;
-    const costs = require("../data/abilityCosts.json");
+    const costs = client.abilityCosts;
 
     const playerCooldown = 2;
     const guildCooldown  = 6;

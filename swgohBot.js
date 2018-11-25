@@ -13,6 +13,7 @@ const Sequelize = require("sequelize");
 client.config = require("./config.js");
 
 // Attach the character and team files to the client so I don't have to reopen em each time
+client.abilityCosts = JSON.parse(fs.readFileSync("data/abilityCosts.json"));
 client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
 client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
 client.squads = JSON.parse(fs.readFileSync("data/squads.json"));

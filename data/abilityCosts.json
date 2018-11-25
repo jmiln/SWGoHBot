@@ -47,6 +47,14 @@
         "AbilityMatOmega": 13,
         "AbilityMatZeta": 20
     },
+    "SKILLRECIPE_LEADER_T6": {
+        "Credits": 48000,
+        "AbilityMatMk1": 26,
+        "AbilityMatMk2": 21,
+        "AbilityMatMk3": 14,
+        "AbilityMatOmega": 0,
+        "AbilityMatZeta": 0
+    },
     "SKILLRECIPE_LEADER_T7": {
         "Credits": 99200,
         "AbilityMatMk1": 26,
