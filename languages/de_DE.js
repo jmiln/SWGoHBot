@@ -98,6 +98,7 @@ module.exports = class extends Language {
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
             COMMAND_INVALID_BOOL: "Ungueltiger Wert, versuche true oder false",
             COMMAND_MISSING_PERMS: "Entschuldigung, aber Sie haben nicht die richtigen Berechtigungen, um das zu verwenden.",
+            BASE_CANNOT_DM: "Entschuldigung, aber ich konnte Dir keine Nachricht senden. Bitte pruefe Deine Einstellungen, ob du es erlaubt hast, dass Leute auf diesem Server Dir Nachrichten senden duerfen.", 
             BASE_COMMAND_UNAVAILABLE: "Dieser Befehl ist ueber Privatnachrichten nicht verfuegbar. Bitte fuehre diesen Befehl innerhalb eines Gildenservers aus.",
             BASE_COMMAND_HELP_HEADER: (name) => `Hilfe fuer ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Fortgesetzte Hilfe fuer ${name}`,
@@ -193,8 +194,7 @@ module.exports = class extends Language {
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
             COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Verwendung \`${prefix}abilities <CharakterName>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Abklingzeit Faehigkeit:** ${aCooldown}\n`,
-            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Faehigkeiten-Typ:** ${aType}     **Max Faehigkeit Mat benoetigt:** ${mat}\n${cdString}${aDesc}`,
-            COMMAND_ABILITIES_ABILITY_CODE: (abilityName, type, tier, aDesc) => `### ${abilityName} ###\n* Faehigkeiten-Typ: ${type}\n* Max Faehigkeit Mat benoetigt: ${tier}\n* Beschreibung: ${aDesc}\n\n`,
+            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Faehigkeiten-Typ:** ${aType}\n**Faehigkeitenmaterial benoetigt:     ${mat}**\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_HELP: {
                 description: "Zeigt die Faehigkeiten für einen spezifizierten Charakter.",
                 actions: [
@@ -202,6 +202,21 @@ module.exports = class extends Language {
                         action: "",
                         actionDesc: "",
                         usage: ";abilities <Charaktername>",
+                        args: {}
+                    }
+                ]
+            },
+
+            //Acronym Command
+            COMMAND_ACRONYMS_INVALID: "Akronym Suche ungueltig fuer blank",
+            COMMAND_ACRONYMS_NOT_FOUND: "Akronym konnte nicht gefunden werden",
+            COMMAND_ACRONYMS_HELP: {
+                description: "Hilfe um nach gebraeuchlichen Akronymen in Star Wars: Galaxy of Heroes zu suchen.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";acronym zu suchendes Akronym\n;acronym oder mehrere Akronyme",
                         args: {}
                     }
                 ]
@@ -284,8 +299,9 @@ module.exports = class extends Language {
             },
 
             // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Benoetigt Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [SternLvl]\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [SternLvl]\``,
+            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Benoetigt Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [GearLvl]\``,
+            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}charactergear <Charakter> [GearLvl]\``,
+            COMMAND_CHARGEAR_INVALID_GEAR: "Ungueltiges Gearlevel. Gueltige Gearlevel liegen zwischen 1 & 12.",
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### Komplette benoetigte Ausruestung ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: "Diese Ausruestung wurde nicht eingefuegt",
             COMMAND_CHARACTERGEAR_HELP: {
@@ -294,8 +310,12 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "charactergear <Charakter> [Gearlevel]",
-                        args: {}
+                        usage: "charactergear [user] <Charakter> [Gearlevel]",
+                        args: {
+                            "user": "Den Spieler dessen Ausruestung du sehen moechtest (me | userID | mention)",
+                            "Charakter": "Den Charakter dessen Ausruestung du sehen moechtest",
+                            "Gearlevel": "Wenn du nur die Ausruestung fuer ein bestimmtes Gearlevel sehen moechtest"
+                        }
                     }
                 ]
             },
@@ -481,14 +501,17 @@ module.exports = class extends Language {
                 heroic:    "Heroisch"
             },
             COMMAND_GUILDS_STAT_HEADER: "Statistiken",
-            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
+            COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
                 `Members:      ${members}/50`,
                 `Erforderliches Lvl: ${lvl}`,
+                `Gesch. Char GM: ${charGP}`,
+                `Gesch. Shiff GM: ${shipGP}`,
                 `Gesamt GM:     ${gp}`
             ].join("\n"),
             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` eine Liste der Gildenmitglieder und ihrer GM.\n\`${prefix}guild -roster -allycode\` fuer eine Liste mit ihren Buendniscodes. `,
+            COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName} Territorialkrieg Uebersicht`,
             COMMAND_GUILDS_HELP: {
-                description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
+                description: "Zeigt dir jeden in Deiner Gilde und grundsätzliche Statistiken an.",
                 actions: [
                     {
                         action: "",
@@ -500,6 +523,15 @@ module.exports = class extends Language {
                             "-allycode": "Zeigt den Buendniscode anstatt die GM eines Gieldenmitglieds an",
                             "-sort": "Waehle zwischen einer Sortierung nach Namen oder GM",
                             "-reg": "Zeigt den Discordnamen neben dem registrierten Namen des Users auf dem Server an."   
+                        }
+                    },
+                    {
+                        action: "Territorialkrieg Uebersicht",
+                        actionDesc: "Zeigt eine allgemeine Uebersicht von wichtigen Charakteren einer spezifizierten Gilde an",
+                        usage: ";guild [user] -twsummary",
+                        args: {
+                            "user": "Zur Identifikation der Gilde (mention | allyCode | guildName)",
+                            "-twsummary": "Zeigt die Uebersicht an  (-tw)"
                         }
                     }
                 ]
@@ -764,11 +796,12 @@ module.exports = class extends Language {
 
             // Polls Command
             COMMAND_POLL_NO_ARG: "Es muss eine waehlbare Option oder eine Aktion angegeben werden (create/view/etc).",
+            COMMAND_POLL_TITLE_TOO_LONG: "Entschuldigung, aber der Titel/die Frage darf maximal 255 Zeichen lang sein.",
             COMMAND_POLL_ALREADY_RUNNING: "Entschuldigung, aber Sie koennen nur eine Umfrage zur gleichen Zeit durchfuehren. Bitte beenden Sie zuerst die aktuelle Umfrage.",
             COMMAND_POLL_MISSING_QUESTION: "Sie muessen etwas angeben, über das abgestimmt werden soll.",
             COMMAND_POLL_TOO_FEW_OPT: "Sie muessen mindestens 2 Optionen zur Wahl stellen.",
             COMMAND_POLL_TOO_MANY_OPT: "Sie koennen max. bis zu 10 Optionen zur Wahl stellen.",
-            COMMAND_POLL_CREATED: (name, prefix, poll) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n\n${poll}`,
+            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n`,
             COMMAND_POLL_NO_POLL: "Es wird aktuell keine Umfrage durchgefuehrt",
             COMMAND_POLL_FINAL: (poll) => `Endergebnisse fuer ${poll}`,
             COMMAND_POLL_FINAL_ERROR: (question) => `Loeschen fehlgeschlagen **${question}**, bitte erneut versuchen.`,
@@ -777,16 +810,26 @@ module.exports = class extends Language {
             COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Sie haben Ihre Auswahl von **${oldOpt}** zu **${newOpt}** geaendert`,
             COMMAND_POLL_REGISTERED: (opt) => `Wahl fuer **${opt}** gespeichert`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice} **${optCount} vote${optCount === 1 ? "" : "s"}**\n`,
+            COMMAND_POLL_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice>\` zum voten`,
+            // Remote poll strings
+            COMMAND_POLL_INVALID_ID: "Eine Umfrage mit dieser ID existiert nicht.",
+            COMMAND_POLL_NO_ACCESS: "Entschuldige, aber du hast keinen Zugriff auf diese Umfrage.",
+            COMMAND_POLL_REMOTE_OPTS: "Die einzigen gueltigen Aktionen fuer remote Umfragen sind voting oder eine Umfrage pruefen.",
+            COMMAND_POLL_DM_USE: (prefix) => `Entschuldige, aber wenn du diesen Befehl in einer PN nutzen moechtest, musst du eine Umfrage ID wie folgt angeben. \`${prefix}poll -poll <UmfrageID>\``,
+            COMMAND_POLL_DM_FOOTER: (id, prefix) => `Umfrage ID: ${id}  -  \`${prefix}poll <choice> -poll ${id}\`  zum voten`,
+            COMMAND_POLL_ME1: (pollID, poll) => `Hier sind die gueltigen Optionen fuer die Umfrage ${pollID}\n${poll}\nKopiere die unten stehende Nachricht und aendere \`<Auswahl>\` auf die Option die du waehlen moechtest`,
+            COMMAND_POLL_ME2: (prefix, pollID) => `${prefix}poll -poll ${pollID} <Auswahl>`,
             COMMAND_POLL_HELP: {
                 description: "Startet Deine Umfrage mit mehreren Optionen.",
                 actions: [
                     {
                         action: "Create",
                         actionDesc: "Erstelle eine neue Umfrage",
-                        usage: ";poll create <Frage> | <Opt1> | <Opt2> | [...] | [Opt10]",
+                        usage: ";poll create [-anonymous] <Frage> | <Opt1> | <Opt2> | [...] | [Opt10]",
                         args: {
                             "Frage": "Deine Frage, zu der Du Feedback erwartest.",
-                            "Opt": "Die Optionen, von denen die Teilnehmer auswaehlen koennen"
+                            "Opt": "Die Optionen, von denen die Teilnehmer auswaehlen koennen",
+                            "-anonymous": "Wenn diese Option eingefuegt wird, dann werden die Abstimmungsergebnisse nicht angezeigt bis die Umfrage beendet wird. (-anon)"
                         }
                     },
                     {
@@ -799,15 +842,25 @@ module.exports = class extends Language {
                     },
                     {
                         action: "View",
-                        actionDesc: "Sieh Dir die aktuellen Ergebnisse an.",
+                        actionDesc: "Sieh Dir die aktuellen Ergebnisse und Optionen fuer die Umfrage in diesem Kanal an.",
                         usage: ";poll view",
                         args: {}
                     },
                     {
                         action: "Close",
-                        actionDesc: "Beende die Umfrage und zeige das finale Ergebnis.",
+                        actionDesc: "Beende die Umfrage in diesem Kanal und zeige das finale Ergebnis an.",
                         usage: ";poll close",
                         args: {}
+                    },
+                    {
+                        action: "Remote View/ Vote",
+                        actionDesc: "Stimme ab oder sieh Dir den Status zu einer Umfrage an die mit einem bestimmten Kanal verknuepft ist.",
+                        usage: ";poll view -poll <Umfrage> \n;poll vote <Auswahl> -poll <Umfrage>\n;poll me",
+                        args: {
+                            "pollID": "Die ID der Umfrage die du sehen oder verwenden moechtest",
+                            "Auswahl": "Die Auswahl die du treffen moechtest.",
+                            "me": "Sendet Dir die zur Verfuegung stehenden Optionen die du auswaehlen kannst und ein Beispiel welches du kopieren / fuer das du abstimmen kannst"
+                        }
                     }
                 ]
             },
@@ -1122,7 +1175,9 @@ module.exports = class extends Language {
                         action: "View",
                         actionDesc: "Zeigt alle Zeiten fuer Dich und Deiner Splitter-Gefaehrten an.",
                         usage: ";shardtimes view",
-                        args: {}
+                        args: {
+                            "-ships": "Zeigt die Zeiten fuer den Flotten payout an (-ship | -s)"
+                        }
                     }
                 ]
             },
