@@ -315,7 +315,7 @@ module.exports = class extends Language {
                             "user": "Den Spieler dessen Ausruestung du sehen moechtest (me | userID | mention)",
                             "Charakter": "Den Charakter dessen Ausruestung du sehen moechtest",
                             "Gearlevel": "Wenn du nur die Ausruestung fuer ein bestimmtes Gearlevel sehen moechtest"
-}
+                        }
                     }
                 ]
             },
