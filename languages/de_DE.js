@@ -801,7 +801,7 @@ module.exports = class extends Language {
             COMMAND_POLL_MISSING_QUESTION: "Sie muessen etwas angeben, über das abgestimmt werden soll.",
             COMMAND_POLL_TOO_FEW_OPT: "Sie muessen mindestens 2 Optionen zur Wahl stellen.",
             COMMAND_POLL_TOO_MANY_OPT: "Sie koennen max. bis zu 10 Optionen zur Wahl stellen.",
-            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n\n${poll}`,
+            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n`,
             COMMAND_POLL_NO_POLL: "Es wird aktuell keine Umfrage durchgefuehrt",
             COMMAND_POLL_FINAL: (poll) => `Endergebnisse fuer ${poll}`,
             COMMAND_POLL_FINAL_ERROR: (question) => `Loeschen fehlgeschlagen **${question}**, bitte erneut versuchen.`,
