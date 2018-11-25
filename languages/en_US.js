@@ -474,8 +474,9 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction <faction>",
+                        usage: "faction [user] <faction>",
                         args: {
+                            "user": "A way to identify the player. (mention | allyCode | me)",
                             "faction": "The faction you want to see the roster of. \nKeep in mind, this is as shown in game, so it's rebel, not rebels"
                         }
                     }
