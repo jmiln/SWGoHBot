@@ -221,6 +221,7 @@ class Guilds extends Command {
             guildChecklist.forEach((char, ix) => {
                 if (Array.isArray(char)) {
                     const roster = guildGG.roster[char[0]];
+                    if (!roster.length) return;
                     const total = roster.length;
                     const g12 = roster.filter(c => c.gearLevel === 12).length;
                     const g11 = roster.filter(c => c.gearLevel === 11).length;

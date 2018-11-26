@@ -191,7 +191,7 @@ class GuildSearch extends Command {
             const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
             let z = " | ";
             zetas.forEach((zeta, ix) => {
-                const pZeta = member.zetas.find(pz => pz === zeta);
+                const pZeta = member.zetas.find(pz => pz.id === zeta);
                 if (!pZeta) {
                     z += " ";
                 } else {
@@ -199,7 +199,7 @@ class GuildSearch extends Command {
                 }
             });
             const gpStr = parseInt(member.gp).toLocaleString();
-            
+
             let uStr;
             if (member.starLevel > 0) {
                 if (options.flags.ships) {
