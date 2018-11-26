@@ -159,6 +159,8 @@ class Shardtimes extends Command {
             const fields = [];
             sortedShardTimes.forEach(time => {
                 const times = [];
+                console.log("Time: " + time);
+                console.log(shardOut[time]);
                 shardOut[time].forEach(user => {
                     let userFlag = client.emojis.get(shardTimes[user].flag);
                     if (!userFlag) {
@@ -175,12 +177,15 @@ class Shardtimes extends Command {
                         const userName = user;
                         uName = userName.length > maxLen ? userName.substring(0, maxLen) : userName;
                     }
-                    times.push(`${shardTimes[user].flag != "" ? userFlag : ""}${uName}`);
+                    times.push({
+                        flag: shardTimes[user].flag != "" ? userFlag : "",
+                        name: uName
+                    });
                 });
+                const sortedTimes = times.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0).map(t => `${t.flag}${t.name}`);
                 fields.push({
-                    "name": time,
-                    value: times.join("\n"),
-                    "inline": true
+                    name: time,
+                    value: sortedTimes.join(" - ")
                 });
             });
             return message.channel.send({

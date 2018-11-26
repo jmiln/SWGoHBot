@@ -12,6 +12,9 @@ class Faction extends Command {
     async run(client, message, args) {
         const charList = client.characters;
         let allyCode = null;
+        if (!args[0]) {
+            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+        } 
         if (args[0].toLowerCase() === "me" || client.isAllyCode(args[0]) || client.isUserID(args[0])) {
             allyCode = args.splice(0, 1);
             allyCode = await client.getAllyCode(message, allyCode);
