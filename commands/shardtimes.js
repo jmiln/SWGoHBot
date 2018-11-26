@@ -181,9 +181,13 @@ class Shardtimes extends Command {
                     });
                 });
                 const sortedTimes = times.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0).map(t => `${t.flag}${t.name}`);
+                let joiner = " - ";
+                if (message.guildSettings.shardtimeVertical) {
+                    joiner = "\n";
+                }
                 fields.push({
                     name: time,
-                    value: sortedTimes.join(" - ")
+                    value: sortedTimes.join(joiner)
                 });
             });
             return message.channel.send({
