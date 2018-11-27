@@ -221,11 +221,13 @@ class Guilds extends Command {
             guildChecklist.forEach((char, ix) => {
                 if (Array.isArray(char)) {
                     const roster = guildGG.roster[char[0]];
-                    if (!roster.length) return;
-                    const total = roster.length;
-                    const g12 = roster.filter(c => c.gearLevel === 12).length;
-                    const g11 = roster.filter(c => c.gearLevel === 11).length;
-                    const sevenStar = roster.filter(c => c.starLevel === 7).length;
+                    let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
+                    if (roster && roster.length) { 
+                        total = roster.length;
+                        g12 = roster.filter(c => c.gearLevel === 12).length;
+                        g11 = roster.filter(c => c.gearLevel === 11).length;
+                        sevenStar = roster.filter(c => c.starLevel === 7).length;
+                    } 
                     const name = allNames[ix];
                     charOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
                 } else {
