@@ -27,7 +27,7 @@ class Changelog extends Command {
                     .replace("[Added]",   "**[Added]**")
                     .replace("[Removed]", "**[Removed]**")
                     .replace("[Changed]", "**[Changed]**")}`;
-                client.sendChangelog(clMessage + "\nAlso listed at swgohbot.com/changelogs/" + logID);
+                client.sendChangelog(clMessage + "\nAlso listed at https://swgohbot.com/changelogs/" + logID);
             }
         });
     }
