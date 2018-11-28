@@ -1143,6 +1143,7 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_INVALID_USER: "Invalid user, please enter \"me\", mention someone here, or input their discord ID.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "You need to enter a timezone.",
             COMMAND_SHARDTIMES_INVALID_TIMEZONE: "Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column",
+            COMMAND_SHARDTIMES_INVALID_TIME_TIL: "Invalid time until your payout, it must be in the format of `00:00`, so if you have **13** minutes until your payout, you'd enter `00:13`",
             COMMAND_SHARDTIMES_USER_ADDED: "User successfully added!",
             COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `Updated user from ${from} to ${to}.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: "Something went wrong when with adding this user. Please try again.",
@@ -1157,11 +1158,12 @@ module.exports = class extends Language {
                     {
                         action: "Add",
                         actionDesc: "Add a user to the shard tracker",
-                        usage: ";shardtimes add <user> <timezone> [flag/emoji]",
+                        usage: ";shardtimes add <user> <timezone> [flag/emoji]\n;shardtimes add <user> <-timeuntil 00:00> [flag/emoji]",
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "timezone": "The zone that your account is based in, Use this list:\n https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
-                            "flag/emoji": "An optional emoji if you want it to show by your name"
+                            "flag/emoji": "An optional emoji if you want it to show by your name",
+                            "-timeuntil": "If you want to just list the time remaining until your payout"
                         }
                     },
                     {

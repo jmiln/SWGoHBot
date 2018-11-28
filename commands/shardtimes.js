@@ -16,8 +16,8 @@ class Shardtimes extends Command {
                 }
             },
             subArgs: {
-                "utc": {
-                    aliases: ["dst"]
+                "timeuntil": {
+                    aliases: ["tu"]
                 }
             }
         });
@@ -53,7 +53,7 @@ class Shardtimes extends Command {
             // If it's an admin, let them register other users, else let em register themselves
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
             let type = "id", zoneType = "zone";
-            const tempZone = timezone ? timezone : null;
+            let tempZone = timezone ? timezone : null;
             if (userID === "me") {
                 userID = message.author.id;
             } else if (userID.match(/\d{17,18}/)) {
@@ -64,22 +64,38 @@ class Shardtimes extends Command {
             if (userID !== message.author.id && userID !== message.author.username && level < 3) {
                 return message.channel.send(message.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
-            
-            if (!timezone) {
-                // Grumble that they need a timezone, then give the wiki list
-                return message.channel.send(message.language.get("COMMAND_SHARDTIMES_MISSING_TIMEZONE"));
+            if (!options.subArgs.timeuntil) {
+                if (!timezone) {
+                    // Grumble that they need a timezone, then give the wiki list
+                    return message.channel.send(message.language.get("COMMAND_SHARDTIMES_MISSING_TIMEZONE"));
+                } else {
+                    if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
+                        const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
+                        if (match) {
+                            // It's a UTC +/- zone
+                            zoneType = "utc";
+                            timezone = parseInt(`${match[1]}${parseInt(match[2] * 60) + parseInt(match[3])}`);
+                        } else { 
+                            // Grumble that it's an invalid tz
+                            return message.channel.send(message.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
+                        }
+                    } 
+                }
             } else {
-                if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
-                    const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
-                    if (match) {
-                        // It's a UTC +/- zone
-                        zoneType = "utc";
-                        timezone = parseInt(`${match[1]}${parseInt(match[2] * 60) + parseInt(match[3])}`);
-                    } else { 
-                        // Grumble that it's an invalid tz
-                        return message.channel.send(message.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
-                    }
-                } 
+                zoneType = "hhmm";
+                const timeTil = options.subArgs.timeuntil;
+                const match = timeTil.match(/(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
+                if (match) {
+                    // It's a valid time until payout
+                    const [hour, minute] = timeTil.split(":");
+                    const [tempH, tempM] = momentTZ().add(hour, "h").add(minute, "m").format("HH:mm").split(":").map(t => parseInt(t));
+                    const totalMin = (tempH * 60) + tempM;
+                    const rounded = Math.round(totalMin / 15) * 15;
+                    timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
+                    tempZone = timezone + " UTC";
+                } else {
+                    return message.channel.send(message.language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
+                }
             }
             if (flag.length > 0) {
                 flag = flag[0];
@@ -92,13 +108,17 @@ class Shardtimes extends Command {
             let tempUser = null;
             if (exists && shardTimes[`${userID}`]) {
                 tempUser = shardTimes[`${userID}`];
-                if (tempUser.zoneType && tempUser.zoneType === "utc") {
-                    const sign = tempUser.timezone >= 0 ? "+" : "-";
-                    const num = Math.abs(tempUser.timezone);
-                    const hour = Math.floor(num / 60);
-                    let min = (num % 60).toString();
-                    if (min.length === 1) min = "0" + min;
-                    tempUser.tempZone = sign + hour + ":" + min; 
+                if (tempUser.zoneType) {
+                    if (tempUser.zoneType === "utc") {
+                        const sign = tempUser.timezone >= 0 ? "+" : "-";
+                        const num = Math.abs(tempUser.timezone);
+                        const hour = Math.floor(num / 60);
+                        let min = (num % 60).toString();
+                        if (min.length === 1) min = "0" + min;
+                        tempUser.tempZone = sign + hour + ":" + min; 
+                    } else if (tempUser.zoneType === "hhmm") {
+                        tempUser.tempZone = tempUser.timezone + " UTC";
+                    }
                 } else {
                     tempUser.tempZone = tempUser.timezone;
                 }
@@ -210,6 +230,8 @@ class Shardtimes extends Command {
                     // If it's already passed for the day
                     targetTime = momentTZ.tz(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
                 }
+            } else if (type === "hhmm") {
+                return momentTZ.duration(momentTZ(zone, "HH:mm").diff(momentTZ())).format("HH:mm", { trim: false });
             } else {
                 // It's utc +/- format
                 if (momentTZ().utcOffset(zone).unix() < momentTZ().utcOffset(zone).startOf("day").add(timeToAdd, "h").unix()) {
