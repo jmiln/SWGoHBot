@@ -5,7 +5,8 @@ class Squads extends Command {
         super(client, {
             name: "squads",
             aliases: ["sq", "squad", "raid", "raidteam"],
-            category: "Star Wars"
+            category: "Star Wars",
+            permissions: ["EMBED_LINKS"]
         });
     }
 

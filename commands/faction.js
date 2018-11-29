@@ -5,7 +5,8 @@ class Faction extends Command {
         super(client, {
             name: "faction",
             aliases: ["factions"],
-            category: "Star Wars"
+            category: "Star Wars",
+            permissions: ["EMBED_LINKS"]
         });
     }
 
@@ -49,9 +50,6 @@ class Faction extends Command {
                 const gpMax   = Math.max(...playerChars.map(c => c.gp.length));
                 const gearMax = Math.max(...playerChars.map(c => c.gear.toString().length));
                 const lvlMax  = Math.max(...playerChars.map(c => c.level.toString().length));
-
-                // factionChars.push(`**\`[  * | Level${" ".repeat(lvlMax)}|   GP   | ⚙${" ".repeat(gearMax)}]\`**`);
-                // factionChars.push("**`====================" + "=".repeat(lvlMax + gpMax + gearMax) + "`**");
                 
                 factionChars.push(`**\`[ * | Lvl${" ".repeat(lvlMax)}|   GP  ${" ".repeat(gpMax-5)}| ⚙${" ".repeat(gearMax)}]\`**`);
                 factionChars.push("**`=================" + "=".repeat(lvlMax + gpMax + gearMax) + "`**");
@@ -60,7 +58,6 @@ class Faction extends Command {
                     const lvlStr  = " ".repeat(lvlMax  - c.level.toString().length) + c.level;
                     const gpStr   = " ".repeat(gpMax   - c.gp.length) + c.gp;
                     const gearStr = " ".repeat(gearMax - c.gear.toString().length) + c.gear;
-                    // factionChars.push(`**\`[ ${c.rarity}* | Lvl ${lvlStr} | ${gpStr} | ⚙${gearStr}]\`** ${c.nameKey}`);
                     factionChars.push(`**\`[ ${c.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${c.nameKey}**`);
                 });
                 const msgArray = client.msgArray(factionChars, "\n", 1000);

@@ -10,6 +10,7 @@ class Shardtimes extends Command {
             aliases: ["shard", "st", "payout", "po"],
             guildOnly: true,
             category: "Misc",
+            permissions: ["EMBED_LINKS"],
             flags: {
                 "ships": {
                     aliases: ["ship", "s"]
