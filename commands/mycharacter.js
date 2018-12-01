@@ -217,7 +217,7 @@ class MyCharacter extends Command {
 
             return msg.edit({embed: {
                 author: {
-                    name: thisChar.player + "'s " + character.name
+                    name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name
                 }, 
                 description: 
                 [
