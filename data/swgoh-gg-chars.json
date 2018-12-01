@@ -3567,6 +3567,168 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Carth Onasi",
+        "base_id": "CARTHONASI",
+        "pk": 310,
+        "url": "http://swgoh.gg/characters/carth-onasi/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_carth.png",
+        "power": 21168,
+        "description": "Old Republic soldier that excels at clearing waves of enemies",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "005",
+                    "002",
+                    "004",
+                    "011",
+                    "010",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "015",
+                    "023",
+                    "029",
+                    "017",
+                    "015"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "036",
+                    "036",
+                    "069",
+                    "044",
+                    "049",
+                    "076"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "036",
+                    "062",
+                    "068",
+                    "056",
+                    "074",
+                    "064"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "048",
+                    "056",
+                    "064",
+                    "079",
+                    "048",
+                    "089"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "016",
+                    "068",
+                    "048",
+                    "089",
+                    "097",
+                    "096"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "092",
+                    "109",
+                    "096",
+                    "103",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "034",
+                    "101",
+                    "103",
+                    "089",
+                    "099",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "084",
+                    "091",
+                    "103",
+                    "120",
+                    "125",
+                    "126"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "074",
+                    "108",
+                    "129",
+                    "106",
+                    "111",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "112",
+                    "117",
+                    "129",
+                    "149",
+                    "139",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "160",
+                    "160",
+                    "170",
+                    "171",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Old Republic"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "DoT",
+            "Gain Turn Meter",
+            "Leader: +Tenacity",
+            "Leader: Assist",
+            "Offense Up",
+            "Reset Cooldown"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Cassian Andor",
         "base_id": "CASSIANANDOR",
         "pk": 219,
@@ -15168,6 +15330,168 @@
             "Revive"
         ],
         "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Juhani",
+        "base_id": "JUHANI",
+        "pk": 308,
+        "url": "http://swgoh.gg/characters/juhani/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_juhani.png",
+        "power": 21168,
+        "description": "Unique Jedi Tank who dispels debuffs from Old Republic allies and becomes more dangerous below full Health",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "003",
+                    "003",
+                    "005",
+                    "010",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "012",
+                    "017",
+                    "016",
+                    "018",
+                    "021",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "054",
+                    "055",
+                    "022",
+                    "050",
+                    "055",
+                    "062"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "058",
+                    "048",
+                    "035",
+                    "050",
+                    "063",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "036",
+                    "024",
+                    "063",
+                    "074",
+                    "064",
+                    "084"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "084",
+                    "084",
+                    "086",
+                    "089",
+                    "091",
+                    "075"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "092",
+                    "100",
+                    "099",
+                    "108",
+                    "108",
+                    "101"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "117",
+                    "118",
+                    "092",
+                    "075",
+                    "109",
+                    "078"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "110",
+                    "091",
+                    "103",
+                    "102",
+                    "126",
+                    "120"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "138",
+                    "118",
+                    "131",
+                    "129",
+                    "092",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "129",
+                    "138",
+                    "144",
+                    "139",
+                    "110",
+                    "137"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "159",
+                    "166",
+                    "166",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Jedi",
+            "Old Republic"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Counter",
+            "Dispel",
+            "Offense Up",
+            "Stealth",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Tank",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25

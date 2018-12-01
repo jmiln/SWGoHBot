@@ -486,6 +486,26 @@
                 "name": "PHASE 1 - GENERAL GRIEVOUS &amp; DROIDS",
                 "squads": [
                     {
+                        "name": "CLS FRIENDS",
+                        "note": "Solo on auto",
+                        "url": "",
+                        "team": [
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "HANSOLO:uniqueskill_HANSOLO01"
+                        ]
+                    },
+                    {
+                        "name": "BROTINI",
+                        "note": "Solo on auto",
+                        "url": "https://youtu.be/eUmwTh61bGM",
+                        "team": [
+                            "DATHCHA",
+                            "COMMANDERLUKESKYWALKER",
+                            "HANSOLO:uniqueskill_HANSOLO01"
+                        ]
+                    },
+                    {
                         "name": "TENACITY JEDI",
                         "note": "",
                         "url": "",
@@ -575,16 +595,6 @@
                         "url": "",
                         "team": [
                             "KYLOREN:specialskill_KYLOREN02"
-                        ]
-                    },
-                    {
-                        "name": "BROTINI",
-                        "note": "",
-                        "url": "",
-                        "team": [
-                            "DATHCHA",
-                            "COMMANDERLUKESKYWALKER",
-                            "HANSOLO"
                         ]
                     }
                 ]
@@ -1036,6 +1046,18 @@
                         ]
                     },
                     {
+                        "name": "ACKBAR WAMPA",
+                        "note": "Full HAAT solo",
+                        "url": "https://youtu.be/y5hEtd1n_i0",
+                        "team": [
+                            "ADMIRALACKBAR",
+                            "BB8",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "WAMPA"
+                        ]
+                    },
+                    {
                         "name": "YOLO SOLO",
                         "note": "Full HAAT solo",
                         "url": "https://youtu.be/GVoikNZWUx4",
@@ -1063,7 +1085,7 @@
                     {
                         "name": "[α] RJT REY R2",
                         "main": true,
-                        "note": "4%-10% [1,862,000-4,655,000]",
+                        "note": "7,200,000",
                         "url": "https://youtu.be/8ebER5Sm1ok",
                         "team": [
                             "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
@@ -1076,7 +1098,7 @@
                     {
                         "name": "[α] RJT REY VISAS",
                         "main": true,
-                        "note": "4%-10% [1,862,000-4,655,000]",
+                        "note": "4,655,000",
                         "url": "",
                         "team": [
                             "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
@@ -1088,7 +1110,7 @@
                     },
                     {
                         "name": "[α] RJT HYODA R2",
-                        "note": "4%-10% [1,862,000-4,655,000]",
+                        "note": "4,655,000",
                         "url": "",
                         "team": [
                             "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
@@ -1100,7 +1122,7 @@
                     },
                     {
                         "name": "[α] RJT HYODA VISAS",
-                        "note": "4%-10% [1,862,000-4,655,000]",
+                        "note": "4,655,000",
                         "url": "",
                         "team": [
                             "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
@@ -1113,7 +1135,7 @@
                     {
                         "name": "[α] YODALICIOUS",
                         "main": true,
-                        "note": "4%-12% [1,862,000-5,586,000] - Hermit Yoda zeta recommended, but optional",
+                        "note": "5,586,000 - Hermit Yoda zeta recommended, but optional",
                         "url": "https://www.youtube.com/watch?v=dpwuA_gao48",
                         "team": [
                             "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
@@ -1125,7 +1147,7 @@
                     },
                     {
                         "name": "[α] BOBA VM",
-                        "note": "2%-5% [931,000-2,327,500]",
+                        "note": "2,327,500",
                         "url": "",
                         "team": [
                             "BOBAFETT",
@@ -1137,7 +1159,7 @@
                     },
                     {
                         "name": "[α] BOBA BOSS",
-                        "note": "2%-5% [931,000-2,327,500]",
+                        "note": "2,327,500",
                         "url": "",
                         "team": [
                             "BOBAFETT",
@@ -1149,7 +1171,7 @@
                     },
                     {
                         "name": "[α] BOSSK VM",
-                        "note": "2%-5% [931,000-2,327,500]",
+                        "note": "2,327,500",
                         "url": "",
                         "team": [
                             "BOSSK",
@@ -1165,68 +1187,147 @@
                 "name": "PHASE 2 - DARTH SION, SITH MARAUDER &amp; SITH ASSASSIN",
                 "squads": [
                     {
+                        "name": "[α] GK HW",
+                        "main": true,
+                        "note": "2,580,000",
+                        "url": "",
+                        "team": [
+                            "GENERALKENOBI",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "WAMPA"
+                        ]
+                    },
+                    {
+                        "name": "[α] GK HL",
+                        "main": true,
+                        "note": "2,580,000",
+                        "url": "",
+                        "team": [
+                            "GENERALKENOBI",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "PRINCESSLEIA"
+                        ]
+                    },
+                    {
+                        "name": "[α] BEAST MODE",
+                        "main": true,
+                        "note": "6,564,538",
+                        "url": "https://youtu.be/kwlNr9YQ5Ts",
+                        "team": [
+                            "BOBAFETT",
+                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
+                            "SABINEWRENS3",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "WAMPA"
+                        ]
+                    },
+                    {
+                        "name": "[α] REVAN JOLEE",
+                        "main": true,
+                        "note": "16,000,000",
+                        "url": "",
+                        "team": [
+                            "JEDIKNIGHTREVAN",
+                            "BASTILASHAN",
+                            "JOLEEBINDO",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "GRANDMASTERYODA:specialskill_GRANDMASTERYODA03"
+                        ]
+                    },
+                    {
+                        "name": "[α] REVAN EZRA",
+                        "main": true,
+                        "note": "10,000,000",
+                        "url": "https://youtu.be/4Y0QxHPdGb4",
+                        "team": [
+                            "JEDIKNIGHTREVAN",
+                            "BASTILASHAN",
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "GRANDMASTERYODA:specialskill_GRANDMASTERYODA03"
+                        ]
+                    },
+                    {
+                        "name": "[α] BASTILA",
+                        "main": true,
+                        "note": "6,000,000",
+                        "url": "",
+                        "team": [
+                            "BASTILASHAN:leaderskill_BASTILASHAN",
+                            "GENERALKENOBI",
+                            "GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
+                        ]
+                    },
+                    {
+                        "name": "[α] MISSION: IMPOSSZAALBAR",
+                        "main": true,
+                        "note": "5,274,861",
+                        "url": "https://youtu.be/kNc5WOHeIWA",
+                        "team": [
+                            "QIRA",
+                            "YOUNGHAN:uniqueskill_YOUNGHAN01",
+                            "HERMITYODA:specialskill_HERMITYODA02",
+                            "ZAALBAR",
+                            "MISSIONVAO:uniqueskill_MISSIONVAO02"
+                        ]
+                    },
+                    {
                         "name": "[α] CLS YODA",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER",
                             "HERMITYODA:specialskill_HERMITYODA02",
                             "SCARIFREBEL",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
                         ]
                     },
                     {
                         "name": "[α] LEIA YODA",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "PRINCESSLEIA",
                             "HERMITYODA:specialskill_HERMITYODA02",
                             "SCARIFREBEL",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
                         ]
                     },
                     {
                         "name": "[α] LEIA ALT 1",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "PRINCESSLEIA",
                             "HERMITYODA:specialskill_HERMITYODA02",
                             "SCARIFREBEL",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "GRANDADMIRALTHRAWN"
                         ]
                     },
                     {
                         "name": "[α] LEIA ALT 2",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "PRINCESSLEIA",
                             "HERMITYODA:specialskill_HERMITYODA02",
                             "GENERALKENOBI",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "EZRABRIDGERS3:specialskill_EZRABRIDGERS301"
                         ]
                     },
                     {
-                        "name": "[α] LEIA ALT 3",
-                        "note": "2%-4% [1,040,000-2,080,000]",
-                        "url": "",
-                        "team": [
-                            "PRINCESSLEIA",
-                            "HERMITYODA:specialskill_HERMITYODA02",
-                            "GENERALKENOBI",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
-                            "GRANDADMIRALTHRAWN"
-                        ]
-                    },
-                    {
                         "name": "[α] VEERS",
-                        "note": "1%-2% [520,000-1,040,000]",
+                        "note": "1,040,000",
                         "url": "",
                         "team": [
                             "VEERS:uniqueskill_VEERS01",
@@ -1237,155 +1338,116 @@
                         ]
                     },
                     {
-                        "name": "[α] GK HW",
-                        "main": true,
-                        "note": "2%-4% [1,040,000-2,080,000]",
-                        "url": "",
-                        "team": [
-                            "GENERALKENOBI",
-                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
-                            "HERMITYODA:specialskill_HERMITYODA02",
-                            "WAMPA"
-                        ]
-                    },
-                    {
-                        "name": "[α] GK HL",
-                        "main": true,
-                        "note": "2%-4% [1,040,000-2,080,000]",
-                        "url": "",
-                        "team": [
-                            "GENERALKENOBI",
-                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
-                            "HERMITYODA:specialskill_HERMITYODA02",
-                            "PRINCESSLEIA"
-                        ]
-                    },
-                    {
                         "name": "[α] GK ZW",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "GENERALKENOBI",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "WAMPA"
                         ]
                     },
                     {
                         "name": "[α] GK ZL",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "GENERALKENOBI",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "PRINCESSLEIA"
                         ]
                     },
                     {
-                        "name": "[α] BEAST MODE",
-                        "main": true,
-                        "note": "2%-4% [2,040,000-6,580,000]",
-                        "url": "https://youtu.be/kwlNr9YQ5Ts",
-                        "team": [
-                            "BOBAFETT",
-                            "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
-                            "HERMITYODA:specialskill_HERMITYODA02",
-                            "WAMPA"
-                        ]
-                    },
-                    {
                         "name": "[α] BOBA HL",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "BOBAFETT",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "HERMITYODA:specialskill_HERMITYODA02",
                             "PRINCESSLEIA"
                         ]
                     },
                     {
                         "name": "[α] BOBA ZW",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "BOBAFETT",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "WAMPA"
                         ]
                     },
                     {
                         "name": "[α] BOBA ZL",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "BOBAFETT",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "PRINCESSLEIA"
                         ]
                     },
                     {
                         "name": "[α] OB HW",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "OLDBENKENOBI",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "HERMITYODA:specialskill_HERMITYODA02",
                             "WAMPA"
                         ]
                     },
                     {
                         "name": "[α] OB HL",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "OLDBENKENOBI",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "HERMITYODA:specialskill_HERMITYODA02",
                             "PRINCESSLEIA"
                         ]
                     },
                     {
                         "name": "[α] OB ZW",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "OLDBENKENOBI",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "WAMPA"
                         ]
                     },
                     {
                         "name": "[α] OB ZL",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "OLDBENKENOBI",
                             "GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
-                            "SABINEWRENS3:specialskill_SABINEWRENS302",
+                            "SABINEWRENS3",
                             "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01",
                             "PRINCESSLEIA"
                         ]
                     },
                     {
                         "name": "[α] NUTE SRP",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "NUTEGUNRAY",
@@ -1397,7 +1459,7 @@
                     },
                     {
                         "name": "[α] NUTE ZOMBIE",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "NUTEGUNRAY",
@@ -1409,7 +1471,7 @@
                     },
                     {
                         "name": "[α] NUTE",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "NUTEGUNRAY",
@@ -1421,7 +1483,7 @@
                     },
                     {
                         "name": "[α/β] PHOENIX",
-                        "note": "0.5%-7% [260,000-3,640,000]",
+                        "note": "3,640,000",
                         "url": "",
                         "team": [
                             "HERASYNDULLAS3:specialskill_HERASYNDULLAS301",
@@ -1433,7 +1495,7 @@
                     },
                     {
                         "name": "[β] ACKBAR",
-                        "note": "1% [520,000]",
+                        "note": "1,020,000",
                         "url": "",
                         "team": [
                             "ADMIRALACKBAR",
@@ -1445,7 +1507,7 @@
                     },
                     {
                         "name": "[β] ACKBAR + LEIA SPAM",
-                        "note": "1%-4% [520,000-2,100,000]",
+                        "note": "2,100,000",
                         "url": "",
                         "team": [
                             "ADMIRALACKBAR",
@@ -1456,32 +1518,8 @@
                         ]
                     },
                     {
-                        "name": "[β] LEIA",
-                        "note": "1% [520,000]",
-                        "url": "",
-                        "team": [
-                            "PRINCESSLEIA",
-                            "HERMITYODA",
-                            "SCARIFREBEL",
-                            "GRANDADMIRALTHRAWN",
-                            "SABINEWRENS3"
-                        ]
-                    },
-                    {
-                        "name": "[β] THRAWN",
-                        "note": "1% [520,000]",
-                        "url": "",
-                        "team": [
-                            "GRANDADMIRALTHRAWN",
-                            "VEERS",
-                            "SHORETROOPER",
-                            "COLONELSTARCK",
-                            "SNOWTROOPER"
-                        ]
-                    },
-                    {
                         "name": "[β] VEERS SNOW",
-                        "note": "1% [520,000]",
+                        "note": "1,000,000",
                         "url": "",
                         "team": [
                             "VEERS",
@@ -1493,7 +1531,7 @@
                     },
                     {
                         "name": "[β] MURDER BEARS",
-                        "note": "0.5%-1% [260,000-520,000]",
+                        "note": "520,000",
                         "url": "",
                         "team": [
                             "CHIEFCHIRPA:leaderskill_CHIEFCHIRPA",
@@ -1505,7 +1543,7 @@
                     },
                     {
                         "name": "[β] ZAUL",
-                        "note": "0.5%-1% [260,000-520,000]",
+                        "note": "520,000",
                         "url": "",
                         "team": [
                             "MAUL:leaderskill_MAUL",
@@ -1517,7 +1555,7 @@
                     },
                     {
                         "name": "[β] PALPS",
-                        "note": "1%-2% [520,000-1,040,000]",
+                        "note": "1,040,000",
                         "url": "",
                         "team": [
                             "EMPERORPALPATINE",
@@ -1529,7 +1567,7 @@
                     },
                     {
                         "name": "[β] PALPS ALT",
-                        "note": "1%-2% [520,000-1,040,000]",
+                        "note": "1,040,000",
                         "url": "",
                         "team": [
                             "EMPERORPALPATINE",
@@ -1541,7 +1579,7 @@
                     },
                     {
                         "name": "[β] FO FUN",
-                        "note": "1%-2% [520,000-1,040,000]",
+                        "note": "1,040,000",
                         "url": "",
                         "team": [
                             "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
@@ -1553,7 +1591,7 @@
                     },
                     {
                         "name": "[β] TRAYA",
-                        "note": "2%-6% [1,040,000-3,120,000] - GMY Special & DN Unique recommended zetas",
+                        "note": "3,120,000 - GMY Special & DN Unique recommended zetas",
                         "url": "",
                         "team": [
                             "DARTHTRAYA:leaderskill_DARTHTRAYA:uniqueskill_DARTHTRAYA01",
@@ -1565,7 +1603,7 @@
                     },
                     {
                         "name": "[β] YOUNG GUNS",
-                        "note": "2%-6% [1,040,000-3,120,000] - Optional Zetas: STH unique & Young Lando Unique",
+                        "note": "3,120,000 - Optional Zetas: STH unique & Young Lando Unique",
                         "url": "",
                         "team": [
                             "QIRA:uniqueskill_QIRA01",
@@ -1577,7 +1615,7 @@
                     },
                     {
                         "name": "[α] CLS (IF NO DT)",
-                        "note": "2%-4% [1,040,000-2,080,000]",
+                        "note": "2,080,000",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
@@ -1607,7 +1645,7 @@
                     {
                         "name": "[α] CHEX MIX",
                         "main": true,
-                        "note": "4%-6% [1,440,000-2,160,000]",
+                        "note": "3,160,000",
                         "url": "https://youtu.be/lzq1TwKyAH4",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
@@ -1620,7 +1658,7 @@
                     {
                         "name": "[α] CHEX MIX 2.0",
                         "main": true,
-                        "note": "4%-8% [1,440,000-3,160,000]",
+                        "note": "3,160,000",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
@@ -1633,7 +1671,7 @@
                     {
                         "name": "[α] BOUNTY AND THE BEAST",
                         "main": true,
-                        "note": "6%-12% [2,880,000-7,320,000]",
+                        "note": "7,289,162",
                         "url": "https://youtu.be/3v9lcHKNOG8",
                         "team": [
                             "BOBAFETT",
@@ -1646,7 +1684,7 @@
                     {
                         "name": "[α] FLAMING HOT GREEDO MIX",
                         "main": true,
-                        "note": "6%-12% [2,880,000-4,320,000]",
+                        "note": "4,320,000",
                         "url": "https://youtu.be/eveb8nYD2qk",
                         "team": [
                             "BOBAFETT",
@@ -1659,20 +1697,20 @@
                     {
                         "name": "[α] NIGHTSISTERS",
                         "main": true,
-                        "note": "8%-30% [3,440,000-19,386,537]",
+                        "note": "19,386,537",
                         "url": "https://youtu.be/nqpEKet9ga0",
                         "team": [
                             "MOTHERTALZIN:leaderskill_MOTHERTALZIN",
                             "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
                             "DAKA",
-                            "NIGHTSISTERACOLYTE",
+                            "NIGHTSISTERINITIATE",
                             "NIGHTSISTERZOMBIE"
                         ]
                     },
                     {
                         "name": "[α] AURRA HUNTERS",
                         "main": true,
-                        "note": "6%-16% [2,880,000-6,320,000]",
+                        "note": "6,320,000",
                         "url": "https://youtu.be/e23uAhlvOQk",
                         "team": [
                             "AURRA_SING:leaderskill_AURRA_SING",
@@ -1684,7 +1722,7 @@
                     },
                     {
                         "name": "[α] CHEX MIX SAB",
-                        "note": "4%-6% [1,440,000-2,160,000]",
+                        "note": "2,160,000",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
@@ -1696,7 +1734,7 @@
                     },
                     {
                         "name": "[α] CHEX MIX JKA",
-                        "note": "4%-6% [1,440,000-2,160,000]",
+                        "note": "2,160,000",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
@@ -1708,7 +1746,7 @@
                     },
                     {
                         "name": "[α] CHEX REX SAB",
-                        "note": "4%-6% [1,440,000-2,160,000]",
+                        "note": "2,160,000",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
@@ -1720,7 +1758,7 @@
                     },
                     {
                         "name": "[α] CHEX REX PAO",
-                        "note": "4%-6% [1,440,000-2,160,000]",
+                        "note": "2,160,000",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
@@ -1732,7 +1770,7 @@
                     },
                     {
                         "name": "[α] CHEX REX JKA",
-                        "note": "4%-6% [1,440,000-2,160,000]",
+                        "note": "2,160,000",
                         "url": "",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
@@ -1744,7 +1782,7 @@
                     },
                     {
                         "name": "[β] KRU XSF",
-                        "note": "3%-4% [1,080,000-1,440,000]",
+                        "note": "1,440,000",
                         "url": "",
                         "team": [
                             "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
@@ -1756,7 +1794,7 @@
                     },
                     {
                         "name": "[β] KRU ALT 1",
-                        "note": "3%-4% [1,080,000-1,440,000]",
+                        "note": "1,440,000",
                         "url": "",
                         "team": [
                             "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
@@ -1768,7 +1806,7 @@
                     },
                     {
                         "name": "[β] KRU ALT 2",
-                        "note": "3%-4% [1,080,000-1,440,000]",
+                        "note": "1,440,000",
                         "url": "",
                         "team": [
                             "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
@@ -1780,7 +1818,7 @@
                     },
                     {
                         "name": "[β] KRU ALT 3",
-                        "note": "3%-4% [1,080,000-1,440,000]",
+                        "note": "1,440,000",
                         "url": "",
                         "team": [
                             "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
@@ -1792,7 +1830,7 @@
                     },
                     {
                         "name": "[β] NIGHTSISTERS",
-                        "note": "4%-8% [1,440,000-2,880,000]",
+                        "note": "2,880,000",
                         "url": "",
                         "team": [
                             "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
@@ -1804,7 +1842,7 @@
                     },
                     {
                         "name": "[β] BOBA VM FLEX TANK",
-                        "note": "2%-3% [720,000-1,080,000]",
+                        "note": "1,080,000",
                         "url": "",
                         "team": [
                             "BOBAFETT",
@@ -1816,7 +1854,7 @@
                     },
                     {
                         "name": "[β] BOBA DOOKU FLEX TANK",
-                        "note": "2%-3% [720,000-1,080,000]",
+                        "note": "1,080,000",
                         "url": "",
                         "team": [
                             "BOBAFETT",
@@ -1834,131 +1872,14 @@
                     {
                         "name": "[α] NS 1.0",
                         "main": true,
-                        "note": "4%-8% [480,000-16,600,000] - Zombie should be weak as possible",
-                        "url": "https://youtu.be/hMctm_0RYwA",
+                        "note": "13,435,185",
+                        "url": "https://youtu.be/lb8Ui9AvQ1U",
                         "team": [
-                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
-                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01",
-                            "DAKA:uniqueskill_DAKA01",
-                            "TALIA",
-                            "NIGHTSISTERZOMBIE"
-                        ]
-                    },
-                    {
-                        "name": "[α] NS 2.0",
-                        "note": "4%-8% [480,000-960,000]",
-                        "url": "",
-                        "team": [
-                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
-                            "DAKA:uniqueskill_DAKA01",
-                            "TALIA",
-                            "NIGHTSISTERACOLYTE",
-                            "NIGHTSISTERINITIATE"
-                        ]
-                    },
-                    {
-                        "name": "[α] NS 3.0",
-                        "note": "4%-8% [480,000-960,000]",
-                        "url": "",
-                        "team": [
-                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
+                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS",
+                            "MOTHERTALZIN",
                             "DAKA",
                             "TALIA",
-                            "NIGHTSISTERACOLYTE",
-                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01"
-                        ]
-                    },
-                    {
-                        "name": "[α] NS 4.0",
-                        "note": "4%-8% [480,000-960,000]",
-                        "url": "",
-                        "team": [
-                            "ASAJVENTRESS:leaderskill_ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
-                            "DAKA",
-                            "NIGHTSISTERACOLYTE",
-                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01",
                             "NIGHTSISTERZOMBIE"
-                        ]
-                    },
-                    {
-                        "name": "[α] NS 5.0",
-                        "note": "4%-8% [480,000-960,000]",
-                        "url": "",
-                        "team": [
-                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01",
-                            "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
-                            "DAKA",
-                            "NIGHTSISTERACOLYTE",
-                            "NIGHTSISTERZOMBIE"
-                        ]
-                    },
-                    {
-                        "name": "[α] NS 6.0",
-                        "note": "4%-8% [480,000-960,000]",
-                        "url": "",
-                        "team": [
-                            "MOTHERTALZIN:uniqueskill_MOTHERTALZIN01",
-                            "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01",
-                            "DAKA",
-                            "NIGHTSISTERACOLYTE",
-                            "TALIA"
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "PHASE 4 - DARTH TRAYA - SION",
-                "squads": [
-                    {
-                        "name": "[α] FO 1.0",
-                        "main": true,
-                        "note": "1%-4% [96,000-384,000]",
-                        "url": "",
-                        "team": [
-                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
-                            "FIRSTORDERTROOPER",
-                            "FIRSTORDEROFFICERMALE",
-                            "FIRSTORDEREXECUTIONER",
-                            "FIRSTORDERSPECIALFORCESPILOT"
-                        ]
-                    },
-                    {
-                        "name": "[α] FO 2.0",
-                        "main": true,
-                        "note": "1%-4% [96,000-384,000]",
-                        "url": "",
-                        "team": [
-                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
-                            "FIRSTORDERTROOPER",
-                            "FIRSTORDEROFFICERMALE",
-                            "FIRSTORDEREXECUTIONER",
-                            "FIRSTORDERTIEPILOT"
-                        ]
-                    },
-                    {
-                        "name": "[β] FO 3.0",
-                        "main": true,
-                        "note": "1%-2% [96,000-192,000]",
-                        "url": "",
-                        "team": [
-                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
-                            "FIRSTORDERTROOPER",
-                            "FIRSTORDEROFFICERMALE",
-                            "KYLOREN",
-                            "FIRSTORDERSPECIALFORCESPILOT"
-                        ]
-                    },
-                    {
-                        "name": "[β] FO 4.0",
-                        "main": true,
-                        "note": "1%-2% [96,000-192,000]",
-                        "url": "",
-                        "team": [
-                            "KYLORENUNMASKED:leaderskill_KYLORENUNMASKED",
-                            "FIRSTORDERTROOPER",
-                            "FIRSTORDEROFFICERMALE",
-                            "KYLOREN",
-                            "FIRSTORDERTIEPILOT"
                         ]
                     }
                 ]
