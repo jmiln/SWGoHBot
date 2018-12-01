@@ -138,6 +138,9 @@ class Zetas extends Command {
             const myZetas = [];
 
             const sortBy = searchChar ? searchChar : "versa";
+            if (!zetas || !zetas.zetas) {
+                return msg.edit("Soething broke, I can't find the zetas list");
+            }
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {
                 if (myZetas.length >= 5) {
