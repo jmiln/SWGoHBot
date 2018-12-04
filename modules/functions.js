@@ -700,15 +700,12 @@ module.exports = (client) => {
      * rows: The data to fill in
      */
     client.makeTable = (headers, rows) => {
-        if (!headers || !rows) throw new Error("Need both headers and rows");
+        if (!headers || !rows || !rows.length) throw new Error("Need both headers and rows");
         const max = {};
-        Object.keys(headers).forEach((h, ix) => {
-            max[h] = Math.max(...rows.map(v => v[h].toString().length));
-            // Add a bit to allow for padding
-            if (ix === 0) max[h] = max[h] + 1;
-            else max[h] = max[h] + 2;
+        Object.keys(headers).forEach(h => {
+            // Get the max length needed, then add a bit for padding 
+            max[h] = Math.max(...rows.map(v => v[h].toString().length)) + 2;
         });
-        console.log(max);
 
         let header = "";
         Object.keys(headers).forEach(h => {
@@ -719,12 +716,13 @@ module.exports = (client) => {
                 const padBefore = Math.floor(pad/2);
                 const padAfter = pad-padBefore;
                 header += head.startWith ? head.startWith : "";
-                header += " ".repeat(padBefore) + head.value + " ".repeat(padAfter);
+                if (padBefore) header += " ".repeat(padBefore);
+                header += head.value;
+                if (padAfter) header  += " ".repeat(padAfter);
                 header += head.endWith ? head.endWith : "";
             } else {
                 header += head.startWith ? head.startWith : "";
-                console.log(headerMax);
-                header += " ".repeat(headerMax+1);
+                header += " ".repeat(headerMax);
                 header += head.endWith ? head.endWith : "";
             }
         });
@@ -732,7 +730,7 @@ module.exports = (client) => {
         const out = [client.expandSpaces("**" + header + "**")];
         rows.forEach(r => {
             let row = "";
-            Object.keys(r).forEach(h => {
+            Object.keys(headers).forEach(h => {
                 const rowMax = max[h];
                 const head = headers[h];
                 const value = r[h];
@@ -742,11 +740,13 @@ module.exports = (client) => {
                     if (!head.align || (head.align && head.align === "center")) {
                         const padBefore = Math.floor(pad/2);
                         const padAfter = pad-padBefore;
-                        row += " ".repeat(padBefore) + value + " ".repeat(padAfter);
+                        if (padBefore) row += " ".repeat(padBefore);
+                        row += value;
+                        if (padAfter) row  += " ".repeat(padAfter);
                     } else if (head.align === "left") {
                         row += " " + value + " ".repeat(pad-1);
                     } else if (head.align === "right") {
-                        row += " ".repeat(pad) + value;
+                        row += " ".repeat(pad-1) + value + " ";
                     } else {
                         throw new Error("Invalid alignment");
                     }

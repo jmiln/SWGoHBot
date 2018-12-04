@@ -93,6 +93,7 @@ module.exports = class extends Language {
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
             BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
             BASE_SWGOH_LOCKED_CHAR: "Sorry, but it looks like you don't have this character unlocked",
+            BASE_SWGOH_GUILD_LOCKED_CHAR: "Sorry, but it looks like no one in your guild has this character unlocked",
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
@@ -558,12 +559,22 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]",
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
+                            "user": "The player who's guild you want to check. (me | userID | mention)",
                             "character": "The character you want to search for.",
                             "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
                             "-reverse": "Reverse the chosen sort",
                             "-sort": "Choose either name, gear, or gp to sort by",
                             "starLvl": "Select the star level you want to see."
+                        }
+                    },
+                    {
+                        action: "Stat comparison",
+                        actionDesc: "Compare stats for a character across your entire guild",
+                        usage: ";guildsearch [user] <character> -stats <stat>",
+                        args: {
+                            "user": "The player who's guild you want to check. (me | userID | mention)",
+                            "character": "The character you want to search for.",
+                            "stat": "One of the character's stats from below ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
                         }
                     }
                 ]

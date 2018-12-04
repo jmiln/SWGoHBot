@@ -14,6 +14,7 @@ module.exports = (client) => {
         players: players,
         playerByName: playerByName,
         unitStats: unitStats,
+        guildStats: guildStats,
         abilities: abilities,
         getCharacter: getCharacter,
         character: character,
@@ -29,7 +30,7 @@ module.exports = (client) => {
         whois: whois
     };
 
-    async function player( allycode, lang, cooldown) {
+    async function player(allycode, lang, cooldown) {
         lang = lang ? lang : "ENG_US";
         if (cooldown) {
             cooldown = cooldown.player;
@@ -136,7 +137,7 @@ module.exports = (client) => {
             if (!playerStats || !playerStats[0] || isExpired(playerStats[0].updated, cooldown)) {
                 let player, barePlayer;
                 try {
-                    player = await this.player(allycode);
+                    player = await client.swgohAPI.player(allycode);
                     if (Array.isArray(player)) { player = player[0]; }
                     barePlayer = await swgoh.fetchPlayer({allycode: allycode});
                     if (barePlayer.warning) warnings = barePlayer.warning;
@@ -171,12 +172,12 @@ module.exports = (client) => {
                     c.unit.gp   = char.gp;
                     c.unit.skills = char.skills;
                     c.unit.name = char.nameKey;
-                    c.unit.player = player.name;
                     delete c.unit.mods;
                 });
 
                 const stats = {
                     allyCode: player.allyCode,
+                    name: player.name,
                     updated: player.updated,
                     stats: playerStats
                 };
@@ -191,6 +192,32 @@ module.exports = (client) => {
             console.log("SWAPI Broke getting playerStats: " + error);
             throw error;
         }
+    }
+
+    async function guildStats( allyCodes, defId, cooldown ) {
+        if (cooldown) {
+            cooldown = cooldown.guild;
+            if (cooldown > guildCooldown) cooldown = guildCooldown;
+            if (cooldown < 1) cooldown = 1;
+        } else {
+            cooldown = guildCooldown;
+        }
+
+        const outStats = [];
+        for (const allyCode of allyCodes) {
+            const stats = await unitStats(allyCode, cooldown);
+            if (!stats) continue;
+            const unit = stats.stats.find(c => c.unit.defId === defId);
+            if (!unit) {
+                continue;
+            } else {
+                unit.player = stats.name;
+                unit.allyCode = stats.allyCode;
+                unit.updated = stats.updated;
+                outStats.push(unit);
+            }
+        }
+        return outStats;
     }
 
     async function abilities( skillArray, lang, update=false ) {
