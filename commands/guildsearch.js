@@ -340,9 +340,9 @@ class GuildSearch extends Command {
                 console.log("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: {
-                        name: "Something Broke getting your guild's roster"
+                        name: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER")
                     },
-                    description: client.codeBlock(e) + "Please try again in a bit."
+                    description: client.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN")
                 }});
             }
             let gRoster;
@@ -397,7 +397,7 @@ class GuildSearch extends Command {
                 if (outArr.length) {
                     const outMsgArr = client.msgArray(outTable, "\n", 1000);
                     outMsgArr.forEach((m, ix) => {
-                        const name = (ix === 0) ? `${character.name} (Sorted by ${sortBy})` : message.language.get("BASE_CONT_STRING");
+                        const name = (ix === 0) ? message.language.get("COMMAND_GUILDSEARCH_SORTED_BY", character.name, sortBy) : message.language.get("BASE_CONT_STRING");
                         fields.push({
                             name: name,
                             value: m
@@ -411,11 +411,13 @@ class GuildSearch extends Command {
                 }
             }
 
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             msg.edit({embed: {
                 author: {
                     name: guild.name
                 },
-                fields: fields
+                fields: fields,
+                footer: footer
             }});
         }    
     }

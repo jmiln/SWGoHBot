@@ -190,6 +190,9 @@ module.exports = class extends Language {
             BASE_LEVEL_SHORT: "lvl",
             BASE_GEAR_SHORT: "Gear",
             BASE_SOMETHING_BROKE: "Something Broke",
+            BASE_SOMETHING_BROKE_GUILD: "Something broke while getting your guild",
+            BASE_SOMETHING_BROKE_GUILD_ROSTER: "Something broke while getting your guild's roster",
+            BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
@@ -551,6 +554,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Star (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Please wait while I search your guild's roster.",
             COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character.",
+            COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (Sorted by ${sort})`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
                 actions: [
