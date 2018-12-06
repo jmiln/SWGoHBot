@@ -17,9 +17,11 @@ class GuildSearch extends Command {
                 },
             },
             subArgs: {
+                sort: {
+                    aliases: []
+                },
                 stat: {
-                    aliases: ["stats"],
-                    default: "name"
+                    aliases: ["stats"]
                 }
             }
         });
@@ -27,7 +29,11 @@ class GuildSearch extends Command {
 
     async run(client, message, args, options) { // eslint-disable-line no-unused-vars
         let starLvl = 0;
+        const availableSorts = ["gp", "gear", "name"];
         const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
+        if (!availableSorts.includes(sortType)) {
+            return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts));
+        }
         const reverse = options.flags.reverse;
         const rarityMap = {
             "ONESTAR": 1,
@@ -108,7 +114,7 @@ class GuildSearch extends Command {
                 guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
-                return message.channel.send({embed: {
+                return msg.edit({embed: {
                     author: {
                         name: "Something Broke while getting your guild's characters"
                     },
@@ -188,7 +194,7 @@ class GuildSearch extends Command {
                     sortedGuild = guildChar.sort((p, c) => c.gearLevel - p.gearLevel);
                 }
             } else {
-                return msg.edit(message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp"]));
+                return msg.edit(message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp", "gear"]));
             }
 
             const charOut = {};
