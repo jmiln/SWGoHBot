@@ -1254,8 +1254,8 @@
                     {
                         "name": "[α] BASTILA",
                         "main": true,
-                        "note": "6,000,000",
-                        "url": "",
+                        "note": "5,000,000",
+                        "url": "https://youtu.be/k69v-xzt3bk",
                         "team": [
                             "BASTILASHAN:leaderskill_BASTILASHAN",
                             "GENERALKENOBI",
@@ -1893,12 +1893,34 @@
         "level": 80,
         "phase": [
             {
+                "name": "C-3PO Legendary",
+                "anchor": "c3po",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "Event starts Dec 14th. Will likely need g10-g11. Panic farm calculator:",
+                        "url": "https://swgohevents.com/panic-farm/c-3p0",
+                        "gear": "9",
+                        "level": "85",
+                        "team": [
+                            "CHIEFCHIRPA",
+                            "WICKET",
+                            "LOGRAY",
+                            "PAPLOO",
+                            "EWOKELDER",
+                            "EWOKSCOUT",
+                            "TEEBO"
+                        ]
+                    }
+                ]
+            },
+            {
                 "name": "AN ANCIENT JOURNEY OF REDEMPTION",
                 "anchor": "revan",
                 "squads": [
                     {
                         "name": "",
-                        "note": "Event starts Oct 18th.",
+                        "note": "",
                         "url": "",
                         "gear": "9",
                         "level": "85",
