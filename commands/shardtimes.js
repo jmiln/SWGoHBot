@@ -234,6 +234,10 @@ class Shardtimes extends Command {
                     targetTime = momentTZ.tz(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
                 }
             } else if (type === "hhmm") {
+                if (momentTZ(zone, "HH:mm").unix() < momentTZ().unix()) {
+                    // It's already passed
+                    return momentTZ.duration(momentTZ(zone, "HH:mm").add(1, "d").diff(momentTZ())).format("HH:mm", { trim: false });
+                }
                 return momentTZ.duration(momentTZ(zone, "HH:mm").diff(momentTZ())).format("HH:mm", { trim: false });
             } else {
                 // It's utc +/- format
