@@ -119,6 +119,8 @@ class Shardtimes extends Command {
                         tempUser.tempZone = sign + hour + ":" + min; 
                     } else if (tempUser.zoneType === "hhmm") {
                         tempUser.tempZone = tempUser.timezone + " UTC";
+                    } else if (tempUser.zoneType === "zone") {
+                        tempUser.tempZone = tempUser.timezone;
                     }
                 } else {
                     tempUser.tempZone = tempUser.timezone;
