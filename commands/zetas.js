@@ -69,12 +69,15 @@ class Zetas extends Command {
             return msg.edit(message.language.get("BASE_SWGOH_NO_ACCT"));
         }
 
+        player.roster = player.roster.filter(c => c.crew.length === 0);
+
         if (!options.flags.r && !options.flags.g) {
             // Just want to see your own zetas
             const zetas = {};
             let count = 0;
-            player.roster.forEach(char => {
+            for (let char of player.roster) {
                 // If they are not looking for a specific character, check em all
+                char = await client.swgohAPI.langChar(char, message.guildSettings.swgohLanguage);
                 if (!character || character.uniqueName === char.defId) {
                     if (!char.nameKey) {
                         const tmp = client.characters.filter(c => c.uniqueName === char.defId);
@@ -94,7 +97,7 @@ class Zetas extends Command {
                         }
                     });
                 }
-            });
+            }
 
             const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);
             const desc = [], author = {};

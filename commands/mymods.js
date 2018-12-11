@@ -85,6 +85,8 @@ class MyMods extends Command {
 
             let charMods = player.roster.filter(c => c.defId === character.uniqueName);
 
+            charMods = await client.swgohAPI.langChar(charMods, message.guildSettings.swgohLanguage);
+
             if (charMods && charMods.length > 0) {
                 charMods = charMods[0].mods;
                 const slots = {};
