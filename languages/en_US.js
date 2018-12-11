@@ -917,8 +917,9 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";randomchar [numberOfChars]",
+                        usage: ";randomchar [user] [numberOfChars]",
                         args: {
+                            "user": "The user's roster you want it to choose from. (me | userID | mention)",
                             "numberOfChars": "The number of characters that you want chosen"
                         }
                     }
