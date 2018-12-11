@@ -31,12 +31,9 @@ class MyProfile extends Command {
             return message.channel.send("ERROR: Please make sure you are registered with a valid ally code");
         }
 
-        // const gpFull = player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;
-        // const gpChar = player.stats.find(s => s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME").value;
-        // const gpShip = player.stats.find(s => s.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME").value;
-        const gpFull = player.stats.find(s => s.nameKey === "Galactic Power:").value;
-        const gpChar = player.stats.find(s => s.nameKey === "Galactic Power (Characters):").value;
-        const gpShip = player.stats.find(s => s.nameKey === "Galactic Power (Ships):").value;
+        const gpFull = player.stats.find(s => s.nameKey === "Galactic Power:" || s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;
+        const gpChar = player.stats.find(s => s.nameKey === "Galactic Power (Characters):" || s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME").value;
+        const gpShip = player.stats.find(s => s.nameKey === "Galactic Power (Ships):" || s.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME").value;
 
         const rarityMap = {
             "ONESTAR": 1,
