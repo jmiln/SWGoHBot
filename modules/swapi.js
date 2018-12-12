@@ -136,18 +136,21 @@ module.exports = (client) => {
             playerStats = await cache.get("swapi", "playerStats", {allyCode:allycode});
             let warnings;
             if (!playerStats || !playerStats[0] || isExpired(playerStats[0].updated, cooldown)) {
-                let player;
+                let player, barePlayer;
                 try {
-                    player = await client.swgohAPI.player(allycode);
+                    player = await this.player(allycode);
                     if (Array.isArray(player)) { player = player[0]; }
-                    if (player.warning) warnings = player.warning;
-                    if (player.error) throw new Error(player.error);
+                    barePlayer = await swgoh.fetchPlayer({allycode: allycode});
+                    if (barePlayer.warning) warnings = barePlayer.warning;
+                    if (barePlayer.error) throw new Error(barePlayer.error);
+                    barePlayer = barePlayer.result;
+                    if (Array.isArray(barePlayer)) { barePlayer = barePlayer[0]; }
                 } catch (error) {
                     console.log("Error getting player in unitStats: " + error);
                     // throw new Error("Error getting player in unitStats: " + error);
                 }
 
-                if (!player) {
+                if (!player || !barePlayer) {
                     if (!playerStats || !playerStats[0]) {
                         throw new Error("I could not get your info right now.");
                     } else {
@@ -157,10 +160,10 @@ module.exports = (client) => {
                 }
 
                 // Strip out the ships since you can't get the stats for em yet
-                player.roster = player.roster.filter(c => c.crew.length === 0);
+                barePlayer.roster = barePlayer.roster.filter(c => c.crew.length === 0);
 
                 try {
-                    playerStats = await swgoh.rosterStats(player.roster, ["withModCalc","gameStyle"]);
+                    playerStats = await swgoh.rosterStats(barePlayer.roster, ["withModCalc","gameStyle"]);
                 } catch (error) {
                     throw new Error("Error getting player stats: " + error);
                 }
@@ -170,12 +173,12 @@ module.exports = (client) => {
                     c.unit.gp   = char.gp;
                     c.unit.skills = char.skills;
                     c.unit.name = char.nameKey;
+                    c.unit.player = player.name;
                     delete c.unit.mods;
                 });
 
                 const stats = {
                     allyCode: player.allyCode,
-                    name: player.name,
                     updated: player.updated,
                     stats: playerStats
                 };

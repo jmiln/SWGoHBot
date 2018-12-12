@@ -157,7 +157,7 @@ class MyMods extends Command {
                     aliases: ["Prot"]
                 },
                 "Speed": {
-                    aliases: []
+                    aliases: ["spd"]
                 },
                 "Potency": {
                     aliases: ["Pot"]
@@ -234,12 +234,17 @@ class MyMods extends Command {
                 sorted = stats.sort((p, c) => p.stats.mods && c.stats.mods && p.stats.mods[statToCheck] > c.stats.mods[statToCheck] ? -1 : 1);
 
             }
+
+            for (const c in sorted) {
+                sorted[c].unit = await client.swgohAPI.langChar(sorted[c].unit, message.guildSettings.swgohLanguage);
+            }
+
             const out = sorted.map(c => {
                 const finalStat = c.stats.final ? (c.stats.final[statToCheck] % 1 === 0 ? c.stats.final[statToCheck] : (c.stats.final[statToCheck] * 100).toFixed(2)+"%") : 0;
                 const modStat = c.stats.mods && c.stats.mods[statToCheck] ? (c.stats.mods[statToCheck] % 1 === 0 ? `(${c.stats.mods[statToCheck]})` : `(${(c.stats.mods[statToCheck] * 100).toFixed(2)}%)`) : "";
                 return {
                     stat: `${finalStat}${modStat.length ? " " + modStat : ""}`, 
-                    name: `: ${c.unit.name}`
+                    name: `: ${c.unit.nameKey}`
                 };
             });
             const longest = out.reduce((max, s) => Math.max(max, s.stat.length), 0);
