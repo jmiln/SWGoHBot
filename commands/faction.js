@@ -29,6 +29,7 @@ class Faction extends Command {
 
         // Add in common misspellings
         if (searchName === "rebels") searchName = "rebel";
+        else if (searchName === "ewoks") searchName = "ewok";
         // else if (searchName === "")
 
         const factionChars = [];
@@ -39,13 +40,15 @@ class Faction extends Command {
                 const cooldown = client.getPlayerCooldown(message.author.id);
                 const player = await client.swgohAPI.player(allyCode, null, cooldown);
                 const playerChars = [];
-                chars.forEach(c => {
-                    const found = player.roster.find(char => char.defId === c);
+                // chars.forEach(async c => {
+                for (const c of chars) {
+                    let found = player.roster.find(char => char.defId === c);
                     if (found) {
+                        found = await client.swgohAPI.langChar(found, message.guildSettings.swgohLanguage); 
                         found.gp = found.gp.toLocaleString();
                         playerChars.push(found);
                     }
-                });
+                }
 
                 const gpMax   = Math.max(...playerChars.map(c => c.gp.length));
                 const gearMax = Math.max(...playerChars.map(c => c.gear.toString().length));
