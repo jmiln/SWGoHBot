@@ -2919,6 +2919,172 @@
         "activate_shard_count": 25
     },
     {
+        "name": "C-3PO",
+        "base_id": "C3POLEGENDARY",
+        "pk": 312,
+        "url": "http://swgoh.gg/characters/c-3po/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_c3p0.png",
+        "power": 25717,
+        "description": "Evasive support character that Confuses foes and strengthens mixed-faction interplay with Translation.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "011",
+                    "010",
+                    "010",
+                    "009",
+                    "005",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "010",
+                    "028",
+                    "014",
+                    "020",
+                    "012",
+                    "012"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "049",
+                    "041",
+                    "065",
+                    "055",
+                    "050",
+                    "020"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "068",
+                    "082",
+                    "077",
+                    "073",
+                    "054",
+                    "049"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "088",
+                    "089",
+                    "073",
+                    "080",
+                    "055",
+                    "054"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "090",
+                    "088",
+                    "089",
+                    "063",
+                    "055",
+                    "102"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "108",
+                    "105",
+                    "109",
+                    "090",
+                    "091",
+                    "102"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "111",
+                    "117",
+                    "109",
+                    "114",
+                    "024",
+                    "050"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "125",
+                    "131",
+                    "117",
+                    "109",
+                    "105",
+                    "108"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "146",
+                    "129",
+                    "130",
+                    "131",
+                    "107"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "142",
+                    "014",
+                    "144",
+                    "137",
+                    "150",
+                    "105"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "165",
+                    "162",
+                    "168",
+                    "166",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Droid",
+            "Galactic Republic",
+            "Rebel",
+            "Resistance"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Counter",
+            "Defense Down",
+            "Expose",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Reduce Cooldowns",
+            "Reset Cooldown",
+            "Stealth"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
+    },
+    {
         "name": "Cad Bane",
         "base_id": "CADBANE",
         "pk": 121,

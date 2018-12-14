@@ -1915,7 +1915,7 @@
                 ]
             },
             {
-                "name": "AN ANCIENT JOURNEY OF REDEMPTION",
+                "name": "LEGEND OF THE OLD REPUBLIC",
                 "anchor": "revan",
                 "squads": [
                     {
@@ -3888,6 +3888,49 @@
                             "GENERALKENOBI",
                             "HANSOLO:uniqueskill_HANSOLO01",
                             "DARTHTRAYA"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "twcounters": {
+        "phase": [
+            {
+                "teamlead": "DARTHTRAYA",
+                "hardcounters": [
+                    {
+                        "teamlead": [
+                            "JEDIKNIGHTREVAN",
+                            "DARTHTRAYA"
+                        ]
+                    }
+                ],
+                "softcounters": [
+                    {
+                        "teamlead": [
+                            "WEDGEANTILLES",
+                            "COMMANDERLUKESKYWALKER"
+                        ]
+                    }
+                ]
+            },
+            {
+                "teamlead": "JEDIKNIGHTREVAN",
+                "hardcounters": [
+                    {
+                        "teamlead": [
+                            "DARTHTRAYA",
+                            "MAUL"
+                        ]
+                    }
+                ],
+                "softcounters": [
+                    {
+                        "teamlead": [
+                            "COMMANDERLUKESKYWALKER",
+                            "ASAJVENTRESS",
+                            "REYJEDITRAINING"
                         ]
                     }
                 ]
