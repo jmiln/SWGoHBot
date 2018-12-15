@@ -14,7 +14,7 @@ module.exports = async (client, member) => {
     if (guildConf.enablePart && guildConf.partMessage !== "" && guildConf.announceChan !== "") { // If they have it turned on, and it's not empty
         const partMessage = guildConf.partMessage
             .replace(/{{user}}/gi, member.displayName)
-            .replace(/{{usermention}}/gi, member.id)
+            .replace(/{{usermention}}/gi, member.user)
             .replace(/{{server}}/gi, member.guild.name)
             .replace(/{{prefix}}/gi, guildConf.prefix);
         try {
