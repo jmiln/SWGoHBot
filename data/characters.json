@@ -4197,7 +4197,22 @@
             "Resistance",
             "Support"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Protection",
+                "cross": "Health/ Protection",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [
@@ -11905,7 +11920,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -12075,24 +12091,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 951,
-            "Agility": 939,
-            "Intelligence": 653,
-            "Speed": 171,
-            "Physical Damage": 2576,
-            "Physical Critical Rating": 716,
-            "Special Damage": 1668,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 329,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 41,
-            "Health": 35938,
-            "Armor": 247,
-            "Resistance": 100,
-            "Tenacity": 39,
-            "Health Steal": 10,
-            "Protection": 32,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -16748,7 +16764,8 @@
         "factions": [
             "Attacker",
             "Rebel",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -16918,24 +16935,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 891,
-            "Agility": 979,
-            "Intelligence": 623,
-            "Speed": 148,
-            "Physical Damage": 2559,
-            "Physical Critical Rating": 1145,
-            "Special Damage": 1495,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 149,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 12,
-            "Health": 34503,
-            "Armor": 288,
-            "Resistance": 162,
-            "Tenacity": 35,
-            "Health Steal": 10,
-            "Protection": 21,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 145
         }
     },
@@ -22490,6 +22507,7 @@
         "factions": [
             "Droid",
             "Scoundrel",
+            "Smuggler",
             "Tank"
         ],
         "mods": {
@@ -22662,24 +22680,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 1449,
-            "Agility": 987,
-            "Intelligence": 726,
-            "Speed": 109,
-            "Physical Damage": 3306,
-            "Physical Critical Rating": 554,
-            "Special Damage": 1792,
-            "Special Critical Rating": 10,
-            "Armor Penetration": 48,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 37,
-            "Health": 35822,
-            "Armor": 538,
-            "Resistance": 192,
-            "Tenacity": 32,
-            "Health Steal": 10,
-            "Protection": 38,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -27507,6 +27525,7 @@
         "side": "light",
         "factions": [
             "Scoundrel",
+            "Smuggler",
             "Support"
         ],
         "mods": {
@@ -27690,24 +27709,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 21133,
-            "Strength": 972,
-            "Agility": 1005,
-            "Intelligence": 605,
-            "Speed": 154,
-            "Physical Damage": 2900,
-            "Physical Critical Rating": 857,
-            "Special Damage": 1473,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 260,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 28,
-            "Health": 31746,
-            "Armor": 259,
-            "Resistance": 100,
-            "Tenacity": 41,
-            "Health Steal": 15,
-            "Protection": 32,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -33857,6 +33876,7 @@
         "side": "light",
         "factions": [
             "Scoundrel",
+            "Smuggler",
             "Tank"
         ],
         "mods": {
@@ -34029,24 +34049,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 1383,
-            "Agility": 729,
-            "Intelligence": 636,
-            "Speed": 143,
-            "Physical Damage": 3518,
-            "Physical Critical Rating": 497,
-            "Special Damage": 1887,
-            "Special Critical Rating": 70,
-            "Armor Penetration": 161,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 31,
-            "Health": 30454,
-            "Armor": 544,
-            "Resistance": 183,
-            "Tenacity": 37,
-            "Health Steal": 10,
-            "Protection": 32,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -34064,7 +34084,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -34236,24 +34257,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 1544,
-            "Agility": 742,
-            "Intelligence": 588,
-            "Speed": 114,
-            "Physical Damage": 3351,
-            "Physical Critical Rating": 468,
-            "Special Damage": 1521,
-            "Special Critical Rating": 10,
-            "Armor Penetration": 177,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 48,
-            "Health": 37412,
-            "Armor": 436,
-            "Resistance": 241,
-            "Tenacity": 46,
-            "Health Steal": 10,
-            "Protection": 39,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -34273,7 +34294,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -34445,24 +34467,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 853,
-            "Agility": 1135,
-            "Intelligence": 740,
-            "Speed": 157,
-            "Physical Damage": 2676,
-            "Physical Critical Rating": 735,
-            "Special Damage": 1946,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 117,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 47,
-            "Health": 34554,
-            "Armor": 271,
-            "Resistance": 235,
-            "Tenacity": 33,
-            "Health Steal": 20,
-            "Protection": 31,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -35318,7 +35340,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -35488,24 +35511,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 840,
-            "Agility": 1225,
-            "Intelligence": 676,
-            "Speed": 137,
-            "Physical Damage": 2788,
-            "Physical Critical Rating": 772,
-            "Special Damage": 1792,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 177,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 47,
-            "Health": 33220,
-            "Armor": 321,
-            "Resistance": 198,
-            "Tenacity": 34,
-            "Health Steal": 15,
-            "Protection": 29,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -35523,7 +35546,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -35693,24 +35717,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 752,
-            "Agility": 1260,
-            "Intelligence": 600,
-            "Speed": 153,
-            "Physical Damage": 3131,
-            "Physical Critical Rating": 850,
-            "Special Damage": 1588,
-            "Special Critical Rating": 25,
-            "Armor Penetration": 287,
-            "Resistance Penetration": 5,
-            "Potency": 38,
-            "Health": 28436,
-            "Armor": 207,
-            "Resistance": 89,
-            "Tenacity": 31,
-            "Health Steal": 15,
-            "Protection": 29,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },

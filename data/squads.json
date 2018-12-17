@@ -534,7 +534,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "QUIGONJINN",
+                            "QUIGONJINN:leaderskill_QUIGONJINN",
                             "EZRABRIDGERS3",
                             "BARRISSOFFEE",
                             "ANAKINKNIGHT",
@@ -619,7 +619,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "CC2224",
+                            "CC2224:leaderskill_CC2224",
                             "CT7567",
                             "CT210408",
                             "CT5555",
@@ -631,7 +631,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "CC2224",
+                            "CC2224:leaderskill_CC2224",
                             "CT210408",
                             "CT5555",
                             "CLONESERGEANTPHASEI",
@@ -643,7 +643,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "CC2224",
+                            "CC2224:leaderskill_CC2224",
                             "CT210408",
                             "CT5555",
                             "CLONESERGEANTPHASEI",
@@ -655,7 +655,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "VEERS",
+                            "VEERS:uniqueskill_VEERS01",
                             "STORMTROOPER",
                             "MAGMATROOPER",
                             "DEATHTROOPER",
@@ -667,7 +667,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "CC2224",
+                            "CC2224:leaderskill_CC2224",
                             "CT210408",
                             "CT5555",
                             "CLONESERGEANTPHASEI",
@@ -679,8 +679,8 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "VADER",
-                            "DARTHSIDIOUS",
+                            "VADER:leaderskill_VADER",
+                            "DARTHSIDIOUS:uniqueskill_DARTHSIDIOUS01",
                             "TUSKENSHAMAN",
                             "EWOKELDER",
                             "PHASMA"
@@ -691,7 +691,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "FINN",
+                            "FINN:leaderskill_FINN",
                             "REY",
                             "POE",
                             "RESISTANCEPILOT",
@@ -703,11 +703,11 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "PHASMA",
-                            "KYLOREN",
+                            "PHASMA:leaderskill_PHASMA",
+                            "KYLOREN:specialskill_KYLOREN02",
                             "FIRSTORDEROFFICERMALE",
-                            "FIRSTORDERTROOPER",
-                            "FIRSTORDERTIEPILOT"
+                            "FIRSTORDERTROOPER:uniqueskill_FIRSTORDERTROOPER01",
+                            "FIRSTORDERTIEPILOT:uniqueskill_FIRSTORDERTIEPILOT01"
                         ]
                     },
                     {
@@ -715,7 +715,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "CC2224",
+                            "CC2224:leaderskill_CC2224",
                             "JAWASCAVENGER",
                             "CT210408",
                             "CT5555",
@@ -732,7 +732,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "GRANDADMIRALTHRAWN",
+                            "GRANDADMIRALTHRAWN:leaderskill_GRANDADMIRALTHRAWN:uniqueskill_GRANDADMIRALTHRAWN01",
                             "JYNERSO",
                             "SHORETROOPER",
                             "GRANDMOFFTARKIN",
@@ -744,7 +744,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "FINN",
+                            "FINN:leaderskill_FINN",
                             "POE",
                             "R2D2_LEGENDARY",
                             "RESISTANCEPILOT",
@@ -840,7 +840,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "CHIEFCHIRPA",
+                            "CHIEFCHIRPA:leaderskill_CHIEFCHIRPA",
                             "TEEBO",
                             "WICKET",
                             "LOGRAY",
@@ -852,7 +852,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "SAVAGEOPRESS"
+                            "SAVAGEOPRESS:uniqueskill_SAVAGEOPRESS01"
                         ]
                     }
                 ]
@@ -877,7 +877,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "CC2224",
+                            "CC2224:leaderskill_CC2224",
                             "CT5555",
                             "CT210408",
                             "CLONESERGEANTPHASEI",
@@ -889,7 +889,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "CC2224",
+                            "CC2224:leaderskill_CC2224",
                             "CT5555",
                             "CT210408",
                             "CLONESERGEANTPHASEI",
@@ -925,11 +925,11 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "PHASMA",
+                            "PHASMA:leaderskill_PHASMA",
+                            "KYLOREN:specialskill_KYLOREN02",
                             "FIRSTORDEROFFICERMALE",
-                            "KYLOREN",
-                            "FIRSTORDERTROOPER",
-                            "FIRSTORDERTIEPILOT"
+                            "FIRSTORDERTROOPER:uniqueskill_FIRSTORDERTROOPER01",
+                            "FIRSTORDERTIEPILOT:uniqueskill_FIRSTORDERTIEPILOT01"
                         ]
                     },
                     {
@@ -937,7 +937,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "FINN",
+                            "FINN:leaderskill_FINN",
                             "POE",
                             "REY",
                             "RESISTANCETROOPER",
@@ -949,7 +949,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "FINN",
+                            "FINN:leaderskill_FINN",
                             "POE",
                             "BB8",
                             "RESISTANCETROOPER",
@@ -961,7 +961,7 @@
                         "note": "",
                         "url": "",
                         "team": [
-                            "VEERS",
+                            "VEERS:uniqueskill_VEERS01",
                             "SNOWTROOPER",
                             "MAGMATROOPER",
                             "DEATHTROOPER",
@@ -998,6 +998,30 @@
                 "name": "MULTIPLE PHASES",
                 "squads": [
                     {
+                        "name": "FINN THREEPIO SCOUT",
+                        "note": "Full HAAT solo",
+                        "url": "https://youtu.be/6f3i6PdYjpY",
+                        "team": [
+                            "FINN:leaderskill_FINN",
+                            "EWOKSCOUT",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HANSOLO:uniqueskill_HANSOLO01",
+                            "C3POLEGENDARY:specialskill_C3POLEGENDARY01"
+                        ]
+                    },
+                    {
+                        "name": "FINN THREEPIO BB8",
+                        "note": "Full HAAT solo",
+                        "url": "https://youtu.be/dXfMjsaTXkQ",
+                        "team": [
+                            "FINN:leaderskill_FINN",
+                            "BB8",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "HANSOLO:uniqueskill_HANSOLO01",
+                            "C3POLEGENDARY:specialskill_C3POLEGENDARY01"
+                        ]
+                    },
+                    {
                         "name": "EZRADICATOR",
                         "note": "Full HAAT solo",
                         "url": "https://youtu.be/Q0ed4dYTXDY",
@@ -1019,18 +1043,6 @@
                             "GRANDADMIRALTHRAWN",
                             "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
                             "BB8"
-                        ]
-                    },
-                    {
-                        "name": "ABC",
-                        "note": "Part of P2 through P4",
-                        "url": "https://youtu.be/BlgDKYa6kjI",
-                        "team": [
-                            "ADMIRALACKBAR",
-                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
-                            "BB8",
-                            "GRANDADMIRALTHRAWN",
-                            "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01"
                         ]
                     },
                     {
@@ -1067,6 +1079,18 @@
                             "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
                             "HERMITYODA",
                             "YOUNGHAN"
+                        ]
+                    },
+                    {
+                        "name": "ABC",
+                        "note": "Part of P2 through P4",
+                        "url": "https://youtu.be/BlgDKYa6kjI",
+                        "team": [
+                            "ADMIRALACKBAR",
+                            "COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER02",
+                            "BB8",
+                            "GRANDADMIRALTHRAWN",
+                            "ASAJVENTRESS:uniqueskill_ASAJVENTRESS01"
                         ]
                     }
                 ]
@@ -1893,14 +1917,15 @@
         "level": 80,
         "phase": [
             {
-                "name": "C-3PO Legendary",
+                "name": "CONTACT PROTOCOL",
                 "anchor": "c3po",
                 "squads": [
                     {
                         "name": "",
-                        "note": "Event starts Dec 14th. Will likely need g10-g11. Panic farm calculator:",
-                        "url": "https://swgohevents.com/panic-farm/c-3p0",
-                        "gear": "9",
+                        "note": "",
+                        "url": "",
+                        "panic": "https://swgohevents.com/panic-farm/c-3p0",
+                        "gear": "10",
                         "level": "85",
                         "team": [
                             "CHIEFCHIRPA",
@@ -1920,10 +1945,9 @@
                 "squads": [
                     {
                         "name": "",
-                        "note": "",
+                        "note": "Bastila's zeta not strictly needed.",
                         "url": "",
-                        "gear": "9",
-                        "level": "85",
+                        "panic": "https://swgohevents.com/panic-farm/jkr",
                         "team": [
                             "BASTILASHAN:leaderskill_BASTILASHAN",
                             "JOLEEBINDO",
@@ -1941,6 +1965,7 @@
                     {
                         "name": "",
                         "note": "zBossk and Dengar make this event easier.",
+                        "panic": "https://swgohevents.com/panic-farm/chewbacca",
                         "url": "",
                         "gear": "11",
                         "level": "85",
@@ -1967,9 +1992,10 @@
                         "name": "",
                         "note": "Finn's Zeta recommended.",
                         "url": "",
+                        "panic": "https://swgohevents.com/panic-farm/jtr",
                         "team": [
+                            "FINN:leaderskill_FINN",
                             "REY",
-                            "FINN",
                             "BB8",
                             "SMUGGLERHAN",
                             "SMUGGLERCHEWBACCA"
@@ -2130,6 +2156,7 @@
                         "name": "",
                         "note": "Sabine not recommended. All purple mats and omegas on Ezra recommended",
                         "url": "",
+                        "panic": "https://swgohevents.com/panic-farm/thrawn",
                         "team": [
                             "CHOPPERS3",
                             "EZRABRIDGERS3",
@@ -3498,7 +3525,8 @@
                             "COMMANDERLUKESKYWALKER:leaderskill_COMMANDERLUKESKYWALKER:uniqueskill_COMMANDERLUKESKYWALKER01:uniqueskill_COMMANDERLUKESKYWALKER02",
                             "REYJEDITRAINING:leaderskill_REYJEDITRAINING:uniqueskill_REYJEDITRAINING01:uniqueskill_REYJEDITRAINING02",
                             "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
-                            "CHEWBACCALEGENDARY:uniqueskill_CHEWBACCALEGENDARY01:uniqueskill_CHEWBACCALEGENDARY02"
+                            "CHEWBACCALEGENDARY:uniqueskill_CHEWBACCALEGENDARY01:uniqueskill_CHEWBACCALEGENDARY02",
+                            "C3POLEGENDARY:specialskill_C3POLEGENDARY01:uniqueskill_C3POLEGENDARY02"
                         ]
                     }
                 ]
