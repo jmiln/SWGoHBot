@@ -159,9 +159,6 @@ module.exports = (client) => {
                     }
                 }
 
-                // Strip out the ships since you can't get the stats for em yet
-                barePlayer.roster = barePlayer.roster.filter(c => c.crew.length === 0);
-
                 try {
                     playerStats = await swgoh.rosterStats(barePlayer.roster, ["withModCalc","gameStyle"]);
                 } catch (error) {
@@ -174,12 +171,12 @@ module.exports = (client) => {
                     c.unit.skills = char.skills;
                     c.unit.name = char.nameKey;
                     c.unit.player = player.name;
-                    delete c.unit.mods;
                 });
 
                 const stats = {
                     allyCode: player.allyCode,
                     updated: player.updated,
+                    arena: player.arena,
                     stats: playerStats
                 };
 

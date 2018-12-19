@@ -699,38 +699,52 @@ module.exports = (client) => {
      *  }
      * rows: The data to fill in
      */
-    client.makeTable = (headers, rows) => {
+    client.makeTable = (headers, rows, options={
+        boldHeader: true,
+        useHeader:  true
+    }) => {
         if (!headers || !rows || !rows.length) throw new Error("Need both headers and rows");
         const max = {};
         Object.keys(headers).forEach(h => {
             // Get the max length needed, then add a bit for padding 
-            max[h] = Math.max(...rows.map(v => v[h].toString().length)) + 2;
-        });
-
-        let header = "";
-        Object.keys(headers).forEach(h => {
-            const headerMax = max[h];
-            const head = headers[h];
-            if (head && head.value.length) {
-                const pad = headerMax - head.value.length;
-                const padBefore = Math.floor(pad/2);
-                const padAfter = pad-padBefore;
-                header += head.startWith ? head.startWith : "";
-                if (padBefore) header += " ".repeat(padBefore);
-                header += head.value;
-                if (padAfter) header  += " ".repeat(padAfter);
-                header += head.endWith ? head.endWith : "";
+            if (options.useHeader) {
+                max[h] = Math.max(...[headers[h].value.length].concat(rows.map(v => v[h].toString().length))) + 2;
             } else {
-                header += head.startWith ? head.startWith : "";
-                header += " ".repeat(headerMax);
-                header += head.endWith ? head.endWith : "";
+                max[h] = Math.max(...rows.map(v => v[h].toString().length)) + 2;
             }
         });
 
-        const out = [client.expandSpaces("**" + header + "**")];
+        let header = "";
+        const out = [];
+
+        if (options.useHeader) {
+            Object.keys(headers).forEach(h => {
+                const headerMax = max[h];
+                const head = headers[h];
+                if (head && head.value.length) {
+                    const pad = headerMax - head.value.length;
+                    const padBefore = Math.floor(pad/2);
+                    const padAfter = pad-padBefore;
+                    header += head.startWith ? head.startWith : "";
+                    if (padBefore) header += " ".repeat(padBefore);
+                    header += head.value;
+                    if (padAfter) header  += " ".repeat(padAfter);
+                    header += head.endWith ? head.endWith : "";
+                } else {
+                    header += head.startWith ? head.startWith : "";
+                    header += " ".repeat(headerMax);
+                    header += head.endWith ? head.endWith : "";
+                }
+            });
+            if (options.boldHeader) {
+                out.push(client.expandSpaces("**" + header + "**"));
+            } else {
+                out.push(client.expandSpaces(header));
+            }
+        }
         rows.forEach(r => {
             let row = "";
-            Object.keys(headers).forEach(h => {
+            Object.keys(headers).forEach((h, ix) => {
                 const rowMax = max[h];
                 const head = headers[h];
                 const value = r[h];
@@ -743,6 +757,8 @@ module.exports = (client) => {
                         if (padBefore) row += " ".repeat(padBefore);
                         row += value;
                         if (padAfter) row  += " ".repeat(padAfter);
+                    } else if (head.align === "left" && ix === 0 && !h.startWith) {
+                        row += value + " ".repeat(pad-1);
                     } else if (head.align === "left") {
                         row += " " + value + " ".repeat(pad-1);
                     } else if (head.align === "right") {
@@ -762,6 +778,49 @@ module.exports = (client) => {
 
         return out;
     };
+
+    /*
+     * Trim down largs numbers to be more easily readable
+     */
+    client.shortenNum = (number) => {
+        const million = 1000000, thousand = 1000;
+
+        if (number >= million) {
+            number = (number / million);
+            number = trimFloat(number) + "M";
+        } else if (number >= thousand) {
+            number = (number / thousand);
+            number = parseInt(number) + "K";
+        }
+        return number;
+    };
+
+    function trimFloat(num) {
+        if (num % 1 === 0) {
+            num = parseInt(num);
+        } else {
+            num = num.toFixed(1);
+        }
+        return num;
+    }
+
+    /*
+     * Small function to search the factions
+     */
+    client.findFaction = (fact) => {
+        fact = fact.toLowerCase();
+        if (client.factions.find(f => f.toLowerCase() === fact)) {
+            return fact;
+        } 
+        if (fact.endsWith("s") && client.factions.find(f => f.toLowerCase() === fact.substring(0, fact.length-1))) {
+            return fact.substring(0, fact.length-1);
+        }
+        if (!fact.endsWith("s") && client.factions.find(f => f.toLowerCase === fact + "s")) {
+            return fact+"s";
+        }
+        return false;
+    };
+
 
     // Expand multiple spaces to have zero width spaces between so 
     // Discord doesn't collapse em

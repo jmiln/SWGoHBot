@@ -487,6 +487,49 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Grand Arena Command
+            COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Invalid user ${userNum}`,
+            COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Could not find a match for "${char}"`,
+            COMMAND_GRANDARENA_COMP_NAMES: {
+                charGP: "Char GP",
+                shipGP: "Ship GP",
+                cArena: "C Arena",
+                sArena: "S Arena",
+                zetas: "Zetas",
+                star6: "6 Star",
+                star7: "7 Star",
+                g11: "Gear 11",
+                g12: "Gear 12",
+                "mods6": "6*  Mods",
+                "spd10": "10+  Spd",
+                "spd15": "15+  Spd",
+                "spd20": "20+  Spd",
+                "off100": "100+ Off",
+                "level": "Level",
+                "gearLvl": "Gear Lvl",
+                "starLvl": "Star Lvl",
+                "speed": "Speed"
+            },
+            COMMAND_GRANDARENA_EXTRAS_HEADER:"Extras",
+            COMMAND_GRANDARENA_EXTRAS: (extraCount) => `There are ${extraCount} more characters that matched your search, but could not be shown.`,
+            COMMAND_GRANDARENA_OUT_HEADER: (p1, p2) => `Grand Arena ${p1} vs ${p2}`,
+            COMMAND_GRANDARENA_OUT_DESC: (overview, modOverview) => `**Stats:**${overview}**Mod Stats:**${modOverview}`,
+            COMMAND_GRANDARENA_HELP: {
+                description: "Compares 2 players for Grand Arena.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";grandarena <user1> <user2> [-faction faction] [character1] | [character2] | ...",
+                        args: {
+                            "users": "A way to identify the . (mention | allyCode | guildName)",
+                            "charcaters": "A list of charcaters (Separated by the | symbol).",
+                            "-faction": "A faction you want to show."
+                        }
+                    }
+                ]
+            },
+
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: "For more info on a specific guild:",
             COMMAND_GUILDS_NO_GUILD: "I cannot find that guild.",

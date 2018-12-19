@@ -27,10 +27,10 @@ class Faction extends Command {
             return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
         }
 
-        // Add in common misspellings
-        if (searchName === "rebels") searchName = "rebel";
-        else if (searchName === "ewoks") searchName = "ewok";
-        // else if (searchName === "")
+        searchName = client.findFaction(searchName);
+        if (!searchName) {
+            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+        }
 
         const factionChars = [];
         let chars = charList.filter(c => c.factions.map(ch => ch.toLowerCase()).includes(searchName.toLowerCase()));
