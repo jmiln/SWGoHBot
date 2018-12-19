@@ -23,7 +23,7 @@ class CommandName extends Command {
         if (!user1) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 1)); 
         if (!user2) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 2)); 
 
-        const charOut = [];
+        let charOut = [];
         if (characters.length) {
             characters = characters.join(" ").split("|").map(c => c.trim());
             for (const ix in characters) {
@@ -86,15 +86,15 @@ class CommandName extends Command {
                     "WAMPA"
                 ];
 
-                if (charOut.length) {
-                    charArr = [...new Set(charOut)];
-                }
-
                 if (options.subArgs.faction) {
                     const fact = client.findFaction(options.subArgs.faction);
                     if (fact) {
-                        charArr = charArr.concat(client.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === fact)).map(c => c.uniqueName));
+                        charOut = charOut.concat(client.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === fact)).map(c => c.uniqueName));
                     }
+                }
+
+                if (charOut.length) {
+                    charArr = [...new Set(charOut)];
                 }
 
                 let overview = [];
