@@ -392,7 +392,7 @@ class GuildSearch extends Command {
                 });
             } else {
                 const header = {
-                    gear: {value: "Gear", startWith: "`[", endWith: "|", align: "right"},
+                    gear: {value: "⚙", startWith: "`[", endWith: "|", align: "right"},
                     gp: {value: "GP", endWith: "|", align: "right"}
                 };
                 header[sortBy] = {value: checkableStats[sortBy].short, endWith: "]`", align: "right"};

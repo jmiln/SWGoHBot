@@ -138,7 +138,7 @@ module.exports = (client) => {
             if (!playerStats || !playerStats[0] || isExpired(playerStats[0].updated, cooldown)) {
                 let player, barePlayer;
                 try {
-                    player = await this.player(allycode);
+                    player = await client.swgohAPI.player(allycode);
                     if (Array.isArray(player)) { player = player[0]; }
                     barePlayer = await swgoh.fetchPlayer({allycode: allycode});
                     if (barePlayer.warning) warnings = barePlayer.warning;
@@ -152,6 +152,7 @@ module.exports = (client) => {
 
                 if (!player || !barePlayer) {
                     if (!playerStats || !playerStats[0]) {
+                        console.log(player, playerStats, barePlayer);
                         throw new Error("I could not get your info right now.");
                     } else {
                         // It has the old player stats
