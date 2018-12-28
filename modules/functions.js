@@ -808,17 +808,20 @@ module.exports = (client) => {
      * Small function to search the factions
      */
     client.findFaction = (fact) => {
-        fact = fact.toLowerCase();
-        if (client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.replace(/\s+/g, ""))) {
-            return fact;
+        fact = fact.toLowerCase().replace(/\s+/g, "");
+        let found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact);
+        if (found) {
+            return found.toLowerCase();
         } 
-        if (fact.endsWith("s") && client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.substring(0, fact.length-1).replace(/\s+/g, ""))) {
-            return fact.substring(0, fact.length-1);
+        found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.substring(0, fact.length-1));
+        if (fact.endsWith("s") && found) {
+            return found.toLowerCase();
         }
-        if (!fact.endsWith("s") && client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === (fact + "s").replace(/\s+/g, ""))) {
-            return fact+"s";
+        found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact + "s");
+        if (!fact.endsWith("s") && found) {
+            return found.toLowerCase();
         }
-        const close = client.factions.filter(f => f.toLowerCase().replace(/\s+/g, "").includes(fact.toLowerCase().replace(/\s+/g, "")));
+        const close = client.factions.filter(f => f.toLowerCase().replace(/\s+/g, "").includes(fact.toLowerCase()));
         if (close.length) {
             return close.map(f => f.toLowerCase());
         }
