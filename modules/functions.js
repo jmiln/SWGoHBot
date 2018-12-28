@@ -809,15 +809,20 @@ module.exports = (client) => {
      */
     client.findFaction = (fact) => {
         fact = fact.toLowerCase();
-        if (client.factions.find(f => f.toLowerCase() === fact)) {
+        if (client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.replace(/\s+/g, ""))) {
             return fact;
         } 
-        if (fact.endsWith("s") && client.factions.find(f => f.toLowerCase() === fact.substring(0, fact.length-1))) {
+        if (fact.endsWith("s") && client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.substring(0, fact.length-1).replace(/\s+/g, ""))) {
             return fact.substring(0, fact.length-1);
         }
-        if (!fact.endsWith("s") && client.factions.find(f => f.toLowerCase === fact + "s")) {
+        if (!fact.endsWith("s") && client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === (fact + "s").replace(/\s+/g, ""))) {
             return fact+"s";
         }
+        const close = client.factions.filter(f => f.toLowerCase().replace(/\s+/g, "").includes(fact.toLowerCase().replace(/\s+/g, "")));
+        if (close.length) {
+            return close.map(f => f.toLowerCase());
+        }
+
         return false;
     };
 

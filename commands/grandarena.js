@@ -88,8 +88,14 @@ class CommandName extends Command {
 
                 if (options.subArgs.faction) {
                     const fact = client.findFaction(options.subArgs.faction);
-                    if (fact) {
+                    if (Array.isArray(fact)) {
+                        fact.forEach(f => {
+                            charOut = charOut.concat(client.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === f)).map(c => c.uniqueName));
+                        });
+                    } else if (fact) {
                         charOut = charOut.concat(client.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === fact)).map(c => c.uniqueName));
+                    } else {
+                        return message.channel.send("Sorry, but I did not find a match for the faction: `" + options.subArgs.faction + "`");
                     }
                 }
 

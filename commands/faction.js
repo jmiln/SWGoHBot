@@ -30,6 +30,12 @@ class Faction extends Command {
         searchName = client.findFaction(searchName);
         if (!searchName) {
             return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+        } else if (Array.isArray(searchName)) {
+            if (searchName.length > 1) {
+                return message.channel.send("Your query came up with too many results: ```" + searchName.join("\n") + "```");
+            } else {
+                searchName = searchName[0];
+            }
         }
 
         const factionChars = [];
