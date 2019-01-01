@@ -487,6 +487,49 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Grand Arena Command
+            COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Ungueltiger Spieler ${userNum}`,
+            COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Keine Ergebnisse gefunden fuer "${char}"`,
+            COMMAND_GRANDARENA_COMP_NAMES: {
+                charGP: "Char GM",
+                shipGP: "Schiff GM",
+                cArena: "C Arena",
+                sArena: "S Arena",
+                zetas: "Zetas",
+                star6: "6 Sterne",
+                star7: "7 Sterne",
+                g11: "Gear 11",
+                g12: "Gear 12",
+                "mods6": "6*  Mods",
+                "spd10": "10+  Tempo",
+                "spd15": "15+  Tempo",
+                "spd20": "20+  Tempo",
+                "off100": "100+ Ang",
+                "level": "Level",
+                "gearLvl": "Gear Lvl",
+                "starLvl": "Stern Lvl",
+                "speed": "Tempo"
+            },
+            COMMAND_GRANDARENA_EXTRAS_HEADER:"Extras",
+            COMMAND_GRANDARENA_EXTRAS: (extraCount) => `Es gibt ${extraCount} Charaktere mehr die deiner Suche entsprechen aber nicht angezeigt werden koennen.`,
+            COMMAND_GRANDARENA_OUT_HEADER: (p1, p2) => `Grosse Arena ${p1} vs ${p2}`,
+            COMMAND_GRANDARENA_OUT_DESC: (overview, modOverview) => `**Statistik:**${overview}**Mod Statistik:**${modOverview}`,
+            COMMAND_GRANDARENA_HELP: {
+                description: "Vergleicht 2 Spieler fuer die Grosse Arena.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";grandarena <user1> <user2> [-faction Fraktion] [character1] | [character2] | ...",
+                        args: {
+                            "users": "Zur Identifikation des Spielers (mention | allyCode | guildName)",
+                            "characters": "Eine Liste von Charakteren (getrennt durch das | Symbol).",
+                            "-faction": "Eine Fraktion die angezeigt werden soll."
+                        }
+                    }
+                ]
+            },
+
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: "Fuer mehr Info zu einer spezifischen Gilde:",
             COMMAND_GUILDS_NO_GUILD: "Ich kann diese Gilde nicht finden.",
