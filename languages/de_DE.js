@@ -597,6 +597,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Bitte warten waehrend ich die Sammlung deiner Gilde durchsuche.",
             COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in deiner Gilde diesen Charakter.",
+            COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (sortiert nach ${sort})`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Zeigt den Stern-Level des gewaehlten Charakters von allen Gildenmitgliedern an.",
                 actions: [
