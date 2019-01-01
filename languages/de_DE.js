@@ -95,7 +95,6 @@ module.exports = class extends Language {
             BASE_SWGOH_LOCKED_CHAR: "Entschuldige, aber sieht so aus als ob du diesen Charakter noch nicht freigeschalten hast",
             BASE_SWGOH_GUILD_LOCKED_CHAR: "Entschuldige, aber es sieht so aus als ob niemand in deiner Gilde diesen Charakter freigeschaltet hat",
 
-
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
             COMMAND_INVALID_BOOL: "Ungueltiger Wert, versuche true oder false",
@@ -191,6 +190,9 @@ module.exports = class extends Language {
             BASE_LEVEL_SHORT: "lvl",
             BASE_GEAR_SHORT: "Ausruestung",
             BASE_SOMETHING_BROKE: "Etwas funktioniert nicht",
+            BASE_SOMETHING_BROKE_GUILD: "Etwas hat beim holen deiner Gildeninformationen nicht geklappt",
+            BASE_SOMETHING_BROKE_GUILD_ROSTER: "Etwas hat beim holen der Gilden-Mitgliederliste nicht geklappt",
+            BASE_PLEASE_TRY_AGAIN: "Bitte versuche es etwas später nocheinmal.",
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
