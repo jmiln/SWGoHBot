@@ -960,8 +960,9 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";randomchar [AnzahlCharaktere]",
+                        usage: ";randomchar [user][AnzahlCharaktere]",
                         args: {
+                            "user": "Die Charaktersammlung eines Spielers aus der ausgewaehlt werden soll. (me | userID | mention)",
                             "AnzahlCharaktere": "Die Anzahl der Charaktere, die ausgewaehlt werden sollen"
                         }
                     }
