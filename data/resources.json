@@ -5,10 +5,15 @@
             "Discord": "https://discord.gg/4GJ8Ty2",
             "Invite": "https://discordapp.com/oauth2/authorize?client_id=355873395164053512&scope=bot&permissions=511040"
         },
+        "Counter Bot": {
+            "Desc": "Awesome bot that shows useful counters to popoular teams (TW/ GA based)",
+            "Discord": "https://discordapp.com/invite/MtDn8ze",
+            "Invite": "https://discordapp.com/oauth2/authorize?client_id=525598644624162816&scope=bot&permissions=515136"
+        },
         "Crouching Rancor": {
             "Desc": "Useful SWGoH tools and calculators",
             "Discord": "https://discord.gg/nyWgbU3",
-            "Invite": "https://discordapp.com/oauth2/authorize?client_id=436693905736466432&permissions=0&scope=bot"
+            "Invite": "https://discordapp.com/oauth2/authorize?&client_id=360075123841040395&scope=bot&permissions=0"
         },
         "DSR Bot": {
             "Desc": "Shows teams and player readiness for the sith raid",

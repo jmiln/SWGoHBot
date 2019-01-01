@@ -998,6 +998,18 @@
                 "name": "MULTIPLE PHASES",
                 "squads": [
                     {
+                        "name": "JTR AND HER DROIDS",
+                        "note": "Full HAAT solo",
+                        "url": "https://youtu.be/UFBVOMiotFU",
+                        "team": [
+                            "REYJEDITRAINING:leaderskill_REYJEDITRAINING",
+                            "BB8:uniqueskill_BB801",
+                            "RESISTANCETROOPER",
+                            "R2D2_LEGENDARY:uniqueskill_R2D2_LEGENDARY01:uniqueskill_R2D2_LEGENDARY02",
+                            "C3POLEGENDARY:specialskill_C3POLEGENDARY01"
+                        ]
+                    },
+                    {
                         "name": "FINN THREEPIO SCOUT",
                         "note": "Full HAAT solo",
                         "url": "https://youtu.be/6f3i6PdYjpY",
@@ -3526,7 +3538,8 @@
                             "REYJEDITRAINING:leaderskill_REYJEDITRAINING:uniqueskill_REYJEDITRAINING01:uniqueskill_REYJEDITRAINING02",
                             "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
                             "CHEWBACCALEGENDARY:uniqueskill_CHEWBACCALEGENDARY01:uniqueskill_CHEWBACCALEGENDARY02",
-                            "C3POLEGENDARY:specialskill_C3POLEGENDARY01:uniqueskill_C3POLEGENDARY02"
+                            "C3POLEGENDARY:specialskill_C3POLEGENDARY01:uniqueskill_C3POLEGENDARY02",
+                            "JEDIKNIGHTREVAN:leaderskill_JEDIKNIGHTREVAN:specialskill_JEDIKNIGHTREVAN02:uniqueskill_JEDIKNIGHTREVAN02"
                         ]
                     }
                 ]
@@ -3925,40 +3938,99 @@
     "twcounters": {
         "phase": [
             {
-                "teamlead": "DARTHTRAYA",
+                "team": "DARTHTRAYA",
                 "hardcounters": [
                     {
-                        "teamlead": [
-                            "JEDIKNIGHTREVAN",
+                        "team": [
+                            "JEDIKNIGHTREVAN"
+                        ]
+                    },
+                    {
+                        "team": [
                             "DARTHTRAYA"
                         ]
                     }
                 ],
                 "softcounters": [
                     {
-                        "teamlead": [
+                        "team": [
                             "WEDGEANTILLES",
-                            "COMMANDERLUKESKYWALKER"
+                            "BIGGSDARKLIGHTER"
+                        ]
+                    },
+                    {
+                        "team": [
+                            "COMMANDERLUKESKYWALKER",
+                            "CHEWBACCALEGENDARY",
+                            "HANSOLO:uniqueskill_HANSOLO01"
                         ]
                     }
                 ]
             },
             {
-                "teamlead": "JEDIKNIGHTREVAN",
+                "team": "JEDIKNIGHTREVAN",
                 "hardcounters": [
                     {
-                        "teamlead": [
+                        "team": [
                             "DARTHTRAYA",
-                            "MAUL"
+                            "GRANDADMIRALTHRAWN"
+                        ]
+                    },
+                    {
+                        "team": [
+                            "MAUL:leaderskill_MAUL",
+                            "ENFYSNEST:uniqueskill_ENFYSNEST01"
                         ]
                     }
                 ],
                 "softcounters": [
                     {
-                        "teamlead": [
+                        "team": [
                             "COMMANDERLUKESKYWALKER",
-                            "ASAJVENTRESS",
-                            "REYJEDITRAINING"
+                            "CHEWBACCALEGENDARY",
+                            "HANSOLO:uniqueskill_HANSOLO01"
+                        ]
+                    },
+                    {
+                        "team": [
+                            "ASAJVENTRESS"
+                        ]
+                    },
+                    {
+                        "team": [
+                            "REYJEDITRAINING",
+                            "IG88",
+                            "IMPERIALPROBEDROID"
+                        ]
+                    }
+                ]
+            },
+            {
+                "team": "COMMANDERLUKESKYWALKER",
+                "hardcounters": [
+                    {
+                        "team": [
+                            "CT7567",
+                            "WAMPA"
+                        ]
+                    }
+                ],
+                "softcounters": [
+                    {
+                        "team": [
+                            "COMMANDERLUKESKYWALKER"
+                        ]
+                    },
+                    {
+                        "team": [
+                            "MOTHERTALZIN",
+                            "ASAJVENTRESS"
+                        ]
+                    },
+                    {
+                        "team": [
+                            "GENERALKENOBI",
+                            "BARRISSOFFEE:uniqueskill_BARRISSOFFEE01"
                         ]
                     }
                 ]
