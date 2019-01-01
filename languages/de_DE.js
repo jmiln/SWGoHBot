@@ -606,7 +606,7 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]",
                         args: {
-                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
+                            "user": "Die Person dessen Gilde du pruefen moechtest (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest.",
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "-reverse": "Kehrt die Sortierreihenfolge um",
