@@ -93,6 +93,7 @@ module.exports = class extends Language {
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
             BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
             BASE_SWGOH_LOCKED_CHAR: "Entschuldige, aber sieht so aus als ob du diesen Charakter noch nicht freigeschalten hast",
+            BASE_SWGOH_GUILD_LOCKED_CHAR: "Entschuldige, aber es sieht so aus als ob niemand in deiner Gilde diesen Charakter freigeschaltet hat",
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
@@ -189,6 +190,9 @@ module.exports = class extends Language {
             BASE_LEVEL_SHORT: "lvl",
             BASE_GEAR_SHORT: "Ausruestung",
             BASE_SOMETHING_BROKE: "Etwas funktioniert nicht",
+            BASE_SOMETHING_BROKE_GUILD: "Etwas hat beim holen deiner Gildeninformationen nicht geklappt",
+            BASE_SOMETHING_BROKE_GUILD_ROSTER: "Etwas hat beim holen der Gilden-Mitgliederliste nicht geklappt",
+            BASE_PLEASE_TRY_AGAIN: "Bitte versuche es etwas später nocheinmal.",
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
@@ -474,9 +478,53 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction <Fraktion>",
+                        usage: "faction [user] <Fraktion>",
                         args: {
+                            "user": "Zur Identifikation des Spielers (mention | allyCode | me)",
                             "Fraktion": "Die Fraktion, von der Du das Rooster sehen willst. \nDenke dran, diese Anzeige ist wie im Spiel, z.B. Rebell und nicht Rebellen"
+                        }
+                    }
+                ]
+            },
+
+            // Grand Arena Command
+            COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Ungueltiger Spieler ${userNum}`,
+            COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Keine Ergebnisse gefunden fuer "${char}"`,
+            COMMAND_GRANDARENA_COMP_NAMES: {
+                charGP: "Char GM",
+                shipGP: "Schiff GM",
+                cArena: "C Arena",
+                sArena: "S Arena",
+                zetas: "Zetas",
+                star6: "6 Sterne",
+                star7: "7 Sterne",
+                g11: "Gear 11",
+                g12: "Gear 12",
+                "mods6": "6*  Mods",
+                "spd10": "10+  Tempo",
+                "spd15": "15+  Tempo",
+                "spd20": "20+  Tempo",
+                "off100": "100+ Ang",
+                "level": "Level",
+                "gearLvl": "Gear Lvl",
+                "starLvl": "Stern Lvl",
+                "speed": "Tempo"
+            },
+            COMMAND_GRANDARENA_EXTRAS_HEADER:"Extras",
+            COMMAND_GRANDARENA_EXTRAS: (extraCount) => `Es gibt ${extraCount} Charaktere mehr die deiner Suche entsprechen aber nicht angezeigt werden koennen.`,
+            COMMAND_GRANDARENA_OUT_HEADER: (p1, p2) => `Grosse Arena ${p1} vs ${p2}`,
+            COMMAND_GRANDARENA_OUT_DESC: (overview, modOverview) => `**Statistik:**${overview}**Mod Statistik:**${modOverview}`,
+            COMMAND_GRANDARENA_HELP: {
+                description: "Vergleicht 2 Spieler fuer die Grosse Arena.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";grandarena <user1> <user2> [-faction Fraktion] [character1] | [character2] | ...",
+                        args: {
+                            "users": "Zur Identifikation des Spielers (mention | allyCode | guildName)",
+                            "characters": "Eine Liste von Charakteren (getrennt durch das | Symbol).",
+                            "-faction": "Eine Fraktion die angezeigt werden soll."
                         }
                     }
                 ]
@@ -489,7 +537,7 @@ module.exports = class extends Language {
             COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Spieler bei ${guild}`,
             COMMAND_GUILDS_GUILD_GP_HEADER: "Registrierte GM",
             COMMAND_GUILDS_GUILD_GP: (total, average) => `Gesamt GM: ${total}\nDurchschnitt : ${average}`,
-            COMMAND_GUILDS_DESC: "Gilde Beschreibung",
+            COMMAND_GUILDS_DESC: "Gildenbeschreibung",
             COMMAND_GUILDS_MSG: "Chat Ankuendigung",
             COMMAND_GUILDS_REG_NEEDED: "Ich kann keine Gilde fuer diesen User finden. Bitte sicherstellen dass der Buendniscode korrekt ist.",
             COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ix}/${len})`,
@@ -502,16 +550,16 @@ module.exports = class extends Language {
             },
             COMMAND_GUILDS_STAT_HEADER: "Statistiken",
             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
-                `Members:      ${members}/50`,
+                `Mitglieder:      ${members}/50`,
                 `Erforderliches Lvl: ${lvl}`,
-                `Gesch. Char GM: ${charGP}`,
-                `Gesch. Shiff GM: ${shipGP}`,
+                `Ca. Char GM: ${charGP}`,
+                `Ca. Schiff GM: ${shipGP}`,
                 `Gesamt GM:     ${gp}`
             ].join("\n"),
             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` eine Liste der Gildenmitglieder und ihrer GM.\n\`${prefix}guild -roster -allycode\` fuer eine Liste mit ihren Buendniscodes. `,
             COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName} Territorialkrieg Uebersicht`,
             COMMAND_GUILDS_HELP: {
-                description: "Zeigt dir jeden in Deiner Gilde und grundsätzliche Statistiken an.",
+                description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
                 actions: [
                     {
                         action: "",
@@ -549,6 +597,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Bitte warten waehrend ich die Sammlung deiner Gilde durchsuche.",
             COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in deiner Gilde diesen Charakter.",
+            COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (sortiert nach ${sort})`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Zeigt den Stern-Level des gewaehlten Charakters von allen Gildenmitgliedern an.",
                 actions: [
@@ -557,12 +606,22 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]",
                         args: {
-                            "user": "Die Person die du hinzufuegen moechtest. (me | userID | mention)",
+                            "user": "Die Person dessen Gilde du pruefen moechtest (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest.",
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "-reverse": "Kehrt die Sortierreihenfolge um",
                             "-sort": "Waehle entweder eine Sortierung nach Name, Ausruestung oder GM",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
+                        }
+                    },
+                    {
+                        action: "Vergleich der Werte",
+                        actionDesc: "Vergleicht die Werte eines Charakters innerhalb einer Gilde",
+                        usage: ";guildsearch [user] <charaktername auf englisch> -stats <stat>",
+                        args: {
+                            "user": "Der Spieler dessen Gilde du pruefen moechtest. (me | userID | mention)",
+                            "character": "Der Charakter nach dem du suchen moechtest (auf englisch).",
+                            "stat": "Einer dieser Statistik-Werte eines Charakters ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
                         }
                     }
                 ]
@@ -901,8 +960,9 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";randomchar [AnzahlCharaktere]",
+                        usage: ";randomchar [user][AnzahlCharaktere]",
                         args: {
+                            "user": "Die Charaktersammlung eines Spielers aus der ausgewaehlt werden soll. (me | userID | mention)",
                             "AnzahlCharaktere": "Die Anzahl der Charaktere, die ausgewaehlt werden sollen"
                         }
                     }
@@ -1142,6 +1202,7 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_INVALID_USER: "Ungueltiger Benutzer, bitte \"me\" verwenden, einen Benutzer benennen oder eine Discord ID einfuegen.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "Bitte eine Zeitzone eintragen.",
             COMMAND_SHARDTIMES_INVALID_TIMEZONE: "Ungueltige Zeitzone, bitte hier pruefen https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nwelche benoetigt wird, dann eintragen, was in der TZ-Spalte gennant wird",
+            COMMAND_SHARDTIMES_INVALID_TIME_TIL: "Ungueltige Zeitangabe bis zum Payout, es muss im folgenden Format angegeben werden `00:00`, d.h. wenn bspw. **13** Minuten bis zum Payout fehlen, dann gibst du `00:13` an",
             COMMAND_SHARDTIMES_USER_ADDED: "Benutzer erfolgreich hinzugefuegt!",
             COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `User aktualisiert von ${from} nach ${to}.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: "Etwas lief schief beim Benutzer hinzufuegen, bitte erneut probieren.",
@@ -1155,12 +1216,13 @@ module.exports = class extends Language {
                 actions: [
                     {
                         action: "Add",
-                        actionDesc: "Benutzer zum Splitter-Tracker hinzufuegen",
-                        usage: ";shardtimes add <Benutzer> <Zeitzone> [Emoji]",
+                        actionDesc: "Benutzer zum Tracker hinzufuegen",
+                        usage: ";shardtimes add <Benutzer> <Zeitzone> [Emoji]\n;shardtimes add <Benutzer> <-timeuntil 00:00> [Emoji]",
                         args: {
                             "Benutzer": "Der Benutzer, der hinzugefuegt wird. (me | userID | mention)",
                             "Zeitzone": "Die Zeitzone, die fuer Dich gilt. Verwende diese Liste:\n https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
-                            "Emoji": "OPTIONAL: Ein Emoji, das neben dem Namen angezeigt wird."
+                            "Emoji": "OPTIONAL: Ein Emoji, das neben dem Namen angezeigt wird.",
+                            "-timeuntil": "Wenn du nur die verbleibende Zeit bis zum Payout anzeigen lassen moechtest"
                         }
                     },
                     {
