@@ -522,8 +522,8 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";grandarena <user1> <user2> [-faction faction] [character1] | [character2] | ...",
                         args: {
-                            "users": "A way to identify the . (mention | allyCode | guildName)",
-                            "charcaters": "A list of charcaters (Separated by the | symbol).",
+                            "users": "A way to identify the user. (mention | allyCode | me)",
+                            "characters": "A list of characters (Separated by the | symbol).",
                             "-faction": "A faction you want to show."
                         }
                     }
