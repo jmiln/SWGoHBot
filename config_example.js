@@ -33,8 +33,8 @@ const config = {
         "useEventPages": false,
         "eventCountdown": [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5],
         "language": "en_US",
-        "swgohLanguage": "ENG_US"
-
+        "swgohLanguage": "ENG_US",
+        "shardtimeVertical": false
     },
 
     // If you want to send error/ create/ delete message to a log channel

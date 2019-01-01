@@ -60,9 +60,13 @@ class MyCharacter extends Command {
         const footer = client.updatedFooter(player.updated, message, "player", cooldown);
 
         let thisChar = player.stats.filter(c => c.unit.defId === character.uniqueName);
-        if (thisChar && thisChar[0]) {
-            const stats = thisChar[0].stats;
-            thisChar = thisChar[0].unit;
+        if (thisChar.length && Array.isArray(thisChar)) thisChar = thisChar[0];
+    
+        thisChar.unit = await client.swgohAPI.langChar(thisChar.unit, message.guildSettings.swgohLanguage);
+
+        if (thisChar) {
+            const stats = thisChar.stats;
+            thisChar = thisChar.unit;
             let gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
             const abilities = {
                 basic: [],
@@ -217,7 +221,7 @@ class MyCharacter extends Command {
 
             return msg.edit({embed: {
                 author: {
-                    name: thisChar.player + "'s " + character.name
+                    name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name
                 }, 
                 description: 
                 [

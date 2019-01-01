@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2018-11-22 20:00:01.000000",
+        "date": "2018-12-16 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -1059,7 +1059,7 @@
             "cross": "Offense / Protection",
             "short": "jka",
             "families": "jedi ; galactic republic",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Jedi Knight Guardian",
@@ -3364,8 +3364,88 @@
             "triangle": "Offense / Protection",
             "circle": "Protection",
             "cross": "Offense / Protection",
+            "short": "jkr",
+            "families": "jedi ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "Canderous Ordo",
+            "cname": "Canderous Ordo",
+            "set1": "OFF",
+            "set2": "POT",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Critical Damage",
+            "circle": "Protection",
+            "cross": "Potency",
+            "short": "co",
+            "families": "scoundrel ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "Bastila Shan Fallen",
+            "cname": "Bastila Shan Fallen",
+            "set1": "OFF",
+            "set2": "POT",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage / Protection",
+            "circle": "Protection",
+            "cross": "Potency / Protection",
+            "short": "bsf",
+            "families": "sith ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "Carth Onasi",
+            "cname": "Carth Onasi",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense / Protection",
+            "short": "co",
+            "families": "old republic",
+            "crew": "0"
+        },
+        {
+            "name": "Juhani",
+            "cname": "Juhani",
+            "set1": "HP",
+            "set2": "HP",
+            "set3": "TEN",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency / Protection",
             "short": "",
             "families": "jedi ; old republic",
+            "crew": "0"
+        },
+        {
+            "name": "C-3PO",
+            "cname": "C-3PO",
+            "set1": "HP",
+            "set2": "HP",
+            "set3": "HP",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health / Protection",
+            "circle": "Protection",
+            "cross": "Health / Protection",
+            "short": "c3",
+            "families": "galactic republic ; droid ; rebel ; resistance",
             "crew": "0"
         }
     ]

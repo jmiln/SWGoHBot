@@ -39,7 +39,7 @@ module.exports = (client) => {
 
         // Also giving them the permissions if they have the manage server role, 
         // since they can change anything else in the server, so no reason not to
-        if (message.member.hasPermission(["ADMINISTRATOR", "MANAGE_GUILD"])) return permlvl = 3;
+        if (message.member.hasPermission(["ADMINISTRATOR"]) || message.member.hasPermission(["MANAGE_GUILD"])) return permlvl = 3;
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
@@ -365,12 +365,13 @@ module.exports = (client) => {
     client.reloadDataFiles = async (msgID) => {
         let err = false;
         try {
-            client.characters = await JSON.parse(fs.readFileSync("data/characters.json"));
-            client.ships      = await JSON.parse(fs.readFileSync("data/ships.json"));
-            client.squads     = await JSON.parse(fs.readFileSync("data/squads.json"));
-            client.resources  = await JSON.parse(fs.readFileSync("data/resources.json"));
-            client.arenaJumps = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
-            client.acronyms   = await JSON.parse(fs.readFileSync("data/acronyms.json"));
+            client.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json"));
+            client.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
+            client.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
+            client.characters   = await JSON.parse(fs.readFileSync("data/characters.json"));
+            client.resources    = await JSON.parse(fs.readFileSync("data/resources.json"));
+            client.ships        = await JSON.parse(fs.readFileSync("data/ships.json"));
+            client.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
         } catch (e) {
             err = e;
         }
@@ -544,6 +545,7 @@ module.exports = (client) => {
     client.msgArray = (arr, join="\n", maxLen=1900) => {
         const messages = [];
         arr.forEach((elem) => {
+            elem = client.expandSpaces(elem);
             if  (messages.length === 0) {
                 messages.push(elem);
             } else {
@@ -680,6 +682,153 @@ module.exports = (client) => {
         const match = aCode.replace(/[^\d]*/g, "").match(/\d{9}/);
         return match ? true : false;
     };
+
+    /*
+     * makeTable
+     * Makes a table-like format given an array of objects
+     *
+     * headers: object of columnName: columnHeader 
+     *  (columnHeader is empty string if you want it not in a codeBlock)
+     *  {
+     *      columnKey: {
+     *          value: "",
+     *          startWith: "",
+     *          endWith: "",
+     *          align: "center"     (Also supports left & right)
+     *      }
+     *  }
+     * rows: The data to fill in
+     */
+    client.makeTable = (headers, rows, options={
+        boldHeader: true,
+        useHeader:  true
+    }) => {
+        if (!headers || !rows || !rows.length) throw new Error("Need both headers and rows");
+        const max = {};
+        Object.keys(headers).forEach(h => {
+            // Get the max length needed, then add a bit for padding 
+            if (options.useHeader) {
+                max[h] = Math.max(...[headers[h].value.length].concat(rows.map(v => v[h].toString().length))) + 2;
+            } else {
+                max[h] = Math.max(...rows.map(v => v[h].toString().length)) + 2;
+            }
+        });
+
+        let header = "";
+        const out = [];
+
+        if (options.useHeader) {
+            Object.keys(headers).forEach(h => {
+                const headerMax = max[h];
+                const head = headers[h];
+                if (head && head.value.length) {
+                    const pad = headerMax - head.value.length;
+                    const padBefore = Math.floor(pad/2);
+                    const padAfter = pad-padBefore;
+                    header += head.startWith ? head.startWith : "";
+                    if (padBefore) header += " ".repeat(padBefore);
+                    header += head.value;
+                    if (padAfter) header  += " ".repeat(padAfter);
+                    header += head.endWith ? head.endWith : "";
+                } else {
+                    header += head.startWith ? head.startWith : "";
+                    header += " ".repeat(headerMax);
+                    header += head.endWith ? head.endWith : "";
+                }
+            });
+            if (options.boldHeader) {
+                out.push(client.expandSpaces("**" + header + "**"));
+            } else {
+                out.push(client.expandSpaces(header));
+            }
+        }
+        rows.forEach(r => {
+            let row = "";
+            Object.keys(headers).forEach((h, ix) => {
+                const rowMax = max[h];
+                const head = headers[h];
+                const value = r[h];
+                if (value && value.toString().length) {
+                    const pad = rowMax - value.toString().length;
+                    row += head.startWith ? head.startWith : "";
+                    if (!head.align || (head.align && head.align === "center")) {
+                        const padBefore = Math.floor(pad/2);
+                        const padAfter = pad-padBefore;
+                        if (padBefore) row += " ".repeat(padBefore);
+                        row += value;
+                        if (padAfter) row  += " ".repeat(padAfter);
+                    } else if (head.align === "left" && ix === 0 && !h.startWith) {
+                        row += value + " ".repeat(pad-1);
+                    } else if (head.align === "left") {
+                        row += " " + value + " ".repeat(pad-1);
+                    } else if (head.align === "right") {
+                        row += " ".repeat(pad-1) + value + " ";
+                    } else {
+                        throw new Error("Invalid alignment");
+                    }
+                    row += head.endWith ? head.endWith : "";
+                } else {
+                    row += head.startWith ? head.startWith : "";
+                    row += " ".repeat(rowMax);
+                    row += head.endWith ? head.endWith : "";
+                }
+            });
+            out.push(client.expandSpaces(row.replace(/\s*$/, "")));
+        });
+
+        return out;
+    };
+
+    /*
+     * Trim down largs numbers to be more easily readable
+     */
+    client.shortenNum = (number) => {
+        const million = 1000000, thousand = 1000;
+
+        if (number >= million) {
+            number = (number / million);
+            number = trimFloat(number) + "M";
+        } else if (number >= thousand) {
+            number = (number / thousand);
+            number = parseInt(number) + "K";
+        }
+        return number;
+    };
+
+    function trimFloat(num) {
+        if (num % 1 === 0) {
+            num = parseInt(num);
+        } else {
+            num = num.toFixed(1);
+        }
+        return num;
+    }
+
+    /*
+     * Small function to search the factions
+     */
+    client.findFaction = (fact) => {
+        fact = fact.toLowerCase().replace(/\s+/g, "");
+        let found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact);
+        if (found) {
+            return found.toLowerCase();
+        } 
+        found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.substring(0, fact.length-1));
+        if (fact.endsWith("s") && found) {
+            return found.toLowerCase();
+        }
+        found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact + "s");
+        if (!fact.endsWith("s") && found) {
+            return found.toLowerCase();
+        }
+        const close = client.factions.filter(f => f.toLowerCase().replace(/\s+/g, "").includes(fact.toLowerCase()));
+        if (close.length) {
+            return close.map(f => f.toLowerCase());
+        }
+
+        return false;
+    };
+
 
     // Expand multiple spaces to have zero width spaces between so 
     // Discord doesn't collapse em

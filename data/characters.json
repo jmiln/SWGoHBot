@@ -2418,12 +2418,14 @@
         "uniqueName": "BASTILASHANDARK",
         "aliases": [
             "Bastila Shan (Fallen)",
+            "Bastila Shan Fallen",
             "Bastila Fallen",
             "BSF",
             "Fallen"
         ],
         "nameVariant": [
-            "Bastila Shan (Fallen)"
+            "Bastila Shan (Fallen)",
+            "Bastila Shan Fallen"
         ],
         "url": "http://swgoh.gg/characters/bastila-shan-fallen/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bastilashan_dark.png",
@@ -2433,7 +2435,22 @@
             "Sith",
             "Support"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Protection",
+                "circle": "Protection",
+                "cross": "Potency/ Protection",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [
@@ -3269,7 +3286,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Scoundrel"
         ],
         "mods": {
@@ -3956,6 +3973,249 @@
             "Health Steal": 10,
             "Protection": 40,
             "activation": 25
+        }
+    },
+    {
+        "name": "C-3PO",
+        "uniqueName": "C3POLEGENDARY",
+        "aliases": [
+            "C-3PO",
+            "C3P0",
+            "3PO"
+        ],
+        "nameVariant": [
+            "C-3PO"
+        ],
+        "url": "http://swgoh.gg/characters/c-3po/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_c3p0.png",
+        "side": "light",
+        "factions": [
+            "Droid",
+            "Galactic Republic",
+            "Rebel",
+            "Resistance",
+            "Support"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Protection",
+                "cross": "Health/ Protection",
+                "source": "Crouching Rancor"
+            }
+        },
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 BioTech Implant",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 1 A/KT Stun Gun",
+                "Mk 3 TaggeCo Holo Lens",
+                "Mk 2 BAW Armor Mod",
+                "Mk 1 Czerka Stun Cuffs",
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 1 Merr-Sonn Shield Generator"
+            ],
+            "Gear 3": [
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 3 Fabritech Data Pad",
+                "Mk 6 Loronar Power Cell",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 4 BAW Armor Mod",
+                "Mk 1 Czerka Stun Cuffs"
+            ],
+            "Gear 4": [
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 Merr-Sonn Shield Generator",
+                "Mk 4 Nubian Design Tech",
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 5 Loronar Power Cell",
+                "Mk 5 BlasTech Weapon Mod"
+            ],
+            "Gear 5": [
+                "Mk 7 Loronar Power Cell",
+                "Mk 7 Fabritech Data Pad",
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 1 Zaltin Bacta Gel",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 Loronar Power Cell"
+            ],
+            "Gear 6": [
+                "Mk 5 Nubian Design Tech",
+                "Mk 7 Loronar Power Cell",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 7": [
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Athakam Medpac",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 5 Nubian Design Tech",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 3 Sienar Holo Projector"
+            ],
+            "Gear 8": [
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 7 BioTech Implant",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 4 BAW Armor Mod"
+            ],
+            "Gear 9": [
+                "Mk 7 Nubian Security Scanner",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 3 Athakam Medpac",
+                "Mk 3 Carbanti Sensor Array"
+            ],
+            "Gear 10": [
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 10 Neuro-Saav Electrobinoculars",
+                "Mk 8 BioTech Implant",
+                "Mk 5 Athakam Medpac",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 6 Merr-Sonn Shield Generator"
+            ],
+            "Gear 11": [
+                "Mk 6 A/KT Stun Gun",
+                "Mk 2 BAW Armor Mod",
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 8 Loronar Power Cell",
+                "Mk 4 Zaltin Bacta Gel",
+                "Mk 3 Athakam Medpac"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Visor",
+                "Mk 12 ArmaTek Fusion Furnace",
+                "Mk 12 ArmaTek Thermal Detonator",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Baffling Trick": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "C-3PO inflicts the unique debuff Confuse for 3 turns (max 3 stacks, can't be evaded or copied). If target is already Confused, duration of their stacks resets to 3 turns. Reduce target's Turn Meter by 6% and 3% more for each stack of Translation on C-3PO. (See Protocol Droid for Translation.)",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Oh My Goodness!": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "C-3PO gains Potency Up and Stealth for 2 turns, then he and target other ally gain Translation for 3 turns. C-3PO inflicts Confuse twice on target enemy for 3 turns, then calls all other allies with Translation to assist, dealing 50% less damage.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 49,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Protocol Droid": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "C-3PO has +20 Speed. While C-3PO is active, Galactic Republic, Rebel, Resistance, and Ewok allies gain the unique buff Translation for 3 turns (max 3 stacks) each time they use a Special ability. Translation cannot be copied. If the character already has Translation, the duration for all current stacks on that character resets to 3 turns. When C-3PO is defeated, all stacks of Translation will expire.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Wait for Me!": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "C-3PO and R2-D2 have +10% Evasion for each of their own stacks of Translation. At the start of encounter, C-3PO and R2-D2 gain Translation for 3 turns. When there are no other allied combatants, C-3PO escapes from battle.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            },
+            "Intermediary": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "All allies have +10% Defense Penetration. Each time a Galactic Republic or Ewok ally gains a different, non-unique, non-Protection buff, they gain 15% Protection Up for 2 turns (does not stack with itself). For each stack of Translation, Galactic Republic have +10% Defense Penetration, doubled for Ewoks.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Cyborg Relations": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "All allies have +10% Potency. Whenever a Rebel or Ewok ally uses their Basic ability, they inflict Expose on the target enemy for 2 turns which cannot be evaded. For each stack of Translation, Rebel allies have +10% Potency, doubled for Ewoks.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Fretful Mediator": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "All allies have +10% Critical Damage. Whenever a Resistance or Ewok ally uses their Special ability, they inflict Offense Down on the target enemy for 2 turns which cannot be evaded. For each stack of Translation, Resistance allies have +10% Critical Damage, doubled for Ewoks.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
+            "activation": 145
         }
     },
     {
@@ -5083,7 +5343,22 @@
             "Old Republic",
             "Scoundrel"
         ],
-        "mods": {},
+        "mods": {
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Critical Damage",
+                "circle": "Protection",
+                "cross": "Potency",
+                "source": "Crouching Rancor"
+            }
+        },
         "defaultMods": {},
         "gear": {
             "Gear 1": [
@@ -5687,6 +5962,211 @@
             "Health Steal": 35,
             "Protection": 29,
             "activation": 50
+        }
+    },
+    {
+        "name": "Carth Onasi",
+        "uniqueName": "CARTHONASI",
+        "aliases": [
+            "Carth Onasi"
+        ],
+        "nameVariant": [
+            "Carth Onasi"
+        ],
+        "url": "http://swgoh.gg/characters/carth-onasi/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_carth.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Old Republic"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection",
+                "source": "Crouching Rancor"
+            }
+        },
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 BAW Armor Mod",
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 CEC Fusion Furnace",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 2 CEC Fusion Furnace",
+                "Mk 3 Loronar Power Cell",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 3": [
+                "Mk 3 BioTech Implant",
+                "Mk 3 BioTech Implant",
+                "Mk 2 Chedak Comlink",
+                "Mk 4 BioTech Implant",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 6 Fabritech Data Pad"
+            ],
+            "Gear 4": [
+                "Mk 3 BioTech Implant",
+                "Mk 5 BAW Armor Mod",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 5 BioTech Implant",
+                "Mk 6 BAW Armor Mod",
+                "Mk 4 Nubian Security Scanner"
+            ],
+            "Gear 5": [
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 5 BioTech Implant",
+                "Mk 4 Nubian Security Scanner",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 7 Fabritech Data Pad"
+            ],
+            "Gear 6": [
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 4 CEC Fusion Furnace"
+            ],
+            "Gear 7": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 4 CEC Fusion Furnace",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 7 TaggeCo Holo Lens"
+            ],
+            "Gear 8": [
+                "Mk 1 Sienar Holo Projector",
+                "Mk 5 SoroSuub Keypad",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 5 Arakyd Droid Caller"
+            ],
+            "Gear 9": [
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 5 Merr-Sonn Thermal Detonator",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 6 Nubian Design Tech"
+            ],
+            "Gear 10": [
+                "Mk 6 BAW Armor Mod",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 8 BioTech Implant",
+                "Mk 3 Chedak Comlink",
+                "Mk 5 Arakyd Droid Caller",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 5 A/KT Stun Gun",
+                "Mk 8 BioTech Implant",
+                "Mk 6 Arakyd Droid Caller",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 6 A/KT Stun Gun"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Medpac",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Holo Lens",
+                "Mk 12 ArmaTek Stun Gun",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Rapid Shot": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy and inflict a Damage Over Time effect for 2 turns. This attack deals 10% more damage for each Damage Over Time effect on that enemy.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Just Keep Shooting": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal Physical damage to all enemies and gain Offense Up for 2 turns. For each Critical Hit this attack scores, Carth gains 15% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Soldier of the Old Republic": {
+                "type": "Leader",
+                "abilityCooldown": "0",
+                "abilityDesc": "Old Republic allies gain 30% Potency, Tenacity and Critical Avoidance. Whenever an enemy is inflicted with a Damage Over Time effect, all Old Republic allies recover 3% Health and Protection.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 34,
+                    "omega": 10,
+                    "zeta": 20
+                }
+            },
+            "Soldier's Training": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "While attacking, Carth gains 10% Offense for each active enemy and Old Republic ally. Whenever Carth defeats an enemy, he gains 10% Critical Chance and Critical Damage (stacking), and the cooldown of Just Keep Shooting is reset.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
+            "activation": 25
         }
     },
     {
@@ -11239,7 +11719,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -11409,24 +11890,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 951,
-            "Agility": 939,
-            "Intelligence": 653,
-            "Speed": 171,
-            "Physical Damage": 2576,
-            "Physical Critical Rating": 716,
-            "Special Damage": 1668,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 329,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 41,
-            "Health": 35938,
-            "Armor": 247,
-            "Resistance": 100,
-            "Tenacity": 39,
-            "Health Steal": 10,
-            "Protection": 32,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -16082,7 +16563,8 @@
         "factions": [
             "Attacker",
             "Rebel",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -16252,24 +16734,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 891,
-            "Agility": 979,
-            "Intelligence": 623,
-            "Speed": 148,
-            "Physical Damage": 2559,
-            "Physical Critical Rating": 1145,
-            "Special Damage": 1495,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 149,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 12,
-            "Health": 34503,
-            "Armor": 288,
-            "Resistance": 162,
-            "Tenacity": 35,
-            "Health Steal": 10,
-            "Protection": 21,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 145
         }
     },
@@ -20262,6 +20744,212 @@
         }
     },
     {
+        "name": "Juhani",
+        "uniqueName": "JUHANI",
+        "aliases": [
+            "Juhani"
+        ],
+        "nameVariant": [
+            "Juhani"
+        ],
+        "url": "http://swgoh.gg/characters/juhani/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_juhani.png",
+        "side": "light",
+        "factions": [
+            "Jedi",
+            "Old Republic",
+            "Tank"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Tenacity x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Potency/ Protection",
+                "source": "Crouching Rancor"
+            }
+        },
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Neuro-Saav Electrobinoculars",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 A/KT Stun Gun",
+                "Mk 1 CEC Fusion Furnace"
+            ],
+            "Gear 2": [
+                "Mk 1 Merr-Sonn Shield Generator",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 TaggeCo Holo Lens",
+                "Mk 2 Loronar Power Cell",
+                "Mk 1 Chiewab Hypo Syringe",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 5 Loronar Power Cell",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 2 BioTech Implant",
+                "Mk 4 BAW Armor Mod",
+                "Mk 4 Fabritech Data Pad",
+                "Mk 5 BAW Armor Mod"
+            ],
+            "Gear 4": [
+                "Mk 1 Chedak Comlink",
+                "Mk 1 Merr-Sonn Thermal Detonator",
+                "Mk 2 Chiewab Hypo Syringe",
+                "Mk 4 BAW Armor Mod",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 6 BAW Armor Mod"
+            ],
+            "Gear 5": [
+                "Mk 3 BioTech Implant",
+                "Mk 2 Merr-Sonn Shield Generator",
+                "Mk 5 TaggeCo Holo Lens",
+                "Mk 6 BAW Armor Mod",
+                "Mk 4 Nubian Security Scanner",
+                "Mk 4 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 6": [
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 4 Merr-Sonn Thermal Detonator",
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 6 TaggeCo Holo Lens"
+            ],
+            "Gear 7": [
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 6 Nubian Security Scanner",
+                "Mk 7 TaggeCo Holo Lens",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 3 Carbanti Sensor Array",
+                "Mk 5 SoroSuub Keypad"
+            ],
+            "Gear 8": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 6 TaggeCo Holo Lens",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 2 Sienar Holo Projector"
+            ],
+            "Gear 9": [
+                "Mk 8 Fabritech Data Pad",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 3 Sienar Holo Projector",
+                "Mk 6 Nubian Design Tech",
+                "Mk 5 Merr-Sonn Thermal Detonator"
+            ],
+            "Gear 10": [
+                "Mk 9 Fabritech Data Pad",
+                "Mk 5 CEC Fusion Furnace",
+                "Mk 7 Merr-Sonn Shield Generator",
+                "Mk 8 BioTech Implant",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 8 BioTech Implant",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 6 Merr-Sonn Thermal Detonator",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 8 Loronar Power Cell"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Multi-tool",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Thermal Detonator",
+                "Mk 12 ArmaTek Thermal Detonator",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "Raging Strike": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy. This attack deals 10% more damage for each debuffed enemy.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Boastful Provocation": {
+                "type": "Special",
+                "abilityCooldown": "4",
+                "abilityDesc": "Dispel all debuffs on Jedi and Old Republic allies. Then, Juhani gains Taunt for 4 turns and Stuns the target enemy for 1 turn, which can't be evaded.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Remorseful Thrash": {
+                "type": "Special",
+                "abilityCooldown": "3",
+                "abilityDesc": "Deal Physical damage to all enemies. For each Critical Hit, Juhani recovers 10% Health and Protection. If Juhani is Stealthed when this ability is used, Stagger each enemy for 2 turns.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Cathar Resilience": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Juhani recovers 20% of her Max Health at the beginning of each of her turns. While Taunting, Juhani has +35% Counter Chance.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
+            "activation": 25
+        }
+    },
+    {
         "name": "Jyn Erso",
         "uniqueName": "JYNERSO",
         "aliases": [
@@ -21618,6 +22306,7 @@
         "factions": [
             "Droid",
             "Scoundrel",
+            "Smuggler",
             "Tank"
         ],
         "mods": {
@@ -21790,24 +22479,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 1449,
-            "Agility": 987,
-            "Intelligence": 726,
-            "Speed": 109,
-            "Physical Damage": 3306,
-            "Physical Critical Rating": 554,
-            "Special Damage": 1792,
-            "Special Critical Rating": 10,
-            "Armor Penetration": 48,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 37,
-            "Health": 35822,
-            "Armor": 538,
-            "Resistance": 192,
-            "Tenacity": 32,
-            "Health Steal": 10,
-            "Protection": 38,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -26635,6 +27324,7 @@
         "side": "light",
         "factions": [
             "Scoundrel",
+            "Smuggler",
             "Support"
         ],
         "mods": {
@@ -26818,24 +27508,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 21133,
-            "Strength": 972,
-            "Agility": 1005,
-            "Intelligence": 605,
-            "Speed": 154,
-            "Physical Damage": 2900,
-            "Physical Critical Rating": 857,
-            "Special Damage": 1473,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 260,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 28,
-            "Health": 31746,
-            "Armor": 259,
-            "Resistance": 100,
-            "Tenacity": 41,
-            "Health Steal": 15,
-            "Protection": 32,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -32985,6 +33675,7 @@
         "side": "light",
         "factions": [
             "Scoundrel",
+            "Smuggler",
             "Tank"
         ],
         "mods": {
@@ -33157,24 +33848,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 1383,
-            "Agility": 729,
-            "Intelligence": 636,
-            "Speed": 143,
-            "Physical Damage": 3518,
-            "Physical Critical Rating": 497,
-            "Special Damage": 1887,
-            "Special Critical Rating": 70,
-            "Armor Penetration": 161,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 31,
-            "Health": 30454,
-            "Armor": 544,
-            "Resistance": 183,
-            "Tenacity": 37,
-            "Health Steal": 10,
-            "Protection": 32,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -33192,7 +33883,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -33364,24 +34056,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 1544,
-            "Agility": 742,
-            "Intelligence": 588,
-            "Speed": 114,
-            "Physical Damage": 3351,
-            "Physical Critical Rating": 468,
-            "Special Damage": 1521,
-            "Special Critical Rating": 10,
-            "Armor Penetration": 177,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 48,
-            "Health": 37412,
-            "Armor": 436,
-            "Resistance": 241,
-            "Tenacity": 46,
-            "Health Steal": 10,
-            "Protection": 39,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -33401,7 +34093,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -33573,24 +34266,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 853,
-            "Agility": 1135,
-            "Intelligence": 740,
-            "Speed": 157,
-            "Physical Damage": 2676,
-            "Physical Critical Rating": 735,
-            "Special Damage": 1946,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 117,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 47,
-            "Health": 34554,
-            "Armor": 271,
-            "Resistance": 235,
-            "Tenacity": 33,
-            "Health Steal": 20,
-            "Protection": 31,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -34446,7 +35139,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -34616,24 +35310,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 840,
-            "Agility": 1225,
-            "Intelligence": 676,
-            "Speed": 137,
-            "Physical Damage": 2788,
-            "Physical Critical Rating": 772,
-            "Special Damage": 1792,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
             "Special Critical Rating": 0,
-            "Armor Penetration": 177,
+            "Armor Penetration": 0,
             "Resistance Penetration": 0,
-            "Potency": 47,
-            "Health": 33220,
-            "Armor": 321,
-            "Resistance": 198,
-            "Tenacity": 34,
-            "Health Steal": 15,
-            "Protection": 29,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },
@@ -34651,7 +35345,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Scoundrel"
+            "Scoundrel",
+            "Smuggler"
         ],
         "mods": {
             "General": {
@@ -34821,24 +35516,24 @@
             "shops": []
         },
         "stats": {
-            "Power": 20349,
-            "Strength": 752,
-            "Agility": 1260,
-            "Intelligence": 600,
-            "Speed": 153,
-            "Physical Damage": 3131,
-            "Physical Critical Rating": 850,
-            "Special Damage": 1588,
-            "Special Critical Rating": 25,
-            "Armor Penetration": 287,
-            "Resistance Penetration": 5,
-            "Potency": 38,
-            "Health": 28436,
-            "Armor": 207,
-            "Resistance": 89,
-            "Tenacity": 31,
-            "Health Steal": 15,
-            "Protection": 29,
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
             "activation": 25
         }
     },

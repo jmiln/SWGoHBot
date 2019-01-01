@@ -39,7 +39,12 @@ class MyMods extends Command {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
         if (err) {
-            return message.channel.send("**Error:** `" + err + "`");
+            return message.channel.send({embed: {
+                author: {
+                    name: "Error"
+                }, 
+                description: client.codeBlock(err)
+            }});
         }
 
         const msg = await message.channel.send(message.language.get("COMMAND_MYMODS_WAIT"));
@@ -79,6 +84,8 @@ class MyMods extends Command {
             const footer = client.updatedFooter(player.updated, message, "player", cooldown);
 
             let charMods = player.roster.filter(c => c.defId === character.uniqueName);
+
+            charMods = await client.swgohAPI.langChar(charMods, message.guildSettings.swgohLanguage);
 
             if (charMods && charMods.length > 0) {
                 charMods = charMods[0].mods;
@@ -150,7 +157,7 @@ class MyMods extends Command {
                     aliases: ["Prot"]
                 },
                 "Speed": {
-                    aliases: []
+                    aliases: ["spd"]
                 },
                 "Potency": {
                     aliases: ["Pot"]
@@ -227,12 +234,17 @@ class MyMods extends Command {
                 sorted = stats.sort((p, c) => p.stats.mods && c.stats.mods && p.stats.mods[statToCheck] > c.stats.mods[statToCheck] ? -1 : 1);
 
             }
+
+            for (const c in sorted) {
+                sorted[c].unit = await client.swgohAPI.langChar(sorted[c].unit, message.guildSettings.swgohLanguage);
+            }
+
             const out = sorted.map(c => {
                 const finalStat = c.stats.final ? (c.stats.final[statToCheck] % 1 === 0 ? c.stats.final[statToCheck] : (c.stats.final[statToCheck] * 100).toFixed(2)+"%") : 0;
                 const modStat = c.stats.mods && c.stats.mods[statToCheck] ? (c.stats.mods[statToCheck] % 1 === 0 ? `(${c.stats.mods[statToCheck]})` : `(${(c.stats.mods[statToCheck] * 100).toFixed(2)}%)`) : "";
                 return {
                     stat: `${finalStat}${modStat.length ? " " + modStat : ""}`, 
-                    name: `: ${c.unit.name}`
+                    name: `: ${c.unit.nameKey}`
                 };
             });
             const longest = out.reduce((max, s) => Math.max(max, s.stat.length), 0);

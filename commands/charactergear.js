@@ -5,7 +5,8 @@ class Charactergear extends Command {
         super(client, {
             name: "charactergear",
             category: "Star Wars",
-            aliases: ["chargear", "gear"]
+            aliases: ["chargear", "gear"],
+            permissions: ["EMBED_LINKS"]
         });
     }
 

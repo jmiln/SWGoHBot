@@ -16,7 +16,7 @@ module.exports = async (client, member) => {
             .replace(/{{user}}/gi, member.user.username)
             .replace(/{{usermention}}/gi, member.user)
             .replace(/{{server}}/gi, member.guild.name)
-            .replace(/{{prefix}}/gi, client.config.prefix);
+            .replace(/{{prefix}}/gi, guildConf.prefix);
         try {
             client.announceMsg(guild, welcomeMessage);
         } catch (e) {

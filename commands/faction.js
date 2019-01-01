@@ -5,61 +5,104 @@ class Faction extends Command {
         super(client, {
             name: "faction",
             aliases: ["factions"],
-            category: "Star Wars"
+            category: "Star Wars",
+            permissions: ["EMBED_LINKS"]
         });
     }
 
-    run(client, message, args) {
+    async run(client, message, args) {
         const charList = client.characters;
-
-        // Check if it should send as an embed or a code block
-        const guildConf = message.guildSettings;
-        let embeds = true;
-        if (message.guild) {
-            if (guildConf["useEmbeds"] !== true || !message.channel.permissionsFor(client.user).has("EMBED_LINKS")) {
-                embeds = false;
-            }
+        let allyCode = null;
+        if (!args[0]) {
+            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+        } 
+        if (args[0].toLowerCase() === "me" || client.isAllyCode(args[0]) || client.isUserID(args[0])) {
+            allyCode = args.splice(0, 1);
+            allyCode = await client.getAllyCode(message, allyCode);
         }
 
-        const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
-
-        let found = false;
-
-        const factionChars = [];
+        let searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
         if (searchName === "") {
             return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
         }
-        for (var ix = 0; ix < charList.length; ix++) {
-            var character = charList[ix];
-            for (var jx = 0; jx < character.factions.length; jx++) {
-                if (searchName.toLowerCase() === character.factions[jx].toLowerCase()) {
-                    // Found the character, now just need to show it
-                    found = true;
 
-                    factionChars.push(character.name);
-                }
+        searchName = client.findFaction(searchName);
+        if (!searchName) {
+            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+        } else if (Array.isArray(searchName)) {
+            if (searchName.length > 1) {
+                return message.channel.send("Your query came up with too many results: ```" + searchName.join("\n") + "```");
+            } else {
+                searchName = searchName[0];
             }
         }
-        if (found) {
-            if (embeds) { // if Embeds are enabled
-                var charString = factionChars.join("\n");
-                const fields = [];
-                fields.push({
-                    "name": searchName.toProperCase(),
-                    "value": charString
-                });
-                message.channel.send({
-                    embed: {
-                        "fields": fields
+
+        const factionChars = [];
+        let chars = charList.filter(c => c.factions.map(ch => ch.toLowerCase()).includes(searchName.toLowerCase()));
+        if (allyCode) {
+            if (chars.length) {
+                chars = chars.map(c => c.uniqueName);
+                const cooldown = client.getPlayerCooldown(message.author.id);
+                const player = await client.swgohAPI.player(allyCode, null, cooldown);
+                const playerChars = [];
+                // chars.forEach(async c => {
+                for (const c of chars) {
+                    let found = player.roster.find(char => char.defId === c);
+                    if (found) {
+                        found = await client.swgohAPI.langChar(found, message.guildSettings.swgohLanguage); 
+                        found.gp = found.gp.toLocaleString();
+                        playerChars.push(found);
                     }
+                }
+
+                const gpMax   = Math.max(...playerChars.map(c => c.gp.length));
+                const gearMax = Math.max(...playerChars.map(c => c.gear.toString().length));
+                const lvlMax  = Math.max(...playerChars.map(c => c.level.toString().length));
+                
+                factionChars.push(`**\`[ * | Lvl${" ".repeat(lvlMax)}|   GP  ${" ".repeat(gpMax-5)}| ⚙${" ".repeat(gearMax)}]\`**`);
+                factionChars.push("**`=================" + "=".repeat(lvlMax + gpMax + gearMax) + "`**");
+
+                playerChars.forEach(c => {
+                    const lvlStr  = " ".repeat(lvlMax  - c.level.toString().length) + c.level;
+                    const gpStr   = " ".repeat(gpMax   - c.gp.length) + c.gp;
+                    const gearStr = " ".repeat(gearMax - c.gear.toString().length) + c.gear;
+                    const zetas   = "z".repeat(c.skills.filter(s => s.isZeta && s.tier === 8).length);
+                    factionChars.push(`**\`[ ${c.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${c.nameKey}**`);
                 });
-            } else { // Embeds are disabled
-                charString = "* " + factionChars.join("\n* ");
-                return message.channel.send(message.language.get("COMMAND_FACTION_CODE_OUT", searchName.toProperCase(),charString), { code: "md" });
+                const msgArray = client.msgArray(factionChars, "\n", 1000);
+                const fields = [];
+                let desc;
+                if (msgArray.length > 1) {
+                    msgArray.forEach((m, ix) => {
+                        fields.push({
+                            name: ix+1,
+                            value: m
+                        });
+                    });
+                } else {
+                    desc = msgArray[0];
+                }
+
+                const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+                return message.channel.send({embed: {
+                    author: {
+                        name: player.name + "'s " + searchName.toProperCase() + " Faction"
+                    },
+                    description: desc,
+                    fields: fields,
+                    footer: footer
+                }});
+            } else {
+                return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
             }
         } else {
-            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+            return message.channel.send({embed: {
+                author: {
+                    name: searchName.toProperCase()
+                },
+                description: chars.map(c => c.name).join("\n")
+            }});
         }
     }
 }

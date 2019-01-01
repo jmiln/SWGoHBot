@@ -93,6 +93,7 @@ module.exports = class extends Language {
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
             BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
             BASE_SWGOH_LOCKED_CHAR: "Sorry, but it looks like you don't have this character unlocked",
+            BASE_SWGOH_GUILD_LOCKED_CHAR: "Sorry, but it looks like no one in your guild has this character unlocked",
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Extended help for ${command.help.name}** \n**Usage**: ${command.help.usage} \n${command.help.extended}`,
@@ -189,6 +190,9 @@ module.exports = class extends Language {
             BASE_LEVEL_SHORT: "lvl",
             BASE_GEAR_SHORT: "Gear",
             BASE_SOMETHING_BROKE: "Something Broke",
+            BASE_SOMETHING_BROKE_GUILD: "Something broke while getting your guild",
+            BASE_SOMETHING_BROKE_GUILD_ROSTER: "Something broke while getting your guild's roster",
+            BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
@@ -301,7 +305,7 @@ module.exports = class extends Language {
             // Character gear Command
             COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
             COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
-            COMMAND_CHARGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are betweem 1 & 12.",
+            COMMAND_CHARGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are between 1 & 12.",
             COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
             COMMAND_CHARGEAR_GEAR_NA: "This gear has not been entered yet",
             COMMAND_CHARACTERGEAR_HELP: {
@@ -474,9 +478,53 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction <faction>",
+                        usage: "faction [user] <faction>",
                         args: {
+                            "user": "A way to identify the player. (mention | allyCode | me)",
                             "faction": "The faction you want to see the roster of. \nKeep in mind, this is as shown in game, so it's rebel, not rebels"
+                        }
+                    }
+                ]
+            },
+
+            // Grand Arena Command
+            COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Invalid user ${userNum}`,
+            COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Could not find a match for "${char}"`,
+            COMMAND_GRANDARENA_COMP_NAMES: {
+                charGP: "Char GP",
+                shipGP: "Ship GP",
+                cArena: "C Arena",
+                sArena: "S Arena",
+                zetas: "Zetas",
+                star6: "6 Star",
+                star7: "7 Star",
+                g11: "Gear 11",
+                g12: "Gear 12",
+                "mods6": "6*  Mods",
+                "spd10": "10+  Spd",
+                "spd15": "15+  Spd",
+                "spd20": "20+  Spd",
+                "off100": "100+ Off",
+                "level": "Level",
+                "gearLvl": "Gear Lvl",
+                "starLvl": "Star Lvl",
+                "speed": "Speed"
+            },
+            COMMAND_GRANDARENA_EXTRAS_HEADER:"Extras",
+            COMMAND_GRANDARENA_EXTRAS: (extraCount) => `There are ${extraCount} more characters that matched your search, but could not be shown.`,
+            COMMAND_GRANDARENA_OUT_HEADER: (p1, p2) => `Grand Arena ${p1} vs ${p2}`,
+            COMMAND_GRANDARENA_OUT_DESC: (overview, modOverview) => `**Stats:**${overview}**Mod Stats:**${modOverview}`,
+            COMMAND_GRANDARENA_HELP: {
+                description: "Compares 2 players for Grand Arena.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";grandarena <user1> <user2> [-faction faction] [character1] | [character2] | ...",
+                        args: {
+                            "users": "A way to identify the . (mention | allyCode | guildName)",
+                            "charcaters": "A list of charcaters (Separated by the | symbol).",
+                            "-faction": "A faction you want to show."
                         }
                     }
                 ]
@@ -527,7 +575,7 @@ module.exports = class extends Language {
                     },
                     {
                         action: "Territory War Summary",
-                        actionDesc: "Show a general overview of some impoortant characters for the specified guild",
+                        actionDesc: "Show a general overview of some important characters for the specified guild",
                         usage: ";guild [user] -twsummary",
                         args: {
                             "user": "A way to identify the guild. (mention | allyCode | guildName)",
@@ -549,6 +597,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Star (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Please wait while I search your guild's roster.",
             COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character.",
+            COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (Sorted by ${sort})`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
                 actions: [
@@ -557,12 +606,22 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]",
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
+                            "user": "The player who's guild you want to check. (me | userID | mention)",
                             "character": "The character you want to search for.",
                             "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
                             "-reverse": "Reverse the chosen sort",
                             "-sort": "Choose either name, gear, or gp to sort by",
                             "starLvl": "Select the star level you want to see."
+                        }
+                    },
+                    {
+                        action: "Stat comparison",
+                        actionDesc: "Compare stats for a character across your entire guild",
+                        usage: ";guildsearch [user] <character> -stats <stat>",
+                        args: {
+                            "user": "The player who's guild you want to check. (me | userID | mention)",
+                            "character": "The character you want to search for.",
+                            "stat": "One of the character's stats from below ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
                         }
                     }
                 ]
@@ -901,8 +960,9 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";randomchar [numberOfChars]",
+                        usage: ";randomchar [user] [numberOfChars]",
                         args: {
+                            "user": "The user's roster you want it to choose from. (me | userID | mention)",
                             "numberOfChars": "The number of characters that you want chosen"
                         }
                     }
@@ -1142,6 +1202,7 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_INVALID_USER: "Invalid user, please enter \"me\", mention someone here, or input their discord ID.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "You need to enter a timezone.",
             COMMAND_SHARDTIMES_INVALID_TIMEZONE: "Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column",
+            COMMAND_SHARDTIMES_INVALID_TIME_TIL: "Invalid time until your payout, it must be in the format of `00:00`, so if you have **13** minutes until your payout, you'd enter `00:13`",
             COMMAND_SHARDTIMES_USER_ADDED: "User successfully added!",
             COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `Updated user from ${from} to ${to}.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: "Something went wrong when with adding this user. Please try again.",
@@ -1156,11 +1217,12 @@ module.exports = class extends Language {
                     {
                         action: "Add",
                         actionDesc: "Add a user to the shard tracker",
-                        usage: ";shardtimes add <user> <timezone> [flag/emoji]",
+                        usage: ";shardtimes add <user> <timezone> [flag/emoji]\n;shardtimes add <user> <-timeuntil 00:00> [flag/emoji]",
                         args: {
                             "user": "The person you're adding. (me | userID | mention)",
                             "timezone": "The zone that your account is based in, Use this list:\n https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
-                            "flag/emoji": "An optional emoji if you want it to show by your name"
+                            "flag/emoji": "An optional emoji if you want it to show by your name",
+                            "-timeuntil": "If you want to just list the time remaining until your payout"
                         }
                     },
                     {

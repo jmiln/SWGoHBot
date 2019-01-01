@@ -5,7 +5,8 @@ class Mods extends Command {
         super(client, {
             name: "mods",
             aliases: ["m", "mod"],
-            category: "Star Wars"
+            category: "Star Wars",
+            permissions: ["EMBED_LINKS"]
         });
     }
 

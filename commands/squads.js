@@ -5,7 +5,8 @@ class Squads extends Command {
         super(client, {
             name: "squads",
             aliases: ["sq", "squad", "raid", "raidteam"],
-            category: "Star Wars"
+            category: "Star Wars",
+            permissions: ["EMBED_LINKS"]
         });
     }
 
@@ -54,17 +55,17 @@ class Squads extends Command {
                 phase = phase - 1;
                 const sqArray = [];
                 squadList[list].phase[phase].name = squadList[list].phase[phase].name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT");
-                squadList[list].phase[phase].squads.forEach(s => {
+                for (const s of squadList[list].phase[phase].squads) {
                     let outStr = s.name ? `**${s.name}**\n` : "";
 
-                    outStr += charCheck(s.team, {
+                    outStr += await charCheck(s.team, {
                         level : squadList[list].level,
                         stars : squadList[list].rarity,
                         gear  : squadList[list].gear
                     }, player, s.ships);
                     if (s.ships) shipEv = true;
                     sqArray.push(outStr);
-                });
+                }
 
                 const fields = [];
                 const outArr = client.msgArray(sqArray, "\n", 1000);
@@ -103,7 +104,7 @@ class Squads extends Command {
             return message.channel.send(`Invalid category, please select one of the following: \n\`${lists.join(", ")}\``);
         }
 
-        function charCheck(characters, stats, player=null, ships=null) {
+        async function charCheck(characters, stats, player=null, ships=null) {
             const {level, stars, gear} = stats;
             let outStr = "";
             if (!player) {
@@ -122,9 +123,12 @@ class Squads extends Command {
                 if (!player || !player.roster) {
                     return message.channel.send("Sorry, something broke whlie getting your info. Please try again.");
                 }
-                characters.forEach(c => {
+                for (const c of characters) {
                     try {
-                        const ch = player.roster.filter(char => char.defId === c.split(":")[0])[0];
+                        let ch = player.roster.find(char => char.defId === c.split(":")[0]);
+                        if (ch) {
+                            ch = await client.swgohAPI.langChar(ch, message.guildSettings.swgohLanguage);
+                        }
                         if (!ch) {
                             if (!ships) {
                                 outStr += "`✗|✗|✗` " + client.characters.filter(char => char.uniqueName === c.split(":")[0])[0].name + "\n";
@@ -148,7 +152,7 @@ class Squads extends Command {
                     } catch (e) {
                         console.log("Squad broke: " + c + ": " + e);
                     }
-                });
+                }
             }
             return outStr;
         }

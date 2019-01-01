@@ -6,7 +6,8 @@ class Abilities extends Command {
             name: "abilities",
             description: "",
             category: "Star Wars",
-            aliases: ["a", "ab"]
+            aliases: ["a", "ab"],
+            permissions: ["EMBED_LINKS"]
         });
     }
 

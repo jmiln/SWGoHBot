@@ -69,12 +69,15 @@ class Zetas extends Command {
             return msg.edit(message.language.get("BASE_SWGOH_NO_ACCT"));
         }
 
+        player.roster = player.roster.filter(c => c.crew.length === 0);
+
         if (!options.flags.r && !options.flags.g) {
             // Just want to see your own zetas
             const zetas = {};
             let count = 0;
-            player.roster.forEach(char => {
+            for (let char of player.roster) {
                 // If they are not looking for a specific character, check em all
+                char = await client.swgohAPI.langChar(char, message.guildSettings.swgohLanguage);
                 if (!character || character.uniqueName === char.defId) {
                     if (!char.nameKey) {
                         const tmp = client.characters.filter(c => c.uniqueName === char.defId);
@@ -94,7 +97,7 @@ class Zetas extends Command {
                         }
                     });
                 }
-            });
+            }
 
             const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);
             const desc = [], author = {};
@@ -138,18 +141,27 @@ class Zetas extends Command {
             const myZetas = [];
 
             const sortBy = searchChar ? searchChar : "versa";
+            if (!zetas || !zetas.zetas) {
+                return msg.edit("Soething broke, I can't find the zetas list");
+            }
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {
                 if (myZetas.length >= 5) {
                     break;
                 }
-                if (zetaSort[ix][sortBy] === 0) continue;
-                const char = player.roster.find(c => zetaSort[ix].toon === c.nameKey);
+                if (zetaSort[ix][sortBy] === 0) {
+                    continue;
+                }
+                let charN = await client.cache.get("swapi", "units", {nameKey: zetaSort[ix].toon, language: "eng_us"}, {_id: 0, updated: 0});
+                if (!charN || !charN.length) continue;
+                if (Array.isArray(charN)) charN = charN[0];
+                let char = player.roster.find(c => charN.baseId === c.defId);
                 let skill = null;
                 if (char) {
+                    char = await client.swgohAPI.langChar(char, "eng_us");
                     skill = char.skills.find(a => a.nameKey === zetaSort[ix].name);
                 } 
-                if (skill && skill.tier < 8 && char.level >= 80) {
+                if (skill && skill.tier < 8 && char.level >= 70 && char.gear >= 8) {
                     if (options.flags.h && char.rarity < 7) continue; 
                     skill.toon = char.nameKey;
                     skill.gearLvl = char.gear;
@@ -161,9 +173,14 @@ class Zetas extends Command {
 
             let desc = message.language.get("COMMAND_ZETA_REC_HEADER");
             desc += "\n`" + filters.join(", ") + "`\n`------------------------------`\n";
-            myZetas.forEach(z => {
-                desc += `**${z.nameKey}**\n${z.toon}\n\`${message.language.get("BASE_LEVEL_SHORT")}${z.lvl} | ⚙${z.gearLvl} | ${z.star}*\`\n${client.zws}\n`;
-            });
+            if (myZetas.length) {
+                myZetas.forEach(z => {
+                    desc += `**${z.nameKey}**\n${z.toon}\n\`${message.language.get("BASE_LEVEL_SHORT")}${z.lvl} | ⚙${z.gearLvl} | ${z.star}*\`\n${client.zws}\n`;
+                });
+            } else {
+                // They don't have any viable characters (lvl or gear too low)
+                desc += "Sorry, but it looks like you don't have any characters that meet the requirements of character lvl 70 and gear lvl 8 at this time.";
+            }
 
             const zetaLen = `${myZetas.length} ${sortBy === "versa" ? "" : sortBy + " "}`;
             const fields = [];

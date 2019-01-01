@@ -2,7 +2,7 @@ const {inspect} = require("util");
 module.exports = (client) => {
     const swgoh = client.swgoh;
     const cache = client.cache;
-    const costs = require("../data/abilityCosts.json");
+    const costs = client.abilityCosts;
 
     const playerCooldown = 2;
     const guildCooldown  = 6;
@@ -14,10 +14,13 @@ module.exports = (client) => {
         players: players,
         playerByName: playerByName,
         unitStats: unitStats,
+        langChar: langChar,
+        guildStats: guildStats,
         abilities: abilities,
         getCharacter: getCharacter,
         character: character,
         gear: gear,
+        units: units,
         recipes: recipes,
         materials: materials,
         guild: guild,
@@ -29,7 +32,7 @@ module.exports = (client) => {
         whois: whois
     };
 
-    async function player( allycode, lang, cooldown) {
+    async function player(allycode, lang, cooldown) {
         lang = lang ? lang : "ENG_US";
         if (cooldown) {
             cooldown = cooldown.player;
@@ -54,7 +57,6 @@ module.exports = (client) => {
                 try {
                     tempPlayer = await swgoh.fetchPlayer({
                         allycode: allycode,
-                        language: lang,
                         enums: true
                     });
                     if (tempPlayer.warning) warnings = tempPlayer.warning;
@@ -136,7 +138,7 @@ module.exports = (client) => {
             if (!playerStats || !playerStats[0] || isExpired(playerStats[0].updated, cooldown)) {
                 let player, barePlayer;
                 try {
-                    player = await this.player(allycode);
+                    player = await client.swgohAPI.player(allycode);
                     if (Array.isArray(player)) { player = player[0]; }
                     barePlayer = await swgoh.fetchPlayer({allycode: allycode});
                     if (barePlayer.warning) warnings = barePlayer.warning;
@@ -150,15 +152,13 @@ module.exports = (client) => {
 
                 if (!player || !barePlayer) {
                     if (!playerStats || !playerStats[0]) {
+                        console.log(player, playerStats, barePlayer);
                         throw new Error("I could not get your info right now.");
                     } else {
                         // It has the old player stats
                         return playerStats[0];
                     }
                 }
-
-                // Strip out the ships since you can't get the stats for em yet
-                barePlayer.roster = barePlayer.roster.filter(c => c.crew.length === 0);
 
                 try {
                     playerStats = await swgoh.rosterStats(barePlayer.roster, ["withModCalc","gameStyle"]);
@@ -172,12 +172,12 @@ module.exports = (client) => {
                     c.unit.skills = char.skills;
                     c.unit.name = char.nameKey;
                     c.unit.player = player.name;
-                    delete c.unit.mods;
                 });
 
                 const stats = {
                     allyCode: player.allyCode,
                     updated: player.updated,
+                    arena: player.arena,
                     stats: playerStats
                 };
 
@@ -191,6 +191,50 @@ module.exports = (client) => {
             console.log("SWAPI Broke getting playerStats: " + error);
             throw error;
         }
+    }
+
+    async function langChar(char, lang) {
+        lang = lang ? lang.toLowerCase() : "eng_us"; 
+        if (!char) throw new Error("Missing Character");
+
+        if (char.defId) {
+            const nameKey = await this.units(char.defId);
+            char.nameKey = nameKey ? nameKey.nameKey : null;
+        }
+
+        for (const skill in char.skills) {
+            let skillName = await cache.get("swapi", "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
+            if (Array.isArray(skillName)) skillName = skillName[0];
+            if (!skillName) throw new Error("Cannot find skillName for " + char.skills[skill].id);
+            char.skills[skill].nameKey = skillName.nameKey;
+        }
+        return char;
+    }
+
+    async function guildStats( allyCodes, defId, cooldown ) {
+        if (cooldown) {
+            cooldown = cooldown.guild;
+            if (cooldown > guildCooldown) cooldown = guildCooldown;
+            if (cooldown < 1) cooldown = 1;
+        } else {
+            cooldown = guildCooldown;
+        }
+
+        const outStats = [];
+        for (const allyCode of allyCodes) {
+            const stats = await unitStats(allyCode, cooldown);
+            if (!stats) continue;
+            const unit = stats.stats.find(c => c.unit.defId === defId);
+            if (!unit) {
+                continue;
+            } else {
+                unit.player = stats.name;
+                unit.allyCode = stats.allyCode;
+                unit.updated = stats.updated;
+                outStats.push(unit);
+            }
+        }
+        return outStats;
     }
 
     async function abilities( skillArray, lang, update=false ) {
@@ -263,7 +307,7 @@ module.exports = (client) => {
     }
 
     async function getCharacter(defId, lang) {
-        lang = lang || "eng_us";
+        lang = lang ? lang.toLowerCase() : "eng_us";
         if (!defId) throw new Error("[getCharacter] Missing character ID.");
 
         const char = await this.character(defId);
@@ -384,6 +428,46 @@ module.exports = (client) => {
             // All the skills should be loaded, so just get em from the cache
             const gOut = await cache.get("swapi", "gear", {id: {$in: gearArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             return gOut;
+        }
+    }
+
+    async function units( defId, lang, update=false ) {
+        lang = lang || "eng_us";
+        lang = lang.toLowerCase();
+        if (!defId && !update) {
+            throw new Error("You need to specify a defId");
+        } 
+
+        if (update) {
+            let uOut;
+            let unitList = await client.swgoh.fetchAPI("/swgoh/data", {
+                "collection": "unitsList",
+                "language": lang,
+                "enums":true,
+                "match": {
+                    "rarity": 7
+                },
+                "project": {
+                    "baseId": 1,
+                    "nameKey": 1
+                }
+            });
+            unitList = unitList.result;
+
+            for (const unit of unitList) {
+                unit.language = lang.toLowerCase();
+                if (unit.baseId === defId) {
+                    uOut = unit.nameKey;
+                }
+                if (unit._id) delete unit._id;
+                await cache.put("swapi", "units", {baseId: unit.baseId, language: lang}, unit);
+            }
+            return uOut;
+        } else {
+            // All the skills should be loaded, so just get em from the cache
+            let uOut = await cache.get("swapi", "units", {baseId: defId, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            if (Array.isArray(uOut)) uOut = uOut[0];
+            return uOut;
         }
     }
 

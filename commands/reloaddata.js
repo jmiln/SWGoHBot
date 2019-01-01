@@ -71,17 +71,22 @@ class ReloadData extends Command {
                 await client.swgohAPI.character(null, true);
                 for (const lang of swgohLangList) {
                     await client.swgohAPI.abilities([], lang, true);
+                    message.channel.send(`Updated abilities for ${lang}`);
                     await client.swgohAPI.gear([], lang, true);
+                    message.channel.send(`Updated gear for ${lang}`);
                     await client.swgohAPI.recipes([], lang, true);
+                    message.channel.send(`Updated recipes for ${lang}`);
                     await client.swgohAPI.materials([], lang, true);
-                    message.channel.send("Updated local data for " + lang);
+                    message.channel.send(`Updated mats for ${lang}`);
+                    await client.swgohAPI.units("", lang, true);
+                    message.channel.send(`Updated units for ${lang}`);
+                    message.channel.send("Updated all local data for " + lang);
                 }
                 message.channel.send("API Language update complete");
                 break;
 
             default:
-                return message.channel.send("You can only choose `commands, events, functions, languages, or data.`");
-
+                return message.channel.send("You can only choose `api, commands, events, functions, languages, swlang, or data.`");
         }
     }
 }

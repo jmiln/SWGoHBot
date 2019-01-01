@@ -9,29 +9,75 @@ class Randomchar extends Command {
         });
     }
 
-    run(client, message, args) {
-        const charCount = client.characters.length;
-        const MAX_CHARACTERS = 5;
-        let count;
+    async run(client, message, [userID, count]) {
+        let chars = client.characters;
+        let MAX_CHARACTERS = 5;
 
         const charOut = [];
+        let msg;
 
-        if (args.length > 0) {
-            count = parseInt(args[0]);
-            if (isNaN(count) || count < 1 || count > MAX_CHARACTERS) {
-                return message.channel.send(message.language.get("COMMAND_RANDOMCHAR_INVALID_NUM", MAX_CHARACTERS));
+        let allyCode;
+        if (userID) {
+            allyCode = await super.getUser(message, userID, false);
+            if (allyCode) {
+                // If there is a valid userID, and an allycode linked to it
+                const cooldown = client.getPlayerCooldown(message.author.id);
+                let player = null;
+                try {
+                    player = await client.swgohAPI.player(allyCode, cooldown);
+                } catch (e) {
+                    console.error(e);
+                    return msg.edit({embed: {
+                        author: {name: message.language.get("BASE_SOMETHING_BROKE")},
+                        description: client.codeBlock(e.message) + "Please try again in a bit"
+                    }});
+                } 
+                // Filter out all the ships, so it only shows characters
+                chars = player.roster.filter(c => !c.crew.length);
+                // In case a new player tries using it before they get enough characters?
+                if (chars.length < MAX_CHARACTERS) MAX_CHARACTERS = chars.length;
+                if (count) {
+                    count = parseInt(count);
+                    if (count <= 0) {
+                        count = 1;
+                    } else if (count > MAX_CHARACTERS) {
+                        count = MAX_CHARACTERS;
+                    } 
+                } else {
+                    count = MAX_CHARACTERS;
+                }
+            } else {
+                if (count) {
+                    // They must have put in a bad user?
+                    // TODO Tell em something is wrong?
+                }
+                // The userID was probably a #
+                userID = parseInt(userID);
+                if (userID > 0 && !isNaN(userID) && userID <= MAX_CHARACTERS) {
+                    count = userID;
+                } else if (userID <= 0) {
+                    count = 1;
+                } else {
+                    count = MAX_CHARACTERS;
+                }
             }
         } else {
-            count = 1;
+            count = MAX_CHARACTERS;
         }
 
-        for (let ix = 0; ix < count; ix++) {
+        const charCount = chars.length;
+        while (charOut.length < count) {
             const newIndex = Math.floor(Math.random()*charCount);
-            const newChar = client.characters[newIndex].name;
-            if (charOut.includes(newChar)) {    // If it's already picked a character, don't let it pick them again
-                ix--;
-            } else {    // If it's already picked a character, don't let it pick them again
-                charOut.push(newChar);
+            const newChar = chars[newIndex];
+            let name;
+            if (newChar.name) {
+                name = newChar.name;
+            } else if (newChar.defId) {
+                name = await client.swgohAPI.units(newChar.defId);
+                name = name.nameKey;
+            }
+            if (!charOut.includes(name)) {    // If it's already picked a character, don't let it pick them again
+                charOut.push(name);
             }
         }
         const charString = charOut.join("\n");

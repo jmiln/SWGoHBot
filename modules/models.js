@@ -56,6 +56,10 @@ module.exports = (Sequelize, database) => {
         swgohLanguage: {    // Live-data language 
             type: Sequelize.TEXT,
             defaultValue: "ENG_US"
+        },
+        shardtimeVertical: {// Align registered shardmates vertically or not
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     });
 
