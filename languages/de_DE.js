@@ -537,7 +537,7 @@ module.exports = class extends Language {
             COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Spieler bei ${guild}`,
             COMMAND_GUILDS_GUILD_GP_HEADER: "Registrierte GM",
             COMMAND_GUILDS_GUILD_GP: (total, average) => `Gesamt GM: ${total}\nDurchschnitt : ${average}`,
-            COMMAND_GUILDS_DESC: "Gilde Beschreibung",
+            COMMAND_GUILDS_DESC: "Gildenbeschreibung",
             COMMAND_GUILDS_MSG: "Chat Ankuendigung",
             COMMAND_GUILDS_REG_NEEDED: "Ich kann keine Gilde fuer diesen User finden. Bitte sicherstellen dass der Buendniscode korrekt ist.",
             COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ix}/${len})`,
@@ -550,16 +550,16 @@ module.exports = class extends Language {
             },
             COMMAND_GUILDS_STAT_HEADER: "Statistiken",
             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
-                `Members:      ${members}/50`,
+                `Mitglieder:      ${members}/50`,
                 `Erforderliches Lvl: ${lvl}`,
-                `Gesch. Char GM: ${charGP}`,
-                `Gesch. Shiff GM: ${shipGP}`,
+                `Ca. Char GM: ${charGP}`,
+                `Ca. Schiff GM: ${shipGP}`,
                 `Gesamt GM:     ${gp}`
             ].join("\n"),
             COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` eine Liste der Gildenmitglieder und ihrer GM.\n\`${prefix}guild -roster -allycode\` fuer eine Liste mit ihren Buendniscodes. `,
             COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName} Territorialkrieg Uebersicht`,
             COMMAND_GUILDS_HELP: {
-                description: "Zeigt dir jeden in Deiner Gilde und grundsätzliche Statistiken an.",
+                description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
                 actions: [
                     {
                         action: "",
