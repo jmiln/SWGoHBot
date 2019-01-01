@@ -478,8 +478,9 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction <Fraktion>",
+                        usage: "faction [user] <Fraktion>",
                         args: {
+                            "user": "Zur Identifikation des Spielers (mention | allyCode | me)",
                             "Fraktion": "Die Fraktion, von der Du das Rooster sehen willst. \nDenke dran, diese Anzeige ist wie im Spiel, z.B. Rebell und nicht Rebellen"
                         }
                     }
