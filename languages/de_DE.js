@@ -1202,6 +1202,7 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_INVALID_USER: "Ungueltiger Benutzer, bitte \"me\" verwenden, einen Benutzer benennen oder eine Discord ID einfuegen.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "Bitte eine Zeitzone eintragen.",
             COMMAND_SHARDTIMES_INVALID_TIMEZONE: "Ungueltige Zeitzone, bitte hier pruefen https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nwelche benoetigt wird, dann eintragen, was in der TZ-Spalte gennant wird",
+            COMMAND_SHARDTIMES_INVALID_TIME_TIL: "Ungueltige Zeitangabe bis zum Payout, es muss im folgenden Format angegeben werden `00:00`, d.h. wenn bspw. **13** Minuten bis zum Payout fehlen, dann gibst du `00:13` an",
             COMMAND_SHARDTIMES_USER_ADDED: "Benutzer erfolgreich hinzugefuegt!",
             COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `User aktualisiert von ${from} nach ${to}.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: "Etwas lief schief beim Benutzer hinzufuegen, bitte erneut probieren.",
@@ -1215,12 +1216,13 @@ module.exports = class extends Language {
                 actions: [
                     {
                         action: "Add",
-                        actionDesc: "Benutzer zum Splitter-Tracker hinzufuegen",
-                        usage: ";shardtimes add <Benutzer> <Zeitzone> [Emoji]",
+                        actionDesc: "Benutzer zum Tracker hinzufuegen",
+                        usage: ";shardtimes add <Benutzer> <Zeitzone> [Emoji]\n;shardtimes add <Benutzer> <-timeuntil 00:00> [Emoji]",
                         args: {
                             "Benutzer": "Der Benutzer, der hinzugefuegt wird. (me | userID | mention)",
                             "Zeitzone": "Die Zeitzone, die fuer Dich gilt. Verwende diese Liste:\n https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
-                            "Emoji": "OPTIONAL: Ein Emoji, das neben dem Namen angezeigt wird."
+                            "Emoji": "OPTIONAL: Ein Emoji, das neben dem Namen angezeigt wird.",
+                            "-timeuntil": "Wenn du nur die verbleibende Zeit bis zum Payout anzeigen lassen moechtest"
                         }
                     },
                     {
