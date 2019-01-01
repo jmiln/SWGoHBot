@@ -613,6 +613,16 @@ module.exports = class extends Language {
                             "-sort": "Waehle entweder eine Sortierung nach Name, Ausruestung oder GM",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
+                    },
+                    {
+                        action: "Vergleich der Werte",
+                        actionDesc: "Vergleicht die Werte eines Charakters innerhalb einer Gilde",
+                        usage: ";guildsearch [user] <charaktername auf englisch> -stats <stat>",
+                        args: {
+                            "user": "Der Spieler dessen Gilde du pruefen moechtest. (me | userID | mention)",
+                            "character": "Der Charakter nach dem du suchen moechtest (auf englisch).",
+                            "stat": "Einer dieser Statistik-Werte eines Charakters ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
+                        }
                     }
                 ]
             },
