@@ -7,7 +7,7 @@
         },
         "Counter Bot": {
             "Desc": "Awesome bot that shows useful counters to popoular teams (TW/ GA based)",
-            "Discord": "https://discordapp.com/invite/MtDn8ze",
+            "Discord": "https://discord.gg/uw3HMRb",
             "Invite": "https://discordapp.com/oauth2/authorize?client_id=525598644624162816&scope=bot&permissions=515136"
         },
         "Crouching Rancor": {
@@ -34,6 +34,12 @@
             "Discord": "https://discord.gg/FfwGvhr",
             "Website": "https://swgohbot.com",
             "Invite": "https://swgohbot.com/invite"
+        },
+        "SWGoH Events Bot": {
+            "Desc": "Shows the upcoming known & estimated event times",
+            "Discord": "https://discord.gg/NpSpyGT",
+            "Website": "https://swgohevents.com",
+            "Invite": "https://swgohevents.com/botinvite"
         }
     },
     "Game Changers": {
