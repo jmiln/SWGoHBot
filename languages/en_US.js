@@ -598,6 +598,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Please wait while I search your guild's roster.",
             COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character.",
             COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (Sorted by ${sort})`,
+            COMMAND_GUILDSEARCH_MODS_HEADER: (guildName) => `${guildName}'s mods'`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
                 actions: [
@@ -623,7 +624,16 @@ module.exports = class extends Language {
                             "character": "The character you want to search for.",
                             "stat": "One of the character's stats from below ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
                         }
-                    }
+                    },
+                    {
+                        action: "Mods overview",
+                        actionDesc: "Compare some of the more important mods across your entire guild",
+                        usage: ";guildsearch [user] -mods",
+                        args: {
+                            "user": "The player who's guild you want to check. (me | userID | mention)",
+                            "-mods": "Tell it you want to see the mods. (-m | -mod)"
+                        }
+                    },
                 ]
             },
 

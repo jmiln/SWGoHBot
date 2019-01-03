@@ -15,6 +15,9 @@ class GuildSearch extends Command {
                 reverse: {
                     aliases: ["rev"]
                 },
+                mods: {
+                    aliases: ["mod", "m"]
+                }
             },
             subArgs: {
                 sort: {
@@ -53,39 +56,44 @@ class GuildSearch extends Command {
             }
         }
         
-        const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
+        let tmp;
+        let character;
+        if (!options.flags.mods) {
+            tmp = await super.getUserAndChar(message, args);
+            if (options.flags.ships && options.flags.stats) {
+                // TODO Lang this
+                return message.channel.send("Sorry, but I cannot get the stats for ships at this time.");
+            }
+            
+            const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
+            
+            if (chars.length === 0) {
+                return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar));
+            } else if (chars.length > 1) {
+                const charL = [];
+                const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
+                charS.forEach(c => {
+                    charL.push(c.name);
+                });
+                return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
+            } else {
+                character = chars[0];
+            }
+
+        } else {
+            tmp = await super.getUserAndChar(message, args, false);
+        }
+        const {allyCode, searchChar, err} = tmp;
 
         if (err) {
             return message.channel.send("**Error:** `" + err + "`");
-        }
-
-        if (options.flags.ships && options.flags.stats) {
-            // TODO Lang this
-            return message.channel.send("Sorry, but I cannot get the stats for ships at this time.");
-        }
-        
-        const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
-        
-        let character;
-        
-        if (chars.length === 0) {
-            return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar));
-        } else if (chars.length > 1) {
-            const charL = [];
-            const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
-            charS.forEach(c => {
-                charL.push(c.name);
-            });
-            return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
-        } else {
-            character = chars[0];
         }
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
 
         const cooldown = client.getPlayerCooldown(message.author.id);
 
-        if (!options.subArgs.stat) {
+        if (!options.subArgs.stat && !options.flags.mods) {
             let guild = null;
             try {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
@@ -267,7 +275,7 @@ class GuildSearch extends Command {
                 fields: fields,
                 footer: footer
             }});
-        } else {
+        } else if (!options.flags.mods) {
             // Looking for a stat
             const outArr = [];
 
@@ -424,6 +432,85 @@ class GuildSearch extends Command {
                 },
                 fields: fields,
                 footer: footer
+            }});
+        } else {
+            // Give a general overview of important mods (+10, +15, +20 speed, maybe +100 offense?)
+            let guild = null;
+            try {
+                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e);
+                return message.channel.send({embed: {
+                    author: {
+                        name: "Something Broke getting your guild's roster"
+                    },
+                    description: client.codeBlock(e) + "Please try again in a bit."
+                }});
+            }
+            let gRoster;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
+            }
+
+            if (!gRoster.length) {
+                return msg.edit("I can't find any players in the requested guild.");
+            }
+
+            const output = [];
+            for (let player of gRoster) {
+                player = await client.swgohAPI.player(player);
+                const mods = {
+                    spd10: 0,
+                    spd15: 0,
+                    spd20: 0,
+                    off100: 0,
+                    name: player.name
+                };
+                
+                player.roster.forEach(c => {
+                    if (c.mods) {
+                        c.mods.forEach(m => {
+                            const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 10);
+                            const off = m.secondaryStat.find(o => (o.unitStat === 41 || o.unitStat === "UNITSTATOFFENSE") && o.value >= 100);
+
+                            if (spd) {
+                                if (spd.value >= 20) {
+                                    mods.spd20 += 1;
+                                } else if (spd.value >= 15) {
+                                    mods.spd15 += 1;
+                                } else {
+                                    mods.spd10 += 1;
+                                }
+                            }
+                            if (off) mods.off100 += 1;
+                        });
+                    }
+                });
+                Object.keys(mods).forEach(k => {
+                    if (mods[k] === 0) mods[k] = "0";
+                });
+                output.push(mods);
+            }
+
+            const table = client.makeTable({
+                spd10: {value: "10+", startWith: "`"},
+                spd15: {value: "15+"},
+                spd20: {value: "20+"},
+                off100:{value: "100+", endWith: "`"},
+                name: {value: "", align: "left"}
+            }, output);
+            const header = [client.expandSpaces("`┏╸╸╸ Spd ╺╺╺┓  Off ​`")];
+
+            const fields = client.msgArray(header.concat(table), "\n", 1024).map(m => {
+                return {name: "-", value: m};
+            });
+
+            msg.edit({embed: {
+                author: {name: message.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name)},
+                fields: fields
             }});
         }    
     }

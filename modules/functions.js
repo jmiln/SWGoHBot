@@ -710,7 +710,11 @@ module.exports = (client) => {
             if (options.useHeader) {
                 max[h] = Math.max(...[headers[h].value.length].concat(rows.map(v => v[h].toString().length))) + 2;
             } else {
-                max[h] = Math.max(...rows.map(v => v[h].toString().length)) + 2;
+                if (!Array.isArray(rows) || !rows[0][h]) {
+                    throw new Error("Something broke when trying to do that. Please report this so it can get fixed");
+                } else {
+                    max[h] = Math.max(...rows.map(v => v[h].toString().length)) + 2;
+                }
             }
         });
 
