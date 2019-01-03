@@ -58,8 +58,13 @@ class GuildSearch extends Command {
         
         let tmp;
         let character;
+        let allyCode, searchChar, err;
         if (!options.flags.mods) {
             tmp = await super.getUserAndChar(message, args);
+            allyCode = tmp.allyCode;
+            searchChar = tmp.searchChar;
+            err = tmp.err;
+
             if (options.flags.ships && options.flags.stats) {
                 // TODO Lang this
                 return message.channel.send("Sorry, but I cannot get the stats for ships at this time.");
@@ -82,8 +87,10 @@ class GuildSearch extends Command {
 
         } else {
             tmp = await super.getUserAndChar(message, args, false);
+            allyCode = tmp.allyCode;
+            searchChar = tmp.searchChar;
+            err = tmp.err;
         }
-        const {allyCode, searchChar, err} = tmp;
 
         if (err) {
             return message.channel.send("**Error:** `" + err + "`");
