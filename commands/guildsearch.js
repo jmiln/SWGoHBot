@@ -17,6 +17,9 @@ class GuildSearch extends Command {
                 },
                 mods: {
                     aliases: ["mod", "m"]
+                },
+                zetas: {
+                    aliases: ["zeta", "z"]
                 }
             },
             subArgs: {
@@ -49,7 +52,7 @@ class GuildSearch extends Command {
         };
 
         // If there's enough elements in args, and it's in the format of a number*
-        if (args.length && !isNaN(parseInt(args[args.length-1]))) {
+        if (args.length && !isNaN(parseInt(args[args.length-1])) && /^\d+$/.test(args[args.length-1].toString())) {
             starLvl = parseInt(args.pop());
             if (starLvl < 0 || starLvl > 7) {
                 return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"));
@@ -140,12 +143,24 @@ class GuildSearch extends Command {
             // Get the list of people with that character
             const guildChar = guildGG.roster[character.uniqueName];
 
-            if (!guildChar || guildChar.length === 0) {
+            if (!guildChar || guildChar.length === 0 || (starLvl > 0 && !guildChar.filter(c => c.starLevel >= starLvl).length) || (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length)) {
+                let desc = "";
+                if (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length) {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
+                } else if (options.flags.ships && starLvl > 0) {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_SHIP_STAR", starLvl);
+                } else if (starLvl > 0) {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER_STAR", starLvl);
+                } else if (options.flags.ships) {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_SHIP");
+                } else {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
+                }
                 return msg.edit({embed: {
                     author: {
                         name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name)
                     },
-                    description: message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER"),
+                    description: desc,
                     footer: {
                         text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message))
                     }
@@ -214,6 +229,8 @@ class GuildSearch extends Command {
 
             const charOut = {};
             for (const member of sortedGuild) {
+                if (options.flags.zetas && !member.zetas.length) continue;
+
                 if (isNaN(parseInt(member.starLevel))) member.starLevel = rarityMap[member.starLevel];
                 const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
                 let z = " | ";

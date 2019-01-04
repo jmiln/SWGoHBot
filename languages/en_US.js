@@ -596,7 +596,11 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Not Activated (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Star (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Please wait while I search your guild's roster.",
-            COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character unlocked.",
+            COMMAND_GUILDSEARCH_NO_SHIP: "It seems that no one in your guild has this ship unlocked.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER_STAR: (star) => `It seems that no one in your guild has this character unlocked at ${star}* or higher.`,
+            COMMAND_GUILDSEARCH_NO_SHIP_STAR: (star) => `It seems that no one in your guild has this ship unlocked at ${star}* or higher.`,
+            COMMAND_GUILDSEARCH_NO_ZETAS: "It looks like no one in your guild has applied any zetas to this character.",
             COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (Sorted by ${sort})`,
             COMMAND_GUILDSEARCH_MODS_HEADER: (guildName) => `${guildName}'s mods'`,
             COMMAND_GUILDSEARCH_HELP: {
