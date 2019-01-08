@@ -23,20 +23,30 @@ class Abilities extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.get("COMMAND_ABILITIES_NEED_CHARACTER", message.guildSettings.prefix));
+            const err = message.language.get("COMMAND_ABILITIES_NEED_CHARACTER", message.guildSettings.prefix);
+            if (err.indexOf("\n") > -1) {
+                const [title, usage] = err.split("\n");
+                return super.error(message, usage, {title: title, example: "abilities Han Solo"});
+            }
+            return super.error(message, err, {example: "abilities Han Solo"});
         }
 
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
         if (chars.length <= 0) {
-            return message.channel.send(message.language.get("COMMAND_ABILITIES_INVALID_CHARACTER", message.guildSettings.prefix));        
+            const err = message.language.get("COMMAND_ABILITIES_INVALID_CHARACTER", message.guildSettings.prefix);
+            if (err.indexOf("\n") > -1) {
+                const [title, usage] = err.split("\n");
+                return super.error(message, usage, {title: title, example: "abilities Han Solo"});
+            }
+            return super.error(message, err, {example: "abilities Han Solo"});
         } else if (chars.length > 1) {
             const charL = [];
             const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
             charS.forEach(c => {
                 charL.push(c.name);
             });
-            return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(message, message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
 
         const character = chars[0];

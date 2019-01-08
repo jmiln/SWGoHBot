@@ -17,7 +17,8 @@ class Arenarank extends Command {
         const currentRank = parseInt(args[0]);
         const rankHops = parseInt(args[1]) || 5;
         if (isNaN(currentRank) || !currentRank) {
-            return message.channel.send(message.language.get("COMMAND_ARENARANK_INVALID_NUMBER"));
+            // return message.channel.send();
+            return super.error(message, message.language.get("COMMAND_ARENARANK_INVALID_NUMBER"), {example: "arenarank 55"});
         }
 
         // If they are rank 1, don't bother calculating anything
