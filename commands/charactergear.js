@@ -11,13 +11,22 @@ class Charactergear extends Command {
     }
 
     async run(client, message, [userID, ...searchChar]) {
+        // The current max possible gear level
+        const MAX_GEAR = 12;
         let gearLvl = 0;
         // If there's enough elements in searchChar, and it's in the format of a number*
         if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {                                                                                               
             gearLvl = parseInt(searchChar.pop());
-            if (gearLvl < 0 || gearLvl > 12) {
+            if (gearLvl < 0 || gearLvl > MAX_GEAR) {
                 return message.channel.send(message.language.get("COMMAND_CHARGEAR_INVALID_GEAR"));
-            }   
+            } else { 
+                if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(parseInt(gearLvl)) ) {
+                    gearLvl = 0;
+                } else {
+                    // There is a valid gear level being requested
+                    gearLvl = parseInt(gearLvl);
+                }
+            }
         }  
 
         // Need to get the allycode from the db, then use that
@@ -62,23 +71,9 @@ class Charactergear extends Command {
             character = chars[0];
         }
 
-        // The current max possible gear level
-        const MAX_GEAR = 12;
 
         if (!userID) {
-            // Figure out where the gear level is in the command, and grab it
-            if (gearLvl) {
-                if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(gearLvl) ) {
-                    gearLvl = "";
-                } else {
-                    // There is a valid gear level being requested
-                    gearLvl = "Gear " + gearLvl;
-                }
-            } else {
-                gearLvl = "";
-            }
-
-            if (!gearLvl.length) {
+            if (!gearLvl) {
                 const allGear = {};
 
                 for (var level in character.gear) {
@@ -103,7 +98,7 @@ class Charactergear extends Command {
             } else {
                 // Format and send the requested data back
                 chars.forEach(character => {
-                    const thisGear = character.gear[gearLvl];
+                    const thisGear = character.gear[`Gear ${gearLvl}`];
                     message.channel.send({
                         embed: {
                             "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
@@ -113,7 +108,7 @@ class Charactergear extends Command {
                                 "icon_url": character.avatarURL
                             },
                             "fields": [{
-                                "name": gearLvl,
+                                "name": "Gear " + gearLvl,
                                 "value": `* ${thisGear.length > 0 ? thisGear.join("\n* ") : message.language.get("COMMAND_CHARGEAR_GEAR_NA")}`
                             }]
                         }
@@ -128,17 +123,21 @@ class Charactergear extends Command {
             const playerChar = player.roster.find(c => c.defId === character.uniqueName);
 
             if (!playerChar) {
-                // They don't have it unlocked, so send the whole list
-                
+                return super.error(message, "Looks like you don't have this character unlocked");
             } else {
                 // They do have the character unlocked.
                 // Need to filter out the gear that they already have assigned to the character, then show them what's left
+
+                if (gearLvl && gearLvl < playerChar.gear) {
+                    return super.error(message, "Looks like you already have all the gear equipped for that level", {title: "Already There"});
+                }
 
                 const gearList = char.unitTierList.filter(t => t.tier >= playerChar.gear);
 
                 const fields = [];
                 gearList.forEach((g, ix) => {
                     // Take out any that are already equipped
+                    if (gearLvl > 0 && g.tier > gearLvl) return;
                     if (g.tier === playerChar.gear) {
                         const toRemove = playerChar.equipped.map(eq => eq.slot);
                         while (toRemove.length) {
@@ -170,7 +169,7 @@ class Charactergear extends Command {
                 const footer = client.updatedFooter(player.updated, message, "player", cooldown);
                 message.channel.send({embed: {
                     author: {
-                        name: `${player.name}'s ${character.name} needs:`
+                        name: (gearLvl > 0) ? `${player.name}'s ${character.name} gear til g${gearLvl}` : `${player.name}'s ${character.name} needs:`
                     },
                     fields: fields,
                     footer: footer

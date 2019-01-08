@@ -99,6 +99,42 @@ class Command {
 
         return out;
     }
+
+    async error(message, err, options) {
+        if (!message || !message.channel) throw new Error("Missing message");
+        if (!err) throw new Error("Missing error message");
+        if (!options) options = {};
+        const title = options.title || "Error";
+        const footer = options.footer || "";
+        const color = options.color || 0xe01414;
+        if (options.example) {
+            err += `\n\n**Example:**${message.client.codeBlock(message.guildSettings.prefix + options.example)}`;
+        }
+
+        return message.channel.send({embed: {
+            author: {name: title},
+            description: err,
+            color: color,
+            footer: {
+                text: footer
+            }
+        }});
+    }
 }
 
 module.exports = Command;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

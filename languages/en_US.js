@@ -195,8 +195,8 @@ module.exports = class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}abilities <characterName>\``,
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Missing character. \nUsage is \`${prefix}abilities <characterName>\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Invalid character. \nUsage is \`${prefix}abilities <characterName>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
             COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}\n**Ability mats needed:     ${mat}**\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_HELP: {
@@ -212,8 +212,8 @@ module.exports = class extends Language {
             },
 
             //Acronym Command
-            COMMAND_ACRONYMS_INVALID: "Acronym lookup provided not available for blank",
-            COMMAND_ACRONYMS_NOT_FOUND: "Acronym could not be found",
+            COMMAND_ACRONYMS_INVALID: "Missing acronym to look up.",
+            COMMAND_ACRONYMS_NOT_FOUND: "Acronym could not be found.",
             COMMAND_ACRONYMS_HELP: {
                 description: "Helps to provide a lookup for the acronyms commonly used in Star Wars: Galaxy of Heros.",
                 actions: [
@@ -314,11 +314,20 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
+                        usage: "charactergear <character> [gearLvl]",
+                        args: {
+                            "character": "The character you want to see the gear for",
+                            "gearLvl": "If you just want to see the gear for a certain gear level"
+                        }
+                    },
+                    {
+                        action: "Check your own gear needs",
+                        actionDesc: "",
                         usage: "charactergear [user] <character> [gearLvl]",
                         args: {
                             "user": "The person you want to see the gear for. (me | userID | mention)",
                             "character": "The character you want to see the gear for",
-                            "gearLvl": "If you just want to see the gear for a certain gear level"
+                            "gearLvl": "If you want to see all needed gear up to a certain gear level"
                         }
                     }
                 ]
