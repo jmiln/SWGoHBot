@@ -71,6 +71,8 @@ class GuildSearch extends Command {
             if (options.flags.ships && options.flags.stats) {
                 // TODO Lang this
                 return message.channel.send("Sorry, but I cannot get the stats for ships at this time.");
+            } else if (!searchChar) {
+                return message.channel.send("Missing character to search for.");
             }
             
             const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
