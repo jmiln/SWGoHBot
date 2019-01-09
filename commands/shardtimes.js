@@ -191,7 +191,7 @@ class Shardtimes extends Command {
                     let uName = "";
                     if (!shardTimes[user].type || shardTimes[user].type === "id") {
                         const thisUser = message.guild.members.get(user);
-                        const userName = thisUser ? `${thisUser.displayName}` : `${client.users.get(user) ? client.users.get(user).username : user}`;
+                        const userName = thisUser ? `${thisUser.displayName}` : user;
                         uName = "**" + (userName.length > maxLen ? userName.substring(0, maxLen) : userName) + "**";
                     } else {
                         // Type is name, don't try looking it up
