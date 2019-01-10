@@ -366,12 +366,12 @@ module.exports = class extends Language {
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
             COMMAND_EVENT_INVALID_PERMS: "Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.",
-            COMMAND_EVENT_ONE_REPEAT: "Sorry, but you cannot use both `repeat` and `repeatDay` in one event. Please pick one or the other",
+            COMMAND_EVENT_ONE_REPEAT: "You must pick either `repeat` or `repeatDay` for one event. Please pick one or the other",
             COMMAND_EVENT_INVALID_REPEAT: "The repeat is in the wrong format. Example: `5d3h8m` for 5 days, 3 hours, and 8 minutes",
             COMMAND_EVENT_USE_COMMAS: "Please use comma seperated numbers for repeatDay. Example: `1,2,1,3,4`",
             COMMAND_EVENT_INVALID_CHAN: "This channel is invalid, please try again",
             COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `I don't have permission to send messages in ${channel}, please choose one where I can`,
-            COMMAND_EVENT_NEED_CHAN: "ERROR: I need to configure a channel to send this to. Configure `announceChan` to be able to make events.",
+            COMMAND_EVENT_NEED_CHAN: "You need to configure a channel to send this to. Configure `announceChan` to be able to make events.",
             COMMAND_EVENT_NEED_NAME: "You must give a name for your event.",
             COMMAND_EVENT_EVENT_EXISTS: "That event name already exists. Cannot add it again.",
             COMMAND_EVENT_NEED_DATE: "You must give a date for your event. Accepted format is `DD/MM/YYYY`.",
@@ -391,7 +391,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_JSON_MISSING_DAY: "Missing event date (DD/MM/YYYY)",
             COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Invalid Day (${day}). Must be in the format DD/MM/YYYY`,
             COMMAND_EVENT_JSON_MISSING_TIME: "Missing event time (HH:MM)",
-            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Invalid time (${time}). Must be in format of HH:MM`,
+            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Invalid time (${time}). Must be in 24hr format HH:MM`,
             COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Invalid channel (${chan}), wrong ID or channel is not in this server`,
             COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Invalid channel (${chan}). I do not have permissions to post there.`,
             COMMAND_EVENT_JSON_NO_2X_REPEAT: "You cannot have both repeat & repeatDay",
@@ -479,18 +479,28 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Invalid faction, usage is \`${prefix}faction <faction>\``,
+            COMMAND_FACTION_MISSING_FACTION: "Missing faction",
+            COMMAND_FACTION_INVALID_FACTION: "Invalid faction",
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
+            COMMAND_FACTION_USAGE: (prefix) => `Usage is \`${prefix}faction <faction>\``,
             COMMAND_FACTION_HELP: {
                 description: "Shows the list of characters in the specified faction.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction [user] <faction>",
+                        usage: "faction <faction>",
+                        args: {
+                            "faction": "The faction you want to see the roster of."
+                        }
+                    },
+                    {
+                        action: "Player Faction",
+                        actionDesc: "See how a player's faction is shaping up",
+                        usage: "faction <user> <faction>",
                         args: {
                             "user": "A way to identify the player. (mention | allyCode | me)",
-                            "faction": "The faction you want to see the roster of. \nKeep in mind, this is as shown in game, so it's rebel, not rebels"
+                            "faction": "The faction you want to see the roster of."
                         }
                     }
                 ]

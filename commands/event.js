@@ -52,6 +52,8 @@ class Event extends Command {
 
         const EVENTS_PER_PAGE = 5;
 
+        const overallExample = `event create name 8/10/2018 15:45\n${message.guildSettings.prefix}event view\n${message.guildSettings.prefix}event delete name`;
+
         const actions = ["create", "view", "delete", "help", "trigger"];
         const exampleEvent = {
             "eventID": "guildID-eventName",
@@ -75,23 +77,26 @@ class Event extends Command {
         let repeatMin = 0;
         let dayList = [];
 
-        if (!args[0] || !actions.includes(args[0].toLowerCase())) return message.channel.send(message.language.get("COMMAND_EVENT_INVALID_ACTION", actions.join(", "))).then(msg => msg.delete(10000)).catch(console.error);
+        if (!args[0] || !actions.includes(args[0].toLowerCase())) {
+            return super.error(message, message.language.get("COMMAND_EVENT_INVALID_ACTION", actions.join(", ")), {example: overallExample});
+        }
         action = args.splice(0, 1);
         action = action[0].toLowerCase();
 
         if (action === "create" || action === "delete" || action === "trigger") {
             if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to use these
-                return message.channel.send(message.language.get("COMMAND_EVENT_INVALID_PERMS"));
+                return super.error(message, message.language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
         }
         switch (action) {
             case "create": {
+                const err = [];
                 const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { $like: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
                 const evCount = guildEvents.length;
                 // If they have too many events, stop here
                 if (evCount >= 50) {
                     // 50 should be fine, as at the time of making this, the most anyone has is 31
-                    return message.channel.send(message.language.get("COMMAND_EVENT_TOO_MANY_EVENTS"));
+                    return super.error(message, message.language.get("COMMAND_EVENT_TOO_MANY_EVENTS"));
                 }
                 if (!options.flags.json) {
                     let repeatTime = options.subArgs["repeat"];
@@ -100,53 +105,92 @@ class Event extends Command {
                     let countdownOn = options.flags["countdown"];
                     const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
                     const dayReg  = /^[0-9,]*$/gi;
-                    let msgOut = "";
 
-                    // If they try and set a repeat time and a repeating day schedule, tell em to pick just one
-                    if (repeatDays && repeatTime) {
-                        msgOut = message.language.get("COMMAND_EVENT_ONE_REPEAT");
-                        if (!msgOut.trim()) {
-                            client.log("Trying to send empty message, broke checking for a repeat: " + message.content);
-                        }
-                        return message.channel.send(msgOut);
+                    const [evName, evDate, evTime, ...evMsg] = args;
+
+                    if (!evName) {
+                        err.push(message.language.get("COMMAND_EVENT_NEED_NAME"));
                     }
 
-                    // If the repeat is set, try to parse it
-                    if (repeatTime) {
-                        if (repeatTime.match(timeReg)) {
-                            repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf("d")));
-                            repeatTime = repeatTime.replace(/^\d{1,2}d/, "");
-                            repeatHour = parseInt(repeatTime.substring(0, repeatTime.indexOf("h")));
-                            repeatTime = repeatTime.replace(/^\d{1,2}h/, "");
-                            repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf("m")));
-                        } else {
-                            msgOut = message.language.get("COMMAND_EVENT_INVALID_REPEAT");
-                            if (!msgOut.trim()) {
-                                client.log("Trying to send empty message, INVREP: " + message.content);
-                            }
-                            return message.channel.send(msgOut);
-                        }
+                    // Check if that name/ event already exists
+                    const exists = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${evName}`}})
+                        .then(token => token !== null)
+                        .then(isUnique => isUnique);
+                    if (exists) {
+                        err.push(message.language.get("COMMAND_EVENT_JSON_EXISTS"));
+                    }
+
+                    if (!evDate) {
+                        // If there is no date
+                        err.push(message.language.get("COMMAND_EVENT_NEED_DATE"));
+                    } else if (!momentTZ(evDate, "D/M/YYYY").isValid()) {
+                        // Or if the given date is not valid
+                        err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_DAY", evDate));
+                    }
+
+                    if (!evTime) {
+                        // If there is no time
+                        err.push(message.language.get("COMMAND_EVENT_NEED_TIME"));
+                    } else if (!momentTZ(evTime, "H:mm").isValid()) {
+                        // Or if the given time is not valid
+                        err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_TIME", evTime));
+                    }
+                    const eventDT = momentTZ.tz(`${evDate} ${evTime}`, "DD/MM/YYYY H:mm", guildConf.timezone).unix() * 1000;
+
+                    if (!evMsg) {
+                        eventMessage = "";
                     } else {
-                        repeatTime = "0";
+                        eventMessage = args.join(" ");
+                    }
+
+                    if ((eventMessage.length + evName.length) > maxSize) {
+                        const currentSize = eventMessage.length + evName.length;
+                        err.push(message.language.get("COMMAND_EVENT_TOO_BIG", currentSize-maxSize));
+                    }
+
+                    if (momentTZ(eventDT).isBefore(momentTZ())) {
+                        var eventDATE = momentTZ.tz(eventDT, guildConf.timezone).format("D/M/YYYY H:mm");
+                        var nowDATE = momentTZ().tz(guildConf["timezone"]).format("D/M/YYYY H:mm");
+
+                        err.push(message.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
+                    }
+                    
+                    // If they try and set a repeat time and a repeating day schedule, tell em to pick just one
+                    if (repeatDays && repeatTime) {
+                        err.push(message.language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
+                    } else {
+                        // If the repeat is set, try to parse it
+                        if (repeatTime) {
+                            if (repeatTime.match(timeReg)) {
+                                repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf("d")));
+                                repeatTime = repeatTime.replace(/^\d{1,2}d/, "");
+                                repeatHour = parseInt(repeatTime.substring(0, repeatTime.indexOf("h")));
+                                repeatTime = repeatTime.replace(/^\d{1,2}h/, "");
+                                repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf("m")));
+                            } else {
+                                err.push(message.language.get("COMMAND_EVENT_INVALID_REPEAT"));
+                            }
+                        } else {
+                            repeatTime = "0";
+                        }
+
+                        // If they chose repeatDay, split the days
+                        if (repeatDays) {
+                            if (repeatDays.match(dayReg)) {
+                                dayList = repeatDays.split(",");
+                                if (dayList.find(d => d <= 0)) {
+                                    err.push(message.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
+                                }
+                            } else {
+                                err.push(message.language.get("COMMAND_EVENT_USE_COMMAS"));
+                            }
+                        }
                     }
 
                     if (countdownOn === "yes") {
                         countdownOn = "true";
                     } else if (countdownOn === "no") {
                         countdownOn = "false";
-                    }
-
-                    // If they chose repeatDay, split the days
-                    if (repeatDays) {
-                        if (repeatDays.match(dayReg)) {
-                            dayList = repeatDays.split(",");
-                        } else {
-                            msgOut = message.language.get("COMMAND_EVENT_USE_COMMAS");
-                            if (!msgOut.trim()) {
-                                client.log("Trying to send empty message, broke in repeatDay: " + message.content);
-                            }
-                            return message.channel.send(msgOut);
-                        }
                     }
 
                     // If the event channel is something other than default, check to make sure it works, then set it
@@ -162,92 +206,24 @@ class Event extends Command {
                             checkChan = message.guild.channels.find("name", eventChan);
                         }
                         if (!checkChan) {   // Make sure it"s a real channel
-                            msgOut = message.language.get("COMMAND_EVENT_INVALID_CHAN");
-                            if (!msgOut.trim()) {
-                                client.log("Trying to send empty message, BADCHAN: " + message.content);
-                            }
-                            return message.channel.send(msgOut);
+                            err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_CHANNEL", checkChan));
                         } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {   // Make sure it can send messages there
-                            msgOut = message.language.get("COMMAND_EVENT_CHANNEL_NO_PERM", checkChan);
-                            if (!msgOut.trim()) {
-                                client.log("Trying to send empty message, NOPERM: " + message.content);
-                            }
-                            return message.channel.send(msgOut);
+                            err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS", checkChan));
                         } else {
                             // It found a valid channel and has permission to post there, so save the ID
                             eventChan = checkChan.id;
                         }
                     } else if (!announceChannel) {
-                        msgOut = message.language.get("COMMAND_EVENT_NEED_CHAN");
-                        if (!msgOut.trim()) {
-                            client.log("Trying to send empty message, NEEDCHAN: " + message.content);
-                        }
-                        return message.channel.send(msgOut);
+                        err.push(message.language.get("COMMAND_EVENT_NEED_CHAN"));
                     }
 
-                    if (!args[1]) return message.channel.send(message.language.get("COMMAND_EVENT_NEED_NAME")).then(msg => msg.delete(10000)).catch(console.error);
-                    eventName = args.splice(0,1)[0];
-
-                    // Check if that name/ event already exists
-                    const exists = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
-                        .then(token => token !== null)
-                        .then(isUnique => isUnique);
-                    if (exists) {
-                        msgOut = message.language.get("COMMAND_EVENT_EVENT_EXISTS");
-                        if (!msgOut.trim()) {
-                            client.log("Trying to send empty message, EXISTS: " + message.content);
-                        }
-                        return message.channel.send(msgOut);
+                    if (err.length) {
+                        console.log(err);
+                        return super.error(message, client.codeBlock("* " + err.join("\n* ")));
                     }
-
-                    if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_NEED_DATE")).then(msg => msg.delete(10000)).catch(console.error);
-                    const d = args.splice(0,1)[0];
-                    if (!momentTZ(d, "D/M/YYYY").isValid()) {
-                        msgOut = message.language.get("COMMAND_EVENT_BAD_DATE", d);
-                        if (!msgOut.trim()) {
-                            client.log("Trying to send empty message, BADDATE: " + message.content);
-                        }
-                        return message.channel.send(msgOut);
-                    }
-
-                    if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_NEED_TIME")).then(msg => msg.delete(10000)).catch(console.error);
-                    const t = args.splice(0,1)[0];
-                    if (!momentTZ(t, "H:mm").isValid()) {
-                        msgOut = message.language.get("COMMAND_EVEMT_INVALID_TIME");
-                        if (!msgOut.trim()) {
-                            client.log("Trying to send empty message, INVTIME: " + message.content);
-                        }
-                        return message.channel.send(msgOut);
-                    }
-                    const eventDT = momentTZ.tz(`${d} ${t}`, "DD/MM/YYYY H:mm", guildConf.timezone).unix() * 1000;
-
-                    if (!args[0]) {
-                        eventMessage = "";
-                    } else {
-                        eventMessage = args.join(" ");
-                    }
-
-                    if ((eventMessage.length + eventName.length) > maxSize) {
-                        const currentSize = eventMessage.length + eventName.length;
-                        msgOut = message.language.get("COMMAND_EVENT_TOO_BIG", currentSize-maxSize);
-                        if (!msgOut.trim()) {
-                            client.log("Trying to send empty message, TOOBIG: " + message.content);
-                        }
-                        return message.channel.send(msgOut);
-                    }
-
-                    if (momentTZ(eventDT).isBefore(momentTZ())) {
-                        var eventDATE = momentTZ.tz(eventDT, guildConf.timezone).format("D/M/YYYY H:mm");
-                        var nowDATE = momentTZ().tz(guildConf["timezone"]).format("D/M/YYYY H:mm");
-
-                        msgOut = message.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE);
-                        if (!msgOut.trim()) {
-                            client.log("Trying to send empty message, PASTTIME: " + message.content);
-                        }
-                        return message.channel.send(msgOut);
-                    }
+                    
                     const newEvent = {
-                        eventID: `${message.guild.id}-${eventName}`,
+                        eventID: `${message.guild.id}-${evName}`,
                         eventDT: eventDT,
                         eventMessage: eventMessage,
                         eventChan: eventChan ? eventChan.toString() : "",
@@ -262,11 +238,7 @@ class Event extends Command {
                     client.scheduleEvent(newEvent, guildConf.eventCountdown);
                     await client.database.models.eventDBs.create(newEvent)
                         .then(() => {
-                            msgOut = message.language.get("COMMAND_EVENT_CREATED", eventName, momentTZ.tz(eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm"));
-                            if (!msgOut.trim()) {
-                                client.log("Trying to send empty message, CREATED: " + message.content);
-                            }
-                            message.channel.send(msgOut);
+                            return message.channel.send(message.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
                         })
                         .catch(error => {
                             client.log("ERROR",`Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
@@ -282,25 +254,25 @@ class Event extends Command {
                         try {
                             jsonWhole = JSON.parse(match[2]);
                         } catch (e) {
-                            return message.channel.send("**ERROR Parsing the json**" + client.codeBlock(e.message));
+                            return super.error(message, "**ERROR Parsing the json**" + client.codeBlock(e.message));
                         }
 
                         if (!Array.isArray(jsonWhole)) {
                             jsonWhole = [jsonWhole];
                         }
 
-                        // const exampleInput = {
-                        //     name: "Example",                    // No spaces ?
-                        //     time: "12:36",                      // hh:mm    (24hr format)
-                        //     day:  "28/09/18",                   // dd/mm/yy
-                        //     message: "Example message here",    // If you need a line break, put \n in the spot you want it
-                        //     repeatDay: [0, 0, 0],               // Only need one of these, if
-                        //     repeat: "0d0h0m",                   // you have both, it won't work
-                        //     countdown: false,                   // true if you want a countdown, false if not
-                        //     channel: "327974285563920387"       // Channel ID, not name anymore
-                        // };
+                        // ```{
+                        //     "name":      "Example",               // No spaces ?
+                        //     "time":      "12:36",                 // hh:mm    (24hr format)
+                        //     "day":       "28/09/18",              // dd/mm/yy
+                        //     "message":   "Example message here",  // If you need a line break, put \n in the spot you want it
+                        //     "repeatDay": [0, 0, 0],               // Only need one of these, if
+                        //     "repeat":    "0d0h0m",                // you have both, it won't work
+                        //     "countdown": false,                   // true if you want a countdown, false if not
+                        //     "channel":   "327974285563920387"     // Channel ID, not name anymore
+                        // }```
 
-                        // TODO Maybe add in a special help for -json  ";ev -json -help" since it'll need more of a description
+                        // TODO Maybe add in a special help for -json  ";ev -jsonHelp" since it'll need more of a description
                         const outArr = [];
                         const nameArr = [];
                         let evErr = false;
