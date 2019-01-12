@@ -679,17 +679,26 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: (guilds, prefix) => ({
-                "header": "INFORMATION",
-                "desc": ` \nLaeuft zur Zeit auf **${guilds}** server \nAktueller Praefix: \`${prefix}\``,
-                "links": {
-                    "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
-
+            COMMAND_INFO_OUTPUT: () => ({
+	                "header": "== Bot Information ==",
+	                "statHeader": "== Bot Statistiken ==",
+	                "prefix": "Praefix",
+	                "users": "Users",
+	                "servers": "Servers",
+	                "discordVer": "Discord.js",
+	                "nodeVer": "Node",
+	                "swgohHeader": "== SWGoH Statistiken ==",
+	                "players": "Spieler",
+	                "guilds": "Gilden",
+	                "lang": "Sprachen",
+                   "links": {
+                       "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
+                   "Teilnahme SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
                     "Unterstuetze den Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
             }),
             COMMAND_INFO_HELP: {
-                description: "Shows useful links pertaining to the bot.",
+                description: "Zeigt nuetzliche Links zum Bot.",
                 actions: [
                     {
                         action: "",
@@ -724,7 +733,8 @@ module.exports = class extends Language {
 
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <Charaktername auf englisch>\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}mods <Charaktername auf englisch>\``,
+            COMMAND_MODS_INVALID_CHARACTER_HEADER: "Ungueltiger Charakter",
+	            COMMAND_MODS_USAGE: (prefix) => `Verwendung ist \`${prefix}mods <CharakterName auf englisch>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
