@@ -195,8 +195,8 @@ module.exports = class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Bitte versuche es etwas später nocheinmal.",
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Verwendung \`${prefix}abilities <CharakterName>\``,
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. \n Verwendung \`${prefix}abilities <CharakterName auf englisch>\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. \nVerwendung \`${prefix}abilities <CharakterName auf englisch>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Abklingzeit Faehigkeit:** ${aCooldown}\n`,
             COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Faehigkeiten-Typ:** ${aType}\n**Faehigkeitenmaterial benoetigt:     ${mat}**\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_HELP: {
@@ -212,8 +212,8 @@ module.exports = class extends Language {
             },
 
             //Acronym Command
-            COMMAND_ACRONYMS_INVALID: "Akronym Suche ungueltig fuer blank",
-            COMMAND_ACRONYMS_NOT_FOUND: "Akronym konnte nicht gefunden werden",
+            COMMAND_ACRONYMS_INVALID: "Es fehlt das Akronym nach dem gesucht werden soll",
+            COMMAND_ACRONYMS_NOT_FOUND: "Akronym konnte nicht gefunden werden.",
             COMMAND_ACRONYMS_HELP: {
                 description: "Hilfe um nach gebraeuchlichen Akronymen in Star Wars: Galaxy of Heroes zu suchen.",
                 actions: [
@@ -314,11 +314,20 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "charactergear [user] <Charakter> [Gearlevel]",
+                        usage: "charactergear <charakter auf englisch> [gearLvl]",
+	                        args: {
+	                            "charakter auf englisch": "Der Charakter fuer den du die Ausruestung suchst",
+	                            "gearLvl": "Wenn du die Ausruestung einer bestimmten Stufe sehen willst"
+	                        }
+	                    },
+	                    {
+	                        action: "Pruefe deinen eigenen Ausruestungsbedarf",
+	                        actionDesc: "",
+                        usage: "charactergear [user] <Charakter auf englisch> [gearLvl]",
                         args: {
                             "user": "Den Spieler dessen Ausruestung du sehen moechtest (me | userID | mention)",
-                            "Charakter": "Den Charakter dessen Ausruestung du sehen moechtest",
-                            "Gearlevel": "Wenn du nur die Ausruestung fuer ein bestimmtes Gearlevel sehen moechtest"
+                            "Charakter auf englisch": "Den Charakter dessen Ausruestung du sehen moechtest",
+                            "gearLvl": "Wenn du die gesamte Ausruestung bis zu einer bestimmten Ausruestungsstufe sehen moechtest"
                         }
                     }
                 ]
@@ -357,12 +366,12 @@ module.exports = class extends Language {
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
             COMMAND_EVENT_INVALID_PERMS: "Entschuldigung, aber entweder bist du kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.",
-            COMMAND_EVENT_ONE_REPEAT: "Entschuldigung, aber du kannst nicht `repeat` und `repeatDay` in einem Event nutzen. Bitte benutze nur eins der beiden.",
+            COMMAND_EVENT_ONE_REPEAT: "Entschuldigung, aber du musst entweder `repeat` oder `repeatDay` in einem Event nutzen. Bitte benutze das Eine oder das Andere.",
             COMMAND_EVENT_INVALID_REPEAT: "Die Wiederholung ist im falschen Format. Beispiel: ˋ5d3h8mˋ steht fuer 5 Tage 3 Stunden und 8 Minuten",
             COMMAND_EVENT_USE_COMMAS: "Bitte benutze Komma getrennte Nummern fuer repeatDay. Beispiel: `1,2,1,3,4`",
             COMMAND_EVENT_INVALID_CHAN: "Dieser Kanal ist ungueltig. Bitte erneut versuchen",
             COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `Ich habe keine Berechtigung in ${channel} Nachrichten zu senden, bitte waehle einen Kanal, wo ich es kann`,
-            COMMAND_EVENT_NEED_CHAN: "FEHLER: Um dies zu senden, wird ein konfigurierter Kanal benoetigt. Konfiguriere ˋannounceChanˋ zum Erstellen von Events..",
+            COMMAND_EVENT_NEED_CHAN: "Du musst einen Kanal angeben der genutzt werden soll. Konfiguriere ˋannounceChanˋ zum erstellen von Events..",
             COMMAND_EVENT_NEED_NAME: "Du musst dem Event einen Namen geben.",
             COMMAND_EVENT_EVENT_EXISTS: "Dieser Eventname existiert bereits. Erneutes anlegen nicht moeglich.",
             COMMAND_EVENT_NEED_DATE: "Du musst ein Datum fuer dein Event angeben. Akzeptiertes Format ist `DD/MM/YYYY`.",
@@ -382,7 +391,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_JSON_MISSING_DAY: "Datum fehlt (DD/MM/YYYY)",
             COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Ungueltiger Tag (${day}). Muss in diesem Format sein DD/MM/YYYY`,
             COMMAND_EVENT_JSON_MISSING_TIME: "Uhrzeit fehlt (HH:MM)",
-            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Ungueltige Uhrzeit (${time}). Muss in diesem Format sein HH:MM`,
+            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Ungueltige Uhrzeit (${time}). Muss in diesem 24 Stunden Format sein HH:MM`,
             COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Ungueltiger Kanal (${chan}), falsche ID oder Kanal ist auf diesem Server nicht vorhanden`,
             COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Ungueltiger Kanal (${chan}). Ich habe keine Berechtigung um dort zu schreiben.`,
             COMMAND_EVENT_JSON_NO_2X_REPEAT: "Du kannst repeat & repeatDay nicht gleichzeitig verwenden",
@@ -470,18 +479,28 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Ungueltige Fraktion, das Kommando lautet: \`${prefix}faction <Fraktion>\``,
+            COMMAND_FACTION_MISSING_FACTION: "Fraktion fehlt",
+	            COMMAND_FACTION_INVALID_FACTION: "Ungueltige Fraktion",
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Charakter gehoert zur Fraktion: ${searchName} # \n${charString}`,
+            COMMAND_FACTION_USAGE: (prefix) => `Verwendung ist \`${prefix}faction <Fraktion>\``,
             COMMAND_FACTION_HELP: {
                 description: "Zeigt die Liste der Charaktere der spezifizierten Fraktion an.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction [user] <Fraktion>",
+                        usage: "faction <Fraktion>",
+                        args: {
+	                            "faction": "Die Fraktion die du aus der Sammlung sehen moechtest."
+	                        }
+	                    },
+	                    {
+	                        action: "Spieler Fraktion",
+	                        actionDesc: "Zeigt die Entwicklung der Fraktion eines Spieler",
+	                        usage: "faction <user> <Fraktion>",
                         args: {
                             "user": "Zur Identifikation des Spielers (mention | allyCode | me)",
-                            "Fraktion": "Die Fraktion, von der Du das Rooster sehen willst. \nDenke dran, diese Anzeige ist wie im Spiel, z.B. Rebell und nicht Rebellen"
+                            "Fraktion": "Die Fraktion, von der Du die Sammlung sehen willst."
                         }
                     }
                 ]
@@ -522,7 +541,7 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";grandarena <user1> <user2> [-faction Fraktion] [character1] | [character2] | ...",
                         args: {
-                            "users": "Zur Identifikation des Spielers (mention | allyCode | guildName)",
+                            "users": "Zur Identifikation des Spielers (mention | allyCode | me)",
                             "characters": "Eine Liste von Charakteren (getrennt durch das | Symbol).",
                             "-faction": "Eine Fraktion die angezeigt werden soll."
                         }
@@ -596,21 +615,27 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Nicht aktiviert (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Bitte warten waehrend ich die Sammlung deiner Gilde durchsuche.",
-            COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in deiner Gilde diesen Charakter.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in der Gilde diesen Charakter freigeschaltet.",
+	            COMMAND_GUILDSEARCH_NO_SHIP: "Wie es scheint hat niemand in der Gilde dieses Schiff freigeschaltet.",
+	            COMMAND_GUILDSEARCH_NO_CHARACTER_STAR: (star) => `Wie es scheint hat niemand in der Gilde diesen Charakter auf dem Sternlevel ${star}* oder hoeher freigeschaltet.`,
+	            COMMAND_GUILDSEARCH_NO_SHIP_STAR: (star) => `Wie es scheint hat niemand in der Gilde dieses Schiff auf dem Sternlevel ${star}* oder hoeher freigeschaltet. `,
+	            COMMAND_GUILDSEARCH_NO_ZETAS: "Wie es scheint hat niemand in der Gilde diesem Charakter ein Zeta gegeben.",
             COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (sortiert nach ${sort})`,
+            COMMAND_GUILDSEARCH_MODS_HEADER: (guildName) => `${guildName}'s mods'`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Zeigt den Stern-Level des gewaehlten Charakters von allen Gildenmitgliedern an.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]",
+                        usage: ";guildsearch [user] <character> [-zetas] [-ships] [-reverse] [-sort type] [starLvl]",
                         args: {
                             "user": "Die Person dessen Gilde du pruefen moechtest (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest.",
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "-reverse": "Kehrt die Sortierreihenfolge um",
                             "-sort": "Waehle entweder eine Sortierung nach Name, Ausruestung oder GM",
+                            "-zetas": "Zeigt nur Charaktere die Zetas haben",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
                     },
@@ -623,7 +648,16 @@ module.exports = class extends Language {
                             "character": "Der Charakter nach dem du suchen moechtest (auf englisch).",
                             "stat": "Einer dieser Statistik-Werte eines Charakters ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
                         }
-                    }
+                    },
+	                 {
+	                     action: "Mods Uebersicht",
+	                     actionDesc: "Vergleiche die wichtigsten Mods innerhalb deiner Gilde",
+	                        usage: ";guildsearch [user] -mods",
+	                        args: {
+	                            "user": "Der Spieler dessen Gilde du sehen moechtest (me | userID | mention)",
+	                            "-mods": "Angabe um die Mods zu sehen. (-m | -mod)"
+	                        }
+	                 },
                 ]
             },
 
@@ -645,17 +679,26 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: (guilds, prefix) => ({
-                "header": "INFORMATION",
-                "desc": ` \nLaeuft zur Zeit auf **${guilds}** server \nAktueller Praefix: \`${prefix}\``,
-                "links": {
-                    "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
-
+            COMMAND_INFO_OUTPUT: () => ({
+	                "header"      : "== Bot Information ==",
+	                "statHeader"  : "== Bot Statistiken ==",
+	                "prefix"      : "Praefix",
+	                "users"       : "Users",
+	                "servers"     : "Servers",
+	                "discordVer"  : "Discord.js",
+	                "nodeVer"     : "Node",
+	                "swgohHeader" : "== SWGoH Statistiken ==",
+	                "players"     : "Spieler",
+	                "guilds"      : "Gilden",
+	                "lang"        : "Sprachen",
+                   "links": {
+                       "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
+                   "Teilnahme SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
                     "Unterstuetze den Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
-            }),
+            },
             COMMAND_INFO_HELP: {
-                description: "Shows useful links pertaining to the bot.",
+                description: "Zeigt nuetzliche Links zum Bot.",
                 actions: [
                     {
                         action: "",
@@ -690,7 +733,8 @@ module.exports = class extends Language {
 
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <Charaktername auf englisch>\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Der Befehl lautet: \`${prefix}mods <Charaktername auf englisch>\``,
+            COMMAND_MODS_INVALID_CHARACTER_HEADER: "Ungueltiger Charakter",
+	            COMMAND_MODS_USAGE: (prefix) => `Verwendung ist \`${prefix}mods <CharakterName auf englisch>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
