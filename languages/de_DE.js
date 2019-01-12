@@ -366,12 +366,12 @@ module.exports = class extends Language {
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
             COMMAND_EVENT_INVALID_PERMS: "Entschuldigung, aber entweder bist du kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.",
-            COMMAND_EVENT_ONE_REPEAT: "Entschuldigung, aber du kannst nicht `repeat` und `repeatDay` in einem Event nutzen. Bitte benutze nur eins der beiden.",
+            COMMAND_EVENT_ONE_REPEAT: "Entschuldigung, aber du musst entweder `repeat` oder `repeatDay` in einem Event nutzen. Bitte benutze das Eine oder das Andere.",
             COMMAND_EVENT_INVALID_REPEAT: "Die Wiederholung ist im falschen Format. Beispiel: ˋ5d3h8mˋ steht fuer 5 Tage 3 Stunden und 8 Minuten",
             COMMAND_EVENT_USE_COMMAS: "Bitte benutze Komma getrennte Nummern fuer repeatDay. Beispiel: `1,2,1,3,4`",
             COMMAND_EVENT_INVALID_CHAN: "Dieser Kanal ist ungueltig. Bitte erneut versuchen",
             COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `Ich habe keine Berechtigung in ${channel} Nachrichten zu senden, bitte waehle einen Kanal, wo ich es kann`,
-            COMMAND_EVENT_NEED_CHAN: "FEHLER: Um dies zu senden, wird ein konfigurierter Kanal benoetigt. Konfiguriere ˋannounceChanˋ zum Erstellen von Events..",
+            COMMAND_EVENT_NEED_CHAN: "Du musst einen Kanal angeben der genutzt werden soll. Konfiguriere ˋannounceChanˋ zum erstellen von Events..",
             COMMAND_EVENT_NEED_NAME: "Du musst dem Event einen Namen geben.",
             COMMAND_EVENT_EVENT_EXISTS: "Dieser Eventname existiert bereits. Erneutes anlegen nicht moeglich.",
             COMMAND_EVENT_NEED_DATE: "Du musst ein Datum fuer dein Event angeben. Akzeptiertes Format ist `DD/MM/YYYY`.",
@@ -391,7 +391,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_JSON_MISSING_DAY: "Datum fehlt (DD/MM/YYYY)",
             COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Ungueltiger Tag (${day}). Muss in diesem Format sein DD/MM/YYYY`,
             COMMAND_EVENT_JSON_MISSING_TIME: "Uhrzeit fehlt (HH:MM)",
-            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Ungueltige Uhrzeit (${time}). Muss in diesem Format sein HH:MM`,
+            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Ungueltige Uhrzeit (${time}). Muss in diesem 24 Stunden Format sein HH:MM`,
             COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Ungueltiger Kanal (${chan}), falsche ID oder Kanal ist auf diesem Server nicht vorhanden`,
             COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Ungueltiger Kanal (${chan}). Ich habe keine Berechtigung um dort zu schreiben.`,
             COMMAND_EVENT_JSON_NO_2X_REPEAT: "Du kannst repeat & repeatDay nicht gleichzeitig verwenden",
@@ -479,18 +479,28 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Ungueltige Fraktion, das Kommando lautet: \`${prefix}faction <Fraktion>\``,
+            COMMAND_FACTION_MISSING_FACTION: "Fraktion fehlt",
+	            COMMAND_FACTION_INVALID_FACTION: "Ungueltige Fraktion",
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Charakter gehoert zur Fraktion: ${searchName} # \n${charString}`,
+            COMMAND_FACTION_USAGE: (prefix) => `Verwendung ist \`${prefix}faction <Fraktion>\``,
             COMMAND_FACTION_HELP: {
                 description: "Zeigt die Liste der Charaktere der spezifizierten Fraktion an.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction [user] <Fraktion>",
+                        usage: "faction <Fraktion>",
+                        args: {
+	                            "faction": "Die Fraktion die du aus der Sammlung sehen moechtest."
+	                        }
+	                    },
+	                    {
+	                        action: "Spieler Fraktion",
+	                        actionDesc: "Zeigt die Entwicklung der Fraktion eines Spieler",
+	                        usage: "faction <user> <Fraktion>",
                         args: {
                             "user": "Zur Identifikation des Spielers (mention | allyCode | me)",
-                            "Fraktion": "Die Fraktion, von der Du das Rooster sehen willst. \nDenke dran, diese Anzeige ist wie im Spiel, z.B. Rebell und nicht Rebellen"
+                            "Fraktion": "Die Fraktion, von der Du die Sammlung sehen willst."
                         }
                     }
                 ]
