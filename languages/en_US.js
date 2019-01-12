@@ -679,24 +679,24 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: () => ({
-                "header": "== Bot Information ==",
-                "statHeader": "== Bot Stats ==",
-                "prefix": "Prefix",
-                "users": "Users",
-                "servers": "Servers",
-                "discordVer": "Discord.js",
-                "nodeVer": "Node",
-                "swgohHeader": "== SWGoH Stats ==",
-                "players": "Players",
-                "guilds": "Guilds",
-                "lang": "Languages",
+            COMMAND_INFO_OUTPUT: {
+                "header"      : "== Bot Information ==",
+                "statHeader"  : "== Bot Stats ==",
+                "prefix"      : "Prefix",
+                "users"       : "Users",
+                "servers"     : "Servers",
+                "discordVer"  : "Discord.js",
+                "nodeVer"     : "Node",
+                "swgohHeader" : "== SWGoH Stats ==",
+                "players"     : "Players",
+                "guilds"      : "Guilds",
+                "lang"        : "Languages",
                 "links": {
                     "Add me to your server": "- http://swgohbot.com/invite",
                     "Join SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
                     "Support the Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
-            }),
+            },
             COMMAND_INFO_HELP: {
                 description: "Shows useful info pertaining to the bot.",
                 actions: [
