@@ -68,7 +68,7 @@ class Register extends Command {
                         try {
                             await client.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
                                 if (!u) {
-                                    super.error(message, (message.language.get("COMMAND_REGISTER_FAILURE")), {edit: true});
+                                    super.error(msg, (message.language.get("COMMAND_REGISTER_FAILURE")), {edit: true});
                                 } else {
                                     await client.database.models.allyCodes.create({ id: userID, allyCode: allyCode })
                                         .then(async () => {
@@ -142,13 +142,13 @@ class Register extends Command {
                         try {
                             await client.swgohAPI.player(ac, null, cooldown).then(async (u) => {
                                 if (!u) {
-                                    await super.error(message, (message.language.get("COMMAND_REGISTER_UPDATE_FAILURE")), {edit: true});
+                                    await super.error(msg, (message.language.get("COMMAND_REGISTER_UPDATE_FAILURE")), {edit: true});
                                 } else {
                                     await msg.edit(message.language.get("COMMAND_REGISTER_UPDATE_SUCCESS", u.name));
                                 }
                             });
                         } catch (e) {
-                            return super.error(message, client.codeBlock(e), {edit: true});
+                            return super.error(msg, client.codeBlock(e), {edit: true});
                         }
                     }
                 });

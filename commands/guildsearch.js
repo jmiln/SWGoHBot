@@ -134,7 +134,7 @@ class GuildSearch extends Command {
                 guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
-                return super.error(message, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
+                return super.error(msg, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
 
             // Get the list of people with that character
@@ -217,7 +217,7 @@ class GuildSearch extends Command {
                     sortedGuild = guildChar.sort((p, c) => c.gearLevel - p.gearLevel);
                 }
             } else {
-                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp", "gear"]), {edit: true, example: "guildsearch c3po -sort gp"});
+                return super.error(msg, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp", "gear"]), {edit: true, example: "guildsearch c3po -sort gp"});
             }
 
             const charOut = {};
@@ -361,7 +361,7 @@ class GuildSearch extends Command {
             }
 
             if (!found) {
-                return super.error(message, "Not an acceptable stat to sort by. Try one of the following:" + client.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")), {edit: true, example: "guildsearch c3po -sort gp"});
+                return super.error(msg, "Not an acceptable stat to sort by. Try one of the following:" + client.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")), {edit: true, example: "guildsearch c3po -sort gp"});
             }
 
             let guild = null;
@@ -369,18 +369,18 @@ class GuildSearch extends Command {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
-                return super.error(message, client.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
+                return super.error(msg, client.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
             }
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
-                return super.error(message, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
+                return super.error(msg, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
             } else {
                 msg.edit("Found guild `" + guild.name + "`!");
                 gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
             }
 
             if (!gRoster.length) {
-                return super.error(message, "I can't find any players in the requested guild.", {edit: true});
+                return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
             }
             const gStats = await client.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
 
@@ -456,14 +456,14 @@ class GuildSearch extends Command {
             }
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
-                return super.error(message, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
+                return super.error(msg, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
             } else {
                 msg.edit("Found guild `" + guild.name + "`!");
                 gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
             }
 
             if (!gRoster.length) {
-                return super.error(message, "I can't find any players in the requested guild.", {edit: true});
+                return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
             }
 
             const output = [];

@@ -66,7 +66,7 @@ class Zetas extends Command {
             player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log("Error: Broke while trying to get player data in zetas: " + e);
-            return super.error(message, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});
+            return super.error(msg, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});
         }
 
         player.roster = player.roster.filter(c => c.crew.length === 0);
@@ -142,7 +142,7 @@ class Zetas extends Command {
 
             const sortBy = searchChar ? searchChar : "versa";
             if (!zetas || !zetas.zetas) {
-                return super.error(message, ("Soething broke, I can't find the zetas list"), {edit: true});
+                return super.error(msg, ("Soething broke, I can't find the zetas list"), {edit: true});
             }
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {
@@ -310,7 +310,7 @@ class Zetas extends Command {
                     }});
                 }
             } catch (e) {
-                super.error(message, (e.message), {edit: true});
+                super.error(msg, (e.message), {edit: true});
             }
         } 
     }

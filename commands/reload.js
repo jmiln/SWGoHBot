@@ -32,7 +32,7 @@ class Reload extends Command {
                                 msg.edit(message.language.get("COMMAND_RELOAD_SUCCESS", command));
                             })
                             .catch(e => {
-                                super.error(message, (message.language.get("COMMAND_RELOAD_FAILURE",command, e.stack)), {edit: true});
+                                super.error(msg, (message.language.get("COMMAND_RELOAD_FAILURE",command, e.stack)), {edit: true});
                             });
                     } else {
                         client.reloadCommand(command)
@@ -40,7 +40,7 @@ class Reload extends Command {
                                 msg.edit(message.language.get("COMMAND_RELOAD_SUCCESS", command));
                             })
                             .catch(e => {
-                                super.error(message, (message.language.get("COMMAND_RELOAD_FAILURE", command, e.stack)), {edit: true});
+                                super.error(msg, (message.language.get("COMMAND_RELOAD_FAILURE", command, e.stack)), {edit: true});
                             });
                     }
                 });
