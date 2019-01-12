@@ -1929,6 +1929,24 @@
         "level": 80,
         "phase": [
             {
+                "name": "HAN'S MILLENIUM FALCON",
+                "anchor": "ot-falcon",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "",
+                        "url": "",
+                        "panic": "https://swgohevents.com/panic-farm/ot-falcon",
+                        "team": [
+                            "SLAVE1",
+                            "IG2000",
+                            "HOUNDSTOOTH",
+                            "XANADUBLOOD"
+                        ]
+                    }
+                ]
+            },
+            {
                 "name": "CONTACT PROTOCOL",
                 "anchor": "c3po",
                 "squads": [
