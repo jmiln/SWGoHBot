@@ -602,6 +602,23 @@ module.exports = (client) => {
     };
 
     /*
+     * Get the current user count
+     */
+    client.userCount = async () => {
+        let users = 0;
+        if (client.shard && client.shard.count > 0) {
+            await client.shard.fetchClientValues("users.size")
+                .then(results => {
+                    users =  results.reduce((prev, val) => prev + val, 0);
+                })
+                .catch(console.error);
+            return users;
+        } else {
+            return client.users.size;
+        }
+    };
+
+    /*
      * Get the current guild count
      */
     client.guildCount = async () => {
@@ -710,7 +727,10 @@ module.exports = (client) => {
             if (options.useHeader) {
                 max[h] = Math.max(...[headers[h].value.length].concat(rows.map(v => v[h].toString().length))) + 2;
             } else {
-                max[h] = Math.max(...rows.map(v => v[h].toString().length)) + 2;
+                max[h] = Math.max(...rows.map(v => {
+                    if (!v[h]) return 0;
+                    return v[h].toString().length;
+                })) + 2;
             }
         });
 
@@ -747,31 +767,28 @@ module.exports = (client) => {
             Object.keys(headers).forEach((h, ix) => {
                 const rowMax = max[h];
                 const head = headers[h];
-                const value = r[h];
-                if (value && value.toString().length) {
-                    const pad = rowMax - value.toString().length;
-                    row += head.startWith ? head.startWith : "";
-                    if (!head.align || (head.align && head.align === "center")) {
-                        const padBefore = Math.floor(pad/2);
-                        const padAfter = pad-padBefore;
-                        if (padBefore) row += " ".repeat(padBefore);
-                        row += value;
-                        if (padAfter) row  += " ".repeat(padAfter);
-                    } else if (head.align === "left" && ix === 0 && !h.startWith) {
-                        row += value + " ".repeat(pad-1);
-                    } else if (head.align === "left") {
-                        row += " " + value + " ".repeat(pad-1);
-                    } else if (head.align === "right") {
-                        row += " ".repeat(pad-1) + value + " ";
-                    } else {
-                        throw new Error("Invalid alignment");
-                    }
-                    row += head.endWith ? head.endWith : "";
-                } else {
-                    row += head.startWith ? head.startWith : "";
-                    row += " ".repeat(rowMax);
-                    row += head.endWith ? head.endWith : "";
+                let value = r[h];
+                if (!value) {
+                    value = 0;
                 }
+                const pad = rowMax - value.toString().length;
+                row += head.startWith ? head.startWith : "";
+                if (!head.align || (head.align && head.align === "center")) {
+                    const padBefore = Math.floor(pad/2);
+                    const padAfter = pad-padBefore;
+                    if (padBefore) row += " ".repeat(padBefore);
+                    row += value;
+                    if (padAfter) row  += " ".repeat(padAfter);
+                } else if (head.align === "left" && ix === 0 && !h.startWith) {
+                    row += value + " ".repeat(pad-1);
+                } else if (head.align === "left") {
+                    row += " " + value + " ".repeat(pad-1);
+                } else if (head.align === "right") {
+                    row += " ".repeat(pad-1) + value + " ";
+                } else {
+                    throw new Error("Invalid alignment");
+                }
+                row += head.endWith ? head.endWith : "";
             });
             out.push(client.expandSpaces(row.replace(/\s*$/, "")));
         });

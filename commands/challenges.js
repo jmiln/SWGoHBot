@@ -15,17 +15,17 @@ class Challenges extends Command {
 
         const challenges = {
             // Normal Challenges
-            [message.language.get("COMMAND_CHALLENGES_TRAINING")]: ["Sunday", "Monday", "Saturday"],
+            [message.language.get("COMMAND_CHALLENGES_TRAINING")]: ["Sunday", "Monday",    "Saturday"],
             [message.language.get("COMMAND_CHALLENGES_ABILITY")] : ["Sunday", "Wednesday", "Saturday"],
-            [message.language.get("COMMAND_CHALLENGES_BOUNTY")]  : ["Sunday", "Tuesday", "Friday"],
-            [message.language.get("COMMAND_CHALLENGES_AGILITY")] : ["Sunday", "Tuesday", "Friday"],
-            [message.language.get("COMMAND_CHALLENGES_STRENGTH")]: ["Sunday", "Monday", "Thursday"],
+            [message.language.get("COMMAND_CHALLENGES_BOUNTY")]  : ["Sunday", "Tuesday",   "Friday"],
+            [message.language.get("COMMAND_CHALLENGES_AGILITY")] : ["Sunday", "Tuesday",   "Friday"],
+            [message.language.get("COMMAND_CHALLENGES_STRENGTH")]: ["Sunday", "Monday",    "Thursday"],
             [message.language.get("COMMAND_CHALLENGES_TACTICS")] : ["Sunday", "Wednesday", "Saturday"],
         
             // Ship Challenges
             [message.language.get("COMMAND_CHALLENGES_SHIP_ENHANCEMENT")]: ["Monday", "Wednesday", "Saturday"],
-            [message.language.get("COMMAND_CHALLENGES_SHIP_BUILDING")]   : ["Monday", "Tuesday", "Friday"],
-            [message.language.get("COMMAND_CHALLENGES_SHIP_ABILITY")]    : ["Monday", "Thursday", "Sunday"]
+            [message.language.get("COMMAND_CHALLENGES_SHIP_BUILDING")]   : ["Monday", "Tuesday",   "Friday"],
+            [message.language.get("COMMAND_CHALLENGES_SHIP_ABILITY")]    : ["Monday", "Thursday",  "Sunday"]
         };
 
         const dayString = (day) => {

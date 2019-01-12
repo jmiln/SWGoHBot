@@ -16,24 +16,24 @@ class Mods extends Command {
         const getLocalizedModString = function(key) {
             const localizationKeyMap = {
                 "Critical Chance x2" : "COMMAND_MODS_CRIT_CHANCE_SET",
-                "Critical Damage x4": "COMMAND_MODS_CRIT_DAMAGE_SET",
-                "Speed x4": "COMMAND_MODS_SPEED_SET",
-                "Tenacity x2": "COMMAND_MODS_TENACITY_SET",
-                "Offense x4": "COMMAND_MODS_OFFENSE_SET",
-                "Potency x2": "COMMAND_MODS_POTENCY_SET",
-                "Health x2": "COMMAND_MODS_HEALTH_SET",
-                "Defense x2": "COMMAND_MODS_DEFENSE_SET",
-                "": "COMMAND_MODS_EMPTY_SET",
-                "Accuracy": "COMMAND_MODS_ACCURACY_STAT",
-                "Crit. Chance": "COMMAND_MODS_CRIT_CHANCE_STAT",
-                "Crit. Damage": "COMMAND_MODS_CRIT_DAMAGE_STAT",
-                "Defense": "COMMAND_MODS_DEFENSE_STAT",
-                "Health": "COMMAND_MODS_HEALTH_STAT",
-                "Offense": "COMMAND_MODS_OFFENSE_STAT",
-                "Protection": "COMMAND_MODS_PROTECTION_STAT",
-                "Potency": "COMMAND_MODS_POTENCY_STAT",
-                "Speed": "COMMAND_MODS_SPEED_STAT",
-                "Tenacity": "COMMAND_MODS_TENACITY_STAT"
+                "Critical Damage x4" : "COMMAND_MODS_CRIT_DAMAGE_SET",
+                "Speed x4"           : "COMMAND_MODS_SPEED_SET",
+                "Tenacity x2"        : "COMMAND_MODS_TENACITY_SET",
+                "Offense x4"         : "COMMAND_MODS_OFFENSE_SET",
+                "Potency x2"         : "COMMAND_MODS_POTENCY_SET",
+                "Health x2"          : "COMMAND_MODS_HEALTH_SET",
+                "Defense x2"         : "COMMAND_MODS_DEFENSE_SET",
+                ""                   : "COMMAND_MODS_EMPTY_SET",
+                "Accuracy"           : "COMMAND_MODS_ACCURACY_STAT",
+                "Crit. Chance"       : "COMMAND_MODS_CRIT_CHANCE_STAT",
+                "Crit. Damage"       : "COMMAND_MODS_CRIT_DAMAGE_STAT",
+                "Defense"            : "COMMAND_MODS_DEFENSE_STAT",
+                "Health"             : "COMMAND_MODS_HEALTH_STAT",
+                "Offense"            : "COMMAND_MODS_OFFENSE_STAT",
+                "Protection"         : "COMMAND_MODS_PROTECTION_STAT",
+                "Potency"            : "COMMAND_MODS_POTENCY_STAT",
+                "Speed"              : "COMMAND_MODS_SPEED_STAT",
+                "Tenacity"           : "COMMAND_MODS_TENACITY_STAT"
             };
 
             const keyArray = key.split("/ ");
@@ -62,14 +62,14 @@ class Mods extends Command {
             }
 
             return {
-                "sets": sets,
-                "square": getLocalizedModString(modAdvice.square),
-                "arrow": getLocalizedModString(modAdvice.arrow),
-                "diamond": getLocalizedModString(modAdvice.diamond),
-                "triangle": getLocalizedModString(modAdvice.triangle),
-                "circle": getLocalizedModString(modAdvice.circle),
-                "cross": getLocalizedModString(modAdvice.cross),
-                "source": modAdvice.source
+                "sets"     : sets,
+                "square"   : getLocalizedModString(modAdvice.square),
+                "arrow"    : getLocalizedModString(modAdvice.arrow),
+                "diamond"  : getLocalizedModString(modAdvice.diamond),
+                "triangle" : getLocalizedModString(modAdvice.triangle),
+                "circle"   : getLocalizedModString(modAdvice.circle),
+                "cross"    : getLocalizedModString(modAdvice.cross),
+                "source"   : modAdvice.source
             };
         };
 
@@ -96,23 +96,24 @@ class Mods extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.get("COMMAND_MODS_NEED_CHARACTER", message.guildSettings.prefix));
+            return super.error(message, message.language.get("COMMAND_MODS_NEED_CHARACTER", message.guildSettings.prefix));
         }
 
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
         if (!chars || chars.length <= 0) {
-            return message.channel.send(message.language.get("COMMAND_MODS_INVALID_CHARACTER", message.guildSettings.prefix));
+            return super.error(message, message.language.get("COMMAND_MODS_USAGE", message.guildSettings.prefix), {
+                title: message.language.get("COMMAND_MODS_INVALID_CHARACTER_HEADER"),
+                example: "mods darth vader"
+            });
         } else if (chars.length > 1) {
             const charL = [];
             const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
             charS.forEach(c => {
                 charL.push(c.name);
             });
-            return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(message, message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
-
-
 
         chars.forEach(character => {
             if (embeds) { // If Embeds are enabled

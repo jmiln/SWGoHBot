@@ -63,12 +63,12 @@ class Shardtimes extends Command {
                 type = "name";
             }
             if (userID !== message.author.id && userID !== message.author.username && level < 3) {
-                return message.channel.send(message.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
+                return super.error(message, message.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
             if (!options.subArgs.timeuntil) {
                 if (!timezone) {
                     // Grumble that they need a timezone, then give the wiki list
-                    return message.channel.send(message.language.get("COMMAND_SHARDTIMES_MISSING_TIMEZONE"));
+                    return super.error(message, message.language.get("COMMAND_SHARDTIMES_MISSING_TIMEZONE"));
                 } else {
                     if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
                         const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
@@ -78,7 +78,7 @@ class Shardtimes extends Command {
                             timezone = parseInt(`${match[1]}${parseInt(match[2] * 60) + parseInt(match[3])}`);
                         } else { 
                             // Grumble that it's an invalid tz
-                            return message.channel.send(message.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
+                            return super.error(message, message.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
                         }
                     } 
                 }
@@ -95,7 +95,7 @@ class Shardtimes extends Command {
                     timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
                     tempZone = timezone + " UTC";
                 } else {
-                    return message.channel.send(message.language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
+                    return super.error(message, message.language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
                 }
             }
             if (flag.length > 0) {
@@ -140,12 +140,12 @@ class Shardtimes extends Command {
                     return message.channel.send(message.language.get("COMMAND_SHARDTIMES_USER_ADDED"));
                 })
                 .catch(() => {
-                    return message.channel.send(message.language.get("COMMAND_SHARDTIMES_USER_NOT_ADDED"));
+                    return super.error(message, message.language.get("COMMAND_SHARDTIMES_USER_NOT_ADDED"));
                 });
         } else if (action === "remove" || action === "rem") {
             // Get the json object, remove the user if available, then resave if it changed
             if (userID !== message.author.id && userID !== message.author.username && level < 3) {
-                return message.channel.send(message.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
+                return super.error(message, message.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
             if (userID === "me") {
                 userID = message.author.id;
@@ -160,10 +160,10 @@ class Shardtimes extends Command {
                         return message.channel.send(message.language.get("COMMAND_SHARDTIMES_REM_SUCCESS"));
                     })
                     .catch(() => {
-                        return message.channel.send(message.language.get("COMMAND_SHARDTIMES_REM_FAIL"));
+                        return super.error(message, message.language.get("COMMAND_SHARDTIMES_REM_FAIL"));
                     });
             } else {
-                return message.channel.send(message.language.get("COMMAND_SHARDTIMES_REM_MISSING"));
+                return super.error(message, message.language.get("COMMAND_SHARDTIMES_REM_MISSING"));
             }
         } else {
             // View the shard table
@@ -191,7 +191,7 @@ class Shardtimes extends Command {
                     let uName = "";
                     if (!shardTimes[user].type || shardTimes[user].type === "id") {
                         const thisUser = message.guild.members.get(user);
-                        const userName = thisUser ? `${thisUser.displayName}` : `${client.users.get(user) ? client.users.get(user).username : user}`;
+                        const userName = thisUser ? `${thisUser.displayName}` : user;
                         uName = "**" + (userName.length > maxLen ? userName.substring(0, maxLen) : userName) + "**";
                     } else {
                         // Type is name, don't try looking it up

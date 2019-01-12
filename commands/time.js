@@ -17,7 +17,7 @@ class Time extends Command {
             if (moment.tz.zone(args[0])) { // Valid time zone
                 return message.channel.send(message.language.get("COMMAND_TIME_CURRENT", moment.tz(args[0]).format("DD/MM/YYYY [at] H:mm:ss"), args[0])); 
             } else { // Not so valid
-                return message.reply(message.language.get("COMMAND_TIME_INVALID_ZONE", moment.tz(guildConf["timezone"]).format("DD/MM/YYYY [at] H:mm:ss"), guildConf["timezone"])).then(msg => msg.delete(10000)).catch(console.error);
+                return super.error(message.language.get("COMMAND_TIME_INVALID_ZONE", moment.tz(guildConf["timezone"]).format("DD/MM/YYYY [at] H:mm:ss"), guildConf["timezone"])).then(msg => msg.delete(10000)).catch(console.error);
             }
         }
 

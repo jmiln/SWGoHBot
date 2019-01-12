@@ -15,6 +15,12 @@ class GuildSearch extends Command {
                 reverse: {
                     aliases: ["rev"]
                 },
+                mods: {
+                    aliases: ["mod", "m"]
+                },
+                zetas: {
+                    aliases: ["zeta", "z"]
+                }
             },
             subArgs: {
                 sort: {
@@ -32,7 +38,7 @@ class GuildSearch extends Command {
         const availableSorts = ["gp", "gear", "name"];
         const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
         if (!availableSorts.includes(sortType)) {
-            return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts));
+            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
         }
         const reverse = options.flags.reverse;
         const rarityMap = {
@@ -46,46 +52,60 @@ class GuildSearch extends Command {
         };
 
         // If there's enough elements in args, and it's in the format of a number*
-        if (args.length && !isNaN(parseInt(args[args.length-1]))) {
+        if (args.length && !isNaN(parseInt(args[args.length-1])) && /^\d+$/.test(args[args.length-1].toString())) {
             starLvl = parseInt(args.pop());
             if (starLvl < 0 || starLvl > 7) {
-                return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"));
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"), {example: "guildsearch c3po 7"});
             }
         }
         
-        const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
+        let tmp;
+        let character;
+        let allyCode, searchChar, err;
+        if (!options.flags.mods) {
+            tmp = await super.getUserAndChar(message, args);
+            allyCode = tmp.allyCode;
+            searchChar = tmp.searchChar;
+            err = tmp.err;
+
+            if (options.flags.ships && options.flags.stats) {
+                // TODO Lang this
+                return super.error(message, "Sorry, but I cannot get the stats for ships at this time.");
+            } else if (!searchChar) {
+                return super.error(message, "Missing character to search for.", {example: "guildsearch c3po"});
+            }
+            
+            const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
+            
+            if (chars.length === 0) {
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar), {example: "guildsearch c3po"});
+            } else if (chars.length > 1) {
+                const charL = [];
+                const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
+                charS.forEach(c => {
+                    charL.push(c.name);
+                });
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
+            } else {
+                character = chars[0];
+            }
+
+        } else {
+            tmp = await super.getUserAndChar(message, args, false);
+            allyCode = tmp.allyCode;
+            searchChar = tmp.searchChar;
+            err = tmp.err;
+        }
 
         if (err) {
-            return message.channel.send("**Error:** `" + err + "`");
-        }
-
-        if (options.flags.ships && options.flags.stats) {
-            // TODO Lang this
-            return message.channel.send("Sorry, but I cannot get the stats for ships at this time.");
-        }
-        
-        const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
-        
-        let character;
-        
-        if (chars.length === 0) {
-            return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar));
-        } else if (chars.length > 1) {
-            const charL = [];
-            const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
-            charS.forEach(c => {
-                charL.push(c.name);
-            });
-            return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
-        } else {
-            character = chars[0];
+            return super.error(message, err);
         }
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
 
         const cooldown = client.getPlayerCooldown(message.author.id);
 
-        if (!options.subArgs.stat) {
+        if (!options.subArgs.stat && !options.flags.mods) {
             let guild = null;
             try {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
@@ -114,27 +134,30 @@ class GuildSearch extends Command {
                 guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
-                return msg.edit({embed: {
-                    author: {
-                        name: "Something Broke while getting your guild's characters"
-                    },
-                    description: client.codeBlock(e) + "Please try again in a bit."
-                }});
+                return super.error(message, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
 
             // Get the list of people with that character
             const guildChar = guildGG.roster[character.uniqueName];
 
-            if (!guildChar || guildChar.length === 0) {
-                return msg.edit({embed: {
-                    author: {
-                        name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name)
-                    },
-                    description: message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER"),
-                    footer: {
-                        text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message))
-                    }
-                }});
+            if (!guildChar || guildChar.length === 0 || (starLvl > 0 && !guildChar.filter(c => c.starLevel >= starLvl).length) || (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length)) {
+                let desc = "";
+                if (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length) {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
+                } else if (options.flags.ships && starLvl > 0) {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_SHIP_STAR", starLvl);
+                } else if (starLvl > 0) {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER_STAR", starLvl);
+                } else if (options.flags.ships) {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_SHIP");
+                } else {
+                    desc = message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
+                }
+                return super.error(message, desc, {
+                    title: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name), 
+                    footer: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message)),
+                    edit: true
+                });
             }
 
             const totalUnlocked = guildChar.length;
@@ -194,11 +217,13 @@ class GuildSearch extends Command {
                     sortedGuild = guildChar.sort((p, c) => c.gearLevel - p.gearLevel);
                 }
             } else {
-                return msg.edit(message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp", "gear"]));
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp", "gear"]), {edit: true, example: "guildsearch c3po -sort gp"});
             }
 
             const charOut = {};
             for (const member of sortedGuild) {
+                if (options.flags.zetas && !member.zetas.length) continue;
+
                 if (isNaN(parseInt(member.starLevel))) member.starLevel = rarityMap[member.starLevel];
                 const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
                 let z = " | ";
@@ -267,7 +292,7 @@ class GuildSearch extends Command {
                 fields: fields,
                 footer: footer
             }});
-        } else {
+        } else if (!options.flags.mods) {
             // Looking for a stat
             const outArr = [];
 
@@ -336,7 +361,7 @@ class GuildSearch extends Command {
             }
 
             if (!found) {
-                return msg.edit("Not an acceptable stat to sort by. Try one of the following:" + client.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")));
+                return super.error(message, "Not an acceptable stat to sort by. Try one of the following:" + client.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")), {edit: true, example: "guildsearch c3po -sort gp"});
             }
 
             let guild = null;
@@ -344,23 +369,18 @@ class GuildSearch extends Command {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
-                return message.channel.send({embed: {
-                    author: {
-                        name: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER")
-                    },
-                    description: client.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN")
-                }});
+                return super.error(message, client.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
             }
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
-                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+                return super.error(message, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
             } else {
                 msg.edit("Found guild `" + guild.name + "`!");
                 gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
             }
 
             if (!gRoster.length) {
-                return msg.edit("I can't find any players in the requested guild.");
+                return super.error(message, "I can't find any players in the requested guild.", {edit: true});
             }
             const gStats = await client.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
 
@@ -418,12 +438,86 @@ class GuildSearch extends Command {
             }
 
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
-            msg.edit({embed: {
+            return msg.edit({embed: {
                 author: {
                     name: guild.name
                 },
                 fields: fields,
                 footer: footer
+            }});
+        } else {
+            // Give a general overview of important mods (+10, +15, +20 speed, maybe +100 offense?)
+            let guild = null;
+            try {
+                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e);
+                return super.error(message, client.codeBlock(e), {title: "Something Broke while getting your guild's roster", footer: "Please try again later"});
+            }
+            let gRoster;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                return super.error(message, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
+            }
+
+            if (!gRoster.length) {
+                return super.error(message, "I can't find any players in the requested guild.", {edit: true});
+            }
+
+            const output = [];
+            for (let player of gRoster) {
+                player = await client.swgohAPI.player(player);
+                const mods = {
+                    spd10: 0,
+                    spd15: 0,
+                    spd20: 0,
+                    off100: 0,
+                    name: player.name
+                };
+                
+                player.roster.forEach(c => {
+                    if (c.mods) {
+                        c.mods.forEach(m => {
+                            const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 10);
+                            const off = m.secondaryStat.find(o => (o.unitStat === 41 || o.unitStat === "UNITSTATOFFENSE") && o.value >= 100);
+
+                            if (spd) {
+                                if (spd.value >= 20) {
+                                    mods.spd20 += 1;
+                                } else if (spd.value >= 15) {
+                                    mods.spd15 += 1;
+                                } else {
+                                    mods.spd10 += 1;
+                                }
+                            }
+                            if (off) mods.off100 += 1;
+                        });
+                    }
+                });
+                Object.keys(mods).forEach(k => {
+                    if (mods[k] === 0) mods[k] = "0";
+                });
+                output.push(mods);
+            }
+
+            const table = client.makeTable({
+                spd10: {value: "10+", startWith: "`"},
+                spd15: {value: "15+"},
+                spd20: {value: "20+"},
+                off100:{value: "100+", endWith: "`"},
+                name: {value: "", align: "left"}
+            }, output);
+            const header = [client.expandSpaces("`┏╸╸╸ Spd ╺╺╺┓  Off ​`")];
+
+            const fields = client.msgArray(header.concat(table), "\n", 1024).map(m => {
+                return {name: "-", value: m};
+            });
+
+            return msg.edit({embed: {
+                author: {name: message.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name)},
+                fields: fields
             }});
         }    
     }

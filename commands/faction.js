@@ -14,7 +14,7 @@ class Faction extends Command {
         const charList = client.characters;
         let allyCode = null;
         if (!args[0]) {
-            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+            return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_MISSING_FACTION"), example: "faction sith"});
         } 
         if (args[0].toLowerCase() === "me" || client.isAllyCode(args[0]) || client.isUserID(args[0])) {
             allyCode = args.splice(0, 1);
@@ -24,15 +24,15 @@ class Faction extends Command {
         let searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
         if (searchName === "") {
-            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+            return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_MISSING_FACTION"), example: "faction sith"});
         }
 
         searchName = client.findFaction(searchName);
         if (!searchName) {
-            return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+            return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
         } else if (Array.isArray(searchName)) {
             if (searchName.length > 1) {
-                return message.channel.send("Your query came up with too many results: ```" + searchName.join("\n") + "```");
+                return super.error(message, "Your query came up with too many results: ```" + searchName.map(n => n.toProperCase()).join("\n") + "```");
             } else {
                 searchName = searchName[0];
             }
@@ -46,7 +46,6 @@ class Faction extends Command {
                 const cooldown = client.getPlayerCooldown(message.author.id);
                 const player = await client.swgohAPI.player(allyCode, null, cooldown);
                 const playerChars = [];
-                // chars.forEach(async c => {
                 for (const c of chars) {
                     let found = player.roster.find(char => char.defId === c);
                     if (found) {
@@ -94,7 +93,7 @@ class Faction extends Command {
                     footer: footer
                 }});
             } else {
-                return message.channel.send(message.language.get("COMMAND_FACTION_INVALID_CHAR", message.guildSettings.prefix));
+                return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
             }
         } else {
             return message.channel.send({embed: {

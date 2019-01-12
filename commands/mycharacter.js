@@ -17,24 +17,24 @@ class MyCharacter extends Command {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
 
         if (err) {
-            return message.channel.send("**Error:** `" + err + "`");
+            return super.error(message, err);
         }
 
         const chars = client.findChar(searchChar, client.characters);
         let character;
         if (!searchChar) {
-            return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
+            return super.error(message, message.language.get("BASE_SWGOH_MISSING_CHAR"));
         }
 
         if (chars.length === 0) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+            return super.error(message, message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         } else if (chars.length > 1) {
             const charL = [];
             const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
             charS.forEach(c => {
                 charL.push(c.name);
             });
-            return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(message, message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         } else {
             character = chars[0];
         }
@@ -48,10 +48,10 @@ class MyCharacter extends Command {
             player = await client.swgohAPI.unitStats(allyCode, cooldown);
         } catch (e) {
             console.error(e);
-            return msg.edit({embed: {
-                author: {name: message.language.get("BASE_SOMETHING_BROKE")},
-                description: client.codeBlock(e.message) + "Please try again in a bit"
-            }});
+            return super.error(message, client.codeBlock(e.message), {
+                title: message.lanugage.get("BASE_SOMETHING_BROKE"),
+                footer: "Please try again in a bit."
+            });
         }
 
         if (player && player.stats) {

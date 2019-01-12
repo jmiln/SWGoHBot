@@ -195,8 +195,8 @@ module.exports = class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}abilities <characterName>\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}abilities <characterName>\``,
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Missing character. \nUsage is \`${prefix}abilities <characterName>\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Invalid character. \nUsage is \`${prefix}abilities <characterName>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
             COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}\n**Ability mats needed:     ${mat}**\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_HELP: {
@@ -212,8 +212,8 @@ module.exports = class extends Language {
             },
 
             //Acronym Command
-            COMMAND_ACRONYMS_INVALID: "Acronym lookup provided not available for blank",
-            COMMAND_ACRONYMS_NOT_FOUND: "Acronym could not be found",
+            COMMAND_ACRONYMS_INVALID: "Missing acronym to look up.",
+            COMMAND_ACRONYMS_NOT_FOUND: "Acronym could not be found.",
             COMMAND_ACRONYMS_HELP: {
                 description: "Helps to provide a lookup for the acronyms commonly used in Star Wars: Galaxy of Heros.",
                 actions: [
@@ -314,11 +314,20 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
+                        usage: "charactergear <character> [gearLvl]",
+                        args: {
+                            "character": "The character you want to see the gear for",
+                            "gearLvl": "If you just want to see the gear for a certain gear level"
+                        }
+                    },
+                    {
+                        action: "Check your own gear needs",
+                        actionDesc: "",
                         usage: "charactergear [user] <character> [gearLvl]",
                         args: {
                             "user": "The person you want to see the gear for. (me | userID | mention)",
                             "character": "The character you want to see the gear for",
-                            "gearLvl": "If you just want to see the gear for a certain gear level"
+                            "gearLvl": "If you want to see all needed gear up to a certain gear level"
                         }
                     }
                 ]
@@ -357,12 +366,12 @@ module.exports = class extends Language {
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Valid actions are \`${actions}\`.`,
             COMMAND_EVENT_INVALID_PERMS: "Sorry, but either you're not an admin, or your server leader has not set up the configs.\nYou cannot add or remove an event unless you have the configured admin role.",
-            COMMAND_EVENT_ONE_REPEAT: "Sorry, but you cannot use both `repeat` and `repeatDay` in one event. Please pick one or the other",
+            COMMAND_EVENT_ONE_REPEAT: "You must pick either `repeat` or `repeatDay` for one event. Please pick one or the other",
             COMMAND_EVENT_INVALID_REPEAT: "The repeat is in the wrong format. Example: `5d3h8m` for 5 days, 3 hours, and 8 minutes",
             COMMAND_EVENT_USE_COMMAS: "Please use comma seperated numbers for repeatDay. Example: `1,2,1,3,4`",
             COMMAND_EVENT_INVALID_CHAN: "This channel is invalid, please try again",
             COMMAND_EVENT_CHANNEL_NO_PERM: (channel) => `I don't have permission to send messages in ${channel}, please choose one where I can`,
-            COMMAND_EVENT_NEED_CHAN: "ERROR: I need to configure a channel to send this to. Configure `announceChan` to be able to make events.",
+            COMMAND_EVENT_NEED_CHAN: "You need to configure a channel to send this to. Configure `announceChan` to be able to make events.",
             COMMAND_EVENT_NEED_NAME: "You must give a name for your event.",
             COMMAND_EVENT_EVENT_EXISTS: "That event name already exists. Cannot add it again.",
             COMMAND_EVENT_NEED_DATE: "You must give a date for your event. Accepted format is `DD/MM/YYYY`.",
@@ -382,7 +391,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_JSON_MISSING_DAY: "Missing event date (DD/MM/YYYY)",
             COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Invalid Day (${day}). Must be in the format DD/MM/YYYY`,
             COMMAND_EVENT_JSON_MISSING_TIME: "Missing event time (HH:MM)",
-            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Invalid time (${time}). Must be in format of HH:MM`,
+            COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Invalid time (${time}). Must be in 24hr format HH:MM`,
             COMMAND_EVENT_JSON_INVALID_CHANNEL: (chan) => `Invalid channel (${chan}), wrong ID or channel is not in this server`,
             COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS: (chan) => `Invalid channel (${chan}). I do not have permissions to post there.`,
             COMMAND_EVENT_JSON_NO_2X_REPEAT: "You cannot have both repeat & repeatDay",
@@ -470,18 +479,28 @@ module.exports = class extends Language {
             },
 
             // Faction Command
-            COMMAND_FACTION_INVALID_CHAR: (prefix) => `Invalid faction, usage is \`${prefix}faction <faction>\``,
+            COMMAND_FACTION_MISSING_FACTION: "Missing faction",
+            COMMAND_FACTION_INVALID_FACTION: "Invalid faction",
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
+            COMMAND_FACTION_USAGE: (prefix) => `Usage is \`${prefix}faction <faction>\``,
             COMMAND_FACTION_HELP: {
                 description: "Shows the list of characters in the specified faction.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction [user] <faction>",
+                        usage: "faction <faction>",
+                        args: {
+                            "faction": "The faction you want to see the roster of."
+                        }
+                    },
+                    {
+                        action: "Player Faction",
+                        actionDesc: "See how a player's faction is shaping up",
+                        usage: "faction <user> <faction>",
                         args: {
                             "user": "A way to identify the player. (mention | allyCode | me)",
-                            "faction": "The faction you want to see the roster of. \nKeep in mind, this is as shown in game, so it's rebel, not rebels"
+                            "faction": "The faction you want to see the roster of."
                         }
                     }
                 ]
@@ -522,8 +541,8 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";grandarena <user1> <user2> [-faction faction] [character1] | [character2] | ...",
                         args: {
-                            "users": "A way to identify the . (mention | allyCode | guildName)",
-                            "charcaters": "A list of charcaters (Separated by the | symbol).",
+                            "users": "A way to identify the user. (mention | allyCode | me)",
+                            "characters": "A list of characters (Separated by the | symbol).",
                             "-faction": "A faction you want to show."
                         }
                     }
@@ -596,21 +615,27 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Not Activated (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Star (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Please wait while I search your guild's roster.",
-            COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER: "It seems that no one in your guild has this character unlocked.",
+            COMMAND_GUILDSEARCH_NO_SHIP: "It seems that no one in your guild has this ship unlocked.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER_STAR: (star) => `It seems that no one in your guild has this character unlocked at ${star}* or higher.`,
+            COMMAND_GUILDSEARCH_NO_SHIP_STAR: (star) => `It seems that no one in your guild has this ship unlocked at ${star}* or higher.`,
+            COMMAND_GUILDSEARCH_NO_ZETAS: "It looks like no one in your guild has applied any zetas to this character.",
             COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (Sorted by ${sort})`,
+            COMMAND_GUILDSEARCH_MODS_HEADER: (guildName) => `${guildName}'s mods'`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]",
+                        usage: ";guildsearch [user] <character> [-zetas] [-ships] [-reverse] [-sort type] [starLvl]",
                         args: {
                             "user": "The player who's guild you want to check. (me | userID | mention)",
                             "character": "The character you want to search for.",
                             "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
                             "-reverse": "Reverse the chosen sort",
                             "-sort": "Choose either name, gear, or gp to sort by",
+                            "-zetas": "Show only characters with zetas equipped",
                             "starLvl": "Select the star level you want to see."
                         }
                     },
@@ -623,7 +648,16 @@ module.exports = class extends Language {
                             "character": "The character you want to search for.",
                             "stat": "One of the character's stats from below ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
                         }
-                    }
+                    },
+                    {
+                        action: "Mods overview",
+                        actionDesc: "Compare some of the more important mods across your entire guild",
+                        usage: ";guildsearch [user] -mods",
+                        args: {
+                            "user": "The player who's guild you want to check. (me | userID | mention)",
+                            "-mods": "Tell it you want to see the mods. (-m | -mod)"
+                        }
+                    },
                 ]
             },
 
@@ -645,17 +679,26 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: (guilds, prefix) => ({
-                "header": "INFORMATION",
-                "desc": ` \nCurrently running on **${guilds}** servers \nCurrent prefix: \`${prefix}\``,
+            COMMAND_INFO_OUTPUT: {
+                "header"      : "== Bot Information ==",
+                "statHeader"  : "== Bot Stats ==",
+                "prefix"      : "Prefix",
+                "users"       : "Users",
+                "servers"     : "Servers",
+                "discordVer"  : "Discord.js",
+                "nodeVer"     : "Node",
+                "swgohHeader" : "== SWGoH Stats ==",
+                "players"     : "Players",
+                "guilds"      : "Guilds",
+                "lang"        : "Languages",
                 "links": {
                     "Add me to your server": "- http://swgohbot.com/invite",
-
+                    "Join SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
                     "Support the Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
-            }),
+            },
             COMMAND_INFO_HELP: {
-                description: "Shows useful links pertaining to the bot.",
+                description: "Shows useful info pertaining to the bot.",
                 actions: [
                     {
                         action: "",
@@ -690,7 +733,8 @@ module.exports = class extends Language {
 
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}mods <characterName>\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}mods <characterName>\``,
+            COMMAND_MODS_INVALID_CHARACTER_HEADER: "Invalid character",
+            COMMAND_MODS_USAGE: (prefix) => `Usage is \`${prefix}mods <characterName>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Square:   ${square}\`\n\`Arrow:    ${arrow}\`\n\`Diamond:  ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangle: ${triangle}\`\n\`Circle:   ${circle}\`\n\`Cross:    ${cross}\`\n`,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,

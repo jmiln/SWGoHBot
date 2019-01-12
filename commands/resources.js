@@ -16,11 +16,11 @@ class Resources extends Command {
         const resources = client.resources;
         let categories = Object.keys(resources);
         if (!cat.length) {
-            return message.channel.send(message.language.get("COMMAND_RESOURCES_INVALID_CATEGORY", categories.join(", ")));
+            return super.error(message, message.language.get("COMMAND_RESOURCES_INVALID_CATEGORY", categories.join(", ")));
         }
         cat = cat.join(" ");
         if (!categories.filter(c => c.toLowerCase() === cat.toLowerCase()).length) {
-            return message.channel.send(message.language.get("COMMAND_RESOURCES_INVALID_CATEGORY", categories.join(", ")));
+            return super.error(message, message.language.get("COMMAND_RESOURCES_INVALID_CATEGORY", categories.join(", ")));
         } 
         categories = categories.filter(c => c.toLowerCase() === cat.toLowerCase());
         const category = categories[0];

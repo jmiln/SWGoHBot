@@ -95,7 +95,7 @@ class CommandName extends Command {
                     } else if (fact) {
                         charOut = charOut.concat(client.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === fact)).map(c => c.uniqueName));
                     } else {
-                        return message.channel.send("Sorry, but I did not find a match for the faction: `" + options.subArgs.faction + "`");
+                        return super.error(message, "Sorry, but I did not find a match for the faction: `" + options.subArgs.faction + "`");
                     }
                 }
 
@@ -335,10 +335,7 @@ class CommandName extends Command {
         }
         if (problemArr.length) {
             // Otherwise, spit out the list of issues
-            return message.channel.send({embed: {
-                author: {name: "Error"},
-                description: client.codeBlock(problemArr.map(p => "* " + p).join("\n"))
-            }});
+            return super.error(message, client.codeBlock(problemArr.map(p => "* " + p).join("\n")));
         }
 
     }

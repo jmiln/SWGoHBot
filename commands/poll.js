@@ -23,7 +23,7 @@ class Poll extends Command {
     async run(client, message, [action, ...opts], options) {
         const level = options.level;
         if (!action) {
-            return message.channel.send(message.language.get("COMMAND_POLL_NO_ARG"));
+            return super.error(message, message.language.get("COMMAND_POLL_NO_ARG"));
         }
         let poll = { // ID = guildID-channelID
             "question": "",
@@ -57,24 +57,24 @@ class Poll extends Command {
                     const perms = client.guilds.get(guildID).channels.get(chanID).permissionsFor(message.author.id);
                     if (!perms || !perms.has("READ_MESSAGES")) {
                         // The guild and channel exist, but the message author cannot see it
-                        return message.channel.send(message.language.get("COMMAND_POLL_NO_ACCESS"));
+                        return super.error(message, message.language.get("COMMAND_POLL_NO_ACCESS"));
                     }
                 }
                 if (message.guild && message.guild.id !== guildID) {
                     // Make it so remote voting is only usable within DMs or in the same guild
-                    return message.channel.send("Sorry, but you must be in a DM or in the same server to vote remotely.");
+                    return super.error(message, "Sorry, but you must be in a DM or in the same server to vote remotely.");
                 }
             } else {
-                return message.channel.send(message.language.get("COMMAND_POLL_INVALID_ID"));
+                return super.error(message, message.language.get("COMMAND_POLL_INVALID_ID"));
             }
             const actions = ["view", "check"];
             if (!actions.includes(action.toLowerCase()) && !action.match(/\d/)) {
-                return message.channel.send(message.language.get("COMMAND_POLL_REMOTE_OPTS"));
+                return super.error(message, message.language.get("COMMAND_POLL_REMOTE_OPTS"));
             }
             // If they get past all the stuff before here, they should be good to go
         } else if (!message.guild) {
             // If they're trying to use this in a DM
-            return message.channel.send(message.language.get("COMMAND_POLL_DM_USE", message.guildSettings.prefix));
+            return super.error(message, message.language.get("COMMAND_POLL_DM_USE", message.guildSettings.prefix));
         } else {
             // If they're just voting on the channel's poll
             pollID = `${message.guild.id}-${message.channel.id}`;
@@ -93,24 +93,24 @@ class Poll extends Command {
             case "create": {
                 // Create a poll (lvl 3+)
                 if (level < 3) {
-                    return message.channel.send(message.language.get("COMMAND_MISSING_PERMS"));
+                    return super.error(message, message.language.get("COMMAND_MISSING_PERMS"));
                 }
                 if (exists) {
-                    return message.channel.send(message.language.get("COMMAND_POLL_ALREADY_RUNNING"));
+                    return super.error(message, message.language.get("COMMAND_POLL_ALREADY_RUNNING"));
                 }
                 if (!optsJoin[0]) {
-                    return message.channel.send(message.language.get("COMMAND_POLL_MISSING_QUESTION"));
+                    return super.error(message, message.language.get("COMMAND_POLL_MISSING_QUESTION"));
                 } else {
                     poll.question = optsJoin[0];
                     optsJoin.splice(0,1);
                     if (poll.question.length >= 256) {
-                        return message.channel.send(message.language.get("COMMAND_POLL_TITLE_TOO_LONG"));
+                        return super.error(message, message.language.get("COMMAND_POLL_TITLE_TOO_LONG"));
                     }
                 }
                 if (optsJoin.length < 2) {
-                    return message.channel.send(message.language.get("COMMAND_POLL_TOO_FEW_OPT"));
+                    return super.error(message, message.language.get("COMMAND_POLL_TOO_FEW_OPT"));
                 } else if (optsJoin.length > 10) {
-                    return message.channel.send(message.language.get("COMMAND_POLL_TOO_MANY_OPT"));
+                    return super.error(message, message.language.get("COMMAND_POLL_TOO_MANY_OPT"));
                 } else {
                     poll.options = optsJoin.map(opt => opt.trim());
                 }
@@ -137,7 +137,7 @@ class Poll extends Command {
             case "check": {
                 // Check the current poll
                 if (!exists) {
-                    return message.channel.send(message.language.get("COMMAND_POLL_NO_POLL"));
+                    return super.error(message, message.language.get("COMMAND_POLL_NO_POLL"));
                 } else {
                     if (poll.question.length > 256) {
                         // Should not happen, but just in case
@@ -163,10 +163,10 @@ class Poll extends Command {
             case "end": {
                 // Close the current poll and send the results (lvl 3+)
                 if (level < 3) {
-                    return message.channel.send(message.language.get("COMMAND_MISSING_PERMS"));
+                    return super.error(message, message.language.get("COMMAND_MISSING_PERMS"));
                 }
                 if (!exists) {
-                    return message.channel.send(message.language.get("COMMAND_POLL_NO_POLL"));
+                    return super.error(message, message.language.get("COMMAND_POLL_NO_POLL"));
                 } else {
                     // Delete the current poll
                     await client.database.models.polls.destroy({where: {id: pollID}})
@@ -181,7 +181,7 @@ class Poll extends Command {
                         })
                         .catch(() => { 
                             // Or, if it breaks, tell them that it broke
-                            return message.channel.send(message.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
+                            return super.error(message, message.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
                         });
                 }
                 break;
@@ -190,15 +190,15 @@ class Poll extends Command {
                 // Someone voting on an option
                 // Check if there is a poll going, then if there is, vote, else tell em that there isn"t 
                 if (!exists) {
-                    return message.channel.send(message.language.get("COMMAND_POLL_NO_POLL"));
+                    return super.error(message, message.language.get("COMMAND_POLL_NO_POLL"));
                 } else {
                     const opt = Math.abs(parseInt(action)) - 1;
                     if (poll.options.length <= opt || opt < 0) {
-                        return message.channel.send(message.language.get("COMMAND_POLL_INVALID_OPTION"));
+                        return super.error(message, message.language.get("COMMAND_POLL_INVALID_OPTION"));
                     } else {
                         let voted = -1;
                         if (poll.votes[message.author.id] === opt) {
-                            return message.channel.send(message.language.get("COMMAND_POLL_SAME_OPT", poll.options[opt]));
+                            return super.error(message, message.language.get("COMMAND_POLL_SAME_OPT", poll.options[opt]));
                         } else if (poll.votes.hasOwnProperty(message.author.id)) {
                             voted = poll.votes[message.author.id];
                         }
@@ -221,11 +221,11 @@ class Poll extends Command {
                         await message.author.send(message.language.get("COMMAND_POLL_ME1", poll.pollID, pollCheck(poll)));
                         return message.author.send(message.language.get("COMMAND_POLL_ME2", message.guildSettings.prefix, poll.pollID));
                     } catch (e) {
-                        return message.channel.send(message.language.get("BASE_CANNOT_DM"));
+                        return super.error(message, message.language.get("BASE_CANNOT_DM"));
                     }
                 } else {
                     // no poll active
-                    return message.channel.send(message.language.get("COMMAND_POLL_NO_POLL"));
+                    return super.error(message, message.language.get("COMMAND_POLL_NO_POLL"));
                 }
             }
             default: {

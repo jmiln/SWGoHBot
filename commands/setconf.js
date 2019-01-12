@@ -18,7 +18,7 @@ class Setconf extends Command {
         const guildSettings = await client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
         const langList = Object.keys(client.languages);
-        const swgohLangList = ["CHS_CN", "CHT_CN", "ENG_US", "FRE_FR", "GER_DE", "IND_ID", "ITA_IT", "JPN_JP", "KOR_KR", "POR_BR", "RUS_RU", "SPA_XM", "THA_TH", "TUR_TR"];
+        const swgohLangList = client.swgohLangList;
         const defSet = config.defaultSettings;
         const rawAttr = client.database.models.settings.rawAttributes;
         const onVar = ["true", "on", "enable"];
@@ -38,14 +38,14 @@ class Setconf extends Command {
                             value = value.join(" ").replace(/\n\s+/g, "\n");
                         }
                         if (key === "prefix" && value.indexOf(" ") > -1) {
-                            return message.channel.send(message.language.get("COMMAND_SETCONF_PREFIX_TOO_LONG"));
+                            return super.error(message, message.language.get("COMMAND_SETCONF_PREFIX_TOO_LONG"));
                         } else if (key === "language") {
                             if (!langList.includes(value)) {
-                                return message.channel.send(message.language.get("COMMAND_SETCONF_INVALID_LANG", value, langList.join(", ")));
+                                return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", value, langList.join(", ")));
                             }
                         } else if (key === "swgohLanguage") {
                             if (!swgohLangList.includes(value)) {
-                                return message.channel.send(message.language.get("COMMAND_SETCONF_INVALID_LANG", value, swgohLangList.join(", ")));
+                                return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", value, swgohLangList.join(", ")));
                             }
                         } else if (key === "timezone") {
                             if (!moment.tz.zone(value)) { // Valid time zone
@@ -53,8 +53,8 @@ class Setconf extends Command {
                             }
                         } else if (key === "announceChan") {
                             const newChannel = message.guild.channels.find("name", value);
-                            if (!newChannel) return message.channel.send(message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN", value));
-                            if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return message.channel.send(message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS"));
+                            if (!newChannel) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN", value));
+                            if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS"));
                         }
                         client.database.models.settings.update({[key]: value}, {where: {guildID: message.guild.id}});
                         return message.channel.send("Config setting `" + key + "` changed to `" + value + "`");
@@ -75,21 +75,21 @@ class Setconf extends Command {
                         if (action === "add") { 
                             if (key === "adminRole") { // If it needs a role, make sure it's a valid role
                                 const role = message.guild.roles.find("name", value);
-                                if (!role) return message.channel.send(message.language.get("COMMAND_SETCONF_ADMINROLE_MISSING_ROLE", value));
+                                if (!role) return super.error(message, message.language.get("COMMAND_SETCONF_ADMINROLE_MISSING_ROLE", value));
                             }
                             if (!valArray.includes(value)) {
                                 valArray.push(value);
                             } else {
-                                return message.channel.send(message.language.get("COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS", value));
+                                return super.error(message, message.language.get("COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS", value));
                             }
                         } else if (action === "remove") {
                             if (valArray.includes(value)) {
                                 valArray.splice(valArray.indexOf(value), 1);
                             } else {
-                                return message.channel.send(message.language.get("COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG", key, value));
+                                return super.error(message, message.language.get("COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG", key, value));
                             }
                         } else {
-                            return message.reply(message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
+                            return super.error(message, message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
                         }
                         client.database.models.settings.update({[key]: [...new Set(valArray)]}, {where: {guildID: message.guild.id}});
                         return message.channel.send(message.language.get("COMMAND_SETCONF_ARRAY_SUCCESS", key, value, (action === "add" ? "added to" : "removed from")));
@@ -100,7 +100,7 @@ class Setconf extends Command {
                         } else if (offVar.includes(value[0].toLowerCase())) {
                             value = false;
                         } else {
-                            return message.channel.send(message.language.get("COMMAND_INVALID_BOOL"));
+                            return super.error(message, message.language.get("COMMAND_INVALID_BOOL"));
                         }
                         client.database.models.settings.update({[key]: value}, {where: {guildID: message.guild.id}});
                         return message.channel.send("Value for `" + key + "` changed to `" + value + "`");
@@ -110,15 +110,15 @@ class Setconf extends Command {
                         if (value[0]) {
                             action = value.splice(0, 1)[0];
                         } else {
-                            return message.reply(message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
+                            return super.error(message, message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
                         }
                         if (!value[0]) {
-                            return message.reply("You need a value to " + action);
+                            return super.error(message, "You need a value to " + action);
                         }
                         value = parseInt(value[0]);
 
                         if (isNaN(value)) {
-                            return message.channel.send("Invalid value, make sure you're trying to add a number in.");
+                            return super.error(message, "Invalid value, make sure you're trying to add a number in.");
                         }
         
                         const valArray = guildConf[key];
@@ -126,18 +126,18 @@ class Setconf extends Command {
                         if (action === "add") { 
                             if (key === "adminRole") { // If it needs a role, make sure it's a valid role
                                 const role = message.guild.roles.find("name", value);
-                                if (!role) return message.channel.send(message.language.get("COMMAND_SETCONF_ADMINROLE_MISSING_ROLE", value));
+                                if (!role) return super.error(message, message.language.get("COMMAND_SETCONF_ADMINROLE_MISSING_ROLE", value));
                             }
                             if (!valArray.includes(value)) {
                                 valArray.push(value);
                             } else {
-                                return message.channel.send(message.language.get("COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS", value));
+                                return super.error(message, message.language.get("COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS", value));
                             }
                         } else if (action === "remove") {
                             if (valArray.includes(value)) {
                                 valArray.splice(valArray.indexOf(value), 1);
                             } else {
-                                return message.channel.send(message.language.get("COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG", key, value));
+                                return super.error(message, message.language.get("COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG", key, value));
                             }
                         } else {
                             return message.reply(message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
@@ -147,11 +147,11 @@ class Setconf extends Command {
                     }
                     default: 
                         // Didn't find it?
-                        message.channel.send("Sorry, but something went wrong.");
+                        super.error(message, "Sorry, but something went wrong.");
                 }
             } else {
                 // No such key
-                return message.reply(message.language.get("COMMAND_SETCONF_NO_KEY", guildConf.prefix));
+                return super.error(message, message.language.get("COMMAND_SETCONF_NO_KEY", guildConf.prefix));
             }
         }
 

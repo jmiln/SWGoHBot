@@ -23,7 +23,7 @@ class Zetas extends Command {
 
     async run(client, message, args, options) { // eslint-disable-line no-unused-vars
         if (options.flags.g && options.flags.r) {
-            return message.channel.send(message.language.get("COMMAND_ZETA_CONFLICTING_FLAGS"));
+            return super.error(message, message.language.get("COMMAND_ZETA_CONFLICTING_FLAGS"));
         }
 
         const filters = ["pit", "pvp", "sith", "tank", "tb", "tw"];
@@ -31,11 +31,11 @@ class Zetas extends Command {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
         if (err) {
-            return message.channel.send("**Error:** `" + err + "`");
+            return super.error(message, "**Error:** `" + err + "`");
         }
         
         if (searchChar && options.flags.r && !filters.includes(searchChar.toLowerCase())) { 
-            return message.channel.send(message.language.get("COMMAND_ZETA_REC_BAD_FILTER", filters.join(", ")));
+            return super.error(message, message.language.get("COMMAND_ZETA_REC_BAD_FILTER", filters.join(", ")));
         }             
 
         let character = null;
@@ -48,12 +48,12 @@ class Zetas extends Command {
                 charS.forEach(c => {
                     charL.push(c.name);
                 });
-                return message.channel.send(message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
             } else if (chars.length === 1) {
                 character = chars[0];
             } else {
                 // No character found
-                return message.channel.send(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+                return super.error(message, message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             }
         }
         
@@ -66,7 +66,7 @@ class Zetas extends Command {
             player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log("Error: Broke while trying to get player data in zetas: " + e);
-            return msg.edit(message.language.get("BASE_SWGOH_NO_ACCT"));
+            return super.error(message, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});
         }
 
         player.roster = player.roster.filter(c => c.crew.length === 0);
@@ -142,7 +142,7 @@ class Zetas extends Command {
 
             const sortBy = searchChar ? searchChar : "versa";
             if (!zetas || !zetas.zetas) {
-                return msg.edit("Soething broke, I can't find the zetas list");
+                return super.error(message, ("Soething broke, I can't find the zetas list"), {edit: true});
             }
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {
@@ -204,8 +204,8 @@ class Zetas extends Command {
             try {
                 guild = await client.swgohAPI.guild(player.allyCode, null, cooldown);
                 // TODO  Lang this
-                if (!guild) return message.channel.send("Cannot find guild");
-                if (!guild.roster) return message.channel.send("Cannot find your guild's roster");
+                if (!guild) return super.error(message, "Cannot find guild");
+                if (!guild.roster) return super.error(message, "Cannot find your guild's roster");
 
                 const zetaList = {};
                 for (let p = 0; p < guild.roster.length; p++) {
@@ -310,7 +310,7 @@ class Zetas extends Command {
                     }});
                 }
             } catch (e) {
-                msg.edit(e.message);
+                super.error(message, (e.message), {edit: true});
             }
         } 
     }

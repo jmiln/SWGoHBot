@@ -44,9 +44,11 @@ class CurrentEvents extends Command {
         // console.log(gohEvents.map(e => e.id));
 
         // Let them specify the max # of events to show
-        let eNum = parseInt(num);
-        if (isNaN(eNum)) {
+        let eNum;
+        if (!num || isNaN(parseInt(num))) {
             eNum = DEF_NUM;
+        } else {
+            eNum = parseInt(num);
         }
 
         let filter = [];

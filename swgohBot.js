@@ -33,6 +33,7 @@ require("./modules/functions.js")(client);
 // Languages
 client.languages = {};
 client.reloadLanguages();
+client.swgohLangList = ["CHS_CN", "CHT_CN", "ENG_US", "FRE_FR", "GER_DE", "IND_ID", "ITA_IT", "JPN_JP", "KOR_KR", "POR_BR", "RUS_RU", "SPA_XM", "THA_TH", "TUR_TR"];
 
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -95,6 +96,10 @@ const init = async () => {
         const MongoClient = require("mongodb").MongoClient;
         client.mongo = await MongoClient.connect("mongodb://localhost:27017/", { useNewUrlParser: true } );
         client.cache = await require("./modules/cache.js")(client.mongo);
+
+
+        client.swgohPlayerCount = await client.mongo.db("swapi").collection("players").find({}).count();
+        client.swgohGuildCount  = await client.mongo.db("swapi").collection("guilds").find({}).count();
 
         // Load up the api connector/ helpers
         const SwgohHelp = require("api-swgoh-help");
