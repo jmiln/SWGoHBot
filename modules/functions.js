@@ -731,7 +731,6 @@ module.exports = (client) => {
                     if (!v[h]) return 0;
                     return v[h].toString().length;
                 })) + 2;
-            // }
             }
         });
 
