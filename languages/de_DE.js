@@ -195,8 +195,8 @@ module.exports = class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Bitte versuche es etwas später nocheinmal.",
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. Verwendung \`${prefix}abilities <CharakterName>\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. Verwendung \`${prefix}abilities <CharakterName>\``,
+            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. \n Verwendung \`${prefix}abilities <CharakterName auf englisch>\``,
+            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. \nVerwendung \`${prefix}abilities <CharakterName auf englisch>\``,
             COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Abklingzeit Faehigkeit:** ${aCooldown}\n`,
             COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Faehigkeiten-Typ:** ${aType}\n**Faehigkeitenmaterial benoetigt:     ${mat}**\n${cdString}${aDesc}`,
             COMMAND_ABILITIES_HELP: {
@@ -212,8 +212,8 @@ module.exports = class extends Language {
             },
 
             //Acronym Command
-            COMMAND_ACRONYMS_INVALID: "Akronym Suche ungueltig fuer blank",
-            COMMAND_ACRONYMS_NOT_FOUND: "Akronym konnte nicht gefunden werden",
+            COMMAND_ACRONYMS_INVALID: "Es fehlt das Akronym nach dem gesucht werden soll",
+            COMMAND_ACRONYMS_NOT_FOUND: "Akronym konnte nicht gefunden werden.",
             COMMAND_ACRONYMS_HELP: {
                 description: "Hilfe um nach gebraeuchlichen Akronymen in Star Wars: Galaxy of Heroes zu suchen.",
                 actions: [
@@ -314,11 +314,20 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "charactergear [user] <Charakter> [Gearlevel]",
+                        usage: "charactergear <charakter auf englisch> [gearLvl]",
+	                        args: {
+	                            "charakter auf englisch": "Der Charakter fuer den du die Ausruestung suchst",
+	                            "gearLvl": "Wenn du die Ausruestung einer bestimmten Stufe sehen willst"
+	                        }
+	                    },
+	                    {
+	                        action: "Pruefe deinen eigenen Ausruestungsbedarf",
+	                        actionDesc: "",
+                        usage: "charactergear [user] <Charakter auf englisch> [gearLvl]",
                         args: {
                             "user": "Den Spieler dessen Ausruestung du sehen moechtest (me | userID | mention)",
-                            "Charakter": "Den Charakter dessen Ausruestung du sehen moechtest",
-                            "Gearlevel": "Wenn du nur die Ausruestung fuer ein bestimmtes Gearlevel sehen moechtest"
+                            "Charakter auf englisch": "Den Charakter dessen Ausruestung du sehen moechtest",
+                            "gearLvl": "Wenn du die gesamte Ausruestung bis zu einer bestimmten Ausruestungsstufe sehen moechtest"
                         }
                     }
                 ]
