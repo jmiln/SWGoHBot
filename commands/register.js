@@ -24,7 +24,7 @@ class Register extends Command {
         action = action.toLowerCase();
         if (action !== "update") {
             if (!userID) {
-                return message.channel.send(message.language.get("COMMAND_REGISTER_MISSING_ARGS"));
+                return super.error(message, message.language.get("COMMAND_REGISTER_MISSING_ARGS"));
             } else {
                 if (userID === "me") {
                     userID = message.author.id;
@@ -33,16 +33,16 @@ class Register extends Command {
                     // If they are trying to add someone else and they don"t have the right perms, stop em
                     if (userID !== message.author.id) {
                         if (level < 3) {
-                            return message.channel.send(message.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
+                            return super.error(message, message.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
                         } else if (!message.guild.members.has(userID) && action === "add" && level < 3) {  // If they are trying to add someone that is not in their server
-                            return message.channel.send(message.language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
+                            return super.error(message, message.language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
                         } else if (action === "remove" && level < 8) {   // If they are trying to remove someone else 
-                            return message.channel.send(message.language.get("COMMAND_REGISTER_CANNOT_REMOVE", message.guildSettings.prefix));
+                            return super.error(message, message.language.get("COMMAND_REGISTER_CANNOT_REMOVE", message.guildSettings.prefix));
                         }
                     }
                 } else {
                     // Bad name, grumblin time
-                    return message.channel.send(message.language.get("COMMAND_SHARDTIMES_INVALID_USER"));
+                    return super.error(message, message.language.get("COMMAND_SHARDTIMES_INVALID_USER"));
                 }
             }
             exists = await client.database.models.allyCodes.findOne({where: {id: userID}})
@@ -53,13 +53,13 @@ class Register extends Command {
         switch (action) {
             case "add":
                 if (!allyCode) {
-                    return message.channel.send(message.language.get("COMMAND_REGISTER_MISSING_ALLY"));
+                    return super.error(message, message.language.get("COMMAND_REGISTER_MISSING_ALLY"));
                 } else {
                     if (client.isAllyCode(allyCode)) {
                         allyCode = allyCode.replace(/[^\d]*/g, "");
                     } else {
                         // Bad code, grumblin time
-                        return message.channel.send(message.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
+                        return super.error(message, message.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
                     }
                 }
                 if (!exists) {
@@ -68,7 +68,7 @@ class Register extends Command {
                         try {
                             await client.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
                                 if (!u) {
-                                    await msg.edit(message.language.get("COMMAND_REGISTER_FAILURE"));
+                                    super.error(message, (message.language.get("COMMAND_REGISTER_FAILURE")), {edit: true});
                                 } else {
                                     await client.database.models.allyCodes.create({ id: userID, allyCode: allyCode })
                                         .then(async () => {
@@ -78,19 +78,23 @@ class Register extends Command {
                                             await msg.edit(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
                                         })
                                         .catch(e => {
-                                            msg.edit("Something went wrong. " + e.message);
                                             client.log("REGISTER", "Broke while trying to link new user: " + e);
+                                            return super.error(msg, client.codeBlock(e.message), {
+                                                title: message.lanugage.get("BASE_SOMETHING_BROKE"),
+                                                footer: "Please try again in a bit.",
+                                                edit: true
+                                            });
                                         });
                                 }
                             });
                         } catch (e) {
-                            msg.edit("Something broke. Make sure you've got the correct ally code" + client.codeBlock(e.message));
+                            super.error(message, ("Something broke. Make sure you've got the correct ally code" + client.codeBlock(e.message)));
                             // msg.edit("Invalid ally code. Please make sure you enter the correct code.");
                             console.log("ERROR[REG]: Incorrect Ally Code: " + e);
                         }
                     });
                 } else {
-                    return message.channel.send(message.language.get("COMMAND_REGISTER_ALREADY_ADDED", message.guildSettings.prefix));
+                    return super.error(message, message.language.get("COMMAND_REGISTER_ALREADY_ADDED", message.guildSettings.prefix));
                 }
                 break;
             case "update": {
@@ -108,10 +112,10 @@ class Register extends Command {
                 let ac;
                 if (!allyCodes.length) {
                     // Tell em no match found
-                    return message.channel.send("I didn't find any results for that user");
+                    return super.error(message, "I didn't find any results for that user");
                 } else if (allyCodes.length > 1) {
                     // Tell em there's too many
-                    return message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific, or use their ally code, Discord userID, or mention them.");
+                    return super.error(message, "Found " + allyCodes.length + " matches. Please try being more specific, or use their ally code, Discord userID, or mention them.");
                 } else {
                     ac = allyCodes[0];
                 }
@@ -138,13 +142,13 @@ class Register extends Command {
                         try {
                             await client.swgohAPI.player(ac, null, cooldown).then(async (u) => {
                                 if (!u) {
-                                    await msg.edit(message.language.get("COMMAND_REGISTER_UPDATE_FAILURE"));
+                                    await super.error(message, (message.language.get("COMMAND_REGISTER_UPDATE_FAILURE")), {edit: true});
                                 } else {
                                     await msg.edit(message.language.get("COMMAND_REGISTER_UPDATE_SUCCESS", u.name));
                                 }
                             });
                         } catch (e) {
-                            return msg.edit("Error: " + client.codeBlock(e));
+                            return super.error(message, client.codeBlock(e), {edit: true});
                         }
                     }
                 });
@@ -160,7 +164,11 @@ class Register extends Command {
                         })
                         .catch((e) => {
                             client.log("REGISTER", "Broke trying to unlink: " + e);
-                            message.channel.send("Something went wrong, please try again.");
+                            return super.error(message, client.codeBlock(e.message), {
+                                title: message.lanugage.get("BASE_SOMETHING_BROKE"),
+                                footer: "Please try again in a bit.",
+                                edit: true
+                            });
                         });
                 }
                 break;

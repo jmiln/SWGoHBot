@@ -64,7 +64,7 @@ class MyMods extends Command {
                 charS.forEach(c => {
                     charL.push(c.name);
                 });
-                return msg.edit(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+                return super.error(message, (message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n"))), {edit: true});
             } else {
                 character = chars[0];
             }
@@ -78,7 +78,7 @@ class MyMods extends Command {
 
             if (!player) {
                 // TODO Lang this
-                return msg.edit("Sorry, but I could not load your profile at this time.");
+                return super.error(message, ("Sorry, but I could not load your profile at this time."), {edit: true});
             }
 
             const footer = client.updatedFooter(player.updated, message, "player", cooldown);
@@ -199,17 +199,17 @@ class MyMods extends Command {
                 });
             }
             if (!found) {
-                return msg.edit(message.language.get("COMMAND_MYMODS_BAD_STAT", client.codeBlock(Object.keys(checkableStats).join("\n"))));
+                return super.error(message, (message.language.get("COMMAND_MYMODS_BAD_STAT", client.codeBlock(Object.keys(checkableStats).join("\n")))), {edit: true});
             }
             const statToCheck = options.subArgs.b;
             let stats;
             try { 
                 stats = await client.swgohAPI.unitStats(allyCode, cooldown);
             } catch (e) {
-                return msg.edit({embed: {
-                    author: {name: "Something Broke"},
-                    description: client.codeBlock(e.message) + "Please try again in a bit"
-                }});
+                return super.error(message, client.codeBlock(e.message), {
+                    title: message.lanugage.get("BASE_SOMETHING_BROKE"),
+                    footer: "Please try again in a bit."
+                });
             }
             
             let updated;

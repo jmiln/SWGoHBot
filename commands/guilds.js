@@ -50,7 +50,7 @@ class Guilds extends Command {
         if (userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
             userID = await client.getAllyCode(message, userID);
             if (!userID.length) {
-                return msg.edit(message.language.get("COMMAND_GUILDS_REG_NEEDED"));
+                return super.error(message, message.language.get("COMMAND_GUILDS_REG_NEEDED"), {edit: true, example: "guilds me"});
             }
             userID = userID[0];
         } else {
@@ -70,17 +70,17 @@ class Guilds extends Command {
             }
         } catch (e) {
             console.log("ERROR(guilds): " + e);
-            return msg.edit("Error: " + client.codeBlock(e));
+            return super.error(message, client.codeBlock(e), {edit: true, example: "guilds me"});
         }
 
         if (!guild) {
-            return msg.edit(message.language.get("COMMAND_GUILDS_NO_GUILD"));
+            return super.error(message, message.language.get("COMMAND_GUILDS_NO_GUILD"), {edit: true, example: "guilds me"});
         } 
 
         if (options.flags.roster) {
             // Display the roster with gp etc
             if (!guild.roster.length) {
-                return msg.edit(message.language.get("COMMAND_GUILDS_NO_GUILD"));
+                return super.error(message, (message.language.get("COMMAND_GUILDS_NO_GUILD")), {edit: true, example: "guilds me"});
             }
             let sortedGuild;
             if (options.flags.a || options.subArgs.sort.toLowerCase() === "name") {
@@ -160,7 +160,7 @@ class Guilds extends Command {
             // Spit out a general summary of guild characters and such related to tw
             let gRoster ;
             if (!guild || !guild.roster || !guild.roster.length) {
-                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+                return super.error(message, (message.language.get("BASE_SWGOH_NO_GUILD")), {edit: true, example: "guilds me -twsumary"});
             } else {
                 msg.edit("Found guild `" + guild.name + "`!");
                 gRoster = guild.roster.map(m => m.allyCode);
@@ -171,12 +171,10 @@ class Guilds extends Command {
                 guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e); 
-                return message.channel.send({embed: {
-                    author: {
-                        name: "Something Broke while getting your guild's characters"
-                    },  
-                    description: client.codeBlock(e) + "Please try again in a bit."
-                }});
+                return super.error(message, client.codeBlock(e), {
+                    title: "Something Broke while getting your guild's characters",
+                    footer: "Please try again in a bit."
+                });
             }
             // Possibly put this in the guildConf so guilds can have custom lists?
             const guildChecklist = [

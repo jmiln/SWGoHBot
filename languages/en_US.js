@@ -679,17 +679,26 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: (guilds, prefix) => ({
-                "header": "INFORMATION",
-                "desc": ` \nCurrently running on **${guilds}** servers \nCurrent prefix: \`${prefix}\``,
+            COMMAND_INFO_OUTPUT: () => ({
+                "header": "== Bot Information ==",
+                "statHeader": "== Bot Stats ==",
+                "prefix": "Prefix",
+                "users": "Users",
+                "servers": "Servers",
+                "discordVer": "Discord.js",
+                "nodeVer": "Node",
+                "swgohHeader": "== SWGoH Stats ==",
+                "players": "Players",
+                "guilds": "Guilds",
+                "lang": "Languages",
                 "links": {
                     "Add me to your server": "- http://swgohbot.com/invite",
-
+                    "Join SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
                     "Support the Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
             }),
             COMMAND_INFO_HELP: {
-                description: "Shows useful links pertaining to the bot.",
+                description: "Shows useful info pertaining to the bot.",
                 actions: [
                     {
                         action: "",
@@ -724,7 +733,8 @@ module.exports = class extends Language {
 
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}mods <characterName>\``,
-            COMMAND_MODS_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}mods <characterName>\``,
+            COMMAND_MODS_INVALID_CHARACTER_HEADER: "Invalid character",
+            COMMAND_MODS_USAGE: (prefix) => `Usage is \`${prefix}mods <characterName>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Square:   ${square}\`\n\`Arrow:    ${arrow}\`\n\`Diamond:  ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangle: ${triangle}\`\n\`Circle:   ${circle}\`\n\`Cross:    ${cross}\`\n`,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,

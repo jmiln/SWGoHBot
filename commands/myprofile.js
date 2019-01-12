@@ -16,9 +16,9 @@ class MyProfile extends Command {
         // const lang = message.guildSettings.swgoghLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
+            return super.error(message, message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
         } else if (allyCodes.length > 1) {
-            return message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific");
+            return super.error(message, "Found " + allyCodes.length + " matches. Please try being more specific");
         }
         const allyCode = allyCodes[0];
 
@@ -28,7 +28,7 @@ class MyProfile extends Command {
             player = await client.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log("Broke getting player in myprofile: " + e);
-            return message.channel.send("ERROR: Please make sure you are registered with a valid ally code");
+            return super.error(message, "Please make sure you are registered with a valid ally code");
         }
 
         const gpFull = player.stats.find(s => s.nameKey === "Galactic Power:" || s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;

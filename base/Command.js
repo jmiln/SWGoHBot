@@ -110,15 +110,25 @@ class Command {
         if (options.example) {
             err += `\n\n**Example:**${message.client.codeBlock(message.guildSettings.prefix + options.example)}`;
         }
-
-        return message.channel.send({embed: {
-            author: {name: title},
-            description: err,
-            color: color,
-            footer: {
-                text: footer
-            }
-        }});
+        if (options.edit) {
+            message.edit({embed: {
+                author: {name: title},
+                description: err,
+                color: color,
+                footer: {
+                    text: footer
+                }
+            }});
+        } else {
+            return message.channel.send({embed: {
+                author: {name: title},
+                description: err,
+                color: color,
+                footer: {
+                    text: footer
+                }
+            }});
+        }
     }
 }
 

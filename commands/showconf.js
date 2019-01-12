@@ -36,7 +36,7 @@ class Showconf extends Command {
             if (found) {
                 guildID = args[0];
             } else {
-                return message.channel.send(`Sorry, but I don't seem to be in the guild ${args[0]}.`);
+                return super.error(message, `Sorry, but I don't seem to be in the guild ${args[0]}.`);
             }
 
         } else {

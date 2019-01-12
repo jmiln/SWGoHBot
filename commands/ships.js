@@ -27,15 +27,15 @@ class Ships extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            return message.channel.send(message.language.get("COMMAND_SHIPS_NEED_CHARACTER", message.guildSettings.prefix));
+            return super.error(message, message.language.get("COMMAND_SHIPS_NEED_CHARACTER", message.guildSettings.prefix));
         }
 
         // Find any characters that match that
         const ships = client.findChar(searchName, shipList, true);
         if (ships.length <= 0) {
-            return message.channel.send(message.language.get("COMMAND_SHIPS_INVALID_CHARACTER", message.guildSettings.prefix));
+            return super.error(message, message.language.get("COMMAND_SHIPS_INVALID_CHARACTER", message.guildSettings.prefix));
         } else if (ships.length > 1) {
-            return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", ships.map(s => `${s.name}${s.crew.length ? "\n" + s.crew.map(c => "- " + c).join("\n") + "\n" : "\n"}`).join("\n")));
+            return super.error(message, message.language.get("BASE_SWGOH_CHAR_LIST", ships.map(s => `${s.name}${s.crew.length ? "\n" + s.crew.map(c => "- " + c).join("\n") + "\n" : "\n"}`).join("\n")));
         }
 
         const ship = ships[0];

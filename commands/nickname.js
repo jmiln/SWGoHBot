@@ -17,7 +17,7 @@ class Nickname extends Command {
                 if (args.length > 0) {
                     const name = String(args.join(" "));
                     if (name.length > 32) {
-                        return message.channel.send(message.language.get("COMMAND_NICKNAME_TOO_LONG"));
+                        return super.error(message, message.language.get("COMMAND_NICKNAME_TOO_LONG"));
                     }
                     message.guild.member(client.user).setNickname(name);
                 } else {
@@ -25,7 +25,7 @@ class Nickname extends Command {
                 }
                 message.channel.send(message.language.get("COMMAND_NICKNAME_SUCCESS"));
             } else {
-                message.channel.send(message.language.get("COMMAND_NICKNAME_FAILURE"));
+                super.error(message, message.language.get("COMMAND_NICKNAME_FAILURE"));
             }
         } catch (e) {
             client.log("Broke", "I broke while trying to set a nickname\n" + e);

@@ -10,8 +10,6 @@ class Help extends Command {
         });
     }
 
-
-
     run(client, message, args, options) {
         const level = options.level;
         const config = client.config;
@@ -45,7 +43,7 @@ class Help extends Command {
             } else if (client.aliases.has(args[0])) {
                 command = client.commands.get(client.aliases.get(args[0]));
             } else {
-                return message.channel.send(message.language.get("COMMAND_RELOAD_INVALID_CMD", args[0]));
+                return super.error(message, message.language.get("COMMAND_RELOAD_INVALID_CMD", args[0]));
             }
             
             client.helpOut(message, command);

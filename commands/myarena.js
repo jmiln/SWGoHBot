@@ -21,9 +21,9 @@ class MyArena extends Command {
         const lang = message.guildSettings.swgohLanguage;
         const allyCodes = await client.getAllyCode(message, user);
         if (!allyCodes.length) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
+            return super.error(message, message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
         } else if (allyCodes.length > 1) {
-            return message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific");
+            return super.error(message, "Found " + allyCodes.length + " matches. Please try being more specific");
         }
         const allyCode = allyCodes[0];
 
@@ -37,7 +37,7 @@ class MyArena extends Command {
         }
 
         if (!player.arena) {
-            return message.channel.send("Something broke when getting your info, please try again in a bit.");
+            return super.error(message, "Something broke when getting your info, please try again in a bit.");
         }         
 
         const fields = [];
@@ -82,10 +82,10 @@ class MyArena extends Command {
                 playerStats = await client.swgohAPI.unitStats(allyCode, cooldown);
             } catch (e) {
                 console.error(e);
-                return message.channel.send({embed: {
-                    author: {name: message.language.get("BASE_SOMETHING_BROKE")},
-                    description: client.codeBlock(e.message) + "Please try again in a bit"
-                }});
+                return super.error(message, client.codeBlock(e.message), {
+                    title: message.language.get("BASE_SOMETHING_BROKE"), 
+                    footer: "Please try again in a bit."
+                });
             }
             const chars = [];
             // player.arena.char.squad.forEach((char, ix) => {

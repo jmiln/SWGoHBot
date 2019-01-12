@@ -11,12 +11,13 @@ class Squads extends Command {
     }
 
     async run(client, message, [user, list, phase]) {
+        const example = `squads aat 1\n${message.guildSettings.prefix}squads me aat 1\n${message.guildSettings.prefix}squads 123456789 aat 1`;
         const squadList = client.squads;
         const lists = Object.keys(squadList).filter(l => !["psummary", "gsummary"].includes(l));
         let shipEv = false;
 
         if (!user) {
-            return message.channel.send(message.language.get("COMMAND_SQUADS_NO_LIST", lists.join(", ")));
+            return super.error(message, message.language.get("COMMAND_SQUADS_NO_LIST", lists.join(", ")), {title: "Missing category", example: example});
         }
 
         const lang = message.guildSettings.swgoghLanguage;
@@ -40,7 +41,7 @@ class Squads extends Command {
 
         if (!list) {
             // No list, show em the possible ones
-            return message.channel.send(message.language.get("COMMAND_SQUADS_NO_LIST", lists.join(", ")));
+            return super.error(message, message.language.get("COMMAND_SQUADS_NO_LIST", lists.join(", ")), {title: "Missing category", example: example});
         } else {
             list = list.toLowerCase();
         } 
@@ -50,7 +51,7 @@ class Squads extends Command {
                 const outList = squadList[list].phase.map((p, ix) => 
                     "`" + (ix + 1) + "`"+ ": " + p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT")
                 ).join("\n");
-                return message.channel.send(message.language.get("COMMAND_SQUADS_SHOW_LIST", list.toProperCase().replace(/aat/gi, "AAT"), outList));
+                return super.error(message, message.language.get("COMMAND_SQUADS_SHOW_LIST", list.toProperCase().replace(/aat/gi, "AAT"), outList), {title: "Missing phase", example: example});
             } else if (phase > 0 && phase <= squadList[list].phase.length) {
                 phase = phase - 1;
                 const sqArray = [];
@@ -58,11 +59,15 @@ class Squads extends Command {
                 for (const s of squadList[list].phase[phase].squads) {
                     let outStr = s.name ? `**${s.name}**\n` : "";
 
-                    outStr += await charCheck(s.team, {
-                        level : squadList[list].level,
-                        stars : squadList[list].rarity,
-                        gear  : squadList[list].gear
-                    }, player, s.ships);
+                    try {
+                        outStr += await charCheck(s.team, {
+                            level : squadList[list].level,
+                            stars : squadList[list].rarity,
+                            gear  : squadList[list].gear
+                        }, player, s.ships);
+                    } catch (e) {
+                        return super.error(message, e.message);
+                    }
                     if (s.ships) shipEv = true;
                     sqArray.push(outStr);
                 }
@@ -97,11 +102,11 @@ class Squads extends Command {
                 }});
             } else {
                 const outList = squadList[list].phase.map((p, ix) => "`" + (ix + 1) + "`"+ ": " + p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT")).join("\n");
-                return message.channel.send(message.language.get("COMMAND_SQUAD_INVALID_PHASE", outList));
+                return super.error(message, message.language.get("COMMAND_SQUAD_INVALID_PHASE", outList), {example: example});
             }
         } else {
             // Unknown list/ category
-            return message.channel.send(`Invalid category, please select one of the following: \n\`${lists.join(", ")}\``);
+            return super.error(message, `Please select one of the following: \n\`${lists.join(", ")}\``, {title: "Invalid Category", example: example});
         }
 
         async function charCheck(characters, stats, player=null, ships=null) {
@@ -121,7 +126,7 @@ class Squads extends Command {
                 });
             } else {
                 if (!player || !player.roster) {
-                    return message.channel.send("Sorry, something broke whlie getting your info. Please try again.");
+                    throw new Error("Sorry, something broke whlie getting your info. Please try again.");
                 }
                 for (const c of characters) {
                     try {

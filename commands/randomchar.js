@@ -14,7 +14,6 @@ class Randomchar extends Command {
         let MAX_CHARACTERS = 5;
 
         const charOut = [];
-        let msg;
 
         let allyCode;
         if (userID) {
@@ -27,10 +26,10 @@ class Randomchar extends Command {
                     player = await client.swgohAPI.player(allyCode, cooldown);
                 } catch (e) {
                     console.error(e);
-                    return msg.edit({embed: {
-                        author: {name: message.language.get("BASE_SOMETHING_BROKE")},
-                        description: client.codeBlock(e.message) + "Please try again in a bit"
-                    }});
+                    return super.error(message, client.codeBlock(e.message), {
+                        title: message.lanugage.get("BASE_SOMETHING_BROKE"),
+                        footer: "Please try again in a bit."
+                    });
                 } 
                 // Filter out all the ships, so it only shows characters
                 chars = player.roster.filter(c => !c.crew.length);
@@ -49,7 +48,7 @@ class Randomchar extends Command {
             } else {
                 if (count) {
                     // They must have put in a bad user?
-                    // TODO Tell em something is wrong?
+                    return super.error(message, "Could not find any characters to pick from");
                 }
                 // The userID was probably a #
                 userID = parseInt(userID);
@@ -82,7 +81,7 @@ class Randomchar extends Command {
         }
         const charString = charOut.join("\n");
 
-        message.channel.send("```\n" + charString + "```");
+        return message.channel.send("```\n" + charString + "```");
     }
 }
 module.exports = Randomchar;

@@ -602,6 +602,23 @@ module.exports = (client) => {
     };
 
     /*
+     * Get the current user count
+     */
+    client.userCount = async () => {
+        let users = 0;
+        if (client.shard && client.shard.count > 0) {
+            await client.shard.fetchClientValues("users.size")
+                .then(results => {
+                    users =  results.reduce((prev, val) => prev + val, 0);
+                })
+                .catch(console.error);
+            return users;
+        } else {
+            return client.users.size;
+        }
+    };
+
+    /*
      * Get the current guild count
      */
     client.guildCount = async () => {

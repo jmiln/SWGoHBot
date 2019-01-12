@@ -17,11 +17,7 @@ class Stats extends Command {
         let users = 0;
         let channels = 0;
 
-        const playerCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'players', distinct:'allyCode'}, 'ENG_US');
-        const guildCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'players', distinct:'guildName'}, 'ENG_US');
-        const languageCount = "N/A"; //await client.swgohAPI.report('countCollection', {collection:'localization', distinct:'language'}, 'ENG_US');
-        const lastUpdated = "N/A"; //await client.swgohAPI.report('getLastUpdated', {collection:'localization', match:{ 'language':'ENG_US' }}, 'ENG_US');
-        // lastUpdated = moment(lastUpdated[0].updated).format('ddd, MMM Do YYYY');
+        const languageCount = client.swgohLangList.length;
 
         if (client.shard && client.shard.count > 0) {
             await client.shard.fetchClientValues("channels.size")
@@ -39,7 +35,7 @@ class Stats extends Command {
             channels = client.channels.size.toLocaleString();
         }
 
-        await message.channel.send(message.language.get("COMMAND_STATS_OUTPUT", (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
+        return await message.channel.send(message.language.get("COMMAND_STATS_OUTPUT", (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
             Math.round(require("os").loadavg()[0] * 10000) / 100,
             duration,
             users,
@@ -47,10 +43,9 @@ class Stats extends Command {
             channels,
             (client.shard ? client.shard.id : 0), 
             Object.keys(client.languages).length,
-            playerCount,
-            guildCount,
-            languageCount,
-            lastUpdated
+            client.swgohPlayerCount,
+            client.swgohGuildCount,
+            languageCount
         ), {
             code: "asciidoc"
         });
