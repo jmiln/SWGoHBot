@@ -680,23 +680,23 @@ module.exports = class extends Language {
 
             // Info Command
             COMMAND_INFO_OUTPUT: () => ({
-	                "header": "== Bot Information ==",
-	                "statHeader": "== Bot Statistiken ==",
-	                "prefix": "Praefix",
-	                "users": "Users",
-	                "servers": "Servers",
-	                "discordVer": "Discord.js",
-	                "nodeVer": "Node",
-	                "swgohHeader": "== SWGoH Statistiken ==",
-	                "players": "Spieler",
-	                "guilds": "Gilden",
-	                "lang": "Sprachen",
+	                "header"      : "== Bot Information ==",
+	                "statHeader"  : "== Bot Statistiken ==",
+	                "prefix"      : "Praefix",
+	                "users"       : "Users",
+	                "servers"     : "Servers",
+	                "discordVer"  : "Discord.js",
+	                "nodeVer"     : "Node",
+	                "swgohHeader" : "== SWGoH Statistiken ==",
+	                "players"     : "Spieler",
+	                "guilds"      : "Gilden",
+	                "lang"        : "Sprachen",
                    "links": {
                        "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
                    "Teilnahme SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
                     "Unterstuetze den Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
-            }),
+            },
             COMMAND_INFO_HELP: {
                 description: "Zeigt nuetzliche Links zum Bot.",
                 actions: [
