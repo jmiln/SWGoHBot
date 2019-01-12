@@ -609,13 +609,14 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guildsearch [user] <character> [-ships] [-reverse] [-sort type] [starLvl]",
+                        usage: ";guildsearch [user] <character> [-zetas] [-ships] [-reverse] [-sort type] [starLvl]",
                         args: {
                             "user": "Die Person dessen Gilde du pruefen moechtest (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest.",
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "-reverse": "Kehrt die Sortierreihenfolge um",
                             "-sort": "Waehle entweder eine Sortierung nach Name, Ausruestung oder GM",
+                            "-zetas": "Zeigt nur Charaktere die Zetas haben",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
                     },
