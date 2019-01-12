@@ -64,7 +64,7 @@ class MyMods extends Command {
                 charS.forEach(c => {
                     charL.push(c.name);
                 });
-                return super.error(message, (message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n"))), {edit: true});
+                return super.error(msg, (message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n"))), {edit: true});
             } else {
                 character = chars[0];
             }
@@ -78,7 +78,7 @@ class MyMods extends Command {
 
             if (!player) {
                 // TODO Lang this
-                return super.error(message, ("Sorry, but I could not load your profile at this time."), {edit: true});
+                return super.error(msg, ("Sorry, but I could not load your profile at this time."), {edit: true});
             }
 
             const footer = client.updatedFooter(player.updated, message, "player", cooldown);
@@ -199,7 +199,7 @@ class MyMods extends Command {
                 });
             }
             if (!found) {
-                return super.error(message, (message.language.get("COMMAND_MYMODS_BAD_STAT", client.codeBlock(Object.keys(checkableStats).join("\n")))), {edit: true});
+                return super.error(msg, (message.language.get("COMMAND_MYMODS_BAD_STAT", client.codeBlock(Object.keys(checkableStats).join("\n")))), {edit: true});
             }
             const statToCheck = options.subArgs.b;
             let stats;
