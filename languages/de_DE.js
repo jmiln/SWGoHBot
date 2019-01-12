@@ -624,7 +624,16 @@ module.exports = class extends Language {
                             "character": "Der Charakter nach dem du suchen moechtest (auf englisch).",
                             "stat": "Einer dieser Statistik-Werte eines Charakters ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
                         }
-                    }
+                    },
+	                 {
+	                     action: "Mods Uebersicht",
+	                     actionDesc: "Vergleiche die wichtigsten Mods innerhalb deiner Gilde",
+	                        usage: ";guildsearch [user] -mods",
+	                        args: {
+	                            "user": "Der Spieler dessen Gilde du sehen moechtest (me | userID | mention)",
+	                            "-mods": "Angabe um die Mods zu sehen. (-m | -mod)"
+	                        }
+	                 },
                 ]
             },
 
