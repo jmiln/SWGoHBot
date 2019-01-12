@@ -522,7 +522,7 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";grandarena <user1> <user2> [-faction Fraktion] [character1] | [character2] | ...",
                         args: {
-                            "users": "Zur Identifikation des Spielers (mention | allyCode | guildName)",
+                            "users": "Zur Identifikation des Spielers (mention | allyCode | me)",
                             "characters": "Eine Liste von Charakteren (getrennt durch das | Symbol).",
                             "-faction": "Eine Fraktion die angezeigt werden soll."
                         }
