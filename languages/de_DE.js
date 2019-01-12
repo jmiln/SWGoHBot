@@ -596,7 +596,11 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Nicht aktiviert (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Bitte warten waehrend ich die Sammlung deiner Gilde durchsuche.",
-            COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in deiner Gilde diesen Charakter.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in der Gilde diesen Charakter freigeschaltet.",
+	            COMMAND_GUILDSEARCH_NO_SHIP: "Wie es scheint hat niemand in der Gilde dieses Schiff freigeschaltet.",
+	            COMMAND_GUILDSEARCH_NO_CHARACTER_STAR: (star) => `Wie es scheint hat niemand in der Gilde diesen Charakter auf dem Sternlevel ${star}* oder hoeher freigeschaltet.`,
+	            COMMAND_GUILDSEARCH_NO_SHIP_STAR: (star) => `Wie es scheint hat niemand in der Gilde dieses Schiff auf dem Sternlevel ${star}* oder hoeher freigeschaltet. `,
+	            COMMAND_GUILDSEARCH_NO_ZETAS: "Wie es scheint hat niemand in der Gilde diesem Charakter ein Zeta gegeben.",
             COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (sortiert nach ${sort})`,
             COMMAND_GUILDSEARCH_MODS_HEADER: (guildName) => `${guildName}'s mods'`,
             COMMAND_GUILDSEARCH_HELP: {
