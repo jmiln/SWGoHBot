@@ -108,17 +108,31 @@ class Command {
         const footer = options.footer || "";
         const color = options.color || 0xe01414;
         if (options.example) {
-            err += `\n\n**Example:**${message.client.codeBlock(message.guildSettings.prefix + options.example)}`;
+            const prefix = message.guildSettings ? message.guildSettings.prefix : ";";
+            err += `\n\n**Example:**${message.client.codeBlock(prefix + options.example)}`;
         }
         if (options.edit) {
-            message.edit({embed: {
-                author: {name: title},
-                description: err,
-                color: color,
-                footer: {
-                    text: footer
-                }
-            }});
+            try {
+                return message.edit({embed: {
+                    author: {name: title},
+                    description: err,
+                    color: color,
+                    footer: {
+                        text: footer
+                    }
+                }});
+            } catch (e) {
+                console.log("base/Command Error: " + e.message);
+                console.log("base/Command Message: " + message.content);
+                return message.channel.send({embed: {
+                    author: {name: title},
+                    description: err,
+                    color: color,
+                    footer: {
+                        text: footer
+                    }
+                }});
+            }
         } else {
             return message.channel.send({embed: {
                 author: {name: title},

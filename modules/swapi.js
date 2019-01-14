@@ -237,8 +237,9 @@ module.exports = (client) => {
         return outStats;
     }
 
-    async function abilities( skillArray, lang, update=false ) {
+    async function abilities( skillArray, lang, update=false, opts ) {
         lang = lang || "eng_us";
+        if (!opts) opts = {};
         if (!skillArray) {
             throw new Error("You need to have a list of abilities here");
         } else if (!Array.isArray(skillArray)) {
@@ -301,8 +302,13 @@ module.exports = (client) => {
             return ab;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            const skillOut = await cache.get("swapi", "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
-            return skillOut;
+            if (opts.min) {
+                const skillOut = await cache.get("swapi", "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {nameKey: 1, _id: 0});
+                return skillOut;
+            } else {
+                const skillOut = await cache.get("swapi", "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+                return skillOut;
+            }
         }
     }
 

@@ -201,117 +201,79 @@ class Zetas extends Command {
             }});
         } else if (options.flags.g) {
             let guild = null;
+            let guildGG = null;
+
             try {
                 guild = await client.swgohAPI.guild(player.allyCode, null, cooldown);
                 // TODO  Lang this
                 if (!guild) return super.error(message, "Cannot find guild");
                 if (!guild.roster) return super.error(message, "Cannot find your guild's roster");
-
-                const zetaList = {};
-                for (let p = 0; p < guild.roster.length; p++) {
-                    let member;
-                    try {
-                        member = await client.swgohAPI.player(guild.roster[p].allyCode);
-                    } catch (e) {
-                        console.log("Broke getting: " + guild.roster[p].name);
-                        continue;
-                    }
-                    if (!member) continue;
-                    if (searchChar && searchChar.length) {
-                        member.roster = member.roster.filter(c => c.defId === character.uniqueName);
-                    }
-                    if (!member.roster.length) continue;
-                    for (let c = 0; c < member.roster.length; c++) {
-                        const char = member.roster[c];
-                        if (!char.skills || !char.skills.length) continue;
-                        for (let s = 0; s < char.skills.length; s++) {
-                            const skill = char.skills[s];
-                            if (!skill.isZeta || skill.tier < 8) continue;
-                            const tmp = zetaList[char.nameKey] || {};
-                            if (!tmp[skill.nameKey]) {
-                                tmp[skill.nameKey] = [member.name];
-                            } else {
-                                tmp[skill.nameKey].push(member.name);
-                            }
-                            zetaList[char.nameKey] = tmp;
-                        }
-                    }
-                }
-                if (!searchChar || !searchChar.length) {
-                    // Just want to see all zetas for the guild
-                    const zArr = [];
-                    const sorted = Object.keys(zetaList).sort();
-                    sorted.forEach(c => { 
-                        let zStr = "";
-                        zStr += `**${c}**\n`;
-                        Object.keys(zetaList[c]).forEach(z => {
-                            zStr += `**\`${zetaList[c][z].length}\`**: ${z}\n`;
-                        });
-                        zArr.push(zStr);
-                    });
-                    const fields = [];
-                    const msgArr = client.msgArray(zArr, "", 1000);
-                    msgArr.forEach(m => {
-                        fields.push({
-                            name: "____",
-                            value: m,
-                            inline: true
-                        });
-
-                    });
-
-                    if (guild.warnings) {
-                        fields.push({
-                            name: "Warnings",
-                            value: guild.warnings.join("\n")
-                        });
-                    }
-
-                    const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
-                    return msg.edit({embed: {
-                        author: {
-                            name: message.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
-                        },
-                        fields: fields,
-                        footer: footer
-                    }});
-                } else {
-                    // Want to see all zetas in the guild for a certain character
-                    const fields = [];
-                    const zChar = zetaList[Object.keys(zetaList)[0]];
-                    Object.keys(zChar).forEach(z => {
-                        // Format the string/ embed
-                        const msgArr = client.msgArray(zChar[z].sort((p, c) => p.toLowerCase() > c.toLowerCase() ? 1 : -1), "\n", 700);
-                        msgArr.forEach((m, ix) => {
-                            let msgCount = "";
-                            if (msgArr.length > 1) msgCount = ` (${ix+1}/${msgArr.length})`;
-                            fields.push({
-                                name: z + msgCount,
-                                value: m,
-                                inline: (ix + 1) === msgArr.length ? false : true
-                            });
-                        });
-                    });
-
-                    if (guild.warnings) {
-                        fields.push({
-                            name: "Warnings",
-                            value: guild.warnings.join("\n")
-                        });
-                    }
-
-                    const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
-                    return msg.edit({embed: {
-                        author: {
-                            name: `${guild.name}'s ${character.name} zetas`
-                        },
-                        fields: fields,
-                        footer: footer
-                    }});
-                }
+            } catch (e) {
+                return super.error(message, e.message);
+            }
+            try {
+                guildGG = await client.swgohAPI.guildGG(guild.roster.map(p => p.allyCode), null, cooldown);
             } catch (e) {
                 super.error(msg, (e.message), {edit: true});
             }
+                
+            const zetas = {};
+
+            for (const char of Object.keys(guildGG.roster)) {
+                for (const player of guildGG.roster[char]) {
+                    if (player.zetas.length) {
+                        player.zetas.forEach(s => {
+                            if (!zetas[char]) {
+                                zetas[char] = {};
+                            }
+
+                            zetas[char][s.id] ? zetas[char][s.id].push(player.player) : zetas[char][s.id] = [player.player];
+                        });
+                    }
+                }
+            }
+
+            const sortedZ = Object.keys(zetas).sort();
+
+            const zOut = [];
+            const fields = [];
+            if (!searchChar || !searchChar.length) {
+                // They want to see all zetas for the guild
+                for (const char of sortedZ) {
+                    let outStr = "**" + client.characters.find(c => c.uniqueName === char).name + "**\n";
+                    for (const skill of Object.keys(zetas[char])) {
+                        const s = await client.swgohAPI.abilities(skill, null, null, {min: true});
+                        outStr += `**\`${zetas[char][skill].length}\`**: ${s[0].nameKey}\n`;
+                    }
+                    zOut.push(outStr);
+                }
+                const msgArr = client.msgArray(zOut, "", 1000);
+                msgArr.forEach(m => {
+                    fields.push({
+                        name: "____",
+                        value: m,
+                        inline: true
+                    });
+                });
+            } else {
+                for (const skill of Object.keys(zetas[character.uniqueName])) {
+                    const name = await client.swgohAPI.abilities(skill, null, null, {min: true});
+                    fields.push({
+                        name: name[0].nameKey,
+                        value: zetas[character.uniqueName][skill].join("\n")
+                    });
+                }
+            }
+
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            return msg.edit({embed: {
+                author: {
+                    name: message.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
+                },
+                fields: fields,
+                footer: footer
+            }});
+
         } 
     }
 }
