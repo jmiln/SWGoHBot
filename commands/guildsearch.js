@@ -153,7 +153,7 @@ class GuildSearch extends Command {
                 } else {
                     desc = message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
                 }
-                return super.error(message, desc, {
+                return super.error(msg, desc, {
                     title: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name), 
                     footer: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message)),
                     edit: true

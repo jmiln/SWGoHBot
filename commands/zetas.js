@@ -142,7 +142,7 @@ class Zetas extends Command {
 
             const sortBy = searchChar ? searchChar : "versa";
             if (!zetas || !zetas.zetas) {
-                return super.error(msg, ("Soething broke, I can't find the zetas list"), {edit: true});
+                return super.error(msg, ("Something broke, I can't find the zetas list"), {edit: true});
             }
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {
@@ -214,7 +214,7 @@ class Zetas extends Command {
             try {
                 guildGG = await client.swgohAPI.guildGG(guild.roster.map(p => p.allyCode), null, cooldown);
             } catch (e) {
-                super.error(msg, (e.message), {edit: true});
+                super.error(msg, e.message, {edit: true});
             }
                 
             const zetas = {};

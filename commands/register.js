@@ -166,8 +166,7 @@ class Register extends Command {
                             client.log("REGISTER", "Broke trying to unlink: " + e);
                             return super.error(message, client.codeBlock(e.message), {
                                 title: message.lanugage.get("BASE_SOMETHING_BROKE"),
-                                footer: "Please try again in a bit.",
-                                edit: true
+                                footer: "Please try again in a bit."
                             });
                         });
                 }

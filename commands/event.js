@@ -140,7 +140,7 @@ class Event extends Command {
                     if (!evMsg) {
                         eventMessage = "";
                     } else {
-                        eventMessage = args.join(" ");
+                        eventMessage = evMsg.join(" ");
                     }
 
                     if ((eventMessage.length + evName.length) > maxSize) {

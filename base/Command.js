@@ -113,6 +113,10 @@ class Command {
         }
         if (options.edit) {
             try {
+                if (message.author.id !== message.client.user.id) {
+                    console.log("Trying to edit someone else's message" + message.content);
+                    throw new Error("Can't edit someone else's message");
+                }
                 return message.edit({embed: {
                     author: {name: title},
                     description: err,

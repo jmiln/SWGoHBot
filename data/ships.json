@@ -647,6 +647,28 @@
         }
     },
     {
+        "name": "Han's Millennium Falcon",
+        "uniqueName": "MILLENNIUMFALCON",
+        "aliases": [
+            "Han's Millennium Falcon"
+        ],
+        "nameVariant": [
+            "Han's Millennium Falcon"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/hans-millennium-falcon/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        }
+    },
+    {
         "name": "Home One",
         "uniqueName": "CAPITALMONCALAMARICRUISER",
         "aliases": [
@@ -892,13 +914,14 @@
             "Millennium Falcon (Ep VII)"
         ],
         "nameVariant": [
-            "Millennium Falcon (Ep VII)"
+            "Millennium Falcon (Ep VII)",
+            "Rey's Millennium Falcon"
         ],
         "crew": [
             "Rey",
             "Finn"
         ],
-        "url": "http://swgoh.gg/ships/millennium-falcon-ep-vii/",
+        "url": "http://swgoh.gg/ships/reys-millennium-falcon/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
         "side": "light",
         "factions": [
