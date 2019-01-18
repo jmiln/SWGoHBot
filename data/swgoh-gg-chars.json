@@ -4382,8 +4382,8 @@
             "Tenacity Down"
         ],
         "role": "Attacker",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "MILLENNIUMFALCON",
+        "ship_slot": 1,
         "activate_shard_count": 145
     },
     {
@@ -12286,8 +12286,8 @@
             "Taunt"
         ],
         "role": "Attacker",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "MILLENNIUMFALCON",
+        "ship_slot": 0,
         "activate_shard_count": 145
     },
     {

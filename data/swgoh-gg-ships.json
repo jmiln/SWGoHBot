@@ -344,6 +344,28 @@
         "capital_ship": false
     },
     {
+        "name": "Han's Millennium Falcon",
+        "base_id": "MILLENNIUMFALCON",
+        "url": "http://swgoh.gg/ships/hans-millennium-falcon/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_mfalcon.png",
+        "power": 69270,
+        "description": "Highly-modified Rebel Attacker that specializes in assists and shows up at just the right time",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Cargo Ship",
+            "Rebel",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Dispel",
+            "Foresight"
+        ],
+        "role": "Attacker",
+        "capital_ship": false
+    },
+    {
         "name": "Home One",
         "base_id": "CAPITALMONCALAMARICRUISER",
         "url": "http://swgoh.gg/ships/home-one/",
@@ -495,26 +517,6 @@
         "capital_ship": false
     },
     {
-        "name": "Millennium Falcon (Ep VII)",
-        "base_id": "MILLENNIUMFALCONEP7",
-        "url": "http://swgoh.gg/ships/millennium-falcon-ep-vii/",
-        "image": "//swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
-        "power": 65247,
-        "description": "Daring Resistance freighter that can turn the tide by sacrificing buffs",
-        "combat_type": 2,
-        "alignment": "Light Side",
-        "categories": [
-            "Cargo Ship",
-            "Resistance"
-        ],
-        "ability_classes": [
-            "Counter",
-            "Gain Turn Meter"
-        ],
-        "role": "Attacker",
-        "capital_ship": false
-    },
-    {
         "name": "Phantom II",
         "base_id": "PHANTOM2",
         "url": "http://swgoh.gg/ships/phantom-ii/",
@@ -620,6 +622,26 @@
             "Remove Turn Meter"
         ],
         "role": "Tank",
+        "capital_ship": false
+    },
+    {
+        "name": "Rey's Millennium Falcon",
+        "base_id": "MILLENNIUMFALCONEP7",
+        "url": "http://swgoh.gg/ships/reys-millennium-falcon/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
+        "power": 65247,
+        "description": "Daring Resistance freighter that can turn the tide by sacrificing buffs",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Cargo Ship",
+            "Resistance"
+        ],
+        "ability_classes": [
+            "Counter",
+            "Gain Turn Meter"
+        ],
+        "role": "Attacker",
         "capital_ship": false
     },
     {

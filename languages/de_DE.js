@@ -315,14 +315,14 @@ module.exports = class extends Language {
                         action: "",
                         actionDesc: "",
                         usage: "charactergear <charakter auf englisch> [gearLvl]",
-	                        args: {
-	                            "charakter auf englisch": "Der Charakter fuer den du die Ausruestung suchst",
-	                            "gearLvl": "Wenn du die Ausruestung einer bestimmten Stufe sehen willst"
-	                        }
-	                    },
-	                    {
-	                        action: "Pruefe deinen eigenen Ausruestungsbedarf",
-	                        actionDesc: "",
+                        args: {
+                            "charakter auf englisch": "Der Charakter fuer den du die Ausruestung suchst",
+                            "gearLvl": "Wenn du die Ausruestung einer bestimmten Stufe sehen willst"
+                        }
+                    },
+                    {
+                        action: "Pruefe deinen eigenen Ausruestungsbedarf",
+                        actionDesc: "",
                         usage: "charactergear [user] <Charakter auf englisch> [gearLvl]",
                         args: {
                             "user": "Den Spieler dessen Ausruestung du sehen moechtest (me | userID | mention)",
@@ -480,7 +480,7 @@ module.exports = class extends Language {
 
             // Faction Command
             COMMAND_FACTION_MISSING_FACTION: "Fraktion fehlt",
-	            COMMAND_FACTION_INVALID_FACTION: "Ungueltige Fraktion",
+            COMMAND_FACTION_INVALID_FACTION: "Ungueltige Fraktion",
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Charakter gehoert zur Fraktion: ${searchName} # \n${charString}`,
             COMMAND_FACTION_USAGE: (prefix) => `Verwendung ist \`${prefix}faction <Fraktion>\``,
             COMMAND_FACTION_HELP: {
@@ -491,13 +491,13 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: "faction <Fraktion>",
                         args: {
-	                            "faction": "Die Fraktion die du aus der Sammlung sehen moechtest."
-	                        }
-	                    },
-	                    {
-	                        action: "Spieler Fraktion",
-	                        actionDesc: "Zeigt die Entwicklung der Fraktion eines Spieler",
-	                        usage: "faction <user> <Fraktion>",
+                            "faction": "Die Fraktion die du aus der Sammlung sehen moechtest."
+                        }
+                    },
+                    {
+                        action: "Spieler Fraktion",
+                        actionDesc: "Zeigt die Entwicklung der Fraktion eines Spieler",
+                        usage: "faction <user> <Fraktion>",
                         args: {
                             "user": "Zur Identifikation des Spielers (mention | allyCode | me)",
                             "Fraktion": "Die Fraktion, von der Du die Sammlung sehen willst."
@@ -616,10 +616,10 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Bitte warten waehrend ich die Sammlung deiner Gilde durchsuche.",
             COMMAND_GUILDSEARCH_NO_CHARACTER: "Wie es scheint hat niemand in der Gilde diesen Charakter freigeschaltet.",
-	            COMMAND_GUILDSEARCH_NO_SHIP: "Wie es scheint hat niemand in der Gilde dieses Schiff freigeschaltet.",
-	            COMMAND_GUILDSEARCH_NO_CHARACTER_STAR: (star) => `Wie es scheint hat niemand in der Gilde diesen Charakter auf dem Sternlevel ${star}* oder hoeher freigeschaltet.`,
-	            COMMAND_GUILDSEARCH_NO_SHIP_STAR: (star) => `Wie es scheint hat niemand in der Gilde dieses Schiff auf dem Sternlevel ${star}* oder hoeher freigeschaltet. `,
-	            COMMAND_GUILDSEARCH_NO_ZETAS: "Wie es scheint hat niemand in der Gilde diesem Charakter ein Zeta gegeben.",
+            COMMAND_GUILDSEARCH_NO_SHIP: "Wie es scheint hat niemand in der Gilde dieses Schiff freigeschaltet.",
+            COMMAND_GUILDSEARCH_NO_CHARACTER_STAR: (star) => `Wie es scheint hat niemand in der Gilde diesen Charakter auf dem Sternlevel ${star}* oder hoeher freigeschaltet.`,
+            COMMAND_GUILDSEARCH_NO_SHIP_STAR: (star) => `Wie es scheint hat niemand in der Gilde dieses Schiff auf dem Sternlevel ${star}* oder hoeher freigeschaltet. `,
+            COMMAND_GUILDSEARCH_NO_ZETAS: "Wie es scheint hat niemand in der Gilde diesem Charakter ein Zeta gegeben.",
             COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (sortiert nach ${sort})`,
             COMMAND_GUILDSEARCH_MODS_HEADER: (guildName) => `${guildName}'s mods'`,
             COMMAND_GUILDSEARCH_HELP: {
@@ -649,15 +649,15 @@ module.exports = class extends Language {
                             "stat": "Einer dieser Statistik-Werte eines Charakters ```Health, Protection, Speed, Potency, PhysicalCriticalChance, SpecialCriticalChance, CriticalDamage, Tenacity, Accuracy, Armor, Resistance```"
                         }
                     },
-	                 {
-	                     action: "Mods Uebersicht",
-	                     actionDesc: "Vergleiche die wichtigsten Mods innerhalb deiner Gilde",
-	                        usage: ";guildsearch [user] -mods",
-	                        args: {
-	                            "user": "Der Spieler dessen Gilde du sehen moechtest (me | userID | mention)",
-	                            "-mods": "Angabe um die Mods zu sehen. (-m | -mod)"
-	                        }
-	                 },
+                    {
+                        action: "Mods Uebersicht",
+                        actionDesc: "Vergleiche die wichtigsten Mods innerhalb deiner Gilde",
+                        usage: ";guildsearch [user] -mods",
+                        args: {
+                            "user": "Der Spieler dessen Gilde du sehen moechtest (me | userID | mention)",
+                            "-mods": "Angabe um die Mods zu sehen. (-m | -mod)"
+                        }
+                    },
                 ]
             },
 
@@ -679,21 +679,21 @@ module.exports = class extends Language {
             },
 
             // Info Command
-            COMMAND_INFO_OUTPUT: () => ({
-	                "header"      : "== Bot Information ==",
-	                "statHeader"  : "== Bot Statistiken ==",
-	                "prefix"      : "Praefix",
-	                "users"       : "Users",
-	                "servers"     : "Servers",
-	                "discordVer"  : "Discord.js",
-	                "nodeVer"     : "Node",
-	                "swgohHeader" : "== SWGoH Statistiken ==",
-	                "players"     : "Spieler",
-	                "guilds"      : "Gilden",
-	                "lang"        : "Sprachen",
-                   "links": {
-                       "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
-                   "Teilnahme SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
+            COMMAND_INFO_OUTPUT: {
+                "header"      : "== Bot Information ==",
+                "statHeader"  : "== Bot Statistiken ==",
+                "prefix"      : "Praefix",
+                "users"       : "Users",
+                "servers"     : "Servers",
+                "discordVer"  : "Discord.js",
+                "nodeVer"     : "Node",
+                "swgohHeader" : "== SWGoH Statistiken ==",
+                "players"     : "Spieler",
+                "guilds"      : "Gilden",
+                "lang"        : "Sprachen",
+                "links": {
+                    "Fuege mich deinem Server hinzu": "- http://swgohbot.com/invite",
+                    "Teilnahme SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
                     "Unterstuetze den Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
                 }
             },
@@ -734,7 +734,7 @@ module.exports = class extends Language {
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <Charaktername auf englisch>\``,
             COMMAND_MODS_INVALID_CHARACTER_HEADER: "Ungueltiger Charakter",
-	            COMMAND_MODS_USAGE: (prefix) => `Verwendung ist \`${prefix}mods <CharakterName auf englisch>\``,
+            COMMAND_MODS_USAGE: (prefix) => `Verwendung ist \`${prefix}mods <CharakterName auf englisch>\``,
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
@@ -830,8 +830,8 @@ module.exports = class extends Language {
                     },
                     {
                         action: "Beste Werte",
-                        actionDesc: 'Zeigt deine Top 10 Charaktere fuer den jeweiligen Wert an',
-                        usage: ';mymods -best <filter>\n;mymods -total -best <filter>',
+                        actionDesc: "Zeigt deine Top 10 Charaktere fuer den jeweiligen Wert an",
+                        usage: ";mymods -best <filter>\n;mymods -total -best <filter>",
                         args: {
                             "-best": "Zeigt die besten Werte an (-b)",
                             "-total": "Sortiert nach Gesamtwert anstatt nach mod boost (-t)",

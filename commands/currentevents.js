@@ -27,7 +27,7 @@ class CurrentEvents extends Command {
         const DAILY_CHALLENGES = ["challenge_XP", "challenge_CREDIT", "challenge_ABILITYUPGRADEMATERIALS", "challenge_EQUIPMENT_AGILITY", "challenge_EQUIPMENT_INTELLIGENCE", "challenge_EQUIPMENT_STRENGTH"];
         const HEISTS = ["EVENT_CREDIT_HEIST_GETAWAY_V2", "EVENT_TRAINING_DROID_SMUGGLING"];
         const HEROIC = ["progressionevent_PIECES_AND_PLANS", "progressionevent_GRANDMASTERS_TRAINING", "EVENT_HERO_SCAVENGERREY"];
-        const EXCLUDE_Strings = ["EVENT_ECONOMY_BH"];
+        const EXCLUDE_Strings = ["EVENT_ECONOMY_BH", "SEASON_TEST"];
 
         const DEF_NUM = 10;
         const lang = message.guildSettings.swgohLanguage;
@@ -70,7 +70,7 @@ class CurrentEvents extends Command {
             }
 
             EXCLUDE_Strings.forEach(e => {
-                if (event.id.includes(e)) {
+                if (event.id.includes(e) || event.nameKey.includes(e)) {
                     excludeFilter.push(event.id);
                 }
             });

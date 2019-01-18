@@ -235,6 +235,17 @@ class MyMods extends Command {
 
             }
 
+            const delArr = [];
+            for (const c in sorted) {
+                if (client.ships.find(s => s.uniqueName === sorted[c].unit.defId)) {
+                    delArr.push(c);
+                }
+            }
+
+            for (const ix of delArr.reverse()) {
+                sorted.splice(ix, 1);
+            }
+
             for (const c in sorted) {
                 sorted[c].unit = await client.swgohAPI.langChar(sorted[c].unit, message.guildSettings.swgohLanguage);
             }
