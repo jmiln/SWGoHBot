@@ -46,7 +46,6 @@ class Squads extends Command {
             list = list.toLowerCase();
         } 
         if (lists.includes(list)) {
-            console.log("Phase: " + phase);
             if (!phase) {
                 // They've chosen a list, show em the phase list 
                 const outList = squadList[list].phase.map((p, ix) => {
