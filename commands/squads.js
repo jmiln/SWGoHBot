@@ -64,7 +64,7 @@ class Squads extends Command {
             } else if (phase > 0 && phase <= squadList[list].phase.length) {
                 phase = phase - 1;
                 const sqArray = [];
-                if (!list === "twcounters") {
+                if (list !== "twcounters") {
                     if (squadList[list].phase[phase].name) {
                         squadList[list].phase[phase].name = squadList[list].phase[phase].name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT");
                     }
@@ -114,7 +114,7 @@ class Squads extends Command {
                 } else {
                     const fields = [];
                     let counterName = squadList[list].phase[phase].team;
-                    if (counterName.toUpperCase() === counterName) {
+                    if (counterName && counterName.toUpperCase() === counterName) {
                         const char = await client.characters.find(c => c.uniqueName === counterName);
                         counterName = char.name.trim();
                     } 
