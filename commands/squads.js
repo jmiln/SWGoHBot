@@ -48,60 +48,130 @@ class Squads extends Command {
         if (lists.includes(list)) {
             if (!phase) {
                 // They've chosen a list, show em the phase list 
-                const outList = squadList[list].phase.map((p, ix) => 
-                    "`" + (ix + 1) + "`"+ ": " + p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT")
-                ).join("\n");
+                const outList = squadList[list].phase.map((p, ix) => {
+                    if (p && p.name) {
+                        return "`" + (ix + 1) + "`"+ ": " + p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT").trim();
+                    } else {
+                        let tmp = p.team;
+                        if (tmp === tmp.toUpperCase()) {
+                            const char = client.characters.find(c => c.uniqueName === tmp);
+                            tmp = char.name;
+                        }
+                        return "`" + (ix + 1) + "`"+ ": " + tmp.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT").trim();
+                    }
+                }).join("\n");
                 return super.error(message, message.language.get("COMMAND_SQUADS_SHOW_LIST", list.toProperCase().replace(/aat/gi, "AAT"), outList), {title: "Missing phase", example: example});
             } else if (phase > 0 && phase <= squadList[list].phase.length) {
                 phase = phase - 1;
                 const sqArray = [];
-                if (squadList[list].phase[phase].name) {
-                    squadList[list].phase[phase].name = squadList[list].phase[phase].name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT");
-                }
-                for (const s of squadList[list].phase[phase].squads) {
-                    let outStr = s.name ? `**${s.name}**\n` : "";
-
-                    try {
-                        outStr += await charCheck(s.team, {
-                            level : squadList[list].level,
-                            stars : squadList[list].rarity,
-                            gear  : squadList[list].gear
-                        }, player, s.ships);
-                    } catch (e) {
-                        return super.error(message, e.message);
+                if (list !== "twcounters") {
+                    if (squadList[list].phase[phase].name) {
+                        squadList[list].phase[phase].name = squadList[list].phase[phase].name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT");
                     }
-                    if (s.ships) shipEv = true;
-                    sqArray.push(outStr);
-                }
+                    for (const s of squadList[list].phase[phase].squads) {
+                        let outStr = s.name ? `**${s.name}**\n` : "";
 
-                const fields = [];
-                const outArr = client.msgArray(sqArray, "\n", 1000);
-                outArr.forEach((sq, ix) => {
-                    fields.push({
-                        name: (player ? player.name + "'s " : "") + message.language.get("COMMAND_SQUADS_FIELD_HEADER") + (ix === 0 ? "" : " " + message.language.get("BASE_CONT_STRING")),
-                        value: sq
-                    });
-                });
-                let footer = "";
-                if (player && cooldown) {
-                    if (player.warnings) {
+                        try {
+                            outStr += await charCheck(s.team, {
+                                level : squadList[list].level,
+                                stars : squadList[list].rarity,
+                                gear  : squadList[list].gear
+                            }, player, s.ships);
+                        } catch (e) {
+                            return super.error(message, e.message);
+                        }
+                        if (s.ships) shipEv = true;
+                        sqArray.push(outStr);
+                    }
+                    const fields = [];
+                    const outArr = client.msgArray(sqArray, "\n", 1000);
+                    outArr.forEach((sq, ix) => {
                         fields.push({
-                            name: "Warnings",
-                            value: player.warnings.join("\n")
+                            name: (player ? player.name + "'s " : "") + message.language.get("COMMAND_SQUADS_FIELD_HEADER") + (ix === 0 ? "" : " " + message.language.get("BASE_CONT_STRING")),
+                            value: sq
                         });
-                    }
+                    });
+                    let footer = "";
+                    if (player && cooldown) {
+                        if (player.warnings) {
+                            fields.push({
+                                name: "Warnings",
+                                value: player.warnings.join("\n")
+                            });
+                        }
 
-                    footer = client.updatedFooter(player.updated, message, "player", cooldown);
+                        footer = client.updatedFooter(player.updated, message, "player", cooldown);
+                    }
+                    return message.channel.send({embed: {
+                        author: {
+                            name: squadList[list].name.toProperCase().replace(/aat/gi, "AAT")
+                        },
+                        description: `**${squadList[list].phase[phase].name}**\n${squadList[list].rarity}* ${shipEv ? "" : `| g${squadList[list].gear}`} | lvl${squadList[list].level}`,
+                        fields: fields,
+                        footer: footer,
+                        color: 0x00FF00
+                    }});
+                } else {
+                    const fields = [];
+                    let counterName = squadList[list].phase[phase].team;
+                    if (counterName && counterName.toUpperCase() === counterName) {
+                        const char = await client.characters.find(c => c.uniqueName === counterName);
+                        counterName = char.name.trim();
+                    } 
+                    let out = [];
+                    for (const counters of squadList[list].phase[phase].hardcounters) {
+                        try {
+                            out.push(await charCheck(counters.team, {
+                                level: 0,
+                                stars: 0,
+                                gear: 0
+                            }, player));
+                        } catch (e) {
+                            super.error(message, e.message);
+                        }
+                    }
+                    fields.push({
+                        name: "Hard counters",
+                        value: out.join("--\n")
+                    });
+
+                    out = [];
+                    for (const counters of squadList[list].phase[phase].softcounters) {
+                        try {
+                            out.push(await charCheck(counters.team, {
+                                level: 0,
+                                stars: 0,
+                                gear: 0
+                            }, player));
+                        } catch (e) {
+                            super.error(message, e.message);
+                        }
+                    }
+                    fields.push({
+                        name: "Soft counters",
+                        value: out.join("--\n")
+                    });
+                    let footer;
+                    if (player && cooldown) {
+                        if (player.warnings) {
+                            fields.push({
+                                name: "Warnings",
+                                value: player.warnings.join("\n")
+                            });
+                        }
+
+                        footer = client.updatedFooter(player.updated, message, "player", cooldown);
+                    }
+                    return message.channel.send({embed: {
+                        author: {
+                            name: `Counters for ${counterName}`
+                        },
+                        fields: fields,
+                        footer: footer,
+                        color: 0x00FF00
+                    }});
                 }
-                return message.channel.send({embed: {
-                    author: {
-                        name: squadList[list].name.toProperCase().replace(/aat/gi, "AAT")
-                    },
-                    description: `**${squadList[list].phase[phase].name}**\n${squadList[list].rarity}* ${shipEv ? "" : `| g${squadList[list].gear}`} | lvl${squadList[list].level}`,
-                    fields: fields,
-                    footer: footer,
-                    color: 0x00FF00
-                }});
+
             } else {
                 const outList = squadList[list].phase.map((p, ix) => "`" + (ix + 1) + "`"+ ": " + p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT")).join("\n");
                 return super.error(message, message.language.get("COMMAND_SQUAD_INVALID_PHASE", outList), {example: example});
@@ -114,6 +184,9 @@ class Squads extends Command {
         async function charCheck(characters, stats, player=null, ships=null) {
             const {level, stars, gear} = stats;
             let outStr = "";
+            if (!Array.isArray(characters)) {
+                characters = [characters];
+            }
             if (!player) {
                 characters.forEach(c => {
                     try {

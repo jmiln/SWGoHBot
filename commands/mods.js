@@ -27,6 +27,7 @@ class Mods extends Command {
                 "Accuracy"           : "COMMAND_MODS_ACCURACY_STAT",
                 "Crit. Chance"       : "COMMAND_MODS_CRIT_CHANCE_STAT",
                 "Crit. Damage"       : "COMMAND_MODS_CRIT_DAMAGE_STAT",
+                "Critical Damage"    : "COMMAND_MODS_CRIT_DAMAGE_STAT",
                 "Defense"            : "COMMAND_MODS_DEFENSE_STAT",
                 "Health"             : "COMMAND_MODS_HEALTH_STAT",
                 "Offense"            : "COMMAND_MODS_OFFENSE_STAT",
@@ -133,7 +134,7 @@ class Mods extends Command {
                     });
                 }
                 const embed = {
-                    "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
+                    "color": `${character.side === "light" ? 0x0055ff : 0xe01414}`,
                     "author": {
                         "name": character.name,
                         "url": character.url,
