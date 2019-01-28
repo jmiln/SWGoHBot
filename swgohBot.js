@@ -15,8 +15,10 @@ client.config = require("./config.js");
 // Attach the character and team files to the client so I don't have to reopen em each time
 client.abilityCosts = JSON.parse(fs.readFileSync("data/abilityCosts.json"));
 client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
+client.charLocs = JSON.parse(fs.readFileSync("data/charLocations.json"));
 client.factions = [...new Set(client.characters.reduce((a, b) => a.concat(b.factions), []))];
 client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
+client.shipLocs = JSON.parse(fs.readFileSync("data/shipLocations.json"));
 client.squads = JSON.parse(fs.readFileSync("data/squads.json"));
 client.missions = JSON.parse(fs.readFileSync("data/missions.json"));
 client.resources = JSON.parse(fs.readFileSync("data/resources.json"));

@@ -508,12 +508,14 @@ module.exports = class extends Language {
 
             // Farm Command
             COMMAND_FARM_USAGE: (prefix) => `Usage is \`${prefix}farm <character>\``,
+            COMMAND_FARM_LOCATIONS: " farm locations",
             COMMAND_FARM_MISSING_CHARACTER: "Missing character",
             COMMAND_FARM_HARD: "Hard ",
             COMMAND_FARM_LIGHT: "Light Side ",
             COMMAND_FARM_DARK: "Dark Side ",
             COMMAND_FARM_FLEET: "Fleet ",
             COMMAND_FARM_CANTINA: "Cantina ",
+            COMMAND_FARM_ENERGY_PER: " energy per attempt",
             COMMAND_FARM_CHAR_UNAVAILABLE: "Looks like that character is not currently farmable, or only available through an event.",
             COMMAND_FARM_EVENT_CHARS: {
                 // Heroes Journey

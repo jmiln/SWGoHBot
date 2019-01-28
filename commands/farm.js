@@ -7,15 +7,25 @@ class Farm extends Command {
             name: "farm",
             category: "SWGoH",
             aliases: [],
-            permissions: ["EMBED_LINKS"]
+            permissions: ["EMBED_LINKS"],
+            flags: {
+                ships: {
+                    aliases: ["s"]
+                }
+            }
         });
     }
 
-    async run(client, message, [...searchChar]) {
+    async run(client, message, [...searchChar], options) {
 
         if (!searchChar || !searchChar.length) return super.error(message, message.language.get("COMMAND_FARM_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FARM_MISSING_CHARACTER"), example: "farm bb8"});
         searchChar = searchChar.join(" ");
-        const chars = client.findChar(searchChar, client.characters);
+        let chars;
+        if (options.flags.ships) {
+            chars = client.findChar(searchChar, client.ships, true);
+        } else {
+            chars = client.findChar(searchChar, client.characters);
+        }
         let character;
         if (!chars.length) {
             // Didn't find one
@@ -73,7 +83,8 @@ class Farm extends Command {
                 out = message.language.get("COMMAND_FARM_CANTINA") + out;
             }
             const letter = client.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty][mission.campaignMissionId];
-            out += letter;
+            const nodeCost = client.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty]["COST"];
+            out += letter + " - " + nodeCost + message.language.get("COMMAND_FARM_ENERGY_PER");
             outList.push(out);
         }
         if (raidLookupList.length) {
@@ -101,15 +112,25 @@ class Farm extends Command {
             }
         }
 
-        if (character.shardLocations.shops.length) {
-            outList = outList.concat(character.shardLocations.shops);
+        if (options.flags.ships) {
+            const ship = client.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
+            const shopLoc = ship.locations.filter(l => l.cost);
+            if (shopLoc.length) {
+                outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
+            }
+        } else {
+            const char = client.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
+            const shopLoc = char.locations.filter(l => l.cost);
+            if (shopLoc.length) {
+                outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
+            }
         }
         if (!outList.length) {
             return super.error(message, message.language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
         } 
         return message.channel.send({embed: {
             author: {
-                name: character.name + " farm locations"
+                name: character.name + message.language.get("COMMAND_FARM_LOCATIONS")
             },
             color: character.side === "light" ? 0x0055ff : 0xe01414,
             description: `**${outList.map(f => "* " + f).join("\n")}**`

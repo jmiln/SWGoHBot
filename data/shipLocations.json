@@ -1,0 +1,554 @@
+[
+    {
+        "name": "Ahsoka Tano's Jedi Starfighter",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Anakin’s Eta-2 Starfighter",
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "1-B"
+            }
+        ]
+    },
+    {
+        "name": "B-28 Extinction-class Bomber",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "6-C"
+            }
+        ]
+    },
+    {
+        "name": "Biggs Darklighter's X-wing",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Bistan's U-wing",
+        "locations": [
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-C"
+            }
+        ]
+    },
+    {
+        "name": "Cassian's U-wing",
+        "locations": [
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Cantina Shipments",
+                "cost": "400/5"
+            }
+        ]
+    },
+    {
+        "name": "Chimaera",
+        "locations": [
+            {
+                "type": "Legendary Event",
+                "name": "Imperial Chimaera"
+            }
+        ]
+    },
+    {
+        "name": "Clone Sergeant's ARC-170",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "1-A"
+            }
+        ]
+    },
+    {
+        "name": "Endurance",
+        "locations": [
+            {
+                "type": "Challenges",
+                "name": "Fleet Commander Training: Mace Windu"
+            }
+        ]
+    },
+    {
+        "name": "Executrix",
+        "locations": [
+            {
+                "type": "Challenges",
+                "name": "Fleet Commander Training: Grand Moff Tarkin"
+            }
+        ]
+    },
+    {
+        "name": "First Order SF TIE Fighter",
+        "locations": [
+            {
+                "type": "Guild Shop",
+                "cost": "450/4"
+            }
+        ]
+    },
+    {
+        "name": "First Order TIE Fighter",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Gauntlet Starfighter",
+        "locations": [
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-A"
+            }
+        ]
+    },
+    {
+        "name": "Geonosian Soldier's Starfighter",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "9-D"
+            },
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Geonosian Spy's Starfighter",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Ghost",
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "9-C"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Han's Millennium Falcon",
+        "locations": [
+            {
+                "type": "Legendary Event",
+                "name": "Flight of the Falcon"
+            }
+        ]
+    },
+    {
+        "name": "Home One",
+        "locations": [
+            {
+                "type": "Challenges",
+                "name": "Fleet Commander Training: Admiral Ackbar"
+            }
+        ]
+    },
+    {
+        "name": "Hound's Tooth",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "8-D"
+            }
+        ]
+    },
+    {
+        "name": "IG-2000",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "6-E"
+            }
+        ]
+    },
+    {
+        "name": "Imperial TIE Fighter",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "1-C"
+            }
+        ]
+    },
+    {
+        "name": "Jedi Consular's Starfighter",
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "8-B"
+            },
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Kylo Ren's Command Shuttle",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "9-A"
+            }
+        ]
+    },
+    {
+        "name": "Lando's Millennium Falcon",
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "1-D"
+            }
+        ]
+    },
+    {
+        "name": "Phantom II",
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "9-D"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Plo Koon's Jedi Starfighter",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "7-F"
+            },
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Poe Dameron's X-wing",
+        "locations": [
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-A"
+            }
+        ]
+    },
+    {
+        "name": "Resistance X-wing",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "1-E"
+            }
+        ]
+    },
+    {
+        "name": "Rex's ARC-170",
+        "locations": [
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Rey's Millennium Falcon",
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "5-D"
+            }
+        ]
+    },
+    {
+        "name": "Scimitar",
+        "locations": [
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-D"
+            }
+        ]
+    },
+    {
+        "name": "Sith Fighter",
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-E"
+            }
+        ]
+    },
+    {
+        "name": "Slave I",
+        "locations": [
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-B"
+            }
+        ]
+    },
+    {
+        "name": "Sun Fac's Geonosian Starfighter",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-A"
+            }
+        ]
+    },
+    {
+        "name": "TIE Advanced x1",
+        "locations": [
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-B"
+            }
+        ]
+    },
+    {
+        "name": "TIE Reaper",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "9-B"
+            }
+        ]
+    },
+    {
+        "name": "TIE Silencer",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "3-F"
+            }
+        ]
+    },
+    {
+        "name": "Umbaran Starfighter",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-B"
+            }
+        ]
+    },
+    {
+        "name": "Wedge Antilles's X-wing",
+        "locations": [
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Fleet Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
+            }
+        ]
+    },
+    {
+        "name": "Xanadu Blood",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "8-B"
+            }
+        ]
+    }
+]
