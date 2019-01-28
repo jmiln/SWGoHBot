@@ -11,10 +11,15 @@ class Updatechar extends Command {
             aliases: ["u"],
             permLevel: 9,
             category: "Dev",
+            flags: {
+                "all": {
+                    aliases: []
+                }
+            }
         });
     }
 
-    async run(client, message, args) {
+    async run(client, message, args, options) {
         const usableArgs = ["gear", "info", "mods"];
         let characterIndex, action;
         // Make sure they're trying to update something that exists
@@ -31,11 +36,11 @@ class Updatechar extends Command {
 
         const charName = args.splice(1).join(" ");
 
-        var options = {
+        var fuseOptions = {
             keys: ["name"],
             threshold: 0.0
         };
-        const fuse = new Fuse(client.characters, options);
+        const fuse = new Fuse(client.characters, fuseOptions);
         const chars = fuse.search(charName);
         // If there's a ton of em, only return the first 4
         let found = false;
@@ -51,7 +56,7 @@ class Updatechar extends Command {
             });
         }
 
-        if (!found) {
+        if (!found && !options.flags.all) {
             return super.error(message, `Sorry, but I cannot find ${charName}`);
         }
 
@@ -60,9 +65,18 @@ class Updatechar extends Command {
         } else if (action === "gear") {
             await updateCharacterGear(client, message, characterIndex);
         } else if (action === "info") {
-            await updateCharacterInfo(client, message, characterIndex);
+            if (options.flags.all) {
+                // If we want to go through and update all the characters (To be used seldomly)
+                for (const ix in client.characters) {
+                    console.log(ix + ": " + client.characters[ix].name);
+                    await updateCharacterInfo(client, message, ix);
+                    await client.wait(1000);
+                }
+            } else {
+                // Update just the one character that's specified
+                await updateCharacterInfo(client, message, characterIndex);
+            }
         }
-
 
         function getModType(type) {
             switch (type) {
@@ -193,142 +207,142 @@ class Updatechar extends Command {
                 }
             });
             // Get the character's abilities and such
-            $(".char-detail-info").each(function() {
-                let abilityName = $(this).find("h5").text();    // May have the cooldown included, need to get rid of it
-                let desc = $(this).find("p").text().split("\n")[1];
-                let abilityMat = $(this).find("img").attr("title").split(" ").join("");
-                let abilityType = $(this).find("small").text();
-                let cooldown = $(this).find("h5 small").text().split(" ")[0];
-        
-                // Make sure it doesn't have any line returns in there
-                if (abilityName.indexOf("\n") !== -1) {
-                    abilityName = abilityName.replace(/\n/g, "");
-                }
-                if (desc.indexOf("\n") !== -1) {
-                    desc = desc.replace(/\n/g, "");
-                }
-                if (abilityMat.indexOf("\n") !== -1) {
-                    abilityMat = abilityMat.replace(/\n/g, "");
-                }
-        
-                // Make sure it grabs the right one to work with the rest
-                if (abilityMat === "AbilityMaterialOmega") {
-                    abilityMat = "omega";
-                } else if (abilityMat === "AbilityMaterialMkIII") {
-                    abilityMat = "abilityMatMK3";
-                } else if (abilityMat === "AbilityMaterialZeta") {
-                    abilityMat = "zeta";
-                }
-        
-                // Grab the ability type
-                if (abilityType.indexOf("Basic") !== -1) {
-                    abilityType = "Basic";
-                } else if (abilityType.indexOf("Special") !== -1) {
-                    abilityType = "Special";
-                } else if (abilityType.indexOf("Leader") !== -1) {
-                    abilityType = "Leader";
-                } else if (abilityType.indexOf("Unique") !== -1) {
-                    abilityType = "Unique";
-                }
-                // If the cooldown isn't there, set it to 0
-                if (cooldown === "") {
-                    cooldown = "0";
-                } else {
-                    abilityName = abilityName.split(" ").slice(0, -3).join(" ").toString();
-                }
-        
-                charList[charIndex].abilities[abilityName] = {
-                    "type": abilityType,
-                    "abilityCooldown": cooldown,
-                    "abilityDesc": desc,
-                    "tier": abilityMat,
-                    "cost": {
-                        "mk3": 0,
-                        "omega": 0,
-                        "zeta": 0
-                    }
-                };
-            });
+            // $(".char-detail-info").each(function() {
+            //     let abilityName = $(this).find("h5").text();    // May have the cooldown included, need to get rid of it
+            //     let desc = $(this).find("p").text().split("\n")[1];
+            //     let abilityMat = $(this).find("img").attr("title").split(" ").join("");
+            //     let abilityType = $(this).find("small").text();
+            //     let cooldown = $(this).find("h5 small").text().split(" ")[0];
+            //
+            //     // Make sure it doesn't have any line returns in there
+            //     if (abilityName.indexOf("\n") !== -1) {
+            //         abilityName = abilityName.replace(/\n/g, "");
+            //     }
+            //     if (desc.indexOf("\n") !== -1) {
+            //         desc = desc.replace(/\n/g, "");
+            //     }
+            //     if (abilityMat.indexOf("\n") !== -1) {
+            //         abilityMat = abilityMat.replace(/\n/g, "");
+            //     }
+            //
+            //     // Make sure it grabs the right one to work with the rest
+            //     if (abilityMat === "AbilityMaterialOmega") {
+            //         abilityMat = "omega";
+            //     } else if (abilityMat === "AbilityMaterialMkIII") {
+            //         abilityMat = "abilityMatMK3";
+            //     } else if (abilityMat === "AbilityMaterialZeta") {
+            //         abilityMat = "zeta";
+            //     }
+            //
+            //     // Grab the ability type
+            //     if (abilityType.indexOf("Basic") !== -1) {
+            //         abilityType = "Basic";
+            //     } else if (abilityType.indexOf("Special") !== -1) {
+            //         abilityType = "Special";
+            //     } else if (abilityType.indexOf("Leader") !== -1) {
+            //         abilityType = "Leader";
+            //     } else if (abilityType.indexOf("Unique") !== -1) {
+            //         abilityType = "Unique";
+            //     }
+            //     // If the cooldown isn't there, set it to 0
+            //     if (cooldown === "") {
+            //         cooldown = "0";
+            //     } else {
+            //         abilityName = abilityName.split(" ").slice(0, -3).join(" ").toString();
+            //     }
+            //
+            //     charList[charIndex].abilities[abilityName] = {
+            //         "type": abilityType,
+            //         "abilityCooldown": cooldown,
+            //         "abilityDesc": desc,
+            //         "tier": abilityMat,
+            //         "cost": {
+            //             "mk3": 0,
+            //             "omega": 0,
+            //             "zeta": 0
+            //         }
+            //     };
+            // });
         
             // Grab ability costs
-            $(".list-group-item-ability").each(function() {
-                const aName = $(this).find(".ability-mechanics-link").text().replace(/^View /, "").replace(/\sMechanics$/, "");
+            // $(".list-group-item-ability").each(function() {
+            //     const aName = $(this).find(".ability-mechanics-link").text().replace(/^View /, "").replace(/\sMechanics$/, "");
+            //
+            //     let mk3s = 0, omegas = 0, zetas = 0;
+            //     // Each level of the ability is in a tr
+            //     const aCost = [];
+            //     $(this).find("tr").each(function() {
+            //         // And the cost of each is in the 2nd td in each row
+            //         const lvl = [];
+            //         $(this).find("td").each(function() {
+            //             lvl.push($(this).html());
+            //         });
+            //         aCost.push(lvl[1]);
+            //     });
+            //     aCost.splice(0,2);  // Ignore the first two (Header then default unlock)
+            //     aCost.forEach(lvl => {
+            //         const count = getCount(lvl);
+            //         mk3s += count.mk3;
+            //         omegas += count.omega;
+            //         zetas += count.zeta;
+            //     });
+            //     charList[charIndex].abilities[aName].cost = {
+            //         "mk3": mk3s,
+            //         "omega": omegas,
+            //         "zeta": zetas
+            //     };
+            // });
         
-                let mk3s = 0, omegas = 0, zetas = 0;
-                // Each level of the ability is in a tr
-                const aCost = [];
-                $(this).find("tr").each(function() {
-                    // And the cost of each is in the 2nd td in each row
-                    const lvl = [];
-                    $(this).find("td").each(function() {
-                        lvl.push($(this).html());
-                    });
-                    aCost.push(lvl[1]);
-                });
-                aCost.splice(0,2);  // Ignore the first two (Header then default unlock)
-                aCost.forEach(lvl => {
-                    const count = getCount(lvl);
-                    mk3s += count.mk3;
-                    omegas += count.omega;
-                    zetas += count.zeta;
-                });
-                charList[charIndex].abilities[aName].cost = {
-                    "mk3": mk3s,
-                    "omega": omegas,
-                    "zeta": zetas
-                };
-            });
+            // const stats = {
+            //     // Primary
+            //     "Power":0,
+            //     "Strength": 0,
+            //     "Agility":0,
+            //     "Intelligence":0,
+            //     // Offensive
+            //     "Speed": 0,
+            //     "Physical Damage": 0,
+            //     "Physical Critical Rating": 0,
+            //     "Special Damage": 0,
+            //     "Special Critical Rating": 0,
+            //     "Armor Penetration": 0,
+            //     "Resistance Penetration": 0,
+            //     "Potency": 0,
+            //     // Defensive
+            //     "Health": 0,
+            //     "Armor": 0,
+            //     "Resistance": 0,
+            //     "Tenacity": 0,
+            //     "Health Steal": 0,
+            //     "Protection": 0,
+            //     // Activation
+            //     "activation": 0
+            // };
         
-            const stats = {
-                // Primary
-                "Power":0,
-                "Strength": 0,
-                "Agility":0,
-                "Intelligence":0,
-                // Offensive
-                "Speed": 0,
-                "Physical Damage": 0,
-                "Physical Critical Rating": 0,
-                "Special Damage": 0,
-                "Special Critical Rating": 0,
-                "Armor Penetration": 0,
-                "Resistance Penetration": 0,
-                "Potency": 0,
-                // Defensive
-                "Health": 0,
-                "Armor": 0,
-                "Resistance": 0,
-                "Tenacity": 0,
-                "Health Steal": 0,
-                "Protection": 0,
-                // Activation
-                "activation": 0
-            };
-        
-            $(".content-container-primary-aside").each(function() {
-                $(this).find(".media-body").each(function() {
-                    const rows = $(this).html().split("\n");
-        
-                    rows.forEach(stat => {
-                        if (stat.startsWith("<p></p>") || stat.startsWith("</p>")) {
-                            stat = stat.replace(/<p><\/p>/g, "").replace(/^<p>/g, "").replace(/^<\/p>/g, "");
-                            stat = stat.replace(/\n/g, "").replace(/\(.*\)/g, "");
-                            if (stat.startsWith("<div class=\"pull-right\">")) {
-                                stat = stat.replace("<div class=\"pull-right\">", "");
-                                const statNum = parseInt(stat.replace(/<\/div>.*/g, ""));
-                                const statName = stat.replace(/.*<\/div>/g, "").replace(/\s*$/g, "");
-                                if (statName.indexOf("Shards for Activation") > -1) {
-                                    stats.activation = statNum;
-                                } else {
-                                    stats[statName] = statNum;
-                                }
-                            }
-                        }
-                    });
-                });
-            });
-        
-            charList[charIndex].stats = stats;
+            // $(".content-container-primary-aside").each(function() {
+            //     $(this).find(".media-body").each(function() {
+            //         const rows = $(this).html().split("\n");
+            //
+            //         rows.forEach(stat => {
+            //             if (stat.startsWith("<p></p>") || stat.startsWith("</p>")) {
+            //                 stat = stat.replace(/<p><\/p>/g, "").replace(/^<p>/g, "").replace(/^<\/p>/g, "");
+            //                 stat = stat.replace(/\n/g, "").replace(/\(.*\)/g, "");
+            //                 if (stat.startsWith("<div class=\"pull-right\">")) {
+            //                     stat = stat.replace("<div class=\"pull-right\">", "");
+            //                     const statNum = parseInt(stat.replace(/<\/div>.|)}>#g, ""));
+            //                     const statName = stat.replace(/.*<\/div>/g, "").replace(/\s*$/g, "");
+            //                     if (statName.indexOf("Shards for Activation") > -1) {
+            //                         stats.activation = statNum;
+            //                     } else {
+            //                         stats[statName] = statNum;
+            //                     }
+            //                 }
+            //             }
+            //         });
+            //     });
+            // });
+            //
+            // charList[charIndex].stats = stats;
         
             const shardLocations = { "dark": [], "light": [], "cantina": [], "shops": [] };
         
@@ -417,35 +431,35 @@ class Updatechar extends Command {
         
         
         // Lvl is the string from each level of the ability
-        function getCount(lvl) {
-            const mk3 = "<img src=\"//swgoh.gg/static/img/assets/tex.skill_pentagon_white.png\" style=\"width: 25px;\">";
-            const omega = "<img src=\"//swgoh.gg/static/img/assets/tex.skill_pentagon_gold.png\" style=\"width: 25px;\">";
-            const zeta =  "<img src=\"//swgoh.gg/static/img/assets/tex.skill_zeta.png\" style=\"width: 25px;\">";
-            const lvlCost = {
-                "mk3": 0,
-                "omega": 0,
-                "zeta": 0
-            };
-            if (lvl.indexOf(mk3) > -1) {
-                let lvlmk3 = lvl;
-                lvlmk3 = lvlmk3.replace(new RegExp(`^.*${mk3} x`), "");
-                lvlmk3 = lvlmk3.replace(/\s.*/, "");
-                lvlCost.mk3 = parseInt(lvlmk3);
-            }
-            if (lvl.indexOf(omega) > -1) {
-                let lvlomega = lvl;
-                lvlomega = lvlomega.replace(new RegExp(`^.*${omega} x`), "");
-                lvlomega = lvlomega.replace(/\s.*/, "");
-                lvlCost.omega = parseInt(lvlomega);
-            }
-            if (lvl.indexOf(zeta) > -1) {
-                let lvlzeta = lvl;
-                lvlzeta = lvlzeta.replace(new RegExp(`^.*${zeta} x`), "");
-                lvlzeta = lvlzeta.replace(/\s.*/, "");
-                lvlCost.zeta = parseInt(lvlzeta);
-            }
-            return lvlCost;
-        }
+        // function getCount(lvl) {
+        //     const mk3 = "<img src=\"//swgoh.gg/static/img/assets/tex.skill_pentagon_white.png\" style=\"width: 25px;\">";
+        //     const omega = "<img src=\"//swgoh.gg/static/img/assets/tex.skill_pentagon_gold.png\" style=\"width: 25px;\">";
+        //     const zeta =  "<img src=\"//swgoh.gg/static/img/assets/tex.skill_zeta.png\" style=\"width: 25px;\">";
+        //     const lvlCost = {
+        //         "mk3": 0,
+        //         "omega": 0,
+        //         "zeta": 0
+        //     };
+        //     if (lvl.indexOf(mk3) > -1) {
+        //         let lvlmk3 = lvl;
+        //         lvlmk3 = lvlmk3.replace(new RegExp(`^.*${mk3} x`), "");
+        //         lvlmk3 = lvlmk3.replace(/\s.|)}>#, "");
+        //         lvlCost.mk3 = parseInt(lvlmk3);
+        //     }
+        //     if (lvl.indexOf(omega) > -1) {
+        //         let lvlomega = lvl;
+        //         lvlomega = lvlomega.replace(new RegExp(`^.*${omega} x`), "");
+        //         lvlomega = lvlomega.replace(/\s.|)}>#, "");
+        //         lvlCost.omega = parseInt(lvlomega);
+        //     }
+        //     if (lvl.indexOf(zeta) > -1) {
+        //         let lvlzeta = lvl;
+        //         lvlzeta = lvlzeta.replace(new RegExp(`^.*${zeta} x`), "");
+        //         lvlzeta = lvlzeta.replace(/\s.|)}>#, "");
+        //         lvlCost.zeta = parseInt(lvlzeta);
+        //     }
+        //     return lvlCost;
+        // }
     }
 }
 

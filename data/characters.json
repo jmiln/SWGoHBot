@@ -603,8 +603,7 @@
         },
         "shardLocations": {
             "dark": [
-                "4-C",
-                "5-D"
+                "4-C"
             ],
             "light": [],
             "cantina": [],
@@ -1290,7 +1289,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "mods": {
@@ -1479,7 +1478,9 @@
         "shardLocations": {
             "dark": [],
             "light": [],
-            "cantina": [],
+            "cantina": [
+                "7-C"
+            ],
             "shops": []
         },
         "stats": {
@@ -2386,7 +2387,9 @@
             }
         },
         "shardLocations": {
-            "dark": [],
+            "dark": [
+                "5-B"
+            ],
             "light": [],
             "cantina": [],
             "shops": []
@@ -3288,7 +3291,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "mods": {
@@ -3760,7 +3763,7 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_bossk.png",
         "side": "dark",
         "factions": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel",
             "Tank"
         ],
@@ -5123,7 +5126,7 @@
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_cadbane.png",
         "side": "dark",
         "factions": [
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel",
             "Support"
         ],
@@ -6394,7 +6397,7 @@
             "Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/chewbacca/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_chewbacca_ot.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -10556,7 +10559,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "mods": {
@@ -11272,7 +11275,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "mods": {
@@ -11448,7 +11451,9 @@
             }
         },
         "shardLocations": {
-            "dark": [],
+            "dark": [
+                "8-C"
+            ],
             "light": [],
             "cantina": [],
             "shops": []
@@ -12084,8 +12089,7 @@
         },
         "shardLocations": {
             "dark": [
-                "2-C",
-                "8-C"
+                "2-C"
             ],
             "light": [],
             "cantina": [],
@@ -12720,8 +12724,7 @@
             ],
             "light": [],
             "cantina": [
-                "3-E",
-                "5-C"
+                "3-E"
             ],
             "shops": [
                 "Guild Shipments"
@@ -14999,7 +15002,6 @@
         "shardLocations": {
             "dark": [
                 "4-C",
-                "6-D",
                 "6-C"
             ],
             "light": [],
@@ -16128,7 +16130,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "mods": {
@@ -18014,7 +18016,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Droid",
             "Scoundrel"
         ],
@@ -18858,7 +18860,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "mods": {
@@ -19045,7 +19047,9 @@
             }
         },
         "shardLocations": {
-            "dark": [],
+            "dark": [
+                "8-D"
+            ],
             "light": [],
             "cantina": [],
             "shops": []
@@ -20069,7 +20073,6 @@
         },
         "shardLocations": {
             "dark": [
-                "5-B",
                 "5-C",
                 "7-D"
             ],
@@ -20721,7 +20724,9 @@
             }
         },
         "shardLocations": {
-            "dark": [],
+            "dark": [
+                "6-D"
+            ],
             "light": [],
             "cantina": [],
             "shops": []
@@ -24149,7 +24154,9 @@
         "shardLocations": {
             "dark": [],
             "light": [],
-            "cantina": [],
+            "cantina": [
+                "7-A"
+            ],
             "shops": []
         },
         "stats": {
@@ -25803,8 +25810,7 @@
             "dark": [],
             "light": [],
             "cantina": [
-                "2-F",
-                "6-B"
+                "2-F"
             ],
             "shops": [
                 "Guild Shipments"
@@ -26862,7 +26868,6 @@
         },
         "shardLocations": {
             "dark": [
-                "7-A",
                 "7-B"
             ],
             "light": [],
@@ -29670,9 +29675,7 @@
                 "5-F"
             ],
             "light": [],
-            "cantina": [
-                "7-C"
-            ],
+            "cantina": [],
             "shops": []
         },
         "stats": {
@@ -31545,8 +31548,7 @@
         },
         "shardLocations": {
             "dark": [
-                "3-C",
-                "8-D"
+                "3-C"
             ],
             "light": [],
             "cantina": [],
@@ -32216,7 +32218,9 @@
         "shardLocations": {
             "dark": [],
             "light": [],
-            "cantina": [],
+            "cantina": [
+                "6-B"
+            ],
             "shops": []
         },
         "stats": {
@@ -33034,9 +33038,7 @@
                 "6-C"
             ],
             "light": [],
-            "cantina": [
-                "7-A"
-            ],
+            "cantina": [],
             "shops": [
                 "Galactic War Shipments"
             ]
@@ -35721,7 +35723,9 @@
             }
         },
         "shardLocations": {
-            "dark": [],
+            "dark": [
+                "5-D"
+            ],
             "light": [],
             "cantina": [],
             "shops": []
@@ -35762,7 +35766,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunter",
+            "Bounty Hunters",
             "Scoundrel"
         ],
         "mods": {

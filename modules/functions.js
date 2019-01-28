@@ -464,7 +464,7 @@ module.exports = (client) => {
     };
 
     // `await wait(1000);` to "pause" for 1 second.
-    global.wait = promisify(setTimeout);
+    client.wait = promisify(setTimeout);
 
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
