@@ -18,6 +18,7 @@ client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
 client.factions = [...new Set(client.characters.reduce((a, b) => a.concat(b.factions), []))];
 client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
 client.squads = JSON.parse(fs.readFileSync("data/squads.json"));
+client.missions = JSON.parse(fs.readFileSync("data/missions.json"));
 client.resources = JSON.parse(fs.readFileSync("data/resources.json"));
 client.arenaJumps = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
 client.acronyms = JSON.parse(fs.readFileSync("data/acronyms.json"));

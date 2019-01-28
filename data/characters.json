@@ -2608,7 +2608,9 @@
             }
         },
         "shardLocations": {
-            "dark": [],
+            "dark": [
+                "7-A"
+            ],
             "light": [],
             "cantina": [],
             "shops": []
@@ -5508,7 +5510,9 @@
         "shardLocations": {
             "dark": [],
             "light": [],
-            "cantina": [],
+            "cantina": [
+                "5-C"
+            ],
             "shops": []
         },
         "stats": {

@@ -20,6 +20,7 @@ module.exports = (client) => {
         getCharacter: getCharacter,
         character: character,
         gear: gear,
+        battles: battles,
         units: units,
         recipes: recipes,
         materials: materials,
@@ -455,7 +456,9 @@ module.exports = (client) => {
                 },
                 "project": {
                     "baseId": 1,
-                    "nameKey": 1
+                    "nameKey": 1,
+                    "categoryIdList": 1,
+                    "creationRecipeReference": 1
                 }
             });
             unitList = unitList.result;
@@ -517,6 +520,34 @@ module.exports = (client) => {
         }
     }
 
+    async function battles( batId, update=false ) {
+        if (!batId) throw new Error("Missing batId");
+        if (update) {
+            let bOut;
+            let battleList = await client.swgoh.fetchAPI("/swgoh/battles", {
+                "language": "eng_us",
+                "enums":true
+            });
+
+            const errors = battleList.error;
+            if (errors) console.log("Error: " + errors);
+            const warnings = battleList.warning;
+            if (warnings) console.log("Warning: " + warnings);
+            battleList = battleList.result.battles;
+            console.log(battleList);
+
+            for (const battle of battleList) {
+                if (battle.id === batId) bOut = battle;
+                await cache.put("swapi", "battles", {id: battle.id}, battle);
+            }
+            return bOut;
+        } else {
+            // All the skills should be loaded, so just get em from the cache
+            const bOut = await cache.get("swapi", "battles", {id: batId}, {_id: 0, updated: 0});
+            return bOut;
+        }
+    }
+
     async function materials( matArray, lang, update=false ) {
         lang = lang || "eng_us";
         if (!matArray) {
@@ -534,7 +565,9 @@ module.exports = (client) => {
                 "project": {
                     "id": 1,
                     "nameKey": 1,
-                    "descKey": 1
+                    "descKey": 1,
+                    "lookupMissionList": 1,
+                    "raidLookupList": 1
                 }
             });
             matList = matList.result;

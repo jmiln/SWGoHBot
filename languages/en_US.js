@@ -506,6 +506,48 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Farm Command
+            COMMAND_FARM_USAGE: (prefix) => `Usage is \`${prefix}farm <character>\``,
+            COMMAND_FARM_MISSING_CHARACTER: "Missing character",
+            COMMAND_FARM_HARD: "Hard ",
+            COMMAND_FARM_LIGHT: "Light Side ",
+            COMMAND_FARM_DARK: "Dark Side ",
+            COMMAND_FARM_FLEET: "Fleet ",
+            COMMAND_FARM_CANTINA: "Cantina ",
+            COMMAND_FARM_CHAR_UNAVAILABLE: "Looks like that character is not currently farmable, or only available through an event.",
+            COMMAND_FARM_EVENT_CHARS: {
+                // Heroes Journey
+                "REYJEDITRAINING": "Rey's Hero's Journey event",
+                "COMMANDERLUKESKYWALKER": "Luke Skywalker Hero's Journey event",
+                "JEDIKNIGHTREVAN": "Legend of the Old Republic event",
+
+                // Legendary events
+                "CHEWBACCALEGENDARY": "One Famous Wookiee event",
+                "R2D2_LEGENDARY": "Daring Droid event",
+                "GRANDADMIRALTHRAWN": "Artist of War event",
+                "C3POLEGENDARY": "Contact Protocol event",
+                "GRANDMASTERYODA": "Grandmaster's Training event",
+                "BB8": "Daring Droid event",
+                "EMPERORPALPATINE": "Emperor's Demise event",
+
+                // TB Rewards
+                "IMPERIALPROBEDROID": "Dark Side TB (Special Mission)",
+                "HOTHLEIA": "Light Side TB (Special Mission)"
+            },
+            COMMAND_FARM_HELP: {
+                description: "Shows a list of available farming locations for characters.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: "farm <character>",
+                        args: {
+                            "character": "The character you want to see the shard locations for."
+                        }
+                    }
+                ]
+            },
+
             // Grand Arena Command
             COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Invalid user ${userNum}`,
             COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Could not find a match for "${char}"`,

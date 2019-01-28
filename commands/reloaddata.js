@@ -70,17 +70,44 @@ class ReloadData extends Command {
                 // Do this first since it's just the basic skeleton
                 await client.swgohAPI.character(null, true);
                 for (const lang of swgohLangList) {
-                    await client.swgohAPI.abilities([], lang, true);
-                    message.channel.send(`Updated abilities for ${lang}`);
-                    await client.swgohAPI.gear([], lang, true);
-                    message.channel.send(`Updated gear for ${lang}`);
-                    await client.swgohAPI.recipes([], lang, true);
-                    message.channel.send(`Updated recipes for ${lang}`);
-                    await client.swgohAPI.materials([], lang, true);
-                    message.channel.send(`Updated mats for ${lang}`);
-                    await client.swgohAPI.units("", lang, true);
-                    message.channel.send(`Updated units for ${lang}`);
-                    message.channel.send("Updated all local data for " + lang);
+                    if (!args[0]) {
+                        await client.swgohAPI.abilities([], lang, true);
+                        message.channel.send(`Updated abilities for ${lang}`);
+                        await client.swgohAPI.gear([], lang, true);
+                        message.channel.send(`Updated gear for ${lang}`);
+                        await client.swgohAPI.recipes([], lang, true);
+                        message.channel.send(`Updated recipes for ${lang}`);
+                        await client.swgohAPI.materials([], lang, true);
+                        message.channel.send(`Updated mats for ${lang}`);
+                        await client.swgohAPI.units("", lang, true);
+                        message.channel.send(`Updated units for ${lang}`);
+                        message.channel.send("Updated all local data for " + lang);
+                    } else {
+                        switch (args[0]) { 
+                            case "abilities":    
+                                await client.swgohAPI.abilities([], lang, true);
+                                message.channel.send(`Updated abilities for ${lang}`);
+                                break;
+                            case "gear":    
+                                await client.swgohAPI.gear([], lang, true);
+                                message.channel.send(`Updated gear for ${lang}`);
+                                break;
+                            case "materials":    
+                                await client.swgohAPI.materials([], lang, true);
+                                message.channel.send(`Updated mats for ${lang}`);
+                                break;
+                            case "recipes":    
+                                await client.swgohAPI.recipes([], lang, true);
+                                message.channel.send(`Updated recipes for ${lang}`);
+                                break;
+                            case "units":    
+                                await client.swgohAPI.units("", lang, true);
+                                message.channel.send(`Updated units for ${lang}`);
+                                break;
+                            default:
+                                return message.channel.send("Invalid choice - `Abilities, gear, materials, recipes, units`");
+                        }        
+                    }
                 }
                 message.channel.send("API Language update complete");
                 break;
