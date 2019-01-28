@@ -340,7 +340,7 @@ class Event extends Command {
                                 if (!channel) {
                                     err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_CHANNEL", json.channel));
                                 } else if (!channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                                    err.push("COMMAND_EVENT_JSON_MISSING_CHANNEL_PERM", json.channel);
+                                    err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS", json.channel));
                                 } else {
                                     newEvent.eventChan = channel.id;
                                 }
