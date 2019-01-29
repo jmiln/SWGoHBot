@@ -672,13 +672,14 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guildsearch [user] <character> [-zetas] [-ships] [-reverse] [-sort type] [starLvl]",
+                        usage: ";guildsearch [user] <character> [-zetas] [-ships] [-reverse] [-sort type] [-top X] [starLvl]",
                         args: {
                             "user": "The player who's guild you want to check. (me | userID | mention)",
                             "character": "The character you want to search for.",
                             "-ships": "Search for ships, you can use `-s, -ship, or -ships`",
                             "-reverse": "Reverse the chosen sort",
                             "-sort": "Choose either name, gear, or gp to sort by",
+                            "-top X": "Show just the top X results, where X is between 0 and 50",
                             "-zetas": "Show only characters with zetas equipped",
                             "starLvl": "Select the star level you want to see."
                         }
