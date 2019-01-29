@@ -28,6 +28,9 @@ class GuildSearch extends Command {
                 },
                 stat: {
                     aliases: ["stats"]
+                },
+                top: {
+                    aliases: []
                 }
             }
         });
@@ -50,7 +53,15 @@ class GuildSearch extends Command {
             "SIXSTAR": 6,
             "SEVENSTAR": 7
         };
-
+        let top = null;
+        if (options.subArgs.top !== null) {
+            const t = parseInt(options.subArgs.top);
+            if (!isNaN(t) && t > 0 && t <= 50) {
+                top = t;
+            } else {
+                return super.error(message, "Invalid argument for -top. Must be between 1 and 50");
+            }
+        }
         // If there's enough elements in args, and it's in the format of a number*
         if (args.length && !isNaN(parseInt(args[args.length-1])) && /^\d+$/.test(args[args.length-1].toString())) {
             starLvl = parseInt(args.pop());
@@ -205,19 +216,22 @@ class GuildSearch extends Command {
             } else if (sortType === "gp") {
                 // Sort by gp
                 if (!reverse) {
-                    sortedGuild = guildChar.sort((p, c) => p.gp - c.gp);
-                } else {
                     sortedGuild = guildChar.sort((p, c) => c.gp - p.gp);
+                } else {
+                    sortedGuild = guildChar.sort((p, c) => p.gp - c.gp);
                 }
             } else if (sortType === "gear") {
                 // Sort by gear
                 if (!reverse) {
-                    sortedGuild = guildChar.sort((p, c) => p.gearLevel - c.gearLevel);
-                } else {
                     sortedGuild = guildChar.sort((p, c) => c.gearLevel - p.gearLevel);
+                } else {
+                    sortedGuild = guildChar.sort((p, c) => p.gearLevel - c.gearLevel);
                 }
             } else {
                 return super.error(msg, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp", "gear"]), {edit: true, example: "guildsearch c3po -sort gp"});
+            }
+            if (top) {
+                sortedGuild = sortedGuild.slice(0, top);
             }
 
             const charOut = {};
