@@ -6,11 +6,19 @@ class Faction extends Command {
             name: "faction",
             aliases: ["factions"],
             category: "Star Wars",
-            permissions: ["EMBED_LINKS"]
+            permissions: ["EMBED_LINKS"],
+            flags: {
+                leader: {
+                    aliases: ["leaders", "l"]
+                },
+                zetas: {
+                    aliases: ["zeta", "z"]
+                }
+            }
         });
     }
 
-    async run(client, message, args) {
+    async run(client, message, args, options) {
         const charList = client.characters;
         let allyCode = null;
         if (!args[0]) {
@@ -21,28 +29,53 @@ class Faction extends Command {
             allyCode = await client.getAllyCode(message, allyCode);
         }
 
-        let searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
+        const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
-        if (searchName === "") {
+        if (!searchName || !searchName.length || searchName === "") {
             return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_MISSING_FACTION"), example: "faction sith"});
         }
 
-        searchName = client.findFaction(searchName);
-        if (!searchName) {
+        const factionChars = [];
+        const query = new RegExp(searchName.replace(/[^\w]/g, "").replace(/s$/, ""), "gi");
+        let chars = await client.cache.get("swapi", "units", {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, {_id: 0, baseId: 1, nameKey: 1});
+        chars = chars.filter(c => charList.find(char => char.uniqueName === c.baseId));
+        if (!chars.length) {
             return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
-        } else if (Array.isArray(searchName)) {
-            if (searchName.length > 1) {
-                return super.error(message, "Your query came up with too many results: ```" + searchName.map(n => n.toProperCase()).join("\n") + "```");
-            } else {
-                searchName = searchName[0];
-            }
+        } else if (chars.length > 40) {
+            return super.error(message, "Your query came up with too many results, please try and be more specific");
+        } else {
+            chars = chars.sort((a, b) => a.nameKey.toLowerCase() > b.nameKey.toLowerCase() ? 1 : -1);
         }
 
-        const factionChars = [];
-        let chars = charList.filter(c => c.factions.map(ch => ch.toLowerCase()).includes(searchName.toLowerCase()));
+        // If they want just characters with leader abilities or zetas, filter em out
+        if (options.flags.leader || options.flags.zetas) {
+            const units = [];
+
+            for (const c of chars) {
+                const char = await client.swgohAPI.getCharacter(c.baseId, message.guildSettings.swgohLanguage);
+                units.push(char);
+            }
+
+            if (options.flags.leader) {
+                chars = chars.filter(c => {
+                    const char = units.find(u => u.baseId === c.baseId);
+                    const leader = char.skillReferenceList.filter(s => s.skillId.startsWith("leader"));
+                    if (leader.length) return true;
+                    return false;
+                });
+            }
+            if (options.flags.zetas) {
+                chars = chars.filter(c => {
+                    const char = units.find(u => u.baseId === c.baseId);
+                    const zetas = char.skillReferenceList.filter(s => s.cost.AbilityMatZeta > 0);
+                    if (zetas.length > 0) return true;
+                    return false;
+                });
+            }
+        }
         if (allyCode) {
             if (chars.length) {
-                chars = chars.map(c => c.uniqueName);
+                chars = chars.map(c => c.baseId);
                 const cooldown = client.getPlayerCooldown(message.author.id);
                 const player = await client.swgohAPI.player(allyCode, null, cooldown);
                 const playerChars = [];
@@ -86,7 +119,7 @@ class Faction extends Command {
                 const footer = client.updatedFooter(player.updated, message, "player", cooldown);
                 return message.channel.send({embed: {
                     author: {
-                        name: player.name + "'s " + searchName.toProperCase() + " Faction"
+                        name: player.name + "'s matches for " + searchName.toProperCase()
                     },
                     description: desc,
                     fields: fields,
@@ -98,9 +131,9 @@ class Faction extends Command {
         } else {
             return message.channel.send({embed: {
                 author: {
-                    name: searchName.toProperCase()
+                    name: "Matches for " + searchName.toProperCase()
                 },
-                description: chars.map(c => c.name).join("\n")
+                description: chars.map(c => c.nameKey).join("\n")
             }});
         }
     }

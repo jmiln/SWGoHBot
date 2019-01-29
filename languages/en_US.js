@@ -489,18 +489,22 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction <faction>",
+                        usage: "faction <faction> [-leader] [-zeta]",
                         args: {
-                            "faction": "The faction you want to see the roster of."
+                            "faction": "The faction you want to see the roster of.",
+                            "-leader": "Limit the results to characters who have a leader ability",
+                            "-zeta": "Limit the results to characters who can have abilities zetad"
                         }
                     },
                     {
                         action: "Player Faction",
                         actionDesc: "See how a player's faction is shaping up",
-                        usage: "faction <user> <faction>",
+                        usage: "faction <user> <faction> [-leader] [-zeta]",
                         args: {
                             "user": "A way to identify the player. (mention | allyCode | me)",
-                            "faction": "The faction you want to see the roster of."
+                            "faction": "The faction you want to see the roster of.",
+                            "-leader": "Limit the results to characters who have a leader ability",
+                            "-zeta": "Limit the results to characters who can have abilities zetad"
                         }
                     }
                 ]
