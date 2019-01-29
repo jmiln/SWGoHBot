@@ -36,8 +36,14 @@ class Faction extends Command {
         }
 
         const factionChars = [];
-        const query = new RegExp(searchName.replace(/[^\w]/g, "").replace(/s$/, ""), "gi");
+        const search = searchName.replace(/[^\w]/g, "").replace(/s$/, "");
+        const query = new RegExp(`^(?!.*selftag).*${search}.*`, "gi");
         let chars = await client.cache.get("swapi", "units", {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, {_id: 0, baseId: 1, nameKey: 1});
+
+        // Filter out any ships that show up
+        chars = chars.filter(c => charList.find(char => char.uniqueName === c.baseId));
+
+        // Filter out 
         chars = chars.filter(c => charList.find(char => char.uniqueName === c.baseId));
         if (!chars.length) {
             return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
