@@ -216,22 +216,30 @@ class GuildSearch extends Command {
             } else if (sortType === "gp") {
                 // Sort by gp
                 if (!reverse) {
-                    sortedGuild = guildChar.sort((p, c) => c.gp - p.gp);
-                } else {
                     sortedGuild = guildChar.sort((p, c) => p.gp - c.gp);
+                } else {
+                    sortedGuild = guildChar.sort((p, c) => c.gp - p.gp);
                 }
             } else if (sortType === "gear") {
                 // Sort by gear
                 if (!reverse) {
-                    sortedGuild = guildChar.sort((p, c) => c.gearLevel - p.gearLevel);
-                } else {
                     sortedGuild = guildChar.sort((p, c) => p.gearLevel - c.gearLevel);
+                } else {
+                    sortedGuild = guildChar.sort((p, c) => c.gearLevel - p.gearLevel);
                 }
             } else {
                 return super.error(msg, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp", "gear"]), {edit: true, example: "guildsearch c3po -sort gp"});
             }
+
             if (top) {
-                sortedGuild = sortedGuild.slice(0, top);
+                if (!reverse) sortedGuild = sortedGuild.reverse();
+                console.log(sortedGuild.length);
+                const start = reverse ? sortedGuild.length - top : 0;
+                const end   = reverse ? sortedGuild.length       : top;
+                sortedGuild = sortedGuild.slice(start, end);
+                if (reverse) {
+                    sortedGuild = sortedGuild.reverse();
+                }
             }
 
             const charOut = {};
@@ -272,7 +280,18 @@ class GuildSearch extends Command {
             }
 
             const fields = [];
-            const outArr = reverse ? Object.keys(charOut).reverse() : Object.keys(charOut);
+            let outArr;
+
+            if (top) {
+                outArr = Object.keys(charOut);
+            } else {
+                if (reverse) {
+                    outArr = Object.keys(charOut).reverse();
+                } else {
+                    outArr = Object.keys(charOut);
+                }
+            }
+
             outArr.forEach(star => {
                 if (star >= starLvl) {
                     const msgArr = client.msgArray(charOut[star], "\n", 1000);
