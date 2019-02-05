@@ -2,6 +2,9 @@ module.exports = async (client, guild) => {
     // Get the default config settings
     const defSet = client.config.defaultSettings;
 
+    // Make sure it's not a server outage that's causing it to show as leaving/ re-joining
+    if(!guild.available) return;
+
     const exists = await client.database.models.settings.findOne({where: {guildID: guild.id}})
         .then(token => token !== null)
         .then(isUnique => isUnique);
