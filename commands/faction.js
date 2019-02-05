@@ -36,7 +36,8 @@ class Faction extends Command {
         }
 
         const factionChars = [];
-        const search = searchName.replace(/[^\w]/g, "").replace(/s$/, "");
+        let search = searchName.replace(/[^\w]/g, "").replace(/s$/, "");
+        if (searchName.toLowerCase() === "galactic republic") search = "affiliation_republic";
         const query = new RegExp(`^(?!.*selftag).*${search}.*`, "gi");
         let chars = await client.cache.get("swapi", "units", {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, {_id: 0, baseId: 1, nameKey: 1});
 

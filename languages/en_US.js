@@ -1084,10 +1084,11 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";randomchar [user] [numberOfChars]",
+                        usage: ";randomchar [user] [numberOfChars] [-star X]",
                         args: {
                             "user": "The user's roster you want it to choose from. (me | userID | mention)",
-                            "numberOfChars": "The number of characters that you want chosen"
+                            "numberOfChars": "The number of characters that you want chosen",
+                            "-star X": "Choose the min star lvl of character that you want chosen, where X is the lvl."
                         }
                     }
                 ]

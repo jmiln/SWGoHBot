@@ -23,28 +23,34 @@ class Squads extends Command {
         const lang = message.guildSettings.swgoghLanguage;
         let allyCodes;
         if (user === "me" || client.isUserID(user) || client.isAllyCode(user)) {
-            allyCodes = await client.getAllyCode(message, user);
+            allyCodes = await super.getUser(message, user);
+            if (!allyCodes) {
+                return super.error(message, "I could't find that user. Check that:\n* Your ally code is correct.\n* The user you're checking is registered.");
+            }
         }
+        // console.log(allyCodes, list, phase);
+        // console.log(lists);
         let player = null;
         let cooldown = null;
-        if (!allyCodes || !allyCodes.length || allyCodes.length > 1) {
+        if (!allyCodes) {
             phase = list;
             list = user;
         } else {
             cooldown = client.getPlayerCooldown(message.author.id);
             try {
-                player = await client.swgohAPI.player(allyCodes[0], lang, cooldown);
+                player = await client.swgohAPI.player(allyCodes, lang, cooldown);
             } catch (e) {
                 console.log("Broke getting player in squads: " + e);
             }
         }
 
-        if (!list) {
+        if (!list || !list.length) {
             // No list, show em the possible ones
             return super.error(message, message.language.get("COMMAND_SQUADS_NO_LIST", lists.join(", ")), {title: "Missing category", example: example});
         } else {
             list = list.toLowerCase();
         } 
+
         if (lists.includes(list)) {
             if (!phase) {
                 // They've chosen a list, show em the phase list 

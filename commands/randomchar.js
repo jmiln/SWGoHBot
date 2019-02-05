@@ -5,11 +5,17 @@ class Randomchar extends Command {
         super(client, {
             name: "randomchar",
             aliases: ["rand", "random"],
-            category: "Star Wars"
+            category: "Star Wars",
+            permissions: ["EMBED_LINKS"],
+            subArgs: {
+                star: {
+                    aliases: ["rarity"]
+                }
+            }
         });
     }
 
-    async run(client, message, [userID, count]) {
+    async run(client, message, [userID, count], options) {
         let chars = client.characters;
         let MAX_CHARACTERS = 5;
 
@@ -33,6 +39,17 @@ class Randomchar extends Command {
                 } 
                 // Filter out all the ships, so it only shows characters
                 chars = player.roster.filter(c => !c.crew.length);
+
+                // If they're looking for a certain min star lvl, filter out everything lower
+                if (options.subArgs.star) {
+                    const star = parseInt(options.subArgs.star);
+                    if (!isNaN(star) && star <= 7 && star > 0) {
+                        chars = chars.filter(c => c.rarity >= star);
+                    } else {
+                        return super.error(message, "Invalid star level. Only 1-7 are supported.");
+                    }
+                }
+
                 // In case a new player tries using it before they get enough characters?
                 if (chars.length < MAX_CHARACTERS) MAX_CHARACTERS = chars.length;
                 if (count) {
