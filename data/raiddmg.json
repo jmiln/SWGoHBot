@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Rancor",
+        "aliases": ["pit"],
+        "phases": {
+            "1": {
+                "name": "Phase 1",
+                "dmg":  18730
+            }, 
+            "2": {
+                "name": "Phase 2",
+                "dmg": 30550
+            },
+            "3": {
+                "name": "Phase 3",
+                "dmg": 33000
+            },
+            "4": {
+                "name": "Phase 4",
+                "dmg": 21080
+            }
+        }
+    },
+    {
+        "name": "HAAT",
+        "aliases": [
+            "tank",
+            "aat"
+        ],
+        "phases": {
+            "1": {
+                "name": "Phase 1",
+                "dmg": 40731
+            },
+            "2": {
+                "name": "Phase 2",
+                "dmg": 191228
+            },
+            "3": {
+                "name": "Phase 3",
+                "dmg": 127063
+            },
+            "4": {
+                "name": "Phase 4",
+                "dmg": 124560
+            }
+        }
+    },
+    {
+        "name": "Sith",
+        "aliases": [
+            "hsith"
+        ],
+        "phases": {
+            "1": {
+                "name": "Phase 1",
+                "dmg": 468887.76
+            },
+            "2": {
+                "name": "Phase 2",
+                "dmg": 521055.85
+            },
+            "3": {
+                "name": "Phase 3",
+                "dmg": 383714.55
+            },
+            "4": {
+                "name": "Phase 4 (Nihilus)",
+                "dmg": 118220.98
+            },
+            "5": {
+                "name": "Phase 4 (Sion)",
+                "dmg": 96748.37
+            },
+            "6": {
+                "name": "Phase 4 (Traya)",
+                "dmg": 120026.02
+            }
+        }
+    }
+]
+

@@ -1017,6 +1017,37 @@ module.exports = class extends Language {
                 ]
             },
 
+            // RaidDamage Command
+            COMMAND_RAIDDMG_DMG: "damage", 
+            COMMAND_RAIDDMG_MISSING_RAID: "Missing Raid", 
+            COMMAND_RAIDDMG_INVALID_RAID: "Invalid Raid", 
+            COMMAND_RAIDDMG_RAID_STR: (raids) => `Please select one of the following raids:\n\`${raids}\``, 
+            COMMAND_RAIDDMG_MISSING_PHASE: "Missing Phase", 
+            COMMAND_RAIDDMG_INVALID_PHASE: "Invalid Phase",
+            COMMAND_RAIDDMG_PHASE_STR: (raid, phases) => `Please select one of the following phases for the ${raid} raid:\n${phases}`, 
+            COMMAND_RAIDDMG_MISSING_AMT: "Missing Amount",  
+            COMMAND_RAIDDMG_INVALID_AMT: "Invalid Amount",
+            COMMAND_RAIDDMG_AMOUNT_STR: "You need to enter either a number or percent to convert the damage to or from",
+            COMMAND_RAIDDMG_OUT_HEADER: (raidName, phaseName) => `${raidName} raid, ${phaseName}`,
+            COMMAND_RAIDDMG_OUT_DMG: (inAmt, outAmt) => `**${inAmt} is about ${outAmt} of the boss' hp**`,
+            COMMAND_RAIDDMG_OUT_PERCENT: (inAmt, outAmt) => `**${inAmt} is about ${outAmt}**`,
+            COMMAND_RAIDDMG_OUT_STR: (inAmt, outAmt, phase, raid) => `${inAmt} is about ${outAmt} during ${phase} of the ${raid} raid.`,
+            COMMAND_RAIDDMG_HELP: {
+                description: "Shows some teams that work well for each raid.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";raidteams <raid> <phase>",
+                        args: {
+                            "raid": "The raid that you want to see teams for. (aat|pit|sith)",
+                            "phase": "The phase of the raid you want to see. (p1|p2|p3|p4|solo)"
+                        }
+                    }
+                ]
+            },
+
+
             // Raidteams Command
             COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Invalid raid, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
             COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Invalid phase, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
