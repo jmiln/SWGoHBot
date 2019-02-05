@@ -34,14 +34,14 @@ class RaidDamage extends Command {
 
         if (!phase) {
             return super.error(message, message.language.get("COMMAND_RAIDDMG_PHASE_STR", thisRaid.name, Object.keys(thisRaid.phases).map(ix => "`" + ix + "`: " + thisRaid.phases[ix].name.toProperCase()).join("\n")), {
-                title: message.language.get("COMMAND_MISSING_PHASE"), 
+                title: message.language.get("COMMAND_RAIDDMG_MISSING_PHASE"), 
                 example: examples.join("\n")
             });
         }
         const thisPhase = thisRaid.phases[phase];
         if (!thisPhase) {
             return super.error(message, message.language.get("COMMAND_RAIDDMG_PHASE_STR", thisRaid.name, Object.keys(thisRaid.phases).map(ix => "`" + ix + "`: " + thisRaid.phases[ix].name.toProperCase()).join("\n")), {
-                title: message.language.get("COMMAND_INVALID_PHASE"), 
+                title: message.language.get("COMMAND_RAIDDMG_INVALID_PHASE"), 
                 example: examples.join("\n")
             });
         }
