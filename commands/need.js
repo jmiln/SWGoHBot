@@ -77,7 +77,8 @@ class Need extends Command {
 
         if (!units.length) {
             // Can't find a match, so let them know
-            return super.error(message, message.language.get("COMMAND_NEED_MISSING_SEARCH"), searchChar);
+            console.log("Error: " + units.length, search, searchChar);
+            return super.error(message, message.language.get("COMMAND_NEED_MISSING_SEARCH", searchChar));
         }
 
         const totalShards = units.length * shardsLeftAtStar[0];
