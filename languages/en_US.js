@@ -928,6 +928,31 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Need Command
+            COMMAND_NEED_MISSING_USER: "In order to use this command, you must either register or enter an ally code.",
+            COMMAND_NEED_MISSING_SEARCH: (search) => `Cannot find any matches for ${search}`,
+            COMMAND_NEED_CHAR_HEADER: "__Characters:__",
+            COMMAND_NEED_SHIP_HEADER: "__Ships:__",
+            COMMAND_NEED_COMPLETE: "100% Complete!",
+            COMMAND_NEED_ALL_CHAR: "Congrats, you have all the characters at 7*",
+            COMMAND_NEED_ALL_SHIP: "Congrats, you have all the ships at 7*",
+            COMMAND_NEED_PARTIAL: (percent) => `You're about **${percent}%** complete.`,
+            COMMAND_NEED_HEADER: (player, search) => `${player}'s ${search} needs`,
+            COMMAND_NEED_HELP: {
+                description: "Shows your progress towards 7* characters from a faction or shop.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";need [user] <faction|shop>",
+                        args: {
+                            "user": "The person you're checking. (me | userID | mention)",
+                            "faction | shop": "The faction or shop you want to see your completeness of" 
+                        }
+                    }
+                ]
+            },
+
             // Nickname Command
             COMMAND_NICKNAME_SUCCESS: "I have changed my nickname.",
             COMMAND_NICKNAME_FAILURE: "Sorry, but I don't have permission to change that.",

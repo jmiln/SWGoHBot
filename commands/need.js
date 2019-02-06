@@ -1,0 +1,164 @@
+const Command = require("../base/Command");
+
+class Need extends Command {
+    constructor(client) {
+        super(client, {
+            name: "need",
+            category: "SWGoH",
+            enabled: true, 
+            permissions: ["EMBED_LINKS"]
+        });
+    }
+
+    async run(client, message, args, options) { // eslint-disable-line no-unused-vars
+        const shardsLeftAtStar = {
+            0: 330,
+            1: 320,
+            2: 305,
+            3: 280,
+            4: 250,
+            5: 185,
+            6: 100
+        };
+        const {searchChar, allyCode, err} = await super.getUserAndChar(message, args, true);   // eslint-disable-line no-unused-vars
+        if (err) {
+            return super.error(message, err);
+        }
+        if (!allyCode) {
+            return super.error(message, message.language.get("COMMAND_NEED_MISSING_USER"));
+        }
+        let search = searchChar.replace(/[^\w\s]/g, "").replace(/s$/, "");
+        if (search.toLowerCase() === "galactic republic") search = "affiliation_republic";                                                                                          
+        if (search.toLowerCase() === "galactic war") search = "gw";
+        if (search.includes("cantina") && search.includes("battle")) {
+            search = search.replace(/(battles|battle)/gi, "");
+        } else if (search.includes("fleet") && (search.includes("store") || search.includes("shop"))) {
+            search = search.replace(/(store|shop)/gi, "shipment");
+        } else {
+            search = search
+                .replace("store", "shop")
+                .replace(/(battles|battle)/gi, "hard")
+                .replace(/light/gi, "(l)")
+                .replace(/dark/gi, "(d)")
+                .replace("node", "mode");
+        }
+
+        const cooldown = client.getPlayerCooldown(message.author.id);
+        const player = await client.swgohAPI.player(allyCode, null, cooldown);
+        if (!player) {
+            // Could not find the player, possible api issue?
+            return super.error(message, "I couldn't find that player, please make sure you've got the corect ally code.");
+        }
+
+        let outChars = [];
+        let outShips = [];
+
+        let units = client.charLocs.filter(c => c.locations.filter(l => search.split(" ").every(item => l.type.toLowerCase().includes(item))).length);
+        units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => search.split(" ").every(item => l.type.toLowerCase().includes(item))).length));
+        for (const c of units) {
+            let char = client.characters.find(char => char.name.toLowerCase() === c.name.toLowerCase());
+            if (!char) {
+                char = client.ships.find(char => char.name.toLowerCase() === c.name.toLowerCase());
+            }
+            if (!char) continue;
+            c.baseId = char.uniqueName;
+            c.nameKey = c.name;
+        }
+
+        if (!units.length) {
+            // Must not be in a shop or node, try checking factions
+            const searchReg = search.split(" ").map(s => `(?=.*${s})`).join("");
+            const query = new RegExp(`^${searchReg}.*`, "gi");
+            units = await client.cache.get("swapi", "units", 
+                {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, 
+                {_id: 0, baseId: 1, nameKey: 1}
+            );
+        }        
+
+        if (!units.length) {
+            // Can't find a match, so let them know
+            return super.error(message, message.language.get("COMMAND_NEED_MISSING_SEARCH"), searchChar);
+        }
+
+        const totalShards = units.length * shardsLeftAtStar[0];
+        let shardsLeft = 0;
+        for (const unit of units) {
+            let u = player.roster.find(c => c.defId === unit.baseId);
+            if (!u) continue;
+            if (u.rarity === 7) continue;
+            shardsLeft += shardsLeftAtStar[u.rarity];
+            u = await client.swgohAPI.langChar(u, message.guildSettings.swgohLanguage);
+            if (client.characters.find(c => c.uniqueName === unit.baseId)) {
+                // It's a character
+                outChars.push({
+                    rarity: u.rarity,
+                    name: u.nameKey
+                });
+            } else if (client.ships.find(s => s.uniqueName === unit.baseId)) {
+                // It's a ship
+                outShips.push({
+                    rarity: u.rarity,
+                    name: u.nameKey
+                });
+            } else {
+                // It's neither and shouldn't be there
+                continue;
+            }
+        }
+        outChars = outChars.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+        outShips = outShips.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+        const fields = [];
+        if (outChars.length) {
+            outChars = outChars.map(c => `\`${c.rarity}*\` ${c.name}`);
+            const msgArr = client.msgArray(outChars, "\n", 1000);
+            msgArr.forEach((m, ix) => {
+                let end = "";
+                if (msgArr.length > 1) end = `(${ix+1})`;
+                fields.push({
+                    name: message.language.get("COMMAND_NEED_CHAR_HEADER") + end,
+                    value: m
+                });
+            });
+        } else {
+            fields.push({
+                name: message.language.get("COMMAND_NEED_CHAR_HEADER"),
+                value: message.language.get("COMMAND_NEED_ALL_CHAR")
+            });
+        }
+        if (outShips.length) {
+            outShips = outShips.map(s => `\`${s.rarity}*\` ${s.name}`);
+            const msgArr = client.msgArray(outShips, "\n", 1000);
+            msgArr.forEach((m, ix) => {
+                let end = "";
+                if (msgArr.length > 1) end = `(${ix+1})`;
+                fields.push({
+                    name: message.language.get("COMMAND_NEED_SHIP_HEADER") + end,
+                    value: m
+                });
+            });
+        } else {
+            fields.push({
+                name: message.language.get("COMMAND_NEED_SHIP_HEADER"),
+                value: message.language.get("COMMAND_NEED_ALL_SHIP")
+            });
+        }
+
+        let desc = "";
+        if (shardsLeft === 0) {
+            desc = message.language.get("COMMAND_NEED_COMPLETE");
+        } else {
+            desc = message.language.get("COMMAND_NEED_PARTIAL", (((totalShards - shardsLeft)/ totalShards) * 100).toFixed(1));
+        }
+
+        return message.channel.send({embed: {
+            author: {
+                name: message.language.get("COMMAND_NEED_HEADER", player.name, searchChar.toProperCase())
+            },
+            description: desc,
+            fields: fields
+        }});
+    }
+}
+
+module.exports = Need;
