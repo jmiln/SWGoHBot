@@ -1,4 +1,3 @@
-const {inspect} = require("util");  // eslint-disable-line no-unused-vars
 const Command = require("../base/Command");
 
 class Farm extends Command {

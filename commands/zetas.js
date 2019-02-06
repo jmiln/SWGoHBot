@@ -31,7 +31,7 @@ class Zetas extends Command {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
         if (err) {
-            return super.error(message, "**Error:** `" + err + "`");
+            return super.error(message, err);
         }
         
         if (searchChar && options.flags.r && !filters.includes(searchChar.toLowerCase())) { 
