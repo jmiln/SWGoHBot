@@ -51,6 +51,8 @@ class CurrentEvents extends Command {
             eNum = parseInt(num);
         }
 
+        console.log(gohEvents);
+
         let filter = [];
         const excludeFilter = [];
         const evOut = [];
@@ -61,6 +63,9 @@ class CurrentEvents extends Command {
             filter = filter.concat(HEROIC);
         }
         for (const event of gohEvents) {
+            if (event.nameKey === "TERRITORY_TOURNAMENT_EVENT_NAME") {
+                event.nameKey = "Territory War";
+            }
             if (FLEET_CHALLENGES.includes(event.id) ||
                 MOD_CHALLENGES.includes(event.id) ||
                 DAILY_CHALLENGES.includes(event.id) ||
