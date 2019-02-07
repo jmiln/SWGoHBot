@@ -27,21 +27,6 @@ class Need extends Command {
         if (!allyCode) {
             return super.error(message, message.language.get("COMMAND_NEED_MISSING_USER"));
         }
-        let search = searchChar.replace(/[^\w\s]/g, "").replace(/s$/, "");
-        if (search.toLowerCase() === "galactic republic") search = "affiliation_republic";                                                                                          
-        if (search.toLowerCase() === "galactic war") search = "gw";
-        if (search.includes("cantina") && search.includes("battle")) {
-            search = search.replace(/(battles|battle)/gi, "");
-        } else if (search.includes("fleet") && (search.includes("store") || search.includes("shop"))) {
-            search = search.replace(/(store|shop)/gi, "shipment");
-        } else {
-            search = search
-                .replace("store", "shop")
-                .replace(/(battles|battle)/gi, "hard")
-                .replace(/light/gi, "(l)")
-                .replace(/dark/gi, "(d)")
-                .replace("node", "mode");
-        }
 
         const cooldown = client.getPlayerCooldown(message.author.id);
         const player = await client.swgohAPI.player(allyCode, null, cooldown);
@@ -53,31 +38,26 @@ class Need extends Command {
         let outChars = [];
         let outShips = [];
 
-        const searchReg = search.split(" ").map(s => `(?=.*${s})`).join("");
-        const query = new RegExp(`.*${searchReg}.*`, "gi");
-
-        let units = client.charLocs.filter(c => c.locations.filter(l => l.type.match(query)).length);
-        units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type.match(query)).length));
-
-        for (const c of units) {
-            // The char/ ship locations don't have the baseId so need to get those
-            let char = client.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
-            if (!char) {
-                char = client.ships.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
-            }
-            if (!char) {
-                continue;
-            }
-            c.baseId = char.uniqueName;
+        let search;
+        switch (searchChar.toLowerCase()) {
+            case "cantina":
+                search = "Cantina Shipments";
+                break;
+            case "guild":
+                search = "Guild Shop";
+                break;
+            case "fleet": 
+                search = "Fleet Shipments";
+                break;
         }
 
-        if (!units.length) {
-            // Must not be in a shop or node, try checking factions
-            units = await client.cache.get("swapi", "units", 
-                {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, 
-                {_id: 0, baseId: 1, nameKey: 1}
-            );
-        }        
+        let units = [];
+        if (search) {
+            units = client.charLocs.filter(c => c.locations.filter(l => l.type === search).length);
+            units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type === search).length));
+        } else {
+            units = await getUnits(searchChar);
+        }
 
         if (!units.length) {
             // Can't find a match, so let them know
@@ -163,6 +143,52 @@ class Need extends Command {
             description: desc,
             fields: fields
         }});
+
+        async function getUnits(searchName) {
+            let search = searchName.replace(/[^\w\s]/g, "").replace(/s$/, "");
+            if (search.toLowerCase() === "galactic republic") search = "affiliation_republic";                                                                                          
+            if (search.toLowerCase() === "galactic war") search = "gw";
+            if (search.includes("cantina") && search.includes("battle")) {
+                search = search.replace(/(battles|battle)/gi, "");
+            } else if (search.includes("fleet") && (search.includes("store") || search.includes("shop"))) {
+                search = search.replace(/(store|shop)/gi, "shipment");
+            } else {
+                search = search
+                    .replace("store", "shop")
+                    .replace(/(battles|battle)/gi, "hard")
+                    .replace(/light/gi, "(l)")
+                    .replace(/dark/gi, "(d)")
+                    .replace("node", "mode");
+            }
+
+
+            const searchReg = search.split(" ").map(s => `(?=.*${s})`).join("");
+            const query = new RegExp(`.*${searchReg}.*`, "gi");
+
+            let units = client.charLocs.filter(c => c.locations.filter(l => l.type.match(query)).length);
+            units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type.match(query)).length));
+
+            for (const c of units) {
+                // The char/ ship locations don't have the baseId so need to get those
+                let char = client.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                if (!char) {
+                    char = client.ships.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                }
+                if (!char) {
+                    continue;
+                }
+                c.baseId = char.uniqueName;
+            }
+
+            if (!units.length) {
+                // Must not be in a shop or node, try checking factions
+                units = await client.cache.get("swapi", "units", 
+                    {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, 
+                    {_id: 0, baseId: 1, nameKey: 1}
+                );
+            }        
+            return units;
+        }
     }
 }
 
