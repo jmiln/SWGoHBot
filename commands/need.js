@@ -162,7 +162,7 @@ class Need extends Command {
             }
 
 
-            const searchReg = search.split(" ").map(s => `(?=.*${s})`).join("");
+            const searchReg = search.split(" ").map(s => `(?=.*${s.replace(/(\(|\))/g, "\\$1")})`).join("");
             const query = new RegExp(`.*${searchReg}.*`, "gi");
 
             let units = client.charLocs.filter(c => c.locations.filter(l => l.type.match(query)).length);
