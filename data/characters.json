@@ -1506,6 +1506,197 @@
         }
     },
     {
+        "name": "B1 Battle Droid",
+        "uniqueName": "B1BATTLEDROIDV2",
+        "aliases": [
+            "B1 Battle Droid"
+        ],
+        "nameVariant": [
+            "B1 Battle Droid"
+        ],
+        "url": "http://swgoh.gg/characters/b1-battle-droid/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b1.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Droid",
+            "Separatist"
+        ],
+        "mods": {},
+        "defaultMods": {},
+        "gear": {
+            "Gear 1": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 BlasTech Weapon Mod",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Nubian Security Scanner",
+                "Mk 1 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 2": [
+                "Mk 1 SoroSuub Keypad",
+                "Mk 2 Nubian Security Scanner",
+                "Mk 2 Neuro-Saav Electrobinoculars",
+                "Mk 3 Loronar Power Cell",
+                "Mk 3 BlasTech Weapon Mod",
+                "Mk 1 Sienar Holo Projector"
+            ],
+            "Gear 3": [
+                "Mk 1 TaggeCo Holo Lens",
+                "Mk 2 BioTech Implant",
+                "Mk 5 BlasTech Weapon Mod",
+                "Mk 3 Arakyd Droid Caller",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 5 BlasTech Weapon Mod"
+            ],
+            "Gear 4": [
+                "Mk 6 BlasTech Weapon Mod",
+                "Mk 5 Neuro-Saav Electrobinoculars",
+                "Mk 5 BioTech Implant",
+                "Mk 1 Chedak Comlink",
+                "MK 7 BlasTech Weapon Mod",
+                "Mk 6 BAW Armor Mod"
+            ],
+            "Gear 5": [
+                "Mk 6 Fabritech Data Pad",
+                "Mk 2 Merr-Sonn Thermal Detonator",
+                "Mk 6 BAW Armor Mod",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 6 Neuro-Saav Electrobinoculars"
+            ],
+            "Gear 6": [
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 7 Fabritech Data Pad",
+                "Mk 2 Czerka Stun Cuffs",
+                "Mk 6 Neuro-Saav Electrobinoculars",
+                "Mk 4 SoroSuub Keypad",
+                "Mk 4 Arakyd Droid Caller"
+            ],
+            "Gear 7": [
+                "Mk 3 Chiewab Hypo Syringe",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 8 BlasTech Weapon Mod",
+                "Mk 8 Fabritech Data Pad",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 6 Chiewab Hypo Syringe"
+            ],
+            "Gear 8": [
+                "Mk 3 Sienar Holo Projector",
+                "Mk 4 Arakyd Droid Caller",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 3 Chedak Comlink",
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 5 CEC Fusion Furnace"
+            ],
+            "Gear 9": [
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 3 Czerka Stun Cuffs",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 6 Nubian Design Tech",
+                "Mk 7 Nubian Security Scanner",
+                "Mk 4 Chedak Comlink"
+            ],
+            "Gear 10": [
+                "Mk 2 Zaltin Bacta Gel",
+                "Mk 4 Sienar Holo Projector",
+                "Mk 8 TaggeCo Holo Lens",
+                "Mk 11 BlasTech Weapon Mod",
+                "Mk 9 Fabritech Data Pad",
+                "Mk 4 Sienar Holo Projector"
+            ],
+            "Gear 11": [
+                "Mk 5 A/KT Stun Gun",
+                "Mk 10 BlasTech Weapon Mod",
+                "Mk 6 Chiewab Hypo Syringe",
+                "Mk 3 Zaltin Bacta Gel",
+                "Mk 5 Chedak Comlink",
+                "Mk 9 BioTech Implant"
+            ],
+            "Gear 12": [
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Armor Plating",
+                "Mk 12 ArmaTek Bayonet",
+                "Mk 12 ArmaTek Holo Lens",
+                "Mk 12 ArmaTek Stun Gun",
+                "Unknown Gear"
+            ]
+        },
+        "abilities": {
+            "B1 Barrage": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to target enemy. If target was Target Locked, all Droid allies recover 5% of their leader's Max Health and Protection.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 24,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Blast Them!": {
+                "type": "Special",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal Physical damage to all enemies and inflict Target Lock for 2 turns on the selected target. Gain 1 stack of Droid Battalion for each other Separatist ally. Heal target other Separatist ally for 0.5% Health and 0.5% Protection for each stack of Droid Battalion.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 19,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Roger Roger": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "When another Separatist ally uses an ability during their turn, B1 assists dealing 40% less damage (limit once per turn). When another Droid ally uses a Special ability, B1 gains 15% Turn Meter.",
+                "tier": "omega",
+                "cost": {
+                    "mk3": 16,
+                    "omega": 5,
+                    "zeta": 0
+                }
+            },
+            "Droid Battalion": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "B1 can't score critical hits or be revived. B1 has no Protection, 1 Health and 100 stacks of Droid Battalion, and can't be defeated or destroyed while they have Droid Battalion. When all stacks of Droid Battalion expire, B1 immediately destroys itself. B1 is immune to Damage Over Time.",
+                "tier": "zeta",
+                "cost": {
+                    "mk3": 46,
+                    "omega": 13,
+                    "zeta": 20
+                }
+            }
+        },
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        },
+        "stats": {
+            "Power": 0,
+            "Strength": 0,
+            "Agility": 0,
+            "Intelligence": 0,
+            "Speed": 0,
+            "Physical Damage": 0,
+            "Physical Critical Rating": 0,
+            "Special Damage": 0,
+            "Special Critical Rating": 0,
+            "Armor Penetration": 0,
+            "Resistance Penetration": 0,
+            "Potency": 0,
+            "Health": 0,
+            "Armor": 0,
+            "Resistance": 0,
+            "Tenacity": 0,
+            "Health Steal": 0,
+            "Protection": 0,
+            "activation": 25
+        }
+    },
+    {
         "name": "B2 Super Battle Droid",
         "uniqueName": "B2SUPERBATTLEDROID",
         "aliases": [

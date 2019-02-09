@@ -302,6 +302,28 @@
         }
     },
     {
+        "name": "Emperor's Shuttle",
+        "uniqueName": "EMPERORSSHUTTLE",
+        "aliases": [
+            "Emperor's Shuttle"
+        ],
+        "nameVariant": [
+            "Emperor's Shuttle"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/emperors-shuttle/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {},
+        "shardLocations": {
+            "dark": [],
+            "light": [],
+            "cantina": [],
+            "shops": []
+        }
+    },
+    {
         "name": "Endurance",
         "uniqueName": "CAPITALJEDICRUISER",
         "aliases": [

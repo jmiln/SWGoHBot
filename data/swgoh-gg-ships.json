@@ -19,7 +19,8 @@
             "Reset Cooldown"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Anakin's Eta-2 Starfighter",
@@ -42,7 +43,8 @@
             "Offense Up"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "B-28 Extinction-class Bomber",
@@ -64,7 +66,8 @@
             "Taunt"
         ],
         "role": "Tank",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Biggs Darklighter's X-wing",
@@ -82,7 +85,8 @@
             "Taunt"
         ],
         "role": "Tank",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Bistan's U-wing",
@@ -104,7 +108,8 @@
             "Tenacity Down"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 50
     },
     {
         "name": "Cassian's U-wing",
@@ -128,7 +133,8 @@
             "Offense Down"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 80
     },
     {
         "name": "Chimaera",
@@ -156,7 +162,8 @@
             "Speed Down"
         ],
         "role": "Capital Ship",
-        "capital_ship": true
+        "capital_ship": true,
+        "activate_shard_count": 145
     },
     {
         "name": "Clone Sergeant's ARC-170",
@@ -176,7 +183,31 @@
             "Taunt"
         ],
         "role": "Tank",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
+    },
+    {
+        "name": "Emperor's Shuttle",
+        "base_id": "EMPERORSSHUTTLE",
+        "url": "http://swgoh.gg/ships/emperors-shuttle/",
+        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "power": 65246,
+        "description": "Versatile Support that boosts Empire and Sith survivability while debuffing enemies",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire",
+            "Sith"
+        ],
+        "ability_classes": [
+            "Dispel",
+            "Offense Up",
+            "Taunt",
+            "Tenacity Down"
+        ],
+        "role": "Support",
+        "capital_ship": false,
+        "activate_shard_count": 80
     },
     {
         "name": "Endurance",
@@ -197,7 +228,8 @@
             "Taunt"
         ],
         "role": "Capital Ship",
-        "capital_ship": true
+        "capital_ship": true,
+        "activate_shard_count": 10
     },
     {
         "name": "Executrix",
@@ -221,7 +253,8 @@
             "Tenacity Down"
         ],
         "role": "Capital Ship",
-        "capital_ship": true
+        "capital_ship": true,
+        "activate_shard_count": 10
     },
     {
         "name": "First Order SF TIE Fighter",
@@ -240,7 +273,8 @@
             "DoT"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "First Order TIE Fighter",
@@ -259,7 +293,8 @@
             "Gain Turn Meter"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Gauntlet Starfighter",
@@ -277,7 +312,8 @@
             "Heal"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Geonosian Soldier's Starfighter",
@@ -299,7 +335,8 @@
             "Remove Turn Meter"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Geonosian Spy's Starfighter",
@@ -319,7 +356,8 @@
             "Taunt"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Ghost",
@@ -341,7 +379,8 @@
             "Stealth"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Han's Millennium Falcon",
@@ -363,7 +402,8 @@
             "Foresight"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 145
     },
     {
         "name": "Home One",
@@ -386,7 +426,8 @@
             "Reset Cooldown"
         ],
         "role": "Capital Ship",
-        "capital_ship": true
+        "capital_ship": true,
+        "activate_shard_count": 10
     },
     {
         "name": "Hound's Tooth",
@@ -408,7 +449,8 @@
             "Taunt"
         ],
         "role": "Tank",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "IG-2000",
@@ -431,7 +473,8 @@
             "Stun"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Imperial TIE Fighter",
@@ -451,7 +494,8 @@
             "Remove Turn Meter"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Jedi Consular's Starfighter",
@@ -472,7 +516,8 @@
             "Heal"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Kylo Ren's Command Shuttle",
@@ -494,7 +539,8 @@
             "Remove Turn Meter"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 80
     },
     {
         "name": "Lando's Millennium Falcon",
@@ -514,7 +560,8 @@
             "Dispel"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Phantom II",
@@ -539,7 +586,8 @@
             "Taunt"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Plo Koon's Jedi Starfighter",
@@ -559,7 +607,8 @@
             "Taunt"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Poe Dameron's X-wing",
@@ -581,7 +630,8 @@
             "Offense Up"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 50
     },
     {
         "name": "Resistance X-wing",
@@ -603,7 +653,8 @@
             "Remove Turn Meter"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Rex's ARC-170",
@@ -622,7 +673,8 @@
             "Remove Turn Meter"
         ],
         "role": "Tank",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 50
     },
     {
         "name": "Rey's Millennium Falcon",
@@ -642,7 +694,8 @@
             "Gain Turn Meter"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 80
     },
     {
         "name": "Scimitar",
@@ -661,7 +714,8 @@
             "Stealth"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 50
     },
     {
         "name": "Sith Fighter",
@@ -681,7 +735,8 @@
             "Healing Immunity"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Slave I",
@@ -705,7 +760,8 @@
             "Taunt"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 80
     },
     {
         "name": "Sun Fac's Geonosian Starfighter",
@@ -727,7 +783,8 @@
             "Taunt"
         ],
         "role": "Tank",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "TIE Advanced x1",
@@ -749,7 +806,8 @@
             "Offense Down"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 80
     },
     {
         "name": "TIE Reaper",
@@ -771,7 +829,8 @@
             "Remove Turn Meter"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 50
     },
     {
         "name": "TIE Silencer",
@@ -794,7 +853,8 @@
             "Stun"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 10
     },
     {
         "name": "Umbaran Starfighter",
@@ -819,7 +879,8 @@
             "Remove Turn Meter"
         ],
         "role": "Tank",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Wedge Antilles's X-wing",
@@ -840,7 +901,8 @@
             "Healing Immunity"
         ],
         "role": "Attacker",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "Xanadu Blood",
@@ -863,6 +925,7 @@
             "Defense Down"
         ],
         "role": "Support",
-        "capital_ship": false
+        "capital_ship": false,
+        "activate_shard_count": 25
     }
 ]
