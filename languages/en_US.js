@@ -1043,21 +1043,21 @@ module.exports = class extends Language {
             },
 
             // RaidDamage Command
-            COMMAND_RAIDDMG_DMG: "damage", 
-            COMMAND_RAIDDMG_MISSING_RAID: "Missing Raid", 
-            COMMAND_RAIDDMG_INVALID_RAID: "Invalid Raid", 
-            COMMAND_RAIDDMG_RAID_STR: (raids) => `Please select one of the following raids:\n\`${raids}\``, 
-            COMMAND_RAIDDMG_MISSING_PHASE: "Missing Phase", 
-            COMMAND_RAIDDMG_INVALID_PHASE: "Invalid Phase",
-            COMMAND_RAIDDMG_PHASE_STR: (raid, phases) => `Please select one of the following phases for the ${raid} raid:\n${phases}`, 
-            COMMAND_RAIDDMG_MISSING_AMT: "Missing Amount",  
-            COMMAND_RAIDDMG_INVALID_AMT: "Invalid Amount",
-            COMMAND_RAIDDMG_AMOUNT_STR: "You need to enter either a number or percent to convert the damage to or from",
-            COMMAND_RAIDDMG_OUT_HEADER: (raidName, phaseName) => `${raidName} raid, ${phaseName}`,
-            COMMAND_RAIDDMG_OUT_DMG: (inAmt, outAmt) => `**${inAmt} is about ${outAmt} of the boss' hp**`,
-            COMMAND_RAIDDMG_OUT_PERCENT: (inAmt, outAmt) => `**${inAmt} is about ${outAmt}**`,
-            COMMAND_RAIDDMG_OUT_STR: (inAmt, outAmt, phase, raid) => `${inAmt} is about ${outAmt} during ${phase} of the ${raid} raid.`,
-            COMMAND_RAIDDMG_HELP: {
+            COMMAND_RAIDDAMAGE_DMG: "damage", 
+            COMMAND_RAIDDAMAGE_MISSING_RAID: "Missing Raid", 
+            COMMAND_RAIDDAMAGE_INVALID_RAID: "Invalid Raid", 
+            COMMAND_RAIDDAMAGE_RAID_STR: (raids) => `Please select one of the following raids:\n\`${raids}\``, 
+            COMMAND_RAIDDAMAGE_MISSING_PHASE: "Missing Phase", 
+            COMMAND_RAIDDAMAGE_INVALID_PHASE: "Invalid Phase",
+            COMMAND_RAIDDAMAGE_PHASE_STR: (raid, phases) => `Please select one of the following phases for the ${raid} raid:\n${phases}`, 
+            COMMAND_RAIDDAMAGE_MISSING_AMT: "Missing Amount",  
+            COMMAND_RAIDDAMAGE_INVALID_AMT: "Invalid Amount",
+            COMMAND_RAIDDAMAGE_AMOUNT_STR: "You need to enter either a number or percent to convert the damage to or from",
+            COMMAND_RAIDDAMAGE_OUT_HEADER: (raidName, phaseName) => `${raidName} raid, ${phaseName}`,
+            COMMAND_RAIDDAMAGE_OUT_DMG: (inAmt, outAmt) => `**${inAmt} is about ${outAmt} of the boss' hp**`,
+            COMMAND_RAIDDAMAGE_OUT_PERCENT: (inAmt, outAmt) => `**${inAmt} is about ${outAmt}**`,
+            COMMAND_RAIDDAMAGE_OUT_STR: (inAmt, outAmt, phase, raid) => `${inAmt} is about ${outAmt} during ${phase} of the ${raid} raid.`,
+            COMMAND_RAIDDAMAGE_HELP: {
                 description: "Shows some teams that work well for each raid.",
                 actions: [
                     {

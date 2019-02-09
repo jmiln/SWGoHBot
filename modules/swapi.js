@@ -120,12 +120,14 @@ module.exports = (client) => {
     }
 
     async function unitStats(allycode, cooldown) {
-        if (cooldown) {
-            cooldown = cooldown.player;
-            if (cooldown > playerCooldown) cooldown = playerCooldown;
-            if (cooldown < 1) cooldown = 1;
-        } else {
-            cooldown = playerCooldown;
+        if (cooldown.player) {
+            if (cooldown) {
+                cooldown = cooldown.player;
+                if (cooldown > playerCooldown) cooldown = playerCooldown;
+                if (cooldown < 1) cooldown = 1;
+            } else {
+                cooldown = playerCooldown;
+            }
         }
         try {
             if (allycode) allycode = allycode.toString();
@@ -223,7 +225,7 @@ module.exports = (client) => {
 
         const outStats = [];
         for (const allyCode of allyCodes) {
-            const stats = await unitStats(allyCode, cooldown);
+            const stats = await client.swgohAPI.unitStats(allyCode, cooldown);
             if (!stats) continue;
             const unit = stats.stats.find(c => c.unit.defId === defId);
             if (!unit) {
@@ -869,6 +871,7 @@ module.exports = (client) => {
     }
 
     function isExpired( updated, cooldown ) {
+        if (!cooldown) console.log("ERROR: No cooldown in isExpired");
         const diff = client.convertMS( new Date() - new Date(updated) );
         return diff.hour >= cooldown;
     }

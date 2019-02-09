@@ -51,7 +51,6 @@ class CurrentEvents extends Command {
             eNum = parseInt(num);
         }
 
-        console.log(gohEvents);
 
         let filter = [];
         const excludeFilter = [];
