@@ -120,7 +120,7 @@ module.exports = (client) => {
     }
 
     async function unitStats(allycode, cooldown) {
-        if (cooldown.player) {
+        if (cooldown && cooldown.player) {
             if (cooldown) {
                 cooldown = cooldown.player;
                 if (cooldown > playerCooldown) cooldown = playerCooldown;
