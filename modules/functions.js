@@ -519,12 +519,20 @@ module.exports = (client) => {
                     argString += `**${key}**  ${action.args[key]}\n`;
                 });
             }
-            if (action.action !== "") {
+            if (action.action && action.action.length) {
                 outAct.name = action.action;
-                outAct.value = `${action.actionDesc === "" ? "" : action.actionDesc} \n\`\`\`${action.usage}\`\`\`${argString}\n`;
+                if (action.usage && action.usage.length) {
+                    outAct.value = `${action.actionDesc === "" ? "" : action.actionDesc} \n\`\`\`${action.usage}\`\`\`${argString}\n`;
+                } else {
+                    outAct.value = `${action.actionDesc === "" ? "" : action.actionDesc} \n${argString}\n`;
+                }
                 actionArr.push(outAct);
             } else {
-                headerString += `\`\`\`${action.usage}\`\`\`${argString}`;
+                if (action.usage && action.usage.length) {
+                    headerString += `\`\`\`${action.usage}\`\`\`${argString}`;
+                } else {
+                    headerString += argString;
+                }
             }
         });
         message.channel.send({embed: {

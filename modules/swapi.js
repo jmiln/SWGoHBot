@@ -871,7 +871,10 @@ module.exports = (client) => {
     }
 
     function isExpired( updated, cooldown ) {
-        if (!cooldown) console.log("ERROR: No cooldown in isExpired");
+        if (!cooldown) {
+            console.log("ERROR: No cooldown in isExpired");
+            cooldown = 6;
+        }
         const diff = client.convertMS( new Date() - new Date(updated) );
         return diff.hour >= cooldown;
     }

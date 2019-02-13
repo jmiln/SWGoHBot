@@ -31,6 +31,10 @@ class MyProfile extends Command {
             return super.error(message, "Please make sure you are registered with a valid ally code");
         }
 
+        if (!player || !player.stats) {
+            return super.error(message, "Sorry, but I could not find that player right now.");
+        }
+
         const gpFull = player.stats.find(s => s.nameKey === "Galactic Power:" || s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;
         const gpChar = player.stats.find(s => s.nameKey === "Galactic Power (Characters):" || s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME").value;
         const gpShip = player.stats.find(s => s.nameKey === "Galactic Power (Ships):" || s.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME").value;

@@ -933,7 +933,7 @@ module.exports = class extends Language {
             COMMAND_NEED_MISSING_SEARCH: (search) => `Cannot find any matches for ${search}`,
             COMMAND_NEED_CHAR_HEADER: "__Characters:__",
             COMMAND_NEED_SHIP_HEADER: "__Ships:__",
-            COMMAND_NEED_COMPLETE: "100% Complete!",
+            COMMAND_NEED_COMPLETE: "You've got everything there, congratulations!",
             COMMAND_NEED_ALL_CHAR: "Congrats, you have all the characters at 7*",
             COMMAND_NEED_ALL_SHIP: "Congrats, you have all the ships at 7*",
             COMMAND_NEED_PARTIAL: (percent) => `You're about **${percent}%** complete.`,
@@ -944,10 +944,42 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";need [user] <faction|shop>",
+                        usage: ";need [user] <faction|shop|battle|keyword>",
                         args: {
                             "user": "The person you're checking. (me | userID | mention)",
-                            "faction | shop": "The faction or shop you want to see your completeness of" 
+                            "faction | shop": "The faction or shop you want to see your completeness of",
+                            "keyword": "One of the keywords shown below"
+                        }
+                    },
+                    {
+                        action: "Shops",
+                        actionDesc: "",
+                        args: {
+                            "arena":   "Arena shop",
+                            "cantina": "Cantina shop",
+                            "fleet":   "Fleet shop",
+                            "guild":   "Guild shop",
+                            "gw":      "Galactic War shop",
+                            "shard":   "Shard shop"
+                        }
+                    },
+                    {
+                        action: "Battles",
+                        actionDesc: "",
+                        args: {
+                            "Light battles":   "Light side hard battles",
+                            "Dark battles":    "Dark side hard battles",
+                            "Cantina battles": "Cantina battles",
+                            "Fleet battles":   "Fleet battles"
+                        }
+                    },
+                    {
+                        action: "Keywords",
+                        actionDesc: "",
+                        args: {
+                            "battles": "This will show the characters you're missing from all the various battle nodes.",
+                            "shops":   "This will show you anything you're missing from all of the stores.",
+                            "*":       "This will show you everything that you're missing."
                         }
                     }
                 ]

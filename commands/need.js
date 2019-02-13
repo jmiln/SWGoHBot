@@ -21,8 +21,8 @@ class Need extends Command {
             6: 100
         };
         const {searchChar, allyCode, err} = await super.getUserAndChar(message, args, true);   // eslint-disable-line no-unused-vars
-        if (err) {
-            return super.error(message, err);
+        if (err && !searchChar) {
+            return super.error(message, "You need to specify a location or faction.", {usage: "need <faction|location>"});
         }
         if (!allyCode) {
             return super.error(message, message.language.get("COMMAND_NEED_MISSING_USER"));
@@ -39,16 +39,13 @@ class Need extends Command {
         let outShips = [];
 
         let search;
-        switch (searchChar.toLowerCase()) {
-            case "cantina":
-                search = "Cantina Shipments";
-                break;
-            case "guild":
-                search = "Guild Shop";
-                break;
-            case "fleet": 
-                search = "Fleet Shipments";
-                break;
+        const staticMatches = {
+            cantina: "Cantina Shipments",
+            guild:   "Guild Shop",
+            fleet:   "Fleet Shipments"            
+        };
+        if (staticMatches[searchChar.toLowerCase()]) {
+            search = staticMatches[searchChar.toLowerCase()];
         }
 
         let units = [];
@@ -105,12 +102,13 @@ class Need extends Command {
                     value: m
                 });
             });
-        } else {
-            fields.push({
-                name: message.language.get("COMMAND_NEED_CHAR_HEADER"),
-                value: message.language.get("COMMAND_NEED_ALL_CHAR")
-            });
         }
+        // else {
+        //     fields.push({
+        //         name: message.language.get("COMMAND_NEED_CHAR_HEADER"),
+        //         value: message.language.get("COMMAND_NEED_ALL_CHAR")
+        //     });
+        // }
         if (outShips.length) {
             outShips = outShips.map(s => `\`${s.rarity}*\` ${s.name}`);
             const msgArr = client.msgArray(outShips, "\n", 1000);
@@ -122,12 +120,13 @@ class Need extends Command {
                     value: m
                 });
             });
-        } else {
-            fields.push({
-                name: message.language.get("COMMAND_NEED_SHIP_HEADER"),
-                value: message.language.get("COMMAND_NEED_ALL_SHIP")
-            });
         }
+        // else {
+        //     fields.push({
+        //         name: message.language.get("COMMAND_NEED_SHIP_HEADER"),
+        //         value: message.language.get("COMMAND_NEED_ALL_SHIP")
+        //     });
+        // }
 
         let desc = "";
         if (shardsLeft === 0) {
@@ -135,6 +134,11 @@ class Need extends Command {
         } else {
             desc = message.language.get("COMMAND_NEED_PARTIAL", (((totalShards - shardsLeft)/ totalShards) * 100).toFixed(1));
         }
+
+        fields.push({
+            name: "-",
+            value: "**Check out `" + message.guildSettings.prefix + "help need` for other searches**"
+        });
 
         return message.channel.send({embed: {
             author: {
@@ -145,24 +149,23 @@ class Need extends Command {
         }});
 
         async function getUnits(searchName) {
-            let search = searchName.replace(/[^\w\s]/g, "").replace(/s$/, "");
-            if (search.toLowerCase() === "galactic republic") search = "affiliation_republic";                                                                                          
+            let search = searchName.replace(/[^\w\s]/g, "").replace(/s$/, "");  // Take out all alphanumeric characters and any s off the end
+            if (search.toLowerCase() === "galactic republic") search = "affiliation_republic";  
             if (search.toLowerCase() === "galactic war") search = "gw";
             if (search.includes("cantina") && search.includes("battle")) {
                 search = search.replace(/(battles|battle)/gi, "");
-            } else if (search.includes("fleet") && (search.includes("store") || search.includes("shop"))) {
-                search = search.replace(/(store|shop)/gi, "shipment");
+            // } else if (search.includes("fleet") && (search.includes("store") || search.includes("shop"))) {
+            //     search = search.replace(/(store|shop)/gi, "shipment");
             } else {
                 search = search
-                    .replace("store", "shop")
+                    .replace(/(store|shop|shipment)/g, "shop|store|shipment")
                     .replace(/(battles|battle)/gi, "hard")
                     .replace(/light/gi, "(l)")
                     .replace(/dark/gi, "(d)")
                     .replace("node", "mode");
             }
 
-
-            const searchReg = search.split(" ").map(s => `(?=.*${s.replace(/(\(|\))/g, "\\$1")})`).join("");
+            const searchReg = search.split(" ").map(s => `(?=.*${s.replace(/(\(|\))/g, "\\$1")})`).join(".*");
             const query = new RegExp(`.*${searchReg}.*`, "gi");
 
             let units = client.charLocs.filter(c => c.locations.filter(l => l.type.match(query)).length);
