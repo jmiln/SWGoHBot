@@ -218,7 +218,6 @@ class Event extends Command {
                     }
 
                     if (err.length) {
-                        console.log(err);
                         return super.error(message, client.codeBlock("* " + err.join("\n* ")));
                     }
                     
