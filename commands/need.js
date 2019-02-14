@@ -103,12 +103,6 @@ class Need extends Command {
                 });
             });
         }
-        // else {
-        //     fields.push({
-        //         name: message.language.get("COMMAND_NEED_CHAR_HEADER"),
-        //         value: message.language.get("COMMAND_NEED_ALL_CHAR")
-        //     });
-        // }
         if (outShips.length) {
             outShips = outShips.map(s => `\`${s.rarity}*\` ${s.name}`);
             const msgArr = client.msgArray(outShips, "\n", 1000);
@@ -121,12 +115,6 @@ class Need extends Command {
                 });
             });
         }
-        // else {
-        //     fields.push({
-        //         name: message.language.get("COMMAND_NEED_SHIP_HEADER"),
-        //         value: message.language.get("COMMAND_NEED_ALL_SHIP")
-        //     });
-        // }
 
         let desc = "";
         if (shardsLeft === 0) {
