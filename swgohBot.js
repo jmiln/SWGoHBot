@@ -25,6 +25,7 @@ client.resources = JSON.parse(fs.readFileSync("data/resources.json"));
 client.arenaJumps = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
 client.acronyms = JSON.parse(fs.readFileSync("data/acronyms.json"));
 client.patrons = [];
+
 const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE = "./data/swgoh-gg-ships.json";
@@ -112,11 +113,6 @@ const init = async () => {
         // Load up the zeta recommendstions
         client.zetaRec = await client.swgohAPI.zetaRec();
     }
-    // If we have the magic, use it
-    // if (client.config.swgohAPILoc && client.config.swgohAPILoc !== "") {
-    //     const swgohService = require('./'+client.config.swgohAPILoc);
-    //     client.swgohAPI = new swgohService(client.config.swgohSettings);
-    // }
 
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
@@ -170,8 +166,6 @@ if (!client.shard || client.shard.id === 0) {
         }, 12 * 60 * 60 * 1000);
     }, 2 * 60 * 1000);
 }
-
-// init();
 
 function getModType(type) {
     switch (type) {
@@ -250,12 +244,11 @@ async function updateRemoteData() {
 
     console.log("UpdateRemoteData", "Checking for updates to remote data sources");
     if (await updateIfChanged(GG_SHIPS_CACHE, "https://swgoh.gg/api/ships/?format=json")) {
-    // if (await updateIfChanged(GG_SHIPS_CACHE, 'https://swgoh.gg/api/ships/')) {
         console.log("UpdateRemoteData", "Detected a change in ships from swgoh.gg");
         await updateShips(currentShips);
     }
 
-    if (await updateIfChanged(GG_CHAR_CACHE, "https://swgoh.gg/api/characters/")) {
+    if (await updateIfChanged(GG_CHAR_CACHE, "https://swgoh.gg/api/characters/?format=json")) {
         console.log("UpdateRemoteData", "Detected a change in characters from swgoh.gg");
         // TODO - periodic forced updates to adopt updated minor changes?
         await updateCharacters(currentCharacters);
@@ -281,20 +274,7 @@ async function updateRemoteData() {
         saveFile("./data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
         client.ships = currentShips;
     }
-
-
 }
-
-// async function updateShips() {
-//     const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE));
-//
-//     const currentShips = client.ships;
-//
-//     for (var ggShipkey in ggShipList) {
-//         const ggShip = ggShipList[ggShipkey];
-//         // TODO - check for new ships / reconcile data source differences
-//     }
-// }
 
 async function updateShips(currentShips) {
     const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE));
@@ -441,10 +421,10 @@ async function updateCharacters(currentCharacters) {
                     updated = true;
                 }
 
-                //updated = true; // force an update of everything
+                // Updated = true; // force an update of everything
 
                 if (updated) {
-                    // some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
+                    // Some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
                     await ggGrab(currentChar);
                 }
                 break;
@@ -457,7 +437,7 @@ async function updateCharacters(currentCharacters) {
 
             currentCharacters.push(newCharacter);
 
-            // queue an update to fill in the empty character's details from swgoh.gg
+            // Queue an update to fill in the empty character's details from swgoh.gg
             await ggGrab(newCharacter);
         }
     }
@@ -469,7 +449,7 @@ async function updateCharacterMods(currentCharacters) {
     const rancorCharacterList = rancorData.data;
     const RANCOR_SOURCE = "Crouching Rancor";
 
-    // clear out old crouching rancor mod advice
+    // Clear out old crouching rancor mod advice
     currentCharacters.forEach(currentChar => {
         for (var thisSet in currentChar.mods) {
             const set = currentChar.mods[thisSet];
@@ -479,7 +459,7 @@ async function updateCharacterMods(currentCharacters) {
         }
     });
 
-    // iterate the crouching rancor data (may contain currently unknown characters)
+    // Iterate the crouching rancor data (may contain currently unknown characters)
     for (var rancorCharKey in rancorCharacterList) {
         const rancorChar = rancorCharacterList[rancorCharKey];
 
@@ -529,9 +509,7 @@ async function updateCharacterMods(currentCharacters) {
                 if (currentChar.mods[setName]) {
                     setName = rancorChar.name;
                 }
-
                 currentChar.mods[setName] = modObject;
-                //client.log('NewMods', 'I added a new modset to ' + rancorChar.cname);
             }
         });
         if (!found) {
@@ -549,43 +527,6 @@ async function updateCharacterMods(currentCharacters) {
     }
 }
 
-function getEmptyShardLocations() {
-    return {
-        "dark": [],
-        "light": [],
-        "cantina": [],
-        "shops": []
-    };
-}
-
-function getEmptyStats() {
-    return {
-        // Primary
-        "Power":0,
-        "Strength": 0,
-        "Agility":0,
-        "Intelligence":0,
-        // Offensive
-        "Speed": 0,
-        "Physical Damage": 0,
-        "Physical Critical Rating": 0,
-        "Special Damage": 0,
-        "Special Critical Rating": 0,
-        "Armor Penetration": 0,
-        "Resistance Penetration": 0,
-        "Potency": 0,
-        // Defensive
-        "Health": 0,
-        "Armor": 0,
-        "Resistance": 0,
-        "Tenacity": 0,
-        "Health Steal": 0,
-        "Protection": 0,
-        // Activation
-        "activation": 0
-    };
-}
-
 function createEmptyChar(name, url, uniqueName) {
     return {
         "name": name,
@@ -597,15 +538,7 @@ function createEmptyChar(name, url, uniqueName) {
         "side": "",
         "factions": [],
         "mods": {
-        },
-        "defaultMods": {
-        },
-        "gear": {
-        },
-        "abilities": {
-        },
-        "shardLocations": getEmptyShardLocations(),
-        "stats": getEmptyStats()
+        }
     };
 }
 
@@ -621,28 +554,16 @@ function createEmptyShip(name, url, uniqueName) {
         "side": "",
         "factions": [],
         "abilities": {
-        },
-        "shardLocations": getEmptyShardLocations()
+        }
     };
 }
 
 async function ggGrab(character) {
-    //console.log('ggGrab', 'Fetching: "' + character.url + '"');
+    console.log("ggGrab", "Fetching: \"" + character.url + "\"");
     const charGrab = await snekfetch.get(character.url);
     const ggGrabText = charGrab.text;
 
-    // safety nets in case of entries created by hand
-    if (!character.abilities) {
-        character.abilities = {};
-    }
-    if (!character.stats) {
-        character.stats = getEmptyStats();
-    }
-
-    character.shardLocations = getEmptyShardLocations();
-    character.gear = {};
-
-    let $ = cheerio.load(ggGrabText);
+    const $ = cheerio.load(ggGrabText);
 
     // Get the character's image link
     const charImage = "https:" + $(".panel-profile-img").attr("src");
@@ -663,194 +584,6 @@ async function ggGrab(character) {
             }
         }
     });
-
-    // Get the character's abilities and such
-    $(".char-detail-info").each(function() {
-        let abilityName = $(this).find("h5").text().trim();    // May have the cooldown included, need to get rid of it
-        const desc = $(this).find("p").text().split("\n")[1].trim();
-        let abilityMat = $(this).find("img").attr("title").split(" ").join("").trim();
-        let abilityType = $(this).find("small").text().trim();
-        let cooldown = $(this).find("h5 small").text().trim();
-        const selectorId = "#" + $(this).parent().attr("aria-controls");
-
-        // remove cooldown information from the ability name
-        const cooldownIndex = abilityName.indexOf(cooldown);
-        if (cooldown && cooldownIndex !== -1 && cooldownIndex !== 0) {
-            abilityName = abilityName.substring(0, cooldownIndex - 1).trim();
-        }
-        //console.log('ggGrab', 'After splitting out cooldown text ability: "' + abilityName + '"');
-        cooldown = cooldown.split(" ")[0];
-
-        // If the cooldown isn't there, set it to 0
-        if (cooldown === "") {
-            cooldown = "0";
-        }
-
-
-        // Make sure it grabs the right one to work with the rest
-        if (abilityMat === "AbilityMaterialOmega") {
-            abilityMat = "omega";
-        } else if (abilityMat === "AbilityMaterialMkIII") {
-            abilityMat = "abilityMatMK3";
-        } else if (abilityMat === "AbilityMaterialZeta") {
-            abilityMat = "zeta";
-        }
-
-        // Grab the ability type
-        if (abilityType.indexOf("Basic") !== -1) {
-            abilityType = "Basic";
-        } else if (abilityType.indexOf("Special") !== -1) {
-            abilityType = "Special";
-        } else if (abilityType.indexOf("Leader") !== -1) {
-            abilityType = "Leader";
-        } else if (abilityType.indexOf("Unique") !== -1) {
-            abilityType = "Unique";
-        } else {
-            // it's probably a Unique
-            abilityType = "Unique";
-        }
-
-        let mk3s = 0, omegas = 0, zetas = 0;
-        // Each level of the ability is in a tr
-        const aCost = [];
-        $(selectorId).find("tr").each(function() {
-            // And the cost of each is in the 2nd td in each row
-            const lvl = [];
-            $(this).find("td").each(function() {
-                lvl.push($(this).html());
-            });
-            aCost.push(lvl[1]);
-        });
-        aCost.splice(0,2);  // Ignore the first two (Header then default unlock)
-        aCost.forEach(lvl => {
-            const count = getCount(lvl);
-            // console.log('Count1: ' + inspect(count));
-            mk3s += count.mk3;
-            omegas += count.omega;
-            zetas += count.zeta;
-            // console.log('Count2: ' + inspect(count));
-        });
-        //console.log(`${mk3s} MK3, ${omegas} Omegas, ${zetas} Zetas`);
-
-        character.abilities[abilityName] = {
-            "type": abilityType,
-            "abilityCooldown": cooldown,
-            "abilityDesc": desc,
-            "tier": abilityMat,
-            "cost": {
-                "mk3": mk3s,
-                "omega": omegas,
-                "zeta": zetas
-            }
-        };
-    });
-
-    // Get the stats
-    $(".content-container-primary-aside").each(function() {
-        $(this).find(".media-body").each(function() {
-            const rows = $(this).html().split("\n");
-
-            rows.forEach(stat => {
-                if (stat.startsWith("<p></p>") || stat.startsWith("</p>")) {
-                    stat = stat.replace(/<p><\/p>/g, "").replace(/^<p>/g, "").replace(/^<\/p>/g, "");
-                    stat = stat.replace(/\n/g, "").replace(/\(.*\)/g, "");
-                    if (stat.startsWith("<div class=\"pull-right\">")) {
-                        stat = stat.replace("<div class=\"pull-right\">", "");
-                        const statNum = parseInt(stat.replace(/<\/div>.*/g, ""));
-                        const statName = stat.replace(/.*<\/div>/g, "").replace(/\s*$/g, "");
-                        if (statName.indexOf("Shards for Activation") > -1) {
-                            character.stats.activation = statNum;
-                        } else {
-                            character.stats[statName] = statNum;
-                        }
-                    }
-                }
-            });
-        });
-    });
-
-    // Get the farming locations
-    $(".panel-body:contains('Shard Locations')").each(function() {
-        $(this).find("li").each(function() {
-            const text = $(this).text();
-            if (text.startsWith("Cantina Battles")) {
-                const battle = text.replace(/^Cantina Battles: Battle /, "").replace(/\s.*/g, "");
-                character.shardLocations.cantina.push(battle);
-            } else if (text.startsWith("Dark Side Battles")) {
-                const battle = text.replace(/^Dark Side Battles: /, "").replace(/\s.*/g, "");
-                character.shardLocations.dark.push(battle);
-            } else if (text.startsWith("Light Side Battles")) {
-                const battle = text.replace(/^Light Side Battles: /, "").replace(/\s.*/g, "");
-                character.shardLocations.dark.push(battle);
-            } else if (text.startsWith("Squad Cantina Battle Shipments")) {
-                character.shardLocations.shops.push("Cantina Shipments");
-            } else if (text.startsWith("Squad Arena Shipments")) {
-                character.shardLocations.shops.push("Squad Arena Shipments");
-            } else if (text.startsWith("Fleet Store")) {
-                character.shardLocations.shops.push("Fleet Store");
-            } else if (text.startsWith("Guild Shipments")) {
-                character.shardLocations.shops.push("Guild Shipments");
-            } else if (text.startsWith("Guild Events Store")) {
-                character.shardLocations.shops.push("Guild Events Store");
-            } else if (text.startsWith("Galactic War Shipments")) {
-                character.shardLocations.shops.push("Galactic War Shipments");
-            } else if (text.startsWith("Shard Shop")) {
-                character.shardLocations.shops.push("Shard Shop");
-            }
-        });
-    });
-
-    // Grab the gear for the character
-    const gearLink = character.url + "gear";
-    const gearGrab = await snekfetch.get(gearLink);
-    const gearGrabText = gearGrab.text;
-
-    $ = cheerio.load(gearGrabText);
-
-    // Get the gear
-    $(".media.list-group-item.p-0.character").each(function(i) {
-        const thisGear = $(this).find("a").attr("title");
-        const gearLvl = "Gear " + (Math.floor(i / 6) + 1).toString();
-        if (character.gear[gearLvl]) {
-            character.gear[gearLvl].push(thisGear);
-        } else {
-            character.gear[gearLvl] = [thisGear];
-        }
-    });
-
     console.log("ggGrab", "Finished fetching swgoh.gg data for " + character.name);
 }
-
-const mk3 = "<img src=\"//swgoh.gg/static/img/assets/tex.skill_pentagon_white.png\" style=\"width: 25px;\">";
-const omega = "<img src=\"//swgoh.gg/static/img/assets/tex.skill_pentagon_gold.png\" style=\"width: 25px;\">";
-const zeta =  "<img src=\"//swgoh.gg/static/img/assets/tex.skill_zeta.png\" style=\"width: 25px;\">";
-
-// Lvl is the string from each level of the ability
-function getCount(lvl) {
-    const lvlCost = {
-        "mk3": 0,
-        "omega": 0,
-        "zeta": 0
-    };
-    if (lvl.indexOf(mk3) > -1) {
-        let lvlmk3 = lvl;
-        lvlmk3 = lvlmk3.replace(new RegExp(`^.*${mk3} x`), "");
-        lvlmk3 = lvlmk3.replace(/\s.*/, "");
-        lvlCost.mk3 = parseInt(lvlmk3);
-    }
-    if (lvl.indexOf(omega) > -1) {
-        let lvlomega = lvl;
-        lvlomega = lvlomega.replace(new RegExp(`^.*${omega} x`), "");
-        lvlomega = lvlomega.replace(/\s.*/, "");
-        lvlCost.omega = parseInt(lvlomega);
-    }
-    if (lvl.indexOf(zeta) > -1) {
-        let lvlzeta = lvl;
-        lvlzeta = lvlzeta.replace(new RegExp(`^.*${zeta} x`), "");
-        lvlzeta = lvlzeta.replace(/\s.*/, "");
-        lvlCost.zeta = parseInt(lvlzeta);
-    }
-    return lvlCost;
-}
-
 
