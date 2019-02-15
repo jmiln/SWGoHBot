@@ -158,11 +158,7 @@ module.exports = (client) => {
                 } catch (error) {
                     console.log("Error getting player(s) in unitStats: " + error);
                 }
-                for (const allycode of needUpdating) {
-                    const bareP = updatedBare.find(p => p.allyCode === allycode);
-                    if (!bareP) {
-                        continue;
-                    }
+                for (const bareP of updatedBare) {
                     let pStats;
                     try {
                         pStats = await swgoh.rosterStats(bareP.roster, ["withModCalc","gameStyle"]);

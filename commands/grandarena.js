@@ -46,12 +46,14 @@ class CommandName extends Command {
             // If there are no problems, go ahead and pull the users
             const cooldown = client.getPlayerCooldown(message.author.id);
             try {
-                user1 = await client.swgohAPI.unitStats(user1, null, cooldown);
+                user1 = await client.swgohAPI.unitStats(user1, cooldown);
+                if (Array.isArray(user1)) user1 = user1[0];
             } catch (e) {
                 problemArr.push(e.message);
             }
             try {
-                user2 = await client.swgohAPI.unitStats(user2, null, cooldown);
+                user2 = await client.swgohAPI.unitStats(user2, cooldown);
+                if (Array.isArray(user2)) user2 = user2[0];
             } catch (e) {
                 problemArr.push(e.message);
             }
