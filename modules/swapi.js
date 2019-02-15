@@ -216,11 +216,10 @@ module.exports = (client) => {
 
     async function guildStats( allyCodes, defId, cooldown ) {
         if (cooldown) {
-            cooldown = cooldown.guild;
-            if (cooldown > guildCooldown) cooldown = guildCooldown;
-            if (cooldown < 1) cooldown = 1;
+            if (cooldown > guildCooldown) cooldown.guild = guildCooldown;
+            if (cooldown < 1) cooldown.guild = 3;
         } else {
-            cooldown = guildCooldown;
+            cooldown.guild = guildCooldown;
         }
 
         const outStats = [];
@@ -872,7 +871,6 @@ module.exports = (client) => {
 
     function isExpired( updated, cooldown ) {
         if (!cooldown) {
-            console.log("ERROR: No cooldown in isExpired");
             cooldown = 6;
         }
         const diff = client.convertMS( new Date() - new Date(updated) );
