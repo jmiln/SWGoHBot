@@ -46,10 +46,11 @@ class MyCharacter extends Command {
         let player = null;
         try {
             player = await client.swgohAPI.unitStats(allyCode, cooldown);
+            if (Array.isArray(player)) player = player[0];
         } catch (e) {
             console.error(e);
             return super.error(message, client.codeBlock(e.message), {
-                title: message.lanugage.get("BASE_SOMETHING_BROKE"),
+                title: message.language.get("BASE_SOMETHING_BROKE"),
                 footer: "Please try again in a bit."
             });
         }

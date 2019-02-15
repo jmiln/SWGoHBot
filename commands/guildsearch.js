@@ -233,7 +233,6 @@ class GuildSearch extends Command {
 
             if (top) {
                 if (!reverse) sortedGuild = sortedGuild.reverse();
-                console.log(sortedGuild.length);
                 const start = reverse ? sortedGuild.length - top : 0;
                 const end   = reverse ? sortedGuild.length       : top;
                 sortedGuild = sortedGuild.slice(start, end);

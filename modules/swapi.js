@@ -119,7 +119,10 @@ module.exports = (client) => {
         }
     }
 
-    async function unitStats(allycode, cooldown) {
+    async function unitStats(allycodes, cooldown) {
+        if (!Array.isArray(allycodes)) {
+            allycodes = [allycodes];
+        }
         if (cooldown && cooldown.player) {
             if (cooldown) {
                 cooldown = cooldown.player;
@@ -129,66 +132,65 @@ module.exports = (client) => {
                 cooldown = playerCooldown;
             }
         }
+        let playerStats = [];
         try {
-            if (allycode) allycode = allycode.toString();
-            if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
-            allycode = parseInt(allycode);
+            if (allycodes && allycodes.length) allycodes = allycodes.map(a => a.toString()).filter(a => a.length === 9);
+            if (!allycodes.length) throw new Error("No valid ally code(s) entered");
+            allycodes = allycodes.map(a => parseInt(a));
 
-            let playerStats = null;
+            const players = await cache.get("swapi", "playerStats", {allyCode: {$in: allycodes}});
+            const updated = players.filter(p => !isExpired(p.updated, cooldown));
+            const updatedAC = updated.map(p => p.allyCode);
+            const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
 
-            playerStats = await cache.get("swapi", "playerStats", {allyCode:allycode});
-            let warnings;
-            if (!playerStats || !playerStats[0] || isExpired(playerStats[0].updated, cooldown)) {
-                let player, barePlayer;
+            playerStats = playerStats.concat(updated); 
+
+            let warning;
+            if (needUpdating.length) {
+                let updatedBare;
                 try {
-                    player = await client.swgohAPI.player(allycode);
-                    if (Array.isArray(player)) { player = player[0]; }
-                    barePlayer = await swgoh.fetchPlayer({allycode: allycode});
-                    if (barePlayer.warning) warnings = barePlayer.warning;
-                    if (barePlayer.error) throw new Error(barePlayer.error);
-                    barePlayer = barePlayer.result;
-                    if (Array.isArray(barePlayer)) { barePlayer = barePlayer[0]; }
+                    const tempBare = await swgoh.fetchPlayer({
+                        allycode: needUpdating
+                    });
+                    if (tempBare.warning) warning = tempBare.warning;
+                    if (tempBare.error) throw new Error(tempBare.error);
+                    updatedBare = tempBare.result;
                 } catch (error) {
-                    console.log("Error getting player in unitStats: " + error);
-                    // throw new Error("Error getting player in unitStats: " + error);
+                    console.log("Error getting player(s) in unitStats: " + error);
                 }
-
-                if (!player || !barePlayer) {
-                    if (!playerStats || !playerStats[0]) {
-                        console.log(player, playerStats, barePlayer);
-                        throw new Error("I could not get your info right now.");
-                    } else {
-                        // It has the old player stats
-                        return playerStats[0];
+                for (const allycode of needUpdating) {
+                    const bareP = updatedBare.find(p => p.allyCode === allycode);
+                    if (!bareP) {
+                        continue;
                     }
+                    let pStats;
+                    try {
+                        pStats = await swgoh.rosterStats(bareP.roster, ["withModCalc","gameStyle"]);
+                    } catch (error) {
+                        throw new Error("Error getting player stats: " + error);
+                    }
+
+                    pStats.forEach(c => {
+                        const char = bareP.roster.find(u => u.defId === c.unit.defId);
+                        c.unit.gp   = char.gp;
+                        c.unit.skills = char.skills;
+                        c.unit.name = char.nameKey;
+                        c.unit.player = bareP.name;
+                    });
+
+                    const stats = {
+                        name: bareP.name,
+                        allyCode: bareP.allyCode,
+                        updated: bareP.updated,
+                        arena: bareP.arena,
+                        stats: pStats
+                    };
+                    pStats = await cache.put("swapi", "playerStats", {allyCode: stats.allyCode}, stats);
+                    pStats.warnings = warning;
+                    playerStats.push(pStats);
                 }
-
-                try {
-                    playerStats = await swgoh.rosterStats(barePlayer.roster, ["withModCalc","gameStyle"]);
-                } catch (error) {
-                    throw new Error("Error getting player stats: " + error);
-                }
-
-                playerStats.forEach(c => {
-                    const char = player.roster.find(u => u.defId === c.unit.defId);
-                    c.unit.gp   = char.gp;
-                    c.unit.skills = char.skills;
-                    c.unit.name = char.nameKey;
-                    c.unit.player = player.name;
-                });
-
-                const stats = {
-                    allyCode: player.allyCode,
-                    updated: player.updated,
-                    arena: player.arena,
-                    stats: playerStats
-                };
-
-                playerStats = await cache.put("swapi", "playerStats", {allyCode: allycode}, stats);
-                if (warnings) playerStats.warnings = warnings;
-            } else {
-                playerStats = playerStats[0];
             }
+
             return playerStats;
         } catch (error) {
             console.log("SWAPI Broke getting playerStats: " + error);
@@ -216,23 +218,23 @@ module.exports = (client) => {
 
     async function guildStats( allyCodes, defId, cooldown ) {
         if (cooldown) {
-            if (cooldown > guildCooldown) cooldown.guild = guildCooldown;
-            if (cooldown < 1) cooldown.guild = 3;
+            if (cooldown.guild > guildCooldown) cooldown.guild = guildCooldown;
+            if (cooldown.guild < 1) cooldown.guild = 3;
         } else {
             cooldown.guild = guildCooldown;
         }
 
         const outStats = [];
-        for (const allyCode of allyCodes) {
-            const stats = await client.swgohAPI.unitStats(allyCode, cooldown);
-            if (!stats) continue;
-            const unit = stats.stats.find(c => c.unit.defId === defId);
+        const players = await client.swgohAPI.unitStats(allyCodes, cooldown);
+        if (!players.length) throw new Error("Couldn't get your stats");
+        for (const player of players) {
+            const unit = player.stats.find(c => c.unit.defId === defId);
             if (!unit) {
                 continue;
             } else {
-                unit.player = stats.name;
-                unit.allyCode = stats.allyCode;
-                unit.updated = stats.updated;
+                unit.player = player.name;
+                unit.allyCode = player.allyCode;
+                unit.updated = player.updated;
                 outStats.push(unit);
             }
         }
@@ -535,7 +537,6 @@ module.exports = (client) => {
             const warnings = battleList.warning;
             if (warnings) console.log("Warning: " + warnings);
             battleList = battleList.result.battles;
-            console.log(battleList);
 
             for (const battle of battleList) {
                 if (battle.id === batId) bOut = battle;
@@ -605,11 +606,11 @@ module.exports = (client) => {
             allycode = parseInt(allycode);
 
             /** Get player from cache */
-            const player = await this.player(allycode);
+            const player = await client.swgohAPI.player(allycode);
             if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
             if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
 
-            let guild  = await cache.get("swapi", "guilds", {name:player.guildRefId});
+            let guild  = await cache.get("swapi", "guilds", {id: player.guildRefId});
 
             /** Check if existance and expiration */
             if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown) ) {
