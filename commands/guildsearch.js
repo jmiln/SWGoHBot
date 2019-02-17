@@ -478,7 +478,7 @@ class GuildSearch extends Command {
                 footer: footer
             }});
         } else {
-            // Give a general overview of important mods (+10, +15, +20 speed, maybe +100 offense?)
+            // Give a general overview of important mods (6*, +15, +20 speed, +100 offense?)
             let guild = null;
             try {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
@@ -502,28 +502,28 @@ class GuildSearch extends Command {
             for (let player of gRoster) {
                 player = await client.swgohAPI.player(player);
                 const mods = {
-                    spd10: 0,
+                    sixPip: 0,
                     spd15: 0,
                     spd20: 0,
                     off100: 0,
                     name: player.name
                 };
-                
                 player.roster.forEach(c => {
                     if (c.mods) {
+                        const six = c.mods.filter(p => p.pips === 6);
+                        if (six.length) {
+                            mods.sixPip += six.length;
+                        }
                         c.mods.forEach(m => {
-                            const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 10);
+                            const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 15);
                             const off = m.secondaryStat.find(o => (o.unitStat === 41 || o.unitStat === "UNITSTATOFFENSE") && o.value >= 100);
 
                             if (spd) {
                                 if (spd.value >= 20) {
                                     mods.spd20 += 1;
-                                } else if (spd.value >= 15) {
-                                    mods.spd15 += 1;
                                 } else {
-                                    mods.spd10 += 1;
-                                }
-                            }
+                                    mods.spd15 += 1;
+                                }                             }
                             if (off) mods.off100 += 1;
                         });
                     }
@@ -535,13 +535,13 @@ class GuildSearch extends Command {
             }
 
             const table = client.makeTable({
-                spd10: {value: "10+", startWith: "`"},
+                sixPip:{value: "6*", startWith: "`"},
                 spd15: {value: "15+"},
                 spd20: {value: "20+"},
                 off100:{value: "100+", endWith: "`"},
-                name: {value: "", align: "left"}
+                name:  {value: "", align: "left"}
             }, output);
-            const header = [client.expandSpaces("`┏╸╸╸ Spd ╺╺╺┓  Off ​`")];
+            const header = [client.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
 
             const fields = client.msgArray(header.concat(table), "\n", 1024).map(m => {
                 return {name: "-", value: m};
