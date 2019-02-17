@@ -80,6 +80,7 @@ class MyArena extends Command {
             let playerStats = null;
             try {
                 playerStats = await client.swgohAPI.unitStats(allyCode, cooldown);
+                if (Array.isArray(playerStats)) playerStats = playerStats[0];
             } catch (e) {
                 console.error(e);
                 return super.error(message, client.codeBlock(e.message), {

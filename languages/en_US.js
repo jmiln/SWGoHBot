@@ -1090,44 +1090,16 @@ module.exports = class extends Language {
             COMMAND_RAIDDAMAGE_OUT_PERCENT: (inAmt, outAmt) => `**${inAmt} is about ${outAmt}**`,
             COMMAND_RAIDDAMAGE_OUT_STR: (inAmt, outAmt, phase, raid) => `${inAmt} is about ${outAmt} during ${phase} of the ${raid} raid.`,
             COMMAND_RAIDDAMAGE_HELP: {
-                description: "Shows some teams that work well for each raid.",
+                description: "Convert damage percent or amount to the other",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";raidteams <raid> <phase>",
+                        usage: ";raiddamage <raid> <phase> <damage>",
                         args: {
                             "raid": "The raid that you want to see teams for. (aat|pit|sith)",
-                            "phase": "The phase of the raid you want to see. (p1|p2|p3|p4|solo)"
-                        }
-                    }
-                ]
-            },
-
-
-            // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Invalid raid, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Invalid phase, usage is \`${prefix}raidteams <raid> <phase>\`\n**Example:** \`${prefix}raidteams pit p3\``,
-            COMMAND_RAIDTEAMS_PHASE_SOLO: "Solo",
-            COMMAND_RAIDTEAMS_PHASE_ONE: "Phase 1",
-            COMMAND_RAIDTEAMS_PHASE_TWO: "Phase 2",
-            COMMAND_RAIDTEAMS_PHASE_THREE: "Phase 3",
-            COMMAND_RAIDTEAMS_PHASE_FOUR: "Phase 4",
-            COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Characters:** \`${charList}\``,
-            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Showing teams for ${currentPhase}`,
-            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `Cannot find any teams under \`${currentPhase}\``,
-            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Showing teams for ${currentPhase}\n\n`,
-            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Characters: ${charList}\n`,
-            COMMAND_RAIDTEAMS_HELP: {
-                description: "Shows some teams that work well for each raid.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: "",
-                        usage: ";raidteams <raid> <phase>",
-                        args: {
-                            "raid": "The raid that you want to see teams for. (aat|pit|sith)",
-                            "phase": "The phase of the raid you want to see. (p1|p2|p3|p4|solo)"
+                            "phase": "The phase of the raid you want to see. (p1|p2|p3|p4|solo)",
+                            "damage": "The amount of damage you want to convert. (Ex: 40000 or 35%)"
                         }
                     }
                 ]
@@ -1476,7 +1448,7 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";squads [user] <event> <phaseNum>",
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
+                            "user": "The person you're looking up. (me | userID | mention)",
                             "event": "The event that you want to see teams for. (aat|pit|sith|etc.)",
                             "phase": "The number associated with the phase you want to see"
                         }

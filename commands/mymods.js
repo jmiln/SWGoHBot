@@ -205,6 +205,7 @@ class MyMods extends Command {
             let stats;
             try { 
                 stats = await client.swgohAPI.unitStats(allyCode, cooldown);
+                if (Array.isArray(stats)) stats = stats[0];
             } catch (e) {
                 return super.error(message, client.codeBlock(e.message), {
                     title: message.lanugage.get("BASE_SOMETHING_BROKE"),

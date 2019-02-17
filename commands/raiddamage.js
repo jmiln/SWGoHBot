@@ -7,7 +7,7 @@ class RaidDamage extends Command {
             name: "raiddamage",
             category: "SWGoH",
             enabled: true, 
-            aliases: ["raiddmg", "rdmg", "convert", "raidd"],
+            aliases: ["raiddmg", "rdmg", "convert", "raidd", "raid"],
             permissions: ["EMBED_LINKS"]
         });
     }

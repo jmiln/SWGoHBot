@@ -4,7 +4,7 @@ class Squads extends Command {
     constructor(client) {
         super(client, {
             name: "squads",
-            aliases: ["sq", "squad", "raid", "raidteam"],
+            aliases: ["sq", "squad", "raidteam", "raidteams"],
             category: "Star Wars",
             permissions: ["EMBED_LINKS"]
         });
