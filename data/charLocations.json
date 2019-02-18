@@ -83,6 +83,15 @@
         ]
     },
     {
+        "name": "B1 Battle Droid",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Mechanized Menace"
+            }
+        ]
+    },
+    {
         "name": "B2 Super Battle Droid",
         "locations": [
             {
