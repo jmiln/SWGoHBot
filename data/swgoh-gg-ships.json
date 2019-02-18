@@ -190,7 +190,7 @@
         "name": "Emperor's Shuttle",
         "base_id": "EMPERORSSHUTTLE",
         "url": "http://swgoh.gg/ships/emperors-shuttle/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_imperialshuttle.png",
         "power": 65246,
         "description": "Versatile Support that boosts Empire and Sith survivability while debuffing enemies",
         "combat_type": 2,
