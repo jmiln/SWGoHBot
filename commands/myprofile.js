@@ -56,9 +56,52 @@ class MyProfile extends Command {
         });
 
         const fields = [];
-        // const charList = player.roster.filter(u => u.type === "CHARACTER");
-        const charList = player.roster.filter(u => u.combatType === "CHARACTER");
+
+        // Get the mod stats
+        const mods = {
+            sixPip: 0,
+            spd15: 0,
+            spd20: 0,
+            off100: 0
+        };
+        player.roster.forEach(c => {
+            if (c.mods) {
+                const six = c.mods.filter(p => p.pips === 6);
+                if (six.length) {
+                    mods.sixPip += six.length;
+                }
+                c.mods.forEach(m => {
+                    const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 15);
+                    const off = m.secondaryStat.find(o => (o.unitStat === 41 || o.unitStat === "UNITSTATOFFENSE") && o.value >= 100);
+
+                    if (spd) {
+                        if (spd.value >= 20) {
+                            mods.spd20 += 1;
+                        } else {
+                            mods.spd15 += 1;
+                        }                             }
+                    if (off) mods.off100 += 1;
+                });
+            }
+        });
+        Object.keys(mods).forEach(k => {
+            if (mods[k] === 0) mods[k] = "0";
+        });
+
+        const modOut = message.language.get("COMMAND_MYPROFILE_MODS", mods);
+        fields.push({
+            name: " " + modOut.header,
+            value: [
+                "```asciidoc",
+                modOut.modStrs,
+                "```"
+            ].join("\n")
+        });
+
+
+        // Get the Character stats
         let zetaCount = 0;
+        const charList = player.roster.filter(u => u.combatType === "CHARACTER");
         charList.forEach(char => {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
             zetaCount += thisZ.length;
@@ -73,7 +116,7 @@ class MyProfile extends Command {
             ].join("\n")
         });
 
-        // const shipList = player.roster.filter(u => u.type === "SHIP");
+        // Get the ship stats
         const shipList = player.roster.filter(u => u.combatType === "SHIP");
         const shipOut = message.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList);
         fields.push({
@@ -84,6 +127,7 @@ class MyProfile extends Command {
                 "```"
             ].join("\n")
         });
+
         if (player.warnings) {
             fields.push({
                 name: "Warnings",
@@ -96,7 +140,8 @@ class MyProfile extends Command {
             author: {
                 name: message.language.get("COMMAND_MYPROFILE_EMBED_HEADER", player.name, player.allyCode),
             },
-            description: message.language.get("COMMAND_MYPROFILE_DESC", player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, gpFull.toLocaleString()),
+            // Need 6*, 15/20 spd, and 100 off
+            description: message.language.get("COMMAND_MYPROFILE_DESC", player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, gpFull.toLocaleString(), mods),
             fields: fields,
             footer: footer
         }});

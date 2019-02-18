@@ -895,14 +895,23 @@ module.exports = class extends Language {
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank, gpFull) => `**Guild:** ${guildName}\n**Level:** ${level}\n**Arena rank:** ${charRank}\n**Ship rank:** ${shipRank}\n**Total GP:** ${gpFull}`,
+            COMMAND_MYPROFILE_MODS: (mods) => ({
+                header: "Mod Overview",
+                modStrs: [
+                    `6* Mods  :: ${mods.sixPip}`,
+                    `Spd 15+  :: ${mods.spd15}`,
+                    `Spd 20+  :: ${mods.spd20}`,
+                    `Off 100+ :: ${mods.off100}`
+                ].join("\n")
+            }),
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Characters (${charList.length})`,
                 stats: [
                     `Char GP  :: ${gpChar}`,
                     `7 Star   :: ${charList.filter(c => c.rarity === 7).length}`,
                     `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
-                    `Gear 12  :: ${charList.filter(c => c.gear === 12).length}`,
                     `Gear 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                    `Gear 12  :: ${charList.filter(c => c.gear === 12).length}`,
                     `Zetas    :: ${zetaCount}`
                 ].join("\n")
             }),
