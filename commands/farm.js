@@ -113,16 +113,20 @@ class Farm extends Command {
 
         if (options.flags.ships) {
             const ship = client.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
-            const shopLoc = ship.locations.filter(l => l.cost);
-            if (shopLoc.length) {
-                outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
+            if (ship) {
+                const shopLoc = ship.locations.filter(l => l.cost);
+                if (shopLoc.length) {
+                    outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
+                }
             }
         } else {
             const char = client.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
-            const shopLoc = char.locations.filter(l => l.cost);
-            if (shopLoc.length) {
-                outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
-            }
+            if (char) {
+                const shopLoc = char.locations.filter(l => l.cost);
+                if (shopLoc.length) {
+                    outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
+                }
+            } 
         }
         if (!outList.length) {
             return super.error(message, message.language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
