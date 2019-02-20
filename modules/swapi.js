@@ -203,6 +203,15 @@ module.exports = (client) => {
             char.nameKey = nameKey ? nameKey.nameKey : null;
         }
 
+        // In case it has skillReferenceList
+        for (const skill in char.skillReferenceList) {
+            let skillName = await cache.get("swapi", "abilities", {skillId: char.skillReferenceList[skill].skillId, language: lang}, {nameKey: 1, _id: 0});
+            if (Array.isArray(skillName)) skillName = skillName[0];
+            if (!skillName) throw new Error("Cannot find skillName for " + char.skillReferenceList[skill].skillId);
+            char.skillReferenceList[skill].nameKey = skillName.nameKey;
+        }
+
+        // In case it doesn't
         for (const skill in char.skills) {
             let skillName = await cache.get("swapi", "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
             if (Array.isArray(skillName)) skillName = skillName[0];
@@ -351,6 +360,12 @@ module.exports = (client) => {
     }
 
     async function character( defId, update=false) {
+        const factionMap = {
+            bountyhunter : "bounty hunter",
+            cargoship    : "cargo ship",
+            light        : "light side",
+            dark         : "dark side"
+        };
         let outChar = null;
         if (update) {
             let baseCharacters = await client.swgoh.fetchAPI("/swgoh/data", {
@@ -367,7 +382,8 @@ module.exports = (client) => {
                     "unitTierList": {
                         "tier": 1,
                         "equipmentSetList": 1
-                    }
+                    },
+                    crewList: 1
                 }
             });
 
@@ -376,13 +392,22 @@ module.exports = (client) => {
             for (const char of baseCharacters) {
                 char.factions = [];
                 char.categoryIdList.forEach(c => {
-                    if (c.startsWith("profession_") || c.startsWith("role_")) {
+                    if (c.startsWith("alignment_") || c.startsWith("profession_") || c.startsWith("affiliation_") || c.startsWith("role_") || c.startsWith("shipclass_")) {
                         let faction = c.split("_")[1];
-                        if (faction === "bountyhunter") faction = "bounty hunter";
+                        if (factionMap[faction]) faction = factionMap[faction];
+                        faction = faction.replace(/s$/, "");
                         char.factions.push(faction);
                     }
                 });
                 delete char.categoryIdList;
+                char.crew = [];
+                if (char.crewList.length) {
+                    for (const c of char.crewList) {
+                        char.crew.push(c.unitId);
+                        char.skillReferenceList = char.skillReferenceList.concat(c.skillReferenceList);
+                    }
+                }
+                delete char.crewList;
                 if (defId === char.baseId) outChar = char;
                 if (char._id) delete char._id;
                 await cache.put("swapi", "characters", {baseId: char.baseId}, char);
@@ -451,12 +476,20 @@ module.exports = (client) => {
                 "language": lang,
                 "enums":true,
                 "match": {
-                    "rarity": 7
+                    "rarity": 7,
+                    "obtainable": true,
+                    "obtainableTime": 0
                 },
                 "project": {
                     "baseId": 1,
                     "nameKey": 1,
                     "categoryIdList": 1,
+                    skillReferenceList: 1,
+                    "unitTierList": {
+                        "tier": 1,
+                        "equipmentSetList": 1
+                    },
+                    crewList: 1,
                     "creationRecipeReference": 1
                 }
             });
