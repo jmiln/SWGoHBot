@@ -1,12 +1,12 @@
 const Command = require("../base/Command");
 
-class Abilities extends Command {
+class Character extends Command {
     constructor(client) {
         super(client, {
-            name: "abilities",
+            name: "character",
             description: "",
             category: "Star Wars",
-            aliases: ["a", "ab"],
+            aliases: ["char", "ab", "abilities"],
             permissions: ["EMBED_LINKS"]
         });
     }
@@ -54,6 +54,14 @@ class Abilities extends Command {
         const char = await client.swgohAPI.getCharacter(character.uniqueName, message.guildSettings.swgohLanguage);
 
         const fields = [];
+
+        if (char.factions.length) {
+            fields.push({
+                name: "Factions",
+                value: char.factions.map(f => f.toProperCase()).join(", ")
+            });
+        }
+
         for (const ability of char.skillReferenceList) {
             // Get the ability type
             const types = ["basic", "special", "leader", "unique", "contract"];
@@ -116,4 +124,4 @@ class Abilities extends Command {
     }
 }
 
-module.exports = Abilities;
+module.exports = Character;
