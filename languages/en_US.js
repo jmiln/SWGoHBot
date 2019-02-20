@@ -195,17 +195,17 @@ module.exports = class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Missing character. \nUsage is \`${prefix}abilities <characterName>\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Invalid character. \nUsage is \`${prefix}abilities <characterName>\``,
-            COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
-            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}\n**Ability mats needed:     ${mat}**\n${cdString}${aDesc}`,
-            COMMAND_ABILITIES_HELP: {
-                description: "Shows the abilities for the specified character.",
+            COMMAND_CHARACTER_NEED_CHARACTER: (prefix) => `Missing character. \nUsage is \`${prefix}abilities <characterName>\``,
+            COMMAND_CHARACTER_INVALID_CHARACTER: (prefix) => `Invalid character. \nUsage is \`${prefix}abilities <characterName>\``,
+            COMMAND_CHARACTER_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
+            COMMAND_CHARACTER_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}\n**Ability mats needed:     ${mat}**\n${cdString}${aDesc}`,
+            COMMAND_CHARACTER_HELP: {
+                description: "Shows info for the specified character.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";abilities <characterName>",
+                        usage: ";character <characterName>",
                         args: {}
                     }
                 ]

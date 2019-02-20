@@ -6,7 +6,7 @@ class Character extends Command {
             name: "character",
             description: "",
             category: "Star Wars",
-            aliases: ["char", "ab", "abilities"],
+            aliases: ["characters", "char", "ab", "abilities"],
             permissions: ["EMBED_LINKS"]
         });
     }
