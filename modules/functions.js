@@ -369,9 +369,11 @@ module.exports = (client) => {
             client.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
             client.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
             client.characters   = await JSON.parse(fs.readFileSync("data/characters.json"));
+            client.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json"));
             client.missions     = await JSON.parse(fs.readFileSync("data/missions.json"));
             client.resources    = await JSON.parse(fs.readFileSync("data/resources.json"));
             client.ships        = await JSON.parse(fs.readFileSync("data/ships.json"));
+            client.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json"));
             client.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
         } catch (e) {
             err = e;

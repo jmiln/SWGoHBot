@@ -264,7 +264,22 @@
             "Droid",
             "Separatist"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Tenacity x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Health/ Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "B2 Super Battle Droid",

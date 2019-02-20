@@ -108,6 +108,15 @@
         ]
     },
     {
+        "name": "Emperor's Shuttle",
+        "locations": [
+            {
+                "type": "Special Event",
+                "name": "Galactic Chase"
+            }
+        ]
+    },
+    {
         "name": "Endurance",
         "locations": [
             {

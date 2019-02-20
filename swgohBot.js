@@ -30,6 +30,8 @@ const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE = "./data/swgoh-gg-ships.json";
 const SWGoH_Help_SQUAD_CACHE = "./data/squads.json";
+const CHARLOCATIONS = "./data/charLocations.json";
+const SHIPLOCATIONS = "./data/shipLocations.json";
 const UNKNOWN = "Unknown";
 
 require("./modules/functions.js")(client);
@@ -259,6 +261,14 @@ async function updateRemoteData() {
 
     if (await updateIfChanged(SWGoH_Help_SQUAD_CACHE, "https://swgoh.help/data/squads.json")) {
         console.log("UpdatedRemoteData", "Detected a squad change from swgoh.help.");
+    }
+
+    if (await updateIfChanged(CHARLOCATIONS, "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=false")) {
+        console.log("UpdatedRemoteData", "Detected a change in character locations.");
+    }
+
+    if (await updateIfChanged(SHIPLOCATIONS, "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=true")) {
+        console.log("UpdatedRemoteData", "Detected a change in ship locations.");
     }
 
     console.log("UpdateRemoteData", "Finished processing remote updates");

@@ -180,6 +180,8 @@ class MyCharacter extends Command {
                 "Deflection Chance":        "DEFLECTION" 
             };
 
+            if (!stats || !stats.final) return super.error(message, "Something went wrong. Please make sure you have that character unlocked");
+
             let keys = Object.keys(stats.final);
             if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
             let maxLen;

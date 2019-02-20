@@ -73,22 +73,24 @@ class Charactergear extends Command {
 
 
         if (!userID) {
+            const char = await client.swgohAPI.getCharacter(character.uniqueName);
             if (!gearLvl) {
                 const allGear = {};
 
-                for (var level in character.gear) {
-                    const thisLvl = character.gear[level];
-                    for (var ix = 0; ix < thisLvl.length; ix++) {
-                        if (!allGear[thisLvl[ix]]) { // If it's not been checked yet
-                            allGear[thisLvl[ix]] = 1;
+                char.unitTierList.forEach(gTier => {
+                    gTier.equipmentSetList.forEach(g => {
+                        if (g === "???????") return;
+                        if (!allGear[g]) { // If it's not been checked yet
+                            allGear[g] = 1;
                         } else { // It's already in there
-                            allGear[thisLvl[ix]] = allGear[thisLvl[ix]] + 1;
+                            allGear[g] = allGear[g] + 1;
                         }
-                    }
-                }
+                    });
+                });
 
                 let gearString = "";
-                for (var key in allGear) {
+                const sortedGear = Object.keys(allGear).sort((a, b) => a.replace(/mk \d{1,2}/i, "") > b.replace(/mk \d{1,2}/i, ""));
+                for (var key of sortedGear) {
                     gearString += `* ${allGear[key]}x ${key}\n`;
                 }
                 message.channel.send(message.language.get("COMMAND_CHARGEAR_GEAR_ALL", character.name, gearString), {
@@ -97,22 +99,24 @@ class Charactergear extends Command {
                 });
             } else {
                 // Format and send the requested data back
-                chars.forEach(character => {
-                    const thisGear = character.gear[`Gear ${gearLvl}`];
-                    message.channel.send({
-                        embed: {
-                            "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
-                            "author": {
-                                "name": character.name,
-                                "url": character.url,
-                                "icon_url": character.avatarURL
-                            },
-                            "fields": [{
-                                "name": "Gear " + gearLvl,
-                                "value": `* ${thisGear.length > 0 ? thisGear.join("\n* ") : message.language.get("COMMAND_CHARGEAR_GEAR_NA")}`
-                            }]
-                        }
+                const gearList = char.unitTierList.filter(t => t.tier >= gearLvl);
+                const fields = [];
+                gearList.forEach(g => {
+                    fields.push({
+                        name: "Gear " + g.tier,
+                        value: g.equipmentSetList.filter(gname => gname !== "???????").join("\n")
                     });
+                });
+                message.channel.send({
+                    embed: {
+                        "color": `${character.side === "light" ? 0x5114e0 : 0xe01414}`,
+                        "author": {
+                            "name": character.name,
+                            "url": character.url,
+                            "icon_url": character.avatarURL
+                        },
+                        "fields": fields
+                    }
                 });
             }
         } else {
