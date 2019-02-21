@@ -2104,6 +2104,25 @@
         }
     },
     {
+        "name": "Droideka",
+        "uniqueName": "DROIDEKA",
+        "aliases": [
+            "Droideka"
+        ],
+        "nameVariant": [
+            "Droideka"
+        ],
+        "url": "http://swgoh.gg/characters/droideka/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/blank-character.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Droid",
+            "Separatist"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Eeth Koth",
         "uniqueName": "EETHKOTH",
         "aliases": [
