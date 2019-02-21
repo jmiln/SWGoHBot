@@ -288,6 +288,9 @@ module.exports = (client) => {
 
             abilities = abilities.result;
 
+            if (!abilities) return console.log("No abilities for " + lang);
+            if (!skillList) return console.log("No skillList for " + lang);
+
             abilities.forEach(a => {
                 const skill = skillList.find(s => s.abilityReference === a.id);
                 if (a.tierList && a.tierList.length > 0) {
@@ -389,8 +392,11 @@ module.exports = (client) => {
 
             baseCharacters = baseCharacters.result;
 
+            if (!baseCharacters) return console.log("No baseCharacters");
+
             for (const char of baseCharacters) {
                 char.factions = [];
+                if (!char.categoryIdList) return console.log("Missing baseCharacter abilities");
                 char.categoryIdList.forEach(c => {
                     if (c.startsWith("alignment_") || c.startsWith("profession_") || c.startsWith("affiliation_") || c.startsWith("role_") || c.startsWith("shipclass_")) {
                         let faction = c.split("_")[1];
@@ -446,6 +452,8 @@ module.exports = (client) => {
             });
             gearList = gearList.result;
 
+            if (!gearList) return console.log("Missing gearList for " + lang);
+
             for (const gearPiece of gearList) {
                 gearPiece.language = lang.toLowerCase();
                 if (gearArray.includes(gearPiece.id)) {
@@ -495,6 +503,8 @@ module.exports = (client) => {
             });
             unitList = unitList.result;
 
+            if (!unitList) return console.log("No unitList for " + lang);
+
             for (const unit of unitList) {
                 unit.language = lang.toLowerCase();
                 if (unit.baseId === defId) {
@@ -536,6 +546,8 @@ module.exports = (client) => {
             });
 
             recList = recList.result;
+
+            if (!recList) return console.log("No recList for " + lang);
 
             for (const rec of recList) {
                 rec.language = lang.toLowerCase();

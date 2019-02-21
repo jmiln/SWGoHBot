@@ -1136,7 +1136,11 @@ module.exports = (client) => {
     
     // Reload the SWGoH data for all patrons
     client.reloadPatrons = async () => {
-        client.patrons = await client.getPatrons();
+        try {
+            client.patrons = await client.getPatrons();
+        } catch (e) {
+            // Something happened
+        }
         console.log("Reloaded " + client.patrons.length + " active patrons");
     };
 
