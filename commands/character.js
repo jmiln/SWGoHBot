@@ -23,7 +23,7 @@ class Character extends Command {
 
         // Make sure they gave a character to find
         if (searchName === "") {
-            const err = message.language.get("COMMAND_ABILITIES_NEED_CHARACTER", message.guildSettings.prefix);
+            const err = message.language.get("COMMAND_CHARACTER_NEED_CHARACTER", message.guildSettings.prefix);
             if (err.indexOf("\n") > -1) {
                 const [title, usage] = err.split("\n");
                 return super.error(message, usage, {title: title, example: "abilities Han Solo"});
@@ -34,7 +34,7 @@ class Character extends Command {
         // Find any characters that match that
         const chars = client.findChar(searchName, charList);
         if (chars.length <= 0) {
-            const err = message.language.get("COMMAND_ABILITIES_INVALID_CHARACTER", message.guildSettings.prefix);
+            const err = message.language.get("COMMAND_CHARACTER_INVALID_CHARACTER", message.guildSettings.prefix);
             if (err.indexOf("\n") > -1) {
                 const [title, usage] = err.split("\n");
                 return super.error(message, usage, {title: title, example: "abilities Han Solo"});
@@ -90,10 +90,10 @@ class Character extends Command {
 
             var cooldownString = "";
             if (ability.cooldown > 0) {
-                cooldownString = message.language.get("COMMAND_ABILITIES_COOLDOWN", ability.cooldown);
+                cooldownString = message.language.get("COMMAND_CHARACTER_COOLDOWN", ability.cooldown);
             }
 
-            const msgArr = client.msgArray(client.expandSpaces(message.language.get("COMMAND_ABILITIES_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
+            const msgArr = client.msgArray(client.expandSpaces(message.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
 
             msgArr.forEach((m, ix) => {
                 if (ix === 0) {

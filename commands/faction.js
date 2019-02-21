@@ -26,7 +26,11 @@ class Faction extends Command {
         } 
         if (args[0].toLowerCase() === "me" || client.isAllyCode(args[0]) || client.isUserID(args[0])) {
             allyCode = args.splice(0, 1);
-            allyCode = await client.getAllyCode(message, allyCode);
+            try {
+                allyCode = await client.getAllyCode(message, allyCode);
+            } catch (e) {
+                return super.error(message, e.message);
+            }
         }
 
         const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
