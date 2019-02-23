@@ -17,6 +17,7 @@
         },
         "DSR Bot": {
             "Desc": "Shows teams and player readiness for the sith raid",
+            "Discord": "https://discord.gg/8N37JTc",
             "Invite": "https://discordapp.com/oauth2/authorize?client_id=436693905736466432&permissions=0&scope=bot"
         },
         "MouseBot": {
