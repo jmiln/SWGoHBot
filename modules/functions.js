@@ -1124,7 +1124,7 @@ module.exports = (client) => {
         seconds = Math.floor(milliseconds / 1000);
         totalMin = Math.floor(seconds / 60);
         seconds = seconds % 60;
-        hour = Math.floor(minute / 60);
+        hour = Math.floor(totalMin / 60);
         minute = totalMin % 60;
         return {
             hour: hour,

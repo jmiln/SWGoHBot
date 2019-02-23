@@ -657,7 +657,7 @@ module.exports = (client) => {
             let guild  = await cache.get("swapi", "guilds", {id: player.guildRefId});
 
             /** Check if existance and expiration */
-            if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown) ) {
+            if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
                 /** If not found or expired, fetch new from API and save to cache */
                 let tempGuild;
                 try {
@@ -720,11 +720,11 @@ module.exports = (client) => {
     async function guildGG( allyCodes, lang, cooldown ) {
         lang = lang || "ENG_US";
         if (cooldown && cooldown.guild) {
-            cooldown.guild = cooldown.guild;
-            if (cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
-            if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
+            cooldown = cooldown.guild;
+            if (cooldown.guild > guildMaxCooldown) cooldown = guildMaxCooldown;
+            if (cooldown.guild < guildMinCooldown) cooldown = guildMinCooldown;
         } else {
-            cooldown.guild = guildMaxCooldown;
+            cooldown = guildMaxCooldown;
         }
         let warnings;
         try {
@@ -733,7 +733,7 @@ module.exports = (client) => {
             const fresh = [];
             players.forEach(p => {
                 // Take out anyone who's recent enough to not need to be updated
-                if (p && !isExpired(p.updated, cooldown.guild)) {
+                if (p && !isExpired(p.updated, cooldown, true)) {
                     allyCodes.splice(allyCodes.indexOf(p.allyCode), 1);
                     fresh.push(p);
                 } 
@@ -916,17 +916,17 @@ module.exports = (client) => {
 
     function isExpired( updated, cooldown={}, guild=false ) {
         if (guild) {
-            if (!cooldown.guild) {
-                cooldown.guild = guildMaxCooldown;
+            if (!cooldown) {
+                cooldown = guildMaxCooldown;
             }
             const diff = client.convertMS( new Date() - new Date(updated) );
-            return diff.totalMin >= cooldown.guild;
+            return diff.totalMin >= cooldown;
         } else {
-            if (!cooldown.player) {
-                cooldown.player = playerMaxCooldown;
+            if (!cooldown) {
+                cooldown = playerMaxCooldown;
             }
             const diff = client.convertMS( new Date() - new Date(updated) );
-            return diff.totalMin >= cooldown.player;
+            return diff.totalMin >= cooldown;
         }
     }
 };
