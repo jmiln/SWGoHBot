@@ -1120,15 +1120,16 @@ module.exports = (client) => {
 
     // Convert from milliseconds
     client.convertMS = (milliseconds) => {
-        var hour, minute, seconds;
+        var hour, totalMin, minute, seconds;
         seconds = Math.floor(milliseconds / 1000);
-        minute = Math.floor(seconds / 60);
+        totalMin = Math.floor(seconds / 60);
         seconds = seconds % 60;
         hour = Math.floor(minute / 60);
-        minute = minute % 60;
+        minute = totalMin % 60;
         return {
             hour: hour,
             minute: minute,
+            totalMin: totalMin,
             seconds: seconds
         };
     };
@@ -1149,28 +1150,27 @@ module.exports = (client) => {
         const patron = client.patrons.find(u => u.discordID === author);
         if (!patron) {
             return {
-                player: 2,
-                guild:  6
+                player: 2*60,
+                guild:  6*60
             };
         }
         if (patron.amount_cents >= 500) { 
             // If they have the $5 tier or higher, they get shorted guild & player times
             return {
                 player: 1,
-                guild:  3
+                guild:  3*60
             };
         } else if (patron.amount_cents >= 100) { 
             // They have the $1 tier, so they get short player times
             return {
-                player: 1,
-                guild:  6
+                player: 60,
+                guild:  6*60
             };
-
         } else {
             // If they are not a patron, their cooldown is the default
             return {
-                player: 2,
-                guild:  6
+                player: 2*60,
+                guild:  6*60
             };
         }
     };

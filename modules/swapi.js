@@ -4,10 +4,13 @@ module.exports = (client) => {
     const cache = client.cache;
     const costs = client.abilityCosts;
 
-    const playerCooldown = 2;
-    const guildCooldown  = 6;
-    const eventCooldown  = 4;
-    const zetaCooldown   = 7 * 24; // 7 days
+    // Set the max cooldowns (In minutes)
+    const playerMinCooldown = 1;    // 1 min
+    const playerMaxCooldown = 180;  // 2 hours
+    const guildMinCooldown  = 3*60; // 4 hours
+    const guildMaxCooldown  = 6*60; // 6 hours
+    const eventCooldown     = 4*60; // 4 hours
+    const zetaCooldown =   7*24*60; // 7 days
 
     return {
         player: player,
@@ -37,10 +40,10 @@ module.exports = (client) => {
         lang = lang ? lang : "ENG_US";
         if (cooldown) {
             cooldown = cooldown.player;
-            if (cooldown > playerCooldown) cooldown = playerCooldown;
-            if (cooldown < 1) cooldown = 1;
+            if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
+            if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
         } else {
-            cooldown = playerCooldown;
+            cooldown = playerMaxCooldown;
         }
         try {
             if (allycode) allycode = allycode.toString();
@@ -126,10 +129,10 @@ module.exports = (client) => {
         if (cooldown && cooldown.player) {
             if (cooldown) {
                 cooldown = cooldown.player;
-                if (cooldown > playerCooldown) cooldown = playerCooldown;
-                if (cooldown < 1) cooldown = 1;
+                if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
+                if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
             } else {
-                cooldown = playerCooldown;
+                cooldown = playerMaxCooldown;
             }
         }
         let playerStats = [];
@@ -223,10 +226,10 @@ module.exports = (client) => {
 
     async function guildStats( allyCodes, defId, cooldown ) {
         if (cooldown) {
-            if (cooldown.guild > guildCooldown) cooldown.guild = guildCooldown;
-            if (cooldown.guild < 1) cooldown.guild = 3;
+            if (cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
+            if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
         } else {
-            cooldown.guild = guildCooldown;
+            cooldown.guild = guildMaxCooldown;
         }
 
         const outStats = [];
@@ -635,10 +638,10 @@ module.exports = (client) => {
 
         if (cooldown) {
             cooldown = cooldown.guild;
-            if (cooldown > guildCooldown) cooldown = guildCooldown;
-            if (cooldown < 3) cooldown = 3;
+            if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
+            if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
         } else {
-            cooldown = guildCooldown;
+            cooldown = guildMaxCooldown;
         }
         let warnings;
         try {
@@ -716,12 +719,12 @@ module.exports = (client) => {
 
     async function guildGG( allyCodes, lang, cooldown ) {
         lang = lang || "ENG_US";
-        if (cooldown) {
-            cooldown = cooldown.guild;
-            if (cooldown > guildCooldown) cooldown = guildCooldown;
-            if (cooldown < 3) cooldown = 3;
+        if (cooldown && cooldown.guild) {
+            cooldown.guild = cooldown.guild;
+            if (cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
+            if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
         } else {
-            cooldown = guildCooldown;
+            cooldown.guild = guildMaxCooldown;
         }
         let warnings;
         try {
@@ -730,7 +733,7 @@ module.exports = (client) => {
             const fresh = [];
             players.forEach(p => {
                 // Take out anyone who's recent enough to not need to be updated
-                if (p && !isExpired(p.updated, guildCooldown)) {
+                if (p && !isExpired(p.updated, cooldown.guild)) {
                     allyCodes.splice(allyCodes.indexOf(p.allyCode), 1);
                     fresh.push(p);
                 } 
@@ -911,11 +914,19 @@ module.exports = (client) => {
         }    
     }
 
-    function isExpired( updated, cooldown ) {
-        if (!cooldown) {
-            cooldown = 6;
+    function isExpired( updated, cooldown={}, guild=false ) {
+        if (guild) {
+            if (!cooldown.guild) {
+                cooldown.guild = guildMaxCooldown;
+            }
+            const diff = client.convertMS( new Date() - new Date(updated) );
+            return diff.totalMin >= cooldown.guild;
+        } else {
+            if (!cooldown.player) {
+                cooldown.player = playerMaxCooldown;
+            }
+            const diff = client.convertMS( new Date() - new Date(updated) );
+            return diff.totalMin >= cooldown.player;
         }
-        const diff = client.convertMS( new Date() - new Date(updated) );
-        return diff.hour >= cooldown;
     }
 };
