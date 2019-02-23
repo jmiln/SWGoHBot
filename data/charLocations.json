@@ -295,7 +295,8 @@
         "name": "Carth Onasi",
         "locations": [
             {
-                "type": "Intro P2 (Crystals/Packs)"
+                "type": "Hard Modes (Fleet)",
+                "level": "2-E"
             }
         ]
     },
@@ -617,6 +618,15 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "9-D"
+            }
+        ]
+    },
+    {
+        "name": "Droideka",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Mechanized Menace II"
             }
         ]
     },
@@ -1202,7 +1212,8 @@
         "name": "Juhani",
         "locations": [
             {
-                "type": "Intro P2 (Crystals/Packs)"
+                "type": "Hard Modes (L)",
+                "level": "6-A"
             }
         ]
     },
@@ -1363,10 +1374,6 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "3-D"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "6-A"
             }
         ]
     },

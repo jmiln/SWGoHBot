@@ -8259,7 +8259,7 @@
         "base_id": "DROIDEKA",
         "pk": 325,
         "url": "http://swgoh.gg/characters/droideka/",
-        "image": "//swgoh.gg/static/img/assets/blank-character.png",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_droideka.png",
         "power": 21168,
         "description": "Destructive Droid attacker that punishes fast enemies from behind its deflector shield",
         "combat_type": 1,

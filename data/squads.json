@@ -3748,9 +3748,54 @@
     "gsummary": {
         "name": "GUILD SUMMARY",
         "rarity": 7,
-        "gear": 10,
+        "gear": 11,
         "level": 85,
         "phase": [
+            {
+                "name": "CLONES",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "CC2224",
+                            "CT7567",
+                            "CT210408",
+                            "CLONESERGEANTPHASEI",
+                            "CT5555"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "JEDI",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "AAYLASECURA",
+                            "AHSOKATANO",
+                            "BARRISSOFFEE",
+                            "BASTILASHAN",
+                            "EZRABRIDGERS3",
+                            "GENERALKENOBI",
+                            "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
+                            "HERMITYODA",
+                            "ANAKINKNIGHT",
+                            "JEDIKNIGHTREVAN",
+                            "JOLEEBINDO",
+                            "KANANJARRUSS3",
+                            "MACEWINDU",
+                            "OLDBENKENOBI",
+                            "PLOKOON",
+                            "QUIGONJINN"
+                        ]
+                    }
+                ]
+            },
             {
                 "name": "LEGENDARY CHARACTERS",
                 "squads": [
@@ -3847,7 +3892,8 @@
                             "MAGMATROOPER",
                             "SHORETROOPER",
                             "SNOWTROOPER",
-                            "STORMTROOPER"
+                            "STORMTROOPER",
+                            "RANGETROOPER"
                         ]
                     },
                     {
