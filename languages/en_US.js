@@ -429,6 +429,31 @@ module.exports = class extends Language {
             // Event Command (Other)
             COMMAND_EVENT_TOO_MANY_EVENTS: "Sorry, but you can only have up to 50 events",
 
+            // Event Command (Edit)
+            COMMAND_EVENT_EDIT_MISSING_ARG: "Missing a field to edit",
+            COMMAND_EVENT_EDIT_INVALID_ARG: (target, changable) => `${target} is not a valid field. Try one of these:\n\`${changable}\``,
+            COMMAND_EVENT_EDIT_MISSING_NAME: "Missing a name to change to",
+            COMMAND_EVENT_EDIT_INAVLID_NAME: "Spaces are not allowed in the name, try using `-` or `_` instead.",
+            COMMAND_EVENT_EDIT_SPACE_DATE: "There should be no spaces in the date. The correct format is `DD/MM/YYYY`",
+            COMMAND_EVENT_EDIT_MISSING_DATE: "Missing a date to change to.",
+            COMMAND_EVENT_EDIT_INVALID_DATE: "Invalid date format, only `DD/MM/YYYY` is supported.",
+            COMMAND_EVENT_EDIT_SPACE_TIME: "There should be no spaces in the time. The correct format is `HH:mm`",
+            COMMAND_EVENT_EDIT_MISSING_TIME: "Missing a time to change to.",
+            COMMAND_EVENT_EDIT_INVALID_TIME: "Invalid time format, only `HH:mm` is supported.",
+            COMMAND_EVENT_EDIT_MISSING_MESSAGE: "Missing a message to change to",
+            COMMAND_EVENT_EDIT_LONG_MESSAGE: "Your new message it soo long. Try trimming it down a bit.",
+            COMMAND_EVENT_EDIT_MISSING_CHANNEL: "Missing a channel to change to.",
+            COMMAND_EVENT_EDIT_MISSING_COUNTDOWN: "Missing choice, you need to enter whether you want it on or off",
+            COMMAND_EVENT_EDIT_INVALID_COUTNDOWN: "Invalid option. Try `yes/no`, `true/false` or `on/off`",
+            COMMAND_EVENT_EDIT_MISSING_REPEATDAY: "Missing something to change to, repeatDay needs something in the format of `0,0,0,0,0`.",
+            COMMAND_EVENT_EDIT_SPACE_REPEATDAY: "There should be no spaces here, proper format is `0,0,0,0,0`.",
+            COMMAND_EVENT_EDIT_BOTH_REPEATDAY: "You already have a repeat set, cannot have both repeat & repeatDay set.",
+            COMMAND_EVENT_EDIT_MISSING_REPEAT: "Missing something to change to, repeatDay needs something in the format of `0d0h0m`.",
+            COMMAND_EVENT_EDIT_SPACE_REPEAT: "There should be no spaces here, proper format is `0d0h0m`.",
+            COMMAND_EVENT_EDIT_BOTH_REPEAT: "You already have a repeatday set, cannot have both repeat & repeatDay set.",
+            COMMAND_EVENT_EDIT_UPDATED: (target, cFrom, cTo) => `Changed ${target} from **${cFrom}** to **${cTo}**`,
+            COMMAND_EVENT_EDIT_BROKE: "Something went wrong when updating the event.",
+
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
                 description: "Used to make, check, or delete an event.",
@@ -474,6 +499,16 @@ module.exports = class extends Language {
                         actionDesc: "Trigger an event in the specified channel, leaves the event alone.",
                         usage: ";event trigger <eventName>",
                         args: {}
+                    },
+                    {
+                        action: "Edit",
+                        actionDesc: "Edit a pre-existing event",
+                        usage: ";event edit <eventName> <field> <changeTo>",
+                        args: {
+                            "eventName": "The name of the event you want to edit",
+                            "field": "The field you want to change. Choose from one of the following:\n `name, time, date, message, channel, countdown, repeat, repeatday`.",
+                            "changeTo": "What you want to change that field to."
+                        }
                     }
                 ]
             },
