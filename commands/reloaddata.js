@@ -111,7 +111,13 @@ class ReloadData extends Command {
                 }
                 message.channel.send("API Language update complete");
                 break;
-
+            case "users": // Reload the users file
+                if (client.shard && client.shard.count > 0) {
+                    client.shard.broadcastEval(`this.reloadUserReg('${id}');`);
+                } else {
+                    client.reloadUserReg(id);
+                }
+                break;
             default:
                 return super.error(message, "You can only choose `api, commands, events, functions, languages, swlang, or data.`");
         }

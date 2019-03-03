@@ -361,6 +361,25 @@ module.exports = (client) => {
         }
     };
 
+    // Reload the users file
+    client.reloadUserReg = async (msgID) => {
+        let err = false;
+        try {
+            delete require.cache[require.resolve("../modules/users.js")];
+            client.userReg = require("../modules/users.js")(client);
+        } catch (e) {
+            err = e;
+        }
+        const channel = client.channels.get(msgID);
+        if (channel) {
+            if (err) {
+                channel.send(`Something broke: ${err}`);
+            } else {
+                channel.send("Reloaded users");
+            }
+        }
+    };
+
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async (msgID) => {
         let err = false;

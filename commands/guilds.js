@@ -57,7 +57,6 @@ class Guilds extends Command {
             // Or, if they don't have one of those, try getting the guild by name
             userID += args.length ? " " + args.join(" ") : "";
             acType = false;
-            // return msg.edit("I currently do not support looking up guilds by name, please use an ally code, or mention someone that has registered.");
         }
 
         const cooldown = client.getPlayerCooldown(message.author.id);

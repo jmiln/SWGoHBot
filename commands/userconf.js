@@ -64,7 +64,7 @@ class UserConf extends Command {
                     // Remove from the list, if the chosen one was the primary, set the 1st 
                     const acc = user.accounts.find(a => a.allyCode === allyCode);
                     if (!acc) {
-                        return message.channel.send("You do not already have this ally code registered.");
+                        return message.channel.send("You do not have this ally code registered.");
                     }
                     user.accounts.push({
                         allyCode: allyCode,
