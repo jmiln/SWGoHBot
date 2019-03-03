@@ -1588,10 +1588,11 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";userconf allycode <add|remove|makeprimary> <allycode>",
+                        usage: ";userconf allycode <add|remove|view|makeprimary> <allycode>",
                         args: {
                             "add": "Add an ally code to your profile",
                             "remove": "Remove an ally code from your profile",
+                            "view": "View the current settings that you've got",
                             "makePrimary": "Make the selected ally code your primary one. (The one that will be used when you use `me` in a command)"
                         }
                     }
