@@ -885,16 +885,14 @@ module.exports = (client) => {
                 uID = user.replace(/[^\d]*/g, "");
             }
             try {
-                const exists = await client.database.models.allyCodes.findOne({where: {id: uID}})
-                    .then(token => token !== null)
-                    .then(isUnique => isUnique);
-                if (exists) {
-                    uAC = await client.database.models.allyCodes.findOne({where: {id: uID}});
-                    return [uAC.dataValues.allyCode]; 
+                const exists = await client.userReg.getUser(uID);
+                if (exists && exists.accounts.length) {
+                    const account = exists.accounts.find(a => a.primary);
+                    return [account.allyCode];
                 } else {
                     uAC = await client.swgohAPI.whois(uID);
                     if (uAC.get.length) {
-                        await client.database.models.allyCodes.create({ id: uAC.get[0].discordId, allyCode: uAC.get[0].allyCode });
+                        await client.userReg.addUser(uAC.get[0].discordId, uAC.get[0].allyCode);
                         return [uAC.get[0].allyCode];
                     }
                     return [];

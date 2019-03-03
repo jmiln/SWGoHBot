@@ -102,6 +102,7 @@ const init = async () => {
         const MongoClient = require("mongodb").MongoClient;
         client.mongo = await MongoClient.connect("mongodb://localhost:27017/", { useNewUrlParser: true } );
         client.cache = await require("./modules/cache.js")(client.mongo);
+        client.userReg = await require("./modules/users.js")(client);
 
 
         client.swgohPlayerCount = await client.mongo.db("swapi").collection("players").find({}).count();

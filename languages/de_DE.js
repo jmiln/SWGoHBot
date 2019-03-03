@@ -79,10 +79,10 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: (prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user, prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}register add @${user} <allycode>\``,
-            BASE_SWGOH_NO_USER: (prefix) => `Entschuldigung, aber ich habe diesen User nirgends gelistet. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
-            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `Ich kann für diesen User keine Gilde finden. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NO_ALLY: (prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}userconf allycode add  <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user, prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NO_USER: (prefix) => `Entschuldigung, aber ich habe diesen User nirgends gelistet. Bitte registrieren mit \`${prefix}userconf allycode add  <allycode>\``,
+            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `Ich kann für diesen User keine Gilde finden. Bitte registrieren mit \`${prefix}userconf allycode add  <allycode>\``,
             BASE_SWGOH_NO_GUILD: "Ich kann für diese Gilde keinen User finden.\nBitte sicherstellen, dass der Name korrekt geschrieben ist und dass die Gross- und Kleinschreibung stimmt.",
             BASE_SWGOH_MISSING_CHAR: "Du musst einen Charakter angeben",
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `Kein Ergebnis gefunden fuer ${character}`,

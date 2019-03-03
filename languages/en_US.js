@@ -79,10 +79,10 @@ module.exports = class extends Language {
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}register add <user> <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user, prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}register add @${user} <allycode>\``,
-            BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}register add <user> <allycode>\``,
-            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode  add <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user, prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\``,
             BASE_SWGOH_NO_GUILD: "I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.",
             BASE_SWGOH_MISSING_CHAR: "You need to enter a character to check for",
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
@@ -1576,6 +1576,23 @@ module.exports = class extends Language {
                             "gear": "Update the gear for the character.",
                             "info": "Update the info for the character (Image link, abilities etc.)",
                             "mods": "Update the mods from crouchingrancor.com"
+                        }
+                    }
+                ]
+            },
+
+            // UserConf
+            COMMAND_USERCONF_HELP: {
+                description: "All the needed utilities to manage your info in the bot.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";userconf allycode <add|remove|makeprimary> <allycode>",
+                        args: {
+                            "add": "Add an ally code to your profile",
+                            "remove": "Remove an ally code from your profile",
+                            "makePrimary": "Make the selected ally code your primary one. (The one that will be used when you use `me` in a command)"
                         }
                     }
                 ]

@@ -92,11 +92,8 @@ class Guilds extends Command {
             const users = [];
             for (const p of sortedGuild) {
                 // Check if the player is registered, then bold the name if so
-                const exists = await client.database.models.allyCodes.findOne({where: {allyCode: p.allyCode}})
-                    .then(token => token !== null)
-                    .then(isUnique => isUnique);
-                if (exists) {
-                    const codes = await client.database.models.allyCodes.findAll({where: {allyCode: p.allyCode}});
+                const codes = await client.userReg.getUserFromAlly(p.allyCode);
+                if (codes && codes.length) {
                     for (const c of codes) {
                         // Make sure they're in the same server
                         if (message.guild && message.guild.members.has(c.id)) {
