@@ -3,7 +3,6 @@ const { inspect } = require("util");
 const momentTZ = require("moment-timezone");
 
 const config = require("./config.js");
-console.log(config.defaultUserConf);
 
 /* eslint no-unused-vars: 0 */
 const init = async function() {
@@ -34,11 +33,13 @@ const init = async function() {
         const a = ac.dataValues;
         let user = config.defaultUserConf;
         user.id = a.id;
+        let player = await mongo.db("swapi").collection("players").find({allyCode: parseInt(a.allyCode)}).toArray();
+        if (Array.isArray(player) && player.length) player = player[0];
         user.accounts = [{
             allyCode: a.allyCode,
+            name: player && player.name ? player.name : null,
             primary: true
         }];
-        console.log(user);
         await mongo.db("swgohbot").collection("users").updateOne({id: a.id}, 
             {$set: user},
             {upsert: true}
