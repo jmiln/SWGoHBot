@@ -1168,47 +1168,21 @@ module.exports = class extends Language {
             },
 
             // Register Command
-            COMMAND_REGISTER_MISSING_ARGS: "You need to supply a userID (mention or ID), and an ally code",
             COMMAND_REGISTER_MISSING_ALLY: "You need to enter an ally code to link your account to.",
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
+            COMMAND_REGISTER_ALREADY_REGISTERED: "This is already your registered ally code!",
             COMMAND_REGISTER_PLEASE_WAIT: "Please wait while I sync your data.",
-            COMMAND_REGISTER_ADD_NO_SERVER: "You can only add users that are in your server.",
-            COMMAND_REGISTER_ALREADY_ADDED: (prefix=";") => `That user is already registered! Please use \`${prefix}register update <user>\`.`,
             COMMAND_REGISTER_FAILURE: "Registration failed, please make sure your ally code is correct.",
             COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
-            COMMAND_REGISTER_UPDATE_FAILURE: "Something went wrong, make sure your registered ally code is correct",
-            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profile updated for \`${user}\`.`,
-            COMMAND_REGISTER_CANNOT_REMOVE: (prefix=";") => `You cannot remove other people. If they left your guild, try \`${prefix}register update <user>\`.`,
-            COMMAND_REGISTER_NOT_LINKED: "You are not linked to a SWGoH account.",
-            COMMAND_REGISTER_REMOVE_SUCCESS: "Successfully unlinked.",
-            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Guild updated for \`${guild}\`.`,
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [
                     {
                         action: "Add",
                         actionDesc: "Link your Discord profile to a SWGoH account",
-                        usage: ";register add <user> <allyCode>",
+                        usage: ";register <allyCode>",
                         args: {
-                            "user": "The person you're adding. (me | userID | mention)",
                             "allyCode": "Your ally code from in-game."
-                        }
-                    },
-                    {
-                        action: "Update",
-                        actionDesc: "Update/ resync your SWGoH data.",
-                        usage: ";register update <user> [-guild]",
-                        args: {
-                            "user": "The person you're adding. (me | userID | mention)",
-                            "-guild": "Tell it to pull/ update your whole guild (-g | -guild | -guilds)"
-                        }
-                    },
-                    {
-                        action: "Remove",
-                        actionDesc: "Unlink your Discord profile from a SWGoH account",
-                        usage: ";register remove <user>",
-                        args: {
-                            "user": "You, this is to unlink it if you have the wrong ally code. (me | userID | mention)"
                         }
                     }
                 ]
