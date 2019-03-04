@@ -6,7 +6,7 @@ module.exports = async (client, message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
     if (message.author.bot) return;
-    // if (message.guild && !message.guild.me) await message.guild.members.fetch(client.user);
+
     // If we don't have permission to respond, don't bother
     if (message.guild && message.channel.permissionsFor(message.guild.me) && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
 
@@ -20,7 +20,6 @@ module.exports = async (client, message) => {
         guildSettings = guildSettings.dataValues;
     }
     
-
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.
     message.guildSettings = guildSettings;
@@ -89,6 +88,16 @@ module.exports = async (client, message) => {
 
         const flagArgs = getFlags(cmd.conf.flags, cmd.conf.subArgs, args);
         
+        // Quick shortcut to any extra ally codes you have registered
+        const toRep = args.filter(a => a.match(/^-\d{1,2}$/));
+        if (toRep.length) {
+            const ix = args.indexOf(toRep[0]);
+            const jx = parseInt(args[ix].replace("-", ""))-1;
+            const user = await client.userReg.getUser(message.author.id);
+            if (user.accounts.length && user.accounts.length > jx && jx >= 0) {
+                args[ix] = user.accounts[jx].allyCode;
+            }
+        }
         
         // If they're just looking for the help, don't bother going through the command
         if (args.length === 1 && args[0].toLowerCase() === "help") {

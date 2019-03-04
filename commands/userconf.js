@@ -105,7 +105,7 @@ class UserConf extends Command {
                 const fields = [];
                 fields.push({
                     name: "Ally Codes",
-                    value: user.accounts.length ? "`Primary ally code is BOLD`\n" + user.accounts.map(a => "`" + a.allyCode + "`: " + (a.primary ? `**${a.name}**` : a.name)).join("\n") : "No linked ally codes."
+                    value: user.accounts.length ? "__Primary is **BOLD**__\n" + user.accounts.map((a, ix) => `\`[${ix+1}] ${a.allyCode}\`: ` + (a.primary ? `**${a.name}**` : a.name)).join("\n") : "No linked ally codes."
                 });
                 fields.push({
                     name: "Defaults",
