@@ -96,7 +96,8 @@ class UserConf extends Command {
             case "arenaalert":
                 // ArenaAlert -> activate/ set threshhold
                 return message.channel.send("This is not functional yet, coming soon.");
-            case "view": {
+            case "view":
+            default: {
                 // Show the user's settings/ config
                 if (!user) {
                     return super.error(message, "You've not set up a config yet, try `" + message.guildSettings.prefix + "help userconf` to get started.");
@@ -115,9 +116,6 @@ class UserConf extends Command {
                     fields: fields
                 }});
             }
-            default:
-                console.log(target, action, ...args);
-                break;
         }
     }
 }
