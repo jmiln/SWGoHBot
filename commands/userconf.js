@@ -66,10 +66,11 @@ class UserConf extends Command {
                     if (!acc) {
                         return message.channel.send("You do not have this ally code registered.");
                     }
-                    user.accounts.push({
-                        allyCode: allyCode,
-                        primary: user.accounts.length ? false : true
-                    });
+                    user.accounts = user.accounts.filter(a => a.allyCode !== allyCode);
+                    user.accounts = user.accounts.filter(a => parseInt(a.allyCode));
+                    if (user.accounts.length && !user.accounts.filter(a => a.primary).length) {
+                        user.accounts[0].primary = true;
+                    }
                     message.channel.send(`Removed **${acc.name}** (${acc.allyCode}) from your conf`);
                 } else if (action === "makeprimary") {
                     // Set the selected ally code the primary one
