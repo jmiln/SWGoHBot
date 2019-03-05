@@ -1171,6 +1171,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_MISSING_ALLY: "You need to enter an ally code to link your account to.",
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Sorry, but ${allyCode} is not a valid ally code`,
             COMMAND_REGISTER_ALREADY_REGISTERED: "This is already your registered ally code!",
+            COMMAND_REGISTER_ADD_NO_SERVER: "You can only add users that are in your server.",
             COMMAND_REGISTER_PLEASE_WAIT: "Please wait while I sync your data.",
             COMMAND_REGISTER_FAILURE: "Registration failed, please make sure your ally code is correct.",
             COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
@@ -1178,10 +1179,11 @@ module.exports = class extends Language {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [
                     {
-                        action: "Add",
+                        action: "",
                         actionDesc: "Link your Discord profile to a SWGoH account",
-                        usage: ";register <allyCode>",
+                        usage: ";register [user] <allyCode>",
                         args: {
+                            "user": "The person you're adding. (userID | mention)",
                             "allyCode": "Your ally code from in-game."
                         }
                     }
@@ -1569,19 +1571,6 @@ module.exports = class extends Language {
                             "view": "View the current settings that you've got",
                             "makePrimary": "Make the selected ally code your primary one. (The one that will be used when you use `me` in a command)"
                         }
-                    }
-                ]
-            },
-
-            // UpdateClient Command
-            COMMAND_UPDATECLIENT_HELP: {
-                description: "Update the client for the SWGoHAPI.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: "",
-                        usage: ";updateclient",
-                        args: {}
                     }
                 ]
             },

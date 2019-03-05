@@ -14,21 +14,31 @@ class Register extends Command {
         });
     }
 
-    async run(client, message, [allyCode, ...args], options) { // eslint-disable-line no-unused-vars
-        if (!allyCode) {
+    async run(client, message, [userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
+        if (!userID) {
             return super.error(message, message.language.get("COMMAND_REGISTER_MISSING_ALLY"));
         } else {
-            if (client.isAllyCode(allyCode)) {
-                allyCode = allyCode.replace(/[^\d]*/g, "");
+            if (client.isUserID(userID)) {
+                userID = userID.replace(/[^\d]*/g, "");
+                if (userID !== message.author.id && options.level < 3) {
+                    // If they are trying to change someone else and they don't have the right permissions
+                    return super.error(message, message.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
+                } else if (!message.guild.members.has(userID)) {
+                    // If they are trying to change something for someone in a different server
+                    return super.error(message, message.language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
+                }
+            } else if (client.isAllyCode(userID)) {
+                allyCode = userID;
+                userID = message.author.id;
             } else {
                 // Bad code, grumblin time
                 return super.error(message, message.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
             }
         }
-        let user = await client.userReg.getUser(message.author.id);
+        let user = await client.userReg.getUser(userID);
         if (!user) {
             user = client.config.defaultUserConf;
-            user.id = message.author.id;
+            user.id = userID;
         } else if (user.accounts.find(a => a.allyCode === allyCode && a.primary)) {
             // This ally code is already registered & primary
             return message.channel.send(message.language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
@@ -39,7 +49,7 @@ class Register extends Command {
                 if (a.allyCode === allyCode) a.primary = true;
                 return a;
             });
-            user = await client.userReg.updateUser(message.author.id, user);
+            user = await client.userReg.updateUser(userID, user);
             const u = user.accounts.find(a => a.primary);
             return message.channel.send(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
         }
@@ -49,10 +59,10 @@ class Register extends Command {
                     if (!u) {
                         super.error(msg, (message.language.get("COMMAND_REGISTER_FAILURE")), {edit: true});
                     } else {
-                        await client.userReg.addUser(message.author.id, allyCode)
+                        await client.userReg.addUser(userID, allyCode)
                             .then(async () => {
                                 await client.swgohAPI.register([
-                                    [allyCode, message.author.id]
+                                    [allyCode, userID]
                                 ]);
                                 await msg.edit(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
                             })

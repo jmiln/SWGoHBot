@@ -5,15 +5,30 @@ class UserConf extends Command {
         super(client, {
             name: "userconf",
             category: "SWGoH",
-            aliases: ["uc", "uconf"]
+            aliases: ["uc", "uconf"],
+            subArgs: {
+                user: {
+                    aliases: ["u"]
+                }
+            }
         });
     }
 
     async run(client, message, [target, action, ...args], options) { // eslint-disable-line no-unused-vars
         if (target) target = target.toLowerCase();
         if (action) action = action.toLowerCase();
-        
-        const userID = message.author.id;
+
+        let userID = message.author.id;
+
+        if (options.subArgs.user && options.level < 9) {
+            return super.error(message, "Sorry, but you cannot view someone else's config.");
+        } else if (options.subArgs.user) {
+            userID = options.subArgs.user.replace(/[^\d]*/g, "");
+            if (!client.isUserID(userID)) {
+                return super.error(message, "Invalid user ID");
+            }
+        }
+
         let user = await client.userReg.getUser(userID); // eslint-disable-line no-unused-vars 
         switch (target) {
             case "allycode": {
@@ -113,7 +128,7 @@ class UserConf extends Command {
                     value: "Coming soon™"
                 });
                 return message.channel.send({embed: {
-                    author: {name: message.author.username},
+                    author: {name: client.users.get(userID).username}, //message.author.username},
                     fields: fields
                 }});
             }
