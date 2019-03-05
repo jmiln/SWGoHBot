@@ -36,6 +36,9 @@ class Register extends Command {
             }
         }
         let user = await client.userReg.getUser(userID);
+        if (user && user.accounts.length && userID !== message.author.id) {
+            return super.error(message, "This account already has an ally code linked to it.");
+        }
         if (!user) {
             user = client.config.defaultUserConf;
             user.id = userID;
