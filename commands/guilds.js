@@ -81,7 +81,7 @@ class Guilds extends Command {
                 return super.error(msg, (message.language.get("COMMAND_GUILDS_NO_GUILD")), {edit: true, example: "guilds me"});
             }
             let sortedGuild;
-            if (options.flags.a || options.subArgs.sort.toLowerCase() === "name") {
+            if (options.flags.a || (options.subArgs.sort && options.subArgs.sort.toLowerCase() === "name")) {
                 sortedGuild = guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
             } else {
                 sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
