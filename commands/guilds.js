@@ -26,8 +26,7 @@ class Guilds extends Command {
             },
             subArgs: {
                 sort: {
-                    aliases: [],
-                    default: "gp"
+                    aliases: []
                 }
             }
         });
@@ -138,6 +137,12 @@ class Guilds extends Command {
                 name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
                 value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
             });
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
             if (guild.warnings) {
                 fields.push({
                     name: "Warnings",
@@ -231,6 +236,13 @@ class Guilds extends Command {
             charOut = charOut.map(c => client.expandSpaces(c));
 
             const fields = [];
+
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
             if (guildGG.warnings) {
                 fields.push({
                     name: "Warnings",
@@ -293,6 +305,12 @@ class Guilds extends Command {
                 value: message.language.get("COMMAND_GUILDS_FOOTER", message.guildSettings.prefix)
             });
 
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
             if (guild.warnings) {
                 fields.push({
                     name: "Warnings",

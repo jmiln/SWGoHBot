@@ -5,12 +5,7 @@ class Register extends Command {
         super(client, {
             name: "register",
             category: "SWGoH",
-            aliases: ["reg"],
-            flags: {
-                "guild": {
-                    aliases: ["g", "guilds"]
-                }
-            }
+            aliases: ["reg"]
         });
     }
 

@@ -118,6 +118,13 @@ class MyArena extends Command {
             }, chars).join("\n");
         }
 
+        if (options.defaults) {
+            fields.push({
+                name: "Default flags used:",
+                value: client.codeBlock(options.defaults)
+            });
+        }
+
         if (player.warnings) {
             fields.push({
                 name: "Warnings",

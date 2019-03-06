@@ -1558,18 +1558,44 @@ module.exports = class extends Language {
             },
 
             // UserConf
+            COMMAND_USERCONF_CANNOT_VIEW_OTHER: "Sorry, but you cannot view other's configs",
+            COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED: "You already have this ally code registered",
+            COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `Removed ${name}(${ac}) from your config`,
+            COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED: "You do not have this ally code registered",
+            COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "That ally code is already marked as the primary one.",
+            COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY: (oldName, oldAC, newName, newAC) => `Changed your primary from **${oldName}**(${oldAC}) to **${newName}**(${newAC})`,
+            COMMAND_USERCONF_DEFAULTS_CMD_NO_FLAGS: (name) => `${name} does not have any flags to set the defaults for.`,
+            COMMAND_USERCONF_DEFAULTS_INVALID_CMD: (name) => `Sorry, but ${name} is not currently supported for this.`,
+            COMMAND_USERCONF_DEFAULTS_SET_DEFAULTS: (name, flags) => `Set the default flags for ${name} to \`${flags}\``,
+            COMMAND_USERCONF_DEFAULTS_NO_DEFAULTS: (name) => `You do not have any defaults set for ${name}.`,
+            COMMAND_USERCONF_DEFAULTS_CLEARED: (name) => `Cleared the default flags for ${name}.`,
+            COMMAND_USERCONF_VIEW_NO_CONFIG: (prefix) => `You've not set up a config yet, try \`${prefix}help userconf\` to get started.`,
+            COMMAND_USERCONF_VIEW_ALLYCODES_HEADER: "Ally Codes",
+            COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY: "__Primary is **BOLD**__\n",
+            COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "No linked ally codes.",
+            COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Defaults",
+            COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Set default flags for your commands.",
             COMMAND_USERCONF_HELP: {
                 description: "All the needed utilities to manage your info in the bot.",
                 actions: [
                     {
-                        action: "",
-                        actionDesc: "",
+                        action: "Ally Code",
+                        actionDesc: "Set your ally code(s) to be able to use for the other commands",
                         usage: ";userconf allycode <add|remove|view|makeprimary> <allycode>",
                         args: {
                             "add": "Add an ally code to your profile",
                             "remove": "Remove an ally code from your profile",
                             "view": "View the current settings that you've got",
                             "makePrimary": "Make the selected ally code your primary one. (The one that will be used when you use `me` in a command)"
+                        }
+                    },
+                    {
+                        action: "Defaults",
+                        actionDesc: "Set default flags for commands",
+                        usage: ";userconf defaults <set> <commandName> <flags>\n;userconf defaults <clear> <commandName>",
+                        args: {
+                            "commandName": "The name (or alias) of the command you're wanting to set defaults for.",
+                            "flags": "Any flags you want to set as the dafault for a command"
                         }
                     }
                 ]

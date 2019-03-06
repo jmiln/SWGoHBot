@@ -131,12 +131,20 @@ class Farm extends Command {
         if (!outList.length) {
             return super.error(message, message.language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
         } 
+        const fields = [];
+        if (options.defaults) {
+            fields.push({
+                name: "Default flags used:",
+                value: client.codeBlock(options.defaults)
+            });
+        }
         return message.channel.send({embed: {
             author: {
                 name: character.name + message.language.get("COMMAND_FARM_LOCATIONS")
             },
             color: character.side === "light" ? 0x0055ff : 0xe01414,
-            description: `**${outList.map(f => "* " + f).join("\n")}**`
+            description: `**${outList.map(f => "* " + f).join("\n")}**`,
+            fields: fields
         }});
     }
 }

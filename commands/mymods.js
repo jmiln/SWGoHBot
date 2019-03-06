@@ -12,8 +12,7 @@ class MyMods extends Command {
             permissions: ["EMBED_LINKS"],
             subArgs: {
                 b: {
-                    aliases: ["best"],
-                    default: null
+                    aliases: ["best"]
                 }
             },
             flags: {
@@ -129,6 +128,13 @@ class MyMods extends Command {
                         inline: true
                     });
                 });
+
+                if (options.defaults) {
+                    fields.push({
+                        name: "Default flags used:",
+                        value: client.codeBlock(options.defaults)
+                    });
+                }
 
                 msg.edit({embed: {
                     author: {
@@ -274,6 +280,12 @@ class MyMods extends Command {
             }
 
             const fields = [];
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
             if (stats.warnings) {
                 fields.push({
                     name: "Warnings",

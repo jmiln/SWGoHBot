@@ -303,6 +303,12 @@ class GuildSearch extends Command {
                     });
                 }
             });
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
             if (guild.warnings) {
                 fields.push({
                     name: "Guild Roster Warnings",
@@ -468,6 +474,12 @@ class GuildSearch extends Command {
                     });
                 }
             }
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
 
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
@@ -546,6 +558,12 @@ class GuildSearch extends Command {
             const fields = client.msgArray(header.concat(table), "\n", 1024).map(m => {
                 return {name: "-", value: m};
             });
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
 
             return msg.edit({embed: {
                 author: {name: message.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name)},

@@ -32,12 +32,8 @@ class Event extends Command {
                 "repeat": {
                     aliases: ["repeat", "rep", "r"]
                 },
-                "schedule": {
-                    aliases: ["s"]
-                },
                 "pages": {
-                    aliases: ["p", "page"],
-                    default: 0
+                    aliases: ["p", "page"]
                 }
             }
         });
@@ -480,7 +476,7 @@ class Event extends Command {
                     let PAGE_SELECTED = 1;
                     const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
                     if (guildConf["useEventPages"]) {
-                        PAGE_SELECTED = options.subArgs.pages;
+                        PAGE_SELECTED = options.subArgs.pages || 0;
                         if (PAGE_SELECTED < 1) PAGE_SELECTED = 1;
                         if (PAGE_SELECTED > PAGES_NEEDED) PAGE_SELECTED = PAGES_NEEDED;
 

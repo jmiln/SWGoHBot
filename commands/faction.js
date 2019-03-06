@@ -124,6 +124,12 @@ class Faction extends Command {
                 } else {
                     desc = msgArray[0];
                 }
+                if (options.defaults) {
+                    fields.push({
+                        name: "Default flags used:",
+                        value: client.codeBlock(options.defaults)
+                    });
+                }
 
                 const footer = client.updatedFooter(player.updated, message, "player", cooldown);
                 return message.channel.send({embed: {

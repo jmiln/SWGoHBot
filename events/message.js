@@ -84,16 +84,24 @@ module.exports = async (client, message) => {
             }
         }
 
-        
+        let flagArgs = getFlags(cmd.conf.flags, cmd.conf.subArgs, args);
 
-        const flagArgs = getFlags(cmd.conf.flags, cmd.conf.subArgs, args);
+        const noFlags = Object.keys(flagArgs.flags).every(f => !flagArgs.flags[f]);
+        const noSubArgs = Object.keys(flagArgs.subArgs).every(s => flagArgs.subArgs[s] === null);
+        const user = await client.userReg.getUser(message.author.id);
+        let def = null;
+        if (noFlags && noSubArgs && user) {
+            if (user.defaults[cmd.help.name]) {
+                flagArgs = getFlags(cmd.conf.flags, cmd.conf.subArgs, args.concat(user.defaults[cmd.help.name].split(" ")));
+                def = user.defaults[cmd.help.name];
+            }
+        }
         
         // Quick shortcut to any extra ally codes you have registered
         const toRep = args.filter(a => a.match(/^-\d{1,2}$/));
         if (toRep.length) {
             const ix = args.indexOf(toRep[0]);
             const jx = parseInt(args[ix].replace("-", ""))-1;
-            const user = await client.userReg.getUser(message.author.id);
             if (user.accounts.length && user.accounts.length > jx && jx >= 0) {
                 args[ix] = user.accounts[jx].allyCode;
             }
@@ -107,7 +115,8 @@ module.exports = async (client, message) => {
                 cmd.run(client, message, args, {
                     level: level,
                     flags: flagArgs.flags,
-                    subArgs: flagArgs.subArgs
+                    subArgs: flagArgs.subArgs,
+                    defaults: def
                 });
             } catch (err) {
                 client.log("ERROR(msg)", `I broke with ${cmd.name}: ${err}`, cmd.help.name.toProperCase());

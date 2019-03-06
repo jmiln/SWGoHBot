@@ -120,6 +120,12 @@ class Zetas extends Command {
             }
 
             const fields = [];
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
             if (player.warnings) {
                 fields.push({
                     name: "Warnings",
@@ -184,6 +190,12 @@ class Zetas extends Command {
 
             const zetaLen = `${myZetas.length} ${sortBy === "versa" ? "" : sortBy + " "}`;
             const fields = [];
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
             if (player.warnings) {
                 fields.push({
                     name: "Warnings",
@@ -263,6 +275,13 @@ class Zetas extends Command {
                         value: zetas[character.uniqueName][skill].join("\n")
                     });
                 }
+            }
+
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
             }
 
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);

@@ -13,8 +13,7 @@ class Poll extends Command {
             },
             subArgs: {
                 pollID: {
-                    aliases: ["poll"],
-                    default: null
+                    aliases: ["poll"]
                 }
             }
         });
