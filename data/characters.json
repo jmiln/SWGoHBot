@@ -268,7 +268,7 @@
             "General": {
                 "sets": [
                     "Offense x4",
-                    "Tenacity x2",
+                    "Potency x2",
                     ""
                 ],
                 "square": "Offense",
@@ -2120,7 +2120,22 @@
             "Droid",
             "Separatist"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense/ Protection",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Eeth Koth",
@@ -2732,21 +2747,21 @@
             "Separatist"
         ],
         "mods": {
-            "HK-47 lead": {
+            "General": {
                 "sets": [
-                    "Critical Damage x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
+                "circle": "Health",
+                "cross": "Health",
                 "source": "Crouching Rancor"
             },
-            "General": {
+            "General Grievous": {
                 "sets": [
                     "Offense x4",
                     "Potency x2",

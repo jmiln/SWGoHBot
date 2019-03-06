@@ -1279,7 +1279,8 @@
             "Dispel",
             "DoT",
             "Gain Turn Meter",
-            "Revive"
+            "Revive",
+            "Target Lock"
         ],
         "role": "Attacker",
         "ship": "",
@@ -1440,7 +1441,8 @@
             "Dispel",
             "Dispel - All Enemies",
             "Gain Turn Meter",
-            "Reduce Cooldowns"
+            "Reduce Cooldowns",
+            "Target Lock"
         ],
         "role": "Tank",
         "ship": "",
@@ -8406,6 +8408,7 @@
             "Assist",
             "Dispel",
             "Gain Turn Meter",
+            "Target Lock",
             "Tenacity Up"
         ],
         "role": "Attacker",
@@ -11141,7 +11144,8 @@
             "Leader: +Defense",
             "Remove Turn Meter",
             "Reset Cooldown",
-            "Stun"
+            "Stun",
+            "Target Lock"
         ],
         "role": "Attacker",
         "ship": "",
@@ -13567,6 +13571,7 @@
             "Dispel",
             "Reset Cooldown",
             "Stun",
+            "Target Lock",
             "Taunt"
         ],
         "role": "Tank",
@@ -13884,7 +13889,8 @@
             "Defense Down",
             "DoT",
             "Healing Immunity",
-            "Leader: +Critical"
+            "Leader: +Critical",
+            "Target Lock"
         ],
         "role": "Attacker",
         "ship": "IG2000",
@@ -14204,7 +14210,8 @@
             "Expose",
             "Gain Turn Meter",
             "Remove Turn Meter",
-            "Revive"
+            "Revive",
+            "Target Lock"
         ],
         "role": "Support",
         "ship": "",
@@ -24489,6 +24496,7 @@
             "Offense Up",
             "Remove Turn Meter",
             "Stealth",
+            "Target Lock",
             "Taunt",
             "Tenacity Up"
         ],

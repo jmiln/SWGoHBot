@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2019-02-22 20:00:01.000000",
+        "date": "2019-03-05 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -710,17 +710,17 @@
             "crew": "0"
         },
         {
-            "name": "General Grievous HK-47 lead",
+            "name": "General Grievous",
             "cname": "General Grievous",
-            "set1": "CD",
-            "set2": "POT",
-            "set3": "",
+            "set1": "HP",
+            "set2": "HP",
+            "set3": "HP",
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency",
+            "circle": "Health",
+            "cross": "Health",
             "short": "gg",
             "families": "droid ; separatist",
             "crew": "0"
@@ -3452,7 +3452,7 @@
             "name": "B1 Battle Droid",
             "cname": "B1 Battle Droid",
             "set1": "OFF",
-            "set2": "TEN",
+            "set2": "POT",
             "set3": "",
             "square": "Offense",
             "arrow": "Speed",
@@ -3461,6 +3461,22 @@
             "circle": "Health / Protection",
             "cross": "Offense",
             "short": "b1",
+            "families": "droid ; separatist",
+            "crew": "0"
+        },
+        {
+            "name": "Droideka",
+            "cname": "Droideka",
+            "set1": "OFF",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense / Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense / Protection",
+            "short": "",
             "families": "droid ; separatist",
             "crew": "0"
         }
