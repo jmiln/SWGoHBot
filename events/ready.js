@@ -18,7 +18,6 @@ module.exports = async client => {
             setInterval(async () => {
                 const guilds = await client.guildCount();
                 fs.writeFileSync("../dashboard/data/guildCount.txt", guilds, "utf8");
-                console.log("Saved " + guilds + " guilds.");
             }, 5 * 60 * 1000);
         }
     }

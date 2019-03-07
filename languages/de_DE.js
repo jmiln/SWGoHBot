@@ -1032,29 +1032,12 @@ module.exports = class extends Language {
                 description: "Registriert einen Buendniscode zu einer Discord ID, und synchronisiert ein SWGoH Profil.",
                 actions: [
                     {
-                        action: "Add",
+                        action: "",
                         actionDesc: "Verlinkt ein Discord Profil mit einem SWGoH account",
-                        usage: ";register add <user> <Buendniscode>",
+                        usage: ";register [user] <Buendniscode>",
                         args: {
                             "user": "Das Discordprofil das du verlinken moechtest. (me | userID | mention)",
                             "allyCode": "Dein in-game Buendniscode."
-                        }
-                    },
-                    {
-                        action: "Update",
-                        actionDesc: "Aktualisiert / synchronisiert die SWGoH Daten.",
-                        usage: ";register update <user> [-guild]",
-                        args: {
-                            "user": "Das Discordprofil das du aktualisieren moechtest. (me | userID | mention)",
-                            "-guild": "Setzen um die Daten der kompletten Gilde zu aktualisieren (-g | -guild | -guilds)"
-                        }
-                    },
-                    {
-                        action: "Remove",
-                        actionDesc: "Trennt die Verbindung des Discordprofils mit dem SWGoH account",
-                        usage: ";register remove <user>",
-                        args: {
-                            "user": "Das Discordprofil dessen Verbindung du trennen moechtest (falscher Verbuendetencode). (me | userID | mention)"
                         }
                     }
                 ]
