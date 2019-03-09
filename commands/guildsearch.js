@@ -38,11 +38,6 @@ class GuildSearch extends Command {
 
     async run(client, message, args, options) { // eslint-disable-line no-unused-vars
         let starLvl = 0;
-        const availableSorts = ["gp", "gear", "name"];
-        const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
-        if (!availableSorts.includes(sortType)) {
-            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
-        }
         const reverse = options.flags.reverse;
         const rarityMap = {
             "ONESTAR": 1,
@@ -118,6 +113,11 @@ class GuildSearch extends Command {
 
         if (!options.subArgs.stat && !options.flags.mods) {
             let guild = null;
+            const availableSorts = ["gp", "gear", "name"];
+            const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
+            if (!availableSorts.includes(sortType)) {
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
+            }
             try {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
@@ -491,6 +491,11 @@ class GuildSearch extends Command {
             }});
         } else {
             // Give a general overview of important mods (6*, +15, +20 speed, +100 offense?)
+            const availableSorts = ["speed", "offense", "6"];
+            const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
+            if (!availableSorts.includes(sortType)) {
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
+            }
             let guild = null;
             try {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
@@ -510,7 +515,7 @@ class GuildSearch extends Command {
                 return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
             }
 
-            const output = [];
+            let output = [];
             for (let player of gRoster) {
                 player = await client.swgohAPI.player(player);
                 const mods = {
@@ -520,6 +525,7 @@ class GuildSearch extends Command {
                     off100: 0,
                     name: player.name
                 };
+
                 player.roster.forEach(c => {
                     if (c.mods) {
                         const six = c.mods.filter(p => p.pips === 6);
@@ -544,6 +550,21 @@ class GuildSearch extends Command {
                     if (mods[k] === 0) mods[k] = "0";
                 });
                 output.push(mods);
+            }
+
+            // Sort by speed mods, offense mods, or 6* mods
+            if (options.subArgs.sort) {
+                const sortBy = options.subArgs.sort.toLowerCase();
+                if (sortBy === "offense") {
+                    // Sort by # of good offense mods
+                    output = output.sort((m, n) => parseInt(m.off100) - parseInt(n.off100));
+                } else if (sortBy === "speed") {
+                    // Sort by # of good speed mods
+                    output = output.sort((m, n) => parseInt(m.spd20) - parseInt(n.spd20));
+                } else if (sortBy === "6") {
+                    // Sort by # of 6* mods
+                    output = output.sort((m, n) => parseInt(m.sixPip) - parseInt(n.sixPip));
+                }
             }
 
             const table = client.makeTable({

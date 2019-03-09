@@ -736,10 +736,11 @@ module.exports = class extends Language {
                     {
                         action: "Mods overview",
                         actionDesc: "Compare some of the more important mods across your entire guild",
-                        usage: ";guildsearch [user] -mods",
+                        usage: ";guildsearch [user] [-sort sortBy] -mods",
                         args: {
                             "user": "The player who's guild you want to check. (me | userID | mention)",
-                            "-mods": "Tell it you want to see the mods. (-m | -mod)"
+                            "-mods": "Tell it you want to see the mods. (-m | -mod)",
+                            "-sort": "Sort by either speed, offense, or 6 (for 6* mods)"
                         }
                     },
                 ]
@@ -1596,6 +1597,14 @@ module.exports = class extends Language {
                         args: {
                             "commandName": "The name (or alias) of the command you're wanting to set defaults for.",
                             "flags": "Any flags you want to set as the dafault for a command"
+                        }
+                    },
+                    {
+                        action: "Arena Alert",
+                        actionDesc: "Toggle whether or not to get DMs when your rank drops.",
+                        usage: ";userconf arenaAlert <on|off>",
+                        args: {
+                            "on|off": "Choose if you want it on or off"
                         }
                     }
                 ]
