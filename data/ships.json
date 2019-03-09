@@ -48,7 +48,9 @@
         "nameVariant": [
             "Anakin's Eta-2 Starfighter"
         ],
-        "crew": ["Jedi Knight Anakin"],
+        "crew": [
+            "Jedi Knight Anakin"
+        ],
         "url": "http://swgoh.gg/ships/anakins-eta-2-starfighter/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_jedi_fighter_anakin.png",
         "side": "",
@@ -70,7 +72,9 @@
         "nameVariant": [
             "B-28 Extinction-class Bomber"
         ],
-        "crew": ["Sith Marauder"],
+        "crew": [
+            "Sith Marauder"
+        ],
         "url": "http://swgoh.gg/ships/b-28-extinction-class-bomber/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_b28extinctionclassbomber.png",
         "side": "",
@@ -300,6 +304,22 @@
                 "abilityDesc": "Deal physical damage to target enemy.  Target Lock: This attack is an automatic critical hit and can't be evaded."
             }
         }
+    },
+    {
+        "name": "Ebon Hawk",
+        "uniqueName": "EBONHAWK",
+        "aliases": [
+            "Ebon Hawk"
+        ],
+        "nameVariant": [
+            "Ebon Hawk"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/ebon-hawk/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {}
     },
     {
         "name": "Emperor's Shuttle",
@@ -939,50 +959,6 @@
         }
     },
     {
-        "name": "Rey's Millennium Falcon",
-        "uniqueName": "MILLENNIUMFALCONEP7",
-        "aliases": [
-            "Millennium Falcon (Ep VII)"
-        ],
-        "nameVariant": [
-            "Millennium Falcon (Ep VII)",
-            "Rey's Millennium Falcon"
-        ],
-        "crew": [
-            "Rey",
-            "Finn"
-        ],
-        "url": "http://swgoh.gg/ships/reys-millennium-falcon/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
-        "side": "light",
-        "factions": [
-            "resistance",
-            "attacker"
-        ],
-        "abilities": {
-            "Quad Laser": {
-                "type": "Basic",
-                "abilityCooldown": "0",
-                "abilityDesc": "Deal physical damage to target enemy with a 65% chance to hit them a second time, plus an additonal hit if Millenium Falcon (EP VII) is buffed.  Hits after the first deal 75% less damage.  Target Lock: This attack scores an additional hit."
-            },
-            "Against the Odds": {
-                "type": "Unique",
-                "abilityCooldown": "0",
-                "abilityDesc": "Millenium Falcon (EP VII) gains 9% turn meter and 3% offense (stacking) whenever it is attacked.  If it is buffed when it is attacked, it also inflicts Target Lock on the attacker."
-            },
-            "Thrust Reversal": {
-                "type": "Crew",
-                "abilityCooldown": "6",
-                "abilityDesc": "Millenium Falcom (EP VII) recovers 50% protection and gains 3 stacks of the Thrust Reversal unique buff.  Thrust Reversal: +4% Evasion per stack, 1 stack lost on taking damage; at end of turn, 1 stack is consumed to gain 100% turn meter."
-            },
-            "Gambit": {
-                "type": "Crew",
-                "abilityCooldown": "4",
-                "abilityDesc": "Deal physical damage to all enemies then lose all buffs.  This attack hits each enemy again for each buff lost this way (maximum 3.)  Hits after the first deal 50% less damage."
-            }
-        }
-    },
-    {
         "name": "Phantom II",
         "uniqueName": "PHANTOM2",
         "aliases": [
@@ -1184,6 +1160,50 @@
         }
     },
     {
+        "name": "Rey's Millennium Falcon",
+        "uniqueName": "MILLENNIUMFALCONEP7",
+        "aliases": [
+            "Millennium Falcon (Ep VII)"
+        ],
+        "nameVariant": [
+            "Millennium Falcon (Ep VII)",
+            "Rey's Millennium Falcon"
+        ],
+        "crew": [
+            "Rey",
+            "Finn"
+        ],
+        "url": "http://swgoh.gg/ships/reys-millennium-falcon/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_mfalcon_ep7.png",
+        "side": "light",
+        "factions": [
+            "resistance",
+            "attacker"
+        ],
+        "abilities": {
+            "Quad Laser": {
+                "type": "Basic",
+                "abilityCooldown": "0",
+                "abilityDesc": "Deal physical damage to target enemy with a 65% chance to hit them a second time, plus an additonal hit if Millenium Falcon (EP VII) is buffed.  Hits after the first deal 75% less damage.  Target Lock: This attack scores an additional hit."
+            },
+            "Against the Odds": {
+                "type": "Unique",
+                "abilityCooldown": "0",
+                "abilityDesc": "Millenium Falcon (EP VII) gains 9% turn meter and 3% offense (stacking) whenever it is attacked.  If it is buffed when it is attacked, it also inflicts Target Lock on the attacker."
+            },
+            "Thrust Reversal": {
+                "type": "Crew",
+                "abilityCooldown": "6",
+                "abilityDesc": "Millenium Falcom (EP VII) recovers 50% protection and gains 3 stacks of the Thrust Reversal unique buff.  Thrust Reversal: +4% Evasion per stack, 1 stack lost on taking damage; at end of turn, 1 stack is consumed to gain 100% turn meter."
+            },
+            "Gambit": {
+                "type": "Crew",
+                "abilityCooldown": "4",
+                "abilityDesc": "Deal physical damage to all enemies then lose all buffs.  This attack hits each enemy again for each buff lost this way (maximum 3.)  Hits after the first deal 50% less damage."
+            }
+        }
+    },
+    {
         "name": "Scimitar",
         "uniqueName": "SITHINFILTRATOR",
         "aliases": [
@@ -1227,7 +1247,9 @@
         "nameVariant": [
             "Sith Fighter"
         ],
-        "crew": ["Sith Assassin"],
+        "crew": [
+            "Sith Assassin"
+        ],
         "url": "http://swgoh.gg/ships/sith-fighter/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithfighter.png",
         "side": "",

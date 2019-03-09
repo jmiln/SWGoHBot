@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2019-03-06 20:00:01.000000",
+        "date": "2019-03-08 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -726,19 +726,19 @@
             "crew": "0"
         },
         {
-            "name": "General Grievous",
-            "cname": "General Grievous",
+            "name": "Grand Master Yoda Revan lead",
+            "cname": "Grand Master Yoda",
             "set1": "OFF",
-            "set2": "POT",
+            "set2": "CC",
             "set3": "",
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage / Offense",
             "circle": "Protection",
-            "cross": "Potency",
-            "short": "gg",
-            "families": "droid ; separatist",
+            "cross": "Offense",
+            "short": "gmy",
+            "families": "jedi ; galactic republic",
             "crew": "0"
         },
         {

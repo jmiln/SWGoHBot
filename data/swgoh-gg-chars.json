@@ -4053,8 +4053,8 @@
             "Reset Cooldown"
         ],
         "role": "Attacker",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "EBONHAWK",
+        "ship_slot": 0,
         "activate_shard_count": 25
     },
     {
@@ -24501,8 +24501,8 @@
             "Tenacity Up"
         ],
         "role": "Support",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "EBONHAWK",
+        "ship_slot": 1,
         "activate_shard_count": 25
     },
     {

@@ -187,6 +187,31 @@
         "activate_shard_count": 10
     },
     {
+        "name": "Ebon Hawk",
+        "base_id": "EBONHAWK",
+        "url": "http://swgoh.gg/ships/ebon-hawk/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_ebonhawk.png",
+        "power": 69270,
+        "description": "Durable Old Republic Support that dispels enemies and prevents Target Lock",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Cargo Ship",
+            "Old Republic"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Bonus Attack",
+            "Dispel",
+            "Evasion Down",
+            "Foresight",
+            "Gain Turn Meter"
+        ],
+        "role": "Support",
+        "capital_ship": false,
+        "activate_shard_count": 80
+    },
+    {
         "name": "Emperor's Shuttle",
         "base_id": "EMPERORSSHUTTLE",
         "url": "http://swgoh.gg/ships/emperors-shuttle/",

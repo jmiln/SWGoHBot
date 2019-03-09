@@ -2760,20 +2760,6 @@
                 "circle": "Health",
                 "cross": "Health",
                 "source": "Crouching Rancor"
-            },
-            "General Grievous": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
             }
         }
     },
@@ -2999,6 +2985,20 @@
             "Support"
         ],
         "mods": {
+            "Revan lead": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            },
             "General": {
                 "sets": [
                     "Speed x4",

@@ -17,7 +17,7 @@
         ]
     },
     {
-        "name": "Anakin’s Eta-2 Starfighter",
+        "name": "Anakin's Eta-2 Starfighter",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -104,6 +104,15 @@
             {
                 "type": "Hard Modes (Fleet)",
                 "level": "1-A"
+            }
+        ]
+    },
+    {
+        "name": "Ebon Hawk",
+        "locations": [
+            {
+                "type": "Special Event",
+                "name": "Galactic Chase"
             }
         ]
     },
