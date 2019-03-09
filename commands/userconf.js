@@ -5,7 +5,7 @@ class UserConf extends Command {
         super(client, {
             name: "userconf",
             category: "SWGoH",
-            aliases: ["uc", "uconf"],
+            aliases: ["uc", "uconf", "userconfig", "uconfig"],
             subArgs: {
                 user: {
                     aliases: ["u"]
