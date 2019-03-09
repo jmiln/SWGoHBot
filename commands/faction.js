@@ -86,7 +86,12 @@ class Faction extends Command {
             if (chars.length) {
                 chars = chars.map(c => c.baseId);
                 const cooldown = client.getPlayerCooldown(message.author.id);
-                const player = await client.swgohAPI.player(allyCode, null, cooldown);
+                let player; 
+                try {
+                    player = await client.swgohAPI.player(allyCode, null, cooldown);
+                } catch (e) {
+                    return super.error(message, e.message);
+                }
                 const playerChars = [];
                 for (const c of chars) {
                     let found = player.roster.find(char => char.defId === c);
