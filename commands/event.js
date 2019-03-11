@@ -104,7 +104,7 @@ class Event extends Command {
 
                     const [evName, evDate, evTime, ...evMsg] = args;
 
-                    if (!evName) {
+                    if (!evName || !evName.length) {
                         err.push(message.language.get("COMMAND_EVENT_NEED_NAME"));
                     }
 

@@ -140,6 +140,10 @@ const init = async () => {
         }
     });
 
+    // Reload any patrons
+    await client.reloadPatrons();
+    setInterval(client.reloadPatrons,  15 * 60 * 1000);   // Then every 15 min after
+
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
     evtFiles.forEach(file => {
@@ -160,14 +164,10 @@ client.on("error", (err) => {
 
 // Make it so it only checks for new characters on the main shard
 if (!client.shard || client.shard.id === 0) {
-    // ## Here down is to update any characters that need it ##
+    // Here down is to update any characters that need it 
     setTimeout(updateRemoteData,        1 * 60 * 1000);  // Run it a min after start
     setInterval(updateRemoteData, 12 * 60 * 60 * 1000);  // Then every 12 hours after
     //                            hr   min  sec  mSec
-
-    // Set the patron's goh data to be reloaded
-    setTimeout(client.reloadPatrons,    1 * 60 * 1000);   // Load em a min after start
-    setInterval(client.reloadPatrons,  60 * 60 * 1000);   // Then every hour after
 } else {
     // To reload the characters on any shard other than the main one
     // a bit after it would have grabbed new ones

@@ -101,7 +101,7 @@ class MyProfile extends Command {
 
         // Get the Character stats
         let zetaCount = 0;
-        const charList = player.roster.filter(u => u.combatType === "CHARACTER");
+        const charList = player.roster.filter(u => u.combatType === "CHARACTER" || u.combatType === 1);
         charList.forEach(char => {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
             zetaCount += thisZ.length;
@@ -117,7 +117,7 @@ class MyProfile extends Command {
         });
 
         // Get the ship stats
-        const shipList = player.roster.filter(u => u.combatType === "SHIP");
+        const shipList = player.roster.filter(u => u.combatType === "SHIP" || u.combatType === 2);
         const shipOut = message.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList);
         fields.push({
             name: shipOut.header,

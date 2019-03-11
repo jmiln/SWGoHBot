@@ -35,7 +35,7 @@ class UserConf extends Command {
                 // Allycode   -> add/remove/makePrimary
                 let allyCode;
                 if (!user) {
-                    user = client.config.defaultUserConf;
+                    user = JSON.parse(JSON.stringify(client.config.defaultUserConf));
                     user.id = userID;
                 }
                 if (!args[0]) {
@@ -54,6 +54,13 @@ class UserConf extends Command {
                     if (user.accounts.find(a => a.allyCode === allyCode)) {
                         return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
+    
+                    // Cap the ally codes at 10, if they have even that many
+                    // accounts, they already have too much free time
+                    if (user.accounts.length >= 10) {
+                        return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
+                    }
+
                     // Sync up their swgoh account
                     try {
                         await client.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
@@ -146,9 +153,65 @@ class UserConf extends Command {
                 await client.userReg.updateUser(userID, user);
                 break;
             }
-            case "arenaalert":
-                // ArenaAlert -> activate/ set threshhold
-                return message.channel.send("This is not functional yet, coming soon.");
+            case "arenaalert": {
+                // ArenaAlert -> activate/ deactivate
+                const onVar = ["true", "on", "enable"];
+                const offVar = ["false", "off", "disable"];
+                const pat = client.patrons.find(p => p.discordID === message.author.id);
+                if (!pat || pat.amount_cents < 500) {
+                    return super.error(message, "Sorry, but this feature is only available as a thank you to supporters through https://www.patreon.com/swgohbot");
+                }
+                const setting = args[0].toLowerCase();  
+                if (action === "enabledms") {
+                    // Set it to enable the DM alerts entirely or not
+                    if (!setting) {
+                        return super.error(message, "Missing argument. Try on/off or true/false.");
+                    }
+                    if (onVar.includes(setting)) {
+                        user.arenaAlert.enableRankDMs = true;
+                    } else if (offVar.includes(setting)) {
+                        user.arenaAlert.enableRankDMs = false;
+                    } else {
+                        // They entered an invalid choice
+                        return super.error(message, "Invalid argument. Try on/off or true/false.");
+                    }
+                } else if (action === "arena") {
+                    // Set which arena you want watched
+                    if (!setting) {
+                        return super.error(message, "Missing argument, you need to chose one of the following: `char, fleet, both, none`");
+                    } else if (!["char", "fleet", "both", "none"].includes(setting)) {
+                        return super.error(message, "Invalid argument, you need to chose one of the following: `char, fleet, both, none`");
+                    }
+                    user.arenaAlert.arena = setting;
+                } else if (action === "payoutresult") {
+                    // Set it to tell you the result at your payout
+                    if (!setting) {
+                        return super.error(message, "Missing argument. Try on/off or true/false.");
+                    }
+                    if (onVar.includes(setting)) {
+                        user.arenaAlert.enablePayoutResult = true;
+                    } else if (offVar.includes(setting)) {
+                        user.arenaAlert.enablePayoutResult = false;
+                    } else {
+                        // They entered an invalid choice
+                        return super.error(message, "Invalid argument. Try on/off or true/false.");
+                    }
+                } else if (action === "payoutwarning") {
+                    // Set it to warn you x minutes ahead of your payout 
+                    if (!setting) {
+                        return super.error(message, "Missing argument, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.");
+                    } else if (isNaN(setting)) {
+                        return super.error(message, "Invalid number, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.");
+                    } else if (parseInt(setting) < 0 || parseInt(setting) > 1440) {
+                        return super.error(message, "Invalid number, your number needs to be between 0 (turns it off), and 1440 (one day).");
+                    }
+                    user.arenaAlert.payoutWarning = parseInt(setting);
+                } else {
+                    return super.error(message, "Invalid option, try one of these: `enableDMs, arena, payoutResult, payoutWarning`");
+                }
+                await client.userReg.updateUser(userID, user);
+                return message.channel.send("Success! Your settings have been updated.");
+            }
             case "view":
             default: {
                 // Show the user's settings/ config
@@ -163,6 +226,15 @@ class UserConf extends Command {
                 fields.push({
                     name: message.language.get("COMMAND_USERCONF_VIEW_DEFAULTS_HEADER"),
                     value: Object.keys(user.defaults).length ? Object.keys(user.defaults).map(d => `**${d}:** \`${user.defaults[d]}\``).join("\n") : message.language.get("COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF")
+                });
+                fields.push({
+                    name: "Arena Rank DMs",
+                    value: [
+                        `DM for rank drops: **${user.arenaAlert.enableRankDMs ? "ON" : "OFF"}**`, 
+                        `Show for arena: **${user.arenaAlert.arena}**`,
+                        `Payout warning **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min**" : "disabled**"}`, 
+                        `Payout result alert: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
+                    ].join("\n")
                 });
                 return message.channel.send({embed: {
                     author: {name: client.users.get(userID).username}, 

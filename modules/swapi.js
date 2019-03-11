@@ -1,4 +1,5 @@
 const {inspect} = require("util");
+const snekfetch = require("snekfetch");
 module.exports = (client) => {
     const swgoh = client.swgoh;
     const cache = client.cache;
@@ -14,6 +15,7 @@ module.exports = (client) => {
 
     return {
         player: player,
+        fastPlayer: fastPlayer,
         players: players,
         playerByName: playerByName,
         unitStats: unitStats,
@@ -71,10 +73,10 @@ module.exports = (client) => {
                     tempPlayer = null;
                 }
 
-                if (tempPlayer && tempPlayer[0]) {
+                if (Array.isArray(tempPlayer)) {
                     tempPlayer = tempPlayer[0];
-                    if (tempPlayer._id) delete tempPlayer._id;
                 }
+                if (tempPlayer._id) delete tempPlayer._id;
 
                 if (!tempPlayer || !tempPlayer.roster || !tempPlayer.name) {
                     if (!player || !player[0]) {
@@ -90,6 +92,34 @@ module.exports = (client) => {
                 /** If found and valid, serve from cache */
                 player = player[0];
             }
+            return player;
+        } catch (e) {
+            console.log("SWAPI Broke getting player: " + e);
+            throw e;
+        }
+    }
+
+    async function fastPlayer(allycode) {
+        try {
+            if (allycode) allycode = allycode.toString();
+            if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
+            allycode = parseInt(allycode);
+
+            let player;
+            try {
+                player = await snekfetch.get("http://localhost:1234/pipe/player/" + allycode);
+                player = JSON.parse(player.text);
+            } catch (err) {
+                // Probably API timeout
+                player = null;
+            }
+
+            if (!player || !player.roster || !player.name) {
+                throw new Error("Broke getting player: " + inspect(player));
+            }
+
+            // Just update the arena data, and not the updated time, so it can still update everything like normal
+            await cache.put("swapi", "players", {allyCode: allycode}, {"arena": player.arena}, false);
             return player;
         } catch (e) {
             console.log("SWAPI Broke getting player: " + e);

@@ -1158,6 +1158,7 @@ module.exports = (client) => {
             client.patrons = await client.getPatrons();
         } catch (e) {
             // Something happened
+            console.log("Broke getting patrons");
         }
         console.log("Reloaded " + client.patrons.length + " active patrons");
     };
@@ -1189,6 +1190,115 @@ module.exports = (client) => {
                 player: 2*60,
                 guild:  6*60
             };
+        }
+    };
+
+    // Check for updated ranks
+    client.getRanks = async () => {
+        for (const patron of client.patrons) {
+            if (patron.amount_cents < 500) continue;
+            const user = await client.userReg.getUser(patron.discordID);
+            // If they're not registered with anything or don't have any ally codes
+            if (!user || !user.accounts.length) continue;
+
+            // If they don't want any alerts
+            if (!user.arenaAlert || !user.arenaAlert.enableRankDMs) continue;
+            for (let ix = 0; ix < user.accounts.length; ix++) {
+                const acc = user.accounts[ix];
+                const player = await client.swgohAPI.fastPlayer(acc.allyCode);
+                if (!acc.lastCharRank) {
+                    acc.lastCharRank = 0;
+                    acc.lastCharClimb = 0;
+                }
+                if (!acc.lastShipRank) {
+                    acc.lastShipRank = 0;
+                    acc.lastShipClimb = 0;
+                }
+                const now = moment();
+                if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
+                if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
+                if (player.arena.char && player.arena.char.rank && ["both", "char"].includes(user.arenaAlert.arena)) {
+                    let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(6, "h");
+                    if (then.unix() < now.unix()) {
+                        then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(18, "h");
+                    }
+
+                    const minTil =  parseInt((then-now)/60/1000);
+                    if (user.arenaAlert.payoutWarning > 0) {
+                        if (user.arenaAlert.payoutWarning  === minTil) {
+                            client.users.get(patron.discordID).send({embed: {
+                                author: {name: "Arena Payout Alert"},
+                                description: `${player.name}'s character arena payout is in **${minTil}** minutes!`,
+                                color: 0x00FF00
+                            }});
+                        }
+                    } 
+                    if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
+                        client.users.get(patron.discordID).send({embed: {
+                            author: {name: "Character arena"},
+                            description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
+                            color: 0x00FF00
+                        }});
+                    }
+
+                    const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                    if (player.arena.char.rank > acc.lastCharRank) {
+                        // DM user that they dropped
+                        client.users.get(patron.discordID).send({embed: {
+                            author: {name: "Character Arena"},
+                            description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
+                            color: 0xff0000,
+                            footer: {
+                                text: payoutTime
+                            }
+                        }});
+                    }
+                    acc.lastCharClimb = acc.lastCharClimb ? (player.arena.char.rank < acc.lastCharRank ? player.arena.char.rank : acc.lastCharClimb) : player.arena.char.rank;
+                    acc.lastCharRank = player.arena.char.rank;
+                }
+                if (player.arena.ship && player.arena.ship.rank && ["both", "fleet"].includes(user.arenaAlert.arena)) {
+                    let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(5, "h");
+                    if (then.unix() < now.unix()) {
+                        then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(19, "h");
+                    }
+
+                    const minTil =  parseInt((then-now)/60/1000);
+                    if (user.arenaAlert.payoutWarning > 0) {
+                        if (user.arenaAlert.payoutWarning  === minTil) {
+                            client.users.get(patron.discordID).send({embed: {
+                                author: {name: "Arena Payout Alert"},
+                                description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
+                                color: 0x00FF00
+                            }});
+                        }
+                    }
+
+                    if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
+                        client.users.get(patron.discordID).send({embed: {
+                            author: {name: "Fleet arena"},
+                            description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
+                            color: 0x00FF00
+                        }});
+                    }
+
+                    const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                    if (player.arena.ship.rank > acc.lastShipRank) {
+                        client.users.get(patron.discordID).send({embed: {
+                            author: {name: "Fleet Arena"},
+                            description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
+                            color: 0xff0000,
+                            footer: {
+                                text: payoutTime
+                            }
+                        }});
+                    }
+                    acc.lastShipClimb = acc.lastShipClimb ? (player.arena.ship.rank < acc.lastShipRank ? player.arena.ship.rank : acc.lastShipClimb) : player.arena.ship.rank;
+                    acc.lastShipRank = player.arena.ship.rank;
+                }
+                user.accounts[ix] = acc;
+                await client.wait(480);
+            }
+            await client.userReg.updateUser(patron.discordID, user);
         }
     };
 
@@ -1243,7 +1353,11 @@ module.exports = (client) => {
 
                     // Filter out inactive patrons
                     patrons = patrons.filter(patron => !patron.declined_since);
-
+                    // Since I can't be my own patron...
+                    patrons.push({
+                        discordID: client.config.ownerid,
+                        amount_cents: 9999
+                    });
                     resolve(patrons);
                 }
             } catch (e) {

@@ -1562,6 +1562,7 @@ module.exports = class extends Language {
             COMMAND_USERCONF_CANNOT_VIEW_OTHER: "Sorry, but you cannot view other's configs",
             COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED: "You already have this ally code registered",
             COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `Removed ${name}(${ac}) from your config`,
+            COMMAND_USERCONF_ALLYCODE_TOO_MANY: "Sorry, but you cannot have more than 10 accounts registered.",
             COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED: "You do not have this ally code registered",
             COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "That ally code is already marked as the primary one.",
             COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY: (oldName, oldAC, newName, newAC) => `Changed your primary from **${oldName}**(${oldAC}) to **${newName}**(${newAC})`,
@@ -1601,10 +1602,18 @@ module.exports = class extends Language {
                     },
                     {
                         action: "Arena Alert",
-                        actionDesc: "Toggle whether or not to get DMs when your rank drops.",
-                        usage: ";userconf arenaAlert <on|off>",
+                        actionDesc: "Set alerts to DM when your rank drops and other arena related stuff.",
+                        usage: [
+                            ";userconf arenaAlert enableDMs <on|off>",
+                            ";userconf arenaAlert arena <both|fleet|char>",
+                            ";userconf arenaAlert payoutResult <on|off>",
+                            ";userconf arenaAlert payoutWarning <0-1439>"
+                        ].join("\n"),
                         args: {
-                            "on|off": "Choose if you want it on or off"
+                            "enableDMs": "Turn on or off all set DMs",
+                            "arena": "Choose which arena's alerts you want",
+                            "payoutResult": "Send you a DM with your final payout result",
+                            "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off."
                         }
                     }
                 ]

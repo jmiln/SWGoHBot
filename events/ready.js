@@ -34,6 +34,11 @@ module.exports = async client => {
         client.swgohGuildCount  = await dbo.collection("guilds").find({}).count();
     }, 5 * 60 * 1000);
 
+    // Reload the patrons' goh data, and check for arena rank changes every minute
+    setInterval(async () => {
+        await client.getRanks();
+    }, 1 * 60 * 1000);
+
     client.loadAllEvents();
 };
 

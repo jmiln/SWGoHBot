@@ -8,7 +8,7 @@ module.exports = clientMongo => {
     };
 
 
-    async function put( database, collection, matchCondition, saveObject ) {
+    async function put( database, collection, matchCondition, saveObject, autoUpdate=true ) {
 
         try {
 
@@ -18,7 +18,7 @@ module.exports = clientMongo => {
 
             const dbo = await mongo.db( database );
 
-            if (!saveObject.updated) {
+            if (!saveObject.updated && autoUpdate) {
                 //set updated time to now
                 saveObject.updated = new Date();
                 saveObject.updated = saveObject.updated.getTime();
