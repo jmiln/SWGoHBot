@@ -35,7 +35,7 @@ class Register extends Command {
             return super.error(message, "This account already has an ally code linked to it.");
         }
         if (!user) {
-            user = client.config.defaultUserConf;
+            user = JSON.parse(JSON.stringify(client.config.defaultUserConf));
             user.id = userID;
         } else if (user.accounts.find(a => a.allyCode === allyCode && a.primary)) {
             // This ally code is already registered & primary

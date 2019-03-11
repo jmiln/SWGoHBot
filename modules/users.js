@@ -20,7 +20,7 @@ module.exports = (client) => {
                 throw new Error("Invalid ally code.");
             }
             let user = await cache.get("swgohbot", "users", {id: userId});
-            const defSettings = client.config.defaultUserConf;
+            const defSettings = JSON.parse(JSON.stringify(client.config.defaultUserConf));
             defSettings.id = userId;
             defSettings.accounts = [{
                 allyCode: allyCode,
