@@ -1577,6 +1577,16 @@ module.exports = class extends Language {
             COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "No linked ally codes.",
             COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Defaults",
             COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Set default flags for your commands.",
+            COMMAND_USERCONF_ARENA_PATREON_ONLY: "Sorry, but this feature is only available as a thank you to supporters through https://www.patreon.com/swgohbot",
+            COMMAND_USERCONF_ARENA_MISSING_BOOL: "Missing option. Try on/off or true/false.",
+            COMMAND_USERCONF_ARENA_INVALID_BOOL: "Invalid option. Try on/off or true/false.",
+            COMMAND_USERCONF_ARENA_MISSING_ARENA: "Missing arena, you need to chose one of the following: `char, fleet, both`",
+            COMMAND_USERCONF_ARENA_INVALID_ARENA: "Invalid arena, you need to chose one of the following: `char, fleet, both`",
+            COMMAND_USERCONF_ARENA_MISSING_WARNING: "Missing number, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.",
+            COMMAND_USERCONF_ARENA_INVALID_WARNING: "Invalid number, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.",
+            COMMAND_USERCONF_ARENA_INVALID_NUMBER: "Invalid number, your number needs to be between 0 (turns it off), and 1440 (one day).",
+            COMMAND_USERCONF_ARENA_INVALID_OPTION: "Invalid option, try one of these: `enableDMs, arena, payoutResult, payoutWarning`",
+            COMMAND_USERCONF_ARENA_UPDATED: "Your settings have been updated.",
             COMMAND_USERCONF_HELP: {
                 description: "All the needed utilities to manage your info in the bot.",
                 actions: [
