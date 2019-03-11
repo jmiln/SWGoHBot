@@ -1296,7 +1296,7 @@ module.exports = (client) => {
                     acc.lastShipRank = player.arena.ship.rank;
                 }
                 user.accounts[ix] = acc;
-                await client.wait(480);
+                await client.wait(500);
             }
             await client.userReg.updateUser(patron.discordID, user);
         }
