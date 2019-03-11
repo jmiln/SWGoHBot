@@ -31,7 +31,7 @@ const init = async function() {
     
     for (const ac of oldAllyCodes) {
         const a = ac.dataValues;
-        let user = config.defaultUserConf;
+        const defSettings = JSON.parse(JSON.stringify(config.defaultUserConf));
         user.id = a.id;
         let player = await mongo.db("swapi").collection("players").find({allyCode: parseInt(a.allyCode)}).toArray();
         if (Array.isArray(player) && player.length) player = player[0];

@@ -35,7 +35,7 @@ class UserConf extends Command {
                 // Allycode   -> add/remove/makePrimary
                 let allyCode;
                 if (!user) {
-                    user = client.config.defaultUserConf;
+                    user = JSON.parse(JSON.stringify(client.config.defaultUserConf));
                     user.id = userID;
                 }
                 if (!args[0]) {
