@@ -1578,14 +1578,14 @@ module.exports = class extends Language {
             COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Defaults",
             COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Set default flags for your commands.",
             COMMAND_USERCONF_ARENA_PATREON_ONLY: "Sorry, but this feature is only available as a thank you to supporters through https://www.patreon.com/swgohbot",
-            COMMAND_USERCONF_ARENA_MISSING_BOOL: "Missing option. Try on/off or true/false.",
-            COMMAND_USERCONF_ARENA_INVALID_BOOL: "Invalid option. Try on/off or true/false.",
+            COMMAND_USERCONF_ARENA_MISSING_DM: "Missing option. Try all/primary/off.",
+            COMMAND_USERCONF_ARENA_INVALID_DM: "Invalid option. Try all/primary/off.",
             COMMAND_USERCONF_ARENA_MISSING_ARENA: "Missing arena, you need to chose one of the following: `char, fleet, both`",
             COMMAND_USERCONF_ARENA_INVALID_ARENA: "Invalid arena, you need to chose one of the following: `char, fleet, both`",
             COMMAND_USERCONF_ARENA_MISSING_WARNING: "Missing number, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.",
             COMMAND_USERCONF_ARENA_INVALID_WARNING: "Invalid number, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.",
             COMMAND_USERCONF_ARENA_INVALID_NUMBER: "Invalid number, your number needs to be between 0 (turns it off), and 1440 (one day).",
-            COMMAND_USERCONF_ARENA_INVALID_OPTION: "Invalid option, try one of these: `enableDMs, arena, payoutResult, payoutWarning`",
+            COMMAND_USERCONF_ARENA_INVALID_OPTION: "Try one of these: `enableDMs, arena, payoutResult, payoutWarning`",
             COMMAND_USERCONF_ARENA_UPDATED: "Your settings have been updated.",
             COMMAND_USERCONF_HELP: {
                 description: "All the needed utilities to manage your info in the bot.",
@@ -1616,14 +1616,15 @@ module.exports = class extends Language {
                         usage: [
                             ";userconf arenaAlert enableDMs <on|off>",
                             ";userconf arenaAlert arena <both|fleet|char>",
-                            ";userconf arenaAlert payoutResult <on|off>",
+                            ";userconf arenaAlert payoutResult <all|primary|off>",
                             ";userconf arenaAlert payoutWarning <0-1439>"
                         ].join("\n"),
                         args: {
-                            "enableDMs": "Turn on or off all set DMs",
+                            "enableDMs": "Turn on DM alerts for just your primary allycode, all allycodes, or none",
                             "arena": "Choose which arena's alerts you want",
                             "payoutResult": "Send you a DM with your final payout result",
-                            "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off."
+                            "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off.",
+                            "view": "View your current settings"
                         }
                     }
                 ]

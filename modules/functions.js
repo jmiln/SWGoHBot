@@ -1196,15 +1196,21 @@ module.exports = (client) => {
     // Check for updated ranks
     client.getRanks = async () => {
         for (const patron of client.patrons) {
-            if (patron.amount_cents < 500) continue;
+            if (patron.amount_cents < 100) continue;
             const user = await client.userReg.getUser(patron.discordID);
             // If they're not registered with anything or don't have any ally codes
             if (!user || !user.accounts.length) continue;
 
             // If they don't want any alerts
-            if (!user.arenaAlert || !user.arenaAlert.enableRankDMs) continue;
-            for (let ix = 0; ix < user.accounts.length; ix++) {
-                const acc = user.accounts[ix];
+            if (!user.arenaAlert || user.arenaAlert.enableRankDMs === "off") continue;
+            let accountsToCheck = JSON.parse(JSON.stringify(user.accounts));
+            if ((user.accounts.length > 1 && patron.amount_cents < 500) || user.arenaAlert.enableRankDMs === "primary") {
+                accountsToCheck = accountsToCheck.filter(a => a.primary);
+            }
+
+
+            for (let ix = 0; ix < accountsToCheck.length; ix++) {
+                const acc = accountsToCheck[ix];
                 const player = await client.swgohAPI.fastPlayer(acc.allyCode);
                 if (!acc.lastCharRank) {
                     acc.lastCharRank = 0;
@@ -1217,85 +1223,94 @@ module.exports = (client) => {
                 const now = moment();
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
-                if (player.arena.char && player.arena.char.rank && ["both", "char"].includes(user.arenaAlert.arena)) {
-                    let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(6, "h");
-                    if (then.unix() < now.unix()) {
-                        then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(18, "h");
-                    }
+                if (player.arena.char && player.arena.char.rank) {
+                    if (["both", "char"].includes(user.arenaAlert.arena)) {
+                        let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(6, "h");
+                        if (then.unix() < now.unix()) {
+                            then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(18, "h");
+                        }
 
-                    const minTil =  parseInt((then-now)/60/1000);
-                    if (user.arenaAlert.payoutWarning > 0) {
-                        if (user.arenaAlert.payoutWarning  === minTil) {
+                        const minTil =  parseInt((then-now)/60/1000);
+                        if (user.arenaAlert.payoutWarning > 0) {
+                            if (user.arenaAlert.payoutWarning  === minTil) {
+                                client.users.get(patron.discordID).send({embed: {
+                                    author: {name: "Arena Payout Alert"},
+                                    description: `${player.name}'s character arena payout is in **${minTil}** minutes!`,
+                                    color: 0x00FF00
+                                }});
+                            }
+                        } 
+                        if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
                             client.users.get(patron.discordID).send({embed: {
-                                author: {name: "Arena Payout Alert"},
-                                description: `${player.name}'s character arena payout is in **${minTil}** minutes!`,
+                                author: {name: "Character arena"},
+                                description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
                                 color: 0x00FF00
                             }});
                         }
-                    } 
-                    if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                        client.users.get(patron.discordID).send({embed: {
-                            author: {name: "Character arena"},
-                            description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
-                            color: 0x00FF00
-                        }});
-                    }
 
-                    const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
-                    if (player.arena.char.rank > acc.lastCharRank) {
-                        // DM user that they dropped
-                        client.users.get(patron.discordID).send({embed: {
-                            author: {name: "Character Arena"},
-                            description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
-                            color: 0xff0000,
-                            footer: {
-                                text: payoutTime
-                            }
-                        }});
+                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                        if (player.arena.char.rank > acc.lastCharRank) {
+                            // DM user that they dropped
+                            client.users.get(patron.discordID).send({embed: {
+                                author: {name: "Character Arena"},
+                                description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
+                                color: 0xff0000,
+                                footer: {
+                                    text: payoutTime
+                                }
+                            }});
+                        }
                     }
                     acc.lastCharClimb = acc.lastCharClimb ? (player.arena.char.rank < acc.lastCharRank ? player.arena.char.rank : acc.lastCharClimb) : player.arena.char.rank;
                     acc.lastCharRank = player.arena.char.rank;
                 }
-                if (player.arena.ship && player.arena.ship.rank && ["both", "fleet"].includes(user.arenaAlert.arena)) {
-                    let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(5, "h");
-                    if (then.unix() < now.unix()) {
-                        then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(19, "h");
-                    }
+                if (player.arena.ship && player.arena.ship.rank) {
+                    if (["both", "fleet"].includes(user.arenaAlert.arena)) {
+                        let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(5, "h");
+                        if (then.unix() < now.unix()) {
+                            then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(19, "h");
+                        }
 
-                    const minTil =  parseInt((then-now)/60/1000);
-                    if (user.arenaAlert.payoutWarning > 0) {
-                        if (user.arenaAlert.payoutWarning  === minTil) {
+                        const minTil =  parseInt((then-now)/60/1000);
+                        if (user.arenaAlert.payoutWarning > 0) {
+                            if (user.arenaAlert.payoutWarning  === minTil) {
+                                client.users.get(patron.discordID).send({embed: {
+                                    author: {name: "Arena Payout Alert"},
+                                    description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
+                                    color: 0x00FF00
+                                }});
+                            }
+                        }
+
+                        if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
                             client.users.get(patron.discordID).send({embed: {
-                                author: {name: "Arena Payout Alert"},
-                                description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
+                                author: {name: "Fleet arena"},
+                                description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
                                 color: 0x00FF00
                             }});
                         }
-                    }
 
-                    if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                        client.users.get(patron.discordID).send({embed: {
-                            author: {name: "Fleet arena"},
-                            description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
-                            color: 0x00FF00
-                        }});
-                    }
-
-                    const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
-                    if (player.arena.ship.rank > acc.lastShipRank) {
-                        client.users.get(patron.discordID).send({embed: {
-                            author: {name: "Fleet Arena"},
-                            description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
-                            color: 0xff0000,
-                            footer: {
-                                text: payoutTime
-                            }
-                        }});
+                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                        if (player.arena.ship.rank > acc.lastShipRank) {
+                            client.users.get(patron.discordID).send({embed: {
+                                author: {name: "Fleet Arena"},
+                                description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
+                                color: 0xff0000,
+                                footer: {
+                                    text: payoutTime
+                                }
+                            }});
+                        }
                     }
                     acc.lastShipClimb = acc.lastShipClimb ? (player.arena.ship.rank < acc.lastShipRank ? player.arena.ship.rank : acc.lastShipClimb) : player.arena.ship.rank;
                     acc.lastShipRank = player.arena.ship.rank;
                 }
-                user.accounts[ix] = acc;
+                if (patron.amount_cents < 500) {
+                    user.accounts[user.accounts.findIndex(a => a.primary)] = acc;
+                } else {
+                    user.accounts[ix] = acc;
+                }
+                // Wait here in case of extra accounts
                 await client.wait(500);
             }
             await client.userReg.updateUser(patron.discordID, user);
@@ -1356,7 +1371,7 @@ module.exports = (client) => {
                     // Since I can't be my own patron...
                     patrons.push({
                         discordID: client.config.ownerid,
-                        amount_cents: 9999
+                        amount_cents: 100
                     });
                     resolve(patrons);
                 }

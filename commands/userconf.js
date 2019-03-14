@@ -158,22 +158,24 @@ class UserConf extends Command {
                 const onVar = ["true", "on", "enable"];
                 const offVar = ["false", "off", "disable"];
                 const pat = client.patrons.find(p => p.discordID === message.author.id);
-                if (!pat || pat.amount_cents < 500) {
+                if (!pat || pat.amount_cents < 100) {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_PATREON_ONLY"));
                 }
-                const setting = args[0].toLowerCase();  
+                const setting = args.length ? args[0].toLowerCase() : null;  
                 if (action === "enabledms") {
                     // Set it to enable the DM alerts entirely or not
                     if (!setting) {
-                        return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_MISSING_BOOL"));
-                    }
-                    if (onVar.includes(setting)) {
-                        user.arenaAlert.enableRankDMs = true;
+                        return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_MISSING_DM"));
+                    } else if (setting === "all" && pat.amount_cents < 500) {
+                        return super.error(message, "Sorry, but you can only set up alerts for the allycode you have set as your primary.");
+                    } 
+                    if (["all", "primary"].includes(setting)) {
+                        user.arenaAlert.enableRankDMs = setting;
                     } else if (offVar.includes(setting)) {
-                        user.arenaAlert.enableRankDMs = false;
+                        user.arenaAlert.enableRankDMs = "off";
                     } else {
                         // They entered an invalid choice
-                        return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_BOOL"));
+                        return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_DM"));
                     }
                 } else if (action === "arena") {
                     // Set which arena you want watched
@@ -207,13 +209,12 @@ class UserConf extends Command {
                     }
                     user.arenaAlert.payoutWarning = parseInt(setting);
                 } else {
-                    return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_OPTION"));
+                    return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_OPTION"), {title: "Invalid Option"});
                 }
                 await client.userReg.updateUser(userID, user);
                 return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_UPDATED"), {title: "Success!", color: 0x00FF00});
             }
-            case "view":
-            default: {
+            case "view": {
                 // Show the user's settings/ config
                 if (!user) {
                     return super.error(message, message.language.get("COMMAND_USERCONF_VIEW_NO_CONFIG", message.guildSettings.prefix));
@@ -230,7 +231,7 @@ class UserConf extends Command {
                 fields.push({
                     name: "Arena Rank DMs",
                     value: [
-                        `DM for rank drops: **${user.arenaAlert.enableRankDMs ? "ON" : "OFF"}**`, 
+                        `DM for rank drops: **${user.arenaAlert.enableRankDMs}**`, 
                         `Show for arena: **${user.arenaAlert.arena}**`,
                         `Payout warning **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min**" : "disabled**"}`, 
                         `Payout result alert: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
@@ -240,6 +241,9 @@ class UserConf extends Command {
                     author: {name: client.users.get(userID).username}, 
                     fields: fields
                 }});
+            }
+            default: {
+                return super.error(message, "Try one of these: `allycodes, defaults, arenaAlert, view`",{title: "Invalid option"});
             }
         }
     }
