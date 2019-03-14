@@ -84,13 +84,13 @@ class Command {
 
     async getUser(message, userID, useAuth=false) {
         let out = null;
-        if (useAuth && userID !== "me" && !this.client.isAllyCode(userID) && !this.client.isUserID(userID)) {
+        if (useAuth && (!userID || (userID !== "me" && !this.client.isAllyCode(userID) && !this.client.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
             userID = message.author.id;
         } 
-        // If it got this far, it's got a valid userID (ally code or Discord ID)
-        // so regardless of which, grab an ally code 
         if (userID) {
+            // If it got this far, it's got a valid userID (ally code or Discord ID)
+            // so regardless of which, grab an ally code 
             const allyCodes = await this.client.getAllyCode(message, userID);
             if (allyCodes.length) {
                 out = allyCodes[0];

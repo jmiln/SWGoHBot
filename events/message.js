@@ -25,7 +25,7 @@ module.exports = async (client, message) => {
     message.guildSettings = guildSettings;
     
     // Load the language file for whatever language they have set
-    message.language = client.languages[guildSettings.language];
+    message.language = client.languages[guildSettings.language] || client.languages["en_US"];
 
     // If the message is just mentioning the bot, tell them what the prefix is
     if (message.content === client.user.toString() || (message.guild && typeof message.guild.me !== "undefined" && message.content === message.guild.me.toString())) {
