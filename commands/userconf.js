@@ -99,7 +99,7 @@ class UserConf extends Command {
                     const acc = user.accounts.find(a => a.allyCode === allyCode);
                     const prim = user.accounts.find(a => a.primary);
                     if (!acc) {
-                        return message.channel.send(message.langauge.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
+                        return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     } else if (acc.primary) {
                         return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY"));
                     }
@@ -210,7 +210,7 @@ class UserConf extends Command {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_OPTION"));
                 }
                 await client.userReg.updateUser(userID, user);
-                return super.error(message, message.lanuage.get("COMMAND_USERCONF_ARENA_UPDATED"), {title: "Success!", color: 0x00FF00});
+                return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_UPDATED"), {title: "Success!", color: 0x00FF00});
             }
             case "view":
             default: {
