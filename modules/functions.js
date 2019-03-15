@@ -114,30 +114,32 @@ module.exports = (client) => {
      * LOGGING FUNCTION
      * Logs to console. Future patches may include time+colors
      */
-    client.log = (type, msg, title="Log", codeType="md", prefix="") => {
+    client.log = (type, msg, title="Log", codeType="md", prefix="", options={}) => {
         console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
-        try {
-            const chan = client.config.logs.channel;
-            const mess = `${prefix === "" ? "" : prefix + " "}[${client.myTime()}] [${type}] ${msg}`.replace(/\n/g, "\"|\"");
-            const args = {code: codeType, split: true};
-            // Sends the logs to the channel I have set up for it.
-            if (client.config.logs.logToChannel) {
-                if (client.channels.has(chan)) {
-                    client.sendMsg(chan, mess, args);
-                } else if (client.shard && client.shard.count > 0) {
-                    // If it's on a different shard, then send it there 
-                    client.shard.broadcastEval(`
-                        const thisChan = ${inspect(chan)};
-                        const msg = "${mess}";
-                        if (this.channels.has(thisChan)) {
-                            this.sendMsg(thisChan, msg, ${inspect(args)});
-                        }
-                    `);
+        if (!options.noSend) {
+            try {
+                const chan = client.config.logs.channel;
+                const mess = `${prefix === "" ? "" : prefix + " "}[${client.myTime()}] [${type}] ${msg}`.replace(/\n/g, "\"|\"");
+                const args = {code: codeType, split: true};
+                // Sends the logs to the channel I have set up for it.
+                if (client.config.logs.logToChannel) {
+                    if (client.channels.has(chan)) {
+                        client.sendMsg(chan, mess, args);
+                    } else if (client.shard && client.shard.count > 0) {
+                        // If it's on a different shard, then send it there 
+                        client.shard.broadcastEval(`
+                            const thisChan = ${inspect(chan)};
+                            const msg = "${mess}";
+                            if (this.channels.has(thisChan)) {
+                                this.sendMsg(thisChan, msg, ${inspect(args)});
+                            }
+                            `);
+                    }
                 }
+            } catch (e) {
+                // Probably broken because it's not started yet
+                console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
             }
-        } catch (e) {
-            // Probably broken because it's not started yet
-            console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
         }
     };
 
@@ -1208,7 +1210,6 @@ module.exports = (client) => {
                 accountsToCheck = accountsToCheck.filter(a => a.primary);
             }
 
-
             for (let ix = 0; ix < accountsToCheck.length; ix++) {
                 const acc = accountsToCheck[ix];
                 const player = await client.swgohAPI.fastPlayer(acc.allyCode);
@@ -1371,7 +1372,7 @@ module.exports = (client) => {
                     // Since I can't be my own patron...
                     patrons.push({
                         discordID: client.config.ownerid,
-                        amount_cents: 100
+                        amount_cents: 9999
                     });
                     resolve(patrons);
                 }

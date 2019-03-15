@@ -76,7 +76,7 @@ module.exports = (client) => {
                 if (Array.isArray(tempPlayer)) {
                     tempPlayer = tempPlayer[0];
                 }
-                if (tempPlayer._id) delete tempPlayer._id;
+                if (tempPlayer && tempPlayer._id) delete tempPlayer._id;
 
                 if (!tempPlayer || !tempPlayer.roster || !tempPlayer.name) {
                     if (!player || !player[0]) {
@@ -94,7 +94,7 @@ module.exports = (client) => {
             }
             return player;
         } catch (e) {
-            console.log("SWAPI Broke getting player: " + e);
+            console.log("SWAPI Broke getting player: " + e, allycode);
             throw e;
         }
     }
@@ -448,7 +448,7 @@ module.exports = (client) => {
                 }
                 delete char.crewList;
                 if (defId === char.baseId) outChar = char;
-                if (char._id) delete char._id;
+                if (char && char._id) delete char._id;
                 await cache.put("swapi", "characters", {baseId: char.baseId}, char);
             }
         } else {
@@ -492,7 +492,7 @@ module.exports = (client) => {
                 if (gearArray.includes(gearPiece.id)) {
                     gOut.push(gearPiece);
                 }
-                if (gearPiece._id) delete gearPiece._id;
+                if (gearPiece && gearPiece._id) delete gearPiece._id;
                 await cache.put("swapi", "gear", {id: gearPiece.id, language: lang}, gearPiece);
             }
             return gOut;
@@ -543,7 +543,7 @@ module.exports = (client) => {
                 if (unit.baseId === defId) {
                     uOut = unit.nameKey;
                 }
-                if (unit._id) delete unit._id;
+                if (unit && unit._id) delete unit._id;
                 await cache.put("swapi", "units", {baseId: unit.baseId, language: lang}, unit);
             }
             return uOut;
@@ -708,7 +708,7 @@ module.exports = (client) => {
 
                 if (tempGuild && tempGuild[0]) {
                     tempGuild = tempGuild[0];
-                    if (tempGuild._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
+                    if (tempGuild && tempGuild._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
                 }
 
                 if (!tempGuild || !tempGuild.roster || !tempGuild.name) {

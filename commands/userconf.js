@@ -51,7 +51,7 @@ class UserConf extends Command {
                 }
                 if (action === "add") {
                     // Add to the list of ally codes, if the first, make it the primary
-                    if (user.accounts.find(a => a.allyCode === allyCode)) {
+                    if (user && user.accounts && user.accounts.find(a => a.allyCode === allyCode)) {
                         return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
     
@@ -75,7 +75,8 @@ class UserConf extends Command {
                                 await client.swgohAPI.register([
                                     [allyCode, userID]
                                 ]);
-                                message.channel.send(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
+                                await client.userReg.updateUser(userID, user);
+                                return message.channel.send(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
                             }
                         });
                     } catch (e) {
@@ -86,14 +87,16 @@ class UserConf extends Command {
                     // Remove from the list, if the chosen one was the primary, set the 1st 
                     const acc = user.accounts.find(a => a.allyCode === allyCode);
                     if (!acc) {
-                        return message.channel.send(message.langauge.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
+                        return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
-                    user.accounts = user.accounts.filter(a => a.allyCode !== allyCode);
-                    user.accounts = user.accounts.filter(a => parseInt(a.allyCode));
-                    if (user.accounts.length && !user.accounts.filter(a => a.primary).length) {
+                    // Filter out the one(s) that match the specified allycode
+                    user.accounts = user.accounts.filter(a => a.allyCode !== acc.allyCode);
+                    // If none of the remaining accounts are marked as primary, mark the first one as such
+                    if (user.accounts.length && !user.accounts.find(a => a.primary)) {
                         user.accounts[0].primary = true;
                     }
-                    message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode));
+                    await client.userReg.updateUser(userID, user);
+                    return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode));
                 } else if (action === "makeprimary") {
                     // Set the selected ally code the primary one
                     const acc = user.accounts.find(a => a.allyCode === allyCode);
@@ -108,9 +111,8 @@ class UserConf extends Command {
                         if (a.allyCode === allyCode) a.primary = true;
                         return a;
                     });
-                    message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim.name, prim.allyCode, acc.name, acc.allyCode));
+                    return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim.name, prim.allyCode, acc.name, acc.allyCode));
                 }
-                await client.userReg.updateUser(userID, user);
                 break;
             }
             case "defaults": {

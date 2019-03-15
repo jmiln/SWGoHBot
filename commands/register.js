@@ -50,14 +50,25 @@ class Register extends Command {
             user = await client.userReg.updateUser(userID, user);
             const u = user.accounts.find(a => a.primary);
             return message.channel.send(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
-        }
+        } else {
+            // They're registered with a different ally code, so turn off all the other primaries
+            user.accounts = user.accounts.map(a => {
+                a.primary = false;
+                return a;
+            });
+        }    
         message.channel.send(message.language.get("COMMAND_REGISTER_PLEASE_WAIT")).then(async msg => {
             try {
                 await client.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
                     if (!u) {
-                        super.error(msg, (message.language.get("COMMAND_REGISTER_FAILURE")), {edit: true});
+                        super.error(msg, (message.language.get("COMMAND_REGISTER_FAILURE") + allyCode), {edit: true});
                     } else {
-                        await client.userReg.addUser(userID, allyCode)
+                        user.accounts.push({
+                            allyCode: allyCode,
+                            name: u.name,
+                            primary: true
+                        });
+                        await client.userReg.updateUser(userID, user)
                             .then(async () => {
                                 await client.swgohAPI.register([
                                     [allyCode, userID]
