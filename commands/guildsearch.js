@@ -57,8 +57,9 @@ class GuildSearch extends Command {
                 return super.error(message, "Invalid argument for -top. Must be between 1 and 50");
             }
         }
+
         // If there's enough elements in args, and it's in the format of a number*
-        if (args.length && !isNaN(parseInt(args[args.length-1])) && /^\d+$/.test(args[args.length-1].toString())) {
+        if (!options.flags.mods && args.length && !isNaN(parseInt(args[args.length-1])) && /^\d+$/.test(args[args.length-1].toString())) {
             starLvl = parseInt(args.pop());
             if (starLvl < 0 || starLvl > 7) {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"), {example: "guildsearch c3po 7"});
@@ -522,7 +523,7 @@ class GuildSearch extends Command {
                 try {
                     player = await client.swgohAPI.player(player);
                 } catch (e) {
-                    super.error(message, e.message);
+                    return super.error(message, e.message);
                 }
                 const mods = {
                     sixPip: 0,
