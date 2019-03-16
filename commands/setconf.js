@@ -52,7 +52,7 @@ class Setconf extends Command {
                                 return message.reply(message.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
                             }
                         } else if (key === "announceChan") {
-                            const newChannel = message.guild.channels.find("name", value);
+                            const newChannel = message.guild.channels.find(c => c.name ===  value);
                             if (!newChannel) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN", value));
                             if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS"));
                         }
@@ -74,7 +74,7 @@ class Setconf extends Command {
 
                         if (action === "add") { 
                             if (key === "adminRole") { // If it needs a role, make sure it's a valid role
-                                const role = message.guild.roles.find("name", value);
+                                const role = message.guild.roles.find(r => r.name === value);
                                 if (!role) return super.error(message, message.language.get("COMMAND_SETCONF_ADMINROLE_MISSING_ROLE", value));
                             }
                             if (!valArray.includes(value)) {
@@ -125,7 +125,7 @@ class Setconf extends Command {
 
                         if (action === "add") { 
                             if (key === "adminRole") { // If it needs a role, make sure it's a valid role
-                                const role = message.guild.roles.find("name", value);
+                                const role = message.guild.roles.find(r => r.name === value);
                                 if (!role) return super.error(message, message.language.get("COMMAND_SETCONF_ADMINROLE_MISSING_ROLE", value));
                             }
                             if (!valArray.includes(value)) {

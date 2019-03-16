@@ -190,7 +190,7 @@ class Event extends Command {
                     }
 
                     // If the event channel is something other than default, check to make sure it works, then set it
-                    const announceChannel = message.guild.channels.find("name", guildConf["announceChan"]);
+                    const announceChannel = message.guild.channels.find(c => c.name === guildConf["announceChan"]);
                     if (eventChan) {
                         // Try getting the channel by ID first
                         let checkChan = message.guild.channels.get(eventChan.replace(/[^0-9]/g, ""));
@@ -199,7 +199,7 @@ class Event extends Command {
                             if (eventChan.startsWith("#")) {
                                 eventChan = eventChan.replace(/^#/, "");
                             }
-                            checkChan = message.guild.channels.find("name", eventChan);
+                            checkChan = message.guild.channels.find(c => c.name === eventChan);
                         }
                         if (!checkChan) {   // Make sure it"s a real channel
                             err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_CHANNEL", checkChan));
@@ -330,7 +330,7 @@ class Event extends Command {
                                 json.channel = json.channel.toString();
                                 let channel = message.guild.channels.get(json.channel);
                                 if (!channel) {
-                                    channel = message.guild.channels.find("name", json.channel);
+                                    channel = message.guild.channels.find(c => c.name === json.channel);
                                 }
                                 if (!channel) {
                                     err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_CHANNEL", json.channel));
@@ -578,10 +578,10 @@ class Event extends Command {
                     if (event["eventChan"] && event.eventChan !== "") {  // If they"ve set a channel, try using it
                         channel = message.guild.channels.get(event.eventChan);
                         if (!channel) {
-                            channel = message.guild.channels.find("name", event.eventChan);
+                            channel = message.guild.channels.find(c => c.name === event.eventChan);
                         }
                     } else { // Else, use the default one from their settings
-                        channel = message.guild.channels.find("name", guildConf["announceChan"]);
+                        channel = message.guild.channels.find(c => c.name === guildConf["announceChan"]);
                     }
                     if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                         try {
@@ -708,7 +708,7 @@ class Event extends Command {
                             let checkChan = message.guild.channels.get(check.replace(/[^0-9]/g, ""));
                             // If it doesn't come up by ID, try it by name
                             if (!checkChan) {
-                                checkChan = message.guild.channels.find("name", check.replace(/^#/, ""));
+                                checkChan = message.guild.channels.find(c => c.name === check.replace(/^#/, ""));
                             }
                             if (!checkChan && check === "null") {
                                 checkChan = null;
@@ -855,7 +855,7 @@ class Event extends Command {
                     // const roleName = message.guild.roles.find("id", roleID).name;
                     let roleName;
                     try {
-                        roleName = message.guild.roles.find("id", roleID).name;
+                        roleName = message.guild.roles.get(roleID).name;
                     } catch (e) {
                         roleName = roleID;
                     }
@@ -865,7 +865,7 @@ class Event extends Command {
             if (chanResult !== null) {
                 chanResult.forEach(chan => {
                     const chanID = chan.replace(/\D/g,"");
-                    const chanName = message.guild.channels.find("id", chanID).name;
+                    const chanName = message.guild.channels.get(chanID).name;
                     mess = mess.replace(chan, `#${chanName}`);
                 });
             }
