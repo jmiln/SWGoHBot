@@ -94,7 +94,6 @@ module.exports = (client) => {
             }
             return player;
         } catch (e) {
-            console.log("SWAPI Broke getting player: " + e, allycode);
             throw e;
         }
     }
@@ -112,6 +111,7 @@ module.exports = (client) => {
             } catch (err) {
                 // Probably API timeout
                 player = null;
+                console.log("ERROR(FP): " + err.message);
             }
 
             if (!player || !player.roster || !player.name) {

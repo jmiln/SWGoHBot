@@ -192,11 +192,11 @@ module.exports = (client) => {
 
         // If  that didn't work, try and get it by name
         if (!chan) {
-            chan = guild.channels.find("name", announceChan);
+            chan = guild.channels.find(c => c.name === announceChan);
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
-        if (!chan || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+        if (!chan || !chan.send || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
             return;
         } else {
             // If everything is ok, go ahead and try sending the message
@@ -497,7 +497,7 @@ module.exports = (client) => {
         // If it's that error, don't bother showing it again
         try {
             if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && client.config.logs.logToChannel) {
-                client.channels.get(client.config.log("```inspect(errorMsg)```",{split: true}));
+                client.channels.get(client.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
             }
         } catch (e) {
             // Don't bother doing anything
@@ -507,7 +507,7 @@ module.exports = (client) => {
         process.exit(1);
     });
 
-    process.on("unhandledRejection", err => {
+    process.on("unhandledRejection", (err) => {
         const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
         console.error(`[${client.myTime()}] Uncaught Promise Error: `, errorMsg);
         try {
@@ -1162,7 +1162,7 @@ module.exports = (client) => {
             // Something happened
             console.log("Broke getting patrons");
         }
-        console.log("Reloaded " + client.patrons.length + " active patrons");
+        // console.log("Reloaded " + client.patrons.length + " active patrons");
     };
 
     // Get the cooldown

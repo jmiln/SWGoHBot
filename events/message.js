@@ -112,6 +112,7 @@ module.exports = async (client, message) => {
             client.helpOut(message, cmd);
         } else {
             try {
+                // client.log("CMD", message.content, "Log", null, null, {noSend: true});
                 cmd.run(client, message, args, {
                     level: level,
                     flags: flagArgs.flags,
@@ -119,7 +120,7 @@ module.exports = async (client, message) => {
                     defaults: def
                 });
             } catch (err) {
-                client.log("ERROR(msg)", `I broke with ${cmd.name}: ${err}`, cmd.help.name.toProperCase());
+                client.log("ERROR(msg)", `I broke with ${cmd.help.name}: ${err}`, cmd.help.name.toProperCase());
             }
         }
         if (client.config.logs.logComs) {
