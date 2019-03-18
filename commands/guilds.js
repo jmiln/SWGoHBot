@@ -88,8 +88,13 @@ class Guilds extends Command {
             }
 
             const users = [];
+            let badCount = 0;
             for (const p of sortedGuild) {
                 // Check if the player is registered, then bold the name if so
+                if (!p.allyCode) {
+                    badCount += 1;
+                    continue;
+                }
                 const codes = await client.userReg.getUserFromAlly(p.allyCode);
                 if (codes && codes.length) {
                     for (const c of codes) {
@@ -142,6 +147,10 @@ class Guilds extends Command {
                     name: "Default flags used:",
                     value: client.codeBlock(options.defaults)
                 });
+            }
+            if (badCount > 0) {
+                guild.warnings = guild.warnings || [];
+                guild.warnings.push(`Missing ${badCount} guild members`);
             }
             if (guild.warnings) {
                 fields.push({

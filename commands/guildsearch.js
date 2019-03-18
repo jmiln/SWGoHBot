@@ -135,6 +135,12 @@ class GuildSearch extends Command {
                 return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
             } else {
                 msg.edit("Found guild `" + guild.name + "`!");
+                const oldLen = guild.roster.length;
+                guild.roster = guild.roster.filter(m => m.allyCode !== null);
+                if (guild.roster.length !== oldLen) {
+                    guild.warnings = guild.warnings || [];
+                    guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
+                }
                 gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
             }
 
