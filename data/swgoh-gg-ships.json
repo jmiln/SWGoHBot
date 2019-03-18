@@ -9,6 +9,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Galactic Republic",
             "Jedi"
         ],
@@ -32,6 +33,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Galactic Republic",
             "Jedi"
         ],
@@ -56,7 +58,8 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Sith"
+            "Sith",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -79,7 +82,8 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
-            "Rebel"
+            "Rebel",
+            "Tank"
         ],
         "ability_classes": [
             "Taunt"
@@ -99,7 +103,8 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
-            "Rogue One"
+            "Rogue One",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -122,7 +127,8 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
-            "Rogue One"
+            "Rogue One",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -146,6 +152,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Capital Ship",
             "Empire"
         ],
         "ability_classes": [
@@ -176,7 +183,8 @@
         "alignment": "Light Side",
         "categories": [
             "Clone Trooper",
-            "Galactic Republic"
+            "Galactic Republic",
+            "Tank"
         ],
         "ability_classes": [
             "Defense Up",
@@ -197,7 +205,8 @@
         "alignment": "Light Side",
         "categories": [
             "Cargo Ship",
-            "Old Republic"
+            "Old Republic",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -222,7 +231,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Sith"
+            "Sith",
+            "Support"
         ],
         "ability_classes": [
             "Dispel",
@@ -244,6 +254,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Capital Ship",
             "Galactic Republic",
             "Jedi"
         ],
@@ -266,6 +277,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Capital Ship",
             "Empire"
         ],
         "ability_classes": [
@@ -291,6 +303,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "First Order"
         ],
         "ability_classes": [
@@ -311,6 +324,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "First Order"
         ],
         "ability_classes": [
@@ -331,7 +345,8 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Empire"
+            "Empire",
+            "Support"
         ],
         "ability_classes": [
             "Heal"
@@ -350,6 +365,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Geonosian",
             "Separatist"
         ],
@@ -373,6 +389,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Geonosian",
             "Separatist"
         ],
@@ -394,6 +411,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Cargo Ship",
             "Phoenix",
             "Rebel"
@@ -417,6 +435,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Cargo Ship",
             "Rebel",
             "Scoundrel"
@@ -440,6 +459,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Capital Ship",
             "Rebel"
         ],
         "ability_classes": [
@@ -466,7 +486,8 @@
         "categories": [
             "Bounty Hunters",
             "Cargo Ship",
-            "Scoundrel"
+            "Scoundrel",
+            "Tank"
         ],
         "ability_classes": [
             "Counter",
@@ -487,6 +508,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
             "Droid",
             "Scoundrel"
@@ -511,6 +533,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Empire"
         ],
         "ability_classes": [
@@ -533,7 +556,8 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -554,7 +578,8 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "First Order"
+            "First Order",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -577,6 +602,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Cargo Ship",
             "Scoundrel"
         ],
@@ -598,6 +624,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Cargo Ship",
             "Phoenix",
             "Rebel"
@@ -625,7 +652,8 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Support"
         ],
         "ability_classes": [
             "Dispel",
@@ -645,6 +673,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Resistance"
         ],
         "ability_classes": [
@@ -668,7 +697,8 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
-            "Resistance"
+            "Resistance",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -692,7 +722,8 @@
         "alignment": "Light Side",
         "categories": [
             "Clone Trooper",
-            "Galactic Republic"
+            "Galactic Republic",
+            "Tank"
         ],
         "ability_classes": [
             "Remove Turn Meter"
@@ -711,6 +742,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Cargo Ship",
             "Resistance"
         ],
@@ -732,7 +764,8 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Sith"
+            "Sith",
+            "Support"
         ],
         "ability_classes": [
             "Remove Turn Meter",
@@ -752,6 +785,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Sith"
         ],
         "ability_classes": [
@@ -773,6 +807,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
             "Cargo Ship",
             "Scoundrel"
@@ -799,7 +834,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Geonosian",
-            "Separatist"
+            "Separatist",
+            "Tank"
         ],
         "ability_classes": [
             "Gain Turn Meter",
@@ -821,6 +857,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Empire",
             "Sith"
         ],
@@ -844,7 +881,8 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Empire"
+            "Empire",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -867,6 +905,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "First Order"
         ],
         "ability_classes": [
@@ -892,7 +931,8 @@
         "alignment": "Light Side",
         "categories": [
             "Clone Trooper",
-            "Galactic Republic"
+            "Galactic Republic",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -917,6 +957,7 @@
         "combat_type": 2,
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Rebel"
         ],
         "ability_classes": [
@@ -940,7 +981,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Bounty Hunters",
-            "Scoundrel"
+            "Scoundrel",
+            "Support"
         ],
         "ability_classes": [
             "AoE",

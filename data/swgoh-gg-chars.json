@@ -145,7 +145,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -305,7 +307,9 @@
         "alignment": "Light Side",
         "categories": [
             "Fleet Commander",
-            "Rebel"
+            "Leader",
+            "Rebel",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -466,8 +470,10 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader"
         ],
         "ability_classes": [
             "Counter",
@@ -475,7 +481,7 @@
             "Heal",
             "Leader: +Evasion"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "JEDISTARFIGHTERAHSOKATANO",
         "ship_slot": 0,
         "activate_shard_count": 25
@@ -625,6 +631,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Rebel"
         ],
         "ability_classes": [
@@ -785,7 +792,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Resistance"
+            "Resistance",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -946,8 +954,10 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Leader",
             "Nightsister",
-            "Separatist"
+            "Separatist",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -1109,7 +1119,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
+            "Leader",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -1120,7 +1132,7 @@
             "Stealth",
             "Stun"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -1270,6 +1282,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Droid",
             "Separatist"
         ],
@@ -1433,7 +1446,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Droid",
-            "Separatist"
+            "Separatist",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -1595,7 +1609,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Healer",
+            "Jedi",
+            "Leader"
         ],
         "ability_classes": [
             "Defense Up",
@@ -1607,7 +1623,7 @@
             "Leader: Healing",
             "Remove Turn Meter"
         ],
-        "role": "Healer",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 80
@@ -1758,7 +1774,9 @@
         "alignment": "Light Side",
         "categories": [
             "Jedi",
-            "Old Republic"
+            "Leader",
+            "Old Republic",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -1921,7 +1939,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Old Republic",
-            "Sith"
+            "Sith",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -2087,7 +2106,8 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
-            "Rogue One"
+            "Rogue One",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -2249,7 +2269,8 @@
         "alignment": "Light Side",
         "categories": [
             "Droid",
-            "Resistance"
+            "Resistance",
+            "Support"
         ],
         "ability_classes": [
             "Advantage",
@@ -2415,7 +2436,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Rebel"
+            "Rebel",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -2572,6 +2594,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Rebel",
             "Rogue One"
         ],
@@ -2730,7 +2753,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
+            "Leader",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -2751,7 +2776,7 @@
             "Taunt",
             "Thermal Detonator"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "SLAVE1",
         "ship_slot": 0,
         "activate_shard_count": 80
@@ -2902,7 +2927,8 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
-            "Rogue One"
+            "Rogue One",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -3063,7 +3089,9 @@
         "alignment": "Dark Side",
         "categories": [
             "Bounty Hunters",
-            "Scoundrel"
+            "Leader",
+            "Scoundrel",
+            "Tank"
         ],
         "ability_classes": [
             "Assist",
@@ -3229,7 +3257,8 @@
             "Droid",
             "Galactic Republic",
             "Rebel",
-            "Resistance"
+            "Resistance",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -3393,7 +3422,9 @@
         "alignment": "Dark Side",
         "categories": [
             "Bounty Hunters",
-            "Scoundrel"
+            "Leader",
+            "Scoundrel",
+            "Support"
         ],
         "ability_classes": [
             "Advantage",
@@ -3557,6 +3588,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Old Republic",
             "Scoundrel"
         ],
@@ -3720,7 +3752,8 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
-            "Scoundrel"
+            "Scoundrel",
+            "Support"
         ],
         "ability_classes": [
             "Daze",
@@ -3878,7 +3911,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "First Order"
+            "First Order",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Advantage",
@@ -4040,6 +4075,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Old Republic"
         ],
         "ability_classes": [
@@ -4052,7 +4089,7 @@
             "Offense Up",
             "Reset Cooldown"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "EBONHAWK",
         "ship_slot": 0,
         "activate_shard_count": 25
@@ -4203,7 +4240,8 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
-            "Rogue One"
+            "Rogue One",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -4369,8 +4407,10 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Clone Trooper",
-            "Galactic Republic"
+            "Galactic Republic",
+            "Leader"
         ],
         "ability_classes": [
             "Assist",
@@ -4379,7 +4419,7 @@
             "Leader: +Defense",
             "Stun"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
@@ -4529,6 +4569,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Rebel",
             "Scoundrel",
             "Smuggler"
@@ -4694,7 +4735,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Ewok"
+            "Ewok",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -4853,7 +4896,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Jawa"
+            "Jawa",
+            "Leader",
+            "Tank"
         ],
         "ability_classes": [
             "Assist",
@@ -5011,6 +5056,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Rebel",
             "Rogue One"
         ],
@@ -5172,7 +5218,8 @@
         "categories": [
             "Droid",
             "Phoenix",
-            "Rebel"
+            "Rebel",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -5334,6 +5381,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Clone Trooper",
             "Galactic Republic"
         ],
@@ -5494,7 +5542,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Scoundrel"
+            "Leader",
+            "Scoundrel",
+            "Tank"
         ],
         "ability_classes": [
             "Defense Up",
@@ -5655,7 +5705,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Imperial Trooper"
+            "Imperial Trooper",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -5814,6 +5865,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Rebel"
         ],
         "ability_classes": [
@@ -5829,7 +5882,7 @@
             "Taunt",
             "Tenacity Down"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 330
@@ -5979,7 +6032,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Galactic Republic"
+            "Galactic Republic",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -6137,8 +6191,10 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Leader",
             "Separatist",
-            "Sith"
+            "Sith",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -6300,7 +6356,8 @@
         "alignment": "Light Side",
         "categories": [
             "Clone Trooper",
-            "Galactic Republic"
+            "Galactic Republic",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -6459,7 +6516,9 @@
         "alignment": "Light Side",
         "categories": [
             "Clone Trooper",
-            "Galactic Republic"
+            "Galactic Republic",
+            "Leader",
+            "Tank"
         ],
         "ability_classes": [
             "Assist",
@@ -6620,7 +6679,9 @@
         "alignment": "Light Side",
         "categories": [
             "Clone Trooper",
-            "Galactic Republic"
+            "Galactic Republic",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Dispel",
@@ -6779,6 +6840,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Sith"
         ],
         "ability_classes": [
@@ -6792,7 +6855,7 @@
             "Stealth",
             "Taunt"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "SITHINFILTRATOR",
         "ship_slot": 0,
         "activate_shard_count": 80
@@ -6942,7 +7005,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Sith"
+            "Leader",
+            "Sith",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -7104,6 +7169,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Sith"
         ],
         "ability_classes": [
@@ -7114,7 +7181,7 @@
             "Healing Immunity",
             "Leader: +Critical"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 80
@@ -7264,7 +7331,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Sith"
+            "Sith",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -7423,7 +7491,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Sith"
+            "Leader",
+            "Sith",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -7585,7 +7655,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Empire",
+            "Leader",
             "Sith"
         ],
         "ability_classes": [
@@ -7598,7 +7670,7 @@
             "Remove Turn Meter",
             "Speed Down"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "TIEADVANCED",
         "ship_slot": 0,
         "activate_shard_count": 80
@@ -7748,7 +7820,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Jawa"
+            "Jawa",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -7909,6 +7983,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Empire",
             "Imperial Trooper"
         ],
@@ -8072,7 +8147,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
+            "Leader",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -8088,7 +8165,7 @@
             "Tenacity Up",
             "Thermal Detonator"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -8238,7 +8315,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Empire"
+            "Empire",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -8401,6 +8480,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Droid",
             "Separatist"
         ],
@@ -8562,7 +8642,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -8721,7 +8803,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
+            "Leader",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -8730,7 +8814,7 @@
             "Foresight",
             "Offense Up"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -8881,7 +8965,9 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Sith"
+            "Leader",
+            "Sith",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -9043,6 +9129,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Scoundrel",
             "Smuggler"
         ],
@@ -9212,7 +9299,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Ewok"
+            "Ewok",
+            "Healer"
         ],
         "ability_classes": [
             "Assist",
@@ -9371,6 +9459,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Ewok"
         ],
         "ability_classes": [
@@ -9528,6 +9617,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Jedi",
             "Phoenix",
             "Rebel"
@@ -9690,7 +9780,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Resistance"
+            "Leader",
+            "Resistance",
+            "Tank"
         ],
         "ability_classes": [
             "Advantage",
@@ -9853,6 +9945,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "First Order"
         ],
         "ability_classes": [
@@ -10013,7 +10106,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "First Order"
+            "First Order",
+            "Support"
         ],
         "ability_classes": [
             "Advantage",
@@ -10173,6 +10267,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "First Order"
         ],
         "ability_classes": [
@@ -10332,7 +10427,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "First Order"
+            "First Order",
+            "Tank"
         ],
         "ability_classes": [
             "Advantage",
@@ -10494,6 +10590,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "First Order"
         ],
         "ability_classes": [
@@ -10653,7 +10750,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Tank"
         ],
         "ability_classes": [
             "Counter",
@@ -10811,7 +10909,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Empire"
+            "Empire",
+            "Leader",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -10972,7 +11072,8 @@
         "alignment": "Light Side",
         "categories": [
             "Phoenix",
-            "Rebel"
+            "Rebel",
+            "Tank"
         ],
         "ability_classes": [
             "Counter",
@@ -11132,6 +11233,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Droid",
             "Separatist"
         ],
@@ -11298,7 +11400,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader",
+            "Tank"
         ],
         "ability_classes": [
             "Advantage",
@@ -11465,7 +11569,9 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Imperial Trooper"
+            "Imperial Trooper",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -11625,6 +11731,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Geonosian",
             "Separatist"
         ],
@@ -11783,6 +11890,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Geonosian",
             "Separatist"
         ],
@@ -11944,7 +12052,9 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Fleet Commander"
+            "Fleet Commander",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -12107,7 +12217,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -12273,7 +12385,9 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Fleet Commander"
+            "Fleet Commander",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -12435,7 +12549,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
+            "Leader",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -12448,7 +12564,7 @@
             "Stun",
             "Thermal Detonator"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -12598,6 +12714,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Rebel",
             "Scoundrel",
             "Smuggler"
@@ -12760,8 +12877,10 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Leader",
             "Phoenix",
-            "Rebel"
+            "Rebel",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -12921,7 +13040,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Jedi"
+            "Jedi",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -13084,7 +13204,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Droid"
+            "Droid",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -13248,6 +13370,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Rebel"
         ],
         "ability_classes": [
@@ -13404,7 +13527,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Rebel"
+            "Rebel",
+            "Support"
         ],
         "ability_classes": [
             "Counter",
@@ -13563,7 +13687,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Droid",
-            "Separatist"
+            "Separatist",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -13724,6 +13849,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Droid"
         ],
         "ability_classes": [
@@ -13879,8 +14005,10 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
             "Droid",
+            "Leader",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -13892,7 +14020,7 @@
             "Leader: +Critical",
             "Target Lock"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "IG2000",
         "ship_slot": 0,
         "activate_shard_count": 50
@@ -14043,7 +14171,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Anti-Droid",
@@ -14202,7 +14332,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Droid",
-            "Empire"
+            "Empire",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -14363,6 +14494,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Empire"
         ],
         "ability_classes": [
@@ -14523,7 +14655,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
+            "Leader",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -14537,7 +14671,7 @@
             "Revive",
             "Taunt"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -14687,6 +14821,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Jawa"
         ],
         "ability_classes": [
@@ -14845,6 +14980,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Healer",
             "Jawa"
         ],
         "ability_classes": [
@@ -15003,7 +15139,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Jawa"
+            "Jawa",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -15166,6 +15303,7 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
+            "Healer",
             "Jedi"
         ],
         "ability_classes": [
@@ -15322,8 +15460,10 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader"
         ],
         "ability_classes": [
             "Advantage",
@@ -15333,7 +15473,7 @@
             "Gain Turn Meter",
             "Offense Up"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "JEDISTARFIGHTERANAKIN",
         "ship_slot": 0,
         "activate_shard_count": 80
@@ -15484,7 +15624,8 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Tank"
         ],
         "ability_classes": [
             "Ability Block",
@@ -15642,7 +15783,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Jedi",
+            "Leader",
             "Old Republic"
         ],
         "ability_classes": [
@@ -15664,7 +15807,7 @@
             "Taunt",
             "Tenacity Up"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 330
@@ -15814,6 +15957,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Healer",
             "Jedi",
             "Old Republic"
         ],
@@ -15974,7 +16118,8 @@
         "alignment": "Light Side",
         "categories": [
             "Jedi",
-            "Old Republic"
+            "Old Republic",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -16135,6 +16280,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Rebel",
             "Rogue One"
         ],
@@ -16147,7 +16294,7 @@
             "Revive",
             "Stun"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "UWINGROGUEONE",
         "ship_slot": 1,
         "activate_shard_count": 80
@@ -16299,7 +16446,8 @@
         "categories": [
             "Droid",
             "Rebel",
-            "Rogue One"
+            "Rogue One",
+            "Tank"
         ],
         "ability_classes": [
             "Assist",
@@ -16461,7 +16609,8 @@
         "categories": [
             "Jedi",
             "Phoenix",
-            "Rebel"
+            "Rebel",
+            "Tank"
         ],
         "ability_classes": [
             "Counter",
@@ -16622,8 +16771,10 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader"
         ],
         "ability_classes": [
             "AoE",
@@ -16633,7 +16784,7 @@
             "Leader: +Defense",
             "Leader: +Tenacity"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -16783,6 +16934,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "First Order"
         ],
         "ability_classes": [
@@ -16945,7 +17097,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "First Order"
+            "First Order",
+            "Leader",
+            "Tank"
         ],
         "ability_classes": [
             "Advantage",
@@ -17109,7 +17263,8 @@
         "categories": [
             "Droid",
             "Scoundrel",
-            "Smuggler"
+            "Smuggler",
+            "Tank"
         ],
         "ability_classes": [
             "Counter",
@@ -17269,6 +17424,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Rebel",
             "Scoundrel"
         ],
@@ -17277,7 +17434,7 @@
             "Leader: +Speed",
             "Reset Cooldown"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 80
@@ -17427,7 +17584,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Rebel"
+            "Leader",
+            "Rebel",
+            "Support"
         ],
         "ability_classes": [
             "Defense Down",
@@ -17586,7 +17745,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Ewok"
+            "Ewok",
+            "Support"
         ],
         "ability_classes": [
             "Advantage",
@@ -17750,6 +17910,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Rebel"
         ],
         "ability_classes": [
@@ -17763,7 +17925,7 @@
             "Speed Down",
             "Stun"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
@@ -17914,7 +18076,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Healer",
+            "Jedi",
+            "Leader"
         ],
         "ability_classes": [
             "Ability Block",
@@ -17924,7 +18088,7 @@
             "Leader: +Max Health",
             "Leader: Healing"
         ],
-        "role": "Healer",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
@@ -18076,7 +18240,9 @@
         "categories": [
             "Fleet Commander",
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader",
+            "Tank"
         ],
         "ability_classes": [
             "Dispel",
@@ -18235,6 +18401,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Empire",
             "Imperial Trooper"
         ],
@@ -18393,6 +18560,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Old Republic",
             "Scoundrel"
         ],
@@ -18554,7 +18722,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Scoundrel"
+            "Scoundrel",
+            "Tank"
         ],
         "ability_classes": [
             "Defense Down",
@@ -18712,7 +18881,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Nightsister"
+            "Leader",
+            "Nightsister",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -18874,6 +19045,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Nightsister"
         ],
         "ability_classes": [
@@ -19031,6 +19203,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Nightsister"
         ],
         "ability_classes": [
@@ -19188,6 +19361,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Nightsister"
         ],
         "ability_classes": [
@@ -19349,7 +19523,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Nightsister"
+            "Nightsister",
+            "Tank"
         ],
         "ability_classes": [
             "Counter",
@@ -19508,6 +19683,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Scoundrel",
             "Separatist"
         ],
@@ -19517,7 +19694,7 @@
             "Stealth",
             "Thermal Detonator"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 80
@@ -19668,7 +19845,9 @@
         "alignment": "Light Side",
         "categories": [
             "Jedi",
-            "Rebel"
+            "Leader",
+            "Rebel",
+            "Tank"
         ],
         "ability_classes": [
             "Ability Block",
@@ -19832,6 +20011,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Healer",
+            "Leader",
             "Nightsister"
         ],
         "ability_classes": [
@@ -19844,7 +20025,7 @@
             "Revive",
             "Stun"
         ],
-        "role": "Healer",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 80
@@ -19994,6 +20175,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Rebel",
             "Rogue One"
         ],
@@ -20154,7 +20336,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Ewok"
+            "Ewok",
+            "Tank"
         ],
         "ability_classes": [
             "Assist",
@@ -20316,7 +20499,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -20477,7 +20662,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Resistance"
+            "Leader",
+            "Resistance",
+            "Tank"
         ],
         "ability_classes": [
             "Buff Immunity",
@@ -20637,7 +20824,9 @@
         "alignment": "Dark Side",
         "categories": [
             "Geonosian",
-            "Separatist"
+            "Leader",
+            "Separatist",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -20794,6 +20983,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Rebel"
         ],
         "ability_classes": [
@@ -20804,7 +20995,7 @@
             "Offense Up",
             "Stealth"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -20954,8 +21145,10 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Leader",
             "Scoundrel",
-            "Smuggler"
+            "Smuggler",
+            "Support"
         ],
         "ability_classes": [
             "AoE",
@@ -21120,7 +21313,9 @@
         "alignment": "Light Side",
         "categories": [
             "Galactic Republic",
-            "Jedi"
+            "Jedi",
+            "Leader",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -21286,7 +21481,8 @@
             "Droid",
             "Galactic Republic",
             "Rebel",
-            "Resistance"
+            "Resistance",
+            "Support"
         ],
         "ability_classes": [
             "Advantage",
@@ -21449,7 +21645,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Imperial Trooper"
+            "Imperial Trooper",
+            "Support"
         ],
         "ability_classes": [
             "Assist",
@@ -21605,6 +21802,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Rebel"
         ],
         "ability_classes": [
@@ -21617,7 +21816,7 @@
             "Leader: +Tenacity",
             "Leader: Foresight"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 80
@@ -21767,6 +21966,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Resistance"
         ],
         "ability_classes": [
@@ -21924,6 +22124,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Resistance"
         ],
         "ability_classes": [
@@ -22082,7 +22283,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Resistance"
+            "Leader",
+            "Resistance",
+            "Tank"
         ],
         "ability_classes": [
             "Ability Block",
@@ -22251,6 +22454,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Resistance"
         ],
         "ability_classes": [
@@ -22408,6 +22612,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Resistance"
         ],
         "ability_classes": [
@@ -22570,7 +22775,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Empire"
+            "Empire",
+            "Tank"
         ],
         "ability_classes": [
             "Defense Up",
@@ -22729,6 +22935,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Phoenix",
             "Rebel"
         ],
@@ -22889,6 +23096,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Sith"
         ],
         "ability_classes": [
@@ -22900,7 +23109,7 @@
             "Offense Down",
             "Offense Up"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
@@ -23051,7 +23260,8 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
-            "Rogue One"
+            "Rogue One",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -23212,7 +23422,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Imperial Trooper"
+            "Imperial Trooper",
+            "Tank"
         ],
         "ability_classes": [
             "Counter",
@@ -23370,6 +23581,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Sith"
         ],
         "ability_classes": [
@@ -23532,6 +23744,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Sith"
         ],
         "ability_classes": [
@@ -23689,7 +23902,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Sith"
+            "Sith",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -23849,6 +24063,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Empire",
             "Imperial Trooper"
         ],
@@ -24008,7 +24223,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
-            "Imperial Trooper"
+            "Imperial Trooper",
+            "Tank"
         ],
         "ability_classes": [
             "Expose",
@@ -24165,8 +24381,10 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Leader",
             "Rebel",
-            "Scoundrel"
+            "Scoundrel",
+            "Tank"
         ],
         "ability_classes": [
             "Gain Turn Meter",
@@ -24325,7 +24543,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Geonosian",
-            "Separatist"
+            "Separatist",
+            "Tank"
         ],
         "ability_classes": [
             "Counter",
@@ -24485,7 +24704,8 @@
         "alignment": "Light Side",
         "categories": [
             "Droid",
-            "Old Republic"
+            "Old Republic",
+            "Support"
         ],
         "ability_classes": [
             "Ability Block",
@@ -24650,6 +24870,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Healer",
+            "Leader",
             "Nightsister"
         ],
         "ability_classes": [
@@ -24659,7 +24881,7 @@
             "Leader: +Evasion",
             "Leader: +Max Health"
         ],
-        "role": "Healer",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
@@ -24809,7 +25031,9 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Ewok"
+            "Ewok",
+            "Leader",
+            "Tank"
         ],
         "ability_classes": [
             "Dispel",
@@ -24967,6 +25191,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Empire"
         ],
         "ability_classes": [
@@ -25127,6 +25352,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Tusken"
         ],
         "ability_classes": [
@@ -25283,6 +25509,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Healer",
             "Tusken"
         ],
         "ability_classes": [
@@ -25439,7 +25666,9 @@
             }
         ],
         "alignment": "Light Side",
-        "categories": [],
+        "categories": [
+            "Support"
+        ],
         "ability_classes": [
             "AoE",
             "Defense Down",
@@ -25596,6 +25825,8 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Leader",
+            "Support",
             "Tusken"
         ],
         "ability_classes": [
@@ -25755,7 +25986,8 @@
         "alignment": "Light Side",
         "categories": [
             "Scoundrel",
-            "Smuggler"
+            "Smuggler",
+            "Tank"
         ],
         "ability_classes": [
             "Advantage",
@@ -25913,6 +26145,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Scoundrel",
             "Smuggler"
         ],
@@ -26075,6 +26308,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Scoundrel",
             "Smuggler"
         ],
@@ -26236,7 +26470,9 @@
             }
         ],
         "alignment": "Light Side",
-        "categories": [],
+        "categories": [
+            "Healer"
+        ],
         "ability_classes": [
             "AoE",
             "Assist",
@@ -26393,7 +26629,9 @@
             }
         ],
         "alignment": "Dark Side",
-        "categories": [],
+        "categories": [
+            "Attacker"
+        ],
         "ability_classes": [
             "AoE",
             "Counter",
@@ -26555,6 +26793,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
+            "Leader",
             "Rebel"
         ],
         "ability_classes": [
@@ -26562,7 +26802,7 @@
             "Defense Down",
             "Leader: +Max Health"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "XWINGRED2",
         "ship_slot": 0,
         "activate_shard_count": 80
@@ -26712,6 +26952,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Ewok"
         ],
         "ability_classes": [
@@ -26870,6 +27111,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Scoundrel",
             "Smuggler"
         ],
@@ -27028,6 +27270,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Attacker",
             "Scoundrel",
             "Smuggler"
         ],
@@ -27189,7 +27432,8 @@
         "alignment": "Light Side",
         "categories": [
             "Old Republic",
-            "Scoundrel"
+            "Scoundrel",
+            "Tank"
         ],
         "ability_classes": [
             "AoE",
@@ -27347,7 +27591,9 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Bounty Hunters",
+            "Leader",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -27359,7 +27605,7 @@
             "Stealth",
             "Thermal Detonator"
         ],
-        "role": "Attacker",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50

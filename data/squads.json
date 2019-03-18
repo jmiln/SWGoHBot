@@ -1929,6 +1929,25 @@
         "level": 80,
         "phase": [
             {
+                "name": "DARTH REVAN",
+                "anchor": "darth-revan",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "",
+                        "url": "",
+                        "panic": "https://swgohevents.com/panic-farm/darth-revan",
+                        "team": [
+                            "CARTHONASI",
+                            "HK47",
+                            "JUHANI",
+                            "CANDEROUSORDO",
+                            "BASTILASHANDARK"
+                        ]
+                    }
+                ]
+            },
+            {
                 "name": "HAN'S MILLENIUM FALCON",
                 "anchor": "ot-falcon",
                 "squads": [
