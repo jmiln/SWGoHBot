@@ -17,9 +17,9 @@ class Character extends Command {
         const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
 
-        const zeta = client.emojis.find("name", "zeta");
-        const omega = client.emojis.find("name", "omega");
-        const abilityMatMK3 = client.emojis.find("name", "abilityMatMK3");
+        const zeta = client.emojis.find(e => e.name === "zeta");
+        const omega = client.emojis.find(e => e.name === "omega");
+        const abilityMatMK3 = client.emojis.find(e => e.name === "abilityMatMK3");
 
         // Make sure they gave a character to find
         if (searchName === "") {
