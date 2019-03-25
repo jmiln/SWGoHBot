@@ -115,7 +115,10 @@ module.exports = (client) => {
             }
 
             if (!player || !player.roster || !player.name) {
-                throw new Error("Broke getting player: " + inspect(player));
+                if (player.error) {
+                    throw new Error("Broke getting fastPlayer: " + player.error);
+                }
+                throw new Error("Broke getting fastPlayer: " + inspect(player));
             }
 
             // Just update the arena data, and not the updated time, so it can still update everything like normal

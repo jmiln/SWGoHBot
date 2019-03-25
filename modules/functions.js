@@ -77,7 +77,7 @@ module.exports = (client) => {
 
         // Check the names for an exact match
         for (let ix = 0; ix < charList.length; ix++) {
-            if (charList[ix].name.toLowerCase() === searchName) {
+            if (charList[ix].name.toLowerCase() === searchName || charList[ix].aliases.map(a => a.toLowerCase()).includes(searchName)) {
                 return [charList[ix]];
             }
         }
@@ -1212,7 +1212,12 @@ module.exports = (client) => {
 
             for (let ix = 0; ix < accountsToCheck.length; ix++) {
                 const acc = accountsToCheck[ix];
-                const player = await client.swgohAPI.fastPlayer(acc.allyCode);
+                let player;
+                try {
+                    player = await client.swgohAPI.fastPlayer(acc.allyCode);
+                } catch (e) {
+                    return console.log("Broke in getRanks: " + e.message);
+                }
                 if (!acc.lastCharRank) {
                     acc.lastCharRank = 0;
                     acc.lastCharClimb = 0;
