@@ -1591,13 +1591,18 @@ module.exports = class extends Language {
                 description: "All the needed utilities to manage your info in the bot.",
                 actions: [
                     {
+                        action: "View",
+                        actionDesc: "Show what your current settings are.",
+                        usage: ";userconf view",
+                        args: { }
+                    },
+                    {
                         action: "Ally Code",
                         actionDesc: "Set your ally code(s) to be able to use for the other commands",
-                        usage: ";userconf allycode <add|remove|view|makeprimary> <allycode>",
+                        usage: ";userconf allycode <add|remove|makeprimary> <allycode>",
                         args: {
                             "add": "Add an ally code to your profile",
                             "remove": "Remove an ally code from your profile",
-                            "view": "View the current settings that you've got",
                             "makePrimary": "Make the selected ally code your primary one. (The one that will be used when you use `me` in a command)"
                         }
                     },
