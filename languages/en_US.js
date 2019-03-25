@@ -1628,8 +1628,7 @@ module.exports = class extends Language {
                             "enableDMs": "Turn on DM alerts for just your primary allycode, all allycodes, or none",
                             "arena": "Choose which arena's alerts you want",
                             "payoutResult": "Send you a DM with your final payout result",
-                            "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off.",
-                            "view": "View your current settings"
+                            "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off."
                         }
                     }
                 ]
