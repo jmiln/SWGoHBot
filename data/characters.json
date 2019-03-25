@@ -1701,6 +1701,27 @@
         }
     },
     {
+        "name": "Darth Revan",
+        "uniqueName": "DARTHREVAN",
+        "aliases": [
+            "Darth Revan",
+            "DR"
+        ],
+        "nameVariant": [
+            "Darth Revan"
+        ],
+        "url": "http://swgoh.gg/characters/darth-revan/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithrevan.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Leader",
+            "Sith",
+            "Sith Empire"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Darth Sidious",
         "uniqueName": "DARTHSIDIOUS",
         "aliases": [
