@@ -3774,7 +3774,9 @@
         "name": "Jedi Knight Revan",
         "uniqueName": "JEDIKNIGHTREVAN",
         "aliases": [
-            "Jedi Knight Revan"
+            "Jedi Knight Revan",
+            "Jedi Revan",
+            "JKR"
         ],
         "nameVariant": [
             "Jedi Knight Revan"
