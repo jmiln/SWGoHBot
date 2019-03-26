@@ -692,6 +692,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_CONFLICTING: (args) => `You have conflicting arguments, the following are not compatible with each other. ${args}`,
             COMMAND_GUILDSEARCH_GEAR_SUM: "Char Gear Summary",
             COMMAND_GUILDSEARCH_STAR_SUM: "Char Star Lvl Summary",
+            COMMAND_GUILDSEARCH_INVALID_SORT: (opts) => `Invalid sort. Try one of these: \`${opts}\``,
             COMMAND_GUILDSEARCH_BAD_STAR: "You can only choose a star level from 1-7",
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Sorry, but \`${sortType}\` is not a supported sorting method. Only \`${filters.join(", ")}\` supported.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: "You need to enter a character to check for",
@@ -750,19 +751,22 @@ module.exports = class extends Language {
                     {
                         action: "Gear overview",
                         actionDesc: "Compare the count of upper gear levels across your entire guild",
-                        usage: ";guildsearch [user] -gear",
+                        usage: ";guildsearch [user] -gear [-sort gearLvl]",
                         args: {
                             "user": "The player who's guild you want to check. (me | userID | mention)",
-                            "-gear": "Tell it you want to see the gear levels (-g)"
+                            "-gear": "Tell it you want to see the gear levels (-g)",
+                            "-sort": "Choose one of the given gear lvls (9,10,11,12) to sort by"
                         }
                     },
                     {
                         action: "Character Star overview",
                         actionDesc: "Compare the count of upper star levels across your entire guild",
-                        usage: ";guildsearch [user] -stars",
+                        usage: ";guildsearch [user] -stars [-sort starLvl] [-ship]",
                         args: {
                             "user": "The player who's guild you want to check. (me | userID | mention)",
-                            "-stars": "Tell it you want to see the star levels (-star | -*)"
+                            "-stars": "Tell it you want to see the star levels (-star | -*)",
+                            "-sort": "Choose one of the given star lvls (10,11,12) to sort by",
+                            "-ship": "Show the star count for ships instead of characters (-s | -ship | -ships)"
                         }
                     },
                 ]

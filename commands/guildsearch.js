@@ -115,10 +115,16 @@ class GuildSearch extends Command {
         }
         
         // Check for conflicting flags/ subArgs
-        const checkArr = ["mods", "ships", "stat", "gear", "stars"];
-        const checkRes = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes("stat") ? options.subArgs[k] : null));
+        const checkArr = ["ships", "mods", "stat", "gear"];
+        const checkRes = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes(k) ? options.subArgs[k] : null));
         if (checkRes.filter(c => c).length > 1) {
             return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", client.codeBlock(checkArr.map(c => "-" + c).join("\n"))));
+        }
+        // Then check with stars instead of ships since those work together
+        const checkArr2 = ["stars", "mods", "stat", "gear"];
+        const checkRes2 = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes(k) ? options.subArgs[k] : null));
+        if (checkRes2.filter(c => c).length > 1) {
+            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", client.codeBlock(checkArr2.map(c => "-" + c).join("\n"))));
         }
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
@@ -127,6 +133,13 @@ class GuildSearch extends Command {
 
         if (options.flags.gear) {
             // List an overview of the guild's upper geared characters
+            let sortBy = null;
+            if (options.subArgs.sort) {
+                sortBy = options.subArgs.sort;
+                if (isNaN(sortBy) || ![9,10,11,12].includes(parseInt(sortBy))) {
+                    return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", "9,10,11,12"));
+                }
+            }
             let guild = null;
             try {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
@@ -186,7 +199,22 @@ class GuildSearch extends Command {
                 };
             });
 
-            tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+            switch (sortBy) {
+                case "9":
+                    tableIn = tableIn.sort((a, b) => a.nine < b.nine ? 1 : -1);
+                    break;
+                case "10":
+                    tableIn = tableIn.sort((a, b) => a.ten < b.ten ? 1 : -1);
+                    break;
+                case "11":
+                    tableIn = tableIn.sort((a, b) => a.eleven < b.eleven ? 1 : -1);
+                    break;
+                case "12":
+                    tableIn = tableIn.sort((a, b) => a.twelve < b.twelve ? 1 : -1);
+                    break;
+                default:
+                    tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+            }
 
             const tableOut = client.makeTable({
                 nine:  {value: "g9", startWith: "`[", endWith: "|", align: "right"},
@@ -222,6 +250,13 @@ class GuildSearch extends Command {
             }});
         } else if (options.flags.stars) {
             // List an overview of the guild's upper starred characters
+            let sortBy = null;
+            if (options.subArgs.sort) {
+                sortBy = options.subArgs.sort;
+                if (isNaN(sortBy) || ![5,6,7].includes(parseInt(sortBy))) {
+                    return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", "5,6,7"));
+                }
+            }
             let guild = null;
             try {
                 guild = await client.swgohAPI.guild(allyCode, null, cooldown);
@@ -260,7 +295,15 @@ class GuildSearch extends Command {
             }
             const starOut = {};
 
-            Object.keys(guildGG.roster).forEach(char => {
+            console.log(guildGG.roster["PHANTOM2"]);
+
+            // Object.keys(guildGG.roster).forEach(char => {
+            for (const char of Object.keys(guildGG.roster)) {
+                if (options.flags.ships && guildGG.roster[char][0].type === "CHARACTER") {
+                    continue;
+                } else if (!options.flags.ships && guildGG.roster[char][0].type === "SHIP") {
+                    continue;
+                }
                 guildGG.roster[char].forEach(p => {
                     starOut[p.player] = starOut[p.player] || {};
                     if (starOut[p.player][p.starLevel]) {
@@ -269,7 +312,7 @@ class GuildSearch extends Command {
                         starOut[p.player][p.starLevel] = 1;
                     }
                 });
-            });
+            }
 
             let tableIn = Object.keys(starOut).map(k => {
                 return {
@@ -280,7 +323,19 @@ class GuildSearch extends Command {
                 };
             });
 
-            tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+            switch (sortBy) {
+                case "5":
+                    tableIn = tableIn.sort((a, b) => a.five < b.five ? 1 : -1);
+                    break;
+                case "6":
+                    tableIn = tableIn.sort((a, b) => a.six < b.six ? 1 : -1);
+                    break;
+                case "7":
+                    tableIn = tableIn.sort((a, b) => a.seven < b.seven ? 1 : -1);
+                    break;
+                default: 
+                    tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+            }
 
             const tableOut = client.makeTable({
                 five:  {value: "5*", startWith: "`[", endWith: "|", align: "right"},
@@ -623,6 +678,7 @@ class GuildSearch extends Command {
             }
 
             // Get the list of people with that character
+            console.log(character.uniqueName);
             const guildChar = guildGG.roster[character.uniqueName];
 
             if (!guildChar || guildChar.length === 0 || (starLvl > 0 && !guildChar.filter(c => c.starLevel >= starLvl).length) || (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length)) {
