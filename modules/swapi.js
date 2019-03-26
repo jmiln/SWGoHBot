@@ -824,10 +824,6 @@ module.exports = (client) => {
                 });
             });
 
-
-            gg.members = guild.desc;
-            gg.id = guild.id;
-            gg.name = guild.name;
             gg.roster = roster;
             if (warnings) gg.warnings = warnings;
 
