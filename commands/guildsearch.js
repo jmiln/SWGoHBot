@@ -362,9 +362,10 @@ class GuildSearch extends Command {
             }
 
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            const header = options.flags.ships ? message.language.get("COMMAND_GUILDSEARCH_SHIP_STAR_SUM") : message.language.get("COMMAND_GUILDSEARCH_CHAR_STAR_SUM");
             return msg.edit({embed: {
                 author: {
-                    name: `${guild.name} ${message.language.get("COMMAND_GUILDSEARCH_STAR_SUM")}`
+                    name: guild.name + "'s " + header
                 },
                 fields: fields,
                 footer: footer
