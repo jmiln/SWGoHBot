@@ -688,6 +688,10 @@ module.exports = class extends Language {
             },
 
             // GuildSearch Command
+            COMMAND_GUILDSEARCH_SHIP_STATS: "Sorry, but I cannot get the stats for ships at this time.",
+            COMMAND_GUILDSEARCH_CONFLICTING: (args) => `You have conflicting arguments, the following are not compatible with each other. ${args}`,
+            COMMAND_GUILDSEARCH_GEAR_SUM: "Char Gear Summary",
+            COMMAND_GUILDSEARCH_STAR_SUM: "Char Star Lvl Summary",
             COMMAND_GUILDSEARCH_BAD_STAR: "You can only choose a star level from 1-7",
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Sorry, but \`${sortType}\` is not a supported sorting method. Only \`${filters.join(", ")}\` supported.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: "You need to enter a character to check for",
@@ -741,6 +745,24 @@ module.exports = class extends Language {
                             "user": "The player who's guild you want to check. (me | userID | mention)",
                             "-mods": "Tell it you want to see the mods. (-m | -mod)",
                             "-sort": "Sort by either speed, offense, or 6 (for 6* mods)"
+                        }
+                    },
+                    {
+                        action: "Gear overview",
+                        actionDesc: "Compare the count of upper gear levels across your entire guild",
+                        usage: ";guildsearch [user] -gear",
+                        args: {
+                            "user": "The player who's guild you want to check. (me | userID | mention)",
+                            "-gear": "Tell it you want to see the gear levels (-g)"
+                        }
+                    },
+                    {
+                        action: "Character Star overview",
+                        actionDesc: "Compare the count of upper star levels across your entire guild",
+                        usage: ";guildsearch [user] -stars",
+                        args: {
+                            "user": "The player who's guild you want to check. (me | userID | mention)",
+                            "-stars": "Tell it you want to see the star levels (-star | -*)"
                         }
                     },
                 ]

@@ -83,7 +83,7 @@ class GuildSearch extends Command {
 
             if (options.flags.ships && options.flags.stats) {
                 // TODO Lang this
-                return super.error(message, "Sorry, but I cannot get the stats for ships at this time.");
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_SHIP_STATS"));
             } else if (!searchChar) {
                 return super.error(message, "Missing character to search for.", {example: "guildsearch c3po"});
             }
@@ -118,7 +118,7 @@ class GuildSearch extends Command {
         const checkArr = ["mods", "ships", "stat", "gear", "stars"];
         const checkRes = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes("stat") ? options.subArgs[k] : null));
         if (checkRes.filter(c => c).length > 1) {
-            return super.error(message, "You have conflicting arguments, the following are not compatible with each other. " + client.codeBlock(checkArr.map(c => "-" + c).join("\n")));
+            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", client.codeBlock(checkArr.map(c => "-" + c).join("\n"))));
         }
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
@@ -158,7 +158,7 @@ class GuildSearch extends Command {
             try {
                 guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                console.log("ERROR(GS_GEAR) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
                 console.log("GuildID: " + guild.id);
                 return super.error(msg, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
@@ -215,7 +215,7 @@ class GuildSearch extends Command {
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
-                    name: guild.name + " Char Gear Summary"
+                    name: `${guild.name} ${message.language.get("COMMAND_GUILDSEARCH_GEAR_SUM")}`
                 },
                 fields: fields,
                 footer: footer
@@ -308,7 +308,7 @@ class GuildSearch extends Command {
             const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
-                    name: guild.name + " Char Star Lvl Summary"
+                    name: `${guild.name} ${message.language.get("COMMAND_GUILDSEARCH_STAR_SUM")}`
                 },
                 fields: fields,
                 footer: footer
