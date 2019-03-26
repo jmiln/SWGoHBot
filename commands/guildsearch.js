@@ -18,6 +18,12 @@ class GuildSearch extends Command {
                 mods: {
                     aliases: ["mod", "m"]
                 },
+                stars: {
+                    aliases: ["*", "star", "rarity"]
+                },
+                gear: {
+                    aliases: ["g"]
+                },
                 zetas: {
                     aliases: ["zeta", "z"]
                 }
@@ -69,7 +75,7 @@ class GuildSearch extends Command {
         let tmp;
         let character;
         let allyCode, searchChar, err;
-        if (!options.flags.mods) {
+        if (!options.flags.mods && !options.flags.stars && !options.flags.gear) {
             tmp = await super.getUserAndChar(message, args);
             allyCode = tmp.allyCode;
             searchChar = tmp.searchChar;
@@ -107,12 +113,471 @@ class GuildSearch extends Command {
         if (err) {
             return super.error(message, err);
         }
+        
+        // Check for conflicting flags/ subArgs
+        const checkArr = ["mods", "ships", "stat", "gear", "stars"];
+        const checkRes = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes("stat") ? options.subArgs[k] : null));
+        if (checkRes.filter(c => c).length > 1) {
+            return super.error(message, "You have conflicting arguments, the following are not compatible with each other. " + client.codeBlock(checkArr.map(c => "-" + c).join("\n")));
+        }
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
 
         const cooldown = client.getPlayerCooldown(message.author.id);
 
-        if (!options.subArgs.stat && !options.flags.mods) {
+        if (options.flags.gear) {
+            // List an overview of the guild's upper geared characters
+            let guild = null;
+            try {
+                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e);
+                return message.channel.send({embed: {
+                    author: { name: "Something Broke getting your guild's roster" },
+                    description: client.codeBlock(e) + "Please try again in a bit."
+                }});
+            }
+            let gRoster;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                const oldLen = guild.roster.length;
+                guild.roster = guild.roster.filter(m => m.allyCode !== null);
+                if (guild.roster.length !== oldLen) {
+                    guild.warnings = guild.warnings || [];
+                    guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
+                }
+                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
+            }
+
+            if (!gRoster.length) {
+                return msg.edit("I can't find any players in the requested guild.");
+            }
+            let guildGG;
+            try {
+                guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e);
+                // Spit out the gId so I can go check on why it's breaking
+                console.log("GuildID: " + guild.id);
+                return super.error(msg, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
+            }
+            const starOut = {};
+
+            Object.keys(guildGG.roster).forEach(char => {
+                guildGG.roster[char].forEach(p => {
+                    starOut[p.player] = starOut[p.player] || {};
+                    if (starOut[p.player][p.gearLevel]) {
+                        starOut[p.player][p.gearLevel] += 1;
+                    } else {
+                        starOut[p.player][p.gearLevel] = 1;
+                    }
+                });
+            });
+
+            let tableIn = Object.keys(starOut).map(k => {
+                return {
+                    nine: starOut[k]["9"] || 0,
+                    ten: starOut[k]["10"] || 0,
+                    eleven:  starOut[k]["11"] || 0,
+                    twelve: starOut[k]["12"] || 0,
+                    name: k 
+                };
+            });
+
+            tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+            const tableOut = client.makeTable({
+                nine:  {value: "g9", startWith: "`[", endWith: "|", align: "right"},
+                ten:   {value: "g10", endWith: "|", align: "right"},
+                eleven:   {value: "g11", endWith: "|", align: "right"},
+                twelve: {value: "g12", endWith: "]`", align: "right"},
+                name:  {value: "", align: "left"}
+            }, tableIn);
+
+            const outMsgArr = client.msgArray(tableOut, "\n", 900);
+            const fields = [];
+            outMsgArr.forEach(m => {
+                fields.push({
+                    name: "-",
+                    value: m
+                });
+            });
+
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
+
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            return msg.edit({embed: {
+                author: {
+                    name: guild.name + " Char Gear Summary"
+                },
+                fields: fields,
+                footer: footer
+            }});
+        } else if (options.flags.stars) {
+            // List an overview of the guild's upper starred characters
+            let guild = null;
+            try {
+                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e);
+                return message.channel.send({embed: {
+                    author: { name: "Something Broke getting your guild's roster" },
+                    description: client.codeBlock(e) + "Please try again in a bit."
+                }});
+            }
+            let gRoster;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                const oldLen = guild.roster.length;
+                guild.roster = guild.roster.filter(m => m.allyCode !== null);
+                if (guild.roster.length !== oldLen) {
+                    guild.warnings = guild.warnings || [];
+                    guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
+                }
+                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
+            }
+
+            if (!gRoster.length) {
+                return msg.edit("I can't find any players in the requested guild.");
+            }
+            let guildGG;
+            try {
+                guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e);
+                // Spit out the gId so I can go check on why it's breaking
+                console.log("GuildID: " + guild.id);
+                return super.error(msg, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
+            }
+            const starOut = {};
+
+            Object.keys(guildGG.roster).forEach(char => {
+                guildGG.roster[char].forEach(p => {
+                    starOut[p.player] = starOut[p.player] || {};
+                    if (starOut[p.player][p.starLevel]) {
+                        starOut[p.player][p.starLevel] += 1;
+                    } else {
+                        starOut[p.player][p.starLevel] = 1;
+                    }
+                });
+            });
+
+            let tableIn = Object.keys(starOut).map(k => {
+                return {
+                    five: starOut[k]["5"] || 0,
+                    six:  starOut[k]["6"] || 0,
+                    seven: starOut[k]["7"] || 0,
+                    name: k 
+                };
+            });
+
+            tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+            const tableOut = client.makeTable({
+                five:  {value: "5*", startWith: "`[", endWith: "|", align: "right"},
+                six:   {value: "6*", endWith: "|", align: "right"},
+                seven: {value: "7*", endWith: "]`", align: "right"},
+                name:  {value: "", align: "left"}
+            }, tableIn);
+ 
+            const outMsgArr = client.msgArray(tableOut, "\n", 900);
+            const fields = [];
+            outMsgArr.forEach(m => {
+                fields.push({
+                    name: "-",
+                    value: m
+                });
+            });
+
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
+
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            return msg.edit({embed: {
+                author: {
+                    name: guild.name + " Char Star Lvl Summary"
+                },
+                fields: fields,
+                footer: footer
+            }});
+        } else if (options.subArgs.stat !== null) {
+            // Looking for a stat
+            const outArr = [];
+
+            const checkableStats = { 
+                "Health": {
+                    aliases: ["HP"],
+                    short: "HP"
+                },   
+                "Protection": {
+                    aliases: ["Prot"],
+                    short: "Prot"
+                },   
+                "Speed": {
+                    aliases: ["spd"],
+                    short: "Spd"
+                },   
+                "Potency": {
+                    aliases: ["Pot"],
+                    short: "Pot"
+                },   
+                "Physical Critical Chance": {
+                    aliases: ["PCC", "CC", "Crit Chance", "Critical Chance", "Physical Crit Chance"], 
+                    short: "CC"
+                },   
+                "Special Critical Chance": {
+                    aliases: ["SCC", "Special Crit Chance"],
+                    short: "CC"
+                },   
+                "Critical Damage": {
+                    aliases: ["CD", "Crit Damage"],
+                    short: "CD"
+                },   
+                "Tenacity": {
+                    aliases: ["Ten"],
+                    short: "Ten"
+                },   
+                "Accuracy": {
+                    aliases: ["Acc"],
+                    short: "Acc"
+                },   
+                "Armor": {
+                    aliases: ["arm"],
+                    short: "Arm"
+                },   
+                "Resistance": {
+                    aliases: ["Res", "Resist"],
+                    short: "Res"
+                }       
+            }; 
+
+
+            let found = false;
+            let sortBy = options.subArgs.stat;
+            const stat = Object.keys(checkableStats).filter(s => s.toLowerCase().replace(/\s/gi, "") === sortBy.toLowerCase());
+            if (stat && stat.length) {
+                sortBy = stat[0];
+                found = true;
+            } else {
+                Object.keys(checkableStats).forEach(s => {
+                    if (checkableStats[s].aliases.find(c => c.toLowerCase().replace(" ", "") === sortBy.toLowerCase())) {
+                        sortBy = s;
+                        found = true;
+                        return;
+                    }
+                });
+            }
+
+            if (!found) {
+                return super.error(msg, "Not an acceptable stat to sort by. Try one of the following:" + client.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")), {edit: true, example: "guildsearch c3po -sort gp"});
+            }
+
+            let guild = null;
+            try {
+                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e);
+                return super.error(msg, client.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
+            }
+            let gRoster;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                return super.error(msg, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
+            }
+
+            if (!gRoster.length) {
+                return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
+            }
+            const gStats = await client.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
+
+            const sortedMembers = gStats.sort((a, b) => a.stats.final[sortBy] < b.stats.final[sortBy] ? 1 : -1);
+
+
+            sortedMembers.forEach( member => {
+                const stats = member.stats.final;
+                Object.keys(stats).forEach(s => {
+                    if (stats[s] % 1 !== 0) {
+                        // Probably a percentage
+                        stats[s] = (stats[s] * 100).toFixed(2) + "%";
+                    } else {
+                        stats[s] = stats[s].toLocaleString();
+                    }
+                });
+                stats.player = guild.roster.find(m => m.allyCode === member.allyCode).name;
+                stats.gp = member.unit.gp.toLocaleString();
+                stats.gear = member.unit.gear;
+                if (!stats.Protection) stats.Protection = 0;
+                outArr.push(stats);
+            });
+
+            const fields = []; 
+            if (!outArr.length) {
+                fields.push({
+                    name: character.name,
+                    value: message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER")
+                });
+            } else {
+                const header = {
+                    gear: {value: "⚙", startWith: "`[", endWith: "|", align: "right"},
+                    gp: {value: "GP", endWith: "|", align: "right"}
+                };
+                header[sortBy] = {value: checkableStats[sortBy].short, endWith: "]`", align: "right"};
+                header.player = {value:"", align: "left"};
+
+                const outTable = client.makeTable(header, outArr);
+
+                if (outTable.length) {
+                    const outMsgArr = client.msgArray(outTable, "\n", 900);
+                    outMsgArr.forEach((m, ix) => {
+                        const name = (ix === 0) ? message.language.get("COMMAND_GUILDSEARCH_SORTED_BY", character.name, sortBy) : message.language.get("BASE_CONT_STRING");
+                        fields.push({
+                            name: name,
+                            value: m
+                        });
+                    });
+                } else {
+                    fields.push({
+                        name: "-",
+                        value: message.language.get("BASE_SWGOH_GUILD_LOCKED_CHAR")
+                    });
+                }
+            }
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
+
+            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            return msg.edit({embed: {
+                author: {
+                    name: guild.name
+                },
+                fields: fields,
+                footer: footer
+            }});
+        } else if (options.flags.mods) {
+            // Give a general overview of important mods (6*, +15, +20 speed, +100 offense?)
+            const availableSorts = ["speed", "offense", "6", "name"];
+            const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
+            if (!availableSorts.includes(sortType)) {
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
+            }
+            let guild = null;
+            try {
+                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+            } catch (e) {
+                console.log("ERROR(GS) getting guild: " + e);
+                return super.error(message, client.codeBlock(e), {title: "Something Broke while getting your guild's roster", footer: "Please try again later"});
+            }
+            let gRoster;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                return super.error(msg, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
+            }
+
+            if (!gRoster.length) {
+                return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
+            }
+
+            let output = [];
+            for (let player of gRoster) {
+                try {
+                    player = await client.swgohAPI.player(player);
+                } catch (e) {
+                    return super.error(message, e.message);
+                }
+                const mods = {
+                    sixPip: 0,
+                    spd15: 0,
+                    spd20: 0,
+                    off100: 0,
+                    name: player.name
+                };
+
+                player.roster.forEach(c => {
+                    if (c.mods) {
+                        const six = c.mods.filter(p => p.pips === 6);
+                        if (six.length) {
+                            mods.sixPip += six.length;
+                        }
+                        c.mods.forEach(m => {
+                            const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 15);
+                            const off = m.secondaryStat.find(o => (o.unitStat === 41 || o.unitStat === "UNITSTATOFFENSE") && o.value >= 100);
+
+                            if (spd) {
+                                if (spd.value >= 20) {
+                                    mods.spd20 += 1;
+                                } else {
+                                    mods.spd15 += 1;
+                                }                             }
+                            if (off) mods.off100 += 1;
+                        });
+                    }
+                });
+                Object.keys(mods).forEach(k => {
+                    if (mods[k] === 0) mods[k] = "0";
+                });
+                output.push(mods);
+            }
+
+            // Sort by speed mods, offense mods, or 6* mods
+            if (options.subArgs.sort) {
+                const sortBy = options.subArgs.sort.toLowerCase();
+                if (sortBy === "offense") {
+                    // Sort by # of good offense mods
+                    output = output.sort((m, n) => parseInt(m.off100) - parseInt(n.off100));
+                } else if (sortBy === "speed") {
+                    // Sort by # of good speed mods
+                    output = output.sort((m, n) => parseInt(m.spd20) - parseInt(n.spd20));
+                } else if (sortBy === "6") {
+                    // Sort by # of 6* mods
+                    output = output.sort((m, n) => parseInt(m.sixPip) - parseInt(n.sixPip));
+                }
+            }
+
+            const table = client.makeTable({
+                sixPip:{value: "6*", startWith: "`"},
+                spd15: {value: "15+"},
+                spd20: {value: "20+"},
+                off100:{value: "100+", endWith: "`"},
+                name:  {value: "", align: "left"}
+            }, output);
+            const header = [client.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
+
+            const fields = client.msgArray(header.concat(table), "\n", 900).map(m => {
+                return {name: "-", value: m};
+            });
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: client.codeBlock(options.defaults)
+                });
+            }
+
+            return msg.edit({embed: {
+                author: {name: message.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name)},
+                fields: fields
+            }});
+        } else {
             let guild = null;
             const availableSorts = ["gp", "gear", "name"];
             const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
@@ -358,270 +823,6 @@ class GuildSearch extends Command {
                 client.log("ERR", e);
                 console.log(fields);
             }
-        } else if (!options.flags.mods) {
-            // Looking for a stat
-            const outArr = [];
-
-            const checkableStats = { 
-                "Health": {
-                    aliases: ["HP"],
-                    short: "HP"
-                },   
-                "Protection": {
-                    aliases: ["Prot"],
-                    short: "Prot"
-                },   
-                "Speed": {
-                    aliases: ["spd"],
-                    short: "Spd"
-                },   
-                "Potency": {
-                    aliases: ["Pot"],
-                    short: "Pot"
-                },   
-                "Physical Critical Chance": {
-                    aliases: ["PCC", "CC", "Crit Chance", "Critical Chance", "Physical Crit Chance"], 
-                    short: "CC"
-                },   
-                "Special Critical Chance": {
-                    aliases: ["SCC", "Special Crit Chance"],
-                    short: "CC"
-                },   
-                "Critical Damage": {
-                    aliases: ["CD", "Crit Damage"],
-                    short: "CD"
-                },   
-                "Tenacity": {
-                    aliases: ["Ten"],
-                    short: "Ten"
-                },   
-                "Accuracy": {
-                    aliases: ["Acc"],
-                    short: "Acc"
-                },   
-                "Armor": {
-                    aliases: ["arm"],
-                    short: "Arm"
-                },   
-                "Resistance": {
-                    aliases: ["Res", "Resist"],
-                    short: "Res"
-                }       
-            }; 
-
-
-            let found = false;
-            let sortBy = options.subArgs.stat;
-            const stat = Object.keys(checkableStats).filter(s => s.toLowerCase().replace(/\s/gi, "") === sortBy.toLowerCase());
-            if (stat && stat.length) {
-                sortBy = stat[0];
-                found = true;
-            } else {
-                Object.keys(checkableStats).forEach(s => {
-                    if (checkableStats[s].aliases.find(c => c.toLowerCase().replace(" ", "") === sortBy.toLowerCase())) {
-                        sortBy = s;
-                        found = true;
-                        return;
-                    }
-                });
-            }
-
-            if (!found) {
-                return super.error(msg, "Not an acceptable stat to sort by. Try one of the following:" + client.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")), {edit: true, example: "guildsearch c3po -sort gp"});
-            }
-
-            let guild = null;
-            try {
-                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
-            } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
-                return super.error(msg, client.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
-            }
-            let gRoster;
-            if (!guild || !guild.roster || !guild.roster.length) {
-                return super.error(msg, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
-            } else {
-                msg.edit("Found guild `" + guild.name + "`!");
-                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
-            }
-
-            if (!gRoster.length) {
-                return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
-            }
-            const gStats = await client.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
-
-            const sortedMembers = gStats.sort((a, b) => a.stats.final[sortBy] < b.stats.final[sortBy] ? 1 : -1);
-
-
-            sortedMembers.forEach( member => {
-                const stats = member.stats.final;
-                Object.keys(stats).forEach(s => {
-                    if (stats[s] % 1 !== 0) {
-                        // Probably a percentage
-                        stats[s] = (stats[s] * 100).toFixed(2) + "%";
-                    } else {
-                        stats[s] = stats[s].toLocaleString();
-                    }
-                });
-                stats.player = guild.roster.find(m => m.allyCode === member.allyCode).name;
-                stats.gp = member.unit.gp.toLocaleString();
-                stats.gear = member.unit.gear;
-                if (!stats.Protection) stats.Protection = 0;
-                outArr.push(stats);
-            });
-
-            const fields = []; 
-            if (!outArr.length) {
-                fields.push({
-                    name: character.name,
-                    value: message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER")
-                });
-            } else {
-                const header = {
-                    gear: {value: "⚙", startWith: "`[", endWith: "|", align: "right"},
-                    gp: {value: "GP", endWith: "|", align: "right"}
-                };
-                header[sortBy] = {value: checkableStats[sortBy].short, endWith: "]`", align: "right"};
-                header.player = {value:"", align: "left"};
-
-                const outTable = client.makeTable(header, outArr);
-
-                if (outArr.length) {
-                    const outMsgArr = client.msgArray(outTable, "\n", 900);
-                    outMsgArr.forEach((m, ix) => {
-                        const name = (ix === 0) ? message.language.get("COMMAND_GUILDSEARCH_SORTED_BY", character.name, sortBy) : message.language.get("BASE_CONT_STRING");
-                        fields.push({
-                            name: name,
-                            value: m
-                        });
-                    });
-                } else {
-                    fields.push({
-                        name: "-",
-                        value: message.language.get("BASE_SWGOH_GUILD_LOCKED_CHAR")
-                    });
-                }
-            }
-            if (options.defaults) {
-                fields.push({
-                    name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
-                });
-            }
-
-            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
-                author: {
-                    name: guild.name
-                },
-                fields: fields,
-                footer: footer
-            }});
-        } else {
-            // Give a general overview of important mods (6*, +15, +20 speed, +100 offense?)
-            const availableSorts = ["speed", "offense", "6", "name"];
-            const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
-            if (!availableSorts.includes(sortType)) {
-                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
-            }
-            let guild = null;
-            try {
-                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
-            } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
-                return super.error(message, client.codeBlock(e), {title: "Something Broke while getting your guild's roster", footer: "Please try again later"});
-            }
-            let gRoster;
-            if (!guild || !guild.roster || !guild.roster.length) {
-                return super.error(msg, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
-            } else {
-                msg.edit("Found guild `" + guild.name + "`!");
-                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
-            }
-
-            if (!gRoster.length) {
-                return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
-            }
-
-            let output = [];
-            for (let player of gRoster) {
-                try {
-                    player = await client.swgohAPI.player(player);
-                } catch (e) {
-                    return super.error(message, e.message);
-                }
-                const mods = {
-                    sixPip: 0,
-                    spd15: 0,
-                    spd20: 0,
-                    off100: 0,
-                    name: player.name
-                };
-
-                player.roster.forEach(c => {
-                    if (c.mods) {
-                        const six = c.mods.filter(p => p.pips === 6);
-                        if (six.length) {
-                            mods.sixPip += six.length;
-                        }
-                        c.mods.forEach(m => {
-                            const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 15);
-                            const off = m.secondaryStat.find(o => (o.unitStat === 41 || o.unitStat === "UNITSTATOFFENSE") && o.value >= 100);
-
-                            if (spd) {
-                                if (spd.value >= 20) {
-                                    mods.spd20 += 1;
-                                } else {
-                                    mods.spd15 += 1;
-                                }                             }
-                            if (off) mods.off100 += 1;
-                        });
-                    }
-                });
-                Object.keys(mods).forEach(k => {
-                    if (mods[k] === 0) mods[k] = "0";
-                });
-                output.push(mods);
-            }
-
-            // Sort by speed mods, offense mods, or 6* mods
-            if (options.subArgs.sort) {
-                const sortBy = options.subArgs.sort.toLowerCase();
-                if (sortBy === "offense") {
-                    // Sort by # of good offense mods
-                    output = output.sort((m, n) => parseInt(m.off100) - parseInt(n.off100));
-                } else if (sortBy === "speed") {
-                    // Sort by # of good speed mods
-                    output = output.sort((m, n) => parseInt(m.spd20) - parseInt(n.spd20));
-                } else if (sortBy === "6") {
-                    // Sort by # of 6* mods
-                    output = output.sort((m, n) => parseInt(m.sixPip) - parseInt(n.sixPip));
-                }
-            }
-
-            const table = client.makeTable({
-                sixPip:{value: "6*", startWith: "`"},
-                spd15: {value: "15+"},
-                spd20: {value: "20+"},
-                off100:{value: "100+", endWith: "`"},
-                name:  {value: "", align: "left"}
-            }, output);
-            const header = [client.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
-
-            const fields = client.msgArray(header.concat(table), "\n", 900).map(m => {
-                return {name: "-", value: m};
-            });
-            if (options.defaults) {
-                fields.push({
-                    name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
-                });
-            }
-
-            return msg.edit({embed: {
-                author: {name: message.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name)},
-                fields: fields
-            }});
         }    
     }
 }
