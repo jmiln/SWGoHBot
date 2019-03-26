@@ -86,8 +86,7 @@
         "name": "B1 Battle Droid",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Mechanized Menace"
+                "type": "Intro P2 (Crystals/Packs)"
             }
         ]
     },
@@ -527,6 +526,15 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "9-A"
+            }
+        ]
+    },
+    {
+        "name": "Darth Revan",
+        "locations": [
+            {
+                "type": "Hero's Journey",
+                "name": "Scourge of the Old Republic"
             }
         ]
     },
