@@ -302,7 +302,7 @@ class GuildSearch extends Command {
 
             outArr.forEach(star => {
                 if (star >= starLvl) {
-                    const msgArr = client.msgArray(charOut[star], "\n", 900);
+                    const msgArr = client.msgArray(charOut[star], "\n", 1000);
                     msgArr.forEach((msg, ix) => {
                         const name = star === 0 ? message.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length) : message.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
                         fields.push({
@@ -319,26 +319,45 @@ class GuildSearch extends Command {
                 });
             }
             if (guild.warnings) {
+                let warn = guild.warnings.join("\n");
+                if (warn.length < 1024) {
+                    warn = warn.slice(0,1000) + "...";
+                }
                 fields.push({
                     name: "Guild Roster Warnings",
-                    value: guild.warnings.join("\n")
+                    value: warn
                 });
             }
             if (guildGG.warnings) {
+                let warn = guildGG.warnings.join("\n");
+                if (warn.length < 1024) {
+                    warn = warn.slice(0,1000) + "...";
+                }
                 fields.push({
                     name: "Guild Character Warnings",
-                    value: guildGG.warnings.join("\n")
+                    value: warn
                 });
             }
 
+            fields.forEach(f => {
+                if (f.value.length > 1000) {
+                    f.value = f.value.slice(0,1000) +  "...";
+                }
+            });
+
             const footer = client.updatedFooter(guildGG.updated, message, "guild", cooldown);
-            msg.edit({embed: {
-                author: {
-                    name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
-                },
-                fields: fields,
-                footer: footer
-            }});
+            try {
+                msg.edit({embed: {
+                    author: {
+                        name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
+                    },
+                    fields: fields,
+                    footer: footer
+                }});
+            } catch (e) {
+                client.log("ERR", e);
+                console.log(fields);
+            }
         } else if (!options.flags.mods) {
             // Looking for a stat
             const outArr = [];
