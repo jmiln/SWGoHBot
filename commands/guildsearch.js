@@ -253,8 +253,8 @@ class GuildSearch extends Command {
             let sortBy = null;
             if (options.subArgs.sort) {
                 sortBy = options.subArgs.sort;
-                if (isNaN(sortBy) || ![5,6,7].includes(parseInt(sortBy))) {
-                    return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", "5,6,7"));
+                if (isNaN(sortBy) || ![4,5,6,7].includes(parseInt(sortBy))) {
+                    return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", "4,5,6,7"));
                 }
             }
             let guild = null;
@@ -294,10 +294,6 @@ class GuildSearch extends Command {
                 return super.error(msg, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
             const starOut = {};
-
-            console.log(guildGG.roster["PHANTOM2"]);
-
-            // Object.keys(guildGG.roster).forEach(char => {
             for (const char of Object.keys(guildGG.roster)) {
                 if (options.flags.ships && guildGG.roster[char][0].type === "CHARACTER") {
                     continue;
@@ -316,6 +312,7 @@ class GuildSearch extends Command {
 
             let tableIn = Object.keys(starOut).map(k => {
                 return {
+                    four: starOut[k]["4"] || 0,
                     five: starOut[k]["5"] || 0,
                     six:  starOut[k]["6"] || 0,
                     seven: starOut[k]["7"] || 0,
@@ -324,6 +321,9 @@ class GuildSearch extends Command {
             });
 
             switch (sortBy) {
+                case "4":
+                    tableIn = tableIn.sort((a, b) => a.four < b.four ? 1 : -1);
+                    break;
                 case "5":
                     tableIn = tableIn.sort((a, b) => a.five < b.five ? 1 : -1);
                     break;
@@ -338,7 +338,8 @@ class GuildSearch extends Command {
             }
 
             const tableOut = client.makeTable({
-                five:  {value: "5*", startWith: "`[", endWith: "|", align: "right"},
+                four:  {value: "4*", startWith: "`[", endWith: "|", align: "right"},
+                five:  {value: "5*", endWith: "|", align: "right"},
                 six:   {value: "6*", endWith: "|", align: "right"},
                 seven: {value: "7*", endWith: "]`", align: "right"},
                 name:  {value: "", align: "left"}
