@@ -680,7 +680,6 @@ class GuildSearch extends Command {
             }
 
             // Get the list of people with that character
-            console.log(character.uniqueName);
             const guildChar = guildGG.roster[character.uniqueName];
 
             if (!guildChar || guildChar.length === 0 || (starLvl > 0 && !guildChar.filter(c => c.starLevel >= starLvl).length) || (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length)) {
