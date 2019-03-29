@@ -633,8 +633,7 @@
         "name": "Droideka",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Mechanized Menace II"
+                "type": "Intro P2 (Crystals/Packs)"
             }
         ]
     },
