@@ -50,9 +50,9 @@ class Need extends Command {
 
         let units = [];
         if (search) {
-            units = client.charLocs.filter(c => c.locations.filter(l => l.type === search).length);
-            units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type === search).length));
+            units = await getUnitsByName(searchChar);
         } else {
+            search = searchChar;
             units = await getUnits(searchChar);
         }
 
@@ -130,11 +130,32 @@ class Need extends Command {
 
         return message.channel.send({embed: {
             author: {
-                name: message.language.get("COMMAND_NEED_HEADER", player.name, searchChar.toProperCase())
+                name: message.language.get("COMMAND_NEED_HEADER", player.name, search.toProperCase())
             },
             description: desc,
             fields: fields
         }});
+
+        async function getUnitsByName(searchName) {
+            const search = searchName.replace(/[^\w\s]/g, "").replace(/s$/, "");  // Take out all alphanumeric characters and any s off the end
+            const searchReg = search.split(" ").map(s => `(?=.*${s.replace(/(\(|\))/g, "\\$1")})`).join(".*");
+            const query = new RegExp(`.*${searchReg}.*`, "gi");
+
+            let units = client.charLocs.filter(c => c.locations.filter(l => l.type.match(query)).length);
+            units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type.match(query)).length));
+            for (const c of units) {
+                // The char/ ship locations don't have the baseId so need to get those
+                let char = client.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                if (!char) {
+                    char = client.ships.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                }
+                if (!char) {
+                    continue;
+                }
+                c.baseId = char.uniqueName;
+            }
+            return units;
+        }
 
         async function getUnits(searchName) {
             let search = searchName.replace(/[^\w\s]/g, "").replace(/s$/, "");  // Take out all alphanumeric characters and any s off the end
@@ -142,8 +163,6 @@ class Need extends Command {
             if (search.toLowerCase() === "galactic war") search = "gw";
             if (search.includes("cantina") && search.includes("battle")) {
                 search = search.replace(/(battles|battle)/gi, "");
-            // } else if (search.includes("fleet") && (search.includes("store") || search.includes("shop"))) {
-            //     search = search.replace(/(store|shop)/gi, "shipment");
             } else {
                 search = search
                     .replace(/(store|shop|shipment)/g, "shop|store|shipment")
