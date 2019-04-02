@@ -111,6 +111,7 @@ class UserConf extends Command {
                         if (a.allyCode === allyCode) a.primary = true;
                         return a;
                     });
+                    await client.userReg.updateUser(userID, user);
                     return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim.name, prim.allyCode, acc.name, acc.allyCode));
                 }
                 break;

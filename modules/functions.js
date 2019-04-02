@@ -1210,13 +1210,13 @@ module.exports = (client) => {
 
             // If they don't want any alerts
             if (!user.arenaAlert || user.arenaAlert.enableRankDMs === "off") continue;
-            let accountsToCheck = JSON.parse(JSON.stringify(user.accounts));
-            if ((user.accounts.length > 1 && patron.amount_cents < 500) || user.arenaAlert.enableRankDMs === "primary") {
-                accountsToCheck = accountsToCheck.filter(a => a.primary);
-            }
+            const accountsToCheck = JSON.parse(JSON.stringify(user.accounts));
 
             for (let ix = 0; ix < accountsToCheck.length; ix++) {
                 const acc = accountsToCheck[ix];
+                if (((user.accounts.length > 1 && patron.amount_cents < 500) || user.arenaAlert.enableRankDMs === "primary") && !acc.primary) {
+                    continue;
+                }
                 let player;
                 try {
                     player = await client.swgohAPI.fastPlayer(acc.allyCode);
@@ -1240,36 +1240,42 @@ module.exports = (client) => {
                         if (then.unix() < now.unix()) {
                             then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(18, "h");
                         }
-
                         const minTil =  parseInt((then-now)/60/1000);
-                        if (user.arenaAlert.payoutWarning > 0) {
-                            if (user.arenaAlert.payoutWarning  === minTil) {
-                                client.users.get(patron.discordID).send({embed: {
-                                    author: {name: "Arena Payout Alert"},
-                                    description: `${player.name}'s character arena payout is in **${minTil}** minutes!`,
+                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                        
+                        const pUser = client.users.get(patron.discordID);
+                        if (pUser) {
+                            if (user.arenaAlert.payoutWarning > 0) {
+                                if (user.arenaAlert.payoutWarning  === minTil) {
+                                    pUser.send({embed: {
+                                        author: {name: "Arena Payout Alert"},
+                                        description: `${player.name}'s character arena payout is in **${minTil}** minutes!`,
+                                        color: 0x00FF00,
+                                        footer: {
+                                            text: payoutTime
+                                        }
+                                    }});
+                                }
+                            } 
+                            if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
+                                pUser.send({embed: {
+                                    author: {name: "Character arena"},
+                                    description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
                                     color: 0x00FF00
                                 }});
                             }
-                        } 
-                        if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                            client.users.get(patron.discordID).send({embed: {
-                                author: {name: "Character arena"},
-                                description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
-                                color: 0x00FF00
-                            }});
-                        }
 
-                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
-                        if (player.arena.char.rank > acc.lastCharRank) {
-                            // DM user that they dropped
-                            client.users.get(patron.discordID).send({embed: {
-                                author: {name: "Character Arena"},
-                                description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
-                                color: 0xff0000,
-                                footer: {
-                                    text: payoutTime
-                                }
-                            }});
+                            if (player.arena.char.rank > acc.lastCharRank) {
+                                // DM user that they dropped
+                                pUser.send({embed: {
+                                    author: {name: "Character Arena"},
+                                    description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
+                                    color: 0xff0000,
+                                    footer: {
+                                        text: payoutTime
+                                    }
+                                }});
+                            }
                         }
                     }
                     acc.lastCharClimb = acc.lastCharClimb ? (player.arena.char.rank < acc.lastCharRank ? player.arena.char.rank : acc.lastCharClimb) : player.arena.char.rank;
