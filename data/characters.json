@@ -1719,7 +1719,22 @@
             "Sith",
             "Sith Empire"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Darth Sidious",

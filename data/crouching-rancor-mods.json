@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2019-03-25 20:00:01.000000",
+        "date": "2019-04-01 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -579,7 +579,7 @@
             "cross": "Protection",
             "short": "ep",
             "families": "sith ; empire",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Emperor Palpatine",
@@ -595,7 +595,7 @@
             "cross": "Potency",
             "short": "ep",
             "families": "sith ; empire",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Ewok Elder",
@@ -1459,7 +1459,7 @@
             "cross": "Protection",
             "short": "rg",
             "families": "empire",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Savage Opress",
@@ -1842,7 +1842,7 @@
             "circle": "Protection",
             "cross": "Protection / Potency",
             "short": "st",
-            "families": "sith",
+            "families": "sith ; sith empire",
             "crew": "0"
         },
         {
@@ -1874,7 +1874,7 @@
             "circle": "Protection",
             "cross": "Offense / Potency",
             "short": "sa",
-            "families": "sith",
+            "families": "sith ; sith empire",
             "crew": "1"
         },
         {
@@ -2981,8 +2981,8 @@
             "circle": "Health",
             "cross": "Offense",
             "short": "sm",
-            "families": "sith",
-            "crew": "0"
+            "families": "sith ; sith empire",
+            "crew": "1"
         },
         {
             "name": "Sith Marauder DN Lead",
@@ -2997,8 +2997,8 @@
             "circle": "Health",
             "cross": "Offense",
             "short": "sm",
-            "families": "sith",
-            "crew": "0"
+            "families": "sith ; sith empire",
+            "crew": "1"
         },
         {
             "name": "Darth Sion",
@@ -3397,7 +3397,7 @@
             "circle": "Protection",
             "cross": "Potency / Protection",
             "short": "bsf",
-            "families": "sith ; old republic",
+            "families": "sith ; old republic ; sith empire",
             "crew": "0"
         },
         {
@@ -3478,6 +3478,22 @@
             "cross": "Offense / Protection",
             "short": "",
             "families": "droid ; separatist",
+            "crew": "0"
+        },
+        {
+            "name": "Darth Revan",
+            "cname": "Darth Revan",
+            "set1": "SPE",
+            "set2": "POT",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "",
+            "families": "sith empire ; sith",
             "crew": "0"
         }
     ]
