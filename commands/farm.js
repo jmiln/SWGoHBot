@@ -60,6 +60,7 @@ class Farm extends Command {
         for (const mis of lookupList) {
             let out = "";
             const mission = mis.missionIdentifier;
+            if (mission.campaignMapId === "PRELUDE") continue;
             const battle = await client.swgohAPI.battles(mission.campaignId);
             const found = battle[0].campaignMapList.find(c => c.id === mission.campaignMapId);
             out += parseInt(found.id.replace(/[^\d]/g, ""));
