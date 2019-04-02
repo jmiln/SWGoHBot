@@ -50,7 +50,7 @@ class Need extends Command {
 
         let units = [];
         if (search) {
-            units = await getUnitsByName(searchChar);
+            units = await getUnitsExact(search);
         } else {
             search = searchChar;
             units = await getUnits(searchChar);
@@ -66,7 +66,11 @@ class Need extends Command {
         for (const unit of units) {
             // Go through the found characters and check them against the player's roster
             let u = player.roster.find(c => c.defId === unit.baseId);
-            if (!u) continue;
+            if (!u) {
+                u = {};
+                u.rarity = 0;
+                u.nameKey = unit.name;
+            }
             if (u.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[u.rarity];
             u = await client.swgohAPI.langChar(u, message.guildSettings.swgohLanguage);
@@ -80,7 +84,7 @@ class Need extends Command {
                 // It's a ship
                 outShips.push({
                     rarity: u.rarity,
-                    name: u.nameKey
+                    name: u.nameKey 
                 });
             } else {
                 // It's neither and shouldn't be there
@@ -92,7 +96,7 @@ class Need extends Command {
 
         const fields = [];
         if (outChars.length) {
-            outChars = outChars.map(c => `\`${c.rarity}*\` ${c.name}`);
+            outChars = outChars.map(c => `\`${c.rarity}*\` ${c.rarity ? c.name : "~~" + c.name + "~~"}`);
             const msgArr = client.msgArray(outChars, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
@@ -104,7 +108,7 @@ class Need extends Command {
             });
         }
         if (outShips.length) {
-            outShips = outShips.map(s => `\`${s.rarity}*\` ${s.name}`);
+            outShips = outShips.map(s => `\`${s.rarity}*\` ${s.rarity ? s.name : "~~" + s.name + "~~"}`);
             const msgArr = client.msgArray(outShips, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
@@ -136,13 +140,9 @@ class Need extends Command {
             fields: fields
         }});
 
-        async function getUnitsByName(searchName) {
-            const search = searchName.replace(/[^\w\s]/g, "").replace(/s$/, "");  // Take out all alphanumeric characters and any s off the end
-            const searchReg = search.split(" ").map(s => `(?=.*${s.replace(/(\(|\))/g, "\\$1")})`).join(".*");
-            const query = new RegExp(`.*${searchReg}.*`, "gi");
-
-            let units = client.charLocs.filter(c => c.locations.filter(l => l.type.match(query)).length);
-            units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type.match(query)).length));
+        async function getUnitsExact(searchName) {
+            let units = client.charLocs.filter(c => c.locations.filter(l => l.type === searchName).length);
+            units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type === searchName).length));
             for (const c of units) {
                 // The char/ ship locations don't have the baseId so need to get those
                 let char = client.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
