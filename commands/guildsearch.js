@@ -68,7 +68,7 @@ class GuildSearch extends Command {
         if (!options.flags.mods && args.length && !isNaN(parseInt(args[args.length-1])) && /^\d+$/.test(args[args.length-1].toString())) {
             starLvl = parseInt(args.pop());
             if (starLvl < 0 || starLvl > 7) {
-                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"), {example: "guildsearch c3po 7"});
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"), {example: "guildsearch c3po 7\n;guildsearch falcon -s 7"});
             }
         }
         
@@ -85,13 +85,13 @@ class GuildSearch extends Command {
                 // TODO Lang this
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_SHIP_STATS"));
             } else if (!searchChar) {
-                return super.error(message, "Missing character to search for.", {example: "guildsearch c3po"});
+                return super.error(message, "Missing character to search for.", {example: "guildsearch c3po\n;guildsearch falcon -s"});
             }
             
             const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
             
             if (chars.length === 0) {
-                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar), {example: "guildsearch c3po"});
+                return super.error(message, message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar), {example: "guildsearch c3po\n;guildsearch falcon -s"});
             } else if (chars.length > 1) {
                 const charL = [];
                 const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
