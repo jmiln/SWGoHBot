@@ -142,7 +142,7 @@ const init = async () => {
 
     // Reload any patrons
     await client.reloadPatrons();
-    setInterval(client.reloadPatrons,  15 * 60 * 1000);   // Then every 15 min after
+    setInterval(client.reloadPatrons,  1 * 60 * 1000);   // Then every min after
 
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
