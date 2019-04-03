@@ -39,7 +39,7 @@ class Register extends Command {
             user.id = userID;
         } else if (user.accounts.find(a => a.allyCode === allyCode && a.primary)) {
             // This ally code is already registered & primary
-            return message.channel.send(message.language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
+            return super.error(message, message.language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
         } else if (user.accounts.find(a => a.allyCode === allyCode && !a.primary)) {
             // This ally code is already registered but not primary, so just swap it over
             user.accounts = user.accounts.map(a => {
@@ -49,7 +49,15 @@ class Register extends Command {
             });
             user = await client.userReg.updateUser(userID, user);
             const u = user.accounts.find(a => a.primary);
-            return message.channel.send(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
+            return super.success(message, 
+                client.codeBlock(message.language.get(
+                    "COMMAND_REGISTER_SUCCESS_DESC", 
+                    u, 
+                    u.allyCode.toString().match(/\d{3}/g).join("-"), 
+                    u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                ), "asciiDoc"), {
+                    title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name)
+                });
         } else {
             // They're registered with a different ally code, so turn off all the other primaries
             user.accounts = user.accounts.map(a => {

@@ -136,7 +136,10 @@ class Command {
                     throw new Error("Can't edit someone else's message");
                 }
                 return message.edit({embed: {
-                    author: {name: title},
+                    author: {
+                        name: title,
+                        icon_url: options.iconURL || null
+                    },
                     description: out,
                     color: color,
                     footer: {
@@ -147,7 +150,10 @@ class Command {
                 console.log("base/Command Error: " + e.message);
                 console.log("base/Command Message: " + message.content);
                 return message.channel.send({embed: {
-                    author: {name: title},
+                    author: {
+                        name: title,
+                        icon_url: options.iconURL || null
+                    },
                     description: out,
                     color: color,
                     footer: {
@@ -157,7 +163,10 @@ class Command {
             }
         } else {
             return message.channel.send({embed: {
-                author: {name: title},
+                author: {
+                    name: title,
+                    icon_url: options.iconURL || null
+                },
                 description: out,
                 color: color,
                 footer: {

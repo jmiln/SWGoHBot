@@ -77,7 +77,15 @@ class UserConf extends Command {
                                     [allyCode, userID]
                                 ]);
                                 await client.userReg.updateUser(userID, user);
-                                return super.success(message, message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
+                                return super.success(message, 
+                                    client.codeBlock(message.language.get(
+                                        "COMMAND_REGISTER_SUCCESS_DESC", 
+                                        u, 
+                                        u.allyCode.toString().match(/\d{3}/g).join("-"), 
+                                        u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                                    ), "asciiDoc"), {
+                                        title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name)
+                                    });
                             }
                         });
                     } catch (e) {

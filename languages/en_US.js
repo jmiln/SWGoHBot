@@ -1202,7 +1202,13 @@ module.exports = class extends Language {
             COMMAND_REGISTER_ADD_NO_SERVER: "You can only add users that are in your server.",
             COMMAND_REGISTER_PLEASE_WAIT: "Please wait while I sync your data.",
             COMMAND_REGISTER_FAILURE: "Registration failed, please make sure your ally code is correct.",
-            COMMAND_REGISTER_SUCCESS: (user) => `Registration for \`${user}\` successful!`,
+            COMMAND_REGISTER_SUCCESS_HEADER: (user) => `Registration for ${user} successful!`,
+            COMMAND_REGISTER_SUCCESS_DESC: (user, allyCode, gp) => [
+                `Allycode :: ${allyCode}`,
+                `Guild    :: ${user.guild || "N/A"}`,
+                `GP       :: ${gp}`,
+                `Level    :: ${user.level}`
+            ].join("\n"),
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
                 actions: [
