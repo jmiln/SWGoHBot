@@ -1243,7 +1243,7 @@ module.exports = (client) => {
                         const minTil =  parseInt((then-now)/60/1000);
                         const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
                         
-                        const pUser = client.users.get(patron.discordID);
+                        const pUser = await client.fetchUser(patron.discordID);
                         if (pUser) {
                             if (user.arenaAlert.payoutWarning > 0) {
                                 if (user.arenaAlert.payoutWarning  === minTil) {
@@ -1289,34 +1289,37 @@ module.exports = (client) => {
                         }
 
                         const minTil =  parseInt((then-now)/60/1000);
-                        if (user.arenaAlert.payoutWarning > 0) {
-                            if (user.arenaAlert.payoutWarning  === minTil) {
-                                client.users.get(patron.discordID).send({embed: {
-                                    author: {name: "Arena Payout Alert"},
-                                    description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
+                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                        const pUser = await client.fetchUser(patron.discordID);
+                        if (pUser) {
+                            if (user.arenaAlert.payoutWarning > 0) {
+                                if (user.arenaAlert.payoutWarning  === minTil) {
+                                    pUser.send({embed: {
+                                        author: {name: "Arena Payout Alert"},
+                                        description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
+                                        color: 0x00FF00
+                                    }});
+                                }
+                            }
+
+                            if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
+                                pUser.send({embed: {
+                                    author: {name: "Fleet arena"},
+                                    description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
                                     color: 0x00FF00
                                 }});
                             }
-                        }
 
-                        if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                            client.users.get(patron.discordID).send({embed: {
-                                author: {name: "Fleet arena"},
-                                description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
-                                color: 0x00FF00
-                            }});
-                        }
-
-                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
-                        if (player.arena.ship.rank > acc.lastShipRank) {
-                            client.users.get(patron.discordID).send({embed: {
-                                author: {name: "Fleet Arena"},
-                                description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
-                                color: 0xff0000,
-                                footer: {
-                                    text: payoutTime
-                                }
-                            }});
+                            if (player.arena.ship.rank > acc.lastShipRank) {
+                                pUser.send({embed: {
+                                    author: {name: "Fleet Arena"},
+                                    description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
+                                    color: 0xff0000,
+                                    footer: {
+                                        text: payoutTime
+                                    }
+                                }});
+                            }
                         }
                     }
                     acc.lastShipClimb = acc.lastShipClimb ? (player.arena.ship.rank < acc.lastShipRank ? player.arena.ship.rank : acc.lastShipClimb) : player.arena.ship.rank;
