@@ -172,22 +172,22 @@ class Shardtimes extends Command {
             }
             // Make sure there are times to copy from
             if (!Object.keys(shardTimes).length) {
-                return super.error(message, "You don't have any times here to copy from");
+                return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_NO_SOURCE"));
             }
             // Check and make sure the destination channel exists/ the bot has permissions to see/ send there
             let destChan = message.guild.channels.find(c => c.name === userID);
             if (!destChan) {
                 destChan = message.guild.channels.get(userID.replace(/[^0-9]/g, ""));
                 if (!destChan) {
-                    return super.error(message, "Cannot find a match for `" + userID + "`");
+                    return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_NO_DEST", userID));
                 }
             } 
             if (!destChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                return super.error(message, "I don't have permission to view/send messages in <#" + destChan.id + ">");
+                return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChan.id));
             }
 
             if (message.channel.id === destChan.id) {
-                return super.error(message, "You can't copy to/from the same channel");
+                return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_SAME_CHAN"));
             }
 
             const destShardID = `${message.guild.id}-${destChan.id}`;
@@ -200,7 +200,7 @@ class Shardtimes extends Command {
                 // If there's no shard info in the destination channel
                 await client.database.models.shardtimes.create({ id: destShardID, times: shardTimes })
                     .then(() => {
-                        return message.channel.send("Shard info copied to <#" + destChan.id + ">");
+                        return message.channel.send(message.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id));
                     })
                     .catch((err) => {
                         return super.error(message, err.message);
@@ -211,16 +211,15 @@ class Shardtimes extends Command {
                     .then(isLen => isLen);
                 if (destHasTimes) {
                     // Of if there is shard info there with listings
-                    return super.error(message, "Sorry, but the destination channel already has some shard info listed");
+                    return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_DEST_FULL"));
                 } else {
                     // Or if there is shard info there, but no listings
                     await client.database.models.shardtimes.update({times: shardTimes}, {where: {id: destShardID}})
                         .then(() => {
-                            return message.channel.send("Shard info copied to <#" + destChan.id + ">");
+                            return message.channel.send(message.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id));
                         })
                         .catch(() => {
-                            return super.error(message, "Something broke while trying to copy your shard settings. Please try again");
-                            // return super.error(message, message.language.get("COMMAND_SHARDTIMES_REM_FAIL"));
+                            return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
                         });
                 }
             }
