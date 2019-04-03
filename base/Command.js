@@ -104,13 +104,31 @@ class Command {
         if (!message || !message.channel) throw new Error("Missing message");
         if (!err) throw new Error("Missing error message");
         if (!options) options = {};
-        const title = options.title || "Error";
-        const footer = options.footer || "";
-        const color = options.color || 0xe01414;
+        options.title = options.title || "Error";
+        options.color = options.color || 0xe01414;
         if (options.example) {
             const prefix = message.guildSettings ? message.guildSettings.prefix : ";";
             err += `\n\n**Example:**${message.client.codeBlock(prefix + options.example)}`;
         }
+        await this.embed(message, err, options);
+    }
+
+    async success(message, out, options) {
+        if (!message || !message.channel) throw new Error("Missing message");
+        if (!out) throw new Error("Missing outgoing success message");
+        if (!options) options = {};
+        options.title = options.title || "Success!";
+        options.color = options.color || 0x00ff00;
+        await this.embed(message, out, options);
+    }
+
+    async embed(message, out, options) {
+        if (!message || !message.channel) throw new Error("Missing message");
+        if (!out) throw new Error("Missing outgoing message");
+        if (!options) options = {};
+        const title = options.title || "TITLE HERE";
+        const footer = options.footer || "";
+        const color = options.color;
         if (options.edit) {
             try {
                 if (message.author.id !== message.client.user.id) {
@@ -119,7 +137,7 @@ class Command {
                 }
                 return message.edit({embed: {
                     author: {name: title},
-                    description: err,
+                    description: out,
                     color: color,
                     footer: {
                         text: footer
@@ -130,7 +148,7 @@ class Command {
                 console.log("base/Command Message: " + message.content);
                 return message.channel.send({embed: {
                     author: {name: title},
-                    description: err,
+                    description: out,
                     color: color,
                     footer: {
                         text: footer
@@ -140,7 +158,7 @@ class Command {
         } else {
             return message.channel.send({embed: {
                 author: {name: title},
-                description: err,
+                description: out,
                 color: color,
                 footer: {
                     text: footer

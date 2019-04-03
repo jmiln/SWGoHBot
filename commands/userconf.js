@@ -31,6 +31,7 @@ class UserConf extends Command {
 
         let user = await client.userReg.getUser(userID); // eslint-disable-line no-unused-vars 
         switch (target) {
+            case "allycodes":
             case "allycode": {
                 // Allycode   -> add/remove/makePrimary
                 let allyCode;
@@ -52,20 +53,20 @@ class UserConf extends Command {
                 if (action === "add") {
                     // Add to the list of ally codes, if the first, make it the primary
                     if (user && user.accounts && user.accounts.find(a => a.allyCode === allyCode)) {
-                        return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
+                        return super.error(message, message.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
     
                     // Cap the ally codes at 10, if they have even that many
                     // accounts, they already have too much free time
                     if (user.accounts.length >= 10) {
-                        return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
+                        return super.error(message, message.language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
                     }
 
                     // Sync up their swgoh account
                     try {
                         await client.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
                             if (!u) {
-                                super.error(message, (message.language.get("COMMAND_REGISTER_FAILURE")));
+                                super.error(message, message.language.get("COMMAND_REGISTER_FAILURE"));
                             } else {
                                 user.accounts.push({
                                     allyCode: allyCode,
@@ -76,7 +77,7 @@ class UserConf extends Command {
                                     [allyCode, userID]
                                 ]);
                                 await client.userReg.updateUser(userID, user);
-                                return message.channel.send(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
+                                return super.success(message, message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
                             }
                         });
                     } catch (e) {
@@ -87,7 +88,7 @@ class UserConf extends Command {
                     // Remove from the list, if the chosen one was the primary, set the 1st 
                     const acc = user.accounts.find(a => a.allyCode === allyCode);
                     if (!acc) {
-                        return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
+                        return super.error(message, message.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
                     // Filter out the one(s) that match the specified allycode
                     user.accounts = user.accounts.filter(a => a.allyCode !== acc.allyCode);
@@ -96,15 +97,15 @@ class UserConf extends Command {
                         user.accounts[0].primary = true;
                     }
                     await client.userReg.updateUser(userID, user);
-                    return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode));
+                    return super.success(message, message.language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode));
                 } else if (action === "makeprimary") {
                     // Set the selected ally code the primary one
                     const acc = user.accounts.find(a => a.allyCode === allyCode);
                     const prim = user.accounts.find(a => a.primary);
                     if (!acc) {
-                        return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
+                        return super.error(message, message.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     } else if (acc.primary) {
-                        return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY"));
+                        return super.error(message, message.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY"));
                     }
                     user.accounts = user.accounts.map(a => {
                         if (a.primary) a.primary = false;
@@ -112,7 +113,7 @@ class UserConf extends Command {
                         return a;
                     });
                     await client.userReg.updateUser(userID, user);
-                    return message.channel.send(message.language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim.name, prim.allyCode, acc.name, acc.allyCode));
+                    return super.success(message, message.language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim.name, prim.allyCode, acc.name, acc.allyCode));
                 }
                 break;
             }
