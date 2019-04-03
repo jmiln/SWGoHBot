@@ -1412,6 +1412,13 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_REM_SUCCESS: "User successfully removed!",
             COMMAND_SHARDTIMES_REM_FAIL: "Something went wrong when removing this user. Please try again.",
             COMMAND_SHARDTIMES_REM_MISSING: "Sorry, but that user does not seem to be here.",
+            COMMAND_SHARDTIMES_COPY_NO_SOURCE: "This channel doesn't have any shard times to copy from.",
+            COMMAND_SHARDTIMES_COPY_NO_DEST: (input) => `Cannot find a match for \`${input}\``,
+            COMMAND_SHARDTIMES_COPY_NO_PERMS: (inChan) => `I don't have permission to view/send messages in <#${inChan}>`,
+            COMMAND_SHARDTIMES_COPY_SAME_CHAN: "You can't copy to/from the same channel",
+            COMMAND_SHARDTIMES_COPY_DEST_FULL: "Sorry, but the destination channel already has some shard info listed",
+            COMMAND_SHARDTIMES_COPY_BROKE: "Something broke while trying to copy your shard settings. Please try again",
+            COMMAND_SHARDTIMES_COPY_SUCCESS: (dest) => `Shard info copied to <#${dest}>`,
             COMMAND_SHARDTIMES_SHARD_HEADER: "Shard payouts in:",
             COMMAND_SHARDTIMES_HELP: {
                 description: "Lists the time until the payouts of anyone registered.",
@@ -1433,6 +1440,14 @@ module.exports = class extends Language {
                         usage: ";shardtimes remove <user>",
                         args: {
                             "user": "The person you're removing. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Copy",
+                        actionDesc: "Copy the list of times from one channel to another",
+                        usage: ";shardtimes copy <newChannel>",
+                        args: {
+                            "newChannel": "The channel you want to copy the times to"
                         }
                     },
                     {
