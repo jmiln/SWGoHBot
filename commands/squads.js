@@ -60,7 +60,10 @@ class Squads extends Command {
                     } else {
                         let tmp = p.team;
                         if (tmp === tmp.toUpperCase()) {
-                            const char = client.characters.find(c => c.uniqueName === tmp);
+                            let char = client.characters.find(c => c.uniqueName === tmp);
+                            if (!char) {
+                                char = client.ships.find(c => c.uniqueName === tmp);
+                            }
                             tmp = char.name;
                         }
                         return "`" + (ix + 1) + "`"+ ": " + tmp.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT").trim();
@@ -197,9 +200,13 @@ class Squads extends Command {
                 characters.forEach(c => {
                     try {
                         if (!ships) {
-                            outStr += client.characters.filter(char => char.uniqueName === c.split(":")[0])[0].name + "\n";
+                            let char = client.characters.find(char => char.uniqueName === c.split(":")[0]);
+                            if (!char) {
+                                char = client.ships.find(ship => ship.uniqueName === c.split(":")[0]);
+                            }
+                            outStr += char.name + "\n";
                         } else {
-                            outStr += client.ships.filter(ship => ship.uniqueName === c.split(":")[0])[0].name + "\n";
+                            outStr += client.ships.find(ship => ship.uniqueName === c.split(":")[0]).name + "\n";
                         }
                     } catch (e) {
                         console.log("Squad broke: " + c + ": " + e);

@@ -81,7 +81,16 @@ class Register extends Command {
                                 await client.swgohAPI.register([
                                     [allyCode, userID]
                                 ]);
-                                await msg.edit(message.language.get("COMMAND_REGISTER_SUCCESS", u.name));
+                                return super.success(msg, 
+                                    client.codeBlock(message.language.get(
+                                        "COMMAND_REGISTER_SUCCESS_DESC", 
+                                        u, 
+                                        u.allyCode.toString().match(/\d{3}/g).join("-"), 
+                                        u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                                    ), "asciiDoc"), {
+                                        title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name),
+                                        edit: true
+                                    });
                             })
                             .catch(e => {
                                 client.log("REGISTER", "Broke while trying to link new user: " + e);
