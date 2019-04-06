@@ -42,7 +42,8 @@ class Need extends Command {
         const staticMatches = {
             cantina: "Cantina Shipments",
             guild:   "Guild Shop",
-            fleet:   "Fleet Shipments"            
+            fleet:   "Fleet Shipments",
+            gw:      "GW Shipments"
         };
         if (staticMatches[searchChar.toLowerCase()]) {
             search = staticMatches[searchChar.toLowerCase()];

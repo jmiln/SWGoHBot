@@ -598,8 +598,7 @@
             }
         },
         "nameVariant": [
-            "Geonosian Soldier's Starfighter",
-            "Sun Fac's Geonosian Starfighter"
+            "Geonosian Soldier's Starfighter"
         ]
     },
     {
@@ -1301,7 +1300,7 @@
         }
     },
     {
-        "name": "Sun Fac's Genosian Starfighter",
+        "name": "Sun Fac's Geonosian Starfighter",
         "uniqueName": "GEONOSIANSTARFIGHTER2",
         "aliases": [
             "Sun Fac",
