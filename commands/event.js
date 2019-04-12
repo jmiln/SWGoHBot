@@ -87,7 +87,7 @@ class Event extends Command {
         switch (action) {
             case "create": {
                 const err = [];
-                const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { $like: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
+                const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { [client.seqOps.like]: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
                 const evCount = guildEvents.length;
                 // If they have too many events, stop here
                 if (evCount >= 50) {
@@ -461,7 +461,7 @@ class Event extends Command {
                     }
                 } else {
                     // Grab all events for this guild
-                    const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { $like: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
+                    const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { [client.seqOps.like]: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
                     const eventList = [];
                     guildEvents.forEach(event => {
                         eventList.push(event.dataValues);

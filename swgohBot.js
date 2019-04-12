@@ -46,6 +46,7 @@ client.aliases = new Collection();
 
 client.evCountdowns = {};
 
+client.seqOps = Sequelize.Op;
 client.database = new Sequelize(
     client.config.database.data, 
     client.config.database.user, 
