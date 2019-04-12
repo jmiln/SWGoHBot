@@ -46,21 +46,15 @@ client.aliases = new Collection();
 
 client.evCountdowns = {};
 
-const Op = Sequelize.Op;
-client.database = new Sequelize(client.config.database.data, client.config.database.user, client.config.database.pass, {
-    host: client.config.database.host,
-    dialect: "postgres",
-    logging: false,
-    operatorsAliases: {
-        $and: Op.and,
-        $or: Op.or,
-        $eq: Op.eq,
-        $gt: Op.gt,
-        $lt: Op.lt,
-        $lte: Op.lte,
-        $like: Op.like
+client.database = new Sequelize(
+    client.config.database.data, 
+    client.config.database.user, 
+    client.config.database.pass, {
+        host: client.config.database.host,
+        dialect: "postgres",
+        logging: false
     }
-});
+);
 
 
 client.database.authenticate().then(async () => {
