@@ -57,10 +57,10 @@ class CommandName extends Command {
             } catch (e) {
                 problemArr.push(e.message);
             }
-            if (!user1 || !user1.stats) {
+            if (!user1 || !user1.stats || !user1.stats.length) {
                 problemArr.push("Could not get user 1");
             }
-            if (!user2 || !user2.stats) {
+            if (!user2 || !user2.stats || !user2.stats.length) {
                 problemArr.push("Could not get user 2");
             }
             if (!problemArr.length) {

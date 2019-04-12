@@ -1205,7 +1205,7 @@ module.exports = class extends Language {
             COMMAND_REGISTER_SUCCESS_HEADER: (user) => `Registration for ${user} successful!`,
             COMMAND_REGISTER_SUCCESS_DESC: (user, allyCode, gp) => [
                 `Allycode :: ${allyCode}`,
-                `Guild    :: ${user.guild || "N/A"}`,
+                `Guild    :: ${user.guildName || "N/A"}`,
                 `GP       :: ${gp}`,
                 `Level    :: ${user.level}`
             ].join("\n"),
