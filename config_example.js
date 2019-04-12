@@ -2,9 +2,6 @@ const config = {
     // The Discord ID for the bot owner (Gets max perms/ can use Dev commands)
     "ownerid": "YourUserID",
 
-    // Array of discord ID strings
-    "vipList": [],
-
     // The prefix for commands (';' is used as ;help, '+' for +help etc. )
     "prefix": "YourPrefixGoesHere",
 
@@ -37,6 +34,23 @@ const config = {
         "shardtimeVertical": false
     },
 
+    // Default config for users (Leave these blank)
+    "defaultUserConf": {
+        // Discord userID
+        id: "",
+        // Array of allycode/ primary status pairs
+        accounts: [],
+        // Command specific defaults (guildsearch, ga, etc..)
+        defaults:{},
+        // Settings for the arena alerts
+        arenaAlert: {
+            enableRankDMs: false,
+            arena: "none",    // both, char, fleet
+            payoutWarning: 0,  // If higher than 0, send someone a DM that their payout is in x min
+            enablePayoutResult: false
+        }
+    },
+
     // If you want to send error/ create/ delete message to a log channel
     "logs": {
         "logToChannel": false,
@@ -50,10 +64,11 @@ const config = {
         "sendChangelogs": false
     },
 
-    // Need Bill's magic stuffs for this
-    // "swgohAPILoc": "",
-    // "swgohSettings": {},
-    //
+    // Tell it to send stats to bot list(s)
+    "sendStats": true,
+    // Massive long token for botsfordiscord
+    "b4dToken": "",
+
     // Need a Patreon account for this
     // "patreon": {                                                                 │50     //     "host"     : "",
     //     "clientID": "",
@@ -61,6 +76,15 @@ const config = {
     //     "creatorAccessToken": "",
     //     "creatorRefreshToken": ""
     // }
+
+    // api.swgoh.help info
+    "api_swgoh_help": {
+        "username"     : "",
+        "password"     : "",
+        "client_id"    : "",     // Your discord user ID
+        "client_secret": "YOUR_SECRET",
+        "host"         : "api.swgoh.help"
+    },
 };
 
 module.exports = config;
