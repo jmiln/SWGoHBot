@@ -1634,7 +1634,7 @@
         "pk": 284,
         "url": "http://swgoh.gg/characters/bastila-shan/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_bastilashan.png",
-        "power": 21952,
+        "power": 22737,
         "description": "Strong Jedi Support that grants allies an overwhelming first turn with her Leader ability",
         "combat_type": 1,
         "gear_levels": [
@@ -1780,7 +1780,9 @@
         ],
         "ability_classes": [
             "Ability Block",
+            "Advantage",
             "Assist",
+            "Buff Immunity",
             "Counter",
             "Dispel",
             "Gain Turn Meter",
@@ -6697,6 +6699,170 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Darth Malak",
+        "base_id": "DARTHMALAK",
+        "pk": 342,
+        "url": "http://swgoh.gg/characters/darth-malak/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_darthmalak.png",
+        "power": 24148,
+        "description": "Brutal Sith Tank who terrorizes and drains enemies to stay alive",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "011",
+                    "005",
+                    "011",
+                    "005",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "030",
+                    "028",
+                    "048",
+                    "034",
+                    "021",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "050",
+                    "047",
+                    "055",
+                    "048",
+                    "038",
+                    "043"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "048",
+                    "048",
+                    "063",
+                    "055",
+                    "061"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "075",
+                    "055",
+                    "055",
+                    "089",
+                    "063",
+                    "088"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "063",
+                    "084",
+                    "075",
+                    "089",
+                    "063"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "061",
+                    "063",
+                    "075",
+                    "063",
+                    "099",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "063",
+                    "094",
+                    "063",
+                    "087",
+                    "075",
+                    "172"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "100",
+                    "172",
+                    "125",
+                    "111",
+                    "125",
+                    "121"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "114",
+                    "144",
+                    "117",
+                    "129",
+                    "173",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "173",
+                    "142",
+                    "144",
+                    "144",
+                    "139",
+                    "128"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "162",
+                    "158",
+                    "171",
+                    "166",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Sith",
+            "Sith Empire",
+            "Tank"
+        ],
+        "ability_classes": [
+            "Counter",
+            "Dispel",
+            "DoT",
+            "Healing Immunity",
+            "Reset Cooldown",
+            "Stun",
+            "Taunt",
+            "Tenacity Down"
+        ],
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
+    },
+    {
         "name": "Darth Maul",
         "base_id": "MAUL",
         "pk": 82,
@@ -9956,14 +10122,14 @@
         ],
         "ability_classes": [
             "Advantage",
+            "Counter",
             "Defense Up",
             "Dispel",
             "Expose",
-            "Foresight",
             "Gain Turn Meter",
             "Leader: +Defense",
-            "Leader: Foresight",
-            "Stun"
+            "Stun",
+            "Taunt"
         ],
         "role": "Tank",
         "ship": "MILLENNIUMFALCONEP7",

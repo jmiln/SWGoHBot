@@ -1619,6 +1619,25 @@
         }
     },
     {
+        "name": "Darth Malak",
+        "uniqueName": "DARTHMALAK",
+        "aliases": [
+            "Darth Malak"
+        ],
+        "nameVariant": [
+            "Darth Malak"
+        ],
+        "url": "http://swgoh.gg/characters/darth-malak/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_darthmalak.png",
+        "side": "dark",
+        "factions": [
+            "Sith",
+            "Sith Empire",
+            "Tank"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Darth Maul",
         "uniqueName": "MAUL",
         "aliases": [
