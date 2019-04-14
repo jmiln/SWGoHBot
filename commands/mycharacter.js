@@ -235,7 +235,7 @@ class MyCharacter extends Command {
                 fields: [
                     {
                         name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                        value: abilitiesOut.join("\n")
+                        value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
                     }
                 ].concat(fields),
                 footer: footer
