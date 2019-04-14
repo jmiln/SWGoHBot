@@ -99,7 +99,6 @@ class Shardtimes extends Command {
                     return super.error(message, message.language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
                 }
             }
-            console.log(flag);
             if (flag.length > 0) {
                 flag = flag[0];
                 if (flag.match(/<:.+:\d+>/)) {
