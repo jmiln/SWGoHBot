@@ -83,6 +83,7 @@ class Shardtimes extends Command {
                     } 
                 }
             } else {
+                flag = [timezone].concat(flag);
                 zoneType = "hhmm";
                 const timeTil = options.subArgs.timeuntil;
                 const match = timeTil.match(/(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
@@ -98,6 +99,7 @@ class Shardtimes extends Command {
                     return super.error(message, message.language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
                 }
             }
+            console.log(flag);
             if (flag.length > 0) {
                 flag = flag[0];
                 if (flag.match(/<:.+:\d+>/)) {
