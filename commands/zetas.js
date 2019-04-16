@@ -33,15 +33,15 @@ class Zetas extends Command {
         if (err) {
             return super.error(message, err);
         }
-        
-        if (searchChar && options.flags.r && !filters.includes(searchChar.toLowerCase())) { 
+
+        if (searchChar && options.flags.r && !filters.includes(searchChar.toLowerCase())) {
             return super.error(message, message.language.get("COMMAND_ZETA_REC_BAD_FILTER", filters.join(", ")));
-        }             
+        }
 
         let character = null;
         if (searchChar && !options.flags.r) {
             const chars = client.findChar(searchChar, client.characters);
-            
+
             if (chars.length > 1) {
                 const charL = [];
                 const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
@@ -56,7 +56,7 @@ class Zetas extends Command {
                 return super.error(message, message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             }
         }
-        
+
         const msg = await message.channel.send(options.flags.g ? message.language.get("COMMAND_ZETA_WAIT_GUILD") : message.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas"));
 
         const cooldown = client.getPlayerCooldown(message.author.id);
@@ -132,12 +132,12 @@ class Zetas extends Command {
                     value: player.warnings.join("\n")
                 });
             }
-            
+
             const footer = client.updatedFooter(player.updated, message, "player", cooldown);
             msg.edit({embed: {
                 color: 0x000000,
                 author: author,
-                description: desc.join("\n"), 
+                description: desc.join("\n"),
                 fields: fields,
                 footer: footer
             }});
@@ -158,7 +158,7 @@ class Zetas extends Command {
                 if (zetaSort[ix][sortBy] === 0) {
                     continue;
                 }
-                let charN = await client.cache.get("swapi", "units", {nameKey: zetaSort[ix].toon, language: "eng_us"}, {_id: 0, updated: 0});
+                let charN = await client.cache.get(client.config.mongodb.swapidb, "units", {nameKey: zetaSort[ix].toon, language: "eng_us"}, {_id: 0, updated: 0});
                 if (!charN || !charN.length) continue;
                 if (Array.isArray(charN)) charN = charN[0];
                 let char = player.roster.find(c => charN.baseId === c.defId);
@@ -166,9 +166,9 @@ class Zetas extends Command {
                 if (char) {
                     char = await client.swgohAPI.langChar(char, "eng_us");
                     skill = char.skills.find(a => a.nameKey === zetaSort[ix].name);
-                } 
+                }
                 if (skill && skill.tier < 8 && char.level >= 70 && char.gear >= 8) {
-                    if (options.flags.h && char.rarity < 7) continue; 
+                    if (options.flags.h && char.rarity < 7) continue;
                     skill.toon = char.nameKey;
                     skill.gearLvl = char.gear;
                     skill.lvl = char.level;
@@ -228,7 +228,7 @@ class Zetas extends Command {
             } catch (e) {
                 super.error(msg, e.message, {edit: true});
             }
-                
+
             const zetas = {};
 
             for (const char of Object.keys(guildGG.roster)) {
@@ -293,7 +293,7 @@ class Zetas extends Command {
                 footer: footer
             }});
 
-        } 
+        }
     }
 }
 

@@ -16,6 +16,12 @@ const config = {
         "data": "database"
     },
 
+    "mongodb": {
+        "url": "mongodb://localhost:27017/",
+        "swgohbotdb": "swgohbot",
+        "swapidb": "swapi"
+    },
+
     // The default per-guild settings
     "defaultSettings": {
         "prefix": ";",
@@ -84,7 +90,7 @@ const config = {
         "client_id"    : "",     // Your discord user ID
         "client_secret": "YOUR_SECRET",
         "host"         : "api.swgoh.help"
-    },
+    }
 };
 
 module.exports = config;

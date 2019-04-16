@@ -53,7 +53,7 @@ module.exports = (client) => {
             allycode = parseInt(allycode);
 
             /** Get player from cache */
-            let player = await cache.get("swapi", "players", {allyCode:allycode});
+            let player = await cache.get(client.config.mongodb.swapidb, "players", {allyCode:allycode});
             let warnings;
 
             /** Check if existance and expiration */
@@ -86,7 +86,7 @@ module.exports = (client) => {
                     }
                 }
 
-                player = await cache.put("swapi", "players", {allyCode:allycode}, tempPlayer);
+                player = await cache.put(client.config.mongodb.swapidb, "players", {allyCode:allycode}, tempPlayer);
                 if (warnings) player.warnings = warnings;
             } else {
                 /** If found and valid, serve from cache */
@@ -122,7 +122,7 @@ module.exports = (client) => {
             }
 
             // Just update the arena data, and not the updated time, so it can still update everything like normal
-            await cache.put("swapi", "players", {allyCode: allycode}, {"arena": player.arena}, false);
+            await cache.put(client.config.mongodb.swapidb, "players", {allyCode: allycode}, {"arena": player.arena}, false);
             return player;
         } catch (e) {
             console.log("SWAPI Broke getting player: " + e);
@@ -135,7 +135,7 @@ module.exports = (client) => {
             allycodes = [allycodes];
         }
 
-        const players = await cache.get("swapi", "players", {allyCode:{ $in: allycodes}});
+        const players = await cache.get(client.config.mongodb.swapidb, "players", {allyCode:{ $in: allycodes}});
 
         return players || [];
     }
@@ -146,7 +146,7 @@ module.exports = (client) => {
             if (typeof name !== "string") name = name.toString();
 
             /** Try to get player's ally code from cache */
-            const player = await cache.get("swapi", "players", {name:name}, {allyCode: 1, _id: 0});
+            const player = await cache.get(client.config.mongodb.swapidb, "players", {name:name}, {allyCode: 1, _id: 0});
 
             return player;
         } catch (e) {
@@ -174,12 +174,12 @@ module.exports = (client) => {
             if (!allycodes.length) throw new Error("No valid ally code(s) entered");
             allycodes = allycodes.map(a => parseInt(a));
 
-            const players = await cache.get("swapi", "playerStats", {allyCode: {$in: allycodes}});
+            const players = await cache.get(client.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
             const updated = players.filter(p => !isExpired(p.updated, cooldown));
             const updatedAC = updated.map(p => p.allyCode);
             const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
 
-            playerStats = playerStats.concat(updated); 
+            playerStats = playerStats.concat(updated);
 
             let warning;
             if (needUpdating.length) {
@@ -217,7 +217,7 @@ module.exports = (client) => {
                         arena: bareP.arena,
                         stats: pStats
                     };
-                    pStats = await cache.put("swapi", "playerStats", {allyCode: stats.allyCode}, stats);
+                    pStats = await cache.put(client.config.mongodb.swapidb, "playerStats", {allyCode: stats.allyCode}, stats);
                     pStats.warnings = warning;
                     playerStats.push(pStats);
                 }
@@ -231,7 +231,7 @@ module.exports = (client) => {
     }
 
     async function langChar(char, lang) {
-        lang = lang ? lang.toLowerCase() : "eng_us"; 
+        lang = lang ? lang.toLowerCase() : "eng_us";
         if (!char) throw new Error("Missing Character");
 
         if (char.defId) {
@@ -241,7 +241,7 @@ module.exports = (client) => {
 
         // In case it has skillReferenceList
         for (const skill in char.skillReferenceList) {
-            let skillName = await cache.get("swapi", "abilities", {skillId: char.skillReferenceList[skill].skillId, language: lang}, {nameKey: 1, _id: 0});
+            let skillName = await cache.get(client.config.mongodb.swapidb, "abilities", {skillId: char.skillReferenceList[skill].skillId, language: lang}, {nameKey: 1, _id: 0});
             if (Array.isArray(skillName)) skillName = skillName[0];
             if (!skillName) throw new Error("Cannot find skillName for " + char.skillReferenceList[skill].skillId);
             char.skillReferenceList[skill].nameKey = skillName.nameKey;
@@ -249,7 +249,7 @@ module.exports = (client) => {
 
         // In case it doesn't
         for (const skill in char.skills) {
-            let skillName = await cache.get("swapi", "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
+            let skillName = await cache.get(client.config.mongodb.swapidb, "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
             if (Array.isArray(skillName)) skillName = skillName[0];
             if (!skillName) throw new Error("Cannot find skillName for " + char.skills[skill].id);
             char.skills[skill].nameKey = skillName.nameKey;
@@ -345,16 +345,16 @@ module.exports = (client) => {
                 if (skillArray.includes(ability.skillId)) {
                     ab.push(ability);
                 }
-                await cache.put("swapi", "abilities", {skillId: ability.skillId, language: ability.language}, ability);
+                await cache.put(client.config.mongodb.swapidb, "abilities", {skillId: ability.skillId, language: ability.language}, ability);
             }
             return ab;
         } else {
             // All the skills should be loaded, so just get em from the cache
             if (opts.min) {
-                const skillOut = await cache.get("swapi", "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {nameKey: 1, _id: 0});
+                const skillOut = await cache.get(client.config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {nameKey: 1, _id: 0});
                 return skillOut;
             } else {
-                const skillOut = await cache.get("swapi", "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+                const skillOut = await cache.get(client.config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
                 return skillOut;
             }
         }
@@ -452,10 +452,10 @@ module.exports = (client) => {
                 delete char.crewList;
                 if (defId === char.baseId) outChar = char;
                 if (char && char._id) delete char._id;
-                await cache.put("swapi", "characters", {baseId: char.baseId}, char);
+                await cache.put(client.config.mongodb.swapidb, "characters", {baseId: char.baseId}, char);
             }
         } else {
-            outChar = await cache.get("swapi", "characters", {baseId: defId}, {_id: 0, updated: 0});
+            outChar = await cache.get(client.config.mongodb.swapidb, "characters", {baseId: defId}, {_id: 0, updated: 0});
         }
         if (outChar && outChar[0]) {
             return outChar[0];
@@ -496,12 +496,12 @@ module.exports = (client) => {
                     gOut.push(gearPiece);
                 }
                 if (gearPiece && gearPiece._id) delete gearPiece._id;
-                await cache.put("swapi", "gear", {id: gearPiece.id, language: lang}, gearPiece);
+                await cache.put(client.config.mongodb.swapidb, "gear", {id: gearPiece.id, language: lang}, gearPiece);
             }
             return gOut;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            const gOut = await cache.get("swapi", "gear", {id: {$in: gearArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            const gOut = await cache.get(client.config.mongodb.swapidb, "gear", {id: {$in: gearArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             return gOut;
         }
     }
@@ -511,7 +511,7 @@ module.exports = (client) => {
         lang = lang.toLowerCase();
         if (!defId && !update) {
             throw new Error("You need to specify a defId");
-        } 
+        }
 
         if (update) {
             let uOut;
@@ -547,12 +547,12 @@ module.exports = (client) => {
                     uOut = unit.nameKey;
                 }
                 if (unit && unit._id) delete unit._id;
-                await cache.put("swapi", "units", {baseId: unit.baseId, language: lang}, unit);
+                await cache.put(client.config.mongodb.swapidb, "units", {baseId: unit.baseId, language: lang}, unit);
             }
             return uOut;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            let uOut = await cache.get("swapi", "units", {baseId: defId, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            let uOut = await cache.get(client.config.mongodb.swapidb, "units", {baseId: defId, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             if (Array.isArray(uOut)) uOut = uOut[0];
             return uOut;
         }
@@ -590,12 +590,12 @@ module.exports = (client) => {
                 if (recArray.includes(rec.id)) {
                     rOut.push(rec);
                 }
-                await cache.put("swapi", "recipes", {id: rec.id, language: lang}, rec);
+                await cache.put(client.config.mongodb.swapidb, "recipes", {id: rec.id, language: lang}, rec);
             }
             return rOut;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            const rOut = await cache.get("swapi", "recipes", {id: {$in: recArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            const rOut = await cache.get(client.config.mongodb.swapidb, "recipes", {id: {$in: recArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             return rOut;
         }
     }
@@ -617,12 +617,12 @@ module.exports = (client) => {
 
             for (const battle of battleList) {
                 if (battle.id === batId) bOut = battle;
-                await cache.put("swapi", "battles", {id: battle.id}, battle);
+                await cache.put(client.config.mongodb.swapidb, "battles", {id: battle.id}, battle);
             }
             return bOut;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            const bOut = await cache.get("swapi", "battles", {id: batId}, {_id: 0, updated: 0});
+            const bOut = await cache.get(client.config.mongodb.swapidb, "battles", {id: batId}, {_id: 0, updated: 0});
             return bOut;
         }
     }
@@ -656,12 +656,12 @@ module.exports = (client) => {
                 if (matArray.includes(mat.id)) {
                     mOut.push(mat);
                 }
-                await cache.put("swapi", "materials", {id: mat.id, language: lang}, mat);
+                await cache.put(client.config.mongodb.swapidb, "materials", {id: mat.id, language: lang}, mat);
             }
             return mOut;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            const mOut = await cache.get("swapi", "materials", {id: {$in: matArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            const mOut = await cache.get(client.config.mongodb.swapidb, "materials", {id: {$in: matArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             return mOut;
         }
     }
@@ -687,7 +687,7 @@ module.exports = (client) => {
             if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
             if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
 
-            let guild  = await cache.get("swapi", "guilds", {id: player.guildRefId});
+            let guild  = await cache.get(client.config.mongodb.swapidb, "guilds", {id: player.guildRefId});
 
             /** Check if existance and expiration */
             if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
@@ -723,7 +723,7 @@ module.exports = (client) => {
                     }
                 }
 
-                guild = await cache.put("swapi", "guilds", {name: tempGuild.name}, tempGuild);
+                guild = await cache.put(client.config.mongodb.swapidb, "guilds", {name: tempGuild.name}, tempGuild);
                 if (warnings) guild.warnings = warnings;
             } else {
                 /** If found and valid, serve from cache */
@@ -738,7 +738,7 @@ module.exports = (client) => {
 
     async function guildByName( gName ) {
         try {
-            const guild  = await cache.get("swapi", "guilds", {name:gName});
+            const guild  = await cache.get(client.config.mongodb.swapidb, "guilds", {name:gName});
 
             if ( !guild || !guild[0] ) {
                 return null;
@@ -761,7 +761,7 @@ module.exports = (client) => {
         }
         let warnings;
         try {
-            const players = await cache.get("swapi", "pUnits", {allyCode:{ $in: allyCodes}});
+            const players = await cache.get(client.config.mongodb.swapidb, "pUnits", {allyCode:{ $in: allyCodes}});
 
             const fresh = [];
             players.forEach(p => {
@@ -769,7 +769,7 @@ module.exports = (client) => {
                 if (p && !isExpired(p.updated, cooldown, true)) {
                     allyCodes.splice(allyCodes.indexOf(p.allyCode), 1);
                     fresh.push(p);
-                } 
+                }
             });
 
             if (allyCodes.length > 0) {
@@ -807,7 +807,7 @@ module.exports = (client) => {
                         roster: p
                     };
                     fresh.push(pNew);
-                    await cache.put("swapi", "pUnits", {allyCode: pNew.allyCode}, pNew);
+                    await cache.put(client.config.mongodb.swapidb, "pUnits", {allyCode: pNew.allyCode}, pNew);
                 }
             }
 
@@ -835,7 +835,7 @@ module.exports = (client) => {
 
     async function zetaRec( lang="ENG_US" ) {
         try {
-            let zetas = await cache.get("swapi", "zetaRec", {lang:lang});
+            let zetas = await cache.get(client.config.mongodb.swapidb, "zetaRec", {lang:lang});
 
             /** Check if existance and expiration */
             if ( !zetas || !zetas[0] || !zetas[0].zetas || isExpired(zetas[0].zetas.updated, zetaCooldown) ) {
@@ -862,7 +862,7 @@ module.exports = (client) => {
                     lang: lang,
                     zetas: zetas
                 };
-                zetas = await cache.put("swapi", "zetaRec", {lang:lang}, zetas);
+                zetas = await cache.put(client.config.mongodb.swapidb, "zetaRec", {lang:lang}, zetas);
                 zetas = zetas.zetas;
             } else {
                 /** If found and valid, serve from cache */
@@ -877,7 +877,7 @@ module.exports = (client) => {
     async function events( lang="ENG_US" ) {
         try {
             /** Get events from cache */
-            let events = await cache.get("swapi", "events", {lang:lang});
+            let events = await cache.get(client.config.mongodb.swapidb, "events", {lang:lang});
 
             /** Check if existance and expiration */
             if ( !events || !events[0] || isExpired(events[0].updated, eventCooldown) ) {
@@ -899,7 +899,7 @@ module.exports = (client) => {
                     events: events.events,
                     updated: events.updated
                 };
-                events = await cache.put("swapi", "events", {lang:lang}, events);
+                events = await cache.put(client.config.mongodb.swapidb, "events", {lang:lang}, events);
             } else {
                 /** If found and valid, serve from cache */
                 events = events[0];
@@ -920,7 +920,7 @@ module.exports = (client) => {
             });
         } catch (e) {
             throw e;
-        }    
+        }
     }
 
     async function whois( ids ) {
@@ -929,8 +929,8 @@ module.exports = (client) => {
         }
         if (!ids.length) return [];
         try {
-            if (!ids) { 
-                throw new Error("Please provide one or more allycodes or discordIds"); 
+            if (!ids) {
+                throw new Error("Please provide one or more allycodes or discordIds");
             }
 
             /** Get player from swapi cacher */
@@ -940,7 +940,7 @@ module.exports = (client) => {
 
         } catch (e) {
             throw e;
-        }    
+        }
     }
 
     function isExpired( updated, cooldown={}, guild=false ) {
