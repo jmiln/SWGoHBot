@@ -29,7 +29,7 @@ class UserConf extends Command {
             }
         }
 
-        let user = await client.userReg.getUser(userID); // eslint-disable-line no-unused-vars 
+        let user = await client.userReg.getUser(userID); // eslint-disable-line no-unused-vars
         switch (target) {
             case "allycodes":
             case "allycode": {
@@ -55,7 +55,7 @@ class UserConf extends Command {
                     if (user && user.accounts && user.accounts.find(a => a.allyCode === allyCode)) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
-    
+
                     // Cap the ally codes at 10, if they have even that many
                     // accounts, they already have too much free time
                     if (user.accounts.length >= 10) {
@@ -77,11 +77,11 @@ class UserConf extends Command {
                                     [allyCode, userID]
                                 ]);
                                 await client.userReg.updateUser(userID, user);
-                                return super.success(message, 
+                                return super.success(message,
                                     client.codeBlock(message.language.get(
-                                        "COMMAND_REGISTER_SUCCESS_DESC", 
-                                        u, 
-                                        u.allyCode.toString().match(/\d{3}/g).join("-"), 
+                                        "COMMAND_REGISTER_SUCCESS_DESC",
+                                        u,
+                                        u.allyCode.toString().match(/\d{3}/g).join("-"),
                                         u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
                                     ), "asciiDoc"), {
                                         title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name)
@@ -93,7 +93,7 @@ class UserConf extends Command {
                         return super.error(message, ("Something broke. Make sure you've got the correct ally code" + client.codeBlock(e.message)));
                     }
                 } else if (action === "remove") {
-                    // Remove from the list, if the chosen one was the primary, set the 1st 
+                    // Remove from the list, if the chosen one was the primary, set the 1st
                     const acc = user.accounts.find(a => a.allyCode === allyCode);
                     if (!acc) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
@@ -135,7 +135,7 @@ class UserConf extends Command {
                     user.id = userID;
                 }
 
-                let command; 
+                let command;
                 const cmdBlacklist = ["event", "shardtimes"];
                 if (client.commands.has(com)) {
                     command = client.commands.get(com);
@@ -173,14 +173,14 @@ class UserConf extends Command {
                 if (!pat || pat.amount_cents < 100) {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_PATREON_ONLY"));
                 }
-                const setting = args.length ? args[0].toLowerCase() : null;  
+                const setting = args.length ? args[0].toLowerCase() : null;
                 if (action === "enabledms") {
                     // Set it to enable the DM alerts entirely or not
                     if (!setting) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_MISSING_DM"));
                     } else if (setting === "all" && pat.amount_cents < 500) {
                         return super.error(message, "Sorry, but you can only set up alerts for the allycode you have set as your primary.");
-                    } 
+                    }
                     if (["all", "primary"].includes(setting)) {
                         user.arenaAlert.enableRankDMs = setting;
                     } else if (offVar.includes(setting)) {
@@ -211,7 +211,7 @@ class UserConf extends Command {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_BOOL"));
                     }
                 } else if (action === "payoutwarning") {
-                    // Set it to warn you x minutes ahead of your payout 
+                    // Set it to warn you x minutes ahead of your payout
                     if (!setting) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_MISSING_WARNING"));
                     } else if (isNaN(setting)) {
@@ -243,14 +243,15 @@ class UserConf extends Command {
                 fields.push({
                     name: "Arena Rank DMs",
                     value: [
-                        `DM for rank drops: **${user.arenaAlert.enableRankDMs}**`, 
+                        `DM for rank drops: **${user.arenaAlert.enableRankDMs}**`,
                         `Show for arena: **${user.arenaAlert.arena}**`,
-                        `Payout warning **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min**" : "disabled**"}`, 
+                        `Payout warning **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min**" : "disabled**"}`,
                         `Payout result alert: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
                     ].join("\n")
                 });
+                const u = await client.fetchUser(userID);
                 return message.channel.send({embed: {
-                    author: {name: client.users.get(userID).username}, 
+                    author: {name: u.username},
                     fields: fields
                 }});
             }

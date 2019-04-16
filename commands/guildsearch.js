@@ -71,7 +71,7 @@ class GuildSearch extends Command {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"), {example: "guildsearch c3po 7\n;guildsearch falcon -s 7"});
             }
         }
-        
+
         let tmp;
         let character;
         let allyCode, searchChar, err;
@@ -87,9 +87,9 @@ class GuildSearch extends Command {
             } else if (!searchChar) {
                 return super.error(message, "Missing character to search for.", {example: "guildsearch c3po\n;guildsearch falcon -s"});
             }
-            
+
             const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
-            
+
             if (chars.length === 0) {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar), {example: "guildsearch c3po\n;guildsearch falcon -s"});
             } else if (chars.length > 1) {
@@ -113,7 +113,7 @@ class GuildSearch extends Command {
         if (err) {
             return super.error(message, err);
         }
-        
+
         // Check for conflicting flags/ subArgs
         const checkArr = ["ships", "mods", "stat", "gear"];
         const checkRes = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes(k) ? options.subArgs[k] : null));
@@ -195,7 +195,7 @@ class GuildSearch extends Command {
                     ten: starOut[k]["10"] || 0,
                     eleven:  starOut[k]["11"] || 0,
                     twelve: starOut[k]["12"] || 0,
-                    name: k 
+                    name: k
                 };
             });
 
@@ -316,7 +316,7 @@ class GuildSearch extends Command {
                     five: starOut[k]["5"] || 0,
                     six:  starOut[k]["6"] || 0,
                     seven: starOut[k]["7"] || 0,
-                    name: k 
+                    name: k
                 };
             });
 
@@ -333,7 +333,7 @@ class GuildSearch extends Command {
                 case "7":
                     tableIn = tableIn.sort((a, b) => a.seven < b.seven ? 1 : -1);
                     break;
-                default: 
+                default:
                     tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             }
 
@@ -344,7 +344,7 @@ class GuildSearch extends Command {
                 seven: {value: "7*", endWith: "]`", align: "right"},
                 name:  {value: "", align: "left"}
             }, tableIn);
- 
+
             const outMsgArr = client.msgArray(tableOut, "\n", 900);
             const fields = [];
             outMsgArr.forEach(m => {
@@ -374,52 +374,60 @@ class GuildSearch extends Command {
             // Looking for a stat
             const outArr = [];
 
-            const checkableStats = { 
+            const checkableStats = {
                 "Health": {
                     aliases: ["HP"],
                     short: "HP"
-                },   
+                },
                 "Protection": {
                     aliases: ["Prot"],
                     short: "Prot"
-                },   
+                },
                 "Speed": {
                     aliases: ["spd"],
                     short: "Spd"
-                },   
+                },
                 "Potency": {
                     aliases: ["Pot"],
                     short: "Pot"
-                },   
+                },
                 "Physical Critical Chance": {
-                    aliases: ["PCC", "CC", "Crit Chance", "Critical Chance", "Physical Crit Chance"], 
+                    aliases: ["PCC", "CC", "Crit Chance", "Critical Chance", "Physical Crit Chance"],
                     short: "CC"
-                },   
+                },
+                "Physical Damage": {
+                    aliases: ["PD", "Physical Dmg", "Offense"],
+                    short: "PD"
+                },
                 "Special Critical Chance": {
                     aliases: ["SCC", "Special Crit Chance"],
                     short: "CC"
-                },   
+                },
+                "Special Damage": {
+                    aliases: ["SD", "Special Dmg"],
+                    short: "SD"
+                },
                 "Critical Damage": {
                     aliases: ["CD", "Crit Damage"],
                     short: "CD"
-                },   
+                },
                 "Tenacity": {
                     aliases: ["Ten"],
                     short: "Ten"
-                },   
+                },
                 "Accuracy": {
                     aliases: ["Acc"],
                     short: "Acc"
-                },   
+                },
                 "Armor": {
                     aliases: ["arm"],
                     short: "Arm"
-                },   
+                },
                 "Resistance": {
                     aliases: ["Res", "Resist"],
                     short: "Res"
-                }       
-            }; 
+                }
+            };
 
 
             let found = false;
@@ -482,7 +490,7 @@ class GuildSearch extends Command {
                 outArr.push(stats);
             });
 
-            const fields = []; 
+            const fields = [];
             if (!outArr.length) {
                 fields.push({
                     name: character.name,
@@ -696,7 +704,7 @@ class GuildSearch extends Command {
                     desc = message.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
                 }
                 return super.error(msg, desc, {
-                    title: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name), 
+                    title: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name),
                     footer: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message)),
                     edit: true
                 });
@@ -880,7 +888,7 @@ class GuildSearch extends Command {
                 client.log("ERR", e);
                 console.log(fields);
             }
-        }    
+        }
     }
 }
 
