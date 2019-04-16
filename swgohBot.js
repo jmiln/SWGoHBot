@@ -48,8 +48,8 @@ client.evCountdowns = {};
 
 client.seqOps = Sequelize.Op;
 client.database = new Sequelize(
-    client.config.database.data, 
-    client.config.database.user, 
+    client.config.database.data,
+    client.config.database.user,
     client.config.database.pass, {
         host: client.config.database.host,
         dialect: "postgres",
@@ -101,17 +101,16 @@ client.database.authenticate().then(async () => {
 });
 
 const init = async () => {
+    const MongoClient = require("mongodb").MongoClient;
+    client.mongo = await MongoClient.connect(client.config.mongodb.url, { useNewUrlParser: true } );
+    // Set up the caching
+    client.cache = await require("./modules/cache.js")(client.mongo);
+    client.userReg = await require("./modules/users.js")(client);
+
+    client.swgohPlayerCount = await client.mongo.db(client.config.mongodb.swapidb).collection("players").find({}).count();
+    client.swgohGuildCount  = await client.mongo.db(client.config.mongodb.swapidb).collection("guilds").find({}).count();
+
     if (client.config.api_swgoh_help) {
-        // Set up the caching
-        const MongoClient = require("mongodb").MongoClient;
-        client.mongo = await MongoClient.connect("mongodb://localhost:27017/", { useNewUrlParser: true } );
-        client.cache = await require("./modules/cache.js")(client.mongo);
-        client.userReg = await require("./modules/users.js")(client);
-
-
-        client.swgohPlayerCount = await client.mongo.db("swapi").collection("players").find({}).count();
-        client.swgohGuildCount  = await client.mongo.db("swapi").collection("guilds").find({}).count();
-
         // Load up the api connector/ helpers
         const SwgohHelp = require("api-swgoh-help");
         client.swgoh = new SwgohHelp(client.config.api_swgoh_help);
@@ -159,7 +158,7 @@ client.on("error", (err) => {
 
 // Make it so it only checks for new characters on the main shard
 if (!client.shard || client.shard.id === 0) {
-    // Here down is to update any characters that need it 
+    // Here down is to update any characters that need it
     setTimeout(updateRemoteData,        1 * 60 * 1000);  // Run it a min after start
     setInterval(updateRemoteData, 12 * 60 * 60 * 1000);  // Then every 12 hours after
     //                            hr   min  sec  mSec

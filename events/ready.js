@@ -27,13 +27,13 @@ module.exports = async client => {
     }
     client.log("Ready", readyString);
 
-    // Sets the status as the current server count and help command 
+    // Sets the status as the current server count and help command
     const playingString =  `${client.config.prefix}help ~ swgohbot.com`;
     client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
 
     // Update the player/ guild count every 5 min
     setInterval(async () => {
-        const dbo = await client.mongo.db("swapi");
+        const dbo = await client.mongo.db(client.config.mongodb.swapidb);
         client.swgohPlayerCount = await dbo.collection("players").find({}).count();
         client.swgohGuildCount  = await dbo.collection("guilds").find({}).count();
     }, 5 * 60 * 1000);

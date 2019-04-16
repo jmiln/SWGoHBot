@@ -23,7 +23,7 @@ class Faction extends Command {
         let allyCode = null;
         if (!args[0]) {
             return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_MISSING_FACTION"), example: "faction sith"});
-        } 
+        }
         if (args[0].toLowerCase() === "me" || client.isAllyCode(args[0]) || client.isUserID(args[0])) {
             allyCode = args.splice(0, 1);
             try {
@@ -43,7 +43,7 @@ class Faction extends Command {
         let search = searchName.replace(/[^\w]/g, "").replace(/s$/, "");
         if (searchName.toLowerCase() === "galactic republic") search = "affiliation_republic";
         const query = new RegExp(`^(?!.*selftag).*${search}.*`, "gi");
-        let chars = await client.cache.get("swapi", "units", {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, {_id: 0, baseId: 1, nameKey: 1});
+        let chars = await client.cache.get(client.config.mongodb.swapidb, "units", {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, {_id: 0, baseId: 1, nameKey: 1});
 
         // Filter out any ships that show up
         chars = chars.filter(c => charList.find(char => char.uniqueName === c.baseId));
@@ -86,7 +86,7 @@ class Faction extends Command {
             if (chars.length) {
                 chars = chars.map(c => c.baseId);
                 const cooldown = client.getPlayerCooldown(message.author.id);
-                let player; 
+                let player;
                 try {
                     player = await client.swgohAPI.player(allyCode, null, cooldown);
                 } catch (e) {
@@ -96,7 +96,7 @@ class Faction extends Command {
                 for (const c of chars) {
                     let found = player.roster.find(char => char.defId === c);
                     if (found) {
-                        found = await client.swgohAPI.langChar(found, message.guildSettings.swgohLanguage); 
+                        found = await client.swgohAPI.langChar(found, message.guildSettings.swgohLanguage);
                         found.gp = found.gp.toLocaleString();
                         playerChars.push(found);
                     }
@@ -105,7 +105,7 @@ class Faction extends Command {
                 const gpMax   = Math.max(...playerChars.map(c => c.gp.length));
                 const gearMax = Math.max(...playerChars.map(c => c.gear.toString().length));
                 const lvlMax  = Math.max(...playerChars.map(c => c.level.toString().length));
-                
+
                 factionChars.push(`**\`[ * | Lvl${" ".repeat(lvlMax)}|   GP  ${" ".repeat(gpMax-5)}| ⚙${" ".repeat(gearMax)}]\`**`);
                 factionChars.push("**`=================" + "=".repeat(lvlMax + gpMax + gearMax) + "`**");
 

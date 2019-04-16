@@ -5,7 +5,7 @@ class Need extends Command {
         super(client, {
             name: "need",
             category: "SWGoH",
-            enabled: true, 
+            enabled: true,
             permissions: ["EMBED_LINKS"]
         });
     }
@@ -85,7 +85,7 @@ class Need extends Command {
                 // It's a ship
                 outShips.push({
                     rarity: u.rarity,
-                    name: u.nameKey 
+                    name: u.nameKey
                 });
             } else {
                 // It's neither and shouldn't be there
@@ -160,7 +160,7 @@ class Need extends Command {
 
         async function getUnits(searchName) {
             let search = searchName.replace(/[^\w\s]/g, "").replace(/s$/, "");  // Take out all alphanumeric characters and any s off the end
-            if (search.toLowerCase() === "galactic republic") search = "affiliation_republic";  
+            if (search.toLowerCase() === "galactic republic") search = "affiliation_republic";
             if (search.toLowerCase() === "galactic war") search = "gw";
             if (search.includes("cantina") && search.includes("battle")) {
                 search = search.replace(/(battles|battle)/gi, "");
@@ -193,11 +193,11 @@ class Need extends Command {
 
             if (!units.length) {
                 // Must not be in a shop or node, try checking factions
-                units = await client.cache.get("swapi", "units", 
-                    {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, 
+                units = await client.cache.get(client.config.mongodb.swapidb, "units",
+                    {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()},
                     {_id: 0, baseId: 1, nameKey: 1}
                 );
-            }        
+            }
             return units;
         }
     }
