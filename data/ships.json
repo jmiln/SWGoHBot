@@ -598,7 +598,8 @@
             }
         },
         "nameVariant": [
-            "Geonosian Soldier's Starfighter"
+            "Geonosian Soldier's Starfighter",
+            "Sun Fac's Geonosian Starfighter"
         ]
     },
     {
@@ -694,7 +695,8 @@
         "name": "Han's Millennium Falcon",
         "uniqueName": "MILLENNIUMFALCON",
         "aliases": [
-            "Han's Millennium Falcon"
+            "Han's Millennium Falcon",
+            "MilF"
         ],
         "nameVariant": [
             "Han's Millennium Falcon"
