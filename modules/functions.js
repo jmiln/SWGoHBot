@@ -14,7 +14,7 @@ module.exports = (client) => {
 
     // A zero-width-space
     client.zws = "\u200B";
-    
+
     /*
         PERMISSION LEVEL FUNCTION
         This is a very basic permission system for commands which uses "levels"
@@ -37,7 +37,7 @@ module.exports = (client) => {
             if (message.author.id === message.guild.owner.id) return permlvl = 4;
         }
 
-        // Also giving them the permissions if they have the manage server role, 
+        // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
         if (message.member.hasPermission(["ADMINISTRATOR"]) || message.member.hasPermission(["MANAGE_GUILD"])) return permlvl = 3;
 
@@ -126,7 +126,7 @@ module.exports = (client) => {
                     if (client.channels.has(chan)) {
                         client.sendMsg(chan, mess, args);
                     } else if (client.shard && client.shard.count > 0) {
-                        // If it's on a different shard, then send it there 
+                        // If it's on a different shard, then send it there
                         client.shard.broadcastEval(`
                             const thisChan = ${inspect(chan)};
                             const msg = "${mess}";
@@ -144,6 +144,7 @@ module.exports = (client) => {
     };
 
     client.sendMsg = (chanID, msg, options={}) => {
+        if (!msg) return;
         msg = msg.replace(/"\|"/g, "\n").replace(/\|:\|/g, "'");
         client.channels.get(chanID).send(msg, options);
     };
@@ -165,7 +166,7 @@ module.exports = (client) => {
                         const clMess = '${clMessage}';
                         if (this.channels.has('${clChan}')) {
                             this.sendMsg('${clChan}', clMess);
-                        } 
+                        }
                     `);
                 } catch (e) {
                     console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
@@ -271,7 +272,7 @@ module.exports = (client) => {
     };
 
     // Reloads all commads (even if they were not loaded before)
-    // Will not remove a command it it's been loaded, 
+    // Will not remove a command it it's been loaded,
     // but will load a new command it it's been added
     client.reloadAllCommands = async (msgID) => {
         client.commands.keyArray().forEach(c => {
@@ -502,7 +503,7 @@ module.exports = (client) => {
         } catch (e) {
             // Don't bother doing anything
         }
-        // Always best practice to let the code crash on uncaught exceptions. 
+        // Always best practice to let the code crash on uncaught exceptions.
         // Because you should be catching them anyway.
         process.exit(1);
     });
@@ -571,7 +572,7 @@ module.exports = (client) => {
 
     /*
      *  MESSAGE SPLITTER
-     *  Input an array of strings, and it will put them together so that it 
+     *  Input an array of strings, and it will put them together so that it
      *  doesn't exceed the given max length.
      */
     client.msgArray = (arr, join="\n", maxLen=1900) => {
@@ -617,11 +618,11 @@ module.exports = (client) => {
         let between = client.convertMS(new Date() - new Date(updated));
 
         if (between.hour >= minCooldown[type] && between.hour < userCooldown[type]) {
-            // If the data is between the shorter time they'd get from patreon, and the 
+            // If the data is between the shorter time they'd get from patreon, and the
             // time they'd get without, stick the patreon link in the footer
             between = " | patreon.com/swgohbot";
         } else {
-            // Otherwise, if it's too new, too old, or they already have the faster 
+            // Otherwise, if it's too new, too old, or they already have the faster
             // times, don't add it in
             between = "";
         }
@@ -741,7 +742,7 @@ module.exports = (client) => {
      * makeTable
      * Makes a table-like format given an array of objects
      *
-     * headers: object of columnName: columnHeader 
+     * headers: object of columnName: columnHeader
      *  (columnHeader is empty string if you want it not in a codeBlock)
      *  {
      *      columnKey: {
@@ -760,7 +761,7 @@ module.exports = (client) => {
         if (!headers || !rows || !rows.length) throw new Error("Need both headers and rows");
         const max = {};
         Object.keys(headers).forEach(h => {
-            // Get the max length needed, then add a bit for padding 
+            // Get the max length needed, then add a bit for padding
             if (options.useHeader) {
                 max[h] = Math.max(...[headers[h].value.length].concat(rows.map(v => v[h].toString().length))) + 2;
             } else {
@@ -866,7 +867,7 @@ module.exports = (client) => {
         let found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact);
         if (found) {
             return found.toLowerCase();
-        } 
+        }
         found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.substring(0, fact.length-1));
         if (fact.endsWith("s") && found) {
             return found.toLowerCase();
@@ -884,7 +885,7 @@ module.exports = (client) => {
     };
 
 
-    // Expand multiple spaces to have zero width spaces between so 
+    // Expand multiple spaces to have zero width spaces between so
     // Discord doesn't collapse em
     client.expandSpaces = (str) => {
         let outStr = "";
@@ -943,7 +944,7 @@ module.exports = (client) => {
     };
 
 
-    // Bunch of stuff for the events 
+    // Bunch of stuff for the events
     client.loadAllEvents = async () => {
         let ix = 0;
         const nowTime = momentTZ().subtract(2, "h").unix();
@@ -954,7 +955,7 @@ module.exports = (client) => {
             const event = events[i];
             const eventNameID = event.eventID.split("-");
             const guildID = eventNameID[0];
-            
+
             // Make sure it only loads events for it's shard
             if (client.guilds.keyArray().includes(guildID)) {
                 const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
@@ -984,14 +985,14 @@ module.exports = (client) => {
         client.schedule.scheduleJob(event.eventID, parseInt(event.eventDT), function() {
             client.eventAnnounce(event);
         });
-    
+
         if (countdown.length && (event.countdown === "true" || event.countdown === "yes" || event.countdown === true)) {
             const timesToCountdown = countdown;
             const nowTime = momentTZ().unix() * 1000;
             timesToCountdown.forEach(time => {
                 const cdTime = time * 60;
                 const evTime = event.eventDT / 1000;
-                const newTime = (evTime-cdTime-60) * 1000; 
+                const newTime = (evTime-cdTime-60) * 1000;
                 if (newTime > nowTime) {    // If the countdown is between now and the event
                     const sID = `${event.eventID}-CD${time}`;
                     if (!client.evCountdowns[event.eventID]) {
@@ -1000,7 +1001,7 @@ module.exports = (client) => {
                         client.evCountdowns[event.eventID].push(sID);
                     }
                     client.schedule.scheduleJob(sID, parseInt(newTime) , function() {
-                        client.countdownAnnounce(event);                    
+                        client.countdownAnnounce(event);
                     });
                 }
             });
@@ -1020,8 +1021,8 @@ module.exports = (client) => {
                     eventToDel.cancel();
                 }
             })
-            .catch(error => { 
-                client.log("ERROR",`Broke deleting an event ${error}`); 
+            .catch(error => {
+                client.log("ERROR",`Broke deleting an event ${error}`);
             });
 
         if (client.evCountdowns[event.eventID] && (event.countdown === "true" || event.countdown === "yes")) {
@@ -1033,19 +1034,19 @@ module.exports = (client) => {
             });
         }
     };
-    
+
     // To stick into node-schedule for each countdown event
     client.countdownAnnounce = async (event) => {
         let eventName = event.eventID.split("-");
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
-    
+
         const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
-    
+
         var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), "minutes") * -1, "minutes").format(`h [${client.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${client.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
         var announceMessage = client.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
-    
+
         if (guildConf["announceChan"] != "" || event.eventChan !== "") {
             if (event["eventChan"] && event.eventChan !== "") { // If they've set a channel, use it
                 client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
@@ -1054,17 +1055,17 @@ module.exports = (client) => {
             }
         }
     };
-    
+
     // To stick into node-schedule for each full event
     client.eventAnnounce = async (event) => {
         // Parse out the eventName and guildName from the ID
         let eventName = event.eventID.split("-");
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
-    
+
         const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
-    
+
         let repTime = false, repDay = false;
         let newEvent = {};
         const repDays = event.repeatDays;
@@ -1088,10 +1089,10 @@ module.exports = (client) => {
                 client.announceMsg(client.guilds.get(guildID), announceMessage);
             }
         }
-    
+
         // If it's got any left in repeatDays
-        if (repDays.length > 0) {    
-            repDay = true;        
+        if (repDays.length > 0) {
+            repDay = true;
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
             if (repDays.length === 1) {
@@ -1110,7 +1111,7 @@ module.exports = (client) => {
                 },
                 "repeatDays": repDays
             };
-            // Else if it's set to repeat 
+            // Else if it's set to repeat
         } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
             repTime = true;
             newEvent = {
@@ -1126,7 +1127,7 @@ module.exports = (client) => {
                 },
                 "repeatDays": []
             };
-        }  
+        }
 
         if (repTime || repDay) {
             await client.database.models.eventDBs.update(newEvent, {where: {eventID: event.eventID}})
@@ -1158,7 +1159,7 @@ module.exports = (client) => {
         };
     };
 
-    
+
     // Reload the SWGoH data for all patrons
     client.reloadPatrons = async () => {
         try {
@@ -1179,13 +1180,13 @@ module.exports = (client) => {
                 guild:  6*60
             };
         }
-        if (patron.amount_cents >= 500) { 
+        if (patron.amount_cents >= 500) {
             // If they have the $5 tier or higher, they get shorted guild & player times
             return {
-                player: 1,
+                player: 60,
                 guild:  3*60
             };
-        } else if (patron.amount_cents >= 100) { 
+        } else if (patron.amount_cents >= 100) {
             // They have the $1 tier, so they get short player times
             return {
                 player: 60,
@@ -1242,21 +1243,18 @@ module.exports = (client) => {
                         }
                         const minTil =  parseInt((then-now)/60/1000);
                         const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
-                        
+
                         const pUser = await client.fetchUser(patron.discordID);
                         if (pUser) {
                             if (user.arenaAlert.payoutWarning > 0) {
                                 if (user.arenaAlert.payoutWarning  === minTil) {
                                     pUser.send({embed: {
                                         author: {name: "Arena Payout Alert"},
-                                        description: `${player.name}'s character arena payout is in **${minTil}** minutes!`,
-                                        color: 0x00FF00,
-                                        footer: {
-                                            text: payoutTime
-                                        }
+                                        description: `${player.name}'s character arena payout is in **${minTil}** minutes!\nYour current rank is ${player.arena.char.rank}`,
+                                        color: 0x00FF00
                                     }});
                                 }
-                            } 
+                            }
                             if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
                                 pUser.send({embed: {
                                     author: {name: "Character arena"},
@@ -1358,7 +1356,7 @@ module.exports = (client) => {
                         headers: {
                             Authorization: "Bearer " + patreon.creatorAccessToken
                         },
-                        uri: "https://www.patreon.com/api/oauth2/api/campaigns/" + response.data[0].id + "/pledges",
+                        uri: "https://www.patreon.com/api/oauth2/api/campaigns/1328738/pledges?page%5Bcount%5D=100",
                         json: true
                     });
 
@@ -1388,10 +1386,18 @@ module.exports = (client) => {
 
                     // Filter out inactive patrons
                     patrons = patrons.filter(patron => !patron.declined_since);
-                    // Since I can't be my own patron...
-                    patrons.push({
-                        discordID: client.config.ownerid,
-                        amount_cents: 9999
+
+                    // This is so I can manually add people in, be it bugginess or just so they can try it out
+                    const others = client.cofig.patrons ? client.config.patrons : [];
+                    // Add myself in since I can't really be my own patron
+                    others.push(client.config.ownerid);
+                    others.forEach(o => {
+                        if (!patrons.find(p => p.discordID === o)) {
+                            patrons.push({
+                                discordID: o,
+                                amount_cents: 100
+                            });
+                        }
                     });
                     resolve(patrons);
                 }
