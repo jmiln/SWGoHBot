@@ -1166,7 +1166,7 @@ module.exports = (client) => {
             client.patrons = await client.getPatrons();
         } catch (e) {
             // Something happened
-            console.log("Broke getting patrons");
+            console.log("Broke getting patrons: " + e);
         }
         // console.log("Reloaded " + client.patrons.length + " active patrons");
     };
@@ -1388,7 +1388,8 @@ module.exports = (client) => {
                     patrons = patrons.filter(patron => !patron.declined_since);
 
                     // This is so I can manually add people in, be it bugginess or just so they can try it out
-                    const others = client.cofig.patrons ? client.config.patrons : [];
+                    const others = client.config.patrons ? client.config.patrons : [];
+
                     // Add myself in since I can't really be my own patron
                     others.push(client.config.ownerid);
                     others.forEach(o => {
