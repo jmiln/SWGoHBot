@@ -1929,7 +1929,7 @@
         "level": 80,
         "phase": [
             {
-                "name": "DARTH REVAN",
+                "name": "SCOURGE OF THE OLD REPUBLIC",
                 "anchor": "darth-revan",
                 "squads": [
                     {
@@ -3577,7 +3577,9 @@
                             "GRANDMASTERYODA:leaderskill_GRANDMASTERYODA:specialskill_GRANDMASTERYODA03",
                             "CHEWBACCALEGENDARY:uniqueskill_CHEWBACCALEGENDARY01:uniqueskill_CHEWBACCALEGENDARY02",
                             "C3POLEGENDARY:specialskill_C3POLEGENDARY01:uniqueskill_C3POLEGENDARY02",
-                            "JEDIKNIGHTREVAN:leaderskill_JEDIKNIGHTREVAN:specialskill_JEDIKNIGHTREVAN02:uniqueskill_JEDIKNIGHTREVAN02"
+                            "JEDIKNIGHTREVAN:leaderskill_JEDIKNIGHTREVAN:specialskill_JEDIKNIGHTREVAN02:uniqueskill_JEDIKNIGHTREVAN02",
+                            "DARTHREVAN:leaderskill_DARTHREVAN:uniqueskill_DARTHREVAN01:uniqueskill_DARTHREVAN02",
+                            "DARTHMALAK:uniqueskill_DARTHMALAK01:uniqueskill_DARTHMALAK02"
                         ]
                     }
                 ]
@@ -3641,10 +3643,10 @@
                             "CADBANE",
                             "DENGAR:uniqueskill_DENGAR01",
                             "IG88:uniqueskill_IG8801",
-                            "ZAMWESELL",
-                            "JANGOFETT",
-                            "AURRA_SING",
-                            "EMBO"
+                            "ZAMWESELL:uniqueskill_ZAMWESELL01",
+                            "JANGOFETT:leaderskill_JANGOFETT:uniqueskill_JANGOFETT01",
+                            "AURRA_SING:specialskill_AURRA_SING02:leaderskill_AURRA_SING",
+                            "EMBO:leaderskill_EMBO:uniqueskill_EMBO01"
                         ]
                     },
                     {
@@ -3759,6 +3761,102 @@
                             "GENERALKENOBI",
                             "HANSOLO:uniqueskill_HANSOLO01",
                             "DARTHTRAYA:leaderskill_DARTHTRAYA:uniqueskill_DARTHTRAYA01"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "geonosistb": {
+        "name": "GUESSES FOR UPCOMING GEONOSIS TB",
+        "rarity": 7,
+        "gear": 12,
+        "level": 85,
+        "phase": [
+            {
+                "name": "LIGHT SIDE",
+                "squads": [
+                    {
+                        "name": "JEDI",
+                        "note": "These are all guesses. They are in no way to be taken as fact.",
+                        "url": "",
+                        "team": [
+                            "AHSOKATANO",
+                            "PLOKOON",
+                            "ANAKINKNIGHT",
+                            "GRANDMASTERYODA",
+                            "BARRISSOFFEE",
+                            "GENERALKENOBI",
+                            "QUIGONJINN",
+                            "MACEWINDU",
+                            "JEDIKNIGHTCONSULAR",
+                            "LUMINARAUNDULI",
+                            "JEDIKNIGHTGUARDIAN",
+                            "AAYLASECURA",
+                            "EETHKOTH",
+                            "IMAGUNDI",
+                            "KITFISTO"
+                        ]
+                    },
+                    {
+                        "name": "CLONES",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "CT7567",
+                            "CT5555",
+                            "CLONESERGEANTPHASEI",
+                            "CC2224",
+                            "CT210408"
+                        ]
+                    },
+                    {
+                        "name": "OTHER",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "R2D2_LEGENDARY",
+                            "C3POLEGENDARY",
+                            "CLONEWARSCHEWBACCA",
+                            "CORUSCANTUNDERWORLDPOLICE"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "DARK SIDE",
+                "squads": [
+                    {
+                        "name": "GEONOSIANS",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "POGGLETHELESSER",
+                            "SUNFAC",
+                            "GEONOSIANSPY",
+                            "GEONOSIANSOLDIER"
+                        ]
+                    },
+                    {
+                        "name": "DROIDS",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "GRIEVOUS",
+                            "B2SUPERBATTLEDROID",
+                            "MAGNAGUARD",
+                            "DROIDEKA",
+                            "B1BATTLEDROID"
+                        ]
+                    },
+                    {
+                        "name": "OTHER",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "ASAJVENTRESS",
+                            "COUNTDOOKU",
+                            "NUTEGUNRAY"
                         ]
                     }
                 ]

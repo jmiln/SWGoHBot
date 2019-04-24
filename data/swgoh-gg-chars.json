@@ -331,8 +331,8 @@
         "pk": 64,
         "url": "http://swgoh.gg/characters/ahsoka-tano/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_ahsoka.png",
-        "power": 18762,
-        "description": "Versatile Attacker with healing and superior stats as long as she can avoid suffering Critical Hits",
+        "power": 21168,
+        "description": "Versatile Attacker who constantly assists while healing and dispelling",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -476,7 +476,10 @@
             "Leader"
         ],
         "ability_classes": [
+            "Assist",
             "Counter",
+            "Dispel",
+            "Foresight",
             "Gain Turn Meter",
             "Heal",
             "Leader: +Evasion"
@@ -6851,6 +6854,7 @@
             "Counter",
             "Dispel",
             "DoT",
+            "Gain Turn Meter",
             "Healing Immunity",
             "Reset Cooldown",
             "Stun",
@@ -11597,7 +11601,7 @@
         "pk": 213,
         "url": "http://swgoh.gg/characters/general-kenobi/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_obiwangeneral.png",
-        "power": 19336,
+        "power": 21742,
         "description": "Vigorous Jedi Tank who gains Foresight, dispels debuffs to grant buffs, and calls buffed allies to Assist",
         "combat_type": 1,
         "gear_levels": [
@@ -15805,8 +15809,7 @@
             "Advantage",
             "AoE",
             "Buff Immunity",
-            "Expose",
-            "Gain Turn Meter",
+            "Healing Immunity",
             "Offense Up"
         ],
         "role": "Leader",
