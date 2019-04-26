@@ -92,11 +92,10 @@ class Need extends Command {
                 continue;
             }
         }
-        outChars = outChars.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-        outShips = outShips.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
 
         const fields = [];
         if (outChars.length) {
+            outChars = outChars.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             outChars = outChars.map(c => `\`${c.rarity}*\` ${c.rarity ? c.name : "~~" + c.name + "~~"}`);
             const msgArr = client.msgArray(outChars, "\n", 1000);
             msgArr.forEach((m, ix) => {
@@ -109,6 +108,7 @@ class Need extends Command {
             });
         }
         if (outShips.length) {
+            outShips = outShips.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             outShips = outShips.map(s => `\`${s.rarity}*\` ${s.rarity ? s.name : "~~" + s.name + "~~"}`);
             const msgArr = client.msgArray(outShips, "\n", 1000);
             msgArr.forEach((m, ix) => {

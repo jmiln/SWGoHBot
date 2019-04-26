@@ -86,7 +86,8 @@
         "name": "B1 Battle Droid",
         "locations": [
             {
-                "type": "Intro P2 (Crystals/Packs)"
+                "type": "Hard Modes (Fleet)",
+                "level": "5-B"
             }
         ]
     },
@@ -633,7 +634,8 @@
         "name": "Droideka",
         "locations": [
             {
-                "type": "Intro P2 (Crystals/Packs)"
+                "type": "Hard Modes (L)",
+                "level": "8-B"
             }
         ]
     },
@@ -984,10 +986,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "6-A"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "8-B"
             }
         ]
     },
