@@ -77,6 +77,7 @@ module.exports = class extends Language {
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: "\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.",
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
+            BASE_EVENT_LATE: "Sorry, but this event was triggered later than expected. If it is set to repeat, the next alert should be on time.",
 
             // Base swgohAPI
             BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode  add <allycode>\``,
@@ -1147,14 +1148,14 @@ module.exports = class extends Language {
             },
 
             // RaidDamage Command
-            COMMAND_RAIDDAMAGE_DMG: "damage", 
-            COMMAND_RAIDDAMAGE_MISSING_RAID: "Missing Raid", 
-            COMMAND_RAIDDAMAGE_INVALID_RAID: "Invalid Raid", 
-            COMMAND_RAIDDAMAGE_RAID_STR: (raids) => `Please select one of the following raids:\n\`${raids}\``, 
-            COMMAND_RAIDDAMAGE_MISSING_PHASE: "Missing Phase", 
+            COMMAND_RAIDDAMAGE_DMG: "damage",
+            COMMAND_RAIDDAMAGE_MISSING_RAID: "Missing Raid",
+            COMMAND_RAIDDAMAGE_INVALID_RAID: "Invalid Raid",
+            COMMAND_RAIDDAMAGE_RAID_STR: (raids) => `Please select one of the following raids:\n\`${raids}\``,
+            COMMAND_RAIDDAMAGE_MISSING_PHASE: "Missing Phase",
             COMMAND_RAIDDAMAGE_INVALID_PHASE: "Invalid Phase",
-            COMMAND_RAIDDAMAGE_PHASE_STR: (raid, phases) => `Please select one of the following phases for the ${raid} raid:\n${phases}`, 
-            COMMAND_RAIDDAMAGE_MISSING_AMT: "Missing Amount",  
+            COMMAND_RAIDDAMAGE_PHASE_STR: (raid, phases) => `Please select one of the following phases for the ${raid} raid:\n${phases}`,
+            COMMAND_RAIDDAMAGE_MISSING_AMT: "Missing Amount",
             COMMAND_RAIDDAMAGE_INVALID_AMT: "Invalid Amount",
             COMMAND_RAIDDAMAGE_AMOUNT_STR: "You need to enter either a number or percent to convert the damage to or from",
             COMMAND_RAIDDAMAGE_OUT_HEADER: (raidName, phaseName) => `${raidName} raid, ${phaseName}`,
