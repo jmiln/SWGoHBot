@@ -120,8 +120,8 @@
         "name": "Emperor's Shuttle",
         "locations": [
             {
-                "type": "Special Event",
-                "name": "Galactic Chase"
+                "type": "Hard Modes (D)",
+                "level": "7-D"
             }
         ]
     },

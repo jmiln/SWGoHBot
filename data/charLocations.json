@@ -509,6 +509,15 @@
         ]
     },
     {
+        "name": "Darth Malak",
+        "locations": [
+            {
+                "type": "Special Event",
+                "name": "Star Forge Showdown"
+            }
+        ]
+    },
+    {
         "name": "Darth Maul",
         "locations": [
             {
@@ -1169,10 +1178,6 @@
                 "level": "7-G"
             },
             {
-                "type": "Hard Modes (D)",
-                "level": "7-D"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "5-C"
             }
@@ -1527,6 +1532,15 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "4-B"
+            }
+        ]
+    },
+    {
+        "name": "Padmé Amidala",
+        "locations": [
+            {
+                "type": "Legendary Event",
+                "name": "Aggressive Negotiations"
             }
         ]
     },

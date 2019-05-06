@@ -15661,7 +15661,7 @@
         "pk": 112,
         "url": "http://swgoh.gg/characters/jedi-knight-anakin/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_anakinknight.png",
-        "power": 18762,
+        "power": 21168,
         "description": "High-pressure Jedi attacker that punishes enemies for wounding his allies",
         "combat_type": 1,
         "gear_levels": [
@@ -15809,6 +15809,7 @@
             "Advantage",
             "AoE",
             "Buff Immunity",
+            "Dispel",
             "Healing Immunity",
             "Offense Up"
         ],
@@ -20368,6 +20369,167 @@
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 80
+    },
+    {
+        "name": "Padmé Amidala",
+        "base_id": "PADMEAMIDALA",
+        "pk": 346,
+        "url": "http://swgoh.gg/characters/padme-amidala/",
+        "image": "//swgoh.gg/static/img/assets/tex.charui_padme_geonosis.png",
+        "power": 24148,
+        "description": "Courageous leader who continuously helps her allies and adapts to any circumstance",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "003",
+                    "010",
+                    "005",
+                    "003",
+                    "010",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "034",
+                    "026",
+                    "032",
+                    "015",
+                    "015"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "044",
+                    "032",
+                    "026",
+                    "039",
+                    "043",
+                    "061"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "039",
+                    "043",
+                    "045",
+                    "064",
+                    "061",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "043",
+                    "064",
+                    "044",
+                    "045",
+                    "051",
+                    "055"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "084",
+                    "101",
+                    "084",
+                    "087",
+                    "063",
+                    "079"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "109",
+                    "106",
+                    "087",
+                    "069",
+                    "103",
+                    "079"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "125",
+                    "073",
+                    "117",
+                    "172",
+                    "099",
+                    "103"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "112",
+                    "121",
+                    "118",
+                    "117",
+                    "109",
+                    "172"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "131",
+                    "129",
+                    "129",
+                    "173",
+                    "117",
+                    "112"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "129",
+                    "119",
+                    "144",
+                    "112",
+                    "112",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "158",
+                    "159",
+                    "171",
+                    "170",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Galactic Republic",
+            "Leader",
+            "Support"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Stun"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
     },
     {
         "name": "Pao",
@@ -25053,7 +25215,7 @@
             "Ability Block",
             "AoE",
             "Dispel",
-            "Foresight",
+            "Evasion Up",
             "Offense Down",
             "Offense Up",
             "Remove Turn Meter",

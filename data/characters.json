@@ -4817,6 +4817,26 @@
         }
     },
     {
+        "name": "Padmé Amidala",
+        "uniqueName": "PADMEAMIDALA",
+        "aliases": [
+            "Padmé Amidala",
+            "Padme Amidala"
+        ],
+        "nameVariant": [
+            "Padmé Amidala"
+        ],
+        "url": "http://swgoh.gg/characters/padme-amidala/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_padme_geonosis.png",
+        "side": "light",
+        "factions": [
+            "Galactic Republic",
+            "Leader",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Pao",
         "uniqueName": "PAO",
         "aliases": [
