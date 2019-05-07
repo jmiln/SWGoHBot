@@ -1635,7 +1635,22 @@
             "Sith Empire",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Darth Maul",
@@ -4824,7 +4839,8 @@
             "Padme Amidala"
         ],
         "nameVariant": [
-            "Padmé Amidala"
+            "Padmé Amidala",
+            "Padme Amidala"
         ],
         "url": "http://swgoh.gg/characters/padme-amidala/",
         "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_padme_geonosis.png",
@@ -4834,7 +4850,22 @@
             "Leader",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Pao",
