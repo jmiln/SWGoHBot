@@ -5,7 +5,7 @@ class CommandName extends Command {
         super(client, {
             name: "grandarena",
             category: "SWGoH",
-            enabled: true, 
+            enabled: true,
             aliases: ["ga"],
             permissions: ["EMBED_LINKS"],
             subArgs: {
@@ -20,8 +20,8 @@ class CommandName extends Command {
         const problemArr = [];
         user1 = await super.getUser(message, user1, false);
         user2 = await super.getUser(message, user2, false);
-        if (!user1) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 1)); 
-        if (!user2) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 2)); 
+        if (!user1) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
+        if (!user2) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
 
         let charOut = [];
         if (characters.length) {
@@ -72,19 +72,19 @@ class CommandName extends Command {
 
                 // Set of default characters to show
                 let charArr = [
-                    "BASTILASHAN",
                     "BB8",
                     "COMMANDERLUKESKYWALKER",
                     "ENFYSNEST",
                     "GENERALKENOBI",
                     "GRANDMASTERYODA",
                     "HANSOLO",
-                    "HERMITYODA",
                     "JEDIKNIGHTREVAN",
                     "R2D2_LEGENDARY",
                     "REYJEDITRAINING",
+                    "BASTILASHANDARK",
                     "BOSSK",
-                    "DARTHSION",
+                    "DARTHMALAK",
+                    "DARTHREVAN",
                     "DARTHTRAYA",
                     "KYLORENUNMASKED",
                     "VEERS",
