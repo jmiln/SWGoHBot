@@ -217,14 +217,14 @@ class GuildSearch extends Command {
             }
 
             const tableOut = client.makeTable({
-                nine:  {value: "g9", startWith: "`[", endWith: "|", align: "right"},
-                ten:   {value: "g10", endWith: "|", align: "right"},
-                eleven:   {value: "g11", endWith: "|", align: "right"},
-                twelve: {value: "g12", endWith: "]`", align: "right"},
-                name:  {value: "", align: "left"}
+                nine:   {value: "g9", startWith: "`[", endWith: "|",  align: "right"},
+                ten:    {value: "g10",                 endWith: "|",  align: "right"},
+                eleven: {value: "g11",                 endWith: "|",  align: "right"},
+                twelve: {value: "g12",                 endWith: "]`", align: "right"},
+                name:   {value: "",                                   align: "left"}
             }, tableIn);
 
-            const outMsgArr = client.msgArray(tableOut, "\n", 900);
+            const outMsgArr = client.msgArray(tableOut, "\n", 700);
             const fields = [];
             outMsgArr.forEach(m => {
                 fields.push({
@@ -345,7 +345,7 @@ class GuildSearch extends Command {
                 name:  {value: "", align: "left"}
             }, tableIn);
 
-            const outMsgArr = client.msgArray(tableOut, "\n", 900);
+            const outMsgArr = client.msgArray(tableOut, "\n", 700);
             const fields = [];
             outMsgArr.forEach(m => {
                 fields.push({
@@ -507,7 +507,7 @@ class GuildSearch extends Command {
                 const outTable = client.makeTable(header, outArr);
 
                 if (outTable.length) {
-                    const outMsgArr = client.msgArray(outTable, "\n", 900);
+                    const outMsgArr = client.msgArray(outTable, "\n", 700);
                     outMsgArr.forEach((m, ix) => {
                         const name = (ix === 0) ? message.language.get("COMMAND_GUILDSEARCH_SORTED_BY", character.name, sortBy) : message.language.get("BASE_CONT_STRING");
                         fields.push({
@@ -628,7 +628,7 @@ class GuildSearch extends Command {
             }, output);
             const header = [client.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
 
-            const fields = client.msgArray(header.concat(table), "\n", 900).map(m => {
+            const fields = client.msgArray(header.concat(table), "\n", 700).map(m => {
                 return {name: "-", value: m};
             });
             if (options.defaults) {
@@ -832,7 +832,7 @@ class GuildSearch extends Command {
 
             outArr.forEach(star => {
                 if (star >= starLvl) {
-                    const msgArr = client.msgArray(charOut[star], "\n", 1000);
+                    const msgArr = client.msgArray(charOut[star], "\n", 700);
                     msgArr.forEach((msg, ix) => {
                         const name = star === 0 ? message.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length) : message.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
                         fields.push({
