@@ -303,18 +303,18 @@ class CommandName extends Command {
                         });
                         checkArr[cName].push({
                             check: labels.speed,
-                            user1: user1Char ? user1Char.stats.final.Speed : "N/A",
-                            user2: user2Char ? user2Char.stats.final.Speed : "N/A"
+                            user1: user1Char ? user1Char.stats.Speed.final : "N/A",
+                            user2: user2Char ? user2Char.stats.Speed.final : "N/A"
                         });
                     }
                 }
 
                 let extra = 0;
                 const fields = [];
-                const len = 27;
+                const len = 30;
                 Object.keys(checkArr).forEach((c, ix) => {
                     if (ix < 20) {
-                        let halfLen = parseInt((len - c.length) / 2) - 1;
+                        let halfLen = parseInt((len - c.length) / 2);
                         if (halfLen < 0) halfLen = 0;
                         fields.push({
                             name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
@@ -338,7 +338,7 @@ class CommandName extends Command {
 
                 const footer = client.updatedFooter(Math.min(user1.updated, user2.updated), message, "player", cooldown);
                 return message.channel.send({embed: {
-                    author: {name: message.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.stats[0].unit.player, user2.stats[0].unit.player)},
+                    author: {name: message.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name)},
                     description: message.language.get("COMMAND_GRANDARENA_OUT_DESC", overview, modOverview),
                     fields: fields,
                     footer: footer
