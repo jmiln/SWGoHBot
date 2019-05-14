@@ -1,5 +1,6 @@
 const {inspect} = require("util");
 const snekfetch = require("snekfetch");
+const nodeFetch = require("node-fetch");
 module.exports = (client) => {
     const swgoh = client.swgoh;
     const cache = client.cache;
@@ -197,25 +198,31 @@ module.exports = (client) => {
                 for (const bareP of updatedBare) {
                     let pStats;
                     try {
-                        pStats = await swgoh.rosterStats(bareP.roster, ["withModCalc","gameStyle"]);
+                        pStats =  await nodeFetch("http://localhost:3201/char", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(bareP.roster.filter(u => !u.crew.length))
+                        }).then(res => res.json());
                     } catch (error) {
                         throw new Error("Error getting player stats: " + error);
                     }
 
-                    pStats.forEach(c => {
-                        const char = bareP.roster.find(u => u.defId === c.unit.defId);
-                        c.unit.gp   = char.gp;
-                        c.unit.skills = char.skills;
-                        c.unit.name = char.nameKey;
-                        c.unit.player = bareP.name;
+                    const outChars = [];
+                    bareP.roster.filter(u => !u.crew.length).forEach(c => {
+                        const char = pStats.find(u => u.unit === c.defId);
+                        outChars.push({
+                            stats: char.stats,
+                            unit: c
+                        });
                     });
+                    bareP.roster = outChars;
 
                     const stats = {
                         name: bareP.name,
                         allyCode: bareP.allyCode,
                         updated: bareP.updated,
                         arena: bareP.arena,
-                        stats: pStats
+                        stats: bareP.roster
                     };
                     pStats = await cache.put(client.config.mongodb.swapidb, "playerStats", {allyCode: stats.allyCode}, stats);
                     pStats.warnings = warning;

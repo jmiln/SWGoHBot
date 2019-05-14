@@ -6,9 +6,9 @@ class MyCharacter extends Command {
         super(client, {
             name: "mycharacter",
             category: "SWGoH",
-            enabled: true, 
+            enabled: true,
             aliases: ["mc", "mychar"],
-            permissions: ["EMBED_LINKS"],   
+            permissions: ["EMBED_LINKS"],
             permLevel: 0,
         });
     }
@@ -56,18 +56,20 @@ class MyCharacter extends Command {
         }
 
         if (player && player.stats) {
-            pName = player.stats[0].unit.player;
+            pName = player.name;
         }
         const footer = client.updatedFooter(player.updated, message, "player", cooldown);
 
         let thisChar = player.stats.filter(c => c.unit.defId === character.uniqueName);
         if (thisChar.length && Array.isArray(thisChar)) thisChar = thisChar[0];
-    
+
+        // console.log(thisChar);
         thisChar.unit = await client.swgohAPI.langChar(thisChar.unit, message.guildSettings.swgohLanguage);
 
         if (thisChar) {
             const stats = thisChar.stats;
             thisChar = thisChar.unit;
+            // console.log(thisChar);
             let gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
             const abilities = {
                 basic: [],
@@ -121,7 +123,7 @@ class MyCharacter extends Command {
                     "Potency",
                     "Tenacity",
                     "Health Steal",
-                    "Defense Penetration"
+                    // "Defense Penetration"
                 ],
                 "Physical Offense": [
                     "Physical Damage",
@@ -149,62 +151,63 @@ class MyCharacter extends Command {
 
             const langStr = message.language.get("BASE_STAT_NAMES");
             const langMap = {
-                "Primary Attributes":       "PRIMARY",    
-                "Strength":                 "STRENGTH",   
-                "Agility":                  "AGILITY",    
-                "Intelligence":             "TACTICS",    
-                "General":                  "GENERAL",    
-                "Health":                   "HEALTH",     
-                "Protection":               "PROTECTION", 
-                "Speed":                    "SPEED",      
-                "Critical Damage":          "CRITDMG",    
-                "Potency":                  "POTENCY",    
-                "Tenacity":                 "TENACITY",   
-                "Health Steal":             "HPSTEAL",    
-                "Defense Penetration":      "DEFENSEPEN", 
-                "Physical Offense":         "PHYSOFF",    
-                "Physical Damage":          "PHYSDMG",    
-                "Physical Critical Chance": "PHYSCRIT",   
-                "Armor Penetration":        "ARMORPEN",   
-                "Accuracy":                 "ACCURACY",   
-                "Physical Survivability":   "PHYSSURV",   
-                "Armor":                    "ARMOR",      
+                "Primary Attributes":       "PRIMARY",
+                "Strength":                 "STRENGTH",
+                "Agility":                  "AGILITY",
+                "Intelligence":             "TACTICS",
+                "General":                  "GENERAL",
+                "Health":                   "HEALTH",
+                "Protection":               "PROTECTION",
+                "Speed":                    "SPEED",
+                "Critical Damage":          "CRITDMG",
+                "Potency":                  "POTENCY",
+                "Tenacity":                 "TENACITY",
+                "Health Steal":             "HPSTEAL",
+                // "Defense Penetration":      "DEFENSEPEN",
+                "Physical Offense":         "PHYSOFF",
+                "Physical Damage":          "PHYSDMG",
+                "Physical Critical Chance": "PHYSCRIT",
+                "Armor Penetration":        "ARMORPEN",
+                "Accuracy":                 "ACCURACY",
+                "Physical Survivability":   "PHYSSURV",
+                "Armor":                    "ARMOR",
                 "Dodge Chance":             "DODGECHANCE",
-                "Critical Avoidance":       "CRITAVOID",  
-                "Special Offense":          "SPECOFF",    
-                "Special Damage":           "SPECDMG",    
-                "Special Critical Chance":  "SPECCRIT",   
-                "Resistance Penetration":   "RESPEN",     
-                "Special Survivability":    "SPECSURV",   
-                "Resistance":               "RESISTANCE", 
-                "Deflection Chance":        "DEFLECTION" 
+                "Critical Avoidance":       "CRITAVOID",
+                "Special Offense":          "SPECOFF",
+                "Special Damage":           "SPECDMG",
+                "Special Critical Chance":  "SPECCRIT",
+                "Resistance Penetration":   "RESPEN",
+                "Special Survivability":    "SPECSURV",
+                "Resistance":               "RESISTANCE",
+                "Deflection Chance":        "DEFLECTION"
             };
 
-            if (!stats || !stats.final) return super.error(message, "Something went wrong. Please make sure you have that character unlocked");
+            if (!stats) return super.error(message, "Something went wrong. Please make sure you have that character unlocked");
 
-            let keys = Object.keys(stats.final);
+            let keys = Object.keys(stats);
             if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
             let maxLen;
             try {
-                maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]].length), 0);
+                maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]] ? langStr[langMap[str]].length : 0), 0);
             } catch (e) {
                 console.log("[MC] Getting maxLen broke: " + e);
             }
+            console.log(maxLen);
             const statArr = [];
             Object.keys(statNames).forEach(sn => {
                 let statStr = "== " + sn + " ==\n";
                 statNames[sn].forEach(s => {
-                    if (!stats.final[s]) stats.final[s] = 0;
+                    if (!stats[s]) stats[s] = {final: 0, mods: 0, pct: false};
                     if (s === "Dodge Chance" || s === "Deflection Chance") {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
                     } else {
-                        statStr += `${langStr[langMap[s]]}${` ${client.zws}`.repeat(maxLen - langStr[langMap[s]].length)} :: `;
-                        const str = stats.final[s] % 1 === 0 ? stats.final[s] : (stats.final[s] * 100).toFixed(2)+"%";
-                        const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s]})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
-                        statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
+                        statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: `;
+                        const str = !stats[s].pct ? parseInt(stats[s].final) : (stats[s].final * 100).toFixed(2)+"%";
+                        const modStr = stats[s].mods > 0 ? (!stats[s].pct ? `(${parseInt(stats[s].mods)})` : `(${(stats[s].mods * 100).toFixed(2)}%)`) : "";
+                        statStr += str + " ".repeat(8 - str.toString().length) + modStr + "\n";
                     }
                 });
-                statArr.push(statStr);
+                statArr.push(client.expandSpaces(statStr));
             });
 
             const fields = [];
@@ -225,8 +228,8 @@ class MyCharacter extends Command {
             return msg.edit({embed: {
                 author: {
                     name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name
-                }, 
-                description: 
+                },
+                description:
                 [
                     `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\``,
                     `${message.language.get("BASE_GEAR_SHORT")}: ${thisChar.gear}`,
