@@ -41,7 +41,7 @@ class MyMods extends Command {
             return message.channel.send({embed: {
                 author: {
                     name: "Error"
-                }, 
+                },
                 description: client.codeBlock(err)
             }});
         }
@@ -107,7 +107,7 @@ class MyMods extends Command {
                     // Then all the secondaries
                     mod.secondaryStat.forEach(s => {
                         let t = stats[s.unitStat];
-                        if (t.indexOf("%") > -1) { 
+                        if (t.indexOf("%") > -1) {
                             t = t.replace("%", "").trim();
                             s.value = s.value.toFixed(2) + "%";
                         }
@@ -142,8 +142,8 @@ class MyMods extends Command {
                         icon_url: character.avatarURL
                     },
                     fields: fields,
-                    footer: footer 
-                }}); 
+                    footer: footer
+                }});
             } else {
                 // They don't have the character
                 msg.edit({embed: {
@@ -151,7 +151,7 @@ class MyMods extends Command {
                         name: player.name + "'s " + character.name
                     },
                     description: message.language.get("BASE_SWGOH_LOCKED_CHAR"),
-                    footer: footer 
+                    footer: footer
                 }});
             }
         } else {
@@ -169,7 +169,7 @@ class MyMods extends Command {
                     aliases: ["Pot"]
                 },
                 "Physical Critical Chance": {
-                    aliases: ["PCC", "CC", "Crit Chance", "Critical Chance", "Physical Crit Chance"], 
+                    aliases: ["PCC", "CC", "Crit Chance", "Critical Chance", "Physical Crit Chance"],
                 },
                 "Special Critical Chance": {
                     aliases: ["SCC", "Special Crit Chance"]
@@ -208,37 +208,49 @@ class MyMods extends Command {
                 return super.error(msg, (message.language.get("COMMAND_MYMODS_BAD_STAT", client.codeBlock(Object.keys(checkableStats).join("\n")))), {edit: true});
             }
             const statToCheck = options.subArgs.b;
-            let stats;
-            try { 
-                stats = await client.swgohAPI.unitStats(allyCode, cooldown);
-                if (Array.isArray(stats)) stats = stats[0];
+            let player;
+            try {
+                player = await client.swgohAPI.unitStats(allyCode, cooldown);
+                if (Array.isArray(player)) player = player[0];
             } catch (e) {
                 return super.error(message, client.codeBlock(e.message), {
                     title: message.lanugage.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit."
                 });
             }
-            
-            let updated;
-            if (stats && stats.stats) {
-                updated = stats.updated;
-                stats = stats.stats;
+
+            let updated, stats;
+            if (player && player.stats) {
+                updated = player.updated;
+                stats = player.stats;
             }
 
             stats.forEach(c => {
-                if (c.stats.final && !c.stats.final[statToCheck]) {
-                    c.stats.final[statToCheck] = 0;
+                if (c.stats && !c.stats[statToCheck]) {
+                    c.stats[statToCheck].final = 0;
                 }
-                if (c.stats.mods && !c.stats.mods[statToCheck]) {
-                    c.stats.mods[statToCheck] = 0;
+                if (c.stats && !c.stats[statToCheck]) {
+                    c.stats[statToCheck].mods = 0;
                 }
             });
 
             let sorted;
             if (options.flags.t) {
-                sorted = stats.sort((p, c) => p.stats.final && c.stats.final && p.stats.final[statToCheck] > c.stats.final[statToCheck] ? -1 : 1);
+                sorted = stats.sort((p, c) => {
+                    if (p.stats[statToCheck] && c.stats[statToCheck]) {
+                        return c.stats[statToCheck].final - p.stats[statToCheck].final;
+                    } else {
+                        return -1;
+                    }
+                });
             } else {
-                sorted = stats.sort((p, c) => p.stats.mods && c.stats.mods && p.stats.mods[statToCheck] > c.stats.mods[statToCheck] ? -1 : 1);
+                sorted = stats.sort((p, c) => {
+                    if (p.stats[statToCheck] && c.stats[statToCheck]) {
+                        return c.stats[statToCheck].mods - p.stats[statToCheck].mods;
+                    } else {
+                        return -1;
+                    }
+                });
 
             }
 
@@ -258,10 +270,10 @@ class MyMods extends Command {
             }
 
             const out = sorted.map(c => {
-                const finalStat = c.stats.final ? (c.stats.final[statToCheck] % 1 === 0 ? c.stats.final[statToCheck] : (c.stats.final[statToCheck] * 100).toFixed(2)+"%") : 0;
-                const modStat = c.stats.mods && c.stats.mods[statToCheck] ? (c.stats.mods[statToCheck] % 1 === 0 ? `(${c.stats.mods[statToCheck]})` : `(${(c.stats.mods[statToCheck] * 100).toFixed(2)}%)`) : "";
+                const finalStat = c.stats && c.stats[statToCheck] ? (!c.stats[statToCheck].pct ? c.stats[statToCheck].final : (c.stats[statToCheck].final * 100).toFixed(2)+"%") : 0;
+                const modStat = c.stats && c.stats[statToCheck] ? (!c.stats[statToCheck].pct ? `(${parseInt(c.stats[statToCheck].mods)})` : `(${(c.stats[statToCheck].mods * 100).toFixed(2)}%)`) : "";
                 return {
-                    stat: `${finalStat}${modStat.length ? " " + modStat : ""}`, 
+                    stat: `${finalStat}${modStat.length ? " " + modStat : ""}`,
                     name: `: ${c.unit.nameKey}`
                 };
             });
@@ -273,10 +285,10 @@ class MyMods extends Command {
             const author = {};
             if (options.flags.t) {
                 // ${playerName}'s Highest ${stat} Characters
-                author.name = message.language.get("COMMAND_MYMODS_HEADER_TOTAL", stats[0].unit.player, options.subArgs.b);
+                author.name = message.language.get("COMMAND_MYMODS_HEADER_TOTAL", player.name, options.subArgs.b);
             } else {
                 // ${playerName}'s Best ${stat} From Mods
-                author.name = message.language.get("COMMAND_MYMODS_HEADER_MODS", stats[0].unit.player, options.subArgs.b);
+                author.name = message.language.get("COMMAND_MYMODS_HEADER_MODS", player.name, options.subArgs.b);
             }
 
             const fields = [];

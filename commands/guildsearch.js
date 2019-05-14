@@ -82,7 +82,6 @@ class GuildSearch extends Command {
             err = tmp.err;
 
             if (options.flags.ships && options.flags.stats) {
-                // TODO Lang this
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_SHIP_STATS"));
             } else if (!searchChar) {
                 return super.error(message, "Missing character to search for.", {example: "guildsearch c3po\n;guildsearch falcon -s"});

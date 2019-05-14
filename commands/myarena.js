@@ -38,7 +38,7 @@ class MyArena extends Command {
 
         if (!player.arena) {
             return super.error(message, "Something broke when getting your info, please try again in a bit.");
-        }         
+        }
 
         const fields = [];
         const positions = [ "L|", "2|", "3|", "4|", "5|" ];
@@ -84,7 +84,7 @@ class MyArena extends Command {
             } catch (e) {
                 console.error(e);
                 return super.error(message, client.codeBlock(e.message), {
-                    title: message.language.get("BASE_SOMETHING_BROKE"), 
+                    title: message.language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit."
                 });
             }
@@ -98,9 +98,9 @@ class MyArena extends Command {
                 const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 const cName = `${"z".repeat(thisZ.length)}${thisChar.nameKey}`;
-                const speed = thisCharStats.stats.final.Speed;
-                const health = thisCharStats.stats.final.Health;
-                const prot = thisCharStats.stats.final.Protection;
+                const speed = thisCharStats.stats.Speed.final;
+                const health = thisCharStats.stats.Health.final;
+                const prot = thisCharStats.stats.Protection.final;
                 chars.push({
                     pos: positions[ix],
                     speed: speed,
