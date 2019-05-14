@@ -514,6 +514,10 @@
             {
                 "type": "Special Event",
                 "name": "Star Forge Showdown"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "3800/10"
             }
         ]
     },

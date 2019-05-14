@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2019-05-06 20:00:01.000000",
+        "date": "2019-05-07 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -3494,6 +3494,38 @@
             "cross": "Offense",
             "short": "",
             "families": "sith empire ; sith",
+            "crew": "0"
+        },
+        {
+            "name": "Darth Malak",
+            "cname": "Darth Malak",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "short": "dm",
+            "families": "sith empire ; sith",
+            "crew": "0"
+        },
+        {
+            "name": "Padme Amidala",
+            "cname": "Padme Amidala",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "short": "pa",
+            "families": "galactic republic",
             "crew": "0"
         }
     ]

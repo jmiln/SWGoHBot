@@ -69,7 +69,7 @@ class Need extends Command {
             let u = player.roster.find(c => c.defId === unit.baseId);
             if (!u) {
                 u = {};
-                u.rarity = 0;
+                u.rarity = unit.baseId === "DARTHMALAK" ? 5 : 0;
                 u.nameKey = unit.name;
             }
             if (u.rarity === 7) continue;

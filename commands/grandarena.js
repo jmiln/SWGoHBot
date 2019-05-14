@@ -5,7 +5,7 @@ class CommandName extends Command {
         super(client, {
             name: "grandarena",
             category: "SWGoH",
-            enabled: true, 
+            enabled: true,
             aliases: ["ga"],
             permissions: ["EMBED_LINKS"],
             subArgs: {
@@ -20,8 +20,8 @@ class CommandName extends Command {
         const problemArr = [];
         user1 = await super.getUser(message, user1, false);
         user2 = await super.getUser(message, user2, false);
-        if (!user1) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 1)); 
-        if (!user2) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 2)); 
+        if (!user1) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
+        if (!user2) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
 
         let charOut = [];
         if (characters.length) {
@@ -72,19 +72,20 @@ class CommandName extends Command {
 
                 // Set of default characters to show
                 let charArr = [
-                    "BASTILASHAN",
                     "BB8",
                     "COMMANDERLUKESKYWALKER",
                     "ENFYSNEST",
                     "GENERALKENOBI",
                     "GRANDMASTERYODA",
                     "HANSOLO",
-                    "HERMITYODA",
                     "JEDIKNIGHTREVAN",
+                    "PADMEAMIDALA",
                     "R2D2_LEGENDARY",
                     "REYJEDITRAINING",
+                    "BASTILASHANDARK",
                     "BOSSK",
-                    "DARTHSION",
+                    "DARTHMALAK",
+                    "DARTHREVAN",
                     "DARTHTRAYA",
                     "KYLORENUNMASKED",
                     "VEERS",
@@ -310,11 +311,14 @@ class CommandName extends Command {
 
                 let extra = 0;
                 const fields = [];
+                const len = 27;
                 Object.keys(checkArr).forEach((c, ix) => {
                     if (ix < 20) {
+                        let halfLen = parseInt((len - c.length) / 2) - 1;
+                        if (halfLen < 0) halfLen = 0;
                         fields.push({
-                            name: c,
-                            value: "`==================================`\n" + client.codeBlock(client.makeTable({
+                            name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
+                            value: client.codeBlock(client.makeTable({
                                 check: {value: "", align: "left", endWith: "::"},
                                 user1: {value: "", endWith: "vs", align: "right"},
                                 user2: {value: "", align: "left"}
@@ -345,7 +349,6 @@ class CommandName extends Command {
             // Otherwise, spit out the list of issues
             return super.error(message, client.codeBlock(problemArr.map(p => "* " + p).join("\n")));
         }
-
     }
 }
 
