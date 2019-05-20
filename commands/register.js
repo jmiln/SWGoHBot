@@ -49,12 +49,12 @@ class Register extends Command {
             });
             user = await client.userReg.updateUser(userID, user);
             const u = user.accounts.find(a => a.primary);
-            return super.success(message, 
+            return super.success(message,
                 client.codeBlock(message.language.get(
-                    "COMMAND_REGISTER_SUCCESS_DESC", 
-                    u, 
-                    u.allyCode.toString().match(/\d{3}/g).join("-"), 
-                    u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                    "COMMAND_REGISTER_SUCCESS_DESC",
+                    u,
+                    u.allyCode.toString().match(/\d{3}/g).join("-"),
+                    u.stats ? u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString() : ""
                 ), "asciiDoc"), {
                     title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name)
                 });
@@ -64,7 +64,7 @@ class Register extends Command {
                 a.primary = false;
                 return a;
             });
-        }    
+        }
         message.channel.send(message.language.get("COMMAND_REGISTER_PLEASE_WAIT")).then(async msg => {
             try {
                 await client.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
@@ -81,11 +81,11 @@ class Register extends Command {
                                 await client.swgohAPI.register([
                                     [allyCode, userID]
                                 ]);
-                                return super.success(msg, 
+                                return super.success(msg,
                                     client.codeBlock(message.language.get(
-                                        "COMMAND_REGISTER_SUCCESS_DESC", 
-                                        u, 
-                                        u.allyCode.toString().match(/\d{3}/g).join("-"), 
+                                        "COMMAND_REGISTER_SUCCESS_DESC",
+                                        u,
+                                        u.allyCode.toString().match(/\d{3}/g).join("-"),
                                         u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
                                     ), "asciiDoc"), {
                                         title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name),
