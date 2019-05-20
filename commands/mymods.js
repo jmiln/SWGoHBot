@@ -237,7 +237,7 @@ class MyMods extends Command {
             let sorted;
             if (options.flags.t) {
                 sorted = stats.sort((p, c) => {
-                    if (p.stats[statToCheck] && c.stats[statToCheck]) {
+                    if (p.stats && c.stats && p.stats[statToCheck] && c.stats[statToCheck]) {
                         return c.stats[statToCheck].final - p.stats[statToCheck].final;
                     } else {
                         return -1;
@@ -245,7 +245,7 @@ class MyMods extends Command {
                 });
             } else {
                 sorted = stats.sort((p, c) => {
-                    if (p.stats[statToCheck] && c.stats[statToCheck]) {
+                    if (p.stats && c.stats && p.stats[statToCheck] && c.stats[statToCheck]) {
                         return c.stats[statToCheck].mods - p.stats[statToCheck].mods;
                     } else {
                         return -1;

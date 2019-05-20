@@ -199,6 +199,7 @@ class UserConf extends Command {
                     user.arenaAlert.arena = setting;
                 } else if (action === "payoutresult") {
                     // Set it to tell you the result at your payout
+                    console.log(!setting);
                     if (!setting) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_MISSING_BOOL"));
                     }

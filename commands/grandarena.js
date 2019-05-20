@@ -113,8 +113,8 @@ class CommandName extends Command {
                 }
 
                 let overview = [];
-                const shipList = client.ships.map(s => s.uniqueName);
                 const charList = client.characters.map(c => c.uniqueName);
+                const shipList = client.ships.map(s => s.uniqueName);
 
                 overview.push({
                     check: labels.charGP,

@@ -95,6 +95,7 @@ class Need extends Command {
 
         const fields = [];
         if (outChars.length) {
+            outChars = outChars.filter(c => c.name);
             outChars = outChars.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             outChars = outChars.map(c => `\`${c.rarity}*\` ${c.rarity ? c.name : "~~" + c.name + "~~"}`);
             const msgArr = client.msgArray(outChars, "\n", 1000);
