@@ -111,8 +111,8 @@
         "name": "Ebon Hawk",
         "locations": [
             {
-                "type": "Special Event",
-                "name": "Galactic Chase"
+                "type": "Cantina",
+                "level": "8-E"
             }
         ]
     },

@@ -6058,8 +6058,8 @@
         "pk": 91,
         "url": "http://swgoh.gg/characters/count-dooku/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_dooku.png",
-        "power": 21168,
-        "description": "High-damage attacker with stun, bonus attacks, and incredible counter-attacking.",
+        "power": 21952,
+        "description": "Disciplined Separatist Attacker with high damage, counter attacks, and debuff capabilities",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -6197,21 +6197,25 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Attacker",
             "Leader",
             "Separatist",
-            "Sith",
-            "Support"
+            "Sith"
         ],
         "ability_classes": [
             "Ability Block",
             "Bonus Attack",
             "Counter",
+            "Daze",
+            "Dispel",
             "Gain Turn Meter",
-            "Leader: +Evasion",
-            "Offense Up",
-            "Stun"
+            "Healing Immunity",
+            "Leader: +Tenacity",
+            "Stealth",
+            "Stun",
+            "Tenacity Down"
         ],
-        "role": "Support",
+        "role": "Leader",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
@@ -19884,8 +19888,8 @@
         "pk": 177,
         "url": "http://swgoh.gg/characters/nute-gunray/",
         "image": "//swgoh.gg/static/img/assets/tex.charui_nutegunray.png",
-        "power": 18762,
-        "description": "Attacker with powerful Stealth bonuses and a potent Thermal Detonator",
+        "power": 21952,
+        "description": "Separatist Support who specializes in sabotaging enemy strategies",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -20023,18 +20027,22 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Attacker",
             "Leader",
             "Scoundrel",
-            "Separatist"
+            "Separatist",
+            "Support"
         ],
         "ability_classes": [
-            "Gain Turn Meter",
-            "Leader: +Critical",
-            "Stealth",
-            "Thermal Detonator"
+            "AoE",
+            "Assist",
+            "Dispel",
+            "Leader: +Speed",
+            "Reduce Cooldowns",
+            "Revive",
+            "Speed Down",
+            "Stealth"
         ],
-        "role": "Leader",
+        "role": "Support",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 80
@@ -25215,14 +25223,10 @@
             "Ability Block",
             "AoE",
             "Dispel",
-            "Evasion Up",
             "Offense Down",
             "Offense Up",
             "Remove Turn Meter",
-            "Stealth",
-            "Target Lock",
-            "Taunt",
-            "Tenacity Up"
+            "Target Lock"
         ],
         "role": "Support",
         "ship": "EBONHAWK",
