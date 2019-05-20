@@ -1635,6 +1635,7 @@ module.exports = class extends Language {
             COMMAND_USERCONF_ARENA_INVALID_WARNING: "Invalid number, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.",
             COMMAND_USERCONF_ARENA_INVALID_NUMBER: "Invalid number, your number needs to be between 0 (turns it off), and 1440 (one day).",
             COMMAND_USERCONF_ARENA_INVALID_OPTION: "Try one of these: `enableDMs, arena, payoutResult, payoutWarning`",
+            COMMAND_USERCONF_ARENA_INVALID_BOOL: "Invalid option. Try `yes/no`, `true/false` or `on/off`",
             COMMAND_USERCONF_ARENA_UPDATED: "Your settings have been updated.",
             COMMAND_USERCONF_HELP: {
                 description: "All the needed utilities to manage your info in the bot.",
@@ -1668,9 +1669,9 @@ module.exports = class extends Language {
                         action: "Arena Alert",
                         actionDesc: "Set alerts to DM when your rank drops and other arena related stuff.",
                         usage: [
-                            ";userconf arenaAlert enableDMs <on|off>",
+                            ";userconf arenaAlert enableDMs <all|primary|off>",
                             ";userconf arenaAlert arena <both|fleet|char>",
-                            ";userconf arenaAlert payoutResult <all|primary|off>",
+                            ";userconf arenaAlert payoutResult <on|off>",
                             ";userconf arenaAlert payoutWarning <0-1439>"
                         ].join("\n"),
                         args: {
