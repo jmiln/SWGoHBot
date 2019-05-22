@@ -197,45 +197,40 @@ module.exports = (client) => {
                 }
                 for (const bareP of updatedBare) {
                     let charStats;
-                    // let shipStats;
+                    let shipStats;
                     try {
+                        bareP.roster.forEach(unit => {
+                            unit.crew.forEach(cm => {
+                                cm.unit = bareP.roster.find(u => u.defId === cm.unitId);
+                            });
+                        });
                         // Get the stats for all the characters
                         charStats =  await nodeFetch("http://localhost:3201/char", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(bareP.roster.filter(u => !u.crew.length))
                         }).then(res => res.json());
+
                         // Then get all the stats for the ships (coming soon tm)
-                        // shipStats = require("node-fetch")("http://localhost:3201/ship", {
-                        //     method: "POST",
-                        //     headers: { "Content-Type": "application/json" },
-                        //     body: JSON.stringify(bareP.roster.filter(u => u.crew.length))
-                        // }).then(res => res.json());
+                        shipStats = await nodeFetch("http://localhost:3201/ship", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(bareP.roster.filter(u => u.crew.length > 0))
+                        }).then(res => res.json());
                     } catch (error) {
                         throw new Error("Error getting player stats: " + error);
                     }
 
-
                     const outChars = [];
                     bareP.roster.forEach(c => {
-                        const char = charStats.find(u => u.unit === c.defId);
+                        let char = charStats.find(u => u.unit === c.defId);
+                        if (!char) {
+                            char = shipStats.find(u => u.unit === c.defId);
+                        }
                         outChars.push({
                             stats: char ? char.stats : null,
                             unit: c
                         });
-                    //     if (c.crew.length) {
-                    //         // const ship = shipStats.find(u => u.unit === c.defId);
-                    //         outChars.push({
-                    //             stats: null, //ship.stats,
-                    //             unit: c
-                    //         });
-                    //     } else {
-                    //         const char = charStats.find(u => u.unit === c.defId);
-                    //         outChars.push({
-                    //             stats: char ? char.stats : null,
-                    //             unit: c
-                    //         });
-                    //     }
                     });
                     bareP.roster = outChars;
 
@@ -246,6 +241,7 @@ module.exports = (client) => {
                         arena: bareP.arena,
                         stats: bareP.roster
                     };
+                    charStats = stats;
                     charStats = await cache.put(client.config.mongodb.swapidb, "playerStats", {allyCode: stats.allyCode}, stats);
                     charStats.warnings = warning;
                     playerStats.push(charStats);

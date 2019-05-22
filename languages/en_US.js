@@ -912,10 +912,11 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";mycharacter [user] <character>",
+                        usage: ";mycharacter [user] <character>\n;mycharacter [user] <character> -s",
                         args: {
                             "user": "The person you're checking. (me | userID | mention)",
-                            "character": "The character you want to search for."
+                            "character": "The character you want to search for.",
+                            "-s": "Make sure it's looking for a ship (You can use the pilot to search this way)"
                         }
                     }
                 ]

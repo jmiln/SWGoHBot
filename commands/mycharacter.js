@@ -10,17 +10,28 @@ class MyCharacter extends Command {
             aliases: ["mc", "mychar"],
             permissions: ["EMBED_LINKS"],
             permLevel: 0,
+            flags: {
+                ships: {
+                    aliases: ["s", "ship"]
+                }
+            }
         });
     }
 
-    async run(client, message, args) {
+    async run(client, message, args, options) {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
 
         if (err) {
             return super.error(message, err);
         }
 
-        const chars = client.findChar(searchChar, client.characters);
+        let chars = [];
+        if (!options.flags.ships) {
+            chars = client.findChar(searchChar, client.characters);
+        }
+        if (!chars.length) {
+            chars = client.findChar(searchChar, client.ships, true);
+        }
         let character;
         if (!searchChar) {
             return super.error(message, message.language.get("BASE_SWGOH_MISSING_CHAR"));
@@ -63,32 +74,39 @@ class MyCharacter extends Command {
         let thisChar = player.stats.filter(c => c.unit.defId === character.uniqueName);
         if (thisChar.length && Array.isArray(thisChar)) thisChar = thisChar[0];
 
-        // console.log(thisChar);
-        thisChar.unit = await client.swgohAPI.langChar(thisChar.unit, message.guildSettings.swgohLanguage);
-
-        if (thisChar) {
+        if (thisChar && !Array.isArray(thisChar)) {
+            thisChar.unit = await client.swgohAPI.langChar(thisChar.unit, message.guildSettings.swgohLanguage);
             const stats = thisChar.stats;
             thisChar = thisChar.unit;
-            // console.log(thisChar);
-            let gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
+            const isShip = thisChar.crew.length ? true : false;
+
             const abilities = {
                 basic: [],
                 special: [],
                 leader: [],
                 unique: [],
-                contract: []
+                contract: [],
+                crew: [],
+                hardware: []
             };
-            thisChar.equipped.forEach(e => {
-                gearStr = gearStr.replace(e.slot, "X");
-            });
-            gearStr = gearStr.replace(/[0-9]/g, "  ");
-            gearStr = client.expandSpaces(gearStr);
+
+            let gearStr;
+            if (!isShip) {
+                gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
+                thisChar.equipped.forEach(e => {
+                    gearStr = gearStr.replace(e.slot, "X");
+                });
+                gearStr = gearStr.replace(/[0-9]/g, "  ");
+                gearStr = client.expandSpaces(gearStr);
+            }
             thisChar.skills.forEach(a => {
                 a.type = a.id.split("_")[0].replace("skill", "").toProperCase();
-                if (a.tier === 8 || (a.tier === 3 && a.type === "Contract")) {
+                if (a.tier === 8 || (a.tier === 3 && (a.type === "Contract" || a.type === "Hardware"))) {
                     if (a.isZeta) {
                         // Maxed Zeta ability
                         a.tier = "Max ✦";
+                    } else if (isShip) {
+                        a.tier = "Max";
                     } else {
                         // Maxed Omega ability
                         a.tier = "Max ⭓";
@@ -107,46 +125,17 @@ class MyCharacter extends Command {
                 .concat(abilities.special)
                 .concat(abilities.leader)
                 .concat(abilities.unique)
-                .concat(abilities.contract);
+                .concat(abilities.crew)
+                .concat(abilities.contract)
+                .concat(abilities.hardware);
 
             const statNames = {
-                "Primary Attributes" : [
-                    "Strength",
-                    "Agility",
-                    "Intelligence"
-                ],
-                "General": [
-                    "Health",
-                    "Protection",
-                    "Speed",
-                    "Critical Damage",
-                    "Potency",
-                    "Tenacity",
-                    "Health Steal",
-                    // "Defense Penetration"
-                ],
-                "Physical Offense": [
-                    "Physical Damage",
-                    "Physical Critical Chance",
-                    "Armor Penetration",
-                    "Accuracy"
-                ],
-                "Physical Survivability": [
-                    "Armor",
-                    "Dodge Chance",
-                    "Critical Avoidance"
-                ],
-                "Special Offense": [
-                    "Special Damage",
-                    "Special Critical Chance",
-                    "Resistance Penetration",
-                    "Accuracy"
-                ],
-                "Special Survivability": [
-                    "Resistance",
-                    "Deflection Chance",
-                    "Critical Avoidance"
-                ]
+                "Primary Attributes" : [ "Strength", "Agility", "Intelligence" ],
+                "General": [ "Health", "Protection", "Speed", "Critical Damage", "Potency", "Tenacity", "Health Steal", ],
+                "Physical Offense": [ "Physical Damage", "Physical Critical Chance", "Armor Penetration", "Accuracy" ],
+                "Physical Survivability": [ "Armor", "Dodge Chance", "Critical Avoidance" ],
+                "Special Offense": [ "Special Damage", "Special Critical Chance", "Resistance Penetration", "Accuracy" ],
+                "Special Survivability": [ "Resistance", "Deflection Chance", "Critical Avoidance" ]
             };
 
             const langStr = message.language.get("BASE_STAT_NAMES");
@@ -163,7 +152,7 @@ class MyCharacter extends Command {
                 "Potency":                  "POTENCY",
                 "Tenacity":                 "TENACITY",
                 "Health Steal":             "HPSTEAL",
-                // "Defense Penetration":      "DEFENSEPEN",
+                "Defense Penetration":      "DEFENSEPEN",
                 "Physical Offense":         "PHYSOFF",
                 "Physical Damage":          "PHYSDMG",
                 "Physical Critical Chance": "PHYSCRIT",
@@ -192,12 +181,11 @@ class MyCharacter extends Command {
             } catch (e) {
                 console.log("[MC] Getting maxLen broke: " + e);
             }
-            console.log(maxLen);
             const statArr = [];
             Object.keys(statNames).forEach(sn => {
                 let statStr = "== " + sn + " ==\n";
                 statNames[sn].forEach(s => {
-                    if (!stats[s]) stats[s] = {final: 0, mods: 0, pct: false};
+                    if (!stats[s]) stats[s] = {base: 0, final: 0, mods: 0, pct: false};
                     if (s === "Dodge Chance" || s === "Deflection Chance") {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
                     } else {
@@ -224,17 +212,22 @@ class MyCharacter extends Command {
                     value: player.warnings.join("\n")
                 });
             }
+            let gearOut = "";
+            if (!isShip) {
+                // If it's a character, go ahead and work out the gear
+                gearOut = "\n" + [
+                    `${message.language.get("BASE_GEAR_SHORT")}: ${thisChar.gear}`,
+                    `${gearStr}`
+                ].join("\n");
+            }
 
             return msg.edit({embed: {
                 author: {
-                    name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name
+                    name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
+                    url: character.url,
+                    icon_url: character.avatarURL
                 },
-                description:
-                [
-                    `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\``,
-                    `${message.language.get("BASE_GEAR_SHORT")}: ${thisChar.gear}`,
-                    `${gearStr}`
-                ].join("\n"),
+                description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\`${gearOut}`,
                 fields: [
                     {
                         name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),

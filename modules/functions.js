@@ -1056,7 +1056,6 @@ module.exports = (client) => {
 
     // Re-caclulate a viable eventDT, and return the updated event
     async function reCalc(ev, nowTime) {
-        console.log("IN RECALC");
         if (ev.repeatDays.length > 0) { // repeatDays is an array of days to skip
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
