@@ -1,6 +1,8 @@
 const {inspect} = require("util");
 const snekfetch = require("snekfetch");
 const nodeFetch = require("node-fetch");
+const statEnums = require("../data/statEnum.js");
+
 module.exports = (client) => {
     const swgoh = client.swgoh;
     const cache = client.cache;
@@ -63,8 +65,7 @@ module.exports = (client) => {
                 let tempPlayer;
                 try {
                     tempPlayer = await swgoh.fetchPlayer({
-                        allycode: allycode,
-                        enums: true
+                        allycode: allycode
                     });
                     if (tempPlayer.warning) warnings = tempPlayer.warning;
                     if (tempPlayer.error) throw new Error(tempPlayer.error);
@@ -261,6 +262,20 @@ module.exports = (client) => {
         if (char.defId) {
             const nameKey = await this.units(char.defId);
             char.nameKey = nameKey ? nameKey.nameKey : null;
+        }
+
+        if (char.mods) {
+            for (const mod of char.mods) {
+                // If they've got the numbers instead of enums, enum em
+                if (!isNaN(mod.primaryStat.unitStat)) {
+                    mod.primaryStat.unitStat = statEnums.enums[mod.primaryStat.unitStat];
+                }
+                for (const stat of mod.secondaryStat) {
+                    if (!isNaN(stat.unitStat)) {
+                        stat.unitStat = statEnums.enums[stat.unitStat];
+                    }
+                }
+            }
         }
 
         // In case it has skillReferenceList

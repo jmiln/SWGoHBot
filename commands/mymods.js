@@ -24,7 +24,6 @@ class MyMods extends Command {
     }
 
     async run(client, message, args, options) { // eslint-disable-line no-unused-vars
-        // const lang = message.guildSettings.swgohLanguage;
         const cooldown = client.getPlayerCooldown(message.author.id);
         const icons = {
             STATMOD_SLOT_01: await client.getEmoji("362066327101243392") || "Square",
@@ -82,12 +81,12 @@ class MyMods extends Command {
 
             const footer = client.updatedFooter(player.updated, message, "player", cooldown);
 
-            let charMods = player.roster.filter(c => c.defId === character.uniqueName);
+            let charMods = player.roster.find(c => c.defId === character.uniqueName);
 
             charMods = await client.swgohAPI.langChar(charMods, message.guildSettings.swgohLanguage);
 
-            if (charMods && charMods.length > 0) {
-                charMods = charMods[0].mods;
+            if (charMods) {
+                charMods = charMods.mods;
                 const slots = {};
 
                 const sets = message.language.get("BASE_MODSETS_FROM_GAME");
