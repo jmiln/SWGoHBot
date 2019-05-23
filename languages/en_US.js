@@ -672,7 +672,7 @@ module.exports = class extends Language {
                             "user": "A way to identify the guild. (mention | allyCode | guildName)",
                             "-roster": "Show a list of all the members of the guild",
                             "-allycode": "Show a member's ally codes instead of GP",
-                            "-sort": "Choose either name or gp to sort by",
+                            "-sort": "Choose either name, rank, or gp to sort by",
                             "-reg": "Show the discord names of anyone registered & on the server next to their name."
                         }
                     },

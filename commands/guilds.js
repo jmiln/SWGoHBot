@@ -35,14 +35,14 @@ class Guilds extends Command {
     async run(client, message, [userID, ...args], options) { // eslint-disable-line no-unused-vars
         // Basic, with no args, shows the top ## guilds (Based on how many have registered)
         // <allyCode | mention | guildName >
-        
+
         // Shows your guild's total GP, average GP, and a list of your members
         // Not trying to get any specific guild, show em the top ones
         let acType = true;
         if (!userID) {
             userID = "me";
-        } 
-        
+        }
+
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDS_PLEASE_WAIT"));
 
         // Get the user's ally code from the message or psql db
@@ -73,7 +73,7 @@ class Guilds extends Command {
 
         if (!guild) {
             return super.error(msg, message.language.get("COMMAND_GUILDS_NO_GUILD"), {edit: true, example: "guilds me"});
-        } 
+        }
 
         if (options.flags.roster) {
             // Display the roster with gp etc
@@ -81,7 +81,7 @@ class Guilds extends Command {
                 return super.error(msg, (message.language.get("COMMAND_GUILDS_NO_GUILD")), {edit: true, example: "guilds me"});
             }
             let sortedGuild;
-            if (options.flags.a || (options.subArgs.sort && options.subArgs.sort.toLowerCase() === "name")) {
+            if (options.flags.a || (options.subArgs.sort && ["name", "rank"].indexOf(options.subArgs.sort.toLowerCase()) > -1)) {
                 sortedGuild = guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
             } else {
                 sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
@@ -104,17 +104,37 @@ class Guilds extends Command {
                             p.dID = c.id;
                             break;
                         }
-                    }                    
-                } 
+                    }
+                }
+                p.memberLvl = p.guildMemberLevel ?  p.guildMemberLevel.split("GUILD")[1][0] : null;
+            }
+
+            if (options.subArgs.sort && options.subArgs.sort.toLowerCase() === "rank") {
+                const members = [];
+                const officers = [];
+                const leader = [];
+                sortedGuild.forEach(p => {
+                    if (p.memberLvl === "L") {
+                        leader.push(p);
+                    } else if (p.memberLvl === "O") {
+                        officers.push(p);
+                    } else {
+                        members.push(p);
+                    }
+                });
+                sortedGuild = leader.concat(officers).concat(members);
+            }
+
+            for (const p of sortedGuild) {
                 if (options.flags.a) {
                     if (p.inGuild) {
                         if (options.flags.reg) {
-                            users.push(`\`[${p.allyCode}]\` - **${p.name}** (<@!${p.dID}>)`);
+                            users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` **${p.name}** (<@!${p.dID}>)`);
                         } else {
-                            users.push(`\`[${p.allyCode}]\` - **${p.name}**`);
+                            users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` **${p.name}**`);
                         }
                     } else {
-                        users.push(`\`[${p.allyCode}]\` - ${p.name}`);
+                        users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` ${p.name}`);
                     }
                 } else {
                     if (p.inGuild) {
@@ -180,7 +200,7 @@ class Guilds extends Command {
             try {
                 guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e); 
+                console.log("ERROR(GS) getting guild: " + e);
                 return super.error(message, client.codeBlock(e), {
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit."
@@ -216,7 +236,7 @@ class Guilds extends Command {
                 ["MOTHERTALZIN",            "Talzin"],
                 ["GRANDADMIRALTHRAWN",      "Thrawn"],
                 ["WAMPA",                   "Wampa"],
-    
+
                 "Ships",
                 ["CAPITALCHIMAERA",         "Chimaera"],
                 ["CAPITALJEDICRUISER",      "Endurance"],
@@ -234,12 +254,12 @@ class Guilds extends Command {
                 if (Array.isArray(char)) {
                     const roster = guildGG.roster[char[0]];
                     let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
-                    if (roster && roster.length) { 
+                    if (roster && roster.length) {
                         total = roster.length;
                         g12 = roster.filter(c => c.gearLevel === 12).length;
                         g11 = roster.filter(c => c.gearLevel === 11).length;
                         sevenStar = roster.filter(c => c.starLevel === 7).length;
-                    } 
+                    }
                     const name = allNames[ix];
                     charOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
                 } else {
@@ -293,16 +313,16 @@ class Guilds extends Command {
                 value: client.codeBlock(raids),
                 inline: true
             });
-    
+
             let guildCharGP = 0;
             let guildShipGP = 0;
             guild.roster.forEach(m => {
                 guildCharGP += m.gpChar;
                 guildShipGP += m.gpShip;
             });
-            const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS", 
-                guild.members, 
-                guild.required, 
+            const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS",
+                guild.members,
+                guild.required,
                 guild.gp.toLocaleString(),
                 guildCharGP.toLocaleString(),
                 guildShipGP.toLocaleString()
