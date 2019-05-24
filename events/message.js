@@ -1,8 +1,4 @@
-// The MESSAGE event runs anytime a message is received
-// Note that due to the binding of client to every event, every event
-// goes `client, other, args` when this function is run.
-
-module.exports = async (client, message) => {
+module.exports = async (message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
     if (message.author.bot) return;
@@ -10,29 +6,29 @@ module.exports = async (client, message) => {
     // If we don't have permission to respond, don't bother
     if (message.guild && message.channel.permissionsFor(message.guild.me) && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
 
-    // Grab the settings for this server from the PersistentCollection
+    // Grab the settings for this server
     // If there is no guild, get default conf (DMs)
     let guildSettings;
     if (!message.guild) {
-        guildSettings = client.config.defaultSettings;
+        guildSettings = message.client.config.defaultSettings;
     } else {
-        guildSettings = await client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
+        guildSettings = await message.client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(message.client.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
     }
-    
+
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.
     message.guildSettings = guildSettings;
-    
+
     // Load the language file for whatever language they have set
-    message.language = client.languages[guildSettings.language] || client.languages["en_US"];
+    message.language = message.client.languages[guildSettings.language] || message.client.languages["en_US"];
 
     // If the message is just mentioning the bot, tell them what the prefix is
-    if (message.content === client.user.toString() || (message.guild && typeof message.guild.me !== "undefined" && message.content === message.guild.me.toString())) {
+    if (message.content === message.client.user.toString() || (message.guild && typeof message.guild.me !== "undefined" && message.content === message.guild.me.toString())) {
         return message.channel.send(`The prefix is \`${message.guildSettings.prefix}\`.`);
     }
 
-    const prefixMention = new RegExp(`^<@!?${client.user.id}>`);
+    const prefixMention = new RegExp(`^<@!?${message.client.user.id}>`);
     const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : message.guildSettings.prefix;
 
     // Also good practice to ignore any message that does not start with our prefix, which is set in the configuration file.
@@ -43,17 +39,17 @@ module.exports = async (client, message) => {
     let args = [];
     nArgs.forEach(e => {
         const ne = e.split(" ").filter(String);
-        args = args.concat(ne);    
+        args = args.concat(ne);
     });
 
     // Get the command name/ remove it from the args
     const command = args.shift().slice(prefix.length).toLowerCase();
 
     // Get the user or member's permission level from the elevation
-    const level = client.permlevel(message);
+    const level = message.client.permlevel(message);
 
     // Check whether the command, or alias, exist in the collections defined in swgohbot.js.
-    const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
+    const cmd = message.client.commands.get(command) || message.client.commands.get(message.client.aliases.get(command));
 
     // Some commands may not be useable in DMs. This check prevents those commands from running
     // and return a friendly error message.
@@ -71,7 +67,7 @@ module.exports = async (client, message) => {
             }
             // Merge the permission arrays to make sure it has at least the minimum
             const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
-            if (message.guild && message.channel && !message.channel.permissionsFor(client.user.id).has(perms)) {
+            if (message.guild && message.channel && !message.channel.permissionsFor(message.client.user.id).has(perms)) {
                 const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
 
                 if (missingPerms.length > 0) {
@@ -88,7 +84,7 @@ module.exports = async (client, message) => {
 
         const noFlags = Object.keys(flagArgs.flags).every(f => !flagArgs.flags[f]);
         const noSubArgs = Object.keys(flagArgs.subArgs).every(s => flagArgs.subArgs[s] === null);
-        const user = await client.userReg.getUser(message.author.id);
+        const user = await message.client.userReg.getUser(message.author.id);
         let def = null;
         if (noFlags && noSubArgs && user) {
             if (user.defaults[cmd.help.name]) {
@@ -96,7 +92,7 @@ module.exports = async (client, message) => {
                 def = user.defaults[cmd.help.name];
             }
         }
-        
+
         // Quick shortcut to any extra ally codes you have registered
         const toRep = args.filter(a => a.match(/^-\d{1,2}$/));
         if (toRep.length) {
@@ -106,25 +102,25 @@ module.exports = async (client, message) => {
                 args[ix] = user.accounts[jx].allyCode;
             }
         }
-        
+
         // If they're just looking for the help, don't bother going through the command
         if (args.length === 1 && args[0].toLowerCase() === "help") {
-            client.helpOut(message, cmd);
+            message.client.helpOut(message, cmd);
         } else {
             try {
-                // client.log("CMD", message.content, "Log", null, null, {noSend: true});
-                cmd.run(client, message, args, {
+                // message.client.log("CMD", message.content, "Log", null, null, {noSend: true});
+                cmd.run(message.client, message, args, {
                     level: level,
                     flags: flagArgs.flags,
                     subArgs: flagArgs.subArgs,
                     defaults: def
                 });
             } catch (err) {
-                client.log("ERROR(msg)", `I broke with ${cmd.help.name}: ${err}`, cmd.help.name.toProperCase());
+                message.client.log("ERROR(msg)", `I broke with ${cmd.help.name}: ${err}`, cmd.help.name.toProperCase());
             }
         }
-        if (client.config.logs.logComs) {
-            client.database.models.commands.create({
+        if (message.client.config.logs.logComs) {
+            message.client.database.models.commands.create({
                 id: `${cmd.help.name}-${message.author.id}-${message.id}`,
                 commandText: args.join(" ")
             });
@@ -134,7 +130,7 @@ module.exports = async (client, message) => {
 
 // Checks for any args that start with - or -- that match what the command is looking for
 function checkForArgs(key, args) {
-    if (args.includes("-"+key)) { 
+    if (args.includes("-"+key)) {
         return [true, "-"+key];
     } else if (args.includes("--"+key)) {
         return [true, "--"+key];
@@ -149,7 +145,7 @@ function getFlags(cFlags, cSubArgs, args) {
     const subArgs = {};
 
     const flagKeys = Object.keys(cFlags);
-    flagKeys.forEach(key => { 
+    flagKeys.forEach(key => {
         let found = checkForArgs(key, args);
         flags[key] = false;
         if (!found[0]) {
@@ -159,24 +155,24 @@ function getFlags(cFlags, cSubArgs, args) {
             }
         }
         if (found[0]) {
-            args.splice(args.indexOf(found[1]), 1);   
+            args.splice(args.indexOf(found[1]), 1);
             flags[key] = true;
         }
     });
 
     const subKeys = Object.keys(cSubArgs);
-    subKeys.forEach(key => { 
+    subKeys.forEach(key => {
         let found = checkForArgs(key, args);
         if (!found[0]) {
             for (let ix = 0; ix < cSubArgs[key].aliases.length; ix++) {
                 found = checkForArgs(cSubArgs[key].aliases[ix], args);
                 if (found[0]) {
                     break;
-                } 
+                }
             }
         }
         if (found[0]) {
-            const res = args.splice(args.indexOf(found[1]), 2);    
+            const res = args.splice(args.indexOf(found[1]), 2);
             subArgs[key] = res[1] ? res[1] : null;
         } else {
             subArgs[key] = cSubArgs[key].default ? cSubArgs[key].default : null;

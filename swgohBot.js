@@ -25,6 +25,7 @@ client.resources = JSON.parse(fs.readFileSync("data/resources.json"));
 client.arenaJumps = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
 client.acronyms = JSON.parse(fs.readFileSync("data/acronyms.json"));
 client.patrons = [];
+client.emotes = {};
 
 const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";
@@ -144,8 +145,11 @@ const init = async () => {
     const evtFiles = await readdir("./events/");
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
-        const event = require(`./events/${file}`);
-        client.on(eventName, event.bind(null, client));
+        if (eventName === "ready") {
+            client.on(eventName, () => require(`./events/${file}`)(client));
+        } else {
+            client.on(eventName, require(`./events/${file}`));
+        }
         delete require.cache[require.resolve(`./events/${file}`)];
     });
 };

@@ -1,19 +1,15 @@
 /* eslint no-undef: 0 */
 const fs = require("fs");
 module.exports = async client => {
-    // Why await here? Because the ready event isn't actually ready, sometimes
-    // guild information will come in *after* ready. 1s is plenty, generally,
-    // for all of them to be loaded.
-    await client.wait(1000);
-
     // Logs that it's up, and some extra info
     let  readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
-    if (client.shard && client.shard.count > 0) {
+    if (client.shard) {
         readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. Shard #${client.shard.id}`;
-        if (client.shard.id === 0 && client.config.sendStats) {
-            require("../modules/botStats.js")(client);
-        }
         if (client.shard.id === 0) {
+            if (client.config.sendStats) {
+                require("../modules/botStats.js")(client);
+            }
+
             // Save the bot's current guild count every 5 minutes
             setInterval(async () => {
                 const guilds = await client.guildCount();
@@ -27,7 +23,15 @@ module.exports = async client => {
                 }, 1 * 60 * 1000);
             }
         }
+        // If it's the last shard being started, load all the emotes in
+        if ((client.shard.id + 1) === client.shard.count) {
+            console.log("Loading up emotes");
+            await client.shard.broadcastEval("this.loadAllEmotes()");
+        }
+    } else {
+        client.loadAllEmotes();
     }
+
     client.log("Ready", readyString);
 
     // Sets the status as the current server count and help command

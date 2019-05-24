@@ -25,14 +25,14 @@ class MyMods extends Command {
 
     async run(client, message, args, options) { // eslint-disable-line no-unused-vars
         const cooldown = client.getPlayerCooldown(message.author.id);
-        const icons = {
-            STATMOD_SLOT_01: await client.getEmoji("362066327101243392") || "Square",
-            STATMOD_SLOT_02: await client.getEmoji("362066325474115605") || "Arrow",
-            STATMOD_SLOT_03: await client.getEmoji("362066326925082637") || "Diamond",
-            STATMOD_SLOT_04: await client.getEmoji("362066327168352257") || "Triangle",
-            STATMOD_SLOT_05: await client.getEmoji("362066326996385812") || "Circle",
-            STATMOD_SLOT_06: await client.getEmoji("362066327516610570") || "Cross"
-        };
+        // const icons = {
+        //     STATMOD_SLOT_01: await client.getEmoji("362066327101243392") || "Square",
+        //     STATMOD_SLOT_02: await client.getEmoji("362066325474115605") || "Arrow",
+        //     STATMOD_SLOT_03: await client.getEmoji("362066326925082637") || "Diamond",
+        //     STATMOD_SLOT_04: await client.getEmoji("362066327168352257") || "Triangle",
+        //     STATMOD_SLOT_05: await client.getEmoji("362066326996385812") || "Circle",
+        //     STATMOD_SLOT_06: await client.getEmoji("362066327516610570") || "Cross"
+        // };
 
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
@@ -119,10 +119,21 @@ class MyMods extends Command {
                 });
 
                 const fields = [];
+                const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
                 Object.keys(slots).forEach(mod => {
+                    let typeIcon  = slots[mod].type;
+                    let shapeIcon = modSlots[mod-1].toProperCase();
                     const stats = slots[mod].stats;
+                    // If the bot has the right perms to use external emotes, go for it
+                    if (message.channel.permissionsFor(message.guild.me).has("USE_EXTERNAL_EMOJIS")) {
+                        const shapeIconString = `${modSlots[mod-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
+                        shapeIcon = client.emotes[shapeIconString] || shapeIcon;
+
+                        const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
+                        typeIcon = client.emotes[typeIconString] || typeIcon;
+                    }
                     fields.push({
-                        name: `${icons[`STATMOD_SLOT_0${mod}`]} ${slots[mod].type} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                        name: `${shapeIcon} ${typeIcon} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
                         value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(28)}\``,
                         inline: true
                     });

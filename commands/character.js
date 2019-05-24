@@ -17,9 +17,9 @@ class Character extends Command {
         const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
 
-        const zeta = client.emojis.find(e => e.name === "zeta");
-        const omega = client.emojis.find(e => e.name === "omega");
-        const abilityMatMK3 = client.emojis.find(e => e.name === "abilityMatMK3");
+        const zeta = client.emotes["zetaMat"];
+        const omega = client.emotes["omegaMat"];
+        const abilityMatMK3 = client.emotes["abilityMatMK3"];
 
         // Make sure they gave a character to find
         if (searchName === "") {
@@ -76,10 +76,10 @@ class Character extends Command {
             if (ability.cost) {
                 if (ability.cost.AbilityMatZeta > 0) {
                     costs.push(`${ability.cost.AbilityMatZeta} ${zeta}`);
-                } 
+                }
                 if (ability.cost.AbilityMatOmega > 0) {
                     costs.push(`${ability.cost.AbilityMatOmega} ${omega}`);
-                } 
+                }
                 if (ability.cost.AbilityMatMk3 > 0) {
                     costs.push(`${ability.cost.AbilityMatMk3} ${abilityMatMK3}`);
                 }

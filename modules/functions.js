@@ -311,10 +311,13 @@ module.exports = (client) => {
         evtFiles.forEach(file => {
             try {
                 const eventName = file.split(".")[0];
-                const event = require(`../events/${file}`);
                 client.removeAllListeners(eventName);
-                client.on(eventName, event.bind(null, client));
-                delete require.cache[require.resolve(`../events/${file}`)];
+                if (eventName === "ready") {
+                    client.on(eventName, () => require(`./events/${file}`)(client));
+                } else {
+                    client.on(eventName, require(`./events/${file}`));
+                }
+                delete require.cache[require.resolve(`./events/${file}`)];
                 ev.push(eventName);
             } catch (e) {
                 errEv.push(file);
@@ -718,6 +721,21 @@ module.exports = (client) => {
             return new Discord.Emoji(client.guilds.get(emoji.guild), emoji);
         }
     };
+
+    // Load all the emotes that may be used for the bot at some point (from data/emoteIDs.js)
+    client.loadAllEmotes = async () => {
+        const emoteList = require("../data/emoteIDs.js");
+        for (const emote of Object.keys(emoteList)) {
+            const e = await client.getEmoji(emoteList[emote]);
+            if (!e) {
+                console.log("Couldn't get emote: " + emote);
+                continue;
+            } else {
+                client.emotes[emote] = e;
+            }
+        }
+    };
+
 
 
     /*

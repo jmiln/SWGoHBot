@@ -1,17 +1,17 @@
-module.exports = async (client, guild) => {
+module.exports = async (guild) => {
     // Get the default config settings
-    const defSet = client.config.defaultSettings;
+    const defSet = guild.client.config.defaultSettings;
 
     // Make sure it's not a server outage that's causing it to show as leaving/ re-joining
     if (!guild.available) return;
 
-    const exists = await client.database.models.settings.findOne({where: {guildID: guild.id}})
+    const exists = await guild.client.database.models.settings.findOne({where: {guildID: guild.id}})
         .then(token => token !== null)
         .then(isUnique => isUnique);
 
     if (!exists) {
         // Adding a new row to the DB
-        client.database.models.settings.create({
+        guild.client.database.models.settings.create({
             guildID: guild.id,
             adminRole: defSet.adminRole,
             enableWelcome: defSet.enableWelcome,
@@ -24,12 +24,12 @@ module.exports = async (client, guild) => {
         })
             .then(() => {
                 // Log that it joined another guild
-                client.log("GuildCreate", `I joined ${guild.name}(${guild.id})`, "Log", "diff", "+");
+                guild.client.log("GuildCreate", `I joined ${guild.name}(${guild.id})`, "Log", "diff", "+");
             })
             .catch(error => { console.log(error, guild.id); });
     } else {
         // Log that it joined another guild (Again)
-        client.log("GuildCreate", `I re-joined ${guild.name}(${guild.id})`, "Log", "diff", "+");
+        guild.client.log("GuildCreate", `I re-joined ${guild.name}(${guild.id})`, "Log", "diff", "+");
     }
 };
 

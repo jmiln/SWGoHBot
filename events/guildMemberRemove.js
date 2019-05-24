@@ -1,7 +1,8 @@
 const {inspect} = require("util");
-module.exports = async (client, member) => {
+module.exports = async (member) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
+    const client = member.client;
     const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: client.config.defaultSettings});
     const guildConf = guildSettings.dataValues;
 
@@ -21,7 +22,7 @@ module.exports = async (client, member) => {
             client.announceMsg(guild, partMessage);
         } catch (e) {
             client.log("ERROR", `Error sending partMessage:\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
-        } 
+        }
     }
 };
 
