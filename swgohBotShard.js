@@ -1,7 +1,12 @@
-// At max, each shard should have ~2500 servers 
-// This is used for when you get your bot on a ton of servers. 
+// At max, each shard can have 2500 servers
+const config = require("./config.js");
 
 const Discord = require("discord.js");
-const Manager = new Discord.ShardingManager("./swgohBot.js");   // Tell it what the main file we'd otherwise run the bot with is
-Manager.spawn(5);   // Tell it that we want 5 shards (Approx. 1100 servers per shard)
+const Manager = new Discord.ShardingManager("./swgohBot.js",{
+    totalShards: config.shardCount  // Tell it how many shards we want (Approx. 1100 servers per shard)
+});
+Manager.spawn();
 
+Manager.on("launch", (shard) => {
+    console.log(`Launching Shard ${shard.id} (${shard.id + 1}/${Manager.totalShards})`);
+});
