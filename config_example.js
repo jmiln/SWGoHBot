@@ -8,6 +8,9 @@ const config = {
     // The bot's token. Get it from https://discordapp.com/developers/applications/me
     "token": "YourTokenGoesHere",
 
+    // The number of shards to spawn with
+    "shardCount": 1,
+
     // The postgres DB for the server configs and such
     "database": {
         "host": "localhost",
