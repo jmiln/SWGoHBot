@@ -484,12 +484,6 @@ module.exports = (client) => {
 
     /* MISCELANEOUS NON-CRITICAL FUNCTIONS */
 
-    String.prototype.toProperCase = function() {
-        return this.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-    };
-
     // `await wait(1000);` to "pause" for 1 second.
     client.wait = promisify(setTimeout);
 
@@ -851,31 +845,6 @@ module.exports = (client) => {
 
         return out;
     };
-
-    /*
-     * Trim down largs numbers to be more easily readable
-     */
-    client.shortenNum = (number) => {
-        const million = 1000000, thousand = 1000;
-
-        if (number >= million) {
-            number = (number / million);
-            number = trimFloat(number) + "M";
-        } else if (number >= thousand) {
-            number = (number / thousand);
-            number = parseInt(number) + "K";
-        }
-        return number;
-    };
-
-    function trimFloat(num) {
-        if (num % 1 === 0) {
-            num = parseInt(num);
-        } else {
-            num = num.toFixed(1);
-        }
-        return num;
-    }
 
     /*
      * Small function to search the factions

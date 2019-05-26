@@ -36,6 +36,7 @@ const SHIPLOCATIONS = "./data/shipLocations.json";
 const UNKNOWN = "Unknown";
 
 require("./modules/functions.js")(client);
+require("./modules/prototypes.js");
 
 // Languages
 client.languages = {};

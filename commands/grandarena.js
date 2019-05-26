@@ -118,13 +118,13 @@ class CommandName extends Command {
 
                 overview.push({
                     check: labels.charGP,
-                    user1: client.shortenNum(user1.stats.reduce((a, b) => a + (charList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0)),
-                    user2: client.shortenNum(user2.stats.reduce((a, b) => a + (charList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0))
+                    user1: user1.stats.reduce((a, b) => a + (charList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0).shortenNum(),
+                    user2: user2.stats.reduce((a, b) => a + (charList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0).shortenNum()
                 });
                 overview.push({
                     check: labels.shipGP,
-                    user1: client.shortenNum(user1.stats.reduce((a, b) => a + (shipList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0)),
-                    user2: client.shortenNum(user2.stats.reduce((a, b) => a + (shipList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0))
+                    user1: user1.stats.reduce((a, b) => a + (shipList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0).shortenNum(),
+                    user2: user2.stats.reduce((a, b) => a + (shipList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0).shortenNum()
                 });
                 if (user1.arena && user2.arena) {
                     if (user1.arena.char && user2.arena.char) {
