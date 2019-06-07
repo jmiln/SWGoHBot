@@ -118,7 +118,7 @@ module.exports = (client) => {
 
             if (!player || !player.roster || !player.name) {
                 if (player.error) {
-                    throw new Error("Broke getting fastPlayer: " + player.error);
+                    throw new Error("Broke getting fastPlayer: " + inspect(player.error));
                 }
                 throw new Error("Broke getting fastPlayer: " + inspect(player));
             }

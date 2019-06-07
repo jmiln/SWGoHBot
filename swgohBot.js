@@ -2,10 +2,15 @@ const { Client, Collection } = require("discord.js");
 const { promisify } = require("util");
 const { inspect } = require("util");
 const readdir = promisify(require("fs").readdir);
-const client = new Client();
 const fs = require("fs");
 const snekfetch = require("snekfetch");
 const cheerio = require("cheerio");
+
+const client = new Client({
+    // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
+    messageCacheLifetime: 300, // How long a message should stay in the cache       (5min)
+    messageSweepInterval: 120  // How frequently to remove messages from the cache  (2min)
+});
 
 const Sequelize = require("sequelize");
 
