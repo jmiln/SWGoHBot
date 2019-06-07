@@ -77,6 +77,8 @@ module.exports = class extends Language {
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: "\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.",
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
+            BASE_EVENT_LATE: "Entschuldigung, aber dieses Event wurde spaeter als erwartet getriggert. Wenn eine Wiederholung eingestellt wurde (repeat) wird die naechste Ankuendigung rechtzeitig erscheinen.",
+
 
             // Base swgohAPI
             BASE_SWGOH_NO_ALLY: (prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}userconf allycode add  <allycode>\``,
