@@ -5666,6 +5666,26 @@
         }
     },
     {
+        "name": "Shaak Ti",
+        "uniqueName": "SHAAKTI",
+        "aliases": [
+            "Shaak Ti"
+        ],
+        "nameVariant": [
+            "Shaak Ti"
+        ],
+        "url": "http://swgoh.gg/characters/shaak-ti/",
+        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_shaakti.png",
+        "side": "light",
+        "factions": [
+            "Galactic Republic",
+            "Jedi",
+            "Leader",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Shoretrooper",
         "uniqueName": "SHORETROOPER",
         "aliases": [
