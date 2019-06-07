@@ -77,12 +77,13 @@ module.exports = class extends Language {
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: "\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.",
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
+            BASE_EVENT_LATE: "Entschuldige, dieses Event wurde später als erwartet getriggert. Falls eine Wiederholung (repeat) eingestellt wurde, dann sollte die naechste Ankuendigung korrekt ausgegeben werden.",
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: (prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user, prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}register add @${user} <allycode>\``,
-            BASE_SWGOH_NO_USER: (prefix) => `Entschuldigung, aber ich habe diesen User nirgends gelistet. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
-            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `Ich kann für diesen User keine Gilde finden. Bitte registrieren mit \`${prefix}register add <user> <allycode>\``,
+            BASE_SWGOH_NO_ALLY: (prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NOT_REG: (user, prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NO_USER: (prefix) => `Entschuldigung, aber ich habe diesen User nirgends gelistet. Bitte registrieren mit \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `Ich kann für diesen User keine Gilde finden. Bitte registrieren mit \`${prefix}userconf allycode add  <allycode>\``,
             BASE_SWGOH_NO_GUILD: "Ich kann für diese Gilde keinen User finden.\nBitte sicherstellen, dass der Name korrekt geschrieben ist und dass die Gross- und Kleinschreibung stimmt.",
             BASE_SWGOH_MISSING_CHAR: "Du musst einen Charakter angeben",
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `Kein Ergebnis gefunden fuer ${character}`,
