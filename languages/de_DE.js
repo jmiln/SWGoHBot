@@ -430,6 +430,31 @@ module.exports = class extends Language {
             // Event Command (Other)
             COMMAND_EVENT_TOO_MANY_EVENTS: "Entschuldige, aber du kannst nur bis zu 50 Events haben",
 
+            // Event Command (Edit)
+            COMMAND_EVENT_EDIT_MISSING_ARG: "Es fehlt ein Feld zum Editieren",
+            COMMAND_EVENT_EDIT_INVALID_ARG: (target, changable) => `${target} ist kein gueltiges Feld. Versuche es mit einem von diesen:\n\`${changable}\``,
+            COMMAND_EVENT_EDIT_MISSING_NAME: "Es fehlt ein Name zum aendern",
+            COMMAND_EVENT_EDIT_INAVLID_NAME: "Leerzeichen im Namen sind nicht moeglich, verwende `-` oder `_` stattdessen.",
+            COMMAND_EVENT_EDIT_SPACE_DATE: "Es duerfen keine Leerzeichen im Datum verwendet werden. Das korrekte Format ist `DD/MM/YYYY`",
+            COMMAND_EVENT_EDIT_MISSING_DATE: "Zum aendern fehlt das Datum.",
+            COMMAND_EVENT_EDIT_INVALID_DATE: "Ungueltiges Datumsformat, nur `DD/MM/YYYY` wird unterstuetzt.",
+            COMMAND_EVENT_EDIT_SPACE_TIME: "Es duerfen keine Leerzeichen in der Uhrzeit verwendet werden. Das korrekte Format ist `HH:mm`",
+            COMMAND_EVENT_EDIT_MISSING_TIME: "Zum aendern fehlt die Uhrzeit.",
+            COMMAND_EVENT_EDIT_INVALID_TIME: "Ungueltiges Zeitformat, nur `HH:mm` wird unterstuetzt.",
+            COMMAND_EVENT_EDIT_MISSING_MESSAGE: "Zum aendern fehlt die Nachricht",
+            COMMAND_EVENT_EDIT_LONG_MESSAGE: "Die neue Nachricht ist zu lang. Versuche etwas zu kuerzen.",
+            COMMAND_EVENT_EDIT_MISSING_CHANNEL: "Zum aendern fehlt der Kanal.",
+            COMMAND_EVENT_EDIT_MISSING_COUNTDOWN: "Es fehlt die Auswahl ob der Countdown aktiviert werden soll oder nicht",
+            COMMAND_EVENT_EDIT_INVALID_COUTNDOWN: "Ungueltige Option. Verwende `yes/no`, `true/false` oder `on/off`",
+            COMMAND_EVENT_EDIT_MISSING_REPEATDAY: "Zum aendern fehlt etwas, repeatDay braucht bspw. etwas im Format wie `0,0,0,0,0`.",
+            COMMAND_EVENT_EDIT_SPACE_REPEATDAY: "Es duerfen keine Leerzeichen verwendet werden, ein gueltiges Format ist `0,0,0,0,0`.",
+            COMMAND_EVENT_EDIT_BOTH_REPEATDAY: "Es wurde bereits die Wiederholung (repeat) eingestellt und repeat & repeatDay gleichzeitig ist nicht moeglich.",
+            COMMAND_EVENT_EDIT_MISSING_REPEAT: "Zum aendern fehlt etwas, repeatDay braucht bspw. etwas im Format `0d0h0m`.",
+            COMMAND_EVENT_EDIT_SPACE_REPEAT: "Es duerfen keine Leerzeichen verwendet werden, ein gueltiges Format ist `0d0h0m`.",
+            COMMAND_EVENT_EDIT_BOTH_REPEAT: "Es wurde bereits die Wiederholung (repeatDay) eingestellt und repeat & repeatDay gleichzeitig ist nicht moeglich.",
+            COMMAND_EVENT_EDIT_UPDATED: (target, cFrom, cTo) => `${target} geaendert von **${cFrom}** nach **${cTo}**`,
+            COMMAND_EVENT_EDIT_BROKE: "Etwas ist beim aktualisieren des Events fehlgeschlagen.",
+
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
                 description: "Wird verwendet um ein Event zu erstellen, zu pruefen oder zu loeschen.",
