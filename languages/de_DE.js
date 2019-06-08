@@ -725,6 +725,7 @@ module.exports = class extends Language {
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "-reverse": "Kehrt die Sortierreihenfolge um",
                             "-sort": "Waehle entweder eine Sortierung nach Name, Ausruestung oder GM",
+                            "-top X": "Zeigt die Top X Ergebnisse an (X ist zwischen 0 und 50)",
                             "-zetas": "Zeigt nur Charaktere die Zetas haben",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
