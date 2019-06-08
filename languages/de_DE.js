@@ -546,6 +546,50 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Farm Command
+            COMMAND_FARM_USAGE: (prefix) => `Verwendung ist \`${prefix}farm <charakter auf englisch>\``,
+            COMMAND_FARM_LOCATIONS: " Farming-Gebiete",
+            COMMAND_FARM_MISSING_CHARACTER: "Es fehlt die Angabe des Charakters (auf englisch)",
+            COMMAND_FARM_HARD: "Hart ",
+            COMMAND_FARM_LIGHT: "Helle Seite ",
+            COMMAND_FARM_DARK: "Dunkle Seite ",
+            COMMAND_FARM_FLEET: "Flotte ",
+            COMMAND_FARM_CANTINA: "Cantina ",
+            COMMAND_FARM_ENERGY_PER: " Energie pro Versuch",
+            COMMAND_FARM_CHAR_UNAVAILABLE: "Wie es scheint ist dieser Charakter noch nicht oder nur ueber ein Event farmbar.",
+            COMMAND_FARM_EVENT_CHARS: {
+                // Heroes Journey
+                "REYJEDITRAINING": "Rey's Heldenreise",
+                "COMMANDERLUKESKYWALKER": "Luke Skywalker Heldenreise",
+                "JEDIKNIGHTREVAN": "Legende der alten Republik",
+
+                // Legendary events
+                "CHEWBACCALEGENDARY": "Ein beruehmter Wookie",
+                "R2D2_LEGENDARY": "Tapferer Droide",
+                "GRANDADMIRALTHRAWN": "Kriegskuenstler",
+                "C3POLEGENDARY": "Kontakt Protokoll",
+                "GRANDMASTERYODA": "Grossmeister Training",
+                "BB8": "Infos und Plaene",
+                "EMPERORPALPATINE": "Tod des Imperators",
+
+                // TB Rewards
+                "IMPERIALPROBEDROID": "Dunkle Seite TB (Spezialmission)",
+                "HOTHLEIA": "Helle Seite TB (Spezialmission)"
+            },
+            COMMAND_FARM_HELP: {
+                description: "Zeigt eine Uebersicht von verfuegbaren Farming-Gebieten fuer Charaktere.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: "farm <charakter auf englisch>",
+                        args: {
+                            "charakter auf englisch": "Der Charakter fuer den du die verfuegbaren Farming-Gebiete anzeigen lassen moechtest."
+                        }
+                    }
+                ]
+            },
+
             // Grand Arena Command
             COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Ungueltiger Spieler ${userNum}`,
             COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Keine Ergebnisse gefunden fuer "${char}"`,
