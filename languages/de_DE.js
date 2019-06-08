@@ -747,6 +747,28 @@ module.exports = class extends Language {
                         args: {
                             "user": "Der Spieler dessen Gilde du sehen moechtest (me | userID | mention)",
                             "-mods": "Angabe um die Mods zu sehen. (-m | -mod)"
+                            "-sort": "Sortiert nach speed, offense, oder 6 (fuer 6* mods)"
+                        }
+                    },
+                    {
+                        action: "Ausruestung Uebersicht",
+                        actionDesc: "Vergleicht die Anzahl von hoeheren Ausruestungsstufen innerhalb der Gilde",
+                        usage: ";guildsearch [user] -gear [-sort gearLvl]",
+                        args: {
+                            "user": "Spieler dessen Gilde du sehen moechtest. (me | userID | mention)",
+                            "-gear": "Zur Anzeige der Ausruestungsstufen (-g)",
+                            "-sort": "Waehle die Ausruestungsstufe nach der sortiert werden soll (9,10,11,12)"
+                        }
+                    },
+                    {
+                        action: "Charakter Stern Uebersicht",
+                        actionDesc: "Vergleicht die Anzahl von hoeheren Stern-Level innerhalb der Gilde",
+                        usage: ";guildsearch [user] -stars [-sort starLvl] [-ship]",
+                        args: {
+                            "user": "Spieler dessen Gilde du sehen moechtest. (me | userID | mention)",
+                            "-stars": "Zur Anzeige des Stern-Level (-star | -*)",
+                            "-sort": "Waehle den Stern-Level nach dem sortiert werden soll (10,11,12)",
+                            "-ship": "Zeigt die Schiffe anstatt die Charaktere an (-s | -ship | -ships)"
                         }
                     },
                 ]
