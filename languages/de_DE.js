@@ -916,6 +916,7 @@ module.exports = class extends Language {
                         args: {
                             "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest."
+                            "-s": "Sucht nach dem Schiff des Piloten"
                         }
                     }
                 ]
