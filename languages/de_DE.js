@@ -525,9 +525,11 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction <Fraktion>",
+                        usage: "faction <Fraktion> [-leader] [-zeta]",
                         args: {
                             "faction": "Die Fraktion die du aus der Sammlung sehen moechtest."
+                            "-leader": "Beschraenkt die Ausgabe auf Charaktere mit einer Anfuehrerfaehigkeit",
+                            "-zeta": "Beschraenkt die Ausgabe auf Charaktere deren Faehigkeiten mit einer Zeta aufgewertet werden koennen"
                         }
                     },
                     {
