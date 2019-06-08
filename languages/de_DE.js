@@ -960,6 +960,15 @@ module.exports = class extends Language {
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arenadaten vom: ${date}`,
             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank, gpFull) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}\n**Gesamt GM:** ${gpFull}`,
+            COMMAND_MYPROFILE_MODS: (mods) => ({
+                header: "Mod Uebersicht",
+                modStrs: [
+                    `6* Mods  :: ${mods.sixPip}`,
+                    `Spd 15+  :: ${mods.spd15}`,
+                    `Spd 20+  :: ${mods.spd20}`,
+                    `Off 100+ :: ${mods.off100}`
+                ].join("\n")
+            }),
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Charaktere (${charList.length})`,
                 stats: [
