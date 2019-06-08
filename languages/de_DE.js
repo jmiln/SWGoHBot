@@ -500,6 +500,16 @@ module.exports = class extends Language {
                         actionDesc: "Loest die Ankuendigung in dem spezifizierten Kanal aus. Das Event bleibt unverändert.",
                         usage: ";event trigger <eventName>",
                         args: {}
+                    },
+                    {
+                        action: "Edit",
+                        actionDesc: "Editiert ein vorhandenes Event",
+                        usage: ";event edit <eventName> <Feld> <Aenderung>",
+                        args: {
+                            "eventName": "Der Name des Events das du veraendern moechtest",
+                            "field": "Das Feld das du aendern willst. Waehle eines der folgenden aus:\n `name, time, date, message, channel, countdown, repeat, repeatday`.",
+                            "Aenderung": "Der Wert der geaendert werden soll."
+                        }
                     }
                 ]
             },
