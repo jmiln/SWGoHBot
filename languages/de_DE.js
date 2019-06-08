@@ -1002,6 +1002,63 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Need Command
+            COMMAND_NEED_MISSING_USER: "Wenn du diesen Befehl verwenden moechtest, musst du dich entweder registrieren oder einen Buendniscode angeben.",
+            COMMAND_NEED_MISSING_SEARCH: (search) => `Es konnte nichts gefunden werden fuer ${search}`,
+            COMMAND_NEED_CHAR_HEADER: "__Charaktere:__",
+            COMMAND_NEED_SHIP_HEADER: "__Schiffe:__",
+            COMMAND_NEED_COMPLETE: "Glueckwunsch, du hast alles von hier!",
+            COMMAND_NEED_ALL_CHAR: "Glueckwunsch, du hast alle Charaktere auf 7*",
+            COMMAND_NEED_ALL_SHIP: "Glueckwunsch, du hast alle Schiffe auf 7*",
+            COMMAND_NEED_PARTIAL: (percent) => `Du bist zu **${percent}%** fertig.`,
+            COMMAND_NEED_HEADER: (player, search) => `${player}'s ${search} benoetigt`,
+            COMMAND_NEED_HELP: {
+                description: "Zeigt Deinen Fortschritt zu den 7* Charakteren einer Fraktion oder eines Shops an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";need [user] <fraktion|shop|battle|keyword>",
+                        args: {
+                            "user": "Der Spieler den du sehen moechtest. (me | userID | mention)",
+                            "fraktion | shop": "Die Fraktion oder den Shop dessen Fortschritt du sehen moechtest",
+                            "keyword": "Eines der folgenden Stichwoerter (siehe unten)"
+                        }
+                    },
+                    {
+                        action: "Shops",
+                        actionDesc: "",
+                        args: {
+                            "arena":   "Arena shop",
+                            "cantina": "Cantina shop",
+                            "fleet":   "Fleet shop",
+                            "guild":   "Gilden shop",
+                            "gw":      "Galaktischer Krieg shop",
+                            "shard":   "Splitter shop"
+                        }
+                    },
+                    {
+                        action: "Battles",
+                        actionDesc: "",
+                        args: {
+                            "Helle Kaempfe":   "Helle Seite harte Kaempfe",
+                            "Dunkle Kaempfe":    "Dunkle Seite harte Kaempfe",
+                            "Cantina Kaempfe": "Cantina Kaempfe",
+                            "Flotten Kaempfe":   "Flotten Kaempfe"
+                        }
+                    },
+                    {
+                        action: "Keywords",
+                        actionDesc: "",
+                        args: {
+                            "battles": "Zeigt fehlende Charaktere von den verschiedenen Knoten an",
+                            "shops":   "Zeigt an was alles aus den jeweiligen Stores fehlt.",
+                            "*":       "Zeigt alles an was fehlt."
+                        }
+                    }
+                ]
+            },
+
             // Nickname Command
             COMMAND_NICKNAME_SUCCESS: "Ich habe meinen nickname geaendert.",
             COMMAND_NICKNAME_FAILURE: "Entschuldige, aber ich habe keine Berechtigung das zu aendern.",
