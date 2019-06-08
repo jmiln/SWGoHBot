@@ -689,6 +689,12 @@ module.exports = class extends Language {
             },
 
             // GuildSearch Command
+            COMMAND_GUILDSEARCH_SHIP_STATS: "Entschuldige, aber ich kann im Moment keine Statistiken zu diesem Schiff abrufen.",
+            COMMAND_GUILDSEARCH_CONFLICTING: (args) => `Du verwendest Parameter die untereinander nicht kompatibel sind. Folgende koennen nicht gleichzeitig verwendet werden. ${args}`,
+            COMMAND_GUILDSEARCH_GEAR_SUM: "Char Ausruestung Uebersicht",
+            COMMAND_GUILDSEARCH_CHAR_STAR_SUM: "Char Stern Lvl Uebersicht",
+            COMMAND_GUILDSEARCH_SHIP_STAR_SUM: "Schiff Stern Lvl Uebersicht",
+            COMMAND_GUILDSEARCH_INVALID_SORT: (opts) => `Ungueltige Sortierung. Verwende: \`${opts}\``,
             COMMAND_GUILDSEARCH_BAD_STAR: "Du kannst nur ein Sternen-Level von 1-7 waehlen",
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Entschuldigung, aber \`${sortType}\` ist keine gueltige Sortierreihenfolge. Nur \`${filters.join(", ")}\` ist moeglich.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: "Du musst einen Charakter angeben",
