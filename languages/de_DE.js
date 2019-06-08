@@ -535,10 +535,12 @@ module.exports = class extends Language {
                     {
                         action: "Spieler Fraktion",
                         actionDesc: "Zeigt die Entwicklung der Fraktion eines Spieler",
-                        usage: "faction <user> <Fraktion>",
+                        usage: "faction <user> <Fraktion> [-leader] [-zeta]",
                         args: {
                             "user": "Zur Identifikation des Spielers (mention | allyCode | me)",
                             "Fraktion": "Die Fraktion, von der Du die Sammlung sehen willst."
+                            "-leader": "Beschraenkt die Ausgabe auf Charaktere mit einer Anfuehrerfaehigkeit",
+                            "-zeta": "Beschraenkt die Ausgabe auf Charaktere deren Faehigkeiten mit einer Zeta aufgewertet werden koennen"
                         }
                     }
                 ]
