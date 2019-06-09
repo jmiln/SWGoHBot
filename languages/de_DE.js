@@ -1608,15 +1608,79 @@ module.exports = class extends Language {
                 ]
             },
 
-            // UpdateClient Command
-            COMMAND_UPDATECLIENT_HELP: {
-                description: "Aktualisiert den Client fuer die SWGoHAPI.",
+            // UserConf
+            COMMAND_USERCONF_CANNOT_VIEW_OTHER: "Entschuldige, aber du kannst keine anderen Einstellungen ansehen",
+            COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED: "Dieser Buendniscode ist bereits registriert",
+            COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `${name}(${ac}) von der Konfiguration entfernt`,
+            COMMAND_USERCONF_ALLYCODE_TOO_MANY: "Du kannst nicht mehr als 10 Accounts registrieren.",
+            COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED: "Dieser Buendniscode ist nicht registriert",
+            COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "Dieser Buendniscode wurde bereits als "primaer" gekennzeichnet.",
+            COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY: (oldName, oldAC, newName, newAC) => `Primaer von **${oldName}**(${oldAC}) nach **${newName}**(${newAC}) geaendert`,
+            COMMAND_USERCONF_DEFAULTS_CMD_NO_FLAGS: (name) => `${name} hat keine Kennzeichnungen fuer die Standardwerte geladen werden koennten.`,
+            COMMAND_USERCONF_DEFAULTS_INVALID_CMD: (name) => `${name} wird aktuell hierfuer nicht unterstuetzt.`,
+            COMMAND_USERCONF_DEFAULTS_SET_DEFAULTS: (name, flags) => `Setzt die Standardwerte fuer ${name} auf \`${flags}\``,
+            COMMAND_USERCONF_DEFAULTS_NO_DEFAULTS: (name) => `Es wurden keine Standardwerte gesetzt fuer ${name}.`,
+            COMMAND_USERCONF_DEFAULTS_CLEARED: (name) => `Standardwerte geloescht fuer ${name}.`,
+            COMMAND_USERCONF_VIEW_NO_CONFIG: (prefix) => `Es wurde noch keine Konfiguration eingestellt. Versuche \`${prefix}help userconf\` um zu beginnen.`,
+            COMMAND_USERCONF_VIEW_ALLYCODES_HEADER: "Buendniscodes",
+            COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY: "__Primaer ist **BOLD**__\n",
+            COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "Keine verknuepften Buendniscodes.",
+            COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Standardwerte",
+            COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Setzt Standards fuer Befehle.",
+            COMMAND_USERCONF_ARENA_PATREON_ONLY: "Dieses Feature ist nur verfuegbar fuer Unterstuetzer auf https://www.patreon.com/swgohbot",
+            COMMAND_USERCONF_ARENA_MISSING_DM: "Fehlende Option. Versuche all/primary/off.",
+            COMMAND_USERCONF_ARENA_INVALID_DM: "Ungueltige Option. Versuche all/primary/off.",
+            COMMAND_USERCONF_ARENA_MISSING_ARENA: "Fehlende arena, Du musst eine der folgenden waehlen: `char, fleet, both`",
+            COMMAND_USERCONF_ARENA_INVALID_ARENA: "Ungueltige arena, Du musst eine der folgenden waehlen: `char, fleet, both`",
+            COMMAND_USERCONF_ARENA_MISSING_WARNING: "Fehlende Nummer, Versuche `0` um zu deaktivieren, oder eine Anzahl von Minuten bevor die Warnung erscheinen soll.",
+            COMMAND_USERCONF_ARENA_INVALID_WARNING: "Ungueltige Nummer, Versuche `0` um zu deaktivieren, oder eine Anzahl von Minuten bevor die Warnung erscheinen soll.",
+            COMMAND_USERCONF_ARENA_INVALID_NUMBER: "Ungueltige Nummer, deine Nummer muss zwischen 0 (deaktiviert), und 1440 (ein Tag) sein.",
+            COMMAND_USERCONF_ARENA_INVALID_OPTION: "Versuche eine der folgenden: `enableDMs, arena, payoutResult, payoutWarning`",
+            COMMAND_USERCONF_ARENA_INVALID_BOOL: "Ungueltige Option. Versuche `yes/no`, `true/false` oder `on/off`",
+            COMMAND_USERCONF_ARENA_UPDATED: "Deine Einstellungen wurden aktualisiert.",
+            COMMAND_USERCONF_HELP: {
+                description: "Alle Utilities um deine Informationen im Bot zu verwalten.",
                 actions: [
                     {
-                        action: "",
-                        actionDesc: "",
-                        usage: ";updateclient",
-                        args: {}
+                        action: "View",
+                        actionDesc: "Zeigt die gegenwaertigen Einstellungen an.",
+                        usage: ";userconf view",
+                        args: { }
+                    },
+                    {
+                        action: "Buendniscode",
+                        actionDesc: "Gibt die Buendniscodes zur Verwendung mit anderen Kommandos frei",
+                        usage: ";userconf allycode <add|remove|makeprimary> <Buendniscode>",
+                        args: {
+                            "add": "Fuegt einen Buendniscode dem Profil hinzu",
+                            "remove": "Entfernt einen Buendniscode von deinem Profil",
+                            "makePrimary": "Setzt den gewaehlten Buendniscode als "primaer" (derjenige der genutzt wird wenn `me` in einem befehl genutzt wird)"
+                        }
+                    },
+                    {
+                        action: "Defaults",
+                        actionDesc: "Setzt Standardwerte fuer die Kommandos",
+                        usage: ";userconf defaults <set> <commandName> <flags>\n;userconf defaults <clear> <commandName>",
+                        args: {
+                            "commandName": "Der Name (oder alias) des Kommandos fuer den du Standardwerte setzen willst.",
+                            "flags": "Eine Kennzeichnung fuer die du einen Standartwert setzen moechtest"
+                        }
+                    },
+                    {
+                        action: "Arena Alert",
+                        actionDesc: "Setzt eine Warnung als PN wenn du deinen Rang verlierst oder andere Arena-bezogenen Themen.",
+                        usage: [
+                            ";userconf arenaAlert enableDMs <all|primary|off>",
+                            ";userconf arenaAlert arena <both|fleet|char>",
+                            ";userconf arenaAlert payoutResult <on|off>",
+                            ";userconf arenaAlert payoutWarning <0-1439>"
+                        ].join("\n"),
+                        args: {
+                            "enableDMs": "Aktiviert PN Warnungen fuer den primaeren Buendniscode, alle Buendniscodes oder Keinen",
+                            "arena": "Waehle welche Arena Warnungen du sehen moechtest",
+                            "payoutResult": "Schickt eine PN mit deiner endgueltigen Arena-Platzierung",
+                            "payoutWarning": "Schickt eine PN Minuten vor deinem payout. 0 schaltet die Funktion ab."
+                        }
                     }
                 ]
             },
