@@ -1420,6 +1420,13 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_REM_SUCCESS: "Benutzer erfolgreich entfernt!",
             COMMAND_SHARDTIMES_REM_FAIL: "Etwas lief schief beim entfernen des Benutzers, bitte erneut probieren.",
             COMMAND_SHARDTIMES_REM_MISSING: "Dieser Benutzer scheint hier nicht zu existieren.",
+            COMMAND_SHARDTIMES_COPY_NO_SOURCE: "Dieser Kanal hat keine Shard-Zeiten die kopiert werden koennten.",
+            COMMAND_SHARDTIMES_COPY_NO_DEST: (input) => `Kein Ergebnis gefunden fuer \`${input}\``,
+            COMMAND_SHARDTIMES_COPY_NO_PERMS: (inChan) => `Ich habe keine Berechtigung um Nachrichten in <#${inChan}> zu lesen/schreiben`,
+            COMMAND_SHARDTIMES_COPY_SAME_CHAN: "Du kannst nicht von/nach dem selben Kanal kopieren",
+            COMMAND_SHARDTIMES_COPY_DEST_FULL: "Entschuldige, aber der Ziel-Kanal hat bereits Shard-Informationen",
+            COMMAND_SHARDTIMES_COPY_BROKE: "Etwas hat beim Versuch die Shard-Informationen zu kopieren nicht geklappt. Bitte erneut versuchen.",
+            COMMAND_SHARDTIMES_COPY_SUCCESS: (dest) => `Shard-Informationen kopiert nach <#${dest}>`,
             COMMAND_SHARDTIMES_SHARD_HEADER: "Splitterauszahlung in:",
             COMMAND_SHARDTIMES_HELP: {
                 description: "Zeigt die Payout-Zeiten von allen registrierten Benutzern an.",
@@ -1441,6 +1448,14 @@ module.exports = class extends Language {
                         usage: ";shardtimes remove <Benutzer>",
                         args: {
                             "Benutzer": "Der Benutzer, der entfernt werden soll. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Copy",
+                        actionDesc: "Kopiert die Liste mit den Zeiten von einem Kanal in einen anderen",
+                        usage: ";shardtimes copy <neuerKanal>",
+                        args: {
+                            "neuerKanal": "Der Ziel-Kanal wohin die Zeiten kopiert werden sollen"
                         }
                     },
                     {
