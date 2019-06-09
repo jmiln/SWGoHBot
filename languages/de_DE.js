@@ -1148,29 +1148,32 @@ module.exports = class extends Language {
                 ]
             },
 
-            // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Ungueltiger Raid, Verwendung lautet \`${prefix}raidteams <raid> <phase>\`\n**Beispiel:** \`${prefix}raidteams pit p3\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Ungueltige Phase, Verwendung lautet \`${prefix}raidteams <raid> <phase>\`\n**Beispiel:** \`${prefix}raidteams pit p3\``,
-            COMMAND_RAIDTEAMS_PHASE_SOLO: "Solo",
-            COMMAND_RAIDTEAMS_PHASE_ONE: "Phase 1",
-            COMMAND_RAIDTEAMS_PHASE_TWO: "Phase 2",
-            COMMAND_RAIDTEAMS_PHASE_THREE: "Phase 3",
-            COMMAND_RAIDTEAMS_PHASE_FOUR: "Phase 4",
-            COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Charaktere:** \`${charList}\``,
-            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Zeige Teams fuer ${currentPhase}`,
-            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `Keine Teams gefunden \`${currentPhase}\``,
-            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Zeige Teams fuer ${currentPhase}\n\n`,
-            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Charaktere: ${charList}\n`,
-            COMMAND_RAIDTEAMS_HELP: {
-                description: "Zeigt Teams an, die im Raid gut funktionieren.",
+             // RaidDamage Command
+            COMMAND_RAIDDAMAGE_DMG: "Schaden",
+            COMMAND_RAIDDAMAGE_MISSING_RAID: "Raid fehlt",
+            COMMAND_RAIDDAMAGE_INVALID_RAID: "Ungueltiger Raid",
+            COMMAND_RAIDDAMAGE_RAID_STR: (raids) => `Bitte waehle einen der folgenden raids:\n\`${raids}\``,
+            COMMAND_RAIDDAMAGE_MISSING_PHASE: "Phase fehlt",
+            COMMAND_RAIDDAMAGE_INVALID_PHASE: "Ungueltige Phase",
+            COMMAND_RAIDDAMAGE_PHASE_STR: (raid, phases) => `Bitte waehle eine der folgenden Phasen aus fuer ${raid} raid:\n${phases}`,
+            COMMAND_RAIDDAMAGE_MISSING_AMT: "Fehlende Schadenshoehe",
+            COMMAND_RAIDDAMAGE_INVALID_AMT: "Ungueltige Schadenshoehe",
+            COMMAND_RAIDDAMAGE_AMOUNT_STR: "Du musst entweder eine Schadenshoehe oder einen prozentualen Wert angeben der umgerechnet werden soll",
+            COMMAND_RAIDDAMAGE_OUT_HEADER: (raidName, phaseName) => `${raidName} raid, ${phaseName}`,
+            COMMAND_RAIDDAMAGE_OUT_DMG: (inAmt, outAmt) => `**${inAmt} ist etwa ${outAmt} des Boss-Gegners' hp**`,
+            COMMAND_RAIDDAMAGE_OUT_PERCENT: (inAmt, outAmt) => `**${inAmt} ist etwa ${outAmt}**`,
+            COMMAND_RAIDDAMAGE_OUT_STR: (inAmt, outAmt, phase, raid) => `${inAmt} ist etwa ${outAmt} waehrend ${phase} vom ${raid} raid.`,
+            COMMAND_RAIDDAMAGE_HELP: {
+                description: "Rechnet die Schadenshoehe bzw den prozentualen Wert um",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";raidteams <Raid> <Phase>",
+                        usage: ";raiddamage <raid> <phase> <damage>",
                         args: {
-                            "Raid": "Der Raid, fuer welchen Du Teams anzeigen willst. (aat|pit|sith)",
-                            "Phase": "Die Phase des Raids, fuer welches Du Teams anzeigen lassen willst. ( p1 | p2 | p3 | p4 | solo )"
+                            "raid": "Der Raid den du sehen moechtest. (aat|pit|sith)",
+                            "phase": "Die Phase des Raids die du sehen moechtest. (p1|p2|p3|p4|solo)",
+                            "damage": "Die Schadenshoehe die du sehen moechtest. (Bspw: 40000 oder 35%)"
                         }
                     }
                 ]
