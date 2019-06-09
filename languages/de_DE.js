@@ -1198,34 +1198,34 @@ module.exports = class extends Language {
             },
 
             // Register Command
-            COMMAND_REGISTER_MISSING_ARGS: "Du musst eine userID (mention oder ID) angeben, und einen Buendniscode",
             COMMAND_REGISTER_MISSING_ALLY: "Du musst einen Buendniscode angeben mit dem du das Konto verknuepfen willst.",
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger Buendniscode`,
+            COMMAND_REGISTER_ALREADY_REGISTERED: "Das ist bereits dein registrierter Buendniscode!",
+            COMMAND_REGISTER_ADD_NO_SERVER: "Du kannst nur User angeben die bereits auf diesem Server sind.",
             COMMAND_REGISTER_PLEASE_WAIT: "Bitte warten waehrend ich die Daten synchronisiere.",
-            COMMAND_REGISTER_ADD_NO_SERVER: "Du kannst nur User angeben die auf dem Discord Server vorhanden sind.",
-            COMMAND_REGISTER_ALREADY_ADDED: (prefix=";") => `Dieser User ist bereits registriert! Bitte verwende \`${prefix}register update <user>\`.`,
-            COMMAND_REGISTER_FAILURE: "Registrierung fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.",
-            COMMAND_REGISTER_SUCCESS: "Registrierung erfolgreich!",
-            COMMAND_REGISTER_UPDATE_FAILURE: "Etwas ist fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.",
-            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profil aktualisiert fuer \`${user}\`.`,
-            COMMAND_REGISTER_CANNOT_REMOVE: (prefix=";") => `Du kannst keine anderen User entfernen. Falls sie die Gilde verlassen haben nutze \`${prefix}register update <user>\`.`,
-            COMMAND_REGISTER_NOT_LINKED: "Du bist mit keinem SWGoH Profil verlinkt.",
-            COMMAND_REGISTER_REMOVE_SUCCESS: "Erfolgreich getrennt.",
-            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Gilde aktualisiert fuer \`${guild}\`.`,
+            COMMAND_REGISTER_FAILURE: "Registrierung fehlgeschlagen, bitte sicherstellen dass der Buendniscode korrekt ist.",
+            COMMAND_REGISTER_SUCCESS_HEADER: (user) => `Registrierung fuer ${user} erfolgreich!`,
+            COMMAND_REGISTER_SUCCESS_DESC: (user, allyCode, gp) => [
+                `Buendniscode :: ${allyCode}`,
+                `Gilde    :: ${user.guildName || "N/A"}`,
+                `GM       :: ${gp}`,
+                `Level    :: ${user.level}`
+            ].join("\n"),
             COMMAND_REGISTER_HELP: {
-                description: "Registriert einen Buendniscode zu einer Discord ID, und synchronisiert ein SWGoH Profil.",
+                description: "Verknuepft den Buendniscode mit der Discord-ID und synchronisiert das SWGoH Profil.",
                 actions: [
                     {
                         action: "",
-                        actionDesc: "Verlinkt ein Discord Profil mit einem SWGoH account",
+                        actionDesc: "Verknuepft das Discord Profil zu einem SWGoH account",
                         usage: ";register [user] <Buendniscode>",
                         args: {
-                            "user": "Das Discordprofil das du verlinken moechtest. (me | userID | mention)",
-                            "allyCode": "Dein in-game Buendniscode."
+                            "user": "Der Spieler den du hinzufuegen moechtest. (userID | mention)",
+                            "Buendniscode": "Der In-Game Buendniscode."
                         }
                     }
                 ]
             },
+
 
 
 
