@@ -1228,7 +1228,6 @@ module.exports = class extends Language {
 
 
 
-
             // Reload Command
             COMMAND_RELOAD_INVALID_CMD: (cmd) => `Ich kann das Kommando nicht finden: ${cmd}`,
             COMMAND_RELOAD_SUCCESS: (cmd) => `Erfolgreich neu geladen: ${cmd}`,
