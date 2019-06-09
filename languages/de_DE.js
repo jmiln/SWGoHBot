@@ -100,7 +100,7 @@ module.exports = class extends Language {
             COMMAND_EXTENDED_HELP: (command) => `**Erweiterte Hilfe fuer ${command.help.name}** \n**Verwendung**: ${command.help.usage} \n${command.help.extended}`,
             COMMAND_INVALID_BOOL: "Ungueltiger Wert, versuche true oder false",
             COMMAND_MISSING_PERMS: "Entschuldigung, aber Sie haben nicht die richtigen Berechtigungen, um das zu verwenden.",
-            BASE_CANNOT_DM: "Entschuldigung, aber ich konnte Dir keine Nachricht senden. Bitte pruefe Deine Einstellungen, ob du es erlaubt hast, dass Leute auf diesem Server Dir Nachrichten senden duerfen.", 
+            BASE_CANNOT_DM: "Entschuldigung, aber ich konnte Dir keine Nachricht senden. Bitte pruefe Deine Einstellungen, ob du es erlaubt hast, dass Leute auf diesem Server Dir Nachrichten senden duerfen.",
             BASE_COMMAND_UNAVAILABLE: "Dieser Befehl ist ueber Privatnachrichten nicht verfuegbar. Bitte fuehre diesen Befehl innerhalb eines Gildenservers aus.",
             BASE_COMMAND_HELP_HEADER: (name) => `Hilfe fuer ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Fortgesetzte Hilfe fuer ${name}`,
@@ -527,7 +527,7 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: "faction <Fraktion> [-leader] [-zeta]",
                         args: {
-                            "faction": "Die Fraktion die du aus der Sammlung sehen moechtest."
+                            "faction": "Die Fraktion die du aus der Sammlung sehen moechtest.",
                             "-leader": "Beschraenkt die Ausgabe auf Charaktere mit einer Anfuehrerfaehigkeit",
                             "-zeta": "Beschraenkt die Ausgabe auf Charaktere deren Faehigkeiten mit einer Zeta aufgewertet werden koennen"
                         }
@@ -538,7 +538,7 @@ module.exports = class extends Language {
                         usage: "faction <user> <Fraktion> [-leader] [-zeta]",
                         args: {
                             "user": "Zur Identifikation des Spielers (mention | allyCode | me)",
-                            "Fraktion": "Die Fraktion, von der Du die Sammlung sehen willst."
+                            "Fraktion": "Die Fraktion, von der Du die Sammlung sehen willst.",
                             "-leader": "Beschraenkt die Ausgabe auf Charaktere mit einer Anfuehrerfaehigkeit",
                             "-zeta": "Beschraenkt die Ausgabe auf Charaktere deren Faehigkeiten mit einer Zeta aufgewertet werden koennen"
                         }
@@ -673,7 +673,7 @@ module.exports = class extends Language {
                             "-roster": "Zeigt eine Liste aller Gildenmitglieder dieser Gilde an",
                             "-allycode": "Zeigt den Buendniscode anstatt die GM eines Gieldenmitglieds an",
                             "-sort": "Waehle zwischen einer Sortierung nach Namen oder GM",
-                            "-reg": "Zeigt den Discordnamen neben dem registrierten Namen des Users auf dem Server an."   
+                            "-reg": "Zeigt den Discordnamen neben dem registrierten Namen des Users auf dem Server an."
                         }
                     },
                     {
@@ -746,7 +746,7 @@ module.exports = class extends Language {
                         usage: ";guildsearch [user] -mods",
                         args: {
                             "user": "Der Spieler dessen Gilde du sehen moechtest (me | userID | mention)",
-                            "-mods": "Angabe um die Mods zu sehen. (-m | -mod)"
+                            "-mods": "Angabe um die Mods zu sehen. (-m | -mod)",
                             "-sort": "Sortiert nach speed, offense, oder 6 (fuer 6* mods)"
                         }
                     },
@@ -915,7 +915,7 @@ module.exports = class extends Language {
                         usage: ";mycharacter [user] <character>",
                         args: {
                             "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
-                            "character": "Der Charakter nach dem du suchen moechtest."
+                            "character": "Der Charakter nach dem du suchen moechtest.",
                             "-s": "Sucht nach dem Schiff des Piloten"
                         }
                     }
@@ -1148,7 +1148,7 @@ module.exports = class extends Language {
                 ]
             },
 
-             // RaidDamage Command
+            // RaidDamage Command
             COMMAND_RAIDDAMAGE_DMG: "Schaden",
             COMMAND_RAIDDAMAGE_MISSING_RAID: "Raid fehlt",
             COMMAND_RAIDDAMAGE_INVALID_RAID: "Ungueltiger Raid",
@@ -1190,7 +1190,7 @@ module.exports = class extends Language {
                         usage: ";randomchar [user][AnzahlCharaktere]",
                         args: {
                             "user": "Die Charaktersammlung eines Spielers aus der ausgewaehlt werden soll. (me | userID | mention)",
-                            "AnzahlCharaktere": "Die Anzahl der Charaktere, die ausgewaehlt werden sollen"
+                            "AnzahlCharaktere": "Die Anzahl der Charaktere, die ausgewaehlt werden sollen",
                             "-star X": "Waehle den Mindest-Stern-Level (X) fuer den Charakter der ausgesucht werden soll."
                         }
                     }
@@ -1296,7 +1296,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_WELCOME_NEED_CHAN: "Entschuldige, aber der Ankuendigungskanal ist nicht definiert oder nicht mehr gueltig.\nSetze `announceChan` auf einen gueltigen Kanal und versuche es erneut`",
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: "Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an",
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
-            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: "Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.",        
+            COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: "Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.",
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
             COMMAND_SETCONF_RESET: "Die Konfiguration wurde zurueckgesetzt",
             COMMAND_SETCONF_HELP: {
@@ -1614,7 +1614,7 @@ module.exports = class extends Language {
             COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `${name}(${ac}) von der Konfiguration entfernt`,
             COMMAND_USERCONF_ALLYCODE_TOO_MANY: "Du kannst nicht mehr als 10 Accounts registrieren.",
             COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED: "Dieser Buendniscode ist nicht registriert",
-            COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "Dieser Buendniscode wurde bereits als "primaer" gekennzeichnet.",
+            COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "Dieser Buendniscode wurde bereits als *primaer* gekennzeichnet.",
             COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY: (oldName, oldAC, newName, newAC) => `Primaer von **${oldName}**(${oldAC}) nach **${newName}**(${newAC}) geaendert`,
             COMMAND_USERCONF_DEFAULTS_CMD_NO_FLAGS: (name) => `${name} hat keine Kennzeichnungen fuer die Standardwerte geladen werden koennten.`,
             COMMAND_USERCONF_DEFAULTS_INVALID_CMD: (name) => `${name} wird aktuell hierfuer nicht unterstuetzt.`,
@@ -1654,7 +1654,7 @@ module.exports = class extends Language {
                         args: {
                             "add": "Fuegt einen Buendniscode dem Profil hinzu",
                             "remove": "Entfernt einen Buendniscode von deinem Profil",
-                            "makePrimary": "Setzt den gewaehlten Buendniscode als "primaer" (derjenige der genutzt wird wenn `me` in einem befehl genutzt wird)"
+                            "makePrimary": "Setzt den gewaehlten Buendniscode als 'primaer' (derjenige der genutzt wird wenn `me` in einem befehl genutzt wird)"
                         }
                     },
                     {
