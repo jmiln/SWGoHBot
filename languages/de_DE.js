@@ -1191,6 +1191,7 @@ module.exports = class extends Language {
                         args: {
                             "user": "Die Charaktersammlung eines Spielers aus der ausgewaehlt werden soll. (me | userID | mention)",
                             "AnzahlCharaktere": "Die Anzahl der Charaktere, die ausgewaehlt werden sollen"
+                            "-star X": "Waehle den Mindest-Stern-Level (X) fuer den Charakter der ausgesucht werden soll."
                         }
                     }
                 ]
