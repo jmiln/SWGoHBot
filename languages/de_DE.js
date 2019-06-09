@@ -77,6 +77,7 @@ module.exports = class extends Language {
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: "\n\nDas ist der letzte Eintrag fuer dieses Event. Um weiterhin diese Ankuendigung zu erhalten, erstelle ein neues Event.",
             BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStartet in ${timeToGo}`,
+            BASE_EVENT_LATE: "Entschuldigung, aber dieses Event wurde spaeter als erwartet getriggert. Wenn eine Wiederholung eingestellt wurde (repeat) wird die naechste Ankuendigung rechtzeitig erscheinen.",
 
             // Base swgohAPI
             BASE_SWGOH_NO_ALLY: (prefix=";") => `Entschuldigung, aber dieser User ist nicht registriert. Bitte registrieren mit \`${prefix}userconf allycode add  <allycode>\``,
@@ -195,11 +196,11 @@ module.exports = class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Bitte versuche es etwas später nocheinmal.",
 
             // Abilities Command
-            COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. \n Verwendung \`${prefix}abilities <CharakterName auf englisch>\``,
-            COMMAND_ABILITIES_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. \nVerwendung \`${prefix}abilities <CharakterName auf englisch>\``,
-            COMMAND_ABILITIES_COOLDOWN: (aCooldown) => `**Abklingzeit Faehigkeit:** ${aCooldown}\n`,
-            COMMAND_ABILITIES_ABILITY: (aType, mat, cdString, aDesc) => `**Faehigkeiten-Typ:** ${aType}\n**Faehigkeitenmaterial benoetigt:     ${mat}**\n${cdString}${aDesc}`,
-            COMMAND_ABILITIES_HELP: {
+            COMMAND_CHARACTER_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. \n Verwendung \`${prefix}abilities <CharakterName auf englisch>\``,
+            COMMAND_CHARACTER_INVALID_CHARACTER: (prefix) => `Ungueltiger Charakter. \nVerwendung \`${prefix}abilities <CharakterName auf englisch>\``,
+            COMMAND_CHARACTER_COOLDOWN: (aCooldown) => `**Abklingzeit Faehigkeit:** ${aCooldown}\n`,
+            COMMAND_CHARACTER_ABILITY: (aType, mat, cdString, aDesc) => `**Faehigkeiten-Typ:** ${aType}\n**Faehigkeitenmaterial benoetigt:     ${mat}**\n${cdString}${aDesc}`,
+            COMMAND_CHARACTER_HELP: {
                 description: "Zeigt die Faehigkeiten für einen spezifizierten Charakter.",
                 actions: [
                     {
@@ -429,6 +430,31 @@ module.exports = class extends Language {
             // Event Command (Other)
             COMMAND_EVENT_TOO_MANY_EVENTS: "Entschuldige, aber du kannst nur bis zu 50 Events haben",
 
+            // Event Command (Edit)
+            COMMAND_EVENT_EDIT_MISSING_ARG: "Es fehlt ein Feld zum Editieren",
+            COMMAND_EVENT_EDIT_INVALID_ARG: (target, changable) => `${target} ist kein gueltiges Feld. Versuche es mit einem von diesen:\n\`${changable}\``,
+            COMMAND_EVENT_EDIT_MISSING_NAME: "Es fehlt ein Name zum aendern",
+            COMMAND_EVENT_EDIT_INAVLID_NAME: "Leerzeichen im Namen sind nicht moeglich, verwende `-` oder `_` stattdessen.",
+            COMMAND_EVENT_EDIT_SPACE_DATE: "Es duerfen keine Leerzeichen im Datum verwendet werden. Das korrekte Format ist `DD/MM/YYYY`",
+            COMMAND_EVENT_EDIT_MISSING_DATE: "Zum aendern fehlt das Datum.",
+            COMMAND_EVENT_EDIT_INVALID_DATE: "Ungueltiges Datumsformat, nur `DD/MM/YYYY` wird unterstuetzt.",
+            COMMAND_EVENT_EDIT_SPACE_TIME: "Es duerfen keine Leerzeichen in der Uhrzeit verwendet werden. Das korrekte Format ist `HH:mm`",
+            COMMAND_EVENT_EDIT_MISSING_TIME: "Zum aendern fehlt die Uhrzeit.",
+            COMMAND_EVENT_EDIT_INVALID_TIME: "Ungueltiges Zeitformat, nur `HH:mm` wird unterstuetzt.",
+            COMMAND_EVENT_EDIT_MISSING_MESSAGE: "Zum aendern fehlt die Nachricht",
+            COMMAND_EVENT_EDIT_LONG_MESSAGE: "Die neue Nachricht ist zu lang. Versuche etwas zu kuerzen.",
+            COMMAND_EVENT_EDIT_MISSING_CHANNEL: "Zum aendern fehlt der Kanal.",
+            COMMAND_EVENT_EDIT_MISSING_COUNTDOWN: "Es fehlt die Auswahl ob der Countdown aktiviert werden soll oder nicht",
+            COMMAND_EVENT_EDIT_INVALID_COUTNDOWN: "Ungueltige Option. Verwende `yes/no`, `true/false` oder `on/off`",
+            COMMAND_EVENT_EDIT_MISSING_REPEATDAY: "Zum aendern fehlt etwas, repeatDay braucht bspw. etwas im Format wie `0,0,0,0,0`.",
+            COMMAND_EVENT_EDIT_SPACE_REPEATDAY: "Es duerfen keine Leerzeichen verwendet werden, ein gueltiges Format ist `0,0,0,0,0`.",
+            COMMAND_EVENT_EDIT_BOTH_REPEATDAY: "Es wurde bereits die Wiederholung (repeat) eingestellt und repeat & repeatDay gleichzeitig ist nicht moeglich.",
+            COMMAND_EVENT_EDIT_MISSING_REPEAT: "Zum aendern fehlt etwas, repeatDay braucht bspw. etwas im Format `0d0h0m`.",
+            COMMAND_EVENT_EDIT_SPACE_REPEAT: "Es duerfen keine Leerzeichen verwendet werden, ein gueltiges Format ist `0d0h0m`.",
+            COMMAND_EVENT_EDIT_BOTH_REPEAT: "Es wurde bereits die Wiederholung (repeatDay) eingestellt und repeat & repeatDay gleichzeitig ist nicht moeglich.",
+            COMMAND_EVENT_EDIT_UPDATED: (target, cFrom, cTo) => `${target} geaendert von **${cFrom}** nach **${cTo}**`,
+            COMMAND_EVENT_EDIT_BROKE: "Etwas ist beim aktualisieren des Events fehlgeschlagen.",
+
             // Event Command (Help)
             COMMAND_EVENT_HELP: {
                 description: "Wird verwendet um ein Event zu erstellen, zu pruefen oder zu loeschen.",
@@ -474,6 +500,16 @@ module.exports = class extends Language {
                         actionDesc: "Loest die Ankuendigung in dem spezifizierten Kanal aus. Das Event bleibt unverändert.",
                         usage: ";event trigger <eventName>",
                         args: {}
+                    },
+                    {
+                        action: "Edit",
+                        actionDesc: "Editiert ein vorhandenes Event",
+                        usage: ";event edit <eventName> <Feld> <Aenderung>",
+                        args: {
+                            "eventName": "Der Name des Events das du veraendern moechtest",
+                            "field": "Das Feld das du aendern willst. Waehle eines der folgenden aus:\n `name, time, date, message, channel, countdown, repeat, repeatday`.",
+                            "Aenderung": "Der Wert der geaendert werden soll."
+                        }
                     }
                 ]
             },
@@ -489,18 +525,66 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "faction <Fraktion>",
+                        usage: "faction <Fraktion> [-leader] [-zeta]",
                         args: {
                             "faction": "Die Fraktion die du aus der Sammlung sehen moechtest."
+                            "-leader": "Beschraenkt die Ausgabe auf Charaktere mit einer Anfuehrerfaehigkeit",
+                            "-zeta": "Beschraenkt die Ausgabe auf Charaktere deren Faehigkeiten mit einer Zeta aufgewertet werden koennen"
                         }
                     },
                     {
                         action: "Spieler Fraktion",
                         actionDesc: "Zeigt die Entwicklung der Fraktion eines Spieler",
-                        usage: "faction <user> <Fraktion>",
+                        usage: "faction <user> <Fraktion> [-leader] [-zeta]",
                         args: {
                             "user": "Zur Identifikation des Spielers (mention | allyCode | me)",
                             "Fraktion": "Die Fraktion, von der Du die Sammlung sehen willst."
+                            "-leader": "Beschraenkt die Ausgabe auf Charaktere mit einer Anfuehrerfaehigkeit",
+                            "-zeta": "Beschraenkt die Ausgabe auf Charaktere deren Faehigkeiten mit einer Zeta aufgewertet werden koennen"
+                        }
+                    }
+                ]
+            },
+
+            // Farm Command
+            COMMAND_FARM_USAGE: (prefix) => `Verwendung ist \`${prefix}farm <charakter auf englisch>\``,
+            COMMAND_FARM_LOCATIONS: " Farming-Gebiete",
+            COMMAND_FARM_MISSING_CHARACTER: "Es fehlt die Angabe des Charakters (auf englisch)",
+            COMMAND_FARM_HARD: "Hart ",
+            COMMAND_FARM_LIGHT: "Helle Seite ",
+            COMMAND_FARM_DARK: "Dunkle Seite ",
+            COMMAND_FARM_FLEET: "Flotte ",
+            COMMAND_FARM_CANTINA: "Cantina ",
+            COMMAND_FARM_ENERGY_PER: " Energie pro Versuch",
+            COMMAND_FARM_CHAR_UNAVAILABLE: "Wie es scheint ist dieser Charakter noch nicht oder nur ueber ein Event farmbar.",
+            COMMAND_FARM_EVENT_CHARS: {
+                // Heroes Journey
+                "REYJEDITRAINING": "Rey's Heldenreise",
+                "COMMANDERLUKESKYWALKER": "Luke Skywalker Heldenreise",
+                "JEDIKNIGHTREVAN": "Legende der alten Republik",
+
+                // Legendary events
+                "CHEWBACCALEGENDARY": "Ein beruehmter Wookie",
+                "R2D2_LEGENDARY": "Tapferer Droide",
+                "GRANDADMIRALTHRAWN": "Kriegskuenstler",
+                "C3POLEGENDARY": "Kontakt Protokoll",
+                "GRANDMASTERYODA": "Grossmeister Training",
+                "BB8": "Infos und Plaene",
+                "EMPERORPALPATINE": "Tod des Imperators",
+
+                // TB Rewards
+                "IMPERIALPROBEDROID": "Dunkle Seite TB (Spezialmission)",
+                "HOTHLEIA": "Helle Seite TB (Spezialmission)"
+            },
+            COMMAND_FARM_HELP: {
+                description: "Zeigt eine Uebersicht von verfuegbaren Farming-Gebieten fuer Charaktere.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: "farm <charakter auf englisch>",
+                        args: {
+                            "charakter auf englisch": "Der Charakter fuer den du die verfuegbaren Farming-Gebiete anzeigen lassen moechtest."
                         }
                     }
                 ]
@@ -605,6 +689,12 @@ module.exports = class extends Language {
             },
 
             // GuildSearch Command
+            COMMAND_GUILDSEARCH_SHIP_STATS: "Entschuldige, aber ich kann im Moment keine Statistiken zu diesem Schiff abrufen.",
+            COMMAND_GUILDSEARCH_CONFLICTING: (args) => `Du verwendest Parameter die untereinander nicht kompatibel sind. Folgende koennen nicht gleichzeitig verwendet werden. ${args}`,
+            COMMAND_GUILDSEARCH_GEAR_SUM: "Char Ausruestung Uebersicht",
+            COMMAND_GUILDSEARCH_CHAR_STAR_SUM: "Char Stern Lvl Uebersicht",
+            COMMAND_GUILDSEARCH_SHIP_STAR_SUM: "Schiff Stern Lvl Uebersicht",
+            COMMAND_GUILDSEARCH_INVALID_SORT: (opts) => `Ungueltige Sortierung. Verwende: \`${opts}\``,
             COMMAND_GUILDSEARCH_BAD_STAR: "Du kannst nur ein Sternen-Level von 1-7 waehlen",
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Entschuldigung, aber \`${sortType}\` ist keine gueltige Sortierreihenfolge. Nur \`${filters.join(", ")}\` ist moeglich.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: "Du musst einen Charakter angeben",
@@ -635,6 +725,7 @@ module.exports = class extends Language {
                             "-ships": "Suche nach Schiffen, benutze `-s, -ship, oder -ships`",
                             "-reverse": "Kehrt die Sortierreihenfolge um",
                             "-sort": "Waehle entweder eine Sortierung nach Name, Ausruestung oder GM",
+                            "-top X": "Zeigt die Top X Ergebnisse an (X ist zwischen 0 und 50)",
                             "-zetas": "Zeigt nur Charaktere die Zetas haben",
                             "starLvl": "Waehle den Star-Level aus den du sehen moechtest."
                         }
@@ -656,6 +747,28 @@ module.exports = class extends Language {
                         args: {
                             "user": "Der Spieler dessen Gilde du sehen moechtest (me | userID | mention)",
                             "-mods": "Angabe um die Mods zu sehen. (-m | -mod)"
+                            "-sort": "Sortiert nach speed, offense, oder 6 (fuer 6* mods)"
+                        }
+                    },
+                    {
+                        action: "Ausruestung Uebersicht",
+                        actionDesc: "Vergleicht die Anzahl von hoeheren Ausruestungsstufen innerhalb der Gilde",
+                        usage: ";guildsearch [user] -gear [-sort gearLvl]",
+                        args: {
+                            "user": "Spieler dessen Gilde du sehen moechtest. (me | userID | mention)",
+                            "-gear": "Zur Anzeige der Ausruestungsstufen (-g)",
+                            "-sort": "Waehle die Ausruestungsstufe nach der sortiert werden soll (9,10,11,12)"
+                        }
+                    },
+                    {
+                        action: "Charakter Stern Uebersicht",
+                        actionDesc: "Vergleicht die Anzahl von hoeheren Stern-Level innerhalb der Gilde",
+                        usage: ";guildsearch [user] -stars [-sort starLvl] [-ship]",
+                        args: {
+                            "user": "Spieler dessen Gilde du sehen moechtest. (me | userID | mention)",
+                            "-stars": "Zur Anzeige des Stern-Level (-star | -*)",
+                            "-sort": "Waehle den Stern-Level nach dem sortiert werden soll (10,11,12)",
+                            "-ship": "Zeigt die Schiffe anstatt die Charaktere an (-s | -ship | -ships)"
                         }
                     },
                 ]
@@ -803,6 +916,7 @@ module.exports = class extends Language {
                         args: {
                             "user": "Das Discordprofil des jeweiligen Spielers. (me | userID | mention)",
                             "character": "Der Charakter nach dem du suchen moechtest."
+                            "-s": "Sucht nach dem Schiff des Piloten"
                         }
                     }
                 ]
@@ -846,6 +960,15 @@ module.exports = class extends Language {
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arenadaten vom: ${date}`,
             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank, gpFull) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}\n**Gesamt GM:** ${gpFull}`,
+            COMMAND_MYPROFILE_MODS: (mods) => ({
+                header: "Mod Uebersicht",
+                modStrs: [
+                    `6* Mods  :: ${mods.sixPip}`,
+                    `Spd 15+  :: ${mods.spd15}`,
+                    `Spd 20+  :: ${mods.spd20}`,
+                    `Off 100+ :: ${mods.off100}`
+                ].join("\n")
+            }),
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Charaktere (${charList.length})`,
                 stats: [
@@ -874,6 +997,63 @@ module.exports = class extends Language {
                         usage: ";myprofile [user]",
                         args: {
                             "user": "Die Person die du sehen moechtest. (me | userID | mention)"
+                        }
+                    }
+                ]
+            },
+
+            // Need Command
+            COMMAND_NEED_MISSING_USER: "Wenn du diesen Befehl verwenden moechtest, musst du dich entweder registrieren oder einen Buendniscode angeben.",
+            COMMAND_NEED_MISSING_SEARCH: (search) => `Es konnte nichts gefunden werden fuer ${search}`,
+            COMMAND_NEED_CHAR_HEADER: "__Charaktere:__",
+            COMMAND_NEED_SHIP_HEADER: "__Schiffe:__",
+            COMMAND_NEED_COMPLETE: "Glueckwunsch, du hast alles von hier!",
+            COMMAND_NEED_ALL_CHAR: "Glueckwunsch, du hast alle Charaktere auf 7*",
+            COMMAND_NEED_ALL_SHIP: "Glueckwunsch, du hast alle Schiffe auf 7*",
+            COMMAND_NEED_PARTIAL: (percent) => `Du bist zu **${percent}%** fertig.`,
+            COMMAND_NEED_HEADER: (player, search) => `${player}'s ${search} benoetigt`,
+            COMMAND_NEED_HELP: {
+                description: "Zeigt Deinen Fortschritt zu den 7* Charakteren einer Fraktion oder eines Shops an.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";need [user] <fraktion|shop|battle|keyword>",
+                        args: {
+                            "user": "Der Spieler den du sehen moechtest. (me | userID | mention)",
+                            "fraktion | shop": "Die Fraktion oder den Shop dessen Fortschritt du sehen moechtest",
+                            "keyword": "Eines der folgenden Stichwoerter (siehe unten)"
+                        }
+                    },
+                    {
+                        action: "Shops",
+                        actionDesc: "",
+                        args: {
+                            "arena":   "Arena shop",
+                            "cantina": "Cantina shop",
+                            "fleet":   "Fleet shop",
+                            "guild":   "Gilden shop",
+                            "gw":      "Galaktischer Krieg shop",
+                            "shard":   "Splitter shop"
+                        }
+                    },
+                    {
+                        action: "Battles",
+                        actionDesc: "",
+                        args: {
+                            "Helle Kaempfe":   "Helle Seite harte Kaempfe",
+                            "Dunkle Kaempfe":    "Dunkle Seite harte Kaempfe",
+                            "Cantina Kaempfe": "Cantina Kaempfe",
+                            "Flotten Kaempfe":   "Flotten Kaempfe"
+                        }
+                    },
+                    {
+                        action: "Keywords",
+                        actionDesc: "",
+                        args: {
+                            "battles": "Zeigt fehlende Charaktere von den verschiedenen Knoten an",
+                            "shops":   "Zeigt an was alles aus den jeweiligen Stores fehlt.",
+                            "*":       "Zeigt alles an was fehlt."
                         }
                     }
                 ]
@@ -968,29 +1148,32 @@ module.exports = class extends Language {
                 ]
             },
 
-            // Raidteams Command
-            COMMAND_RAIDTEAMS_INVALID_RAID: (prefix) => `Ungueltiger Raid, Verwendung lautet \`${prefix}raidteams <raid> <phase>\`\n**Beispiel:** \`${prefix}raidteams pit p3\``,
-            COMMAND_RAIDTEAMS_INVALID_PHASE: (prefix) => `Ungueltige Phase, Verwendung lautet \`${prefix}raidteams <raid> <phase>\`\n**Beispiel:** \`${prefix}raidteams pit p3\``,
-            COMMAND_RAIDTEAMS_PHASE_SOLO: "Solo",
-            COMMAND_RAIDTEAMS_PHASE_ONE: "Phase 1",
-            COMMAND_RAIDTEAMS_PHASE_TWO: "Phase 2",
-            COMMAND_RAIDTEAMS_PHASE_THREE: "Phase 3",
-            COMMAND_RAIDTEAMS_PHASE_FOUR: "Phase 4",
-            COMMAND_RAIDTEAMS_CHARLIST: (charList) => `**Charaktere:** \`${charList}\``,
-            COMMAND_RAIDTEAMS_SHOWING: (currentPhase) => `Zeige Teams fuer ${currentPhase}`,
-            COMMAND_RAIDTEAMS_NO_TEAMS: (currentPhase) => `Keine Teams gefunden \`${currentPhase}\``,
-            COMMAND_RAIDTEAMS_CODE_TEAMS: (raidName, currentPhase) => ` * ${raidName} * \n\n* Zeige Teams fuer ${currentPhase}\n\n`,
-            COMMAND_RAIDTEAMS_CODE_TEAMCHARS: (raidTeam, charList) => `### ${raidTeam} ### \n* Charaktere: ${charList}\n`,
-            COMMAND_RAIDTEAMS_HELP: {
-                description: "Zeigt Teams an, die im Raid gut funktionieren.",
+             // RaidDamage Command
+            COMMAND_RAIDDAMAGE_DMG: "Schaden",
+            COMMAND_RAIDDAMAGE_MISSING_RAID: "Raid fehlt",
+            COMMAND_RAIDDAMAGE_INVALID_RAID: "Ungueltiger Raid",
+            COMMAND_RAIDDAMAGE_RAID_STR: (raids) => `Bitte waehle einen der folgenden raids:\n\`${raids}\``,
+            COMMAND_RAIDDAMAGE_MISSING_PHASE: "Phase fehlt",
+            COMMAND_RAIDDAMAGE_INVALID_PHASE: "Ungueltige Phase",
+            COMMAND_RAIDDAMAGE_PHASE_STR: (raid, phases) => `Bitte waehle eine der folgenden Phasen aus fuer ${raid} raid:\n${phases}`,
+            COMMAND_RAIDDAMAGE_MISSING_AMT: "Fehlende Schadenshoehe",
+            COMMAND_RAIDDAMAGE_INVALID_AMT: "Ungueltige Schadenshoehe",
+            COMMAND_RAIDDAMAGE_AMOUNT_STR: "Du musst entweder eine Schadenshoehe oder einen prozentualen Wert angeben der umgerechnet werden soll",
+            COMMAND_RAIDDAMAGE_OUT_HEADER: (raidName, phaseName) => `${raidName} raid, ${phaseName}`,
+            COMMAND_RAIDDAMAGE_OUT_DMG: (inAmt, outAmt) => `**${inAmt} ist etwa ${outAmt} des Boss-Gegners' hp**`,
+            COMMAND_RAIDDAMAGE_OUT_PERCENT: (inAmt, outAmt) => `**${inAmt} ist etwa ${outAmt}**`,
+            COMMAND_RAIDDAMAGE_OUT_STR: (inAmt, outAmt, phase, raid) => `${inAmt} ist etwa ${outAmt} waehrend ${phase} vom ${raid} raid.`,
+            COMMAND_RAIDDAMAGE_HELP: {
+                description: "Rechnet die Schadenshoehe bzw den prozentualen Wert um",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";raidteams <Raid> <Phase>",
+                        usage: ";raiddamage <raid> <phase> <damage>",
                         args: {
-                            "Raid": "Der Raid, fuer welchen Du Teams anzeigen willst. (aat|pit|sith)",
-                            "Phase": "Die Phase des Raids, fuer welches Du Teams anzeigen lassen willst. ( p1 | p2 | p3 | p4 | solo )"
+                            "raid": "Der Raid den du sehen moechtest. (aat|pit|sith)",
+                            "phase": "Die Phase des Raids die du sehen moechtest. (p1|p2|p3|p4|solo)",
+                            "damage": "Die Schadenshoehe die du sehen moechtest. (Bspw: 40000 oder 35%)"
                         }
                     }
                 ]
@@ -1008,36 +1191,36 @@ module.exports = class extends Language {
                         args: {
                             "user": "Die Charaktersammlung eines Spielers aus der ausgewaehlt werden soll. (me | userID | mention)",
                             "AnzahlCharaktere": "Die Anzahl der Charaktere, die ausgewaehlt werden sollen"
+                            "-star X": "Waehle den Mindest-Stern-Level (X) fuer den Charakter der ausgesucht werden soll."
                         }
                     }
                 ]
             },
 
             // Register Command
-            COMMAND_REGISTER_MISSING_ARGS: "Du musst eine userID (mention oder ID) angeben, und einen Buendniscode",
             COMMAND_REGISTER_MISSING_ALLY: "Du musst einen Buendniscode angeben mit dem du das Konto verknuepfen willst.",
             COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger Buendniscode`,
+            COMMAND_REGISTER_ALREADY_REGISTERED: "Das ist bereits dein registrierter Buendniscode!",
+            COMMAND_REGISTER_ADD_NO_SERVER: "Du kannst nur User angeben die bereits auf diesem Server sind.",
             COMMAND_REGISTER_PLEASE_WAIT: "Bitte warten waehrend ich die Daten synchronisiere.",
-            COMMAND_REGISTER_ADD_NO_SERVER: "Du kannst nur User angeben die auf dem Discord Server vorhanden sind.",
-            COMMAND_REGISTER_ALREADY_ADDED: (prefix=";") => `Dieser User ist bereits registriert! Bitte verwende \`${prefix}register update <user>\`.`,
-            COMMAND_REGISTER_FAILURE: "Registrierung fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.",
-            COMMAND_REGISTER_SUCCESS: "Registrierung erfolgreich!",
-            COMMAND_REGISTER_UPDATE_FAILURE: "Etwas ist fehlgeschlagen, bitte darauf achten, dass der Buendniscode korrekt ist.",
-            COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Profil aktualisiert fuer \`${user}\`.`,
-            COMMAND_REGISTER_CANNOT_REMOVE: (prefix=";") => `Du kannst keine anderen User entfernen. Falls sie die Gilde verlassen haben nutze \`${prefix}register update <user>\`.`,
-            COMMAND_REGISTER_NOT_LINKED: "Du bist mit keinem SWGoH Profil verlinkt.",
-            COMMAND_REGISTER_REMOVE_SUCCESS: "Erfolgreich getrennt.",
-            COMMAND_REGISTER_GUPDATE_SUCCESS: (guild) => `Gilde aktualisiert fuer \`${guild}\`.`,
+            COMMAND_REGISTER_FAILURE: "Registrierung fehlgeschlagen, bitte sicherstellen dass der Buendniscode korrekt ist.",
+            COMMAND_REGISTER_SUCCESS_HEADER: (user) => `Registrierung fuer ${user} erfolgreich!`,
+            COMMAND_REGISTER_SUCCESS_DESC: (user, allyCode, gp) => [
+                `Buendniscode :: ${allyCode}`,
+                `Gilde    :: ${user.guildName || "N/A"}`,
+                `GM       :: ${gp}`,
+                `Level    :: ${user.level}`
+            ].join("\n"),
             COMMAND_REGISTER_HELP: {
-                description: "Registriert einen Buendniscode zu einer Discord ID, und synchronisiert ein SWGoH Profil.",
+                description: "Verknuepft den Buendniscode mit der Discord-ID und synchronisiert das SWGoH Profil.",
                 actions: [
                     {
                         action: "",
-                        actionDesc: "Verlinkt ein Discord Profil mit einem SWGoH account",
+                        actionDesc: "Verknuepft das Discord Profil zu einem SWGoH account",
                         usage: ";register [user] <Buendniscode>",
                         args: {
-                            "user": "Das Discordprofil das du verlinken moechtest. (me | userID | mention)",
-                            "allyCode": "Dein in-game Buendniscode."
+                            "user": "Der Spieler den du hinzufuegen moechtest. (userID | mention)",
+                            "Buendniscode": "Der In-Game Buendniscode."
                         }
                     }
                 ]
@@ -1237,6 +1420,13 @@ module.exports = class extends Language {
             COMMAND_SHARDTIMES_REM_SUCCESS: "Benutzer erfolgreich entfernt!",
             COMMAND_SHARDTIMES_REM_FAIL: "Etwas lief schief beim entfernen des Benutzers, bitte erneut probieren.",
             COMMAND_SHARDTIMES_REM_MISSING: "Dieser Benutzer scheint hier nicht zu existieren.",
+            COMMAND_SHARDTIMES_COPY_NO_SOURCE: "Dieser Kanal hat keine Shard-Zeiten die kopiert werden koennten.",
+            COMMAND_SHARDTIMES_COPY_NO_DEST: (input) => `Kein Ergebnis gefunden fuer \`${input}\``,
+            COMMAND_SHARDTIMES_COPY_NO_PERMS: (inChan) => `Ich habe keine Berechtigung um Nachrichten in <#${inChan}> zu lesen/schreiben`,
+            COMMAND_SHARDTIMES_COPY_SAME_CHAN: "Du kannst nicht von/nach dem selben Kanal kopieren",
+            COMMAND_SHARDTIMES_COPY_DEST_FULL: "Entschuldige, aber der Ziel-Kanal hat bereits Shard-Informationen",
+            COMMAND_SHARDTIMES_COPY_BROKE: "Etwas hat beim Versuch die Shard-Informationen zu kopieren nicht geklappt. Bitte erneut versuchen.",
+            COMMAND_SHARDTIMES_COPY_SUCCESS: (dest) => `Shard-Informationen kopiert nach <#${dest}>`,
             COMMAND_SHARDTIMES_SHARD_HEADER: "Splitterauszahlung in:",
             COMMAND_SHARDTIMES_HELP: {
                 description: "Zeigt die Payout-Zeiten von allen registrierten Benutzern an.",
@@ -1258,6 +1448,14 @@ module.exports = class extends Language {
                         usage: ";shardtimes remove <Benutzer>",
                         args: {
                             "Benutzer": "Der Benutzer, der entfernt werden soll. (me | userID | mention)"
+                        }
+                    },
+                    {
+                        action: "Copy",
+                        actionDesc: "Kopiert die Liste mit den Zeiten von einem Kanal in einen anderen",
+                        usage: ";shardtimes copy <neuerKanal>",
+                        args: {
+                            "neuerKanal": "Der Ziel-Kanal wohin die Zeiten kopiert werden sollen"
                         }
                     },
                     {
@@ -1410,15 +1608,79 @@ module.exports = class extends Language {
                 ]
             },
 
-            // UpdateClient Command
-            COMMAND_UPDATECLIENT_HELP: {
-                description: "Aktualisiert den Client fuer die SWGoHAPI.",
+            // UserConf
+            COMMAND_USERCONF_CANNOT_VIEW_OTHER: "Entschuldige, aber du kannst keine anderen Einstellungen ansehen",
+            COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED: "Dieser Buendniscode ist bereits registriert",
+            COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `${name}(${ac}) von der Konfiguration entfernt`,
+            COMMAND_USERCONF_ALLYCODE_TOO_MANY: "Du kannst nicht mehr als 10 Accounts registrieren.",
+            COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED: "Dieser Buendniscode ist nicht registriert",
+            COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "Dieser Buendniscode wurde bereits als "primaer" gekennzeichnet.",
+            COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY: (oldName, oldAC, newName, newAC) => `Primaer von **${oldName}**(${oldAC}) nach **${newName}**(${newAC}) geaendert`,
+            COMMAND_USERCONF_DEFAULTS_CMD_NO_FLAGS: (name) => `${name} hat keine Kennzeichnungen fuer die Standardwerte geladen werden koennten.`,
+            COMMAND_USERCONF_DEFAULTS_INVALID_CMD: (name) => `${name} wird aktuell hierfuer nicht unterstuetzt.`,
+            COMMAND_USERCONF_DEFAULTS_SET_DEFAULTS: (name, flags) => `Setzt die Standardwerte fuer ${name} auf \`${flags}\``,
+            COMMAND_USERCONF_DEFAULTS_NO_DEFAULTS: (name) => `Es wurden keine Standardwerte gesetzt fuer ${name}.`,
+            COMMAND_USERCONF_DEFAULTS_CLEARED: (name) => `Standardwerte geloescht fuer ${name}.`,
+            COMMAND_USERCONF_VIEW_NO_CONFIG: (prefix) => `Es wurde noch keine Konfiguration eingestellt. Versuche \`${prefix}help userconf\` um zu beginnen.`,
+            COMMAND_USERCONF_VIEW_ALLYCODES_HEADER: "Buendniscodes",
+            COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY: "__Primaer ist **BOLD**__\n",
+            COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "Keine verknuepften Buendniscodes.",
+            COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Standardwerte",
+            COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Setzt Standards fuer Befehle.",
+            COMMAND_USERCONF_ARENA_PATREON_ONLY: "Dieses Feature ist nur verfuegbar fuer Unterstuetzer auf https://www.patreon.com/swgohbot",
+            COMMAND_USERCONF_ARENA_MISSING_DM: "Fehlende Option. Versuche all/primary/off.",
+            COMMAND_USERCONF_ARENA_INVALID_DM: "Ungueltige Option. Versuche all/primary/off.",
+            COMMAND_USERCONF_ARENA_MISSING_ARENA: "Fehlende arena, Du musst eine der folgenden waehlen: `char, fleet, both`",
+            COMMAND_USERCONF_ARENA_INVALID_ARENA: "Ungueltige arena, Du musst eine der folgenden waehlen: `char, fleet, both`",
+            COMMAND_USERCONF_ARENA_MISSING_WARNING: "Fehlende Nummer, Versuche `0` um zu deaktivieren, oder eine Anzahl von Minuten bevor die Warnung erscheinen soll.",
+            COMMAND_USERCONF_ARENA_INVALID_WARNING: "Ungueltige Nummer, Versuche `0` um zu deaktivieren, oder eine Anzahl von Minuten bevor die Warnung erscheinen soll.",
+            COMMAND_USERCONF_ARENA_INVALID_NUMBER: "Ungueltige Nummer, deine Nummer muss zwischen 0 (deaktiviert), und 1440 (ein Tag) sein.",
+            COMMAND_USERCONF_ARENA_INVALID_OPTION: "Versuche eine der folgenden: `enableDMs, arena, payoutResult, payoutWarning`",
+            COMMAND_USERCONF_ARENA_INVALID_BOOL: "Ungueltige Option. Versuche `yes/no`, `true/false` oder `on/off`",
+            COMMAND_USERCONF_ARENA_UPDATED: "Deine Einstellungen wurden aktualisiert.",
+            COMMAND_USERCONF_HELP: {
+                description: "Alle Utilities um deine Informationen im Bot zu verwalten.",
                 actions: [
                     {
-                        action: "",
-                        actionDesc: "",
-                        usage: ";updateclient",
-                        args: {}
+                        action: "View",
+                        actionDesc: "Zeigt die gegenwaertigen Einstellungen an.",
+                        usage: ";userconf view",
+                        args: { }
+                    },
+                    {
+                        action: "Buendniscode",
+                        actionDesc: "Gibt die Buendniscodes zur Verwendung mit anderen Kommandos frei",
+                        usage: ";userconf allycode <add|remove|makeprimary> <Buendniscode>",
+                        args: {
+                            "add": "Fuegt einen Buendniscode dem Profil hinzu",
+                            "remove": "Entfernt einen Buendniscode von deinem Profil",
+                            "makePrimary": "Setzt den gewaehlten Buendniscode als "primaer" (derjenige der genutzt wird wenn `me` in einem befehl genutzt wird)"
+                        }
+                    },
+                    {
+                        action: "Defaults",
+                        actionDesc: "Setzt Standardwerte fuer die Kommandos",
+                        usage: ";userconf defaults <set> <commandName> <flags>\n;userconf defaults <clear> <commandName>",
+                        args: {
+                            "commandName": "Der Name (oder alias) des Kommandos fuer den du Standardwerte setzen willst.",
+                            "flags": "Eine Kennzeichnung fuer die du einen Standartwert setzen moechtest"
+                        }
+                    },
+                    {
+                        action: "Arena Alert",
+                        actionDesc: "Setzt eine Warnung als PN wenn du deinen Rang verlierst oder andere Arena-bezogenen Themen.",
+                        usage: [
+                            ";userconf arenaAlert enableDMs <all|primary|off>",
+                            ";userconf arenaAlert arena <both|fleet|char>",
+                            ";userconf arenaAlert payoutResult <on|off>",
+                            ";userconf arenaAlert payoutWarning <0-1439>"
+                        ].join("\n"),
+                        args: {
+                            "enableDMs": "Aktiviert PN Warnungen fuer den primaeren Buendniscode, alle Buendniscodes oder Keinen",
+                            "arena": "Waehle welche Arena Warnungen du sehen moechtest",
+                            "payoutResult": "Schickt eine PN mit deiner endgueltigen Arena-Platzierung",
+                            "payoutWarning": "Schickt eine PN Minuten vor deinem payout. 0 schaltet die Funktion ab."
+                        }
                     }
                 ]
             },
