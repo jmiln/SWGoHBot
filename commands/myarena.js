@@ -3,8 +3,8 @@ const {inspect} = require("util"); // eslint-disable-line no-unused-vars
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 class MyArena extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "myarena",
             category: "SWGoH",
             aliases: ["ma", "userarena", "ua"],
@@ -17,9 +17,9 @@ class MyArena extends Command {
         });
     }
 
-    async run(client, message, [user], options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [user], options) { // eslint-disable-line no-unused-vars
         const lang = message.guildSettings.swgohLanguage;
-        const allyCodes = await client.getAllyCode(message, user);
+        const allyCodes = await Bot.getAllyCode(message, user);
         if (!allyCodes.length) {
             return super.error(message, message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
         } else if (allyCodes.length > 1) {
@@ -27,10 +27,10 @@ class MyArena extends Command {
         }
         const allyCode = allyCodes[0];
 
-        const cooldown = client.getPlayerCooldown(message.author.id);
+        const cooldown = Bot.getPlayerCooldown(message.author.id);
         let player;
         try {
-            player = await client.swgohAPI.player(allyCode, lang, cooldown);
+            player = await Bot.swgohAPI.player(allyCode, lang, cooldown);
         } catch (e) {
             console.log("Broke getting player in myarena: " + e);
             return super.error(message, "Something broke, please try again in a bit");
@@ -49,7 +49,7 @@ class MyArena extends Command {
             for (let ix = 0; ix < player.arena.ship.squad.length; ix++) {
                 const ship = player.arena.ship.squad[ix];
                 let thisShip = player.roster.find(s => s.defId === ship.defId);
-                thisShip = await client.swgohAPI.langChar(thisShip, message.guildSettings.swgohLanguage);
+                thisShip = await Bot.swgohAPI.langChar(thisShip, message.guildSettings.swgohLanguage);
                 if (thisShip.name && !thisShip.nameKey) thisShip.nameKey = thisShip.name;
                 sArena.push(`\`${sPositions[ix]}\` ${thisShip.nameKey}`);
             }
@@ -66,7 +66,7 @@ class MyArena extends Command {
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
                 const char = player.arena.char.squad[ix];
                 let thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
-                thisChar = await client.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
+                thisChar = await Bot.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
                 const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
@@ -79,11 +79,11 @@ class MyArena extends Command {
         } else {
             let playerStats = null;
             try {
-                playerStats = await client.swgohAPI.unitStats(allyCode, cooldown);
+                playerStats = await Bot.swgohAPI.unitStats(allyCode, cooldown);
                 if (Array.isArray(playerStats)) playerStats = playerStats[0];
             } catch (e) {
                 console.error(e);
-                return super.error(message, client.codeBlock(e.message), {
+                return super.error(message, Bot.codeBlock(e.message), {
                     title: message.language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit."
                 });
@@ -93,7 +93,7 @@ class MyArena extends Command {
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
                 const char = player.arena.char.squad[ix];
                 let thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
-                thisChar = await client.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
+                thisChar = await Bot.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
                 const thisCharStats = playerStats.stats.find(c => c.unit.defId === char.defId);        // Get the character
                 const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
@@ -109,7 +109,7 @@ class MyArena extends Command {
                     name: cName
                 });
             }
-            desc = client.makeTable({
+            desc = Bot.makeTable({
                 pos: {value: "", startWith: "`"},
                 speed:{value:  "Spd", startWith: "[", endWith: "|"},
                 health: {value: "HP", endWith: "|"},
@@ -121,7 +121,7 @@ class MyArena extends Command {
         if (options.defaults) {
             fields.push({
                 name: "Default flags used:",
-                value: client.codeBlock(options.defaults)
+                value: Bot.codeBlock(options.defaults)
             });
         }
 
@@ -132,7 +132,7 @@ class MyArena extends Command {
             });
         }
 
-        const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+        const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
         return message.channel.send({embed: {
             author: {
                 name: message.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name)

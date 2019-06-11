@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Need extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "need",
             category: "SWGoH",
             enabled: true,
@@ -10,7 +10,7 @@ class Need extends Command {
         });
     }
 
-    async run(client, message, args, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, args, options) { // eslint-disable-line no-unused-vars
         const shardsLeftAtStar = {
             0: 330,
             1: 320,
@@ -28,8 +28,8 @@ class Need extends Command {
             return super.error(message, message.language.get("COMMAND_NEED_MISSING_USER"));
         }
 
-        const cooldown = client.getPlayerCooldown(message.author.id);
-        const player = await client.swgohAPI.player(allyCode, null, cooldown);
+        const cooldown = Bot.getPlayerCooldown(message.author.id);
+        const player = await Bot.swgohAPI.player(allyCode, null, cooldown);
         if (!player) {
             // Could not find the player, possible api issue?
             return super.error(message, "I couldn't find that player, please make sure you've got the corect ally code.");
@@ -74,14 +74,14 @@ class Need extends Command {
             }
             if (u.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[u.rarity];
-            u = await client.swgohAPI.langChar(u, message.guildSettings.swgohLanguage);
-            if (client.characters.find(c => c.uniqueName === unit.baseId)) {
+            u = await Bot.swgohAPI.langChar(u, message.guildSettings.swgohLanguage);
+            if (Bot.characters.find(c => c.uniqueName === unit.baseId)) {
                 // It's a character
                 outChars.push({
                     rarity: u.rarity,
                     name: u.nameKey
                 });
-            } else if (client.ships.find(s => s.uniqueName === unit.baseId)) {
+            } else if (Bot.ships.find(s => s.uniqueName === unit.baseId)) {
                 // It's a ship
                 outShips.push({
                     rarity: u.rarity,
@@ -98,7 +98,7 @@ class Need extends Command {
             outChars = outChars.filter(c => c.name);
             outChars = outChars.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             outChars = outChars.map(c => `\`${c.rarity}*\` ${c.rarity ? c.name : "~~" + c.name + "~~"}`);
-            const msgArr = client.msgArray(outChars, "\n", 1000);
+            const msgArr = Bot.msgArray(outChars, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix+1})`;
@@ -111,7 +111,7 @@ class Need extends Command {
         if (outShips.length) {
             outShips = outShips.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             outShips = outShips.map(s => `\`${s.rarity}*\` ${s.rarity ? s.name : "~~" + s.name + "~~"}`);
-            const msgArr = client.msgArray(outShips, "\n", 1000);
+            const msgArr = Bot.msgArray(outShips, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix+1})`;
@@ -143,13 +143,13 @@ class Need extends Command {
         }});
 
         async function getUnitsExact(searchName) {
-            let units = client.charLocs.filter(c => c.locations.filter(l => l.type === searchName).length);
-            units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type === searchName).length));
+            let units = Bot.charLocs.filter(c => c.locations.filter(l => l.type === searchName).length);
+            units = units.concat(Bot.shipLocs.filter(s => s.locations.filter(l => l.type === searchName).length));
             for (const c of units) {
                 // The char/ ship locations don't have the baseId so need to get those
-                let char = client.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                let char = Bot.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
                 if (!char) {
-                    char = client.ships.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                    char = Bot.ships.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
                 }
                 if (!char) {
                     continue;
@@ -177,14 +177,14 @@ class Need extends Command {
             const searchReg = search.split(" ").map(s => `(?=.*${s.replace(/(\(|\))/g, "\\$1")})`).join(".*");
             const query = new RegExp(`.*${searchReg}.*`, "gi");
 
-            let units = client.charLocs.filter(c => c.locations.filter(l => l.type.match(query)).length);
-            units = units.concat(client.shipLocs.filter(s => s.locations.filter(l => l.type.match(query)).length));
+            let units = Bot.charLocs.filter(c => c.locations.filter(l => l.type.match(query)).length);
+            units = units.concat(Bot.shipLocs.filter(s => s.locations.filter(l => l.type.match(query)).length));
 
             for (const c of units) {
                 // The char/ ship locations don't have the baseId so need to get those
-                let char = client.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                let char = Bot.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
                 if (!char) {
-                    char = client.ships.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                    char = Bot.ships.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
                 }
                 if (!char) {
                     continue;
@@ -194,7 +194,7 @@ class Need extends Command {
 
             if (!units.length) {
                 // Must not be in a shop or node, try checking factions
-                units = await client.cache.get(client.config.mongodb.swapidb, "units",
+                units = await Bot.cache.get(Bot.config.mongodb.swapidb, "units",
                     {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()},
                     {_id: 0, baseId: 1, nameKey: 1}
                 );

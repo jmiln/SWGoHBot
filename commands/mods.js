@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Mods extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "mods",
             aliases: ["m", "mod"],
             category: "Star Wars",
@@ -10,8 +10,8 @@ class Mods extends Command {
         });
     }
 
-    run(client, message, args) {
-        const charList = client.characters;
+    run(Bot, message, args) {
+        const charList = Bot.characters;
 
         const getLocalizedModString = function(key) {
             const localizationKeyMap = {
@@ -101,7 +101,7 @@ class Mods extends Command {
         }
 
         // Find any characters that match that
-        const chars = client.findChar(searchName, charList);
+        const chars = Bot.findChar(searchName, charList);
         if (!chars || chars.length <= 0) {
             return super.error(message, message.language.get("COMMAND_MODS_USAGE", message.guildSettings.prefix), {
                 title: message.language.get("COMMAND_MODS_INVALID_CHARACTER_HEADER"),

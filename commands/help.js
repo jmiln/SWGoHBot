@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Help extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "help",
             aliases: ["h"],
             category: "Misc",
@@ -10,25 +10,24 @@ class Help extends Command {
         });
     }
 
-    run(client, message, args, options) {
+    run(Bot, message, args, options) {
         const level = options.level;
-        const config = client.config;
 
         const help = {};
 
         if (!args[0]) { // Show the list of commands
-            const commandList = client.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
+            const commandList = Bot.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
             const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
 
-            let output = message.language.get("COMMAND_HELP_HEADER", config.prefix);
+            let output = message.language.get("COMMAND_HELP_HEADER", Bot.config.prefix);
 
             commandList.forEach(c => {
                 const cat = c.help.category.toProperCase();
                 // If the categry isn't there, then make it
                 if (!help[cat]) {
-                    help[cat] = `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language.get(`COMMAND_${c.help.name.toUpperCase()}_HELP`).description}\n`;
+                    help[cat] = `${Bot.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language.get(`COMMAND_${c.help.name.toUpperCase()}_HELP`).description}\n`;
                 } else {
-                    help[cat] += `${client.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language.get(`COMMAND_${c.help.name.toUpperCase()}_HELP`).description}\n`;
+                    help[cat] += `${Bot.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language.get(`COMMAND_${c.help.name.toUpperCase()}_HELP`).description}\n`;
                 }
             });
             const sortedCat = Object.keys(help).sort((p, c) => p > c ? 1 : -1);
@@ -38,15 +37,15 @@ class Help extends Command {
             message.channel.send(output, { code: "asciidoc", split: {maxLength: 1500, char: "\n"} });
         } else { // Show the help for a specific command
             let command;
-            if (client.commands.has(args[0])) {
-                command = client.commands.get(args[0]);
-            } else if (client.aliases.has(args[0])) {
-                command = client.commands.get(client.aliases.get(args[0]));
+            if (Bot.commands.has(args[0])) {
+                command = Bot.commands.get(args[0]);
+            } else if (Bot.aliases.has(args[0])) {
+                command = Bot.commands.get(Bot.aliases.get(args[0]));
             } else {
                 return super.error(message, message.language.get("COMMAND_RELOAD_INVALID_CMD", args[0]));
             }
-            
-            client.helpOut(message, command);
+
+            Bot.helpOut(message, command);
         }
     }
 }

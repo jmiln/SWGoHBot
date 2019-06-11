@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Character extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "character",
             description: "",
             category: "Star Wars",
@@ -11,15 +11,15 @@ class Character extends Command {
         });
     }
 
-    async run(client, message, args) {
-        const charList = client.characters;
+    async run(Bot, message, args) {
+        const charList = Bot.characters;
 
         const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
 
-        const zeta = client.emotes["zetaMat"];
-        const omega = client.emotes["omegaMat"];
-        const abilityMatMK3 = client.emotes["abilityMatMK3"];
+        const zeta = Bot.emotes["zetaMat"];
+        const omega = Bot.emotes["omegaMat"];
+        const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
 
         // Make sure they gave a character to find
         if (searchName === "") {
@@ -32,7 +32,7 @@ class Character extends Command {
         }
 
         // Find any characters that match that
-        const chars = client.findChar(searchName, charList);
+        const chars = Bot.findChar(searchName, charList);
         if (chars.length <= 0) {
             const err = message.language.get("COMMAND_CHARACTER_INVALID_CHARACTER", message.guildSettings.prefix);
             if (err.indexOf("\n") > -1) {
@@ -51,7 +51,7 @@ class Character extends Command {
 
         const character = chars[0];
 
-        const char = await client.swgohAPI.getCharacter(character.uniqueName, message.guildSettings.swgohLanguage);
+        const char = await Bot.swgohAPI.getCharacter(character.uniqueName, message.guildSettings.swgohLanguage);
 
         const fields = [];
 
@@ -93,7 +93,7 @@ class Character extends Command {
                 cooldownString = message.language.get("COMMAND_CHARACTER_COOLDOWN", ability.cooldown);
             }
 
-            const msgArr = client.msgArray(client.expandSpaces(message.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
+            const msgArr = Bot.msgArray(Bot.expandSpaces(message.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
 
             msgArr.forEach((m, ix) => {
                 if (ix === 0) {

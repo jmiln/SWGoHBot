@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Farm extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "farm",
             category: "SWGoH",
             aliases: [],
@@ -15,15 +15,15 @@ class Farm extends Command {
         });
     }
 
-    async run(client, message, [...searchChar], options) {
+    async run(Bot, message, [...searchChar], options) {
 
         if (!searchChar || !searchChar.length) return super.error(message, message.language.get("COMMAND_FARM_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FARM_MISSING_CHARACTER"), example: "farm bb8"});
         searchChar = searchChar.join(" ");
         let chars;
         if (options.flags.ships) {
-            chars = client.findChar(searchChar, client.ships, true);
+            chars = Bot.findChar(searchChar, Bot.ships, true);
         } else {
-            chars = client.findChar(searchChar, client.characters);
+            chars = Bot.findChar(searchChar, Bot.characters);
         }
         let character;
         if (!chars.length) {
@@ -36,32 +36,32 @@ class Farm extends Command {
             character = chars[0];
         }
 
-        const unit = await client.swgohAPI.units(character.uniqueName, message.swgohLanguage);
+        const unit = await Bot.swgohAPI.units(character.uniqueName, message.swgohLanguage);
         if (!unit) {
             return super.error(message, "Broke trying to get the unit.");
-        } 
-        const recipe = await client.swgohAPI.recipes(unit.creationRecipeReference, message.swgohLanguage);
+        }
+        const recipe = await Bot.swgohAPI.recipes(unit.creationRecipeReference, message.swgohLanguage);
         if (!recipe) {
             return super.error(message, "Broke trying to get the recipe.");
-        } 
+        }
         const mat = recipe[0].ingredientsList.find(i => i.id.startsWith("unitshard"));
-        const material = await client.swgohAPI.materials(mat.id, message.swgohLanguage);
+        const material = await Bot.swgohAPI.materials(mat.id, message.swgohLanguage);
         if (!material) {
             return super.error(message, "Broke trying to get the unit.");
         }
-        
+
         const eventChars = message.language.get("COMMAND_FARM_EVENT_CHARS");
         let outList = [];
         if (Object.keys(eventChars).includes(character.uniqueName)) {
             outList.push(eventChars[character.uniqueName]);
-        } 
+        }
         const lookupList = material[0].lookupMissionList.filter(m => m.missionIdentifier.campaignId !== "EVENTS");
         const raidLookupList = material[0].raidLookupList;
         for (const mis of lookupList) {
             let out = "";
             const mission = mis.missionIdentifier;
             if (mission.campaignMapId === "PRELUDE") continue;
-            const battle = await client.swgohAPI.battles(mission.campaignId);
+            const battle = await Bot.swgohAPI.battles(mission.campaignId);
             const found = battle[0].campaignMapList.find(c => c.id === mission.campaignMapId);
             out += parseInt(found.id.replace(/[^\d]/g, ""));
             let tier;
@@ -82,8 +82,8 @@ class Farm extends Command {
             } else if (tier.forceAlignment === "NEUTRAL") {
                 out = message.language.get("COMMAND_FARM_CANTINA") + out;
             }
-            const letter = client.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty][mission.campaignMissionId];
-            const nodeCost = client.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty]["COST"];
+            const letter = Bot.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty][mission.campaignMissionId];
+            const nodeCost = Bot.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty]["COST"];
             out += letter + " - " + nodeCost + message.language.get("COMMAND_FARM_ENERGY_PER");
             outList.push(out);
         }
@@ -92,7 +92,7 @@ class Farm extends Command {
             for (const mis of raidLookupList) {
                 let out = "";
                 const mission = mis.missionIdentifier;
-                const battle = await client.swgohAPI.battles(mission.campaignId);
+                const battle = await Bot.swgohAPI.battles(mission.campaignId);
                 const found = battle[0].campaignMapList.find(c => c.id === mission.campaignMapId);
                 let tier;
                 found.difficultyList.forEach(d => {
@@ -113,7 +113,7 @@ class Farm extends Command {
         }
 
         if (options.flags.ships) {
-            const ship = client.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
+            const ship = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
             if (ship) {
                 const shopLoc = ship.locations.filter(l => l.cost);
                 if (shopLoc.length) {
@@ -121,22 +121,22 @@ class Farm extends Command {
                 }
             }
         } else {
-            const char = client.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
+            const char = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
             if (char) {
                 const shopLoc = char.locations.filter(l => l.cost);
                 if (shopLoc.length) {
                     outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
                 }
-            } 
+            }
         }
         if (!outList.length) {
             return super.error(message, message.language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
-        } 
+        }
         const fields = [];
         if (options.defaults) {
             fields.push({
                 name: "Default flags used:",
-                value: client.codeBlock(options.defaults)
+                value: Bot.codeBlock(options.defaults)
             });
         }
         return message.channel.send({embed: {

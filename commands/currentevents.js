@@ -1,10 +1,10 @@
 const Command = require("../base/Command");
 const moment = require("moment");
 
-// To get the dates of any upcoming events if any (Adapted from shittybill#3024's Scorpio) 
+// To get the dates of any upcoming events if any (Adapted from shittybill#3024's Scorpio)
 class CurrentEvents extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "currentevents",
             // enabled: false,
             category: "SWGoH",
@@ -21,7 +21,7 @@ class CurrentEvents extends Command {
         });
     }
 
-    async run(client, message, [num], options) {
+    async run(Bot, message, [num], options) {
         const FLEET_CHALLENGES = ["shipevent_PRELUDE_ACKBAR", "shipevent_PRELUDE_MACEWINDU", "shipevent_PRELUDE_TARKIN", "shipevent_SC01UPGRADE", "shipevent_SC02TRAINING", "shipevent_SC03TRAINING", "shipevent_SC03ABILITY"];
         const MOD_CHALLENGES = ["restrictedmodbattle_set_1", "restrictedmodbattle_set_2", "restrictedmodbattle_set_3", "restrictedmodbattle_set_4", "restrictedmodbattle_set_5", "restrictedmodbattle_set_6", "restrictedmodbattle_set_7", "restrictedmodbattle_set_8"];
         const DAILY_CHALLENGES = ["challenge_XP", "challenge_CREDIT", "challenge_ABILITYUPGRADEMATERIALS", "challenge_EQUIPMENT_AGILITY", "challenge_EQUIPMENT_INTELLIGENCE", "challenge_EQUIPMENT_STRENGTH"];
@@ -31,10 +31,10 @@ class CurrentEvents extends Command {
 
         const DEF_NUM = 10;
         const lang = message.guildSettings.swgohLanguage;
-    
+
         let gohEvents = null;
         try {
-            gohEvents = await client.swgohAPI.events(lang);
+            gohEvents = await Bot.swgohAPI.events(lang);
             gohEvents = gohEvents.events;
         } catch (e) {
             console.error(e);
@@ -93,7 +93,7 @@ class CurrentEvents extends Command {
                 }
             }
 
-            // Filter out event dates from the past 
+            // Filter out event dates from the past
             event.schedule = event.instanceList.filter(p => {
                 if (!moment().isBefore(moment(p.endTime))) return false;
                 return true;
@@ -143,12 +143,12 @@ class CurrentEvents extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             return message.channel.send({embed: {
                 author: {
-                    name: message.language.get("COMMAND_CURRENTEVENTS_HEADER") 
+                    name: message.language.get("COMMAND_CURRENTEVENTS_HEADER")
                 },
                 color: 0x0f0f0f,
                 description: message.language.get("COMMAND_CURRENTEVENTS_DESC", count),
@@ -158,12 +158,12 @@ class CurrentEvents extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             return message.channel.send({embed: {
                 author: {
-                    name: message.language.get("COMMAND_CURRENTEVENTS_HEADER") 
+                    name: message.language.get("COMMAND_CURRENTEVENTS_HEADER")
                 },
                 color: 0x0f0f0f,
                 description: message.language.get("COMMAND_CURRENTEVENTS_DESC", count) + "\n" + desc + "\n`------------------------------`",

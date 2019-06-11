@@ -1,14 +1,14 @@
 const Command = require("../base/Command");
 
 class Modsets extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "modsets",
             category: "Star Wars"
         });
     }
 
-    run(client, message) {
+    run(Bot, message) {
         message.channel.send(message.language.get("COMMAND_MODSETS_OUTPUT"), {code: "md"});
     }
 }

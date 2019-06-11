@@ -5,15 +5,15 @@
 const Command = require("../base/Command");
 
 class Arenarank extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "arenarank",
             category: "Star Wars",
             aliases: ["arena"]
         });
     }
 
-    run(client, message, args) {
+    run(Bot, message, args) {
         const currentRank = parseInt(args[0]);
         const rankHops = parseInt(args[1]) || 5;
         if (isNaN(currentRank) || !currentRank) {
@@ -26,7 +26,7 @@ class Arenarank extends Command {
 
         // Mark em as estimates if needed
         let est = false;
-        if (!client.arenaJumps[currentRank.toString()]) est = true;
+        if (!Bot.arenaJumps[currentRank.toString()]) est = true;
 
 
         // Loop through findRank up to 5 times, breaking if it returns 1
@@ -37,17 +37,17 @@ class Arenarank extends Command {
             if (newRank === 1) break;
         }
 
-        return message.channel.send(message.language.get("COMMAND_ARENARANK_RANKLIST", currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? "s" : "", est ? "**(estimate)**" : "", arenaBattles.join(" → "))); 
+        return message.channel.send(message.language.get("COMMAND_ARENARANK_RANKLIST", currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? "s" : "", est ? "**(estimate)**" : "", arenaBattles.join(" → ")));
 
 
         function findNextRank(currentRank) {
-            if (client.arenaJumps.hasOwnProperty(currentRank)) {
-                return client.arenaJumps[currentRank.toString()];
+            if (Bot.arenaJumps.hasOwnProperty(currentRank)) {
+                return Bot.arenaJumps[currentRank.toString()];
             } else {
                 return Math.floor(currentRank * 0.85);
             }
         }
-    }    
+    }
 }
 
 module.exports = Arenarank;

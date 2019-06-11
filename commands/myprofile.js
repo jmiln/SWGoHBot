@@ -3,8 +3,8 @@ const Command = require("../base/Command");
 // const {inspect} = require("util");
 
 class MyProfile extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "myprofile",
             category: "SWGoH",
             aliases: ["mp", "userprofile", "up"],
@@ -12,9 +12,9 @@ class MyProfile extends Command {
         });
     }
 
-    async run(client, message, [user], level) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [user], level) { // eslint-disable-line no-unused-vars
         // const lang = message.guildSettings.swgoghLanguage;
-        const allyCodes = await client.getAllyCode(message, user);
+        const allyCodes = await Bot.getAllyCode(message, user);
         if (!allyCodes.length) {
             return super.error(message, message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
         } else if (allyCodes.length > 1) {
@@ -22,10 +22,10 @@ class MyProfile extends Command {
         }
         const allyCode = allyCodes[0];
 
-        const cooldown = client.getPlayerCooldown(message.author.id);
+        const cooldown = Bot.getPlayerCooldown(message.author.id);
         let player;
         try {
-            player = await client.swgohAPI.player(allyCode, null, cooldown);
+            player = await Bot.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log("Broke getting player in myprofile: " + e);
             return super.error(message, "Please make sure you are registered with a valid ally code");
@@ -135,7 +135,7 @@ class MyProfile extends Command {
             });
         }
 
-        const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+        const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
         return message.channel.send({embed: {
             author: {
                 name: message.language.get("COMMAND_MYPROFILE_EMBED_HEADER", player.name, player.allyCode),

@@ -2,8 +2,8 @@ const Command = require("../base/Command");
 // const {inspect} = require('util');
 
 class GuildSearch extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "guildsearch",
             category: "SWGoH",
             aliases: ["search", "gs"],
@@ -42,7 +42,7 @@ class GuildSearch extends Command {
         });
     }
 
-    async run(client, message, args, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, args, options) { // eslint-disable-line no-unused-vars
         let starLvl = 0;
         const reverse = options.flags.reverse;
         const rarityMap = {
@@ -87,7 +87,7 @@ class GuildSearch extends Command {
                 return super.error(message, "Missing character to search for.", {example: "guildsearch c3po\n;guildsearch falcon -s"});
             }
 
-            const chars = !options.flags.ships ? client.findChar(searchChar, client.characters) : client.findChar(searchChar, client.ships, true);
+            const chars = !options.flags.ships ? Bot.findChar(searchChar, Bot.characters) : Bot.findChar(searchChar, Bot.ships, true);
 
             if (chars.length === 0) {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar), {example: "guildsearch c3po\n;guildsearch falcon -s"});
@@ -117,18 +117,18 @@ class GuildSearch extends Command {
         const checkArr = ["ships", "mods", "stat", "gear"];
         const checkRes = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes(k) ? options.subArgs[k] : null));
         if (checkRes.filter(c => c).length > 1) {
-            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", client.codeBlock(checkArr.map(c => "-" + c).join("\n"))));
+            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", Bot.codeBlock(checkArr.map(c => "-" + c).join("\n"))));
         }
         // Then check with stars instead of ships since those work together
         const checkArr2 = ["stars", "mods", "stat", "gear"];
         const checkRes2 = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes(k) ? options.subArgs[k] : null));
         if (checkRes2.filter(c => c).length > 1) {
-            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", client.codeBlock(checkArr2.map(c => "-" + c).join("\n"))));
+            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", Bot.codeBlock(checkArr2.map(c => "-" + c).join("\n"))));
         }
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
 
-        const cooldown = client.getPlayerCooldown(message.author.id);
+        const cooldown = Bot.getPlayerCooldown(message.author.id);
 
         if (options.flags.gear) {
             // List an overview of the guild's upper geared characters
@@ -141,12 +141,12 @@ class GuildSearch extends Command {
             }
             let guild = null;
             try {
-                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: { name: "Something Broke getting your guild's roster" },
-                    description: client.codeBlock(e) + "Please try again in a bit."
+                    description: Bot.codeBlock(e) + "Please try again in a bit."
                 }});
             }
             let gRoster;
@@ -168,12 +168,12 @@ class GuildSearch extends Command {
             }
             let guildGG;
             try {
-                guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+                guildGG = await Bot.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS_GEAR) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
                 console.log("GuildID: " + guild.id);
-                return super.error(msg, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
+                return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
             const starOut = {};
 
@@ -215,7 +215,7 @@ class GuildSearch extends Command {
                     tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             }
 
-            const tableOut = client.makeTable({
+            const tableOut = Bot.makeTable({
                 nine:   {value: "g9", startWith: "`[", endWith: "|",  align: "right"},
                 ten:    {value: "g10",                 endWith: "|",  align: "right"},
                 eleven: {value: "g11",                 endWith: "|",  align: "right"},
@@ -223,7 +223,7 @@ class GuildSearch extends Command {
                 name:   {value: "",                                   align: "left"}
             }, tableIn);
 
-            const outMsgArr = client.msgArray(tableOut, "\n", 700);
+            const outMsgArr = Bot.msgArray(tableOut, "\n", 700);
             const fields = [];
             outMsgArr.forEach(m => {
                 fields.push({
@@ -235,11 +235,11 @@ class GuildSearch extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
 
-            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: `${guild.name} ${message.language.get("COMMAND_GUILDSEARCH_GEAR_SUM")}`
@@ -258,12 +258,12 @@ class GuildSearch extends Command {
             }
             let guild = null;
             try {
-                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: { name: "Something Broke getting your guild's roster" },
-                    description: client.codeBlock(e) + "Please try again in a bit."
+                    description: Bot.codeBlock(e) + "Please try again in a bit."
                 }});
             }
             let gRoster;
@@ -285,12 +285,12 @@ class GuildSearch extends Command {
             }
             let guildGG;
             try {
-                guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+                guildGG = await Bot.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
                 console.log("GuildID: " + guild.id);
-                return super.error(msg, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
+                return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
             const starOut = {};
             for (const char of Object.keys(guildGG.roster)) {
@@ -336,7 +336,7 @@ class GuildSearch extends Command {
                     tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             }
 
-            const tableOut = client.makeTable({
+            const tableOut = Bot.makeTable({
                 four:  {value: "4*", startWith: "`[", endWith: "|", align: "right"},
                 five:  {value: "5*", endWith: "|", align: "right"},
                 six:   {value: "6*", endWith: "|", align: "right"},
@@ -344,7 +344,7 @@ class GuildSearch extends Command {
                 name:  {value: "", align: "left"}
             }, tableIn);
 
-            const outMsgArr = client.msgArray(tableOut, "\n", 700);
+            const outMsgArr = Bot.msgArray(tableOut, "\n", 700);
             const fields = [];
             outMsgArr.forEach(m => {
                 fields.push({
@@ -356,11 +356,11 @@ class GuildSearch extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
 
-            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             const header = options.flags.ships ? message.language.get("COMMAND_GUILDSEARCH_SHIP_STAR_SUM") : message.language.get("COMMAND_GUILDSEARCH_CHAR_STAR_SUM");
             return msg.edit({embed: {
                 author: {
@@ -446,15 +446,15 @@ class GuildSearch extends Command {
             }
 
             if (!found) {
-                return super.error(msg, "Not an acceptable stat to sort by. Try one of the following:" + client.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")), {edit: true, example: "guildsearch c3po -sort gp"});
+                return super.error(msg, "Not an acceptable stat to sort by. Try one of the following:" + Bot.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")), {edit: true, example: "guildsearch c3po -sort gp"});
             }
 
             let guild = null;
             try {
-                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
-                return super.error(msg, client.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
+                return super.error(msg, Bot.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
             }
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
@@ -467,7 +467,7 @@ class GuildSearch extends Command {
             if (!gRoster.length) {
                 return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
             }
-            const gStats = await client.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
+            const gStats = await Bot.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
 
             const sortedMembers = gStats.sort((a, b) => a.stats[sortBy].final < b.stats[sortBy].final ? 1 : -1);
 
@@ -501,10 +501,10 @@ class GuildSearch extends Command {
                 header[sortBy] = {value: checkableStats[sortBy].short, endWith: "]`", align: "right"};
                 header.player = {value:"", align: "left"};
 
-                const outTable = client.makeTable(header, outArr);
+                const outTable = Bot.makeTable(header, outArr);
 
                 if (outTable.length) {
-                    const outMsgArr = client.msgArray(outTable, "\n", 700);
+                    const outMsgArr = Bot.msgArray(outTable, "\n", 700);
                     outMsgArr.forEach((m, ix) => {
                         const name = (ix === 0) ? message.language.get("COMMAND_GUILDSEARCH_SORTED_BY", character.name, sortBy) : message.language.get("BASE_CONT_STRING");
                         fields.push({
@@ -522,11 +522,11 @@ class GuildSearch extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
 
-            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: guild.name
@@ -543,10 +543,10 @@ class GuildSearch extends Command {
             }
             let guild = null;
             try {
-                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
-                return super.error(message, client.codeBlock(e), {title: "Something Broke while getting your guild's roster", footer: "Please try again later"});
+                return super.error(message, Bot.codeBlock(e), {title: "Something Broke while getting your guild's roster", footer: "Please try again later"});
             }
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
@@ -563,7 +563,7 @@ class GuildSearch extends Command {
             let output = [];
             for (let player of gRoster) {
                 try {
-                    player = await client.swgohAPI.player(player);
+                    player = await Bot.swgohAPI.player(player);
                 } catch (e) {
                     return super.error(message, e.message);
                 }
@@ -616,22 +616,22 @@ class GuildSearch extends Command {
                 }
             }
 
-            const table = client.makeTable({
+            const table = Bot.makeTable({
                 sixPip:{value: "6*", startWith: "`"},
                 spd15: {value: "15+"},
                 spd20: {value: "20+"},
                 off100:{value: "100+", endWith: "`"},
                 name:  {value: "", align: "left"}
             }, output);
-            const header = [client.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
+            const header = [Bot.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
 
-            const fields = client.msgArray(header.concat(table), "\n", 700).map(m => {
+            const fields = Bot.msgArray(header.concat(table), "\n", 700).map(m => {
                 return {name: "-", value: m};
             });
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
 
@@ -647,14 +647,14 @@ class GuildSearch extends Command {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
             }
             try {
-                guild = await client.swgohAPI.guild(allyCode, null, cooldown);
+                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: {
                         name: "Something Broke getting your guild's roster"
                     },
-                    description: client.codeBlock(e) + "Please try again in a bit."
+                    description: Bot.codeBlock(e) + "Please try again in a bit."
                 }});
             }
             let gRoster;
@@ -676,12 +676,12 @@ class GuildSearch extends Command {
             }
             let guildGG;
             try {
-                guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+                guildGG = await Bot.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
                 console.log("GuildID: " + guild.id);
-                return super.error(msg, client.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
+                return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
 
             // Get the list of people with that character
@@ -702,7 +702,7 @@ class GuildSearch extends Command {
                 }
                 return super.error(msg, desc, {
                     title: message.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name),
-                    footer: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(guild.updated, message)),
+                    footer: message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(guild.updated, message)),
                     edit: true
                 });
             }
@@ -733,7 +733,7 @@ class GuildSearch extends Command {
             // Can get the order from abilities table => skillReferenceList
             let maxZ = 0;
             const zetas = [];
-            const apiChar = await client.swgohAPI.getCharacter(character.uniqueName);
+            const apiChar = await Bot.swgohAPI.getCharacter(character.uniqueName);
             for (const ab of apiChar.skillReferenceList) {
                 if (ab.cost && ab.cost.AbilityMatZeta > 0) {
                     maxZ = maxZ + 1;
@@ -805,7 +805,7 @@ class GuildSearch extends Command {
                     uStr = member.player;
                 }
 
-                uStr = client.expandSpaces(uStr);
+                uStr = Bot.expandSpaces(uStr);
 
                 if (!charOut[member.starLevel]) {
                     charOut[member.starLevel] = [uStr];
@@ -829,7 +829,7 @@ class GuildSearch extends Command {
 
             outArr.forEach(star => {
                 if (star >= starLvl) {
-                    const msgArr = client.msgArray(charOut[star], "\n", 700);
+                    const msgArr = Bot.msgArray(charOut[star], "\n", 700);
                     msgArr.forEach((msg, ix) => {
                         const name = star === 0 ? message.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length) : message.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
                         fields.push({
@@ -842,7 +842,7 @@ class GuildSearch extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             if (guild.warnings) {
@@ -872,7 +872,7 @@ class GuildSearch extends Command {
                 }
             });
 
-            const footer = client.updatedFooter(guildGG.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guildGG.updated, message, "guild", cooldown);
             try {
                 msg.edit({embed: {
                     author: {
@@ -882,7 +882,7 @@ class GuildSearch extends Command {
                     footer: footer
                 }});
             } catch (e) {
-                client.log("ERR", e);
+                Bot.log("ERR", e);
                 console.log(fields);
             }
         }

@@ -1,4 +1,4 @@
-module.exports = async (message) => {
+module.exports = async (Bot, message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
     if (message.author.bot) return;
@@ -10,9 +10,9 @@ module.exports = async (message) => {
     // If there is no guild, get default conf (DMs)
     let guildSettings;
     if (!message.guild) {
-        guildSettings = message.client.config.defaultSettings;
+        guildSettings = Bot.config.defaultSettings;
     } else {
-        guildSettings = await message.client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(message.client.config.defaultSettings)});
+        guildSettings = await Bot.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(Bot.config.defaultSettings)});
         guildSettings = guildSettings.dataValues;
     }
 
@@ -21,7 +21,7 @@ module.exports = async (message) => {
     message.guildSettings = guildSettings;
 
     // Load the language file for whatever language they have set
-    message.language = message.client.languages[guildSettings.language] || message.client.languages["en_US"];
+    message.language = Bot.languages[guildSettings.language] || Bot.languages["en_US"];
 
     // If the message is just mentioning the bot, tell them what the prefix is
     if (message.content === message.client.user.toString() || (message.guild && typeof message.guild.me !== "undefined" && message.content === message.guild.me.toString())) {
@@ -46,7 +46,7 @@ module.exports = async (message) => {
     const command = args.shift().slice(prefix.length).toLowerCase();
 
     // Get the user or member's permission level from the elevation
-    const level = message.client.permlevel(message);
+    const level = Bot.permlevel(message);
 
     // Check whether the command, or alias, exist in the collections defined in swgohbot.js.
     const cmd = message.client.commands.get(command) || message.client.commands.get(message.client.aliases.get(command));
@@ -84,7 +84,7 @@ module.exports = async (message) => {
 
         const noFlags = Object.keys(flagArgs.flags).every(f => !flagArgs.flags[f]);
         const noSubArgs = Object.keys(flagArgs.subArgs).every(s => flagArgs.subArgs[s] === null);
-        const user = await message.client.userReg.getUser(message.author.id);
+        const user = await Bot.userReg.getUser(message.author.id);
         let def = null;
         if (noFlags && noSubArgs && user) {
             if (user.defaults[cmd.help.name]) {
@@ -105,22 +105,22 @@ module.exports = async (message) => {
 
         // If they're just looking for the help, don't bother going through the command
         if (args.length === 1 && args[0].toLowerCase() === "help") {
-            message.client.helpOut(message, cmd);
+            Bot.helpOut(message, cmd);
         } else {
             try {
-                // message.client.log("CMD", message.content, "Log", null, null, {noSend: true});
-                cmd.run(message.client, message, args, {
+                // Bot.log("CMD", message.content, "Log", null, null, {noSend: true});
+                cmd.run(Bot, message, args, {
                     level: level,
                     flags: flagArgs.flags,
                     subArgs: flagArgs.subArgs,
                     defaults: def
                 });
             } catch (err) {
-                message.client.log("ERROR(msg)", `I broke with ${cmd.help.name}: ${err}`, cmd.help.name.toProperCase());
+                Bot.log("ERROR(msg)", `I broke with ${cmd.help.name}: ${err}`, cmd.help.name.toProperCase());
             }
         }
-        if (message.client.config.logs.logComs) {
-            message.client.database.models.commands.create({
+        if (Bot.config.logs.logComs) {
+            Bot.database.models.commands.create({
                 id: `${cmd.help.name}-${message.author.id}-${message.id}`,
                 commandText: args.join(" ")
             });

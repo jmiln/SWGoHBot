@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class CommandName extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "grandarena",
             category: "SWGoH",
             enabled: true,
@@ -16,7 +16,7 @@ class CommandName extends Command {
         });
     }
 
-    async run(client, message, [user1, user2, ...characters], options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [user1, user2, ...characters], options) { // eslint-disable-line no-unused-vars
         const problemArr = [];
         user1 = await super.getUser(message, user1, false);
         user2 = await super.getUser(message, user2, false);
@@ -27,9 +27,9 @@ class CommandName extends Command {
         if (characters.length) {
             characters = characters.join(" ").split("|").map(c => c.trim());
             for (const ix in characters) {
-                let chars = client.findChar(characters[ix], client.characters);
+                let chars = Bot.findChar(characters[ix], Bot.characters);
                 if (!chars.length) {
-                    chars = client.findChar(characters[ix], client.ships, true);
+                    chars = Bot.findChar(characters[ix], Bot.ships, true);
                 }
                 if (!chars.length) {
                     problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_CHAR", characters[ix]));
@@ -44,15 +44,15 @@ class CommandName extends Command {
 
         if (!problemArr.length) {
             // If there are no problems, go ahead and pull the users
-            const cooldown = client.getPlayerCooldown(message.author.id);
+            const cooldown = Bot.getPlayerCooldown(message.author.id);
             try {
-                user1 = await client.swgohAPI.unitStats(user1, cooldown);
+                user1 = await Bot.swgohAPI.unitStats(user1, cooldown);
                 if (Array.isArray(user1)) user1 = user1[0];
             } catch (e) {
                 problemArr.push(e.message);
             }
             try {
-                user2 = await client.swgohAPI.unitStats(user2, cooldown);
+                user2 = await Bot.swgohAPI.unitStats(user2, cooldown);
                 if (Array.isArray(user2)) user2 = user2[0];
             } catch (e) {
                 problemArr.push(e.message);
@@ -96,13 +96,13 @@ class CommandName extends Command {
                 ];
 
                 if (options.subArgs.faction) {
-                    const fact = client.findFaction(options.subArgs.faction);
+                    const fact = Bot.findFaction(options.subArgs.faction);
                     if (Array.isArray(fact)) {
                         fact.forEach(f => {
-                            charOut = charOut.concat(client.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === f)).map(c => c.uniqueName));
+                            charOut = charOut.concat(Bot.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === f)).map(c => c.uniqueName));
                         });
                     } else if (fact) {
-                        charOut = charOut.concat(client.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === fact)).map(c => c.uniqueName));
+                        charOut = charOut.concat(Bot.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === fact)).map(c => c.uniqueName));
                     } else {
                         return super.error(message, "Sorry, but I did not find a match for the faction: `" + options.subArgs.faction + "`");
                     }
@@ -113,8 +113,8 @@ class CommandName extends Command {
                 }
 
                 let overview = [];
-                const charList = client.characters.map(c => c.uniqueName);
-                const shipList = client.ships.map(s => s.uniqueName);
+                const charList = Bot.characters.map(c => c.uniqueName);
+                const shipList = Bot.ships.map(s => s.uniqueName);
 
                 overview.push({
                     check: labels.charGP,
@@ -168,7 +168,7 @@ class CommandName extends Command {
                     user2: user2.stats.filter(c => c.unit.gear === 12).length
                 });
 
-                overview = client.codeBlock(client.makeTable({
+                overview = Bot.codeBlock(Bot.makeTable({
                     check: {value: "", align: "left", endWith: "::"},
                     user1: {value: "", endWith: "vs", align: "right"},
                     user2: {value: "", align: "left"}
@@ -251,7 +251,7 @@ class CommandName extends Command {
                     user2: u2Mods.off100
                 });
 
-                modOverview = client.codeBlock(client.makeTable({
+                modOverview = Bot.codeBlock(Bot.makeTable({
                     check: {value: "", align: "left", endWith: "::"},
                     user1: {value: "", endWith: "vs", align: "right"},
                     user2: {value: "", align: "left"}
@@ -261,13 +261,13 @@ class CommandName extends Command {
                 for (const char of charArr) {
                     const user1Char = user1.stats.find(c => c.unit.defId === char);
                     const user2Char = user2.stats.find(c => c.unit.defId === char);
-                    let cName = client.characters.find(c => c.uniqueName === char);
+                    let cName = Bot.characters.find(c => c.uniqueName === char);
                     let ship = false;
 
                     if (!cName) {
                         // See if you can get it from the ships
-                        if (client.ships.find(s => s.uniqueName === char)) {
-                            cName = client.ships.find(s => s.uniqueName === char).name;
+                        if (Bot.ships.find(s => s.uniqueName === char)) {
+                            cName = Bot.ships.find(s => s.uniqueName === char).name;
                             ship = true;
                         } else {
                             continue;
@@ -318,7 +318,7 @@ class CommandName extends Command {
                         if (halfLen < 0) halfLen = 0;
                         fields.push({
                             name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
-                            value: client.codeBlock(client.makeTable({
+                            value: Bot.codeBlock(Bot.makeTable({
                                 check: {value: "", align: "left", endWith: "::"},
                                 user1: {value: "", endWith: "vs", align: "right"},
                                 user2: {value: "", align: "left"}
@@ -336,7 +336,7 @@ class CommandName extends Command {
                     });
                 }
 
-                const footer = client.updatedFooter(Math.min(user1.updated, user2.updated), message, "player", cooldown);
+                const footer = Bot.updatedFooter(Math.min(user1.updated, user2.updated), message, "player", cooldown);
                 return message.channel.send({embed: {
                     author: {name: message.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name)},
                     description: message.language.get("COMMAND_GRANDARENA_OUT_DESC", overview, modOverview),
@@ -347,7 +347,7 @@ class CommandName extends Command {
         }
         if (problemArr.length) {
             // Otherwise, spit out the list of issues
-            return super.error(message, client.codeBlock(problemArr.map(p => "* " + p).join("\n")));
+            return super.error(message, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
         }
     }
 }

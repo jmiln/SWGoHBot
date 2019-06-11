@@ -2,8 +2,8 @@ const Command = require("../base/Command");
 const { version } = require("discord.js");
 
 class Info extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             aliases: ["invite", "inv"],
             name: "info",
             category: "Misc",
@@ -11,9 +11,9 @@ class Info extends Command {
         });
     }
 
-    async run(client, message) {
-        const guilds = await client.guildCount();
-        const users = await client.userCount();
+    async run(Bot, message) {
+        const guilds = await Bot.guildCount();
+        const users = await Bot.userCount();
         const content = message.language.get("COMMAND_INFO_OUTPUT");
         const fields = [];
         let desc = content.statHeader + "\n";
@@ -24,22 +24,22 @@ class Info extends Command {
             { title: content.nodeVer, content: process.version },
             { title: content.discordVer, content: "v" + version }
         ];
-        desc += client.makeTable({
+        desc += Bot.makeTable({
             title:   {value: "", align: "left", endWith: "::"},
             content: {value: "", align: "left"}
         }, statTable, {useHeader: false}).join("\n");
 
         desc += `\n\n${content.swgohHeader}\n`;
         const swgohTable = [
-            { title: content.players, content: client.swgohPlayerCount },
-            { title: content.guilds, content: client.swgohGuildCount },
-            { title: content.lang, content: client.swgohLangList.length }
+            { title: content.players, content: Bot.swgohPlayerCount },
+            { title: content.guilds, content: Bot.swgohGuildCount },
+            { title: content.lang, content: Bot.swgohLangList.length }
         ];
-        desc += client.makeTable({
+        desc += Bot.makeTable({
             title:   {value: "", align: "left", endWith: "::"},
             content: {value: "", align: "left"}
         }, swgohTable, {useHeader: false}).join("\n");
-        
+
         Object.keys(content.links).forEach(link => {
             fields.push({
                 name: link,
@@ -51,7 +51,7 @@ class Info extends Command {
             author: {
                 name: content.header
             },
-            description: client.codeBlock(desc, "asciidoc"),
+            description: Bot.codeBlock(desc, "asciidoc"),
             fields: fields,
             color: Math.floor(Math.random()*16777215)
         }});

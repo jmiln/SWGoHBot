@@ -4,8 +4,8 @@ require("moment-duration-format");
 const Command = require("../base/Command");
 
 class Shardtimes extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "shardtimes",
             aliases: ["shard", "st", "payout", "po"],
             guildOnly: true,
@@ -24,24 +24,24 @@ class Shardtimes extends Command {
         });
     }
 
-    async run(client, message, [action, userID, timezone, ...flag], options) {
+    async run(Bot, message, [action, userID, timezone, ...flag], options) {
         const level = options.level;
         // Shard ID will be guild.id-channel.id
         const shardID = `${message.guild.id}-${message.channel.id}`;
 
-        const exists = await client.database.models.shardtimes.findOne({where: {id: shardID}})
+        const exists = await Bot.database.models.shardtimes.findOne({where: {id: shardID}})
             .then(token => token != null)
             .then(isUnique => isUnique);
 
         let shardTimes = {};
 
         if (!exists) {
-            await client.database.models.shardtimes.create({
+            await Bot.database.models.shardtimes.create({
                 id: shardID,
                 times: shardTimes
             });
         } else {
-            const tempT = await client.database.models.shardtimes.findOne({where: {id: shardID}});
+            const tempT = await Bot.database.models.shardtimes.findOne({where: {id: shardID}});
             shardTimes = tempT.dataValues.times;
         }
 
@@ -49,7 +49,7 @@ class Shardtimes extends Command {
         if (options.flags.ships) {
             timeToAdd = 19;
         }
-        
+
         if (action === "add") {
             // If it's an admin, let them register other users, else let em register themselves
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
@@ -76,11 +76,11 @@ class Shardtimes extends Command {
                             // It's a UTC +/- zone
                             zoneType = "utc";
                             timezone = parseInt(`${match[1]}${parseInt(match[2] * 60) + parseInt(match[3])}`);
-                        } else { 
+                        } else {
                             // Grumble that it's an invalid tz
                             return super.error(message, message.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
                         }
-                    } 
+                    }
                 }
             } else {
                 flag = timezone ? [timezone] : [];
@@ -117,7 +117,7 @@ class Shardtimes extends Command {
                         const hour = Math.floor(num / 60);
                         let min = (num % 60).toString();
                         if (min.length === 1) min = "0" + min;
-                        tempUser.tempZone = sign + hour + ":" + min; 
+                        tempUser.tempZone = sign + hour + ":" + min;
                     } else if (tempUser.zoneType === "hhmm") {
                         tempUser.tempZone = tempUser.timezone + " UTC";
                     } else if (tempUser.zoneType === "zone") {
@@ -133,7 +133,7 @@ class Shardtimes extends Command {
                 "timezone": timezone,
                 "flag": flag
             };
-            await client.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
+            await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
                 .then(() => {
                     if (tempUser) {
                         return message.channel.send(message.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone));
@@ -153,10 +153,10 @@ class Shardtimes extends Command {
             } else if (userID.match(/\d{17,18}/)) {
                 // If they are trying to remove someone else and they don't have the right perms, stop em
                 userID = userID.replace(/[\\|<|@|!]*(\d{17,18})[>]*/g,"$1");
-            } 
+            }
             if (shardTimes.hasOwnProperty(userID)) {
                 delete shardTimes[userID];
-                await client.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
+                await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
                     .then(() => {
                         return message.channel.send(message.language.get("COMMAND_SHARDTIMES_REM_SUCCESS"));
                     })
@@ -182,7 +182,7 @@ class Shardtimes extends Command {
                 if (!destChan) {
                     return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_NO_DEST", userID));
                 }
-            } 
+            }
             if (!destChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                 return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChan.id));
             }
@@ -193,13 +193,13 @@ class Shardtimes extends Command {
 
             const destShardID = `${message.guild.id}-${destChan.id}`;
 
-            const destExists = await client.database.models.shardtimes.findOne({where: {id: destShardID}})
+            const destExists = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}})
                 .then(token => token != null)
                 .then(isUnique => isUnique);
 
             if (!destExists) {
                 // If there's no shard info in the destination channel
-                await client.database.models.shardtimes.create({ id: destShardID, times: shardTimes })
+                await Bot.database.models.shardtimes.create({ id: destShardID, times: shardTimes })
                     .then(() => {
                         return message.channel.send(message.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id));
                     })
@@ -207,7 +207,7 @@ class Shardtimes extends Command {
                         return super.error(message, err.message);
                     });
             } else {
-                const destHasTimes = await client.database.models.shardtimes.findOne({where: {id: destShardID}})
+                const destHasTimes = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}})
                     .then(times => Object.keys(times.dataValues.times).length)
                     .then(isLen => isLen);
                 if (destHasTimes) {
@@ -215,7 +215,7 @@ class Shardtimes extends Command {
                     return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_DEST_FULL"));
                 } else {
                     // Or if there is shard info there, but no listings
-                    await client.database.models.shardtimes.update({times: shardTimes}, {where: {id: destShardID}})
+                    await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: destShardID}})
                         .then(() => {
                             return message.channel.send(message.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id));
                         })
@@ -243,7 +243,7 @@ class Shardtimes extends Command {
             sortedShardTimes.forEach(time => {
                 const times = [];
                 shardOut[time].forEach(user => {
-                    let userFlag = client.emojis.get(shardTimes[user].flag);
+                    let userFlag = Bot.emojis.get(shardTimes[user].flag);
                     if (!userFlag) {
                         userFlag = shardTimes[user].flag;
                     }

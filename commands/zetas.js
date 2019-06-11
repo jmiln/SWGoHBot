@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Zetas extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "zetas",
             category: "SWGoH",
             aliases: ["zeta", "z"],
@@ -21,7 +21,7 @@ class Zetas extends Command {
         });
     }
 
-    async run(client, message, args, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, args, options) { // eslint-disable-line no-unused-vars
         if (options.flags.g && options.flags.r) {
             return super.error(message, message.language.get("COMMAND_ZETA_CONFLICTING_FLAGS"));
         }
@@ -40,7 +40,7 @@ class Zetas extends Command {
 
         let character = null;
         if (searchChar && !options.flags.r) {
-            const chars = client.findChar(searchChar, client.characters);
+            const chars = Bot.findChar(searchChar, Bot.characters);
 
             if (chars.length > 1) {
                 const charL = [];
@@ -59,11 +59,11 @@ class Zetas extends Command {
 
         const msg = await message.channel.send(options.flags.g ? message.language.get("COMMAND_ZETA_WAIT_GUILD") : message.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas"));
 
-        const cooldown = client.getPlayerCooldown(message.author.id);
+        const cooldown = Bot.getPlayerCooldown(message.author.id);
         let player;
 
         try {
-            player = await client.swgohAPI.player(allyCode, null, cooldown);
+            player = await Bot.swgohAPI.player(allyCode, null, cooldown);
         } catch (e) {
             console.log("Error: Broke while trying to get player data in zetas: " + e);
             return super.error(msg, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});
@@ -77,10 +77,10 @@ class Zetas extends Command {
             let count = 0;
             for (let char of player.roster) {
                 // If they are not looking for a specific character, check em all
-                char = await client.swgohAPI.langChar(char, message.guildSettings.swgohLanguage);
+                char = await Bot.swgohAPI.langChar(char, message.guildSettings.swgohLanguage);
                 if (!character || character.uniqueName === char.defId) {
                     if (!char.nameKey) {
-                        const tmp = client.characters.filter(c => c.uniqueName === char.defId);
+                        const tmp = Bot.characters.filter(c => c.uniqueName === char.defId);
                         if (tmp.length) {
                             char.nameKey = tmp[0].name;
                         }
@@ -123,7 +123,7 @@ class Zetas extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             if (player.warnings) {
@@ -133,7 +133,7 @@ class Zetas extends Command {
                 });
             }
 
-            const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+            const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
             msg.edit({embed: {
                 color: 0x000000,
                 author: author,
@@ -143,7 +143,7 @@ class Zetas extends Command {
             }});
         } else if (options.flags.r) {
             // Zeta recommendations
-            const zetas = client.zetaRec;
+            const zetas = Bot.zetaRec;
             const myZetas = [];
 
             const sortBy = searchChar ? searchChar : "versa";
@@ -158,13 +158,13 @@ class Zetas extends Command {
                 if (zetaSort[ix][sortBy] === 0) {
                     continue;
                 }
-                let charN = await client.cache.get(client.config.mongodb.swapidb, "units", {nameKey: zetaSort[ix].toon, language: "eng_us"}, {_id: 0, updated: 0});
+                let charN = await Bot.cache.get(Bot.config.mongodb.swapidb, "units", {nameKey: zetaSort[ix].toon, language: "eng_us"}, {_id: 0, updated: 0});
                 if (!charN || !charN.length) continue;
                 if (Array.isArray(charN)) charN = charN[0];
                 let char = player.roster.find(c => charN.baseId === c.defId);
                 let skill = null;
                 if (char) {
-                    char = await client.swgohAPI.langChar(char, "eng_us");
+                    char = await Bot.swgohAPI.langChar(char, "eng_us");
                     skill = char.skills.find(a => a.nameKey === zetaSort[ix].name);
                 }
                 if (skill && skill.tier < 8 && char.level >= 70 && char.gear >= 8) {
@@ -181,7 +181,7 @@ class Zetas extends Command {
             desc += "\n`" + filters.join(", ") + "`\n`------------------------------`\n";
             if (myZetas.length) {
                 myZetas.forEach(z => {
-                    desc += `**${z.nameKey}**\n${z.toon}\n\`${message.language.get("BASE_LEVEL_SHORT")}${z.lvl} | ⚙${z.gearLvl} | ${z.star}*\`\n${client.zws}\n`;
+                    desc += `**${z.nameKey}**\n${z.toon}\n\`${message.language.get("BASE_LEVEL_SHORT")}${z.lvl} | ⚙${z.gearLvl} | ${z.star}*\`\n${Bot.zws}\n`;
                 });
             } else {
                 // They don't have any viable characters (lvl or gear too low)
@@ -193,7 +193,7 @@ class Zetas extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             if (player.warnings) {
@@ -202,7 +202,7 @@ class Zetas extends Command {
                     value: player.warnings.join("\n")
                 });
             }
-            const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+            const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_ZETA_REC_AUTH", zetaLen, player.name)
@@ -216,7 +216,7 @@ class Zetas extends Command {
             let guildGG = null;
 
             try {
-                guild = await client.swgohAPI.guild(player.allyCode, null, cooldown);
+                guild = await Bot.swgohAPI.guild(player.allyCode, null, cooldown);
                 // TODO  Lang this
                 if (!guild) return super.error(message, "Cannot find guild");
                 if (!guild.roster) return super.error(message, "Cannot find your guild's roster");
@@ -224,7 +224,7 @@ class Zetas extends Command {
                 return super.error(message, e.message);
             }
             try {
-                guildGG = await client.swgohAPI.guildGG(guild.roster.map(p => p.allyCode), null, cooldown);
+                guildGG = await Bot.swgohAPI.guildGG(guild.roster.map(p => p.allyCode), null, cooldown);
             } catch (e) {
                 super.error(msg, e.message, {edit: true});
             }
@@ -252,14 +252,14 @@ class Zetas extends Command {
             if (!searchChar || !searchChar.length) {
                 // They want to see all zetas for the guild
                 for (const char of sortedZ) {
-                    let outStr = "**" + client.characters.find(c => c.uniqueName === char).name + "**\n";
+                    let outStr = "**" + Bot.characters.find(c => c.uniqueName === char).name + "**\n";
                     for (const skill of Object.keys(zetas[char])) {
-                        const s = await client.swgohAPI.abilities(skill, null, null, {min: true});
+                        const s = await Bot.swgohAPI.abilities(skill, null, null, {min: true});
                         outStr += `**\`${zetas[char][skill].length}\`**: ${s[0].nameKey}\n`;
                     }
                     zOut.push(outStr);
                 }
-                const msgArr = client.msgArray(zOut, "", 1000);
+                const msgArr = Bot.msgArray(zOut, "", 1000);
                 msgArr.forEach(m => {
                     fields.push({
                         name: "____",
@@ -269,7 +269,7 @@ class Zetas extends Command {
                 });
             } else {
                 for (const skill of Object.keys(zetas[character.uniqueName])) {
-                    const name = await client.swgohAPI.abilities(skill, null, null, {min: true});
+                    const name = await Bot.swgohAPI.abilities(skill, null, null, {min: true});
                     fields.push({
                         name: name[0].nameKey,
                         value: zetas[character.uniqueName][skill].join("\n")
@@ -280,11 +280,11 @@ class Zetas extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
 
-            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)

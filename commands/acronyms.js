@@ -6,16 +6,16 @@ const Command = require("../base/Command");
  * //https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh
  */
 class Acronyms extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "acronyms",
             category: "Misc",
             aliases: ["acr", "acronym"],
         });
     }
 
-    async run(client, message, [ ...acronym ], options) { // eslint-disable-line no-unused-vars
-        const acronymsLookup = client.acronyms;
+    async run(Bot, message, [ ...acronym ], options) { // eslint-disable-line no-unused-vars
+        const acronymsLookup = Bot.acronyms;
         const acronyms = Object.keys(acronymsLookup);
 
         if (!acronym.length) {
@@ -27,16 +27,16 @@ class Acronyms extends Command {
 
         if (!matchingItems.length) {
             return super.error(message, message.language.get("COMMAND_ACRONYMS_NOT_FOUND"), {example: "acronym cls"});
-        } 
-        
+        }
+
         let acronymMeaningMessage = "";
         for (let i = 0; i < matchingItems.length; i++) {
             if (acronymMeaningMessage !== "") {
                 acronymMeaningMessage += "\n";
             }
-            /* 
+            /*
              * TODO
-             * This next line won't translate well, as is. BUT we could move this to 
+             * This next line won't translate well, as is. BUT we could move this to
              * const acronymMeaning = message.language.get("COMMAND_ACRONYM_" + matchingItems[i]);
              * acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymMeaning}`;
              */

@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Guilds extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "guilds",
             category: "SWGoH",
             aliases: ["guild", "g"],
@@ -32,7 +32,7 @@ class Guilds extends Command {
         });
     }
 
-    async run(client, message, [userID, ...args], options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [userID, ...args], options) { // eslint-disable-line no-unused-vars
         // Basic, with no args, shows the top ## guilds (Based on how many have registered)
         // <allyCode | mention | guildName >
 
@@ -46,8 +46,8 @@ class Guilds extends Command {
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDS_PLEASE_WAIT"));
 
         // Get the user's ally code from the message or psql db
-        if (userID === "me" || client.isUserID(userID) || client.isAllyCode(userID)) {
-            userID = await client.getAllyCode(message, userID);
+        if (userID === "me" || Bot.isUserID(userID) || Bot.isAllyCode(userID)) {
+            userID = await Bot.getAllyCode(message, userID);
             if (!userID.length) {
                 return super.error(msg, message.language.get("COMMAND_GUILDS_REG_NEEDED"), {edit: true, example: "guilds me"});
             }
@@ -58,17 +58,17 @@ class Guilds extends Command {
             acType = false;
         }
 
-        const cooldown = client.getPlayerCooldown(message.author.id);
+        const cooldown = Bot.getPlayerCooldown(message.author.id);
         let guild = null;
         try {
             if (acType) {
-                guild = await client.swgohAPI.guild(userID, null, cooldown);
+                guild = await Bot.swgohAPI.guild(userID, null, cooldown);
             } else {
-                guild = await client.swgohAPI.guildByName(userID);
+                guild = await Bot.swgohAPI.guildByName(userID);
             }
         } catch (e) {
             console.log("ERROR(guilds): " + e);
-            return super.error(msg, client.codeBlock(e), {edit: true, example: "guilds me"});
+            return super.error(msg, Bot.codeBlock(e), {edit: true, example: "guilds me"});
         }
 
         if (!guild) {
@@ -95,7 +95,7 @@ class Guilds extends Command {
                     badCount += 1;
                     continue;
                 }
-                const codes = await client.userReg.getUserFromAlly(p.allyCode);
+                const codes = await Bot.userReg.getUserFromAlly(p.allyCode);
                 if (codes && codes.length) {
                     for (const c of codes) {
                         // Make sure they're in the same server
@@ -150,7 +150,7 @@ class Guilds extends Command {
             }
             const fields = [];
             if (!options.flags.min) {
-                const msgArray = client.msgArray(users, "\n", 1000);
+                const msgArray = Bot.msgArray(users, "\n", 1000);
                 msgArray.forEach((m, ix) => {
                     fields.push({
                         name: message.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArray.length),
@@ -160,12 +160,12 @@ class Guilds extends Command {
             }
             fields.push({
                 name: message.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
-                value: client.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
+                value: Bot.codeBlock(message.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
             });
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             if (badCount > 0) {
@@ -178,7 +178,7 @@ class Guilds extends Command {
                     value: guild.warnings.join("\n")
                 });
             }
-            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
@@ -198,10 +198,10 @@ class Guilds extends Command {
 
             let guildGG;
             try {
-                guildGG = await client.swgohAPI.guildGG(gRoster, null, cooldown);
+                guildGG = await Bot.swgohAPI.guildGG(gRoster, null, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
-                return super.error(message, client.codeBlock(e), {
+                return super.error(message, Bot.codeBlock(e), {
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit."
                 });
@@ -266,14 +266,14 @@ class Guilds extends Command {
                     charOut.push(`\n**${char}**`);
                 }
             });
-            charOut = charOut.map(c => client.expandSpaces(c));
+            charOut = charOut.map(c => Bot.expandSpaces(c));
 
             const fields = [];
 
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             if (guildGG.warnings) {
@@ -282,7 +282,7 @@ class Guilds extends Command {
                     value: guildGG.warnings.join("\n")
                 });
             }
-            const footer = client.updatedFooter(guildGG.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guildGG.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
@@ -310,7 +310,7 @@ class Guilds extends Command {
 
             fields.push({
                 name: raidStr.header,
-                value: client.codeBlock(raids),
+                value: Bot.codeBlock(raids),
                 inline: true
             });
 
@@ -329,7 +329,7 @@ class Guilds extends Command {
             );
             fields.push({
                 name: message.language.get("COMMAND_GUILDS_STAT_HEADER"),
-                value: client.codeBlock(stats),
+                value: Bot.codeBlock(stats),
                 inline: true
             });
 
@@ -341,7 +341,7 @@ class Guilds extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             if (guild.warnings) {
@@ -351,7 +351,7 @@ class Guilds extends Command {
                 });
             }
 
-            const footer = client.updatedFooter(guild.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: guild.name

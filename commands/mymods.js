@@ -3,8 +3,8 @@ const Command = require("../base/Command");
 require("moment-duration-format");
 
 class MyMods extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "mymods",
             category: "SWGoH",
             guildOnly: false,
@@ -23,16 +23,8 @@ class MyMods extends Command {
         });
     }
 
-    async run(client, message, args, options) { // eslint-disable-line no-unused-vars
-        const cooldown = client.getPlayerCooldown(message.author.id);
-        // const icons = {
-        //     STATMOD_SLOT_01: await client.getEmoji("362066327101243392") || "Square",
-        //     STATMOD_SLOT_02: await client.getEmoji("362066325474115605") || "Arrow",
-        //     STATMOD_SLOT_03: await client.getEmoji("362066326925082637") || "Diamond",
-        //     STATMOD_SLOT_04: await client.getEmoji("362066327168352257") || "Triangle",
-        //     STATMOD_SLOT_05: await client.getEmoji("362066326996385812") || "Circle",
-        //     STATMOD_SLOT_06: await client.getEmoji("362066327516610570") || "Cross"
-        // };
+    async run(Bot, message, args, options) { // eslint-disable-line no-unused-vars
+        const cooldown = Bot.getPlayerCooldown(message.author.id);
 
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
@@ -41,7 +33,7 @@ class MyMods extends Command {
                 author: {
                     name: "Error"
                 },
-                description: client.codeBlock(err)
+                description: Bot.codeBlock(err)
             }});
         }
 
@@ -53,7 +45,7 @@ class MyMods extends Command {
                 return msg.edit(message.language.get("BASE_SWGOH_MISSING_CHAR"));
             }
 
-            const chars = client.findChar(searchChar, client.characters);
+            const chars = Bot.findChar(searchChar, Bot.characters);
             if (chars.length === 0) {
                 return msg.edit(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             } else if (chars.length > 1) {
@@ -69,7 +61,7 @@ class MyMods extends Command {
 
             let player;
             try {
-                player = await client.swgohAPI.player(allyCode, null, cooldown);
+                player = await Bot.swgohAPI.player(allyCode, null, cooldown);
             } catch (e) {
                 console.log(e);
             }
@@ -79,11 +71,11 @@ class MyMods extends Command {
                 return super.error(msg, ("Sorry, but I could not load your profile at this time."), {edit: true});
             }
 
-            const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+            const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
 
             let charMods = player.roster.find(c => c.defId === character.uniqueName);
 
-            charMods = await client.swgohAPI.langChar(charMods, message.guildSettings.swgohLanguage);
+            charMods = await Bot.swgohAPI.langChar(charMods, message.guildSettings.swgohLanguage);
 
             if (charMods) {
                 charMods = charMods.mods;
@@ -127,10 +119,10 @@ class MyMods extends Command {
                     // If the bot has the right perms to use external emotes, go for it
                     if (message.channel.permissionsFor(message.guild.me).has("USE_EXTERNAL_EMOJIS")) {
                         const shapeIconString = `${modSlots[mod-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
-                        shapeIcon = client.emotes[shapeIconString] || shapeIcon;
+                        shapeIcon = Bot.emotes[shapeIconString] || shapeIcon;
 
                         const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
-                        typeIcon = client.emotes[typeIconString] || typeIcon;
+                        typeIcon = Bot.emotes[typeIconString] || typeIcon;
                     }
                     fields.push({
                         name: `${shapeIcon} ${typeIcon} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
@@ -142,7 +134,7 @@ class MyMods extends Command {
                 if (options.defaults) {
                     fields.push({
                         name: "Default flags used:",
-                        value: client.codeBlock(options.defaults)
+                        value: Bot.codeBlock(options.defaults)
                     });
                 }
 
@@ -215,15 +207,15 @@ class MyMods extends Command {
                 });
             }
             if (!found) {
-                return super.error(msg, (message.language.get("COMMAND_MYMODS_BAD_STAT", client.codeBlock(Object.keys(checkableStats).join("\n")))), {edit: true});
+                return super.error(msg, (message.language.get("COMMAND_MYMODS_BAD_STAT", Bot.codeBlock(Object.keys(checkableStats).join("\n")))), {edit: true});
             }
             const statToCheck = options.subArgs.b;
             let player;
             try {
-                player = await client.swgohAPI.unitStats(allyCode, cooldown);
+                player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
                 if (Array.isArray(player)) player = player[0];
             } catch (e) {
-                return super.error(message, client.codeBlock(e.message), {
+                return super.error(message, Bot.codeBlock(e.message), {
                     title: message.lanugage.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit."
                 });
@@ -266,7 +258,7 @@ class MyMods extends Command {
 
             const delArr = [];
             for (const c in sorted) {
-                if (client.ships.find(s => s.uniqueName === sorted[c].unit.defId)) {
+                if (Bot.ships.find(s => s.uniqueName === sorted[c].unit.defId)) {
                     delArr.push(c);
                 }
             }
@@ -276,7 +268,7 @@ class MyMods extends Command {
             }
 
             for (const c in sorted) {
-                sorted[c].unit = await client.swgohAPI.langChar(sorted[c].unit, message.guildSettings.swgohLanguage);
+                sorted[c].unit = await Bot.swgohAPI.langChar(sorted[c].unit, message.guildSettings.swgohLanguage);
             }
 
             const out = sorted.map(c => {
@@ -290,7 +282,7 @@ class MyMods extends Command {
             const longest = out.reduce((max, s) => Math.max(max, s.stat.length), 0);
             let outStr = "";
             for (let ix = 0; ix < 10; ix++) {
-                outStr += "`" + out[ix].stat + ` ${client.zws}`.repeat(longest-out[ix].stat.length) + "`**" + out[ix].name + "**\n";
+                outStr += "`" + out[ix].stat + ` ${Bot.zws}`.repeat(longest-out[ix].stat.length) + "`**" + out[ix].name + "**\n";
             }
             const author = {};
             if (options.flags.t) {
@@ -305,7 +297,7 @@ class MyMods extends Command {
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
-                    value: client.codeBlock(options.defaults)
+                    value: Bot.codeBlock(options.defaults)
                 });
             }
             if (stats.warnings) {
@@ -320,7 +312,7 @@ class MyMods extends Command {
                 description: "==============================\n" + outStr + "==============================",
                 fields: fields,
                 footer: {
-                    text: updated ? message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(updated, message)) : ""
+                    text: updated ? message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) : ""
                 }
             }});
         }

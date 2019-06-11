@@ -8,12 +8,12 @@ const readdir = promisify(require("fs").readdir);       // eslint-disable-line n
 const request = require("request-promise-native");
 const Discord = require("discord.js");
 
-module.exports = (client) => {
+module.exports = (Bot, client) => {
     // The scheduler for events
-    client.schedule = require("node-schedule");
+    Bot.schedule = require("node-schedule");
 
     // A zero-width-space
-    client.zws = "\u200B";
+    Bot.zws = "\u200B";
 
     /*
         PERMISSION LEVEL FUNCTION
@@ -22,11 +22,11 @@ module.exports = (client) => {
         NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
         command including the VERY DANGEROUS `eval` and `exec` commands!
         */
-    client.permlevel = message => {
+    Bot.permlevel = message => {
         let permlvl = 0;
 
         // If bot owner, return max perm level
-        if (message.author.id === client.config.ownerid) return 10;
+        if (message.author.id === Bot.config.ownerid) return 10;
 
         // If DMs or webhook, return 0 perm level.
         if (!message.guild || !message.member) return 0;
@@ -54,12 +54,12 @@ module.exports = (client) => {
         return permlvl;
     };
 
-    client.myTime = () => {
+    Bot.myTime = () => {
         return momentTZ.tz("US/Pacific").format("M/D/YYYY hh:mma");
     };
 
     // This finds any character that matches the search, and returns them in an array
-    client.findChar = (searchName, charList, ship=false) => {
+    Bot.findChar = (searchName, charList, ship=false) => {
         const options = {
             tokenize: true,
             matchAllTokens: true,
@@ -100,7 +100,7 @@ module.exports = (client) => {
 
 
     // This find one character that matches the search, and returns it
-    client.findCharByName = (searchName, charList) => {
+    Bot.findCharByName = (searchName, charList) => {
         var options = {
             keys: ["name"],
             threshold: 0.0
@@ -114,17 +114,17 @@ module.exports = (client) => {
      * LOGGING FUNCTION
      * Logs to console. Future patches may include time+colors
      */
-    client.log = (type, msg, title="Log", codeType="md", prefix="", options={}) => {
-        console.log(`[${client.myTime()}] [${type}] [${title}]${msg}`);
+    Bot.log = (type, msg, title="Log", codeType="md", prefix="", options={}) => {
+        console.log(`[${Bot.myTime()}] [${type}] [${title}]${msg}`);
         if (!options.noSend) {
             try {
-                const chan = client.config.logs.channel;
-                const mess = `${prefix === "" ? "" : prefix + " "}[${client.myTime()}] [${type}] ${msg}`.replace(/\n/g, "\"|\"");
+                const chan = Bot.config.logs.channel;
+                const mess = `${prefix === "" ? "" : prefix + " "}[${Bot.myTime()}] [${type}] ${msg}`.replace(/\n/g, "\"|\"");
                 const args = {code: codeType, split: true};
                 // Sends the logs to the channel I have set up for it.
-                if (client.config.logs.logToChannel) {
+                if (Bot.config.logs.logToChannel) {
                     if (client.channels.has(chan)) {
-                        client.sendMsg(chan, mess, args);
+                        Bot.sendMsg(chan, mess, args);
                     } else if (client.shard && client.shard.count > 0) {
                         // If it's on a different shard, then send it there
                         client.shard.broadcastEval(`
@@ -138,12 +138,12 @@ module.exports = (client) => {
                 }
             } catch (e) {
                 // Probably broken because it's not started yet
-                console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
+                console.log(`[${Bot.myTime()}] I couldn't send a log:\n${e}`);
             }
         }
     };
 
-    client.sendMsg = (chanID, msg, options={}) => {
+    Bot.sendMsg = (chanID, msg, options={}) => {
         if (!msg) return;
         msg = msg.replace(/"\|"/g, "\n").replace(/\|:\|/g, "'");
         client.channels.get(chanID).send(msg, options);
@@ -153,12 +153,12 @@ module.exports = (client) => {
      *  CHANGELOG MESSAGE
      *  Send a changelog message to the specified channel
      */
-    client.sendChangelog = (clMessage) => {
+    Bot.sendChangelog = (clMessage) => {
         clMessage = clMessage.replace(/\n/g, "\"|\"");
-        if (client.config.changelog.sendChangelogs) {
-            const clChan = client.config.changelog.changelogChannel;
+        if (Bot.config.changelog.sendChangelogs) {
+            const clChan = Bot.config.changelog.changelogChannel;
             if (client.channels.has(clChan)) {
-                client.sendMsg(clChan, clMessage);
+                Bot.sendMsg(clChan, clMessage);
             } else {
                 try {
                     clMessage = clMessage.replace(/'/g, "|:|");
@@ -169,7 +169,7 @@ module.exports = (client) => {
                         }
                     `);
                 } catch (e) {
-                    console.log(`[${client.myTime()}] I couldn't send a log:\n${e}`);
+                    console.log(`[${Bot.myTime()}] I couldn't send a log:\n${e}`);
                 }
             }
         }
@@ -180,8 +180,8 @@ module.exports = (client) => {
      * ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    client.announceMsg = async (guild, announceMsg, channel="") => {
-        const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ["announceChan"]});
+    Bot.announceMsg = async (guild, announceMsg, channel="") => {
+        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ["announceChan"]});
         const guildConf = guildSettings.dataValues;
 
         let announceChan = guildConf.announceChan;
@@ -210,8 +210,8 @@ module.exports = (client) => {
      */
     client.loadCommand = (commandName) => {
         try {
-            const cmd = new (require(`../commands/${commandName}`))(client);
-            if (cmd.help.category === "SWGoH" && !client.swgohAPI) {
+            const cmd = new (require(`../commands/${commandName}`))(Bot);
+            if (cmd.help.category === "SWGoH" && !Bot.swgohAPI) {
                 return "Unable to load command ${commandName}: no swgohAPI";
             } else if (!cmd.conf.enabled) {
                 return false;
@@ -234,7 +234,7 @@ module.exports = (client) => {
             const commandName = command;
             if (client.commands.has(commandName)) {
                 command = client.commands.get(commandName);
-            } else if (client.aliases.has(commandName)) {
+            } else if (Bot.aliases.has(commandName)) {
                 command = client.commands.get(client.aliases.get(commandName));
             }
         }
@@ -307,19 +307,22 @@ module.exports = (client) => {
     // Reload the events files (message, guildCreate, etc)
     client.reloadAllEvents = async (msgID) => {
         const ev = [], errEv = [];
+
         const evtFiles = await readdir("./events/");
         evtFiles.forEach(file => {
             try {
                 const eventName = file.split(".")[0];
                 client.removeAllListeners(eventName);
+                const event = require(`../events/${file}`);
                 if (eventName === "ready") {
-                    client.on(eventName, () => require(`./events/${file}`)(client));
+                    client.on(eventName, event.bind(null, Bot, client));
                 } else {
-                    client.on(eventName, require(`./events/${file}`));
+                    client.on(eventName, event.bind(null, Bot));
                 }
-                delete require.cache[require.resolve(`./events/${file}`)];
+                delete require.cache[require.resolve(`../events/${file}`)];
                 ev.push(eventName);
             } catch (e) {
+                console.log("In Event reload: " + e);
                 errEv.push(file);
             }
         });
@@ -334,7 +337,7 @@ module.exports = (client) => {
         let err = false;
         try {
             delete require.cache[require.resolve("../modules/functions.js")];
-            require("../modules/functions.js")(client);
+            require("../modules/functions.js")(Bot, client);
         } catch (e) {
             err = e;
         }
@@ -353,7 +356,7 @@ module.exports = (client) => {
         let err = false;
         try {
             delete require.cache[require.resolve("../modules/swapi.js")];
-            client.swgohAPI = require("../modules/swapi.js")(client);
+            Bot.swgohAPI = require("../modules/swapi.js")(Bot);
         } catch (e) {
             err = e;
         }
@@ -372,7 +375,7 @@ module.exports = (client) => {
         let err = false;
         try {
             delete require.cache[require.resolve("../modules/users.js")];
-            client.userReg = require("../modules/users.js")(client);
+            Bot.userReg = require("../modules/users.js")(Bot);
         } catch (e) {
             err = e;
         }
@@ -390,16 +393,16 @@ module.exports = (client) => {
     client.reloadDataFiles = async (msgID) => {
         let err = false;
         try {
-            client.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json"));
-            client.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
-            client.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
-            client.characters   = await JSON.parse(fs.readFileSync("data/characters.json"));
-            client.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json"));
-            client.missions     = await JSON.parse(fs.readFileSync("data/missions.json"));
-            client.resources    = await JSON.parse(fs.readFileSync("data/resources.json"));
-            client.ships        = await JSON.parse(fs.readFileSync("data/ships.json"));
-            client.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json"));
-            client.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
+            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json"));
+            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
+            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
+            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json"));
+            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json"));
+            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json"));
+            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json"));
+            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json"));
+            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json"));
+            Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
         } catch (e) {
             err = e;
         }
@@ -414,23 +417,23 @@ module.exports = (client) => {
     };
 
     // Reload all the language files
-    client.reloadLanguages = async (msgID) => {
+    client.reloadLanguages = async (chanID) => {
         let err = false;
         try {
-            Object.keys(client.languages).forEach(lang => {
-                delete client.languages[lang];
+            Object.keys(Bot.languages).forEach(lang => {
+                delete Bot.languages[lang];
             });
             const langFiles = await readdir(`${process.cwd()}/languages/`);
             langFiles.forEach(file => {
                 const langName = file.split(".")[0];
                 const lang = require(`${process.cwd()}/languages/${file}`);
-                client.languages[langName] = new lang(client);
+                Bot.languages[langName] = new lang(Bot);
                 delete require.cache[require.resolve(`${process.cwd()}/languages/${file}`)];
             });
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.get(msgID);
+        const channel = client.channels.get(chanID);
         if (channel) {
             if (err) {
                 channel.send(`Something broke: ${err}`);
@@ -445,10 +448,10 @@ module.exports = (client) => {
       A simple way to grab a single reply, from the user that initiated
       the command. Useful to get "precisions" on certain things...
       USAGE
-      const response = await client.awaitReply(msg, "Favourite Color?");
+      const response = await Bot.awaitReply(msg, "Favourite Color?");
       msg.reply(`Oh, I really love ${response} too!`);
       */
-    client.awaitReply = async (msg, question, limit = 60000) => {
+    Bot.awaitReply = async (msg, question, limit = 60000) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question);
         try {
@@ -466,7 +469,7 @@ module.exports = (client) => {
       and stringifies objects!
       This is mostly only used by the Eval and Exec commands.
       */
-    client.clean = async (client, text) => {
+    Bot.clean = async (client, text) => {
         if (text && text.constructor.name == "Promise")
             text = await text;
         if (typeof evaled !== "string")
@@ -485,17 +488,17 @@ module.exports = (client) => {
     /* MISCELANEOUS NON-CRITICAL FUNCTIONS */
 
     // `await wait(1000);` to "pause" for 1 second.
-    client.wait = promisify(setTimeout);
+    Bot.wait = promisify(setTimeout);
 
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
-        console.error(`[${client.myTime()}] Uncaught Exception: `, errorMsg);
+        console.error(`[${Bot.myTime()}] Uncaught Exception: `, errorMsg);
 
         // If it's that error, don't bother showing it again
         try {
-            if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
+            if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
+                client.channels.get(Bot.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
             }
         } catch (e) {
             // Don't bother doing anything
@@ -507,10 +510,10 @@ module.exports = (client) => {
 
     process.on("unhandledRejection", (err) => {
         const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
-        console.error(`[${client.myTime()}] Uncaught Promise Error: `, errorMsg);
+        console.error(`[${Bot.myTime()}] Uncaught Promise Error: `, errorMsg);
         try {
-            if (client.config.logs.logToChannel) {
-                client.channels.get(client.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
+            if (Bot.config.logs.logToChannel) {
+                client.channels.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
             }
         } catch (e) {
             // Don't bother doing anything
@@ -521,7 +524,7 @@ module.exports = (client) => {
      *  COMMAND HELP OUTPUT
      *  Input the language and the command, and it'll give ya back the embed object to send
      */
-    client.helpOut = (message, command) => {
+    Bot.helpOut = (message, command) => {
         const language = message.language;
         const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
         const actions = help.actions.slice();
@@ -572,10 +575,10 @@ module.exports = (client) => {
      *  Input an array of strings, and it will put them together so that it
      *  doesn't exceed the given max length.
      */
-    client.msgArray = (arr, join="\n", maxLen=1900) => {
+    Bot.msgArray = (arr, join="\n", maxLen=1900) => {
         const messages = [];
         arr.forEach((elem) => {
-            elem = client.expandSpaces(elem);
+            elem = Bot.expandSpaces(elem);
             if (typeof elem !== "string") console.log(elem + " Is not a string!");
             // Check if something big somehow got in
             if (elem.length > maxLen) {
@@ -599,20 +602,28 @@ module.exports = (client) => {
      * CODE BLOCK MAKER
      * Makes a codeblock with the specified lang for highlighting.
      */
-    client.codeBlock = (str, lang="") => {
+    Bot.codeBlock = (str, lang="") => {
         return `\`\`\`${lang}\n${str}\`\`\``;
+    };
+
+    /*
+     * Return a duration string
+     */
+    Bot.duration = (time, message=null) => {
+        const lang = message ? message.language : Bot.languages[Bot.config.defaultSettings.language];
+        return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
     };
 
     /*
      * LAST UPDATED FOOTER
      * Simple one to make the "Last updated ____ " footers
      */
-    client.updatedFooter = (updated, message=null, type="player", userCooldown) => {
+    Bot.updatedFooter = (updated, message=null, type="player", userCooldown) => {
         const baseCooldown = { player: 2, guild: 6 };
         const minCooldown = { player: 1, guild: 3 };
 
         if (!userCooldown) userCooldown = baseCooldown;
-        let between = client.convertMS(new Date() - new Date(updated));
+        let between = Bot.convertMS(new Date() - new Date(updated));
 
         if (between.hour >= minCooldown[type] && between.hour < userCooldown[type]) {
             // If the data is between the shorter time they'd get from patreon, and the
@@ -624,22 +635,14 @@ module.exports = (client) => {
             between = "";
         }
         return {
-            text: message.language.get("BASE_SWGOH_LAST_UPDATED", client.duration(updated, message)) + between
+            text: message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) + between
         };
-    };
-
-    /*
-     * Return a duration string
-     */
-    client.duration = (time, message=null) => {
-        const lang = message ? message.language : client.languages[client.config.defaultSettings.language];
-        return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
     };
 
     /*
      * Get the current user count
      */
-    client.userCount = async () => {
+    Bot.userCount = async () => {
         let users = 0;
         if (client.shard && client.shard.count > 0) {
             await client.shard.fetchClientValues("users.size")
@@ -656,7 +659,7 @@ module.exports = (client) => {
     /*
      * Get the current guild count
      */
-    client.guildCount = async () => {
+    Bot.guildCount = async () => {
         let guilds = 0;
         if (client.shard && client.shard.count > 0) {
             await client.shard.fetchClientValues("guilds.size")
@@ -674,7 +677,7 @@ module.exports = (client) => {
      * Find an emoji by ID
      * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
-    client.findEmoji = (id) => {
+    Bot.findEmoji = (id) => {
         const temp = client.emojis.get(id);
         if (!temp) return null;
 
@@ -694,7 +697,7 @@ module.exports = (client) => {
      * If sharded, also use the example from
      * https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
-    client.getEmoji = (id) => {
+    Bot.getEmoji = (id) => {
         if (client.shard && client.shard.count > 0) {
             return client.shard.broadcastEval(`this.findEmoji('${id}');`)
                 .then(emojiArray => {
@@ -710,22 +713,22 @@ module.exports = (client) => {
                         });
                 });
         } else {
-            const emoji = client.findEmoji(id);
+            const emoji = Bot.findEmoji(id);
             if (!emoji) return false;
             return new Discord.Emoji(client.guilds.get(emoji.guild), emoji);
         }
     };
 
     // Load all the emotes that may be used for the bot at some point (from data/emoteIDs.js)
-    client.loadAllEmotes = async () => {
+    Bot.loadAllEmotes = async () => {
         const emoteList = require("../data/emoteIDs.js");
         for (const emote of Object.keys(emoteList)) {
-            const e = await client.getEmoji(emoteList[emote]);
+            const e = await Bot.getEmoji(emoteList[emote]);
             if (!e) {
                 console.log("Couldn't get emote: " + emote);
                 continue;
             } else {
-                client.emotes[emote] = e;
+                Bot.emotes[emote] = e;
             }
         }
     };
@@ -736,7 +739,7 @@ module.exports = (client) => {
      * isUserID
      * Check if a string of numbers is a valid user.
      */
-    client.isUserID = (numStr) => {
+    Bot.isUserID = (numStr) => {
         const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
         return match ? true : false;
     };
@@ -745,7 +748,7 @@ module.exports = (client) => {
      * isAllyCode
      * Check if a string of numbers is a valid ally code.
      */
-    client.isAllyCode = (aCode) => {
+    Bot.isAllyCode = (aCode) => {
         const match = aCode.replace(/[^\d]*/g, "").match(/\d{9}/);
         return match ? true : false;
     };
@@ -766,7 +769,7 @@ module.exports = (client) => {
      *  }
      * rows: The data to fill in
      */
-    client.makeTable = (headers, rows, options={
+    Bot.makeTable = (headers, rows, options={
         boldHeader: true,
         useHeader:  true
     }) => {
@@ -807,9 +810,9 @@ module.exports = (client) => {
                 }
             });
             if (options.boldHeader) {
-                out.push(client.expandSpaces("**" + header + "**"));
+                out.push(Bot.expandSpaces("**" + header + "**"));
             } else {
-                out.push(client.expandSpaces(header));
+                out.push(Bot.expandSpaces(header));
             }
         }
         rows.forEach(r => {
@@ -840,7 +843,7 @@ module.exports = (client) => {
                 }
                 row += head.endWith ? head.endWith : "";
             });
-            out.push(client.expandSpaces(row.replace(/\s*$/, "")));
+            out.push(Bot.expandSpaces(row.replace(/\s*$/, "")));
         });
 
         return out;
@@ -849,21 +852,21 @@ module.exports = (client) => {
     /*
      * Small function to search the factions
      */
-    client.findFaction = (fact) => {
+    Bot.findFaction = (fact) => {
         fact = fact.toLowerCase().replace(/\s+/g, "");
-        let found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact);
+        let found = Bot.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact);
         if (found) {
             return found.toLowerCase();
         }
-        found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.substring(0, fact.length-1));
+        found = Bot.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.substring(0, fact.length-1));
         if (fact.endsWith("s") && found) {
             return found.toLowerCase();
         }
-        found = client.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact + "s");
+        found = Bot.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact + "s");
         if (!fact.endsWith("s") && found) {
             return found.toLowerCase();
         }
-        const close = client.factions.filter(f => f.toLowerCase().replace(/\s+/g, "").includes(fact.toLowerCase()));
+        const close = Bot.factions.filter(f => f.toLowerCase().replace(/\s+/g, "").includes(fact.toLowerCase()));
         if (close.length) {
             return close.map(f => f.toLowerCase());
         }
@@ -874,7 +877,7 @@ module.exports = (client) => {
 
     // Expand multiple spaces to have zero width spaces between so
     // Discord doesn't collapse em
-    client.expandSpaces = (str) => {
+    Bot.expandSpaces = (str) => {
         let outStr = "";
         str.split(/([\s]{2,})/).forEach(e => {
             if (e.match(/[\s]{2,}/)) {
@@ -887,26 +890,26 @@ module.exports = (client) => {
     };
 
     // Get the ally code of someone that's registered
-    client.getAllyCode = async (message, user) => {
+    Bot.getAllyCode = async (message, user) => {
         if (user) {
             user = user.toString().trim();
         }
         let uID, uAC;
-        if (!user || user === "me" || client.isUserID(user)) {
+        if (!user || user === "me" || Bot.isUserID(user)) {
             if (!user || user === "me") {
                 uID = message.author.id;
             } else {
                 uID = user.replace(/[^\d]*/g, "");
             }
             try {
-                const exists = await client.userReg.getUser(uID);
+                const exists = await Bot.userReg.getUser(uID);
                 if (exists && exists.accounts.length) {
                     const account = exists.accounts.find(a => a.primary);
                     return [account.allyCode];
                 } else {
-                    uAC = await client.swgohAPI.whois(uID);
+                    uAC = await Bot.swgohAPI.whois(uID);
                     if (uAC.get.length) {
-                        await client.userReg.addUser(uAC.get[0].discordId, uAC.get[0].allyCode);
+                        await Bot.userReg.addUser(uAC.get[0].discordId, uAC.get[0].allyCode);
                         return [uAC.get[0].allyCode];
                     }
                     return [];
@@ -914,11 +917,11 @@ module.exports = (client) => {
             } catch (e) {
                 return [];
             }
-        }  else if (client.isAllyCode(user)) {
+        }  else if (Bot.isAllyCode(user)) {
             return [user.replace(/[^\d]*/g, "")];
         }  else {
             const outArr = [];
-            const results = await client.swgohAPI.playerByName(user);
+            const results = await Bot.swgohAPI.playerByName(user);
             if (results.length > 1) {
                 results.forEach(p => {
                     outArr.push(p.allyCode);
@@ -932,11 +935,11 @@ module.exports = (client) => {
 
 
     // Bunch of stuff for the events
-    client.loadAllEvents = async () => {
+    Bot.loadAllEvents = async () => {
         let ix = 0;
         const nowTime = momentTZ().unix() * 1000;                       // The current time of it running
         const oldTime = momentTZ().subtract(20, "m").unix() * 1000;     // 20 min ago, don't try again if older than this
-        const events = await client.database.models.eventDBs.findAll();
+        const events = await Bot.database.models.eventDBs.findAll();
 
         const eventList = [];
         for (let i = 0; i < events.length; i++ ) {
@@ -946,7 +949,7 @@ module.exports = (client) => {
 
             // Make sure it only loads events for it's shard
             if (client.guilds.keyArray().includes(guildID)) {
-                const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+                const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(Bot.config.defaultSettings)});
                 const guildConf = guildSettings.dataValues;
                 eventList.push([event.dataValues, guildConf]);
             }
@@ -965,19 +968,19 @@ module.exports = (client) => {
                         const guildID = eventName.splice(0, 1)[0];
                         eventName = eventName.join("-");
 
-                        const lang = client.languages[guildConf.language] || client.languages["en_US"];
+                        const lang = Bot.languages[guildConf.language] || Bot.languages["en_US"];
 
                         // Alert them that it was skipped with a note
-                        const announceMessage = `**${eventName}**\n${event.eventMessage} \n\n${client.codeBlock(lang.get("BASE_EVENT_LATE"))}`;
+                        const announceMessage = `**${eventName}**\n${event.eventMessage} \n\n${Bot.codeBlock(lang.get("BASE_EVENT_LATE"))}`;
                         if (guildConf["announceChan"] != "" || event.eventChan !== "") {
                             if (event["eventChan"] && event.eventChan !== "") { // If they've set a channel, use it
                                 try {
-                                    client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+                                    Bot.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
                                 } catch (e) {
-                                    client.log("ERROR", "Broke trying to announce event with ID: ${ev.eventID} \n${e}");
+                                    Bot.log("ERROR", "Broke trying to announce event with ID: ${ev.eventID} \n${e}");
                                 }
                             } else { // Else, use the default one from their settings
-                                client.announceMsg(client.guilds.get(guildID), announceMessage);
+                                Bot.announceMsg(client.guilds.get(guildID), announceMessage);
                             }
                         }
                     }
@@ -990,23 +993,23 @@ module.exports = (client) => {
                             event.repeatDays = tmpEv.repeatDays;
                             event.repeat = tmpEv.repeat;
                             // Save it back with the new values
-                            await client.database.models.eventDBs.update(event, {where: {eventID: event.eventID}})
+                            await Bot.database.models.eventDBs.update(event, {where: {eventID: event.eventID}})
                                 .then(async () => {
-                                    client.scheduleEvent(event, guildConf.eventCountdown);
+                                    Bot.scheduleEvent(event, guildConf.eventCountdown);
                                 });
                         } else {
                             // There was no viable next time, so wipe it out
-                            await client.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
-                                .catch(error => { client.log("ERROR",`Broke trying to delete zombies ${error}`); });
+                            await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
+                                .catch(error => { Bot.log("ERROR",`Broke trying to delete zombies ${error}`); });
                         }
                     } else {
                         // If no repeat and it's long-gone, just wipe it from existence
-                        await client.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
-                            .catch(error => { client.log("ERROR",`Broke trying to delete zombies ${error}`); });
+                        await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
+                            .catch(error => { Bot.log("ERROR",`Broke trying to delete zombies ${error}`); });
                     }
                 } else {
                     ix++;
-                    client.scheduleEvent(event, guildConf.eventCountdown);
+                    Bot.scheduleEvent(event, guildConf.eventCountdown);
                 }
             }
         }
@@ -1014,9 +1017,9 @@ module.exports = (client) => {
     };
 
     // Actually schedule em here
-    client.scheduleEvent = async (event, countdown) => {
-        client.schedule.scheduleJob(event.eventID, parseInt(event.eventDT), function() {
-            client.eventAnnounce(event);
+    Bot.scheduleEvent = async (event, countdown) => {
+        Bot.schedule.scheduleJob(event.eventID, parseInt(event.eventDT), function() {
+            Bot.eventAnnounce(event);
         });
 
         if (countdown.length && (event.countdown === "true" || event.countdown === "yes" || event.countdown === true)) {
@@ -1028,13 +1031,13 @@ module.exports = (client) => {
                 const newTime = (evTime-cdTime-60) * 1000;
                 if (newTime > nowTime) {    // If the countdown is between now and the event
                     const sID = `${event.eventID}-CD${time}`;
-                    if (!client.evCountdowns[event.eventID]) {
-                        client.evCountdowns[event.eventID] = [sID];
+                    if (!Bot.evCountdowns[event.eventID]) {
+                        Bot.evCountdowns[event.eventID] = [sID];
                     } else {
-                        client.evCountdowns[event.eventID].push(sID);
+                        Bot.evCountdowns[event.eventID].push(sID);
                     }
-                    client.schedule.scheduleJob(sID, parseInt(newTime) , function() {
-                        client.countdownAnnounce(event);
+                    Bot.schedule.scheduleJob(sID, parseInt(newTime) , function() {
+                        Bot.countdownAnnounce(event);
                     });
                 }
             });
@@ -1062,12 +1065,12 @@ module.exports = (client) => {
     }
 
     // Delete em here as needed
-    client.deleteEvent = async (eventID) => {
-        const event = await client.database.models.eventDBs.findOne({where: {eventID: eventID}});
+    Bot.deleteEvent = async (eventID) => {
+        const event = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}});
 
-        await client.database.models.eventDBs.destroy({where: {eventID: eventID}})
+        await Bot.database.models.eventDBs.destroy({where: {eventID: eventID}})
             .then(() => {
-                const eventToDel = client.schedule.scheduledJobs[eventID];
+                const eventToDel = Bot.schedule.scheduledJobs[eventID];
                 if (!eventToDel) {
                     console.log("Could not find scheduled event to delete: " + event);
                 } else {
@@ -1075,12 +1078,12 @@ module.exports = (client) => {
                 }
             })
             .catch(error => {
-                client.log("ERROR",`Broke deleting an event ${error}`);
+                Bot.log("ERROR",`Broke deleting an event ${error}`);
             });
 
-        if (client.evCountdowns[event.eventID] && (event.countdown === "true" || event.countdown === "yes")) {
-            client.evCountdowns[event.eventID].forEach(time => {
-                const eventToDel = client.schedule.scheduledJobs[time];
+        if (Bot.evCountdowns[event.eventID] && (event.countdown === "true" || event.countdown === "yes")) {
+            Bot.evCountdowns[event.eventID].forEach(time => {
+                const eventToDel = Bot.schedule.scheduledJobs[time];
                 if (eventToDel) {
                     eventToDel.cancel();
                 }
@@ -1089,34 +1092,34 @@ module.exports = (client) => {
     };
 
     // To stick into node-schedule for each countdown event
-    client.countdownAnnounce = async (event) => {
+    Bot.countdownAnnounce = async (event) => {
         let eventName = event.eventID.split("-");
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
 
-        const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(Bot.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
 
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), "minutes") * -1, "minutes").format(`h [${client.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${client.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
-        var announceMessage = client.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
+        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), "minutes") * -1, "minutes").format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
+        var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
 
         if (guildConf["announceChan"] != "" || event.eventChan !== "") {
             if (event["eventChan"] && event.eventChan !== "") { // If they've set a channel, use it
-                client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+                Bot.announceMsg(Bot.guilds.get(guildID), announceMessage, event.eventChan);
             } else { // Else, use the default one from their settings
-                client.announceMsg(client.guilds.get(guildID), announceMessage);
+                Bot.announceMsg(Bot.guilds.get(guildID), announceMessage);
             }
         }
     };
 
     // To stick into node-schedule for each full event
-    client.eventAnnounce = async (event) => {
+    Bot.eventAnnounce = async (event) => {
         // Parse out the eventName and guildName from the ID
         let eventName = event.eventID.split("-");
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
 
-        const guildSettings = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(Bot.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
 
         let repTime = false, repDay = false;
@@ -1134,12 +1137,12 @@ module.exports = (client) => {
         if (guildConf["announceChan"] != "" || event.eventChan !== "") {
             if (event["eventChan"] && event.eventChan !== "") { // If they've set a channel, use it
                 try {
-                    client.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
+                    Bot.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
                 } catch (e) {
-                    client.log("ERROR", "Broke trying to announce event with ID: ${event.eventID} \n${e}");
+                    Bot.log("ERROR", "Broke trying to announce event with ID: ${event.eventID} \n${e}");
                 }
             } else { // Else, use the default one from their settings
-                client.announceMsg(client.guilds.get(guildID), announceMessage);
+                Bot.announceMsg(client.guilds.get(guildID), announceMessage);
             }
         }
 
@@ -1149,7 +1152,7 @@ module.exports = (client) => {
             let eventMsg = event.eventMessage;
             // If this is the last time, tack a message to the end to let them know it's the last one
             if (repDays.length === 1) {
-                eventMsg += client.languages[guildConf.language].get("BASE_LAST_EVENT_NOTIFICATION");
+                eventMsg += Bot.languages[guildConf.language].get("BASE_LAST_EVENT_NOTIFICATION");
             }
             newEvent = {
                 "eventID": event.eventID,
@@ -1183,21 +1186,21 @@ module.exports = (client) => {
         }
 
         if (repTime || repDay) {
-            await client.database.models.eventDBs.update(newEvent, {where: {eventID: event.eventID}})
+            await Bot.database.models.eventDBs.update(newEvent, {where: {eventID: event.eventID}})
                 .then(async () => {
-                    client.scheduleEvent(newEvent, guildConf.eventCountdown);
+                    Bot.scheduleEvent(newEvent, guildConf.eventCountdown);
                 })
-                .catch(error => { client.log("ERROR", "Broke trying to replace event: " + error); });
+                .catch(error => { Bot.log("ERROR", "Broke trying to replace event: " + error); });
         } else {
             // Just destroy it
-            await client.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
+            await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
                 .then(async () => {})
-                .catch(error => { client.log("ERROR",`Broke trying to delete old event ${error}`); });
+                .catch(error => { Bot.log("ERROR",`Broke trying to delete old event ${error}`); });
         }
     };
 
     // Convert from milliseconds
-    client.convertMS = (milliseconds) => {
+    Bot.convertMS = (milliseconds) => {
         var hour, totalMin, minute, seconds;
         seconds = Math.floor(milliseconds / 1000);
         totalMin = Math.floor(seconds / 60);
@@ -1214,19 +1217,19 @@ module.exports = (client) => {
 
 
     // Reload the SWGoH data for all patrons
-    client.reloadPatrons = async () => {
+    Bot.reloadPatrons = async () => {
         try {
-            client.patrons = await client.getPatrons();
+            Bot.patrons = await Bot.getPatrons();
         } catch (e) {
             // Something happened
             console.log("Broke getting patrons: " + e);
         }
-        // console.log("Reloaded " + client.patrons.length + " active patrons");
+        // console.log("Reloaded " + Bot.patrons.length + " active patrons");
     };
 
     // Get the cooldown
-    client.getPlayerCooldown = (author) => {
-        const patron = client.patrons.find(u => u.discordID === author);
+    Bot.getPlayerCooldown = (author) => {
+        const patron = Bot.patrons.find(u => u.discordID === author);
         if (!patron) {
             return {
                 player: 2*60,
@@ -1255,10 +1258,10 @@ module.exports = (client) => {
     };
 
     // Check for updated ranks
-    client.getRanks = async () => {
-        for (const patron of client.patrons) {
+    Bot.getRanks = async () => {
+        for (const patron of Bot.patrons) {
             if (patron.amount_cents < 100) continue;
-            const user = await client.userReg.getUser(patron.discordID);
+            const user = await Bot.userReg.getUser(patron.discordID);
             // If they're not registered with anything or don't have any ally codes
             if (!user || !user.accounts.length) continue;
 
@@ -1273,7 +1276,7 @@ module.exports = (client) => {
                 }
                 let player;
                 try {
-                    player = await client.swgohAPI.fastPlayer(acc.allyCode);
+                    player = await Bot.swgohAPI.fastPlayer(acc.allyCode);
                 } catch (e) {
                     return console.log("Broke in getRanks: " + e.message);
                 }
@@ -1382,15 +1385,15 @@ module.exports = (client) => {
                     user.accounts[ix] = acc;
                 }
                 // Wait here in case of extra accounts
-                await client.wait(500);
+                await Bot.wait(500);
             }
-            await client.userReg.updateUser(patron.discordID, user);
+            await Bot.userReg.updateUser(patron.discordID, user);
         }
     };
 
     // Get all patrons and their info
-    client.getPatrons = async () => {
-        const patreon = client.config.patreon;
+    Bot.getPatrons = async () => {
+        const patreon = Bot.config.patreon;
         return new Promise(async (resolve, reject) => {
             if (!patreon) {
                 resolve([]);
@@ -1441,10 +1444,10 @@ module.exports = (client) => {
                     patrons = patrons.filter(patron => !patron.declined_since);
 
                     // This is so I can manually add people in, be it bugginess or just so they can try it out
-                    const others = client.config.patrons ? client.config.patrons : [];
+                    const others = Bot.config.patrons ? Bot.config.patrons : [];
 
                     // Add myself in since I can't really be my own patron
-                    others.push(client.config.ownerid);
+                    others.push(Bot.config.ownerid);
                     others.forEach(o => {
                         if (!patrons.find(p => p.discordID === o)) {
                             patrons.push({

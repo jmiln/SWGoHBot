@@ -2,8 +2,8 @@ const util = require("util");
 const Command = require("../base/Command");
 
 class Showconf extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "showconf",
             aliases: ["showconfs", "showconfig", "showconfigs"],
             category: "Admin",
@@ -11,7 +11,7 @@ class Showconf extends Command {
         });
     }
 
-    async run(client, message, args, level) {
+    async run(Bot, message, args, level) {
         let guildID = message.guild.id;
         let guildName = "";
         // If I or an adminHelper adds a guild ID here, pull up that instead
@@ -43,7 +43,7 @@ class Showconf extends Command {
             guildName = message.guild.name;
         }
 
-        const guildConf = await client.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildConf = await Bot.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(Bot.config.defaultSettings)});
 
         var array = [];
         if (guildConf) {

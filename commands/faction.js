@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Faction extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "faction",
             aliases: ["factions"],
             category: "Star Wars",
@@ -18,16 +18,16 @@ class Faction extends Command {
         });
     }
 
-    async run(client, message, args, options) {
-        const charList = client.characters;
+    async run(Bot, message, args, options) {
+        const charList = Bot.characters;
         let allyCode = null;
         if (!args[0]) {
             return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_MISSING_FACTION"), example: "faction sith"});
         }
-        if (args[0].toLowerCase() === "me" || client.isAllyCode(args[0]) || client.isUserID(args[0])) {
+        if (args[0].toLowerCase() === "me" || Bot.isAllyCode(args[0]) || Bot.isUserID(args[0])) {
             allyCode = args.splice(0, 1);
             try {
-                allyCode = await client.getAllyCode(message, allyCode);
+                allyCode = await Bot.getAllyCode(message, allyCode);
             } catch (e) {
                 return super.error(message, e.message);
             }
@@ -43,7 +43,7 @@ class Faction extends Command {
         let search = searchName.replace(/[^\w]/g, "").replace(/s$/, "");
         if (searchName.toLowerCase() === "galactic republic") search = "affiliation_republic";
         const query = new RegExp(`^(?!.*selftag).*${search}.*`, "gi");
-        let chars = await client.cache.get(client.config.mongodb.swapidb, "units", {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, {_id: 0, baseId: 1, nameKey: 1});
+        let chars = await Bot.cache.get(Bot.config.mongodb.swapidb, "units", {categoryIdList: query, language: message.guildSettings.swgohLanguage.toLowerCase()}, {_id: 0, baseId: 1, nameKey: 1});
 
         // Filter out any ships that show up
         chars = chars.filter(c => charList.find(char => char.uniqueName === c.baseId));
@@ -61,7 +61,7 @@ class Faction extends Command {
             const units = [];
 
             for (const c of chars) {
-                const char = await client.swgohAPI.getCharacter(c.baseId, message.guildSettings.swgohLanguage);
+                const char = await Bot.swgohAPI.getCharacter(c.baseId, message.guildSettings.swgohLanguage);
                 units.push(char);
             }
 
@@ -85,10 +85,10 @@ class Faction extends Command {
         if (allyCode) {
             if (chars.length) {
                 chars = chars.map(c => c.baseId);
-                const cooldown = client.getPlayerCooldown(message.author.id);
+                const cooldown = Bot.getPlayerCooldown(message.author.id);
                 let player;
                 try {
-                    player = await client.swgohAPI.player(allyCode, null, cooldown);
+                    player = await Bot.swgohAPI.player(allyCode, null, cooldown);
                 } catch (e) {
                     return super.error(message, e.message);
                 }
@@ -96,7 +96,7 @@ class Faction extends Command {
                 for (const c of chars) {
                     let found = player.roster.find(char => char.defId === c);
                     if (found) {
-                        found = await client.swgohAPI.langChar(found, message.guildSettings.swgohLanguage);
+                        found = await Bot.swgohAPI.langChar(found, message.guildSettings.swgohLanguage);
                         found.gp = found.gp.toLocaleString();
                         playerChars.push(found);
                     }
@@ -116,7 +116,7 @@ class Faction extends Command {
                     const zetas   = "z".repeat(c.skills.filter(s => s.isZeta && s.tier === 8).length);
                     factionChars.push(`**\`[ ${c.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${c.nameKey}**`);
                 });
-                const msgArray = client.msgArray(factionChars, "\n", 1000);
+                const msgArray = Bot.msgArray(factionChars, "\n", 1000);
                 const fields = [];
                 let desc;
                 if (msgArray.length > 1) {
@@ -132,11 +132,11 @@ class Faction extends Command {
                 if (options.defaults) {
                     fields.push({
                         name: "Default flags used:",
-                        value: client.codeBlock(options.defaults)
+                        value: Bot.codeBlock(options.defaults)
                     });
                 }
 
-                const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+                const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
                 return message.channel.send({embed: {
                     author: {
                         name: player.name + "'s matches for " + searchName.toProperCase()

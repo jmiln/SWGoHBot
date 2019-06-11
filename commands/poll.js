@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Poll extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "poll",
             category: "Misc",
             aliases: ["vote"],
@@ -19,7 +19,7 @@ class Poll extends Command {
         });
     }
 
-    async run(client, message, [action, ...opts], options) {
+    async run(Bot, message, [action, ...opts], options) {
         const level = options.level;
         if (!action) {
             return super.error(message, message.language.get("COMMAND_POLL_NO_ARG"));
@@ -35,16 +35,16 @@ class Poll extends Command {
         const optsJoin = opts.join(" ").split("|");
         let pollID;
         let exists = false;
-        // If subArgs.poll is there, get that instead, and check if it's for a channel 
+        // If subArgs.poll is there, get that instead, and check if it's for a channel
         // that the user has access to
         if (options.subArgs.pollID) {
             // If they're using the auto-incrementing ID to vote from anywhere
-            exists = await client.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}})
+            exists = await Bot.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}})
                 .then(token => token != null)
                 .then(isUnique => isUnique);
 
             if (exists) {
-                const tempP = await client.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}, attributes: ["id", "poll", "pollId"]});
+                const tempP = await Bot.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}, attributes: ["id", "poll", "pollId"]});
                 const thisPoll = tempP.dataValues;
                 poll = thisPoll.poll;
                 poll.pollID = thisPoll.pollId;
@@ -77,12 +77,12 @@ class Poll extends Command {
         } else {
             // If they're just voting on the channel's poll
             pollID = `${message.guild.id}-${message.channel.id}`;
-            exists = await client.database.models.polls.findOne({where: {id: pollID}})
+            exists = await Bot.database.models.polls.findOne({where: {id: pollID}})
                 .then(token => token != null)
                 .then(isUnique => isUnique);
 
             if (exists) {
-                const tempP = await client.database.models.polls.findOne({where: {id: pollID}});
+                const tempP = await Bot.database.models.polls.findOne({where: {id: pollID}});
                 poll = tempP.dataValues.poll;
                 poll.pollID = tempP.dataValues.pollId;
             }
@@ -116,7 +116,7 @@ class Poll extends Command {
                 if (options.flags.anon) {
                     poll.anon = true;
                 }
-                await client.database.models.polls.create({
+                await Bot.database.models.polls.create({
                     id: pollID,
                     poll: poll
                 })
@@ -129,9 +129,9 @@ class Poll extends Command {
                             description: pollCheck(poll),
                             footer: getFooter(poll)
                         }});
-                    });               
+                    });
                 break;
-            } 
+            }
             case "view":
             case "check": {
                 // Check the current poll
@@ -168,7 +168,7 @@ class Poll extends Command {
                     return super.error(message, message.language.get("COMMAND_POLL_NO_POLL"));
                 } else {
                     // Delete the current poll
-                    await client.database.models.polls.destroy({where: {id: pollID}})
+                    await Bot.database.models.polls.destroy({where: {id: pollID}})
                         .then(() => {
                             // Then send a message showing the final results
                             return message.channel.send({embed: {
@@ -178,7 +178,7 @@ class Poll extends Command {
                                 description: `**${poll.question}**\n${pollCheck(poll, true)}`
                             }});
                         })
-                        .catch(() => { 
+                        .catch(() => {
                             // Or, if it breaks, tell them that it broke
                             return super.error(message, message.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
                         });
@@ -187,7 +187,7 @@ class Poll extends Command {
             }
             case String(action.match(/\d/)): {
                 // Someone voting on an option
-                // Check if there is a poll going, then if there is, vote, else tell em that there isn"t 
+                // Check if there is a poll going, then if there is, vote, else tell em that there isn"t
                 if (!exists) {
                     return super.error(message, message.language.get("COMMAND_POLL_NO_POLL"));
                 } else {
@@ -202,7 +202,7 @@ class Poll extends Command {
                             voted = poll.votes[message.author.id];
                         }
                         poll.votes[message.author.id] = opt;
-                        await client.database.models.polls.update({poll: poll}, {where: {id: pollID}})
+                        await Bot.database.models.polls.update({poll: poll}, {where: {id: pollID}})
                             .then(() => {
                                 if (voted !== -1) {
                                     return message.channel.send(message.language.get("COMMAND_POLL_CHANGED_OPT", poll.options[voted], poll.options[opt]));
@@ -242,7 +242,7 @@ class Poll extends Command {
             Object.keys(poll.votes).forEach(voter => {
                 voteCount[poll.votes[voter]] += 1;
             });
-            let outString = ""; 
+            let outString = "";
             Object.keys(voteCount).forEach(opt => {
                 const percent = Math.floor((voteCount[opt] / totalVotes) * 30);
                 outString += `\`[${parseInt(opt)+1}]\` **${poll.options[opt]}**\n`;
@@ -257,9 +257,9 @@ class Poll extends Command {
         function getFooter(poll) {
             const footer = {};
             if (message.guild) {
-                footer.text = client.expandSpaces(message.language.get("COMMAND_POLL_FOOTER", poll.pollID, message.guildSettings.prefix));
+                footer.text = Bot.expandSpaces(message.language.get("COMMAND_POLL_FOOTER", poll.pollID, message.guildSettings.prefix));
             } else {
-                footer.text = client.expandSpaces(message.language.get("COMMAND_POLL_DM_FOOTER", poll.pollID, message.guildSettings.prefix));
+                footer.text = Bot.expandSpaces(message.language.get("COMMAND_POLL_DM_FOOTER", poll.pollID, message.guildSettings.prefix));
             }
             return footer;
         }

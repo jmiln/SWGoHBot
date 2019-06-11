@@ -2,24 +2,24 @@ const Command = require("../base/Command");
 const raids = require("../data/raiddmg.json");
 
 class RaidDamage extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "raiddamage",
             category: "SWGoH",
-            enabled: true, 
+            enabled: true,
             aliases: ["raiddmg", "rdmg", "convert", "raidd", "raid"],
             permissions: ["EMBED_LINKS"]
         });
     }
 
-    async run(client, message, [raid, phase, amt]) {
+    async run(Bot, message, [raid, phase, amt]) {
         const examples = [
             "raiddmg rancor 1 49%",
             `${message.guildSettings.prefix}raiddmg aat 3 100,000`
         ];
         if (!raid) {
             return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_RAID_STR", raids.map(r => r.name.toLowerCase())), {
-                title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_RAID"), 
+                title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_RAID"),
                 example: examples.join("\n")
             });
         }
@@ -27,14 +27,14 @@ class RaidDamage extends Command {
         const thisRaid = raids.find(r => r.name.toLowerCase() === raid || r.aliases.includes(raid));
         if (!thisRaid) {
             return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_RAID_STR", raids.map(r => r.name.toLowerCase())), {
-                title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_RAID"), 
+                title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_RAID"),
                 example: examples.join("\n")
             });
         }
 
         if (!phase) {
             return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_PHASE_STR", thisRaid.name, Object.keys(thisRaid.phases).map(ix => "`" + ix + "`: " + thisRaid.phases[ix].name.toProperCase()).join("\n")), {
-                title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_PHASE"), 
+                title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_PHASE"),
                 example: examples.join("\n")
             });
         }
@@ -44,20 +44,20 @@ class RaidDamage extends Command {
         const thisPhase = thisRaid.phases[phase];
         if (!thisPhase) {
             return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_PHASE_STR", thisRaid.name, Object.keys(thisRaid.phases).map(ix => "`" + ix + "`: " + thisRaid.phases[ix].name.toProperCase()).join("\n")), {
-                title: message.language.get("COMMAND_RAIDDAMAGE_INVALID_PHASE"), 
+                title: message.language.get("COMMAND_RAIDDAMAGE_INVALID_PHASE"),
                 example: examples.join("\n")
             });
         }
 
         if (!amt) {
             return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_AMOUNT_STR"), {
-                title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_AMT"), 
+                title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_AMT"),
                 example: examples.join("\n")
             });
-        } 
+        }
         if (isNaN(parseInt(amt))) {
             return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_AMOUNT_STR"), {
-                title: message.language.get("COMMAND_RAIDDAMAGE_INVALID_AMT"), 
+                title: message.language.get("COMMAND_RAIDDAMAGE_INVALID_AMT"),
                 example: examples.join("\n")
             });
         }
@@ -78,7 +78,7 @@ class RaidDamage extends Command {
             },
             description: percent ? message.language.get("COMMAND_RAIDDAMAGE_OUT_PERCENT", amt, outAmt) : message.language.get("COMMAND_RAIDDAMAGE_OUT_DMG", amt, outAmt)
         }});
-    } 
+    }
 }
 
 module.exports = RaidDamage;

@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class UserConf extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "userconf",
             category: "SWGoH",
             aliases: ["uc", "uconf", "userconfig", "uconfig"],
@@ -14,7 +14,7 @@ class UserConf extends Command {
         });
     }
 
-    async run(client, message, [target, action, ...args], options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [target, action, ...args], options) { // eslint-disable-line no-unused-vars
         if (target) target = target.toLowerCase();
         if (action) action = action.toLowerCase();
 
@@ -24,26 +24,26 @@ class UserConf extends Command {
             return super.error(message, message.language.get("COMMAND_USERCONF_CANNOT_VIEW_OTHER"));
         } else if (options.subArgs.user) {
             userID = options.subArgs.user.replace(/[^\d]*/g, "");
-            if (!client.isUserID(userID)) {
+            if (!Bot.isUserID(userID)) {
                 return super.error(message, "Invalid user ID");
             }
         }
 
-        let user = await client.userReg.getUser(userID); // eslint-disable-line no-unused-vars
+        let user = await Bot.userReg.getUser(userID); // eslint-disable-line no-unused-vars
         switch (target) {
             case "allycodes":
             case "allycode": {
                 // Allycode   -> add/remove/makePrimary
                 let allyCode;
                 if (!user) {
-                    user = JSON.parse(JSON.stringify(client.config.defaultUserConf));
+                    user = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
                     user.id = userID;
                 }
                 if (!args[0]) {
                     // Missing ally code
                     return super.error(message, message.language.get("COMMAND_REGISTER_MISSING_ALLY"));
                 } else {
-                    if (client.isAllyCode(args[0])) {
+                    if (Bot.isAllyCode(args[0])) {
                         allyCode = args[0].replace(/[^\d]*/g, "");
                     } else {
                         // Bad code, grumblin time
@@ -64,7 +64,7 @@ class UserConf extends Command {
 
                     // Sync up their swgoh account
                     try {
-                        await client.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
+                        await Bot.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
                             if (!u) {
                                 super.error(message, message.language.get("COMMAND_REGISTER_FAILURE"));
                             } else {
@@ -73,12 +73,12 @@ class UserConf extends Command {
                                     name: u.name,
                                     primary: user.accounts.length ? false : true
                                 });
-                                await client.swgohAPI.register([
+                                await Bot.swgohAPI.register([
                                     [allyCode, userID]
                                 ]);
-                                await client.userReg.updateUser(userID, user);
+                                await Bot.userReg.updateUser(userID, user);
                                 return super.success(message,
-                                    client.codeBlock(message.language.get(
+                                    Bot.codeBlock(message.language.get(
                                         "COMMAND_REGISTER_SUCCESS_DESC",
                                         u,
                                         u.allyCode.toString().match(/\d{3}/g).join("-"),
@@ -90,7 +90,7 @@ class UserConf extends Command {
                         });
                     } catch (e) {
                         console.log("ERROR[REG]: Incorrect Ally Code(" + allyCode + "): " + e);
-                        return super.error(message, ("Something broke. Make sure you've got the correct ally code" + client.codeBlock(e.message)));
+                        return super.error(message, ("Something broke. Make sure you've got the correct ally code" + Bot.codeBlock(e.message)));
                     }
                 } else if (action === "remove") {
                     // Remove from the list, if the chosen one was the primary, set the 1st
@@ -104,7 +104,7 @@ class UserConf extends Command {
                     if (user.accounts.length && !user.accounts.find(a => a.primary)) {
                         user.accounts[0].primary = true;
                     }
-                    await client.userReg.updateUser(userID, user);
+                    await Bot.userReg.updateUser(userID, user);
                     return super.success(message, message.language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode));
                 } else if (action === "makeprimary") {
                     // Set the selected ally code the primary one
@@ -120,7 +120,7 @@ class UserConf extends Command {
                         if (a.allyCode === allyCode) a.primary = true;
                         return a;
                     });
-                    await client.userReg.updateUser(userID, user);
+                    await Bot.userReg.updateUser(userID, user);
                     return super.success(message, message.language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim.name, prim.allyCode, acc.name, acc.allyCode));
                 }
                 break;
@@ -131,16 +131,16 @@ class UserConf extends Command {
                 // ;uc defaults clear <commandName>
                 const [com, ...flag] = args;
                 if (!user) {
-                    user = client.config.defaultUserConf;
+                    user = Bot.config.defaultUserConf;
                     user.id = userID;
                 }
 
                 let command;
                 const cmdBlacklist = ["event", "shardtimes"];
-                if (client.commands.has(com)) {
-                    command = client.commands.get(com);
-                } else if (client.aliases.has(com)) {
-                    command = client.commands.get(client.aliases.get(com));
+                if (Bot.commands.has(com)) {
+                    command = Bot.commands.get(com);
+                } else if (Bot.aliases.has(com)) {
+                    command = Bot.commands.get(Bot.aliases.get(com));
                 } else {
                     return super.error(message, message.language.get("COMMAND_RELOAD_INVALID_CMD", com));
                 }
@@ -162,14 +162,14 @@ class UserConf extends Command {
                     delete user.defaults[command.help.name];
                     message.channel.send(message.language.get("COMMAND_USERCONF_DEFAULTS_CLEARED", command.help.name));
                 }
-                await client.userReg.updateUser(userID, user);
+                await Bot.userReg.updateUser(userID, user);
                 break;
             }
             case "arenaalert": {
                 // ArenaAlert -> activate/ deactivate
                 const onVar = ["true", "on", "enable"];
                 const offVar = ["false", "off", "disable"];
-                const pat = client.patrons.find(p => p.discordID === message.author.id);
+                const pat = Bot.patrons.find(p => p.discordID === message.author.id);
                 if (!pat || pat.amount_cents < 100) {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_PATREON_ONLY"));
                 }
@@ -224,7 +224,7 @@ class UserConf extends Command {
                 } else {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_OPTION"), {title: "Invalid Option"});
                 }
-                await client.userReg.updateUser(userID, user);
+                await Bot.userReg.updateUser(userID, user);
                 return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_UPDATED"), {title: "Success!", color: 0x00FF00});
             }
             case "view": {
@@ -250,7 +250,7 @@ class UserConf extends Command {
                         `Payout result alert: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
                     ].join("\n")
                 });
-                const u = await client.fetchUser(userID);
+                const u = await message.client.fetchUser(userID);
                 return message.channel.send({embed: {
                     author: {name: u.username},
                     fields: fields
