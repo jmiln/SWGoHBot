@@ -29,7 +29,7 @@ module.exports = async (Bot, client) => {
             await client.shard.broadcastEval("this.loadAllEmotes()");
         }
     } else {
-        Bot.loadAllEmotes();
+        client.loadAllEmotes();
     }
 
     Bot.log("Ready", readyString);

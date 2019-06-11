@@ -26,7 +26,6 @@ class Reload extends Command {
             message.channel.send(`Reloading: ${command}`)
                 .then(async msg => {
                     if (message.client.shard && message.client.shard.count > 0) {
-                        console.log("Trying to reload in shards: ");
                         await message.client.shard.broadcastEval(`this.reloadCommand("${command}");`)
                             .then(() => {
                                 msg.edit(message.language.get("COMMAND_RELOAD_SUCCESS", command));

@@ -677,7 +677,7 @@ module.exports = (Bot, client) => {
      * Find an emoji by ID
      * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
-    Bot.findEmoji = (id) => {
+    client.findEmoji = (id) => {
         const temp = client.emojis.get(id);
         if (!temp) return null;
 
@@ -697,7 +697,7 @@ module.exports = (Bot, client) => {
      * If sharded, also use the example from
      * https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
-    Bot.getEmoji = (id) => {
+    client.getEmoji = (id) => {
         if (client.shard && client.shard.count > 0) {
             return client.shard.broadcastEval(`this.findEmoji('${id}');`)
                 .then(emojiArray => {
@@ -713,17 +713,17 @@ module.exports = (Bot, client) => {
                         });
                 });
         } else {
-            const emoji = Bot.findEmoji(id);
+            const emoji = client.findEmoji(id);
             if (!emoji) return false;
             return new Discord.Emoji(client.guilds.get(emoji.guild), emoji);
         }
     };
 
     // Load all the emotes that may be used for the bot at some point (from data/emoteIDs.js)
-    Bot.loadAllEmotes = async () => {
+    client.loadAllEmotes = async () => {
         const emoteList = require("../data/emoteIDs.js");
         for (const emote of Object.keys(emoteList)) {
-            const e = await Bot.getEmoji(emoteList[emote]);
+            const e = await client.getEmoji(emoteList[emote]);
             if (!e) {
                 console.log("Couldn't get emote: " + emote);
                 continue;

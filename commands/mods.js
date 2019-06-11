@@ -12,6 +12,7 @@ class Mods extends Command {
 
     run(Bot, message, args) {
         const charList = Bot.characters;
+        const client = message.client;
 
         const getLocalizedModString = function(key) {
             const localizationKeyMap = {

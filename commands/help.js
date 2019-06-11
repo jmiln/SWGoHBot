@@ -12,11 +12,12 @@ class Help extends Command {
 
     run(Bot, message, args, options) {
         const level = options.level;
+        const client = message.client;
 
         const help = {};
 
         if (!args[0]) { // Show the list of commands
-            const commandList = Bot.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
+            const commandList = client.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
             const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
 
             let output = message.language.get("COMMAND_HELP_HEADER", Bot.config.prefix);
@@ -37,10 +38,10 @@ class Help extends Command {
             message.channel.send(output, { code: "asciidoc", split: {maxLength: 1500, char: "\n"} });
         } else { // Show the help for a specific command
             let command;
-            if (Bot.commands.has(args[0])) {
-                command = Bot.commands.get(args[0]);
-            } else if (Bot.aliases.has(args[0])) {
-                command = Bot.commands.get(Bot.aliases.get(args[0]));
+            if (client.commands.has(args[0])) {
+                command = client.commands.get(args[0]);
+            } else if (client.aliases.has(args[0])) {
+                command = client.commands.get(client.aliases.get(args[0]));
             } else {
                 return super.error(message, message.language.get("COMMAND_RELOAD_INVALID_CMD", args[0]));
             }
