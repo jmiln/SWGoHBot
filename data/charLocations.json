@@ -1789,6 +1789,15 @@
         ]
     },
     {
+        "name": "Shaak Ti",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Clone Training"
+            }
+        ]
+    },
+    {
         "name": "Shoretrooper",
         "locations": [
             {
