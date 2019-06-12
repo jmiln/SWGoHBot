@@ -983,6 +983,7 @@ module.exports = (Bot) => {
     }
 
     function isExpired( updated, cooldown={}, guild=false ) {
+        if (!updated) return true;
         if (guild) {
             if (!cooldown) {
                 cooldown = guildMaxCooldown;
