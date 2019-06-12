@@ -117,7 +117,7 @@ class MyMods extends Command {
                     let shapeIcon = modSlots[mod-1].toProperCase();
                     const stats = slots[mod].stats;
                     // If the bot has the right perms to use external emotes, go for it
-                    if (message.channel.permissionsFor(message.guild.me).has("USE_EXTERNAL_EMOJIS")) {
+                    if (!message.guild || message.channel.permissionsFor(message.guild.me).has("USE_EXTERNAL_EMOJIS")) {
                         const shapeIconString = `${modSlots[mod-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
                         shapeIcon = Bot.emotes[shapeIconString] || shapeIcon;
 
