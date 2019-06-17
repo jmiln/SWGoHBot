@@ -21,6 +21,7 @@ class Poll extends Command {
 
     async run(Bot, message, [action, ...opts], options) {
         const level = options.level;
+        const client = message.client;
         if (!action) {
             return super.error(message, message.language.get("COMMAND_POLL_NO_ARG"));
         }
