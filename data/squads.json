@@ -1929,6 +1929,58 @@
         "level": 80,
         "phase": [
             {
+                "name": "AGGRESSIVE NEGOTIATIONS",
+                "anchor": "padme",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "",
+                        "url": "",
+                        "panic": "https://swgohevents.com/panic-farm/padme",
+                        "team": [
+                            "ASAJVENTRESS",
+                            "GRIEVOUS",
+                            "COUNTDOOKU",
+                            "NUTEGUNRAY",
+                            "B2SUPERBATTLEDROID",
+                            "MAGNAGUARD",
+                            "DROIDEKA",
+                            "B1BATTLEDROIDV2",
+                            "POGGLETHELESSER",
+                            "SUNFAC",
+                            "GEONOSIANSPY",
+                            "GEONOSIANSOLDIER"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "STAR FORGE SHOWDOWN",
+                "anchor": "malak",
+                "squads": [
+                    {
+                        "name": "",
+                        "note": "You will need DR, JKR, and 4 of the 5 under each leader. Both squads will need 17,500 power per character.",
+                        "url": "",
+                        "panic": "",
+                        "team": [
+                            "JEDIKNIGHTREVAN",
+                            "BASTILASHAN",
+                            "JOLEEBINDO",
+                            "T3_M4",
+                            "MISSIONVAO",
+                            "ZAALBAR",
+                            "DARTHREVAN",
+                            "CARTHONASI",
+                            "HK47",
+                            "JUHANI",
+                            "CANDEROUSORDO",
+                            "BASTILASHANDARK"
+                        ]
+                    }
+                ]
+            },
+            {
                 "name": "SCOURGE OF THE OLD REPUBLIC",
                 "anchor": "darth-revan",
                 "squads": [
@@ -3579,7 +3631,8 @@
                             "C3POLEGENDARY:specialskill_C3POLEGENDARY01:uniqueskill_C3POLEGENDARY02",
                             "JEDIKNIGHTREVAN:leaderskill_JEDIKNIGHTREVAN:specialskill_JEDIKNIGHTREVAN02:uniqueskill_JEDIKNIGHTREVAN02",
                             "DARTHREVAN:leaderskill_DARTHREVAN:uniqueskill_DARTHREVAN01:uniqueskill_DARTHREVAN02",
-                            "DARTHMALAK:uniqueskill_DARTHMALAK01:uniqueskill_DARTHMALAK02"
+                            "DARTHMALAK:uniqueskill_DARTHMALAK01:uniqueskill_DARTHMALAK02",
+                            "PADMEAMIDALA:leaderskill_PADMEAMIDALA:uniqueskill_PADMEAMIDALA01"
                         ]
                     }
                 ]

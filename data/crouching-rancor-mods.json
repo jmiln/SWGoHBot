@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2019-06-06 20:00:01.000000",
+        "date": "2019-06-24 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -3465,22 +3465,6 @@
             "crew": "0"
         },
         {
-            "name": "Droideka",
-            "cname": "Droideka",
-            "set1": "OFF",
-            "set2": "CC",
-            "set3": "",
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense / Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense / Protection",
-            "short": "",
-            "families": "droid ; separatist",
-            "crew": "0"
-        },
-        {
             "name": "Darth Revan",
             "cname": "Darth Revan",
             "set1": "SPE",
@@ -3526,6 +3510,22 @@
             "cross": "Health",
             "short": "pa",
             "families": "galactic republic",
+            "crew": "0"
+        },
+        {
+            "name": "Droideka",
+            "cname": "Droideka",
+            "set1": "OFF",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense / Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense / Protection",
+            "short": "",
+            "families": "droid ; separatist",
             "crew": "0"
         }
     ]
