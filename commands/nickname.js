@@ -12,6 +12,7 @@ class Nickname extends Command {
     }
 
     run(Bot, message, args) {
+        const client = message.client;
         try {
             if (message.channel.permissionsFor(message.guild.me).has(["MANAGE_NICKNAMES"])) {
                 if (args.length > 0) {

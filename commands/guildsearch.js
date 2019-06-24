@@ -469,12 +469,26 @@ class GuildSearch extends Command {
             }
             const gStats = await Bot.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
 
-            const sortedMembers = gStats.sort((a, b) => a.stats[sortBy].final < b.stats[sortBy].final ? 1 : -1);
+            let pct = false;
+
+            const sortedMembers = gStats.sort((a, b) => {
+                if (!a.stats[sortBy]) {
+                    a.stats[sortBy] = {
+                        gear: 0,
+                        mods: 0,
+                        final: 0,
+                        pct: false
+                    };
+                } else {
+                    pct = a.stats[sortBy].pct;
+                }
+                return a.stats[sortBy].final < b.stats[sortBy].final ? 1 : -1;
+            });
 
             sortedMembers.forEach( member => {
                 const stats = member.stats;
                 Object.keys(stats).forEach(s => {
-                    if (stats[s].pct) {
+                    if (pct) {
                         stats[s] = (stats[s].final * 100).toFixed(2) + "%";
                     } else {
                         stats[s] = stats[s].final.toLocaleString();
