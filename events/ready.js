@@ -7,7 +7,7 @@ module.exports = async (Bot, client) => {
         readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. Shard #${client.shard.id}`;
         if (client.shard.id === 0) {
             if (Bot.config.sendStats) {
-                require("../modules/botStats.js")(Bot);
+                require("../modules/botStats.js")(Bot, client);
             }
 
             // Save the bot's current guild count every 5 minutes

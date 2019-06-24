@@ -124,7 +124,7 @@ module.exports = (Bot, client) => {
                 // Sends the logs to the channel I have set up for it.
                 if (Bot.config.logs.logToChannel) {
                     if (client.channels.has(chan)) {
-                        Bot.sendMsg(chan, mess, args);
+                        client.sendMsg(chan, mess, args);
                     } else if (client.shard && client.shard.count > 0) {
                         // If it's on a different shard, then send it there
                         client.shard.broadcastEval(`
@@ -143,7 +143,7 @@ module.exports = (Bot, client) => {
         }
     };
 
-    Bot.sendMsg = (chanID, msg, options={}) => {
+    client.sendMsg = (chanID, msg, options={}) => {
         if (!msg) return;
         msg = msg.replace(/"\|"/g, "\n").replace(/\|:\|/g, "'");
         client.channels.get(chanID).send(msg, options);
@@ -158,7 +158,7 @@ module.exports = (Bot, client) => {
         if (Bot.config.changelog.sendChangelogs) {
             const clChan = Bot.config.changelog.changelogChannel;
             if (client.channels.has(clChan)) {
-                Bot.sendMsg(clChan, clMessage);
+                client.sendMsg(clChan, clMessage);
             } else {
                 try {
                     clMessage = clMessage.replace(/'/g, "|:|");
@@ -1105,9 +1105,9 @@ module.exports = (Bot, client) => {
 
         if (guildConf["announceChan"] != "" || event.eventChan !== "") {
             if (event["eventChan"] && event.eventChan !== "") { // If they've set a channel, use it
-                Bot.announceMsg(Bot.guilds.get(guildID), announceMessage, event.eventChan);
+                Bot.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
             } else { // Else, use the default one from their settings
-                Bot.announceMsg(Bot.guilds.get(guildID), announceMessage);
+                Bot.announceMsg(client.guilds.get(guildID), announceMessage);
             }
         }
     };

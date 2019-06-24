@@ -216,7 +216,7 @@ class MyMods extends Command {
                 if (Array.isArray(player)) player = player[0];
             } catch (e) {
                 return super.error(message, Bot.codeBlock(e.message), {
-                    title: message.lanugage.get("BASE_SOMETHING_BROKE"),
+                    title: message.language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit."
                 });
             }
