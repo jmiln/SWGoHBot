@@ -229,10 +229,12 @@ class MyMods extends Command {
 
             stats.forEach(c => {
                 if (c.stats && !c.stats[statToCheck]) {
-                    c.stats[statToCheck].final = 0;
-                }
-                if (c.stats && !c.stats[statToCheck]) {
-                    c.stats[statToCheck].mods = 0;
+                    c.stats[statToCheck] = {
+                        gear: 0,
+                        mods: 0,
+                        final: 0,
+                        pct: false
+                    };
                 }
             });
 
