@@ -23,7 +23,12 @@ class Register extends Command {
                     return super.error(message, message.language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
                 }
             } else if (Bot.isAllyCode(userID)) {
-                allyCode = userID;
+                allyCode = await Bot.getAllyCode(message, userID);
+                if (allyCode.length) {
+                    allyCode = allyCode[0];
+                } else {
+                    return super.error(message, message.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
+                }
                 userID = message.author.id;
             } else {
                 // Bad code, grumblin time
