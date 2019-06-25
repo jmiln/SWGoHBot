@@ -199,7 +199,6 @@ class UserConf extends Command {
                     user.arenaAlert.arena = setting;
                 } else if (action === "payoutresult") {
                     // Set it to tell you the result at your payout
-                    console.log(!setting);
                     if (!setting) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_MISSING_BOOL"));
                     }
@@ -227,6 +226,31 @@ class UserConf extends Command {
                 await Bot.userReg.updateUser(userID, user);
                 return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_UPDATED"), {title: "Success!", color: 0x00FF00});
             }
+            case "lang": {
+                let setting = args.length ? args[0].toLowerCase() : null;
+                if (!user.lang) user.lang = {};
+                if (action === "language") {
+                    if (!setting) {
+                        return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", setting, Bot.languages.join(", ")));
+                    }
+                    if (Object.keys(Bot.languages).map(l => l.toLowerCase()).indexOf(setting) > -1) {
+                        const split = setting.split("_");
+                        setting = split[0].toLowerCase() + "_" + split[1].toUpperCase();
+                        user.lang.language = setting;
+                    }
+                } else if (action === "swgohlanguage") {
+                    if (!setting) {
+                        return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", setting, Bot.swgohLangList.join(", ")));
+                    }
+                    if (Bot.swgohLangList.map(l => l.toLowerCase()).indexOf(setting) > -1) {
+                        user.lang.swgohLanguage = setting;
+                    }
+                } else {
+                    return super.error(message, message.language.get("COMMAND_USERCONF_LANG_INVALID_OPTION"), {title: "Invalid Option"});
+                }
+                await Bot.userReg.updateUser(userID, user);
+                return super.error(message, message.language.get("COMMAND_USERCONF_LANG_UPDATED", action, setting), {title: "Success!", color: 0x00FF00});
+            }
             case "view": {
                 // Show the user's settings/ config
                 if (!user) {
@@ -242,12 +266,19 @@ class UserConf extends Command {
                     value: Object.keys(user.defaults).length ? Object.keys(user.defaults).map(d => `**${d}:** \`${user.defaults[d]}\``).join("\n") : message.language.get("COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF")
                 });
                 fields.push({
-                    name: "Arena Rank DMs",
+                    name: message.language.get("COMMAND_USERCONF_VIEW_ARENA_HEADER"),
                     value: [
-                        `DM for rank drops: **${user.arenaAlert.enableRankDMs}**`,
-                        `Show for arena: **${user.arenaAlert.arena}**`,
-                        `Payout warning **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min**" : "disabled**"}`,
-                        `Payout result alert: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
+                        `${message.language.get("COMMAND_USERCONF_VIEW_ARENA_DM")}: **${user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"}**`,
+                        `${message.language.get("COMMAND_USERCONF_VIEW_ARENA_SHOW")}: **${user.arenaAlert.arena}**`,
+                        `${message.language.get("COMMAND_USERCONF_VIEW_ARENA_WARNING")}: **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min" : "disabled"}**`,
+                        `${message.language.get("COMMAND_USERCONF_VIEW_ARENA_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
+                    ].join("\n")
+                });
+                fields.push({
+                    name: message.language.get("COMMAND_USERCONF_VIEW_LANG_HEADER") ,
+                    value: [
+                        `Language: **${user.lang ? (user.lang.language ? user.lang.language : "N/A") : "N/A"}**`,
+                        `swgohLanguage: **${user.lang ? (user.lang.swgohLanguage ? user.lang.swgohLanguage.toUpperCase() : "N/A") : "N/A"}**`
                     ].join("\n")
                 });
                 const u = await message.client.fetchUser(userID);

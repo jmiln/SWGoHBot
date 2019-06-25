@@ -20,9 +20,6 @@ module.exports = async (Bot, message) => {
     // to the message object, so `message.guildSettings` is accessible.
     message.guildSettings = guildSettings;
 
-    // Load the language file for whatever language they have set
-    message.language = Bot.languages[guildSettings.language] || Bot.languages["en_US"];
-
     // If the message is just mentioning the bot, tell them what the prefix is
     if (message.content === message.client.user.toString() || (message.guild && typeof message.guild.me !== "undefined" && message.content === message.guild.me.toString())) {
         return message.channel.send(`The prefix is \`${message.guildSettings.prefix}\`.`);
@@ -51,10 +48,25 @@ module.exports = async (Bot, message) => {
     // Check whether the command, or alias, exist in the collections defined in swgohbot.js.
     const cmd = message.client.commands.get(command) || message.client.commands.get(message.client.aliases.get(command));
 
+    if (!cmd) return;
+
+    const user = await Bot.userReg.getUser(message.author.id);
+
+    // Load the language file for whatever language they have set
+    if (user && user.lang) {
+        if (user.lang.language) {
+            message.guildSettings.language = user.lang.language;
+        }
+        if (user.lang.swgohLanguage) {
+            message.guildSettings.swgohLanguage = user.lang.swgohLanguage;
+        }
+    }
+    message.language = Bot.languages[message.guildSettings.language] || Bot.languages["en_US"];
+
     // Some commands may not be useable in DMs. This check prevents those commands from running
     // and return a friendly error message.
     if (cmd && !message.guild && cmd.conf.guildOnly) {
-        return message.channel.send(message.language.BASE_COMMAND_UNAVAILABLE).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.get("BASE_COMMAND_UNAVAILABLE")).then(msg => msg.delete(4000)).catch(console.error);
     }
 
     // If the command exists, **AND** the user has permission, run it.
@@ -84,7 +96,6 @@ module.exports = async (Bot, message) => {
 
         const noFlags = Object.keys(flagArgs.flags).every(f => !flagArgs.flags[f]);
         const noSubArgs = Object.keys(flagArgs.subArgs).every(s => flagArgs.subArgs[s] === null);
-        const user = await Bot.userReg.getUser(message.author.id);
         let def = null;
         if (noFlags && noSubArgs && user) {
             if (user.defaults[cmd.help.name]) {
