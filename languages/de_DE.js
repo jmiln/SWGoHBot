@@ -1692,18 +1692,18 @@ module.exports = class extends Language {
                         }
                     },
                     {
-                            action: "Sprachen",
-                            actionDesc: "Setzt persoenliche Lokalisierungseinstellungen",
-                            usage: [
-                               ";userconf lang language <SprachenAuswahl>",
-                               ";userconf lang swgohLanguage <SprachenAuswahl>"
-                               ].join("\n"),
-	                        args: {
-	                            langChoice: ["Die Sprache die du auswaehlen moechtest.",
-	                                `**Sprachoptionen:** ${langList.join(", ")}`,
-	                                `**Swgoh-Sprachoptionen:** ${swgohLangList.join(", ")}`
-                               ].join("\n")
-	                        }
+                        action: "Sprachen",
+                        actionDesc: "Setzt persoenliche Lokalisierungseinstellungen",
+                        usage: [
+                            ";userconf lang language <SprachenAuswahl>",
+                            ";userconf lang swgohLanguage <SprachenAuswahl>"
+                        ].join("\n"),
+                        args: {
+                            langChoice: ["Die Sprache die du auswaehlen moechtest.",
+                                `**Sprachoptionen:** ${langList.join(", ")}`,
+                                `**Swgoh-Sprachoptionen:** ${swgohLangList.join(", ")}`
+                            ].join("\n")
+                        }
                     }
                 ]
             },
