@@ -1628,7 +1628,13 @@ module.exports = class extends Language {
             COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY: "__Primaer ist **BOLD**__\n",
             COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "Keine verknuepften Buendniscodes.",
             COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Standardwerte",
-            COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Setzt Standards fuer Befehle.",
+            COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Setzt Standardwerte fuer deine Kommandos.",
+	            COMMAND_USERCONF_VIEW_ARENA_HEADER: "Arena Rang PNs",
+	            COMMAND_USERCONF_VIEW_ARENA_DM: "PN wenn Rang verloren",
+	            COMMAND_USERCONF_VIEW_ARENA_SHOW: "Zeigt Arena",
+	            COMMAND_USERCONF_VIEW_ARENA_WARNING: "Payout Meldung",
+	            COMMAND_USERCONF_VIEW_ARENA_RESULT: "Payout Ergebnis Meldung",
+	            COMMAND_USERCONF_VIEW_LANG_HEADER: "Spracheinstellung",
             COMMAND_USERCONF_ARENA_PATREON_ONLY: "Dieses Feature ist nur verfuegbar fuer Unterstuetzer auf https://www.patreon.com/swgohbot",
             COMMAND_USERCONF_ARENA_MISSING_DM: "Fehlende Option. Versuche all/primary/off.",
             COMMAND_USERCONF_ARENA_INVALID_DM: "Ungueltige Option. Versuche all/primary/off.",
@@ -1640,6 +1646,7 @@ module.exports = class extends Language {
             COMMAND_USERCONF_ARENA_INVALID_OPTION: "Versuche eine der folgenden: `enableDMs, arena, payoutResult, payoutWarning`",
             COMMAND_USERCONF_ARENA_INVALID_BOOL: "Ungueltige Option. Versuche `yes/no`, `true/false` oder `on/off`",
             COMMAND_USERCONF_ARENA_UPDATED: "Deine Einstellungen wurden aktualisiert.",
+            COMMAND_USERCONF_LANG_UPDATED: (type, newLang) => `Deine ${type} wurde aktualisiert auf ${newLang}`,
             COMMAND_USERCONF_HELP: {
                 description: "Alle Utilities um deine Informationen im Bot zu verwalten.",
                 actions: [
