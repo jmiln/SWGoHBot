@@ -1,4 +1,6 @@
 const Language = require("../base/Language.js");
+const langList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
+const swgohLangList = ["de_DE", "en_US", "es_SP", "ko_KR", "pt_BR"];
 const DAYSOFWEEK = {
     SUNDAY: {
         SHORT: "So",
@@ -1626,7 +1628,13 @@ module.exports = class extends Language {
             COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY: "__Primaer ist **BOLD**__\n",
             COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "Keine verknuepften Buendniscodes.",
             COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Standardwerte",
-            COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Setzt Standards fuer Befehle.",
+            COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Setzt Standardwerte fuer deine Kommandos.",
+            COMMAND_USERCONF_VIEW_ARENA_HEADER: "Arena Rang PNs",
+            COMMAND_USERCONF_VIEW_ARENA_DM: "PN wenn Rang verloren",
+            COMMAND_USERCONF_VIEW_ARENA_SHOW: "Zeigt Arena",
+            COMMAND_USERCONF_VIEW_ARENA_WARNING: "Payout Meldung",
+            COMMAND_USERCONF_VIEW_ARENA_RESULT: "Payout Ergebnis Meldung",
+            COMMAND_USERCONF_VIEW_LANG_HEADER: "Spracheinstellung",
             COMMAND_USERCONF_ARENA_PATREON_ONLY: "Dieses Feature ist nur verfuegbar fuer Unterstuetzer auf https://www.patreon.com/swgohbot",
             COMMAND_USERCONF_ARENA_MISSING_DM: "Fehlende Option. Versuche all/primary/off.",
             COMMAND_USERCONF_ARENA_INVALID_DM: "Ungueltige Option. Versuche all/primary/off.",
@@ -1638,6 +1646,7 @@ module.exports = class extends Language {
             COMMAND_USERCONF_ARENA_INVALID_OPTION: "Versuche eine der folgenden: `enableDMs, arena, payoutResult, payoutWarning`",
             COMMAND_USERCONF_ARENA_INVALID_BOOL: "Ungueltige Option. Versuche `yes/no`, `true/false` oder `on/off`",
             COMMAND_USERCONF_ARENA_UPDATED: "Deine Einstellungen wurden aktualisiert.",
+            COMMAND_USERCONF_LANG_UPDATED: (type, newLang) => `Deine ${type} wurde aktualisiert auf ${newLang}`,
             COMMAND_USERCONF_HELP: {
                 description: "Alle Utilities um deine Informationen im Bot zu verwalten.",
                 actions: [
@@ -1680,6 +1689,20 @@ module.exports = class extends Language {
                             "arena": "Waehle welche Arena Warnungen du sehen moechtest",
                             "payoutResult": "Schickt eine PN mit deiner endgueltigen Arena-Platzierung",
                             "payoutWarning": "Schickt eine PN Minuten vor deinem payout. 0 schaltet die Funktion ab."
+                        }
+                    },
+                    {
+                        action: "Sprachen",
+                        actionDesc: "Setzt persoenliche Lokalisierungseinstellungen",
+                        usage: [
+                            ";userconf lang language <SprachenAuswahl>",
+                            ";userconf lang swgohLanguage <SprachenAuswahl>"
+                        ].join("\n"),
+                        args: {
+                            langChoice: ["Die Sprache die du auswaehlen moechtest.",
+                                `**Sprachoptionen:** ${langList.join(", ")}`,
+                                `**Swgoh-Sprachoptionen:** ${swgohLangList.join(", ")}`
+                            ].join("\n")
                         }
                     }
                 ]
