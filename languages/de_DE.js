@@ -1690,6 +1690,20 @@ module.exports = class extends Language {
                             "payoutResult": "Schickt eine PN mit deiner endgueltigen Arena-Platzierung",
                             "payoutWarning": "Schickt eine PN Minuten vor deinem payout. 0 schaltet die Funktion ab."
                         }
+                    },
+	                 {
+	                        action: "Sprachen",
+	                        actionDesc: "Setzt persoenliche Lokalisierungseinstellungen",
+	                        usage: [
+	                            ";userconf lang language <SprachenAuswahl>",
+	                            ";userconf lang swgohLanguage <SprachenAuswahl>"
+	                        ].join("\n"),
+	                        args: {
+	                            langChoice: ["Die Sprache die du auswaehlen moechtest.",
+	                                `**Sprachoptionen:** ${langList.join(", ")}`,
+	                                `**Swgoh-Sprachoptionen:** ${swgohLangList.join(", ")}`
+	                            ].join("\n")
+	                        }
                     }
                 ]
             },
