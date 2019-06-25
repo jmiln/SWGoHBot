@@ -2,17 +2,17 @@ var moment = require("moment-timezone");
 const Command = require("../base/Command");
 
 class Activites extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "activities",
             category: "Star Wars",
             aliases: ["act"]
         });
     }
 
-    run(client, message, args) {
+    run(Bot, message, args) {
         const guildConf = message.guildSettings;
-        
+
         let day = "";
 
         if (!args[0]) {
@@ -48,7 +48,7 @@ class Activites extends Command {
                 message.channel.send(message.language.get("COMMAND_ACTIVITIES_SATURDAY"), {code:"asciidoc"});
                 break;
             default:
-                return client.helpOut(message, this);
+                return Bot.helpOut(message, this);
         }
     }
 }

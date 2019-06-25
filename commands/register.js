@@ -1,19 +1,19 @@
 const Command = require("../base/Command");
 
 class Register extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "register",
             category: "SWGoH",
             aliases: ["reg"]
         });
     }
 
-    async run(client, message, [userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
         if (!userID) {
             return super.error(message, message.language.get("COMMAND_REGISTER_MISSING_ALLY"));
         } else {
-            if (client.isUserID(userID)) {
+            if (Bot.isUserID(userID)) {
                 userID = userID.replace(/[^\d]*/g, "");
                 if (userID !== message.author.id && options.level < 3) {
                     // If they are trying to change someone else and they don't have the right permissions
@@ -22,7 +22,7 @@ class Register extends Command {
                     // If they are trying to change something for someone in a different server
                     return super.error(message, message.language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
                 }
-            } else if (client.isAllyCode(userID)) {
+            } else if (Bot.isAllyCode(userID)) {
                 allyCode = userID;
                 userID = message.author.id;
             } else {
@@ -30,12 +30,12 @@ class Register extends Command {
                 return super.error(message, message.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
             }
         }
-        let user = await client.userReg.getUser(userID);
+        let user = await Bot.userReg.getUser(userID);
         if (user && user.accounts.length && userID !== message.author.id) {
             return super.error(message, "This account already has an ally code linked to it.");
         }
         if (!user) {
-            user = JSON.parse(JSON.stringify(client.config.defaultUserConf));
+            user = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
             user.id = userID;
         } else if (user.accounts.find(a => a.allyCode === allyCode && a.primary)) {
             // This ally code is already registered & primary
@@ -47,10 +47,10 @@ class Register extends Command {
                 if (a.allyCode === allyCode) a.primary = true;
                 return a;
             });
-            user = await client.userReg.updateUser(userID, user);
+            user = await Bot.userReg.updateUser(userID, user);
             const u = user.accounts.find(a => a.primary);
             return super.success(message,
-                client.codeBlock(message.language.get(
+                Bot.codeBlock(message.language.get(
                     "COMMAND_REGISTER_SUCCESS_DESC",
                     u,
                     u.allyCode.toString().match(/\d{3}/g).join("-"),
@@ -67,7 +67,7 @@ class Register extends Command {
         }
         message.channel.send(message.language.get("COMMAND_REGISTER_PLEASE_WAIT")).then(async msg => {
             try {
-                await client.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
+                await Bot.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
                     if (!u) {
                         super.error(msg, (message.language.get("COMMAND_REGISTER_FAILURE") + allyCode), {edit: true});
                     } else {
@@ -76,13 +76,13 @@ class Register extends Command {
                             name: u.name,
                             primary: true
                         });
-                        await client.userReg.updateUser(userID, user)
+                        await Bot.userReg.updateUser(userID, user)
                             .then(async () => {
-                                await client.swgohAPI.register([
+                                await Bot.swgohAPI.register([
                                     [allyCode, userID]
                                 ]);
                                 return super.success(msg,
-                                    client.codeBlock(message.language.get(
+                                    Bot.codeBlock(message.language.get(
                                         "COMMAND_REGISTER_SUCCESS_DESC",
                                         u,
                                         u.allyCode.toString().match(/\d{3}/g).join("-"),
@@ -93,8 +93,8 @@ class Register extends Command {
                                     });
                             })
                             .catch(e => {
-                                client.log("REGISTER", "Broke while trying to link new user: " + e);
-                                return super.error(msg, client.codeBlock(e.message), {
+                                Bot.log("REGISTER", "Broke while trying to link new user: " + e);
+                                return super.error(msg, Bot.codeBlock(e.message), {
                                     title: message.lanugage.get("BASE_SOMETHING_BROKE"),
                                     footer: "Please try again in a bit.",
                                     edit: true
@@ -104,7 +104,7 @@ class Register extends Command {
                 });
             } catch (e) {
                 console.log("ERROR[REG]: Incorrect Ally Code: " + e);
-                return super.error(message, ("Something broke. Make sure you've got the correct ally code" + client.codeBlock(e.message)));
+                return super.error(message, ("Something broke. Make sure you've got the correct ally code" + Bot.codeBlock(e.message)));
             }
         });
     }

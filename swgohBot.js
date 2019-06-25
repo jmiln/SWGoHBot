@@ -14,72 +14,75 @@ const client = new Client({
 
 const Sequelize = require("sequelize");
 
+const Bot = {};
+
 // Attach the config to the client so we can use it anywhere
-client.config = require("./config.js");
+Bot.config = require("./config.js");
 
-// Attach the character and team files to the client so I don't have to reopen em each time
-client.abilityCosts = JSON.parse(fs.readFileSync("data/abilityCosts.json"));
-client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
-client.charLocs = JSON.parse(fs.readFileSync("data/charLocations.json"));
-client.factions = [...new Set(client.characters.reduce((a, b) => a.concat(b.factions), []))];
-client.ships = JSON.parse(fs.readFileSync("data/ships.json"));
-client.shipLocs = JSON.parse(fs.readFileSync("data/shipLocations.json"));
-client.squads = JSON.parse(fs.readFileSync("data/squads.json"));
-client.missions = JSON.parse(fs.readFileSync("data/missions.json"));
-client.resources = JSON.parse(fs.readFileSync("data/resources.json"));
-client.arenaJumps = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
-client.acronyms = JSON.parse(fs.readFileSync("data/acronyms.json"));
-client.patrons = [];
-client.emotes = {};
+// Attach the character and team files to the Bot so I don't have to reopen em each time
+Bot.abilityCosts = JSON.parse(fs.readFileSync("data/abilityCosts.json"));
+Bot.characters   = JSON.parse(fs.readFileSync("data/characters.json"));
+Bot.charLocs     = JSON.parse(fs.readFileSync("data/charLocations.json"));
+Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
+Bot.ships        = JSON.parse(fs.readFileSync("data/ships.json"));
+Bot.shipLocs     = JSON.parse(fs.readFileSync("data/shipLocations.json"));
+Bot.squads       = JSON.parse(fs.readFileSync("data/squads.json"));
+Bot.missions     = JSON.parse(fs.readFileSync("data/missions.json"));
+Bot.resources    = JSON.parse(fs.readFileSync("data/resources.json"));
+Bot.arenaJumps   = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
+Bot.acronyms     = JSON.parse(fs.readFileSync("data/acronyms.json"));
+Bot.patrons      = [];
+Bot.emotes       = {};
 
-const RANCOR_MOD_CACHE = "./data/crouching-rancor-mods.json";
-const GG_CHAR_CACHE = "./data/swgoh-gg-chars.json";
-const GG_SHIPS_CACHE = "./data/swgoh-gg-ships.json";
+const RANCOR_MOD_CACHE       = "./data/crouching-rancor-mods.json";
+const GG_CHAR_CACHE          = "./data/swgoh-gg-chars.json";
+const GG_SHIPS_CACHE         = "./data/swgoh-gg-ships.json";
 const SWGoH_Help_SQUAD_CACHE = "./data/squads.json";
-const CHARLOCATIONS = "./data/charLocations.json";
-const SHIPLOCATIONS = "./data/shipLocations.json";
-const UNKNOWN = "Unknown";
+const CHARLOCATIONS          = "./data/charLocations.json";
+const SHIPLOCATIONS          = "./data/shipLocations.json";
+const UNKNOWN                = "Unknown";
 
-require("./modules/functions.js")(client);
+require("./modules/functions.js")(Bot, client);
+require("./modules/prototypes.js");
 
 // Languages
-client.languages = {};
+Bot.languages = {};
 client.reloadLanguages();
-client.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
+Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
 
 client.commands = new Collection();
 client.aliases = new Collection();
 
-client.evCountdowns = {};
+Bot.evCountdowns = {};
 
-client.seqOps = Sequelize.Op;
-client.database = new Sequelize(
-    client.config.database.data,
-    client.config.database.user,
-    client.config.database.pass, {
-        host: client.config.database.host,
+Bot.seqOps = Sequelize.Op;
+Bot.database = new Sequelize(
+    Bot.config.database.data,
+    Bot.config.database.user,
+    Bot.config.database.pass, {
+        host: Bot.config.database.host,
         dialect: "postgres",
         logging: false
     }
 );
 
 
-client.database.authenticate().then(async () => {
-    await require("./modules/models")(Sequelize, client.database);
+Bot.database.authenticate().then(async () => {
+    await require("./modules/models")(Sequelize, Bot.database);
 
 
     // Get all the models
-    const rawAttr = client.database.models.settings.rawAttributes;
+    const rawAttr = Bot.database.models.settings.rawAttributes;
     const rawNames = Object.keys(rawAttr);
 
     // Got through them all
     for (let ix = 0; ix < rawNames.length; ix++) {
         // Try getting each column
-        await client.database.models.settings.findAll({limit: 1, attributes: [rawNames[ix]]})
+        await Bot.database.models.settings.findAll({limit: 1, attributes: [rawNames[ix]]})
         // If it doesn't exist, it'll throw an error, then it will add them
             .catch(async () => {
                 console.log("Adding column " + rawNames[ix] + " to settings.");
-                await client.database.queryInterface.addColumn("settings",
+                await Bot.database.queryInterface.addColumn("settings",
                     rawAttr[rawNames[ix]].fieldName,
                     {
                         type: rawAttr[rawNames[ix]].type,
@@ -90,10 +93,10 @@ client.database.authenticate().then(async () => {
     }
 
     init();
-    client.login(client.config.token).then(() => {
+    client.login(Bot.config.token).then(() => {
         const guildList = client.guilds.keyArray();
         for (let ix = 0; ix < guildList.length; ix++) {
-            client.database.models.settings.findOrBuild({
+            Bot.database.models.settings.findOrBuild({
                 where: {
                     guildID: guildList[ix]
                 }
@@ -108,22 +111,22 @@ client.database.authenticate().then(async () => {
 
 const init = async () => {
     const MongoClient = require("mongodb").MongoClient;
-    client.mongo = await MongoClient.connect(client.config.mongodb.url, { useNewUrlParser: true } );
+    Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url, { useNewUrlParser: true } );
     // Set up the caching
-    client.cache = await require("./modules/cache.js")(client.mongo);
-    client.userReg = await require("./modules/users.js")(client);
+    Bot.cache = await require("./modules/cache.js")(Bot.mongo);
+    Bot.userReg = await require("./modules/users.js")(Bot);
 
-    client.swgohPlayerCount = await client.mongo.db(client.config.mongodb.swapidb).collection("players").find({}).count();
-    client.swgohGuildCount  = await client.mongo.db(client.config.mongodb.swapidb).collection("guilds").find({}).count();
+    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("players").find({}).count();
+    Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").find({}).count();
 
-    if (client.config.api_swgoh_help) {
+    if (Bot.config.api_swgoh_help) {
         // Load up the api connector/ helpers
         const SwgohHelp = require("api-swgoh-help");
-        client.swgoh = new SwgohHelp(client.config.api_swgoh_help);
-        client.swgohAPI = require("./modules/swapi.js")(client);
+        Bot.swgoh = new SwgohHelp(Bot.config.api_swgoh_help);
+        Bot.swgohAPI = require("./modules/swapi.js")(Bot);
 
         // Load up the zeta recommendstions
-        client.zetaRec = await client.swgohAPI.zetaRec();
+        Bot.zetaRec = await Bot.swgohAPI.zetaRec();
     }
 
     // Here we load **commands** into memory, as a collection, so they're accessible
@@ -131,29 +134,30 @@ const init = async () => {
     const cmdFiles = await readdir("./commands/");
     cmdFiles.forEach(f => {
         try {
-            const props = new(require(`./commands/${f}`))(client);
+            const props = new(require(`./commands/${f}`))(Bot);
             if (f.split(".").slice(-1)[0] !== "js") return;
-            if (props.help.category === "SWGoH" && !client.swgohAPI) return;
+            if (props.help.category === "SWGoH" && !Bot.swgohAPI) return;
             client.loadCommand(props.help.name);
         } catch (e) {
-            client.log("Init", `Unable to load command ${f}: ${e}`);
+            Bot.log("Init", `Unable to load command ${f}: ${e}`);
         }
     });
 
-    if (client.config.patreon) {
+    if (Bot.config.patreon) {
         // Reload any patrons
-        await client.reloadPatrons();
-        setInterval(client.reloadPatrons,  1 * 60 * 1000);   // Then every min after
+        await Bot.reloadPatrons();
+        setInterval(Bot.reloadPatrons,  1 * 60 * 1000);   // Then every min after
     }
 
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
+        const event = require(`./events/${file}`);
         if (eventName === "ready") {
-            client.on(eventName, () => require(`./events/${file}`)(client));
+            client.on(eventName, event.bind(null, Bot, client));
         } else {
-            client.on(eventName, require(`./events/${file}`));
+            client.on(eventName, event.bind(null, Bot));
         }
         delete require.cache[require.resolve(`./events/${file}`)];
     });
@@ -163,9 +167,10 @@ client.on("error", (err) => {
     if (err.error.toString().indexOf("ECONNRESET") > -1) {
         console.log("Connection error");
     } else {
-        client.log("ERROR", inspect(err.error));
+        Bot.log("ERROR", inspect(err.error));
     }
 });
+
 
 // Make it so it only checks for new characters on the main shard
 if (!client.shard || client.shard.id === 0) {
@@ -178,8 +183,8 @@ if (!client.shard || client.shard.id === 0) {
     // a bit after it would have grabbed new ones
     setTimeout(function() {
         setInterval(function() {
-            delete client.characters;
-            client.characters = JSON.parse(fs.readFileSync("data/characters.json"));
+            delete Bot.characters;
+            Bot.characters = JSON.parse(fs.readFileSync("data/characters.json"));
         }, 12 * 60 * 60 * 1000);
     }, 2 * 60 * 1000);
 }
@@ -251,10 +256,10 @@ async function updateRemoteData() {
     // TODO potentially leverage REST end point for google doc farming location spreadsheet (if more accurate / current than swgoh.gg?)
     // https://docs.google.com/spreadsheets/d/1Z0mOMyCctmxXWEU1cLMlDMRDUdw1ocBmWh4poC3RVXg/htmlview#
 
-    const currentCharacters = client.characters;
+    const currentCharacters = Bot.characters;
     const currentCharSnapshot = JSON.stringify(currentCharacters);
 
-    const currentShips = client.ships;
+    const currentShips = Bot.ships;
     const currentShipSnapshot = JSON.stringify(currentShips);
 
     console.log("UpdateRemoteData", "Checking for updates to remote data sources");
@@ -290,12 +295,12 @@ async function updateRemoteData() {
     if (currentCharSnapshot !== JSON.stringify(currentCharacters)) {
         console.log("UpdateRemoteData", "Changes detected in character data, saving updates and reloading");
         saveFile("./data/characters.json", currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
-        client.characters = currentCharacters;
+        Bot.characters = currentCharacters;
     }
     if (currentShipSnapshot !== JSON.stringify(currentShips)) {
         console.log("UpdateRemoteData", "Changes detected in ship data, saving updates and reloading");
         saveFile("./data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
-        client.ships = currentShips;
+        Bot.ships = currentShips;
     }
 }
 

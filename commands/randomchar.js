@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Randomchar extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "randomchar",
             aliases: ["rand", "random"],
             category: "Star Wars",
@@ -15,8 +15,8 @@ class Randomchar extends Command {
         });
     }
 
-    async run(client, message, [userID, count], options) {
-        let chars = client.characters;
+    async run(Bot, message, [userID, count], options) {
+        let chars = Bot.characters;
         let MAX_CHARACTERS = 5;
 
         const charOut = [];
@@ -26,17 +26,17 @@ class Randomchar extends Command {
             allyCode = await super.getUser(message, userID, false);
             if (allyCode) {
                 // If there is a valid userID, and an allycode linked to it
-                const cooldown = client.getPlayerCooldown(message.author.id);
+                const cooldown = Bot.getPlayerCooldown(message.author.id);
                 let player = null;
                 try {
-                    player = await client.swgohAPI.player(allyCode, cooldown);
+                    player = await Bot.swgohAPI.player(allyCode, cooldown);
                 } catch (e) {
                     console.error(e);
-                    return super.error(message, client.codeBlock(e.message), {
+                    return super.error(message, Bot.codeBlock(e.message), {
                         title: message.lanugage.get("BASE_SOMETHING_BROKE"),
                         footer: "Please try again in a bit."
                     });
-                } 
+                }
                 // Filter out all the ships, so it only shows characters
                 chars = player.roster.filter(c => !c.crew.length);
 
@@ -58,7 +58,7 @@ class Randomchar extends Command {
                         count = 1;
                     } else if (count > MAX_CHARACTERS) {
                         count = MAX_CHARACTERS;
-                    } 
+                    }
                 } else {
                     count = MAX_CHARACTERS;
                 }
@@ -89,7 +89,7 @@ class Randomchar extends Command {
             if (newChar.name) {
                 name = newChar.name;
             } else if (newChar.defId) {
-                name = await client.swgohAPI.units(newChar.defId);
+                name = await Bot.swgohAPI.units(newChar.defId);
                 name = name.nameKey;
             }
             if (!charOut.includes(name)) {    // If it's already picked a character, don't let it pick them again

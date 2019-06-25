@@ -5,8 +5,8 @@ require("moment-duration-format");
 const Command = require("../base/Command");
 
 class Event extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             guildOnly: true,
             name: "event",
             category: "Misc",
@@ -39,11 +39,11 @@ class Event extends Command {
         });
     }
 
-    async run(client, message, args, options) {
+    async run(Bot, message, args, options) {
         const level = options.level;
 
         const maxSize = 1000;
-        const guildSettings = await client.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(client.config.defaultSettings)});
+        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(Bot.config.defaultSettings)});
         const guildConf = guildSettings.dataValues;
 
         const EVENTS_PER_PAGE = 5;
@@ -87,7 +87,7 @@ class Event extends Command {
         switch (action) {
             case "create": {
                 const err = [];
-                const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { [client.seqOps.like]: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
+                const guildEvents = await Bot.database.models.eventDBs.findAll({where: {eventID: { [Bot.seqOps.like]: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
                 const evCount = guildEvents.length;
                 // If they have too many events, stop here
                 if (evCount >= 50) {
@@ -109,7 +109,7 @@ class Event extends Command {
                     }
 
                     // Check if that name/ event already exists
-                    const exists = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${evName}`}})
+                    const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${evName}`}})
                         .then(token => token !== null)
                         .then(isUnique => isUnique);
                     if (exists) {
@@ -150,7 +150,7 @@ class Event extends Command {
 
                         err.push(message.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
                     }
-                    
+
                     // If they try and set a repeat time and a repeating day schedule, tell em to pick just one
                     if (repeatDays && repeatTime) {
                         err.push(message.language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
@@ -214,9 +214,9 @@ class Event extends Command {
                     }
 
                     if (err.length) {
-                        return super.error(message, client.codeBlock("* " + err.join("\n* ")));
+                        return super.error(message, Bot.codeBlock("* " + err.join("\n* ")));
                     }
-                    
+
                     const newEvent = {
                         eventID: `${message.guild.id}-${evName}`,
                         eventDT: eventDT,
@@ -230,13 +230,13 @@ class Event extends Command {
                         },
                         repeatDays: dayList
                     };
-                    client.scheduleEvent(newEvent, guildConf.eventCountdown);
-                    await client.database.models.eventDBs.create(newEvent)
+                    Bot.scheduleEvent(newEvent, guildConf.eventCountdown);
+                    await Bot.database.models.eventDBs.create(newEvent)
                         .then(() => {
                             return message.channel.send(message.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
                         })
                         .catch(error => {
-                            client.log("ERROR",`Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
+                            Bot.log("ERROR",`Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
                             return message.channel.send(message.language.get("COMMAND_EVENT_NO_CREATE"));
                         });
                 } else {
@@ -249,7 +249,7 @@ class Event extends Command {
                         try {
                             jsonWhole = JSON.parse(match[2]);
                         } catch (e) {
-                            return super.error(message, "**ERROR Parsing the json**" + client.codeBlock(e.message));
+                            return super.error(message, "**ERROR Parsing the json**" + Bot.codeBlock(e.message));
                         }
 
                         if (!Array.isArray(jsonWhole)) {
@@ -293,7 +293,7 @@ class Event extends Command {
                             } else if (json.name.indexOf(" ") > -1) {
                                 err.push(message.language.get("COMMAND_EVENT_JSON_NO_SPACES"));
                             } else {
-                                const exists = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${json.name}`}})
+                                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${json.name}`}})
                                     .then(token => token !== null)
                                     .then(isUnique => isUnique);
                                 if (exists) {
@@ -392,15 +392,15 @@ class Event extends Command {
                             });
                         }
                         if (evErr) {
-                            return message.channel.send(message.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", client.codeBlock(outArr.map(e => e.str).join("\n\n"))));
+                            return message.channel.send(message.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(outArr.map(e => e.str).join("\n\n"))));
                         } else {
                             // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
                             const evAddLog = [];
                             const evFailLog = [];
 
                             for (const ev of outArr) {
-                                await client.scheduleEvent(ev.event, guildConf.eventCountdown);
-                                await client.database.models.eventDBs.create(ev.event)
+                                await Bot.scheduleEvent(ev.event, guildConf.eventCountdown);
+                                await Bot.database.models.eventDBs.create(ev.event)
                                     .then(() => {
                                         evAddLog.push(message.language.get("COMMAND_EVENT_CREATED", ev.event.eventID.split("-")[1], momentTZ.tz(ev.event.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
                                     })
@@ -424,7 +424,7 @@ class Event extends Command {
                 const array = [];
                 if (args[0]) {
                     // If they are looking to show a specific event
-                    const guildEvents = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${args[0]}`}});
+                    const guildEvents = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${args[0]}`}});
                     if (!guildEvents) {
                         return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", args[0]));
                     }
@@ -461,7 +461,7 @@ class Event extends Command {
                     }
                 } else {
                     // Grab all events for this guild
-                    const guildEvents = await client.database.models.eventDBs.findAll({where: {eventID: { [client.seqOps.like]: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
+                    const guildEvents = await Bot.database.models.eventDBs.findAll({where: {eventID: { [Bot.seqOps.like]: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
                     const eventList = [];
                     guildEvents.forEach(event => {
                         eventList.push(event.dataValues);
@@ -514,7 +514,7 @@ class Event extends Command {
                         }
                         array.push(eventString);
                     });
-                    const evArray = client.msgArray(array, "\n\n");
+                    const evArray = Bot.msgArray(array, "\n\n");
                     try {
                         if (evArray.length === 0) {
                             return message.channel.send(message.language.get("COMMAND_EVENT_NO_EVENT"));
@@ -540,7 +540,7 @@ class Event extends Command {
                             }
                         }
                     } catch (e) {
-                        client.log("Event View Broke!", evArray);
+                        Bot.log("Event View Broke!", evArray);
                     }
                 }
                 break;
@@ -550,11 +550,11 @@ class Event extends Command {
                 const eventID = `${message.guild.id}-${eventName}`;
 
                 // Check if that name/ event exists
-                const exists = await client.database.models.eventDBs.findOne({where: {eventID: eventID}})
+                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}})
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
                 if (exists) {
-                    client.deleteEvent(eventID);
+                    Bot.deleteEvent(eventID);
                     return message.channel.send(message.language.get("COMMAND_EVENT_DELETED", eventName));
                 } else {
                     return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)).then(msg => msg.delete(10000)).catch(console.error);
@@ -563,7 +563,7 @@ class Event extends Command {
                 if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME")).then(msg => msg.delete(10000)).catch(console.error);
                 eventName = args[0];
 
-                const exists = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
+                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
 
@@ -571,7 +571,7 @@ class Event extends Command {
                 if (!exists) {
                     return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)).then(msg => msg.delete(10000)).catch(console.error);
                 } else {
-                    const events = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
+                    const events = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
                     const event = events.dataValues;
                     var channel = "";
                     var announceMessage = `**${eventName}**\n${event.eventMessage}`;
@@ -587,7 +587,7 @@ class Event extends Command {
                         try {
                             return channel.send(announceMessage);
                         } catch (e) {
-                            client.log("Event trigger Broke!", announceMessage);
+                            Bot.log("Event trigger Broke!", announceMessage);
                         }
                     }
                 }
@@ -601,7 +601,7 @@ class Event extends Command {
 
                 const changable = ["name", "time", "date", "message", "channel", "countdown", "repeat", "repeatday"];
 
-                const exists = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
+                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
 
@@ -609,7 +609,7 @@ class Event extends Command {
                 if (!exists) {
                     return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
                 } else {
-                    const events = await client.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
+                    const events = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
                     const event = events.dataValues;
 
                     const [target, ...changeTo] = args;
@@ -619,7 +619,7 @@ class Event extends Command {
                     } else if (!changable.includes(target)) {
                         return super.error(message, message.language.get("COMMAND_EVENT_EDIT_MISSING_ARG", target, changable.join(", ")));
                     }
-                    
+
                     const oldId = event.eventID;
                     const oldDate = momentTZ.tz(parseInt(event.eventDT), message.guildSettings.timezone).format("DD/MM/YYYY");
                     const oldTime = momentTZ.tz(parseInt(event.eventDT), message.guildSettings.timezone).format("HH:mm");
@@ -635,7 +635,7 @@ class Event extends Command {
 
                             const oldName = oldId.split("-")[1];
                             const newName = changeTo[0];
-                            
+
                             const newId = event.eventID.split("-")[0] + "-" + newName;
                             cFrom = oldName;
                             cTo   = newName;
@@ -703,7 +703,7 @@ class Event extends Command {
                             // Check for name or id?
                             if (!changeTo.length) return super.error(message, message.language.get("COMMAAND_EVENT_EDIT_MISSING_CHANNEL"));
                             const check = changeTo[0];
-                            
+
                             // Try getting the channel by ID first
                             let checkChan = message.guild.channels.get(check.replace(/[^0-9]/g, ""));
                             // If it doesn't come up by ID, try it by name
@@ -716,7 +716,7 @@ class Event extends Command {
                                 return super.error(message, message.language.get("COMMAND_EVENT_JSON_INVALID_CHANNEL", checkChan));
                             } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {   // Make sure it can send messages there
                                 return super.error(message, message.language.get("COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS", checkChan));
-                            } 
+                            }
                             cFrom = event.eventChan ? "<#" + event.eventChan + ">" : "";
                             cTo   = checkChan ? "<#" + checkChan.id + ">" : "";
                             event.eventChan = checkChan ? checkChan.id.toString() : null;
@@ -732,7 +732,7 @@ class Event extends Command {
                             if (yesOpts.includes(choice)) {
                                 event.countdown = true;
                             } else if (noOpts.includes(choice)) {
-                                event.countdown = false;    
+                                event.countdown = false;
                             } else {
                                 return super.error(message, message.language.get("COMMAND_EVENT_EDIT_INVALID_COUNTDOWN"));
                             }
@@ -776,7 +776,7 @@ class Event extends Command {
                                 cTo = "0d0h0m";
                                 const rep = event.repeat;
                                 cFrom = `${rep.repeatDay}d${rep.repeatHour}h${rep.repeatMin}m`;
-                                event.repeat = { 
+                                event.repeat = {
                                     repeatDay: 0,
                                     repeatMin: 0,
                                     repeatHour: 0
@@ -820,14 +820,14 @@ class Event extends Command {
         }
 
         async function updateEvent(id, event) {
-            await client.deleteEvent(id);
-            client.scheduleEvent(event, guildConf.eventCountdown);
-            const out = await client.database.models.eventDBs.create(event)
+            await Bot.deleteEvent(id);
+            Bot.scheduleEvent(event, guildConf.eventCountdown);
+            const out = await Bot.database.models.eventDBs.create(event)
                 .then(() => {
                     return true;
                 })
                 .catch(error => {
-                    client.log("ERROR",`(Ev updateEvent)Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
+                    Bot.log("ERROR",`(Ev updateEvent)Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
                     return false;
                 });
             return out;

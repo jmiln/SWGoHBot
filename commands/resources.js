@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Resources extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "resources",
             category: "Misc",
             aliases: ["res"],
@@ -11,9 +11,9 @@ class Resources extends Command {
         });
     }
 
-    async run(client, message, [...cat]) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [...cat]) { // eslint-disable-line no-unused-vars
         const fields = [];
-        const resources = client.resources;
+        const resources = Bot.resources;
         let categories = Object.keys(resources);
         if (!cat.length) {
             return super.error(message, message.language.get("COMMAND_RESOURCES_INVALID_CATEGORY", categories.join(", ")));
@@ -21,7 +21,7 @@ class Resources extends Command {
         cat = cat.join(" ");
         if (!categories.filter(c => c.toLowerCase() === cat.toLowerCase()).length) {
             return super.error(message, message.language.get("COMMAND_RESOURCES_INVALID_CATEGORY", categories.join(", ")));
-        } 
+        }
         categories = categories.filter(c => c.toLowerCase() === cat.toLowerCase());
         const category = categories[0];
         const fieldArr = [];
@@ -46,7 +46,7 @@ class Resources extends Command {
             }
             fieldArr.push(fieldVal);
         });
-        const msgArr = client.msgArray(fieldArr, "\n", 1000);
+        const msgArr = Bot.msgArray(fieldArr, "\n", 1000);
         msgArr.forEach((msg, ix) => {
             fields.push({
                 "name": msgArr.length > 1 ? category + ` (${ix+1}/${msgArr.length})` : category,

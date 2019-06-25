@@ -1,14 +1,13 @@
 const {inspect} = require("util");
-module.exports = async (member) => {
+module.exports = async (Bot, member) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
-    const client = member.client;
-    const guildSettings = await client.database.models.settings.findOne({where: {guildID: guild.id}, attributes: client.config.defaultSettings});
+    const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guild.id}, attributes: Bot.config.defaultSettings});
     const guildConf = guildSettings.dataValues;
 
     // Make sure the config option exists. Should not need this, but just in case
     if (!guildConf["announceChan"]) {
-        client.database.models.settings.update({announceChan: ""}, {where: {guildID: guild.id}});
+        Bot.database.models.settings.update({announceChan: ""}, {where: {guildID: guild.id}});
     }
 
     // Our welcome message has a bit of a placeholder, let's fix
@@ -19,9 +18,9 @@ module.exports = async (member) => {
             .replace(/{{server}}/gi, member.guild.name)
             .replace(/{{prefix}}/gi, guildConf.prefix);
         try {
-            client.announceMsg(guild, welcomeMessage);
+            Bot.announceMsg(guild, welcomeMessage);
         } catch (e) {
-            client.log("ERROR", `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
+            Bot.log("ERROR", `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
         }
     }
 };

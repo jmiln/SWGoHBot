@@ -2,16 +2,16 @@
 const Command = require("../base/Command");
 
 class Ships extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "ships",
             aliases: ["s", "ship"],
             category: "Star Wars"
         });
     }
 
-    async run(client, message, args) {
-        const shipList = client.ships;
+    async run(Bot, message, args) {
+        const shipList = Bot.ships;
 
         // Remove any junk from the name
         const searchName = args.join(" ");
@@ -22,7 +22,7 @@ class Ships extends Command {
         }
 
         // Find any characters that match that
-        const ships = client.findChar(searchName, shipList, true);
+        const ships = Bot.findChar(searchName, shipList, true);
         if (ships.length <= 0) {
             return super.error(message, message.language.get("COMMAND_SHIPS_INVALID_CHARACTER", message.guildSettings.prefix));
         } else if (ships.length > 1) {
@@ -30,7 +30,7 @@ class Ships extends Command {
         }
 
         const ship = ships[0];
-        const unit = await client.swgohAPI.getCharacter(ship.uniqueName, message.guildSettings.swgohLanguage);
+        const unit = await Bot.swgohAPI.getCharacter(ship.uniqueName, message.guildSettings.swgohLanguage);
 
         const shipAbilities = unit.skillReferenceList;
 
@@ -39,7 +39,7 @@ class Ships extends Command {
         if (unit.crew.length) {
             const crew = [];
             unit.crew.forEach(crewMember => {
-                const crewName = client.characters.find(c => c.uniqueName === crewMember);
+                const crewName = Bot.characters.find(c => c.uniqueName === crewMember);
                 crew.push(crewName.name);
             });
             fields.push({

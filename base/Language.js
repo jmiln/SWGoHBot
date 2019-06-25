@@ -2,12 +2,12 @@
 
 class Language {
     constructor(c) {
-        this.client = c;
+        this.Bot = c;
     }
 
     get(str, ...args) {
         if (!this.language[str]) {
-            const defLang = this.client.languages[this.client.config.defaultSettings.language];
+            const defLang = this.Bot.languages[this.Bot.config.defaultSettings.language];
             let res = "";
             try {
                 if (!args.length) {

@@ -1,4 +1,6 @@
 const Language = require("../base/Language");
+const langList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
+const swgohLangList = ["de_DE", "en_US", "es_SP", "ko_KR", "pt_BR"];
 const DAYSOFWEEK = {
     SUNDAY: {
         SHORT: "Sun",
@@ -1627,6 +1629,12 @@ module.exports = class extends Language {
             COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "No linked ally codes.",
             COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Defaults",
             COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Set default flags for your commands.",
+            COMMAND_USERCONF_VIEW_ARENA_HEADER: "Arena Rank DMs",
+            COMMAND_USERCONF_VIEW_ARENA_DM: "DM for rank drops",
+            COMMAND_USERCONF_VIEW_ARENA_SHOW: "Show for Arena",
+            COMMAND_USERCONF_VIEW_ARENA_WARNING: "Payout warning",
+            COMMAND_USERCONF_VIEW_ARENA_RESULT: "Payout result alert",
+            COMMAND_USERCONF_VIEW_LANG_HEADER: "Language Settings",
             COMMAND_USERCONF_ARENA_PATREON_ONLY: "Sorry, but this feature is only available as a thank you to supporters through https://www.patreon.com/swgohbot",
             COMMAND_USERCONF_ARENA_MISSING_DM: "Missing option. Try all/primary/off.",
             COMMAND_USERCONF_ARENA_INVALID_DM: "Invalid option. Try all/primary/off.",
@@ -1638,6 +1646,7 @@ module.exports = class extends Language {
             COMMAND_USERCONF_ARENA_INVALID_OPTION: "Try one of these: `enableDMs, arena, payoutResult, payoutWarning`",
             COMMAND_USERCONF_ARENA_INVALID_BOOL: "Invalid option. Try `yes/no`, `true/false` or `on/off`",
             COMMAND_USERCONF_ARENA_UPDATED: "Your settings have been updated.",
+            COMMAND_USERCONF_LANG_UPDATED: (type, newLang) => `Your ${type} setting has been updated to ${newLang}`,
             COMMAND_USERCONF_HELP: {
                 description: "All the needed utilities to manage your info in the bot.",
                 actions: [
@@ -1680,6 +1689,20 @@ module.exports = class extends Language {
                             "arena": "Choose which arena's alerts you want",
                             "payoutResult": "Send you a DM with your final payout result",
                             "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off."
+                        }
+                    },
+                    {
+                        action: "Languages",
+                        actionDesc: "Set personal localization settings",
+                        usage: [
+                            ";userconf lang language <langChoice>",
+                            ";userconf lang swgohLanguage <langChoice>"
+                        ].join("\n"),
+                        args: {
+                            langChoice: ["The language you want to choose.",
+                                `**Language options:** ${langList.join(", ")}`,
+                                `**SwgohLanguage options:** ${swgohLangList.join(", ")}`
+                            ].join("\n")
                         }
                     }
                 ]

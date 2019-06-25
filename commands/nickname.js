@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Nickname extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "nickname",
             aliases: ["nick"],
             guildOnly: true,
@@ -11,7 +11,8 @@ class Nickname extends Command {
         });
     }
 
-    run(client, message, args) {
+    run(Bot, message, args) {
+        const client = message.client;
         try {
             if (message.channel.permissionsFor(message.guild.me).has(["MANAGE_NICKNAMES"])) {
                 if (args.length > 0) {
@@ -28,7 +29,7 @@ class Nickname extends Command {
                 super.error(message, message.language.get("COMMAND_NICKNAME_FAILURE"));
             }
         } catch (e) {
-            client.log("Broke", "I broke while trying to set a nickname\n" + e);
+            Bot.log("Broke", "I broke while trying to set a nickname\n" + e);
         }
     }
 }

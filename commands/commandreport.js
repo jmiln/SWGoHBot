@@ -3,19 +3,19 @@ const moment = require("moment");
 const { Op } = require("sequelize");
 
 class CommandReport extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "commandreport",
             category: "Dev",
-            enabled: true, 
+            enabled: true,
             aliases: ["comreport", "cr"],
-            permissions: ["EMBED_LINKS"],   
+            permissions: ["EMBED_LINKS"],
             permLevel: 10
         });
     }
 
-    async run(client, message) { // eslint-disable-line no-unused-vars
-        const commands = await client.database.models.commands.findAll({
+    async run(Bot, message) { // eslint-disable-line no-unused-vars
+        const commands = await Bot.database.models.commands.findAll({
             where: {
                 updatedAt: {
                     [Op.gte]: moment().subtract(10, "days").toDate()

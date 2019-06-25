@@ -1,8 +1,8 @@
 const Command = require("../base/Command");
 
 class Charactergear extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "charactergear",
             category: "Star Wars",
             aliases: ["chargear", "gear"],
@@ -10,16 +10,16 @@ class Charactergear extends Command {
         });
     }
 
-    async run(client, message, [userID, ...searchChar]) {
+    async run(Bot, message, [userID, ...searchChar]) {
         // The current max possible gear level
         const MAX_GEAR = 12;
         let gearLvl = 0;
         // If there's enough elements in searchChar, and it's in the format of a number*
-        if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {                                                                                               
+        if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {
             gearLvl = parseInt(searchChar.pop());
             if (gearLvl < 0 || gearLvl > MAX_GEAR) {
                 return message.channel.send(message.language.get("COMMAND_CHARGEAR_INVALID_GEAR"));
-            } else { 
+            } else {
                 if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(parseInt(gearLvl)) ) {
                     gearLvl = 0;
                 } else {
@@ -27,19 +27,19 @@ class Charactergear extends Command {
                     gearLvl = parseInt(gearLvl);
                 }
             }
-        }  
+        }
 
         // Need to get the allycode from the db, then use that
         if (!userID) {
             return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
-        } else if (userID !== "me" && !client.isAllyCode(userID) && !client.isUserID(userID)) {
+        } else if (userID !== "me" && !Bot.isAllyCode(userID) && !Bot.isUserID(userID)) {
             // If they're just looking for a character for themselves, get the char
             searchChar = userID + " " + searchChar;
             searchChar = searchChar.trim();
             userID = null;
-        } 
+        }
         if (userID) {
-            const allyCodes = await client.getAllyCode(message, userID);
+            const allyCodes = await Bot.getAllyCode(message, userID);
             if (!allyCodes.length) {
                 return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
             } else if (allyCodes.length > 1) {
@@ -51,12 +51,12 @@ class Charactergear extends Command {
         if (Array.isArray(searchChar)) {
             searchChar = searchChar.join(" ");
         }
- 
+
         if (!searchChar || !searchChar.length) {
             return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
         }
-        const chars = client.findChar(searchChar, client.characters);
- 
+        const chars = Bot.findChar(searchChar, Bot.characters);
+
         let character;
         if (chars.length === 0) {
             return message.channel.send(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
@@ -67,13 +67,13 @@ class Charactergear extends Command {
                 charL.push(c.name);
             });
             return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
-        } else {                                                                                                                                                                        
+        } else {
             character = chars[0];
         }
 
 
         if (!userID) {
-            const char = await client.swgohAPI.getCharacter(character.uniqueName);
+            const char = await Bot.swgohAPI.getCharacter(character.uniqueName);
             if (!gearLvl) {
                 const allGear = {};
 
@@ -121,9 +121,9 @@ class Charactergear extends Command {
             }
         } else {
             // Looking for a player's remaining needed gear
-            const cooldown = client.getPlayerCooldown(message.author.id);
-            const player = await client.swgohAPI.player(userID, message.guildSettings.swgohLanguage, cooldown);
-            const char = await client.swgohAPI.getCharacter(character.uniqueName);
+            const cooldown = Bot.getPlayerCooldown(message.author.id);
+            const player = await Bot.swgohAPI.player(userID, message.guildSettings.swgohLanguage, cooldown);
+            const char = await Bot.swgohAPI.getCharacter(character.uniqueName);
             const playerChar = player.roster.find(c => c.defId === character.uniqueName);
 
             if (!playerChar) {
@@ -170,7 +170,7 @@ class Charactergear extends Command {
                         value: player.warnings.join("\n")
                     });
                 }
-                const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+                const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
                 message.channel.send({embed: {
                     author: {
                         name: (gearLvl > 0) ? `${player.name}'s ${character.name} gear til g${gearLvl}` : `${player.name}'s ${character.name} needs:`

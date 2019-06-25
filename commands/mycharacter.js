@@ -2,8 +2,8 @@ const Command = require("../base/Command");
 const {promisify, inspect} = require("util");      // eslint-disable-line no-unused-vars
 
 class MyCharacter extends Command {
-    constructor(client) {
-        super(client, {
+    constructor(Bot) {
+        super(Bot, {
             name: "mycharacter",
             category: "SWGoH",
             enabled: true,
@@ -18,7 +18,7 @@ class MyCharacter extends Command {
         });
     }
 
-    async run(client, message, args, options) {
+    async run(Bot, message, args, options) {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args);
 
         if (err) {
@@ -27,10 +27,10 @@ class MyCharacter extends Command {
 
         let chars = [];
         if (!options.flags.ships) {
-            chars = client.findChar(searchChar, client.characters);
+            chars = Bot.findChar(searchChar, Bot.characters);
         }
         if (!chars.length) {
-            chars = client.findChar(searchChar, client.ships, true);
+            chars = Bot.findChar(searchChar, Bot.ships, true);
         }
         let character;
         if (!searchChar) {
@@ -52,15 +52,15 @@ class MyCharacter extends Command {
 
         const msg = await message.channel.send("Please wait while I look up your profile.");
 
-        const cooldown = client.getPlayerCooldown(message.author.id);
+        const cooldown = Bot.getPlayerCooldown(message.author.id);
         let pName;
         let player = null;
         try {
-            player = await client.swgohAPI.unitStats(allyCode, cooldown);
+            player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
             console.error(e);
-            return super.error(message, client.codeBlock(e.message), {
+            return super.error(message, Bot.codeBlock(e.message), {
                 title: message.language.get("BASE_SOMETHING_BROKE"),
                 footer: "Please try again in a bit."
             });
@@ -69,13 +69,13 @@ class MyCharacter extends Command {
         if (player && player.stats) {
             pName = player.name;
         }
-        const footer = client.updatedFooter(player.updated, message, "player", cooldown);
+        const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
 
         let thisChar = player.stats.filter(c => c.unit.defId === character.uniqueName);
         if (thisChar.length && Array.isArray(thisChar)) thisChar = thisChar[0];
 
         if (thisChar && !Array.isArray(thisChar)) {
-            thisChar.unit = await client.swgohAPI.langChar(thisChar.unit, message.guildSettings.swgohLanguage);
+            thisChar.unit = await Bot.swgohAPI.langChar(thisChar.unit, message.guildSettings.swgohLanguage);
             const stats = thisChar.stats;
             thisChar = thisChar.unit;
             const isShip = thisChar.crew.length ? true : false;
@@ -97,7 +97,7 @@ class MyCharacter extends Command {
                     gearStr = gearStr.replace(e.slot, "X");
                 });
                 gearStr = gearStr.replace(/[0-9]/g, "  ");
-                gearStr = client.expandSpaces(gearStr);
+                gearStr = Bot.expandSpaces(gearStr);
             }
             thisChar.skills.forEach(a => {
                 a.type = a.id.split("_")[0].replace("skill", "").toProperCase();
@@ -195,14 +195,14 @@ class MyCharacter extends Command {
                         statStr += str + " ".repeat(8 - str.toString().length) + modStr + "\n";
                     }
                 });
-                statArr.push(client.expandSpaces(statStr));
+                statArr.push(Bot.expandSpaces(statStr));
             });
 
             const fields = [];
-            client.msgArray(statArr, "\n", 1000).forEach((m, ix) => {
+            Bot.msgArray(statArr, "\n", 1000).forEach((m, ix) => {
                 fields.push({
                     name: ix === 0 ? "Stats" : "-",
-                    value: client.codeBlock(m, "asciidoc")
+                    value: Bot.codeBlock(m, "asciidoc")
                 });
             });
 

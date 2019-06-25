@@ -1,5 +1,5 @@
 class Command {
-    constructor(client, {
+    constructor(Bot, {
         name = null,
         description = "No description provided.",
         category = "General",
@@ -7,7 +7,7 @@ class Command {
         example = "No example provided",
         extended = "No information provided.",
         hidden = false,
-        enabled = true, 
+        enabled = true,
         guildOnly = false,
         aliases = [],
         permissions = [],
@@ -15,7 +15,7 @@ class Command {
         flags = {},
         subArgs = {}
     }) {
-        this.client = client;
+        this.Bot = Bot;
         this.conf = {
             enabled,
             hidden,
@@ -50,8 +50,8 @@ class Command {
             } else {
                 userID = message.author.id;
             }
-        } else if (userID !== "me" && !this.client.isAllyCode(userID) && !this.client.isUserID(userID)) {
-            // No valid user, so return it all as a character, and 
+        } else if (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)) {
+            // No valid user, so return it all as a character, and
             // use the message's author as the user
             out.searchChar = (userID + " " + searchChar.join(" ")).trim();
             userID = message.author.id;
@@ -67,9 +67,9 @@ class Command {
         }
 
         // If it got this far, it's got a valid userID (ally code or Discord ID)
-        // so regardless of which, grab an ally code 
+        // so regardless of which, grab an ally code
         if (userID && (out.searchChar || !charNeeded)) {
-            const allyCodes = await this.client.getAllyCode(message, userID);
+            const allyCodes = await this.Bot.getAllyCode(message, userID);
             if (!allyCodes.length) {
                 out.err = message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix);
             } else if (allyCodes.length > 1) {
@@ -84,14 +84,14 @@ class Command {
 
     async getUser(message, userID, useAuth=false) {
         let out = null;
-        if (useAuth && (!userID || (userID !== "me" && !this.client.isAllyCode(userID) && !this.client.isUserID(userID)))) {
+        if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
             userID = message.author.id;
-        } 
+        }
         if (userID) {
             // If it got this far, it's got a valid userID (ally code or Discord ID)
-            // so regardless of which, grab an ally code 
-            const allyCodes = await this.client.getAllyCode(message, userID);
+            // so regardless of which, grab an ally code
+            const allyCodes = await this.Bot.getAllyCode(message, userID);
             if (allyCodes.length) {
                 out = allyCodes[0];
             }
@@ -108,7 +108,7 @@ class Command {
         options.color = options.color || 0xe01414;
         if (options.example) {
             const prefix = message.guildSettings ? message.guildSettings.prefix : ";";
-            err += `\n\n**Example:**${message.client.codeBlock(prefix + options.example)}`;
+            err += `\n\n**Example:**${this.Bot.codeBlock(prefix + options.example)}`;
         }
         await this.embed(message, err, options);
     }
