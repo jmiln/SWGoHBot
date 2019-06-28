@@ -267,10 +267,12 @@ module.exports = (Bot) => {
         if (char.mods) {
             for (const mod of char.mods) {
                 // If they've got the numbers instead of enums, enum em
+                if (mod.primaryStat.unitStatId) mod.primaryStat.unitStat = mod.primaryStat.unitStatId;
                 if (!isNaN(mod.primaryStat.unitStat)) {
                     mod.primaryStat.unitStat = statEnums.enums[mod.primaryStat.unitStat];
                 }
                 for (const stat of mod.secondaryStat) {
+                    if (stat.unitStatId) stat.unitStat = stat.unitStatId;
                     if (!isNaN(stat.unitStat)) {
                         stat.unitStat = statEnums.enums[stat.unitStat];
                     }
@@ -416,7 +418,9 @@ module.exports = (Bot) => {
             if (Array.isArray(skill)) {
                 skill = skill[0];
             }
-            s.name = skill.nameKey;
+            s.name = skill.nameKey
+                .replace(/\\n/g, " ")
+                .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
             s.cooldown = skill.cooldown;
             s.desc = skill.descKey
                 .replace(/\\n/g, " ")
@@ -430,6 +434,11 @@ module.exports = (Bot) => {
             const eqList = await this.gear(tier.equipmentSetList, lang);
             tier.equipmentSetList.forEach((e, ix) => {
                 const eq = eqList.find(equipment => equipment.id === e);
+                if (!eq) {
+                    console.log("Missing equipment for char " + char.name + ", make sure to update the gear lang stuff");
+                    console.log(e);
+                    return;
+                }
                 tier.equipmentSetList.splice(ix, 1, eq.nameKey);
             });
         }
