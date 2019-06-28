@@ -2646,7 +2646,7 @@
         ]
     },
     "lstb": {
-        "name": "LIGHT SIDE TERRITORY BATTLES",
+        "name": "HOTH LIGHT SIDE TERRITORY BATTLES",
         "rarity": 7,
         "gear": 10,
         "level": 85,
@@ -3118,7 +3118,7 @@
         ]
     },
     "dstb": {
-        "name": "DARK SIDE TERRITORY BATTLES",
+        "name": "HOTH DARK SIDE TERRITORY BATTLES",
         "rarity": 7,
         "gear": 9,
         "level": 85,
@@ -3820,8 +3820,444 @@
             }
         ]
     },
-    "geonosistb": {
-        "name": "GUESSES FOR UPCOMING GEONOSIS TB",
+    "geonosistbds": {
+        "name": "GEONOSIS DSTB",
+        "rarity": 7,
+        "gear": 12,
+        "level": 85,
+        "phase": [
+            {
+                "name": "PHASE ONE - 6* AND UP",
+                "squads": [
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "Separatists Only. Poggle, Sun Fac, Geo Soldier required",
+                        "url": "",
+                        "team": [
+                            "POGGLETHELESSER",
+                            "SUNFAC",
+                            "GEONOSIANSPY",
+                            "GEONOSIANSOLDIER",
+                            "GEONOSIANBROODALPHA",
+                            "GRIEVOUS"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "MOTHERTALZIN",
+                            "ASAJVENTRESS",
+                            "NIGHTSISTERSPIRIT",
+                            "NIGHTSISTERZOMBIE",
+                            "DAKA",
+                            "TALIA",
+                            "NIGHTSISTERACOLYTE",
+                            "NIGHTSISTERINITIATE"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "DARTHREVAN",
+                            "DARTHMALAK",
+                            "HK47",
+                            "SITHTROOPER",
+                            "SITHMARAUDER",
+                            "BASTILASHANDARK",
+                            "SITHASSASSIN"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "DARTHTRAYA",
+                            "DARTHSION",
+                            "DARTHNIHILUS",
+                            "EMPERORPALPATINE",
+                            "VADER"
+                        ]
+                    },
+                    {
+                        "name": "SPECIAL MISSION",
+                        "note": "Separatists Only, 16,500 GP required. Nute, B1, B2, Droideka required",
+                        "url": "https://youtu.be/t8yuWMsDFuE",
+                        "team": [
+                            "NUTEGUNRAY",
+                            "COUNTDOOKU",
+                            "B1BATTLEDROIDV2",
+                            "B2SUPERBATTLEDROID",
+                            "DROIDEKA"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "PHASE TWO - 6* AND UP",
+                "squads": [
+                    {
+                        "name": "SHIP COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "ships": true,
+                        "team": [
+                            "CAPITALSTARDESTROYER",
+                            "XANADUBLOOD",
+                            "IG2000",
+                            "SLAVE1",
+                            "TIESILENCER",
+                            "TIEREAPER",
+                            "TIEADVANCED",
+                            "SITHFIGHTER",
+                            "SITHINFILTRATOR",
+                            "TIEFIGHTERIMPERIAL",
+                            "GAUNTLETSTARFIGHTER"
+                        ]
+                    },
+                    {
+                        "name": "SHIP COMBAT MISSION",
+                        "note": "Chimaera and vulture droid supplied",
+                        "url": "",
+                        "ships": true,
+                        "team": [
+                            "CAPITALCHIMAERA",
+                            "GEONOSIANSTARFIGHTER1",
+                            "GEONOSIANSTARFIGHTER2",
+                            "GEONOSIANSTARFIGHTER3",
+                            "COMMANDSHUTTLE",
+                            "TIEFIGHTERFIRSTORDER",
+                            "TIEFIGHTERFOSF",
+                            "HOUNDSTOOTH",
+                            "EMPERORSSHUTTLE",
+                            "SITHBOMBER"
+                        ]
+                    },
+                    {
+                        "name": "SPECIAL MISSION",
+                        "note": "Geonosians only.  16,500 power minimum",
+                        "url": "",
+                        "team": [
+                            "POGGLETHELESSER",
+                            "SUNFAC",
+                            "GEONOSIANSPY",
+                            "GEONOSIANSOLDIER",
+                            "GEONOSIANBROODALPHA"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "Dooku and Asajj required at 16,500+ power",
+                        "url": "",
+                        "team": [
+                            "COUNTDOOKU",
+                            "ASAJVENTRESS"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "AURRA_SING",
+                            "BOBAFETT",
+                            "BOSSK",
+                            "CADBANE",
+                            "DENGAR",
+                            "EMBO",
+                            "GREEDO",
+                            "IG88",
+                            "JANGOFETT",
+                            "ZAMWESELL"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "KYLORENUNMASKED",
+                            "KYLOREN",
+                            "FIRSTORDEREXECUTIONER",
+                            "FIRSTORDEROFFICERMALE",
+                            "FIRSTORDERTIEPILOT",
+                            "FIRSTORDERTROOPER",
+                            "FIRSTORDERSPECIALFORCESPILOT",
+                            "PHASMA"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "GRIEVOUS",
+                            "B2SUPERBATTLEDROID",
+                            "MAGNAGUARD",
+                            "DROIDEKA",
+                            "B1BATTLEDROIDV2"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "DARTHREVAN",
+                            "DARTHMALAK",
+                            "HK47",
+                            "SITHTROOPER",
+                            "SITHMARAUDER",
+                            "BASTILASHANDARK",
+                            "SITHASSASSIN"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "PHASE THREE - 7*",
+                "squads": [
+                    {
+                        "name": "SHIP COMBAT MISSION",
+                        "note": "Sun Fac, Soldier, Spy required",
+                        "url": "",
+                        "ships": true,
+                        "team": [
+                            "CAPITALCHIMAERA",
+                            "GEONOSIANSTARFIGHTER1",
+                            "GEONOSIANSTARFIGHTER2",
+                            "GEONOSIANSTARFIGHTER3",
+                            "COMMANDSHUTTLE",
+                            "TIEFIGHTERFIRSTORDER",
+                            "TIEFIGHTERFOSF",
+                            "HOUNDSTOOTH",
+                            "EMPERORSSHUTTLE",
+                            "SITHBOMBER"
+                        ]
+                    },
+                    {
+                        "name": "SHIP COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "ships": true,
+                        "team": [
+                            "CAPITALSTARDESTROYER",
+                            "XANADUBLOOD",
+                            "IG2000",
+                            "SLAVE1",
+                            "TIESILENCER",
+                            "TIEREAPER",
+                            "TIEADVANCED",
+                            "SITHFIGHTER",
+                            "SITHINFILTRATOR",
+                            "TIEFIGHTERIMPERIAL",
+                            "GAUNTLETSTARFIGHTER"
+                        ]
+                    },
+                    {
+                        "name": "SPECIAL MISSION",
+                        "note": "Geonosians only.  Brood Alpha required.  16,500 power minimum",
+                        "url": "",
+                        "team": [
+                            "POGGLETHELESSER",
+                            "SUNFAC",
+                            "GEONOSIANSPY",
+                            "GEONOSIANSOLDIER",
+                            "GEONOSIANBROODALPHA"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "Separatist Droids only",
+                        "url": "",
+                        "team": [
+                            "GRIEVOUS",
+                            "B2SUPERBATTLEDROID",
+                            "MAGNAGUARD",
+                            "DROIDEKA",
+                            "B1BATTLEDROIDV2",
+                            "WATTAMBOR"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "AURRA_SING",
+                            "BOBAFETT",
+                            "BOSSK",
+                            "CADBANE",
+                            "DENGAR",
+                            "EMBO",
+                            "GREEDO",
+                            "IG88",
+                            "JANGOFETT",
+                            "ZAMWESELL"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "KYLORENUNMASKED",
+                            "KYLOREN",
+                            "FIRSTORDEREXECUTIONER",
+                            "FIRSTORDEROFFICERMALE",
+                            "FIRSTORDERTIEPILOT",
+                            "FIRSTORDERTROOPER",
+                            "FIRSTORDERSPECIALFORCESPILOT",
+                            "PHASMA"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "DARTHREVAN",
+                            "DARTHMALAK",
+                            "HK47",
+                            "SITHTROOPER",
+                            "SITHMARAUDER",
+                            "BASTILASHANDARK",
+                            "SITHASSASSIN"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "PHASE FOUR - 7*",
+                "squads": [
+                    {
+                        "name": "SHIP COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "ships": true,
+                        "team": [
+                            "CAPITALSTARDESTROYER",
+                            "CAPITALCHIMAERA",
+                            "XANADUBLOOD",
+                            "IG2000",
+                            "SLAVE1",
+                            "TIESILENCER",
+                            "TIEREAPER",
+                            "TIEADVANCED",
+                            "SITHFIGHTER",
+                            "SITHINFILTRATOR",
+                            "TIEFIGHTERIMPERIAL",
+                            "GAUNTLETSTARFIGHTER",
+                            "GEONOSIANSTARFIGHTER1",
+                            "GEONOSIANSTARFIGHTER2",
+                            "GEONOSIANSTARFIGHTER3",
+                            "COMMANDSHUTTLE",
+                            "TIEFIGHTERFIRSTORDER",
+                            "TIEFIGHTERFOSF",
+                            "HOUNDSTOOTH",
+                            "EMPERORSSHUTTLE",
+                            "SITHBOMBER"
+                        ]
+                    },
+                    {
+                        "name": "SPECIAL MISSION",
+                        "note": "Separatists only.  Wat Tambor required.  16,500 power minimum",
+                        "url": "",
+                        "team": [
+                            "GRIEVOUS",
+                            "B2SUPERBATTLEDROID",
+                            "MAGNAGUARD",
+                            "DROIDEKA",
+                            "B1BATTLEDROIDV2",
+                            "WATTAMBOR"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "Separatists only.  Dooku required.  16,500 power minimum",
+                        "url": "",
+                        "team": [
+                            "POGGLETHELESSER",
+                            "SUNFAC",
+                            "GEONOSIANSPY",
+                            "GEONOSIANSOLDIER",
+                            "GEONOSIANBROODALPHA",
+                            "COUNTDOOKU",
+                            "NUTEGUNRAY",
+                            "ASAJVENTRESS"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "AURRA_SING",
+                            "BOBAFETT",
+                            "BOSSK",
+                            "CADBANE",
+                            "DENGAR",
+                            "EMBO",
+                            "GREEDO",
+                            "IG88",
+                            "JANGOFETT",
+                            "ZAMWESELL"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "KYLORENUNMASKED",
+                            "KYLOREN",
+                            "FIRSTORDEREXECUTIONER",
+                            "FIRSTORDEROFFICERMALE",
+                            "FIRSTORDERTIEPILOT",
+                            "FIRSTORDERTROOPER",
+                            "FIRSTORDERSPECIALFORCESPILOT",
+                            "PHASMA"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "MOTHERTALZIN",
+                            "ASAJVENTRESS",
+                            "NIGHTSISTERSPIRIT",
+                            "NIGHTSISTERZOMBIE",
+                            "DAKA",
+                            "TALIA",
+                            "NIGHTSISTERACOLYTE",
+                            "NIGHTSISTERINITIATE"
+                        ]
+                    },
+                    {
+                        "name": "COMBAT MISSION",
+                        "note": "",
+                        "url": "",
+                        "team": [
+                            "DARTHREVAN",
+                            "DARTHMALAK",
+                            "HK47",
+                            "SITHTROOPER",
+                            "SITHMARAUDER",
+                            "BASTILASHANDARK",
+                            "SITHASSASSIN"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "geonosistbls": {
+        "name": "GUESSES FOR UPCOMING GEONOSIS LSTB",
         "rarity": 7,
         "gear": 12,
         "level": 85,
@@ -3872,44 +4308,6 @@
                             "C3POLEGENDARY",
                             "CLONEWARSCHEWBACCA",
                             "CORUSCANTUNDERWORLDPOLICE"
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "DARK SIDE",
-                "squads": [
-                    {
-                        "name": "GEONOSIANS",
-                        "note": "",
-                        "url": "",
-                        "team": [
-                            "POGGLETHELESSER",
-                            "SUNFAC",
-                            "GEONOSIANSPY",
-                            "GEONOSIANSOLDIER"
-                        ]
-                    },
-                    {
-                        "name": "DROIDS",
-                        "note": "",
-                        "url": "",
-                        "team": [
-                            "GRIEVOUS",
-                            "B2SUPERBATTLEDROID",
-                            "MAGNAGUARD",
-                            "DROIDEKA",
-                            "B1BATTLEDROIDV2"
-                        ]
-                    },
-                    {
-                        "name": "OTHER",
-                        "note": "",
-                        "url": "",
-                        "team": [
-                            "ASAJVENTRESS",
-                            "COUNTDOOKU",
-                            "NUTEGUNRAY"
                         ]
                     }
                 ]

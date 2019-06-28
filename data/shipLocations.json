@@ -334,6 +334,15 @@
         ]
     },
     {
+        "name": "Negotiator",
+        "locations": [
+            {
+                "type": "Guild Event Shop",
+                "cost": "1350/5"
+            }
+        ]
+    },
+    {
         "name": "Phantom II",
         "locations": [
             {

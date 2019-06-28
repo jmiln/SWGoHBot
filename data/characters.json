@@ -2904,6 +2904,26 @@
         }
     },
     {
+        "name": "Geonosian Brood Alpha",
+        "uniqueName": "GEONOSIANBROODALPHA",
+        "aliases": [
+            "Geonosian Brood Alpha"
+        ],
+        "nameVariant": [
+            "Geonosian Brood Alpha"
+        ],
+        "url": "http://swgoh.gg/characters/geonosian-brood-alpha/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/GEONOSIANBROODALPHA/",
+        "side": "dark",
+        "factions": [
+            "Geonosian",
+            "Leader",
+            "Separatist",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Geonosian Soldier",
         "uniqueName": "GEONOSIANSOLDIER",
         "aliases": [
@@ -6467,6 +6487,24 @@
                 "source": "Crouching Rancor"
             }
         }
+    },
+    {
+        "name": "Wat Tambor",
+        "uniqueName": "WATTAMBOR",
+        "aliases": [
+            "Wat Tambor"
+        ],
+        "nameVariant": [
+            "Wat Tambor"
+        ],
+        "url": "http://swgoh.gg/characters/wat-tambor/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/WATTAMBOR/",
+        "side": "dark",
+        "factions": [
+            "Separatist",
+            "Support"
+        ],
+        "mods": {}
     },
     {
         "name": "Wedge Antilles",

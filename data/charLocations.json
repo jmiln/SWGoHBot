@@ -876,6 +876,15 @@
         ]
     },
     {
+        "name": "Geonosian Brood Alpha",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "8-D"
+            }
+        ]
+    },
+    {
         "name": "Geonosian Soldier",
         "locations": [
             {
@@ -1096,12 +1105,12 @@
         "name": "Imperial Super Commando",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "8-D"
-            },
-            {
                 "type": "Guild Event Shop",
                 "cost": "400/5"
+            },
+            {
+                "type": "Cantina",
+                "level": "2-C"
             }
         ]
     },
@@ -2059,6 +2068,15 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "1350/5"
+            }
+        ]
+    },
+    {
+        "name": "Wat Tambor",
+        "locations": [
+            {
+                "type": "Territory Battle",
+                "name": "Separatist Might"
             }
         ]
     },

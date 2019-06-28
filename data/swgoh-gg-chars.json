@@ -12537,6 +12537,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Fleet Commander",
             "Galactic Republic",
             "Jedi",
             "Leader",
@@ -12557,8 +12558,8 @@
             "Taunt"
         ],
         "role": "Tank",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "CAPITALNEGOTIATOR",
+        "ship_slot": 0,
         "activate_shard_count": 145
     },
     {
@@ -12734,6 +12735,185 @@
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
+    },
+    {
+        "name": "Geonosian Brood Alpha",
+        "base_id": "GEONOSIANBROODALPHA",
+        "pk": 363,
+        "url": "http://swgoh.gg/characters/geonosian-brood-alpha/",
+        "image": "/game-asset/u/GEONOSIANBROODALPHA/",
+        "power": 25143,
+        "description": "Geonosian Support that swarms enemies with summoned allies and Hive Mind",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "002",
+                    "003",
+                    "004",
+                    "008",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "005",
+                    "021",
+                    "015",
+                    "028",
+                    "032",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "014",
+                    "018",
+                    "028",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "014",
+                    "038",
+                    "037",
+                    "045",
+                    "050",
+                    "055"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "018",
+                    "043",
+                    "049",
+                    "048",
+                    "082",
+                    "080"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "014",
+                    "039",
+                    "072",
+                    "092",
+                    "080",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "085",
+                    "067",
+                    "109",
+                    "024",
+                    "100",
+                    "109"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "113",
+                    "101",
+                    "095",
+                    "112",
+                    "090",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "125",
+                    "096",
+                    "135",
+                    "095",
+                    "132"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "116",
+                    "111",
+                    "125",
+                    "113",
+                    "117"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "130",
+                    "129",
+                    "109",
+                    "142",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "160",
+                    "159",
+                    "168",
+                    "168",
+                    "G12Finisher_GEONOSIANBROODALPHA_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Geonosian",
+            "Leader",
+            "Separatist",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "Expose",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Offense Up",
+            "Remove Turn Meter",
+            "Revive",
+            "Taunt"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Geonosian Soldier",
@@ -29173,6 +29353,179 @@
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 145
+    },
+    {
+        "name": "Wat Tambor",
+        "base_id": "WATTAMBOR",
+        "pk": 360,
+        "url": "http://swgoh.gg/characters/wat-tambor/",
+        "image": "/game-asset/u/WATTAMBOR/",
+        "power": 21378,
+        "description": "Separatist Support who distributes powerful Tech to his allies",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "009",
+                    "009",
+                    "011",
+                    "011",
+                    "007",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "012",
+                    "025",
+                    "020",
+                    "022",
+                    "025",
+                    "032"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "069",
+                    "060",
+                    "047",
+                    "054",
+                    "048",
+                    "041"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "082",
+                    "074",
+                    "068",
+                    "024",
+                    "024",
+                    "073"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "083",
+                    "080",
+                    "102",
+                    "102",
+                    "060",
+                    "088"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "080",
+                    "091",
+                    "102",
+                    "095",
+                    "095",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "088",
+                    "083",
+                    "102",
+                    "080",
+                    "088",
+                    "105"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "092",
+                    "088",
+                    "109",
+                    "105",
+                    "109",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "105",
+                    "111",
+                    "107",
+                    "091",
+                    "109",
+                    "173"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "136",
+                    "114",
+                    "173",
+                    "129",
+                    "117",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "134",
+                    "143",
+                    "117",
+                    "136",
+                    "135",
+                    "137"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "159",
+                    "162",
+                    "168",
+                    "168",
+                    "G12Finisher_WATTAMBOR_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Separatist",
+            "Support"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Dispel",
+            "DoT",
+            "Gain Turn Meter",
+            "Remove Turn Meter",
+            "Revive",
+            "Taunt"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 80
     },
     {
         "name": "Wedge Antilles",

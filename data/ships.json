@@ -960,6 +960,22 @@
         }
     },
     {
+        "name": "Negotiator",
+        "uniqueName": "CAPITALNEGOTIATOR",
+        "aliases": [
+            "Negotiator"
+        ],
+        "nameVariant": [
+            "Negotiator"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/negotiator/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {}
+    },
+    {
         "name": "Phantom II",
         "uniqueName": "PHANTOM2",
         "aliases": [
