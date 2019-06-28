@@ -75,6 +75,10 @@ class MyMods extends Command {
 
             let charMods = player.roster.find(c => c.defId === character.uniqueName);
 
+            if (!charMods) {
+                return super.error(msg, "Looks like you don't have that character activated yet.");
+            }
+
             charMods = await Bot.swgohAPI.langChar(charMods, message.guildSettings.swgohLanguage);
 
             if (charMods) {
