@@ -68,8 +68,8 @@ class ReloadData extends Command {
                 break;
             case "swlang":
                 // Do this first since it's just the basic skeleton
-                await message.client.swgohAPI.character(null, true);
-                for (const lang of message.client.swgohLangList) {
+                await Bot.swgohAPI.character(null, true);
+                for (const lang of Bot.swgohLangList) {
                     if (!args[0]) {
                         await Bot.swgohAPI.abilities([], lang, true);
                         message.channel.send(`Updated abilities for ${lang}`);
