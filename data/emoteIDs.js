@@ -27,7 +27,7 @@ module.exports = {
     modsetHealth:     "437150253062422530",
     modsetOffense:    "437150252944982026",
     modsetPotency:    "437150252844187648",
-    modsetSpeed:      "594254514215714836",
+    modsetSpeed:      "437150253117079582",
     modsetTenacity:   "437150253179863040",
 
     // Stars for x/7 rarities?
