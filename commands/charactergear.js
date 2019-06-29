@@ -12,7 +12,7 @@ class Charactergear extends Command {
 
     async run(Bot, message, [userID, ...searchChar]) {
         // The current max possible gear level
-        const MAX_GEAR = 12;
+        const MAX_GEAR = 13;
         let gearLvl = 0;
         // If there's enough elements in searchChar, and it's in the format of a number*
         if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {
@@ -102,10 +102,13 @@ class Charactergear extends Command {
                 const gearList = char.unitTierList.filter(t => t.tier >= gearLvl);
                 const fields = [];
                 gearList.forEach(g => {
-                    fields.push({
+                    const f = {
                         name: "Gear " + g.tier,
                         value: g.equipmentSetList.filter(gname => gname !== "???????").join("\n")
-                    });
+                    };
+                    if (f.value.length > 0) {
+                        fields.push(f);
+                    }
                 });
                 message.channel.send({
                     embed: {
