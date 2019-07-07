@@ -1082,20 +1082,20 @@ module.exports = class extends Language {
             // Polls Command
             COMMAND_POLL_NO_ARG: "Es muss eine waehlbare Option oder eine Aktion angegeben werden (create/view/etc).",
             COMMAND_POLL_TITLE_TOO_LONG: "Entschuldigung, aber der Titel/die Frage darf maximal 255 Zeichen lang sein.",
-            COMMAND_POLL_ALREADY_RUNNING: "Entschuldigung, aber Sie koennen nur eine Umfrage zur gleichen Zeit durchfuehren. Bitte beenden Sie zuerst die aktuelle Umfrage.",
-            COMMAND_POLL_MISSING_QUESTION: "Sie muessen etwas angeben, über das abgestimmt werden soll.",
-            COMMAND_POLL_TOO_FEW_OPT: "Sie muessen mindestens 2 Optionen zur Wahl stellen.",
-            COMMAND_POLL_TOO_MANY_OPT: "Sie koennen max. bis zu 10 Optionen zur Wahl stellen.",
-            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <choice>\`\n`,
+            COMMAND_POLL_ALREADY_RUNNING: "Entschuldigung, aber es kann nur eine Umfrage zur gleichen Zeit durchgefuehrt werden. Bitte beende zuerst die aktuelle Umfrage.",
+            COMMAND_POLL_MISSING_QUESTION: "Es muss etwas angeben werden über das abgestimmt werden soll.",
+            COMMAND_POLL_TOO_FEW_OPT: "Es muessen mindestens 2 Optionen zur Wahl gestellt werden.",
+            COMMAND_POLL_TOO_MANY_OPT: "Es koennen max. bis zu 10 Optionen zur Wahl gestellt werden.",
+            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** hat eine neue Umfrage gestartet:\nVote mit \`${prefix}poll <Nr>\`\n`,
             COMMAND_POLL_NO_POLL: "Es wird aktuell keine Umfrage durchgefuehrt",
             COMMAND_POLL_FINAL: (poll) => `Endergebnisse fuer ${poll}`,
             COMMAND_POLL_FINAL_ERROR: (question) => `Loeschen fehlgeschlagen **${question}**, bitte erneut versuchen.`,
             COMMAND_POLL_INVALID_OPTION: "Das ist keine gueltige Option.",
-            COMMAND_POLL_SAME_OPT: (opt) => `Sie haben bereits gewaehlt **${opt}**`,
-            COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Sie haben Ihre Auswahl von **${oldOpt}** zu **${newOpt}** geaendert`,
+            COMMAND_POLL_SAME_OPT: (opt) => `Du hast bereits gewaehlt **${opt}**`,
+            COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Die Auswahl wurde geaendert von **${oldOpt}** zu **${newOpt}**`,
             COMMAND_POLL_REGISTERED: (opt) => `Wahl fuer **${opt}** gespeichert`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice} **${optCount} vote${optCount === 1 ? "" : "s"}**\n`,
-            COMMAND_POLL_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice>\` zum voten`,
+            COMMAND_POLL_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <Nr>\` zum voten`,
             // Remote poll strings
             COMMAND_POLL_INVALID_ID: "Eine Umfrage mit dieser ID existiert nicht.",
             COMMAND_POLL_NO_ACCESS: "Entschuldige, aber du hast keinen Zugriff auf diese Umfrage.",
@@ -1105,46 +1105,46 @@ module.exports = class extends Language {
             COMMAND_POLL_ME1: (pollID, poll) => `Hier sind die gueltigen Optionen fuer die Umfrage ${pollID}\n${poll}\nKopiere die unten stehende Nachricht und aendere \`<Auswahl>\` auf die Option die du waehlen moechtest`,
             COMMAND_POLL_ME2: (prefix, pollID) => `${prefix}poll -poll ${pollID} <Auswahl>`,
             COMMAND_POLL_HELP: {
-                description: "Startet Deine Umfrage mit mehreren Optionen.",
+                description: "Startet deine Umfrage mit mehreren Optionen.",
                 actions: [
                     {
                         action: "Create",
                         actionDesc: "Erstelle eine neue Umfrage",
                         usage: ";poll create [-anonymous] <Frage> | <Opt1> | <Opt2> | [...] | [Opt10]",
                         args: {
-                            "Frage": "Deine Frage, zu der Du Feedback erwartest.",
+                            "Frage": "Deine Frage, zu der du Feedback erwartest.",
                             "Opt": "Die Optionen, von denen die Teilnehmer auswaehlen koennen",
                             "-anonymous": "Wenn diese Option eingefuegt wird, dann werden die Abstimmungsergebnisse nicht angezeigt bis die Umfrage beendet wird. (-anon)"
                         }
                     },
                     {
                         action: "Vote",
-                        actionDesc: "Waehle Deine Option aus",
-                        usage: ";poll <Auswahl>",
+                        actionDesc: "Waehle deine Option aus",
+                        usage: ";poll <Nr>",
                         args: {
-                            "Auswahl": "Die Option die Du waehlst."
+                            "Nr": "Die Option die du waehlst."
                         }
                     },
                     {
                         action: "View",
-                        actionDesc: "Sieh Dir die aktuellen Ergebnisse und Optionen fuer die Umfrage in diesem Kanal an.",
+                        actionDesc: "Sieh dir die aktuellen Ergebnisse und Optionen fuer die Umfrage in diesem Kanal an.",
                         usage: ";poll view",
                         args: {}
                     },
                     {
                         action: "Close",
-                        actionDesc: "Beende die Umfrage in diesem Kanal und zeige das finale Ergebnis an.",
+                        actionDesc: "Beende die Umfrage in diesem Kanal und zeige das engueltige Ergebnis an.",
                         usage: ";poll close",
                         args: {}
                     },
                     {
                         action: "Remote View/ Vote",
-                        actionDesc: "Stimme ab oder sieh Dir den Status zu einer Umfrage an die mit einem bestimmten Kanal verknuepft ist.",
-                        usage: ";poll view -poll <Umfrage> \n;poll vote <Auswahl> -poll <Umfrage>\n;poll me",
+                        actionDesc: "Stimme ab oder sieh dir den Status zu einer Umfrage an die mit einem bestimmten Kanal verknuepft ist.",
+                        usage: ";poll view -poll <Umfrage> \n;poll vote <Nr> -poll <Umfrage>\n;poll me",
                         args: {
                             "pollID": "Die ID der Umfrage die du sehen oder verwenden moechtest",
-                            "Auswahl": "Die Auswahl die du treffen moechtest.",
-                            "me": "Sendet Dir die zur Verfuegung stehenden Optionen die du auswaehlen kannst und ein Beispiel welches du kopieren / fuer das du abstimmen kannst"
+                            "Nr": "Die Auswahl die du treffen moechtest.",
+                            "me": "Sendet dir die zur Verfuegung stehenden Optionen die du auswaehlen kannst und ein Beispiel welches du kopieren / fuer das du abstimmen kannst"
                         }
                     }
                 ]
