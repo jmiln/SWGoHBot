@@ -159,6 +159,9 @@ module.exports = (Bot) => {
 
     async function unitStats(allycodes, cooldown) {
         if (!Array.isArray(allycodes)) {
+            if (!allycodes) {
+                return false;
+            }
             allycodes = [allycodes];
         }
         if (cooldown && cooldown.player) {
@@ -172,7 +175,7 @@ module.exports = (Bot) => {
         }
         let playerStats = [];
         try {
-            if (allycodes && allycodes.length) allycodes = allycodes.map(a => a.toString()).filter(a => a.length === 9);
+            if (allycodes && allycodes.length) allycodes = allycodes.filter(a => !!a).map(a => a.toString()).filter(a => a.length === 9);
             if (!allycodes.length) throw new Error("No valid ally code(s) entered");
             allycodes = allycodes.map(a => parseInt(a));
 
