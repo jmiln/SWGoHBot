@@ -9,7 +9,7 @@ class Charactergear extends Command {
             permissions: ["EMBED_LINKS"],
             flags: {
                 all: {
-                    aliases: ["recipes", "recs", "a"]
+                    aliases: ["recipes", "recs", "a", "expand"]
                 }
             }
         });
