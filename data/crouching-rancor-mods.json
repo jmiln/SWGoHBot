@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2019-06-27 20:00:01.000000",
+        "date": "2019-07-09 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -2978,7 +2978,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense",
             "short": "sm",
             "families": "sith ; sith empire",
@@ -3387,8 +3387,8 @@
         {
             "name": "Bastila Shan Fallen",
             "cname": "Bastila Shan Fallen",
-            "set1": "OFF",
-            "set2": "POT",
+            "set1": "SPE",
+            "set2": "HP",
             "set3": "",
             "square": "Offense",
             "arrow": "Speed",
@@ -3526,6 +3526,54 @@
             "cross": "Offense / Protection",
             "short": "",
             "families": "droid ; separatist",
+            "crew": "0"
+        },
+        {
+            "name": "Shaak Ti",
+            "cname": "Shaak Ti",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense / Health",
+            "circle": "Protection",
+            "cross": "Offense / Protection",
+            "short": "st",
+            "families": "galactic republic ; jedi",
+            "crew": "0"
+        },
+        {
+            "name": "Geonosian Brood Alpha",
+            "cname": "Geonosian Brood Alpha",
+            "set1": "SPE",
+            "set2": "TEN",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Protection",
+            "cross": "Tenacity",
+            "short": "gba",
+            "families": "geonosian ; separatist",
+            "crew": "0"
+        },
+        {
+            "name": "Wat Tambor",
+            "cname": "Wat Tambor",
+            "set1": "HP",
+            "set2": "HP",
+            "set3": "HP",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "short": "wt",
+            "families": "separatist",
             "crew": "0"
         }
     ]
