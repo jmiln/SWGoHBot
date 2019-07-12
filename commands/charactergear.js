@@ -23,7 +23,7 @@ class Charactergear extends Command {
         if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {
             gearLvl = parseInt(searchChar.pop());
             if (gearLvl < 0 || gearLvl > MAX_GEAR) {
-                return message.channel.send(message.language.get("COMMAND_CHARGEAR_INVALID_GEAR"));
+                return message.channel.send(message.language.get("COMMAND_CHARACTERGEAR_INVALID_GEAR"));
             } else {
                 if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(parseInt(gearLvl)) ) {
                     gearLvl = 0;
@@ -116,7 +116,7 @@ class Charactergear extends Command {
                         gearString += `* ${allGear[key]}x ${key}\n`;
                     }
                 }
-                message.channel.send(message.language.get("COMMAND_CHARGEAR_GEAR_ALL", character.name, gearString), {
+                message.channel.send(message.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), {
                     code: "md",
                     split: true
                 });
@@ -296,36 +296,3 @@ async function getParts(Bot, gr, partList=[], amt=1) {
 
     return partList;
 }
-
-
-// const char = await Bot.swgohAPI.getCharacter("DARTHREVAN");
-// const gearList = char.unitTierList.filter(t => t.tier === 9);
-// // console.log(gearList);
-//
-// let end = [];
-// for (const g of gearList[0].equipmentSetList) {
-//     const gr = await Bot.cache.get(Bot.config.mongodb.swapidb, "gear", {
-//         nameKey: g,
-//         language: message.guildSettings.swgohLanguage
-//     }, {
-//         nameKey: 1,
-//         recipeId: 1,
-//         _id: 0
-//     });
-//
-//     const pieces = await getParts(message, Bot, gr);
-//     end = end.concat(pieces);
-// }
-//
-// const out = {};
-// end = end.sort((a, b) => a.name > b.name ? 1 : -1);
-// end.forEach(g => {
-//     if (out[g.name]) {
-//         out[g.name].count += g.count;
-//     } else {
-//         out[g.name] = {
-//             count: g.count
-//         };
-//     }
-// });
-// console.log(Object.keys(out).map(g => " ".repeat(2 - out[g].count.toString().length) + out[g].count + "x " + g).join("\n"));

@@ -6,6 +6,7 @@ class Poll extends Command {
             name: "poll",
             category: "Misc",
             aliases: ["vote"],
+            permissions: ["EMBED_LINKS"],
             flags: {
                 anon: {
                     aliases: ["anonymous"]
