@@ -1801,8 +1801,7 @@
         "name": "Shaak Ti",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Clone Training"
+                "type": "Intro P2 (Crystals/Packs)"
             }
         ]
     },
