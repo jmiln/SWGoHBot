@@ -303,8 +303,8 @@ class CommandName extends Command {
                         });
                         checkArr[cName].push({
                             check: labels.speed,
-                            user1: user1Char ? user1Char.stats.Speed.final : "N/A",
-                            user2: user2Char ? user2Char.stats.Speed.final : "N/A"
+                            user1: (user1Char && user1Char.stats.Speed) ? user1Char.stats.Speed.final : "N/A",
+                            user2: (user2Char && user2Char.stats.Speed) ? user2Char.stats.Speed.final : "N/A"
                         });
                     }
                 }

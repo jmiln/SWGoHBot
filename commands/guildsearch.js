@@ -491,7 +491,7 @@ class GuildSearch extends Command {
                     if (pct) {
                         stats[s] = (stats[s].final * 100).toFixed(2) + "%";
                     } else {
-                        stats[s] = stats[s].final.toLocaleString();
+                        stats[s] = stats[s].final ? stats[s].final.toLocaleString() : "N/A";
                     }
                 });
                 stats.player = guild.roster.find(m => m.allyCode === member.allyCode).name;
