@@ -3,8 +3,8 @@ module.exports = (Sequelize, database) => {
     // Models
     database.define("settings", {
         guildID: {          // The guild's ID
-            type: Sequelize.TEXT, 
-            primaryKey: true 
+            type: Sequelize.TEXT,
+            primaryKey: true
         },
         prefix: {           // The guild's prefix
             type: Sequelize.TEXT,
@@ -53,11 +53,15 @@ module.exports = (Sequelize, database) => {
             type: Sequelize.TEXT,
             defaultValue: "en_US"
         },
-        swgohLanguage: {    // Live-data language 
+        swgohLanguage: {    // Live-data language
             type: Sequelize.TEXT,
             defaultValue: "ENG_US"
         },
         shardtimeVertical: {// Align registered shardmates vertically or not
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        useActivityLog: {// Use the activity logs or not
             type: Sequelize.BOOLEAN,
             defaultValue: false
         }
@@ -95,7 +99,7 @@ module.exports = (Sequelize, database) => {
         },
         commandText: {
             type: Sequelize.TEXT
-        } 
+        }
     });
     database.define("changelogs", {
         logText: {
