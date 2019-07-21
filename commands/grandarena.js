@@ -303,8 +303,8 @@ class CommandName extends Command {
                         });
                         checkArr[cName].push({
                             check: labels.speed,
-                            user1: user1Char ? user1Char.stats.Speed.final : "N/A",
-                            user2: user2Char ? user2Char.stats.Speed.final : "N/A"
+                            user1: (user1Char && user1Char.stats.Speed) ? user1Char.stats.Speed.final : "N/A",
+                            user2: (user2Char && user2Char.stats.Speed) ? user2Char.stats.Speed.final : "N/A"
                         });
                     }
                 }
@@ -312,8 +312,9 @@ class CommandName extends Command {
                 let extra = 0;
                 const fields = [];
                 const len = 30;
+                const checkLen = Object.keys(checkArr).length;
                 Object.keys(checkArr).forEach((c, ix) => {
-                    if (ix < 20) {
+                    if (checkLen <= 21 || ix < 21) {
                         let halfLen = parseInt((len - c.length) / 2);
                         if (halfLen < 0) halfLen = 0;
                         fields.push({

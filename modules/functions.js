@@ -903,6 +903,7 @@ module.exports = (Bot, client) => {
 
     // Get the ally code of someone that's registered
     Bot.getAllyCode = async (message, user) => {
+        if (Array.isArray(user)) user = user.join(" ");
         if (user) {
             user = user.toString().trim();
         }

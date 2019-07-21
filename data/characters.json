@@ -505,8 +505,8 @@
         "mods": {
             "General": {
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
+                    "Speed x4",
+                    "Health x2",
                     ""
                 ],
                 "square": "Offense",
@@ -2899,6 +2899,41 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Protection/ Potency",
+                "source": "Crouching Rancor"
+            }
+        }
+    },
+    {
+        "name": "Geonosian Brood Alpha",
+        "uniqueName": "GEONOSIANBROODALPHA",
+        "aliases": [
+            "Geonosian Brood Alpha"
+        ],
+        "nameVariant": [
+            "Geonosian Brood Alpha"
+        ],
+        "url": "http://swgoh.gg/characters/geonosian-brood-alpha/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/GEONOSIANBROODALPHA/",
+        "side": "dark",
+        "factions": [
+            "Geonosian",
+            "Leader",
+            "Separatist",
+            "Support"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Tenacity x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Protection",
+                "cross": "Tenacity",
                 "source": "Crouching Rancor"
             }
         }
@@ -5686,7 +5721,22 @@
             "Leader",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Health",
+                "circle": "Protection",
+                "cross": "Offense/ Protection",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Shoretrooper",
@@ -5784,7 +5834,7 @@
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Health",
+                "circle": "Protection",
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             },
@@ -6464,6 +6514,39 @@
                 "triangle": "Offense/ Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection",
+                "source": "Crouching Rancor"
+            }
+        }
+    },
+    {
+        "name": "Wat Tambor",
+        "uniqueName": "WATTAMBOR",
+        "aliases": [
+            "Wat Tambor"
+        ],
+        "nameVariant": [
+            "Wat Tambor"
+        ],
+        "url": "http://swgoh.gg/characters/wat-tambor/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/WATTAMBOR/",
+        "side": "dark",
+        "factions": [
+            "Separatist",
+            "Support"
+        ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health",
                 "source": "Crouching Rancor"
             }
         }

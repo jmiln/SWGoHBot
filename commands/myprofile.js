@@ -12,8 +12,7 @@ class MyProfile extends Command {
         });
     }
 
-    async run(Bot, message, [user], level) { // eslint-disable-line no-unused-vars
-        // const lang = message.guildSettings.swgoghLanguage;
+    async run(Bot, message, [...user], level) { // eslint-disable-line no-unused-vars
         const allyCodes = await Bot.getAllyCode(message, user);
         if (!allyCodes.length) {
             return super.error(message, message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));

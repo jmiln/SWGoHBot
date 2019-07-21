@@ -615,6 +615,34 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Negotiator",
+        "base_id": "CAPITALNEGOTIATOR",
+        "url": "http://swgoh.gg/ships/negotiator/",
+        "image": "/game-asset/u/CAPITALNEGOTIATOR/",
+        "power": 55290,
+        "description": "Offensive Jedi Capital Ship that uses Valor to bolster ally attacks and increase its Speed",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Capital Ship",
+            "Galactic Republic",
+            "Jedi"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Daze",
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Offense Up",
+            "Stealth"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true,
+        "activate_shard_count": 145
+    },
+    {
         "name": "Phantom II",
         "base_id": "PHANTOM2",
         "url": "http://swgoh.gg/ships/phantom-ii/",

@@ -306,31 +306,33 @@ module.exports = class extends Language {
             },
 
             // Character gear Command
-            COMMAND_CHARGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
-            COMMAND_CHARGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
-            COMMAND_CHARGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are between 1 & 12.",
-            COMMAND_CHARGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
-            COMMAND_CHARGEAR_GEAR_NA: "This gear has not been entered yet",
+            COMMAND_CHARACTERGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
+            COMMAND_CHARACTERGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
+            COMMAND_CHARACTERGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are between 1 & 12.",
+            COMMAND_CHARACTERGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
+            COMMAND_CHARACTERGEAR_GEAR_NA: "This gear has not been entered yet",
             COMMAND_CHARACTERGEAR_HELP: {
                 description: "Shows the gear requirements for the specified character/ lvl.",
                 actions: [
                     {
                         action: "",
                         actionDesc: "",
-                        usage: "charactergear <character> [gearLvl]",
+                        usage: "charactergear <character> [gearLvl] [-all]",
                         args: {
                             "character": "The character you want to see the gear for",
-                            "gearLvl": "If you just want to see the gear for a certain gear level"
+                            "gearLvl": "If you just want to see the gear for a certain gear level",
+                            "-all": "Use this flag to expand the gear shown, and show all the bits that make up the main pieces (-a | -recipes | -recs | -expand)"
                         }
                     },
                     {
                         action: "Check your own gear needs",
                         actionDesc: "",
-                        usage: "charactergear [user] <character> [gearLvl]",
+                        usage: "charactergear [user] <character> [gearLvl] [-all]",
                         args: {
                             "user": "The person you want to see the gear for. (me | userID | mention)",
                             "character": "The character you want to see the gear for",
-                            "gearLvl": "If you want to see all needed gear up to a certain gear level"
+                            "gearLvl": "If you want to see all needed gear up to a certain gear level",
+                            "-all": "Use this flag to expand the gear shown, and show all the bits that make up the main pieces (-a | -recipes | -recs | -expand)"
                         }
                     }
                 ]
