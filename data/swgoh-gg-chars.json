@@ -12922,7 +12922,7 @@
         "url": "http://swgoh.gg/characters/geonosian-soldier/",
         "image": "/game-asset/u/GEONOSIANSOLDIER/",
         "power": 18397,
-        "description": "Aggressive Attacker that calls Assists and works extremely well with Geonosians",
+        "description": "Aggressive Attacker who calls assists and grants powerful offensive bonuses to Geonosian allies",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -13078,7 +13078,7 @@
         "ability_classes": [
             "Assist",
             "Gain Turn Meter",
-            "Offense Up"
+            "Tenacity Down"
         ],
         "role": "Attacker",
         "ship": "GEONOSIANSTARFIGHTER2",
@@ -13091,8 +13091,8 @@
         "pk": 88,
         "url": "http://swgoh.gg/characters/geonosian-spy/",
         "image": "/game-asset/u/GEONOSIANSPY/",
-        "power": 18397,
-        "description": "Stealthy Geonosian attacker that can dispel status effects to deal massive damage.",
+        "power": 19182,
+        "description": "Stealthy Geonosian Attacker who Exposes enemies and has high damage potential",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -13246,9 +13246,11 @@
             "Separatist"
         ],
         "ability_classes": [
+            "AoE",
             "Counter",
             "Dispel",
             "Evasion Down",
+            "Expose",
             "Gain Turn Meter",
             "Stealth"
         ],
@@ -22805,8 +22807,8 @@
         "pk": 81,
         "url": "http://swgoh.gg/characters/poggle-the-lesser/",
         "image": "/game-asset/u/POGGLETHELESSER/",
-        "power": 18972,
-        "description": "Support character with strong droid synergies.",
+        "power": 19182,
+        "description": "Support for Geonosian and Separatist allies, with strong offensive synergies",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -22962,8 +22964,12 @@
         ],
         "ability_classes": [
             "Ability Block",
+            "Assist",
+            "Dispel",
             "Gain Turn Meter",
-            "Offense Up"
+            "Offense Up",
+            "Remove Turn Meter",
+            "Target Lock"
         ],
         "role": "Support",
         "ship": "",
@@ -26959,8 +26965,8 @@
         "pk": 192,
         "url": "http://swgoh.gg/characters/sun-fac/",
         "image": "/game-asset/u/SUNFAC/",
-        "power": 18972,
-        "description": "Geonosian Tank that punishes attackers with a variety of negative status effects",
+        "power": 19182,
+        "description": "Geonosian Tank who punishes attackers with a variety of negative effects",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -27115,6 +27121,8 @@
         ],
         "ability_classes": [
             "Counter",
+            "Daze",
+            "Defense Up",
             "Dispel",
             "Offense Down",
             "Remove Turn Meter",
