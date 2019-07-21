@@ -55,6 +55,8 @@ client.aliases = new Collection();
 
 Bot.evCountdowns = {};
 
+Bot.talkedRecently = new Set();
+
 Bot.seqOps = Sequelize.Op;
 Bot.database = new Sequelize(
     Bot.config.database.data,

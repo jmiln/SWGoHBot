@@ -745,6 +745,18 @@ module.exports = (Bot, client) => {
     };
 
     /*
+     * getUserID
+     * Get a valid Discord id string from a given string.
+     */
+    Bot.getUserID = (numStr) => {
+        const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
+        if (match) {
+            return numStr.replace(/[^0-9]/g, "");
+        }
+        return null;
+    };
+
+    /*
      * isAllyCode
      * Check if a string of numbers is a valid ally code.
      */
