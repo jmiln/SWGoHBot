@@ -339,6 +339,7 @@ module.exports = class extends Language {
             },
 
             // CheckAct Help
+            COMMAND_CHECKACTIVITY_NOT_ACTIVE: "You need to activate the activity log with the setconf command before you can use this.",
             COMMAND_CHECKACTIVITY_NO_ROLE: (role) => `Cannot find role **${role}**`,
             COMMAND_CHECKACTIVITY_NO_MATCH_TITLE: "No Match",
             COMMAND_CHECKACTIVITY_NO_MATCH: "No one matches your criteria",

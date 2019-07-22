@@ -26,6 +26,10 @@ class CheckAct extends Command {
     }
 
     async run(Bot, message, args, options) {
+        if (!message.guildSettings.useActivityLog) {
+            super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NOT_ACTIVE"));
+        }
+
         let userID = args[0];
         let activityLog = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: message.guild.id});
         if (Array.isArray(activityLog)) activityLog = activityLog[0];
@@ -63,7 +67,7 @@ class CheckAct extends Command {
                 }
                 if (!role) {
                     // If it can't find it by role or name, error
-                    return super.error(message, message.language.get("COMMAND_CHECKACT_NO_ROLE", roleNId));
+                    return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NO_ROLE", roleNId));
                 }
                 // Now that we have a role, filter out anyone that doens't have it
                 objArr = objArr.filter(u => {
@@ -79,7 +83,7 @@ class CheckAct extends Command {
                 objArr = objArr.sort((a, b) => b.time - a.time);
             }
             // If there's no one left after filtering everyone out, let em know
-            if (!objArr.length) return super.error(message, message.language.get("COMMAND_CHECKACT_NO_MATCH"), {title: message.language.get("COMMAND_CHECKACT_NO_MATCH_TITLE")});
+            if (!objArr.length) return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NO_MATCH"), {title: message.language.get("COMMAND_CHECKACTIVITY_NO_MATCH_TITLE")});
             // Convert the time from a unix-format time string into something human readable
             objArr = objArr.map(u => {
                 u.time = moment.duration(moment().diff(moment(u.time))).format("d [days], hh [hrs], mm [min]");
@@ -92,7 +96,7 @@ class CheckAct extends Command {
             }
 
             // Format the output into a table so it looks nice
-            const headerValues = message.language.get("COMMAND_CHECKACT_TABLE_HEADERS");
+            const headerValues = message.language.get("COMMAND_CHECKACTIVITY_TABLE_HEADERS");
             const outArr = Bot.makeTable({
                 user: {value: headerValues.user, startWith: "`", endWith: "|", align: "left"},
                 time: {value: headerValues.time, endWith: "`", align: "right"}
@@ -104,7 +108,7 @@ class CheckAct extends Command {
 
             const desc = fields.shift();
             return message.channel.send({embed: {
-                author: {name: message.language.get("COMMAND_CHECKACT_LOG_HEADER", message.guild.name)},
+                author: {name: message.language.get("COMMAND_CHECKACTIVITY_LOG_HEADER", message.guild.name)},
                 description: desc.value,
                 fields: fields,
                 color: 0x00FF00
@@ -112,7 +116,7 @@ class CheckAct extends Command {
         } else {
             // Make sure it's a valid userID
             if (!Bot.isUserID(userID)) {
-                return super.error(message, message.language.get("COMMAND_CHECKACT_INVALID_USER"));
+                return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_INVALID_USER"));
             }
             userID = Bot.getUserID(userID);
             const user = message.guild.members.get(userID);
@@ -124,13 +128,13 @@ class CheckAct extends Command {
                 const diff = moment().diff(moment(lastActive));
                 if ((diff / 1000 / 60) > 1) {
                     // If they've not been active for over a minute
-                    return super.error(message, message.language.get("COMMAND_CHECKACT_USER_CHECK", name, moment.duration(diff).format("d [days], h [hrs], m [min]")), {title: message.language.get("COMMAND_CHECKACT_USER_CHECK_HEADER"), color: 0x00FF00});
+                    return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name, moment.duration(diff).format("d [days], h [hrs], m [min]")), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
                 } else {
                     // If they were just active
-                    return super.error(message, message.language.get("COMMAND_CHECKACT_USER_CHECK", name), {title: message.language.get("COMMAND_CHECKACT_USER_CHECK_HEADER"), color: 0x00FF00});
+                    return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
                 }
             } else {
-                return super.error(message, message.language.get("COMMAND_CHECKACT_NO_USER"));
+                return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NO_USER"));
             }
         }
     }
