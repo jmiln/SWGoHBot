@@ -5,8 +5,8 @@ require("moment-duration-format");
 class CheckAct extends Command {
     constructor(Bot) {
         super(Bot, {
-            name: "checkact",
-            aliases: ["activity", "check"],
+            name: "checkactivity",
+            aliases: ["activity", "check", "ca"],
             guildOnly: true,
             permLevel: 3,
             category: "Admin",
@@ -27,7 +27,6 @@ class CheckAct extends Command {
 
     async run(Bot, message, args, options) {
         let userID = args[0];
-        console.log("Trying to check: " + userID);
         let activityLog = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: message.guild.id});
         if (Array.isArray(activityLog)) activityLog = activityLog[0];
         if (!userID) {
@@ -64,15 +63,12 @@ class CheckAct extends Command {
                 }
                 if (!role) {
                     // If it can't find it by role or name, error
-                    return super.error(message, "Cannot find role **" + roleNId + "**");
+                    return super.error(message, message.language.get("COMMAND_CHECKACT_NO_ROLE", roleNId));
                 }
                 // Now that we have a role, filter out anyone that doens't have it
                 objArr = objArr.filter(u => {
                     const outRole = u.roles.find(r => r.id === role.id);
-                    if (!outRole) {
-                        return false;
-                    }
-                    return true;
+                    return !outRole ? false : true;
                 });
             }
             if (options.subArgs.sort && options.subArgs.sort.toLowerCase() === "name") {
@@ -83,7 +79,7 @@ class CheckAct extends Command {
                 objArr = objArr.sort((a, b) => b.time - a.time);
             }
             // If there's no one left after filtering everyone out, let em know
-            if (!objArr.length) return super.error(message, "No one matches your criteria", {title: "No Match"});
+            if (!objArr.length) return super.error(message, message.language.get("COMMAND_CHECKACT_NO_MATCH"), {title: message.language.get("COMMAND_CHECKACT_NO_MATCH_TITLE")});
             // Convert the time from a unix-format time string into something human readable
             objArr = objArr.map(u => {
                 u.time = moment.duration(moment().diff(moment(u.time))).format("d [days], hh [hrs], mm [min]");
@@ -96,42 +92,45 @@ class CheckAct extends Command {
             }
 
             // Format the output into a table so it looks nice
+            const headerValues = message.language.get("COMMAND_CHECKACT_TABLE_HEADERS");
             const outArr = Bot.makeTable({
-                user: {value: "User", startWith: "`", endWith: "|", align: "left"},
-                time: {value: "Last Seen", endWith: "`", align: "right"}
+                user: {value: headerValues.user, startWith: "`", endWith: "|", align: "left"},
+                time: {value: headerValues.time, endWith: "`", align: "right"}
             }, objArr);
 
             const fields = Bot.msgArray(outArr, "\n", 700).map(m => {
                 return {name: "-", value: m};
             });
 
+            const desc = fields.shift();
             return message.channel.send({embed: {
-                author: {name: message.guild.name + "'s activity log"},
+                author: {name: message.language.get("COMMAND_CHECKACT_LOG_HEADER", message.guild.name)},
+                description: desc.value,
                 fields: fields,
                 color: 0x00FF00
             }});
         } else {
             // Make sure it's a valid userID
             if (!Bot.isUserID(userID)) {
-                return super.error(message, "Invalid user ID");
+                return super.error(message, message.language.get("COMMAND_CHECKACT_INVALID_USER"));
             }
             userID = Bot.getUserID(userID);
-            console.log(userID);
+            const user = message.guild.members.get(userID);
+            const name = user.nickname ? user.nickname : user.user.username;
             // Try and check the activity for just one user
             if (activityLog.log[userID]) {
                 // Spit out user's last activity
                 const lastActive = activityLog.log[userID];
                 const diff = moment().diff(moment(lastActive));
-
                 if ((diff / 1000 / 60) > 1) {
                     // If they've not been active for over a minute
-                    return super.error(message, `User was last active ${moment.duration(diff).format("d [days], h [hrs], m [min]")} ago`, {title: "Success", color: 0x00FF00});
+                    return super.error(message, message.language.get("COMMAND_CHECKACT_USER_CHECK", name, moment.duration(diff).format("d [days], h [hrs], m [min]")), {title: message.language.get("COMMAND_CHECKACT_USER_CHECK_HEADER"), color: 0x00FF00});
                 } else {
                     // If they were just active
-                    return super.error(message, "User was last active just a bit ago", {title: "Success", color: 0x00FF00});
+                    return super.error(message, message.language.get("COMMAND_CHECKACT_USER_CHECK", name), {title: message.language.get("COMMAND_CHECKACT_USER_CHECK_HEADER"), color: 0x00FF00});
                 }
             } else {
-                return super.error(message, "That user has not been active on this server");
+                return super.error(message, message.language.get("COMMAND_CHECKACT_NO_USER"));
             }
         }
     }

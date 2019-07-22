@@ -338,6 +338,37 @@ module.exports = class extends Language {
                 ]
             },
 
+            // CheckAct Help
+            COMMAND_CHECKACTIVITY_NO_ROLE: (role) => `Cannot find role **${role}**`,
+            COMMAND_CHECKACTIVITY_NO_MATCH_TITLE: "No Match",
+            COMMAND_CHECKACTIVITY_NO_MATCH: "No one matches your criteria",
+            COMMAND_CHECKACTIVITY_TABLE_HEADERS: {
+                user: "User",
+                time: "Last Seen"
+            },
+            COMMAND_CHECKACTIVITY_LOG_HEADER: (guildName) => `${guildName}'s activity log`,
+            COMMAND_CHECKACTIVITY_INVALID_USER: "Invalid user ID, try mentioning the user you're trying to check.",
+            COMMAND_CHECKACTIVITY_USER_CHECK: (user, time) => `${user} was last active ${time} ago`,
+            COMMAND_CHECKACTIVITY_USER_CHECK2: (user) => `${user} was last active just a bit ago`,
+            COMMAND_CHECKACTIVITY_USER_CHECK_HEADER: "User Activity",
+            COMMAND_CHECKACTIVITY_NO_USER: (user) => `I have not seen ${user} here`,
+            COMMAND_CHECKACTIVITY_HELP: {
+                description: "Shows how recently people in your server have been active",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: "checkact [user] [-sort name] [-role role] [-time hours]",
+                        args: {
+                            "user": "Select a specific user to see when they were last active",
+                            "-sort": "Sort the list by user names instead of last activity",
+                            "-role": "Select a role to filter the list by",
+                            "-time": "Will show only people not active within the last x hours"
+                        }
+                    }
+                ]
+            },
+
             // Command Report Command
             COMMAND_COMMANDREPORT_HELP: ({
                 description: "Shows a list of all the commands that have been run in the last 10 days.",
