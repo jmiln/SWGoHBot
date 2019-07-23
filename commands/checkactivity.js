@@ -43,9 +43,15 @@ class CheckAct extends Command {
             });
             for (const u of objArr) {
                 const user = await message.guild.members.get(u.user);
-                u.user = user.user.username;
-                u.roles = user.roles;
+                if (user.user.bot) {
+                    u.user = null;
+                } else {
+                    u.user = user.user.username;
+                    u.roles = user.roles;
+                }
             }
+            // Remove any bots
+            objArr = objArr.filter(u => u.user !== null);
             if (options.subArgs.time && !isNaN(options.subArgs.time)) {
                 // Convert the time from hours to milliseconds
                 //                                   ms    sec  min
