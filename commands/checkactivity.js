@@ -27,7 +27,7 @@ class CheckAct extends Command {
 
     async run(Bot, message, args, options) {
         if (!message.guildSettings.useActivityLog) {
-            super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NOT_ACTIVE"));
+            return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NOT_ACTIVE"));
         }
 
         let userID = args[0];
@@ -86,7 +86,7 @@ class CheckAct extends Command {
             if (!objArr.length) return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NO_MATCH"), {title: message.language.get("COMMAND_CHECKACTIVITY_NO_MATCH_TITLE")});
             // Convert the time from a unix-format time string into something human readable
             objArr = objArr.map(u => {
-                u.time = moment.duration(moment().diff(moment(u.time))).format("d [days], hh [hrs], mm [min]");
+                u.time = getTime(moment().diff(moment(u.time)), true);
                 return u;
             });
 
@@ -126,18 +126,47 @@ class CheckAct extends Command {
                 // Spit out user's last activity
                 const lastActive = activityLog.log[userID];
                 const diff = moment().diff(moment(lastActive));
-                if ((diff / 1000 / 60) > 1) {
-                    // If they've not been active for over a minute
-                    return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name, moment.duration(diff).format("d [days], h [hrs], m [min]")), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
-                } else {
-                    // If they were just active
-                    return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
-                }
+                console.log(getTime(diff));
+                // if ((diff / 1000 / 60) > 1) {
+                // If they've not been active for over a minute
+                return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name, getTime(diff)), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
+                // } else {
+                //     // If they were just active
+                //     return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
+                // }
             } else {
                 return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NO_USER"));
             }
+        }
+        function getTime(diff, numOnly) {
+            const days = 1000 * 60 * 60 * 24;
+            const hours= 1000 * 60 * 60;
+            const mins = 1000 * 60;
+
+            let out = diff / days;
+            if (out > 1) {
+                return out.toFixed(1) + (numOnly ? "d" : " days");
+            }
+            out = diff / hours;
+            if (out > 1) {
+                return out.toFixed(1) + (numOnly ? "h" : " hours");
+            }
+            out = diff / mins;
+            if (out > 1) {
+                return out.toFixed(1) + (numOnly ? "m" : " minutes");
+            }
+            return numOnly ? "0m" : " just a bit";
         }
     }
 }
 
 module.exports = CheckAct;
+
+
+
+
+
+
+
+
+
