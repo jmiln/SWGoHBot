@@ -99,7 +99,7 @@ class CheckAct extends Command {
             const headerValues = message.language.get("COMMAND_CHECKACTIVITY_TABLE_HEADERS");
             const outArr = Bot.makeTable({
                 user: {value: headerValues.user, startWith: "`", endWith: "|", align: "left"},
-                time: {value: headerValues.time, endWith: "`", align: "right"}
+                time: {value: headerValues.time, endWith: "`"}
             }, objArr);
 
             const fields = Bot.msgArray(outArr, "\n", 700).map(m => {
@@ -145,17 +145,14 @@ class CheckAct extends Command {
 
             let out = diff / days;
             if (out > 1) {
-                return out.toFixed(1) + (numOnly ? "d" : " days");
+                return (out < 10 ? " " : "") + out.toFixed(1) + (numOnly ? "d" : " days");
             }
             out = diff / hours;
             if (out > 1) {
-                return out.toFixed(1) + (numOnly ? "h" : " hours");
+                return (out < 10 ? " " : "") + out.toFixed(1) + (numOnly ? "h" : " hours");
             }
             out = diff / mins;
-            if (out > 1) {
-                return out.toFixed(1) + (numOnly ? "m" : " minutes");
-            }
-            return numOnly ? "0m" : " just a bit";
+            return (out < 10 ? "   " : "  ") + parseInt(out) + (numOnly ? "m" : " minutes");
         }
     }
 }

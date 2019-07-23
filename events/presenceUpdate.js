@@ -1,6 +1,8 @@
 // const {inspect} = require("util");
 module.exports = async (Bot, oldMember, newMember) => {
-    // This executes when a member joins, so let's welcome them!
+    // Ignore bots
+    if (newMember.user.bot) return;
+
     const guild = newMember.guild;
     const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guild.id}, attributes: Bot.config.defaultSettings});
     const guildConf = guildSettings.dataValues;
