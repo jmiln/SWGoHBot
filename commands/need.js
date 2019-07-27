@@ -72,8 +72,10 @@ class Need extends Command {
             // Go through the found characters and check them against the player's roster
             let u = player.roster.find(c => c.defId === unit.baseId);
             if (!u) {
+                // If Malak
+                if (unit.baseId === "DARTHMALAK") continue;
                 u = {};
-                u.rarity = unit.baseId === "DARTHMALAK" ? 5 : 0;
+                u.rarity = 0;
                 u.nameKey = unit.name;
             }
             if (u.rarity === 7) continue;

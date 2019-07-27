@@ -1235,7 +1235,7 @@ module.exports = (Bot, client) => {
             Bot.patrons = await Bot.getPatrons();
         } catch (e) {
             // Something happened
-            console.log("Broke getting patrons: " + e);
+            console.log("Broke getting patrons: " + e.stack);
         }
         // console.log("Reloaded " + Bot.patrons.length + " active patrons");
     };

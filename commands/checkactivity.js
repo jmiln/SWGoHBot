@@ -43,7 +43,7 @@ class CheckAct extends Command {
             });
             for (const u of objArr) {
                 const user = await message.guild.members.get(u.user);
-                if (user.user.bot) {
+                if (!user || user.user.bot) {
                     u.user = null;
                 } else {
                     u.user = user.user.username;
