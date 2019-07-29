@@ -463,6 +463,19 @@ module.exports = (Bot, client) => {
     };
 
     /*
+     * STRING TRUNCATE FUNCTION
+     */
+    Bot.truncate = (string, len, terminator="...") => {
+        const termLength = terminator.length;
+
+        if (string.length > len) {
+            return string.substring(0, len - termLength) + terminator;
+        } else {
+            return string;
+        }
+    };
+
+    /*
       MESSAGE CLEAN FUNCTION
       "Clean" removes @everyone pings, as well as tokens, and makes code blocks
       escaped so they're shown more easily. As a bonus it resolves promises

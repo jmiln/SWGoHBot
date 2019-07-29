@@ -46,7 +46,7 @@ class CheckAct extends Command {
                 if (!user || user.user.bot) {
                     u.user = null;
                 } else {
-                    u.user = user.user.username;
+                    u.user = Bot.truncate(user.nickname ? user.nickname : user.user.username, 20);
                     u.roles = user.roles;
                 }
             }
@@ -98,7 +98,7 @@ class CheckAct extends Command {
 
             // Limit it to 50 people if there are more
             if (objArr.length > 50) {
-                objArr = objArr.slice(0, 50);
+                objArr = objArr.slice(0, 100);
             }
 
             // Format the output into a table so it looks nice
@@ -114,7 +114,7 @@ class CheckAct extends Command {
 
             const desc = fields.shift();
             return message.channel.send({embed: {
-                author: {name: message.language.get("COMMAND_CHECKACTIVITY_LOG_HEADER", message.guild.name)},
+                author: {name: message.language.get("COMMAND_CHECKACTIVITY_LOG_HEADER", message.guild.name, objArr.length)},
                 description: desc.value,
                 fields: fields,
                 color: 0x00FF00

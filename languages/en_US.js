@@ -347,7 +347,7 @@ module.exports = class extends Language {
                 user: "User",
                 time: "Last Seen"
             },
-            COMMAND_CHECKACTIVITY_LOG_HEADER: (guildName) => `${guildName}'s activity log`,
+            COMMAND_CHECKACTIVITY_LOG_HEADER: (guildName, count) => `${guildName}'s activity log (${count})`,
             COMMAND_CHECKACTIVITY_INVALID_USER: "Invalid user ID, try mentioning the user you're trying to check.",
             COMMAND_CHECKACTIVITY_USER_CHECK: (user, time) => `${user} was last active ${time} ago`,
             COMMAND_CHECKACTIVITY_USER_CHECK2: (user) => `${user} was last active just a bit ago`,
