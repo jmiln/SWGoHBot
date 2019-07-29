@@ -12,15 +12,18 @@ class CheckAct extends Command {
             category: "Admin",
             flags: {},
             subArgs: {
-                sort: {
+                sort: {         // Sort by name or time
                     aliases: []
                 },
-                time: {
+                time: {         // Filter based on them being inactive past x hours
                     aliases: ["hour", "hours"]
                 },
-                role: {
+                role: {         // Filter the list to a single role
                     aliases: []
-                }
+                },
+                // ingame: {       // Show the last active times based on their in-game lastActivity
+                //     aliases: ["ig"]
+                // }
             }
         });
     }
@@ -132,14 +135,8 @@ class CheckAct extends Command {
                 // Spit out user's last activity
                 const lastActive = activityLog.log[userID];
                 const diff = moment().diff(moment(lastActive));
-                console.log(getTime(diff));
-                // if ((diff / 1000 / 60) > 1) {
-                // If they've not been active for over a minute
+
                 return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name, getTime(diff)), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
-                // } else {
-                //     // If they were just active
-                //     return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
-                // }
             } else {
                 return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NO_USER"));
             }

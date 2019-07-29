@@ -115,7 +115,7 @@ class Need extends Command {
             });
         }
         if (outShips.length) {
-            outShips = outShips.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+            outShips = outShips.filter(a => !!a.name).sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             outShips = outShips.map(s => `\`${s.rarity}*\` ${s.rarity ? s.name : "~~" + s.name + "~~"}`);
             const msgArr = Bot.msgArray(outShips, "\n", 1000);
             msgArr.forEach((m, ix) => {
