@@ -69,7 +69,7 @@ class Zetas extends Command {
             return super.error(msg, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});
         }
 
-        player.roster = player.roster.filter(c => c.crew.length === 0);
+        player.roster = player.roster.filter(c => !c.crew || !c.crew.length);
 
         if (!options.flags.r && !options.flags.g) {
             // Just want to see your own zetas

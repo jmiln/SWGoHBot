@@ -976,6 +976,32 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Vulture Droid",
+        "base_id": "VULTUREDROID",
+        "url": "http://swgoh.gg/ships/vulture-droid/",
+        "image": "/game-asset/u/VULTUREDROID/",
+        "power": 7309,
+        "description": "Persistent Separatist Attacker that inflicts Buzz Droids and is replaced when defeated",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Droid",
+            "Separatist"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Dispel",
+            "Reset Cooldown"
+        ],
+        "role": "Attacker",
+        "capital_ship": false,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Wedge Antilles's X-wing",
         "base_id": "XWINGRED2",
         "url": "http://swgoh.gg/ships/wedge-antilless-x-wing/",

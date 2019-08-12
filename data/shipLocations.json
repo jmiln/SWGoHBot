@@ -553,6 +553,15 @@
         ]
     },
     {
+        "name": "Vulture Droid",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Mindless Destruction"
+            }
+        ]
+    },
+    {
         "name": "Wedge Antilles's X-wing",
         "locations": [
             {

@@ -204,22 +204,24 @@ module.exports = (Bot) => {
                     let shipStats;
                     try {
                         bareP.roster.forEach(unit => {
-                            unit.crew.forEach(cm => {
-                                cm.unit = bareP.roster.find(u => u.defId === cm.unitId);
-                            });
+                            if (unit.crew) {
+                                unit.crew.forEach(cm => {
+                                    cm.unit = bareP.roster.find(u => u.defId === cm.unitId);
+                                });
+                            }
                         });
                         // Get the stats for all the characters
                         charStats =  await nodeFetch("http://localhost:3201/char", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(bareP.roster.filter(u => !u.crew.length))
+                            body: JSON.stringify(bareP.roster.filter(u => !u.crew || !u.crew.length))
                         }).then(res => res.json());
 
                         // Then get all the stats for the ships (coming soon tm)
                         shipStats = await nodeFetch("http://localhost:3201/ship", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(bareP.roster.filter(u => u.crew.length > 0))
+                            body: JSON.stringify(bareP.roster.filter(u => u.crew && u.crew.length > 0))
                         }).then(res => res.json());
                     } catch (error) {
                         throw new Error("Error getting player stats: " + error);

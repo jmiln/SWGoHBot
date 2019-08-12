@@ -1515,6 +1515,22 @@
         }
     },
     {
+        "name": "Vulture Droid",
+        "uniqueName": "VULTUREDROID",
+        "aliases": [
+            "Vulture Droid"
+        ],
+        "nameVariant": [
+            "Vulture Droid"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/vulture-droid/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {}
+    },
+    {
         "name": "Wedge Antilles's X-Wing",
         "uniqueName": "XWINGRED2",
         "aliases": [
