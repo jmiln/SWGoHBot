@@ -90,7 +90,7 @@ class Shardtimes extends Command {
                 if (match) {
                     // It's a valid time until payout
                     const [hour, minute] = timeTil.split(":");
-                    const [tempH, tempM] = momentTZ().add(hour, "h").add(minute, "m").format("HH:mm").split(":").map(t => parseInt(t));
+                    const [tempH, tempM] = momentTZ.tz("UTC").add(hour, "h").add(minute, "m").format("HH:mm").split(":").map(t => parseInt(t));
                     const totalMin = (tempH * 60) + tempM;
                     const rounded = Math.round(totalMin / 15) * 15;
                     timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
@@ -294,11 +294,11 @@ class Shardtimes extends Command {
                     targetTime = momentTZ.tz(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
                 }
             } else if (type === "hhmm") {
-                if (momentTZ(zone, "HH:mm").unix() < momentTZ().unix()) {
+                if (momentTZ.tz(zone, "HH:mm", "UTC").unix() < momentTZ().unix()) {
                     // It's already passed
-                    return momentTZ.duration(momentTZ(zone, "HH:mm").add(1, "d").diff(momentTZ())).format("HH:mm", { trim: false });
+                    return momentTZ.duration(momentTZ.tz(zone, "HH:mm", "UTC").add(1, "d").diff(momentTZ())).format("HH:mm", { trim: false });
                 }
-                return momentTZ.duration(momentTZ(zone, "HH:mm").diff(momentTZ())).format("HH:mm", { trim: false });
+                return momentTZ.duration(momentTZ.tz(zone, "HH:mm", "UTC").diff(momentTZ())).format("HH:mm", { trim: false });
             } else {
                 // It's utc +/- format
                 if (momentTZ().utcOffset(zone).unix() < momentTZ().utcOffset(zone).startOf("day").add(timeToAdd, "h").unix()) {
