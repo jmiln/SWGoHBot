@@ -191,12 +191,11 @@ class GuildSearch extends Command {
             let tableFormat;
             if (sortBy.toString() === "13") {
                 tableFormat = {
-                    "9":  {value: "g9", startWith: "`[", endWith: "|",  align: "right"},
-                    "10": {value: "g10",                 endWith: "|",  align: "right"},
-                    "11": {value: "g11",                 endWith: "|",  align: "right"},
-                    "12": {value: "g12",                 endWith: "|",  align: "right"},
-                    "13": {value: "g13",                 endWith: "]`", align: "right"},
-                    name: {value: "",                                   align: "left"}
+                    "10": {value: "g10", startWith: "`[", endWith: "|",  align: "right"},
+                    "11": {value: "g11",                  endWith: "|",  align: "right"},
+                    "12": {value: "g12",                  endWith: "|",  align: "right"},
+                    "13": {value: "g13",                  endWith: "]`", align: "right"},
+                    name: {value: "",                                    align: "left"}
                 };
             } else {
                 tableFormat = {
