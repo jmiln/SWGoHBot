@@ -9,35 +9,17 @@ class GuildSearch extends Command {
             aliases: ["search", "gs"],
             permissions: ["EMBED_LINKS"],
             flags: {
-                "ships": {
-                    aliases: ["s", "ship"]
-                },
-                reverse: {
-                    aliases: ["rev"]
-                },
-                mods: {
-                    aliases: ["mod", "m"]
-                },
-                stars: {
-                    aliases: ["*", "star", "rarity"]
-                },
-                gear: {
-                    aliases: ["g"]
-                },
-                zetas: {
-                    aliases: ["zeta", "z"]
-                }
+                "ships": { aliases: ["s", "ship"] },
+                reverse: { aliases: ["rev"] },
+                mods: { aliases: ["mod", "m"] },
+                stars: { aliases: ["*", "star", "rarity"] },
+                gear: { aliases: ["g"] },
+                zetas: { aliases: ["zeta", "z"] }
             },
             subArgs: {
-                sort: {
-                    aliases: []
-                },
-                stat: {
-                    aliases: ["stats"]
-                },
-                top: {
-                    aliases: []
-                }
+                sort: { aliases: [] },
+                stat: { aliases: ["stats"] },
+                top: { aliases: [] }
             }
         });
     }
@@ -45,6 +27,7 @@ class GuildSearch extends Command {
     async run(Bot, message, args, options) { // eslint-disable-line no-unused-vars
         let starLvl = 0;
         const reverse = options.flags.reverse;
+        const gears = [9,10,11,12,13];
         const rarityMap = {
             "ONESTAR": 1,
             "TWOSTAR": 2,
@@ -134,9 +117,9 @@ class GuildSearch extends Command {
             // List an overview of the guild's upper geared characters
             let sortBy = null;
             if (options.subArgs.sort) {
-                sortBy = options.subArgs.sort;
-                if (isNaN(sortBy) || ![9,10,11,12].includes(parseInt(sortBy))) {
-                    return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", "9,10,11,12"));
+                sortBy = options.subArgs.sort.toString();
+                if (isNaN(sortBy) || !gears.includes(parseInt(sortBy))) {
+                    return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")));
                 }
             }
             let guild = null;
@@ -190,38 +173,42 @@ class GuildSearch extends Command {
 
             let tableIn = Object.keys(starOut).map(k => {
                 return {
-                    nine: starOut[k]["9"] || 0,
-                    ten: starOut[k]["10"] || 0,
-                    eleven:  starOut[k]["11"] || 0,
-                    twelve: starOut[k]["12"] || 0,
+                    "9": starOut[k]["9"] || 0,
+                    "10": starOut[k]["10"] || 0,
+                    "11":  starOut[k]["11"] || 0,
+                    "12": starOut[k]["12"] || 0,
+                    "13": starOut[k]["13"] || 0,
                     name: k
                 };
             });
 
-            switch (sortBy) {
-                case "9":
-                    tableIn = tableIn.sort((a, b) => a.nine < b.nine ? 1 : -1);
-                    break;
-                case "10":
-                    tableIn = tableIn.sort((a, b) => a.ten < b.ten ? 1 : -1);
-                    break;
-                case "11":
-                    tableIn = tableIn.sort((a, b) => a.eleven < b.eleven ? 1 : -1);
-                    break;
-                case "12":
-                    tableIn = tableIn.sort((a, b) => a.twelve < b.twelve ? 1 : -1);
-                    break;
-                default:
-                    tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+            if (gears.indexOf(parseInt(sortBy)) > -1) {
+                tableIn = tableIn.sort((a, b) => a[sortBy] < b[sortBy] ? 1 : -1);
+            } else {
+                tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             }
 
-            const tableOut = Bot.makeTable({
-                nine:   {value: "g9", startWith: "`[", endWith: "|",  align: "right"},
-                ten:    {value: "g10",                 endWith: "|",  align: "right"},
-                eleven: {value: "g11",                 endWith: "|",  align: "right"},
-                twelve: {value: "g12",                 endWith: "]`", align: "right"},
-                name:   {value: "",                                   align: "left"}
-            }, tableIn);
+            let tableFormat;
+            if (sortBy.toString() === "13") {
+                tableFormat = {
+                    "9":  {value: "g9", startWith: "`[", endWith: "|",  align: "right"},
+                    "10": {value: "g10",                 endWith: "|",  align: "right"},
+                    "11": {value: "g11",                 endWith: "|",  align: "right"},
+                    "12": {value: "g12",                 endWith: "|",  align: "right"},
+                    "13": {value: "g13",                 endWith: "]`", align: "right"},
+                    name: {value: "",                                   align: "left"}
+                };
+            } else {
+                tableFormat = {
+                    "9":  {value: "g9", startWith: "`[", endWith: "|",  align: "right"},
+                    "10": {value: "g10",                 endWith: "|",  align: "right"},
+                    "11": {value: "g11",                 endWith: "|",  align: "right"},
+                    "12": {value: "g12",                 endWith: "]`", align: "right"},
+                    name: {value: "",                                   align: "left"}
+                };
+            }
+
+            const tableOut = Bot.makeTable(tableFormat, tableIn);
 
             const outMsgArr = Bot.msgArray(tableOut, "\n", 700);
             const fields = [];
