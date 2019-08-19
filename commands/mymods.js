@@ -243,23 +243,26 @@ class MyMods extends Command {
             });
 
             let sorted;
-            if (options.flags.t) {
+            if (options.flags.t) {  // If looking for the total stats
                 sorted = stats.sort((p, c) => {
                     if (p.stats && c.stats && p.stats[statToCheck] && c.stats[statToCheck]) {
                         return c.stats[statToCheck].final - p.stats[statToCheck].final;
-                    } else {
+                    } else if (!c.stats || !c.stats[statToCheck]) {
                         return -1;
+                    } else {
+                        return 1;
                     }
                 });
-            } else {
+            } else {  // Or if looking for just the amount added by mods
                 sorted = stats.sort((p, c) => {
                     if (p.stats && c.stats && p.stats[statToCheck] && c.stats[statToCheck]) {
                         return c.stats[statToCheck].mods - p.stats[statToCheck].mods;
-                    } else {
+                    } else if (!c.stats || !c.stats[statToCheck]) {
                         return -1;
+                    } else {
+                        return 1;
                     }
                 });
-
             }
 
             const delArr = [];
