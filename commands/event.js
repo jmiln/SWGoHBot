@@ -545,7 +545,7 @@ class Event extends Command {
                 }
                 break;
             } case "delete": {
-                if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_DELETE_NEED_NAME")).then(msg => msg.delete(10000)).catch(console.error);
+                if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_DELETE_NEED_NAME"));
                 eventName = args[0];
                 const eventID = `${message.guild.id}-${eventName}`;
 
@@ -557,10 +557,10 @@ class Event extends Command {
                     Bot.deleteEvent(eventID);
                     return message.channel.send(message.language.get("COMMAND_EVENT_DELETED", eventName));
                 } else {
-                    return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
                 }
             } case "trigger": {
-                if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME")).then(msg => msg.delete(10000)).catch(console.error);
+                if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME"));
                 eventName = args[0];
 
                 const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
@@ -569,7 +569,7 @@ class Event extends Command {
 
                 // Check if that name/ event already exists
                 if (!exists) {
-                    return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)).then(msg => msg.delete(10000)).catch(console.error);
+                    return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
                 } else {
                     const events = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
                     const event = events.dataValues;

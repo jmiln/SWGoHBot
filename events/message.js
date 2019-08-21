@@ -88,7 +88,7 @@ module.exports = async (Bot, message) => {
     // Some commands may not be useable in DMs. This check prevents those commands from running
     // and return a friendly error message.
     if (cmd && !message.guild && cmd.conf.guildOnly) {
-        return message.channel.send(message.language.get("BASE_COMMAND_UNAVAILABLE")).then(msg => msg.delete(4000)).catch(console.error);
+        return message.channel.send(message.language.get("BASE_COMMAND_UNAVAILABLE"));
     }
 
     // If the command exists, **AND** the user has permission, run it.
