@@ -16,7 +16,7 @@ class CheckAct extends Command {
                     aliases: []
                 },
                 time: {         // Filter based on them being inactive past x hours
-                    aliases: ["hour", "hours"]
+                    aliases: ["t", "hour", "hours"]
                 },
                 role: {         // Filter the list to a single role
                     aliases: []
