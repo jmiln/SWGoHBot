@@ -113,7 +113,7 @@ Bot.database.authenticate().then(async () => {
 
 const init = async () => {
     const MongoClient = require("mongodb").MongoClient;
-    Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url, { useNewUrlParser: true } );
+    Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
     // Set up the caching
     Bot.cache = await require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = await require("./modules/users.js")(Bot);
