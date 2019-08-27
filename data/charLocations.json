@@ -1801,7 +1801,8 @@
         "name": "Shaak Ti",
         "locations": [
             {
-                "type": "Intro P2 (Crystals/Packs)"
+                "type": "Hard Modes (Fleet)",
+                "level": "5-A"
             }
         ]
     },

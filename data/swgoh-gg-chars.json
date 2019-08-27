@@ -503,6 +503,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "501st",
             "Attacker",
             "Galactic Republic",
             "Jedi",
@@ -6644,8 +6645,8 @@
         "pk": 149,
         "url": "http://swgoh.gg/characters/ct-21-0408-echo/",
         "image": "/game-asset/u/CT210408/",
-        "power": 18972,
-        "description": "Clone Support that automatically Assists allies and can Dispel all enemies",
+        "power": 21378,
+        "description": "Clone Trooper Support that automatically assists allies and can dispel all enemy buffs",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -6794,6 +6795,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "501st",
             "Clone Trooper",
             "Galactic Republic",
             "Support"
@@ -6802,7 +6804,8 @@
             "AoE",
             "Assist",
             "Dispel",
-            "Dispel - All Enemies"
+            "Stun",
+            "Taunt"
         ],
         "role": "Support",
         "ship": "",
@@ -6815,8 +6818,8 @@
         "pk": 189,
         "url": "http://swgoh.gg/characters/ct-5555-fives/",
         "image": "/game-asset/u/CT5555/",
-        "power": 21378,
-        "description": "Tank character with high Defense, enemy speed reduction, and joint attack ability.",
+        "power": 24358,
+        "description": "Tank with high Defense, enemy Speed reduction, and team-wide stat bonuses",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -6965,6 +6968,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "501st",
             "Clone Trooper",
             "Galactic Republic",
             "Leader",
@@ -6976,7 +6980,9 @@
             "Counter",
             "Gain Turn Meter",
             "Leader: +Defense",
-            "Speed Down"
+            "Revive",
+            "Speed Down",
+            "Taunt"
         ],
         "role": "Tank",
         "ship": "UMBARANSTARFIGHTER",
@@ -6989,8 +6995,8 @@
         "pk": 16,
         "url": "http://swgoh.gg/characters/ct-7567-rex/",
         "image": "/game-asset/u/CT7567/",
-        "power": 18972,
-        "description": "Clone leader with a variety of abilities to support and protect Clone allies.",
+        "power": 22162,
+        "description": "Clone Leader who fiercely supports and protects his 501st and Clone Trooper allies",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -7139,15 +7145,18 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "501st",
             "Clone Trooper",
             "Galactic Republic",
             "Leader",
             "Support"
         ],
         "ability_classes": [
+            "Counter",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Max Health",
+            "Reduce Cooldowns",
             "Remove Turn Meter",
             "Tenacity Up"
         ],
@@ -16198,7 +16207,8 @@
             "Attacker",
             "Bounty Hunters",
             "Leader",
-            "Scoundrel"
+            "Scoundrel",
+            "Separatist"
         ],
         "ability_classes": [
             "AoE",
