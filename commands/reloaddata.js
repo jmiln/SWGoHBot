@@ -7,6 +7,9 @@ class ReloadData extends Command {
             category: "Dev",
             enabled: true,
             aliases: ["rdata", "rd"],
+            subArgs: {
+                lang: { aliases: [] }
+            },
             permLevel: 10
         });
     }
@@ -66,10 +69,21 @@ class ReloadData extends Command {
                     client.reloadLanguages(id);
                 }
                 break;
-            case "swlang":
+            case "swlang": {
                 // Do this first since it's just the basic skeleton
+                let langList;
+                if (options.subArgs.lang) {
+                    if (Bot.swgohLangList.includes(options.subArgs.lang)) {
+                        langList = [options.subArgs.lang];
+                    } else {
+                        return message.channel.send("Invalid lang, try one of these: " + Bot.swgohLangList.join(", "));
+                    }
+                } else {
+                    langList = Bot.swgohLangList;
+                }
+
                 await Bot.swgohAPI.character(null, true);
-                for (const lang of Bot.swgohLangList) {
+                for (const lang of langList) {
                     if (!args[0]) {
                         await Bot.swgohAPI.abilities([], lang, true);
                         message.channel.send(`Updated abilities for ${lang}`);
@@ -111,6 +125,7 @@ class ReloadData extends Command {
                 }
                 message.channel.send("API Language update complete");
                 break;
+            }
             case "users": // Reload the users file
                 if (message.client.shard && message.client.shard.count > 0) {
                     message.client.shard.broadcastEval(`this.reloadUserReg('${id}');`);
