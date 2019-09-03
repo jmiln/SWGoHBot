@@ -218,7 +218,7 @@ module.exports = class extends Language {
             COMMAND_ACRONYMS_INVALID: "Missing acronym to look up.",
             COMMAND_ACRONYMS_NOT_FOUND: "Acronym could not be found.",
             COMMAND_ACRONYMS_HELP: {
-                description: "Helps to provide a lookup for the acronyms commonly used in Star Wars: Galaxy of Heros.",
+                description: "Helps to provide a lookup for the acronyms commonly used in Star Wars: Galaxy of Heroes.",
                 actions: [
                     {
                         action: "",
