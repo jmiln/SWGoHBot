@@ -605,6 +605,7 @@ module.exports = class extends Language {
                 star7: "7 Sterne",
                 g11: "Gear 11",
                 g12: "Gear 12",
+                g13: "Gear 13",
                 "mods6": "6*  Mods",
                 "spd10": "10+  Tempo",
                 "spd15": "15+  Tempo",

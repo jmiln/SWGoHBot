@@ -167,6 +167,11 @@ class CommandName extends Command {
                     user1: user1.stats.filter(c => c.unit.gear === 12).length,
                     user2: user2.stats.filter(c => c.unit.gear === 12).length
                 });
+                overview.push({
+                    check: labels.g13,
+                    user1: user1.stats.filter(c => c.unit.gear === 13).length,
+                    user2: user2.stats.filter(c => c.unit.gear === 13).length
+                });
 
                 overview = Bot.codeBlock(Bot.makeTable({
                     check: {value: "", align: "left", endWith: "::"},
