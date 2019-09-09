@@ -137,10 +137,11 @@ class UserConf extends Command {
 
                 let command;
                 const cmdBlacklist = ["event", "shardtimes"];
-                if (Bot.commands.has(com)) {
-                    command = Bot.commands.get(com);
-                } else if (Bot.aliases.has(com)) {
-                    command = Bot.commands.get(Bot.aliases.get(com));
+                const client = message.client;
+                if (client.commands.has(com)) {
+                    command = client.commands.get(com);
+                } else if (client.aliases.has(com)) {
+                    command = client.commands.get(client.aliases.get(com));
                 } else {
                     return super.error(message, message.language.get("COMMAND_RELOAD_INVALID_CMD", com));
                 }
