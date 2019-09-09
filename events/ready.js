@@ -32,7 +32,7 @@ module.exports = async (Bot, client) => {
         client.loadAllEmotes();
     }
 
-    Bot.log("Ready", readyString);
+    Bot.log("Ready", readyString, {color: Bot.colors.green});
 
     // Sets the status as the current server count and help command
     const playingString =  `${Bot.config.prefix}help ~ swgohbot.com`;

@@ -24,12 +24,12 @@ module.exports = async (Bot, guild) => {
         })
             .then(() => {
                 // Log that it joined another guild
-                Bot.log("GuildCreate", `I joined ${guild.name}(${guild.id})`, "Log", "diff", "+");
+                Bot.log("GuildCreate", `I joined ${guild.name}(${guild.id})`, {color: Bot.colors.green});
             })
             .catch(error => { console.log(error, guild.id); });
     } else {
         // Log that it joined another guild (Again)
-        Bot.log("GuildCreate", `I re-joined ${guild.name}(${guild.id})`, "Log", "diff", "+");
+        Bot.log("GuildCreate", `I re-joined ${guild.name}(${guild.id})`, {color: Bot.colors.green});
     }
 };
 

@@ -15,6 +15,12 @@ module.exports = (Bot, client) => {
     // A zero-width-space
     Bot.zws = "\u200B";
 
+    // Some normal color codes
+    Bot.colors = {
+        red: 0xFF0000,
+        green: 0x00FF00
+    };
+
     /*
         PERMISSION LEVEL FUNCTION
         This is a very basic permission system for commands which uses "levels"
@@ -110,31 +116,42 @@ module.exports = (Bot, client) => {
         return char[0];
     };
 
+    // Parse the webhook url, and get the id & token from the end
+    function parseWebhook(url) {
+        const webhookCredentials = url.split("/").slice(-2);
+        return {
+            id: webhookCredentials[0],
+            token: webhookCredentials[1]
+        };
+    }
+
+    Bot.sendWebhook = (hookUrl, embed) => {
+        const h = parseWebhook(hookUrl);
+        const hook = new Discord.WebhookClient(h.id, h.token);
+        hook.send({embeds: [
+            embed
+        ]});
+    };
+
     /*
      * LOGGING FUNCTION
-     * Logs to console. Future patches may include time+colors
+     * Logs to console & if set up, the log channel
      */
-    Bot.log = (type, msg, title="Log", codeType="md", prefix="", options={}) => {
-        console.log(`[${Bot.myTime()}] [${type}] [${title}]${msg}`);
+    Bot.log = (title="Log", msg, options={}) => {
+        console.log(`[${Bot.myTime()}][${title}]${msg}`);
         if (!options.noSend) {
+            if (client.shard) {
+                title = title + ` (${client.shard.id})`;
+            }
             try {
-                const chan = Bot.config.logs.channel;
-                const mess = `${prefix === "" ? "" : prefix + " "}[${Bot.myTime()}] [${type}] ${msg}`.replace(/\n/g, "\"|\"");
-                const args = {code: codeType, split: true};
                 // Sends the logs to the channel I have set up for it.
-                if (Bot.config.logs.logToChannel) {
-                    if (client.channels.has(chan)) {
-                        client.sendMsg(chan, mess, args);
-                    } else if (client.shard && client.shard.count > 0) {
-                        // If it's on a different shard, then send it there
-                        client.shard.broadcastEval(`
-                            const thisChan = ${inspect(chan)};
-                            const msg = "${mess}";
-                            if (this.channels.has(thisChan)) {
-                                this.sendMsg(thisChan, msg, ${inspect(args)});
-                            }
-                            `);
-                    }
+                if (Bot.config.logs.logToChannel && Bot.config.webhookURL) {
+                    Bot.sendWebhook(Bot.config.webhookURL, {
+                        title: title ? title : null,
+                        description: msg,
+                        color: options.color ? options.color : null,
+                        footer: {text: Bot.myTime()}
+                    });
                 }
             } catch (e) {
                 // Probably broken because it's not started yet
@@ -1165,7 +1182,7 @@ module.exports = (Bot, client) => {
                 try {
                     Bot.announceMsg(client.guilds.get(guildID), announceMessage, event.eventChan);
                 } catch (e) {
-                    Bot.log("ERROR", "Broke trying to announce event with ID: ${event.eventID} \n${e}");
+                    Bot.log("ERROR", "Broke trying to announce event with ID: ${event.eventID} \n${e}", {color: Bot.colors.red});
                 }
             } else { // Else, use the default one from their settings
                 Bot.announceMsg(client.guilds.get(guildID), announceMessage);
@@ -1216,12 +1233,12 @@ module.exports = (Bot, client) => {
                 .then(async () => {
                     Bot.scheduleEvent(newEvent, guildConf.eventCountdown);
                 })
-                .catch(error => { Bot.log("ERROR", "Broke trying to replace event: " + error); });
+                .catch(error => { Bot.log("ERROR", "Broke trying to replace event: " + error, {color: Bot.colors.red}); });
         } else {
             // Just destroy it
             await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
                 .then(async () => {})
-                .catch(error => { Bot.log("ERROR",`Broke trying to delete old event ${error}`); });
+                .catch(error => { Bot.log("ERROR",`Broke trying to delete old event ${error}`, {color: Bot.colors.red}); });
         }
     };
 
@@ -1419,6 +1436,7 @@ module.exports = (Bot, client) => {
 
     // Get all patrons and their info
     Bot.getPatrons = async () => {
+        if (!Bot.config.premium) return;
         const patreon = Bot.config.patreon;
         return new Promise(async (resolve, reject) => {
             if (!patreon) {

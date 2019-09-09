@@ -149,7 +149,7 @@ module.exports = async (Bot, message) => {
                     defaults: def
                 });
             } catch (err) {
-                Bot.log("ERROR(msg)", `I broke with ${cmd.help.name}: ${err}`, cmd.help.name.toProperCase());
+                Bot.log("ERROR(msg)", `I broke with ${cmd.help.name}: ${err}`, cmd.help.name.toProperCase(), {color: Bot.colors.red});
             }
         }
         if (Bot.config.logs.logComs) {

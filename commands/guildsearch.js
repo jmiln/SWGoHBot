@@ -882,7 +882,7 @@ class GuildSearch extends Command {
                     footer: footer
                 }});
             } catch (e) {
-                Bot.log("ERR", e);
+                Bot.log("ERROR", "Error sending message in guildsearch - " + e, {color: Bot.colors.red});
                 console.log(fields);
             }
         }
