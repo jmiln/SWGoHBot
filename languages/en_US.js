@@ -605,7 +605,7 @@ module.exports = class extends Language {
                 "GRANDADMIRALTHRAWN": "Artist of War event",
                 "C3POLEGENDARY": "Contact Protocol event",
                 "GRANDMASTERYODA": "Grandmaster's Training event",
-                "BB8": "Daring Droid event",
+                "BB8": "Pieces and Plans event",
                 "EMPERORPALPATINE": "Emperor's Demise event",
 
                 // TB Rewards

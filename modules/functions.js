@@ -1061,6 +1061,9 @@ module.exports = (Bot, client) => {
 
     // Actually schedule em here
     Bot.scheduleEvent = async (event, countdown) => {
+        if (Object.keys(Bot.schedule.scheduledJobs).indexOf(event.eventID) > -1) {
+            return;
+        }
         Bot.schedule.scheduleJob(event.eventID, parseInt(event.eventDT), function() {
             Bot.eventAnnounce(event);
         });
