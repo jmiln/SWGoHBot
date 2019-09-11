@@ -6,6 +6,11 @@ class UserConf extends Command {
             name: "userconf",
             category: "SWGoH",
             aliases: ["uc", "uconf", "userconfig", "uconfig"],
+            flags: {
+                unreg: {
+                    aliases: ["ur"]
+                }
+            },
             subArgs: {
                 user: {
                     aliases: ["u"]
@@ -97,6 +102,12 @@ class UserConf extends Command {
                     const acc = user.accounts.find(a => a.allyCode === allyCode);
                     if (!acc) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
+                    }
+                    // Remove that registration from the api
+                    if (options.flags.unreg) {
+                        await Bot.swgohAPI.unRegister([
+                            [allyCode, userID]
+                        ]);
                     }
                     // Filter out the one(s) that match the specified allycode
                     user.accounts = user.accounts.filter(a => a.allyCode !== acc.allyCode);

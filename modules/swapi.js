@@ -38,6 +38,7 @@ module.exports = (Bot) => {
         zetaRec: zetaRec,
         events: events,
         register: register,
+        unregister: unregister,
         whois: whois
     };
 
@@ -972,6 +973,16 @@ module.exports = (Bot) => {
             return await swgoh.fetchAPI("/registration", {
                 "put":putArray,
                 "get":getArray
+            });
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    async function unRegister(putArray) {
+        try {
+            return await swgoh.fetchAPI("/registration", {
+                "del":putArray,
             });
         } catch (e) {
             throw e;
