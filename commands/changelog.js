@@ -57,7 +57,7 @@ class Changelog extends Command {
                 } else if (!lastT) {
                     continue;
                 } else {
-                    obj[lastT].push(line);
+                    obj[lastT].push(Bot.expandSpaces(line));
                 }
             }
             const embed = {

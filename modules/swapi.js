@@ -979,7 +979,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function unRegister(putArray) {
+    async function unregister(putArray) {
         try {
             return await swgoh.fetchAPI("/registration", {
                 "del":putArray,
