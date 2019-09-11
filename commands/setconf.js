@@ -55,6 +55,11 @@ class Setconf extends Command {
                             const newChannel = message.guild.channels.find(c => c.name ===  value);
                             if (!newChannel) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN", value));
                             if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS"));
+                        } else if (key === "changelogWebhook") {
+                            const match = /discordapp.com\/api\/webhooks\/[^/]+\/[^/]+/.test(value);
+                            if (!match) {
+                                return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_WEBHOOK"));
+                            }
                         }
                         Bot.database.models.settings.update({[key]: value}, {where: {guildID: message.guild.id}});
                         return message.channel.send("Config setting `" + key + "` changed to `" + value + "`");

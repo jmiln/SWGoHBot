@@ -1335,6 +1335,7 @@ module.exports = class extends Language {
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: "Sorry, but I don't have permission to send message there. Please either change the perms, or choose another channel.",
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Sorry, but ${value} is not a currently supported language. \nCurrently supported languages are: \`${langList}\``,
+            COMMAND_SETCONF_INVALID_WEBHOOK: "Sorry, but that's not a valid webhook url. Copy the one that Discord gives you when you set it up",
             COMMAND_SETCONF_RESET: "Your config has been reset",
             COMMAND_SETCONF_HELP: {
                 description: "Used to set the bot's config settings.",
