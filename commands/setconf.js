@@ -56,9 +56,14 @@ class Setconf extends Command {
                             if (!newChannel) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN", value));
                             if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS"));
                         } else if (key === "changelogWebhook") {
-                            const match = /discordapp.com\/api\/webhooks\/[^/]+\/[^/]+/.test(value);
-                            if (!match) {
-                                return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_WEBHOOK"));
+                            if (!value || !value.length) {
+                                Bot.database.models.settings.update({[key]: ""}, {where: {guildID: message.guild.id}});
+                                return message.channel.send("Removed webhook link.");
+                            } else {
+                                const match = /discordapp.com\/api\/webhooks\/[^/]+\/[^/]+/.test(value);
+                                if (!match) {
+                                    return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_WEBHOOK"));
+                                }
                             }
                         }
                         Bot.database.models.settings.update({[key]: value}, {where: {guildID: message.guild.id}});
