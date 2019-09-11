@@ -1435,6 +1435,12 @@ module.exports = class extends Language {
                         usage: ";setconf swgohLanguage <lang>",
                         args: {}
                     },
+                    {
+                        action: "changelogWebhook",
+                        actionDesc: "Set up a webhook for the bot to send changelogs to.",
+                        usage: ";setconf changelogWebhook <link>",
+                        args: {}
+                    },
                     // {
                     //     action: "reset",
                     //     actionDesc: 'Resets the config back to default (ONLY use this if you are sure)',
