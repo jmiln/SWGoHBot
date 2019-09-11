@@ -1437,8 +1437,8 @@ module.exports = class extends Language {
                     },
                     {
                         action: "changelogWebhook",
-                        actionDesc: "Set up a webhook for the bot to send changelogs to.",
-                        usage: ";setconf changelogWebhook <link>",
+                        actionDesc: "Set up a webhook for the bot to send changelogs to. Use with no link to remove the configured link",
+                        usage: ";setconf changelogWebhook [link]",
                         args: {}
                     },
                     // {
