@@ -197,7 +197,9 @@ module.exports = (Bot) => {
                     if (tempBare.error) throw new Error(tempBare.error);
                     updatedBare = tempBare.result;
                 } catch (error) {
+                    // Couldn't get the data from the api, so send old stuff
                     console.log("Error getting player(s) in unitStats: " + error);
+                    return players;
                 }
                 for (const bareP of updatedBare) {
                     let charStats;
