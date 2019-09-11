@@ -160,39 +160,6 @@ module.exports = (Bot, client) => {
         }
     };
 
-    client.sendMsg = (chanID, msg, options={}) => {
-        if (!msg) return;
-        msg = msg.replace(/"\|"/g, "\n").replace(/\|:\|/g, "'");
-        client.channels.get(chanID).send(msg, options);
-    };
-
-    /*
-     *  CHANGELOG MESSAGE
-     *  Send a changelog message to the specified channel
-     */
-    Bot.sendChangelog = (clMessage) => {
-        clMessage = clMessage.replace(/\n/g, "\"|\"");
-        if (Bot.config.changelog.sendChangelogs) {
-            const clChan = Bot.config.changelog.changelogChannel;
-            if (client.channels.has(clChan)) {
-                client.sendMsg(clChan, clMessage);
-            } else {
-                try {
-                    clMessage = clMessage.replace(/'/g, "|:|");
-                    client.shard.broadcastEval(`
-                        const clMess = '${clMessage}';
-                        if (this.channels.has('${clChan}')) {
-                            this.sendMsg('${clChan}', clMess);
-                        }
-                    `);
-                } catch (e) {
-                    console.log(`[${Bot.myTime()}] I couldn't send a log:\n${e}`);
-                }
-            }
-        }
-    };
-
-
     /*
      * ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
