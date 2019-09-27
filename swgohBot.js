@@ -125,8 +125,8 @@ const init = async () => {
     Bot.cache = await require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = await require("./modules/users.js")(Bot);
 
-    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("players").countDocuments({});
-    Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").countDocuments({});
+    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("players").find({}).count();
+    Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").find({}).count();
 
     if (Bot.config.api_swgoh_help) {
         // Load up the api connector/ helpers

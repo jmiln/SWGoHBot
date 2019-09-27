@@ -50,6 +50,7 @@ module.exports = (Bot, client) => {
             }
         } catch (e) {
             console.log("Error getting patrons");
+            console.log(e);
         }
     };
 
@@ -67,7 +68,8 @@ module.exports = (Bot, client) => {
     async function getActivePatrons() {
         let patrons = await Bot.cache.get("swgohbot", "patrons", {});
         patrons = patrons.filter(p => !p.declined_since);
-        for (const u of Bot.config.patrons.concat([Bot.config.ownerID])) {
+        const others = Bot.config.patrons ? Bot.config.patrons.concat([Bot.config.ownerID]) : [Bot.config.ownerID];
+        for (const u of others) {
             const user = patrons.find(p => p.discordID === u);
             if (!user) {
                 patrons.push({discordID: u, amount_cents: 100});
