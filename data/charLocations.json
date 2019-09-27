@@ -1296,10 +1296,6 @@
                 "level": "4-C"
             },
             {
-                "type": "Cantina",
-                "level": "6-C"
-            },
-            {
                 "type": "Guild Shop",
                 "cost": "450/5"
             }
@@ -1329,10 +1325,6 @@
             {
                 "type": "Cantina",
                 "level": "1-E"
-            },
-            {
-                "type": "Cantina",
-                "level": "5-F"
             },
             {
                 "type": "Guild Event Shop",
@@ -1820,7 +1812,7 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "8-C"
+                "level": "6-C"
             },
             {
                 "type": "Guild Shop",
@@ -1925,10 +1917,6 @@
             {
                 "type": "Cantina",
                 "level": "1-G"
-            },
-            {
-                "type": "Cantina",
-                "level": "5-E"
             },
             {
                 "type": "Guild Shop",
@@ -2040,7 +2028,7 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "8-F"
+                "level": "5-F"
             }
         ]
     },
@@ -2049,7 +2037,7 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "8-G"
+                "level": "5-E"
             }
         ]
     },

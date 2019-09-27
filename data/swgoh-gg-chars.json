@@ -5,7 +5,7 @@
         "pk": 80,
         "url": "http://swgoh.gg/characters/aayla-secura/",
         "image": "/game-asset/u/AAYLASECURA/",
-        "power": 18972,
+        "power": 26941,
         "description": "Versatile attacker with high survivability through Dodge, Hitpoints, and self healing.",
         "combat_type": 1,
         "gear_levels": [
@@ -178,7 +178,7 @@
         "pk": 169,
         "url": "http://swgoh.gg/characters/admiral-ackbar/",
         "image": "/game-asset/u/ADMIRALACKBAR/",
-        "power": 18972,
+        "power": 26941,
         "description": "Rebel Support that can Dispel debuffs and grant allies extra turns",
         "combat_type": 1,
         "gear_levels": [
@@ -353,7 +353,7 @@
         "pk": 64,
         "url": "http://swgoh.gg/characters/ahsoka-tano/",
         "image": "/game-asset/u/AHSOKATANO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Versatile Attacker who constantly assists while healing and dispelling",
         "combat_type": 1,
         "gear_levels": [
@@ -529,7 +529,7 @@
         "pk": 236,
         "url": "http://swgoh.gg/characters/ahsoka-tano-fulcrum/",
         "image": "/game-asset/u/FULCRUMAHSOKA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Enduring Rebel Attacker who shrugs off debuffs and consumes buffs to deal extra damage",
         "combat_type": 1,
         "gear_levels": [
@@ -701,7 +701,7 @@
         "pk": 254,
         "url": "http://swgoh.gg/characters/amilyn-holdo/",
         "image": "/game-asset/u/AMILYNHOLDO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Seasoned Resistance Tank with powerful ally support and enemy debuffs",
         "combat_type": 1,
         "gear_levels": [
@@ -874,7 +874,7 @@
         "pk": 23,
         "url": "http://swgoh.gg/characters/asajj-ventress/",
         "image": "/game-asset/u/ASAJVENTRESS/",
-        "power": 24358,
+        "power": 32328,
         "description": "Nightsister controller with healing who generates attack power as characters are defeated",
         "combat_type": 1,
         "gear_levels": [
@@ -1050,7 +1050,7 @@
         "pk": 294,
         "url": "http://swgoh.gg/characters/aurra-sing/",
         "image": "/game-asset/u/AURRA_SING/",
-        "power": 25143,
+        "power": 33112,
         "description": "Deadly Bounty Hunter that has increased damage while Stealthed",
         "combat_type": 1,
         "gear_levels": [
@@ -1224,7 +1224,7 @@
         "pk": 324,
         "url": "http://swgoh.gg/characters/b1-battle-droid/",
         "image": "/game-asset/u/B1BATTLEDROIDV2/",
-        "power": 21378,
+        "power": 29347,
         "description": "Fragile Separatist Attacker that overwhelms their enemies with numbers",
         "combat_type": 1,
         "gear_levels": [
@@ -1398,7 +1398,7 @@
         "pk": 195,
         "url": "http://swgoh.gg/characters/b2-super-battle-droid/",
         "image": "/game-asset/u/B2SUPERBATTLEDROID/",
-        "power": 21378,
+        "power": 29347,
         "description": "Droid Tank that relentlessly punishes enemies that evade attacks or damage allies",
         "combat_type": 1,
         "gear_levels": [
@@ -1572,7 +1572,7 @@
         "pk": 61,
         "url": "http://swgoh.gg/characters/barriss-offee/",
         "image": "/game-asset/u/BARRISSOFFEE/",
-        "power": 21378,
+        "power": 29347,
         "description": "Jedi Healer that can balance party Health and Dispel allied Jedi frequently",
         "combat_type": 1,
         "gear_levels": [
@@ -1748,7 +1748,7 @@
         "pk": 284,
         "url": "http://swgoh.gg/characters/bastila-shan/",
         "image": "/game-asset/u/BASTILASHAN/",
-        "power": 22947,
+        "power": 30916,
         "description": "Strong Jedi Support that grants allies an overwhelming first turn with her Leader ability",
         "combat_type": 1,
         "gear_levels": [
@@ -1926,7 +1926,7 @@
         "pk": 305,
         "url": "http://swgoh.gg/characters/bastila-shan-fallen/",
         "image": "/game-asset/u/BASTILASHANDARK/",
-        "power": 22947,
+        "power": 30916,
         "description": "Strong Sith Support who inflicts a large number of debuffs including Shock, Fear, and Corrupted Battle Meditation",
         "combat_type": 1,
         "gear_levels": [
@@ -2105,7 +2105,7 @@
         "pk": 216,
         "url": "http://swgoh.gg/characters/baze-malbus/",
         "image": "/game-asset/u/BAZEMALBUS/",
-        "power": 19546,
+        "power": 27516,
         "description": "Fearsome Rebel Tank who Taunts, dispels buffs, and inflicts debuffs",
         "combat_type": 1,
         "gear_levels": [
@@ -2279,7 +2279,7 @@
         "pk": 242,
         "url": "http://swgoh.gg/characters/bb-8/",
         "image": "/game-asset/u/BB8/",
-        "power": 24358,
+        "power": 32328,
         "description": "Persistent Resistance Droid who empowers allies by circulating Secret Intel",
         "combat_type": 1,
         "gear_levels": [
@@ -2458,7 +2458,7 @@
         "pk": 152,
         "url": "http://swgoh.gg/characters/biggs-darklighter/",
         "image": "/game-asset/u/BIGGSDARKLIGHTER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Rebel Support with Critical Hit synergies who calls Assists",
         "combat_type": 1,
         "gear_levels": [
@@ -2627,7 +2627,7 @@
         "pk": 214,
         "url": "http://swgoh.gg/characters/bistan/",
         "image": "/game-asset/u/BISTAN/",
-        "power": 18972,
+        "power": 26941,
         "description": "Wild Rebel Attacker who gains Frenzy, debuffs enemies, and removes Turn Meter",
         "combat_type": 1,
         "gear_levels": [
@@ -2797,7 +2797,7 @@
         "pk": 164,
         "url": "http://swgoh.gg/characters/boba-fett/",
         "image": "/game-asset/u/BOBAFETT/",
-        "power": 22947,
+        "power": 30916,
         "description": "Ruthless Bounty Hunter Attacker who ignores Taunts, Ability Blocks and self-revives",
         "combat_type": 1,
         "gear_levels": [
@@ -2981,7 +2981,7 @@
         "pk": 232,
         "url": "http://swgoh.gg/characters/bodhi-rook/",
         "image": "/game-asset/u/BODHIROOK/",
-        "power": 21378,
+        "power": 29347,
         "description": "Clever Rebel Support who spots enemy units for his allies",
         "combat_type": 1,
         "gear_levels": [
@@ -3154,7 +3154,7 @@
         "pk": 264,
         "url": "http://swgoh.gg/characters/bossk/",
         "image": "/game-asset/u/BOSSK/",
-        "power": 25143,
+        "power": 33112,
         "description": "Bounty Hunter Tank that constantly regenerates Health and Protection",
         "combat_type": 1,
         "gear_levels": [
@@ -3331,7 +3331,7 @@
         "pk": 312,
         "url": "http://swgoh.gg/characters/c-3po/",
         "image": "/game-asset/u/C3POLEGENDARY/",
-        "power": 25927,
+        "power": 33897,
         "description": "Evasive support character that Confuses foes and strengthens mixed-faction interplay with Translation.",
         "combat_type": 1,
         "gear_levels": [
@@ -3509,7 +3509,7 @@
         "pk": 121,
         "url": "http://swgoh.gg/characters/cad-bane/",
         "image": "/game-asset/u/CADBANE/",
-        "power": 19966,
+        "power": 27936,
         "description": "Bounty Hunter Support with a powerful Stun and bonuses against Jedi characters",
         "combat_type": 1,
         "gear_levels": [
@@ -3687,7 +3687,7 @@
         "pk": 307,
         "url": "http://swgoh.gg/characters/canderous-ordo/",
         "image": "/game-asset/u/CANDEROUSORDO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Powerful attacker who can make short work of enemy Tanks",
         "combat_type": 1,
         "gear_levels": [
@@ -3861,7 +3861,7 @@
         "pk": 239,
         "url": "http://swgoh.gg/characters/captain-han-solo/",
         "image": "/game-asset/u/HOTHHAN/",
-        "power": 21378,
+        "power": 29347,
         "description": "Daring Rebel Support that risks himself to Revive allies and Daze enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -4032,7 +4032,7 @@
         "pk": 67,
         "url": "http://swgoh.gg/characters/captain-phasma/",
         "image": "/game-asset/u/PHASMA/",
-        "power": 21378,
+        "power": 29347,
         "description": "High-damage First Order support that can grant allies many extra attacks",
         "combat_type": 1,
         "gear_levels": [
@@ -4207,7 +4207,7 @@
         "pk": 310,
         "url": "http://swgoh.gg/characters/carth-onasi/",
         "image": "/game-asset/u/CARTHONASI/",
-        "power": 21378,
+        "power": 29347,
         "description": "Old Republic soldier that excels at clearing waves of enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -4382,7 +4382,7 @@
         "pk": 219,
         "url": "http://swgoh.gg/characters/cassian-andor/",
         "image": "/game-asset/u/CASSIANANDOR/",
-        "power": 21378,
+        "power": 29347,
         "description": "Rebel Support who buffs allies at the start of battle and debuffs enemies during battle",
         "combat_type": 1,
         "gear_levels": [
@@ -4561,7 +4561,7 @@
         "pk": 26,
         "url": "http://swgoh.gg/characters/cc-2224-cody/",
         "image": "/game-asset/u/CC2224/",
-        "power": 21378,
+        "power": 29347,
         "description": "Clone Attacker that Stuns and calls tons of Assists",
         "combat_type": 1,
         "gear_levels": [
@@ -4734,7 +4734,7 @@
         "pk": 300,
         "url": "http://swgoh.gg/characters/chewbacca/",
         "image": "/game-asset/u/CHEWBACCALEGENDARY/",
-        "power": 24358,
+        "power": 32328,
         "description": "Mighty Rebel Attacker who Guards the weakest ally",
         "combat_type": 1,
         "gear_levels": [
@@ -4911,7 +4911,7 @@
         "pk": 72,
         "url": "http://swgoh.gg/characters/chief-chirpa/",
         "image": "/game-asset/u/CHIEFCHIRPA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Ewok Leader that greatly improves ally Basic abilities",
         "combat_type": 1,
         "gear_levels": [
@@ -5083,7 +5083,7 @@
         "pk": 93,
         "url": "http://swgoh.gg/characters/chief-nebit/",
         "image": "/game-asset/u/CHIEFNEBIT/",
-        "power": 18972,
+        "power": 26941,
         "description": "Cunning Jawa Tank with Stealth synergies who can reduce cooldowns",
         "combat_type": 1,
         "gear_levels": [
@@ -5254,7 +5254,7 @@
         "pk": 215,
         "url": "http://swgoh.gg/characters/chirrut-imwe/",
         "image": "/game-asset/u/CHIRRUTIMWE/",
-        "power": 19546,
+        "power": 27516,
         "description": "Balanced Rebel Attacker who dispels debuffs, heals allies, and grants Tenacity Up",
         "combat_type": 1,
         "gear_levels": [
@@ -5425,7 +5425,7 @@
         "pk": 225,
         "url": "http://swgoh.gg/characters/chopper/",
         "image": "/game-asset/u/CHOPPERS3/",
-        "power": 19182,
+        "power": 27151,
         "description": "Surly Phoenix Support who Taunts and Dispels, and can recover Phoenix cooldowns",
         "combat_type": 1,
         "gear_levels": [
@@ -5601,7 +5601,7 @@
         "pk": 186,
         "url": "http://swgoh.gg/characters/clone-sergeant-phase-i/",
         "image": "/game-asset/u/CLONESERGEANTPHASEI/",
-        "power": 18397,
+        "power": 26367,
         "description": "Clone Attacker with AoE damage and Turn Meter Reduction",
         "combat_type": 1,
         "gear_levels": [
@@ -5772,7 +5772,7 @@
         "pk": 62,
         "url": "http://swgoh.gg/characters/clone-wars-chewbacca/",
         "image": "/game-asset/u/CLONEWARSCHEWBACCA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Durable Tank with both Taunt and self-Healing",
         "combat_type": 1,
         "gear_levels": [
@@ -5946,7 +5946,7 @@
         "pk": 247,
         "url": "http://swgoh.gg/characters/colonel-starck/",
         "image": "/game-asset/u/COLONELSTARCK/",
-        "power": 21378,
+        "power": 29347,
         "description": "Offensive Support who provides critical buffs and removes enemy Turn Meter",
         "combat_type": 1,
         "gear_levels": [
@@ -6118,7 +6118,7 @@
         "pk": 238,
         "url": "http://swgoh.gg/characters/commander-luke-skywalker/",
         "image": "/game-asset/u/COMMANDERLUKESKYWALKER/",
-        "power": 27339,
+        "power": 35308,
         "description": "Determined Rebel hero who can ignore debuffs or ignore Taunts",
         "combat_type": 1,
         "gear_levels": [
@@ -6296,7 +6296,7 @@
         "pk": 78,
         "url": "http://swgoh.gg/characters/coruscant-underworld-police/",
         "image": "/game-asset/u/CORUSCANTUNDERWORLDPOLICE/",
-        "power": 18397,
+        "power": 26367,
         "description": "Support that shuts down enemies with Stuns and Offense Down",
         "combat_type": 1,
         "gear_levels": [
@@ -6466,7 +6466,7 @@
         "pk": 91,
         "url": "http://swgoh.gg/characters/count-dooku/",
         "image": "/game-asset/u/COUNTDOOKU/",
-        "power": 22162,
+        "power": 30132,
         "description": "Disciplined Separatist Attacker with high damage, counter attacks, and debuff capabilities",
         "combat_type": 1,
         "gear_levels": [
@@ -6645,7 +6645,7 @@
         "pk": 149,
         "url": "http://swgoh.gg/characters/ct-21-0408-echo/",
         "image": "/game-asset/u/CT210408/",
-        "power": 21378,
+        "power": 29347,
         "description": "Clone Trooper Support that automatically assists allies and can dispel all enemy buffs",
         "combat_type": 1,
         "gear_levels": [
@@ -6818,7 +6818,7 @@
         "pk": 189,
         "url": "http://swgoh.gg/characters/ct-5555-fives/",
         "image": "/game-asset/u/CT5555/",
-        "power": 24358,
+        "power": 32328,
         "description": "Tank with high Defense, enemy Speed reduction, and team-wide stat bonuses",
         "combat_type": 1,
         "gear_levels": [
@@ -6995,7 +6995,7 @@
         "pk": 16,
         "url": "http://swgoh.gg/characters/ct-7567-rex/",
         "image": "/game-asset/u/CT7567/",
-        "power": 22162,
+        "power": 30132,
         "description": "Clone Leader who fiercely supports and protects his 501st and Clone Trooper allies",
         "combat_type": 1,
         "gear_levels": [
@@ -7171,7 +7171,7 @@
         "pk": 342,
         "url": "http://swgoh.gg/characters/darth-malak/",
         "image": "/game-asset/u/DARTHMALAK/",
-        "power": 24358,
+        "power": 32328,
         "description": "Brutal Sith Tank who terrorizes and drains enemies to stay alive",
         "combat_type": 1,
         "gear_levels": [
@@ -7347,7 +7347,7 @@
         "pk": 82,
         "url": "http://swgoh.gg/characters/darth-maul/",
         "image": "/game-asset/u/MAUL/",
-        "power": 21378,
+        "power": 29347,
         "description": "Deadly Attacker that gains power and extra turns as enemies are defeated",
         "combat_type": 1,
         "gear_levels": [
@@ -7523,7 +7523,7 @@
         "pk": 222,
         "url": "http://swgoh.gg/characters/darth-nihilus/",
         "image": "/game-asset/u/DARTHNIHILUS/",
-        "power": 24358,
+        "power": 32328,
         "description": "Sith Support that can instantly defeat enemies by draining cooldowns",
         "combat_type": 1,
         "gear_levels": [
@@ -7698,7 +7698,7 @@
         "pk": 336,
         "url": "http://swgoh.gg/characters/darth-revan/",
         "image": "/game-asset/u/DARTHREVAN/",
-        "power": 27339,
+        "power": 35308,
         "description": "Ruthless Sith Lord that is extremely effective at taking down the enemy leader",
         "combat_type": 1,
         "gear_levels": [
@@ -7878,7 +7878,7 @@
         "pk": 73,
         "url": "http://swgoh.gg/characters/darth-sidious/",
         "image": "/game-asset/u/DARTHSIDIOUS/",
-        "power": 21378,
+        "power": 29347,
         "description": "Brutal Attacker effective against Healers and Jedi while boosting allied Criticals as a Leader",
         "combat_type": 1,
         "gear_levels": [
@@ -8052,7 +8052,7 @@
         "pk": 259,
         "url": "http://swgoh.gg/characters/darth-sion/",
         "image": "/game-asset/u/DARTHSION/",
-        "power": 22162,
+        "power": 30132,
         "description": "Aggressive Sith tank that becomes stronger with Hatred",
         "combat_type": 1,
         "gear_levels": [
@@ -8223,7 +8223,7 @@
         "pk": 258,
         "url": "http://swgoh.gg/characters/darth-traya/",
         "image": "/game-asset/u/DARTHTRAYA/",
-        "power": 24358,
+        "power": 32328,
         "description": "Sith support who punishes enemies for relying on others",
         "combat_type": 1,
         "gear_levels": [
@@ -8398,7 +8398,7 @@
         "pk": 200,
         "url": "http://swgoh.gg/characters/darth-vader/",
         "image": "/game-asset/u/VADER/",
-        "power": 24358,
+        "power": 32328,
         "description": "Fearsome Attacker that applies AoE Damage Over Time, and crushes debuffed targets for extra turns",
         "combat_type": 1,
         "gear_levels": [
@@ -8574,7 +8574,7 @@
         "pk": 142,
         "url": "http://swgoh.gg/characters/dathcha/",
         "image": "/game-asset/u/DATHCHA/",
-        "power": 18972,
+        "power": 26941,
         "description": "Versatile Support able to Ability Block and Stealth, effective against Droids or with Jawas",
         "combat_type": 1,
         "gear_levels": [
@@ -8748,7 +8748,7 @@
         "pk": 221,
         "url": "http://swgoh.gg/characters/death-trooper/",
         "image": "/game-asset/u/DEATHTROOPER/",
-        "power": 21378,
+        "power": 29347,
         "description": "Terrifying Empire Attacker who inflicts debilitating debuffs and prevents revives",
         "combat_type": 1,
         "gear_levels": [
@@ -8923,7 +8923,7 @@
         "pk": 115,
         "url": "http://swgoh.gg/characters/dengar/",
         "image": "/game-asset/u/DENGAR/",
-        "power": 22947,
+        "power": 30916,
         "description": "Adaptable Scoundrel attacker that Stuns and inflicts Tenacity Down.",
         "combat_type": 1,
         "gear_levels": [
@@ -9102,7 +9102,7 @@
         "pk": 220,
         "url": "http://swgoh.gg/characters/director-krennic/",
         "image": "/game-asset/u/DIRECTORKRENNIC/",
-        "power": 21952,
+        "power": 29922,
         "description": "Intimidating Empire Support who inflicts devastating debuffs and slows enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -9278,7 +9278,7 @@
         "pk": 325,
         "url": "http://swgoh.gg/characters/droideka/",
         "image": "/game-asset/u/DROIDEKA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Destructive Droid attacker that punishes fast enemies from behind its deflector shield",
         "combat_type": 1,
         "gear_levels": [
@@ -9450,7 +9450,7 @@
         "pk": 203,
         "url": "http://swgoh.gg/characters/eeth-koth/",
         "image": "/game-asset/u/EETHKOTH/",
-        "power": 18972,
+        "power": 26941,
         "description": "Stunning Jedi Support extremely effective against Droids",
         "combat_type": 1,
         "gear_levels": [
@@ -9623,7 +9623,7 @@
         "pk": 290,
         "url": "http://swgoh.gg/characters/embo/",
         "image": "/game-asset/u/EMBO/",
-        "power": 24358,
+        "power": 32328,
         "description": "Deadly Bounty Hunter Attacker that consumes his Protection to boost his damage",
         "combat_type": 1,
         "gear_levels": [
@@ -9795,7 +9795,7 @@
         "pk": 180,
         "url": "http://swgoh.gg/characters/emperor-palpatine/",
         "image": "/game-asset/u/EMPERORPALPATINE/",
-        "power": 24358,
+        "power": 32328,
         "description": "Overwhelming Sith Support who inflicts Shock and can Stun targets for multiple turns",
         "combat_type": 1,
         "gear_levels": [
@@ -9971,7 +9971,7 @@
         "pk": 274,
         "url": "http://swgoh.gg/characters/enfys-nest/",
         "image": "/game-asset/u/ENFYSNEST/",
-        "power": 21378,
+        "power": 29347,
         "description": "Powerhouse attacker that stacks Protection when attacked, then dismantles enemy defenses with Dispels and Turn Meter manipulation",
         "combat_type": 1,
         "gear_levels": [
@@ -10152,7 +10152,7 @@
         "pk": 21,
         "url": "http://swgoh.gg/characters/ewok-elder/",
         "image": "/game-asset/u/EWOKELDER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Ewok Healer that specializes in Revives",
         "combat_type": 1,
         "gear_levels": [
@@ -10323,7 +10323,7 @@
         "pk": 71,
         "url": "http://swgoh.gg/characters/ewok-scout/",
         "image": "/game-asset/u/EWOKSCOUT/",
-        "power": 18397,
+        "power": 26367,
         "description": "Powerful single-target Attacker that becomes evasive with Ewok allies",
         "combat_type": 1,
         "gear_levels": [
@@ -10492,7 +10492,7 @@
         "pk": 230,
         "url": "http://swgoh.gg/characters/ezra-bridger/",
         "image": "/game-asset/u/EZRABRIDGERS3/",
-        "power": 21378,
+        "power": 29347,
         "description": "Versatile Phoenix Attacker that can perform a variety of effects based on the Roles of allies",
         "combat_type": 1,
         "gear_levels": [
@@ -10666,7 +10666,7 @@
         "pk": 66,
         "url": "http://swgoh.gg/characters/finn/",
         "image": "/game-asset/u/FINN/",
-        "power": 21378,
+        "power": 29347,
         "description": "Resistance tank that keeps the pressure up with a balance between offense and defense",
         "combat_type": 1,
         "gear_levels": [
@@ -10842,7 +10842,7 @@
         "pk": 253,
         "url": "http://swgoh.gg/characters/first-order-executioner/",
         "image": "/game-asset/u/FIRSTORDEREXECUTIONER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Merciless First Order Attacker who executes powerful attacks",
         "combat_type": 1,
         "gear_levels": [
@@ -11014,7 +11014,7 @@
         "pk": 166,
         "url": "http://swgoh.gg/characters/first-order-officer/",
         "image": "/game-asset/u/FIRSTORDEROFFICERMALE/",
-        "power": 18397,
+        "power": 26367,
         "description": "First Order support that grants Advantage and can manipulate both ally and enemy Turn Meters",
         "combat_type": 1,
         "gear_levels": [
@@ -11186,7 +11186,7 @@
         "pk": 246,
         "url": "http://swgoh.gg/characters/first-order-sf-tie-pilot/",
         "image": "/game-asset/u/FIRSTORDERSPECIALFORCESPILOT/",
-        "power": 18397,
+        "power": 26367,
         "description": "Subversive First Order Attacker who buffs allies and disrupts enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -11357,7 +11357,7 @@
         "pk": 150,
         "url": "http://swgoh.gg/characters/first-order-stormtrooper/",
         "image": "/game-asset/u/FIRSTORDERTROOPER/",
-        "power": 20593,
+        "power": 28563,
         "description": "First Order tank that uses Advantage to disrupt enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -11531,7 +11531,7 @@
         "pk": 199,
         "url": "http://swgoh.gg/characters/first-order-tie-pilot/",
         "image": "/game-asset/u/FIRSTORDERTIEPILOT/",
-        "power": 20593,
+        "power": 28563,
         "description": "First Order attacker that can deal extreme damage in a single turn with Advantage",
         "combat_type": 1,
         "gear_levels": [
@@ -11702,7 +11702,7 @@
         "pk": 207,
         "url": "http://swgoh.gg/characters/gamorrean-guard/",
         "image": "/game-asset/u/GAMORREANGUARD/",
-        "power": 18397,
+        "power": 26367,
         "description": "Aggressive tank that Taunts and Counters with multiple Damage Over Time effects",
         "combat_type": 1,
         "gear_levels": [
@@ -11872,7 +11872,7 @@
         "pk": 234,
         "url": "http://swgoh.gg/characters/gar-saxon/",
         "image": "/game-asset/u/GARSAXON/",
-        "power": 21378,
+        "power": 29347,
         "description": "Leader who grants Empire allies Counter Chance and Assists them when they Counter Attack",
         "combat_type": 1,
         "gear_levels": [
@@ -12045,7 +12045,7 @@
         "pk": 229,
         "url": "http://swgoh.gg/characters/garazeb-zeb-orrelios/",
         "image": "/game-asset/u/ZEBS3/",
-        "power": 21378,
+        "power": 29347,
         "description": "Versatile Phoenix Tank with wide variety of effects for allies or enemies with or without debuffs",
         "combat_type": 1,
         "gear_levels": [
@@ -12218,7 +12218,7 @@
         "pk": 1,
         "url": "http://swgoh.gg/characters/general-grievous/",
         "image": "/game-asset/u/GRIEVOUS/",
-        "power": 24358,
+        "power": 32328,
         "description": "Aggressive Attacker that grows increasingly stronger as the Droids around him fall. Although he hates being called a droid, he counts as one in combat.",
         "combat_type": 1,
         "gear_levels": [
@@ -12396,7 +12396,7 @@
         "pk": 213,
         "url": "http://swgoh.gg/characters/general-kenobi/",
         "image": "/game-asset/u/GENERALKENOBI/",
-        "power": 21952,
+        "power": 29922,
         "description": "Vigorous Jedi Tank who gains Foresight, dispels debuffs to grant buffs, and calls buffed allies to Assist",
         "combat_type": 1,
         "gear_levels": [
@@ -12577,7 +12577,7 @@
         "pk": 132,
         "url": "http://swgoh.gg/characters/general-veers/",
         "image": "/game-asset/u/VEERS/",
-        "power": 21378,
+        "power": 29347,
         "description": "Aggressive Empire Support that becomes stronger as enemies are defeated",
         "combat_type": 1,
         "gear_levels": [
@@ -12751,7 +12751,7 @@
         "pk": 363,
         "url": "http://swgoh.gg/characters/geonosian-brood-alpha/",
         "image": "/game-asset/u/GEONOSIANBROODALPHA/",
-        "power": 25143,
+        "power": 33112,
         "description": "Geonosian Support that swarms enemies with summoned allies and Hive Mind",
         "combat_type": 1,
         "gear_levels": [
@@ -12930,7 +12930,7 @@
         "pk": 57,
         "url": "http://swgoh.gg/characters/geonosian-soldier/",
         "image": "/game-asset/u/GEONOSIANSOLDIER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Aggressive Attacker who calls assists and grants powerful offensive bonuses to Geonosian allies",
         "combat_type": 1,
         "gear_levels": [
@@ -13100,7 +13100,7 @@
         "pk": 88,
         "url": "http://swgoh.gg/characters/geonosian-spy/",
         "image": "/game-asset/u/GEONOSIANSPY/",
-        "power": 19182,
+        "power": 27151,
         "description": "Stealthy Geonosian Attacker who Exposes enemies and has high damage potential",
         "combat_type": 1,
         "gear_levels": [
@@ -13274,7 +13274,7 @@
         "pk": 237,
         "url": "http://swgoh.gg/characters/grand-admiral-thrawn/",
         "image": "/game-asset/u/GRANDADMIRALTHRAWN/",
-        "power": 24358,
+        "power": 32328,
         "description": "Calculating Empire Leader who can halt enemies in their tracks, and grants Empire allies a new Special ability",
         "combat_type": 1,
         "gear_levels": [
@@ -13450,7 +13450,7 @@
         "pk": 144,
         "url": "http://swgoh.gg/characters/grand-master-yoda/",
         "image": "/game-asset/u/GRANDMASTERYODA/",
-        "power": 24358,
+        "power": 32328,
         "description": "Masterful Jedi support that can replicate enemy buffs and share them with allies",
         "combat_type": 1,
         "gear_levels": [
@@ -13629,7 +13629,7 @@
         "pk": 138,
         "url": "http://swgoh.gg/characters/grand-moff-tarkin/",
         "image": "/game-asset/u/GRANDMOFFTARKIN/",
-        "power": 24358,
+        "power": 32328,
         "description": "Offensive Empire Support with crushing AoE debuffs",
         "combat_type": 1,
         "gear_levels": [
@@ -13805,7 +13805,7 @@
         "pk": 190,
         "url": "http://swgoh.gg/characters/greedo/",
         "image": "/game-asset/u/GREEDO/",
-        "power": 22737,
+        "power": 30706,
         "description": "Deadly Attacker that gains extra attacks from Critical Hits",
         "combat_type": 1,
         "gear_levels": [
@@ -13981,7 +13981,7 @@
         "pk": 41,
         "url": "http://swgoh.gg/characters/han-solo/",
         "image": "/game-asset/u/HANSOLO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Daring Attacker that stacks Criticals in his favor and always shoots first",
         "combat_type": 1,
         "gear_levels": [
@@ -14155,7 +14155,7 @@
         "pk": 227,
         "url": "http://swgoh.gg/characters/hera-syndulla/",
         "image": "/game-asset/u/HERASYNDULLAS3/",
-        "power": 21378,
+        "power": 29347,
         "description": "Cunning Phoenix Support that allows Phoenix allies to share their Unique abilities with each other",
         "combat_type": 1,
         "gear_levels": [
@@ -14329,7 +14329,7 @@
         "pk": 74,
         "url": "http://swgoh.gg/characters/hermit-yoda/",
         "image": "/game-asset/u/HERMITYODA/",
-        "power": 24358,
+        "power": 32328,
         "description": "Jedi recluse who imparts sage wisdom in the ways of the Force",
         "combat_type": 1,
         "gear_levels": [
@@ -14504,7 +14504,7 @@
         "pk": 172,
         "url": "http://swgoh.gg/characters/hk-47/",
         "image": "/game-asset/u/HK47/",
-        "power": 25143,
+        "power": 33112,
         "description": "Offensive Attacker with powerful Darth Revan synergy",
         "combat_type": 1,
         "gear_levels": [
@@ -14680,7 +14680,7 @@
         "pk": 157,
         "url": "http://swgoh.gg/characters/hoth-rebel-scout/",
         "image": "/game-asset/u/HOTHREBELSCOUT/",
-        "power": 18397,
+        "power": 26367,
         "description": "Single target attacker with crit synergies and speed building abilities.",
         "combat_type": 1,
         "gear_levels": [
@@ -14848,7 +14848,7 @@
         "pk": 54,
         "url": "http://swgoh.gg/characters/hoth-rebel-soldier/",
         "image": "/game-asset/u/HOTHREBELSOLDIER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Support character that debuffs, taunts, and defensively buffs, with Rebel and anti-Empire synergies.",
         "combat_type": 1,
         "gear_levels": [
@@ -15018,7 +15018,7 @@
         "pk": 17,
         "url": "http://swgoh.gg/characters/ig-100-magnaguard/",
         "image": "/game-asset/u/MAGNAGUARD/",
-        "power": 21378,
+        "power": 29347,
         "description": "Disruptive Droid Tank that Taunts and takes an extra turn before it is defeated",
         "combat_type": 1,
         "gear_levels": [
@@ -15193,7 +15193,7 @@
         "pk": 167,
         "url": "http://swgoh.gg/characters/ig-86-sentinel-droid/",
         "image": "/game-asset/u/IG86SENTINELDROID/",
-        "power": 18397,
+        "power": 26367,
         "description": "Droid Attacker with a powerful Droid Assist and devastating Criticals",
         "combat_type": 1,
         "gear_levels": [
@@ -15360,7 +15360,7 @@
         "pk": 143,
         "url": "http://swgoh.gg/characters/ig-88/",
         "image": "/game-asset/u/IG88/",
-        "power": 22162,
+        "power": 30132,
         "description": "Droid Attacker with debuffs and a damage bonus against debuffed enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -15536,7 +15536,7 @@
         "pk": 147,
         "url": "http://swgoh.gg/characters/ima-gun-di/",
         "image": "/game-asset/u/IMAGUNDI/",
-        "power": 18972,
+        "power": 26941,
         "description": "Supportive Tank that boost ally defense and grants Jedi allies Counter Chance",
         "combat_type": 1,
         "gear_levels": [
@@ -15708,7 +15708,7 @@
         "pk": 248,
         "url": "http://swgoh.gg/characters/imperial-probe-droid/",
         "image": "/game-asset/u/IMPERIALPROBEDROID/",
-        "power": 21378,
+        "power": 29347,
         "description": "Imperial Droid who reveals and tracks enemies with Target Lock",
         "combat_type": 1,
         "gear_levels": [
@@ -15882,7 +15882,7 @@
         "pk": 233,
         "url": "http://swgoh.gg/characters/imperial-super-commando/",
         "image": "/game-asset/u/IMPERIALSUPERCOMMANDO/",
-        "power": 18397,
+        "power": 26367,
         "description": "An Empire Attacker with counter mechanics who dispels buffs and applies buff immunity",
         "combat_type": 1,
         "gear_levels": [
@@ -16054,7 +16054,7 @@
         "pk": 298,
         "url": "http://swgoh.gg/characters/jango-fett/",
         "image": "/game-asset/u/JANGOFETT/",
-        "power": 25143,
+        "power": 33112,
         "description": "Notorious Bounty Hunter that exploits debuffed foes and inflicts Burning",
         "combat_type": 1,
         "gear_levels": [
@@ -16232,7 +16232,7 @@
         "pk": 123,
         "url": "http://swgoh.gg/characters/jawa/",
         "image": "/game-asset/u/JAWA/",
-        "power": 18397,
+        "power": 26367,
         "description": "Attacker effective against debuffed enemies as well as Droids",
         "combat_type": 1,
         "gear_levels": [
@@ -16402,7 +16402,7 @@
         "pk": 87,
         "url": "http://swgoh.gg/characters/jawa-engineer/",
         "image": "/game-asset/u/JAWAENGINEER/",
-        "power": 18972,
+        "power": 26941,
         "description": "High-speed Jawa Healer with a Critical Chance buff and both Jawa and Droid synergy",
         "combat_type": 1,
         "gear_levels": [
@@ -16572,7 +16572,7 @@
         "pk": 209,
         "url": "http://swgoh.gg/characters/jawa-scavenger/",
         "image": "/game-asset/u/JAWASCAVENGER/",
-        "power": 18972,
+        "power": 26941,
         "description": "Versatile Jawa Support who can detonate Thermal Detonators to inflict a large variety of status effects",
         "combat_type": 1,
         "gear_levels": [
@@ -16746,7 +16746,7 @@
         "pk": 100,
         "url": "http://swgoh.gg/characters/jedi-consular/",
         "image": "/game-asset/u/JEDIKNIGHTCONSULAR/",
-        "power": 18397,
+        "power": 26367,
         "description": "Well-rounded Jedi Healer with a mix of offense and defense",
         "combat_type": 1,
         "gear_levels": [
@@ -16915,7 +16915,7 @@
         "pk": 112,
         "url": "http://swgoh.gg/characters/jedi-knight-anakin/",
         "image": "/game-asset/u/ANAKINKNIGHT/",
-        "power": 21378,
+        "power": 29347,
         "description": "High-pressure Jedi attacker that punishes enemies for wounding his allies",
         "combat_type": 1,
         "gear_levels": [
@@ -17089,7 +17089,7 @@
         "pk": 107,
         "url": "http://swgoh.gg/characters/jedi-knight-guardian/",
         "image": "/game-asset/u/JEDIKNIGHTGUARDIAN/",
-        "power": 18397,
+        "power": 26367,
         "description": "Tenacious Jedi tank with crippling debuffs and natural recovery at low Health",
         "combat_type": 1,
         "gear_levels": [
@@ -17260,7 +17260,7 @@
         "pk": 302,
         "url": "http://swgoh.gg/characters/jedi-knight-revan/",
         "image": "/game-asset/u/JEDIKNIGHTREVAN/",
-        "power": 27339,
+        "power": 35308,
         "description": "Fabled Jedi leader who controls the battle with a wide mix of powerful abilities",
         "combat_type": 1,
         "gear_levels": [
@@ -17445,7 +17445,7 @@
         "pk": 283,
         "url": "http://swgoh.gg/characters/jolee-bindo/",
         "image": "/game-asset/u/JOLEEBINDO/",
-        "power": 22162,
+        "power": 30132,
         "description": "Potent Jedi Healer with high durability and resistance to disruption",
         "combat_type": 1,
         "gear_levels": [
@@ -17616,7 +17616,7 @@
         "pk": 308,
         "url": "http://swgoh.gg/characters/juhani/",
         "image": "/game-asset/u/JUHANI/",
-        "power": 21378,
+        "power": 29347,
         "description": "Unique Jedi Tank who dispels debuffs from Old Republic allies and becomes more dangerous below full Health",
         "combat_type": 1,
         "gear_levels": [
@@ -17790,7 +17790,7 @@
         "pk": 217,
         "url": "http://swgoh.gg/characters/jyn-erso/",
         "image": "/game-asset/u/JYNERSO/",
-        "power": 24358,
+        "power": 32328,
         "description": "Offensive Rebel Leader who gains Advantage, Stuns enemies, revives Rebel allies and grants them Potency Up",
         "combat_type": 1,
         "gear_levels": [
@@ -17965,7 +17965,7 @@
         "pk": 218,
         "url": "http://swgoh.gg/characters/k-2so/",
         "image": "/game-asset/u/K2SO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Rebel Tank who Taunts and Counter Attacks",
         "combat_type": 1,
         "gear_levels": [
@@ -18139,7 +18139,7 @@
         "pk": 226,
         "url": "http://swgoh.gg/characters/kanan-jarrus/",
         "image": "/game-asset/u/KANANJARRUSS3/",
-        "power": 21378,
+        "power": 29347,
         "description": "Durable Phoenix Tank that keeps enemy Offense crippled and allies healthy",
         "combat_type": 1,
         "gear_levels": [
@@ -18314,7 +18314,7 @@
         "pk": 187,
         "url": "http://swgoh.gg/characters/kit-fisto/",
         "image": "/game-asset/u/KITFISTO/",
-        "power": 18972,
+        "power": 26941,
         "description": "Versatile Jedi Attacker with multi-attack, Counter Chance, and a variety of ally buffs",
         "combat_type": 1,
         "gear_levels": [
@@ -18488,7 +18488,7 @@
         "pk": 141,
         "url": "http://swgoh.gg/characters/kylo-ren/",
         "image": "/game-asset/u/KYLOREN/",
-        "power": 21378,
+        "power": 29347,
         "description": "Versatile First Order attacker that can reuse special attacks when damaged",
         "combat_type": 1,
         "gear_levels": [
@@ -18662,7 +18662,7 @@
         "pk": 245,
         "url": "http://swgoh.gg/characters/kylo-ren-unmasked/",
         "image": "/game-asset/u/KYLORENUNMASKED/",
-        "power": 24358,
+        "power": 32328,
         "description": "Tough First Order Tank with a powerful Stun",
         "combat_type": 1,
         "gear_levels": [
@@ -18837,7 +18837,7 @@
         "pk": 279,
         "url": "http://swgoh.gg/characters/l3-37/",
         "image": "/game-asset/u/L3_37/",
-        "power": 21378,
+        "power": 29347,
         "description": "Droid Tank that can dispel allies and has multiple ways to increase her stats permanently",
         "combat_type": 1,
         "gear_levels": [
@@ -19011,7 +19011,7 @@
         "pk": 4,
         "url": "http://swgoh.gg/characters/lando-calrissian/",
         "image": "/game-asset/u/ADMINISTRATORLANDO/",
-        "power": 18762,
+        "power": 26731,
         "description": "Scoundrel leader with high offense and excellent Critical Hit synergy",
         "combat_type": 1,
         "gear_levels": [
@@ -19182,7 +19182,7 @@
         "pk": 84,
         "url": "http://swgoh.gg/characters/lobot/",
         "image": "/game-asset/u/LOBOT/",
-        "power": 18972,
+        "power": 26941,
         "description": "Rebel Support that can reliably inflict Defense Down, clear allied debuffs, and speed up allied Droids",
         "combat_type": 1,
         "gear_levels": [
@@ -19354,7 +19354,7 @@
         "pk": 170,
         "url": "http://swgoh.gg/characters/logray/",
         "image": "/game-asset/u/LOGRAY/",
-        "power": 21378,
+        "power": 29347,
         "description": "Sage Ewok Support who can Daze enemies and grant Ewok allies many buffs",
         "combat_type": 1,
         "gear_levels": [
@@ -19530,7 +19530,7 @@
         "pk": 24,
         "url": "http://swgoh.gg/characters/luke-skywalker-farmboy/",
         "image": "/game-asset/u/LUKESKYWALKER/",
-        "power": 23574,
+        "power": 31543,
         "description": "Attacker that can boost his own Critical Rate, then disable enemies with Critical Hits",
         "combat_type": 1,
         "gear_levels": [
@@ -19706,7 +19706,7 @@
         "pk": 158,
         "url": "http://swgoh.gg/characters/luminara-unduli/",
         "image": "/game-asset/u/LUMINARAUNDULI/",
-        "power": 21378,
+        "power": 29347,
         "description": "Versatile attacker with ability block and powerful party heal.",
         "combat_type": 1,
         "gear_levels": [
@@ -19880,7 +19880,7 @@
         "pk": 70,
         "url": "http://swgoh.gg/characters/mace-windu/",
         "image": "/game-asset/u/MACEWINDU/",
-        "power": 18972,
+        "power": 26941,
         "description": "Aggressive Jedi tank with devastating damage if left unchecked",
         "combat_type": 1,
         "gear_levels": [
@@ -20054,7 +20054,7 @@
         "pk": 47,
         "url": "http://swgoh.gg/characters/magmatrooper/",
         "image": "/game-asset/u/MAGMATROOPER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Resilient Attacker that recovers quickly from debuffs and deals potent AoE damage",
         "combat_type": 1,
         "gear_levels": [
@@ -20224,7 +20224,7 @@
         "pk": 287,
         "url": "http://swgoh.gg/characters/mission-vao/",
         "image": "/game-asset/u/MISSIONVAO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Slippery Scoundrel Attacker who blinds her enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -20397,7 +20397,7 @@
         "pk": 2,
         "url": "http://swgoh.gg/characters/mob-enforcer/",
         "image": "/game-asset/u/HUMANTHUG/",
-        "power": 18397,
+        "power": 26367,
         "description": "Scoundrel Tank with enemy debuff ability and a thermal detonator.",
         "combat_type": 1,
         "gear_levels": [
@@ -20567,7 +20567,7 @@
         "pk": 75,
         "url": "http://swgoh.gg/characters/mother-talzin/",
         "image": "/game-asset/u/MOTHERTALZIN/",
-        "power": 24358,
+        "power": 32328,
         "description": "Vicious Nightsister Leader who inflicts Plague, preventing enemies from Dispelling debuffs",
         "combat_type": 1,
         "gear_levels": [
@@ -20742,7 +20742,7 @@
         "pk": 108,
         "url": "http://swgoh.gg/characters/nightsister-acolyte/",
         "image": "/game-asset/u/NIGHTSISTERACOLYTE/",
-        "power": 18397,
+        "power": 26367,
         "description": "Stealth attacker with some enemy debuffing and self healing ability.",
         "combat_type": 1,
         "gear_levels": [
@@ -20911,7 +20911,7 @@
         "pk": 129,
         "url": "http://swgoh.gg/characters/nightsister-initiate/",
         "image": "/game-asset/u/NIGHTSISTERINITIATE/",
-        "power": 21378,
+        "power": 29347,
         "description": "Critical-focused Attacker that can render enemies immune to buffs",
         "combat_type": 1,
         "gear_levels": [
@@ -21080,7 +21080,7 @@
         "pk": 244,
         "url": "http://swgoh.gg/characters/nightsister-spirit/",
         "image": "/game-asset/u/NIGHTSISTERSPIRIT/",
-        "power": 18397,
+        "power": 26367,
         "description": "Veiled Nightsister Attacker who Dispels, Stuns, and gains Foresight",
         "combat_type": 1,
         "gear_levels": [
@@ -21253,7 +21253,7 @@
         "pk": 243,
         "url": "http://swgoh.gg/characters/nightsister-zombie/",
         "image": "/game-asset/u/NIGHTSISTERZOMBIE/",
-        "power": 19182,
+        "power": 27151,
         "description": "Vile Nightsister Tank who inflicts Tenacity Down and can't be stopped from reviving endlessly",
         "combat_type": 1,
         "gear_levels": [
@@ -21424,7 +21424,7 @@
         "pk": 177,
         "url": "http://swgoh.gg/characters/nute-gunray/",
         "image": "/game-asset/u/NUTEGUNRAY/",
-        "power": 22162,
+        "power": 30132,
         "description": "Separatist Support who specializes in sabotaging enemy strategies",
         "combat_type": 1,
         "gear_levels": [
@@ -21600,7 +21600,7 @@
         "pk": 154,
         "url": "http://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
         "image": "/game-asset/u/OLDBENKENOBI/",
-        "power": 24358,
+        "power": 32328,
         "description": "Durable Jedi Tank able to shut down enemy offense with multiple debuffs",
         "combat_type": 1,
         "gear_levels": [
@@ -21778,7 +21778,7 @@
         "pk": 25,
         "url": "http://swgoh.gg/characters/old-daka/",
         "image": "/game-asset/u/DAKA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Defensive Nightsister Healer who Stuns and Revives",
         "combat_type": 1,
         "gear_levels": [
@@ -21953,7 +21953,7 @@
         "pk": 346,
         "url": "http://swgoh.gg/characters/padme-amidala/",
         "image": "/game-asset/u/PADMEAMIDALA/",
-        "power": 24358,
+        "power": 32328,
         "description": "Courageous leader who continuously helps her allies and adapts to any circumstance",
         "combat_type": 1,
         "gear_levels": [
@@ -22125,7 +22125,7 @@
         "pk": 228,
         "url": "http://swgoh.gg/characters/pao/",
         "image": "/game-asset/u/PAO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Unrelenting Rebel Attacker with a mighty battle cry",
         "combat_type": 1,
         "gear_levels": [
@@ -22297,7 +22297,7 @@
         "pk": 185,
         "url": "http://swgoh.gg/characters/paploo/",
         "image": "/game-asset/u/PAPLOO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Resourceful Ewok Tank with assist and buff synergies",
         "combat_type": 1,
         "gear_levels": [
@@ -22470,7 +22470,7 @@
         "pk": 7,
         "url": "http://swgoh.gg/characters/plo-koon/",
         "image": "/game-asset/u/PLOKOON/",
-        "power": 18972,
+        "power": 26941,
         "description": "Jedi Tank with Clone synergy, reliable enemy Dispel and anti-Stealth",
         "combat_type": 1,
         "gear_levels": [
@@ -22645,7 +22645,7 @@
         "pk": 179,
         "url": "http://swgoh.gg/characters/poe-dameron/",
         "image": "/game-asset/u/POE/",
-        "power": 18972,
+        "power": 26941,
         "description": "Resistance Tank with a Taunt that inflicts Expose for big reversals",
         "combat_type": 1,
         "gear_levels": [
@@ -22817,7 +22817,7 @@
         "pk": 81,
         "url": "http://swgoh.gg/characters/poggle-the-lesser/",
         "image": "/game-asset/u/POGGLETHELESSER/",
-        "power": 19182,
+        "power": 27151,
         "description": "Support for Geonosian and Separatist allies, with strong offensive synergies",
         "combat_type": 1,
         "gear_levels": [
@@ -22992,7 +22992,7 @@
         "pk": 122,
         "url": "http://swgoh.gg/characters/princess-leia/",
         "image": "/game-asset/u/PRINCESSLEIA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Well-rounded Rebel Attacker with extra attacks, Stealth, and team Critical bonuses.",
         "combat_type": 1,
         "gear_levels": [
@@ -23165,7 +23165,7 @@
         "pk": 272,
         "url": "http://swgoh.gg/characters/qira/",
         "image": "/game-asset/u/QIRA/",
-        "power": 22162,
+        "power": 30132,
         "description": "High-utility Support that uses Prepared, debuffs, and an adaptable Leader ability to overwhelm enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -23343,7 +23343,7 @@
         "pk": 44,
         "url": "http://swgoh.gg/characters/qui-gon-jinn/",
         "image": "/game-asset/u/QUIGONJINN/",
-        "power": 21378,
+        "power": 29347,
         "description": "Versatile attacker focused on generating extra attacks.",
         "combat_type": 1,
         "gear_levels": [
@@ -23520,7 +23520,7 @@
         "pk": 235,
         "url": "http://swgoh.gg/characters/r2-d2/",
         "image": "/game-asset/u/R2D2_LEGENDARY/",
-        "power": 24358,
+        "power": 32328,
         "description": "Versatile Support Droid that inflicts Burning and grants allies Stealth",
         "combat_type": 1,
         "gear_levels": [
@@ -23697,7 +23697,7 @@
         "pk": 280,
         "url": "http://swgoh.gg/characters/range-trooper/",
         "image": "/game-asset/u/RANGETROOPER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Aggressive Empire Support that provides other Imperial Trooper allies with Assist chance",
         "combat_type": 1,
         "gear_levels": [
@@ -23866,7 +23866,7 @@
         "pk": 92,
         "url": "http://swgoh.gg/characters/rebel-officer-leia-organa/",
         "image": "/game-asset/u/HOTHLEIA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Tenacious Rebel Attacker that counters debuffs and is more effective against healthy targets",
         "combat_type": 1,
         "gear_levels": [
@@ -24041,7 +24041,7 @@
         "pk": 38,
         "url": "http://swgoh.gg/characters/resistance-pilot/",
         "image": "/game-asset/u/RESISTANCEPILOT/",
-        "power": 18187,
+        "power": 26157,
         "description": "Resistance attacker that can use Expose, Foresight, and Turn Meter gains to surprise enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -24210,7 +24210,7 @@
         "pk": 133,
         "url": "http://swgoh.gg/characters/resistance-trooper/",
         "image": "/game-asset/u/RESISTANCETROOPER/",
-        "power": 18187,
+        "power": 26157,
         "description": "Opportunistic Resistance attacker that can deal heavy damage to debuffed enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -24380,7 +24380,7 @@
         "pk": 250,
         "url": "http://swgoh.gg/characters/rey-jedi-training/",
         "image": "/game-asset/u/REYJEDITRAINING/",
-        "power": 27339,
+        "power": 35308,
         "description": "Resilient Resistance Tank who avenges debuffed allies and controls the battlefield",
         "combat_type": 1,
         "gear_levels": [
@@ -24562,7 +24562,7 @@
         "pk": 116,
         "url": "http://swgoh.gg/characters/rey-scavenger/",
         "image": "/game-asset/u/REY/",
-        "power": 21378,
+        "power": 29347,
         "description": "Risky Attacker that has high damage and evasion, but is vulnerable to debuffs",
         "combat_type": 1,
         "gear_levels": [
@@ -24731,7 +24731,7 @@
         "pk": 255,
         "url": "http://swgoh.gg/characters/rose-tico/",
         "image": "/game-asset/u/ROSETICO/",
-        "power": 21378,
+        "power": 29347,
         "description": "A brave Resistance Attacker who can Stun and grant allies buffs.",
         "combat_type": 1,
         "gear_levels": [
@@ -24905,7 +24905,7 @@
         "pk": 18,
         "url": "http://swgoh.gg/characters/royal-guard/",
         "image": "/game-asset/u/ROYALGUARD/",
-        "power": 18397,
+        "power": 26367,
         "description": "Versatile Empire Tank that punishes enemies for attacking other allies",
         "combat_type": 1,
         "gear_levels": [
@@ -25076,7 +25076,7 @@
         "pk": 231,
         "url": "http://swgoh.gg/characters/sabine-wren/",
         "image": "/game-asset/u/SABINEWRENS3/",
-        "power": 21378,
+        "power": 29347,
         "description": "Aggressive Phoenix Attacker that permanently strips Defense and punishes slower enemies",
         "combat_type": 1,
         "gear_levels": [
@@ -25248,7 +25248,7 @@
         "pk": 137,
         "url": "http://swgoh.gg/characters/savage-opress/",
         "image": "/game-asset/u/SAVAGEOPRESS/",
-        "power": 21378,
+        "power": 29347,
         "description": "Durable Attacker that crushes low-health units and becomes stronger when attacked",
         "combat_type": 1,
         "gear_levels": [
@@ -25422,7 +25422,7 @@
         "pk": 210,
         "url": "http://swgoh.gg/characters/scarif-rebel-pathfinder/",
         "image": "/game-asset/u/SCARIFREBEL/",
-        "power": 18397,
+        "power": 26367,
         "description": "Steadfast Rebel Tank who debuffs, Taunts, and self-revives",
         "combat_type": 1,
         "gear_levels": [
@@ -25595,7 +25595,7 @@
         "pk": 351,
         "url": "http://swgoh.gg/characters/shaak-ti/",
         "image": "/game-asset/u/SHAAKTI/",
-        "power": 24358,
+        "power": 32328,
         "description": "Inspiring Jedi Leader with heightened reflexes",
         "combat_type": 1,
         "gear_levels": [
@@ -25774,7 +25774,7 @@
         "pk": 212,
         "url": "http://swgoh.gg/characters/shoretrooper/",
         "image": "/game-asset/u/SHORETROOPER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Empire Tank who enters battle with Taunt, heals allies, and grants them Critical Hit Immunity",
         "combat_type": 1,
         "gear_levels": [
@@ -25945,7 +25945,7 @@
         "pk": 224,
         "url": "http://swgoh.gg/characters/sith-assassin/",
         "image": "/game-asset/u/SITHASSASSIN/",
-        "power": 18397,
+        "power": 26367,
         "description": "Elusive Sith Attacker with Stealth synergy",
         "combat_type": 1,
         "gear_levels": [
@@ -26120,7 +26120,7 @@
         "pk": 256,
         "url": "http://swgoh.gg/characters/sith-marauder/",
         "image": "/game-asset/u/SITHMARAUDER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Destructive Sith Attacker that takes advantage of all buffs and debuffs in battle",
         "combat_type": 1,
         "gear_levels": [
@@ -26290,7 +26290,7 @@
         "pk": 223,
         "url": "http://swgoh.gg/characters/sith-trooper/",
         "image": "/game-asset/u/SITHTROOPER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Sith Tank who Taunts and ignores enemy Protection",
         "combat_type": 1,
         "gear_levels": [
@@ -26463,7 +26463,7 @@
         "pk": 162,
         "url": "http://swgoh.gg/characters/snowtrooper/",
         "image": "/game-asset/u/SNOWTROOPER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Empire Attacker that becomes faster and stronger as enemies are defeated",
         "combat_type": 1,
         "gear_levels": [
@@ -26633,7 +26633,7 @@
         "pk": 55,
         "url": "http://swgoh.gg/characters/stormtrooper/",
         "image": "/game-asset/u/STORMTROOPER/",
-        "power": 20593,
+        "power": 28563,
         "description": "Empire Tank that can Taunt and surprise enemies with unpredictable damage",
         "combat_type": 1,
         "gear_levels": [
@@ -26803,7 +26803,7 @@
         "pk": 202,
         "url": "http://swgoh.gg/characters/stormtrooper-han/",
         "image": "/game-asset/u/STORMTROOPERHAN/",
-        "power": 21168,
+        "power": 29137,
         "description": "Versatile tank able to surprise enemies with sudden Turn Meter changes and Offense boosts",
         "combat_type": 1,
         "gear_levels": [
@@ -26975,7 +26975,7 @@
         "pk": 192,
         "url": "http://swgoh.gg/characters/sun-fac/",
         "image": "/game-asset/u/SUNFAC/",
-        "power": 19182,
+        "power": 27151,
         "description": "Geonosian Tank who punishes attackers with a variety of negative effects",
         "combat_type": 1,
         "gear_levels": [
@@ -27149,7 +27149,7 @@
         "pk": 286,
         "url": "http://swgoh.gg/characters/t3-m4/",
         "image": "/game-asset/u/T3_M4/",
-        "power": 24358,
+        "power": 32328,
         "description": "Offensive Droid who supports a Droid team with extra stats and debuffs the enemy team",
         "combat_type": 1,
         "gear_levels": [
@@ -27323,7 +27323,7 @@
         "pk": 197,
         "url": "http://swgoh.gg/characters/talia/",
         "image": "/game-asset/u/TALIA/",
-        "power": 18972,
+        "power": 26941,
         "description": "Aggressive Healer that sacrifices Health so allies can recover Health and Turn Meter",
         "combat_type": 1,
         "gear_levels": [
@@ -27495,7 +27495,7 @@
         "pk": 168,
         "url": "http://swgoh.gg/characters/teebo/",
         "image": "/game-asset/u/TEEBO/",
-        "power": 19182,
+        "power": 27151,
         "description": "Ewok stealth character with stealth synergies and some control ability.",
         "combat_type": 1,
         "gear_levels": [
@@ -27666,7 +27666,7 @@
         "pk": 124,
         "url": "http://swgoh.gg/characters/tie-fighter-pilot/",
         "image": "/game-asset/u/TIEFIGHTERPILOT/",
-        "power": 18397,
+        "power": 26367,
         "description": "Empire Attacker who inflicts Buff Immunity and gains Foresight",
         "combat_type": 1,
         "gear_levels": [
@@ -27838,7 +27838,7 @@
         "pk": 43,
         "url": "http://swgoh.gg/characters/tusken-raider/",
         "image": "/game-asset/u/TUSKENRAIDER/",
-        "power": 18397,
+        "power": 26367,
         "description": "Durable Attacker with Tusken Synergy and a strong Assist attack",
         "combat_type": 1,
         "gear_levels": [
@@ -28006,7 +28006,7 @@
         "pk": 39,
         "url": "http://swgoh.gg/characters/tusken-shaman/",
         "image": "/game-asset/u/TUSKENSHAMAN/",
-        "power": 18397,
+        "power": 26367,
         "description": "Offensive Healer that can also boost Offense and rapidly stack Damage Over Time effects",
         "combat_type": 1,
         "gear_levels": [
@@ -28175,7 +28175,7 @@
         "pk": 58,
         "url": "http://swgoh.gg/characters/ugnaught/",
         "image": "/game-asset/u/UGNAUGHT/",
-        "power": 18187,
+        "power": 26157,
         "description": "Anti-Droid Support with AoE damage and high Evasion against Droids",
         "combat_type": 1,
         "gear_levels": [
@@ -28344,7 +28344,7 @@
         "pk": 125,
         "url": "http://swgoh.gg/characters/urorrurrr/",
         "image": "/game-asset/u/URORRURRR/",
-        "power": 18972,
+        "power": 26941,
         "description": "Tusken Support that can Stun frequently and speed up Tuskens for surprise attacks",
         "combat_type": 1,
         "gear_levels": [
@@ -28515,7 +28515,7 @@
         "pk": 266,
         "url": "http://swgoh.gg/characters/vandor-chewbacca/",
         "image": "/game-asset/u/YOUNGCHEWBACCA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Aggressive Scoundrel Tank that provides Protection Recovery for his allies when they are attacked",
         "combat_type": 1,
         "gear_levels": [
@@ -28686,7 +28686,7 @@
         "pk": 240,
         "url": "http://swgoh.gg/characters/veteran-smuggler-chewbacca/",
         "image": "/game-asset/u/SMUGGLERCHEWBACCA/",
-        "power": 21378,
+        "power": 29347,
         "description": "Lumbering attacker who accumulates Offensive capabilities as enemies take actions",
         "combat_type": 1,
         "gear_levels": [
@@ -28860,7 +28860,7 @@
         "pk": 241,
         "url": "http://swgoh.gg/characters/veteran-smuggler-han-solo/",
         "image": "/game-asset/u/SMUGGLERHAN/",
-        "power": 21378,
+        "power": 29347,
         "description": "Scoundrel Attacker with multi-attack and multiple devastating debuffs",
         "combat_type": 1,
         "gear_levels": [
@@ -29034,7 +29034,7 @@
         "pk": 257,
         "url": "http://swgoh.gg/characters/visas-marr/",
         "image": "/game-asset/u/VISASMARR/",
-        "power": 21378,
+        "power": 29347,
         "description": "Offensive Healer with strong anti-Sith synergy",
         "combat_type": 1,
         "gear_levels": [
@@ -29204,7 +29204,7 @@
         "pk": 249,
         "url": "http://swgoh.gg/characters/wampa/",
         "image": "/game-asset/u/WAMPA/",
-        "power": 24358,
+        "power": 32328,
         "description": "Fearsome predator from Hoth that attacks constantly with increasing strength",
         "combat_type": 1,
         "gear_levels": [
@@ -29378,7 +29378,7 @@
         "pk": 360,
         "url": "http://swgoh.gg/characters/wat-tambor/",
         "image": "/game-asset/u/WATTAMBOR/",
-        "power": 21378,
+        "power": 29347,
         "description": "Separatist Support who distributes powerful Tech to his allies",
         "combat_type": 1,
         "gear_levels": [
@@ -29551,7 +29551,7 @@
         "pk": 191,
         "url": "http://swgoh.gg/characters/wedge-antilles/",
         "image": "/game-asset/u/WEDGEANTILLES/",
-        "power": 18972,
+        "power": 26941,
         "description": "Rebel Attacker with a strong offensive opening",
         "combat_type": 1,
         "gear_levels": [
@@ -29721,7 +29721,7 @@
         "pk": 105,
         "url": "http://swgoh.gg/characters/wicket/",
         "image": "/game-asset/u/WICKET/",
-        "power": 21378,
+        "power": 29347,
         "description": "Jittery Ewok Attacker with Critical Hit and Stealth synergies",
         "combat_type": 1,
         "gear_levels": [
@@ -29891,7 +29891,7 @@
         "pk": 267,
         "url": "http://swgoh.gg/characters/young-han-solo/",
         "image": "/game-asset/u/YOUNGHAN/",
-        "power": 21378,
+        "power": 29347,
         "description": "Scoundrel Attacker who becomes more deadly over time",
         "combat_type": 1,
         "gear_levels": [
@@ -30061,7 +30061,7 @@
         "pk": 277,
         "url": "http://swgoh.gg/characters/young-lando-calrissian/",
         "image": "/game-asset/u/YOUNGLANDO/",
-        "power": 21378,
+        "power": 29347,
         "description": "Scoundrel Attacker that takes advantage of debuffed enemies and deals ever-increasing damage",
         "combat_type": 1,
         "gear_levels": [
@@ -30233,7 +30233,7 @@
         "pk": 288,
         "url": "http://swgoh.gg/characters/zaalbar/",
         "image": "/game-asset/u/ZAALBAR/",
-        "power": 21378,
+        "power": 29347,
         "description": "Versatile Scoundrel Tank with a powerful AoE attack and reactive Taunt",
         "combat_type": 1,
         "gear_levels": [
@@ -30404,7 +30404,7 @@
         "pk": 208,
         "url": "http://swgoh.gg/characters/zam-wesell/",
         "image": "/game-asset/u/ZAMWESELL/",
-        "power": 22947,
+        "power": 30916,
         "description": "Lightning fast Scoundrel attacker that inflicts Evasion Down and detonates bombs.",
         "combat_type": 1,
         "gear_levels": [
