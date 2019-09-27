@@ -16,6 +16,11 @@ module.exports = async (Bot, client) => {
                 fs.writeFileSync("../dashboard/data/guildCount.txt", guilds, "utf8");
             }, 5 * 60 * 1000);
 
+            if (Bot.config.patreon) {
+                // Reload any patrons
+                await Bot.updatePatrons();
+                setInterval(Bot.updatePatrons,  1 * 60 * 1000);
+            }
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
                 setInterval(async () => {
@@ -41,8 +46,8 @@ module.exports = async (Bot, client) => {
     // Update the player/ guild count every 5 min
     setInterval(async () => {
         const dbo = await Bot.mongo.db(Bot.config.mongodb.swapidb);
-        Bot.swgohPlayerCount = await dbo.collection("players").find({}).count();
-        Bot.swgohGuildCount  = await dbo.collection("guilds").find({}).count();
+        Bot.swgohPlayerCount = await dbo.collection("players").count();
+        Bot.swgohGuildCount  = await dbo.collection("guilds").count();
     }, 5 * 60 * 1000);
 
     Bot.loadAllEvents();

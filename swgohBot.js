@@ -31,7 +31,6 @@ Bot.missions     = JSON.parse(fs.readFileSync("data/missions.json"));
 Bot.resources    = JSON.parse(fs.readFileSync("data/resources.json"));
 Bot.arenaJumps   = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
 Bot.acronyms     = JSON.parse(fs.readFileSync("data/acronyms.json"));
-Bot.patrons      = [];
 Bot.emotes       = {};
 
 const RANCOR_MOD_CACHE       = "./data/crouching-rancor-mods.json";
@@ -42,7 +41,16 @@ const CHARLOCATIONS          = "./data/charLocations.json";
 const SHIPLOCATIONS          = "./data/shipLocations.json";
 const UNKNOWN                = "Unknown";
 
+// Load in various general functions for the bot
 require("./modules/functions.js")(Bot, client);
+
+// Load in stuff for the events command
+require("./modules/eventFuncs.js")(Bot, client);
+
+// Load in stuff for patrons and such
+require("./modules/patreonFuncs.js")(Bot, client);
+
+// Load up js prototypes
 require("./modules/prototypes.js");
 
 // Languages
@@ -71,7 +79,6 @@ Bot.database = new Sequelize(
 
 Bot.database.authenticate().then(async () => {
     await require("./modules/models")(Sequelize, Bot.database);
-
 
     // Get all the models
     const rawAttr = Bot.database.models.settings.rawAttributes;
@@ -118,8 +125,8 @@ const init = async () => {
     Bot.cache = await require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = await require("./modules/users.js")(Bot);
 
-    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("players").find({}).count();
-    Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").find({}).count();
+    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("players").count();
+    Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").count();
 
     if (Bot.config.api_swgoh_help) {
         // Load up the api connector/ helpers
@@ -144,12 +151,6 @@ const init = async () => {
             Bot.log("Init", `Unable to load command ${f}: ${e}`);
         }
     });
-
-    if (Bot.config.patreon) {
-        // Reload any patrons
-        await Bot.reloadPatrons();
-        setInterval(Bot.reloadPatrons,  1 * 60 * 1000);   // Then every min after
-    }
 
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
