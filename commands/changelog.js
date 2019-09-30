@@ -32,7 +32,6 @@ class Changelog extends Command {
                 const Sequelize = require("sequelize");
                 Bot.database.query("select \"changelogWebhook\" from settings where \"changelogWebhook\" <> '';", {type: Sequelize.QueryTypes.SELECT})
                     .then(hookList => {
-                        console.log(hookList);
                         // Send the changelog to each specified webhook
                         for (const hook of hookList) {
                             try {
