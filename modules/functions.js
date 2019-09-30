@@ -754,7 +754,7 @@ module.exports = (Bot, client) => {
      * Check if a string of numbers is a valid ally code.
      */
     Bot.isAllyCode = (aCode) => {
-        const match = aCode.replace(/[^\d]*/g, "").match(/\d{9}/);
+        const match = aCode.toString().replace(/[^\d]*/g, "").match(/\d{9}/);
         return match ? true : false;
     };
 

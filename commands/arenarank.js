@@ -21,6 +21,10 @@ class Arenarank extends Command {
             return super.error(message, message.language.get("COMMAND_ARENARANK_INVALID_NUMBER"), {example: "arenarank 55"});
         }
 
+        if (Bot.isAllyCode(currentRank)) {
+            return super.error(message, message.language.get("COMMAND_ARENARANK_ALLYCODE"));
+        }
+
         // If they are rank 1, don't bother calculating anything
         if (currentRank === 1) return message.channel.send(message.language.get("COMMAND_ARENARANK_BEST_RANK"));
 

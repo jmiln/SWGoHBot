@@ -254,6 +254,7 @@ module.exports = class extends Language {
             COMMAND_ARENARANK_INVALID_NUMBER: "You need to enter a valid rank number",
             COMMAND_ARENARANK_BEST_RANK: "You've already gotten as far as you can, congrats!",
             COMMAND_ARENARANK_RANKLIST: (currentRank, battleCount, plural, est, rankList) => `From rank ${currentRank}, in ${battleCount} battle${plural} ${est}\nThe best you can get is ${rankList}`,
+            COMMAND_ARENARANK_ALLYCODE: "This command doesn't support using ally codes, maybe you're looking for the **myArena** command?",
             COMMAND_ARENARANK_HELP: {
                 description: "Shows the (approximate) highest rank you can get if you win every arena battle.",
                 actions: [
@@ -628,6 +629,7 @@ module.exports = class extends Language {
 
             // Grand Arena Command
             COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Invalid user ${userNum}`,
+            COMMAND_GRANDARENA_UNREGISTERED: (prefix) => `In order to use the \`me\` keyword, you need to have an allycode registered with the bot.\nUse **${prefix}help register** for help`,
             COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Could not find a match for "${char}"`,
             COMMAND_GRANDARENA_COMP_NAMES: {
                 charGP: "Char GP",

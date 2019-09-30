@@ -16,12 +16,24 @@ class CommandName extends Command {
         });
     }
 
-    async run(Bot, message, [user1, user2, ...characters], options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [user1str, user2str, ...characters], options) { // eslint-disable-line no-unused-vars
         const problemArr = [];
-        user1 = await super.getUser(message, user1, false);
-        user2 = await super.getUser(message, user2, false);
-        if (!user1) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
-        if (!user2) problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
+        let user1 = await super.getUser(message, user1str, false);
+        let user2 = await super.getUser(message, user2str, false);
+        if (!user1) {
+            if (user1str === "me") {
+                problemArr.push(message.language.get("COMMAND_GRANDARENA_UNREGISTERED", message.guildSettings.prefix));
+            } else {
+                problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
+            }
+        }
+        if (!user2) {
+            if (user2str === "me") {
+                problemArr.push(message.language.get("COMMAND_GRANDARENA_UNREGISTERED", message.guildSettings.prefix));
+            } else {
+                problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
+            }
+        }
 
         let charOut = [];
         if (characters.length) {
