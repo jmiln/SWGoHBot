@@ -28,7 +28,7 @@ class Need extends Command {
             return super.error(message, message.language.get("COMMAND_NEED_MISSING_USER"));
         }
 
-        const cooldown = Bot.getPlayerCooldown(message.author.id);
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
         const player = await Bot.swgohAPI.player(allyCode, null, cooldown);
         if (!player) {
             // Could not find the player, possible api issue?

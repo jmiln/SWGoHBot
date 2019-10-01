@@ -52,7 +52,7 @@ class MyCharacter extends Command {
 
         const msg = await message.channel.send("Please wait while I look up your profile.");
 
-        const cooldown = Bot.getPlayerCooldown(message.author.id);
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let pName;
         let player = null;
         try {

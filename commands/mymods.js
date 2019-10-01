@@ -24,7 +24,7 @@ class MyMods extends Command {
     }
 
     async run(Bot, message, args, options) { // eslint-disable-line no-unused-vars
-        const cooldown = Bot.getPlayerCooldown(message.author.id);
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
 
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 

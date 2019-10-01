@@ -895,14 +895,14 @@ module.exports = (Bot, client) => {
     };
 
     // Get the ally code of someone that's registered
-    Bot.getAllyCode = async (message, user) => {
+    Bot.getAllyCode = async (message, user, useMessageId=true) => {
         if (Array.isArray(user)) user = user.join(" ");
         if (user) {
             user = user.toString().trim();
         }
         let uID, uAC;
         if (!user || user === "me" || Bot.isUserID(user)) {
-            if (!user || user === "me") {
+            if ((!user || user === "me") && useMessageId) {
                 uID = message.author.id;
             } else {
                 uID = user.replace(/[^\d]*/g, "");

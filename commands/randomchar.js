@@ -26,7 +26,7 @@ class Randomchar extends Command {
             allyCode = await super.getUser(message, userID, false);
             if (allyCode) {
                 // If there is a valid userID, and an allycode linked to it
-                const cooldown = Bot.getPlayerCooldown(message.author.id);
+                const cooldown = await Bot.getPlayerCooldown(message.author.id);
                 let player = null;
                 try {
                     player = await Bot.swgohAPI.player(allyCode, cooldown);

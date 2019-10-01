@@ -111,7 +111,7 @@ class GuildSearch extends Command {
 
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
 
-        const cooldown = Bot.getPlayerCooldown(message.author.id);
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
 
         if (options.flags.gear) {
             // List an overview of the guild's upper geared characters

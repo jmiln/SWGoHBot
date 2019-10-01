@@ -58,7 +58,7 @@ class Guilds extends Command {
             acType = false;
         }
 
-        const cooldown = Bot.getPlayerCooldown(message.author.id);
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let guild = null;
         try {
             if (acType) {
