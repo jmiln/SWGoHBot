@@ -10,7 +10,11 @@ class CheckAct extends Command {
             guildOnly: true,
             permLevel: 3,
             category: "Admin",
-            flags: {},
+            flags: {
+                ingame: {       // Show the last active times based on their in-game lastActivity
+                    aliases: ["ig"]
+                }
+            },
             subArgs: {
                 sort: {         // Sort by name or time
                     aliases: []
@@ -21,9 +25,6 @@ class CheckAct extends Command {
                 role: {         // Filter the list to a single role
                     aliases: []
                 },
-                // ingame: {       // Show the last active times based on their in-game lastActivity
-                //     aliases: ["ig"]
-                // }
             }
         });
     }
@@ -45,14 +46,19 @@ class CheckAct extends Command {
                 };
             });
             for (const u of objArr) {
+                if (options.flags.ingame) {
+                    u.ally = await Bot.getAllyCode(null, u.user, false);
+                    if (Array.isArray(u.ally)) u.ally = u.ally[0];
+                }
                 const user = await message.guild.members.get(u.user);
                 if (!user || user.user.bot) {
                     u.user = null;
                 } else {
-                    u.user = Bot.truncate(user.nickname ? user.nickname : user.user.username, 20);
+                    u.user = Bot.truncate(user.nickname ? user.nickname : user.user.username, options.flags.ingame ? 15 : 20, "..");
                     u.roles = user.roles;
                 }
             }
+
             // Remove any bots
             objArr = objArr.filter(u => u.user !== null);
             if (options.subArgs.time && !isNaN(options.subArgs.time)) {
@@ -104,13 +110,37 @@ class CheckAct extends Command {
                 objArr = objArr.slice(0, 100);
             }
 
+            let outArr;
+            if (!options.flags.ingame) {
             // Format the output into a table so it looks nice
-            const headerValues = message.language.get("COMMAND_CHECKACTIVITY_TABLE_HEADERS");
-            const outArr = Bot.makeTable({
-                user: {value: headerValues.user, startWith: "`", endWith: "|", align: "left"},
-                time: {value: headerValues.time, endWith: "`"}
-            }, objArr);
+                const headerValues = message.language.get("COMMAND_CHECKACTIVITY_TABLE_HEADERS");
+                outArr = Bot.makeTable({
+                    user: {value: headerValues.user, startWith: "`", endWith: "|", align: "left"},
+                    time: {value: headerValues.time, endWith: "`"}
+                }, objArr);
+            } else {
+                // Get the cooldown from the user runnign the command
+                const cooldown = await Bot.getPlayerCooldown(message.author.id);
 
+                // Check everyone's in-game activity if available
+                for (let jx = 0; jx < objArr.length; jx++) {
+                    if (objArr[jx].ally) {
+                        // If the user has an ally code, get their player object, and from there, get the time
+                        const player = await Bot.swgohAPI.player(objArr[jx].ally, message.guildSettings.language, cooldown);
+                        objArr[jx].igTime = player.lastActivity;
+                        objArr[jx].igTime = getTime(moment().diff(moment(objArr[jx].igTime)), true);
+                    } else {
+                        // If no ally code, just output N/A
+                        objArr[jx].igTime = "N/A";
+                    }
+                }
+                const headerValues = message.language.get("COMMAND_CHECKACTIVITY_TABLE_HEADERS");
+                outArr = Bot.makeTable({
+                    user: {value: headerValues.user, startWith: "`", endWith: "|", align: "left"},
+                    time: {value: headerValues.discordTime, endWith: "|"},
+                    igTime: {value: headerValues.igTime, endWith: "`"}
+                }, objArr);
+            }
             const fields = Bot.msgArray(outArr, "\n", 700).map(m => {
                 return {name: "-", value: m};
             });

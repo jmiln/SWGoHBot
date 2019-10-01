@@ -56,7 +56,7 @@ class CommandName extends Command {
 
         if (!problemArr.length) {
             // If there are no problems, go ahead and pull the users
-            const cooldown = Bot.getPlayerCooldown(message.author.id);
+            const cooldown = await Bot.getPlayerCooldown(message.author.id);
             try {
                 user1 = await Bot.swgohAPI.unitStats(user1, cooldown);
                 if (Array.isArray(user1)) user1 = user1[0];

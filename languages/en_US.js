@@ -346,7 +346,9 @@ module.exports = class extends Language {
             COMMAND_CHECKACTIVITY_NO_MATCH: "No one matches your criteria",
             COMMAND_CHECKACTIVITY_TABLE_HEADERS: {
                 user: "User",
-                time: "Last Seen"
+                time: "Last Seen",
+                igTime: "Ingame Act",
+                discordTime: "Disc. Act"
             },
             COMMAND_CHECKACTIVITY_LOG_HEADER: (guildName, count) => `${guildName}'s activity log (${count})`,
             COMMAND_CHECKACTIVITY_INVALID_USER: "Invalid user ID, try mentioning the user you're trying to check.",

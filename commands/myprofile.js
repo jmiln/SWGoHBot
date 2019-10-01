@@ -21,7 +21,7 @@ class MyProfile extends Command {
         }
         const allyCode = allyCodes[0];
 
-        const cooldown = Bot.getPlayerCooldown(message.author.id);
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let player;
         try {
             player = await Bot.swgohAPI.player(allyCode, null, cooldown);
