@@ -131,6 +131,8 @@ module.exports = (Bot, client) => {
                 try {
                     player = await Bot.swgohAPI.fastPlayer(acc.allyCode);
                 } catch (e) {
+                    // Wait since it won't happen later when something breaks
+                    await Bot.wait(500);
                     return console.log("Broke in getRanks: " + e.message);
                 }
                 if (!acc.lastCharRank) {
