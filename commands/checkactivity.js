@@ -47,8 +47,11 @@ class CheckAct extends Command {
             });
             for (const u of objArr) {
                 if (options.flags.ingame) {
-                    u.ally = await Bot.getAllyCode(null, u.user, false);
-                    if (Array.isArray(u.ally)) u.ally = u.ally[0];
+                    const user = await Bot.userReg.getUser(u.user);
+                    if (user && user.accounts.length) {
+                        const acct = user.accounts.find(a => a.primary);
+                        u.ally = acct.allyCode;
+                    }
                 }
                 const user = await message.guild.members.get(u.user);
                 if (!user || user.user.bot) {
@@ -58,6 +61,8 @@ class CheckAct extends Command {
                     u.roles = user.roles;
                 }
             }
+
+            objArr = objArr.filter(u => u.ally);
 
             // Remove any bots
             objArr = objArr.filter(u => u.user !== null);
@@ -107,33 +112,48 @@ class CheckAct extends Command {
 
             // Limit it to 50 people if there are more
             if (objArr.length > 50) {
-                objArr = objArr.slice(0, 100);
+                objArr = objArr.slice(0, 50);
             }
 
             let outArr;
             if (!options.flags.ingame) {
-            // Format the output into a table so it looks nice
+                // Format the output into a table so it looks nice
                 const headerValues = message.language.get("COMMAND_CHECKACTIVITY_TABLE_HEADERS");
                 outArr = Bot.makeTable({
                     user: {value: headerValues.user, startWith: "`", endWith: "|", align: "left"},
                     time: {value: headerValues.time, endWith: "`"}
                 }, objArr);
             } else {
-                // Get the cooldown from the user runnign the command
-                const cooldown = await Bot.getPlayerCooldown(message.author.id);
-
-                // Check everyone's in-game activity if available
-                for (let jx = 0; jx < objArr.length; jx++) {
-                    if (objArr[jx].ally) {
-                        // If the user has an ally code, get their player object, and from there, get the time
-                        const player = await Bot.swgohAPI.player(objArr[jx].ally, message.guildSettings.language, cooldown);
-                        objArr[jx].igTime = player.lastActivity;
-                        objArr[jx].igTime = getTime(moment().diff(moment(objArr[jx].igTime)), true);
-                    } else {
-                        // If no ally code, just output N/A
-                        objArr[jx].igTime = "N/A";
+                // Get all the player infos
+                const ac = objArr.map(u => u.ally).filter(u => !!u);
+                const players = await Bot.swgoh.fetchPlayer({
+                    "allycodes": ac,
+                    "project": {
+                        "allyCode": 1,
+                        "lastActivity": 1
                     }
+                });
+                if (players.error) {
+                    return super.error(message, players.error);
                 }
+                for (const user of objArr) {
+                    const player = players.result.find(u => u.allyCode === parseInt(user.ally));
+                    user.igTime = player ? moment().diff(moment(player.lastActivity)) : null;
+                }
+
+                objArr = objArr.sort(( b, a) => {
+                    a = a.igTime;
+                    b = b.igTime;
+                    if (!a && !b) return 0;
+                    else if (!a) return -1;
+                    else if (!b) return 1;
+                    else return b - a;
+                });
+                objArr = objArr.map(u => {
+                    u.igTime = getTime(u.igTime, true);
+                    return u;
+                });
+
                 const headerValues = message.language.get("COMMAND_CHECKACTIVITY_TABLE_HEADERS");
                 outArr = Bot.makeTable({
                     user: {value: headerValues.user, startWith: "`", endWith: "|", align: "left"},
@@ -175,6 +195,8 @@ class CheckAct extends Command {
             const days = 1000 * 60 * 60 * 24;
             const hours= 1000 * 60 * 60;
             const mins = 1000 * 60;
+
+            if (!diff) return "  N/A";
 
             let out = diff / days;
             if (out > 1) {
