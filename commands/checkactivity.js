@@ -62,7 +62,9 @@ class CheckAct extends Command {
                 }
             }
 
-            objArr = objArr.filter(u => u.ally);
+            if (options.flags.ingame) {
+                objArr = objArr.filter(u => u.ally);
+            }
 
             // Remove any bots
             objArr = objArr.filter(u => u.user !== null);
