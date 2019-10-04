@@ -67,7 +67,7 @@ module.exports = (Bot, client) => {
     async function getActivePatrons() {
         let patrons = await Bot.cache.get("swgohbot", "patrons", {});
         patrons = patrons.filter(p => !p.declined_since);
-        const others = Bot.config.patrons ? Bot.config.patrons.concat([Bot.config.ownerID]) : [Bot.config.ownerID];
+        const others = Bot.config.patrons ? Bot.config.patrons.concat([Bot.config.ownerid]) : [Bot.config.ownerid];
         for (const u of others) {
             const user = patrons.find(p => p.discordID === u);
             if (!user) {

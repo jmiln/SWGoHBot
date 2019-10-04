@@ -2,7 +2,7 @@
 const fs = require("fs");
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
-    let  readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
+    let readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
     if (client.shard) {
         readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. Shard #${client.shard.id}`;
         if (client.shard.id === 0) {

@@ -318,6 +318,10 @@ module.exports = (Bot, client) => {
         try {
             delete require.cache[require.resolve("../modules/functions.js")];
             require("../modules/functions.js")(Bot, client);
+            delete require.cache[require.resolve("../modules/patreonFuncs.js")];
+            require("../modules/patreonFuncs.js")(Bot, client);
+            delete require.cache[require.resolve("../modules/eventFuncs.js")];
+            require("../modules/eventFuncs.js")(Bot, client);
         } catch (e) {
             err = e;
         }
