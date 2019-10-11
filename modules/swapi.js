@@ -109,7 +109,7 @@ module.exports = (Bot) => {
 
             let player;
             try {
-                player = await snekfetch.get("http://localhost:1234/pipe/player/" + allycode);
+                player = await snekfetch.get(Bot.config.premiumIP_Port + "/pipe/player/" + allycode);
                 player = JSON.parse(player.text);
             } catch (err) {
                 // Probably API timeout

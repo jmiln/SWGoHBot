@@ -189,7 +189,7 @@ class GuildSearch extends Command {
             }
 
             let tableFormat;
-            if (sortBy.toString() === "13") {
+            if (sortBy && sortBy.toString() === "13") {
                 tableFormat = {
                     "10": {value: "g10", startWith: "`[", endWith: "|",  align: "right"},
                     "11": {value: "g11",                  endWith: "|",  align: "right"},
