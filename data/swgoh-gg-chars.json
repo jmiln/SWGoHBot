@@ -12572,6 +12572,186 @@
         "activate_shard_count": 145
     },
     {
+        "name": "General Skywalker",
+        "base_id": "GENERALSKYWALKER",
+        "pk": 385,
+        "url": "http://swgoh.gg/characters/general-skywalker/",
+        "image": "/game-asset/u/GENERALSKYWALKER/",
+        "power": 37504,
+        "description": "Fierce Jedi Attacker who protects his battalion at all costs",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "005",
+                    "003",
+                    "005",
+                    "005",
+                    "006",
+                    "001"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "016",
+                    "034",
+                    "021",
+                    "012",
+                    "028"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "050",
+                    "055",
+                    "076",
+                    "061",
+                    "048",
+                    "050"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "064",
+                    "078",
+                    "076",
+                    "051",
+                    "055",
+                    "051"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "086",
+                    "093",
+                    "064",
+                    "074",
+                    "055",
+                    "076"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "097",
+                    "092",
+                    "084",
+                    "087",
+                    "092",
+                    "102"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "172",
+                    "108",
+                    "107",
+                    "113",
+                    "101",
+                    "093"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "118",
+                    "117",
+                    "112",
+                    "172",
+                    "113",
+                    "103"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "173",
+                    "120",
+                    "116",
+                    "125",
+                    "125",
+                    "113"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "139",
+                    "131",
+                    "116",
+                    "112",
+                    "172",
+                    "105"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "145",
+                    "129",
+                    "138",
+                    "120",
+                    "131",
+                    "128"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "165",
+                    "160",
+                    "168",
+                    "170",
+                    "G12Finisher_GENERALSKYWALKER_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "501st",
+            "Attacker",
+            "Galactic Republic",
+            "Jedi",
+            "Leader"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Counter",
+            "Daze",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Speed",
+            "Reduce Cooldowns",
+            "Remove Turn Meter",
+            "Reset Cooldown",
+            "Revive",
+            "Taunt"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 145
+    },
+    {
         "name": "General Veers",
         "base_id": "VEERS",
         "pk": 132,

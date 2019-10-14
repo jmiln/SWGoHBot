@@ -2872,6 +2872,27 @@
         }
     },
     {
+        "name": "General Skywalker",
+        "uniqueName": "GENERALSKYWALKER",
+        "aliases": [
+            "General Skywalker"
+        ],
+        "nameVariant": [
+            "General Skywalker"
+        ],
+        "url": "http://swgoh.gg/characters/general-skywalker/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/GENERALSKYWALKER/",
+        "side": "light",
+        "factions": [
+            "501st",
+            "Attacker",
+            "Galactic Republic",
+            "Jedi",
+            "Leader"
+        ],
+        "mods": {}
+    },
+    {
         "name": "General Veers",
         "uniqueName": "VEERS",
         "aliases": [
@@ -3800,7 +3821,7 @@
             "Jedi Knight Anakin"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-anakin/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_anakinknight.png",
+        "avatarURL": "https://swgoh.gg/game-asset/u/ANAKINKNIGHT/",
         "side": "light",
         "factions": [
             "Attacker",
