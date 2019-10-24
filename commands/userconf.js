@@ -181,7 +181,7 @@ class UserConf extends Command {
                 // ArenaAlert -> activate/ deactivate
                 const onVar = ["true", "on", "enable"];
                 const offVar = ["false", "off", "disable"];
-                const pat = Bot.patrons.find(p => p.discordID === message.author.id);
+                const pat = Bot.getPatronUser(message.author.id);
                 if (!pat || pat.amount_cents < 100) {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_PATREON_ONLY"));
                 }

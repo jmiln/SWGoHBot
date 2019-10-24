@@ -54,14 +54,14 @@ module.exports = (Bot, client) => {
     };
 
     // Check if a given user is a patron, and if so, return their info
-    async function getPatronUser(userId) {
+    Bot.getPatronUser = async (userId) => {
         if (!userId) return new Error("Missing user ID");
         if (userId === Bot.config.ownerid || Bot.config.patrons.indexOf(userId) > -1) return {discordID: userId, amount_cents: 100};
         const patron = await Bot.cache.get("swgohbot", "patrons", {discordID: userId});
         if (patron && !patron.declined_since) {
             return patron;
         }
-    }
+    };
 
     // Get an array of all active patrons
     async function getActivePatrons() {
@@ -79,7 +79,7 @@ module.exports = (Bot, client) => {
 
     // Get the cooldown
     Bot.getPlayerCooldown = async (authorID) => {
-        const patron = await getPatronUser(authorID);
+        const patron = await Bot.getPatronUser(authorID);
         if (!patron) {
             return {
                 player: 2*60,
