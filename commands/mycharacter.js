@@ -1,4 +1,5 @@
 const Command = require("../base/Command");
+const nodeFetch = require("node-fetch");
 const {promisify, inspect} = require("util");      // eslint-disable-line no-unused-vars
 
 class MyCharacter extends Command {
@@ -76,10 +77,33 @@ class MyCharacter extends Command {
 
         if (thisChar && !Array.isArray(thisChar)) {
             thisChar.unit = await Bot.swgohAPI.langChar(thisChar.unit, message.guildSettings.swgohLanguage);
+
             const stats = thisChar.stats;
             thisChar = thisChar.unit;
             const isShip = thisChar.crew.length ? true : false;
 
+            let charImg;
+            const pat = Bot.getPatronUser(message.author.id);
+            if (pat && pat.amount_cents >= 100) {
+                // For now, limit it to Patrons
+                const charArr = [thisChar.defId];
+                charArr.push(thisChar.rarity);
+                charArr.push(thisChar.level);
+                charArr.push(thisChar.gear);
+                charArr.push(thisChar.skills.filter(s => s.isZeta && s.tier == s.tiers).length);  // Zeta count
+                charArr.push(thisChar.relic.currentTier);  // Relic count
+                charArr.push(character.side);
+
+                try {
+                    await nodeFetch(Bot.config.imageServIP_Port + "/char/" + charArr.join("/"))
+                        .then(response => response.buffer())
+                        .then(image => {
+                            charImg = image;
+                        });
+                } catch (e) {
+                    console.log("ImageFetch in myCharacter broke: " + e);
+                }
+            }
             const abilities = {
                 basic: [],
                 special: [],
@@ -221,21 +245,46 @@ class MyCharacter extends Command {
                 ].join("\n");
             }
 
-            return msg.edit({embed: {
-                author: {
-                    name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
-                    url: character.url,
-                    icon_url: character.avatarURL
-                },
-                description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\`${gearOut}`,
-                fields: [
-                    {
-                        name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                        value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
-                    }
-                ].concat(fields),
-                footer: footer
-            }});
+            if (!charImg) {
+                // If it couldn't get an image for the character
+                return msg.edit({embed: {
+                    author: {
+                        name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
+                        url: character.url,
+                        icon_url: character.avatarURL
+                    },
+                    description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\`${gearOut}`,
+                    fields: [
+                        {
+                            name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                            value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
+                        }
+                    ].concat(fields),
+                    footer: footer
+                }});
+            } else {
+                // But if it could, go ahead and send it
+                return message.channel.send({embed: {
+                    author: {
+                        name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
+                        url: character.url,
+                        icon_url: character.avatarURL
+                    },
+                    thumbnail: { url: "attachment://image.png" },
+                    description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\`${gearOut}`,
+                    fields: [
+                        {
+                            name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                            value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
+                        }
+                    ].concat(fields),
+                    footer: footer,
+                    files: [{
+                        attachment: charImg,
+                        name: "image.png"
+                    }]
+                }});
+            }
         } else {
             // You don't have the character
             msg.edit({embed: {
