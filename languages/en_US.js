@@ -1440,6 +1440,12 @@ module.exports = class extends Language {
                         args: {}
                     },
                     {
+                        action: "shardtimeVertical",
+                        actionDesc: "Set the shardtimes output to show in vertical or horizontal lists.",
+                        usage: ";setconf shardtimeVertical <true|false>",
+                        args: {}
+                    },
+                    {
                         action: "useActivityLog",
                         actionDesc: "Turns on keeping track of when users were last active. This needs to be on in order to use the ;checkactivity command.",
                         usage: ";setconf useActivityLog <true|false>",
