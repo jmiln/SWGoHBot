@@ -83,7 +83,7 @@ class MyCharacter extends Command {
             const isShip = thisChar.crew.length ? true : false;
 
             let charImg;
-            const pat = Bot.getPatronUser(message.author.id);
+            const pat = await Bot.getPatronUser(message.author.id);
             if (pat && pat.amount_cents >= 100) {
                 // For now, limit it to Patrons
                 const charArr = [thisChar.defId];
@@ -299,8 +299,3 @@ class MyCharacter extends Command {
 }
 
 module.exports = MyCharacter;
-
-
-
-
-
