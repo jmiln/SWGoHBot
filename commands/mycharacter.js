@@ -9,7 +9,7 @@ class MyCharacter extends Command {
             category: "SWGoH",
             enabled: true,
             aliases: ["mc", "mychar"],
-            permissions: ["EMBED_LINKS"],
+            permissions: ["EMBED_LINKS", "ATTACH_FILES"],
             permLevel: 0,
             flags: {
                 ships: {
@@ -83,27 +83,27 @@ class MyCharacter extends Command {
             const isShip = thisChar.crew.length ? true : false;
 
             let charImg;
-            const pat = await Bot.getPatronUser(message.author.id);
-            if (pat && pat.amount_cents >= 100) {
-                // For now, limit it to Patrons
-                const charArr = [thisChar.defId];
-                charArr.push(thisChar.rarity);
-                charArr.push(thisChar.level);
-                charArr.push(thisChar.gear);
-                charArr.push(thisChar.skills.filter(s => s.isZeta && s.tier == s.tiers).length);  // Zeta count
-                charArr.push(thisChar.relic.currentTier);  // Relic count
-                charArr.push(character.side);
+            // const pat = await Bot.getPatronUser(message.author.id);
+            // if (pat && pat.amount_cents >= 100) {
+            // For now, limit it to Patrons
+            const charArr = [thisChar.defId];
+            charArr.push(thisChar.rarity);
+            charArr.push(thisChar.level);
+            charArr.push(thisChar.gear);
+            charArr.push(thisChar.skills.filter(s => s.isZeta && s.tier == s.tiers).length);  // Zeta count
+            charArr.push(thisChar.relic.currentTier);  // Relic count
+            charArr.push(character.side);
 
-                try {
-                    await nodeFetch(Bot.config.imageServIP_Port + "/char/" + charArr.join("/"))
-                        .then(response => response.buffer())
-                        .then(image => {
-                            charImg = image;
-                        });
-                } catch (e) {
-                    console.log("ImageFetch in myCharacter broke: " + e);
-                }
+            try {
+                await nodeFetch(Bot.config.imageServIP_Port + "/char/" + charArr.join("/"))
+                    .then(response => response.buffer())
+                    .then(image => {
+                        charImg = image;
+                    });
+            } catch (e) {
+                console.log("ImageFetch in myCharacter broke: " + e);
             }
+            // }
             const abilities = {
                 basic: [],
                 special: [],

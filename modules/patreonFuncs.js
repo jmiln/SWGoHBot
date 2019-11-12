@@ -57,7 +57,9 @@ module.exports = (Bot, client) => {
     Bot.getPatronUser = async (userId) => {
         if (!userId) return new Error("Missing user ID");
         if (userId === Bot.config.ownerid || Bot.config.patrons.indexOf(userId) > -1) return {discordID: userId, amount_cents: 100};
-        const patron = await Bot.cache.get("swgohbot", "patrons", {discordID: userId});
+        let patron = await Bot.cache.get("swgohbot", "patrons", {discordID: userId});
+
+        if (Array.isArray(patron)) patron = patron[0];
         if (patron && !patron.declined_since) {
             return patron;
         }
