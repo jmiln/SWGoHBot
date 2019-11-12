@@ -88,6 +88,22 @@
         }
     },
     {
+        "name": "BTL-B Y-wing Starfighter",
+        "uniqueName": "YWINGCLONEWARS",
+        "aliases": [
+            "BTL-B Y-wing Starfighter"
+        ],
+        "nameVariant": [
+            "BTL-B Y-wing Starfighter"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/btl-b-y-wing-starfighter/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {}
+    },
+    {
         "name": "Biggs Darklighter's X-Wing",
         "uniqueName": "XWINGRED3",
         "aliases": [
@@ -793,6 +809,22 @@
             "cantina": [],
             "shops": []
         }
+    },
+    {
+        "name": "Hyena Bomber",
+        "uniqueName": "HYENABOMBER",
+        "aliases": [
+            "Hyena Bomber"
+        ],
+        "nameVariant": [
+            "Hyena Bomber"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/hyena-bomber/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {}
     },
     {
         "name": "IG-2000",

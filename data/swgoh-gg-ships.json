@@ -117,6 +117,28 @@
         "activate_shard_count": 50
     },
     {
+        "name": "BTL-B Y-wing Starfighter",
+        "base_id": "YWINGCLONEWARS",
+        "url": "http://swgoh.gg/ships/btl-b-y-wing-starfighter/",
+        "image": "/game-asset/u/YWINGCLONEWARS/",
+        "power": 45142,
+        "description": "Galactic Republic Tank that can withstand significant damage and Taunts when its allies are in need",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Galactic Republic",
+            "Tank"
+        ],
+        "ability_classes": [
+            "Counter",
+            "Dispel",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Cassian's U-wing",
         "base_id": "UWINGROGUEONE",
         "url": "http://swgoh.gg/ships/cassians-u-wing/",
@@ -497,6 +519,29 @@
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 25
+    },
+    {
+        "name": "Hyena Bomber",
+        "base_id": "HYENABOMBER",
+        "url": "http://swgoh.gg/ships/hyena-bomber/",
+        "image": "/game-asset/u/HYENABOMBER/",
+        "power": 45142,
+        "description": "Robust Separatist Tank that inflicts Buzz Droids and protects allies",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Droid",
+            "Separatist",
+            "Tank"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Dispel",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false,
+        "activate_shard_count": 80
     },
     {
         "name": "IG-2000",

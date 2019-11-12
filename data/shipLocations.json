@@ -65,6 +65,15 @@
         ]
     },
     {
+        "name": "BTL-B Y-wing Starfighter",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Republic Stalwart"
+            }
+        ]
+    },
+    {
         "name": "Cassian's U-wing",
         "locations": [
             {
@@ -261,6 +270,15 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "8-D"
+            }
+        ]
+    },
+    {
+        "name": "Hyena Bomber",
+        "locations": [
+            {
+                "type": "Special Event",
+                "name": "Galactic Chase"
             }
         ]
     },
@@ -556,7 +574,8 @@
         "name": "Vulture Droid",
         "locations": [
             {
-                "type": "Intro P2 (Crystals/Packs)"
+                "type": "Hard Modes (L)",
+                "level": "4-D"
             }
         ]
     },
