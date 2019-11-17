@@ -32,7 +32,8 @@
         "request": "^2.88.0",
         "request-promise-native": "^1.0.7",
         "sequelize": "^5.21.1",
-        "snekfetch": "^3.6.4"
+        "snekfetch": "^3.6.4",
+        "swgoh-stat-calc": "^1.0.1"
     },
     "engines": {
         "node": "^8.4.0"

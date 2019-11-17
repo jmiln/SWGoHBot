@@ -2,6 +2,8 @@ const Command = require("../base/Command");
 const nodeFetch = require("node-fetch");
 const {promisify, inspect} = require("util");      // eslint-disable-line no-unused-vars
 
+// const {statEnum, base, pct} = require("../data/statEnums");
+
 class MyCharacter extends Command {
     constructor(Bot) {
         super(Bot, {
@@ -72,19 +74,17 @@ class MyCharacter extends Command {
         }
         const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
 
-        let thisChar = player.stats.filter(c => c.unit.defId === character.uniqueName);
+        let thisChar = player.stats.filter(c => c.defId === character.uniqueName);
         if (thisChar.length && Array.isArray(thisChar)) thisChar = thisChar[0];
 
         if (thisChar && !Array.isArray(thisChar)) {
-            thisChar.unit = await Bot.swgohAPI.langChar(thisChar.unit, message.guildSettings.swgohLanguage);
+            thisChar.unit = await Bot.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
 
             const stats = thisChar.stats;
-            thisChar = thisChar.unit;
+            // TODO This needs to change because of droid ships etc
             const isShip = thisChar.crew.length ? true : false;
 
             let charImg;
-            // const pat = await Bot.getPatronUser(message.author.id);
-            // if (pat && pat.amount_cents >= 100) {
             // For now, limit it to Patrons
             const charArr = [thisChar.defId];
             charArr.push(thisChar.rarity);
@@ -103,7 +103,7 @@ class MyCharacter extends Command {
             } catch (e) {
                 console.log("ImageFetch in myCharacter broke: " + e);
             }
-            // }
+
             const abilities = {
                 basic: [],
                 special: [],
@@ -197,7 +197,7 @@ class MyCharacter extends Command {
 
             if (!stats) return super.error(message, "Something went wrong. Please make sure you have that character unlocked");
 
-            let keys = Object.keys(stats);
+            let keys = Object.keys(stats.final);
             if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
             let maxLen;
             try {
@@ -205,18 +205,19 @@ class MyCharacter extends Command {
             } catch (e) {
                 console.log("[MC] Getting maxLen broke: " + e);
             }
+
             const statArr = [];
             Object.keys(statNames).forEach(sn => {
                 let statStr = "== " + sn + " ==\n";
                 statNames[sn].forEach(s => {
-                    if (!stats[s]) stats[s] = {base: 0, final: 0, mods: 0, pct: false};
+                    if (!stats.final[s]) stats.final[s] = 0;
                     if (s === "Dodge Chance" || s === "Deflection Chance") {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
                     } else {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: `;
-                        const str = !stats[s].pct ? parseInt(stats[s].final) : (stats[s].final * 100).toFixed(2)+"%";
-                        const modStr = stats[s].mods > 0 ? (!stats[s].pct ? `(${parseInt(stats[s].mods)})` : `(${(stats[s].mods * 100).toFixed(2)}%)`) : "";
-                        statStr += str + " ".repeat(8 - str.toString().length) + modStr + "\n";
+                        const str = stats.final[s] % 1 === 0 ? stats.final[s].toLocaleString() : (stats.final[s] * 100).toFixed(2)+"%";
+                        const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s].toLocaleString()})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
+                        statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
                     }
                 });
                 statArr.push(Bot.expandSpaces(statStr));
