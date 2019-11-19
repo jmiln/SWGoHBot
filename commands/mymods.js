@@ -231,23 +231,32 @@ class MyMods extends Command {
                 stats = player.stats;
             }
 
+            // Get rid of the ship listings
+            const delArr = [];
+            for (const c in stats) {
+                if (Bot.ships.find(s => s.uniqueName === stats[c].defId)) {
+                    delArr.push(c);
+                }
+            }
+            for (const ix of delArr.reverse()) {
+                stats.splice(ix, 1);
+            }
+
             stats.forEach(c => {
-                if (c.stats && !c.stats[statToCheck]) {
-                    c.stats[statToCheck] = {
-                        gear: 0,
-                        mods: 0,
-                        final: 0,
-                        pct: false
-                    };
+                if (c.stats && c.stats.final && !c.stats.final[statToCheck]) {
+                    c.stats.final[statToCheck] = 0;
+                }
+                if (c.stats && c.stats.mods && !c.stats.mods[statToCheck]) {
+                    c.stats.mods[statToCheck] = 0;
                 }
             });
 
             let sorted;
             if (options.flags.t) {  // If looking for the total stats
                 sorted = stats.sort((p, c) => {
-                    if (p.stats && c.stats && p.stats[statToCheck] && c.stats[statToCheck]) {
-                        return c.stats[statToCheck].final - p.stats[statToCheck].final;
-                    } else if (!c.stats || !c.stats[statToCheck]) {
+                    if (p.stats && c.stats && p.stats.final[statToCheck] && c.stats.final[statToCheck]) {
+                        return c.stats.final[statToCheck] - p.stats.final[statToCheck];
+                    } else if (!c.stats || !c.stats.final[statToCheck]) {
                         return -1;
                     } else {
                         return 1;
@@ -255,9 +264,9 @@ class MyMods extends Command {
                 });
             } else {  // Or if looking for just the amount added by mods
                 sorted = stats.sort((p, c) => {
-                    if (p.stats && c.stats && p.stats[statToCheck] && c.stats[statToCheck]) {
-                        return c.stats[statToCheck].mods - p.stats[statToCheck].mods;
-                    } else if (!c.stats || !c.stats[statToCheck]) {
+                    if (p.stats && c.stats && p.stats.mods  && c.stats.mods && p.stats.mods[statToCheck] && c.stats.mods[statToCheck]) {
+                        return c.stats.mods[statToCheck] - p.stats.mods[statToCheck];
+                    } else if (!c.stats || !c.stats.mods[statToCheck]) {
                         return -1;
                     } else {
                         return 1;
@@ -265,27 +274,17 @@ class MyMods extends Command {
                 });
             }
 
-            const delArr = [];
-            for (const c in sorted) {
-                if (Bot.ships.find(s => s.uniqueName === sorted[c].unit.defId)) {
-                    delArr.push(c);
-                }
-            }
-
-            for (const ix of delArr.reverse()) {
-                sorted.splice(ix, 1);
-            }
 
             for (const c in sorted) {
-                sorted[c].unit = await Bot.swgohAPI.langChar(sorted[c].unit, message.guildSettings.swgohLanguage);
+                sorted[c] = await Bot.swgohAPI.langChar(sorted[c], message.guildSettings.swgohLanguage);
             }
 
             const out = sorted.map(c => {
-                const finalStat = c.stats && c.stats[statToCheck] ? (!c.stats[statToCheck].pct ? c.stats[statToCheck].final : (c.stats[statToCheck].final * 100).toFixed(2)+"%") : 0;
-                const modStat = c.stats && c.stats[statToCheck] ? (!c.stats[statToCheck].pct ? `(${parseInt(c.stats[statToCheck].mods)})` : `(${(c.stats[statToCheck].mods * 100).toFixed(2)}%)`) : "";
+                const finalStat = c.stats && c.stats.final[statToCheck] ? (!c.stats.final[statToCheck] % 1 === 0 ? c.stats.final[statToCheck] : (c.stats.final[statToCheck] * 100).toFixed(2)+"%") : 0;
+                const modStat = c.stats && c.stats.final[statToCheck] ? (!c.stats.final[statToCheck] % 1 === 0 ? `(${parseInt(c.stats.mods[statToCheck])})` : `(${(c.stats.mods[statToCheck] * 100).toFixed(2)}%)`) : "";
                 return {
                     stat: `${finalStat}${modStat.length ? " " + modStat : ""}`,
-                    name: `: ${c.unit.nameKey}`
+                    name: `: ${c.nameKey}`
                 };
             });
             const longest = out.reduce((max, s) => Math.max(max, s.stat.length), 0);

@@ -455,34 +455,24 @@ class GuildSearch extends Command {
             }
             const gStats = await Bot.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
 
-            let pct = false;
-
             const sortedMembers = gStats.sort((a, b) => {
-                if (!a.stats[sortBy]) {
-                    a.stats[sortBy] = {
-                        gear: 0,
-                        mods: 0,
-                        final: 0,
-                        pct: false
-                    };
-                } else {
-                    pct = a.stats[sortBy].pct;
-                }
-                return a.stats[sortBy].final < b.stats[sortBy].final ? 1 : -1;
+                if (!a.stats.final[sortBy]) a.stats.final[sortBy] = 0;
+                if (!b.stats.final[sortBy]) b.stats.final[sortBy] = 0;
+                return a.stats.final[sortBy] < b.stats.final[sortBy] ? 1 : -1;
             });
 
             sortedMembers.forEach( member => {
                 const stats = member.stats;
-                Object.keys(stats).forEach(s => {
-                    if (pct) {
-                        stats[s] = (stats[s].final * 100).toFixed(2) + "%";
+                Object.keys(stats.final).forEach(s => {
+                    if (stats.final[s] % 1 !== 0) {
+                        stats[s] = (stats.final[s] * 100).toFixed(2) + "%";
                     } else {
-                        stats[s] = stats[s].final ? stats[s].final.toLocaleString() : "N/A";
+                        stats[s] = stats.final[s] ? stats.final[s].toLocaleString() : "N/A";
                     }
                 });
                 stats.player = guild.roster.find(m => m.allyCode === member.allyCode).name;
-                stats.gp = member.unit.gp ? member.unit.gp.toLocaleString() : 0;
-                stats.gear = member.unit.gear;
+                stats.gp = member.gp ? member.gp.toLocaleString() : 0;
+                stats.gear = member.gear;
                 if (!stats.Protection) stats.Protection = 0;
                 outArr.push(stats);
             });

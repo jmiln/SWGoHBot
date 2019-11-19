@@ -130,13 +130,13 @@ class CommandName extends Command {
 
                 overview.push({
                     check: labels.charGP,
-                    user1: user1.stats.reduce((a, b) => a + (charList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0).shortenNum(),
-                    user2: user2.stats.reduce((a, b) => a + (charList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0).shortenNum()
+                    user1: user1.stats.reduce((a, b) => a + (charList.indexOf(b.defId) > -1 ? b.gp : 0), 0).shortenNum(),
+                    user2: user2.stats.reduce((a, b) => a + (charList.indexOf(b.defId) > -1 ? b.gp : 0), 0).shortenNum()
                 });
                 overview.push({
                     check: labels.shipGP,
-                    user1: user1.stats.reduce((a, b) => a + (shipList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0).shortenNum(),
-                    user2: user2.stats.reduce((a, b) => a + (shipList.indexOf(b.unit.defId) > -1 ? b.unit.gp : 0), 0).shortenNum()
+                    user1: user1.stats.reduce((a, b) => a + (shipList.indexOf(b.defId) > -1 ? b.gp : 0), 0).shortenNum(),
+                    user2: user2.stats.reduce((a, b) => a + (shipList.indexOf(b.defId) > -1 ? b.gp : 0), 0).shortenNum()
                 });
                 if (user1.arena && user2.arena) {
                     if (user1.arena.char && user2.arena.char) {
@@ -156,33 +156,33 @@ class CommandName extends Command {
                 }
                 overview.push({
                     check: labels.zetas,
-                    user1: user1.stats.reduce((a, b) => a + b.unit.skills.filter(s => s.tier === 8 && s.isZeta).length, 0),
-                    user2: user2.stats.reduce((a, b) => a + b.unit.skills.filter(s => s.tier === 8 && s.isZeta).length, 0)
+                    user1: user1.stats.reduce((a, b) => a + b.skills.filter(s => s.tier === 8 && s.isZeta).length, 0),
+                    user2: user2.stats.reduce((a, b) => a + b.skills.filter(s => s.tier === 8 && s.isZeta).length, 0)
                 });
                 overview.push({
                     check: labels.star6,
-                    user1: user1.stats.filter(c => c.unit.rarity === 6).length,
-                    user2: user2.stats.filter(c => c.unit.rarity === 6).length
+                    user1: user1.stats.filter(c => c.rarity === 6).length,
+                    user2: user2.stats.filter(c => c.rarity === 6).length
                 });
                 overview.push({
                     check: labels.star7,
-                    user1: user1.stats.filter(c => c.unit.rarity === 7).length,
-                    user2: user2.stats.filter(c => c.unit.rarity === 7).length
+                    user1: user1.stats.filter(c => c.rarity === 7).length,
+                    user2: user2.stats.filter(c => c.rarity === 7).length
                 });
                 overview.push({
                     check: labels.g11,
-                    user1: user1.stats.filter(c => c.unit.gear === 11).length,
-                    user2: user2.stats.filter(c => c.unit.gear === 11).length
+                    user1: user1.stats.filter(c => c.gear === 11).length,
+                    user2: user2.stats.filter(c => c.gear === 11).length
                 });
                 overview.push({
                     check: labels.g12,
-                    user1: user1.stats.filter(c => c.unit.gear === 12).length,
-                    user2: user2.stats.filter(c => c.unit.gear === 12).length
+                    user1: user1.stats.filter(c => c.gear === 12).length,
+                    user2: user2.stats.filter(c => c.gear === 12).length
                 });
                 overview.push({
                     check: labels.g13,
-                    user1: user1.stats.filter(c => c.unit.gear === 13).length,
-                    user2: user2.stats.filter(c => c.unit.gear === 13).length
+                    user1: user1.stats.filter(c => c.gear === 13).length,
+                    user2: user2.stats.filter(c => c.gear === 13).length
                 });
 
                 overview = Bot.codeBlock(Bot.makeTable({
@@ -204,8 +204,8 @@ class CommandName extends Command {
                     off100: 0
                 };
                 user1.stats.forEach(c => {
-                    if (c.unit.mods) {
-                        c.unit.mods.forEach(m => {
+                    if (c.mods) {
+                        c.mods.forEach(m => {
                             // 5 is the number for speed, 41 is for offense
                             const spd = m.secondaryStat.find(s => s.unitStat === 5 && s.value >= 10);
                             const off = m.secondaryStat.find(s => s.unitStat === 41 && s.value >= 100);
@@ -223,8 +223,8 @@ class CommandName extends Command {
                     }
                 });
                 user2.stats.forEach(c => {
-                    if (c.unit.mods) {
-                        c.unit.mods.forEach(m => {
+                    if (c.mods) {
+                        c.mods.forEach(m => {
                             const spd = m.secondaryStat.find(s => s.unitStat === 5 && s.value >= 10);
                             const off = m.secondaryStat.find(s => s.unitStat === 41 && s.value >= 100);
                             if (spd) {
@@ -244,8 +244,8 @@ class CommandName extends Command {
                 let modOverview = [];
                 modOverview.push({
                     check: labels.mods6,
-                    user1: user1.stats.reduce((a, b) => a + (b.unit.mods ? b.unit.mods.filter(m => m.pips === 6).length : 0), 0),
-                    user2: user2.stats.reduce((a, b) => a + (b.unit.mods ? b.unit.mods.filter(m => m.pips === 6).length : 0), 0)
+                    user1: user1.stats.reduce((a, b) => a + (b.mods ? b.mods.filter(m => m.pips === 6).length : 0), 0),
+                    user2: user2.stats.reduce((a, b) => a + (b.mods ? b.mods.filter(m => m.pips === 6).length : 0), 0)
                 });
                 modOverview.push({
                     check: labels.spd10,
@@ -276,8 +276,8 @@ class CommandName extends Command {
 
 
                 for (const char of charArr) {
-                    const user1Char = user1.stats.find(c => c.unit.defId === char);
-                    const user2Char = user2.stats.find(c => c.unit.defId === char);
+                    const user1Char = user1.stats.find(c => c.defId === char);
+                    const user2Char = user2.stats.find(c => c.defId === char);
                     let cName = Bot.characters.find(c => c.uniqueName === char);
                     let ship = false;
 
@@ -298,30 +298,30 @@ class CommandName extends Command {
                     // Put in the header/ name
                     checkArr[cName].push({
                         check: labels.level,
-                        user1: user1Char ? user1Char.unit.level : "N/A",
-                        user2: user2Char ? user2Char.unit.level : "N/A"
+                        user1: user1Char ? user1Char.level : "N/A",
+                        user2: user2Char ? user2Char.level : "N/A"
                     });
                     checkArr[cName].push({
                         check: labels.gearLvl,
-                        user1: user1Char ? user1Char.unit.gear + `${user1Char.unit.equipped.length ? "+" + user1Char.unit.equipped.length : ""}` : "N/A",
-                        user2: user2Char ? user2Char.unit.gear + `${user2Char.unit.equipped.length ? "+" + user2Char.unit.equipped.length : ""}` : "N/A"
+                        user1: user1Char ? user1Char.gear + `${user1Char.equipped.length ? "+" + user1Char.equipped.length : ""}` : "N/A",
+                        user2: user2Char ? user2Char.gear + `${user2Char.equipped.length ? "+" + user2Char.equipped.length : ""}` : "N/A"
                     });
                     checkArr[cName].push({
                         check: labels.starLvl,
-                        user1: user1Char ? user1Char.unit.rarity : "N/A",
-                        user2: user2Char ? user2Char.unit.rarity : "N/A"
+                        user1: user1Char ? user1Char.rarity : "N/A",
+                        user2: user2Char ? user2Char.rarity : "N/A"
                     });
 
                     if (!ship) {
                         checkArr[cName].push({
                             check: labels.zetas,
-                            user1: user1Char ? user1Char.unit.skills.filter(s => s.tier === 8 && s.isZeta).length.toString() : "N/A",
-                            user2: user2Char ? user2Char.unit.skills.filter(s => s.tier === 8 && s.isZeta).length.toString() : "N/A"
+                            user1: user1Char ? user1Char.skills.filter(s => s.tier === 8 && s.isZeta).length.toString() : "N/A",
+                            user2: user2Char ? user2Char.skills.filter(s => s.tier === 8 && s.isZeta).length.toString() : "N/A"
                         });
                         checkArr[cName].push({
                             check: labels.speed,
-                            user1: (user1Char && user1Char.stats.Speed) ? user1Char.stats.Speed.final : "N/A",
-                            user2: (user2Char && user2Char.stats.Speed) ? user2Char.stats.Speed.final : "N/A"
+                            user1: (user1Char && user1Char.stats.final.Speed) ? user1Char.stats.final.Speed : "N/A",
+                            user2: (user2Char && user2Char.stats.final.Speed) ? user2Char.stats.final.Speed : "N/A"
                         });
                     }
                 }

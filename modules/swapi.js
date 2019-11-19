@@ -293,7 +293,7 @@ module.exports = (Bot) => {
         const players = await Bot.swgohAPI.unitStats(allyCodes, cooldown);
         if (!players.length) throw new Error("Couldn't get your stats");
         for (const player of players) {
-            const unit = player.stats.find(c => c.unit.defId === defId);
+            const unit = player.stats.find(c => c.defId === defId);
             if (!unit) {
                 continue;
             } else {
