@@ -660,6 +660,33 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Malevolence",
+        "base_id": "CAPITALMALEVOLENCE",
+        "url": "http://swgoh.gg/ships/malevolence/",
+        "image": "/game-asset/u/CAPITALMALEVOLENCE/",
+        "power": 78636,
+        "description": "Separatist Capital Ship that powers up both Separatists and Droids and has the means to shut down entire enemy fleets.",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Capital Ship",
+            "Droid",
+            "Separatist"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Remove Turn Meter",
+            "Stun"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true,
+        "activate_shard_count": 145
+    },
+    {
         "name": "Negotiator",
         "base_id": "CAPITALNEGOTIATOR",
         "url": "http://swgoh.gg/ships/negotiator/",

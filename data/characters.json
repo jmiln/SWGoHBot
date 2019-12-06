@@ -1,5 +1,25 @@
 [
     {
+        "name": "ARC Trooper",
+        "uniqueName": "ARCTROOPER501ST",
+        "aliases": [
+            "ARC Trooper"
+        ],
+        "nameVariant": [
+            "ARC Trooper"
+        ],
+        "url": "http://swgoh.gg/characters/arc-trooper/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/ARCTROOPER501ST/",
+        "side": "light",
+        "factions": [
+            "501st",
+            "Attacker",
+            "Clone Trooper",
+            "Galactic Republic"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Aayla Secura",
         "uniqueName": "AAYLASECURA",
         "aliases": [
@@ -4134,6 +4154,25 @@
                 "source": "Crouching Rancor"
             }
         }
+    },
+    {
+        "name": "Ki-Adi-Mundi",
+        "uniqueName": "KIADIMUNDI",
+        "aliases": [
+            "Ki-Adi-Mundi"
+        ],
+        "nameVariant": [
+            "Ki-Adi-Mundi"
+        ],
+        "url": "http://swgoh.gg/characters/ki-adi-mundi/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/KIADIMUNDI/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Galactic Republic",
+            "Jedi"
+        ],
+        "mods": {}
     },
     {
         "name": "Kit Fisto",

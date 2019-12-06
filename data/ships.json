@@ -992,6 +992,22 @@
         }
     },
     {
+        "name": "Malevolence",
+        "uniqueName": "CAPITALMALEVOLENCE",
+        "aliases": [
+            "Malevolence"
+        ],
+        "nameVariant": [
+            "Malevolence"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/malevolence/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/CAPITALMALEVOLENCE/",
+        "side": "",
+        "factions": [],
+        "abilities": {}
+    },
+    {
         "name": "Negotiator",
         "uniqueName": "CAPITALNEGOTIATOR",
         "aliases": [
