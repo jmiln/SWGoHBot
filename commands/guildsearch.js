@@ -173,9 +173,9 @@ class GuildSearch extends Command {
 
             let tableIn = Object.keys(starOut).map(k => {
                 return {
-                    "9": starOut[k]["9"] || 0,
+                    "9":  starOut[k]["9"]  || 0,
                     "10": starOut[k]["10"] || 0,
-                    "11":  starOut[k]["11"] || 0,
+                    "11": starOut[k]["11"] || 0,
                     "12": starOut[k]["12"] || 0,
                     "13": starOut[k]["13"] || 0,
                     name: k
@@ -297,11 +297,11 @@ class GuildSearch extends Command {
 
             let tableIn = Object.keys(starOut).map(k => {
                 return {
-                    four: starOut[k]["4"] || 0,
-                    five: starOut[k]["5"] || 0,
-                    six:  starOut[k]["6"] || 0,
+                    four:  starOut[k]["4"] || 0,
+                    five:  starOut[k]["5"] || 0,
+                    six:   starOut[k]["6"] || 0,
                     seven: starOut[k]["7"] || 0,
-                    name: k
+                    name:  k
                 };
             });
 
@@ -642,7 +642,7 @@ class GuildSearch extends Command {
                 console.log("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: {
-                        name: "Something Broke getting your guild's roster"
+                        name: "Something Broke while getting your guild's roster"
                     },
                     description: Bot.codeBlock(e) + "Please try again in a bit."
                 }});
@@ -664,9 +664,9 @@ class GuildSearch extends Command {
             if (!gRoster.length) {
                 return msg.edit("I can't find any players in the requested guild.");
             }
-            let guildGG;
+            let guildChar;
             try {
-                guildGG = await Bot.swgohAPI.guildGG(gRoster, null, cooldown);
+                guildChar = await Bot.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
@@ -674,10 +674,11 @@ class GuildSearch extends Command {
                 return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
 
-            // Get the list of people with that character
-            const guildChar = guildGG.roster[character.uniqueName];
+            for (const ch of guildChar) {
+                ch.zetas = ch.skills.filter(s => s.isZeta && s.tier === s.tiers);
+            }
 
-            if (!guildChar || guildChar.length === 0 || (starLvl > 0 && !guildChar.filter(c => c.starLevel >= starLvl).length) || (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length)) {
+            if (!guildChar || guildChar.length === 0 || (starLvl > 0 && !guildChar.filter(c => c.rarity >= starLvl).length) || (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length)) {
                 let desc = "";
                 if (options.flags.zetas && !guildChar.filter(c => c.zetas.length > 0).length) {
                     desc = message.language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
@@ -699,23 +700,22 @@ class GuildSearch extends Command {
 
             const totalUnlocked = guildChar.length;
 
-            // Fill in everyone that does not have it since everyone is guaranteed to have jedi consular
-            guildGG.roster["JEDIKNIGHTCONSULAR"].forEach(j => {
-                // If they have both the targeted character and consular, ignore them
-                const filtered = guildChar.filter(p => p.player === j.player);
+            // Fill in everyone that does not have the character
+            guild.roster.forEach(j => {
+                const found = guildChar.find(p => p.allyCode === j.allyCode);
 
-                // If they don't, it'll be a 0 length array, so fill it in with 0 stats
-                if (!filtered.length) {
+                if (!found) {
                     guildChar.push({
-                        player: j.player,       // Player name
+                        player: j.name,       // Player name
                         allyCode: j.allyCode,   // Ally code
-                        gearLevel: 0,
+                        gear: 0,
                         gp: 0,
                         level: 0,
-                        starLevel: 0,
+                        rarity: 0,
+                        skills: [],
                         zetas: [],
-                        gear: [],
-                        type: j.type
+                        relic: {currentTier: 0},
+                        equipped: []
                     });
                 }
             });
@@ -749,9 +749,9 @@ class GuildSearch extends Command {
             } else if (sortType === "gear") {
                 // Sort by gear
                 if (!reverse) {
-                    sortedGuild = guildChar.sort((p, c) => p.gearLevel - c.gearLevel);
+                    sortedGuild = guildChar.sort((p, c) => p.gear - c.gear);
                 } else {
-                    sortedGuild = guildChar.sort((p, c) => c.gearLevel - p.gearLevel);
+                    sortedGuild = guildChar.sort((p, c) => c.gear - p.gear);
                 }
             } else {
                 return super.error(msg, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, ["name", "gp", "gear"]), {edit: true, example: "guildsearch c3po -sort gp"});
@@ -771,8 +771,8 @@ class GuildSearch extends Command {
             for (const member of sortedGuild) {
                 if (options.flags.zetas && !member.zetas.length) continue;
 
-                if (isNaN(parseInt(member.starLevel))) member.starLevel = rarityMap[member.starLevel];
-                const gearStr = "⚙" + member.gearLevel + " ".repeat(2 - member.gearLevel.toString().length);
+                if (isNaN(parseInt(member.rarity))) member.rarity = rarityMap[member.rarity];
+                const gearStr = "⚙" + member.gear + " ".repeat(2 - member.gear.toString().length);
                 let z = " | ";
                 zetas.forEach((zeta, ix) => {
                     const pZeta = member.zetas.find(pz => pz.id === zeta);
@@ -785,7 +785,7 @@ class GuildSearch extends Command {
                 const gpStr = parseInt(member.gp).toLocaleString();
 
                 let uStr;
-                if (member.starLevel > 0) {
+                if (member.rarity > 0) {
                     if (options.flags.ships) {
                         uStr = `**\`[Lvl ${member.level} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}`;
                     } else {
@@ -797,10 +797,10 @@ class GuildSearch extends Command {
 
                 uStr = Bot.expandSpaces(uStr);
 
-                if (!charOut[member.starLevel]) {
-                    charOut[member.starLevel] = [uStr];
+                if (!charOut[member.rarity]) {
+                    charOut[member.rarity] = [uStr];
                 } else {
-                    charOut[member.starLevel].push(uStr);
+                    charOut[member.rarity].push(uStr);
                 }
             }
 
@@ -845,8 +845,8 @@ class GuildSearch extends Command {
                     value: warn
                 });
             }
-            if (guildGG.warnings) {
-                let warn = guildGG.warnings.join("\n");
+            if (guildChar.warnings) {
+                let warn = guildChar.warnings.join("\n");
                 if (warn.length < 1024) {
                     warn = warn.slice(0,1000) + "...";
                 }
@@ -862,7 +862,7 @@ class GuildSearch extends Command {
                 }
             });
 
-            const footer = Bot.updatedFooter(guildGG.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guildChar.updated, message, "guild", cooldown);
             try {
                 msg.edit({embed: {
                     author: {
