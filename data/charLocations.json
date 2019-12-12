@@ -65,6 +65,15 @@
         ]
     },
     {
+        "name": "ARC Trooper",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "5-G"
+            }
+        ]
+    },
+    {
         "name": "Asajj Ventress",
         "locations": [
             {
@@ -406,10 +415,6 @@
             {
                 "type": "Cantina",
                 "level": "1-C"
-            },
-            {
-                "type": "Cantina",
-                "level": "5-G"
             },
             {
                 "type": "Hard Modes (D)",
@@ -850,6 +855,15 @@
         ]
     },
     {
+        "name": "General Hux",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Ruthless General"
+            }
+        ]
+    },
+    {
         "name": "General Kenobi",
         "locations": [
             {
@@ -1272,6 +1286,15 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/5"
+            }
+        ]
+    },
+    {
+        "name": "Ki-Adi-Mundi",
+        "locations": [
+            {
+                "type": "Territory Battle",
+                "name": "Republic Offensive"
             }
         ]
     },
@@ -1821,6 +1844,15 @@
         ]
     },
     {
+        "name": "Sith Empire Trooper",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "8-B"
+            }
+        ]
+    },
+    {
         "name": "Sith Marauder",
         "locations": [
             {
@@ -1833,8 +1865,8 @@
         "name": "Sith Trooper",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "8-B"
+                "type": "Intro P1 (Marquee)",
+                "name": "Emperor's Elite"
             }
         ]
     },

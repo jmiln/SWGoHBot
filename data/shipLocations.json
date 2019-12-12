@@ -277,8 +277,7 @@
         "name": "Hyena Bomber",
         "locations": [
             {
-                "type": "Special Event",
-                "name": "Galactic Chase"
+                "type": "Intro P2 (Crystals/Packs)"
             }
         ]
     },
@@ -348,6 +347,15 @@
             {
                 "type": "Hard Modes (Fleet)",
                 "level": "1-D"
+            }
+        ]
+    },
+    {
+        "name": "Malevolence",
+        "locations": [
+            {
+                "type": "Guild Event Shop",
+                "cost": "1350-04-23T06:59:56.000Z"
             }
         ]
     },

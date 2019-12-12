@@ -209,8 +209,6 @@ module.exports = (Bot) => {
                     return players;
                 }
                 for (const bareP of updatedBare) {
-                    let charStats;
-                    let shipStats;
                     try {
                         await statCalculator.calcRosterStats( bareP.roster , {
                             gameStyle: true,
@@ -226,7 +224,7 @@ module.exports = (Bot) => {
                         arena: bareP.arena,
                         stats: bareP.roster
                     };
-                    charStats = await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: stats.allyCode}, stats);
+                    const charStats = await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: stats.allyCode}, stats);
                     charStats.warnings = warning;
                     playerStats.push(charStats);
                 }
@@ -282,7 +280,7 @@ module.exports = (Bot) => {
     }
 
     async function guildStats( allyCodes, defId, cooldown ) {
-        if (cooldown) {
+        if (cooldown && cooldown.guild) {
             if (cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
             if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
         } else {
@@ -292,6 +290,7 @@ module.exports = (Bot) => {
         const outStats = [];
         const players = await Bot.swgohAPI.unitStats(allyCodes, cooldown);
         if (!players.length) throw new Error("Couldn't get your stats");
+
         for (const player of players) {
             const unit = player.stats.find(c => c.defId === defId);
             if (!unit) {

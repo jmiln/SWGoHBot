@@ -39,6 +39,7 @@ const GG_SHIPS_CACHE         = "./data/swgoh-gg-ships.json";
 const SWGoH_Help_SQUAD_CACHE = "./data/squads.json";
 const CHARLOCATIONS          = "./data/charLocations.json";
 const SHIPLOCATIONS          = "./data/shipLocations.json";
+const GAMEDATA               = "./data/gameData.json";
 const UNKNOWN                = "Unknown";
 
 // Load in various general functions for the bot
@@ -292,6 +293,9 @@ async function updateRemoteData() {
 
     if (await updateIfChanged(SHIPLOCATIONS, "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=true")) {
         console.log("UpdatedRemoteData", "Detected a change in ship locations.");
+    }
+    if (await updateIfChanged(GAMEDATA, "https://swgoh-stat-calc.glitch.me/gameData.json")) {
+        console.log("UpdatedRemoteData", "Detected a change in Crinolo's Game Data.");
     }
 
     console.log("UpdateRemoteData", "Finished processing remote updates");
@@ -597,7 +601,7 @@ async function ggGrab(character) {
     const $ = cheerio.load(ggGrabText);
 
     // Get the character's image link
-    const charImage = "https:" + $(".panel-profile-img").attr("src");
+    const charImage = "https://swgoh.gg" + $(".panel-profile-img").attr("src");
     character.avatarURL = charImage;
 
     // Get the character's affiliations

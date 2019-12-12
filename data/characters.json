@@ -2857,6 +2857,25 @@
         }
     },
     {
+        "name": "General Hux",
+        "uniqueName": "GENERALHUX",
+        "aliases": [
+            "General Hux"
+        ],
+        "nameVariant": [
+            "General Hux"
+        ],
+        "url": "http://swgoh.gg/characters/general-hux/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/GENERALHUX/",
+        "side": "dark",
+        "factions": [
+            "First Order",
+            "Leader",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "General Kenobi",
         "uniqueName": "GENERALKENOBI",
         "aliases": [
@@ -5921,20 +5940,21 @@
         }
     },
     {
-        "name": "Sith Trooper",
+        "name": "Sith Empire Trooper",
         "uniqueName": "SITHTROOPER",
         "aliases": [
-            "Sith Trooper",
-            "ST"
+            "Sith Empire Trooper",
+            "SET"
         ],
         "nameVariant": [
-            "Sith Trooper"
+            "Sith Empire Trooper"
         ],
-        "url": "http://swgoh.gg/characters/sith-trooper/",
-        "avatarURL": "https://swgoh.gg/static/img/assets/tex.charui_sithtrooper.png",
+        "url": "http://swgoh.gg/characters/sith-empire-trooper/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/SITHTROOPER/",
         "side": "dark",
         "factions": [
             "Sith",
+            "Sith Empire",
             "Tank"
         ],
         "mods": {
@@ -5967,6 +5987,26 @@
                 "source": "Crouching Rancor"
             }
         }
+    },
+    {
+        "name": "Sith Trooper",
+        "uniqueName": "FOSITHTROOPER",
+        "aliases": [
+            "Sith Trooper",
+            "ST"
+        ],
+        "nameVariant": [
+            "Sith Trooper"
+        ],
+        "url": "http://swgoh.gg/characters/sith-trooper/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/FOSITHTROOPER/",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "First Order",
+            "Sith"
+        ],
+        "mods": {}
     },
     {
         "name": "Snowtrooper",

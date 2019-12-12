@@ -35,7 +35,7 @@ module.exports = (Bot, client) => {
         const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
-        if (message.channel.type === "text") {
+        if (message.channel.type === "text" && message.guild) {
             if (message.author.id === message.guild.owner.id) return permlvl = 4;
         }
 
