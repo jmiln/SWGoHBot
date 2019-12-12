@@ -5893,6 +5893,26 @@
         }
     },
     {
+        "name": "Sith Empire Trooper",
+        "uniqueName": "SITHTROOPER",
+        "aliases": [
+            "Sith Empire Trooper",
+            "SET"
+        ],
+        "nameVariant": [
+            "Sith Empire Trooper"
+        ],
+        "url": "http://swgoh.gg/characters/sith-empire-trooper/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/SITHTROOPER/",
+        "side": "dark",
+        "factions": [
+            "Sith",
+            "Sith Empire",
+            "Tank"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Sith Marauder",
         "uniqueName": "SITHMARAUDER",
         "aliases": [
@@ -5940,22 +5960,22 @@
         }
     },
     {
-        "name": "Sith Empire Trooper",
-        "uniqueName": "SITHTROOPER",
+        "name": "Sith Trooper",
+        "uniqueName": "FOSITHTROOPER",
         "aliases": [
-            "Sith Empire Trooper",
-            "SET"
+            "Sith Trooper",
+            "ST"
         ],
         "nameVariant": [
-            "Sith Empire Trooper"
+            "Sith Trooper"
         ],
-        "url": "http://swgoh.gg/characters/sith-empire-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SITHTROOPER/",
+        "url": "http://swgoh.gg/characters/sith-trooper/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/FOSITHTROOPER/",
         "side": "dark",
         "factions": [
-            "Sith",
-            "Sith Empire",
-            "Tank"
+            "Attacker",
+            "First Order",
+            "Sith"
         ],
         "mods": {
             "General": {
@@ -5987,26 +6007,6 @@
                 "source": "Crouching Rancor"
             }
         }
-    },
-    {
-        "name": "Sith Trooper",
-        "uniqueName": "FOSITHTROOPER",
-        "aliases": [
-            "Sith Trooper",
-            "ST"
-        ],
-        "nameVariant": [
-            "Sith Trooper"
-        ],
-        "url": "http://swgoh.gg/characters/sith-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FOSITHTROOPER/",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "First Order",
-            "Sith"
-        ],
-        "mods": {}
     },
     {
         "name": "Snowtrooper",
