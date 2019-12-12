@@ -134,15 +134,6 @@ module.exports = (Sequelize, database) => {
             autoIncrement: true
         }
     });
-    database.define("allyCodes", {
-        id: {
-            type: Sequelize.TEXT,
-            primaryKey: true
-        },
-        allyCode: {
-            type: Sequelize.BIGINT
-        }
-    });
 
     database.sync();
 };
