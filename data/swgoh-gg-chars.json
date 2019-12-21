@@ -12677,7 +12677,7 @@
                     "131",
                     "125",
                     "129",
-                    "137",
+                    "130",
                     "130",
                     "136"
                 ]
@@ -24737,6 +24737,178 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Resistance Hero Finn",
+        "base_id": "EPIXFINN",
+        "pk": 417,
+        "url": "http://swgoh.gg/characters/resistance-hero-finn/",
+        "image": "/game-asset/u/EPIXFINN/",
+        "power": 29347,
+        "description": "Supportive Attacker whose inspiration empowers his allies on the battlefield",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "002",
+                    "003",
+                    "003",
+                    "011",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "011",
+                    "028",
+                    "032",
+                    "020",
+                    "020",
+                    "028"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "054",
+                    "060",
+                    "048",
+                    "054",
+                    "055",
+                    "060"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "050",
+                    "055",
+                    "068",
+                    "054",
+                    "071",
+                    "059"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "083",
+                    "080",
+                    "088",
+                    "068",
+                    "054",
+                    "054"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "095",
+                    "095",
+                    "090",
+                    "091",
+                    "102",
+                    "083"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "107",
+                    "098",
+                    "098",
+                    "095",
+                    "088",
+                    "102"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "102",
+                    "111",
+                    "091",
+                    "095",
+                    "100",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "109",
+                    "117",
+                    "172",
+                    "099",
+                    "111",
+                    "098"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "136",
+                    "136",
+                    "130",
+                    "131",
+                    "130",
+                    "140"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "143",
+                    "131",
+                    "117",
+                    "111",
+                    "173",
+                    "150"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "163",
+                    "158",
+                    "163",
+                    "169",
+                    "168",
+                    "G12Finisher_EPIXFINN_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Resistance"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "Gain Turn Meter",
+            "Taunt"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Resistance Pilot",
         "base_id": "RESISTANCEPILOT",
         "pk": 38,
@@ -27259,7 +27431,7 @@
             {
                 "tier": 9,
                 "gear": [
-                    "117",
+                    "173",
                     "102",
                     "096",
                     "101",
@@ -27273,7 +27445,7 @@
                     "173",
                     "116",
                     "129",
-                    "125",
+                    "109",
                     "116",
                     "144"
                 ]
@@ -27284,8 +27456,8 @@
                     "089",
                     "129",
                     "146",
-                    "134",
                     "144",
+                    "134",
                     "142"
                 ]
             },
