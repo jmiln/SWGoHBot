@@ -5398,6 +5398,26 @@
         }
     },
     {
+        "name": "Resistance Hero Finn",
+        "uniqueName": "EPIXFINN",
+        "aliases": [
+            "Resistance Hero Finn",
+            "Res Hero Finn",
+            "RHF"
+        ],
+        "nameVariant": [
+            "Resistance Hero Finn"
+        ],
+        "url": "http://swgoh.gg/characters/resistance-hero-finn/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/EPIXFINN/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Resistance"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Resistance Pilot",
         "uniqueName": "RESISTANCEPILOT",
         "aliases": [
@@ -5963,6 +5983,8 @@
         "name": "Sith Trooper",
         "uniqueName": "FOSITHTROOPER",
         "aliases": [
+            "First Order Sith Trooper",
+            "FO Sith Trooper",
             "Sith Trooper",
             "ST"
         ],
