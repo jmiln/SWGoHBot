@@ -8,6 +8,11 @@ class MyProfile extends Command {
             name: "myprofile",
             category: "SWGoH",
             aliases: ["mp", "userprofile", "up"],
+            flags: {
+                all: {
+                    aliases: ["a"]
+                }
+            },
             permissions: ["EMBED_LINKS"]    // Starts with ["SEND_MESSAGES", "VIEW_CHANNEL"] so don't need to add them
         });
     }
@@ -24,7 +29,8 @@ class MyProfile extends Command {
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let player;
         try {
-            player = await Bot.swgohAPI.player(allyCode, null, cooldown);
+            player = await Bot.swgohAPI.unitStats(allyCode, null, cooldown);
+            if (Array.isArray(player)) player = player[0];
         } catch (e) {
             console.log("Broke getting player in myprofile: " + e);
             return super.error(message, "Please make sure you are registered with a valid ally code");
@@ -97,11 +103,34 @@ class MyProfile extends Command {
             ].join("\n")
         });
 
+        const rarityCount = {
+            1: {"c": 0, "s": 0},
+            2: {"c": 0, "s": 0},
+            3: {"c": 0, "s": 0},
+            4: {"c": 0, "s": 0},
+            5: {"c": 0, "s": 0},
+            6: {"c": 0, "s": 0},
+            7: {"c": 0, "s": 0}
+        };
+        const relicCount = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0
+        };
 
         // Get the Character stats
         let zetaCount = 0;
         const charList = player.roster.filter(u => u.combatType === "CHARACTER" || u.combatType === 1);
         charList.forEach(char => {
+            rarityCount[char.rarity].c += 1;
+            if (char.relic && char.relic.currentTier && char.relic.currentTier > 2) {
+                if (!relicCount[char.relic.currentTier - 3]) relicCount[char.relic.currentTier - 3] = 0;
+                relicCount[char.relic.currentTier - 2] += 1;
+            }
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
             zetaCount += thisZ.length;
         });
@@ -117,6 +146,10 @@ class MyProfile extends Command {
 
         // Get the ship stats
         const shipList = player.roster.filter(u => u.combatType === "SHIP" || u.combatType === 2);
+        shipList.forEach(ship => {
+            rarityCount[ship.rarity].s += 1;
+        });
+
         const shipOut = message.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList);
         fields.push({
             name: shipOut.header,
@@ -126,6 +159,20 @@ class MyProfile extends Command {
                 "```"
             ].join("\n")
         });
+
+        /*  Uncomment this to show the rarity stats/ averages
+        const totalChars    =  Object.keys(rarityCount).map(r => rarityCount[r].c).reduce((a,b) => a + b, 0);
+        const avgCharRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].c).reduce((a,b) => a + b, 0) / totalChars).toFixed(2);
+        const totalShips    =  Object.keys(rarityCount).map(r => rarityCount[r].s).reduce((a,b) => a + b, 0);
+        const avgShipRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].s).reduce((a,b) => a + b, 0) / totalShips).toFixed(2);
+        fields.push({
+            name: "Rarity",
+            value: ["` * | Char | Ship `",
+                Object.keys(rarityCount).filter(r => rarityCount[r].c > 0 || rarityCount[r].s > 0).map(r => Bot.expandSpaces(`\` ${r} | ${" ".repeat(4 - rarityCount[r].c.toString().length)}${rarityCount[r].c} | ${" ".repeat(4 - rarityCount[r].s.toString().length)}${rarityCount[r].s} \``)).join("\n"),
+                `\`AVG| ${" ".repeat(4 - avgCharRarity.toString().length)}${avgCharRarity} | ${" ".repeat(4 - avgShipRarity.toString().length)}${avgShipRarity} \``
+            ].join("\n")
+        });
+        */
 
         if (player.warnings) {
             fields.push({

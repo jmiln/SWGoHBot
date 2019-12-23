@@ -226,9 +226,9 @@ class MyMods extends Command {
             }
 
             let updated, stats;
-            if (player && player.stats) {
+            if (player && player.roster) {
                 updated = player.updated;
-                stats = player.stats;
+                stats = player.roster;
             }
 
             // Get rid of the ship listings

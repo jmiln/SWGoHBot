@@ -217,14 +217,8 @@ module.exports = (Bot) => {
                     } catch (error) {
                         throw new Error("Error getting player stats: " + error);
                     }
-                    const stats = {
-                        name: bareP.name,
-                        allyCode: bareP.allyCode,
-                        updated: bareP.updated,
-                        arena: bareP.arena,
-                        stats: bareP.roster
-                    };
-                    const charStats = await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: stats.allyCode}, stats);
+
+                    const charStats = await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: bareP.allyCode}, bareP);
                     charStats.warnings = warning;
                     playerStats.push(charStats);
                 }
@@ -292,7 +286,7 @@ module.exports = (Bot) => {
         if (!players.length) throw new Error("Couldn't get your stats");
 
         for (const player of players) {
-            const unit = player.stats.find(c => c.defId === defId);
+            const unit = player.roster.find(c => c.defId === defId);
             if (!unit) {
                 continue;
             } else {

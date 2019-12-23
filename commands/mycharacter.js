@@ -69,12 +69,13 @@ class MyCharacter extends Command {
             });
         }
 
-        if (player && player.stats) {
+        console.log(player);
+        if (player && player.roster) {
             pName = player.name;
         }
         const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
 
-        let thisChar = player.stats.filter(c => c.defId === character.uniqueName);
+        let thisChar = player.roster.filter(c => c.defId === character.uniqueName);
         if (thisChar.length && Array.isArray(thisChar)) thisChar = thisChar[0];
 
         if (thisChar && !Array.isArray(thisChar)) {
