@@ -88,7 +88,9 @@ class Faction extends Command {
                 const cooldown = await Bot.getPlayerCooldown(message.author.id);
                 let player;
                 try {
-                    player = await Bot.swgohAPI.player(allyCode, null, cooldown);
+                    player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
+                    if (Array.isArray(player)) player = player[0];
+                    console.log(player);
                 } catch (e) {
                     return super.error(message, e.message);
                 }

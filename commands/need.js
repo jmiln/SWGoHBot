@@ -29,7 +29,8 @@ class Need extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
-        const player = await Bot.swgohAPI.player(allyCode, null, cooldown);
+        let player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
+        if (Array.isArray(player)) player = player[0];
         if (!player) {
             // Could not find the player, possible api issue?
             // TODO Lang this

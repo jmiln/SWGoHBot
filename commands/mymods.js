@@ -61,7 +61,8 @@ class MyMods extends Command {
 
             let player;
             try {
-                player = await Bot.swgohAPI.player(allyCode, null, cooldown);
+                player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
+                if (Array.isArray(player)) player = player[0];
             } catch (e) {
                 console.log(e);
             }

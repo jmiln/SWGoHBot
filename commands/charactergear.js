@@ -159,7 +159,8 @@ class Charactergear extends Command {
         } else {
             // Looking for a player's remaining needed gear
             const cooldown = await Bot.getPlayerCooldown(message.author.id);
-            const player = await Bot.swgohAPI.player(userID, message.guildSettings.swgohLanguage, cooldown);
+            let player = await Bot.swgohAPI.unitStats(userID, cooldown);
+            if (Array.isArray(player)) player = player[0];
             const playerChar = player.roster.find(c => c.defId === character.uniqueName);
 
             if (!playerChar) {

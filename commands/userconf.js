@@ -69,30 +69,30 @@ class UserConf extends Command {
 
                     // Sync up their swgoh account
                     try {
-                        await Bot.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
-                            if (!u) {
-                                super.error(message, message.language.get("COMMAND_REGISTER_FAILURE"));
-                            } else {
-                                user.accounts.push({
-                                    allyCode: allyCode,
-                                    name: u.name,
-                                    primary: user.accounts.length ? false : true
+                        let player = await Bot.swgohAPI.unitStats(allyCode, null);
+                        if (Array.isArray(player)) player = player[0];
+                        if (!player) {
+                            super.error(message, message.language.get("COMMAND_REGISTER_FAILURE"));
+                        } else {
+                            user.accounts.push({
+                                allyCode: allyCode,
+                                name: player.name,
+                                primary: user.accounts.length ? false : true
+                            });
+                            await Bot.swgohAPI.register([
+                                [allyCode, userID]
+                            ]);
+                            await Bot.userReg.updateUser(userID, user);
+                            return super.success(message,
+                                Bot.codeBlock(message.language.get(
+                                    "COMMAND_REGISTER_SUCCESS_DESC",
+                                    player,
+                                    player.allyCode.toString().match(/\d{3}/g).join("-"),
+                                    player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                                ), "asciiDoc"), {
+                                    title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name)
                                 });
-                                await Bot.swgohAPI.register([
-                                    [allyCode, userID]
-                                ]);
-                                await Bot.userReg.updateUser(userID, user);
-                                return super.success(message,
-                                    Bot.codeBlock(message.language.get(
-                                        "COMMAND_REGISTER_SUCCESS_DESC",
-                                        u,
-                                        u.allyCode.toString().match(/\d{3}/g).join("-"),
-                                        u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
-                                    ), "asciiDoc"), {
-                                        title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name)
-                                    });
-                            }
-                        });
+                        }
                     } catch (e) {
                         console.log("ERROR[REG]: Incorrect Ally Code(" + allyCode + "): " + e);
                         return super.error(message, ("Something broke. Make sure you've got the correct ally code" + Bot.codeBlock(e.message)));

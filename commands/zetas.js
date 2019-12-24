@@ -63,7 +63,8 @@ class Zetas extends Command {
         let player;
 
         try {
-            player = await Bot.swgohAPI.player(allyCode, null, cooldown);
+            player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
+            if (Array.isArray(player)) player = player[0];
         } catch (e) {
             console.log("Error: Broke while trying to get player data in zetas: " + e);
             return super.error(msg, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});

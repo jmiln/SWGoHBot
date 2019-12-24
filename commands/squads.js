@@ -20,7 +20,6 @@ class Squads extends Command {
             return super.error(message, message.language.get("COMMAND_SQUADS_NO_LIST", lists.join(", ")), {title: "Missing category", example: example});
         }
 
-        const lang = message.guildSettings.swgoghLanguage;
         let allyCodes;
         if (user === "me" || Bot.isUserID(user) || Bot.isAllyCode(user)) {
             allyCodes = await super.getUser(message, user);
@@ -38,7 +37,8 @@ class Squads extends Command {
         } else {
             cooldown = await Bot.getPlayerCooldown(message.author.id);
             try {
-                player = await Bot.swgohAPI.player(allyCodes, lang, cooldown);
+                player = await Bot.swgohAPI.unitStats(allyCodes, cooldown);
+                if (Array.isArray(player)) player = player[0];
             } catch (e) {
                 console.log("Broke getting player in squads: " + e);
             }

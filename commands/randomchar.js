@@ -29,7 +29,8 @@ class Randomchar extends Command {
                 const cooldown = await Bot.getPlayerCooldown(message.author.id);
                 let player = null;
                 try {
-                    player = await Bot.swgohAPI.player(allyCode, cooldown);
+                    player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
+                    if (Array.isArray(player)) player = player[0];
                 } catch (e) {
                     console.error(e);
                     return super.error(message, Bot.codeBlock(e.message), {

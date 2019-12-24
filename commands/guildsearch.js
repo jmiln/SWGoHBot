@@ -553,7 +553,8 @@ class GuildSearch extends Command {
             let output = [];
             for (let player of gRoster) {
                 try {
-                    player = await Bot.swgohAPI.player(player);
+                    player = await Bot.swgohAPI.unitStats(player, cooldown);
+                    if (Array.isArray(player)) player = player[0];
                 } catch (e) {
                     return super.error(message, e.message);
                 }

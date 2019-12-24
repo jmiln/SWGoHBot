@@ -72,41 +72,41 @@ class Register extends Command {
         }
         message.channel.send(message.language.get("COMMAND_REGISTER_PLEASE_WAIT")).then(async msg => {
             try {
-                await Bot.swgohAPI.player(allyCode, "ENG_US").then(async (u) => {
-                    if (!u) {
-                        super.error(msg, (message.language.get("COMMAND_REGISTER_FAILURE") + allyCode), {edit: true});
-                    } else {
-                        user.accounts.push({
-                            allyCode: allyCode,
-                            name: u.name,
-                            primary: true
-                        });
-                        await Bot.userReg.updateUser(userID, user)
-                            .then(async () => {
-                                await Bot.swgohAPI.register([
-                                    [allyCode, userID]
-                                ]);
-                                return super.success(msg,
-                                    Bot.codeBlock(message.language.get(
-                                        "COMMAND_REGISTER_SUCCESS_DESC",
-                                        u,
-                                        u.allyCode.toString().match(/\d{3}/g).join("-"),
-                                        u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
-                                    ), "asciiDoc"), {
-                                        title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name),
-                                        edit: true
-                                    });
-                            })
-                            .catch(e => {
-                                Bot.log("REGISTER", "Broke while trying to link new user: " + e);
-                                return super.error(msg, Bot.codeBlock(e.message), {
-                                    title: message.lanugage.get("BASE_SOMETHING_BROKE"),
-                                    footer: "Please try again in a bit.",
+                let player = await Bot.swgohAPI.unitStats(allyCode, null);
+                if (Array.isArray(player)) player = player[0];
+                if (!player) {
+                    super.error(msg, (message.language.get("COMMAND_REGISTER_FAILURE") + allyCode), {edit: true});
+                } else {
+                    user.accounts.push({
+                        allyCode: allyCode,
+                        name: player.name,
+                        primary: true
+                    });
+                    await Bot.userReg.updateUser(userID, user)
+                        .then(async () => {
+                            await Bot.swgohAPI.register([
+                                [allyCode, userID]
+                            ]);
+                            return super.success(msg,
+                                Bot.codeBlock(message.language.get(
+                                    "COMMAND_REGISTER_SUCCESS_DESC",
+                                    player,
+                                    player.allyCode.toString().match(/\d{3}/g).join("-"),
+                                    player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                                ), "asciiDoc"), {
+                                    title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
                                     edit: true
                                 });
+                        })
+                        .catch(e => {
+                            Bot.log("REGISTER", "Broke while trying to link new user: " + e);
+                            return super.error(msg, Bot.codeBlock(e.message), {
+                                title: message.lanugage.get("BASE_SOMETHING_BROKE"),
+                                footer: "Please try again in a bit.",
+                                edit: true
                             });
-                    }
-                });
+                        });
+                }
             } catch (e) {
                 console.log("ERROR[REG]: Incorrect Ally Code: " + e);
                 return super.error(message, ("Something broke. Make sure you've got the correct ally code" + Bot.codeBlock(e.message)));

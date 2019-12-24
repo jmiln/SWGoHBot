@@ -30,7 +30,8 @@ class MyArena extends Command {
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let player;
         try {
-            player = await Bot.swgohAPI.player(allyCode, lang, cooldown);
+            player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
+            if (Array.isArray(player)) player = player[0];
         } catch (e) {
             console.log("Broke getting player in myarena: " + e);
             return super.error(message, "Something broke, please try again in a bit");
