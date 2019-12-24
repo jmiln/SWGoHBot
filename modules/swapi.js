@@ -23,7 +23,7 @@ module.exports = (Bot) => {
     const zetaCooldown =   7*24*60; // 7 days
 
     return {
-        player: player,
+        // player: player,
         fastPlayer: fastPlayer,
         players: players,
         playerByName: playerByName,
@@ -47,65 +47,6 @@ module.exports = (Bot) => {
         unregister: unregister,
         whois: whois
     };
-
-    async function player(allycode, lang, cooldown) {
-        lang = lang ? lang : "ENG_US";
-        if (cooldown) {
-            cooldown = cooldown.player;
-            if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
-            if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
-        } else {
-            cooldown = playerMaxCooldown;
-        }
-        try {
-            if (allycode) allycode = allycode.toString();
-            if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
-            allycode = parseInt(allycode);
-
-            /** Get player from cache */
-            let player = await cache.get(Bot.config.mongodb.swapidb, "players", {allyCode:allycode});
-            let warnings;
-
-            /** Check if existance and expiration */
-            if ( !player || !player[0] || isExpired(player[0].updated, cooldown) ) {
-                /** If not found or expired, fetch new from API and save to cache */
-                let tempPlayer;
-                try {
-                    tempPlayer = await swgoh.fetchPlayer({
-                        allycode: allycode
-                    });
-                    if (tempPlayer.warning) warnings = tempPlayer.warning;
-                    if (tempPlayer.error) throw new Error(tempPlayer.error);
-                    tempPlayer = tempPlayer.result;
-                } catch (err) {
-                    // Probably API timeout
-                    tempPlayer = null;
-                }
-
-                if (Array.isArray(tempPlayer)) {
-                    tempPlayer = tempPlayer[0];
-                }
-                if (tempPlayer && tempPlayer._id) delete tempPlayer._id;
-
-                if (!tempPlayer || !tempPlayer.roster || !tempPlayer.name) {
-                    if (!player || !player[0]) {
-                        throw new Error("Broke getting player: " + inspect(tempPlayer));
-                    } else {
-                        return player[0];
-                    }
-                }
-
-                player = await cache.put(Bot.config.mongodb.swapidb, "players", {allyCode:allycode}, tempPlayer);
-                if (warnings) player.warnings = warnings;
-            } else {
-                /** If found and valid, serve from cache */
-                player = player[0];
-            }
-            return player;
-        } catch (e) {
-            throw e;
-        }
-    }
 
     async function fastPlayer(allycode) {
         try {
@@ -131,7 +72,7 @@ module.exports = (Bot) => {
             }
 
             // Just update the arena data, and not the updated time, so it can still update everything like normal
-            await cache.put(Bot.config.mongodb.swapidb, "players", {allyCode: allycode}, {"arena": player.arena}, false);
+            await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: allycode}, {"arena": player.arena}, false);
             return player;
         } catch (e) {
             console.log("SWAPI Broke getting player: " + e);
@@ -144,7 +85,7 @@ module.exports = (Bot) => {
             allycodes = [allycodes];
         }
 
-        const players = await cache.get(Bot.config.mongodb.swapidb, "players", {allyCode:{ $in: allycodes}});
+        const players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode:{ $in: allycodes}});
 
         return players || [];
     }
@@ -155,7 +96,7 @@ module.exports = (Bot) => {
             if (typeof name !== "string") name = name.toString();
 
             /** Try to get player's ally code from cache */
-            const player = await cache.get(Bot.config.mongodb.swapidb, "players", {name:name}, {allyCode: 1, _id: 0});
+            const player = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {name:name}, {allyCode: 1, _id: 0});
 
             return player;
         } catch (e) {
