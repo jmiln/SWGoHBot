@@ -92,15 +92,14 @@ class MyArena extends Command {
             // player.arena.char.squad.forEach((char, ix) => {
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
                 const char = player.arena.char.squad[ix];
-                let thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
+                let thisChar = playerStats.roster.find(c => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
-                const thisCharStats = playerStats.stats.find(c => c.defId === char.defId);        // Get the character
                 const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 const cName = `**${"z".repeat(thisZ.length)}${thisChar.nameKey}**`;
-                const speed  = thisCharStats.stats.final.Speed.toLocaleString();
-                const health = thisCharStats.stats.final.Health.toLocaleString();
-                const prot   = thisCharStats.stats.final.Protection.toLocaleString();
+                const speed  = thisChar.stats.final.Speed.toLocaleString();
+                const health = thisChar.stats.final.Health.toLocaleString();
+                const prot   = thisChar.stats.final.Protection.toLocaleString();
                 chars.push({
                     pos: positions[ix],
                     speed: speed,
