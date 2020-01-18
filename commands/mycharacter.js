@@ -69,7 +69,6 @@ class MyCharacter extends Command {
             });
         }
 
-        console.log(player);
         if (player && player.roster) {
             pName = player.name;
         }

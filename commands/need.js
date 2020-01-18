@@ -36,7 +36,6 @@ class Need extends Command {
             // TODO Lang this
             return super.error(message, "I couldn't find that player, please make sure you've got the corect ally code.");
         } else if (!player.roster) {
-            console.log(player);
             return super.error(message, "I couldn't find your roster.");
         }
 
