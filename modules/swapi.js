@@ -105,7 +105,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function unitStats(allycodes, cooldown) {
+    async function unitStats(allycodes, cooldown, options={}) {
         // Make sure the allycode(s) are in an array
         if (!Array.isArray(allycodes)) {
             if (!allycodes) {
@@ -115,7 +115,17 @@ module.exports = (Bot) => {
         }
 
         // Check the cooldown to see if it should update stuff or not
-        if (cooldown && cooldown.player) {
+        if (allycodes.length > 5) {
+            if (cooldown && cooldown.guild) {
+                if (cooldown) {
+                    cooldown = cooldown.guild;
+                    if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
+                    if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
+                } else {
+                    cooldown = guildMaxCooldown;
+                }
+            }
+        } else if (cooldown && cooldown.player) {
             if (cooldown) {
                 cooldown = cooldown.player;
                 if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
@@ -130,7 +140,12 @@ module.exports = (Bot) => {
             if (!allycodes.length) throw new Error("No valid ally code(s) entered");
             allycodes = allycodes.map(a => parseInt(a));
 
-            const players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
+            let players;
+            if (options && options.defId) {
+                players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, roster: {$elemMatch: {defId: options.defId}}, updated: 1});
+            } else {
+                players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
+            }
             const updated = players.filter(p => !isExpired(p.updated, cooldown));
             const updatedAC = updated.map(p => p.allyCode);
             const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
@@ -157,7 +172,7 @@ module.exports = (Bot) => {
                         await statCalculator.calcRosterStats( bareP.roster , {
                             gameStyle: true,
                             language: statLang
-                        }, {});
+                        }, {calcGP: true});
                     } catch (error) {
                         throw new Error("Error getting player stats: " + error);
                     }
@@ -165,6 +180,12 @@ module.exports = (Bot) => {
                     const charStats = await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: bareP.allyCode}, bareP);
                     charStats.warnings = warning;
                     playerStats.push(charStats);
+                }
+                if (options && options.defId) {
+                    playerStats.forEach(p => {
+                        if (!p.roster) return;
+                        p.roster = p.roster.filter(ch => ch.defId === options.defId);
+                    });
                 }
             }
             return playerStats;
@@ -226,19 +247,44 @@ module.exports = (Bot) => {
         }
 
         const outStats = [];
-        const players = await Bot.swgohAPI.unitStats(allyCodes, cooldown);
+        const players = await Bot.swgohAPI.unitStats(allyCodes, cooldown, {defId: defId});
         if (!players.length) throw new Error("Couldn't get your stats");
 
         for (const player of players) {
-            const unit = player.roster.find(c => c.defId === defId);
-            if (!unit) {
-                continue;
+            let unit;
+
+            if (!player.roster) {
+                unit = {
+                    defId: defId,
+                    gear: 0,
+                    gp: 0,
+                    level: 0,
+                    rarity: 0,
+                    skills: [],
+                    zetas: [],
+                    relic: {currentTier: 0},
+                    equipped: []
+                };
             } else {
-                unit.player = player.name;
-                unit.allyCode = player.allyCode;
-                unit.updated = player.updated;
-                outStats.push(unit);
+                unit = player.roster.find(c => c.defId === defId);
+                if (!unit) {
+                    unit = {
+                        defId: defId,
+                        gear: 0,
+                        gp: 0,
+                        level: 0,
+                        rarity: 0,
+                        skills: [],
+                        zetas: [],
+                        relic: {currentTier: 0},
+                        equipped: []
+                    };
+                }
             }
+            unit.player = player.name;
+            unit.allyCode = player.allyCode;
+            unit.updated = player.updated;
+            outStats.push(unit);
         }
         return outStats;
     }
@@ -662,6 +708,7 @@ module.exports = (Bot) => {
             if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
                 /** If not found or expired, fetch new from API and save to cache */
                 let tempGuild;
+                console.log("Can't find guild");
                 try {
                     tempGuild = await swgoh.fetchGuild({
                         allycode: allycode,
@@ -729,177 +776,157 @@ module.exports = (Bot) => {
             cooldown = guildMaxCooldown;
         }
         let warnings;
-        try {
-            const players = await cache.get(Bot.config.mongodb.swapidb, "pUnits", {allyCode:{ $in: allyCodes}});
+        const players = await cache.get(Bot.config.mongodb.swapidb, "pUnits", {allyCode:{ $in: allyCodes}});
 
-            const fresh = [];
-            players.forEach(p => {
-                // Take out anyone who's recent enough to not need to be updated
-                if (p && !isExpired(p.updated, cooldown, true)) {
-                    allyCodes.splice(allyCodes.indexOf(p.allyCode), 1);
-                    fresh.push(p);
-                }
-            });
-
-            if (allyCodes.length > 0) {
-                let rosters = await swgoh.fetchRoster({
-                    "allycodes": allyCodes,
-                    "language": lang,
-                    "enums": true,
-                    "project": {
-                        "player": 1,
-                        "allyCode": 1,
-                        "type": 1,
-                        "gp": 1,
-                        "starLevel": 1,
-                        "level": 1,
-                        "gearLevel": 1,
-                        "gear": 1,
-                        "zetas": 1,
-                        "mods": 0
-                    }
-                });
-                if (rosters.warning) warnings = rosters.warning;
-                if (rosters.error) throw new Error(rosters.error);
-                rosters = rosters.result;
-
-                for (const p of rosters) {
-                    // Get the updated/ ally code from Jedi Consular since everyone is guaranteed to have him
-                    Object.keys(p).forEach(c => {
-                        if (Array.isArray(p[c])) {
-                            p[c] = p[c][0];
-                        }
-                    });
-                    const pNew = {
-                        allyCode: p.JEDIKNIGHTCONSULAR.allyCode,
-                        updated: p.JEDIKNIGHTCONSULAR.updated,
-                        roster: p
-                    };
-                    fresh.push(pNew);
-                    await cache.put(Bot.config.mongodb.swapidb, "pUnits", {allyCode: pNew.allyCode}, pNew);
-                }
+        const fresh = [];
+        players.forEach(p => {
+            // Take out anyone who's recent enough to not need to be updated
+            if (p && !isExpired(p.updated, cooldown, true)) {
+                allyCodes.splice(allyCodes.indexOf(p.allyCode), 1);
+                fresh.push(p);
             }
+        });
 
-            const gg = {};
-            const roster = {};
-            gg.updated = Math.max(...fresh.map(p => parseInt(p.updated)));
-            fresh.forEach(p => {
-                Object.keys(p.roster).forEach(unit => {
-                    if (!roster[unit]) {
-                        roster[unit] = [p.roster[unit]];
-                    } else {
-                        roster[unit].push(p.roster[unit]);
+        if (allyCodes.length > 0) {
+            let rosters = await swgoh.fetchRoster({
+                "allycodes": allyCodes,
+                "language": lang,
+                "enums": true,
+                "project": {
+                    "player": 1,
+                    "allyCode": 1,
+                    "type": 1,
+                    "gp": 1,
+                    "starLevel": 1,
+                    "level": 1,
+                    "gearLevel": 1,
+                    "gear": 1,
+                    "zetas": 1,
+                    "mods": 0
+                }
+            });
+            if (rosters.warning) warnings = rosters.warning;
+            if (rosters.error) throw new Error(rosters.error);
+            rosters = rosters.result;
+
+            for (const p of rosters) {
+                // Get the updated/ ally code from Jedi Consular since everyone is guaranteed to have him
+                Object.keys(p).forEach(c => {
+                    if (Array.isArray(p[c])) {
+                        p[c] = p[c][0];
                     }
                 });
-            });
-
-            gg.roster = roster;
-            if (warnings) gg.warnings = warnings;
-
-            return gg;
-        } catch (e) {
-            throw e;
+                const pNew = {
+                    allyCode: p.JEDIKNIGHTCONSULAR.allyCode,
+                    updated: p.JEDIKNIGHTCONSULAR.updated,
+                    roster: p
+                };
+                fresh.push(pNew);
+                await cache.put(Bot.config.mongodb.swapidb, "pUnits", {allyCode: pNew.allyCode}, pNew);
+            }
         }
+
+        const gg = {};
+        const roster = {};
+        gg.updated = Math.max(...fresh.map(p => parseInt(p.updated)));
+        fresh.forEach(p => {
+            Object.keys(p.roster).forEach(unit => {
+                if (!roster[unit]) {
+                    roster[unit] = [p.roster[unit]];
+                } else {
+                    roster[unit].push(p.roster[unit]);
+                }
+            });
+        });
+
+        gg.roster = roster;
+        if (warnings) gg.warnings = warnings;
+
+        return gg;
     }
 
     async function zetaRec( lang="ENG_US" ) {
-        try {
-            let zetas = await cache.get(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang});
+        let zetas = await cache.get(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang});
 
-            /** Check if existance and expiration */
-            if ( !zetas || !zetas[0] || !zetas[0].zetas || isExpired(zetas[0].zetas.updated, zetaCooldown) ) {
-                /** If not found or expired, fetch new from API and save to cache */
-                try {
-                    zetas =  await swgoh.fetchAPI("/swgoh/zetas", {
-                        language: lang,
-                        enums: true,
-                        "project": {
-                            zetas: 1,
-                            credits: 1,
-                            updated: 1
-                        }
-                    });
-                    if (zetas.error) throw new Error(zetas.error);
-                    zetas = zetas.result;
-                } catch (e) {
-                    console.log("[SWGoHAPI] Could not get zeta recs: " + e.message);
-                }
-                if (Array.isArray(zetas)) {
-                    zetas = zetas[0];
-                }
-                zetas = {
-                    lang: lang,
-                    zetas: zetas
-                };
-                zetas = await cache.put(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang}, zetas);
-                zetas = zetas.zetas;
-            } else {
-                /** If found and valid, serve from cache */
-                zetas = zetas[0].zetas;
+        /** Check if existance and expiration */
+        if ( !zetas || !zetas[0] || !zetas[0].zetas || isExpired(zetas[0].zetas.updated, zetaCooldown) ) {
+            /** If not found or expired, fetch new from API and save to cache */
+            try {
+                zetas =  await swgoh.fetchAPI("/swgoh/zetas", {
+                    language: lang,
+                    enums: true,
+                    "project": {
+                        zetas: 1,
+                        credits: 1,
+                        updated: 1
+                    }
+                });
+                if (zetas.error) throw new Error(zetas.error);
+                zetas = zetas.result;
+            } catch (e) {
+                console.log("[SWGoHAPI] Could not get zeta recs: " + e.message);
             }
-            return zetas;
-        } catch (e) {
-            throw e;
+            if (Array.isArray(zetas)) {
+                zetas = zetas[0];
+            }
+            zetas = {
+                lang: lang,
+                zetas: zetas
+            };
+            zetas = await cache.put(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang}, zetas);
+            zetas = zetas.zetas;
+        } else {
+            /** If found and valid, serve from cache */
+            zetas = zetas[0].zetas;
         }
+        return zetas;
     }
 
     async function events( lang="ENG_US" ) {
-        try {
-            /** Get events from cache */
-            let events = await cache.get(Bot.config.mongodb.swapidb, "events", {lang:lang});
+        /** Get events from cache */
+        let events = await cache.get(Bot.config.mongodb.swapidb, "events", {lang:lang});
 
-            /** Check if existance and expiration */
-            if ( !events || !events[0] || isExpired(events[0].updated, eventCooldown) ) {
-                /** If not found or expired, fetch new from API and save to cache */
-                try {
-                    events =  await swgoh.fetchAPI("/swgoh/events", {
-                        language: lang,
-                        enums: true
-                    });
-                    events = events.result;
-                } catch (e) {
-                    console.log("[SWGoHAPI] Could not get events");
-                }
-                if (Array.isArray(events)) {
-                    events = events[0];
-                }
-                events = {
-                    lang: lang,
-                    events: events.events,
-                    updated: events.updated
-                };
-                events = await cache.put(Bot.config.mongodb.swapidb, "events", {lang:lang}, events);
-            } else {
-                /** If found and valid, serve from cache */
+        /** Check if existance and expiration */
+        if ( !events || !events[0] || isExpired(events[0].updated, eventCooldown) ) {
+            /** If not found or expired, fetch new from API and save to cache */
+            try {
+                events =  await swgoh.fetchAPI("/swgoh/events", {
+                    language: lang,
+                    enums: true
+                });
+                events = events.result;
+            } catch (e) {
+                console.log("[SWGoHAPI] Could not get events");
+            }
+            if (Array.isArray(events)) {
                 events = events[0];
             }
-            return events;
-        } catch (e) {
-            throw e;
+            events = {
+                lang: lang,
+                events: events.events,
+                updated: events.updated
+            };
+            events = await cache.put(Bot.config.mongodb.swapidb, "events", {lang:lang}, events);
+        } else {
+            /** If found and valid, serve from cache */
+            events = events[0];
         }
+        return events;
     }
 
     async function register(putArray) {
-        try {
-            const getArray = putArray.map(a => a[0]);
+        const getArray = putArray.map(a => a[0]);
 
-            return await swgoh.fetchAPI("/registration", {
-                "put":putArray,
-                "get":getArray
-            });
-        } catch (e) {
-            throw e;
-        }
+        return await swgoh.fetchAPI("/registration", {
+            "put":putArray,
+            "get":getArray
+        });
     }
 
     async function unregister(putArray) {
-        try {
-            return await swgoh.fetchAPI("/registration", {
-                "del":putArray,
-            });
-        } catch (e) {
-            throw e;
-        }
+        return await swgoh.fetchAPI("/registration", {
+            "del":putArray,
+        });
     }
 
     async function whois( ids ) {
@@ -907,19 +934,14 @@ module.exports = (Bot) => {
             ids = [ids];
         }
         if (!ids.length) return [];
-        try {
-            if (!ids) {
-                throw new Error("Please provide one or more allycodes or discordIds");
-            }
-
-            /** Get player from swapi cacher */
-            return await swgoh.fetchAPI("/registration", {
-                "get":ids
-            });
-
-        } catch (e) {
-            throw e;
+        if (!ids) {
+            throw new Error("Please provide one or more allycodes or discordIds");
         }
+
+        /** Get player from swapi cacher */
+        return await swgoh.fetchAPI("/registration", {
+            "get":ids
+        });
     }
 
     function isExpired( updated, cooldown={}, guild=false ) {
