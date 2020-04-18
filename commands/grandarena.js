@@ -84,12 +84,13 @@ class CommandName extends Command {
 
                 // Set of default characters to show
                 let charArr = [
-                    "BB8",
                     "COMMANDERLUKESKYWALKER",
                     "ENFYSNEST",
                     "GENERALKENOBI",
+                    "GENERALSKYWALKER",
                     "GRANDMASTERYODA",
                     "HANSOLO",
+                    "ANAKINKNIGHT",
                     "JEDIKNIGHTREVAN",
                     "PADMEAMIDALA",
                     "R2D2_LEGENDARY",
@@ -99,12 +100,11 @@ class CommandName extends Command {
                     "DARTHMALAK",
                     "DARTHREVAN",
                     "DARTHTRAYA",
-                    "KYLORENUNMASKED",
-                    "VEERS",
                     "EMPERORPALPATINE",
-                    "MOTHERTALZIN",
+                    "GRIEVOUS",
                     "GRANDADMIRALTHRAWN",
-                    "WAMPA"
+                    "KYLORENUNMASKED",
+                    "MOTHERTALZIN"
                 ];
 
                 if (options.subArgs.faction) {
@@ -319,6 +319,11 @@ class CommandName extends Command {
                             user2: user2Char ? user2Char.skills.filter(s => s.tier === 8 && s.isZeta).length.toString() : "N/A"
                         });
                         checkArr[cName].push({
+                            check: labels.relics || "Relic",
+                            user1: (user1Char && user1Char.relic && user1Char.relic.currentTier && user1Char.relic.currentTier > 2) ? user1Char.relic.currentTier-2 : "N/A",
+                            user2: (user2Char && user2Char.relic && user2Char.relic.currentTier && user2Char.relic.currentTier > 2) ? user2Char.relic.currentTier-2 : "N/A"
+                        });
+                        checkArr[cName].push({
                             check: labels.speed,
                             user1: (user1Char && user1Char.stats.final.Speed) ? user1Char.stats.final.Speed : "N/A",
                             user2: (user2Char && user2Char.stats.final.Speed) ? user2Char.stats.final.Speed : "N/A"
@@ -328,7 +333,7 @@ class CommandName extends Command {
 
                 let extra = 0;
                 const fields = [];
-                const len = 30;
+                const len = 18;
                 const checkLen = Object.keys(checkArr).length;
                 Object.keys(checkArr).forEach((c, ix) => {
                     if (checkLen <= 21 || ix < 21) {
@@ -338,9 +343,9 @@ class CommandName extends Command {
                             name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
                             value: Bot.codeBlock(Bot.makeTable({
                                 check: {value: "", align: "left", endWith: "::"},
-                                user1: {value: "", endWith: "vs", align: "right"},
+                                user1: {value: "", align: "right"},
                                 user2: {value: "", align: "left"}
-                            }, checkArr[c], {useHeader: false}).join("\n"), "asciiDoc"),
+                            }, checkArr[c], {useHeader: false}).map(e => e.replace(" ::", "::")).join("\n"), "asciiDoc"),
                             inline: true
                         });
                     } else {

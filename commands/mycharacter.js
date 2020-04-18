@@ -85,7 +85,6 @@ class MyCharacter extends Command {
             const isShip = thisChar.crew.length ? true : false;
 
             let charImg;
-            // For now, limit it to Patrons
             const charArr = [thisChar.defId];
             charArr.push(thisChar.rarity);
             charArr.push(thisChar.level);
