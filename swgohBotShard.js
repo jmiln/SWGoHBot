@@ -8,5 +8,5 @@ const Manager = new Discord.ShardingManager("./swgohBot.js",{
 Manager.spawn();
 
 Manager.on("launch", (shard) => {
-    console.log(`Launching Shard ${shard.id} (${shard.id + 1}/${Manager.totalShards})`);
+    console.log(`Launching Shard ${shard.id + 1}/${Manager.totalShards}`);
 });

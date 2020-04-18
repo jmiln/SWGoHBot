@@ -17,7 +17,22 @@
             "Clone Trooper",
             "Galactic Republic"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Aayla Secura",
@@ -1066,7 +1081,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Potency",
                 "source": "Crouching Rancor"
@@ -2873,7 +2888,22 @@
             "Leader",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Tenacity x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection/ Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection/ Health",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "General Kenobi",
@@ -2930,7 +2960,22 @@
             "Jedi",
             "Leader"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "General Veers",
@@ -2970,7 +3015,8 @@
         "name": "Geonosian Brood Alpha",
         "uniqueName": "GEONOSIANBROODALPHA",
         "aliases": [
-            "Geonosian Brood Alpha"
+            "Geonosian Brood Alpha",
+            "GBA"
         ],
         "nameVariant": [
             "Geonosian Brood Alpha"
@@ -4193,7 +4239,22 @@
             "Galactic Republic",
             "Jedi"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Kit Fisto",
@@ -4618,7 +4679,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
                 "source": "Crouching Rancor"
@@ -5416,6 +5477,39 @@
             "Attacker",
             "Resistance"
         ],
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Crit. Chance",
+                "circle": "Health/ Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        }
+    },
+    {
+        "name": "Resistance Hero Poe",
+        "uniqueName": "EPIXPOE",
+        "aliases": [
+            "Resistance Hero Poe"
+        ],
+        "nameVariant": [
+            "Resistance Hero Poe"
+        ],
+        "url": "http://swgoh.gg/characters/resistance-hero-poe/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/EPIXPOE/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Resistance"
+        ],
         "mods": {}
     },
     {
@@ -5497,6 +5591,26 @@
                 "source": "Crouching Rancor"
             }
         }
+    },
+    {
+        "name": "Rey",
+        "uniqueName": "GLREY",
+        "aliases": [
+            "Rey"
+        ],
+        "nameVariant": [
+            "Rey"
+        ],
+        "url": "http://swgoh.gg/characters/rey/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/GLREY/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Galactic Legend",
+            "Leader",
+            "Resistance"
+        ],
+        "mods": {}
     },
     {
         "name": "Rey (Jedi Training)",
@@ -5931,7 +6045,22 @@
             "Sith Empire",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Defense x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Protection",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection/ Potency",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Sith Marauder",
@@ -6001,20 +6130,6 @@
             "Sith"
         ],
         "mods": {
-            "General": {
-                "sets": [
-                    "Speed x4",
-                    "Defense x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
-            },
             "Palp lead": {
                 "sets": [
                     "Defense x2",
@@ -6027,6 +6142,20 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
+                "source": "Crouching Rancor"
+            },
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Tenacity x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Offense",
                 "source": "Crouching Rancor"
             }
         }
@@ -6183,6 +6312,26 @@
         }
     },
     {
+        "name": "Supreme Leader Kylo Ren",
+        "uniqueName": "SUPREMELEADERKYLOREN",
+        "aliases": [
+            "Supreme Leader Kylo Ren"
+        ],
+        "nameVariant": [
+            "Supreme Leader Kylo Ren"
+        ],
+        "url": "http://swgoh.gg/characters/supreme-leader-kylo-ren/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/SUPREMELEADERKYLOREN/",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "First Order",
+            "Galactic Legend",
+            "Leader"
+        ],
+        "mods": {}
+    },
+    {
         "name": "T3-M4",
         "uniqueName": "T3_M4",
         "aliases": [
@@ -6210,7 +6359,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
@@ -6238,7 +6387,7 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Critical Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
                 "source": "Crouching Rancor"
@@ -6666,16 +6815,16 @@
         "mods": {
             "General": {
                 "sets": [
+                    "Speed x4",
                     "Health x2",
-                    "Health x2",
-                    "Health x2"
+                    ""
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Health",
                 "circle": "Health",
-                "cross": "Health",
+                "cross": "Health/ Protection",
                 "source": "Crouching Rancor"
             }
         }

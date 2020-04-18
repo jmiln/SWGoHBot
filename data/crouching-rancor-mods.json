@@ -1,6 +1,6 @@
 {
     "generatedAt": {
-        "date": "2019-12-21 20:00:01.000000",
+        "date": "2020-04-18 20:00:01.000000",
         "timezone_type": 3,
         "timezone": "UTC"
     },
@@ -50,7 +50,7 @@
             "circle": "Protection",
             "cross": "Offense / Protection",
             "short": "at",
-            "families": "jedi ; galactic republic",
+            "families": "jedi ; galactic republic ; 501st",
             "crew": "1"
         },
         {
@@ -274,7 +274,7 @@
             "circle": "Protection",
             "cross": "Offense / Protection",
             "short": "cc",
-            "families": "clone ; galactic republic",
+            "families": "clone trooper ; galactic republic",
             "crew": "0"
         },
         {
@@ -290,7 +290,7 @@
             "circle": "Protection",
             "cross": "Offense / Protection",
             "short": "cc",
-            "families": "clone ; galactic republic",
+            "families": "clone trooper ; galactic republic",
             "crew": "0"
         },
         {
@@ -354,7 +354,7 @@
             "circle": "Protection",
             "cross": "Offense / Protection",
             "short": "cs",
-            "families": "clone ; galactic republic",
+            "families": "clone trooper ; galactic republic",
             "crew": "1"
         },
         {
@@ -402,7 +402,7 @@
             "circle": "Protection",
             "cross": "Offense",
             "short": "",
-            "families": "clone ; galactic republic",
+            "families": "clone trooper ; galactic republic ; 501st",
             "crew": "0"
         },
         {
@@ -418,7 +418,7 @@
             "circle": "Protection",
             "cross": "Potency",
             "short": "",
-            "families": "clone ; galactic republic",
+            "families": "clone trooper ; galactic republic ; 501st",
             "crew": "1"
         },
         {
@@ -434,7 +434,7 @@
             "circle": "Protection",
             "cross": "Protection",
             "short": "",
-            "families": "clone ; galactic republic",
+            "families": "clone trooper ; galactic republic ; 501st",
             "crew": "1"
         },
         {
@@ -450,7 +450,7 @@
             "circle": "Protection",
             "cross": "Protection",
             "short": "",
-            "families": "clone ; galactic republic",
+            "families": "clone trooper ; galactic republic ; 501st",
             "crew": "1"
         },
         {
@@ -755,7 +755,7 @@
             "cross": "Protection",
             "short": "gk",
             "families": "jedi ; galactic republic",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "General Veers Leader",
@@ -1830,8 +1830,8 @@
             "crew": "0"
         },
         {
-            "name": "Sith Trooper",
-            "cname": "Sith Trooper",
+            "name": "Sith Empire Trooper",
+            "cname": "Sith Empire Trooper",
             "set1": "SPE",
             "set2": "DEF",
             "set3": "",
@@ -1841,7 +1841,7 @@
             "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection / Potency",
-            "short": "st",
+            "short": "set",
             "families": "sith ; sith empire",
             "crew": "0"
         },
@@ -2693,7 +2693,7 @@
             "circle": "Health",
             "cross": "Potency",
             "short": "",
-            "families": "clone ; galactic republic",
+            "families": "clone trooper ; galactic republic ; 501st",
             "crew": "1"
         },
         {
@@ -3217,7 +3217,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Damage",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense / Protection",
             "short": "",
@@ -3265,7 +3265,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Damage",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense",
             "short": "BS",
@@ -3345,7 +3345,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Damage",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense",
             "short": "",
@@ -3377,7 +3377,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Damage",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Potency",
             "short": "co",
@@ -3563,17 +3563,113 @@
         {
             "name": "Wat Tambor",
             "cname": "Wat Tambor",
-            "set1": "HP",
+            "set1": "SPE",
             "set2": "HP",
-            "set3": "HP",
+            "set3": "",
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
+            "cross": "Health / Protection",
             "short": "wt",
             "families": "separatist",
+            "crew": "0"
+        },
+        {
+            "name": "General Skywalker",
+            "cname": "General Skywalker",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection",
+            "short": "gs",
+            "families": "jedi ; galactic republic ; 501st",
+            "crew": "0"
+        },
+        {
+            "name": "Ki-Adi-Mundi",
+            "cname": "Ki-Adi-Mundi",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "short": "kam",
+            "families": "jedi ; galactic republic",
+            "crew": "0"
+        },
+        {
+            "name": "ARC Trooper",
+            "cname": "ARC Trooper",
+            "set1": "OFF",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage / Offense",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "at",
+            "families": "clone trooper ; galactic republic ; 501st",
+            "crew": "0"
+        },
+        {
+            "name": "General Hux",
+            "cname": "General Hux",
+            "set1": "SPE",
+            "set2": "TEN",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection / Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection / Health",
+            "short": "gh",
+            "families": "first order",
+            "crew": "0"
+        },
+        {
+            "name": "Sith Trooper",
+            "cname": "Sith Trooper",
+            "set1": "CD",
+            "set2": "TEN",
+            "set3": "HP",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection / Health",
+            "cross": "Offense",
+            "short": "st",
+            "families": "first order ; sith",
+            "crew": "0"
+        },
+        {
+            "name": "Resistance Hero Finn",
+            "cname": "Resistance Hero Finn",
+            "set1": "SPE",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage / Crit. Chance",
+            "circle": "Health / Protection",
+            "cross": "Offense",
+            "short": "rhf",
+            "families": "resistance",
             "crew": "0"
         }
     ]

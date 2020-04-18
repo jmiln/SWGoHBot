@@ -458,6 +458,22 @@
         }
     },
     {
+        "name": "Finalizer",
+        "uniqueName": "CAPITALFINALIZER",
+        "aliases": [
+            "Finalizer"
+        ],
+        "nameVariant": [
+            "Finalizer"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/finalizer/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {}
+    },
+    {
         "name": "First Order SF Tie Fighter",
         "uniqueName": "TIEFIGHTERFOSF",
         "aliases": [
@@ -1149,6 +1165,24 @@
                 "abilityDesc": "Deal physical damage to target enemy.  This attack can't be evaded and always scores a Critical Hit against enemies without protection."
             }
         }
+    },
+    {
+        "name": "Raddus",
+        "uniqueName": "CAPITALRADDUS",
+        "aliases": [
+            "Raddus"
+        ],
+        "nameVariant": [
+            "Raddus"
+        ],
+        "crew": [
+            "Amilyn Holdo"
+        ],
+        "url": "http://swgoh.gg/ships/raddus/",
+        "avatarURL": "",
+        "side": "",
+        "factions": [],
+        "abilities": {}
     },
     {
         "name": "Resistance X-wing",

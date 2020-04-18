@@ -4,8 +4,9 @@ class Register extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "register",
-            category: "SWGoH",
-            aliases: ["reg"]
+            category: "Misc",
+            aliases: ["reg"],
+            permissions: ["EMBED_LINKS"]
         });
     }
 

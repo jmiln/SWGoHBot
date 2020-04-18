@@ -851,6 +851,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Fleet Commander",
             "Resistance",
             "Tank"
         ],
@@ -864,8 +865,8 @@
             "Taunt"
         ],
         "role": "Tank",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "CAPITALRADDUS",
+        "ship_slot": 0,
         "activate_shard_count": 25
     },
     {
@@ -12719,6 +12720,7 @@
         "alignment": "Dark Side",
         "categories": [
             "First Order",
+            "Fleet Commander",
             "Leader",
             "Support"
         ],
@@ -12732,8 +12734,8 @@
             "Reset Cooldown"
         ],
         "role": "Support",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "CAPITALFINALIZER",
+        "ship_slot": 0,
         "activate_shard_count": 25
     },
     {
@@ -24909,6 +24911,177 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Resistance Hero Poe",
+        "base_id": "EPIXPOE",
+        "pk": 420,
+        "url": "http://swgoh.gg/characters/resistance-hero-poe/",
+        "image": "/game-asset/u/EPIXPOE/",
+        "power": 29347,
+        "description": "Offensive Attacker who overpowers his enemies with debilitating effects",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "002",
+                    "003",
+                    "003",
+                    "011",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "011",
+                    "028",
+                    "032",
+                    "020",
+                    "020",
+                    "028"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "054",
+                    "060",
+                    "048",
+                    "054",
+                    "055",
+                    "060"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "050",
+                    "055",
+                    "068",
+                    "054",
+                    "071",
+                    "059"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "083",
+                    "080",
+                    "088",
+                    "068",
+                    "054",
+                    "054"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "095",
+                    "095",
+                    "090",
+                    "091",
+                    "102",
+                    "083"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "107",
+                    "098",
+                    "098",
+                    "095",
+                    "088",
+                    "102"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "102",
+                    "114",
+                    "091",
+                    "095",
+                    "100",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "109",
+                    "117",
+                    "172",
+                    "099",
+                    "111",
+                    "098"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "136",
+                    "136",
+                    "130",
+                    "173",
+                    "130",
+                    "140"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "143",
+                    "131",
+                    "117",
+                    "111",
+                    "173",
+                    "137"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "163",
+                    "158",
+                    "163",
+                    "168",
+                    "168",
+                    "G12Finisher_EPIXPOE_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Resistance"
+        ],
+        "ability_classes": [
+            "Buff Immunity",
+            "Daze",
+            "Dispel",
+            "DoT",
+            "Stun"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Resistance Pilot",
         "base_id": "RESISTANCEPILOT",
         "pk": 38,
@@ -25246,6 +25419,182 @@
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
+    },
+    {
+        "name": "Rey",
+        "base_id": "GLREY",
+        "pk": 434,
+        "url": "http://swgoh.gg/characters/rey/",
+        "image": "/game-asset/u/GLREY/",
+        "power": 41896,
+        "description": "Resistance Leader who safeguards her allies by providing powerful shields and delivering high damage",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "002",
+                    "003",
+                    "004",
+                    "006",
+                    "001",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "011",
+                    "022",
+                    "018",
+                    "013",
+                    "022",
+                    "028"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "032",
+                    "041",
+                    "060",
+                    "037",
+                    "034",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "049",
+                    "024",
+                    "060",
+                    "053",
+                    "040",
+                    "078"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "071",
+                    "081",
+                    "073",
+                    "048",
+                    "069",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "088",
+                    "074",
+                    "077",
+                    "088",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "046",
+                    "110",
+                    "092",
+                    "086",
+                    "078",
+                    "113"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "117",
+                    "108",
+                    "112",
+                    "117",
+                    "113",
+                    "107"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "173",
+                    "117",
+                    "103",
+                    "173",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "144",
+                    "139",
+                    "173",
+                    "105",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "173",
+                    "128",
+                    "145",
+                    "173",
+                    "141",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "164",
+                    "165",
+                    "171",
+                    "171",
+                    "G12Finisher_GLREY_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Galactic Legend",
+            "Leader",
+            "Resistance"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Counter",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Revive",
+            "Stun"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Rey (Jedi Training)",
@@ -28190,6 +28539,184 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Supreme Leader Kylo Ren",
+        "base_id": "SUPREMELEADERKYLOREN",
+        "pk": 441,
+        "url": "http://swgoh.gg/characters/supreme-leader-kylo-ren/",
+        "image": "/game-asset/u/SUPREMELEADERKYLOREN/",
+        "power": 41896,
+        "description": "Destructive Leader of the First Order who overpowers his enemies with brutal attacks",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "001",
+                    "001",
+                    "005",
+                    "005",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "019",
+                    "017",
+                    "015",
+                    "028",
+                    "025",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "004",
+                    "028",
+                    "049",
+                    "053",
+                    "060",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "061",
+                    "051",
+                    "056",
+                    "068",
+                    "073",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "076",
+                    "060",
+                    "074",
+                    "089",
+                    "079",
+                    "086"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "079",
+                    "089",
+                    "079",
+                    "086",
+                    "091",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "068",
+                    "092",
+                    "097",
+                    "110",
+                    "109",
+                    "113"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "112",
+                    "117",
+                    "109",
+                    "106",
+                    "117",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "172",
+                    "117",
+                    "126",
+                    "172",
+                    "116"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "172",
+                    "144",
+                    "172",
+                    "145",
+                    "138",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "117",
+                    "172",
+                    "172",
+                    "140",
+                    "141",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "160",
+                    "165",
+                    "171",
+                    "171",
+                    "G12Finisher_SUPREMELEADERKYLOREN_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "First Order",
+            "Galactic Legend",
+            "Leader"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "AoE",
+            "Buff Immunity",
+            "Counter",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Revive",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "T3-M4",
         "base_id": "T3_M4",
         "pk": 286,
@@ -29883,6 +30410,7 @@
         "alignment": "Light Side",
         "categories": [
             "Attacker",
+            "Resistance",
             "Scoundrel",
             "Smuggler"
         ],
@@ -30057,6 +30585,7 @@
         "alignment": "Light Side",
         "categories": [
             "Attacker",
+            "Resistance",
             "Scoundrel",
             "Smuggler"
         ],

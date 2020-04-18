@@ -6,10 +6,6 @@ module.exports = async (Bot, client) => {
     if (client.shard) {
         readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. Shard #${client.shard.id}`;
         if (client.shard.id === 0) {
-            if (Bot.config.sendStats) {
-                require("../modules/botStats.js")(Bot, client);
-            }
-
             // Save the bot's current guild count every 5 minutes
             setInterval(async () => {
                 const guilds = await Bot.guildCount();
@@ -19,11 +15,12 @@ module.exports = async (Bot, client) => {
             if (Bot.config.patreon) {
                 // Reload any patrons
                 await Bot.updatePatrons();
-                setInterval(Bot.updatePatrons,  1 * 60 * 1000);
+                setInterval(Bot.updatePatrons,  5 * 60 * 1000);
             }
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
                 setInterval(async () => {
+                    // console.log("Checking Ranks now");
                     await Bot.getRanks();
                 }, 1 * 60 * 1000);
             }

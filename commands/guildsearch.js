@@ -9,7 +9,7 @@ class GuildSearch extends Command {
             aliases: ["search", "gs"],
             permissions: ["EMBED_LINKS"],
             flags: {
-                "ships": { aliases: ["s", "ship"] },
+                ships: { aliases: ["s", "ship"] },
                 reverse: { aliases: ["rev"] },
                 mods: { aliases: ["mod", "m"] },
                 stars: { aliases: ["*", "star", "rarity"] },
@@ -283,29 +283,34 @@ class GuildSearch extends Command {
                 });
             });
 
-            for (const char of Object.keys(guildGG.roster)) {
-                if (options.flags.ships && guildGG.roster[char][0].type === "CHARACTER") {
-                    continue;
-                } else if (!options.flags.ships && guildGG.roster[char][0].type === "SHIP") {
+            for (const player of guildGG) {
+                if (!player) {
+                    console.log("missing player");
                     continue;
                 }
-                guildGG.roster[char].forEach(p => {
-                    starOut[p.player] = starOut[p.player] || {};
-                    if (starOut[p.player][p.starLevel]) {
-                        starOut[p.player][p.starLevel] += 1;
-                    } else {
-                        starOut[p.player][p.starLevel] = 1;
+                for (const char of player.roster) {
+                    // console.log(char);
+                    if (options.flags.ships && (char.combatType === "CHARACTER" || char.combatType == 1)) {
+                        continue;
+                    } else if (!options.flags.ships && (char.combatType === "SHIP" || char.combatType !== 1)) {
+                        continue;
                     }
-                });
+                    starOut[player.name] = starOut[player.name] || {};
+                    if (starOut[player.name][char.rarity]) {
+                        starOut[player.name][char.rarity] += 1;
+                    } else {
+                        starOut[player.name][char.rarity] = 1;
+                    }
+                }
             }
 
-            let tableIn = Object.keys(starOut).map(k => {
+            let tableIn = Object.keys(starOut).map(name => {
                 return {
-                    four:  starOut[k]["4"] || 0,
-                    five:  starOut[k]["5"] || 0,
-                    six:   starOut[k]["6"] || 0,
-                    seven: starOut[k]["7"] || 0,
-                    name:  k
+                    four:  starOut[name]["4"] || 0,
+                    five:  starOut[name]["5"] || 0,
+                    six:   starOut[name]["6"] || 0,
+                    seven: starOut[name]["7"] || 0,
+                    name:  name
                 };
             });
 
@@ -460,6 +465,8 @@ class GuildSearch extends Command {
             const gStats = await Bot.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
 
             const sortedMembers = gStats.sort((a, b) => {
+                if (!a.stats || !a.stats.final) return -1;
+                if (!b.stats || !b.stats.final) return 1;
                 if (!a.stats.final[sortBy]) a.stats.final[sortBy] = 0;
                 if (!b.stats.final[sortBy]) b.stats.final[sortBy] = 0;
                 return a.stats.final[sortBy] < b.stats.final[sortBy] ? 1 : -1;
@@ -467,6 +474,9 @@ class GuildSearch extends Command {
 
             sortedMembers.forEach( member => {
                 const stats = member.stats;
+                if (!stats || !stats.final) {
+                    return;
+                }
                 Object.keys(stats.final).forEach(s => {
                     if (stats.final[s] % 1 !== 0) {
                         stats[s] = (stats.final[s] * 100).toFixed(2) + "%";

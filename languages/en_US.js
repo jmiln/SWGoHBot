@@ -797,7 +797,7 @@ module.exports = class extends Language {
                         usage: ";guildsearch [user] -gear [-sort gearLvl]",
                         args: {
                             "user": "The player who's guild you want to check. (me | userID | mention)",
-                            "-gear": "Tell it you want to see the gear levels (-g)",
+                            "-gear": "Display gear tiers for your guild. (-g)",
                             "-sort": "Choose one of the given gear lvls (9,10,11,12) to sort by"
                         }
                     },

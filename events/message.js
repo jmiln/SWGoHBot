@@ -70,7 +70,7 @@ module.exports = async (Bot, message) => {
     // Check whether the command, or alias, exist in the collections defined in swgohbot.js.
     const cmd = message.client.commands.get(command) || message.client.commands.get(message.client.aliases.get(command));
 
-    if (!cmd) return;
+    if (!cmd || !cmd.conf.enabled) return;
 
     const user = await Bot.userReg.getUser(message.author.id);
 
@@ -94,7 +94,7 @@ module.exports = async (Bot, message) => {
     // If the command exists, **AND** the user has permission, run it.
     if (cmd && level >= cmd.conf.permLevel) {
         if (message.guild) {
-            const defPerms = ["SEND_MESSAGES", "VIEW_CHANNEL"];
+            const defPerms = ["SEND_MESSAGES", "VIEW_CHANNEL", "EMBED_LINKS"];
             if (args.length === 1 && args[0].toLowerCase() === "help") {
                 // If they want the help, it's embeds now, so they need that activated
                 defPerms.push("EMBED_LINKS");

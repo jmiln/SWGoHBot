@@ -90,7 +90,6 @@ class Faction extends Command {
                 try {
                     player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
                     if (Array.isArray(player)) player = player[0];
-                    console.log(player);
                 } catch (e) {
                     return super.error(message, e.message);
                 }

@@ -20,11 +20,6 @@
             "Discord": "https://discord.gg/8N37JTc",
             "Invite": "https://discordapp.com/oauth2/authorize?client_id=436693905736466432&permissions=0&scope=bot"
         },
-        "MouseBot": {
-            "Desc": "Reports on player's rosters, and has some calculators",
-            "Discord": "https://discord.gg/VFUatwk",
-            "Invite": "https://discordapp.com/api/oauth2/authorize?client_id=213381103287926785&permissions=1879395392&scope=bot"
-        },
         "Scorpio": {
             "Desc": "Overall SWGoH utilities bot",
             "Discord": "https://discord.gg/XB4DKCt",
@@ -46,11 +41,7 @@
     "Game Changers": {
         "AhnaldT101": {
             "YouTube": "https://www.youtube.com/user/AhnaldT101",
-            "Discord": "https://discord.gg/kwr5jzv",
-            "Other Links": {
-                "Hall of Fame": "http://www.swgohub.com/",
-                "Ships Hall of Fame": "http://www.swgohub.com/ranking_tables/ships"
-            }
+            "Discord": "https://discord.gg/kwr5jzv"
         }
     },
     "Websites": {

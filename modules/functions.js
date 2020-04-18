@@ -62,6 +62,9 @@ module.exports = (Bot, client) => {
 
     // This finds any character that matches the search, and returns them in an array
     Bot.findChar = (searchName, charList, ship=false) => {
+        if (!searchName || !searchName.length) {
+            return [];
+        }
         const options = {
             tokenize: true,
             matchAllTokens: true,

@@ -3,16 +3,13 @@ const snekfetch = require("snekfetch");
 // const nodeFetch = require("node-fetch");
 const statEnums = require("../data/statEnum.js");
 
-const statCalculator = require("swgoh-stat-calc");
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
-// GameData saved from https://swgoh-stat-calc.glitch.me/gameData.json
-const gameData  = require("../data/gameData.json");
-statCalculator.setGameData( gameData );
 
 module.exports = (Bot) => {
     const swgoh = Bot.swgoh;
     const cache = Bot.cache;
     const costs = Bot.abilityCosts;
+    const statCalculator = Bot.statCalculator;
 
     // Set the max cooldowns (In minutes)
     const playerMinCooldown = 1;    // 1 min
@@ -156,12 +153,29 @@ module.exports = (Bot) => {
             if (needUpdating.length) {
                 let updatedBare;
                 try {
-                    const tempBare = await swgoh.fetchPlayer({
-                        allycode: needUpdating
-                    });
-                    if (tempBare.warning) warning = tempBare.warning;
-                    if (tempBare.error) throw new Error(tempBare.error);
-                    updatedBare = tempBare.result;
+                    let tempBare;
+                    if (needUpdating.length <= 20) {
+                        // If it's not a ton of players at a time
+                        tempBare = await swgoh.fetchPlayer({
+                            allycode: needUpdating
+                        });
+                        if (tempBare.warning) warning = tempBare.warning;
+                        if (tempBare.error) throw new Error(tempBare.error);
+                        updatedBare = tempBare.result;
+                    } else {
+                        // If it's a lot of users
+                        // Get the first half of the list
+                        tempBare = await swgoh.fetchPlayer({
+                            allycode: needUpdating.slice(0, Math.floor(needUpdating.length/2))
+                        });
+                        updatedBare = tempBare.result;
+
+                        // Then get the 2nd half
+                        tempBare = await swgoh.fetchPlayer({
+                            allycode: needUpdating.slice(Math.floor(needUpdating.length/2), needUpdating.length)
+                        });
+                        updatedBare = updatedBare.concat(tempBare.result);
+                    }
                 } catch (error) {
                     // Couldn't get the data from the api, so send old stuff
                     console.log("Error getting player(s) in unitStats: " + error);
@@ -263,7 +277,8 @@ module.exports = (Bot) => {
                     skills: [],
                     zetas: [],
                     relic: {currentTier: 0},
-                    equipped: []
+                    equipped: [],
+                    stats: {}
                 };
             } else {
                 unit = player.roster.find(c => c.defId === defId);
@@ -708,7 +723,6 @@ module.exports = (Bot) => {
             if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
                 /** If not found or expired, fetch new from API and save to cache */
                 let tempGuild;
-                console.log("Can't find guild");
                 try {
                     tempGuild = await swgoh.fetchGuild({
                         allycode: allycode,

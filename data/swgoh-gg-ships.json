@@ -59,6 +59,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Sith",
+            "Sith Empire",
             "Tank"
         ],
         "ability_classes": [
@@ -312,6 +313,31 @@
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 10
+    },
+    {
+        "name": "Finalizer",
+        "base_id": "CAPITALFINALIZER",
+        "url": "http://swgoh.gg/ships/finalizer/",
+        "image": "/game-asset/u/CAPITALFINALIZER/",
+        "power": 73695,
+        "description": "First Order Capital ship that enables the First Order fleet to have an early game advantage and relentlessly pursue enemies",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Capital Ship",
+            "First Order"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Offense Up"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true,
+        "activate_shard_count": 80
     },
     {
         "name": "First Order SF TIE Fighter",
@@ -786,6 +812,34 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Raddus",
+        "base_id": "CAPITALRADDUS",
+        "url": "http://swgoh.gg/ships/raddus/",
+        "image": "/game-asset/u/CAPITALRADDUS/",
+        "power": 71928,
+        "description": "Supportive Resistance Capital Ship that will do whatever is necessary to protect the fleet",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Capital Ship",
+            "Resistance"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Dispel",
+            "Expose",
+            "Foresight",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Tenacity Up"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true,
+        "activate_shard_count": 80
+    },
+    {
         "name": "Resistance X-wing",
         "base_id": "XWINGRESISTANCE",
         "url": "http://swgoh.gg/ships/resistance-x-wing/",
@@ -884,7 +938,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Sith"
+            "Sith",
+            "Sith Empire"
         ],
         "ability_classes": [
             "Foresight",

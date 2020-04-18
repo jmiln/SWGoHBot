@@ -4,8 +4,9 @@ class UserConf extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "userconf",
-            category: "SWGoH",
+            category: "Misc",
             aliases: ["uc", "uconf", "userconfig", "uconfig"],
+            permissions: ["EMBED_LINKS"],
             flags: {
                 unreg: {
                     aliases: ["ur"]
