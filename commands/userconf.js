@@ -36,6 +36,9 @@ class UserConf extends Command {
         }
 
         let user = await Bot.userReg.getUser(userID); // eslint-disable-line no-unused-vars
+        if (!user) {
+            return super.error(message, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
+        }
         switch (target) {
             case "allycodes":
             case "allycode": {

@@ -105,6 +105,9 @@ class Setconf extends Command {
                         return message.channel.send(message.language.get("COMMAND_SETCONF_ARRAY_SUCCESS", key, value, (action === "add" ? "added to" : "removed from")));
                     }
                     case "BOOLEAN":
+                        if (!value[0]) {
+                            return super.error(message, message.language.get("COMMAND_INVALID_BOOL"));
+                        }
                         if (onVar.includes(value[0].toLowerCase())) {
                             value = true;
                         } else if (offVar.includes(value[0].toLowerCase())) {

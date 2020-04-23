@@ -147,6 +147,8 @@ module.exports = (Bot, client) => {
                 const now = moment();
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
+                if (!player || !player.arena) continue;
+
                 if (player.arena.char && player.arena.char.rank) {
                     if (["both", "char"].includes(user.arenaAlert.arena)) {
                         let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(6, "h");

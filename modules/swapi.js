@@ -62,7 +62,7 @@ module.exports = (Bot) => {
             }
 
             if (!player || !player.roster || !player.name) {
-                if (player.error) {
+                if (player && player.error) {
                     throw new Error("Broke getting fastPlayer: " + inspect(player.error));
                 }
                 throw new Error("Broke getting fastPlayer: " + inspect(player));
@@ -72,8 +72,8 @@ module.exports = (Bot) => {
             await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: allycode}, {"arena": player.arena}, false);
             return player;
         } catch (e) {
-            console.log("SWAPI Broke getting player: " + e);
-            throw e;
+            console.log("SWAPI Broke in fastPlayer: " + e);
+            return false;
         }
     }
 
