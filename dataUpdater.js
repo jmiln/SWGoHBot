@@ -88,9 +88,9 @@ async function updateRemoteData() {
     // https://docs.google.com/spreadsheets/d/1Z0mOMyCctmxXWEU1cLMlDMRDUdw1ocBmWh4poC3RVXg/htmlview#
 
     const currentCharacters   = require("./data/characters.json");
-    const currentCharSnapshot = require("./data/characters.json");
+    const currentCharSnapshot = JSON.parse(JSON.stringify(currentCharacters));
     const currentShips        = require("./data/ships.json");
-    const currentShipSnapshot = require("./data/ships.json");
+    const currentShipSnapshot = JSON.parse(JSON.stringify(currentShips));
     const log = [];
 
     // console.log("UpdateRemoteData", "Checking for updates to remote data sources");
@@ -104,7 +104,6 @@ async function updateRemoteData() {
 
     if (await updateIfChanged(GG_CHAR_CACHE, "https://swgoh.gg/api/characters/?format=json")) {
         log.push("Detected a change in characters from swgoh.gg");
-        // TODO - periodic forced updates to adopt updated minor changes?
         await updateCharacters(currentCharacters);
     }
 
@@ -125,7 +124,6 @@ async function updateRemoteData() {
         log.push("Detected a change in ship locations.");
     }
 
-    // console.log("UpdateRemoteData", "Finished processing remote updates");
     if (JSON.stringify(currentCharSnapshot) !== JSON.stringify(currentCharacters)) {
         log.push("Changes detected in character data, saving updates and reloading");
         saveFile("./data/characters.json", currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
