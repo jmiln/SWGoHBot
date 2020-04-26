@@ -1,5 +1,9 @@
 const fs = require("fs");
 const fetch = require("node-fetch");
+const request = require("request-promise-native");
+
+const config = require("./config.js");
+const MongoClient = require("mongodb").MongoClient;
 
 const RANCOR_MOD_CACHE       = "./data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE          = "./data/swgoh-gg-chars.json";
@@ -132,6 +136,11 @@ async function updateRemoteData() {
         log.push("Changes detected in ship data, saving updates and reloading");
         saveFile("./data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
     }
+
+    if (config.patreon) {
+        await updatePatrons();
+    }
+
     return log;
 }
 
@@ -413,4 +422,56 @@ function createEmptyShip(name, url, uniqueName) {
         "abilities": {
         }
     };
+}
+
+async function updatePatrons() {
+    const patreon = config.patreon;
+    if (!patreon) {
+        return;
+    }
+    const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
+    const cache = await require("./modules/cache.js")(mongo);
+    try {
+        let response = await request({
+            headers: {
+                Authorization: "Bearer " + patreon.creatorAccessToken
+            },
+            uri: "https://www.patreon.com/api/oauth2/api/current_user/campaigns",
+            json: true
+        });
+
+        if (response && response.data && response.data.length) {
+            response = await request({
+                headers: {
+                    Authorization: "Bearer " + patreon.creatorAccessToken
+                },
+                uri: "https://www.patreon.com/api/oauth2/api/campaigns/1328738/pledges?page%5Bcount%5D=100",
+                json: true
+            });
+
+            const data = response.data;
+            const included = response.included;
+
+            const pledges = data.filter(data => data.type === "pledge");
+            const users = included.filter(inc => inc.type === "user");
+
+            pledges.forEach(pledge => {
+                const user = users.find(user => user.id === pledge.relationships.patron.data.id);
+                if (user) {
+                    cache.put("swgohbot", "patrons", {id: pledge.relationships.patron.data.id}, {
+                        id:                 pledge.relationships.patron.data.id,
+                        full_name:          user.attributes.full_name,
+                        vanity:             user.attributes.vanity,
+                        email:              user.attributes.email,
+                        discordID:          user.attributes.social_connections.discord ? user.attributes.social_connections.discord.user_id : null,
+                        amount_cents:       pledge.attributes.amount_cents,
+                        declined_since:     pledge.attributes.declined_since,
+                        pledge_cap_cents:   pledge.attributes.pledge_cap_cents,
+                    });
+                }
+            });
+        }
+    } catch (e) {
+        console.log("Error getting patrons");
+    }
 }

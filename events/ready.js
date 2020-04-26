@@ -12,11 +12,6 @@ module.exports = async (Bot, client) => {
                 fs.writeFileSync("../dashboard/data/guildCount.txt", guilds, "utf8");
             }, 5 * 60 * 1000);
 
-            if (Bot.config.patreon) {
-                // Reload any patrons
-                await Bot.updatePatrons();
-                setInterval(Bot.updatePatrons,  5 * 60 * 1000);
-            }
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
                 setInterval(async () => {

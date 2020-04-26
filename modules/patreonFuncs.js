@@ -1,58 +1,6 @@
 const moment = require("moment");
-const request = require("request-promise-native");
 
 module.exports = (Bot, client) => {
-    // Get all patrons and their info
-    Bot.updatePatrons = async () => {
-        const patreon = Bot.config.patreon;
-        if (!patreon) {
-            return;
-        }
-        try {
-            let response = await request({
-                headers: {
-                    Authorization: "Bearer " + patreon.creatorAccessToken
-                },
-                uri: "https://www.patreon.com/api/oauth2/api/current_user/campaigns",
-                json: true
-            });
-
-            if (response && response.data && response.data.length) {
-                response = await request({
-                    headers: {
-                        Authorization: "Bearer " + patreon.creatorAccessToken
-                    },
-                    uri: "https://www.patreon.com/api/oauth2/api/campaigns/1328738/pledges?page%5Bcount%5D=100",
-                    json: true
-                });
-
-                const data = response.data;
-                const included = response.included;
-
-                const pledges = data.filter(data => data.type === "pledge");
-                const users = included.filter(inc => inc.type === "user");
-
-                pledges.forEach(pledge => {
-                    const user = users.find(user => user.id === pledge.relationships.patron.data.id);
-                    if (user) {
-                        Bot.cache.put("swgohbot", "patrons", {id: pledge.relationships.patron.data.id}, {
-                            id:                 pledge.relationships.patron.data.id,
-                            full_name:          user.attributes.full_name,
-                            vanity:             user.attributes.vanity,
-                            email:              user.attributes.email,
-                            discordID:          user.attributes.social_connections.discord ? user.attributes.social_connections.discord.user_id : null,
-                            amount_cents:       pledge.attributes.amount_cents,
-                            declined_since:     pledge.attributes.declined_since,
-                            pledge_cap_cents:   pledge.attributes.pledge_cap_cents,
-                        });
-                    }
-                });
-            }
-        } catch (e) {
-            console.log("Error getting patrons");
-        }
-    };
-
     // Check if a given user is a patron, and if so, return their info
     Bot.getPatronUser = async (userId) => {
         if (!userId) return new Error("Missing user ID");
@@ -133,7 +81,7 @@ module.exports = (Bot, client) => {
                     player = await Bot.swgohAPI.fastPlayer(acc.allyCode);
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
-                    await Bot.wait(500);
+                    await Bot.wait(750);
                     return console.log("Broke in getRanks: " + e.message);
                 }
                 if (!acc.lastCharRank) {
@@ -243,7 +191,7 @@ module.exports = (Bot, client) => {
                     user.accounts[ix] = acc;
                 }
                 // Wait here in case of extra accounts
-                await Bot.wait(500);
+                await Bot.wait(750);
             }
             await Bot.userReg.updateUser(patron.discordID, user);
         }
