@@ -1,6 +1,5 @@
 const fs = require("fs");
 const fetch = require("node-fetch");
-const request = require("request-promise-native");
 
 const config = require("./config.js");
 const MongoClient = require("mongodb").MongoClient;
@@ -14,7 +13,9 @@ const SHIPLOCATIONS          = "./data/shipLocations.json";
 const GAMEDATA               = "./data/gameData.json";
 const UNKNOWN                = "Unknown";
 
-console.log("Starting data updater");
+const INTERVAL = 5;
+
+console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
 setInterval(async () => {
     const time = new Date().toString().split(" ").slice(1, 5);
@@ -23,7 +24,7 @@ setInterval(async () => {
         console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
         console.log(log.join("\n"));
     }
-}, 5 * 60 * 1000);
+}, INTERVAL * 60 * 1000);
 
 function getModType(type) {
     switch (type) {
@@ -432,22 +433,19 @@ async function updatePatrons() {
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
     const cache = await require("./modules/cache.js")(mongo);
     try {
-        let response = await request({
-            headers: {
-                Authorization: "Bearer " + patreon.creatorAccessToken
-            },
-            uri: "https://www.patreon.com/api/oauth2/api/current_user/campaigns",
-            json: true
-        });
-
-        if (response && response.data && response.data.length) {
-            response = await request({
+        let response = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns",
+            {
                 headers: {
                     Authorization: "Bearer " + patreon.creatorAccessToken
-                },
-                uri: "https://www.patreon.com/api/oauth2/api/campaigns/1328738/pledges?page%5Bcount%5D=100",
-                json: true
-            });
+                }
+            }).then(res => res.json());
+
+        if (response && response.data && response.data.length) {
+            response = await fetch("https://www.patreon.com/api/oauth2/api/campaigns/1328738/pledges?page%5Bcount%5D=100", {
+                headers: {
+                    Authorization: "Bearer " + patreon.creatorAccessToken
+                }
+            }).then(res => res.json());
 
             const data = response.data;
             const included = response.included;
