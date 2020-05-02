@@ -184,8 +184,9 @@ module.exports = (Bot) => {
                     try {
                         await statCalculator.calcRosterStats( bareP.roster , {
                             gameStyle: true,
-                            language: statLang
-                        }, {calcGP: true});
+                            language: statLang,
+                            calcGP: true
+                        });
                     } catch (error) {
                         throw new Error("Error getting player stats: " + error);
                     }
