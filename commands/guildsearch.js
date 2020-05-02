@@ -715,7 +715,12 @@ class GuildSearch extends Command {
             // Can get the order from abilities table => skillReferenceList
             let maxZ = 0;
             const zetas = [];
-            const apiChar = await Bot.swgohAPI.getCharacter(character.uniqueName);
+            let apiChar;
+            try {
+                apiChar = await Bot.swgohAPI.getCharacter(character.uniqueName);
+            } catch (e) {
+                return super.error(message, "Couldn't get the character - " + e);
+            }
             for (const ab of apiChar.skillReferenceList) {
                 if (ab.cost && ab.cost.AbilityMatZeta > 0) {
                     maxZ = maxZ + 1;
