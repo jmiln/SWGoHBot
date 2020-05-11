@@ -1,4 +1,4 @@
-const {inspect} = require("util");
+const {inspect} = require("util"); // eslint-disable-line no-unused-vars
 const nodeFetch = require("node-fetch");
 const statEnums = require("../data/statEnum.js");
 
@@ -19,9 +19,7 @@ module.exports = (Bot) => {
     const zetaCooldown =   7*24*60; // 7 days
 
     return {
-        // player: player,
         fastPlayer: fastPlayer,
-        players: players,
         playerByName: playerByName,
         unitStats: unitStats,
         langChar: langChar,
@@ -45,45 +43,27 @@ module.exports = (Bot) => {
     };
 
     async function fastPlayer(allycode) {
-        try {
-            if (allycode) allycode = allycode.toString();
-            if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
-            allycode = parseInt(allycode);
+        if (allycode) allycode = allycode.toString();
+        if (!allycode || isNaN(allycode) || allycode.length !== 9) { throw new Error("Please provide a valid allycode"); }
 
-            let player;
-            try {
-                player = await nodeFetch(Bot.config.premiumIP_Port + "/pipe/player/" + allycode)
-                    .then(res => res.json());
-            } catch (err) {
-                // Probably API timeout
-                player = null;
-                console.log("ERROR(FP): " + err.message);
-            }
+        const rawPlayer = await nodeFetch(Bot.config.premiumIP_port + "/player", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({ payload: { allyCode: allycode } })
+        }).then(data => data.json());
 
-            if (!player || !player.roster || !player.name) {
-                if (player && player.error) {
-                    throw new Error("Broke getting fastPlayer: " + inspect(player.error));
-                }
-                throw new Error("Broke getting fastPlayer: " + inspect(player));
-            }
+        const player = {arena: {}, name: null, poUTCOffsetMinutes: null};
 
-            // Just update the arena data, and not the updated time, so it can still update everything like normal
-            await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: allycode}, {"arena": player.arena}, false);
-            return player;
-        } catch (e) {
-            console.log("SWAPI Broke in fastPlayer: " + e);
-            return false;
+        for (const ar of rawPlayer.result.pvpProfile) {
+            player.arena[ar.tab === 1 ? "char" : "ship"] = {
+                rank: ar.rank,
+                squad: ar.squad.cell.map(a => { return { defId: a.unitDefId.split(":")[0], squadUnitType: a.squadUnitType }; })
+            };
         }
-    }
-
-    async function players(allycodes) {
-        if (!Array.isArray(allycodes)) {
-            allycodes = [allycodes];
-        }
-
-        const players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode:{ $in: allycodes}});
-
-        return players || [];
+        player.poUTCOffsetMinutes = rawPlayer.result.localTimeZoneOffsetMinutes;
+        player.name = rawPlayer.result.name;
+        await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: allycode}, {"arena": player.arena}, false);
+        return player;
     }
 
     async function playerByName(name) {
@@ -268,32 +248,11 @@ module.exports = (Bot) => {
             let unit;
 
             if (!player.roster) {
-                unit = {
-                    defId: defId,
-                    gear: 0,
-                    gp: 0,
-                    level: 0,
-                    rarity: 0,
-                    skills: [],
-                    zetas: [],
-                    relic: {currentTier: 0},
-                    equipped: [],
-                    stats: {}
-                };
+                unit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], relic: {currentTier: 0}, equipped: [], stats: {} };
             } else {
                 unit = player.roster.find(c => c.defId === defId);
                 if (!unit) {
-                    unit = {
-                        defId: defId,
-                        gear: 0,
-                        gp: 0,
-                        level: 0,
-                        rarity: 0,
-                        skills: [],
-                        zetas: [],
-                        relic: {currentTier: 0},
-                        equipped: []
-                    };
+                    unit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], relic: {currentTier: 0}, equipped: [] };
                 }
             }
             unit.player = player.name;
