@@ -281,7 +281,7 @@ module.exports = (Bot, client) => {
                 errArr.push(f);
             }
         });
-        const channel = client.channels.get(msgID);
+        const channel = client.channels.cache.get(msgID);
         if (channel) {
             channel.send(`Reloaded ${coms.length} commands, failed to reload ${errArr.length} commands.${errArr.length > 0 ? "\n```" + errArr.join("\n") + "```" : ""}`);
         }
@@ -309,7 +309,7 @@ module.exports = (Bot, client) => {
                 errEv.push(file);
             }
         });
-        const channel = client.channels.get(msgID);
+        const channel = client.channels.cache.get(msgID);
         if (channel) {
             channel.send(`Reloaded ${ev.length} events, failed to reload ${errEv.length} events.${errEv.length > 0 ? "\n```" + errEv.join("\n") + "```" : ""}`);
         }
@@ -328,7 +328,7 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.get(msgID);
+        const channel = client.channels.cache.get(msgID);
         if (channel) {
             if (err) {
                 channel.send(`Something broke: ${err}`);
@@ -347,7 +347,7 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.get(msgID);
+        const channel = client.channels.cache.get(msgID);
         if (channel) {
             if (err) {
                 channel.send(`Something broke: ${err}`);
@@ -366,7 +366,7 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.get(msgID);
+        const channel = client.channels.cache.get(msgID);
         if (channel) {
             if (err) {
                 channel.send(`Something broke: ${err}`);
@@ -393,7 +393,7 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.get(msgID);
+        const channel = client.channels.cache.get(msgID);
         if (channel) {
             if (err) {
                 channel.send(`Something broke: ${err}`);
@@ -420,7 +420,7 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.get(chanID);
+        const channel = client.channels.cache.get(chanID);
         if (channel) {
             if (err) {
                 channel.send(`Something broke: ${err}`);
@@ -498,7 +498,7 @@ module.exports = (Bot, client) => {
         // If it's that error, don't bother showing it again
         try {
             if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
-                client.channels.get(Bot.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
+                client.channels.cache.get(Bot.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
             }
         } catch (e) {
             // Don't bother doing anything
@@ -513,7 +513,7 @@ module.exports = (Bot, client) => {
         console.error(`[${Bot.myTime()}] Uncaught Promise Error: `, errorMsg);
         try {
             if (Bot.config.logs.logToChannel) {
-                client.channels.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
+                client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
             }
         } catch (e) {
             // Don't bother doing anything
@@ -645,14 +645,14 @@ module.exports = (Bot, client) => {
     Bot.userCount = async () => {
         let users = 0;
         if (client.shard && client.shard.count > 0) {
-            await client.shard.fetchClientValues("users.size")
+            await client.shard.fetchClientValues("users.cache.size")
                 .then(results => {
                     users =  results.reduce((prev, val) => prev + val, 0);
                 })
                 .catch(console.error);
             return users;
         } else {
-            return client.users.size;
+            return client.users.cache.size;
         }
     };
 
@@ -669,7 +669,7 @@ module.exports = (Bot, client) => {
                 .catch(console.error);
             return guilds;
         } else {
-            return client.guilds.size;
+            return client.guilds.cache.size;
         }
     };
 
@@ -678,7 +678,7 @@ module.exports = (Bot, client) => {
      * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
     client.findEmoji = (id) => {
-        const temp = client.emojis.get(id);
+        const temp = client.emojis.cache.get(id);
         if (!temp) return null;
 
         // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
@@ -705,7 +705,7 @@ module.exports = (Bot, client) => {
                     const foundEmoji = emojiArray.find(emoji => emoji);
                     if (!foundEmoji) return false;
 
-                    return client.rest.makeRequest("get", Discord.Constants.Endpoints.Guild(foundEmoji.guild).toString(), true)
+                    return client.api.guilds(foundEmoji.guild).get()
                         .then(raw => {
                             const guild = new Discord.Guild(client, raw);
                             const emoji = new Discord.Emoji(guild, foundEmoji);
@@ -715,7 +715,7 @@ module.exports = (Bot, client) => {
         } else {
             const emoji = client.findEmoji(id);
             if (!emoji) return false;
-            return new Discord.Emoji(client.guilds.get(emoji.guild), emoji);
+            return new Discord.Emoji(client.guilds.cache.get(emoji.guild), emoji);
         }
     };
 

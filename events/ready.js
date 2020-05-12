@@ -1,10 +1,12 @@
 /* eslint no-undef: 0 */
+// const {inspect} = require("util");
 const fs = require("fs");
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
-    let readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers.`;
+    client.shard.id = client.shard.ids[0];
+    let readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`;
     if (client.shard) {
-        readyString = `${client.user.username} is ready to serve ${client.users.size} users in ${client.guilds.size} servers. Shard #${client.shard.id}`;
+        readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers. Shard #${client.shard.id}`;
         if (client.shard.id === 0) {
             // Save the bot's current guild count every 5 minutes
             setInterval(async () => {
@@ -20,6 +22,7 @@ module.exports = async (Bot, client) => {
                 }, 1 * 60 * 1000);
             }
         }
+
         // If it's the last shard being started, load all the emotes in
         if ((client.shard.id + 1) === client.shard.count) {
             console.log("Loading up emotes");
@@ -44,4 +47,3 @@ module.exports = async (Bot, client) => {
 
     Bot.loadAllEvents();
 };
-

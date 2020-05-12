@@ -845,7 +845,7 @@ class Event extends Command {
                 userResult.forEach(user => {
                     const userID = user.replace(/\D/g,"");
                     const thisUser = message.guild.members.get(userID);
-                    const userName = thisUser ? `${thisUser.displayName}` : `${message.client.users.get(user) ? message.client.users.get(user).username : "Unknown User"}`;
+                    const userName = thisUser ? `${thisUser.displayName}` : `${message.client.users.cache.get(user) ? message.client.users.cache.get(user).username : "Unknown User"}`;
                     mess = mess.replace(user, userName);
                 });
             }

@@ -1,14 +1,14 @@
 // const {inspect} = require("util");
-module.exports = async (Bot, oldMember, newMember) => {
+module.exports = async (Bot, oldPresence, newPresence) => {
     // Ignore bots
-    if (newMember.user.bot) return;
+    if (newPresence.user.bot) return;
 
-    const guild = newMember.guild;
+    const guild = newPresence.guild;
     const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guild.id}, attributes: Bot.config.defaultSettings});
     const guildConf = guildSettings.dataValues;
 
     // Make sure the guild has it turned on, and that it's not changing for a different reason
-    if (!guildConf.useActivityLog || oldMember.presence.status === newMember.presence.status) {
+    if (!guildConf.useActivityLog || !oldPresence || oldPresence.status === newPresence.status) {
         return;
     }
 
@@ -21,10 +21,9 @@ module.exports = async (Bot, oldMember, newMember) => {
         };
     }
     // Only log it if it's changing from another status to offline
-    if (newMember.presence.status === "offline") {
+    if (newPresence.status === "offline") {
         // Here, we need to log the user's ID (newMember.id), and the timestamp for the change (new Date().getTime();)
-        activityLog.log[newMember.id] = new Date().getTime();
+        activityLog.log[newPresence.member.id] = new Date().getTime();
         await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: guild.id}, activityLog);
     }
 };
-
