@@ -46,7 +46,7 @@ module.exports = (Bot) => {
         if (allycode) allycode = allycode.toString();
         if (!allycode || isNaN(allycode) || allycode.length !== 9) { throw new Error("Please provide a valid allycode"); }
 
-        const rawPlayer = await nodeFetch(Bot.config.premiumIP_port + "/player", {
+        const rawPlayer = await nodeFetch(Bot.config.premiumIP_Port + "/player", {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({ payload: { allyCode: allycode } })
