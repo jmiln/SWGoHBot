@@ -18,7 +18,6 @@
         "cheerio": "^1.0.0-rc.3",
         "discord.js": "^12.2.0",
         "fuse-js-latest": "^3.1.0",
-        "lodash": ">=4.17.13",
         "moment": "^2.25.1",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.28",

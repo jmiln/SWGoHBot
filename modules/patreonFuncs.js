@@ -106,7 +106,7 @@ module.exports = (Bot, client) => {
                         const minTil =  parseInt((then-now)/60/1000);
                         const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
 
-                        const pUser = await client.fetchUser(patron.discordID);
+                        const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
                             if (user.arenaAlert.payoutWarning > 0) {
                                 if (user.arenaAlert.payoutWarning  === minTil) {
@@ -150,7 +150,7 @@ module.exports = (Bot, client) => {
 
                         const minTil =  parseInt((then-now)/60/1000);
                         const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
-                        const pUser = await client.fetchUser(patron.discordID);
+                        const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
                             if (user.arenaAlert.payoutWarning > 0) {
                                 if (user.arenaAlert.payoutWarning  === minTil) {

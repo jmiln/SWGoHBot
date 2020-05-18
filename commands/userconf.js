@@ -297,7 +297,7 @@ class UserConf extends Command {
                         `swgohLanguage: **${user.lang ? (user.lang.swgohLanguage ? user.lang.swgohLanguage.toUpperCase() : "N/A") : "N/A"}**`
                     ].join("\n")
                 });
-                const u = await message.client.fetchUser(userID);
+                const u = await message.client.users.fetch(userID);
                 return message.channel.send({embed: {
                     author: {name: u.username},
                     fields: fields
