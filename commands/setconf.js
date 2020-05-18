@@ -52,7 +52,7 @@ class Setconf extends Command {
                                 return message.reply(message.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
                             }
                         } else if (key === "announceChan") {
-                            const newChannel = message.guild.channels.find(c => c.name ===  value);
+                            const newChannel = message.guild.channels.cache.find(c => c.name ===  value);
                             if (!newChannel) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN", value));
                             if (!newChannel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return super.error(message, message.language.get("COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS"));
                         } else if (key === "changelogWebhook") {

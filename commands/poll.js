@@ -54,8 +54,8 @@ class Poll extends Command {
                 const [guildID, chanID] = pollID.split("-");
 
                 // If they do not have access to the channel, tell em so/ don't let them interact with the poll (see/ vote)
-                if (client.guilds.has(guildID) && client.guilds.get(guildID).channels.has(chanID)) {
-                    const perms = client.guilds.get(guildID).channels.get(chanID).permissionsFor(message.author.id);
+                if (client.guilds.cache.has(guildID) && client.guilds.cache.get(guildID).channels.cache.has(chanID)) {
+                    const perms = client.guilds.cache.get(guildID).channels.cache.get(chanID).permissionsFor(message.author.id);
                     if (!perms || !perms.has("READ_MESSAGES")) {
                         // The guild and channel exist, but the message author cannot see it
                         return super.error(message, message.language.get("COMMAND_POLL_NO_ACCESS"));

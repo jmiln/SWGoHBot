@@ -172,11 +172,11 @@ module.exports = (Bot, client) => {
             announceChan = channel;
         }
         // Try and get it by ID first
-        let chan = guild.channels.get(announceChan.replace(/[^0-9]/g, ""));
+        let chan = guild.channels.cache.get(announceChan.replace(/[^0-9]/g, ""));
 
         // If  that didn't work, try and get it by name
         if (!chan) {
-            chan = guild.channels.find(c => c.name === announceChan);
+            chan = guild.channels.cache.find(c => c.name === announceChan);
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return

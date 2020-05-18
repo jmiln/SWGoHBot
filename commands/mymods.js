@@ -131,7 +131,7 @@ class MyMods extends Command {
                     }
                     fields.push({
                         name: `${shapeIcon} ${typeIcon} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
-                        value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(28)}\``,
+                        value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(23)}\``,
                         inline: true
                     });
                 });
@@ -329,4 +329,3 @@ class MyMods extends Command {
 }
 
 module.exports = MyMods;
-

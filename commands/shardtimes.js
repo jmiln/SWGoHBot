@@ -176,9 +176,9 @@ class Shardtimes extends Command {
                 return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_NO_SOURCE"));
             }
             // Check and make sure the destination channel exists/ the bot has permissions to see/ send there
-            let destChan = message.guild.channels.find(c => c.name === userID);
+            let destChan = message.guild.channels.cache.find(c => c.name === userID);
             if (!destChan) {
-                destChan = message.guild.channels.get(userID.replace(/[^0-9]/g, ""));
+                destChan = message.guild.channels.cache.get(userID.replace(/[^0-9]/g, ""));
                 if (!destChan) {
                     return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_NO_DEST", userID));
                 }

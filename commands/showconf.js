@@ -17,10 +17,10 @@ class Showconf extends Command {
         // If I or an adminHelper adds a guild ID here, pull up that instead
         if (args[0] && level >= 9) {
             let found = false;
-            if (!client.guilds.has(args[0]) && client.shard) {
+            if (!client.guilds.cache.has(args[0]) && client.shard) {
                 const names = await client.shard.broadcastEval(`
-                    if (this.guilds.has('${args[0]}')) {
-                        this.guilds.get('${args[0]}').name;
+                    if (this.guilds.cache.has('${args[0]}')) {
+                        this.guilds.cache.get('${args[0]}').name;
                     }
                 `);
                 names.forEach(gName => {
@@ -30,7 +30,7 @@ class Showconf extends Command {
                     }
                 });
             } else {
-                guildName = client.guilds.get(guildID).name;
+                guildName = client.guilds.cache.get(guildID).name;
                 found = true;
             }
             if (found) {

@@ -60,12 +60,12 @@ module.exports = (Bot, client) => {
                         const tmpEv = await reCalc(event, nowTime);
                         if (tmpEv) {
                             // Got a viable next time, so set it and move on
-                            event.eventDT = tmpEv.eventDT;
+                            event.eventDT    = tmpEv.eventDT;
                             event.repeatDays = tmpEv.repeatDays;
-                            event.repeat = tmpEv.repeat;
+                            event.repeat     = tmpEv.repeat;
                             // Save it back with the new values
                             await Bot.database.models.eventDBs.update(event, {where: {eventID: event.eventID}})
-                                .then(async () => {
+                                .then(() => {
                                     Bot.scheduleEvent(event, guildConf.eventCountdown);
                                 });
                         } else {
@@ -100,8 +100,8 @@ module.exports = (Bot, client) => {
             const timesToCountdown = countdown;
             const nowTime = momentTZ().unix() * 1000;
             timesToCountdown.forEach(time => {
-                const cdTime = time * 60;
-                const evTime = event.eventDT / 1000;
+                const cdTime  = time * 60;
+                const evTime  = event.eventDT / 1000;
                 const newTime = (evTime-cdTime-60) * 1000;
                 if (newTime > nowTime) {    // If the countdown is between now and the event
                     const sID = `${event.eventID}-CD${time}`;
@@ -120,6 +120,7 @@ module.exports = (Bot, client) => {
 
     // Re-caclulate a viable eventDT, and return the updated event
     async function reCalc(ev, nowTime) {
+        if (!nowTime) nowTime = momentTZ().unix() * 1000;  // In case it doesn't get passed in... Looking at you announcer
         if (ev.repeatDays.length > 0) { // repeatDays is an array of days to skip
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
@@ -131,7 +132,7 @@ module.exports = (Bot, client) => {
             }
         } else { // 0d0h0m
             // Else it's using basic repeat
-            while (nowTime > ev.eventDT) {
+            while (nowTime >= ev.eventDT) {
                 ev.eventDT = momentTZ(parseInt(ev.eventDT)).add(ev.repeat.repeatDay, "d").add(ev.repeat.repeatHour, "h").add(ev.repeat.repeatMin, "m").unix()*1000;
             }
         }
@@ -197,7 +198,7 @@ module.exports = (Bot, client) => {
         const guildConf = guildSettings.dataValues;
 
         let repTime = false, repDay = false;
-        let newEvent = {};
+        let newEvent = null;
         const repDays = event.repeatDays;
 
         if (event.countdown === "yes") {
@@ -244,24 +245,16 @@ module.exports = (Bot, client) => {
             // Else if it's set to repeat
         } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
             repTime = true;
-            newEvent = {
-                "eventID": event.eventID,
-                "eventDT": (momentTZ(parseInt(event.eventDT)).add(event.repeat["repeatDay"], "d").add(event.repeat["repeatHour"], "h").add(event.repeat["repeatMin"], "m").unix()*1000),
-                "eventMessage": event.eventMessage,
-                "eventChan": event.eventChan,
-                "countdown": event.countdown,
-                "repeat": {
-                    "repeatDay": event.repeat["repeatDay"],
-                    "repeatHour": event.repeat["repeatHour"],
-                    "repeatMin": event.repeat["repeatMin"]
-                },
-                "repeatDays": []
-            };
+            newEvent = await reCalc(event, (momentTZ().unix() * 1000));
         }
 
         if (repTime || repDay) {
             await Bot.database.models.eventDBs.update(newEvent, {where: {eventID: event.eventID}})
                 .then(async () => {
+                    const eventToDel = Bot.schedule.scheduledJobs[event.eventID];
+                    if (eventToDel) {
+                        eventToDel.cancel();
+                    }
                     Bot.scheduleEvent(newEvent, guildConf.eventCountdown);
                 })
                 .catch(error => { Bot.log("ERROR", "Broke trying to replace event: " + error, {color: Bot.colors.red}); });
