@@ -13,8 +13,8 @@ module.exports = (Bot, client) => {
 
     // Some normal color codes
     Bot.colors = {
-        red: 0xFF0000,
-        green: 0x00FF00
+        red: "#FF0000",
+        green: "#00FF00"
     };
 
     /*
@@ -560,7 +560,7 @@ module.exports = (Bot, client) => {
             }
         });
         message.channel.send({embed: {
-            "color": 0x605afc,
+            "color": "#605afc",
             "author": {
                 "name": language.get("BASE_COMMAND_HELP_HEADER", command.help.name)
             },

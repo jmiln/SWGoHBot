@@ -135,7 +135,7 @@ class Mods extends Command {
                     });
                 }
                 const embed = {
-                    "color": `${character.side === "light" ? 0x0055ff : 0xe01414}`,
+                    "color": `${character.side === "light" ? "#0055FF" : "#E01414"}`,
                     "author": {
                         "name": character.name,
                         "url": character.url,
@@ -171,4 +171,3 @@ class Mods extends Command {
 }
 
 module.exports = Mods;
-

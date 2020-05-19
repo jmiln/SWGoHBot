@@ -74,7 +74,7 @@ class Ships extends Command {
         }
         message.channel.send({
             embed: {
-                "color": `${ship.side === "light" ? 0x5114e0 : 0xe01414}`,
+                "color": `${ship.side === "light" ? "#5114e0" : "#e01414"}`,
                 "author": {
                     "name": ship.name.toProperCase(),
                     "url": ship.url,

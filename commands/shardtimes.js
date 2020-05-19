@@ -243,7 +243,7 @@ class Shardtimes extends Command {
             sortedShardTimes.forEach(time => {
                 const times = [];
                 shardOut[time].forEach(user => {
-                    let userFlag = message.client.emojis.get(shardTimes[user].flag);
+                    let userFlag = message.client.emojis.cache.get(shardTimes[user].flag);
                     if (!userFlag) {
                         userFlag = shardTimes[user].flag;
                     }

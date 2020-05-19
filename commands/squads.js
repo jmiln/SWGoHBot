@@ -118,7 +118,7 @@ class Squads extends Command {
                         description: `**${squadList[list].phase[phase].name}**\n${squadList[list].rarity}* ${shipEv ? "" : `| g${squadList[list].gear}`} | lvl${squadList[list].level}`,
                         fields: fields,
                         footer: footer,
-                        color: 0x00FF00
+                        color: "#00FF00"
                     }});
                 } else {
                     const fields = [];
@@ -177,7 +177,7 @@ class Squads extends Command {
                         },
                         fields: fields,
                         footer: footer,
-                        color: 0x00FF00
+                        color: "#00FF00"
                     }});
                 }
 

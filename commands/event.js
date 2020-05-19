@@ -808,7 +808,7 @@ class Event extends Command {
                     try {
                         const res = await updateEvent(oldId, event);
                         if (res) {
-                            return super.error(message, message.language.get("COMMAND_EVENT_EDIT_UPDATED", target, cFrom, cTo), {title: "Success", color: 0x00ff00});
+                            return super.error(message, message.language.get("COMMAND_EVENT_EDIT_UPDATED", target, cFrom, cTo), {title: "Success", color: "#00ff00"});
                         } else {
                             return super.error(message, message.language.get("COMMAND_EVENT_EDIT_BROKE"));
                         }

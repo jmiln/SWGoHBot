@@ -136,7 +136,7 @@ class Zetas extends Command {
 
             const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
             msg.edit({embed: {
-                color: 0x000000,
+                color: "#000000",
                 author: author,
                 description: desc.join("\n"),
                 fields: fields,

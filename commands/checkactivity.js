@@ -172,7 +172,7 @@ class CheckAct extends Command {
                 author: {name: message.language.get("COMMAND_CHECKACTIVITY_LOG_HEADER", message.guild.name, objArr.length)},
                 description: desc.value,
                 fields: fields,
-                color: 0x00FF00
+                color: "#00FF00"
             }});
         } else {
             // Make sure it's a valid userID
@@ -188,7 +188,7 @@ class CheckAct extends Command {
                 const lastActive = activityLog.log[userID];
                 const diff = moment().diff(moment(lastActive));
 
-                return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name, getTime(diff)), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: 0x00FF00});
+                return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK", name, getTime(diff)), {title: message.language.get("COMMAND_CHECKACTIVITY_USER_CHECK_HEADER"), color: "#00FF00"});
             } else {
                 return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_NO_USER"));
             }

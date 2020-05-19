@@ -240,7 +240,7 @@ class UserConf extends Command {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_OPTION"), {title: "Invalid Option"});
                 }
                 await Bot.userReg.updateUser(userID, user);
-                return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_UPDATED"), {title: "Success!", color: 0x00FF00});
+                return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_UPDATED"), {title: "Success!", color: "#00FF00"});
             }
             case "lang": {
                 let setting = args.length ? args[0].toLowerCase() : null;
@@ -265,7 +265,7 @@ class UserConf extends Command {
                     return super.error(message, message.language.get("COMMAND_USERCONF_LANG_INVALID_OPTION"), {title: "Invalid Option"});
                 }
                 await Bot.userReg.updateUser(userID, user);
-                return super.error(message, message.language.get("COMMAND_USERCONF_LANG_UPDATED", action, setting), {title: "Success!", color: 0x00FF00});
+                return super.error(message, message.language.get("COMMAND_USERCONF_LANG_UPDATED", action, setting), {title: "Success!", color: "#00FF00"});
             }
             case "view": {
                 // Show the user's settings/ config

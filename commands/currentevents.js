@@ -150,7 +150,7 @@ class CurrentEvents extends Command {
                 author: {
                     name: message.language.get("COMMAND_CURRENTEVENTS_HEADER")
                 },
-                color: 0x0f0f0f,
+                color: "#0f0f0f",
                 description: message.language.get("COMMAND_CURRENTEVENTS_DESC", count),
                 fields: fields
             }});
@@ -165,7 +165,7 @@ class CurrentEvents extends Command {
                 author: {
                     name: message.language.get("COMMAND_CURRENTEVENTS_HEADER")
                 },
-                color: 0x0f0f0f,
+                color: "#0f0f0f",
                 description: message.language.get("COMMAND_CURRENTEVENTS_DESC", count) + "\n" + desc + "\n`------------------------------`",
                 fields: fields
             }});
@@ -176,4 +176,3 @@ class CurrentEvents extends Command {
 }
 
 module.exports = CurrentEvents;
-

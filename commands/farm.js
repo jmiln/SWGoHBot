@@ -143,7 +143,7 @@ class Farm extends Command {
             author: {
                 name: character.name + message.language.get("COMMAND_FARM_LOCATIONS")
             },
-            color: character.side === "light" ? 0x0055ff : 0xe01414,
+            color: character.side === "light" ? "#0055ff" : "#e01414",
             description: `**${outList.map(f => "* " + f).join("\n")}**`,
             fields: fields
         }});

@@ -105,7 +105,7 @@ class Command {
         if (!err) throw new Error("Missing error message");
         if (!options) options = {};
         options.title = options.title || "Error";
-        options.color = options.color || 0xe01414;
+        options.color = options.color || "#e01414";
         if (options.example) {
             const prefix = message.guildSettings ? message.guildSettings.prefix : ";";
             err += `\n\n**Example:**${this.Bot.codeBlock(prefix + options.example)}`;
@@ -118,7 +118,7 @@ class Command {
         if (!out) throw new Error("Missing outgoing success message");
         if (!options) options = {};
         options.title = options.title || "Success!";
-        options.color = options.color || 0x00ff00;
+        options.color = options.color || "#00ff00";
         await this.embed(message, out, options);
     }
 
