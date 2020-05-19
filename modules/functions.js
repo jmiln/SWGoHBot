@@ -49,8 +49,8 @@ module.exports = (Bot, client) => {
             const adminRoles = guildConf.adminRole;
 
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
-                const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase());
-                if (adminRole && message.member.roles.has(adminRole.id)) return permlvl = 3;
+                const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase());
+                if (adminRole && message.member.roles.cache.has(adminRole.id)) return permlvl = 3;
             }
         } catch (e) {() => {};}
         return permlvl;

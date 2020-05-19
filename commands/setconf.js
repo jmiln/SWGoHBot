@@ -84,7 +84,7 @@ class Setconf extends Command {
 
                         if (action === "add") {
                             if (key === "adminRole") { // If it needs a role, make sure it's a valid role
-                                const role = message.guild.roles.find(r => r.name === value);
+                                const role = message.guild.roles.cache.find(r => r.name === value);
                                 if (!role) return super.error(message, message.language.get("COMMAND_SETCONF_ADMINROLE_MISSING_ROLE", value));
                             }
                             if (!valArray.includes(value)) {
@@ -138,7 +138,7 @@ class Setconf extends Command {
 
                         if (action === "add") {
                             if (key === "adminRole") { // If it needs a role, make sure it's a valid role
-                                const role = message.guild.roles.find(r => r.name === value);
+                                const role = message.guild.roles.cache.find(r => r.name === value);
                                 if (!role) return super.error(message, message.language.get("COMMAND_SETCONF_ADMINROLE_MISSING_ROLE", value));
                             }
                             if (!valArray.includes(value)) {

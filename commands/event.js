@@ -844,7 +844,7 @@ class Event extends Command {
             if (userResult !== null) {
                 userResult.forEach(user => {
                     const userID = user.replace(/\D/g,"");
-                    const thisUser = message.guild.members.get(userID);
+                    const thisUser = message.guild.members.cache.get(userID);
                     const userName = thisUser ? `${thisUser.displayName}` : `${message.client.users.cache.get(user) ? message.client.users.cache.get(user).username : "Unknown User"}`;
                     mess = mess.replace(user, userName);
                 });
@@ -852,10 +852,10 @@ class Event extends Command {
             if (roleResult !== null) {
                 roleResult.forEach(role => {
                     const roleID = role.replace(/\D/g,"");
-                    // const roleName = message.guild.roles.find("id", roleID).name;
+                    // const roleName = message.guild.roles.cache.find("id", roleID).name;
                     let roleName;
                     try {
-                        roleName = message.guild.roles.get(roleID).name;
+                        roleName = message.guild.roles.cache.get(roleID).name;
                     } catch (e) {
                         roleName = roleID;
                     }
