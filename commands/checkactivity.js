@@ -53,7 +53,7 @@ class CheckAct extends Command {
                         u.ally = acct.allyCode;
                     }
                 }
-                const user = await message.guild.members.get(u.user);
+                const user = await message.guild.members.cache.get(u.user);
                 if (!user || user.user.bot) {
                     u.user = null;
                 } else {
@@ -82,10 +82,10 @@ class CheckAct extends Command {
                 // Filter out anyone that does not have the specified role (Name or mention/ id)
                 const roleNId = options.subArgs.role;
                 // Try finding by ID first
-                let role = message.guild.roles.get(roleNId.replace(/[^0-9]/gi, ""));
+                let role = message.guild.roles.cache.get(roleNId.replace(/[^0-9]/gi, ""));
                 if (!role) {
                     // If it can't find the role by ID, try by name
-                    role = message.guild.roles.find(r => r.name === roleNId);
+                    role = message.guild.roles.cache.find(r => r.name === roleNId);
                 }
                 if (!role) {
                     // If it can't find it by role or name, error
@@ -93,7 +93,7 @@ class CheckAct extends Command {
                 }
                 // Now that we have a role, filter out anyone that doens't have it
                 objArr = objArr.filter(u => {
-                    const outRole = u.roles.find(r => r.id === role.id);
+                    const outRole = u.roles.cache.find(r => r.id === role.id);
                     return !outRole ? false : true;
                 });
             }
@@ -180,7 +180,7 @@ class CheckAct extends Command {
                 return super.error(message, message.language.get("COMMAND_CHECKACTIVITY_INVALID_USER"));
             }
             userID = Bot.getUserID(userID);
-            const user = message.guild.members.get(userID);
+            const user = message.guild.members.cache.get(userID);
             const name = user.nickname ? user.nickname : user.user.username;
             // Try and check the activity for just one user
             if (activityLog.log[userID]) {
@@ -215,12 +215,3 @@ class CheckAct extends Command {
 }
 
 module.exports = CheckAct;
-
-
-
-
-
-
-
-
-
