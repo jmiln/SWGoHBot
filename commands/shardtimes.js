@@ -154,7 +154,7 @@ class Shardtimes extends Command {
                 // If they are trying to remove someone else and they don't have the right perms, stop em
                 userID = userID.replace(/[\\|<|@|!]*(\d{17,18})[>]*/g,"$1");
             }
-            if (shardTimes.hasOwnProperty(userID)) {
+            if (shardTimes[userID]) {
                 delete shardTimes[userID];
                 await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
                     .then(() => {
@@ -230,7 +230,7 @@ class Shardtimes extends Command {
             const shardOut = {};
             Object.keys(shardTimes).forEach(user => {
                 const diff = timeTil(shardTimes[user].timezone, timeToAdd, (shardTimes[user].zoneType ? shardTimes[user].zoneType : "zone"));
-                if (shardOut.hasOwnProperty(diff)) {
+                if (shardOut[diff]) {
                     shardOut[diff].push(user);
                 } else {
                     shardOut[diff] = [user];
@@ -250,7 +250,7 @@ class Shardtimes extends Command {
                     const maxLen = 20;
                     let uName = "";
                     if (!shardTimes[user].type || shardTimes[user].type === "id") {
-                        const thisUser = message.guild.members.get(user);
+                        const thisUser = message.guild.members.cache.get(user);
                         const userName = thisUser ? `${thisUser.displayName}` : user;
                         uName = "**" + (userName.length > maxLen ? userName.substring(0, maxLen) : userName) + "**";
                     } else {
@@ -314,14 +314,3 @@ class Shardtimes extends Command {
 }
 
 module.exports = Shardtimes;
-
-
-
-
-
-
-
-
-
-
-
