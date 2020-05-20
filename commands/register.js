@@ -19,7 +19,7 @@ class Register extends Command {
                 if (userID !== message.author.id && options.level < 3) {
                     // If they are trying to change someone else and they don't have the right permissions
                     return super.error(message, message.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
-                } else if (!message.guild.members.has(userID)) {
+                } else if (!message.guild.members.cache.has(userID)) {
                     // If they are trying to change something for someone in a different server
                     return super.error(message, message.language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
                 }

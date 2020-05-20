@@ -99,7 +99,7 @@ class Guilds extends Command {
                 if (codes && codes.length) {
                     for (const c of codes) {
                         // Make sure they're in the same server
-                        if (message.guild && message.guild.members.has(c.id)) {
+                        if (message.guild && message.guild.members.cache.has(c.id)) {
                             p.inGuild = true;
                             p.dID = c.id;
                             break;
