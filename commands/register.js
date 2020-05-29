@@ -60,7 +60,6 @@ class Register extends Command {
                     "COMMAND_REGISTER_SUCCESS_DESC",
                     u,
                     u.allyCode.toString().match(/\d{3}/g).join("-"),
-                    u.stats ? u.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString() : ""
                 ), "asciiDoc"), {
                     title: message.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name)
                 });
@@ -117,4 +116,3 @@ class Register extends Command {
 }
 
 module.exports = Register;
-

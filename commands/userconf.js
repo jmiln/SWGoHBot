@@ -304,7 +304,7 @@ class UserConf extends Command {
                 }});
             }
             default: {
-                return super.error(message, "Try one of these: `allycodes, defaults, arenaAlert, view`",{title: "Invalid option"});
+                return super.error(message, "Try one of these: `allycodes, defaults, lang, arenaAlert, view`",{title: "Invalid option"});
             }
         }
     }
