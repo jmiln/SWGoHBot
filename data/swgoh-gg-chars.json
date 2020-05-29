@@ -2616,6 +2616,7 @@
             "Foresight",
             "Gain Turn Meter",
             "Offense Up",
+            "Speed Up",
             "Taunt",
             "Tenacity Down"
         ],
@@ -3313,6 +3314,7 @@
             "Evasion Down",
             "Gain Turn Meter",
             "Offense Up",
+            "Potency Up",
             "Remove Turn Meter"
         ],
         "role": "Support",
@@ -3666,6 +3668,7 @@
             "Expose",
             "Gain Turn Meter",
             "Offense Down",
+            "Potency Up",
             "Reduce Cooldowns",
             "Reset Cooldown",
             "Stealth"
@@ -4536,6 +4539,7 @@
         "ability_classes": [
             "AoE",
             "Gain Turn Meter",
+            "Potency Up",
             "Remove Turn Meter",
             "Revive",
             "Stealth",
@@ -4893,6 +4897,7 @@
             "Gain Turn Meter",
             "Healing Immunity",
             "Offense Down",
+            "Potency Up",
             "Speed Down",
             "Tenacity Up"
         ],
@@ -5416,7 +5421,8 @@
             "Counter",
             "Gain Turn Meter",
             "Heal",
-            "Leader: Assist"
+            "Leader: Assist",
+            "Speed Up"
         ],
         "role": "Support",
         "ship": "",
@@ -5933,6 +5939,7 @@
             "Gain Turn Meter",
             "Offense Up",
             "Reduce Cooldowns",
+            "Speed Up",
             "Stun",
             "Taunt"
         ],
@@ -7502,6 +7509,7 @@
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Max Health",
+            "Potency Up",
             "Reduce Cooldowns",
             "Remove Turn Meter",
             "Tenacity Up"
@@ -11690,6 +11698,7 @@
             "AoE",
             "Assist",
             "Defense Down",
+            "Speed Up",
             "Stun"
         ],
         "role": "Attacker",
@@ -13440,7 +13449,8 @@
             "Assist",
             "Gain Turn Meter",
             "Leader: +Speed",
-            "Offense Up"
+            "Offense Up",
+            "Speed Up"
         ],
         "role": "Support",
         "ship": "",
@@ -13963,6 +13973,7 @@
             "Evasion Down",
             "Expose",
             "Gain Turn Meter",
+            "Potency Up",
             "Stealth"
         ],
         "role": "Attacker",
@@ -14139,6 +14150,7 @@
             "Gain Turn Meter",
             "Remove Turn Meter",
             "Speed Down",
+            "Speed Up",
             "Stun"
         ],
         "role": "Support",
@@ -14494,6 +14506,7 @@
             "Leader: +Defense",
             "Leader: +Speed",
             "Offense Down",
+            "Potency Up",
             "Remove Turn Meter"
         ],
         "role": "Support",
@@ -14668,6 +14681,7 @@
             "Counter",
             "Dispel",
             "Gain Turn Meter",
+            "Potency Up",
             "Remove Turn Meter",
             "Stun",
             "Thermal Detonator"
@@ -16056,6 +16070,7 @@
             "Counter",
             "Dispel",
             "Reset Cooldown",
+            "Speed Up",
             "Stealth",
             "Stun",
             "Target Lock",
@@ -19530,7 +19545,8 @@
             "Counter",
             "Gain Turn Meter",
             "Leader: +Defense",
-            "Leader: +Tenacity"
+            "Leader: +Tenacity",
+            "Potency Up"
         ],
         "role": "Leader",
         "ship": "",
@@ -22819,7 +22835,9 @@
             "Leader: +Evasion",
             "Offense Down",
             "Offense Up",
+            "Potency Up",
             "Remove Turn Meter",
+            "Speed Up",
             "Taunt"
         ],
         "role": "Tank",
@@ -27156,6 +27174,7 @@
             "Offense Down",
             "Offense Up",
             "Revive",
+            "Speed Up",
             "Taunt"
         ],
         "role": "Tank",
@@ -27333,6 +27352,7 @@
             "Leader: +Max Health",
             "Leader: +Speed",
             "Offense Up",
+            "Speed Up",
             "Stealth",
             "Taunt",
             "Tenacity Up"
@@ -27679,6 +27699,7 @@
             "Foresight",
             "Gain Turn Meter",
             "Offense Up",
+            "Speed Up",
             "Stealth",
             "Stun",
             "Tenacity Up"
@@ -28024,7 +28045,8 @@
         "ability_classes": [
             "Counter",
             "Gain Turn Meter",
-            "Offense Down"
+            "Offense Down",
+            "Potency Up"
         ],
         "role": "Attacker",
         "ship": "SITHBOMBER",
@@ -30602,6 +30624,7 @@
             "Gain Turn Meter",
             "Leader: +Defense",
             "Offense Up",
+            "Speed Up",
             "Stun"
         ],
         "role": "Support",
@@ -32322,6 +32345,8 @@
             "Counter",
             "Dispel",
             "Gain Turn Meter",
+            "Potency Up",
+            "Speed Up",
             "Stealth"
         ],
         "role": "Attacker",
@@ -32667,6 +32692,7 @@
             "Dispel",
             "Evasion Down",
             "Gain Turn Meter",
+            "Speed Up",
             "Stealth",
             "Thermal Detonator"
         ],

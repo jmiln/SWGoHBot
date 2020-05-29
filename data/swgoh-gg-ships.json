@@ -840,6 +840,28 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Rebel Y-wing",
+        "base_id": "YWINGREBEL",
+        "url": "http://swgoh.gg/ships/rebel-y-wing/",
+        "image": "/game-asset/u/YWINGREBEL/",
+        "power": 45142,
+        "description": "Sturdy Rebel Tank that can disable enemy Protection",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Rebel",
+            "Tank"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Dispel",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false,
+        "activate_shard_count": 80
+    },
+    {
         "name": "Resistance X-wing",
         "base_id": "XWINGRESISTANCE",
         "url": "http://swgoh.gg/ships/resistance-x-wing/",

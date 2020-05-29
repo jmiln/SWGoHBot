@@ -1185,6 +1185,25 @@
         "abilities": {}
     },
     {
+        "name": "Rebel Y-wing",
+        "uniqueName": "YWINGREBEL",
+        "aliases": [
+            "Rebel Y-wing"
+        ],
+        "nameVariant": [
+            "Rebel Y-wing"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/rebel-y-wing/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/YWINGREBEL/",
+        "side": "light",
+        "factions": [
+            "Rebel",
+            "Tank"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Resistance X-wing",
         "uniqueName": "XWINGRESISTANCE",
         "aliases": [
