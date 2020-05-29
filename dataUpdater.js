@@ -13,7 +13,7 @@ const SHIPLOCATIONS          = "./data/shipLocations.json";
 const GAMEDATA               = "./data/gameData.json";
 const UNKNOWN                = "Unknown";
 
-const INTERVAL = 5;
+const INTERVAL = 30;
 
 console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
