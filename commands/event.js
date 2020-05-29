@@ -139,7 +139,7 @@ class Event extends Command {
                         eventMessage = evMsg.join(" ");
                     }
 
-                    if ((eventMessage.length + evName.length) > maxSize) {
+                    if (eventMessage && (eventMessage.length + evName.length) > maxSize) {
                         const currentSize = eventMessage.length + evName.length;
                         err.push(message.language.get("COMMAND_EVENT_TOO_BIG", currentSize-maxSize));
                     }
