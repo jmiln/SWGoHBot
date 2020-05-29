@@ -1249,9 +1249,9 @@ module.exports = class extends Language {
             COMMAND_REGISTER_SUCCESS_HEADER: (user) => `Registration for ${user} successful!`,
             COMMAND_REGISTER_SUCCESS_DESC: (user, allyCode, gp) => [
                 `Allycode :: ${allyCode}`,
-                `Guild    :: ${user.guildName || "N/A"}`,
-                `GP       :: ${gp}`,
-                `Level    :: ${user.level}`
+                user.guildName ? `Guild    :: ${user.guildName || "N/A"}` : "",
+                gp ? `GP       :: ${gp}` : "",
+                user.level ? `Level    :: ${user.level}` : ""
             ].join("\n"),
             COMMAND_REGISTER_HELP: {
                 description: "Register your ally code to your Discord ID, and sync your SWGoH profile.",
