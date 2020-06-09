@@ -320,7 +320,7 @@
         "url": "http://swgoh.gg/ships/finalizer/",
         "image": "/game-asset/u/CAPITALFINALIZER/",
         "power": 73695,
-        "description": "First Order Capital ship that enables the First Order fleet to have an early game advantage and relentlessly pursue enemies",
+        "description": "First Order Capital Ship that enables the First Order fleet to have an early game advantage and relentlessly pursue enemies",
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
@@ -591,6 +591,29 @@
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
+    },
+    {
+        "name": "Imperial TIE Bomber",
+        "base_id": "TIEBOMBERIMPERIAL",
+        "url": "http://swgoh.gg/ships/imperial-tie-bomber/",
+        "image": "/game-asset/u/TIEBOMBERIMPERIAL/",
+        "power": 45142,
+        "description": "Debilitating Empire Tank that inflicts Burning, cripples enemies' Offense, and provides heavy defensive capability.",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire",
+            "Tank"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Dispel",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false,
+        "activate_shard_count": 80
     },
     {
         "name": "Imperial TIE Fighter",

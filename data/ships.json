@@ -873,6 +873,25 @@
         }
     },
     {
+        "name": "Imperial TIE Bomber",
+        "uniqueName": "TIEBOMBERIMPERIAL",
+        "aliases": [
+            "Imperial TIE Bomber"
+        ],
+        "nameVariant": [
+            "Imperial TIE Bomber"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/imperial-tie-bomber/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/TIEBOMBERIMPERIAL/",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Tank"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Imperial TIE Fighter",
         "aliases": [
             "TIE Fighter",
