@@ -28,7 +28,6 @@
         "node-schedule": "^1.3.2",
         "pg": "^8.0.3",
         "pg-hstore": "^2.3.3",
-        "request": "^2.88.0",
         "sequelize": "^5.21.3",
         "swgoh-stat-calc": "^1.0.8"
     },
