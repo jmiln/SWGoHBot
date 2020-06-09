@@ -87,13 +87,13 @@ class Zetas extends Command {
                         }
                     }
                     char.skills.forEach(skill => {
-                        if (skill && skill.isZeta && skill.tier === 8) {
+                        if (skill && skill.isZeta && skill.tier === skill.tiers) {
                             count++;
                             // If the character is not already listed, add it
                             if (!zetas[char.nameKey]) {
-                                zetas[char.nameKey] = ["`[" + skill.id.charAt(0) + "]` " + skill.nameKey];
+                                zetas[char.nameKey] = ["`[" + skill.id.charAt(0).toUpperCase() + "]` " + skill.nameKey];
                             } else {
-                                zetas[char.nameKey].push("`[" + skill.id.charAt(0) + "]` " + skill.nameKey);
+                                zetas[char.nameKey].push("`[" + skill.id.charAt(0).toUpperCase() + "]` " + skill.nameKey);
                             }
                         }
                     });
@@ -168,7 +168,7 @@ class Zetas extends Command {
                     char = await Bot.swgohAPI.langChar(char, "eng_us");
                     skill = char.skills.find(a => a.nameKey === zetaSort[ix].name);
                 }
-                if (skill && skill.tier < 8 && char.level >= 70 && char.gear >= 8) {
+                if (skill && skill.tier < skill.tiers && char.level >= 70 && char.gear >= 8) {
                     if (options.flags.h && char.rarity < 7) continue;
                     skill.toon = char.nameKey;
                     skill.gearLvl = char.gear;
@@ -242,7 +242,7 @@ class Zetas extends Command {
                             }
 
                             zetas[char.defId][s.id] ? zetas[char.defId][s.id].push(player.name) : zetas[char.defId][s.id] = [player.name];
-                        })
+                        });
                     }
                 }
             }
