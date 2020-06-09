@@ -41,7 +41,7 @@ module.exports = async (Bot, client) => {
     // Update the player/ guild count every 5 min
     setInterval(async () => {
         const dbo = await Bot.mongo.db(Bot.config.mongodb.swapidb);
-        Bot.swgohPlayerCount = await dbo.collection("players").find({}).count();
+        Bot.swgohPlayerCount = await dbo.collection("playerStats").find({}).count();
         Bot.swgohGuildCount  = await dbo.collection("guilds").find({}).count();
     }, 5 * 60 * 1000);
 
