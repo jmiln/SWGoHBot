@@ -225,23 +225,24 @@ class Zetas extends Command {
                 return super.error(message, e.message);
             }
             try {
-                guildGG = await Bot.swgohAPI.guildGG(guild.roster.map(p => p.allyCode), null, cooldown);
+                guildGG = await Bot.swgohAPI.unitStats(guild.roster.map(p => p.allyCode), cooldown);
             } catch (e) {
                 super.error(msg, e.message, {edit: true});
             }
 
             const zetas = {};
 
-            for (const char of Object.keys(guildGG.roster)) {
-                for (const player of guildGG.roster[char]) {
-                    if (player.zetas.length) {
-                        player.zetas.forEach(s => {
-                            if (!zetas[char]) {
-                                zetas[char] = {};
+            for (const player of guildGG) {
+                for (const char of player.roster) {
+                    char.zetas = char.skills.filter(s => s.isZeta && s.tiers === s.tier);
+                    if (char.zetas.length) {
+                        char.zetas.forEach(s => {
+                            if (!zetas[char.defId]) {
+                                zetas[char.defId] = {};
                             }
 
-                            zetas[char][s.id] ? zetas[char][s.id].push(player.player) : zetas[char][s.id] = [player.player];
-                        });
+                            zetas[char.defId][s.id] ? zetas[char.defId][s.id].push(player.name) : zetas[char.defId][s.id] = [player.name];
+                        })
                     }
                 }
             }
@@ -256,7 +257,7 @@ class Zetas extends Command {
                     let outStr = "**" + Bot.characters.find(c => c.uniqueName === char).name + "**\n";
                     for (const skill of Object.keys(zetas[char])) {
                         const s = await Bot.swgohAPI.abilities(skill, null, null, {min: true});
-                        outStr += `**\`${zetas[char][skill].length}\`**: ${s[0].nameKey}\n`;
+                        outStr += `\`${zetas[char][skill].length}\`: ${s[0].nameKey}\n`;
                     }
                     zOut.push(outStr);
                 }
@@ -299,4 +300,3 @@ class Zetas extends Command {
 }
 
 module.exports = Zetas;
-

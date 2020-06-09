@@ -34,7 +34,6 @@ module.exports = (Bot) => {
         materials: materials,
         guild: guild,
         guildByName: guildByName,
-        guildGG: guildGG,
         zetaRec: zetaRec,
         events: events,
         register: register,
@@ -91,23 +90,25 @@ module.exports = (Bot) => {
         }
 
         // Check the cooldown to see if it should update stuff or not
-        if (allycodes.length > 5) {
-            if (cooldown && cooldown.guild) {
-                if (cooldown) {
-                    cooldown = cooldown.guild;
-                    if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
-                    if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
-                } else {
-                    cooldown = guildMaxCooldown;
+        if (!options.force) {
+            if (allycodes.length > 5) {
+                if (cooldown && cooldown.guild) {
+                    if (cooldown) {
+                        cooldown = cooldown.guild;
+                        if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
+                        if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
+                    } else {
+                        cooldown = guildMaxCooldown;
+                    }
                 }
-            }
-        } else if (cooldown && cooldown.player) {
-            if (cooldown) {
-                cooldown = cooldown.player;
-                if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
-                if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
-            } else {
-                cooldown = playerMaxCooldown;
+            } else if (cooldown && cooldown.player) {
+                if (cooldown) {
+                    cooldown = cooldown.player;
+                    if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
+                    if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
+                } else {
+                    cooldown = playerMaxCooldown;
+                }
             }
         }
         let playerStats = [];
@@ -122,7 +123,7 @@ module.exports = (Bot) => {
             } else {
                 players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
             }
-            const updated = players.filter(p => !isExpired(p.updated, cooldown));
+            const updated = options.force ? [] : players.filter(p => !isExpired(p.updated, cooldown));
             const updatedAC = updated.map(p => p.allyCode);
             const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
 
@@ -690,8 +691,7 @@ module.exports = (Bot) => {
                 try {
                     tempGuild = await swgoh.fetchGuild({
                         allycode: allycode,
-                        language: lang,
-                        enums: true
+                        language: lang
                     });
                     if (tempGuild.warning) warnings = tempGuild.warning;
                     if (tempGuild.error) throw new Error(tempGuild.error.description);
@@ -742,85 +742,6 @@ module.exports = (Bot) => {
             console.log("SWAPI(guild) Broke getting guild: " + e);
             throw e;
         }
-    }
-
-    async function guildGG( allyCodes, lang, cooldown ) {
-        lang = lang || "ENG_US";
-        if (cooldown && cooldown.guild) {
-            cooldown = cooldown.guild;
-            if (cooldown.guild > guildMaxCooldown) cooldown = guildMaxCooldown;
-            if (cooldown.guild < guildMinCooldown) cooldown = guildMinCooldown;
-        } else {
-            cooldown = guildMaxCooldown;
-        }
-        let warnings;
-        const players = await cache.get(Bot.config.mongodb.swapidb, "pUnits", {allyCode:{ $in: allyCodes}});
-
-        const fresh = [];
-        players.forEach(p => {
-            // Take out anyone who's recent enough to not need to be updated
-            if (p && !isExpired(p.updated, cooldown, true)) {
-                allyCodes.splice(allyCodes.indexOf(p.allyCode), 1);
-                fresh.push(p);
-            }
-        });
-
-        if (allyCodes.length > 0) {
-            let rosters = await swgoh.fetchRoster({
-                "allycodes": allyCodes,
-                "language": lang,
-                "enums": true,
-                "project": {
-                    "player": 1,
-                    "allyCode": 1,
-                    "type": 1,
-                    "gp": 1,
-                    "starLevel": 1,
-                    "level": 1,
-                    "gearLevel": 1,
-                    "gear": 1,
-                    "zetas": 1,
-                    "mods": 0
-                }
-            });
-            if (rosters.warning) warnings = rosters.warning;
-            if (rosters.error) throw new Error(rosters.error);
-            rosters = rosters.result;
-
-            for (const p of rosters) {
-                // Get the updated/ ally code from Jedi Consular since everyone is guaranteed to have him
-                Object.keys(p).forEach(c => {
-                    if (Array.isArray(p[c])) {
-                        p[c] = p[c][0];
-                    }
-                });
-                const pNew = {
-                    allyCode: p.JEDIKNIGHTCONSULAR.allyCode,
-                    updated: p.JEDIKNIGHTCONSULAR.updated,
-                    roster: p
-                };
-                fresh.push(pNew);
-                await cache.put(Bot.config.mongodb.swapidb, "pUnits", {allyCode: pNew.allyCode}, pNew);
-            }
-        }
-
-        const gg = {};
-        const roster = {};
-        gg.updated = Math.max(...fresh.map(p => parseInt(p.updated)));
-        fresh.forEach(p => {
-            Object.keys(p.roster).forEach(unit => {
-                if (!roster[unit]) {
-                    roster[unit] = [p.roster[unit]];
-                } else {
-                    roster[unit].push(p.roster[unit]);
-                }
-            });
-        });
-
-        gg.roster = roster;
-        if (warnings) gg.warnings = warnings;
-
-        return gg;
     }
 
     async function zetaRec( lang="ENG_US" ) {

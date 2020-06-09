@@ -89,6 +89,11 @@ class Guilds extends Command {
 
             const users = [];
             let badCount = 0;
+            const gRanks = {
+                2: "M",
+                3: "O",
+                4: "L"
+            };
             for (const p of sortedGuild) {
                 // Check if the player is registered, then bold the name if so
                 if (!p.allyCode) {
@@ -106,7 +111,7 @@ class Guilds extends Command {
                         }
                     }
                 }
-                p.memberLvl = p.guildMemberLevel ?  p.guildMemberLevel.split("GUILD")[1][0] : null;
+                p.memberLvl = p.guildMemberLevel ?  gRanks[p.guildMemberLevel] : null;
             }
 
             if (options.subArgs.sort && options.subArgs.sort.toLowerCase() === "rank") {
@@ -196,9 +201,9 @@ class Guilds extends Command {
                 gRoster = guild.roster.map(m => m.allyCode);
             }
 
-            let guildGG;
+            let guildMembers;
             try {
-                guildGG = await Bot.swgohAPI.guildGG(gRoster, null, cooldown);
+                guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 console.log("ERROR(GS) getting guild: " + e);
                 return super.error(message, Bot.codeBlock(e), {
@@ -252,13 +257,16 @@ class Guilds extends Command {
             charOut.push("**`==============================`**");
             guildChecklist.forEach((char, ix) => {
                 if (Array.isArray(char)) {
-                    const roster = guildGG.roster[char[0]];
+                    const defId = char[0];
+                    // console.log(guildMembers[0].roster);
+                    const roster = guildMembers.map(p => p.roster.find(c => c.defId === defId));
+                    // console.log(roster.map(c => c ? c.gear : 0));
                     let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
                     if (roster && roster.length) {
                         total = roster.length;
-                        g12 = roster.filter(c => c.gearLevel === 12).length;
-                        g11 = roster.filter(c => c.gearLevel === 11).length;
-                        sevenStar = roster.filter(c => c.starLevel === 7).length;
+                        g12 = roster.filter(c => c && c.gear === 12).length;
+                        g11 = roster.filter(c => c && c.gear === 11).length;
+                        sevenStar = roster.filter(c => c && c.rarity === 7).length;
                     }
                     const name = allNames[ix];
                     charOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
@@ -276,13 +284,13 @@ class Guilds extends Command {
                     value: Bot.codeBlock(options.defaults)
                 });
             }
-            if (guildGG.warnings) {
+            if (guildMembers.warnings) {
                 fields.push({
                     name: "Warnings",
-                    value: guildGG.warnings.join("\n")
+                    value: guildMembers.warnings.join("\n")
                 });
             }
-            const footer = Bot.updatedFooter(guildGG.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(guildMembers.updated, message, "guild", cooldown);
             return msg.edit({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
@@ -365,4 +373,3 @@ class Guilds extends Command {
 }
 
 module.exports = Guilds;
-
