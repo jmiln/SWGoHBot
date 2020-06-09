@@ -364,10 +364,12 @@ module.exports = (Bot) => {
             s.name = skill.nameKey
                 .replace(/\\n/g, " ")
                 .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
+            /* This is here to un-mess up the last line marking everything ahead as a comment */
             s.cooldown = skill.cooldown;
             s.desc = skill.descKey
                 .replace(/\\n/g, " ")
                 .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
+            /* This is here to un-mess up the last line marking everything ahead as a comment */
             if (skill.tierList.length) {
                 s.cost = costs[skill.tierList[skill.tierList.length - 1].recipeId];
             }

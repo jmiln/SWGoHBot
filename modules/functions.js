@@ -661,8 +661,8 @@ module.exports = (Bot, client) => {
      */
     Bot.guildCount = async () => {
         let guilds = 0;
-        if (client.shard && client.shard.count > 0) {
-            await client.shard.fetchClientValues("guilds.size")
+        if (client.shard) {
+            await client.shard.fetchClientValues("guilds.cache.size")
                 .then(results => {
                     guilds =  results.reduce((prev, val) => prev + val, 0);
                 })
