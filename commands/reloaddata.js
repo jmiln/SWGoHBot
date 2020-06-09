@@ -85,6 +85,8 @@ class ReloadData extends Command {
                 await Bot.swgohAPI.character(null, true);
                 for (const lang of langList) {
                     if (!args[0]) {
+                        await Bot.swgohAPI.units("", lang, true);
+                        message.channel.send(`Updated units for ${lang}`);
                         await Bot.swgohAPI.abilities([], lang, true);
                         message.channel.send(`Updated abilities for ${lang}`);
                         await Bot.swgohAPI.gear([], lang, true);
@@ -93,8 +95,6 @@ class ReloadData extends Command {
                         message.channel.send(`Updated recipes for ${lang}`);
                         await Bot.swgohAPI.materials([], lang, true);
                         message.channel.send(`Updated mats for ${lang}`);
-                        await Bot.swgohAPI.units("", lang, true);
-                        message.channel.send(`Updated units for ${lang}`);
                         message.channel.send("Updated all local data for " + lang);
                     } else {
                         switch (args[0]) {
@@ -140,4 +140,3 @@ class ReloadData extends Command {
 }
 
 module.exports = ReloadData;
-
