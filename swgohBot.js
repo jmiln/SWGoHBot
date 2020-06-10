@@ -115,7 +115,7 @@ const init = async () => {
     Bot.cache = await require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = await require("./modules/users.js")(Bot);
 
-    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("players").find({}).count();
+    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("playerStats").find({}).count();
     Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").find({}).count();
 
     Bot.statCalculator = require("swgoh-stat-calc");
@@ -124,8 +124,11 @@ const init = async () => {
 
     if (Bot.config.api_swgoh_help) {
         // Load up the api connector/ helpers
-        const SwgohHelp = require("api-swgoh-help");
-        Bot.swgoh = new SwgohHelp(Bot.config.api_swgoh_help);
+        const ApiSwgohHelp = require("api-swgoh-help");
+        // Bot.swgoh = new ApiSwgohHelp(Bot.config.api_swgoh_help);
+        Bot.swgoh = (Bot.config.fakeSwapiConfig && Bot.config.fakeSwapiConfig.enabled) ?
+            new ApiSwgohHelp(Bot.config.fakeSwapiConfig.options) :
+            new ApiSwgohHelp(Bot.config.swapiConfig);
         Bot.swgohAPI = require("./modules/swapi.js")(Bot);
 
         // Load up the zeta recommendstions
@@ -167,4 +170,3 @@ client.on("error", (err) => {
         Bot.log("ERROR", inspect(err.error));
     }
 });
-

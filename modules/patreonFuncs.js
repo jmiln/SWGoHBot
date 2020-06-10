@@ -78,7 +78,9 @@ module.exports = (Bot, client) => {
                 }
                 let player;
                 try {
-                    player = await Bot.swgohAPI.fastPlayer(acc.allyCode);
+                    player = await Bot.swgohAPI.unitStats(acc.allyCode, null, {force: true});
+                    if (Array.isArray(player)) player = player[0];
+                    // player = await Bot.swgohAPI.fastPlayer(acc.allyCode);
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
                     await Bot.wait(750);

@@ -788,7 +788,6 @@ module.exports = (Bot) => {
             try {
                 events =  await swgoh.fetchAPI("/swgoh/events", {
                     language: lang,
-                    enums: true
                 });
                 events = events.result;
             } catch (e) {

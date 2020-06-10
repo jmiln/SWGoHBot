@@ -104,6 +104,7 @@ class CurrentEvents extends Command {
                 event.nameKey = event.nameKey
                     .replace(/\\n/g, " ")
                     .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"")
+                    /* Comment to stop vim from showing the rest of the file as a comment... */
                     .toProperCase();
                 evOut.push({
                     name: (HEROIC.includes(event.id) || event.id === "EVENT_CREDIT_HEIST_GETAWAY_V2") ? `**${event.nameKey}**` : event.nameKey,
