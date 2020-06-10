@@ -1,6 +1,5 @@
 /* eslint no-undef: 0 */
 // const {inspect} = require("util");
-const fs = require("fs");
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
     client.shard.id = client.shard.ids[0];
@@ -8,12 +7,6 @@ module.exports = async (Bot, client) => {
     if (client.shard) {
         readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers. Shard #${client.shard.id}`;
         if (client.shard.id === 0) {
-            // Save the bot's current guild count every 5 minutes
-            setInterval(async () => {
-                const guilds = await Bot.guildCount();
-                fs.writeFileSync("../dashboard/data/guildCount.txt", guilds, "utf8");
-            }, 5 * 60 * 1000);
-
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
                 setInterval(async () => {
