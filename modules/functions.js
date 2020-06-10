@@ -920,11 +920,6 @@ module.exports = (Bot, client) => {
                     const account = exists.accounts.find(a => a.primary);
                     return [account.allyCode];
                 } else {
-                    uAC = await Bot.swgohAPI.whois(uID);
-                    if (uAC.get.length) {
-                        await Bot.userReg.addUser(uAC.get[0].discordId, uAC.get[0].allyCode);
-                        return [uAC.get[0].allyCode];
-                    }
                     return [];
                 }
             } catch (e) {

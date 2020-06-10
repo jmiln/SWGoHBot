@@ -813,36 +813,6 @@ module.exports = (Bot) => {
         return events;
     }
 
-    async function register(putArray) {
-        const getArray = putArray.map(a => a[0]);
-
-        return await swgoh.fetchAPI("/registration", {
-            "put":putArray,
-            "get":getArray
-        });
-    }
-
-    async function unregister(putArray) {
-        return await swgoh.fetchAPI("/registration", {
-            "del":putArray,
-        });
-    }
-
-    async function whois( ids ) {
-        if (!Array.isArray(ids)) {
-            ids = [ids];
-        }
-        if (!ids.length) return [];
-        if (!ids) {
-            throw new Error("Please provide one or more allycodes or discordIds");
-        }
-
-        /** Get player from swapi cacher */
-        return await swgoh.fetchAPI("/registration", {
-            "get":ids
-        });
-    }
-
     function isExpired( updated, cooldown={}, guild=false ) {
         if (!updated) return true;
         if (guild) {

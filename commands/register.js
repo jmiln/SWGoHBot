@@ -84,9 +84,6 @@ class Register extends Command {
                     });
                     await Bot.userReg.updateUser(userID, user)
                         .then(async () => {
-                            await Bot.swgohAPI.register([
-                                [allyCode, userID]
-                            ]);
                             return super.success(msg,
                                 Bot.codeBlock(message.language.get(
                                     "COMMAND_REGISTER_SUCCESS_DESC",
