@@ -250,6 +250,45 @@ module.exports = class extends Language {
                 ]
             },
 
+            // ArenaAlert Command
+            COMMAND_ARENAALERT_PATREON_ONLY:    "Sorry, but this command/ feature is only available as a thank you to Patreon supporters through https://www.patreon.com/swgohbot",
+            COMMAND_ARENAALERT_MISSING_DM:      "Missing option. Try all/primary/off.",
+            COMMAND_ARENAALERT_INVALID_DM:      "Invalid option. Try all/primary/off.",
+            COMMAND_ARENAALERT_MISSING_ARENA:   "Missing arena, you need to chose one of the following: `char, fleet, both`",
+            COMMAND_ARENAALERT_INVALID_ARENA:   "Invalid arena, you need to chose one of the following: `char, fleet, both`",
+            COMMAND_ARENAALERT_MISSING_WARNING: "Missing number, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.",
+            COMMAND_ARENAALERT_INVALID_WARNING: "Invalid number, try `0` to turn it off, or a number of minutes that you want it to warn you ahead of time.",
+            COMMAND_ARENAALERT_INVALID_NUMBER:  "Invalid number, your number needs to be between 0 (turns it off), and 1440 (one day).",
+            COMMAND_ARENAALERT_INVALID_OPTION:  "Try one of these: `enableDMs, arena, payoutResult, payoutWarning, view`",
+            COMMAND_ARENAALERT_INVALID_BOOL:    "Invalid option. Try `yes/no`, `true/false` or `on/off`",
+            COMMAND_ARENAALERT_UPDATED:         "Your settings have been updated.",
+            COMMAND_ARENAALERT_VIEW_HEADER:     "Arena Rank DMs",
+            COMMAND_ARENAALERT_VIEW_DM:         "DM for rank drops",
+            COMMAND_ARENAALERT_VIEW_SHOW:       "Show for Arena",
+            COMMAND_ARENAALERT_VIEW_WARNING:    "Payout warning",
+            COMMAND_ARENAALERT_VIEW_RESULT:     "Payout result alert",
+            COMMAND_ARENAALERT_HELP: {
+                description: "Manage your arena alert settings.",
+                actions: [
+                    {
+                        action: "Arena Alert",
+                        actionDesc: "Set alerts to DM when your rank drops and other arena related stuff.",
+                        usage: [
+                            ";arenaalert enableDMs <all|primary|off>",
+                            ";arenaalert arena <both|fleet|char>",
+                            ";arenaalert payoutResult <on|off>",
+                            ";arenaalert payoutWarning <0-1439>"
+                        ].join("\n"),
+                        args: {
+                            "enableDMs": "Turn on DM alerts for just your primary allycode, all allycodes, or none",
+                            "arena": "Choose which arena's alerts you want",
+                            "payoutResult": "Send you a DM with your final payout result",
+                            "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off."
+                        }
+                    }
+                ]
+            },
+
             // Arenarank Command
             COMMAND_ARENARANK_INVALID_NUMBER: "You need to enter a valid rank number",
             COMMAND_ARENARANK_BEST_RANK: "You've already gotten as far as you can, congrats!",
