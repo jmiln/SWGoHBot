@@ -35,10 +35,7 @@ module.exports = (Bot) => {
         guild: guild,
         guildByName: guildByName,
         zetaRec: zetaRec,
-        events: events,
-        register: register,
-        unregister: unregister,
-        whois: whois
+        events: events
     };
 
     async function fastPlayer(allycode) {
