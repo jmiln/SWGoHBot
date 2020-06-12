@@ -132,9 +132,9 @@ class ArenaWatch extends Command {
                     if (!codes.length) {
                         // Add the new code to the list
                         if (!user.arenaWatch.allycodes.includes(code.replace(/[^\d]/g, "")) && code.replace(/[^\d]/g, "").length === 9) {
-                            if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= 1)   || // Under $5, can set a channel for 1 account
-                                (pat.amount_cents < 1000  && user.arenaWatch.allycodes.length >= 10)  || // $5-10, can set a channel for up to 10 accounts
-                                (pat.amount_cents >= 1000 && user.arenaWatch.allycodes.length >= 30)) {  // $10+, can set a channel for up to 30 accounts
+                            if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier1)   || // Under $5, can set a channel for 1 account
+                                (pat.amount_cents < 1000  && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier2)  || // $5-10, can set a channel for up to 10 accounts
+                                (pat.amount_cents >= 1000 && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier3)) {  // $10+, can set a channel for up to 30 accounts
                                 return super.error(message, message.language.get("COMMAND_ARENAWATCH_AC_CAP", code));
                             }
                             user.arenaWatch.allycodes.push(code.replace(/[^\d]/g, ""));
@@ -146,9 +146,9 @@ class ArenaWatch extends Command {
                         // There are more than one valid code, try adding them all
                         codes.forEach(c => {
                             if (!user.arenaWatch.allycodes.includes(c)) {
-                                if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= 1)   || // Under $5, can set a channel for 1 account
-                                    (pat.amount_cents < 1000  && user.arenaWatch.allycodes.length >= 10)  || // $5-10, can set a channel for up to 10 accounts
-                                    (pat.amount_cents >= 1000 && user.arenaWatch.allycodes.length >= 30)) {  // $10+, can set a channel for up to 30 accounts
+                                if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier1)   || // Under $5, can set a channel for 1 account
+                                    (pat.amount_cents < 1000  && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier2)  || // $5-10, can set a channel for up to 10 accounts
+                                    (pat.amount_cents >= 1000 && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier3)) {  // $10+, can set a channel for up to 30 accounts
                                     outLog.push(`Could not add ${c}, ally code cap reached!`);
                                     return;
                                 }
