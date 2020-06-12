@@ -76,7 +76,6 @@ class ArenaWatch extends Command {
             }
             case "channel": {
                 // This needs to make sure the person has an adminrole or something so they cannot just spam a chat with it
-                console.log("Setting Arenawatch for channel: " + "channelID");
                 let channel;
                 [channel, ...args] = args;
                 if (!channel) {
@@ -177,7 +176,6 @@ class ArenaWatch extends Command {
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
                 let chan;
                 if (user.arenaWatch.channel) {
-                    console.log("Trying to find channel");
                     chan = message.guild ? message.guild.channels.cache.get(user.arenaWatch.channel) : null;
                     if (!chan) {
                         chan = await message.client.shard.broadcastEval(`
