@@ -907,7 +907,7 @@ module.exports = (Bot, client) => {
         if (user) {
             user = user.toString().trim();
         }
-        let uID, uAC;
+        let uID;
         if (!user || user === "me" || Bot.isUserID(user)) {
             if ((!user || user === "me") && useMessageId) {
                 uID = message.author.id;
@@ -955,5 +955,42 @@ module.exports = (Bot, client) => {
             totalMin: totalMin,
             seconds: seconds
         };
+    };
+
+    // Clean mentions out of messages and replace them with the text version
+    Bot.cleanMentions = (guild, input) => {
+        return input
+            .replace(/@(here|everyone)/g, `@${Bot.zws}$1`)
+            .replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
+                switch (type) {
+                    case "@":
+                    case "@!": {
+                        const  user = guild.members.cache.get(id);
+                        return user ? `@${user.displayname}` : `<${type}${Bot.zws}${id}>`;
+                    }
+                    case "@&": {
+                        const  role = guild.roles.cache.get(id);
+                        return role ? `@${role.name}` : match;
+                    }
+                    case "#": {
+                        const  channel  = guild.channels.cache.get(id);
+                        return channel ? `#${channel.name}` : `<${type}${Bot.zws}${id}>`;
+                    }
+                    default: return `<${type}${Bot.zws}${id}>`;
+                }
+            });
+    };
+
+    Bot.isChannelMention = (mention) => {
+        const channelRegex = /^<#\d{17,19}>/;
+        return mention.match(channelRegex);
+    };
+    Bot.isRoleMention = (mention) => {
+        const roleRegex = /^<@&\d{17,19}>/;
+        return mention.match(roleRegex);
+    };
+    Bot.isUserMention = (mention) => {
+        const userRegex = /^<@!?\d{17,19}>/;
+        return mention.match(userRegex);
     };
 };

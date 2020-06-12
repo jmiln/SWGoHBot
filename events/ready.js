@@ -10,8 +10,8 @@ module.exports = async (Bot, client) => {
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
                 setInterval(async () => {
-                    // console.log("Checking Ranks now");
-                    await Bot.getRanks();
+                    // await Bot.getRanks();
+                    await Bot.shardRanks();
                 }, 1 * 60 * 1000);
             }
         }

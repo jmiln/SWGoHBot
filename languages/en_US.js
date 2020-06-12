@@ -192,6 +192,7 @@ module.exports = class extends Language {
             },
             BASE_LEVEL_SHORT: "lvl",
             BASE_GEAR_SHORT: "Gear",
+            BASE_SOMETHING_WEIRD: "Something weird happened, and that didn't work. Please report it to SWGoHBot HQ",
             BASE_SOMETHING_BROKE: "Something Broke",
             BASE_SOMETHING_BROKE_GUILD: "Something broke while getting your guild",
             BASE_SOMETHING_BROKE_GUILD_ROSTER: "Something broke while getting your guild's roster",
@@ -302,6 +303,41 @@ module.exports = class extends Language {
                         actionDesc: "",
                         usage: ";arenarank <currentRank> [battleCount]",
                         args: {}
+                    }
+                ]
+            },
+
+            // ArenaWatch Command
+            COMMAND_ARENAWATCH_PATREON_ONLY:        "Sorry, but this command/ feature is only available as a thank you to Patreon supporters through https://www.patreon.com/swgohbot",
+            COMMAND_ARENAWATCH_MISSING_PERM:        "You do not have the correct permissions to set this as a log channel, make sure you have an adminRole or MANAGE_SERVER permission",
+            COMMAND_ARENAWATCH_MISSING_ARENA:       "Missing arena, you need to chose one of the following: `char, fleet, both`",
+            COMMAND_ARENAWATCH_INVALID_ARENA:       "Invalid arena, you need to chose one of the following: `char, fleet, both`",
+            COMMAND_ARENAWATCH_INVALID_OPTION:      "Try one of these: `enabled, arena, channel, allycode, or view`",
+            COMMAND_ARENAWATCH_INVALID_BOOL:        "Invalid option. Try `yes/no`, `true/false` or `on/off`",
+            COMMAND_ARENAWATCH_MISSING_ACTION:      "Missing action, try `add` or `remove`",
+            COMMAND_ARENAWATCH_INVALID_ACTION:      "Invalid action, try `add` or `remove`",
+            COMMAND_ARENAWATCH_MISSING_AC:(act) =>  "Missing ally code to " + act,
+            COMMAND_ARENAWATCH_INVALID_AC:          "Invalide ally code",
+            COMMAND_ARENAWATCH_AC_CAP: (code) =>    `Could not add ${code}, ally code cap reached!`,
+            COMMAND_ARENAWATCH_UPDATED:             "Your settings have been updated.",
+            COMMAND_ARENAWATCH_HELP: {
+                description: "Manage your arena watcher settings.",
+                actions: [
+                    {
+                        action: "Arena Watch",
+                        actionDesc: "Set alerts to DM when your rank drops and other arena related stuff.",
+                        usage: [
+                            ";arenaalert enabled <on|off>",
+                            ";arenaalert arena <both|fleet|char>",
+                            ";arenaalert channel <channelMention>",
+                            ";arenaalert allycode <add|remove> <allycode>"
+                        ].join("\n"),
+                        args: {
+                            "enabled": "Toggle alerts for all selected allycodes",
+                            "arena": "Choose which arena's alerts you want",
+                            "channel": "Select which channel you want the logs to output to",
+                            "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted)"
+                        }
                     }
                 ]
             },
