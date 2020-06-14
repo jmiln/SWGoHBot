@@ -220,7 +220,7 @@ module.exports = (Bot, client) => {
             if (!user || !user.accounts.length) continue;
 
             // If they don't want any alerts
-            if (!user.arenaWatch || user.arenaWatch.enabled === "off" || !user.arenaWatch.channel || user.arenaWatch.arena === "none") continue;
+            if (!user.arenaWatch || !user.arenaWatch.enabled || !user.arenaWatch.channel || user.arenaWatch.arena === "none") continue;
             let acctCount = 0;
             if      (patron.amount_cents < 500)  acctCount =Bot.config.arenaWatchConfig.tier1;
             else if (patron.amount_cents < 1000) acctCount =Bot.config.arenaWatchConfig.tier2;
