@@ -129,7 +129,7 @@ class ArenaWatch extends Command {
                     if (code.indexOf(",") > -1) {
                         codes = code.split(",").filter(c => c.replace(/[^\d]/g, "").length === 9);
                     }
-                    if (!codes.length) {
+                    if (!codes || !codes.length) {
                         // Add the new code to the list
                         if (!user.arenaWatch.allycodes.includes(code.replace(/[^\d]/g, "")) && code.replace(/[^\d]/g, "").length === 9) {
                             if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier1)   || // Under $5, can set a channel for 1 account
