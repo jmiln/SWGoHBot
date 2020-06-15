@@ -222,9 +222,9 @@ module.exports = (Bot, client) => {
             // If they don't want any alerts
             if (!user.arenaWatch || !user.arenaWatch.enabled || !user.arenaWatch.channel || user.arenaWatch.arena === "none") continue;
             let acctCount = 0;
-            if      (patron.amount_cents < 500)  acctCount =Bot.config.arenaWatchConfig.tier1;
-            else if (patron.amount_cents < 1000) acctCount =Bot.config.arenaWatchConfig.tier2;
-            else                                 acctCount =Bot.config.arenaWatchConfig.tier3;
+            if      (patron.amount_cents < 500)  acctCount = Bot.config.arenaWatchConfig.tier1;
+            else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
+            else                                 acctCount = Bot.config.arenaWatchConfig.tier3;
             const accountsToCheck = JSON.parse(JSON.stringify(user.arenaWatch.allycodes.slice(0, acctCount)));
             const oldPlayers = await Bot.swgohAPI.unitStats(accountsToCheck);
             const newPlayers = await Bot.swgohAPI.unitStats(accountsToCheck, null, {force: true});

@@ -52,6 +52,7 @@ class ArenaWatch extends Command {
         }
 
         switch (target) {
+            case "enable":
             case "enabled": {
                 if (!args.length) {
                     // They didn't say which way, so just toggle it
@@ -74,6 +75,7 @@ class ArenaWatch extends Command {
                 }
                 break;
             }
+            case "ch":
             case "channel": {
                 // This needs to make sure the person has an adminrole or something so they cannot just spam a chat with it
                 let channel;
