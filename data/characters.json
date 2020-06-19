@@ -4063,6 +4063,27 @@
         }
     },
     {
+        "name": "Jedi Knight Luke Skywalker",
+        "uniqueName": "JEDIKNIGHTLUKE",
+        "aliases": [
+            "Jedi Knight Luke Skywalker",
+            "JKLS",
+            "JKL"
+        ],
+        "nameVariant": [
+            "Jedi Knight Luke Skywalker"
+        ],
+        "url": "http://swgoh.gg/characters/jedi-knight-luke-skywalker/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/JEDIKNIGHTLUKE/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Jedi",
+            "Leader"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Jedi Knight Revan",
         "uniqueName": "JEDIKNIGHTREVAN",
         "aliases": [

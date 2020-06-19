@@ -18150,6 +18150,182 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Jedi Knight Luke Skywalker",
+        "base_id": "JEDIKNIGHTLUKE",
+        "pk": 487,
+        "url": "http://swgoh.gg/characters/jedi-knight-luke-skywalker/",
+        "image": "/game-asset/u/JEDIKNIGHTLUKE/",
+        "power": 32328,
+        "description": "Stalwart Jedi hero of legend who ascends to victorious heights alongside his Jedi allies through the will of the Force",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "007",
+                    "008",
+                    "005",
+                    "003",
+                    "003",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "038",
+                    "034",
+                    "016",
+                    "029",
+                    "021",
+                    "010"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "055",
+                    "050",
+                    "048",
+                    "043",
+                    "045",
+                    "036"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "081",
+                    "063",
+                    "055",
+                    "050",
+                    "035",
+                    "062"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "075",
+                    "081",
+                    "063",
+                    "068",
+                    "051",
+                    "038"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "092",
+                    "091",
+                    "091",
+                    "071",
+                    "081",
+                    "055"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "172",
+                    "108",
+                    "099",
+                    "100",
+                    "091",
+                    "075"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "118",
+                    "172",
+                    "117",
+                    "099",
+                    "097",
+                    "102"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "125",
+                    "121",
+                    "120",
+                    "117",
+                    "172",
+                    "063"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "145",
+                    "129",
+                    "129",
+                    "120",
+                    "121",
+                    "131"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "142",
+                    "140",
+                    "131",
+                    "129",
+                    "129",
+                    "135"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "159",
+                    "158",
+                    "166",
+                    "168",
+                    "G12Finisher_JEDIKNIGHTLUKE_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Jedi",
+            "Leader"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Critical",
+            "Leader: +Speed",
+            "Leader: Assist",
+            "Stun"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Jedi Knight Revan",
         "base_id": "JEDIKNIGHTREVAN",
         "pk": 302,
