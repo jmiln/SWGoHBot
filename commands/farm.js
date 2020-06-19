@@ -82,6 +82,13 @@ class Farm extends Command {
             } else if (tier.forceAlignment === "NEUTRAL") {
                 out = message.language.get("COMMAND_FARM_CANTINA") + out;
             }
+            const diff = {
+                5: "HARDDIFF",
+                4: "NORMALDIFF"
+            };
+            if (Number.isInteger(mission.campaignNodeDifficulty)) {
+                mission.campaignNodeDifficulty = diff[mission.campaignNodeDifficulty];
+            }
             const letter = Bot.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty][mission.campaignMissionId];
             const nodeCost = Bot.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty]["COST"];
             out += letter + " - " + nodeCost + message.language.get("COMMAND_FARM_ENERGY_PER");
@@ -151,4 +158,3 @@ class Farm extends Command {
 }
 
 module.exports = Farm;
-

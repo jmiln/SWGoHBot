@@ -631,7 +631,6 @@ module.exports = (Bot) => {
             let matList = await Bot.swgoh.fetchAPI("/swgoh/data", {
                 "collection": "materialList",
                 "language": "eng_us",
-                "enums":true,
                 "project": {
                     "id": 1,
                     "nameKey": 1,
