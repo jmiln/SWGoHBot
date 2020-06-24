@@ -8752,7 +8752,7 @@
         "pk": 200,
         "url": "http://swgoh.gg/characters/darth-vader/",
         "image": "/game-asset/u/VADER/",
-        "power": 32328,
+        "power": 35308,
         "description": "Fearsome Attacker that applies AoE Damage Over Time, and crushes debuffed targets for extra turns",
         "combat_type": 1,
         "gear_levels": [
@@ -8915,7 +8915,9 @@
             "DoT",
             "Gain Turn Meter",
             "Remove Turn Meter",
-            "Speed Down"
+            "Speed Down",
+            "Stealth",
+            "Taunt"
         ],
         "role": "Leader",
         "ship": "TIEADVANCED",
