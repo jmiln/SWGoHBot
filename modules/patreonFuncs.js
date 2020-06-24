@@ -226,29 +226,47 @@ module.exports = (Bot, client) => {
             else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
             else                                 acctCount = Bot.config.arenaWatchConfig.tier3;
             const accountsToCheck = JSON.parse(JSON.stringify(user.arenaWatch.allycodes.slice(0, acctCount)));
-            const oldPlayers = await Bot.swgohAPI.unitStats(accountsToCheck);
-            const newPlayers = await Bot.swgohAPI.unitStats(accountsToCheck, null, {force: true});
+            const allyCodes = accountsToCheck.map(a => a.allyCode ?  a.allyCode : a);
+            const newPlayers = await Bot.swgohAPI.unitStats(allyCodes, null, {force: true});
+            if (allyCodes.length !== newPlayers.length) console.log("Did not get all players! ", allyCodes.length, newPlayers.length);
 
             // Go through all the listed players, and see if any of them have shifted arena rank
-            oldPlayers.forEach(player => {
-                const newPlayer = newPlayers.find(p => p.allyCode === player.allyCode);
+            accountsToCheck.forEach((player, ix) => {
+                let newPlayer = newPlayers.find(p => p.allyCode === parseInt(player.allyCode));
+                if (!newPlayer) {
+                    newPlayer = newPlayers.find(p => p.allyCode === parseInt(player));
+                }
+                if (typeof player === "string") {
+                    player = {
+                        allyCode: parseInt(player),
+                        name: newPlayer.name,
+                        lastChar: 0,
+                        lastShip: 0
+                    };
+                }
+                if (!player.name) {
+                    player.name = newPlayer.name;
+                }
 
-                if (newPlayer.arena.char.rank !== player.arena.char.rank) {
+                if (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar) {
                     compChar.push({
-                        name: player.name,
-                        allycode: player.allyCode,
-                        oldRank: player.arena.char.rank,
+                        name: player.mention ? player.mention : newPlayer.name,
+                        allyCode: player.allyCode,
+                        oldRank: player.lastChar || 0,
                         newRank: newPlayer.arena.char.rank
                     });
+                    player.lastChar = newPlayer.arena.char.rank;
                 }
-                if (newPlayer.arena.ship.rank !== player.arena.ship.rank) {
+                if (!player.lastShip || newPlayer.arena.ship.rank !== player.lastShip) {
                     compShip.push({
-                        name: player.name,
-                        allycode: player.allyCode,
-                        oldRank: player.arena.ship.rank,
+                        name: player.mention ? player.mention : newPlayer.name,
+                        allyCode: player.allyCode,
+                        oldRank: player.lastShip || 0,
                         newRank: newPlayer.arena.ship.rank
                     });
+                    player.lastShip = newPlayer.arena.ship.rank;
                 }
+                accountsToCheck[ix] = player;
             });
 
             let charOut = [];
@@ -262,25 +280,22 @@ module.exports = (Bot, client) => {
             }
             const fields = [];
             if (charOut.length) {
-                fields.push({
-                    name: "Character Arena:",
-                    value: charOut.map(c => "- " + c).join("\n")
-                });
+                fields.push("**Character Arena:**");
+                fields.push(charOut.map(c => "- " + c).join("\n"));
             }
             if (shipOut.length) {
-                fields.push({
-                    name: "Ship Arena:",
-                    value: shipOut.map(s => "- " + s).join("\n")
-                });
+                fields.push("**Fleet Arena:**");
+                fields.push(shipOut.map(c => "- " + c).join("\n"));
             }
             if (fields.length) {
+                // console.log(fields.join("\n") + "\n-------------------------------------");
+                // If something has changed, update the user & let them know
+                user.arenaWatch.allycodes = accountsToCheck;
+                await Bot.userReg.updateUser(patron.discordID, user);
                 client.shard.broadcastEval(`
                     const chan = this.channels.cache.get("${user.arenaWatch.channel}");
                     if (chan) {
-                        chan.send({embed: {
-                            title: "Arena Updates",
-                            fields: ${JSON.stringify(fields)}
-                        }});
+                        chan.send(\`>>> ${fields.join("\n")}\`);
                     }
                 `);
             }
@@ -292,7 +307,7 @@ module.exports = (Bot, client) => {
         const outArr = [];
         for (let ix = 0; ix < inArr.length; ix++) {
             for (let jx = 0; jx < inArr.length; jx++) {
-                const isChecked = checked.includes(inArr[ix].allycode) || checked.includes(inArr[jx].allycode);
+                const isChecked = checked.includes(inArr[ix].allyCode) || checked.includes(inArr[jx].allyCode);
                 if (!isChecked && inArr[ix].oldRank === inArr[jx].newRank && inArr[ix].newRank === inArr[jx].oldRank) {
                     // Then they likely swapped spots
                     if (inArr[ix].oldRank > inArr[ix].newRank) {
@@ -302,17 +317,16 @@ module.exports = (Bot, client) => {
                     }
 
                     // Put the players into the checked array so we can make sure not to log it twice
-                    checked.push(inArr[ix].allycode);
-                    checked.push(inArr[jx].allycode);
+                    checked.push(inArr[ix].allyCode);
+                    checked.push(inArr[jx].allyCode);
                 }
             }
         }
         inArr.forEach(player => {
-            if (!checked.includes(player.allycode)) {
+            if (!checked.includes(player.allyCode)) {
                 outArr.push(`${player.name} has ${player.oldRank < player.newRank ? "dropped" : "climbed"} from ${player.oldRank} to ${player.newRank}`);
             }
         });
         return outArr;
     }
-
 };

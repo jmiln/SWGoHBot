@@ -116,8 +116,9 @@ class ArenaWatch extends Command {
             case "allycode":
             case "allycodes": {
                 // Should have add and remove here
-                const [action, code] = args;
-                [ , , ...args] = args;
+                let code;
+                const [action] = args;
+                [ , code, ...args] = args;
 
                 // Bunch of checks before getting to the logic
                 if (!action)                             return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_ACTION"));
@@ -129,17 +130,31 @@ class ArenaWatch extends Command {
                 if (action === "add") {
                     let codes;
                     if (code.indexOf(",") > -1) {
-                        codes = code.split(",").filter(c => c.replace(/[^\d]/g, "").length === 9);
+                        codes = code.split(",").map(c => c.replace(/[^\d]/g, "")).filter(c => c.length === 9).map(c => parseInt(c));
+                    } else {
+                        code = code.replace(/[^\d]/g, "");
+                        if (code.length != 9) {
+                            return super.error(message, `Invalid code, there are ${code.length}/9 digits`);
+                        } else {
+                            code = parseInt(code);
+                        }
                     }
                     if (!codes || !codes.length) {
                         // Add the new code to the list
-                        if (!user.arenaWatch.allycodes.includes(code.replace(/[^\d]/g, "")) && code.replace(/[^\d]/g, "").length === 9) {
+                        if (!user.arenaWatch.allycodes.find(usercode => usercode.allyCode === code)) {
                             if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier1)   || // Under $5, can set a channel for 1 account
                                 (pat.amount_cents < 1000  && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier2)  || // $5-10, can set a channel for up to 10 accounts
                                 (pat.amount_cents >= 1000 && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier3)) {  // $10+, can set a channel for up to 30 accounts
                                 return super.error(message, message.language.get("COMMAND_ARENAWATCH_AC_CAP", code));
                             }
-                            user.arenaWatch.allycodes.push(code.replace(/[^\d]/g, ""));
+                            // TODO Make sure that the codes are valid, and fill in the nulls when adding
+                            user.arenaWatch.allycodes.push({
+                                allyCode: code,
+                                name: null,
+                                mention: null,
+                                lastChar: null,
+                                lastShip: null
+                            });
                             outLog.push(code + " added!");
                         } else {
                             return message.channel.send("That ally code has already been added");
@@ -147,14 +162,19 @@ class ArenaWatch extends Command {
                     } else {
                         // There are more than one valid code, try adding them all
                         codes.forEach(c => {
-                            if (!user.arenaWatch.allycodes.includes(c)) {
+                            if (!user.arenaWatch.allycodes.find(usercode => usercode.allyCode === c)) {
                                 if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier1)   || // Under $5, can set a channel for 1 account
                                     (pat.amount_cents < 1000  && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier2)  || // $5-10, can set a channel for up to 10 accounts
                                     (pat.amount_cents >= 1000 && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier3)) {  // $10+, can set a channel for up to 30 accounts
                                     outLog.push(`Could not add ${c}, ally code cap reached!`);
                                     return;
                                 }
-                                user.arenaWatch.allycodes.push(code.replace(/[^\d]/g, ""));
+                                user.arenaWatch.allycodes.push({
+                                    allyCode: c,
+                                    name: null,
+                                    lastChar: null,
+                                    lastShip: null
+                                });
                                 outLog.push(c + " added!");
                             } else {
                                 outLog.push(message.language.get("COMMAND_ARENAWATCH_AC_CAP", c));
@@ -163,8 +183,14 @@ class ArenaWatch extends Command {
                     }
                 } else if (["remove", "delete"].includes(action)) {
                     // Remove an ally code to the list
-                    if (user.arenaWatch.allycodes.includes(code.replace(/[^\d]/g, ""))) {
-                        user.arenaWatch.allycodes.splice(user.arenaWatch.allycodes.indexOf(code.replace(/[^\d]/g, "")), 1);
+                    code = code.replace(/[^\d]/g, "");
+                    if (code.length != 9) {
+                        return super.error(message, `Invalid code, there are ${code.length}/9 digits`);
+                    } else {
+                        code = parseInt(code);
+                    }
+                    if (user.arenaWatch.allycodes.filter(ac => ac.allyCode === code).length) {
+                        user.arenaWatch.allycodes = user.arenaWatch.allycodes.filter(ac => ac.allyCode !== code);
                     } else {
                         return super.error(message, "That ally code was not available to remove");
                     }
@@ -191,7 +217,7 @@ class ArenaWatch extends Command {
                         `Enabled:  **${user.arenaWatch.enabled ? "ON" : "OFF"}**`,
                         `Channel:  **${user.arenaWatch.channel ? chan : "N/A"}**`,
                         `Arena:    **${user.arenaWatch.arena}**`,
-                        `AllyCodes: ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.sort().map(a => "`" + a + "`").join("\n") : "**N/A**"}`
+                        `AllyCodes: ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.map(a => `\`${a.allyCode}\` **${a.name ? a.name : ""}**\``).join("\n") : "**N/A**"}`
                     ].join("\n")
                 }});
             }

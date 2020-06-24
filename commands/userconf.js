@@ -234,7 +234,7 @@ class UserConf extends Command {
                 if (!user.lang) user.lang = {};
                 if (action === "language") {
                     if (!setting) {
-                        return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", setting, Bot.languages.join(", ")));
+                        return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", setting, Object.keys(Bot.languages).join(", ")));
                     }
                     if (Object.keys(Bot.languages).map(l => l.toLowerCase()).indexOf(setting) > -1) {
                         const split = setting.split("_");
@@ -298,4 +298,3 @@ class UserConf extends Command {
 }
 
 module.exports = UserConf;
-

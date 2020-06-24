@@ -83,6 +83,8 @@ class ReloadData extends Command {
                 }
 
                 await Bot.swgohAPI.character(null, true);
+                // console.log(`Reloading ${args[0] ? args[0] : "all"} for langs: ${langList.join(", ")}`);
+                // console.log(langList);
                 for (const lang of langList) {
                     if (!args[0]) {
                         await Bot.swgohAPI.units("", lang, true);
