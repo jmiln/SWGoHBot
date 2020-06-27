@@ -236,6 +236,9 @@ module.exports = (Bot, client) => {
                 if (!newPlayer) {
                     newPlayer = newPlayers.find(p => p.allyCode === parseInt(player));
                 }
+                if (!newPlayer) {
+                    return;
+                }
                 if (typeof player === "string") {
                     player = {
                         allyCode: parseInt(player),

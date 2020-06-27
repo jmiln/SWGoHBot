@@ -1,5 +1,4 @@
 const {inspect} = require("util"); // eslint-disable-line no-unused-vars
-const nodeFetch = require("node-fetch");
 const statEnums = require("../data/statEnum.js");
 
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
@@ -18,7 +17,6 @@ module.exports = (Bot) => {
     const eventCooldown     = 4*60; // 4 hours
 
     return {
-        fastPlayer: fastPlayer,
         playerByName: playerByName,
         unitStats: unitStats,
         langChar: langChar,
@@ -36,30 +34,6 @@ module.exports = (Bot) => {
         zetaRec: zetaRec,
         events: events
     };
-
-    async function fastPlayer(allycode) {
-        if (allycode) allycode = allycode.toString();
-        if (!allycode || isNaN(allycode) || allycode.length !== 9) { throw new Error("Please provide a valid allycode"); }
-
-        const rawPlayer = await nodeFetch(Bot.config.premiumIP_Port + "/player", {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({ payload: { allyCode: allycode } })
-        }).then(data => data.json());
-
-        const player = {arena: {}, name: null, poUTCOffsetMinutes: null};
-
-        for (const ar of rawPlayer.result.pvpProfile) {
-            player.arena[ar.tab === 1 ? "char" : "ship"] = {
-                rank: ar.rank,
-                squad: ar.squad.cell.map(a => { return { defId: a.unitDefId.split(":")[0], squadUnitType: a.squadUnitType }; })
-            };
-        }
-        player.poUTCOffsetMinutes = rawPlayer.result.localTimeZoneOffsetMinutes;
-        player.name = rawPlayer.result.name;
-        await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: allycode}, {"arena": player.arena}, false);
-        return player;
-    }
 
     async function playerByName(name) {
         try {
