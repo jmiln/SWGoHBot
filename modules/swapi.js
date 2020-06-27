@@ -256,6 +256,8 @@ module.exports = (Bot) => {
                     "tierList": 1
                 }
             });
+
+            if (!skillList || !skillList.result) return console.log("No skillList for " + lang);
             skillList = skillList.result;
 
             let abilities = await Bot.swgoh.fetchAPI("/swgoh/data", {
@@ -274,10 +276,8 @@ module.exports = (Bot) => {
                 }
             });
 
+            if (!abilities || !abilities.result) return console.log("No abilities for " + lang);
             abilities = abilities.result;
-
-            if (!abilities) return console.log("No abilities for " + lang);
-            if (!skillList) return console.log("No skillList for " + lang);
 
             abilities.forEach(a => {
                 const skill = skillList.find(s => s.abilityReference === a.id);
