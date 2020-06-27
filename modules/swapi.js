@@ -16,7 +16,6 @@ module.exports = (Bot) => {
     const guildMinCooldown  = 3*60; // 4 hours
     const guildMaxCooldown  = 6*60; // 6 hours
     const eventCooldown     = 4*60; // 4 hours
-    const zetaCooldown =   7*24*60; // 7 days
 
     return {
         fastPlayer: fastPlayer,
@@ -741,40 +740,8 @@ module.exports = (Bot) => {
     }
 
     async function zetaRec( lang="ENG_US" ) {
-        let zetas = await cache.get(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang});
-
-        /** Check if existance and expiration */
-        if ( !zetas || !zetas[0] || !zetas[0].zetas || isExpired(zetas[0].zetas.updated, zetaCooldown) ) {
-            /** If not found or expired, fetch new from API and save to cache */
-            try {
-                zetas =  await swgoh.fetchAPI("/swgoh/zetas", {
-                    language: lang,
-                    enums: true,
-                    "project": {
-                        zetas: 1,
-                        credits: 1,
-                        updated: 1
-                    }
-                });
-                if (zetas.error) throw new Error(zetas.error);
-                zetas = zetas.result;
-            } catch (e) {
-                console.log("[SWGoHAPI] Could not get zeta recs: " + e.message);
-            }
-            if (Array.isArray(zetas)) {
-                zetas = zetas[0];
-            }
-            zetas = {
-                lang: lang,
-                zetas: zetas
-            };
-            zetas = await cache.put(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang}, zetas);
-            zetas = zetas.zetas;
-        } else {
-            /** If found and valid, serve from cache */
-            zetas = zetas[0].zetas;
-        }
-        return zetas;
+        const zetas = await cache.get(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang});
+        return zetas[0].zetas;
     }
 
     async function events( lang="ENG_US" ) {

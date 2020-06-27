@@ -122,10 +122,9 @@ const init = async () => {
     const gameData  = require("./data/gameData.json");
     Bot.statCalculator.setGameData( gameData );
 
-    if (Bot.config.api_swgoh_help) {
+    if (Bot.config.swapiConfig) {
         // Load up the api connector/ helpers
         const ApiSwgohHelp = require("api-swgoh-help");
-        // Bot.swgoh = new ApiSwgohHelp(Bot.config.api_swgoh_help);
         Bot.swgoh = (Bot.config.fakeSwapiConfig && Bot.config.fakeSwapiConfig.enabled) ?
             new ApiSwgohHelp(Bot.config.fakeSwapiConfig.options) :
             new ApiSwgohHelp(Bot.config.swapiConfig);
