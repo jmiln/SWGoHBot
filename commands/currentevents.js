@@ -1,5 +1,5 @@
 const Command = require("../base/Command");
-const moment = require("moment");
+const moment = require("moment-timezone");
 
 // To get the dates of any upcoming events if any (Adapted from shittybill#3024's Scorpio)
 class CurrentEvents extends Command {

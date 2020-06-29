@@ -63,22 +63,18 @@ module.exports = (Bot) => {
         if (!options.force) {
             if (allycodes.length > 5) {
                 if (cooldown && cooldown.guild) {
-                    if (cooldown) {
-                        cooldown = cooldown.guild;
-                        if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
-                        if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
-                    } else {
-                        cooldown = guildMaxCooldown;
-                    }
+                    cooldown = cooldown.guild;
+                    if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
+                    if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
+                } else {
+                    cooldown = guildMaxCooldown;
                 }
             } else if (cooldown && cooldown.player) {
-                if (cooldown) {
-                    cooldown = cooldown.player;
-                    if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
-                    if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
-                } else {
-                    cooldown = playerMaxCooldown;
-                }
+                cooldown = cooldown.player;
+                if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
+                if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
+            } else {
+                cooldown = playerMaxCooldown;
             }
         }
         let playerStats = [];

@@ -1,6 +1,4 @@
 const Command = require("../base/Command");
-// const moment = require("moment");
-// const {inspect} = require("util");
 
 class MyProfile extends Command {
     constructor(Bot) {
@@ -29,7 +27,7 @@ class MyProfile extends Command {
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let player;
         try {
-            player = await Bot.swgohAPI.unitStats(allyCode, null, cooldown);
+            player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
             console.log("Broke getting player in myprofile: " + e);

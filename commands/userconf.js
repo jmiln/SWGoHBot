@@ -32,6 +32,7 @@ class UserConf extends Command {
         }
 
         let user = await Bot.userReg.getUser(userID); // eslint-disable-line no-unused-vars
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
         if (!user) {
             return super.error(message, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
         }
@@ -69,7 +70,7 @@ class UserConf extends Command {
 
                     // Sync up their swgoh account
                     try {
-                        let player = await Bot.swgohAPI.unitStats(allyCode, null);
+                        let player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
                         if (Array.isArray(player)) player = player[0];
                         if (!player) {
                             super.error(message, message.language.get("COMMAND_REGISTER_FAILURE"));

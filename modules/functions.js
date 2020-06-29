@@ -1,11 +1,10 @@
-const momentTZ = require("moment-timezone");
+const Discord = require("discord.js");
 const Fuse = require("fuse-js-latest");
+const moment = require("moment-timezone");
 require("moment-duration-format");
 const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
-const moment = require("moment");                 // eslint-disable-line no-unused-vars
-const fs = require("fs");                         // eslint-disable-line no-unused-vars
-const readdir = promisify(require("fs").readdir); // eslint-disable-line no-unused-vars
-const Discord = require("discord.js");
+const fs = require("fs");
+const readdir = promisify(require("fs").readdir);
 
 module.exports = (Bot, client) => {
     // A zero-width-space
@@ -57,7 +56,7 @@ module.exports = (Bot, client) => {
     };
 
     Bot.myTime = () => {
-        return momentTZ.tz("US/Pacific").format("M/D/YYYY h:mma");
+        return moment.tz("US/Pacific").format("M/D/YYYY h:mma");
     };
 
     // This finds any character that matches the search, and returns them in an array

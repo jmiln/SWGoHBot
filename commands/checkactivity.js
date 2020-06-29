@@ -1,5 +1,5 @@
 const Command = require("../base/Command");
-const moment = require("moment");
+const moment = require("moment-timezone");
 require("moment-duration-format");
 
 class CheckAct extends Command {

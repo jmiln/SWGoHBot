@@ -11,6 +11,7 @@ class Register extends Command {
     }
 
     async run(Bot, message, [userID, allyCode, ...args], options) { // eslint-disable-line no-unused-vars
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
         if (!userID) {
             return super.error(message, message.language.get("COMMAND_REGISTER_MISSING_ALLY"));
         } else {
@@ -72,7 +73,7 @@ class Register extends Command {
         }
         message.channel.send(message.language.get("COMMAND_REGISTER_PLEASE_WAIT")).then(async msg => {
             try {
-                let player = await Bot.swgohAPI.unitStats(allyCode, null);
+                let player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
                 if (Array.isArray(player)) player = player[0];
                 if (!player) {
                     super.error(msg, (message.language.get("COMMAND_REGISTER_FAILURE") + allyCode), {edit: true});
