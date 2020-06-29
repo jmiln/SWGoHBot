@@ -182,7 +182,7 @@ class Squads extends Command {
                 }
 
             } else {
-                const outList = squadList[list].phase.map((p, ix) => "`" + (ix + 1) + "`"+ ": " + p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT")).join("\n");
+                const outList = squadList[list].phase.map((p, ix) => "`" + (ix + 1) + "`"+ ": " + (p.name ? p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT") : "N/A")).join("\n");
                 return super.error(message, message.language.get("COMMAND_SQUAD_INVALID_PHASE", outList), {example: example});
             }
         } else {
@@ -253,4 +253,3 @@ class Squads extends Command {
 }
 
 module.exports = Squads;
-
