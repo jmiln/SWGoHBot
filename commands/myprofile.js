@@ -30,7 +30,7 @@ class MyProfile extends Command {
             player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
-            console.log("Broke getting player in myprofile: " + e);
+            Bot.logger.error("Broke getting player in myprofile: " + e);
             return super.error(message, "Please make sure you are registered with a valid ally code");
         }
 

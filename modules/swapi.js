@@ -45,7 +45,7 @@ module.exports = (Bot) => {
 
             return player;
         } catch (e) {
-            console.log("SWAPI Broke getting player: " + e);
+            Bot.logger.error("SWAPI Broke getting player: " + e);
             throw e;
         }
     }
@@ -124,7 +124,7 @@ module.exports = (Bot) => {
                     }
                 } catch (error) {
                     // Couldn't get the data from the api, so send old stuff
-                    console.log("Error getting player(s) in unitStats: " + error);
+                    Bot.logger.error("Error getting player(s) in unitStats: " + error);
                     return players;
                 }
                 for (const bareP of updatedBare) {
@@ -151,7 +151,7 @@ module.exports = (Bot) => {
             }
             return playerStats;
         } catch (error) {
-            console.log("SWAPI Broke getting playerStats: " + error);
+            Bot.logger.error("SWAPI Broke getting playerStats: " + error);
             throw error;
         }
     }
@@ -253,7 +253,7 @@ module.exports = (Bot) => {
                 }
             });
 
-            if (!skillList || !skillList.result) return console.log("No skillList for " + lang);
+            if (!skillList || !skillList.result) return Bot.logger.error("No skillList for " + lang);
             skillList = skillList.result;
 
             let abilities = await Bot.swgoh.fetchAPI("/swgoh/data", {
@@ -272,7 +272,7 @@ module.exports = (Bot) => {
                 }
             });
 
-            if (!abilities || !abilities.result) return console.log("No abilities for " + lang);
+            if (!abilities || !abilities.result) return Bot.logger.error("No abilities for " + lang);
             abilities = abilities.result;
 
             abilities.forEach(a => {
@@ -347,8 +347,7 @@ module.exports = (Bot) => {
             tier.equipmentSetList.forEach((e, ix) => {
                 const eq = eqList.find(equipment => equipment.id === e);
                 if (!eq) {
-                    console.log("Missing equipment for char " + char.name + ", make sure to update the gear lang stuff");
-                    console.log(e);
+                    Bot.logger.error("Missing equipment for char " + char.name + ", make sure to update the gear lang stuff" + inspect(e));
                     return;
                 }
                 tier.equipmentSetList.splice(ix, 1, eq.nameKey);
@@ -388,11 +387,11 @@ module.exports = (Bot) => {
 
             baseCharacters = baseCharacters.result;
 
-            if (!baseCharacters) return console.log("No baseCharacters");
+            if (!baseCharacters) return Bot.logger.error("No baseCharacters");
 
             for (const char of baseCharacters) {
                 char.factions = [];
-                if (!char.categoryIdList) return console.log("Missing baseCharacter abilities");
+                if (!char.categoryIdList) return Bot.logger.error("Missing baseCharacter abilities");
                 char.categoryIdList.forEach(c => {
                     if (c.startsWith("alignment_") || c.startsWith("profession_") || c.startsWith("affiliation_") || c.startsWith("role_") || c.startsWith("shipclass_")) {
                         let faction = c.split("_")[1];
@@ -448,7 +447,7 @@ module.exports = (Bot) => {
             });
             gearList = gearList.result;
 
-            if (!gearList) return console.log("Missing gearList for " + lang);
+            if (!gearList) return Bot.logger.error("Missing gearList for " + lang);
 
             for (const gearPiece of gearList) {
                 gearPiece.language = lang.toLowerCase();
@@ -499,7 +498,7 @@ module.exports = (Bot) => {
             });
             unitList = unitList.result;
 
-            if (!unitList) return console.log("No unitList for " + lang);
+            if (!unitList) return Bot.logger.error("No unitList for " + lang);
 
             for (const unit of unitList) {
                 unit.language = lang.toLowerCase();
@@ -543,7 +542,7 @@ module.exports = (Bot) => {
 
             recList = recList.result;
 
-            if (!recList) return console.log("No recList for " + lang);
+            if (!recList) return Bot.logger.error("No recList for " + lang);
 
             for (const rec of recList) {
                 rec.language = lang.toLowerCase();
@@ -570,9 +569,9 @@ module.exports = (Bot) => {
             });
 
             const errors = battleList.error;
-            if (errors) console.log("Error: " + errors);
+            if (errors) Bot.logger.error("In swapi Battles - Error: " + errors);
             const warnings = battleList.warning;
-            if (warnings) console.log("Warning: " + warnings);
+            if (warnings) Bot.logger.warn("In swapi Battles - Warning: " + warnings);
             battleList = battleList.result.battles;
 
             for (const battle of battleList) {
@@ -690,7 +689,7 @@ module.exports = (Bot) => {
             }
             return guild;
         } catch (e) {
-            console.log("SWAPI(guild) Broke getting guild (" + allycode + "): " + e);
+            Bot.logger.error("SWAPI(guild) Broke getting guild (" + allycode + "): " + e);
             throw e;
         }
     }
@@ -704,7 +703,7 @@ module.exports = (Bot) => {
             }
             return guild[0];
         } catch (e) {
-            console.log("SWAPI(guild) Broke getting guild: " + e);
+            Bot.logger.error("SWAPI(guild) Broke getting guild: " + e);
             throw e;
         }
     }
@@ -727,7 +726,7 @@ module.exports = (Bot) => {
                 });
                 events = events.result;
             } catch (e) {
-                console.log("[SWGoHAPI] Could not get events");
+                Bot.logger.error("[SWGoHAPI] Could not get events");
             }
             if (Array.isArray(events)) {
                 events = events[0];

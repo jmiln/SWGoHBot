@@ -34,7 +34,7 @@ class Reload extends Command {
                                 super.error(msg, (message.language.get("COMMAND_RELOAD_FAILURE",command, e.stack)), {edit: true});
                             });
                     } else {
-                        console.log("Trying to reload out of shards");
+                        Bot.logger.log("Trying to reload out of shards");
                         Bot.reloadCommand(command)
                             .then(() => {
                                 msg.edit(message.language.get("COMMAND_RELOAD_SUCCESS", command));

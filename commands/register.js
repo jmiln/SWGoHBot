@@ -97,7 +97,7 @@ class Register extends Command {
                                 });
                         })
                         .catch(e => {
-                            Bot.log("REGISTER", "Broke while trying to link new user: " + e);
+                            Bot.logger.error("REGISTER", "Broke while trying to link new user: " + e);
                             return super.error(msg, Bot.codeBlock(e.message), {
                                 title: message.lanugage.get("BASE_SOMETHING_BROKE"),
                                 footer: "Please try again in a bit.",
@@ -106,7 +106,7 @@ class Register extends Command {
                         });
                 }
             } catch (e) {
-                console.log("ERROR[REG]: Incorrect Ally Code: " + e);
+                Bot.logger.error("ERROR[REG]: Incorrect Ally Code: " + e);
                 return super.error(message, ("Something broke. Make sure you've got the correct ally code" + Bot.codeBlock(e.message)));
             }
         });

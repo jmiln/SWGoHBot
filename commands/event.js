@@ -236,7 +236,7 @@ class Event extends Command {
                             return message.channel.send(message.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
                         })
                         .catch(error => {
-                            Bot.log("ERROR",`Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
+                            Bot.logger.error(`Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
                             return message.channel.send(message.language.get("COMMAND_EVENT_NO_CREATE"));
                         });
                 } else {
@@ -540,7 +540,7 @@ class Event extends Command {
                             }
                         }
                     } catch (e) {
-                        Bot.log("Event View Broke!", evArray);
+                        Bot.logger.error("Event View Broke! " + evArray);
                     }
                 }
                 break;
@@ -587,7 +587,7 @@ class Event extends Command {
                         try {
                             return channel.send(announceMessage);
                         } catch (e) {
-                            Bot.log("Event trigger Broke!", announceMessage);
+                            Bot.logger.error("Event trigger Broke! " + announceMessage);
                         }
                     }
                 }
@@ -827,7 +827,7 @@ class Event extends Command {
                     return true;
                 })
                 .catch(error => {
-                    Bot.log("ERROR",`(Ev updateEvent)Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
+                    Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
                     return false;
                 });
             return out;

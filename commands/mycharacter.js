@@ -100,7 +100,7 @@ class MyCharacter extends Command {
                         charImg = image;
                     });
             } catch (e) {
-                console.log("ImageFetch in myCharacter broke: " + e);
+                Bot.logger.error("ImageFetch in myCharacter broke: " + e);
             }
 
             const abilities = {
@@ -141,7 +141,7 @@ class MyCharacter extends Command {
                 try {
                     abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`);
                 } catch (e) {
-                    console.log("ERROR[MC]: bad ability type: " + inspect(a));
+                    Bot.logger.error("ERROR[MC]: bad ability type: " + inspect(a));
                 }
             });
             const abilitiesOut = abilities.basic
@@ -202,7 +202,7 @@ class MyCharacter extends Command {
             try {
                 maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]] ? langStr[langMap[str]].length : 0), 0);
             } catch (e) {
-                console.log("[MC] Getting maxLen broke: " + e);
+                Bot.logger.error("[MC] Getting maxLen broke: " + e);
             }
 
             const statArr = [];

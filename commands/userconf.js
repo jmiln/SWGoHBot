@@ -92,7 +92,7 @@ class UserConf extends Command {
                                 });
                         }
                     } catch (e) {
-                        console.log("ERROR[REG]: Incorrect Ally Code(" + allyCode + "): " + e);
+                        Bot.logger.error("ERROR[REG]: Incorrect Ally Code(" + allyCode + "): " + e);
                         return super.error(message, ("Something broke. Make sure you've got the correct ally code" + Bot.codeBlock(e.message)));
                     }
                 } else if (action === "remove") {

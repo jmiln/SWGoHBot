@@ -40,7 +40,7 @@ class Squads extends Command {
                 player = await Bot.swgohAPI.unitStats(allyCodes, cooldown);
                 if (Array.isArray(player)) player = player[0];
             } catch (e) {
-                console.log("Broke getting player in squads: " + e);
+                Bot.logger.error("Broke getting player in squads: " + e);
             }
         }
 
@@ -209,7 +209,7 @@ class Squads extends Command {
                             outStr += Bot.ships.find(ship => ship.uniqueName === c.split(":")[0]).name + "\n";
                         }
                     } catch (e) {
-                        console.log("Squad broke: " + c + ": " + e);
+                        Bot.logger.error("Squad broke: " + c + ": " + e);
                     }
                 });
             } else {
@@ -243,7 +243,7 @@ class Squads extends Command {
                             outStr += ch.nameKey + "\n";
                         }
                     } catch (e) {
-                        console.log("Squad broke: " + c + ": " + e);
+                        Bot.logger.error("Squad broke: " + c + ": " + e);
                     }
                 }
             }

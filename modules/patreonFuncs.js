@@ -87,7 +87,7 @@ module.exports = (Bot, client) => {
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
                     await Bot.wait(750);
-                    return console.log("Broke in getRanks: " + e.message);
+                    return Bot.logger.error("Broke in getRanks: " + e.message);
                 }
                 if (!acc.lastCharRank) {
                     acc.lastCharRank = 0;
@@ -228,7 +228,7 @@ module.exports = (Bot, client) => {
             const accountsToCheck = JSON.parse(JSON.stringify(user.arenaWatch.allycodes.slice(0, acctCount)));
             const allyCodes = accountsToCheck.map(a => a.allyCode ?  a.allyCode : a);
             const newPlayers = await Bot.swgohAPI.unitStats(allyCodes, null, {force: true});
-            if (allyCodes.length !== newPlayers.length) console.log("Did not get all players! ", allyCodes.length, newPlayers.length);
+            if (allyCodes.length !== newPlayers.length) Bot.logger.error("Did not get all players! ", allyCodes.length, newPlayers.length);
 
             // Go through all the listed players, and see if any of them have shifted arena rank
             accountsToCheck.forEach((player, ix) => {

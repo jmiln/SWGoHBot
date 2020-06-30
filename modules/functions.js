@@ -12,8 +12,12 @@ module.exports = (Bot, client) => {
 
     // Some normal color codes
     Bot.colors = {
-        red: "#FF0000",
-        green: "#00FF00"
+        black:  "#000000",
+        blue:   "#0000FF",
+        green:  "#00FF00",
+        red:    "#FF0000",
+        white:  "#FFFFFF",
+        yellow: "#FFFF00",
     };
 
     /*
@@ -276,7 +280,7 @@ module.exports = (Bot, client) => {
                     }
                 }
             } catch (e) {
-                console.log("Error: " + e);
+                Bot.logger.error("Error: " + e);
                 errArr.push(f);
             }
         });
@@ -304,7 +308,7 @@ module.exports = (Bot, client) => {
                 delete require.cache[require.resolve(`../events/${file}`)];
                 ev.push(eventName);
             } catch (e) {
-                console.log("In Event reload: " + e);
+                Bot.logger.error("In Event reload: " + e);
                 errEv.push(file);
             }
         });
@@ -578,7 +582,7 @@ module.exports = (Bot, client) => {
         const messages = [];
         arr.forEach((elem) => {
             elem = Bot.expandSpaces(elem);
-            if (typeof elem !== "string") console.log(elem + " Is not a string!");
+            if (typeof elem !== "string") Bot.logger.error("In msgArray, " + elem + " Is not a string!");
             // Check if something big somehow got in
             if (elem.length > maxLen) {
                 throw new Error("[MsgArray] Element too big! " + elem);
@@ -724,7 +728,7 @@ module.exports = (Bot, client) => {
         for (const emote of Object.keys(emoteList)) {
             const e = await client.getEmoji(emoteList[emote]);
             if (!e) {
-                console.log("Couldn't get emote: " + emote);
+                Bot.logger.error("Couldn't get emote: " + emote);
                 continue;
             } else {
                 Bot.emotes[emote] = e;

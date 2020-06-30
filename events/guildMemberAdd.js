@@ -20,7 +20,7 @@ module.exports = async (Bot, member) => {
         try {
             Bot.announceMsg(guild, welcomeMessage);
         } catch (e) {
-            Bot.log("ERROR", `Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
+            Bot.logger.error(`Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
         }
     }
 };

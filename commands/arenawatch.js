@@ -56,18 +56,15 @@ class ArenaWatch extends Command {
             case "enabled": {
                 if (!args.length) {
                     // They didn't say which way, so just toggle it
-                    console.log("Toggling arenaWatch");
                     user.arenaWatch.enabled = !user.arenaWatch.enabled;
                 } else {
                     const toggle = args[0];
                     if (onVar.indexOf(toggle) > -1) {
                         // Turn it on
                         user.arenaWatch.enabled = true;
-                        console.log("Turning arenaWatch on");
                     } else if (offVar.indexOf(toggle) > -1) {
                         // Turn it off
                         user.arenaWatch.enabled = false;
-                        console.log("turning arenaWatch off");
                     } else {
                         // Complain, they didn't supply a proper toggle
                         return super.error(message, message.language.get("COMMAND_ARENAALERT_INVALID_BOOL"));

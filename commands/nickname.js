@@ -29,7 +29,7 @@ class Nickname extends Command {
                 super.error(message, message.language.get("COMMAND_NICKNAME_FAILURE"));
             }
         } catch (e) {
-            Bot.log("Broke", "I broke while trying to set a nickname\n" + e);
+            Bot.logger.error("Broke", "I broke while trying to set a nickname\n" + e);
         }
     }
 }

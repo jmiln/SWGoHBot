@@ -48,7 +48,7 @@ module.exports = (Bot, client) => {
                                 try {
                                     Bot.announceMsg(client.guilds.cache.get(guildID), announceMessage, event.eventChan);
                                 } catch (e) {
-                                    Bot.log("ERROR", "Broke trying to announce event with ID: ${ev.eventID} \n${e}");
+                                    Bot.logger.error("Broke trying to announce event with ID: ${ev.eventID} \n${e}");
                                 }
                             } else { // Else, use the default one from their settings
                                 Bot.announceMsg(client.guilds.cache.get(guildID), announceMessage);
@@ -71,12 +71,12 @@ module.exports = (Bot, client) => {
                         } else {
                             // There was no viable next time, so wipe it out
                             await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
-                                .catch(error => { Bot.log("ERROR",`Broke trying to delete zombies ${error}`); });
+                                .catch(error => { Bot.logger.error(`Broke trying to delete zombies ${error}`); });
                         }
                     } else {
                         // If no repeat and it's long-gone, just wipe it from existence
                         await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
-                            .catch(error => { Bot.log("ERROR",`Broke trying to delete zombies ${error}`); });
+                            .catch(error => { Bot.logger.error(`Broke trying to delete zombies ${error}`); });
                     }
                 } else {
                     ix++;
@@ -84,7 +84,7 @@ module.exports = (Bot, client) => {
                 }
             }
         }
-        console.log(`Loaded ${ix} events`);
+        Bot.logger.log(`Loaded ${ix} events`);
     };
 
     // Actually schedule em here
@@ -147,13 +147,13 @@ module.exports = (Bot, client) => {
             .then(() => {
                 const eventToDel = Bot.schedule.scheduledJobs[eventID];
                 if (!eventToDel) {
-                    console.log("Could not find scheduled event to delete: " + event);
+                    Bot.logger.error("Could not find scheduled event to delete: " + event);
                 } else {
                     eventToDel.cancel();
                 }
             })
             .catch(error => {
-                Bot.log("ERROR",`Broke deleting an event ${error}`);
+                Bot.logger.error(`Broke deleting an event ${error}`);
             });
 
         if (Bot.evCountdowns[event.eventID] && (event.countdown === "true" || event.countdown === "yes")) {
@@ -214,7 +214,7 @@ module.exports = (Bot, client) => {
                 try {
                     Bot.announceMsg(client.guilds.cache.get(guildID), announceMessage, event.eventChan);
                 } catch (e) {
-                    Bot.log("ERROR", "Broke trying to announce event with ID: ${event.eventID} \n${e}", {color: Bot.colors.red});
+                    Bot.logger.error(`Broke trying to announce event with ID: ${event.eventID} \n${e}`);
                 }
             } else { // Else, use the default one from their settings
                 Bot.announceMsg(client.guilds.cache.get(guildID), announceMessage);
@@ -257,12 +257,12 @@ module.exports = (Bot, client) => {
                     }
                     Bot.scheduleEvent(newEvent, guildConf.eventCountdown);
                 })
-                .catch(error => { Bot.log("ERROR", "Broke trying to replace event: " + error, {color: Bot.colors.red}); });
+                .catch(error => { Bot.logger.error(`Broke trying to replace event: ${error}`); });
         } else {
             // Just destroy it
             await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
                 .then(async () => {})
-                .catch(error => { Bot.log("ERROR",`Broke trying to delete old event ${error}`, {color: Bot.colors.red}); });
+                .catch(error => { Bot.logger.error(`Broke trying to delete old event ${error}`); });
         }
     };
 };

@@ -53,7 +53,7 @@ class Showconf extends Command {
             var configKeys = array.join("\n");
             return message.channel.send(message.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName));
         } else {
-            console.log("Something broke in showconf");
+            Bot.logger.error("Something broke in showconf");
         }
     }
 }

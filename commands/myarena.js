@@ -33,7 +33,7 @@ class MyArena extends Command {
             player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
-            console.log("Broke getting player in myarena: " + e);
+            Bot.logger.error("Broke getting player in myarena: " + e);
             return super.error(message, "Something broke, please try again in a bit");
         }
 

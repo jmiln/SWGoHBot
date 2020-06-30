@@ -126,7 +126,7 @@ class GuildSearch extends Command {
             try {
                 guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: { name: "Something Broke getting your guild's roster" },
                     description: Bot.codeBlock(e) + "Please try again in a bit."
@@ -153,9 +153,9 @@ class GuildSearch extends Command {
             try {
                 guildGG = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                console.log("ERROR(GS_GEAR) getting guild: " + e);
+                Bot.logger.error("ERROR(GS_GEAR) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
-                console.log("GuildID: " + guild.id);
+                Bot.logger.error("GuildID: " + guild.id);
                 return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
             const starOut = {};
@@ -236,7 +236,7 @@ class GuildSearch extends Command {
             try {
                 guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: { name: "Something Broke getting your guild's roster" },
                     description: Bot.codeBlock(e) + "Please try again in a bit."
@@ -263,9 +263,9 @@ class GuildSearch extends Command {
             try {
                 guildGG = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
-                console.log("GuildID: " + guild.id);
+                Bot.logger.error("GuildID: " + guild.id);
                 return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
             const starOut = {};
@@ -285,11 +285,10 @@ class GuildSearch extends Command {
 
             for (const player of guildGG) {
                 if (!player) {
-                    console.log("missing player");
+                    Bot.logger.error("missing player");
                     continue;
                 }
                 for (const char of player.roster) {
-                    // console.log(char);
                     if (options.flags.ships && (char.combatType === "CHARACTER" || char.combatType == 1)) {
                         continue;
                     } else if (!options.flags.ships && (char.combatType === "SHIP" || char.combatType !== 1)) {
@@ -448,7 +447,7 @@ class GuildSearch extends Command {
             try {
                 guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return super.error(msg, Bot.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
             }
             let gRoster;
@@ -549,7 +548,7 @@ class GuildSearch extends Command {
             try {
                 guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return super.error(message, Bot.codeBlock(e), {title: "Something Broke while getting your guild's roster", footer: "Please try again later"});
             }
             if (!guild || !guild.roster || !guild.roster.length) {
@@ -562,9 +561,9 @@ class GuildSearch extends Command {
             try {
                 guildGG = await Bot.swgohAPI.unitStats(guild.roster.map(m => m.allyCode), cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
-                console.log("GuildID: " + guild.id);
+                Bot.logger.error("GuildID: " + guild.id);
                 return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
             guildGG = guildGG.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
@@ -652,7 +651,7 @@ class GuildSearch extends Command {
             try {
                 guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: {
                         name: "Something Broke while getting your guild's roster"
@@ -680,9 +679,9 @@ class GuildSearch extends Command {
                 guildChar = await Bot.swgohAPI.guildStats(guild.roster.map(p => p.allyCode), character.uniqueName, cooldown);
                 // guildChar = await Bot.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 // Spit out the gId so I can go check on why it's breaking
-                console.log("GuildID: " + guild.id);
+                Bot.logger.error("GuildID: " + guild.id);
                 return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
 
@@ -869,12 +868,11 @@ class GuildSearch extends Command {
                     footer: footer
                 }});
             } catch (e) {
-                Bot.log("ERROR", "Error sending message in guildsearch - " + e, {color: Bot.colors.red});
-                console.log(fields);
+                Bot.logger.error("ERROR", "Error sending message in guildsearch - " + e);
+                Bot.logger.error(fields);
             }
         }
     }
 }
 
 module.exports = GuildSearch;
-

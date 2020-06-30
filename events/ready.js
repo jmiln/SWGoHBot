@@ -18,14 +18,14 @@ module.exports = async (Bot, client) => {
 
         // If it's the last shard being started, load all the emotes in
         if ((client.shard.id + 1) === client.shard.count) {
-            console.log("Loading up emotes");
+            Bot.logger.log("Loading up emotes");
             await client.shard.broadcastEval("this.loadAllEmotes()");
         }
     } else {
         client.loadAllEmotes();
     }
 
-    Bot.log("Ready", readyString, {color: Bot.colors.green});
+    Bot.logger.log(readyString, "ready", true);
 
     // Sets the status as the current server count and help command
     const playingString =  `${Bot.config.prefix}help ~ swgohbot.com`;

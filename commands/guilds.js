@@ -67,7 +67,7 @@ class Guilds extends Command {
                 guild = await Bot.swgohAPI.guildByName(userID);
             }
         } catch (e) {
-            console.log("ERROR(guilds): " + e);
+            Bot.logger.error("ERROR(guilds): " + e);
             return super.error(msg, Bot.codeBlock(e), {edit: true, example: "guilds me"});
         }
 
@@ -205,7 +205,7 @@ class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                console.log("ERROR(GS) getting guild: " + e);
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return super.error(message, Bot.codeBlock(e), {
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit."
@@ -258,9 +258,7 @@ class Guilds extends Command {
             guildChecklist.forEach((char, ix) => {
                 if (Array.isArray(char)) {
                     const defId = char[0];
-                    // console.log(guildMembers[0].roster);
                     const roster = guildMembers.map(p => p.roster.find(c => c.defId === defId));
-                    // console.log(roster.map(c => c ? c.gear : 0));
                     let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
                     if (roster && roster.length) {
                         total = roster.length;

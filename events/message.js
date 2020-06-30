@@ -149,7 +149,7 @@ module.exports = async (Bot, message) => {
                     defaults: def
                 });
             } catch (err) {
-                Bot.log("ERROR(msg)", `I broke with ${cmd.help.name}: ${err}`, cmd.help.name.toProperCase(), {color: Bot.colors.red});
+                Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: ${err}`);
             }
         }
         if (Bot.config.logs.logComs) {
@@ -217,4 +217,3 @@ function getFlags(cFlags, cSubArgs, args) {
         flags: flags
     };
 }
-

@@ -80,7 +80,7 @@ Bot.database.authenticate().then(async () => {
         await Bot.database.models.settings.findAll({limit: 1, attributes: [rawNames[ix]]})
         // If it doesn't exist, it'll throw an error, then it will add them
             .catch(async () => {
-                console.log("Adding column " + rawNames[ix] + " to settings.");
+                Bot.logger.log("Adding column " + rawNames[ix] + " to settings.");
                 await Bot.database.queryInterface.addColumn("settings",
                     rawAttr[rawNames[ix]].fieldName,
                     {
@@ -103,7 +103,7 @@ Bot.database.authenticate().then(async () => {
                 if (initialized) {
                     return gModel.save();
                 }
-            }).catch((e) =>  console.log("Error: " + e));
+            }).catch((e) =>  Bot.logger.error("Error: " + e));
         }
     }).catch((e) => console.error(e));
 });
@@ -134,19 +134,27 @@ const init = async () => {
         Bot.zetaRec = await Bot.swgohAPI.zetaRec();
     }
 
+    const Logger = require("./modules/Logger.js"); //(Bot, client);
+    Bot.logger = new Logger(Bot, client);
+
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
+    const cmdError = [];
     cmdFiles.forEach(f => {
         try {
             const props = new(require(`./commands/${f}`))(Bot);
             if (f.split(".").slice(-1)[0] !== "js") return;
             if (props.help.category === "SWGoH" && !Bot.swgohAPI) return;
-            client.loadCommand(props.help.name);
+            const result = client.loadCommand(props.help.name);
+            if (result) cmdError.push(`Unable to load command: ${f}`);
         } catch (e) {
-            Bot.log("Init", `Unable to load command ${f}: ${e}`);
+            Bot.logger.warn("Init", `Unable to load command ${f}: ${e}`);
         }
     });
+    if (cmdError.length) {
+        Bot.logger.warn("cmdLoad", cmdError.join("\n"));
+    }
 
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
@@ -164,8 +172,8 @@ const init = async () => {
 
 client.on("error", (err) => {
     if (err.error.toString().indexOf("ECONNRESET") > -1) {
-        console.log("Connection error");
+        Bot.logger.error("Connection error");
     } else {
-        Bot.log("ERROR", inspect(err.error));
+        Bot.logger.error("ERROR", inspect(err.error));
     }
 });

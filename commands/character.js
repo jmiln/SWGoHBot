@@ -84,7 +84,7 @@ class Character extends Command {
                     costs.push(`${ability.cost.AbilityMatMk3} ${abilityMatMK3}`);
                 }
             } else {
-                console.log(ability);
+                Bot.logger.log(ability);
             }
             const costStr = costs.length > 0 ? costs.join(" | ") : "";
 

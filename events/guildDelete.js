@@ -9,6 +9,6 @@ module.exports = async (Bot, guild) => {
     //     .catch(error => { Bot.log('ERROR',`Broke in guildDelete(settings) ${error}`); });
 
     // Log that the bot left
-    Bot.log("GuildDelete", `I left ${guild.name}(${guild.id})`, {color: Bot.colors.red});
+    Bot.logger.log(`[GuildDelete] I left ${guild.name}(${guild.id})`);
 };
 
