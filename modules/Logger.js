@@ -12,7 +12,7 @@ class Logger {
     }
     log(content, type = "log", webhook = false) {
         const shard = this.client.shard ? ` (${this.client.shard.id})` : "";
-        const time = `${moment.tz("US/Pacific").format("M/D/YYYY h:mma")}`;
+        const time = `${moment.tz("US/Pacific").format("M/D/YYYY hh:mma")}`;
         const timestamp = `[${time}]${shard}`;
         let out = "";
         let color = null;
@@ -65,7 +65,7 @@ class Logger {
         return console.log(out);
     }
 
-    error(content, webhook=true) {
+    error(content, webhook=false) {
         return this.log(content, "error", webhook);
     }
 

@@ -167,6 +167,7 @@ module.exports = (Bot, client) => {
      * Sends a message to the set announcement channel
      */
     Bot.announceMsg = async (guild, announceMsg, channel="") => {
+        if (!guild || !guild.id) return;
         const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ["announceChan"]});
         const guildConf = guildSettings.dataValues;
 
@@ -328,6 +329,10 @@ module.exports = (Bot, client) => {
             require("../modules/patreonFuncs.js")(Bot, client);
             delete require.cache[require.resolve("../modules/eventFuncs.js")];
             require("../modules/eventFuncs.js")(Bot, client);
+            delete require.cache[require.resolve("../modules/Logger.js")];
+            delete Bot.logger;
+            const Logger = require("../modules/Logger.js");
+            Bot.logger = new Logger(Bot, client);
         } catch (e) {
             err = e;
         }

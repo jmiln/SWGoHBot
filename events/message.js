@@ -149,7 +149,7 @@ module.exports = async (Bot, message) => {
                     defaults: def
                 });
             } catch (err) {
-                Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: ${err}`);
+                Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: ${err}`, true);
             }
         }
         if (Bot.config.logs.logComs) {

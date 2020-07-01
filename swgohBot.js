@@ -103,7 +103,7 @@ Bot.database.authenticate().then(async () => {
                 if (initialized) {
                     return gModel.save();
                 }
-            }).catch((e) =>  Bot.logger.error("Error: " + e));
+            }).catch((e) =>  Bot.logger.error("Error in init (Models.spread): " + e, true));
         }
     }).catch((e) => console.error(e));
 });
@@ -174,6 +174,6 @@ client.on("error", (err) => {
     if (err.error.toString().indexOf("ECONNRESET") > -1) {
         Bot.logger.error("Connection error");
     } else {
-        Bot.logger.error("ERROR", inspect(err.error));
+        Bot.logger.error("ERROR", inspect(err.error), true);
     }
 });
