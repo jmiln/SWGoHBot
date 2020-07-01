@@ -32,12 +32,11 @@ class CurrentEvents extends Command {
         const DEF_NUM = 10;
         const lang = message.guildSettings.swgohLanguage;
 
-        let gohEvents = null;
-        try {
-            gohEvents = await Bot.swgohAPI.events(lang);
-            gohEvents = gohEvents.events;
-        } catch (e) {
-            console.error(e);
+        let gohEvents = await Bot.swgohAPI.events(lang);
+        gohEvents = gohEvents ? gohEvents.events : null;
+
+        if (!gohEvents) {
+            return super.error("I couldn't get the current events, please try again in a bit");
         }
 
         // console.log(gohEvents);

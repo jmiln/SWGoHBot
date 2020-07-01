@@ -731,6 +731,9 @@ module.exports = (Bot) => {
             if (Array.isArray(events)) {
                 events = events[0];
             }
+            if (!events || !events.events) {
+                return;
+            }
             events = {
                 lang: lang,
                 events: events.events,
