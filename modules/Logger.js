@@ -12,7 +12,7 @@ class Logger {
     }
     log(content, type = "log", webhook = false) {
         const shard = this.client.shard ? ` (${this.client.shard.id})` : "";
-        const time = `${moment.tz("US/Pacific").format("M/D/YYYY hh:mma")}`;
+        const time = `${moment.tz("US/Pacific").format("M/D/YYYY hh:mma").replace(" 0", "  ")}`;
         const timestamp = `[${time}]${shard}`;
         let out = "";
         let color = null;
