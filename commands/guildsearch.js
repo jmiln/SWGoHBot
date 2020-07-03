@@ -70,9 +70,17 @@ class GuildSearch extends Command {
                 return super.error(message, "Missing character to search for.", {example: "guildsearch c3po\n;guildsearch falcon -s"});
             }
 
-            const chars = !options.flags.ships ? Bot.findChar(searchChar, Bot.characters) : Bot.findChar(searchChar, Bot.ships, true);
+            let chars = null;
+            if (options.flags.ships) {
+                chars = Bot.findChar(searchChar, Bot.ships, true);
+            } else {
+                chars = Bot.findChar(searchChar, Bot.characters);
+                if (!chars || !chars.length) {
+                    chars = Bot.findChar(searchChar, Bot.ships, true);
+                }
+            }
 
-            if (chars.length === 0) {
+            if (!chars || chars.length === 0) {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar), {example: "guildsearch c3po\n;guildsearch falcon -s"});
             } else if (chars.length > 1) {
                 const charL = [];
