@@ -67,7 +67,6 @@ class Guilds extends Command {
                 guild = await Bot.swgohAPI.guildByName(userID);
             }
         } catch (e) {
-            Bot.logger.error("ERROR(guilds): " + e);
             return super.error(msg, Bot.codeBlock(e), {edit: true, example: "guilds me"});
         }
 

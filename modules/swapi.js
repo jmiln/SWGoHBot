@@ -689,7 +689,6 @@ module.exports = (Bot) => {
             }
             return guild;
         } catch (e) {
-            Bot.logger.error("SWAPI(guild) Broke getting guild (" + allycode + "): " + e);
             throw e;
         }
     }

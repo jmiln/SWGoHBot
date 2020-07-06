@@ -42,6 +42,15 @@ class ArenaWatch extends Command {
             return super.error(message, message.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
+        let codeLen = 0;
+        if (pat.amount_cents < 500  ) {
+            codeLen = Bot.config.arenaWatchConfig.tier1;
+        } else if (pat.amount_cents < 1000 ) {
+            codeLen = Bot.config.arenaWatchConfig.tier2;
+        } else if (pat.amount_cents >= 1000) {
+            codeLen = Bot.config.arenaWatchConfig.tier3;
+        }
+
         if (!user.arenaWatch) {
             user.arenaWatch = {
                 enabled: false,
@@ -139,9 +148,7 @@ class ArenaWatch extends Command {
                     if (!codes || !codes.length) {
                         // Add the new code to the list
                         if (!user.arenaWatch.allycodes.find(usercode => usercode.allyCode === code)) {
-                            if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier1)   || // Under $5, can set a channel for 1 account
-                                (pat.amount_cents < 1000  && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier2)  || // $5-10, can set a channel for up to 10 accounts
-                                (pat.amount_cents >= 1000 && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier3)) {  // $10+, can set a channel for up to 30 accounts
+                            if (user.arenaWatch.allycodes.length >= codeLen) {
                                 return super.error(message, message.language.get("COMMAND_ARENAWATCH_AC_CAP", code));
                             }
                             // TODO Make sure that the codes are valid, and fill in the nulls when adding
@@ -214,7 +221,7 @@ class ArenaWatch extends Command {
                         `Enabled:  **${user.arenaWatch.enabled ? "ON" : "OFF"}**`,
                         `Channel:  **${user.arenaWatch.channel ? chan : "N/A"}**`,
                         `Arena:    **${user.arenaWatch.arena}**`,
-                        `AllyCodes: ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.map(a => `\`${a.allyCode}\` **${a.name ? a.name : ""}**\``).join("\n") : "**N/A**"}`
+                        `AllyCodes: (${user.arenaWatch.allycodes.length}/${codeLen}) ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.map(a => `\`${a.allyCode}\` **${a.name ? a.name : ""}**`).join("\n") : "**N/A**"}`
                     ].join("\n")
                 }});
             }

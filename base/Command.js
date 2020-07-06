@@ -101,8 +101,8 @@ class Command {
     }
 
     async error(message, err, options) {
-        if (!message || !message.channel) throw new Error("Missing message");
-        if (!err) throw new Error("Missing error message");
+        if (!message || !message.channel) throw new Error(`[${this.name}] Missing message`);
+        if (!err) throw new Error(`[${this.name}] Missing error message`);
         if (!options) options = {};
         options.title = options.title || "Error";
         options.color = options.color || "#e01414";
@@ -178,18 +178,3 @@ class Command {
 }
 
 module.exports = Command;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

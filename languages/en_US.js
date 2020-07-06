@@ -278,13 +278,15 @@ module.exports = class extends Language {
                             ";arenaalert enableDMs <all|primary|off>",
                             ";arenaalert arena <both|fleet|char>",
                             ";arenaalert payoutResult <on|off>",
-                            ";arenaalert payoutWarning <0-1439>"
+                            ";arenaalert payoutWarning <0-1439>",
+                            ";arenaalert view"
                         ].join("\n"),
                         args: {
                             "enableDMs": "Turn on DM alerts for just your primary allycode, all allycodes, or none",
                             "arena": "Choose which arena's alerts you want",
                             "payoutResult": "Send you a DM with your final payout result",
-                            "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off."
+                            "payoutWarning": "Send you a DM the set number of min before your payout. 0 to turn it off.",
+                            "view": "See your current arenaalert settings"
                         }
                     }
                 ]
@@ -327,16 +329,18 @@ module.exports = class extends Language {
                         action: "Arena Watch",
                         actionDesc: "Set alerts to DM when your rank drops and other arena related stuff.",
                         usage: [
-                            ";arenaalert enabled <on|off>",
-                            ";arenaalert arena <both|fleet|char>",
-                            ";arenaalert channel <channelMention>",
-                            ";arenaalert allycode <add|remove> <allycode>"
+                            ";arenawatch enabled <on|off>",
+                            ";arenawatch arena <both|fleet|char>",
+                            ";arenawatch channel <channelMention>",
+                            ";arenawatch allycode <add|remove> <allycode>",
+                            ";arenawatch view"
                         ].join("\n"),
                         args: {
                             "enabled": "Toggle alerts for all selected allycodes",
                             "arena": "Choose which arena's alerts you want",
                             "channel": "Select which channel you want the logs to output to",
-                            "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted)"
+                            "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted)",
+                            "view": "View the current arenawatch settings, and a list of the registered ally codes there"
                         }
                     }
                 ]

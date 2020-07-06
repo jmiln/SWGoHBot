@@ -36,7 +36,7 @@ class CurrentEvents extends Command {
         gohEvents = gohEvents ? gohEvents.events : null;
 
         if (!gohEvents) {
-            return super.error("I couldn't get the current events, please try again in a bit");
+            return super.error(message, "I couldn't get the current events, please try again in a bit");
         }
 
         // console.log(gohEvents);
