@@ -62,7 +62,7 @@ class Logger {
                 });
             }
         }
-        return console.log(out);
+        return type === "error" ? console.error(out) : console.log(out);
     }
 
     error(content, webhook=false) {

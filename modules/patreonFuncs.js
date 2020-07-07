@@ -113,33 +113,37 @@ module.exports = (Bot, client) => {
 
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
-                            if (user.arenaAlert.payoutWarning > 0) {
-                                if (user.arenaAlert.payoutWarning  === minTil) {
+                            try {
+                                if (user.arenaAlert.payoutWarning > 0) {
+                                    if (user.arenaAlert.payoutWarning  === minTil) {
+                                        pUser.send({embed: {
+                                            author: {name: "Arena Payout Alert"},
+                                            description: `${player.name}'s character arena payout is in **${minTil}** minutes!\nYour current rank is ${player.arena.char.rank}`,
+                                            color: "#00FF00"
+                                        }});
+                                    }
+                                }
+                                if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
                                     pUser.send({embed: {
-                                        author: {name: "Arena Payout Alert"},
-                                        description: `${player.name}'s character arena payout is in **${minTil}** minutes!\nYour current rank is ${player.arena.char.rank}`,
+                                        author: {name: "Character arena"},
+                                        description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
                                         color: "#00FF00"
                                     }});
                                 }
-                            }
-                            if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                                pUser.send({embed: {
-                                    author: {name: "Character arena"},
-                                    description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
-                                    color: "#00FF00"
-                                }});
-                            }
 
-                            if (player.arena.char.rank > acc.lastCharRank) {
-                                // DM user that they dropped
-                                pUser.send({embed: {
-                                    author: {name: "Character Arena"},
-                                    description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
-                                    color: "#ff0000",
-                                    footer: {
-                                        text: payoutTime
-                                    }
-                                }});
+                                if (player.arena.char.rank > acc.lastCharRank) {
+                                    // DM user that they dropped
+                                    pUser.send({embed: {
+                                        author: {name: "Character Arena"},
+                                        description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
+                                        color: "#ff0000",
+                                        footer: {
+                                            text: payoutTime
+                                        }
+                                    }});
+                                }
+                            } catch (e) {
+                                Bot.logger.error("Broke getting ranks: " + e);
                             }
                         }
                     }
@@ -157,33 +161,37 @@ module.exports = (Bot, client) => {
                         const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
-                            if (user.arenaAlert.payoutWarning > 0) {
-                                if (user.arenaAlert.payoutWarning  === minTil) {
+                            try {
+                                if (user.arenaAlert.payoutWarning > 0) {
+                                    if (user.arenaAlert.payoutWarning  === minTil) {
+                                        pUser.send({embed: {
+                                            author: {name: "Arena Payout Alert"},
+                                            description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
+                                            color: "#00FF00"
+                                        }});
+                                    }
+                                }
+
+                                if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
                                     pUser.send({embed: {
-                                        author: {name: "Arena Payout Alert"},
-                                        description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
+                                        author: {name: "Fleet arena"},
+                                        description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
                                         color: "#00FF00"
                                     }});
                                 }
-                            }
 
-                            if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                                pUser.send({embed: {
-                                    author: {name: "Fleet arena"},
-                                    description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
-                                    color: "#00FF00"
-                                }});
-                            }
-
-                            if (player.arena.ship.rank > acc.lastShipRank) {
-                                pUser.send({embed: {
-                                    author: {name: "Fleet Arena"},
-                                    description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
-                                    color: "#ff0000",
-                                    footer: {
-                                        text: payoutTime
-                                    }
-                                }});
+                                if (player.arena.ship.rank > acc.lastShipRank) {
+                                    pUser.send({embed: {
+                                        author: {name: "Fleet Arena"},
+                                        description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
+                                        color: "#ff0000",
+                                        footer: {
+                                            text: payoutTime
+                                        }
+                                    }});
+                                }
+                            } catch (e) {
+                                Bot.logger.error("Broke getting ranks: " + e);
                             }
                         }
                     }
@@ -202,6 +210,7 @@ module.exports = (Bot, client) => {
         }
     };
 
+    // Check for updated ranks across up to 50 players
     Bot.shardRanks = async () => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
@@ -227,8 +236,9 @@ module.exports = (Bot, client) => {
             else                                 acctCount = Bot.config.arenaWatchConfig.tier3;
             const accountsToCheck = JSON.parse(JSON.stringify(user.arenaWatch.allycodes.slice(0, acctCount)));
             const allyCodes = accountsToCheck.map(a => a.allyCode ?  a.allyCode : a);
+            if (!allyCodes || !allyCodes.length) continue;
             const newPlayers = await Bot.swgohAPI.unitStats(allyCodes, null, {force: true});
-            if (allyCodes.length !== newPlayers.length) Bot.logger.error("Did not get all players! ", allyCodes.length, newPlayers.length);
+            if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${allyCodes.length} vs ${newPlayers.length}`);
 
             // Go through all the listed players, and see if any of them have shifted arena rank
             accountsToCheck.forEach((player, ix) => {
@@ -297,7 +307,7 @@ module.exports = (Bot, client) => {
                 await Bot.userReg.updateUser(patron.discordID, user);
                 client.shard.broadcastEval(`
                     const chan = this.channels.cache.get("${user.arenaWatch.channel}");
-                    if (chan) {
+                    if (chan && chan.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                         chan.send(\`>>> ${fields.join("\n")}\`);
                     }
                 `);
@@ -305,6 +315,7 @@ module.exports = (Bot, client) => {
         }
     };
 
+    // Compare ranks to see if we have both sides of the fight or not
     function checkRanks(inArr) {
         const checked = [];
         const outArr = [];

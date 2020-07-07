@@ -206,10 +206,12 @@ class Squads extends Command {
                             }
                             outStr += char.name + "\n";
                         } else {
-                            outStr += Bot.ships.find(ship => ship.uniqueName === c.split(":")[0]).name + "\n";
+                            const ship = Bot.ships.find(ship => ship.uniqueName === c.split(":")[0]);
+                            if (!ship) return Bot.logger.error(`[1] I broke finding ${c}`);
+                            outStr += ship.name + "\n";
                         }
                     } catch (e) {
-                        Bot.logger.error("Squad broke: " + c + ": " + e);
+                        Bot.logger.error("[1] Squad broke: " + c + ": " + e);
                     }
                 });
             } else {
@@ -243,7 +245,7 @@ class Squads extends Command {
                             outStr += ch.nameKey + "\n";
                         }
                     } catch (e) {
-                        Bot.logger.error("Squad broke: " + c + ": " + e);
+                        Bot.logger.error("[2] Squad broke: " + c + ": " + e);
                     }
                 }
             }

@@ -63,6 +63,11 @@ module.exports = (Bot, client) => {
         return moment.tz("US/Pacific").format("M/D/YYYY h:mma");
     };
 
+    Bot.isMain = () => {
+        if (client.user.id === "315739499932024834") return true;
+        return false;
+    };
+
     // This finds any character that matches the search, and returns them in an array
     Bot.findChar = (searchName, charList, ship=false) => {
         if (!searchName || !searchName.length) {
@@ -132,7 +137,7 @@ module.exports = (Bot, client) => {
         const hook = new Discord.WebhookClient(h.id, h.token);
         hook.send({embeds: [
             embed
-        ]});
+        ]}).catch(() => {});
     };
 
     /*
@@ -184,11 +189,11 @@ module.exports = (Bot, client) => {
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
-        if (!chan || !chan.send || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+        if (!chan || !chan.send || !chan.permissionsFor(client.user.id).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
             return;
         } else {
             // If everything is ok, go ahead and try sending the message
-            await chan.send(announceMsg).catch(console.error);
+            await chan.send(announceMsg).catch(() => {Bot.logger.error("Broke sending accounceMsg");});
         }
     };
 
@@ -448,7 +453,7 @@ module.exports = (Bot, client) => {
       */
     Bot.awaitReply = async (msg, question, limit = 60000) => {
         const filter = m => m.author.id === msg.author.id;
-        await msg.channel.send(question);
+        await msg.channel.send(question).catch(() => {Bot.logger.error("Broke in awaitReply");});
         try {
             const collected = await msg.channel.awaitMessages(filter, {max: 1, time: limit, errors: ["time"]});
             return collected.first().content;
@@ -517,8 +522,13 @@ module.exports = (Bot, client) => {
     });
 
     process.on("unhandledRejection", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
-        console.error(`[${Bot.myTime()}] Uncaught Promise Error: `, errorMsg);
+        let dir = __dirname.split("/").splice(0,3);
+        dir = dir.join("/");
+        const errorMsg = err.stack.replace(new RegExp(`${dir}`, "g"), "./");
+        if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
+            Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
+        }
+        Bot.logger.error(`Uncaught Promise Error: ${errorMsg}`);
         try {
             if (Bot.config.logs.logToChannel) {
                 client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
@@ -574,7 +584,7 @@ module.exports = (Bot, client) => {
             },
             "description": headerString,
             "fields": actionArr
-        }});
+        }}).catch(() => {Bot.logger.error("Broke in helpOut");});
     };
 
 

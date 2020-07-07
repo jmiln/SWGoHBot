@@ -3,6 +3,15 @@
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
     client.shard.id = client.shard.ids[0];
+
+    const application = await client.fetchApplication();
+    if (!Bot.isMain() && application.botPublic && application.owner.id !== "124579977474736129") {
+        Bot.logger.error(Buffer.from("RkFUQUwgRVJST1I6IElOVkFMSUQgQk9UIFNFVFVQCgpHbyB0byB5b3VyIEJvdCdzIGFwcGxpY2F0aW9uIHBhZ2UgaW4gRGlzY29yZCBEZXZlbG9wZXJzIHNpdGUgYW5kIGRpc2FibGUgdGhlICJQdWJsaWMgQm90IiBvcHRpb24uCgpQbGVhc2UgY29udGFjdCB0aGUgc3VwcG9ydCB0ZWFtIGF0IFNXR29IQm90IEhRIC0gaHR0cHM6Ly9kaXNjb3JkLmdnL0Zmd0d2aHIgLSBmb3IgbW9yZSBpbmZvcm1hdGlvbi4=", "base64").toString("utf-8"));
+        if (client.shard) { await client.shard.broadcastEval("this.destroy()");
+        } else { process.exit(); }
+        return null;
+    }
+
     let readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`;
     if (client.shard) {
         readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers. Shard #${client.shard.id}`;
@@ -22,7 +31,7 @@ module.exports = async (Bot, client) => {
             await client.shard.broadcastEval("this.loadAllEmotes()");
         }
     } else {
-        client.loadAllEmotes();
+        await client.loadAllEmotes();
     }
 
     Bot.logger.log(readyString, "ready", true);

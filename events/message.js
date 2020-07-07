@@ -95,18 +95,16 @@ module.exports = async (Bot, message) => {
     if (cmd && level >= cmd.conf.permLevel) {
         if (message.guild) {
             const defPerms = ["SEND_MESSAGES", "VIEW_CHANNEL", "EMBED_LINKS"];
-            if (args.length === 1 && args[0].toLowerCase() === "help") {
-                // If they want the help, it's embeds now, so they need that activated
-                defPerms.push("EMBED_LINKS");
-            }
+
             // Merge the permission arrays to make sure it has at least the minimum
             const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
             if (message.guild && message.channel && !message.channel.permissionsFor(message.client.user.id).has(perms)) {
-                const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
+                // const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
+                const missingPerms = message.channel.permissionsFor(message.client.user.id).missing(perms);
 
                 if (missingPerms.length > 0) {
                     // If it can't send messages, don't bother trying
-                    if (missingPerms.includes("SEND_MESSAGES")) return;
+                    if (missingPerms.includes("VIEW_CHANNEL") || missingPerms.includes("SEND_MESSAGES")) return;
                     // Make it more readable
                     missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace("_", " ").toProperCase();});
                     return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(", ")}\``);
