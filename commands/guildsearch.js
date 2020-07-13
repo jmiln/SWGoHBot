@@ -134,7 +134,6 @@ class GuildSearch extends Command {
             try {
                 guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
             } catch (e) {
-                Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return message.channel.send({embed: {
                     author: { name: "Something Broke getting your guild's roster" },
                     description: Bot.codeBlock(e) + "Please try again in a bit."

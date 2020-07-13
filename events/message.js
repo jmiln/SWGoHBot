@@ -98,9 +98,9 @@ module.exports = async (Bot, message) => {
 
             // Merge the permission arrays to make sure it has at least the minimum
             const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
-            if (message.guild && message.channel && !message.channel.permissionsFor(message.client.user.id).has(perms)) {
+            if (message.guild && message.channel && !message.channel.permissionsFor(message.guild.me).has(perms)) {
                 // const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
-                const missingPerms = message.channel.permissionsFor(message.client.user.id).missing(perms);
+                const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
 
                 if (missingPerms.length > 0) {
                     // If it can't send messages, don't bother trying

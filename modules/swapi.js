@@ -124,7 +124,6 @@ module.exports = (Bot) => {
                     }
                 } catch (error) {
                     // Couldn't get the data from the api, so send old stuff
-                    Bot.logger.error("Error getting player(s) in unitStats: " + error);
                     return players;
                 }
                 for (const bareP of updatedBare) {
@@ -635,62 +634,58 @@ module.exports = (Bot) => {
             cooldown = guildMaxCooldown;
         }
         let warnings;
-        try {
-            if (allycode) allycode = allycode.toString();
-            if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
-            allycode = parseInt(allycode);
+        if (allycode) allycode = allycode.toString();
+        if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
+        allycode = parseInt(allycode);
 
-            /** Get player from cache */
-            let player = await Bot.swgohAPI.unitStats(allycode);
-            if (Array.isArray(player)) player = player[0];
-            if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
-            if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
+        /** Get player from cache */
+        let player = await Bot.swgohAPI.unitStats(allycode);
+        if (Array.isArray(player)) player = player[0];
+        if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
+        if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
 
-            let guild  = await cache.get(Bot.config.mongodb.swapidb, "guilds", {id: player.guildRefId});
+        let guild  = await cache.get(Bot.config.mongodb.swapidb, "guilds", {id: player.guildRefId});
 
-            /** Check if existance and expiration */
-            if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
-                /** If not found or expired, fetch new from API and save to cache */
-                let tempGuild;
-                try {
-                    tempGuild = await swgoh.fetchGuild({
-                        allycode: allycode,
-                        language: lang
-                    });
-                    if (tempGuild.warning) warnings = tempGuild.warning;
-                    if (tempGuild.error) throw new Error(tempGuild.error.description);
-                    tempGuild = tempGuild.result;
-                } catch (err) {
-                    // Probably API timeout
-                    // console.log("[SWAPI-guild] Couldn't update guild for: " + player.name);
-                    throw new Error(err);
-                }
-                // console.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
-
-                if (tempGuild && tempGuild[0]) {
-                    tempGuild = tempGuild[0];
-                    if (tempGuild && tempGuild._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
-                }
-
-                if (!tempGuild || !tempGuild.roster || !tempGuild.name) {
-                    if (guild[0] && guild[0].roster) {
-                        return guild[0];
-                    } else {
-                        // console.log("Broke getting tempGuild: " + inspect(tempGuild.error));
-                        // throw new Error("Could not find your guild. The API is likely overflowing.");
-                    }
-                }
-
-                guild = await cache.put(Bot.config.mongodb.swapidb, "guilds", {name: tempGuild.name}, tempGuild);
-                if (warnings) guild.warnings = warnings;
-            } else {
-                /** If found and valid, serve from cache */
-                guild = guild[0];
+        /** Check if existance and expiration */
+        if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
+            /** If not found or expired, fetch new from API and save to cache */
+            let tempGuild;
+            try {
+                tempGuild = await swgoh.fetchGuild({
+                    allycode: allycode,
+                    language: lang
+                });
+                if (tempGuild.warning) warnings = tempGuild.warning;
+                if (tempGuild.error) throw new Error(tempGuild.error.description);
+                tempGuild = tempGuild.result;
+            } catch (err) {
+                // Probably API timeout
+                // console.log("[SWAPI-guild] Couldn't update guild for: " + player.name);
+                throw new Error(err);
             }
-            return guild;
-        } catch (e) {
-            throw e;
+            // console.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
+
+            if (tempGuild && tempGuild[0]) {
+                tempGuild = tempGuild[0];
+                if (tempGuild && tempGuild._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
+            }
+
+            if (!tempGuild || !tempGuild.roster || !tempGuild.name) {
+                if (guild[0] && guild[0].roster) {
+                    return guild[0];
+                } else {
+                    // console.log("Broke getting tempGuild: " + inspect(tempGuild.error));
+                    // throw new Error("Could not find your guild. The API is likely overflowing.");
+                }
+            }
+
+            guild = await cache.put(Bot.config.mongodb.swapidb, "guilds", {name: tempGuild.name}, tempGuild);
+            if (warnings) guild.warnings = warnings;
+        } else {
+            /** If found and valid, serve from cache */
+            guild = guild[0];
         }
+        return guild;
     }
 
     async function guildByName( gName ) {
