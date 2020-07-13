@@ -42,13 +42,13 @@ class ArenaWatch extends Command {
             return super.error(message, message.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
-        let codeLen = 0;
+        let codeCap = 0;
         if (pat.amount_cents < 500  ) {
-            codeLen = Bot.config.arenaWatchConfig.tier1;
+            codeCap = Bot.config.arenaWatchConfig.tier1;
         } else if (pat.amount_cents < 1000 ) {
-            codeLen = Bot.config.arenaWatchConfig.tier2;
+            codeCap = Bot.config.arenaWatchConfig.tier2;
         } else if (pat.amount_cents >= 1000) {
-            codeLen = Bot.config.arenaWatchConfig.tier3;
+            codeCap = Bot.config.arenaWatchConfig.tier3;
         }
 
         if (!user.arenaWatch) {
@@ -135,8 +135,11 @@ class ArenaWatch extends Command {
                 // Logic for add/ remove
                 if (action === "add") {
                     let codes;
+                    if (args.length) {
+                        code = [code, ...args].join(",");
+                    }
                     if (code.indexOf(",") > -1) {
-                        codes = code.split(",").map(c => c.replace(/[^\d]/g, "")).filter(c => c.length === 9).map(c => parseInt(c));
+                        codes = code.split(",").map(c => c.replace(/[^0-9]/g, "")).filter(c => c.trim().length === 9).map(c => parseInt(c));
                     } else {
                         code = code.replace(/[^\d]/g, "");
                         if (code.length != 9) {
@@ -147,54 +150,62 @@ class ArenaWatch extends Command {
                     }
                     if (!codes || !codes.length) {
                         // Add the new code to the list
-                        if (!user.arenaWatch.allycodes.find(usercode => usercode.allyCode === code)) {
-                            if (user.arenaWatch.allycodes.length >= codeLen) {
-                                return super.error(message, message.language.get("COMMAND_ARENAWATCH_AC_CAP", code));
-                            }
-                            // TODO Make sure that the codes are valid, and fill in the nulls when adding
-                            user.arenaWatch.allycodes.push({
-                                allyCode: code,
-                                name: null,
-                                mention: null,
-                                lastChar: null,
-                                lastShip: null
-                            });
-                            outLog.push(code + " added!");
-                        } else {
+                        if (user.arenaWatch.allycodes.find(usercode => usercode.allyCode === code)) {
                             return message.channel.send("That ally code has already been added");
                         }
+                        if (user.arenaWatch.allycodes.length >= codeCap) {
+                            return super.error(message, message.language.get("COMMAND_ARENAWATCH_AC_CAP", code));
+                        }
+
+                        const player = await Bot.swgohAPI.unitStats(code);
+                        if (!player) {
+                            return super.error(message, code + " does not seem to be a valid ally code");
+                        }
+
+                        user.arenaWatch.allycodes.push({
+                            allyCode: code,
+                            name:     player.name,
+                            mention:  null,
+                            lastChar: player.arena.char ? player.arena.char.rank : null,
+                            lastShip: player.arena.ship ? player.arena.ship.rank : null
+                        });
+                        outLog.push(code + " added!");
                     } else {
                         // There are more than one valid code, try adding them all
-                        codes.forEach(c => {
-                            if (!user.arenaWatch.allycodes.find(usercode => usercode.allyCode === c)) {
-                                if ((pat.amount_cents < 500   && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier1)   || // Under $5, can set a channel for 1 account
-                                    (pat.amount_cents < 1000  && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier2)  || // $5-10, can set a channel for up to 10 accounts
-                                    (pat.amount_cents >= 1000 && user.arenaWatch.allycodes.length >= Bot.config.arenaWatchConfig.tier3)) {  // $10+, can set a channel for up to 30 accounts
-                                    outLog.push(`Could not add ${c}, ally code cap reached!`);
-                                    return;
-                                }
-                                user.arenaWatch.allycodes.push({
-                                    allyCode: c,
-                                    name: null,
-                                    lastChar: null,
-                                    lastShip: null
-                                });
-                                outLog.push(c + " added!");
-                            } else {
-                                outLog.push(message.language.get("COMMAND_ARENAWATCH_AC_CAP", c));
+                        const players = await Bot.swgohAPI.unitStats(codes);
+                        for (const c of codes) {
+                            const player = players.find(p => p.allyCode === c);
+                            if (user.arenaWatch.allycodes.find(usercode => usercode.allyCode === c)) {
+                                outLog.push(`${c} was already in the list`);
+                                continue;
                             }
-                        });
+                            if (!player) {
+                                outLog.push(`Could not find ${c}, invalid code`);
+                                continue;
+                            }
+                            if (user.arenaWatch.allycodes.length >= codeCap) {
+                                outLog.push(`Could not add ${c}, ally code cap reached!`);
+                                continue;
+                            }
+                            user.arenaWatch.allycodes.push({
+                                allyCode: c,
+                                name:     player.name,
+                                mention:  null,
+                                lastChar: player.arena.char ? player.arena.char.rank : null,
+                                lastShip: player.arena.ship ? player.arena.ship.rank : null
+                            });
+                            outLog.push(c + " added!");
+                        }
                     }
                 } else if (["remove", "delete"].includes(action)) {
                     // Remove an ally code to the list
                     code = code.replace(/[^\d]/g, "");
                     if (code.length != 9) {
                         return super.error(message, `Invalid code, there are ${code.length}/9 digits`);
-                    } else {
-                        code = parseInt(code);
                     }
-                    if (user.arenaWatch.allycodes.filter(ac => ac.allyCode === code).length) {
-                        user.arenaWatch.allycodes = user.arenaWatch.allycodes.filter(ac => ac.allyCode !== code);
+                    if (user.arenaWatch.allycodes.filter(ac => ac.allyCode === code || ac.allyCode === parseInt(code)).length) {
+                        user.arenaWatch.allycodes = user.arenaWatch.allycodes.filter(ac => ac.allyCode !== code && ac.allyCode !== parseInt(code));
+                        outLog.push(code + " has been removed");
                     } else {
                         return super.error(message, "That ally code was not available to remove");
                     }
@@ -221,15 +232,17 @@ class ArenaWatch extends Command {
                         `Enabled:  **${user.arenaWatch.enabled ? "ON" : "OFF"}**`,
                         `Channel:  **${user.arenaWatch.channel ? chan : "N/A"}**`,
                         `Arena:    **${user.arenaWatch.arena}**`,
-                        `AllyCodes: (${user.arenaWatch.allycodes.length}/${codeLen}) ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.map(a => `\`${a.allyCode}\` **${a.name ? a.name : ""}**`).join("\n") : "**N/A**"}`
+                        `AllyCodes: (${user.arenaWatch.allycodes.length}/${codeCap}) ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(a => `\`${a.allyCode}\` **${a.name ? a.name : ""}**`).join("\n") : "**N/A**"}`
                     ].join("\n")
                 }});
             }
             default:
                 return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_OPTION"));
         }
-        await Bot.userReg.updateUser(userID, user);
-        return super.error(message, outLog.length ? outLog.join("\n") : message.language.get("COMMAND_ARENAALERT_UPDATED"), {title: "Success!", color: "#00FF00"});
+        if (target !== "view") {
+            await Bot.userReg.updateUser(userID, user);
+        }
+        return super.error(message, outLog.length ? outLog.join("\n") : message.language.get("COMMAND_ARENAALERT_UPDATED"), {title: " ", color: "#0000FF"});
     }
 }
 
