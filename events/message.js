@@ -51,6 +51,7 @@ module.exports = async (Bot, message) => {
     // Used to convert special characters into literal characters by escaping them, so that they don't terminate the pattern within the regex
     const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const prefixRegex = new RegExp(`^(<@!?${message.client.user.id}>|${escapeRegex(message.guildSettings.prefix)})\\s*`);
+    if (!prefixRegex.test(message.content)) return;
     const [, matchedPrefix] = message.content.match(prefixRegex);
 
     // Also good practice to ignore any message that does not start with our prefix, which is set in the configuration file.
@@ -142,8 +143,7 @@ module.exports = async (Bot, message) => {
             Bot.helpOut(message, cmd);
         } else {
             try {
-                // Bot.log("CMD", message.content, "Log", null, null, {noSend: true});
-                cmd.run(Bot, message, args, {
+                await cmd.run(Bot, message, args, {
                     level: level,
                     flags: flagArgs.flags,
                     subArgs: flagArgs.subArgs,
