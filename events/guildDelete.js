@@ -4,9 +4,9 @@ module.exports = async (Bot, guild) => {
     if (!guild.available) return;
 
     // The bot isn't in the server anymore, so get rid of the config
-    // await Bot.guildSettings.destroy({where: {guildID: guild.id}})
-    //     .then(() => {})
-    //     .catch(error => { Bot.log('ERROR',`Broke in guildDelete(settings) ${error}`); });
+    await Bot.guildSettings.destroy({where: {guildID: guild.id}})
+        .then(() => {})
+        .catch(error => { Bot.log('ERROR',`Broke in guildDelete(settings) ${error}`); });
 
     // Log that the bot left
     Bot.logger.log(`[GuildDelete] I left ${guild.name}(${guild.id})`);

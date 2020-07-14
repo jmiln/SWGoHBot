@@ -47,14 +47,14 @@ module.exports = async (Bot, message) => {
         return message.channel.send(`The prefix is \`${message.guildSettings.prefix}\`.`);
     }
 
-    const prefixMention = new RegExp(`^<@!?${message.client.user.id}>`);
-    const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : message.guildSettings.prefix;
+    const prefixRegex = new RegExp(`^(<@!?${message.client.user.id}>|${message.guildSettings.prefix})\\s*`);
+    const [, matchedPrefix] = message.content.match(prefixRegex);
 
     // Also good practice to ignore any message that does not start with our prefix, which is set in the configuration file.
-    if (message.content.indexOf(prefix) !== 0) return;
+    if (!matchedPrefix || message.content.indexOf(matchedPrefix) !== 0) return;
 
     // Splits on line returns, then on spaces to preserve the line returns
-    const nArgs = message.content.split(/(\n+)/);
+    const nArgs = message.content.slice(matchedPrefix.length).trim().split(/(\n+)/);
     let args = [];
     nArgs.forEach(e => {
         const ne = e.split(" ").filter(String);
@@ -62,7 +62,7 @@ module.exports = async (Bot, message) => {
     });
 
     // Get the command name/ remove it from the args
-    const command = args.shift().slice(prefix.length).toLowerCase();
+    const command = args.shift().toLowerCase();
 
     // Get the user or member's permission level from the elevation
     const level = Bot.permlevel(message);

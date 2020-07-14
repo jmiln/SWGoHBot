@@ -13,10 +13,10 @@ module.exports = async (Bot, member) => {
     // Our message has a bit of a placeholder, let's fix
     if (guildConf.enablePart && guildConf.partMessage !== "" && guildConf.announceChan !== "") { // If they have it turned on, and it's not empty
         const partMessage = guildConf.partMessage
-            .replace(/{{user}}/gi, member.displayName)
+            .replace(/{{user}}/gi,        member.displayName)
             .replace(/{{usermention}}/gi, member.user)
-            .replace(/{{server}}/gi, member.guild.name)
-            .replace(/{{prefix}}/gi, guildConf.prefix);
+            .replace(/{{server}}/gi,      member.guild.name)
+            .replace(/{{prefix}}/gi,      guildConf.prefix);
         try {
             Bot.announceMsg(guild, partMessage);
         } catch (e) {
