@@ -51,6 +51,29 @@ class ArenaWatch extends Command {
             codeCap = Bot.config.arenaWatchConfig.tier3;
         }
 
+        function getAcMention(code) {
+            let [ac, mention] = code.split(":");
+            if (!Bot.isAllyCode(ac)) throw new Error(`Invalid code (${ac})!`);
+            ac = ac.replace(/[^\d]/g, "");
+
+            mention = Bot.isUserMention(mention || "") ? mention.replace(/[^\d]/g, "") : null;
+            return [parseInt(ac), mention];
+        }
+
+        function checkPlayer(players, user, code) {
+            const player = players.find(p => p.allyCode === code.code);
+            if (!player) {
+                throw new Error(`Could not find ${code.code}, invalid code`);
+            }
+            if (user.arenaWatch.allycodes.find(usercode => usercode.allyCode === code.code)) {
+                throw new Error(`${code.code} was already in the list`);
+            }
+            if (user.arenaWatch.allycodes.length >= codeCap) {
+                throw new Error(`Could not add ${code.code}, ally code cap reached!`);
+            }
+            return player;
+        }
+
         if (!user.arenaWatch) {
             user.arenaWatch = {
                 enabled: false,
@@ -128,7 +151,6 @@ class ArenaWatch extends Command {
 
                 // Bunch of checks before getting to the logic
                 if (!action)                             return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_ACTION"));
-                if (!["add", "remove"].includes(action)) return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_ACTION"));
                 if (!code)                               return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
                 if (!Bot.isAllyCode(code))               return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
@@ -140,33 +162,31 @@ class ArenaWatch extends Command {
                     const codesIn = code.split(",");
                     const codes = [];
                     codesIn.forEach(code => {
-                        let [ac, mention] = code.split(":");
-                        if (!Bot.isAllyCode(ac)) return outLog.push(`Invalid code (${ac})!`);
-                        ac = ac.replace(/[^\d]/g, "");
+                        let ac, mention;
+                        try {
+                            [ac, mention] = getAcMention(code);
+                        } catch (e) {
+                            outLog.push(e);
+                        }
 
-                        mention = Bot.isUserMention(mention || "") ? mention.replace(/[^\d]/g, "") : null;
                         codes.push({
-                            code: parseInt(ac),
+                            code: ac,
                             mention: mention
                         });
                     });
-                    console.log(codes);
+
+
                     // There are more than one valid code, try adding them all
                     const players = await Bot.swgohAPI.unitStats(codes.map(c => c.code));
                     for (const c of codes) {
-                        const player = players.find(p => p.allyCode === c.code);
-                        if (user.arenaWatch.allycodes.find(usercode => usercode.allyCode === c.code)) {
-                            outLog.push(`${c.code} was already in the list`);
+                        let player;
+                        try {
+                            player = checkPlayer(players, user, c);
+                        } catch (e) {
+                            outLog.push(e);
                             continue;
                         }
-                        if (!player) {
-                            outLog.push(`Could not find ${c.code}, invalid code`);
-                            continue;
-                        }
-                        if (user.arenaWatch.allycodes.length >= codeCap) {
-                            outLog.push(`Could not add ${c.code}, ally code cap reached!`);
-                            continue;
-                        }
+
                         user.arenaWatch.allycodes.push({
                             allyCode: c.code,
                             name:     player.name,
@@ -176,6 +196,42 @@ class ArenaWatch extends Command {
                         });
                         outLog.push(c.code + " added!");
                     }
+                } else if (["edit", "change"].includes(action)) {
+                    // Used to add or remove a mention
+                    // ;aw ac 123123123 123123123:mention
+                    // ;aw ac 123123123 123123123
+                    let ac, mention;
+                    try {
+                        [ac, mention] = getAcMention(code);
+                    } catch (e) {
+                        outLog.push(e);
+                    }
+
+                    // Check if the specified code is available to edit
+                    // If not, just add it in fresh
+                    // If so, delte it then add it back
+                    const exists = user.arenaWatch.allycodes.some(p => p.allyCode === ac);
+                    if (exists) {
+                        user.arenaWatch.allycodes = user.arenaWatch.allycodes.filter(p => p.allyCode !== ac);
+                    }
+
+                    let player;
+                    try {
+                        const players = await Bot.swgohAPI.unitStats(ac);
+                        player = checkPlayer(players, user, {code: ac});
+                    } catch (e) {
+                        return super.error(message, "Error getting player info.\n" + e);
+                    }
+
+                    user.arenaWatch.allycodes.push({
+                        allyCode: ac,
+                        name:     player.name,
+                        mention:  mention,
+                        lastChar: player.arena.char ? player.arena.char.rank : null,
+                        lastShip: player.arena.ship ? player.arena.ship.rank : null
+                    });
+                    outLog.push(ac + ` ${exists ? "updated" : "added"}!`);
+
                 } else if (["remove", "delete"].includes(action)) {
                     // Remove an ally code to the list
                     code = code.replace(/[^\d]/g, "");
@@ -189,8 +245,8 @@ class ArenaWatch extends Command {
                         return super.error(message, "That ally code was not available to remove");
                     }
                 } else {
-                    // Something weird happened?
-                    return super.error(message, message.language.get("BASE_SOMETHING_WEIRD"));
+                    // Invalid action?
+                    return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_ACTION"));
                 }
                 break;
             }
@@ -224,5 +280,6 @@ class ArenaWatch extends Command {
         return super.error(message, outLog.length ? outLog.join("\n") : message.language.get("COMMAND_ARENAALERT_UPDATED"), {title: " ", color: "#0000FF"});
     }
 }
+
 
 module.exports = ArenaWatch;

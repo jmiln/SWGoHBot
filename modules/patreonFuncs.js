@@ -263,7 +263,7 @@ module.exports = (Bot, client) => {
 
                 if (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar) {
                     compChar.push({
-                        name: player.mention ? player.mention : newPlayer.name,
+                        name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                         allyCode: player.allyCode,
                         oldRank: player.lastChar || 0,
                         newRank: newPlayer.arena.char.rank
@@ -272,7 +272,7 @@ module.exports = (Bot, client) => {
                 }
                 if (!player.lastShip || newPlayer.arena.ship.rank !== player.lastShip) {
                     compShip.push({
-                        name: player.mention ? player.mention : newPlayer.name,
+                        name: player.mention ? `<@${player.mention}>`: newPlayer.name,
                         allyCode: player.allyCode,
                         oldRank: player.lastShip || 0,
                         newRank: newPlayer.arena.ship.rank

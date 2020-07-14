@@ -316,8 +316,8 @@ module.exports = class extends Language {
             COMMAND_ARENAWATCH_INVALID_ARENA:       "Invalid arena, you need to chose one of the following: `char, fleet, both`",
             COMMAND_ARENAWATCH_INVALID_OPTION:      "Try one of these: `enabled, arena, channel, allycode, or view`",
             COMMAND_ARENAWATCH_INVALID_BOOL:        "Invalid option. Try `yes/no`, `true/false` or `on/off`",
-            COMMAND_ARENAWATCH_MISSING_ACTION:      "Missing action, try `add` or `remove`",
-            COMMAND_ARENAWATCH_INVALID_ACTION:      "Invalid action, try `add` or `remove`",
+            COMMAND_ARENAWATCH_MISSING_ACTION:      "Missing action, try `add`, `edit` or `remove`",
+            COMMAND_ARENAWATCH_INVALID_ACTION:      "Invalid action, try `add`, `edit` or `remove`",
             COMMAND_ARENAWATCH_MISSING_AC:(act) =>  "Missing ally code to " + act,
             COMMAND_ARENAWATCH_INVALID_AC:          "Invalide ally code",
             COMMAND_ARENAWATCH_AC_CAP: (code) =>    `Could not add ${code}, ally code cap reached!`,
@@ -332,7 +332,8 @@ module.exports = class extends Language {
                             ";arenawatch enabled <on|off>",
                             ";arenawatch arena <both|fleet|char>",
                             ";arenawatch channel <channelMention>",
-                            ";arenawatch allycode <add|remove> <allycode>",
+                            ";arenawatch allycode <add|remove> <allycode|allycode:mention>",
+                            ";arenawatch allycode <edit> <allycode> <allycode:mention>",
                             ";arenawatch view"
                         ].join("\n"),
                         args: {
