@@ -134,68 +134,47 @@ class ArenaWatch extends Command {
 
                 // Logic for add/ remove
                 if (action === "add") {
-                    let codes;
                     if (args.length) {
                         code = [code, ...args].join(",");
                     }
-                    if (code.indexOf(",") > -1) {
-                        codes = code.split(",").map(c => c.replace(/[^0-9]/g, "")).filter(c => c.trim().length === 9).map(c => parseInt(c));
-                    } else {
-                        code = code.replace(/[^\d]/g, "");
-                        if (code.length != 9) {
-                            return super.error(message, `Invalid code, there are ${code.length}/9 digits`);
-                        } else {
-                            code = parseInt(code);
+                    const codesIn = code.split(",");
+                    const codes = [];
+                    codesIn.forEach(code => {
+                        let [ac, mention] = code.split(":");
+                        if (!Bot.isAllyCode(ac)) return outLog.push(`Invalid code (${ac})!`);
+                        ac = ac.replace(/[^\d]/g, "");
+
+                        mention = Bot.isUserMention(mention || "") ? mention.replace(/[^\d]/g, "") : null;
+                        codes.push({
+                            code: parseInt(ac),
+                            mention: mention
+                        });
+                    });
+                    console.log(codes);
+                    // There are more than one valid code, try adding them all
+                    const players = await Bot.swgohAPI.unitStats(codes.map(c => c.code));
+                    for (const c of codes) {
+                        const player = players.find(p => p.allyCode === c.code);
+                        if (user.arenaWatch.allycodes.find(usercode => usercode.allyCode === c.code)) {
+                            outLog.push(`${c.code} was already in the list`);
+                            continue;
                         }
-                    }
-                    if (!codes || !codes.length) {
-                        // Add the new code to the list
-                        if (user.arenaWatch.allycodes.find(usercode => usercode.allyCode === code)) {
-                            return message.channel.send("That ally code has already been added");
+                        if (!player) {
+                            outLog.push(`Could not find ${c.code}, invalid code`);
+                            continue;
                         }
                         if (user.arenaWatch.allycodes.length >= codeCap) {
-                            return super.error(message, message.language.get("COMMAND_ARENAWATCH_AC_CAP", code));
+                            outLog.push(`Could not add ${c.code}, ally code cap reached!`);
+                            continue;
                         }
-
-                        const player = await Bot.swgohAPI.unitStats(code);
-                        if (!player) {
-                            return super.error(message, code + " does not seem to be a valid ally code");
-                        }
-
                         user.arenaWatch.allycodes.push({
-                            allyCode: code,
+                            allyCode: c.code,
                             name:     player.name,
-                            mention:  null,
+                            mention:  c.mention,
                             lastChar: player.arena.char ? player.arena.char.rank : null,
                             lastShip: player.arena.ship ? player.arena.ship.rank : null
                         });
-                        outLog.push(code + " added!");
-                    } else {
-                        // There are more than one valid code, try adding them all
-                        const players = await Bot.swgohAPI.unitStats(codes);
-                        for (const c of codes) {
-                            const player = players.find(p => p.allyCode === c);
-                            if (user.arenaWatch.allycodes.find(usercode => usercode.allyCode === c)) {
-                                outLog.push(`${c} was already in the list`);
-                                continue;
-                            }
-                            if (!player) {
-                                outLog.push(`Could not find ${c}, invalid code`);
-                                continue;
-                            }
-                            if (user.arenaWatch.allycodes.length >= codeCap) {
-                                outLog.push(`Could not add ${c}, ally code cap reached!`);
-                                continue;
-                            }
-                            user.arenaWatch.allycodes.push({
-                                allyCode: c,
-                                name:     player.name,
-                                mention:  null,
-                                lastChar: player.arena.char ? player.arena.char.rank : null,
-                                lastShip: player.arena.ship ? player.arena.ship.rank : null
-                            });
-                            outLog.push(c + " added!");
-                        }
+                        outLog.push(c.code + " added!");
                     }
                 } else if (["remove", "delete"].includes(action)) {
                     // Remove an ally code to the list
@@ -232,7 +211,7 @@ class ArenaWatch extends Command {
                         `Enabled:  **${user.arenaWatch.enabled ? "ON" : "OFF"}**`,
                         `Channel:  **${user.arenaWatch.channel ? chan : "N/A"}**`,
                         `Arena:    **${user.arenaWatch.arena}**`,
-                        `AllyCodes: (${user.arenaWatch.allycodes.length}/${codeCap}) ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(a => `\`${a.allyCode}\` **${a.name ? a.name : ""}**`).join("\n") : "**N/A**"}`
+                        `AllyCodes: (${user.arenaWatch.allycodes.length}/${codeCap}) ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`).join("\n") : "**N/A**"}`
                     ].join("\n")
                 }});
             }
