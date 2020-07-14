@@ -47,7 +47,10 @@ module.exports = async (Bot, message) => {
         return message.channel.send(`The prefix is \`${message.guildSettings.prefix}\`.`);
     }
 
-    const prefixRegex = new RegExp(`^(<@!?${message.client.user.id}>|${message.guildSettings.prefix})\\s*`);
+    // https://discordjs.guide/popular-topics/miscellaneous-examples.html#mention-prefix
+    // Used to convert special characters into literal characters by escaping them, so that they don't terminate the pattern within the regex
+    const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const prefixRegex = new RegExp(`^(<@!?${message.client.user.id}>|${escapeRegex(message.guildSettings.prefix)})\\s*`);
     const [, matchedPrefix] = message.content.match(prefixRegex);
 
     // Also good practice to ignore any message that does not start with our prefix, which is set in the configuration file.
@@ -56,8 +59,8 @@ module.exports = async (Bot, message) => {
     // Splits on line returns, then on spaces to preserve the line returns
     const nArgs = message.content.slice(matchedPrefix.length).trim().split(/(\n+)/);
     let args = [];
-    nArgs.forEach(e => {
-        const ne = e.split(" ").filter(String);
+    nArgs.forEach(line => {
+        const ne = line.split(" ").filter(String);
         args = args.concat(ne);
     });
 
@@ -99,7 +102,6 @@ module.exports = async (Bot, message) => {
             // Merge the permission arrays to make sure it has at least the minimum
             const perms = [...new Set([...defPerms, ...cmd.conf.permissions])];
             if (message.guild && message.channel && !message.channel.permissionsFor(message.guild.me).has(perms)) {
-                // const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
                 const missingPerms = message.channel.permissionsFor(message.guild.me).missing(perms);
 
                 if (missingPerms.length > 0) {
@@ -114,8 +116,8 @@ module.exports = async (Bot, message) => {
 
         let flagArgs = getFlags(cmd.conf.flags, cmd.conf.subArgs, args);
 
-        const noFlags = Object.keys(flagArgs.flags).every(f => !flagArgs.flags[f]);
-        const noSubArgs = Object.keys(flagArgs.subArgs).every(s => flagArgs.subArgs[s] === null);
+        const noFlags   = Object.keys(flagArgs.flags).every(f => !flagArgs.flags[f]);
+        const noSubArgs = Object.keys(flagArgs.subArgs).every(s => !flagArgs.subArgs[s]);
         let def = null;
         if (noFlags && noSubArgs && user) {
             if (user.defaults[cmd.help.name]) {
@@ -125,6 +127,7 @@ module.exports = async (Bot, message) => {
         }
 
         // Quick shortcut to any extra ally codes you have registered
+        // -1 for the first in the list, -2 for the second, etc.
         const toRep = args.filter(a => a.match(/^-\d{1,2}$/));
         if (toRep.length) {
             const ix = args.indexOf(toRep[0]);
