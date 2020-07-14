@@ -339,7 +339,7 @@ module.exports = class extends Language {
                             "enabled": "Toggle alerts for all selected allycodes",
                             "arena": "Choose which arena's alerts you want",
                             "channel": "Select which channel you want the logs to output to",
-                            "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted)",
+                            "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted). If you want to link a Discord ID so it will show the person as a mention, the format is allycode:mention",
                             "view": "View the current arenawatch settings, and a list of the registered ally codes there"
                         }
                     }
