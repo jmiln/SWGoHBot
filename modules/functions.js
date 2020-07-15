@@ -505,7 +505,7 @@ module.exports = (Bot, client) => {
 
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), ".");
+        const errorMsg = err.stack.replace(new RegExp(`/${__dirname}/`, "g"), "");
         console.error(`[${Bot.myTime()}] Uncaught Exception: `, errorMsg);
 
         // If it's that error, don't bother showing it again
