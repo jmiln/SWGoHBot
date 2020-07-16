@@ -6660,6 +6660,39 @@
         "mods": {}
     },
     {
+        "name": "Threepio & Chewie",
+        "uniqueName": "C3POCHEWBACCA",
+        "aliases": [
+            "Threepio & Chewie",
+            "C3po & Chewie",
+            "3po & Chewie",
+            "C3p0 & Chewie",
+            "3p0 & Chewie",
+            "Threepio & Chewy",
+            "C3po & Chewy",
+            "3po & Chewy",
+            "C3p0 & Chewy",
+            "3p0 & Chewy",
+            "Threepio & Chewbacca",
+            "C3po & Chewbacca",
+            "3po & Chewbacca",
+            "C3p0 & Chewbacca",
+            "3p0 & Chewbacca"
+        ],
+        "nameVariant": [
+            "Threepio & Chewie"
+        ],
+        "url": "http://swgoh.gg/characters/threepio-chewie/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/C3POCHEWBACCA/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Droid",
+            "Rebel"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Tusken Raider",
         "uniqueName": "TUSKENRAIDER",
         "aliases": [
