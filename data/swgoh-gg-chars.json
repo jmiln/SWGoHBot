@@ -2428,6 +2428,7 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Tank"
         ],
@@ -2782,6 +2783,7 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
+            "Rebel Fighter",
             "Support"
         ],
         "ability_classes": [
@@ -2952,6 +2954,7 @@
         "categories": [
             "Attacker",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One"
         ],
         "ability_classes": [
@@ -3305,6 +3308,7 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Support"
         ],
@@ -4533,6 +4537,7 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
+            "Rebel Fighter",
             "Scoundrel",
             "Tank"
         ],
@@ -4883,6 +4888,7 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Support"
         ],
@@ -5758,6 +5764,7 @@
         "categories": [
             "Attacker",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One"
         ],
         "ability_classes": [
@@ -8917,6 +8924,7 @@
             "Remove Turn Meter",
             "Speed Down",
             "Stealth",
+            "Stun",
             "Taunt"
         ],
         "role": "Leader",
@@ -15726,7 +15734,8 @@
         "alignment": "Light Side",
         "categories": [
             "Attacker",
-            "Rebel"
+            "Rebel",
+            "Rebel Fighter"
         ],
         "ability_classes": [
             "Gain Turn Meter",
@@ -15894,6 +15903,7 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
+            "Rebel Fighter",
             "Support"
         ],
         "ability_classes": [
@@ -19016,6 +19026,7 @@
             "Attacker",
             "Leader",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One"
         ],
         "ability_classes": [
@@ -19190,6 +19201,7 @@
         "categories": [
             "Droid",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Tank"
         ],
@@ -20413,6 +20425,7 @@
             "Attacker",
             "Leader",
             "Rebel",
+            "Rebel Fighter",
             "Scoundrel"
         ],
         "ability_classes": [
@@ -21806,6 +21819,181 @@
             "Thermal Detonator"
         ],
         "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Mon Mothma",
+        "base_id": "MONMOTHMA",
+        "pk": 543,
+        "url": "http://swgoh.gg/characters/mon-mothma/",
+        "image": "/game-asset/u/MONMOTHMA/",
+        "power": 32328,
+        "description": "Rebel Leader who supports and rallies her allies",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "005",
+                    "009",
+                    "009",
+                    "010",
+                    "003",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "027",
+                    "034",
+                    "033",
+                    "027",
+                    "031",
+                    "014"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "052",
+                    "054",
+                    "050",
+                    "048",
+                    "027",
+                    "026"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "077",
+                    "072",
+                    "068",
+                    "063",
+                    "027",
+                    "026"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "088",
+                    "083",
+                    "085",
+                    "077",
+                    "068",
+                    "050"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "098",
+                    "088",
+                    "080",
+                    "083",
+                    "072",
+                    "036"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "109",
+                    "098",
+                    "095",
+                    "088",
+                    "072"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "111",
+                    "117",
+                    "114",
+                    "117",
+                    "102",
+                    "102"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "125",
+                    "111",
+                    "132",
+                    "108",
+                    "173",
+                    "173"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "143",
+                    "130",
+                    "129",
+                    "136",
+                    "173",
+                    "129"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "130",
+                    "173",
+                    "137",
+                    "144",
+                    "143",
+                    "117"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "164",
+                    "158",
+                    "168",
+                    "168",
+                    "G12Finisher_MONMOTHMA_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Leader",
+            "Rebel",
+            "Support"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Dispel",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Tenacity",
+            "Leader: Assist",
+            "Revive",
+            "Taunt"
+        ],
+        "role": "Support",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -23528,6 +23716,7 @@
         "categories": [
             "Attacker",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One"
         ],
         "ability_classes": [
@@ -27343,6 +27532,7 @@
         "alignment": "Light Side",
         "categories": [
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Tank"
         ],
@@ -32181,7 +32371,8 @@
         "categories": [
             "Attacker",
             "Leader",
-            "Rebel"
+            "Rebel",
+            "Rebel Fighter"
         ],
         "ability_classes": [
             "AoE",

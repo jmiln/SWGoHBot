@@ -403,6 +403,8 @@ module.exports = (Bot, client) => {
             Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json"));
             Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json"));
             Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
+            const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json"));
+            Bot.statCalculator.setGameData(gameData);
         } catch (e) {
             err = e;
         }
@@ -505,7 +507,7 @@ module.exports = (Bot, client) => {
 
     // These 2 simply handle unhandled things. Like Magic. /shrug
     process.on("uncaughtException", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(`/${__dirname}/`, "g"), "");
+        const errorMsg = err.stack.replace(new RegExp(`${process.cwd()}`, "g"), ".");
         console.error(`[${Bot.myTime()}] Uncaught Exception: `, errorMsg);
 
         // If it's that error, don't bother showing it again
@@ -522,13 +524,11 @@ module.exports = (Bot, client) => {
     });
 
     process.on("unhandledRejection", (err) => {
-        let dir = __dirname.split("/").splice(0,3);
-        dir = dir.join("/");
-        const errorMsg = err.stack.replace(new RegExp(`${dir}`, "g"), "./");
+        const errorMsg = err.stack.replace(new RegExp(`${process.cwd()}`, "g"), ".");
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
             Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
-        Bot.logger.error(`Uncaught Promise Error: ${errorMsg}`);
+        Bot.logger.error(`Uncaught Promise Error: ${errorMsg}`, true);
         try {
             if (Bot.config.logs.logToChannel) {
                 client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
@@ -545,6 +545,7 @@ module.exports = (Bot, client) => {
     Bot.helpOut = (message, command) => {
         const language = message.language;
         const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
+        if (!help || !help.actions) console.log("Broke in helpOut with " + message.comntent);
         const actions = help.actions.slice();
         let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(", ") : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
 

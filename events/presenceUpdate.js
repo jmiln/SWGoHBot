@@ -22,6 +22,6 @@ module.exports = async (Bot, oldPresence, newPresence) => {
     }
 
     // Here, we need to log the user's ID (newMember.id), and the timestamp for the change (new Date().getTime();)
-    activityLog.log[newPresence.member.id] = new Date().getTime();
+    activityLog.log[newPresence.userID] = new Date().getTime();
     await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: guild.id}, activityLog);
 };

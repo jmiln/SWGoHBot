@@ -13,6 +13,7 @@ const SHIPLOCATIONS          = "./data/shipLocations.json";
 const GAMEDATA               = "./data/gameData.json";
 const UNKNOWN                = "Unknown";
 
+// How long between being runs (In minutes)
 const INTERVAL = 30;
 
 console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
@@ -89,16 +90,12 @@ async function updateIfChanged(localCachePath, dataSourceUri) {
 }
 
 async function updateRemoteData() {
-    // TODO potentially leverage REST end point for google doc farming location spreadsheet (if more accurate / current than swgoh.gg?)
-    // https://docs.google.com/spreadsheets/d/1Z0mOMyCctmxXWEU1cLMlDMRDUdw1ocBmWh4poC3RVXg/htmlview#
-
     const currentCharacters   = require("./data/characters.json");
     const currentCharSnapshot = JSON.parse(JSON.stringify(currentCharacters));
     const currentShips        = require("./data/ships.json");
     const currentShipSnapshot = JSON.parse(JSON.stringify(currentShips));
     const log = [];
 
-    // console.log("UpdateRemoteData", "Checking for updates to remote data sources");
     if (await updateIfChanged(GAMEDATA, "https://swgoh-stat-calc.glitch.me/gameData.json")) {
         log.push("Detected a change in Crinolo's Game Data.");
     }

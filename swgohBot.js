@@ -29,6 +29,7 @@ Bot.missions     = JSON.parse(fs.readFileSync("data/missions.json"));
 Bot.resources    = JSON.parse(fs.readFileSync("data/resources.json"));
 Bot.arenaJumps   = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
 Bot.acronyms     = JSON.parse(fs.readFileSync("data/acronyms.json"));
+const gameData   = JSON.parse(fs.readFileSync("data/gameData.json"));
 Bot.emotes       = {};
 
 // Load in various general functions for the bot
@@ -119,8 +120,7 @@ const init = async () => {
     Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").find({}).count();
 
     Bot.statCalculator = require("swgoh-stat-calc");
-    const gameData  = require("./data/gameData.json");
-    Bot.statCalculator.setGameData( gameData );
+    Bot.statCalculator.setGameData(gameData);
 
     if (Bot.config.swapiConfig) {
         // Load up the api connector/ helpers

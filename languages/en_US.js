@@ -1668,35 +1668,6 @@ module.exports = class extends Language {
                 ]
             },
 
-            // Stats Command
-            COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID, botLangs, players, guilds, gohLangs, updated) => [
-                `= STATISTICS (${shardID}) =`,
-                `• Mem Usage  :: ${memUsage} MB`,
-                `• CPU Load   :: ${cpuLoad}%`,
-                `• Uptime     :: ${uptime}`,
-                `• Users      :: ${users}`,
-                `• Servers    :: ${servers}`,
-                `• Channels   :: ${channels}`,
-                `• Languages  :: ${botLangs}`,
-                "• Source     :: https://github.com/jmiln/SWGoHBot\n",
-                "= SWGoH Stats =",
-                `• Registered Players :: ${players}`,
-                `• Registered Guilds  :: ${guilds}`,
-                `• Available Languages:: ${gohLangs}`,
-                `• Client updated     :: ${updated}`
-            ].join("\n"),
-            COMMAND_STATS_HELP: {
-                description: "Shows the bot's stats.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: "",
-                        usage: ";stats",
-                        args: {}
-                    }
-                ]
-            },
-
             // Test command (in .gitignore)
             COMMAND_TEST_HELP: {
                 description: "A command to test things out.",

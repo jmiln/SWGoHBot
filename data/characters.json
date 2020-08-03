@@ -580,6 +580,7 @@
         "side": "light",
         "factions": [
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Tank"
         ],
@@ -615,6 +616,7 @@
         "side": "light",
         "factions": [
             "Rebel",
+            "Rebel Fighter",
             "Support"
         ],
         "mods": {
@@ -649,6 +651,7 @@
         "factions": [
             "Attacker",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One"
         ],
         "mods": {
@@ -748,6 +751,7 @@
         "side": "light",
         "factions": [
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Support"
         ],
@@ -1205,6 +1209,7 @@
         "side": "light",
         "factions": [
             "Rebel",
+            "Rebel Fighter",
             "Scoundrel",
             "Tank"
         ],
@@ -1259,6 +1264,7 @@
         "side": "light",
         "factions": [
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Support"
         ],
@@ -1400,6 +1406,7 @@
         "factions": [
             "Attacker",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One"
         ],
         "mods": {
@@ -3549,7 +3556,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Rebel"
+            "Rebel",
+            "Rebel Fighter"
         ],
         "mods": {
             "General": {
@@ -3584,6 +3592,7 @@
         "side": "light",
         "factions": [
             "Rebel",
+            "Rebel Fighter",
             "Support"
         ],
         "mods": {
@@ -4066,9 +4075,7 @@
         "name": "Jedi Knight Luke Skywalker",
         "uniqueName": "JEDIKNIGHTLUKE",
         "aliases": [
-            "Jedi Knight Luke Skywalker",
-            "JKLS",
-            "JKL"
+            "Jedi Knight Luke Skywalker"
         ],
         "nameVariant": [
             "Jedi Knight Luke Skywalker"
@@ -4206,6 +4213,7 @@
             "Attacker",
             "Leader",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One"
         ],
         "mods": {
@@ -4257,6 +4265,7 @@
         "factions": [
             "Droid",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Tank"
         ],
@@ -4548,6 +4557,7 @@
             "Attacker",
             "Leader",
             "Rebel",
+            "Rebel Fighter",
             "Scoundrel"
         ],
         "mods": {
@@ -4844,6 +4854,25 @@
                 "source": "Crouching Rancor"
             }
         }
+    },
+    {
+        "name": "Mon Mothma",
+        "uniqueName": "MONMOTHMA",
+        "aliases": [
+            "Mon Mothma"
+        ],
+        "nameVariant": [
+            "Mon Mothma"
+        ],
+        "url": "http://swgoh.gg/characters/mon-mothma/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/MONMOTHMA/",
+        "side": "light",
+        "factions": [
+            "Leader",
+            "Rebel",
+            "Support"
+        ],
+        "mods": {}
     },
     {
         "name": "Mother Talzin",
@@ -5197,6 +5226,7 @@
         "factions": [
             "Attacker",
             "Rebel",
+            "Rebel Fighter",
             "Rogue One"
         ],
         "mods": {
@@ -6042,6 +6072,7 @@
         "side": "light",
         "factions": [
             "Rebel",
+            "Rebel Fighter",
             "Rogue One",
             "Tank"
         ],
@@ -6663,21 +6694,7 @@
         "name": "Threepio & Chewie",
         "uniqueName": "C3POCHEWBACCA",
         "aliases": [
-            "Threepio & Chewie",
-            "C3po & Chewie",
-            "3po & Chewie",
-            "C3p0 & Chewie",
-            "3p0 & Chewie",
-            "Threepio & Chewy",
-            "C3po & Chewy",
-            "3po & Chewy",
-            "C3p0 & Chewy",
-            "3p0 & Chewy",
-            "Threepio & Chewbacca",
-            "C3po & Chewbacca",
-            "3po & Chewbacca",
-            "C3p0 & Chewbacca",
-            "3p0 & Chewbacca"
+            "Threepio & Chewie"
         ],
         "nameVariant": [
             "Threepio & Chewie"
@@ -7045,7 +7062,8 @@
         "factions": [
             "Attacker",
             "Leader",
-            "Rebel"
+            "Rebel",
+            "Rebel Fighter"
         ],
         "mods": {
             "General": {

@@ -181,6 +181,7 @@ class CheckAct extends Command {
             }
             userID = Bot.getUserID(userID);
             const user = message.guild.members.cache.get(userID);
+            if (!user) return super.error(message, "Invalid user");
             const name = user.nickname ? user.nickname : user.user.username;
             // Try and check the activity for just one user
             if (activityLog.log[userID]) {
