@@ -18,14 +18,19 @@ const INTERVAL = 30;
 
 console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
+runUpdater();
 setInterval(async () => {
+    await runUpdater();
+}, INTERVAL * 60 * 1000);
+
+async function runUpdater() {
     const time = new Date().toString().split(" ").slice(1, 5);
     const log = await updateRemoteData();
     if (log && log.length) {
         console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
         console.log(log.join("\n"));
     }
-}, INTERVAL * 60 * 1000);
+}
 
 function getModType(type) {
     switch (type) {
@@ -77,6 +82,7 @@ async function updateIfChanged(localCachePath, dataSourceUri) {
             console.log("UpdateRemoteData", "Error reading local cache for " + dataSourceUri + ", reason: " + reason);
         }
 
+        if (remoteData.generatedAt) delete remoteData.generatedAt;
         if (JSON.stringify(remoteData) !== JSON.stringify(localCache)) {
             saveFile(localCachePath, remoteData);
             updated = true;
