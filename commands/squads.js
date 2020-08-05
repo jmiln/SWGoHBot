@@ -228,7 +228,7 @@ class Squads extends Command {
                             if (!ships) {
                                 outStr += "`✗|✗|✗` " + Bot.characters.filter(char => char.uniqueName === c.split(":")[0])[0].name + "\n";
                             } else {
-                                outStr += "`✗|✗` " + Bot.characters.filter(char => char.uniqueName === c.split(":")[0])[0].name + "\n";
+                                outStr += "`✗|✗` " + Bot.ships.filter(char => char.uniqueName === c.split(":")[0])[0].name + "\n";
                             }
                         } else if (ch.rarity >= stars && ch.gear >= gear && ch.level >= level) {
                             if (!ships) {

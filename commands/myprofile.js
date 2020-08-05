@@ -129,7 +129,7 @@ class MyProfile extends Command {
                 if (!relicCount[char.relic.currentTier - 3]) relicCount[char.relic.currentTier - 3] = 0;
                 relicCount[char.relic.currentTier - 2] += 1;
             }
-            const thisZ = char.skills.filter(s => s.isZeta && s.tier === 8);    // Get all zetas for that character
+            const thisZ = char.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get all zetas for that character
             zetaCount += thisZ.length;
         });
         const charOut = message.language.get("COMMAND_MYPROFILE_CHARS", gpChar.toLocaleString(), charList, zetaCount);
