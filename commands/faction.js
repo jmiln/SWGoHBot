@@ -114,7 +114,7 @@ class Faction extends Command {
                     const lvlStr  = " ".repeat(lvlMax  - c.level.toString().length) + c.level;
                     const gpStr   = " ".repeat(gpMax   - c.gp.length) + c.gp;
                     const gearStr = " ".repeat(gearMax - c.gear.toString().length) + c.gear;
-                    const zetas   = "z".repeat(c.skills.filter(s => s.isZeta && s.tier === 8).length);
+                    const zetas   = "z".repeat(c.skills.filter(s => s.isZeta && s.tier === s.tiers).length);
                     factionChars.push(`**\`[ ${c.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${c.nameKey}**`);
                 });
                 const msgArray = Bot.msgArray(factionChars, "\n", 1000);

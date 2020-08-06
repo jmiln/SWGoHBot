@@ -124,7 +124,7 @@ class MyCharacter extends Command {
             }
             thisChar.skills.forEach(a => {
                 a.type = a.id.split("_")[0].replace("skill", "").toProperCase();
-                if (a.tier === 8 || (a.tier === 3 && (a.type === "Contract" || a.type === "Hardware"))) {
+                if (a.tier === a.tiers) {
                     if (a.isZeta) {
                         // Maxed Zeta ability
                         a.tier = "Max ✦";

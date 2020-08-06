@@ -37,7 +37,7 @@ class MyArena extends Command {
             return super.error(message, "Something broke, please try again in a bit");
         }
 
-        if (!player.arena) {
+        if (!player || !player.arena) {
             return super.error(message, "Something broke when getting your info, please try again in a bit.");
         }
 
@@ -68,7 +68,7 @@ class MyArena extends Command {
                 const char = player.arena.char.squad[ix];
                 let thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
+                const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get the zetas of that character
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
             }
@@ -95,7 +95,7 @@ class MyArena extends Command {
                 const char = player.arena.char.squad[ix];
                 let thisChar = playerStats.roster.find(c => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === 8);    // Get the zetas of that character
+                const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get the zetas of that character
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 const cName = `**${"z".repeat(thisZ.length)}${thisChar.nameKey}**`;
                 const speed  = thisChar.stats.final.Speed.toLocaleString();
@@ -145,4 +145,3 @@ class MyArena extends Command {
 }
 
 module.exports = MyArena;
-
