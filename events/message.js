@@ -1,3 +1,4 @@
+const {inspect} = require("util");
 module.exports = async (Bot, message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
@@ -134,7 +135,7 @@ module.exports = async (Bot, message) => {
         if (toRep.length) {
             const ix = args.indexOf(toRep[0]);
             const jx = parseInt(args[ix].replace("-", ""))-1;
-            if (user.accounts.length && user.accounts.length > jx && jx >= 0) {
+            if (user && user.accounts && user.accounts.length && user.accounts.length > jx && jx >= 0) {
                 args[ix] = user.accounts[jx].allyCode;
             }
         }
@@ -151,7 +152,7 @@ module.exports = async (Bot, message) => {
                     defaults: def
                 });
             } catch (err) {
-                Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: ${err}`, true);
+                Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
             }
         }
         if (Bot.config.logs.logComs) {

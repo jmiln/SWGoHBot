@@ -245,6 +245,7 @@ class Squads extends Command {
                             outStr += ch.nameKey + "\n";
                         }
                     } catch (e) {
+                        Bot.logger.error("Message Content: " + message.content);
                         Bot.logger.error("[2] Squad broke: " + c + ": " + e);
                     }
                 }

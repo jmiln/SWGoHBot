@@ -545,8 +545,8 @@ module.exports = (Bot, client) => {
     Bot.helpOut = (message, command) => {
         const language = message.language;
         const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
-        if (!help || !help.actions) console.log("Broke in helpOut with " + message.comntent);
-        const actions = help.actions.slice();
+        if (!help || !help.actions) Bot.logger.error("Broke in helpOut with " + message.content);
+        const actions = help.actions ? help.actions.slice() : [];
         let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(", ") : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
 
         // Stick the extra help bit in

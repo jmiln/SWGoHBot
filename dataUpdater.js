@@ -102,9 +102,10 @@ async function updateRemoteData() {
     const currentShipSnapshot = JSON.parse(JSON.stringify(currentShips));
     const log = [];
 
-    if (await updateIfChanged(GAMEDATA, "https://swgoh-stat-calc.glitch.me/gameData.json")) {
-        log.push("Detected a change in Crinolo's Game Data.");
-    }
+    // Disabled for now since glitch shut it down temporarily
+    // if (await updateIfChanged(GAMEDATA, "https://swgoh-stat-calc.glitch.me/gameData.json")) {
+    //     log.push("Detected a change in Crinolo's Game Data.");
+    // }
     if (await updateIfChanged(GG_SHIPS_CACHE, "https://swgoh.gg/api/ships/?format=json")) {
         log.push("Detected a change in ships from swgoh.gg");
         await updateShips(currentShips);
