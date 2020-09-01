@@ -108,6 +108,26 @@
         }
     },
     {
+        "name": "Admiral Piett",
+        "uniqueName": "ADMIRALPIETT",
+        "aliases": [
+            "Admiral Piett"
+        ],
+        "nameVariant": [
+            "Admiral Piett"
+        ],
+        "url": "http://swgoh.gg/characters/admiral-piett/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/ADMIRALPIETT/",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Imperial Trooper",
+            "Leader",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Ahsoka Tano",
         "uniqueName": "AHSOKATANO",
         "aliases": [

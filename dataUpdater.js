@@ -29,6 +29,8 @@ async function runUpdater() {
     if (log && log.length) {
         console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
         console.log(log.join("\n"));
+    } else {
+        console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}  ##  Nothing updated`);
     }
 }
 
@@ -104,8 +106,9 @@ async function updateRemoteData() {
 
     // Disabled for now since glitch shut it down temporarily
     // if (await updateIfChanged(GAMEDATA, "https://swgoh-stat-calc.glitch.me/gameData.json")) {
-    //     log.push("Detected a change in Crinolo's Game Data.");
-    // }
+    if (await updateIfChanged(GAMEDATA, "http://swgoh-api-stat-calc.glitch.me/gameData.json")) {
+        log.push("Detected a change in Crinolo's Game Data.");
+    }
     if (await updateIfChanged(GG_SHIPS_CACHE, "https://swgoh.gg/api/ships/?format=json")) {
         log.push("Detected a change in ships from swgoh.gg");
         await updateShips(currentShips);

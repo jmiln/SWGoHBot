@@ -348,6 +348,186 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Admiral Piett",
+        "base_id": "ADMIRALPIETT",
+        "pk": 562,
+        "url": "http://swgoh.gg/characters/admiral-piett/",
+        "image": "/game-asset/u/ADMIRALPIETT/",
+        "power": 32328,
+        "description": "An ambitious Imperial Officer who supports his allies while plotting their demise",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "009",
+                    "002",
+                    "003",
+                    "004",
+                    "009",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "028",
+                    "028",
+                    "020"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "048",
+                    "020",
+                    "037",
+                    "041",
+                    "069",
+                    "051"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "058",
+                    "056",
+                    "055",
+                    "039",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "093",
+                    "043",
+                    "086",
+                    "015",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "043",
+                    "043",
+                    "092",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "076",
+                    "106",
+                    "102",
+                    "100",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "076",
+                    "099",
+                    "112",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "172",
+                    "096",
+                    "076",
+                    "106",
+                    "126"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "112",
+                    "129",
+                    "173",
+                    "116",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "129",
+                    "125",
+                    "112",
+                    "134",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "164",
+                    "164",
+                    "170",
+                    "170",
+                    "G12Finisher_ADMIRALPIETT_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire",
+            "Imperial Trooper",
+            "Leader",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Daze",
+            "Defense Up",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Offense Up",
+            "Stealth"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Ahsoka Tano",
         "base_id": "AHSOKATANO",
         "pk": 64,
