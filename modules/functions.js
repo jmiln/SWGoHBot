@@ -946,18 +946,19 @@ module.exports = (Bot, client) => {
             }
         }  else if (Bot.isAllyCode(user)) {
             return [user.replace(/[^\d]*/g, "")];
-        }  else {
-            const outArr = [];
-            const results = await Bot.swgohAPI.playerByName(user);
-            if (results.length > 1) {
-                results.forEach(p => {
-                    outArr.push(p.allyCode);
-                });
-            } else if (results.length ===  1) {
-                outArr.push(results[0].allyCode);
-            }
-            return outArr;
         }
+        // }  else {
+        //     const outArr = [];
+        //     const results = await Bot.swgohAPI.playerByName(user);
+        //     if (results.length > 1) {
+        //         results.forEach(p => {
+        //             outArr.push(p.allyCode);
+        //         });
+        //     } else if (results.length ===  1) {
+        //         outArr.push(results[0].allyCode);
+        //     }
+        //     return outArr;
+        // }
     };
 
     // Convert from milliseconds

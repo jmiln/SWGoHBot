@@ -45,7 +45,7 @@ module.exports = (Bot) => {
 
             return player;
         } catch (e) {
-            Bot.logger.error("SWAPI Broke getting player: " + e);
+            Bot.logger.error(`SWAPI Broke getting player by name (${name}): ${e}`);
             throw e;
         }
     }

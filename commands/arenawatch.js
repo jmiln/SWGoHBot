@@ -31,9 +31,39 @@ class ArenaWatch extends Command {
             }
         }
 
-        const user = await Bot.userReg.getUser(userID); // eslint-disable-line no-unused-vars
+        const user = await Bot.userReg.getUser(userID);
         if (!user) {
             return super.error(message, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
+        }
+        let aw = user.arenaWatch;
+        if (!aw) {
+            aw = {
+                enabled: false,
+                arena: {
+                    fleet: {
+                        channel: null,
+                        enabled: false
+                    },
+                    char: {
+                        channel: null,
+                        enabled: false
+                    }
+                },
+                allycodes: []
+            };
+        }
+        if (aw.channel && (!aw.arena.fleet || !aw.arena.char)) {
+            const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
+            const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
+            aw.arena = {};
+            aw.arena.fleet = {
+                channel: aw.channel,
+                enabled: flEnabled
+            };
+            aw.arena.char  = {
+                channel: aw.channel,
+                enabled: chEnabled
+            };
         }
 
         // ArenaWatch -> activate/ deactivate
@@ -65,22 +95,13 @@ class ArenaWatch extends Command {
             if (!player) {
                 throw new Error(`Could not find ${code.code}, invalid code`);
             }
-            if (user.arenaWatch.allycodes.find(usercode => usercode.allyCode === code.code)) {
+            if (aw.allycodes.find(usercode => usercode.allyCode === code.code)) {
                 throw new Error(`${code.code} was already in the list`);
             }
-            if (user.arenaWatch.allycodes.length >= codeCap) {
+            if (aw.allycodes.length >= codeCap) {
                 throw new Error(`Could not add ${code.code}, ally code cap reached!`);
             }
             return player;
-        }
-
-        if (!user.arenaWatch) {
-            user.arenaWatch = {
-                enabled: false,
-                channel: null,
-                arena: "char",
-                allycodes: []
-            };
         }
 
         switch (target) {
@@ -88,15 +109,15 @@ class ArenaWatch extends Command {
             case "enabled": {
                 if (!args.length) {
                     // They didn't say which way, so just toggle it
-                    user.arenaWatch.enabled = !user.arenaWatch.enabled;
+                    aw.enabled = !aw.enabled;
                 } else {
                     const toggle = args[0];
                     if (onVar.indexOf(toggle) > -1) {
                         // Turn it on
-                        user.arenaWatch.enabled = true;
+                        aw.enabled = true;
                     } else if (offVar.indexOf(toggle) > -1) {
                         // Turn it off
-                        user.arenaWatch.enabled = false;
+                        aw.enabled = false;
                     } else {
                         // Complain, they didn't supply a proper toggle
                         return super.error(message, message.language.get("COMMAND_ARENAALERT_INVALID_BOOL"));
@@ -107,16 +128,17 @@ class ArenaWatch extends Command {
             case "ch":
             case "channel": {
                 // This needs to make sure the person has an adminrole or something so they cannot just spam a chat with it
-                let channel;
-                [channel, ...args] = args;
+                let channel, targetArena = null;
+                [channel, targetArena, ...args] = args;
                 if (!channel) {
-                    if (user.channel && user.channel.length) {
-                        user.channel = null;
+                    if (aw.arena.char.channel || aw.arena.fleet.channel) {
+                        aw.arena.char.channel  = null;
+                        aw.arena.fleet.channel = null;
                     } else {
                         return super.error(message, "Missing channel");
                     }
                 }
-                if (!Bot.isChannelMention(channel)) super.error(message, "Invalid channel");
+                if (!channel || !Bot.isChannelMention(channel)) super.error(message, "Invalid channel");
 
                 channel = channel.replace (/[^\d]/g, "");
                 if (!message.guild.channels.cache.get(channel)) super.error(message, "I cannot find that channel here.");
@@ -128,17 +150,54 @@ class ArenaWatch extends Command {
                 }
 
                 // They got throught all that, go ahead and set it
-                user.arenaWatch.channel = channel;
+                if (targetArena) {
+                    switch (targetArena) {
+                        case "both": {
+                            // Set the channel for both the char and fleet arenas
+                            aw.arena.char.channel  = channel;
+                            aw.arena.fleet.channel = channel;
+                            break;
+                        }
+                        case "char": {
+                            // Set just the char arena channel
+                            aw.arena.char.channel  = channel;
+                            break;
+                        }
+                        case "fleet": {
+                            // Set just the fleet arena channel
+                            aw.arena.fleet.channel  = channel;
+                            break;
+                        }
+                        default: {
+                            return super.error(message, `\`${targetArena}\` is an invalid arena choice, try both, char, or fleet/ ship.`);
+                        }
+                    }
+                } else {
+                    aw.arena.char.channel  = channel;
+                    aw.arena.fleet.channel = channel;
+                }
                 break;
             }
             case "arena": {
-                const setting = args[0];
+                const setting = args[0] ? args[0].toLowerCase() : null;
                 if (!setting) {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_MISSING_ARENA"));
                 } else if (!["char", "fleet", "both", "none"].includes(setting)) {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_ARENA"));
                 }
-                user.arenaWatch.arena = setting;
+                if (setting === "both") {
+                    aw.arena.char.enabled  = true;
+                    aw.arena.fleet.enabled = true;
+                } else if (setting === "char") {
+                    aw.arena.char.enabled  = true;
+                    aw.arena.fleet.enabled = false;
+                } else if (["fleet", "ship"].includes(setting)) {
+                    aw.arena.char.enabled  = false;
+                    aw.arena.fleet.enabled = true;
+                } else {
+                    aw.arena.char.enabled  = false;
+                    aw.arena.fleet.enabled = false;
+                }
                 break;
             }
             case "ac":
@@ -187,7 +246,7 @@ class ArenaWatch extends Command {
                             continue;
                         }
 
-                        user.arenaWatch.allycodes.push({
+                        aw.allycodes.push({
                             allyCode: c.code,
                             name:     player.name,
                             mention:  c.mention,
@@ -210,9 +269,9 @@ class ArenaWatch extends Command {
                     // Check if the specified code is available to edit
                     // If not, just add it in fresh
                     // If so, delte it then add it back
-                    const exists = user.arenaWatch.allycodes.some(p => p.allyCode === ac);
+                    const exists = aw.allycodes.some(p => p.allyCode === ac);
                     if (exists) {
-                        user.arenaWatch.allycodes = user.arenaWatch.allycodes.filter(p => p.allyCode !== ac);
+                        aw.allycodes = aw.allycodes.filter(p => p.allyCode !== ac);
                     }
 
                     let player;
@@ -223,7 +282,7 @@ class ArenaWatch extends Command {
                         return super.error(message, "Error getting player info.\n" + e);
                     }
 
-                    user.arenaWatch.allycodes.push({
+                    aw.allycodes.push({
                         allyCode: ac,
                         name:     player.name,
                         mention:  mention,
@@ -238,8 +297,8 @@ class ArenaWatch extends Command {
                     if (code.length != 9) {
                         return super.error(message, `Invalid code, there are ${code.length}/9 digits`);
                     }
-                    if (user.arenaWatch.allycodes.filter(ac => ac.allyCode === code || ac.allyCode === parseInt(code)).length) {
-                        user.arenaWatch.allycodes = user.arenaWatch.allycodes.filter(ac => ac.allyCode !== code && ac.allyCode !== parseInt(code));
+                    if (aw.allycodes.filter(ac => ac.allyCode === code || ac.allyCode === parseInt(code)).length) {
+                        aw.allycodes = aw.allycodes.filter(ac => ac.allyCode !== code && ac.allyCode !== parseInt(code));
                         outLog.push(code + " has been removed");
                     } else {
                         return super.error(message, "That ally code was not available to remove");
@@ -252,22 +311,39 @@ class ArenaWatch extends Command {
             }
             case "view": {
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
-                let chan;
-                if (user.arenaWatch.channel) {
-                    chan = message.guild ? message.guild.channels.cache.get(user.arenaWatch.channel) : null;
-                    if (!chan) {
-                        chan = await message.client.shard.broadcastEval(`
-                                this.channels.cache.get('${user.arenaWatch.channel}');
-                            `).then((thisChan) => chan = `<#${thisChan.filter(a => !!a)[0].id}>`);
+                let charChan, fleetChan;
+                if (aw.arena.char.channel) {
+                    charChan = message.guild ? message.guild.channels.cache.get(aw.arena.char.channel) : null;
+                    if (!charChan) {
+                        charChan = await message.client.shard.broadcastEval(`
+                                this.channels.cache.get('${aw.channel}');
+                            `).then((thisChan) => charChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
                     }
                 }
+                if (aw.arena.fleet.channel) {
+                    fleetChan = message.guild ? message.guild.channels.cache.get(aw.arena.fleet.channel) : null;
+                    if (!fleetChan) {
+                        fleetChan = await message.client.shard.broadcastEval(`
+                                this.channels.cache.get('${aw.channel}');
+                            `).then((thisChan) => fleetChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
+                    }
+                }
+                const enabledArena = [];
+                if (aw.arena.char.enabled) {
+                    enabledArena.push("Char");
+                }
+                if (aw.arena.fleet.enabled) {
+                    enabledArena.push("Fleet");
+                }
+                if (!enabledArena.length) enabledArena.push("None");
+
                 return message.channel.send({embed: {
                     title: "Arena Watch Settings",
                     description: [
-                        `Enabled:  **${user.arenaWatch.enabled ? "ON" : "OFF"}**`,
-                        `Channel:  **${user.arenaWatch.channel ? chan : "N/A"}**`,
-                        `Arena:    **${user.arenaWatch.arena}**`,
-                        `AllyCodes: (${user.arenaWatch.allycodes.length}/${codeCap}) ${user.arenaWatch.allycodes.length ? "\n" + user.arenaWatch.allycodes.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`).join("\n") : "**N/A**"}`
+                        `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
+                        `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${charChan}`,
+                        `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
+                        `AllyCodes: (${aw.allycodes.length}/${codeCap}) ${aw.allycodes.length ? "\n" + aw.allycodes.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`).join("\n") : "**N/A**"}`
                     ].join("\n")
                 }});
             }

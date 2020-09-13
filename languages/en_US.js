@@ -331,7 +331,7 @@ module.exports = class extends Language {
                         usage: [
                             ";arenawatch enabled <on|off>",
                             ";arenawatch arena <both|fleet|char>",
-                            ";arenawatch channel <channelMention>",
+                            ";arenawatch channel <channelMention> [char|fleet|ship]",
                             ";arenawatch allycode <add|remove> <allycode|allycode:mention>",
                             ";arenawatch allycode <edit> <allycode> <allycode:mention>",
                             ";arenawatch view"
@@ -339,7 +339,7 @@ module.exports = class extends Language {
                         args: {
                             "enabled": "Toggle alerts for all selected allycodes",
                             "arena": "Choose which arena's alerts you want",
-                            "channel": "Select which channel you want the logs to output to",
+                            "channel": "Select which channel you want the logs to output to. You can select which channel each arena will log to buy tacking the arena type on the end",
                             "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted). If you want to link a Discord ID so it will show the person as a mention, the format is allycode:mention",
                             "view": "View the current arenawatch settings, and a list of the registered ally codes there"
                         }

@@ -18,6 +18,18 @@ class CommandName extends Command {
 
     async run(Bot, message, [user1str, user2str, ...characters], options) { // eslint-disable-line no-unused-vars
         const problemArr = [];
+
+        // Make sure the userStrings are valid
+        if (!user1str || (user1str !== "me" && !Bot.isAllyCode(user1str) && !Bot.isUserID(user1str))) {
+            problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
+        }
+        if (!user2str || (user2str !== "me" && !Bot.isAllyCode(user2str) && !Bot.isUserID(user2str))) {
+            problemArr.push(message.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
+        }
+        if (problemArr.length) {
+            return super.error(message, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
+        }
+
         let user1 = await super.getUser(message, user1str, false);
         let user2 = await super.getUser(message, user2str, false);
         if (!user1) {

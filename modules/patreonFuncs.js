@@ -222,21 +222,63 @@ module.exports = (Bot, client) => {
             //   - save that change somewhere
             //   - for each next one, see if someone else had the opposite move
 
+            // user = {
+            //     ...
+            //     arenaWatch: {
+            //         enabled: true/ false,
+            //         arena: {
+            //             fleet: {
+            //                 channel: chID,
+            //                 enabled: true/ false
+            //             },
+            //             char: {
+            //                 channel: chID,
+            //                 enabled: true/ false
+            //             }
+            //         }
+            //         allycodes: []
+            //     }
+            // };
+
             if (patron.amount_cents < 100) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
 
             // If they're not registered with anything or don't have any ally codes
-            if (!user || !user.accounts.length) continue;
+            if (!user || !user.accounts || !user.accounts.length || !user.arenaWatch) continue;
+            const aw = user.arenaWatch;
+
+            // In case they have the old version, update em
+            if (!aw.arena.fleet || !aw.arena.char) {
+                const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
+                const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
+                aw.arena = {};
+                aw.arena.fleet = {
+                    channel: aw.channel,
+                    enabled: flEnabled
+                };
+                aw.arena.char  = {
+                    channel: aw.channel,
+                    enabled: chEnabled
+                };
+            }
+
 
             // If they don't want any alerts
-            if (!user.arenaWatch || !user.arenaWatch.enabled || !user.arenaWatch.channel || user.arenaWatch.arena === "none") continue;
+            if (!aw.enabled
+                || (!aw.arena.fleet.channel && !aw.arena.char.channel)
+                || (!aw.arena.fleet.enabled && !aw.arena.char.enabled)) {
+                continue;
+            }
+
             let acctCount = 0;
             if      (patron.amount_cents < 500)  acctCount = Bot.config.arenaWatchConfig.tier1;
             else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
             else                                 acctCount = Bot.config.arenaWatchConfig.tier3;
-            const accountsToCheck = JSON.parse(JSON.stringify(user.arenaWatch.allycodes.slice(0, acctCount)));
+
+            const accountsToCheck = JSON.parse(JSON.stringify(aw.allycodes.slice(0, acctCount)));
             const allyCodes = accountsToCheck.map(a => a.allyCode ?  a.allyCode : a);
             if (!allyCodes || !allyCodes.length) continue;
+
             const newPlayers = await Bot.swgohAPI.unitStats(allyCodes, null, {force: true});
             if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${allyCodes.length} vs ${newPlayers.length}`);
 
@@ -283,34 +325,57 @@ module.exports = (Bot, client) => {
             });
 
             let charOut = [];
-            if (compChar.length && ["char", "both"].includes(user.arenaWatch.arena.toLowerCase())) {
+            if (compChar.length && aw.arena.char.enabled) {
                 charOut = checkRanks(compChar);
             }
 
             let shipOut = [];
-            if (compShip.length && ["fleet", "both"].includes(user.arenaWatch.arena.toLowerCase())) {
+            if (compShip.length && aw.arena.fleet.enabled) {
                 shipOut = checkRanks(compShip);
             }
-            const fields = [];
+            const charFields = [];
+            const shipFields = [];
             if (charOut.length) {
-                fields.push("**Character Arena:**");
-                fields.push(charOut.map(c => "- " + c).join("\n"));
+                charFields.push("**Character Arena:**");
+                charFields.push(charOut.map(c => "- " + c).join("\n"));
             }
             if (shipOut.length) {
-                fields.push("**Fleet Arena:**");
-                fields.push(shipOut.map(c => "- " + c).join("\n"));
+                shipFields.push("**Fleet Arena:**");
+                shipFields.push(shipOut.map(c => "- " + c).join("\n"));
             }
-            if (fields.length) {
+            if (charFields.length || shipFields.length) {
                 // console.log(fields.join("\n") + "\n-------------------------------------");
                 // If something has changed, update the user & let them know
                 user.arenaWatch.allycodes = accountsToCheck;
                 await Bot.userReg.updateUser(patron.discordID, user);
-                client.shard.broadcastEval(`
-                    const chan = this.channels.cache.get("${user.arenaWatch.channel}");
-                    if (chan && chan.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                        chan.send(\`>>> ${fields.join("\n")}\`);
+                if (aw.arena.char.channel === aw.arena.fleet.channel) {
+                    // If they're both set to the same channel, send it all
+                    const fields = charFields.concat(shipFields);
+                    client.shard.broadcastEval(`
+                        const chan = this.channels.cache.get("${aw.arena.char.channel}");
+                        if (chan && chan.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                            chan.send(\`>>> ${fields.join("\n")}\`);
+                        }
+                    `);
+                } else {
+                    // Else they each have their own channels, so send em there
+                    if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
+                        client.shard.broadcastEval(`
+                            const chan = this.channels.cache.get("${aw.arena.char.channel}");
+                            if (chan && chan.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                                chan.send(\`>>> ${charFields.join("\n")}\`);
+                            }
+                        `);
                     }
-                `);
+                    if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
+                        client.shard.broadcastEval(`
+                            const chan = this.channels.cache.get("${aw.arena.fleet.channel}");
+                            if (chan && chan.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                                chan.send(\`>>> ${shipFields.join("\n")}\`);
+                            }
+                        `);
+                    }
+                }
             }
         }
     };
