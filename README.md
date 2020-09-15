@@ -114,6 +114,8 @@ To start the bot, in the command prompt, run the following command:
 `node swgohbot.js`
 > If at any point it says "cannot find module X" just run `npm install X` and try again.
 
+If you are using PM2 to keep the bot running, you can start it with colored logs with
+`FORCE_COLOR=1 pm2 start swgohBotShard.js`
 
 Special thanks to York for the started bot to base this on (https://github.com/AnIdiotsGuide/Tutorial-Bot/), to CrouchingRancor.com for all their mod suggestions, and to Morningstar-013 & Pete Butler, for their work in collecting a bunch of teams for the raids.
 
