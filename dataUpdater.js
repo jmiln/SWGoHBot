@@ -30,7 +30,7 @@ async function runUpdater() {
         console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
         console.log(log.join("\n"));
     } else {
-        console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}  ##  Nothing updated`);
+        // console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}  ##  Nothing updated`);
     }
 }
 

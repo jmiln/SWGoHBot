@@ -38,7 +38,7 @@ module.exports = (Bot, client) => {
         const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
-        if (message.channel.type === "text" && message.guild) {
+        if (message.channel.type === "text" && message.guild && message.guild.owner) {
             if (message.author.id === message.guild.owner.id) return permlvl = 4;
         }
 
@@ -528,7 +528,7 @@ module.exports = (Bot, client) => {
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
             Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
-        Bot.logger.error(`Uncaught Promise Error: ${errorMsg}`, true);
+        console.error(`Uncaught Promise Error: ${errorMsg}`, true);
         try {
             if (Bot.config.logs.logToChannel) {
                 client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
@@ -759,6 +759,7 @@ module.exports = (Bot, client) => {
      * Check if a string of numbers is a valid user.
      */
     Bot.isUserID = (numStr) => {
+        if (!numStr || !numStr.length) return false;
         const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
         return match ? true : false;
     };
@@ -768,6 +769,7 @@ module.exports = (Bot, client) => {
      * Get a valid Discord id string from a given string.
      */
     Bot.getUserID = (numStr) => {
+        if (!numStr || !numStr.length) return null;
         const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
         if (match) {
             return numStr.replace(/[^0-9]/g, "");
@@ -780,6 +782,7 @@ module.exports = (Bot, client) => {
      * Check if a string of numbers is a valid ally code.
      */
     Bot.isAllyCode = (aCode) => {
+        if (!aCode || !aCode.length) return false;
         const match = aCode.toString().replace(/[^\d]*/g, "").match(/\d{9}/);
         return match ? true : false;
     };

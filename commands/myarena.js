@@ -19,6 +19,9 @@ class MyArena extends Command {
 
     async run(Bot, message, [user], options) { // eslint-disable-line no-unused-vars
         const lang = message.guildSettings.swgohLanguage;
+        if (user && user !== "me" && !Bot.isAllyCode(user) && !Bot.isUserID(user)) {
+            return super.error(message, "Invalid user ID, you need to use either the `me` keyword, an ally code, or mention a Discord user");
+        }
         const allyCodes = await Bot.getAllyCode(message, user);
         if (!allyCodes.length) {
             return super.error(message, message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
