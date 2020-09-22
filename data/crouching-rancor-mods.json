@@ -718,7 +718,7 @@
             "cross": "Health",
             "short": "gg",
             "families": "droid ; separatist",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Grand Master Yoda Revan lead",
@@ -958,7 +958,7 @@
             "cross": "Offense",
             "short": "ig88",
             "families": "droid ; scoundrel ; bounty hunter",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Ima-Gun Di",
@@ -2913,7 +2913,7 @@
             "cross": "Protection",
             "short": "ah",
             "families": "resistance",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Rose Tico RJT Lead",
@@ -3217,7 +3217,7 @@
             "cross": "Offense / Protection",
             "short": "",
             "families": "droid ; old republic",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "T3-M4",
@@ -3409,7 +3409,7 @@
             "cross": "Offense / Protection",
             "short": "co",
             "families": "old republic",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Juhani",
@@ -3633,7 +3633,7 @@
             "cross": "Protection / Health",
             "short": "gh",
             "families": "first order",
-            "crew": "0"
+            "crew": "1"
         },
         {
             "name": "Sith Trooper",
@@ -3666,6 +3666,137 @@
             "short": "rhf",
             "families": "resistance",
             "crew": "0"
+        },
+        {
+            "name": "Resistance Hero Poe",
+            "cname": "Resistance Hero Poe",
+            "set1": "OFF",
+            "set2": "POT",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage / Offense",
+            "circle": "Protection / Health",
+            "cross": "Potency / Offense",
+            "short": "rhp",
+            "families": "resistance",
+            "crew": "0"
+        },
+        {
+            "name": "Cara Dune",
+            "cname": "Cara Dune",
+            "set1": "HP",
+            "set2": "HP",
+            "set3": "HP",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection / Health",
+            "circle": "Protection / Health",
+            "cross": "Tenacity / Protection",
+            "short": "cd",
+            "families": "rebel ; scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "Greef Karga",
+            "cname": "Greef Karga",
+            "set1": "SPE",
+            "set2": "HP",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection / Crit. Chance",
+            "circle": "Health / Protection",
+            "cross": "Protection / Health",
+            "short": "gk",
+            "families": "bounty hunter ; scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "The Mandalorian",
+            "cname": "The Mandalorian",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "mando",
+            "families": "bounty hunter ; scoundrel",
+            "crew": "0"
+        },
+        {
+            "name": "Threepio & Chewie",
+            "cname": "Threepio & Chewie",
+            "set1": "CD",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "3po",
+            "families": "droid ; rebel",
+            "crew": "0"
+        },
+        {
+            "name": "Mon Mothma",
+            "cname": "Mon Mothma",
+            "set1": "SPE",
+            "set2": "TEN",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health / Protection",
+            "circle": "Health / Protection",
+            "cross": "Tenacity / Protection",
+            "short": "mm",
+            "families": "rebel",
+            "crew": "0"
+        },
+        {
+            "name": "Admiral Piett",
+            "cname": "Admiral Piett",
+            "set1": "HP",
+            "set2": "SPE",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Defense",
+            "circle": "Health / Protection",
+            "cross": "Defense",
+            "short": "ap",
+            "families": "empire ; imperial trooper",
+            "crew": "0"
+        },
+        {
+            "name": "Jedi Knight Luke Skywalker",
+            "cname": "Jedi Knight Luke Skywalker",
+            "set1": "OFF",
+            "set2": "CC",
+            "set3": "",
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "short": "jkls",
+            "families": "jedi",
+            "crew": "0"
+        },
+        {
+            "/ 17/09/20 - end": ""
         }
     ]
 }

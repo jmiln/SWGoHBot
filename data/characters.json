@@ -125,7 +125,22 @@
             "Leader",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Speed x4",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Defense",
+                "circle": "Health/ Protection",
+                "cross": "Defense",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Ahsoka Tano",
@@ -1233,7 +1248,22 @@
             "Scoundrel",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection/ Health",
+                "circle": "Protection/ Health",
+                "cross": "Tenacity/ Protection",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Carth Onasi",
@@ -3413,7 +3443,22 @@
             "Scoundrel",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Health x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection/ Crit. Chance",
+                "circle": "Health/ Protection",
+                "cross": "Protection/ Health",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "HK-47",
@@ -4108,7 +4153,22 @@
             "Jedi",
             "Leader"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Jedi Knight Revan",
@@ -4892,7 +4952,22 @@
             "Rebel",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Speed x4",
+                    "Tenacity x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Tenacity/ Protection",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Mother Talzin",
@@ -5697,7 +5772,22 @@
             "Attacker",
             "Resistance"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Offense x4",
+                    "Potency x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Protection/ Health",
+                "cross": "Potency/ Offense",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Resistance Pilot",
@@ -6708,7 +6798,22 @@
             "Leader",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Threepio & Chewie",
@@ -6727,7 +6832,22 @@
             "Droid",
             "Rebel"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "sets": [
+                    "Critical Damage x4",
+                    "Critical Chance x2",
+                    ""
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "Crouching Rancor"
+            }
+        }
     },
     {
         "name": "Tusken Raider",
