@@ -209,9 +209,9 @@ class ArenaWatch extends Command {
                 [ , code, ...args] = args;
 
                 // Bunch of checks before getting to the logic
-                if (!action)                             return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_ACTION"));
-                if (!code)                               return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
-                if (!Bot.isAllyCode(code))               return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!action)                return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_ACTION"));
+                if (!code)                  return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
+                if (!Bot.isAllyCode(code))  return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Logic for add/ remove
                 if (action === "add") {
@@ -224,18 +224,25 @@ class ArenaWatch extends Command {
                         let ac, mention;
                         try {
                             [ac, mention] = getAcMention(code);
+                            if (!Bot.isAllyCode(ac)) {
+                                outLog.push(`${ac} is not a valid allycode.`);
+                                return;
+                            }
                         } catch (e) {
                             outLog.push(e);
+                            return;
                         }
 
                         codes.push({
                             code: ac,
                             mention: mention
                         });
+                        console.log(`${message.author.username} is adding ${ac}  - ${mention}`);
                     });
 
 
                     // There are more than one valid code, try adding them all
+                    console.log("Codes: " + codes.join("\n"));
                     const players = await Bot.swgohAPI.unitStats(codes.map(c => c.code));
                     for (const c of codes) {
                         let player;
@@ -328,14 +335,6 @@ class ArenaWatch extends Command {
                             `).then((thisChan) => fleetChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
                     }
                 }
-                const enabledArena = [];
-                if (aw.arena.char.enabled) {
-                    enabledArena.push("Char");
-                }
-                if (aw.arena.fleet.enabled) {
-                    enabledArena.push("Fleet");
-                }
-                if (!enabledArena.length) enabledArena.push("None");
 
                 return message.channel.send({embed: {
                     title: "Arena Watch Settings",
@@ -351,6 +350,7 @@ class ArenaWatch extends Command {
                 return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_OPTION"));
         }
         if (target !== "view") {
+            user.arenaWatch = aw;
             await Bot.userReg.updateUser(userID, user);
         }
         return super.error(message, outLog.length ? outLog.join("\n") : message.language.get("COMMAND_ARENAALERT_UPDATED"), {title: " ", color: "#0000FF"});
