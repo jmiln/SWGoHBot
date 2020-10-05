@@ -327,7 +327,7 @@ module.exports = class extends Language {
                 actions: [
                     {
                         action: "Arena Watch",
-                        actionDesc: "Set alerts to DM when your rank drops and other arena related stuff.",
+                        actionDesc: "Set alerts to send messages to a channel when you or a shardmate change rank in an arena.",
                         usage: [
                             ";arenawatch enabled <on|off>",
                             ";arenawatch arena <both|fleet|char>",
