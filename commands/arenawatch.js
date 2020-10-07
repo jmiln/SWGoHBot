@@ -408,33 +408,41 @@ class ArenaWatch extends Command {
                 if (aw.arena.char.channel) {
                     charChan = message.guild ? message.guild.channels.cache.get(aw.arena.char.channel) : null;
                     if (!charChan) {
-                        charChan = await message.client.shard.broadcastEval(`
-                                this.channels.cache.get('${aw.arena.char.channel}');
-                            `).then((thisChan) => charChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
+                        charChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.char.channel}');`)
+                            .then((thisChan) => {
+                                thisChan = thisChan.filter(a => !!a)[0];
+                                return thisChan ? `<#${thisChan.id}>` : "N/A";
+                            });
                     }
                 }
                 if (aw.arena.fleet.channel) {
                     fleetChan = message.guild ? message.guild.channels.cache.get(aw.arena.fleet.channel) : null;
                     if (!fleetChan) {
-                        fleetChan = await message.client.shard.broadcastEval(`
-                                this.channels.cache.get('${aw.arena.fleet.channel}');
-                            `).then((thisChan) => fleetChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
+                        fleetChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.fleet.channel}');`)
+                            .then((thisChan) => {
+                                thisChan = thisChan.filter(a => !!a)[0];
+                                return thisChan ? `<#${thisChan.id}>` : "N/A";
+                            });
                     }
                 }
                 if (aw.payout.char.channel) {
                     charPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.char.channel) : null;
                     if (!charPayoutChan) {
-                        charPayoutChan = await message.client.shard.broadcastEval(`
-                                this.channels.cache.get('${aw.payout.char.channel}');
-                            `).then((thisChan) => charPayoutChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
+                        charPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.char.channel}');`)
+                            .then((thisChan) => {
+                                thisChan = thisChan.filter(a => !!a)[0];
+                                return thisChan ? `<#${thisChan.id}>` : "N/A";
+                            });
                     }
                 }
                 if (aw.payout.fleet.channel) {
                     fleetPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.fleet.channel) : null;
                     if (!fleetPayoutChan) {
-                        fleetPayoutChan = await message.client.shard.broadcastEval(`
-                                this.channels.cache.get('${aw.payout.fleet.channel}');
-                            `).then((thisChan) => fleetChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
+                        fleetPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.fleet.channel}');`)
+                            .then((thisChan) => {
+                                thisChan = thisChan.filter(a => !!a)[0];
+                                return thisChan ? `<#${thisChan.id}>` : "N/A";
+                            });
                     }
                 }
 

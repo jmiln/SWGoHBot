@@ -350,7 +350,7 @@ module.exports = class extends Language {
                         usage: [
                             ";arenawatch payout enabled char|fleet",
                             ";arenawatch payout channel <channelMention> <char|fleet|ship>"
-                        ],
+                        ].join("\n"),
                         args: {
                             "enabled": "Toggle the enabled status of each arena type",
                             "channel": "Set the channel for it to use, and which arena to show there."
