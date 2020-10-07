@@ -36,6 +36,18 @@ class ArenaWatch extends Command {
             return super.error(message, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
         }
         let aw = user.arenaWatch;
+        const defPayout = {
+            char: {
+                enabled: false,
+                channel: null,
+                msgID: null
+            },
+            fleet: {
+                enabled: false,
+                channel: null,
+                msgID: null
+            }
+        };
         if (!aw) {
             aw = {
                 enabled: false,
@@ -49,9 +61,11 @@ class ArenaWatch extends Command {
                         enabled: false
                     }
                 },
+                payout: defPayout,
                 allycodes: []
             };
         }
+        if (!aw.payout) aw.payout = defPayout;
         if (aw.channel && (!aw.arena.fleet || !aw.arena.char)) {
             const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
             const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
@@ -138,10 +152,10 @@ class ArenaWatch extends Command {
                         return super.error(message, "Missing channel");
                     }
                 }
-                if (!channel || !Bot.isChannelMention(channel)) super.error(message, "Invalid channel");
+                if (!channel || !Bot.isChannelMention(channel)) return super.error(message, "Invalid channel");
 
                 channel = channel.replace (/[^\d]/g, "");
-                if (!message.guild.channels.cache.get(channel)) super.error(message, "I cannot find that channel here.");
+                if (!message.guild.channels.cache.get(channel)) return super.error(message, "I cannot find that channel here.");
 
                 // If it gets this far, it should be a valid code
                 // Need to make sure that the user has the correct permissions to set this up
@@ -163,6 +177,7 @@ class ArenaWatch extends Command {
                             aw.arena.char.channel  = channel;
                             break;
                         }
+                        case "ship":
                         case "fleet": {
                             // Set just the fleet arena channel
                             aw.arena.fleet.channel  = channel;
@@ -175,6 +190,77 @@ class ArenaWatch extends Command {
                 } else {
                     aw.arena.char.channel  = channel;
                     aw.arena.fleet.channel = channel;
+                }
+                break;
+            }
+            case "payout": {
+                // ;aw payout enable char | fleet | both    (Toggles)
+                // ;aw payout channel #channelName char     (Sets it to a channel)
+                // ;aw payout channel #channelName fleet    (Sets it to a channel)
+                let setting = args[0] ? args.splice(0, 1) : null;
+                setting = setting ? String(setting).toLowerCase() : null;
+                if (!setting) {
+                    // Break here, there needs to be a setting
+                    return super.error(message, "Missing option, try one of the following options: `enable, channel`.");
+                } else if (!["enable", "channel"].includes(setting)) {
+                    // Break here, it needs to be one of those
+                    return super.error(message, `Invalid option (${setting}), try one of the following options: \`enable, channel\`.`);
+                }
+                if (setting === "enable") {
+                    // Toggle enable/ disable
+                    const option = args[0] ? args[0].toLowerCase() : null;
+                    if (!option) {
+                        // If they don't put in an arena
+                        return super.error(message, "Missing arena, choose one of the following: `char, fleet`");
+                    } else if (!["char", "fleet", "ship"].includes(option)) {
+                        // If they put in a wrong arena choice
+                        return super.error(message, "Invalid arena, choose one of the following: `char, fleet`");
+                    } else {
+                        // If it's one of the correct options
+                        if (option === "char") {
+                            aw.payout.char.enabled = !aw.payout.char.enabled;
+                        } else {
+                            aw.payout.fleet.enabled = !aw.payout.fleet.enabled;
+                        }
+                    }
+                } else if (setting === "channel") {
+                    // Set the channel for one of the options (Char/ fleet)
+                    let channel, targetArena = null;
+                    [channel, targetArena, ...args] = args;
+                    if (!channel || !Bot.isChannelMention(channel)) return super.error(message, "Invalid or missing channel");
+
+                    channel = channel.replace (/[^\d]/g, "");
+                    const guildChannel = await message.guild.channels.cache.get(channel);
+                    if (!guildChannel) return super.error(message, `I cannot find that channel (${channel}) here.`);
+
+                    // If it gets this far, it should be a valid code
+                    // Need to make sure that the user has the correct permissions to set this up
+                    if (options.level < 3) {
+                        return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+                    }
+
+                    // They got throught all that, go ahead and set it
+                    if (targetArena) {
+                        switch (targetArena) {
+                            case "char": {
+                                // Set just the char arena channel
+                                aw.payout.char.channel  = channel;
+                                break;
+                            }
+                            case "ship":
+                            case "fleet": {
+                                // Set just the fleet arena channel
+                                aw.payout.fleet.channel  = channel;
+                                break;
+                            }
+                            default: {
+                                return super.error(message, `\`${targetArena}\` is an invalid arena choice, try char or fleet/ ship.`);
+                            }
+                        }
+                    }
+                } else {
+                    // Definitely shouldn't get here, but just in case
+                    return super.error(message, "Something broke, you should never get this message");
                 }
                 break;
             }
@@ -318,12 +404,12 @@ class ArenaWatch extends Command {
             }
             case "view": {
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
-                let charChan, fleetChan;
+                let charChan, fleetChan, charPayoutChan, fleetPayoutChan;
                 if (aw.arena.char.channel) {
                     charChan = message.guild ? message.guild.channels.cache.get(aw.arena.char.channel) : null;
                     if (!charChan) {
                         charChan = await message.client.shard.broadcastEval(`
-                                this.channels.cache.get('${aw.channel}');
+                                this.channels.cache.get('${aw.arena.char.channel}');
                             `).then((thisChan) => charChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
                     }
                 }
@@ -331,7 +417,23 @@ class ArenaWatch extends Command {
                     fleetChan = message.guild ? message.guild.channels.cache.get(aw.arena.fleet.channel) : null;
                     if (!fleetChan) {
                         fleetChan = await message.client.shard.broadcastEval(`
-                                this.channels.cache.get('${aw.channel}');
+                                this.channels.cache.get('${aw.arena.fleet.channel}');
+                            `).then((thisChan) => fleetChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
+                    }
+                }
+                if (aw.payout.char.channel) {
+                    charPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.char.channel) : null;
+                    if (!charPayoutChan) {
+                        charPayoutChan = await message.client.shard.broadcastEval(`
+                                this.channels.cache.get('${aw.payout.char.channel}');
+                            `).then((thisChan) => charPayoutChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
+                    }
+                }
+                if (aw.payout.fleet.channel) {
+                    fleetPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.fleet.channel) : null;
+                    if (!fleetPayoutChan) {
+                        fleetPayoutChan = await message.client.shard.broadcastEval(`
+                                this.channels.cache.get('${aw.payout.fleet.channel}');
                             `).then((thisChan) => fleetChan = `<#${thisChan.filter(a => !!a)[0].id}>`);
                     }
                 }
@@ -342,7 +444,11 @@ class ArenaWatch extends Command {
                         `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
                         `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${charChan}`,
                         `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
-                        `AllyCodes: (${aw.allycodes.length}/${codeCap}) ${aw.allycodes.length ? "\n" + aw.allycodes.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`).join("\n") : "**N/A**"}`
+                        `AllyCodes: (${aw.allycodes.length}/${codeCap}) ${aw.allycodes.length ? "\n" + aw.allycodes.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`).join("\n") : "**N/A**"}`,
+                        "",
+                        "**Payout Settings**",
+                        `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
+                        `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
                     ].join("\n")
                 }});
             }

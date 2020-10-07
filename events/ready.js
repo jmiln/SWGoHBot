@@ -21,6 +21,12 @@ module.exports = async (Bot, client) => {
                 setInterval(async () => {
                     await Bot.getRanks();
                     await Bot.shardRanks();
+
+                    // Only run the shard payout thing on :5, :10, :15, etc
+                    const min = new Date().getMinutes();
+                    if (min % 5 === 0) {
+                        await Bot.shardTimes();
+                    }
                 }, 1 * 60 * 1000);
             }
         }

@@ -46,12 +46,14 @@ module.exports = (Bot, client) => {
                         if (guildConf["announceChan"] != "" || event.eventChan !== "") {
                             if (event["eventChan"] && event.eventChan !== "") { // If they've set a channel, use it
                                 try {
-                                    Bot.announceMsg(client.guilds.cache.get(guildID), announceMessage, event.eventChan);
+                                    const g = await client.guilds.cache.get(guildID);
+                                    Bot.announceMsg(g, announceMessage, event.eventChan);
                                 } catch (e) {
                                     Bot.logger.error("Broke trying to announce event with ID: ${ev.eventID} \n${e}");
                                 }
                             } else { // Else, use the default one from their settings
-                                Bot.announceMsg(client.guilds.cache.get(guildID), announceMessage);
+                                const g = await client.guilds.cache.get(guildID);
+                                Bot.announceMsg(g, announceMessage);
                             }
                         }
                     }

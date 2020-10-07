@@ -343,6 +343,18 @@ module.exports = class extends Language {
                             "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted). If you want to link a Discord ID so it will show the person as a mention, the format is allycode:mention",
                             "view": "View the current arenawatch settings, and a list of the registered ally codes there"
                         }
+                    },
+                    {
+                        action: "Arena Payouts",
+                        actionDesc: "Keep an updated list of all registered players and how long until their payouts.",
+                        usage: [
+                            ";arenawatch payout enabled char|fleet",
+                            ";arenawatch payout channel <channelMention> <char|fleet|ship>"
+                        ],
+                        args: {
+                            "enabled": "Toggle the enabled status of each arena type",
+                            "channel": "Set the channel for it to use, and which arena to show there."
+                        }
                     }
                 ]
             },

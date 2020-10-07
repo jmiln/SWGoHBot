@@ -152,7 +152,11 @@ module.exports = async (Bot, message) => {
                     defaults: def
                 });
             } catch (err) {
-                Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+                if (cmd.help.name === "test") {
+                    console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+                } else {
+                    Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+                }
             }
         }
         if (Bot.config.logs.logComs) {

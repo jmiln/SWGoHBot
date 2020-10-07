@@ -18,6 +18,7 @@ module.exports = (Bot) => {
 
     return {
         playerByName: playerByName,
+        getPayoutFromAC: getPayoutFromAC,
         unitStats: unitStats,
         langChar: langChar,
         guildStats: guildStats,
@@ -48,6 +49,19 @@ module.exports = (Bot) => {
             Bot.logger.error(`SWAPI Broke getting player by name (${name}): ${e}`);
             throw e;
         }
+    }
+
+    async function getPayoutFromAC(allycodes) {
+        // Make sure the allycode(s) are in an array
+        if (!Array.isArray(allycodes)) {
+            if (!allycodes) {
+                return false;
+            }
+            allycodes = [allycodes];
+        }
+        allycodes = allycodes.map(a => parseInt(a));
+        const players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1});
+        return players;
     }
 
     async function unitStats(allycodes, cooldown, options={}) {

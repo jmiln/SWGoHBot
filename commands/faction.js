@@ -107,7 +107,7 @@ class Faction extends Command {
                 const gearMax = Math.max(...playerChars.map(c => c.gear.toString().length));
                 const lvlMax  = Math.max(...playerChars.map(c => c.level.toString().length));
 
-                factionChars.push(`**\`[ * | Lvl${" ".repeat(lvlMax)}|   GP  ${" ".repeat(gpMax-5)}| ⚙${" ".repeat(gearMax)}]\`**`);
+                factionChars.push(`**\`[ * | Lvl${" ".repeat(lvlMax)}|   GP  ${" ".repeat((gpMax > 5 ?  6 : gpMax) -5)}| ⚙${" ".repeat(gearMax)}]\`**`);
                 factionChars.push("**`=================" + "=".repeat(lvlMax + gpMax + gearMax) + "`**");
 
                 playerChars.forEach(c => {

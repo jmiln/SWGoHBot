@@ -210,6 +210,138 @@ module.exports = (Bot, client) => {
         }
     };
 
+    // Send/ update a shard payout times message (Automated shardtimes)
+    Bot.shardTimes = async () => {
+        const patrons = await getActivePatrons();
+        for (const patron of patrons) {
+            if (patron.amount_cents < 1000) continue;
+            const user = await Bot.userReg.getUser(patron.discordID);
+
+            // If they're not registered with anything or don't have any ally codes
+            if (!user || !user.arenaWatch || !user.arenaWatch.payout) continue;
+            const aw = user.arenaWatch;
+
+            // Make sure at least one of the alerts is enabled, no point otherwise
+            if ((!aw.payout.char.enabled || !aw.payout.char.channel) && (!aw.payout.fleet.enabled || !aw.payout.fleet.channel)) continue;
+
+            // Make a copy just in case, so nothing goes wonky
+            const players = JSON.parse(JSON.stringify(aw.allycodes));
+            if (!players || !players.length) continue;
+
+            // If char is enabled, send it there
+            if (aw.payout.char.enabled && aw.payout.char.channel) {
+                const playerTimes = getPayoutTimes(players, "char");
+                const formattedEmbed = formatPayouts(playerTimes, "char");
+                const sentMessage = await sendPayoutUpdates(aw.payout, formattedEmbed, "char");
+                if (sentMessage) {
+                    user.arenaWatch.payout["char"].msgID = sentMessage.id;
+                }
+            }
+            // Then if fleet is enabled, send it there as well/ instead
+            if (aw.payout.fleet.enabled && aw.payout.fleet.channel) {
+                const playerTimes = getPayoutTimes(players, "fleet");
+                const formattedEmbed = formatPayouts(playerTimes, "fleet");
+                const sentMessage = await sendPayoutUpdates(aw.payout, formattedEmbed, "fleet");
+                if (sentMessage) {
+                    user.arenaWatch.payout["fleet"].msgID = sentMessage.id;
+                }
+            }
+            // Update the user in case something changed (Likely message ID)
+            await Bot.userReg.updateUser(patron.discordID, user);
+        }
+    };
+
+    // Format the output for the payouts embed
+    function formatPayouts(players, arena) {
+        const times = {};
+        for (const player of players) {
+            arena = (arena === "fleet") ? "ship" : arena;
+            const arenaString = "last" + arena.toProperCase();
+            const rankString = player[arenaString].toString().padStart(3);
+            const playerString = Bot.expandSpaces(`**\`${Bot.zws} ${rankString} ${Bot.zws}\`** - ${player.name}`);
+            if (times[player.timeTil]) {
+                times[player.timeTil].players.push(playerString);
+            } else {
+                times[player.timeTil] = {
+                    players: [playerString]
+                };
+            }
+        }
+        const fieldOut = [];
+        for (const key of Object.keys(times)) {
+            const time = times[key];
+            time.players = time.players.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1);
+            fieldOut.push({
+                name: "PO in " + key,
+                value: time.players.map(p => `${p}`).join("\n")
+            });
+        }
+        return {
+            title: "Payout Schedule",
+            description: "=".repeat(25),
+            fields: fieldOut,
+            footer: {
+                text: `Last Updated: ${moment().utc().format("H:mm")} UTC`
+            }
+        };
+    }
+
+    // Send updated payout times to the given channel
+    async function sendPayoutUpdates(payout, outEmbed, arena) {
+        // Use broadcastEval to check all shards for the channel, and if there's a valid message
+        // there, edit it. If not, send a fresh copy of it.
+        const messages = await client.shard.broadcastEval(`
+            (async () => {
+                let channel = this.channels.cache.get('${payout[arena].channel}');
+                let msg, targetMsg;
+                if (channel) {
+                    if (!${payout[arena].msgID}) {
+                        targetMsg = await channel.send({embed: ${JSON.stringify(outEmbed)}});
+                    } else {
+                        try {
+                            msg = await channel.messages.fetch('${payout[arena].msgID}');
+                        } catch (e) {
+                            msg = null;
+                        }
+                        if (msg) {
+                            targetMsg = await msg.edit({embed: ${JSON.stringify(outEmbed)}});
+                        } else {
+                            targetMsg = await channel.send({embed: ${JSON.stringify(outEmbed)}});
+                        }
+                    }
+                }
+                return targetMsg;
+            })();
+        `);
+        const msg = messages.filter(a => !!a);
+        return msg.length ? msg[0] : null;
+    }
+
+    // Go through the given list and return how long til payouts
+    function getPayoutTimes(players, arena) {
+        const offsets = {
+            char: {
+                start: 18,
+                end: 6
+            },
+            fleet: {
+                start: 19,
+                end: 5
+            }
+        };
+        const now = moment().utc();
+        for (const player of players) {
+            if (!player.poOffset && player.poOffset !== 0) continue;
+            let then = moment(now).utcOffset(player.poOffset).endOf("day").subtract(offsets[arena].end, "h");
+            if (then.unix() < now.unix()) {
+                then = moment(now).utcOffset(player.poOffset).endOf("day").add(offsets[arena].start, "h");
+            }
+            player.duration = then-now;
+            player.timeTil = moment.duration(player.duration).format("h[h] m[m]");
+        }
+        return players.sort((a, b) => a.duration > b.duration ? 1 : -1);
+    }
+
     // Check for updated ranks across up to 50 players
     Bot.shardRanks = async () => {
         const patrons = await getActivePatrons();
@@ -296,13 +428,16 @@ module.exports = (Bot, client) => {
                         allyCode: parseInt(player),
                         name: newPlayer.name,
                         lastChar: 0,
-                        lastShip: 0
+                        lastShip: 0,
+                        poOffset: 0
                     };
                 }
                 if (!player.name) {
                     player.name = newPlayer.name;
                 }
-
+                if (!player.poOffset) {
+                    player.poOffset = newPlayer.poUTCOffsetMinutes;
+                }
                 if (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar) {
                     compChar.push({
                         name: player.mention ? `<@${player.mention}>` : newPlayer.name,
@@ -344,10 +479,10 @@ module.exports = (Bot, client) => {
                 shipFields.push(shipOut.map(c => "- " + c).join("\n"));
             }
             if (charFields.length || shipFields.length) {
-                // console.log(fields.join("\n") + "\n-------------------------------------");
                 // If something has changed, update the user & let them know
                 user.arenaWatch.allycodes = accountsToCheck;
                 await Bot.userReg.updateUser(patron.discordID, user);
+
                 if (aw.arena.char.channel === aw.arena.fleet.channel) {
                     // If they're both set to the same channel, send it all
                     const fields = charFields.concat(shipFields);
