@@ -214,7 +214,7 @@ module.exports = (Bot, client) => {
     Bot.shardTimes = async () => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
-            if (patron.amount_cents < 1000) continue;
+            if (patron.amount_cents < 100) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
 
             // If they're not registered with anything or don't have any ally codes
@@ -225,7 +225,12 @@ module.exports = (Bot, client) => {
             if ((!aw.payout.char.enabled || !aw.payout.char.channel) && (!aw.payout.fleet.enabled || !aw.payout.fleet.channel)) continue;
 
             // Make a copy just in case, so nothing goes wonky
-            const players = JSON.parse(JSON.stringify(aw.allycodes));
+            let acctCount = 0;
+            if      (patron.amount_cents < 500)  acctCount = Bot.config.arenaWatchConfig.tier1;
+            else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
+            else                                 acctCount = Bot.config.arenaWatchConfig.tier3;
+
+            const players = JSON.parse(JSON.stringify(aw.allycodes.slice(0, acctCount)));
             if (!players || !players.length) continue;
 
             // If char is enabled, send it there
