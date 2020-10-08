@@ -81,7 +81,7 @@ You can make a Pull Request, check [here](https://help.github.com/articles/about
 If you don't want to mess with that, or don't understand how to, feel free to stop by the support server for help or upload your translation in [hastebin](https://hastebin.com/) or [Gist GitHub](https://gist.github.com/) and send it to me on the support server.
 
 # Bug Reporting
-If you find something that's breaking or needs to be fixed (Bad translation, command output not working correctly, or something else), come by the support server and let me know
+If you find something that's breaking or needs to be fixed (Bad translation, command output not working correctly, or something else), come by the [Support Server](http://www.swgohbot.com/server) and let me know
 
 
 # Self-Hosting
