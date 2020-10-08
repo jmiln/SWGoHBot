@@ -323,12 +323,10 @@ class ArenaWatch extends Command {
                             code: ac,
                             mention: mention
                         });
-                        console.log(`${message.author.username} is adding ${ac}  - ${mention}`);
                     });
 
 
                     // There are more than one valid code, try adding them all
-                    console.log("Codes: " + codes.join("\n"));
                     const players = await Bot.swgohAPI.unitStats(codes.map(c => c.code));
                     for (const c of codes) {
                         let player;
