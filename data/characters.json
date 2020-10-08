@@ -4208,6 +4208,26 @@
         }
     },
     {
+        "name": "Jedi Master Luke Skywalker",
+        "uniqueName": "GRANDMASTERLUKE",
+        "aliases": [
+            "Jedi Master Luke Skywalker"
+        ],
+        "nameVariant": [
+            "Jedi Master Luke Skywalker"
+        ],
+        "url": "http://swgoh.gg/characters/jedi-master-luke-skywalker/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/GRANDMASTERLUKE/",
+        "side": "light",
+        "factions": [
+            "Galactic Legend",
+            "Jedi",
+            "Leader",
+            "Tank"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Jolee Bindo",
         "uniqueName": "JOLEEBINDO",
         "aliases": [
@@ -6342,6 +6362,26 @@
                 "source": "Crouching Rancor"
             }
         }
+    },
+    {
+        "name": "Sith Eternal Emperor",
+        "uniqueName": "SITHPALPATINE",
+        "aliases": [
+            "Sith Eternal Emperor"
+        ],
+        "nameVariant": [
+            "Sith Eternal Emperor"
+        ],
+        "url": "http://swgoh.gg/characters/sith-eternal-emperor/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/SITHPALPATINE/",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Galactic Legend",
+            "Leader",
+            "Sith"
+        ],
+        "mods": {}
     },
     {
         "name": "Sith Marauder",

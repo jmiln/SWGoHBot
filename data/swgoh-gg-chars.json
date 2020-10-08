@@ -18703,6 +18703,197 @@
         "activate_shard_count": 330
     },
     {
+        "name": "Jedi Master Luke Skywalker",
+        "base_id": "GRANDMASTERLUKE",
+        "pk": 600,
+        "url": "http://swgoh.gg/characters/jedi-master-luke-skywalker/",
+        "image": "/game-asset/u/GRANDMASTERLUKE/",
+        "power": 41896,
+        "description": "The wizened Jedi master of legend who empowers his Jedi allies with the knowledge and skills he has obtained",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "003",
+                    "003",
+                    "005",
+                    "005",
+                    "009",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "015",
+                    "041",
+                    "014",
+                    "014",
+                    "026",
+                    "059"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "052",
+                    "070",
+                    "031",
+                    "070",
+                    "031",
+                    "026"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "085",
+                    "082",
+                    "077",
+                    "072",
+                    "071",
+                    "068"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "083",
+                    "088",
+                    "083",
+                    "077",
+                    "091",
+                    "077"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "090",
+                    "091",
+                    "094",
+                    "083",
+                    "088",
+                    "098"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "080",
+                    "099",
+                    "090",
+                    "172",
+                    "088"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "088",
+                    "117",
+                    "172",
+                    "172",
+                    "108",
+                    "094"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "108",
+                    "105",
+                    "173",
+                    "172",
+                    "132",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "132",
+                    "143",
+                    "131",
+                    "117",
+                    "123",
+                    "122"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "149",
+                    "124",
+                    "129",
+                    "130",
+                    "143",
+                    "146"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "161",
+                    "165",
+                    "168",
+                    "169",
+                    "G12Finisher_GRANDMASTERLUKE_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Galactic Legend",
+            "Jedi",
+            "Leader",
+            "Tank"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Advantage",
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Counter",
+            "Daze",
+            "Defense Up",
+            "Dispel",
+            "Expose",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Leader: Assist",
+            "Reduce Cooldowns",
+            "Remove Turn Meter",
+            "Reset Cooldown",
+            "Stun",
+            "Taunt",
+            "Tenacity Down",
+            "Tenacity Up"
+        ],
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Jolee Bindo",
         "base_id": "JOLEEBINDO",
         "pk": 283,
@@ -28429,6 +28620,187 @@
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
+    },
+    {
+        "name": "Sith Eternal Emperor",
+        "base_id": "SITHPALPATINE",
+        "pk": 596,
+        "url": "http://swgoh.gg/characters/sith-eternal-emperor/",
+        "image": "/game-asset/u/SITHPALPATINE/",
+        "power": 41896,
+        "description": "Cunning Emperor of the Sith that eliminates his enemies with the overwhelming power of the dark side",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "009",
+                    "009",
+                    "004",
+                    "003",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "027",
+                    "034",
+                    "034",
+                    "027",
+                    "031",
+                    "014"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "052",
+                    "054",
+                    "031",
+                    "048",
+                    "027",
+                    "050"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "077",
+                    "072",
+                    "068",
+                    "063",
+                    "027",
+                    "011"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "088",
+                    "083",
+                    "085",
+                    "077",
+                    "068",
+                    "054"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "098",
+                    "088",
+                    "080",
+                    "083",
+                    "072",
+                    "036"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "109",
+                    "098",
+                    "095",
+                    "088",
+                    "072"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "111",
+                    "117",
+                    "114",
+                    "095",
+                    "102",
+                    "102"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "172",
+                    "111",
+                    "117",
+                    "172",
+                    "072",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "143",
+                    "173",
+                    "130",
+                    "132",
+                    "132",
+                    "122"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "130",
+                    "150",
+                    "143",
+                    "144",
+                    "137",
+                    "117"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "163",
+                    "163",
+                    "158",
+                    "168",
+                    "169",
+                    "G12Finisher_SITHPALPATINE_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Galactic Legend",
+            "Leader",
+            "Sith"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "Expose",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Speed",
+            "Revive",
+            "Speed Up",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Sith Marauder",
