@@ -15,6 +15,7 @@ class ArenaWatch extends Command {
     async run(Bot, message, [target, ...args], options) { // eslint-disable-line no-unused-vars
         const onVar = ["true", "on", "enable"];
         const offVar = ["false", "off", "disable"];
+        let cmdOut = null;
 
         const outLog = [];
 
@@ -202,7 +203,7 @@ class ArenaWatch extends Command {
                 if (!setting) {
                     // Break here, there needs to be a setting
                     return super.error(message, "Missing option, try one of the following options: `enable, channel`.");
-                } else if (!["enable", "channel"].includes(setting)) {
+                } else if (!["enable", "channel", "mark"].includes(setting)) {
                     // Break here, it needs to be one of those
                     return super.error(message, `Invalid option (${setting}), try one of the following options: \`enable, channel\`.`);
                 }
@@ -258,6 +259,27 @@ class ArenaWatch extends Command {
                             }
                         }
                     }
+                } else if (setting === "mark") {
+                    // Setting the mark/ emote/ symbol/ whatver to help show people as friendly/ enemy
+                    // ;aw payout mark 123123123 :smile:
+
+                    const [ac, mark] = args;
+                    const player = aw.allycodes.find(p => p.allyCode.toString() === ac.toString());
+                    if (!player) {
+                        return super.error(message, "Sorry, but you can only apply a mark to an already present player/ allycode");
+                    }
+                    // If they're trying to use a custom emote, make sure it's available for the bot to use
+                    // <:zeta:351808811817893888>
+                    const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
+                    if (emojiRegex.test(mark)) {
+                        cmdOut = "If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from";
+                    }
+                    aw.allycodes = aw.allycodes.map(p => {
+                        if (p.allyCode.toString() === ac.toString()) {
+                            p.mark = mark;
+                        }
+                        return p;
+                    });
                 } else {
                     // Definitely shouldn't get here, but just in case
                     return super.error(message, "Something broke, you should never get this message");
@@ -444,18 +466,32 @@ class ArenaWatch extends Command {
                     }
                 }
 
+                // If there's any ally codes in the array, go ahead and format them
+                let ac =  aw.allycodes.length ? aw.allycodes : [];
+                ac = ac.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+                // ac = ac.map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`);
+                ac = ac.map(a => `\`${a.allyCode}\` ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`);
+
                 return message.channel.send({embed: {
                     title: "Arena Watch Settings",
                     description: [
                         `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
                         `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${charChan}`,
                         `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
-                        `AllyCodes: (${aw.allycodes.length}/${codeCap}) ${aw.allycodes.length ? "\n" + aw.allycodes.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`).join("\n") : "**N/A**"}`,
-                        "",
-                        "**Payout Settings**",
-                        `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
-                        `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
-                    ].join("\n")
+                    ].join("\n"),
+                    fields: [
+                        {
+                            name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
+                            value: `${ac.length ? ac.join("\n") : "**N/A**"}`
+                        },
+                        {
+                            name: "**Payout Settings**",
+                            value: [
+                                `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
+                                `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
+                            ].join("\n")
+                        }
+                    ]
                 }});
             }
             default:
@@ -465,7 +501,7 @@ class ArenaWatch extends Command {
             user.arenaWatch = aw;
             await Bot.userReg.updateUser(userID, user);
         }
-        return super.error(message, outLog.length ? outLog.join("\n") : message.language.get("COMMAND_ARENAALERT_UPDATED"), {title: " ", color: "#0000FF"});
+        return super.error(message, outLog.length ? outLog.join("\n") : message.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? "\n\n#####################\n\n" + cmdOut : ""), {title: " ", color: "#0000FF"});
     }
 }
 

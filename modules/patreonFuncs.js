@@ -263,7 +263,7 @@ module.exports = (Bot, client) => {
             arena = (arena === "fleet") ? "ship" : arena;
             const arenaString = "last" + arena.toProperCase();
             const rankString = player[arenaString].toString().padStart(3);
-            const playerString = Bot.expandSpaces(`**\`${Bot.zws} ${rankString} ${Bot.zws}\`** - ${player.name}`);
+            const playerString = Bot.expandSpaces(`**\`${Bot.zws} ${rankString} ${Bot.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
             if (times[player.timeTil]) {
                 times[player.timeTil].players.push(playerString);
             } else {

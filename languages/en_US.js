@@ -349,11 +349,13 @@ module.exports = class extends Language {
                         actionDesc: "Keep an updated list of all registered players and how long until their payouts.",
                         usage: [
                             ";arenawatch payout enabled char|fleet",
-                            ";arenawatch payout channel <channelMention> <char|fleet|ship>"
+                            ";arenawatch payout channel <channelMention> <char|fleet|ship>",
+                            ";arenawatch payout mark <allycode> [emote/symbol/mark]"
                         ].join("\n"),
                         args: {
                             "enabled": "Toggle the enabled status of each arena type",
-                            "channel": "Set the channel for it to use, and which arena to show there."
+                            "channel": "Set the channel for it to use, and which arena to show there.",
+                            "mark":    "Mark a player with an emote or symbol, or something else of your choosing. Leave it blank to remove an existing mark."
                         }
                     }
                 ]
