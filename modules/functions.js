@@ -20,13 +20,12 @@ module.exports = (Bot, client) => {
         yellow: "#FFFF00",
     };
 
-    /*
-        PERMISSION LEVEL FUNCTION
-        This is a very basic permission system for commands which uses "levels"
-        "spaces" are intentionally left black so you can add them if you want.
-        NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
-        command including the VERY DANGEROUS `eval` and `exec` commands!
-        */
+    /*  PERMISSION LEVEL FUNCTION
+     *  This is a very basic permission system for commands which uses "levels"
+     *  "spaces" are intentionally left black so you can add them if you want.
+     *  NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
+     *  command including the VERY DANGEROUS `eval` and `exec` commands!
+     */
     Bot.permlevel = message => {
         let permlvl = 0;
 
@@ -59,10 +58,12 @@ module.exports = (Bot, client) => {
         return permlvl;
     };
 
+    // Default formatting for current US/Pacific time
     Bot.myTime = () => {
         return moment.tz("US/Pacific").format("M/D/YYYY h:mma");
     };
 
+    // Check if the bot's account is the main (real) bot
     Bot.isMain = () => {
         if (client.user.id === "315739499932024834") return true;
         return false;
@@ -110,8 +111,6 @@ module.exports = (Bot, client) => {
         return chars;
     };
 
-
-
     // This find one character that matches the search, and returns it
     Bot.findCharByName = (searchName, charList) => {
         var options = {
@@ -132,6 +131,7 @@ module.exports = (Bot, client) => {
         };
     }
 
+    // Send a message to a webhook url, takes the url & the embed to send
     Bot.sendWebhook = (hookUrl, embed) => {
         const h = parseWebhook(hookUrl);
         const hook = new Discord.WebhookClient(h.id, h.token);
@@ -140,8 +140,7 @@ module.exports = (Bot, client) => {
         ]}).catch(() => {});
     };
 
-    /*
-     * LOGGING FUNCTION
+    /* LOGGING FUNCTION
      * Logs to console & if set up, the log channel
      */
     Bot.log = (title="Log", msg, options={}) => {
@@ -167,8 +166,7 @@ module.exports = (Bot, client) => {
         }
     };
 
-    /*
-     * ANNOUNCEMENT MESSAGE
+    /* ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
     Bot.announceMsg = async (guild, announceMsg, channel="") => {
@@ -193,13 +191,11 @@ module.exports = (Bot, client) => {
             return;
         } else {
             // If everything is ok, go ahead and try sending the message
-            await chan.send(announceMsg).catch(() => {Bot.logger.error("Broke sending accounceMsg");});
+            await chan.send(announceMsg).catch((err) => {Bot.logger.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );});
         }
     };
 
-    /*
-     * Loads the given command
-     */
+    // Loads the given command
     client.loadCommand = (commandName) => {
         try {
             const cmd = new (require(`../commands/${commandName}`))(Bot);
@@ -218,9 +214,7 @@ module.exports = (Bot, client) => {
         }
     };
 
-    /*
-     * Unloads the given command
-     */
+    // Unloads the given command
     client.unloadCommand = (command) => {
         if (typeof command === "string") {
             const commandName = command;
@@ -239,9 +233,7 @@ module.exports = (Bot, client) => {
         return false;
     };
 
-    /*
-     * Combines the last two, and reloads a command
-     */
+    // Combines the last two (load & unload), and reloads a command
     client.reloadCommand = async (commandName) => {
         let command;
         if (client.commands.has(commandName)) {
@@ -445,14 +437,13 @@ module.exports = (Bot, client) => {
         }
     };
 
-    /*
-      SINGLE-LINE AWAITMESSAGE
-      A simple way to grab a single reply, from the user that initiated
-      the command. Useful to get "precisions" on certain things...
-      USAGE
-      const response = await Bot.awaitReply(msg, "Favourite Color?");
-      msg.reply(`Oh, I really love ${response} too!`);
-      */
+    /* SINGLE-LINE AWAITMESSAGE
+     * A simple way to grab a single reply, from the user that initiated
+     * the command. Useful to get "precisions" on certain things...
+     * USAGE
+     * const response = await Bot.awaitReply(msg, "Favourite Color?");
+     * msg.reply(`Oh, I really love ${response} too!`);
+     */
     Bot.awaitReply = async (msg, question, limit = 60000) => {
         const filter = m => m.author.id === msg.author.id;
         await msg.channel.send(question).catch(() => {Bot.logger.error("Broke in awaitReply");});
@@ -464,9 +455,7 @@ module.exports = (Bot, client) => {
         }
     };
 
-    /*
-     * STRING TRUNCATE FUNCTION
-     */
+    // String Truncate function
     Bot.truncate = (string, len, terminator="...") => {
         const termLength = terminator.length;
 
@@ -477,13 +466,12 @@ module.exports = (Bot, client) => {
         }
     };
 
-    /*
-      MESSAGE CLEAN FUNCTION
-      "Clean" removes @everyone pings, as well as tokens, and makes code blocks
-      escaped so they're shown more easily. As a bonus it resolves promises
-      and stringifies objects!
-      This is mostly only used by the Eval and Exec commands.
-      */
+    /* MESSAGE CLEAN FUNCTION
+     * "Clean" removes @everyone pings, as well as tokens, and makes code blocks
+     * escaped so they're shown more easily. As a bonus it resolves promises
+     * and stringifies objects!
+     * This is mostly only used by the Eval and Exec commands.
+     */
     Bot.clean = async (client, text) => {
         if (text && text.constructor.name == "Promise")
             text = await text;
@@ -538,8 +526,7 @@ module.exports = (Bot, client) => {
         }
     });
 
-    /*
-     *  COMMAND HELP OUTPUT
+    /*  COMMAND HELP OUTPUT
      *  Input the language and the command, and it'll give ya back the embed object to send
      */
     Bot.helpOut = (message, command) => {
@@ -589,8 +576,7 @@ module.exports = (Bot, client) => {
     };
 
 
-    /*
-     *  MESSAGE SPLITTER
+    /*  MESSAGE SPLITTER
      *  Input an array of strings, and it will put them together so that it
      *  doesn't exceed the given max length.
      */
@@ -617,24 +603,20 @@ module.exports = (Bot, client) => {
         return messages;
     };
 
-    /*
-     * CODE BLOCK MAKER
+    /* CODE BLOCK MAKER
      * Makes a codeblock with the specified lang for highlighting.
      */
     Bot.codeBlock = (str, lang="") => {
         return `\`\`\`${lang}\n${str}\`\`\``;
     };
 
-    /*
-     * Return a duration string
-     */
+    // Return a duration string
     Bot.duration = (time, message=null) => {
         const lang = message ? message.language : Bot.languages[Bot.config.defaultSettings.language];
         return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
     };
 
-    /*
-     * LAST UPDATED FOOTER
+    /* LAST UPDATED FOOTER
      * Simple one to make the "Last updated ____ " footers
      */
     Bot.updatedFooter = (updated, message=null, type="player", userCooldown) => {
@@ -658,9 +640,7 @@ module.exports = (Bot, client) => {
         };
     };
 
-    /*
-     * Get the current user count
-     */
+    // Get the current user count
     Bot.userCount = async () => {
         let users = 0;
         if (client.shard && client.shard.count > 0) {
@@ -675,9 +655,7 @@ module.exports = (Bot, client) => {
         }
     };
 
-    /*
-     * Get the current guild count
-     */
+    // Get the current guild count
     Bot.guildCount = async () => {
         let guilds = 0;
         if (client.shard) {
@@ -692,8 +670,7 @@ module.exports = (Bot, client) => {
         }
     };
 
-    /*
-     * Find an emoji by ID
+    /* Find an emoji by ID
      * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
     client.findEmoji = (id) => {
@@ -711,8 +688,7 @@ module.exports = (Bot, client) => {
     };
 
 
-    /*
-     * Use the findEmoji() to check all shards if sharded
+    /* Use the findEmoji() to check all shards if sharded
      * If sharded, also use the example from
      * https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
@@ -752,10 +728,7 @@ module.exports = (Bot, client) => {
         }
     };
 
-
-
-    /*
-     * isUserID
+    /* isUserID
      * Check if a string of numbers is a valid user.
      */
     Bot.isUserID = (numStr) => {
@@ -764,8 +737,7 @@ module.exports = (Bot, client) => {
         return match ? true : false;
     };
 
-    /*
-     * getUserID
+    /* getUserID
      * Get a valid Discord id string from a given string.
      */
     Bot.getUserID = (numStr) => {
@@ -777,18 +749,16 @@ module.exports = (Bot, client) => {
         return null;
     };
 
-    /*
-     * isAllyCode
+    /* isAllyCode
      * Check if a string of numbers is a valid ally code.
      */
     Bot.isAllyCode = (aCode) => {
-        if (!aCode || !aCode.length) return false;
+        if (!aCode || !aCode.toString().length) return false;
         const match = aCode.toString().replace(/[^\d]*/g, "").match(/\d{9}/);
         return match ? true : false;
     };
 
-    /*
-     * makeTable
+    /* makeTable
      * Makes a table-like format given an array of objects
      *
      * headers: object of columnName: columnHeader
@@ -883,9 +853,7 @@ module.exports = (Bot, client) => {
         return out;
     };
 
-    /*
-     * Small function to search the factions
-     */
+    // Small function to search the factions
     Bot.findFaction = (fact) => {
         fact = fact.toLowerCase().replace(/\s+/g, "");
         let found = Bot.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact);
@@ -907,7 +875,6 @@ module.exports = (Bot, client) => {
 
         return false;
     };
-
 
     // Expand multiple spaces to have zero width spaces between so
     // Discord doesn't collapse em
