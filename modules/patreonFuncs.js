@@ -259,9 +259,13 @@ module.exports = (Bot, client) => {
     // Format the output for the payouts embed
     function formatPayouts(players, arena) {
         const times = {};
+        arena = (arena === "fleet") ? "ship" : arena;
+        const arenaString = "last" + arena.toProperCase();
+
+        // Sort the players by their rank, so it shows the people in the est rank first
+        players = players.sort((a, b) => a[arenaString] - b[arenaString]);
+
         for (const player of players) {
-            arena = (arena === "fleet") ? "ship" : arena;
-            const arenaString = "last" + arena.toProperCase();
             const rankString = player[arenaString].toString().padStart(3);
             const playerString = Bot.expandSpaces(`**\`${Bot.zws} ${rankString} ${Bot.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
             if (times[player.timeTil]) {
@@ -275,10 +279,9 @@ module.exports = (Bot, client) => {
         const fieldOut = [];
         for (const key of Object.keys(times)) {
             const time = times[key];
-            time.players = time.players.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1);
             fieldOut.push({
                 name: "PO in " + key,
-                value: time.players.map(p => `${p}`).join("\n")
+                value: time.players.join("\n")
             });
         }
         return {
