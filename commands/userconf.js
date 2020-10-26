@@ -32,19 +32,16 @@ class UserConf extends Command {
         }
 
         let user = await Bot.userReg.getUser(userID); // eslint-disable-line no-unused-vars
-        const cooldown = await Bot.getPlayerCooldown(message.author.id);
         if (!user) {
-            return super.error(message, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
+            user = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
+            user.id = userID;
         }
+        const cooldown = await Bot.getPlayerCooldown(message.author.id);
         switch (target) {
             case "allycodes":
             case "allycode": {
                 // Allycode   -> add/remove/makePrimary
                 let allyCode;
-                if (!user) {
-                    user = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
-                    user.id = userID;
-                }
                 if (!args[0]) {
                     // Missing ally code
                     return super.error(message, message.language.get("COMMAND_REGISTER_MISSING_ALLY"));

@@ -56,7 +56,7 @@ class Poll extends Command {
                 // If they do not have access to the channel, tell em so/ don't let them interact with the poll (see/ vote)
                 if (client.guilds.cache.has(guildID) && client.guilds.cache.get(guildID).channels.cache.has(chanID)) {
                     const perms = client.guilds.cache.get(guildID).channels.cache.get(chanID).permissionsFor(message.author.id);
-                    if (!perms || !perms.has("READ_MESSAGES")) {
+                    if (!perms || !perms.has("VIEW_CHANNEL")) {
                         // The guild and channel exist, but the message author cannot see it
                         return super.error(message, message.language.get("COMMAND_POLL_NO_ACCESS"));
                     }
@@ -269,4 +269,3 @@ class Poll extends Command {
 }
 
 module.exports = Poll;
-

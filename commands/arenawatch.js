@@ -106,12 +106,13 @@ class ArenaWatch extends Command {
         }
 
         function checkPlayer(players, user, code) {
-            const player = players.find(p => p.allyCode === code.code);
+            if (!players) throw new Error("Missing players in checkPlayer");
+            const player = players.find(p => parseInt(p.allyCode) === parseInt(code.code));
             if (!player) {
                 throw new Error(`Could not find ${code.code}, invalid code`);
             }
-            if (aw.allycodes.find(usercode => usercode.allyCode === code.code)) {
-                throw new Error(`${code.code} was already in the list`);
+            if (aw.allycodes.find(usercode => parseInt(usercode.allyCode) === parseInt(code.code))) {
+                throw new Error(`${code.code} was already in the list. If you're trying to change something, try using the \`;aw allycode edit\` command`);
             }
             if (aw.allycodes.length >= codeCap) {
                 throw new Error(`Could not add ${code.code}, ally code cap reached!`);
@@ -269,7 +270,6 @@ class ArenaWatch extends Command {
                         return super.error(message, "Sorry, but you can only apply a mark to an already present player/ allycode");
                     }
                     // If they're trying to use a custom emote, make sure it's available for the bot to use
-                    // <:zeta:351808811817893888>
                     const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
                     if (emojiRegex.test(mark)) {
                         cmdOut = "If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from";
@@ -319,7 +319,10 @@ class ArenaWatch extends Command {
                 // Bunch of checks before getting to the logic
                 if (!action)                return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_ACTION"));
                 if (!code)                  return super.error(message, message.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
-                if (!Bot.isAllyCode(code))  return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!code.includes(",")) {
+                    // If they're trying to add more than one at a time, don't check yet
+                    if (!Bot.isAllyCode(code))  return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                }
 
                 // Logic for add/ remove
                 if (action === "add") {
@@ -341,12 +344,12 @@ class ArenaWatch extends Command {
                             return;
                         }
 
+                        console.log(code, ac, mention);
                         codes.push({
-                            code: ac,
+                            code: parseInt(ac),
                             mention: mention
                         });
                     });
-
 
                     // There are more than one valid code, try adding them all
                     const players = await Bot.swgohAPI.unitStats(codes.map(c => c.code));
@@ -364,17 +367,27 @@ class ArenaWatch extends Command {
                             name:     player.name,
                             mention:  c.mention,
                             lastChar: player.arena.char ? player.arena.char.rank : null,
-                            lastShip: player.arena.ship ? player.arena.ship.rank : null
+                            lastShip: player.arena.ship ? player.arena.ship.rank : null,
+                            poOffset: player.poUTCOffsetMinutes
                         });
                         outLog.push(c.code + " added!");
                     }
                 } else if (["edit", "change"].includes(action)) {
                     // Used to add or remove a mention
-                    // ;aw ac 123123123 123123123:mention
-                    // ;aw ac 123123123 123123123
+                    // ;aw ac edit 123123123 123123123:mention
+                    // ;aw ac edit 123123123 123123123
+
+                    if (!args[0]) {
+                        return super.error(message,
+                            "Missing second code. You need to enter the ally code for it to modify, then the ally code (& mention if you want) that you want it to show instead.",
+                            {example: "aw ac edit 123123123 123123123:@mention"}
+                        );
+
+                    }
+
                     let ac, mention;
                     try {
-                        [ac, mention] = getAcMention(code);
+                        [ac, mention] = getAcMention(args[0]);
                     } catch (e) {
                         outLog.push(e);
                     }
@@ -382,26 +395,28 @@ class ArenaWatch extends Command {
                     // Check if the specified code is available to edit
                     // If not, just add it in fresh
                     // If so, delte it then add it back
-                    const exists = aw.allycodes.some(p => p.allyCode === ac);
-                    if (exists) {
+                    const exists = aw.allycodes.find(p => p.allyCode === ac);
+                    if (!exists) {
+                        let player;
+                        try {
+                            const players = await Bot.swgohAPI.unitStats(ac);
+                            player = checkPlayer(players, user, {code: ac});
+                        } catch (e) {
+                            return super.error(message, "Error getting player info.\n" + e);
+                        }
+                        aw.allycodes.push({
+                            allyCode: ac,
+                            name:     player.name,
+                            mention:  mention,
+                            lastChar: player.arena.char ? player.arena.char.rank : null,
+                            lastShip: player.arena.ship ? player.arena.ship.rank : null,
+                            poOffset: player.poUTCOffsetMinutes
+                        });
+                    } else {
                         aw.allycodes = aw.allycodes.filter(p => p.allyCode !== ac);
+                        exists.mention = mention;
+                        aw.allycodes.push(exists);
                     }
-
-                    let player;
-                    try {
-                        const players = await Bot.swgohAPI.unitStats(ac);
-                        player = checkPlayer(players, user, {code: ac});
-                    } catch (e) {
-                        return super.error(message, "Error getting player info.\n" + e);
-                    }
-
-                    aw.allycodes.push({
-                        allyCode: ac,
-                        name:     player.name,
-                        mention:  mention,
-                        lastChar: player.arena.char ? player.arena.char.rank : null,
-                        lastShip: player.arena.ship ? player.arena.ship.rank : null
-                    });
                     outLog.push(ac + ` ${exists ? "updated" : "added"}!`);
 
                 } else if (["remove", "delete"].includes(action)) {
@@ -410,11 +425,12 @@ class ArenaWatch extends Command {
                     if (code.length != 9) {
                         return super.error(message, `Invalid code, there are ${code.length}/9 digits`);
                     }
-                    if (aw.allycodes.filter(ac => ac.allyCode === code || ac.allyCode === parseInt(code)).length) {
-                        aw.allycodes = aw.allycodes.filter(ac => ac.allyCode !== code && ac.allyCode !== parseInt(code));
+                    code = parseInt(code);
+                    if (aw.allycodes.find(ac => ac.allyCode === code)) {
+                        aw.allycodes = aw.allycodes.filter(ac => ac.allyCode !== code);
                         outLog.push(code + " has been removed");
                     } else {
-                        return super.error(message, "That ally code was not available to remove");
+                        return super.error(message, "That ally code was not available to be removed");
                     }
                 } else {
                     // Invalid action?

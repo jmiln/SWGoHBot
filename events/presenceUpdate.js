@@ -5,6 +5,7 @@ module.exports = async (Bot, oldPresence, newPresence) => {
 
     const guild = newPresence.guild;
     const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guild.id}, attributes: Bot.config.defaultSettings});
+    if (!guildSettings) return;
     const guildConf = guildSettings.dataValues;
 
     // Make sure the guild has it turned on, and that it's not changing for a different reason

@@ -11,7 +11,7 @@ module.exports = async (Bot, message) => {
         guildSettings = Bot.config.defaultSettings;
     } else {
         guildSettings = await Bot.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(Bot.config.defaultSettings)});
-        guildSettings = guildSettings.dataValues ? guildSettings.dataValues : Bot.config.defaultSettings;
+        guildSettings = guildSettings && guildSettings.dataValues ? guildSettings.dataValues : Bot.config.defaultSettings;
     }
 
     // If the guild has the activity log turned on, log the user's last activity
