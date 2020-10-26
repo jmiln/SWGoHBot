@@ -751,6 +751,7 @@ module.exports = (Bot, client) => {
 
     /* isAllyCode
      * Check if a string of numbers is a valid ally code.
+     * Needs to be a string of 9 numbers
      */
     Bot.isAllyCode = (aCode) => {
         if (!aCode || !aCode.toString().length) return false;

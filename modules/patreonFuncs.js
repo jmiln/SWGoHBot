@@ -235,18 +235,18 @@ module.exports = (Bot, client) => {
 
             // If char is enabled, send it there
             if (aw.payout.char.enabled && aw.payout.char.channel) {
-                const playerTimes = getPayoutTimes(players, "char");
+                const playerTimes    = getPayoutTimes(players, "char");
                 const formattedEmbed = formatPayouts(playerTimes, "char");
-                const sentMessage = await sendPayoutUpdates(aw.payout, formattedEmbed, "char");
+                const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "char");
                 if (sentMessage) {
                     user.arenaWatch.payout["char"].msgID = sentMessage.id;
                 }
             }
             // Then if fleet is enabled, send it there as well/ instead
             if (aw.payout.fleet.enabled && aw.payout.fleet.channel) {
-                const playerTimes = getPayoutTimes(players, "fleet");
+                const playerTimes    = getPayoutTimes(players, "fleet");
                 const formattedEmbed = formatPayouts(playerTimes, "fleet");
-                const sentMessage = await sendPayoutUpdates(aw.payout, formattedEmbed, "fleet");
+                const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "fleet");
                 if (sentMessage) {
                     user.arenaWatch.payout["fleet"].msgID = sentMessage.id;
                 }
@@ -262,17 +262,14 @@ module.exports = (Bot, client) => {
         arena = (arena === "fleet") ? "ship" : arena;
         const arenaString = "last" + arena.toProperCase();
 
-        // Sort the players by their rank, so it shows the people in the est rank first
-        players = players.sort((a, b) => a[arenaString] - b[arenaString]);
-
         for (const player of players) {
             const rankString = player[arenaString].toString().padStart(3);
-            const playerString = Bot.expandSpaces(`**\`${Bot.zws} ${rankString} ${Bot.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
+            player.outString = Bot.expandSpaces(`**\`${Bot.zws} ${rankString} ${Bot.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
             if (times[player.timeTil]) {
-                times[player.timeTil].players.push(playerString);
+                times[player.timeTil].players.push(player);
             } else {
                 times[player.timeTil] = {
-                    players: [playerString]
+                    players: [player]
                 };
             }
         }
@@ -281,7 +278,7 @@ module.exports = (Bot, client) => {
             const time = times[key];
             fieldOut.push({
                 name: "PO in " + key,
-                value: time.players.join("\n")
+                value: time.players.sort((a, b) => a[arenaString] - b[arenaString]).map(p => p.outString).join("\n")
             });
         }
         return {
@@ -376,9 +373,28 @@ module.exports = (Bot, client) => {
             //                 enabled: true/ false
             //             }
             //         }
-            //         allycodes: []
+            //         allycodes: [
+            //             {
+            //                 "allyCode": 123123123                // The player's ally code
+            //                 "name" :    "NameHere"               // The player's name (From the game)
+            //                 "mention":  "discordUserID"          // If they want to be mentioned when they drop, their ID goes here
+            //                 "lastChar": 53                       // Their last char arena rank
+            //                 "lastShip": 35                       // Their last ship arena rank
+            //                 "poOffset": -480                     // The utc offset for their payout
+            //                 "mark" :    "Emote/Mark"             // An emote or other mark to tag a player in the monitor
+            //                 "warn":     {min: 30, arena: ""}     // # of min before a payout to mention someone
+            //                 "result":   "none|char|fleet|both"   // This will send a message with their payout result, and mention em if available
+            //              }
+            //         ]
             //     }
             // };
+            // payout = {
+            //     // Temp ones that don't get saved
+            //     "charDuration"
+            //     "charTimeTil"
+            //     "fleetDuration"
+            //     "fleetTimeTil"
+            // }
 
             if (patron.amount_cents < 100) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
@@ -420,9 +436,11 @@ module.exports = (Bot, client) => {
             if (!allyCodes || !allyCodes.length) continue;
 
             const newPlayers = await Bot.swgohAPI.unitStats(allyCodes, null, {force: true});
-            if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${allyCodes.length} vs ${newPlayers.length}`);
+            if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${newPlayers.length}/${allyCodes.length}`);
 
             // Go through all the listed players, and see if any of them have shifted arena rank
+            const poOut = [];
+            // console.log(accountsToCheck);
             accountsToCheck.forEach((player, ix) => {
                 let newPlayer = newPlayers.find(p => p.allyCode === parseInt(player.allyCode));
                 if (!newPlayer) {
@@ -431,19 +449,10 @@ module.exports = (Bot, client) => {
                 if (!newPlayer) {
                     return;
                 }
-                if (typeof player === "string") {
-                    player = {
-                        allyCode: parseInt(player),
-                        name: newPlayer.name,
-                        lastChar: 0,
-                        lastShip: 0,
-                        poOffset: 0
-                    };
-                }
                 if (!player.name) {
                     player.name = newPlayer.name;
                 }
-                if (!player.poOffset) {
+                if (!player.poOffset || player.poOffset !== newPlayer.poUTCOffsetMinutes) {
                     player.poOffset = newPlayer.poUTCOffsetMinutes;
                 }
                 if (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar) {
