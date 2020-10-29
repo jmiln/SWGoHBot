@@ -240,9 +240,9 @@ class Shardtimes extends Command {
             const sortedShardTimes = Object.keys(shardOut).sort((a, b) => momentTZ(a, "HH:mm").diff(momentTZ(b, "HH:mm")));
 
             const fields = [];
-            sortedShardTimes.forEach(time => {
+            for (const time of sortedShardTimes) {
                 const times = [];
-                shardOut[time].forEach(user => {
+                for (const user of shardOut[time]) {
                     let userFlag = message.client.emojis.cache.get(shardTimes[user].flag);
                     if (!userFlag) {
                         userFlag = shardTimes[user].flag;
@@ -250,8 +250,8 @@ class Shardtimes extends Command {
                     const maxLen = 20;
                     let uName = "";
                     if (!shardTimes[user].type || shardTimes[user].type === "id") {
-                        const thisUser = message.guild.members.cache.get(user);
-                        const userName = thisUser ? `${thisUser.displayName}` : user;
+                        const thisUser = await message.guild.members.fetch(user);
+                        const userName = thisUser ? thisUser.displayName : user;
                         uName = "**" + (userName.length > maxLen ? userName.substring(0, maxLen) : userName) + "**";
                     } else {
                         // Type is name, don't try looking it up
@@ -262,7 +262,7 @@ class Shardtimes extends Command {
                         flag: shardTimes[user].flag != "" ? userFlag : "",
                         name: uName
                     });
-                });
+                }
                 const sortedTimes = times.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0).map(t => `${t.flag}${t.name}`);
                 let joiner = " - ";
                 if (message.guildSettings.shardtimeVertical) {
@@ -272,7 +272,7 @@ class Shardtimes extends Command {
                     name: time,
                     value: sortedTimes.join(joiner)
                 });
-            });
+            }
             return message.channel.send({
                 embed: {
                     "author": {
