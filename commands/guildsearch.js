@@ -25,6 +25,7 @@ class GuildSearch extends Command {
     }
 
     async run(Bot, message, args, options) { // eslint-disable-line no-unused-vars
+        if (message.content.indexOf("\n") > -1) return super.error(message, "This command does not support multi-line inputs.");
         let starLvl = 0;
         const reverse = options.flags.reverse;
         const gears = [9,10,11,12,13];
