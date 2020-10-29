@@ -250,7 +250,7 @@ class Shardtimes extends Command {
                     const maxLen = 20;
                     let uName = "";
                     if (!shardTimes[user].type || shardTimes[user].type === "id") {
-                        const thisUser = await message.guild.members.fetch(user);
+                        const thisUser = await message.guild.members.fetch(user).catch(() => {});
                         const userName = thisUser ? thisUser.displayName : user;
                         uName = "**" + (userName.length > maxLen ? userName.substring(0, maxLen) : userName) + "**";
                     } else {

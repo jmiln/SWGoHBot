@@ -191,7 +191,10 @@ module.exports = (Bot, client) => {
             return;
         } else {
             // If everything is ok, go ahead and try sending the message
-            await chan.send(announceMsg).catch((err) => {Bot.logger.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );});
+            await chan.send(announceMsg).catch((err) => {
+                if (err.stack.toString().includes("user aborted a request")) return;
+                Bot.logger.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );
+            });
         }
     };
 

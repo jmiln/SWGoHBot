@@ -8,7 +8,7 @@ const client = new Client({
     // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
     messageCacheLifetime: 300, // How long a message should stay in the cache       (5min)
     messageSweepInterval: 120, // How frequently to remove messages from the cache  (2min)
-    // ws: { intents: Intents.ALL }
+    ws: { intents: new Intents(4619) }
 });
 
 const Sequelize = require("sequelize");

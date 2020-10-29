@@ -438,77 +438,154 @@ class ArenaWatch extends Command {
                 }
                 break;
             }
+            case "warn": {
+                // ;aw warn 123123123 <# of min> <none|both|char|fleet>
+                const code = args[0] ? parseInt(args[0].replace(/[^\d]/g, "")) : null;
+                if (!Bot.isAllyCode(code)) return super.error(message, `Invalid ally code (${code})`);
+
+                let [, mins, arena] = args;
+                const arenas = ["none", "both", "char", "fleet"];
+                if (!arena && mins === "none") {
+                    arena = "none";
+                    mins = null;
+                } else {
+                    mins = parseInt(mins);
+                    arena = arena ? arena.toString().toLowerCase() : null;
+                    if (!mins || mins <= 0) {
+                        return super.error(message, "Invalid minute count. Only values of 1 and above are valid.", {example: "aw warn 123123123 30 both"});
+                    }
+                }
+
+                if (!arena || !arenas.includes(arena)) {
+                    return super.error(message, `Invalid arena. Valid options are: \`${arenas.join(", ")}\``, {example: "aw warn 123123123 30 both"});
+                }
+
+                const exists = aw.allycodes.find(p => parseInt(p.allyCode) === code);
+                if (!exists) return super.error(message, "That ally code is not in your list.");
+                aw.allycodes = aw.allycodes.filter(p => parseInt(p.allyCode) !== code);
+                if (typeof exists.allyCode === "string") exists.allyCode = parseInt(exists.allyCode);
+                exists.warn = {
+                    min: mins && mins > 0 ? mins : null,
+                    arena: arena === "none" ? null : arena
+                };
+                aw.allycodes.push(exists);
+                break;
+            }
+            case "result": {
+                // ;aw result 123123123 <none|char|fleet|both>
+                const code = args[0] ? parseInt(args[0].replace(/[^\d]/g, "")) : null;
+                if (!Bot.isAllyCode(code)) return super.error(message, `Invalid ally code (${code})`);
+
+                let [, arena] = args;
+                const arenas = ["none", "both", "char", "fleet"];
+                arena = arena.toString().toLowerCase();
+
+                if (!arena || !arenas.includes(arena)) {
+                    return super.error(message, `Invalid arena. Valid options are: \`${arenas.join(", ")}\``, {example: "aw warn 123123123 30 both"});
+                }
+                const exists = aw.allycodes.find(p => p.allyCode === code);
+                if (!exists) return super.error(message, "That ally code is not in your list.");
+                aw.allycodes = aw.allycodes.filter(p => p.allyCode !== code);
+                exists.result = arena === "none" ? null : arena;
+                aw.allycodes.push(exists);
+                break;
+            }
             case "view": {
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
-                let charChan, fleetChan, charPayoutChan, fleetPayoutChan;
-                if (aw.arena.char.channel) {
-                    charChan = message.guild ? message.guild.channels.cache.get(aw.arena.char.channel) : null;
-                    if (!charChan) {
-                        charChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.char.channel}');`)
-                            .then((thisChan) => {
-                                thisChan = thisChan.filter(a => !!a)[0];
-                                return thisChan ? `<#${thisChan.id}>` : "N/A";
-                            });
-                    }
-                }
-                if (aw.arena.fleet.channel) {
-                    fleetChan = message.guild ? message.guild.channels.cache.get(aw.arena.fleet.channel) : null;
-                    if (!fleetChan) {
-                        fleetChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.fleet.channel}');`)
-                            .then((thisChan) => {
-                                thisChan = thisChan.filter(a => !!a)[0];
-                                return thisChan ? `<#${thisChan.id}>` : "N/A";
-                            });
-                    }
-                }
-                if (aw.payout.char.channel) {
-                    charPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.char.channel) : null;
-                    if (!charPayoutChan) {
-                        charPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.char.channel}');`)
-                            .then((thisChan) => {
-                                thisChan = thisChan.filter(a => !!a)[0];
-                                return thisChan ? `<#${thisChan.id}>` : "N/A";
-                            });
-                    }
-                }
-                if (aw.payout.fleet.channel) {
-                    fleetPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.fleet.channel) : null;
-                    if (!fleetPayoutChan) {
-                        fleetPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.fleet.channel}');`)
-                            .then((thisChan) => {
-                                thisChan = thisChan.filter(a => !!a)[0];
-                                return thisChan ? `<#${thisChan.id}>` : "N/A";
-                            });
-                    }
-                }
-
-                // If there's any ally codes in the array, go ahead and format them
-                let ac =  aw.allycodes.length ? aw.allycodes : [];
-                ac = ac.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-                // ac = ac.map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`);
-                ac = ac.map(a => `\`${a.allyCode}\` ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`);
-
-                return message.channel.send({embed: {
-                    title: "Arena Watch Settings",
-                    description: [
-                        `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
-                        `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${charChan}`,
-                        `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
-                    ].join("\n"),
-                    fields: [
-                        {
-                            name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
-                            value: `${ac.length ? ac.join("\n") : "**N/A**"}`
-                        },
-                        {
-                            name: "**Payout Settings**",
-                            value: [
-                                `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
-                                `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
-                            ].join("\n")
+                if (!args[0]) {
+                    let charChan, fleetChan, charPayoutChan, fleetPayoutChan;
+                    if (aw.arena.char.channel) {
+                        charChan = message.guild ? message.guild.channels.cache.get(aw.arena.char.channel) : null;
+                        if (!charChan) {
+                            charChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.char.channel}');`)
+                                .then((thisChan) => {
+                                    thisChan = thisChan.filter(a => !!a)[0];
+                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
+                                });
                         }
-                    ]
-                }});
+                    }
+                    if (aw.arena.fleet.channel) {
+                        fleetChan = message.guild ? message.guild.channels.cache.get(aw.arena.fleet.channel) : null;
+                        if (!fleetChan) {
+                            fleetChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.fleet.channel}');`)
+                                .then((thisChan) => {
+                                    thisChan = thisChan.filter(a => !!a)[0];
+                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
+                                });
+                        }
+                    }
+                    if (aw.payout.char.channel) {
+                        charPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.char.channel) : null;
+                        if (!charPayoutChan) {
+                            charPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.char.channel}');`)
+                                .then((thisChan) => {
+                                    thisChan = thisChan.filter(a => !!a)[0];
+                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
+                                });
+                        }
+                    }
+                    if (aw.payout.fleet.channel) {
+                        fleetPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.fleet.channel) : null;
+                        if (!fleetPayoutChan) {
+                            fleetPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.fleet.channel}');`)
+                                .then((thisChan) => {
+                                    thisChan = thisChan.filter(a => !!a)[0];
+                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
+                                });
+                        }
+                    }
+
+                    // If there's any ally codes in the array, go ahead and format them
+                    let ac =  aw.allycodes.length ? aw.allycodes : [];
+                    ac = ac.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+                    // ac = ac.map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`);
+                    ac = ac.map(a => {
+                        const isWarn = a.warn && a.warn.min && a.warn.arena ? "W": "";
+                        const isRes  = a.result ? "R" : "";
+                        const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
+                        return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
+                    });
+
+
+                    return message.channel.send({embed: {
+                        title: "Arena Watch Settings",
+                        description: [
+                            `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
+                            `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${charChan}`,
+                            `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
+                        ].join("\n"),
+                        fields: [
+                            {
+                                name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
+                                value: `${ac.length ? ac.join("\n") : "**N/A**"}`
+                            },
+                            {
+                                name: "**Payout Settings**",
+                                value: [
+                                    `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
+                                    `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
+                                ].join("\n")
+                            }
+                        ]
+                    }});
+                } else {
+                    if (Bot.isAllyCode(args[0])) {
+                        const ac = parseInt(args[0].replace(/[^\d]/g, ""));
+                        const player = aw.allycodes.find(p => parseInt(p.allyCode) === parseInt(ac));
+                        if (!player) return super.error(message, "I cannot find that player in your list.");
+                        return message.channel.send({embed: {
+                            title: `Arena Watch Settings (${ac})`,
+                            description: [
+                                `Name: **${player.name}**`,
+                                `Mention: **${player.mention ? "<@" + player.mention + ">" : "N/A"}**`,
+                                `Payout Result: **${player.result ? player.result : "N/A"}**`,
+                                `Warn Mins: **${player.warn ? player.warn.min : "N/A"}**`,
+                                `Warn Arena: **${player.warn ? player.warn.arena : "N/A"}**`
+                            ].join("\n")
+                        }});
+                    }
+                }
+                break;
             }
             default:
                 return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_OPTION"));

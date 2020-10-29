@@ -329,19 +329,24 @@ module.exports = class extends Language {
                         action: "Arena Watch",
                         actionDesc: "Set alerts to send messages to a channel when you or a shardmate change rank in an arena.",
                         usage: [
-                            ";arenawatch enabled <on|off>",
-                            ";arenawatch arena <both|fleet|char>",
-                            ";arenawatch channel <channelMention> [char|fleet|ship]",
                             ";arenawatch allycode <add|remove> <allycode|allycode:mention>",
                             ";arenawatch allycode <edit> <allycode> <allycode:mention>",
-                            ";arenawatch view"
+                            ";arenawatch arena <both|fleet|char>",
+                            ";arenawatch channel <channelMention> [char|fleet|ship]",
+                            ";arenawatch enabled <on|off>",
+                            ";arenawatch result <allycode> <none|both|char|fleet>",
+                            ";arenawatch view",
+                            ";arenawatch view <allycode>",
+                            ";arenawatch warn <allycode> <#ofMin> <none|both|char|fleet>",
                         ].join("\n"),
                         args: {
                             "enabled": "Toggle alerts for all selected allycodes",
                             "arena": "Choose which arena's alerts you want",
                             "channel": "Select which channel you want the logs to output to. You can select which channel each arena will log to buy tacking the arena type on the end",
                             "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted). If you want to link a Discord ID so it will show the person as a mention, the format is allycode:mention",
-                            "view": "View the current arenawatch settings, and a list of the registered ally codes there"
+                            "result": "Announce the person's final rank at their payout time",
+                            "warn": "Warn the player with a message in the log channel, when it's a certain time (#ofMin) until their payout",
+                            "view": "View the current arenawatch settings, and a list of the registered ally codes there. Include an ally code if you want to view settings for a specific person"
                         }
                     },
                     {

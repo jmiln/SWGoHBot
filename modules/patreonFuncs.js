@@ -347,6 +347,34 @@ module.exports = (Bot, client) => {
         return players.sort((a, b) => a.duration > b.duration ? 1 : -1);
     }
 
+    // Go through a given list and get the payout times for both arenas
+    function getAllPayoutTimes(player) {
+        const offsets = {
+            char: {
+                start: 18,
+                end: 6
+            },
+            fleet: {
+                start: 19,
+                end: 5
+            }
+        };
+        const payout = {
+            poOffset: player.poOffset
+        };
+        const now = moment().utc();
+        for (const arena of ["fleet", "char"]) {
+            if (!payout.poOffset && payout.poOffset !== 0) continue;
+            let then = moment(now).utcOffset(payout.poOffset).endOf("day").subtract(offsets[arena].end, "h");
+            if (then.unix() < now.unix()) {
+                then = moment(now).utcOffset(payout.poOffset).endOf("day").add(offsets[arena].start, "h");
+            }
+            payout[arena + "Duration"] = then-now;
+            payout[arena + "TimeTil"] = moment.duration(payout[arena + "Duration"]).format("h[h] m[m]");
+        }
+        return payout;
+    }
+
     // Check for updated ranks across up to 50 players
     Bot.shardRanks = async () => {
         const patrons = await getActivePatrons();
@@ -438,8 +466,9 @@ module.exports = (Bot, client) => {
             const newPlayers = await Bot.swgohAPI.unitStats(allyCodes, null, {force: true});
             if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${newPlayers.length}/${allyCodes.length}`);
 
-            // Go through all the listed players, and see if any of them have shifted arena rank
-            const poOut = [];
+            // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
+            let charOut = [];
+            let shipOut = [];
             // console.log(accountsToCheck);
             accountsToCheck.forEach((player, ix) => {
                 let newPlayer = newPlayers.find(p => p.allyCode === parseInt(player.allyCode));
@@ -473,18 +502,43 @@ module.exports = (Bot, client) => {
                     });
                     player.lastShip = newPlayer.arena.ship.rank;
                 }
+
+                if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
+                    const payouts = getAllPayoutTimes(player);
+                    const pName = player.mention ? `<@${player.mention}>` : player.name;
+                    const charMinLeft  = Math.floor(payouts.charDuration  / 60000);
+                    const fleetMinLeft = Math.floor(payouts.fleetDuration / 60000);
+                    if (charMinLeft === 0 && ["char", "both"].includes(player.result)) {
+                        // If they have char payouts turned on, do that here
+                        charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
+                    }
+                    if (player.warn && player.warn.min
+                        && ["char", "both"].includes(player.warn.arena)
+                        && charMinLeft === player.warn.min) {
+                        // Warn them of their upcoming payout if this is enabled
+                        charOut.push(`${pName}'s **character** arena payout is in ${player.warn.min + " minutes"}`);
+                    }
+                    if (fleetMinLeft === 0 && ["fleet", "both"].includes(player.result)) {
+                        // If they have fleet payouts turned on, do that here
+                        shipOut.push(`${pName} finished at ${player.lastShip} in fleet arena`);
+                    }
+                    if (player.warn && player.warn.min
+                        && ["fleet", "both"].includes(player.warn.arena)
+                        && fleetMinLeft === player.warn.min) {
+                        // Warn them of their upcoming payout if this is enabled
+                        shipOut.push(`${pName}'s **fleet** arena payout is in ${player.warn.min + " minutes"}`);
+                    }
+                }
                 accountsToCheck[ix] = player;
             });
 
-            let charOut = [];
             if (compChar.length && aw.arena.char.enabled) {
-                charOut = checkRanks(compChar);
+                charOut = charOut.concat(checkRanks(compChar));
+            }
+            if (compShip.length && aw.arena.fleet.enabled) {
+                shipOut = shipOut.concat(checkRanks(compShip));
             }
 
-            let shipOut = [];
-            if (compShip.length && aw.arena.fleet.enabled) {
-                shipOut = checkRanks(compShip);
-            }
             const charFields = [];
             const shipFields = [];
             if (charOut.length) {
