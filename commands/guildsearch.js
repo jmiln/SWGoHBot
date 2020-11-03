@@ -121,9 +121,34 @@ class GuildSearch extends Command {
         const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
 
+        let guild = null;
+        try {
+            guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
+        } catch (e) {
+            if (e.toString().indexOf("player is not in a guild") > -1) {
+                return super.error(msg, "Sorry, but it looks like that player is not in a guild", {edit: true});
+            }
+            return message.channel.send({embed: {
+                author: {
+                    name: "Something Broke while getting your guild's roster"
+                },
+                description: Bot.codeBlock(e) + "Please try again in a bit."
+            }});
+        }
+        if (!guild || !guild.roster || !guild.roster.length) {
+            return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+        } else {
+            msg.edit("Found guild `" + guild.name + "`!");
+            const oldLen = guild.roster.length;
+            guild.roster = guild.roster.filter(m => m.allyCode !== null);
+            if (guild.roster.length !== oldLen) {
+                guild.warnings = guild.warnings || [];
+                guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
+            }
+        }
+
         if (options.flags.gear) {
             // List an overview of the guild's upper geared characters
-
             let sortBy = null;
             if (options.subArgs.sort) {
                 sortBy = options.subArgs.sort.toString();
@@ -131,28 +156,7 @@ class GuildSearch extends Command {
                     return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")));
                 }
             }
-            let guild = null;
-            try {
-                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
-            } catch (e) {
-                return message.channel.send({embed: {
-                    author: { name: "Something Broke getting your guild's roster" },
-                    description: Bot.codeBlock(e) + "Please try again in a bit."
-                }});
-            }
-            let gRoster;
-            if (!guild || !guild.roster || !guild.roster.length) {
-                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
-            } else {
-                msg.edit("Found guild `" + guild.name + "`!");
-                const oldLen = guild.roster.length;
-                guild.roster = guild.roster.filter(m => m.allyCode !== null);
-                if (guild.roster.length !== oldLen) {
-                    guild.warnings = guild.warnings || [];
-                    guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
-                }
-                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
-            }
+            const gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
 
             if (!gRoster.length) {
                 return msg.edit("I can't find any players in the requested guild.");
@@ -240,16 +244,6 @@ class GuildSearch extends Command {
                     return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", "4,5,6,7"));
                 }
             }
-            let guild = null;
-            try {
-                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
-            } catch (e) {
-                Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return message.channel.send({embed: {
-                    author: { name: "Something Broke getting your guild's roster" },
-                    description: Bot.codeBlock(e) + "Please try again in a bit."
-                }});
-            }
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
                 return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
@@ -271,9 +265,6 @@ class GuildSearch extends Command {
             try {
                 guildGG = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                Bot.logger.error("ERROR(GS) getting guild: " + e);
-                // Spit out the gId so I can go check on why it's breaking
-                Bot.logger.error("GuildID: " + guild.id);
                 return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
             const starOut = {};
@@ -451,20 +442,7 @@ class GuildSearch extends Command {
                 return super.error(msg, "Not an acceptable stat to sort by. Try one of the following:" + Bot.codeBlock(Object.keys(checkableStats).map(s => s.replace(/\s/gi, "")).join(", ")), {edit: true, example: "guildsearch c3po -sort gp"});
             }
 
-            let guild = null;
-            try {
-                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
-            } catch (e) {
-                Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return super.error(msg, Bot.codeBlock(e) + message.language.get("BASE_PLEASE_TRY_AGAIN"), {title: message.language.get("BASE_SOMETHING_BROKE_GUILD_ROSTER"), edit: true});
-            }
-            let gRoster;
-            if (!guild || !guild.roster || !guild.roster.length) {
-                return super.error(msg, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
-            } else {
-                msg.edit("Found guild `" + guild.name + "`!");
-                gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
-            }
+            const gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
 
             if (!gRoster.length) {
                 return super.error(msg, "I can't find any players in the requested guild.", {edit: true});
@@ -552,26 +530,10 @@ class GuildSearch extends Command {
             if (!availableSorts.includes(sortType)) {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
             }
-            let guild = null;
-            try {
-                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
-            } catch (e) {
-                Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return super.error(message, Bot.codeBlock(e), {title: "Something Broke while getting your guild's roster", footer: "Please try again later"});
-            }
-            if (!guild || !guild.roster || !guild.roster.length) {
-                return super.error(msg, message.language.get("BASE_SWGOH_NO_GUILD"), {edit: true});
-            } else {
-                msg.edit("Found guild `" + guild.name + "`!");
-            }
-
             let guildGG;
             try {
                 guildGG = await Bot.swgohAPI.unitStats(guild.roster.map(m => m.allyCode), cooldown);
             } catch (e) {
-                Bot.logger.error("ERROR(GS) getting guild: " + e);
-                // Spit out the gId so I can go check on why it's breaking
-                Bot.logger.error("GuildID: " + guild.id);
                 return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
             guildGG = guildGG.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
@@ -650,46 +612,16 @@ class GuildSearch extends Command {
                 fields: fields
             }});
         } else {
-            let guild = null;
             const availableSorts = ["gp", "gear", "name"];
             const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
             if (!availableSorts.includes(sortType)) {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_SORT", sortType, availableSorts), {example: "guildsearch c3po -sort gp"});
-            }
-            try {
-                guild = await Bot.swgohAPI.guild(allyCode, null, cooldown);
-            } catch (e) {
-                Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return message.channel.send({embed: {
-                    author: {
-                        name: "Something Broke while getting your guild's roster"
-                    },
-                    description: Bot.codeBlock(e) + "Please try again in a bit."
-                }});
-            }
-            if (!guild || !guild.roster || !guild.roster.length) {
-                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
-            } else {
-                msg.edit("Found guild `" + guild.name + "`!");
-                const oldLen = guild.roster.length;
-                guild.roster = guild.roster.filter(m => m.allyCode !== null);
-                if (guild.roster.length !== oldLen) {
-                    guild.warnings = guild.warnings || [];
-                    guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
-                }
-            }
-
-            if (!guild.roster.length) {
-                return msg.edit("I can't find any players in the requested guild.");
             }
             let guildChar;
             try {
                 guildChar = await Bot.swgohAPI.guildStats(guild.roster.map(p => p.allyCode), character.uniqueName, cooldown);
                 // guildChar = await Bot.swgohAPI.guildStats(gRoster, character.uniqueName, cooldown);
             } catch (e) {
-                Bot.logger.error("ERROR(GS) getting guild: " + e);
-                // Spit out the gId so I can go check on why it's breaking
-                Bot.logger.error("GuildID: " + guild.id);
                 return super.error(msg, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
             }
 

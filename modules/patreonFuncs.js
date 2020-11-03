@@ -431,22 +431,6 @@ module.exports = (Bot, client) => {
             if (!user || !user.accounts || !user.accounts.length || !user.arenaWatch) continue;
             const aw = user.arenaWatch;
 
-            // In case they have the old version, update em
-            if (!aw.arena.fleet || !aw.arena.char) {
-                const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
-                const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
-                aw.arena = {};
-                aw.arena.fleet = {
-                    channel: aw.channel,
-                    enabled: flEnabled
-                };
-                aw.arena.char  = {
-                    channel: aw.channel,
-                    enabled: chEnabled
-                };
-            }
-
-
             // If they don't want any alerts
             if (!aw.enabled
                 || (!aw.arena.fleet.channel && !aw.arena.char.channel)
