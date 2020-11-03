@@ -19,6 +19,7 @@ module.exports = (Bot) => {
     return {
         playerByName: playerByName,
         getPayoutFromAC: getPayoutFromAC,
+        getPlayersArena: getPlayersArena,
         unitStats: unitStats,
         langChar: langChar,
         guildStats: guildStats,
@@ -62,6 +63,51 @@ module.exports = (Bot) => {
         allycodes = allycodes.map(a => parseInt(a));
         const players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1});
         return players;
+    }
+
+    async function getPlayersArena(allycodes) {
+        const MAX_CONCURRENT = 10;
+        if (!Array.isArray(allycodes)) {
+            if (!allycodes) {
+                return false;
+            }
+            allycodes = [allycodes];
+        }
+        allycodes = allycodes.filter(ac => !!ac).map(ac => ac.toString()).filter(ac => ac.length === 9);
+        if (!allycodes.length) throw new Error("No valid ally code(s) entered");
+
+        const freshPlayers = [];
+        for (const ac of allycodes) {
+            freshPlayers.push(Bot.swapiStub.getPlayerArenaProfile(ac));
+        }
+        const playersChunked = Bot.chunkArray(freshPlayers, MAX_CONCURRENT);
+
+        let playerOut = [];
+        for (const chunk of playersChunked) {
+            const settled = await Promise.allSettled(chunk);
+            playerOut = playerOut.concat(settled);
+        }
+        // return playerOut.map(p => p.value ? p.value : null).filter(p => !!p);
+        return playerOut.map(p => {
+            p = p.value ? p.value : null;
+            if (p) {
+                const charArena = p.pvpProfile.find(t => t.tab === 1);
+                const shipArena = p.pvpProfile.find(t => t.tab === 2);
+                return {
+                    name: p.name,
+                    allyCode: parseInt(p.allyCode),
+                    arena: {
+                        char: {
+                            rank: charArena ? charArena.rank : null
+                        },
+                        ship: {
+                            rank: shipArena ? shipArena.rank : null
+                        }
+                    },
+                    poUTCOffsetMinutes: p.localTimeZoneOffsetMinutes
+                };
+            }
+        }).filter(p => !!p);
     }
 
     async function unitStats(allycodes, cooldown, options={}) {

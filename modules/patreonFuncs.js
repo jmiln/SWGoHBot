@@ -81,7 +81,7 @@ module.exports = (Bot, client) => {
                 }
                 let player;
                 try {
-                    player = await Bot.swgohAPI.unitStats(acc.allyCode, null, {force: true});
+                    player = await Bot.swgohAPI.getPlayersArena(acc.allyCode);
                     if (Array.isArray(player)) player = player[0];
                     // player = await Bot.swgohAPI.fastPlayer(acc.allyCode);
                 } catch (e) {
@@ -463,7 +463,7 @@ module.exports = (Bot, client) => {
             const allyCodes = accountsToCheck.map(a => a.allyCode ?  a.allyCode : a);
             if (!allyCodes || !allyCodes.length) continue;
 
-            const newPlayers = await Bot.swgohAPI.unitStats(allyCodes, null, {force: true});
+            const newPlayers = await Bot.swgohAPI.getPlayersArena(allyCodes);
             if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${newPlayers.length}/${allyCodes.length}`);
 
             // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming

@@ -987,4 +987,11 @@ module.exports = (Bot, client) => {
         const userRegex = /^<@!?\d{17,19}>/;
         return mention.match(userRegex);
     };
+    Bot.chunkArray = (inArray, chunkSize) => {
+        var res = [];
+        for (let ix = 0, len = inArray.length; ix < len; ix += chunkSize) {
+            res.push(inArray.slice(ix, ix + chunkSize));
+        }
+        return res;
+    };
 };

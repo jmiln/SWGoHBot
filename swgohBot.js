@@ -1,6 +1,7 @@
 const { Client, Collection, Intents } = require("discord.js");
 const { promisify } = require("util");
 const { inspect } = require("util");
+const SwgohClientStub = require("swgoh-client-stub");
 const readdir = promisify(require("fs").readdir);
 const fs = require("fs");
 
@@ -130,6 +131,11 @@ const init = async () => {
             new ApiSwgohHelp(Bot.config.fakeSwapiConfig.options) :
             new ApiSwgohHelp(Bot.config.swapiConfig);
         Bot.swgohAPI = require("./modules/swapi.js")(Bot);
+
+        if (Bot.config.fakeSwapiConfig?.clientStub) {
+            // Do stuff
+            Bot.swapiStub = new SwgohClientStub(Bot.config.fakeSwapiConfig.clientStub);
+        }
 
         // Load up the zeta recommendstions
         Bot.zetaRec = await Bot.swgohAPI.zetaRec();
