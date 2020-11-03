@@ -575,7 +575,7 @@ module.exports = (Bot, client) => {
             },
             "description": headerString,
             "fields": actionArr
-        }}).catch(() => {Bot.logger.error("Broke in helpOut");});
+        }}).catch((e) => {Bot.logger.error("Broke in helpOut:\n" + e);});
     };
 
 

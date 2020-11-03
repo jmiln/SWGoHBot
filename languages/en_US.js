@@ -335,18 +335,17 @@ module.exports = class extends Language {
                             ";arenawatch channel <channelMention> [char|fleet|ship]",
                             ";arenawatch enabled <on|off>",
                             ";arenawatch result <allycode> <none|both|char|fleet>",
-                            ";arenawatch view",
-                            ";arenawatch view <allycode>",
+                            ";arenawatch view [allycode]",
                             ";arenawatch warn <allycode> <#ofMin> <none|both|char|fleet>",
                         ].join("\n"),
                         args: {
                             "enabled": "Toggle alerts for all selected allycodes",
                             "arena": "Choose which arena's alerts you want",
-                            "channel": "Select which channel you want the logs to output to. You can select which channel each arena will log to buy tacking the arena type on the end",
-                            "allycode": "Edit the list of ally codes the bot will monitor for you (Comma seperated lists accepted). If you want to link a Discord ID so it will show the person as a mention, the format is allycode:mention",
-                            "result": "Announce the person's final rank at their payout time",
-                            "warn": "Warn the player with a message in the log channel, when it's a certain time (#ofMin) until their payout",
-                            "view": "View the current arenawatch settings, and a list of the registered ally codes there. Include an ally code if you want to view settings for a specific person"
+                            "channel": "Select which channel to output logs to",
+                            "allycode": "Edit the list of ally codes. Use allycode:mention to mention a person",
+                            "result": "Announce a player's final rank at payout",
+                            "warn": "Warn the player in the log channel, #ofMin before their payout",
+                            "view": "View the current settings. Include an ally code to view settings for a specific person"
                         }
                     },
                     {
