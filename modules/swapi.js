@@ -84,7 +84,6 @@ module.exports = (Bot) => {
         });
 
         return playersOut.map(p => {
-            p = p.value ? p.value : null;
             if (p) {
                 const charArena = p.pvpProfile.find(t => t.tab === 1);
                 const shipArena = p.pvpProfile.find(t => t.tab === 2);

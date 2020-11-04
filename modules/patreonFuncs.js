@@ -433,8 +433,8 @@ module.exports = (Bot, client) => {
 
             // If they don't want any alerts
             if (!aw.enabled
-                || (!aw.arena.fleet.channel && !aw.arena.char.channel)
-                || (!aw.arena.fleet.enabled && !aw.arena.char.enabled)) {
+                || (!aw.arena?.fleet?.channel && !aw.arena?.char?.channel)
+                || (!aw.arena?.fleet?.enabled && !aw.arena?.char?.enabled)) {
                 continue;
             }
 
