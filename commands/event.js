@@ -402,7 +402,7 @@ class Event extends Command {
                                 await Bot.scheduleEvent(ev.event, guildConf.eventCountdown);
                                 await Bot.database.models.eventDBs.create(ev.event)
                                     .then(() => {
-                                        evAddLog.push(message.language.get("COMMAND_EVENT_CREATED", ev.event.eventID.split("-")[1], momentTZ.tz(ev.event.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
+                                        evAddLog.push(message.language.get("COMMAND_EVENT_CREATED", ev.event.eventID.split("-").slice().join("-"), momentTZ.tz(ev.event.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
                                     })
                                     .catch(error => {
                                         evFailLog.push(message.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", ev.event.name, error.message));

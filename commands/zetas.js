@@ -70,6 +70,7 @@ class Zetas extends Command {
             return super.error(msg, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});
         }
 
+        if (!player || !player.roster) return super.error(message, "I cannot get this player's info right not. Please try again later");
         player.roster = player.roster.filter(c => !c.crew || !c.crew.length);
 
         if (!options.flags.r && !options.flags.g) {
