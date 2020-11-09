@@ -4520,6 +4520,24 @@
         }
     },
     {
+        "name": "Kuiil",
+        "uniqueName": "KUIIL",
+        "aliases": [
+            "Kuiil"
+        ],
+        "nameVariant": [
+            "Kuiil"
+        ],
+        "url": "http://swgoh.gg/characters/kuiil/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/KUIIL/",
+        "side": "light",
+        "factions": [
+            "Scoundrel",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Kylo Ren",
         "uniqueName": "KYLOREN",
         "aliases": [

@@ -20115,6 +20115,178 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Kuiil",
+        "base_id": "KUIIL",
+        "pk": 609,
+        "url": "http://swgoh.gg/characters/kuiil/",
+        "image": "/game-asset/u/KUIIL/",
+        "power": 29347,
+        "description": "A supportive mechanic who aids Droids and Scoundrels.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "002",
+                    "003",
+                    "004",
+                    "004",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "020",
+                    "014",
+                    "015",
+                    "028",
+                    "015",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "054",
+                    "033",
+                    "025",
+                    "041",
+                    "048",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "072",
+                    "068",
+                    "024",
+                    "070",
+                    "073",
+                    "077"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "073",
+                    "085",
+                    "085",
+                    "027",
+                    "072",
+                    "088"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "083",
+                    "048",
+                    "068",
+                    "068",
+                    "083",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "083",
+                    "088",
+                    "102",
+                    "098",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "091",
+                    "108",
+                    "105",
+                    "091",
+                    "098",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "117",
+                    "095",
+                    "111",
+                    "098",
+                    "122"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "132",
+                    "129",
+                    "109",
+                    "117",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "144",
+                    "129",
+                    "146",
+                    "132",
+                    "124",
+                    "137"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "163",
+                    "161",
+                    "168",
+                    "168",
+                    "G12Finisher_KUIIL_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Scoundrel",
+            "Support"
+        ],
+        "ability_classes": [
+            "Expose",
+            "Gain Turn Meter",
+            "Heal",
+            "Revive",
+            "Speed Down",
+            "Stun"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Kylo Ren",
         "base_id": "KYLOREN",
         "pk": 141,
