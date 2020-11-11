@@ -20,8 +20,7 @@ module.exports = (Bot, client) => {
 
             // Make sure it only loads events for it's shard
             if (client.guilds.cache.keyArray().includes(guildID)) {
-                const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(Bot.config.defaultSettings)});
-                const guildConf = guildSettings.dataValues;
+                const guildConf = await Bot.getGuildConf(guildID);
                 eventList.push([event.dataValues, guildConf]);
             }
         }
@@ -174,8 +173,7 @@ module.exports = (Bot, client) => {
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
 
-        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(Bot.config.defaultSettings)});
-        const guildConf = guildSettings.dataValues;
+        const guildConf = await Bot.getGuildConf(guildID);
 
         var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), "minutes") * -1, "minutes").format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
         var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
@@ -196,8 +194,7 @@ module.exports = (Bot, client) => {
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
 
-        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(Bot.config.defaultSettings)});
-        const guildConf = guildSettings.dataValues;
+        const guildConf = await Bot.getGuildConf(guildID);
 
         let repTime = false, repDay = false;
         let newEvent = null;

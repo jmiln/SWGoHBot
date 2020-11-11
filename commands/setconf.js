@@ -15,8 +15,7 @@ class Setconf extends Command {
 
     async run(Bot, message, [key, ...value]) {
         const config = Bot.config;
-        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(Bot.config.defaultSettings)});
-        const guildConf = guildSettings.dataValues;
+        const guildConf = await Bot.getGuildConf(guildID);
         const langList = Object.keys(Bot.languages);
         const swgohLangList = Bot.swgohLangList;
         const defSet = config.defaultSettings;

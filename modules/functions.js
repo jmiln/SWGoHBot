@@ -171,8 +171,7 @@ module.exports = (Bot, client) => {
      */
     Bot.announceMsg = async (guild, announceMsg, channel="") => {
         if (!guild || !guild.id) return;
-        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guild.id}, attributes: ["announceChan"]});
-        const guildConf = guildSettings.dataValues;
+        const guildConf = await Bot.getGuildConf(guild.id);
 
         let announceChan = guildConf.announceChan;
         if (channel !== "") {
@@ -993,5 +992,17 @@ module.exports = (Bot, client) => {
             res.push(inArray.slice(ix, ix + chunkSize));
         }
         return res;
+    };
+    Bot.getGuildConf = async (guildID) => {
+        if (!guildID) return Bot.config.defaultSettings;
+        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}});
+        return guildSettings && guildSettings.dataValues ? guildSettings.dataValues : Bot.config.defaultSettings;
+    };
+    Bot.hasGuildConf = async (guildID) => {
+        if (!guildID) return false;
+        const exists = await Bot.database.models.settings.findOne({where: {guildID: guildID}})
+            .then(token => token !== null)
+            .then(isUnique => isUnique);
+        return exists ? true : false;
     };
 };

@@ -43,8 +43,7 @@ class Event extends Command {
         const level = options.level;
 
         const maxSize = 1000;
-        const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: message.guild.id}, attributes: Object.keys(Bot.config.defaultSettings)});
-        const guildConf = guildSettings.dataValues;
+        const guildConf = await Bot.getGuildConf(message.guild.id);
 
         const EVENTS_PER_PAGE = 5;
 

@@ -156,7 +156,7 @@ class Mods extends Command {
                 });
             } else { // Embeds are disabled
                 const characterMods = getCharacterMods(character);
-                for (modSet in characterMods) {
+                for (const modSet in characterMods) {
                     const mods = getLocalizedModAdvice(characterMods[modSet]);
                     const modSetString = "* " + mods.sets.join("\n* ");
 

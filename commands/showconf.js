@@ -43,7 +43,7 @@ class Showconf extends Command {
             guildName = message.guild.name;
         }
 
-        const guildConf = await Bot.database.models.settings.findOne({where: {guildID: guildID}, attributes: Object.keys(Bot.config.defaultSettings)});
+        const guildConf = await Bot.getGuildConf(guildID);
 
         var array = [];
         if (guildConf) {

@@ -5,9 +5,7 @@ module.exports = async (Bot, guild) => {
     // Make sure it's not a server outage that's causing it to show as leaving/ re-joining
     if (!guild.available) return;
 
-    const exists = await Bot.database.models.settings.findOne({where: {guildID: guild.id}})
-        .then(token => token !== null)
-        .then(isUnique => isUnique);
+    const exists = await Bot.hasGuildConf(guild.id);
 
     if (!exists) {
         // Adding a new row to the DB
