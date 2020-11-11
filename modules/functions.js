@@ -995,7 +995,6 @@ module.exports = (Bot, client) => {
     };
     Bot.getGuildConf = async (guildID) => {
         if (!guildID) return Bot.config.defaultSettings;
-        guildID = guildID.toString();
         const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}});
         return guildSettings && guildSettings.dataValues ? guildSettings.dataValues : Bot.config.defaultSettings;
     };

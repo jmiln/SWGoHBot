@@ -6,6 +6,7 @@ const Command = require("../base/Command");
 class Setconf extends Command {
     constructor(Bot) {
         super(Bot, {
+            guildOnly: true,
             name: "setconf",
             aliases: ["setconfig"],
             permLevel: 3,
@@ -15,7 +16,7 @@ class Setconf extends Command {
 
     async run(Bot, message, [key, ...value]) {
         const config = Bot.config;
-        const guildConf = await Bot.getGuildConf(guildID);
+        const guildConf = await Bot.getGuildConf(message.guild.id);
         const langList = Object.keys(Bot.languages);
         const swgohLangList = Bot.swgohLangList;
         const defSet = config.defaultSettings;

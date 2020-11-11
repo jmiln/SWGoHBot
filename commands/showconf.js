@@ -4,6 +4,7 @@ const Command = require("../base/Command");
 class Showconf extends Command {
     constructor(Bot) {
         super(Bot, {
+            guildOnly: true,
             name: "showconf",
             aliases: ["showconfs", "showconfig", "showconfigs"],
             category: "Admin",
