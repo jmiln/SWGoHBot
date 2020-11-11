@@ -200,7 +200,7 @@ class Poll extends Command {
                         let voted = -1;
                         if (poll.votes[message.author.id] === opt) {
                             return super.error(message, message.language.get("COMMAND_POLL_SAME_OPT", poll.options[opt]));
-                        } else if (poll.votes.hasOwnProperty(message.author.id)) {
+                        } else if (poll.votes[message.author.id]) {
                             voted = poll.votes[message.author.id];
                         }
                         poll.votes[message.author.id] = opt;

@@ -45,8 +45,9 @@ class Arenarank extends Command {
 
 
         function findNextRank(currentRank) {
-            if (Bot.arenaJumps.hasOwnProperty(currentRank)) {
-                return Bot.arenaJumps[currentRank.toString()];
+            currentRank = currentRank.toString();
+            if (Bot.arenaJumps[currentRank]) {
+                return Bot.arenaJumps[currentRank];
             } else {
                 return Math.floor(currentRank * 0.85);
             }
@@ -55,6 +56,3 @@ class Arenarank extends Command {
 }
 
 module.exports = Arenarank;
-
-
-
