@@ -525,7 +525,7 @@ module.exports = class extends Language {
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `Arena de ${playerName}`,
             COMMAND_MYARENA_EMBED_FOOTER: (date) => `Dados da Arena referentes a: ${date}`,
             COMMAND_MYARENA_HELP: {
-                description: "Mostra a posição corrente do usuário na arena e seus times\esquadrões.",
+                description: "Mostra a posição corrente do usuário na arena e seus times\\esquadrões.",
                 actions: [
                     {
                         action: "",
@@ -882,7 +882,7 @@ module.exports = class extends Language {
                     },
                     {
                         action: "timezone",
-                        actionDesc: "Configura o fuso horário para todos os comandos baseados em data\hora. Acesse o site https://goo.gl/Vqwe49. caso precise de uma lista",
+                        actionDesc: "Configura o fuso horário para todos os comandos baseados em data\\hora. Acesse o site https://goo.gl/Vqwe49. caso precise de uma lista",
                         usage: ";setconf timezone <timezone>",
                         args: {}
                     },
@@ -1114,4 +1114,3 @@ module.exports = class extends Language {
         };
     }
 };
-

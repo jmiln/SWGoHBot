@@ -11,11 +11,13 @@ class Showconf extends Command {
         });
     }
 
-    async run(Bot, message, args, level) {
+    async run(Bot, message, args, options) {
         let guildID = message.guild.id;
         let guildName = "";
+        const client = message.client;
+
         // If I or an adminHelper adds a guild ID here, pull up that instead
-        if (args[0] && level >= 9) {
+        if (args[0] && options && options.level >= 9) {
             let found = false;
             if (!client.guilds.cache.has(args[0]) && client.shard) {
                 const names = await client.shard.broadcastEval(`
@@ -47,7 +49,7 @@ class Showconf extends Command {
 
         var array = [];
         if (guildConf) {
-            for (var key in guildConf.dataValues) {
+            for (const key of Object.keys(guildConf)) {
                 array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
             }
             var configKeys = array.join("\n");

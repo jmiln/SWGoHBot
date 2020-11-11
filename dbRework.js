@@ -21,15 +21,16 @@ const init = async function() {
         id: {
             type: Sequelize.TEXT,
             primaryKey: true
-        },  
+        },
         allyCode: {
             type: Sequelize.BIGINT
-        }   
-    });  
+        }
+    });
     await allyCodes.sync();
     const oldAllyCodes = await allyCodes.findAll();
-    
+
     for (const ac of oldAllyCodes) {
+        let user = {};
         const a = ac.dataValues;
         const defSettings = JSON.parse(JSON.stringify(config.defaultUserConf));
         user.id = a.id;
@@ -40,7 +41,7 @@ const init = async function() {
             name: player && player.name ? player.name : null,
             primary: true
         }];
-        await mongo.db("swgohbot").collection("users").updateOne({id: a.id}, 
+        await mongo.db("swgohbot").collection("users").updateOne({id: a.id},
             {$set: user},
             {upsert: true}
         );
@@ -50,4 +51,3 @@ const init = async function() {
 };
 
 init();
-
