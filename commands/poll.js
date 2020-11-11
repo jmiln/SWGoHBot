@@ -193,7 +193,7 @@ class Poll extends Command {
                 if (!exists) {
                     return super.error(message, message.language.get("COMMAND_POLL_NO_POLL"));
                 } else {
-                    const opt = Math.abs(parseInt(action)) - 1;
+                    const opt = Math.abs(parseInt(action, 10)) - 1;
                     if (poll.options.length <= opt || opt < 0) {
                         return super.error(message, message.language.get("COMMAND_POLL_INVALID_OPTION"));
                     } else {
@@ -247,7 +247,7 @@ class Poll extends Command {
             let outString = "";
             Object.keys(voteCount).forEach(opt => {
                 const percent = Math.floor((voteCount[opt] / totalVotes) * 30);
-                outString += `\`[${parseInt(opt)+1}]\` **${poll.options[opt]}**\n`;
+                outString += `\`[${parseInt(opt, 10)+1}]\` **${poll.options[opt]}**\n`;
                 if (!poll.anon || showRes) {
                     // If the poll is not set to anonymous, or it's told to show the results (for closing the poll)
                     outString += `**\`[${"#".repeat(percent)}${"-".repeat(30-percent)}]\`**(${voteCount[opt]})\n`;

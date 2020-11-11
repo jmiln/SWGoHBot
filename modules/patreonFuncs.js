@@ -108,7 +108,7 @@ module.exports = (Bot, client) => {
                         if (then.unix() < now.unix()) {
                             then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(18, "h");
                         }
-                        const minTil =  parseInt((then-now)/60/1000);
+                        const minTil =  parseInt((then-now)/60/1000, 10);
                         const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
 
                         const pUser = await client.users.fetch(patron.discordID);
@@ -157,7 +157,7 @@ module.exports = (Bot, client) => {
                             then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(19, "h");
                         }
 
-                        const minTil =  parseInt((then-now)/60/1000);
+                        const minTil =  parseInt((then-now)/60/1000, 10);
                         const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
@@ -455,9 +455,9 @@ module.exports = (Bot, client) => {
             let shipOut = [];
             // console.log(accountsToCheck);
             accountsToCheck.forEach((player, ix) => {
-                let newPlayer = newPlayers.find(p => p.allyCode === parseInt(player.allyCode));
+                let newPlayer = newPlayers.find(p => p.allyCode === parseInt(player.allyCode, 10));
                 if (!newPlayer) {
-                    newPlayer = newPlayers.find(p => p.allyCode === parseInt(player));
+                    newPlayer = newPlayers.find(p => p.allyCode === parseInt(player, 10));
                 }
                 if (!newPlayer) {
                     return;

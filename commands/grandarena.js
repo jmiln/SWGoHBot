@@ -349,7 +349,7 @@ class CommandName extends Command {
                 const checkLen = Object.keys(checkArr).length;
                 Object.keys(checkArr).forEach((c, ix) => {
                     if (checkLen <= 21 || ix < 21) {
-                        let halfLen = parseInt((len - c.length) / 2);
+                        let halfLen = parseInt((len - c.length) / 2, 10);
                         if (halfLen < 0) halfLen = 0;
                         fields.push({
                             name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),

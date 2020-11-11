@@ -44,10 +44,10 @@ class CurrentEvents extends Command {
 
         // Let them specify the max # of events to show
         let eNum;
-        if (!num || isNaN(parseInt(num))) {
+        if (!num || isNaN(parseInt(num, 10))) {
             eNum = DEF_NUM;
         } else {
-            eNum = parseInt(num);
+            eNum = parseInt(num, 10);
         }
 
 

@@ -139,7 +139,7 @@ class CheckAct extends Command {
                     return super.error(message, players.error);
                 }
                 for (const user of objArr) {
-                    const player = players.result.find(u => u.allyCode === parseInt(user.ally));
+                    const player = players.result.find(u => u.allyCode === parseInt(user.ally, 10));
                     user.igTime = player ? moment().diff(moment(player.lastActivity)) : null;
                 }
 
@@ -210,7 +210,7 @@ class CheckAct extends Command {
                 return (out < 10 ? " " : "") + out.toFixed(1) + (numOnly ? "h" : " hours");
             }
             out = diff / mins;
-            return (out < 10 ? "   " : "  ") + parseInt(out) + (numOnly ? "m" : " minutes");
+            return (out < 10 ? "   " : "  ") + parseInt(out, 10) + (numOnly ? "m" : " minutes");
         }
     }
 }

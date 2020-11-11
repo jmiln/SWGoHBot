@@ -93,7 +93,7 @@ module.exports = (Bot, client) => {
         if (Object.keys(Bot.schedule.scheduledJobs).indexOf(event.eventID) > -1) {
             return;
         }
-        Bot.schedule.scheduleJob(event.eventID, parseInt(event.eventDT), function() {
+        Bot.schedule.scheduleJob(event.eventID, parseInt(event.eventDT, 10), function() {
             Bot.eventAnnounce(event);
         });
 
@@ -111,7 +111,7 @@ module.exports = (Bot, client) => {
                     } else {
                         Bot.evCountdowns[event.eventID].push(sID);
                     }
-                    Bot.schedule.scheduleJob(sID, parseInt(newTime) , function() {
+                    Bot.schedule.scheduleJob(sID, parseInt(newTime, 10) , function() {
                         Bot.countdownAnnounce(event);
                     });
                 }
@@ -126,7 +126,7 @@ module.exports = (Bot, client) => {
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
                 const days = ev.repeatDays.splice(0, 1)[0];
-                ev.eventDT = momentTZ(parseInt(ev.eventDT)).add(parseInt(days), "d").unix()*1000;
+                ev.eventDT = momentTZ(parseInt(ev.eventDT, 10)).add(parseInt(days, 10), "d").unix()*1000;
             }
             if (nowTime > ev.eventDT) { // It ran out of days
                 return null;
@@ -134,7 +134,7 @@ module.exports = (Bot, client) => {
         } else { // 0d0h0m
             // Else it's using basic repeat
             while (nowTime >= ev.eventDT) {
-                ev.eventDT = momentTZ(parseInt(ev.eventDT)).add(ev.repeat.repeatDay, "d").add(ev.repeat.repeatHour, "h").add(ev.repeat.repeatMin, "m").unix()*1000;
+                ev.eventDT = momentTZ(parseInt(ev.eventDT, 10)).add(ev.repeat.repeatDay, "d").add(ev.repeat.repeatHour, "h").add(ev.repeat.repeatMin, "m").unix()*1000;
             }
         }
         return ev;
@@ -175,7 +175,7 @@ module.exports = (Bot, client) => {
 
         const guildConf = await Bot.getGuildConf(guildID);
 
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), "minutes") * -1, "minutes").format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
+        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
         var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
 
         if (guildConf["announceChan"] != "" || event.eventChan !== "") {
@@ -231,7 +231,7 @@ module.exports = (Bot, client) => {
             }
             newEvent = {
                 "eventID": event.eventID,
-                "eventDT": (momentTZ(parseInt(event.eventDT)).add(parseInt(repDays.splice(0, 1)), "d").unix()*1000),
+                "eventDT": (momentTZ(parseInt(event.eventDT, 10)).add(parseInt(repDays.splice(0, 1), 10), "d").unix()*1000),
                 "eventMessage": eventMsg,
                 "eventChan": event.eventChan,
                 "countdown": event.countdown,

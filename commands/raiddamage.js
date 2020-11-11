@@ -55,7 +55,7 @@ class RaidDamage extends Command {
                 example: examples.join("\n")
             });
         }
-        if (isNaN(parseInt(amt))) {
+        if (isNaN(parseInt(amt, 10))) {
             return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_AMOUNT_STR"), {
                 title: message.language.get("COMMAND_RAIDDAMAGE_INVALID_AMT"),
                 example: examples.join("\n")
@@ -64,10 +64,10 @@ class RaidDamage extends Command {
         let outAmt = "";
         const percent = amt.toString().endsWith("%");
         if (percent) {
-            const tmpAmt = parseInt(amt.toString().replace(/\D/g, ""));
-            outAmt = parseInt(tmpAmt * thisPhase.dmg).toLocaleString() + " " + message.language.get("COMMAND_RAIDDAMAGE_DMG");
+            const tmpAmt = parseInt(amt.toString().replace(/\D/g, ""), 10);
+            outAmt = parseInt(tmpAmt * thisPhase.dmg, 10).toLocaleString() + " " + message.language.get("COMMAND_RAIDDAMAGE_DMG");
         } else {
-            const tmpAmt = parseInt(amt.toString().replace(/\D/g, ""));
+            const tmpAmt = parseInt(amt.toString().replace(/\D/g, ""), 10);
             amt = tmpAmt.toLocaleString();
             outAmt = (tmpAmt / thisPhase.dmg).toFixed(2).toLocaleString() + "%";
         }

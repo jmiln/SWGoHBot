@@ -157,11 +157,11 @@ class Event extends Command {
                         // If the repeat is set, try to parse it
                         if (repeatTime) {
                             if (repeatTime.match(timeReg)) {
-                                repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf("d")));
+                                repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf("d")), 10);
                                 repeatTime = repeatTime.replace(/^\d{1,2}d/, "");
-                                repeatHour = parseInt(repeatTime.substring(0, repeatTime.indexOf("h")));
+                                repeatHour = parseInt(repeatTime.substring(0, repeatTime.indexOf("h")), 10);
                                 repeatTime = repeatTime.replace(/^\d{1,2}h/, "");
-                                repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf("m")));
+                                repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf("m")), 10);
                             } else {
                                 err.push(message.language.get("COMMAND_EVENT_INVALID_REPEAT"));
                             }
@@ -347,11 +347,11 @@ class Event extends Command {
                                 if (json.repeat) {
                                     let repeat = json.repeat;
                                     if (repeat.match(timeReg)) {
-                                        newEvent.repeat.repeatDay = parseInt(repeat.substring(0, repeat.indexOf("d")));
+                                        newEvent.repeat.repeatDay = parseInt(repeat.substring(0, repeat.indexOf("d")),  10);
                                         repeat = repeat.replace(/^\d{1,2}d/, "");
-                                        newEvent.repeat.repeatHour = parseInt(repeat.substring(0, repeat.indexOf("h")));
+                                        newEvent.repeat.repeatHour = parseInt(repeat.substring(0, repeat.indexOf("h")), 10);
                                         repeat = repeat.replace(/^\d{1,2}h/, "");
-                                        newEvent.repeat.repeatMin = parseInt(repeat.substring(0, repeat.indexOf("m")));
+                                        newEvent.repeat.repeatMin = parseInt(repeat.substring(0, repeat.indexOf("m")),  10);
                                     } else {
                                         err.push(message.language.get("COMMAND_EVENT_INVALID_REPEAT"));
                                     }
@@ -432,10 +432,10 @@ class Event extends Command {
                         let eventName = thisEvent.eventID.split("-");
                         eventName.splice(0, 1);
                         eventName = eventName.join("-");
-                        const eventDate = momentTZ(parseInt(thisEvent.eventDT)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+                        const eventDate = momentTZ(parseInt(thisEvent.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                         let eventString = message.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
-                        eventString += message.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(thisEvent.eventDT)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                        eventString += message.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(thisEvent.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
                         if (thisEvent.eventChan && thisEvent.eventChan !== "") {
                             let chanName = "";
                             if (message.guild.channels.cache.has(thisEvent.eventChan)) {
@@ -488,10 +488,10 @@ class Event extends Command {
                         let eventName = event.eventID.split("-");
                         eventName.splice(0, 1);
                         eventName = eventName.join("-");
-                        const eventDate = momentTZ(parseInt(event.eventDT)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+                        const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                         let eventString = message.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
-                        eventString += message.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                        eventString += message.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
                         if (event.eventChan && event.eventChan !== "") {
                             let chanName = "";
                             if (message.guild.channels.cache.has(event.eventChan)) {
@@ -620,8 +620,8 @@ class Event extends Command {
                     }
 
                     const oldId = event.eventID;
-                    const oldDate = momentTZ.tz(parseInt(event.eventDT), message.guildSettings.timezone).format("DD/MM/YYYY");
-                    const oldTime = momentTZ.tz(parseInt(event.eventDT), message.guildSettings.timezone).format("HH:mm");
+                    const oldDate = momentTZ.tz(parseInt(event.eventDT, 10), message.guildSettings.timezone).format("DD/MM/YYYY");
+                    const oldTime = momentTZ.tz(parseInt(event.eventDT, 10), message.guildSettings.timezone).format("HH:mm");
                     let cFrom, cTo;
                     switch (target) {
                         case "name": {
@@ -788,11 +788,11 @@ class Event extends Command {
                                 const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
                                 let repeatTime = changeTo[0];
                                 if (repeatTime.match(timeReg)) {
-                                    outRep.repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf("d")));
+                                    outRep.repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf("d")),  10);
                                     repeatTime = repeatTime.replace(/^\d{1,2}d/, "");
-                                    outRep.repeatHour = parseInt(repeatTime.substring(0, repeatTime.indexOf("h")));
+                                    outRep.repeatHour = parseInt(repeatTime.substring(0, repeatTime.indexOf("h")), 10);
                                     repeatTime = repeatTime.replace(/^\d{1,2}h/, "");
-                                    outRep.repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf("m")));
+                                    outRep.repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf("m")),  10);
                                 } else {
                                     return super.error(message, message.language.get("COMMAND_EVENT_INVALID_REPEAT"));
                                 }

@@ -253,7 +253,7 @@ class MyCharacter extends Command {
                         url: character.url,
                         icon_url: character.avatarURL
                     },
-                    description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\`${gearOut}`,
+                    description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
                     fields: [
                         {
                             name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
@@ -271,7 +271,7 @@ class MyCharacter extends Command {
                         icon_url: character.avatarURL
                     },
                     thumbnail: { url: "attachment://image.png" },
-                    description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp)} gp\`${gearOut}`,
+                    description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
                     fields: [
                         {
                             name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),

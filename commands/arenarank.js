@@ -14,8 +14,8 @@ class Arenarank extends Command {
     }
 
     run(Bot, message, args) {
-        const currentRank = parseInt(args[0]);
-        const rankHops = parseInt(args[1]) || 5;
+        const currentRank = parseInt(args[0], 10);
+        const rankHops = parseInt(args[1], 10) || 5;
         if (isNaN(currentRank) || !currentRank) {
             // return message.channel.send();
             return super.error(message, message.language.get("COMMAND_ARENARANK_INVALID_NUMBER"), {example: "arenarank 55"});

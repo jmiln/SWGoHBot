@@ -23,7 +23,7 @@ Number.prototype.shortenNum = function() {
         number = trimFloat(number) + "M";
     } else if (number >= thousand) {
         number = (number / thousand);
-        number = parseInt(number) + "K";
+        number = parseInt(number, 10) + "K";
     }
     return number;
 };
@@ -32,7 +32,7 @@ Number.prototype.shortenNum = function() {
 // Trims a fload down to either 0 or 1 decimal points
 function trimFloat(num) {
     if (num % 1 === 0) {
-        num = parseInt(num);
+        num = parseInt(num, 10);
     } else {
         num = num.toFixed(1);
     }

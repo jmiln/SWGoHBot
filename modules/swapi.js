@@ -61,7 +61,7 @@ module.exports = (Bot) => {
             }
             allycodes = [allycodes];
         }
-        allycodes = allycodes.map(a => parseInt(a));
+        allycodes = allycodes.map(a => parseInt(a, 10));
         const players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1});
         return players;
     }
@@ -89,7 +89,7 @@ module.exports = (Bot) => {
                 const shipArena = p.pvpProfile.find(t => t.tab === 2);
                 return {
                     name: p.name,
-                    allyCode: parseInt(p.allyCode),
+                    allyCode: parseInt(p.allyCode, 10),
                     arena: {
                         char: {
                             rank: charArena ? charArena.rank : null
@@ -135,7 +135,7 @@ module.exports = (Bot) => {
         try {
             if (allycodes && allycodes.length) allycodes = allycodes.filter(a => !!a).map(a => a.toString()).filter(a => a.length === 9);
             if (!allycodes.length) throw new Error("No valid ally code(s) entered");
-            allycodes = allycodes.map(a => parseInt(a));
+            allycodes = allycodes.map(a => parseInt(a, 10));
 
             let players;
             if (options && options.defId) {
@@ -690,7 +690,7 @@ module.exports = (Bot) => {
         let warnings;
         if (allycode) allycode = allycode.toString();
         if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
-        allycode = parseInt(allycode);
+        allycode = parseInt(allycode, 10);
 
         /** Get player from cache */
         let player = await Bot.swgohAPI.unitStats(allycode);

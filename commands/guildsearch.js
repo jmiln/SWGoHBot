@@ -40,7 +40,7 @@ class GuildSearch extends Command {
         };
         let top = null;
         if (options.subArgs.top !== null) {
-            const t = parseInt(options.subArgs.top);
+            const t = parseInt(options.subArgs.top, 10);
             if (!isNaN(t) && t > 0 && t <= 50) {
                 top = t;
             } else {
@@ -49,8 +49,8 @@ class GuildSearch extends Command {
         }
 
         // If there's enough elements in args, and it's in the format of a number*
-        if (!options.flags.mods && args.length && !isNaN(parseInt(args[args.length-1])) && /^\d+$/.test(args[args.length-1].toString())) {
-            starLvl = parseInt(args.pop());
+        if (!options.flags.mods && args.length && !isNaN(parseInt(args[args.length-1], 10)) && /^\d+$/.test(args[args.length-1].toString())) {
+            starLvl = parseInt(args.pop(, 10));
             if (starLvl < 0 || starLvl > 7) {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"), {example: "guildsearch c3po 7\n;guildsearch falcon -s 7"});
             }
@@ -152,7 +152,7 @@ class GuildSearch extends Command {
             let sortBy = null;
             if (options.subArgs.sort) {
                 sortBy = options.subArgs.sort.toString();
-                if (isNaN(sortBy) || !gears.includes(parseInt(sortBy))) {
+                if (isNaN(sortBy) || !gears.includes(parseInt(sortBy, 10))) {
                     return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")));
                 }
             }
@@ -195,7 +195,7 @@ class GuildSearch extends Command {
                 };
             });
 
-            if (gears.indexOf(parseInt(sortBy)) > -1) {
+            if (gears.indexOf(parseInt(sortBy, 10)) > -1) {
                 tableIn = tableIn.sort((a, b) => a[sortBy] < b[sortBy] ? 1 : -1);
             } else {
                 tableIn = tableIn.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
@@ -240,7 +240,7 @@ class GuildSearch extends Command {
             let sortBy = null;
             if (options.subArgs.sort) {
                 sortBy = options.subArgs.sort;
-                if (isNaN(sortBy) || ![4,5,6,7].includes(parseInt(sortBy))) {
+                if (isNaN(sortBy) || ![4,5,6,7].includes(parseInt(sortBy, 10))) {
                     return super.error(message, message.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", "4,5,6,7"));
                 }
             }
@@ -578,13 +578,13 @@ class GuildSearch extends Command {
                 const sortBy = options.subArgs.sort.toLowerCase();
                 if (sortBy === "offense") {
                     // Sort by # of good offense mods
-                    output = output.sort((m, n) => parseInt(m.off100) - parseInt(n.off100));
+                    output = output.sort((m, n) => parseInt(m.off100, 10) - parseInt(n.off100, 10));
                 } else if (sortBy === "speed") {
                     // Sort by # of good speed mods
-                    output = output.sort((m, n) => parseInt(m.spd20) - parseInt(n.spd20));
+                    output = output.sort((m, n) => parseInt(m.spd20, 10) - parseInt(n.spd20, 10));
                 } else if (sortBy === "6") {
                     // Sort by # of 6* mods
-                    output = output.sort((m, n) => parseInt(m.sixPip) - parseInt(n.sixPip));
+                    output = output.sort((m, n) => parseInt(m.sixPip, 10) - parseInt(n.sixPip, 10));
                 }
             }
 
@@ -707,7 +707,7 @@ class GuildSearch extends Command {
             for (const member of sortedGuild) {
                 if (options.flags.zetas && !member.zetas.length) continue;
 
-                if (isNaN(parseInt(member.rarity))) member.rarity = rarityMap[member.rarity];
+                if (isNaN(parseInt(member.rarity, 10))) member.rarity = rarityMap[member.rarity];
                 const gearStr = "⚙" + member.gear + " ".repeat(2 - member.gear.toString().length);
                 let z = " | ";
                 zetas.forEach((zeta, ix) => {
@@ -718,7 +718,7 @@ class GuildSearch extends Command {
                         z += (ix + 1).toString();
                     }
                 });
-                const gpStr = parseInt(member.gp).toLocaleString();
+                const gpStr = parseInt(member.gp, 10).toLocaleString();
 
                 let uStr;
                 if (member.rarity > 0) {

@@ -133,7 +133,7 @@ module.exports = async (Bot, message) => {
         const toRep = args.filter(a => a.match(/^-\d{1,2}$/));
         if (toRep.length) {
             const ix = args.indexOf(toRep[0]);
-            const jx = parseInt(args[ix].replace("-", ""))-1;
+            const jx = parseInt(args[ix].replace("-", ""), 10)-1;
             if (user && user.accounts && user.accounts.length && user.accounts.length > jx && jx >= 0) {
                 args[ix] = user.accounts[jx].allyCode;
             }

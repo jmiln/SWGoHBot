@@ -282,7 +282,7 @@ class MyMods extends Command {
 
             const out = sorted.map(c => {
                 const finalStat = c.stats && c.stats.final[statToCheck] ? (!c.stats.final[statToCheck] % 1 === 0 ? c.stats.final[statToCheck] : (c.stats.final[statToCheck] * 100).toFixed(2)+"%") : 0;
-                const modStat = c.stats && c.stats.final[statToCheck] ? (!c.stats.final[statToCheck] % 1 === 0 ? `(${parseInt(c.stats.mods[statToCheck])})` : `(${(c.stats.mods[statToCheck] * 100).toFixed(2)}%)`) : "";
+                const modStat = c.stats && c.stats.final[statToCheck] ? (!c.stats.final[statToCheck] % 1 === 0 ? `(${parseInt(c.stats.mods[statToCheck], 10)})` : `(${(c.stats.mods[statToCheck] * 100).toFixed(2)}%)`) : "";
                 return {
                     stat: `${finalStat}${modStat.length ? " " + modStat : ""}`,
                     name: `: ${c.nameKey}`

@@ -128,7 +128,7 @@ class Setconf extends Command {
                         if (!value[0]) {
                             return super.error(message, "You need a value to " + action);
                         }
-                        value = parseInt(value[0]);
+                        value = parseInt(value[0], 10);
 
                         if (isNaN(value)) {
                             return super.error(message, "Invalid value, make sure you're trying to add a number in.");

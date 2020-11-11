@@ -43,7 +43,7 @@ class Randomchar extends Command {
 
                 // If they're looking for a certain min star lvl, filter out everything lower
                 if (options.subArgs.star) {
-                    const star = parseInt(options.subArgs.star);
+                    const star = parseInt(options.subArgs.star, 10);
                     if (!isNaN(star) && star <= 7 && star > 0) {
                         chars = chars.filter(c => c.rarity >= star);
                     } else {
@@ -54,7 +54,7 @@ class Randomchar extends Command {
                 // In case a new player tries using it before they get enough characters?
                 if (chars.length < MAX_CHARACTERS) MAX_CHARACTERS = chars.length;
                 if (count) {
-                    count = parseInt(count);
+                    count = parseInt(count, 10);
                     if (count <= 0) {
                         count = 1;
                     } else if (count > MAX_CHARACTERS) {
@@ -69,7 +69,7 @@ class Randomchar extends Command {
                     return super.error(message, "Could not find any characters to pick from");
                 }
                 // The userID was probably a #
-                userID = parseInt(userID);
+                userID = parseInt(userID, 10);
                 if (userID > 0 && !isNaN(userID) && userID <= MAX_CHARACTERS) {
                     count = userID;
                 } else if (userID <= 0) {

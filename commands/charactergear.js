@@ -20,16 +20,16 @@ class Charactergear extends Command {
         const MAX_GEAR = 13;
         let gearLvl = 0;
         // If there's enough elements in searchChar, and it's in the format of a number*
-        if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1]))) {
-            gearLvl = parseInt(searchChar.pop());
+        if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1], 10))) {
+            gearLvl = parseInt(searchChar.pop(), 10);
             if (gearLvl < 0 || gearLvl > MAX_GEAR) {
                 return message.channel.send(message.language.get("COMMAND_CHARACTERGEAR_INVALID_GEAR"));
             } else {
-                if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(parseInt(gearLvl)) ) {
+                if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(parseInt(gearLvl, 10)) ) {
                     gearLvl = 0;
                 } else {
                     // There is a valid gear level being requested
-                    gearLvl = parseInt(gearLvl);
+                    gearLvl = parseInt(gearLvl, 10);
                 }
             }
         }
@@ -101,7 +101,7 @@ class Charactergear extends Command {
                 if (options.flags.all) {
                     allGearList = allGearList.filter(g => g !== "???????");
                     const out = await expandPieces(Bot, allGearList);
-                    const outK = Object.keys(out).sort((a, b) => parseInt(out[a].mark) - parseInt(out[b].mark));
+                    const outK = Object.keys(out).sort((a, b) => parseInt(out[a].mark, 10) - parseInt(out[b].mark, 10));
                     gearString = Bot.expandSpaces(outK.map(g =>  "* " + " ".repeat(3 - out[g].count.toString().length) + out[g].count + "x " + g).join("\n"));
                 } else {
                     const sortedGear = Object.keys(allGear).sort((a, b) => {
@@ -128,7 +128,7 @@ class Charactergear extends Command {
                     let f;
                     if (options.flags.all) {
                         const out = await expandPieces(Bot, g.equipmentSetList);
-                        const outK = Object.keys(out).sort((a, b) => parseInt(out[a].mark) - parseInt(out[b].mark));
+                        const outK = Object.keys(out).sort((a, b) => parseInt(out[a].mark, 10) - parseInt(out[b].mark, 10));
 
                         f = {
                             name: `Gear Lvl ${g.tier}`,
@@ -199,7 +199,7 @@ class Charactergear extends Command {
                         // If they want all the pieces, work on that
 
                             const out = await expandPieces(Bot, g.equipmentSetList);
-                            const outK = Object.keys(out).sort((a, b) => parseInt(out[a].mark) - parseInt(out[b].mark));
+                            const outK = Object.keys(out).sort((a, b) => parseInt(out[a].mark, 10) - parseInt(out[b].mark, 10));
 
                             fields.push({
                                 name: `Gear Lvl ${g.tier}`,

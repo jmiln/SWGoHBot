@@ -217,10 +217,10 @@ class UserConf extends Command {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_MISSING_WARNING"));
                     } else if (isNaN(setting)) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_WARNING"));
-                    } else if (parseInt(setting) < 0 || parseInt(setting) > 1440) {
+                    } else if (parseInt(setting, 10) < 0 || parseInt(setting, 10) > 1440) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_NUMBER"));
                     }
-                    user.arenaAlert.payoutWarning = parseInt(setting);
+                    user.arenaAlert.payoutWarning = parseInt(setting, 10);
                 } else {
                     return super.error(message, message.language.get("COMMAND_USERCONF_ARENA_INVALID_OPTION"), {title: "Invalid Option"});
                 }

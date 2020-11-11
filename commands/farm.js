@@ -63,7 +63,7 @@ class Farm extends Command {
             if (mission.campaignMapId === "PRELUDE") continue;
             const battle = await Bot.swgohAPI.battles(mission.campaignId);
             const found = battle[0].campaignMapList.find(c => c.id === mission.campaignMapId);
-            out += parseInt(found.id.replace(/[^\d]/g, ""));
+            out += parseInt(found.id.replace(/[^\d]/g, ""), 10);
             let tier;
             found.difficultyList.forEach(d => {
                 const node = d.nodeList.find(n => n.id === mission.campaignNodeId);

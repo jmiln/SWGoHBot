@@ -75,7 +75,7 @@ class Shardtimes extends Command {
                         if (match) {
                             // It's a UTC +/- zone
                             zoneType = "utc";
-                            timezone = parseInt(`${match[1]}${parseInt(match[2] * 60) + parseInt(match[3])}`);
+                            timezone = parseInt(`${match[1]}${parseInt(match[2] * 60, 10) + parseInt(match[3], 10)}`, 10);
                         } else {
                             // Grumble that it's an invalid tz
                             return super.error(message, message.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
@@ -90,7 +90,7 @@ class Shardtimes extends Command {
                 if (match) {
                     // It's a valid time until payout
                     const [hour, minute] = timeTil.split(":");
-                    const [tempH, tempM] = momentTZ.tz("UTC").add(hour, "h").add(minute, "m").format("HH:mm").split(":").map(t => parseInt(t));
+                    const [tempH, tempM] = momentTZ.tz("UTC").add(hour, "h").add(minute, "m").format("HH:mm").split(":").map(t => parseInt(t, 10));
                     const totalMin = (tempH * 60) + tempM;
                     const rounded = Math.round(totalMin / 15) * 15;
                     timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;

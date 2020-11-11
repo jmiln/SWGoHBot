@@ -56,7 +56,7 @@ class MyProfile extends Command {
         };
 
         player.roster.forEach(c => {
-            if (!parseInt(c.rarity)) {
+            if (!parseInt(c.rarity, 10)) {
                 c.rarity = rarityMap[c.rarity];
             }
         });
