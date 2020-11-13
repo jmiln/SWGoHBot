@@ -54,7 +54,7 @@ class Showconf extends Command {
                 array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
             }
             var configKeys = array.join("\n");
-            return message.channel.send(message.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName));
+            return message.channel.send(message.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName), {split: true});
         } else {
             Bot.logger.error("Something broke in showconf");
         }

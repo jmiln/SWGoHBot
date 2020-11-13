@@ -50,7 +50,7 @@ class GuildSearch extends Command {
 
         // If there's enough elements in args, and it's in the format of a number*
         if (!options.flags.mods && args.length && !isNaN(parseInt(args[args.length-1], 10)) && /^\d+$/.test(args[args.length-1].toString())) {
-            starLvl = parseInt(args.pop(, 10));
+            starLvl = parseInt(args.pop(), 10);
             if (starLvl < 0 || starLvl > 7) {
                 return super.error(message, message.language.get("COMMAND_GUILDSEARCH_BAD_STAR"), {example: "guildsearch c3po 7\n;guildsearch falcon -s 7"});
             }

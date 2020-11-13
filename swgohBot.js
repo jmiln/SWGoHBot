@@ -156,11 +156,11 @@ const init = async () => {
             const result = client.loadCommand(props.help.name);
             if (result) cmdError.push(`Unable to load command: ${f}`);
         } catch (e) {
-            Bot.logger.warn("Init", `Unable to load command ${f}: ${e}`);
+            Bot.logger.warn(`[INIT] Unable to load command ${f}: ${e}`);
         }
     });
     if (cmdError.length) {
-        Bot.logger.warn("cmdLoad", cmdError.join("\n"));
+        Bot.logger.warn("cmdLoad: " + cmdError.join("\n"));
     }
 
     // Then we load events, which will include our message and ready event.
