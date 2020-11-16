@@ -807,7 +807,7 @@ class Event extends Command {
                     try {
                         const res = await updateEvent(oldId, event);
                         if (res) {
-                            return super.error(message, message.language.get("COMMAND_EVENT_EDIT_UPDATED", target, cFrom, cTo), {title: "Success", color: "#00ff00"});
+                            return super.error(message, removeTags(message, message.language.get("COMMAND_EVENT_EDIT_UPDATED", target, cFrom, cTo)), {title: "Success", color: "#00ff00"});
                         } else {
                             return super.error(message, message.language.get("COMMAND_EVENT_EDIT_BROKE"));
                         }
@@ -851,7 +851,6 @@ class Event extends Command {
             if (roleResult !== null) {
                 roleResult.forEach(role => {
                     const roleID = role.replace(/\D/g,"");
-                    // const roleName = message.guild.roles.cache.find("id", roleID).name;
                     let roleName;
                     try {
                         roleName = message.guild.roles.cache.get(roleID).name;
