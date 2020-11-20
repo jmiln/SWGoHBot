@@ -478,7 +478,7 @@ class ArenaWatch extends Command {
 
                 let [, arena] = args;
                 const arenas = ["none", "both", "char", "fleet"];
-                arena = arena.toString().toLowerCase();
+                arena = arena?.toString().toLowerCase();
 
                 if (!arena || !arenas.includes(arena)) {
                     return super.error(message, `Invalid arena. Valid options are: \`${arenas.join(", ")}\``, {example: "aw warn 123123123 30 both"});
@@ -546,6 +546,30 @@ class ArenaWatch extends Command {
                         return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
                     });
 
+                    const fields = [];
+                    if (ac.length > 25) {
+                        fields.push({
+                            name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
+                            value: ac.slice(0,25).join("\n")
+                        });
+                        fields.push({
+                            name: "-",
+                            value: ac.slice(25).join("\n")
+                        });
+                    } else {
+                        fields.push({
+                            name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
+                            value: `${ac.length ? ac.join("\n") : "**N/A**"}`
+                        });
+                    }
+                    fields.push({
+                        name: "**Payout Settings**",
+                        value: [
+                            `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
+                            `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
+                        ].join("\n")
+                    });
+
 
                     return message.channel.send({embed: {
                         title: "Arena Watch Settings",
@@ -554,19 +578,7 @@ class ArenaWatch extends Command {
                             `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${charChan}`,
                             `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
                         ].join("\n"),
-                        fields: [
-                            {
-                                name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
-                                value: `${ac.length ? ac.join("\n") : "**N/A**"}`
-                            },
-                            {
-                                name: "**Payout Settings**",
-                                value: [
-                                    `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
-                                    `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
-                                ].join("\n")
-                            }
-                        ]
+                        fields: fields
                     }});
                 } else {
                     if (Bot.isAllyCode(args[0])) {
