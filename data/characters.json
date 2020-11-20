@@ -3714,6 +3714,25 @@
         }
     },
     {
+        "name": "IG-11",
+        "uniqueName": "IG11",
+        "aliases": [
+            "IG-11"
+        ],
+        "nameVariant": [
+            "IG-11"
+        ],
+        "url": "http://swgoh.gg/characters/ig-11/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/IG11/",
+        "side": "light",
+        "factions": [
+            "Droid",
+            "Healer",
+            "Scoundrel"
+        ],
+        "mods": {}
+    },
+    {
         "name": "IG-86 Sentinel Droid",
         "uniqueName": "IG86SENTINELDROID",
         "aliases": [

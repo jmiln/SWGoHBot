@@ -16274,6 +16274,181 @@
         "activate_shard_count": 25
     },
     {
+        "name": "IG-11",
+        "base_id": "IG11",
+        "pk": 638,
+        "url": "http://swgoh.gg/characters/ig-11/",
+        "image": "/game-asset/u/IG11/",
+        "power": 29347,
+        "description": "Versatile Healer with strong Scoundrel and Droid synergies",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "005",
+                    "010",
+                    "010",
+                    "007",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "021",
+                    "015",
+                    "026",
+                    "018",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "050",
+                    "050",
+                    "041",
+                    "041",
+                    "037",
+                    "045"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "042",
+                    "047",
+                    "049",
+                    "060",
+                    "060"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "080",
+                    "075",
+                    "057",
+                    "084",
+                    "057",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "081",
+                    "055",
+                    "079",
+                    "092",
+                    "079",
+                    "089"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "068",
+                    "109",
+                    "080",
+                    "086",
+                    "109",
+                    "108"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "099",
+                    "101",
+                    "111",
+                    "091",
+                    "117",
+                    "109"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "112",
+                    "108",
+                    "096",
+                    "125",
+                    "106",
+                    "120"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "116",
+                    "117",
+                    "139",
+                    "109",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "096",
+                    "129",
+                    "153",
+                    "117",
+                    "140",
+                    "139"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "165",
+                    "171",
+                    "168",
+                    "G12Finisher_IG11_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Droid",
+            "Healer",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "DoT",
+            "Foresight",
+            "Taunt",
+            "Tenacity Down"
+        ],
+        "role": "Healer",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "IG-86 Sentinel Droid",
         "base_id": "IG86SENTINELDROID",
         "pk": 167,
