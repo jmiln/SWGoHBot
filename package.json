@@ -18,20 +18,19 @@
         "async": "^3.2.0",
         "chalk": "^4.1.0",
         "cheerio": "^1.0.0-rc.3",
-        "discord.js": "^12.4.1",
+        "discord.js": "^12.5.0",
         "fuse-js-latest": "^3.1.0",
         "moment-duration-format": "^2.3.2",
-        "moment-timezone": "^0.5.31",
-        "mongodb": "^3.5.7",
+        "moment-timezone": "^0.5.32",
+        "mongodb": "^3.6.3",
         "ms": "^2.1.2",
-        "mysql": "^2.17.1",
         "node-fetch": "^2.6.1",
         "node-schedule": "^1.3.2",
-        "pg": "^8.0.3",
+        "pg": "^8.5.1",
         "pg-hstore": "^2.3.3",
-        "sequelize": "^5.21.3",
-        "swgoh-client-stub": "^1.2.1",
-        "swgoh-stat-calc": "^1.1.0"
+        "sequelize": "^5.22.3",
+        "swgoh-client-stub": "^1.4.2",
+        "swgoh-stat-calc": "^1.1.1"
     },
     "engines": {
         "node": "^8.4.0"
