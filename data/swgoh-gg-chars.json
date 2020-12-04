@@ -22542,6 +22542,183 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Moff Gideon",
+        "base_id": "MOFFGIDEONS1",
+        "pk": 691,
+        "url": "http://swgoh.gg/characters/moff-gideon/",
+        "image": "/game-asset/u/MOFFGIDEONS1/",
+        "power": 32328,
+        "description": "Empire Leader that can lead a fireteam into battle and punish enemies with the Leader tag",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "007",
+                    "009",
+                    "003",
+                    "004",
+                    "004",
+                    "001"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "032",
+                    "015",
+                    "028",
+                    "017",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "062",
+                    "076",
+                    "054",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "043",
+                    "058",
+                    "024",
+                    "073",
+                    "054",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "093",
+                    "043",
+                    "086",
+                    "093",
+                    "073",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "096",
+                    "074",
+                    "092",
+                    "092",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "106",
+                    "024",
+                    "100",
+                    "106"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "114",
+                    "101",
+                    "110",
+                    "112",
+                    "118",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "173",
+                    "095",
+                    "096",
+                    "111",
+                    "106",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "112",
+                    "130",
+                    "125",
+                    "114",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "173",
+                    "130",
+                    "114",
+                    "114",
+                    "144",
+                    "137"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "164",
+                    "160",
+                    "168",
+                    "168",
+                    "G12Finisher_MOFFGIDEONS1_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire",
+            "Imperial Trooper",
+            "Leader",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Daze",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Revive",
+            "Taunt"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Mon Mothma",
         "base_id": "MONMOTHMA",
         "pk": 543,

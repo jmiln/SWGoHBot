@@ -3717,7 +3717,8 @@
         "name": "IG-11",
         "uniqueName": "IG11",
         "aliases": [
-            "IG-11"
+            "IG-11",
+            "IG11"
         ],
         "nameVariant": [
             "IG-11"
@@ -4991,6 +4992,26 @@
                 "source": "Crouching Rancor"
             }
         }
+    },
+    {
+        "name": "Moff Gideon",
+        "uniqueName": "MOFFGIDEONS1",
+        "aliases": [
+            "Moff Gideon"
+        ],
+        "nameVariant": [
+            "Moff Gideon"
+        ],
+        "url": "http://swgoh.gg/characters/moff-gideon/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/MOFFGIDEONS1/",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Imperial Trooper",
+            "Leader",
+            "Support"
+        ],
+        "mods": {}
     },
     {
         "name": "Mon Mothma",
