@@ -514,7 +514,7 @@ module.exports = (Bot, client) => {
     });
 
     process.on("unhandledRejection", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(`${process.cwd()}`, "g"), ".");
+        const errorMsg = err.stack.replace(new RegExp(process.cwd(), "g"), ".");
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
             Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
