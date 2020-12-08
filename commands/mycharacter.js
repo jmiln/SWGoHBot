@@ -176,9 +176,11 @@ class MyCharacter extends Command {
                 "Tenacity":                 "TENACITY",
                 "Health Steal":             "HPSTEAL",
                 "Defense Penetration":      "DEFENSEPEN",
+                "Physical Accuracy":        "ACCURACY",
                 "Physical Offense":         "PHYSOFF",
                 "Physical Damage":          "PHYSDMG",
                 "Physical Critical Chance": "PHYSCRIT",
+                "Physical Critical Rating": "PHYSCRIT",
                 "Armor Penetration":        "ARMORPEN",
                 "Accuracy":                 "ACCURACY",
                 "Physical Survivability":   "PHYSSURV",
@@ -188,6 +190,7 @@ class MyCharacter extends Command {
                 "Special Offense":          "SPECOFF",
                 "Special Damage":           "SPECDMG",
                 "Special Critical Chance":  "SPECCRIT",
+                "Special Critical Rating":  "SPECCRIT",
                 "Resistance Penetration":   "RESPEN",
                 "Special Survivability":    "SPECSURV",
                 "Resistance":               "RESISTANCE",
@@ -205,15 +208,22 @@ class MyCharacter extends Command {
                 Bot.logger.error("[MC] Getting maxLen broke: " + e);
             }
 
+            // Stick in some standatd keys to help it not be wonky
+            if (stats.final["Physical Accuracy"] && stats.final["Special Accuracy"]) stats.final["Accuracy"] = stats.final["Physical Accuracy"];
+            if (stats.final["Physical Critical Rating"]) stats.final["Physical Critical Chance"] = stats.final["Physical Critical Rating"];
+            if (stats.final["Special Critical Rating"]) stats.final["Special Critical Chance"] = stats.final["Special Critical Rating"];
+
             const statArr = [];
             Object.keys(statNames).forEach(sn => {
                 let statStr = "== " + sn + " ==\n";
                 statNames[sn].forEach(s => {
+                    if (s.indexOf("Rating") >= 0) s = s.replace("Rating", "Chance");
                     if (!stats.final[s]) stats.final[s] = 0;
+                    const rep = maxLen - langStr[langMap[s]].length;
                     if (s === "Dodge Chance" || s === "Deflection Chance") {
-                        statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: 2.00%\n`;
+                        statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: 2.00%\n`;
                     } else {
-                        statStr += `${langStr[langMap[s]]}${" ".repeat(maxLen - langStr[langMap[s]].length)} :: `;
+                        statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: `;
                         const str = stats.final[s] % 1 === 0 ? stats.final[s].toLocaleString() : (stats.final[s] * 100).toFixed(2)+"%";
                         const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s].toLocaleString()})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
                         statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
