@@ -1109,7 +1109,7 @@ module.exports = class extends Language {
                     `Off 100+ :: ${mods.off100}`
                 ].join("\n")
             }),
-            COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
+            COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount, relicCount) => ({
                 header: `Characters (${charList.length})`,
                 stats: [
                     `Char GP  :: ${gpChar}`,
@@ -1117,6 +1117,8 @@ module.exports = class extends Language {
                     `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
                     `Gear 11  :: ${charList.filter(c => c.gear === 11).length}`,
                     `Gear 12  :: ${charList.filter(c => c.gear === 12).length}`,
+                    `Gear 13  :: ${charList.filter(c => c.gear === 13).length}`,
+                    `Relic 7  :: ${relicCount ? relicCount[7] : 0}`,
                     `Zetas    :: ${zetaCount}`
                 ].join("\n")
             }),

@@ -135,7 +135,7 @@ class MyProfile extends Command {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get all zetas for that character
             zetaCount += thisZ.length;
         });
-        const charOut = message.language.get("COMMAND_MYPROFILE_CHARS", gpChar.toLocaleString(), charList, zetaCount);
+        const charOut = message.language.get("COMMAND_MYPROFILE_CHARS", gpChar.toLocaleString(), charList, zetaCount, relicCount);
         fields.push({
             name: charOut.header,
             value: [

@@ -30,12 +30,12 @@ class GuildSearch extends Command {
         const reverse = options.flags.reverse;
         const gears = [9,10,11,12,13];
         const rarityMap = {
-            "ONESTAR": 1,
-            "TWOSTAR": 2,
+            "ONESTAR":   1,
+            "TWOSTAR":   2,
             "THREESTAR": 3,
-            "FOURSTAR": 4,
-            "FIVESTAR": 5,
-            "SIXSTAR": 6,
+            "FOURSTAR":  4,
+            "FIVESTAR":  5,
+            "SIXSTAR":   6,
             "SEVENSTAR": 7
         };
         let top = null;

@@ -63,7 +63,7 @@ class Mods extends Command {
                 sets[i] = getLocalizedModString(thisSet);
             }
 
-            return {
+            const modOut = {
                 "sets"     : sets,
                 "square"   : getLocalizedModString(modAdvice.square),
                 "arrow"    : getLocalizedModString(modAdvice.arrow),
@@ -73,6 +73,7 @@ class Mods extends Command {
                 "cross"    : getLocalizedModString(modAdvice.cross),
                 "source"   : modAdvice.source
             };
+            return modOut;
         };
 
         const getCharacterMods = function(character) {
