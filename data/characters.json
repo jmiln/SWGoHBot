@@ -6696,7 +6696,10 @@
         "name": "Supreme Leader Kylo Ren",
         "uniqueName": "SUPREMELEADERKYLOREN",
         "aliases": [
-            "Supreme Leader Kylo Ren"
+            "Supreme Leader Kylo Ren",
+            "Supreme Leader",
+            "SLKR",
+            "SLK"
         ],
         "nameVariant": [
             "Supreme Leader Kylo Ren"
