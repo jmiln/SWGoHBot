@@ -141,7 +141,15 @@ module.exports = async (Bot, message) => {
 
         // If they're just looking for the help, don't bother going through the command
         if (args.length === 1 && args[0].toLowerCase() === "help") {
-            Bot.helpOut(message, cmd);
+            try {
+                Bot.helpOut(message, cmd);
+            } catch (err) {
+                if (cmd.help.name === "test") {
+                    console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+                } else {
+                    Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+                }
+            }
         } else {
             try {
                 await cmd.run(Bot, message, args, {
