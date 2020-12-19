@@ -19,12 +19,16 @@ module.exports = async (Bot, client) => {
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
                 setInterval(async () => {
+                    // Check all the personal ranks   (To send to DMs)
                     await Bot.getRanks();
+
+                    // Check all the ranks for shards (To send to channels)
                     await Bot.shardRanks();
 
-                    // Only run the shard payout thing on :5, :10, :15, etc
+                    // Only run the shard payout thing every 5min (on :5, :10, :15, etc)
                     const min = new Date().getMinutes();
                     if (min % 5 === 0) {
+                        // Update the shard payout monitors
                         await Bot.shardTimes();
                     }
                 }, 1 * 60 * 1000);
