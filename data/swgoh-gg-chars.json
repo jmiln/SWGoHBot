@@ -31228,6 +31228,186 @@
         "activate_shard_count": 25
     },
     {
+        "name": "The Mandalorian (Beskar Armor)",
+        "base_id": "THEMANDALORIANBESKARARMOR",
+        "pk": 724,
+        "url": "http://swgoh.gg/characters/the-mandalorian-beskar-armor/",
+        "image": "/game-asset/u/THEMANDALORIANBESKARARMOR/",
+        "power": 34605,
+        "description": "Fearless Scoundrel leader who hunts down enemies to protect his allies",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "001",
+                    "003",
+                    "005",
+                    "003",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "003",
+                    "022",
+                    "016",
+                    "021",
+                    "021",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "021",
+                    "043",
+                    "055",
+                    "050",
+                    "062",
+                    "055"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "039",
+                    "058",
+                    "060",
+                    "055",
+                    "063",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "021",
+                    "038",
+                    "041",
+                    "040",
+                    "064",
+                    "089"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "079",
+                    "084",
+                    "086",
+                    "075",
+                    "084",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "102",
+                    "064",
+                    "092",
+                    "099",
+                    "110"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "172",
+                    "107",
+                    "172",
+                    "112",
+                    "092",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "112",
+                    "117",
+                    "108",
+                    "173",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "120",
+                    "173",
+                    "173",
+                    "138",
+                    "135",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "129",
+                    "129",
+                    "138",
+                    "139",
+                    "116",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "158",
+                    "160",
+                    "170",
+                    "171",
+                    "G12Finisher_THEMANDALORIANBESKARARMOR_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Leader",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "DoT",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Remove Turn Meter",
+            "Reset Cooldown",
+            "Stealth",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Threepio & Chewie",
         "base_id": "C3POCHEWBACCA",
         "pk": 509,
