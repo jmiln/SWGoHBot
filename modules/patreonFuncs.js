@@ -87,7 +87,7 @@ module.exports = (Bot, client) => {
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
                     await Bot.wait(750);
-                    return Bot.logger.error("Broke in getRanks: " + e.message);
+                    return Bot.logger.error("Broke in getRanks: " + e);
                 }
                 if (!acc.lastCharRank) {
                     acc.lastCharRank = 0;

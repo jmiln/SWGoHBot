@@ -514,11 +514,12 @@ module.exports = (Bot, client) => {
     });
 
     process.on("unhandledRejection", (err) => {
+        console.log(err);
         const errorMsg = err.stack.replace(new RegExp(process.cwd(), "g"), ".");
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
             Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
-        console.error(`Uncaught Promise Error: ${errorMsg}`, true);
+        console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`, true);
         try {
             if (Bot.config.logs.logToChannel) {
                 client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
