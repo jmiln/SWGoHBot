@@ -785,11 +785,12 @@ module.exports = class extends Language {
             COMMAND_GUILDS_REG_NEEDED: "I can't find a guild for that user. Please make sure the ally code is correct.",
             COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ix}/${len})`,
             COMMAND_GUILDS_RAID_STRINGS: {
-                header:    "Raids",
-                rancor:    "Rancor: ",
-                aat:       "AAT:    ",
-                sith_raid: "Sith:   ",
-                heroic:    "Heroic"
+                header:              "Raids",
+                rancor:              "Rancor:      ",
+                rancor_challenge:    "Chal Rancor: ",
+                aat:                 "AAT:         ",
+                sith_raid:           "Sith:        ",
+                heroic:              "Heroic"
             },
             COMMAND_GUILDS_STAT_HEADER: "Stats",
             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
