@@ -322,7 +322,7 @@ class Event extends Command {
                                 err.push(message.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
                             }
 
-                            if (json.message.length) {
+                            if (json.message?.length) {
                                 newEvent.eventMessage = json.message;
                             }
                             if (json.channel) {
