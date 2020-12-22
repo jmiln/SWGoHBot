@@ -113,24 +113,19 @@ class MyProfile extends Command {
             6: {"c": 0, "s": 0},
             7: {"c": 0, "s": 0}
         };
-        const relicCount = {
-            1: 0,
-            2: 0,
-            3: 0,
-            4: 0,
-            5: 0,
-            6: 0,
-            7: 0
-        };
+        const relicTiers = ["LOCKED", "UNLOCKED", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const relicCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0};
 
         // Get the Character stats
         let zetaCount = 0;
         const charList = player.roster.filter(u => u.combatType === "CHARACTER" || u.combatType === 1);
         charList.forEach(char => {
             rarityCount[char.rarity].c += 1;
-            if (char.relic && char.relic.currentTier && char.relic.currentTier > 2) {
-                if (!relicCount[char.relic.currentTier - 3]) relicCount[char.relic.currentTier - 3] = 0;
-                relicCount[char.relic.currentTier - 2] += 1;
+            if (char.relic?.currentTier && char.relic.currentTier > 2) {
+                if (!relicCount[relicTiers[char.relic.currentTier]]) {
+                    relicCount[relicTiers[char.relic.currentTier]] = 0;
+                }
+                relicCount[relicTiers[char.relic.currentTier]] += 1;
             }
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get all zetas for that character
             zetaCount += thisZ.length;

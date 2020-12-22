@@ -1119,7 +1119,7 @@ module.exports = class extends Language {
                     `Gear 11  :: ${charList.filter(c => c.gear === 11).length}`,
                     `Gear 12  :: ${charList.filter(c => c.gear === 12).length}`,
                     `Gear 13  :: ${charList.filter(c => c.gear === 13).length}`,
-                    `Relic 7  :: ${relicCount ? relicCount[7] : 0}`,
+                    `Relic 7+ :: ${relicCount ?  Object.keys(relicCount).reduce((acc, curr) => (curr >= 7 ? relicCount[curr] : 0) + acc, 0): 0}`,
                     `Zetas    :: ${zetaCount}`
                 ].join("\n")
             }),
