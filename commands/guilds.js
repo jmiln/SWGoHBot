@@ -246,7 +246,10 @@ class Guilds extends Command {
                 ["CAPITALCHIMAERA",         "Chimaera"],
                 ["CAPITALJEDICRUISER",      "Endurance"],
                 ["CAPITALSTARDESTROYER",    "Executrix"],
-                ["CAPITALMONCALAMARICRUISER", "Home One"]
+                ["CAPITALMONCALAMARICRUISER", "Home One"],
+                ["CAPITALMALEVOLENCE",      "Malevolence"],
+                ["CAPITALFINALIZER",        "Finalizer"],
+                ["CAPITALRADDUS",           "Raddus"]
             ];
 
             const allNames = guildChecklist.map(c => c[1]);
@@ -258,7 +261,7 @@ class Guilds extends Command {
             guildChecklist.forEach((char, ix) => {
                 if (Array.isArray(char)) {
                     const defId = char[0];
-                    const roster = guildMembers.map(p => p.roster.find(c => c.defId === defId));
+                    const roster = guildMembers.filter(p => p.roster.find(c => c.defId === defId)).map(p => p.roster.find(c => c.defId === defId));
                     let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
                     if (roster && roster.length) {
                         total = roster.length;
