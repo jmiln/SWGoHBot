@@ -113,8 +113,8 @@ class MyProfile extends Command {
             6: {"c": 0, "s": 0},
             7: {"c": 0, "s": 0}
         };
-        const relicTiers = ["LOCKED", "UNLOCKED", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        const relicCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0};
+        const relicTiers = ["baseZero", "LOCKED", "UNLOCKED", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const relicCount = { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0};
 
         // Get the Character stats
         let zetaCount = 0;
@@ -130,6 +130,7 @@ class MyProfile extends Command {
             const thisZ = char.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get all zetas for that character
             zetaCount += thisZ.length;
         });
+        console.log(relicCount);
         const charOut = message.language.get("COMMAND_MYPROFILE_CHARS", gpChar.toLocaleString(), charList, zetaCount, relicCount);
         fields.push({
             name: charOut.header,
