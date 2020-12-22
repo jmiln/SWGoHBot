@@ -161,7 +161,7 @@ class MyProfile extends Command {
             ].join("\n")
         });
 
-        /*  Uncomment this to show the rarity stats/ averages
+        //  Uncomment this to show the rarity stats/ averages
         const totalChars    =  Object.keys(rarityCount).map(r => rarityCount[r].c).reduce((a,b) => a + b, 0);
         const avgCharRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].c).reduce((a,b) => a + b, 0) / totalChars).toFixed(2);
         const totalShips    =  Object.keys(rarityCount).map(r => rarityCount[r].s).reduce((a,b) => a + b, 0);
@@ -173,7 +173,6 @@ class MyProfile extends Command {
                 `\`AVG| ${" ".repeat(4 - avgCharRarity.toString().length)}${avgCharRarity} | ${" ".repeat(4 - avgShipRarity.toString().length)}${avgShipRarity} \``
             ].join("\n")
         });
-        */
 
         if (player.warnings) {
             fields.push({
