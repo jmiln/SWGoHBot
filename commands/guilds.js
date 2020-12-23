@@ -246,22 +246,28 @@ class Guilds extends Command {
                 ["CAPITALCHIMAERA",         "Chimaera"],
                 ["CAPITALJEDICRUISER",      "Endurance"],
                 ["CAPITALSTARDESTROYER",    "Executrix"],
+                ["CAPITALFINALIZER",        "Finalizer"],
                 ["CAPITALMONCALAMARICRUISER", "Home One"],
                 ["CAPITALMALEVOLENCE",      "Malevolence"],
-                ["CAPITALFINALIZER",        "Finalizer"],
                 ["CAPITALRADDUS",           "Raddus"]
             ];
 
             const allNames = guildChecklist.map(c => c[1]);
             const longest = allNames.reduce((long, str) => Math.max(long, str.length), 0);
 
+            const unitHeader = [
+                `**\`${"Name" + " ".repeat(longest-4)}Total G12  G11   7*\`**`,
+                "**`===============================`**"
+            ];
+
             let charOut = [];
-            charOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total G12  G11   7*\`**`);
-            charOut.push("**`==============================`**");
             guildChecklist.forEach((char, ix) => {
                 if (Array.isArray(char)) {
                     const defId = char[0];
-                    const roster = guildMembers.filter(p => p.roster.find(c => c.defId === defId)).map(p => p.roster.find(c => c.defId === defId));
+                    const roster = guildMembers
+                        .filter(p => p.roster.find(c => c.defId === defId))
+                        .map(p => p.roster.find(c => c.defId === defId));
+
                     let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
                     if (roster && roster.length) {
                         total = roster.length;
@@ -273,6 +279,7 @@ class Guilds extends Command {
                     charOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
                 } else {
                     charOut.push(`\n**${char}**`);
+                    charOut.push(...unitHeader);
                 }
             });
             charOut = charOut.map(c => Bot.expandSpaces(c));
