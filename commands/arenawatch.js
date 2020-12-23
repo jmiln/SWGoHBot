@@ -344,7 +344,6 @@ class ArenaWatch extends Command {
                             return;
                         }
 
-                        console.log(code, ac, mention);
                         codes.push({
                             code: parseInt(ac, 10),
                             mention: mention
