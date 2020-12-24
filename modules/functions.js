@@ -10,6 +10,9 @@ module.exports = (Bot, client) => {
     // A zero-width-space
     Bot.zws = "\u200B";
 
+    // No-op (Do nothing)
+    Bot.noop = () => {};
+
     // Some normal color codes
     Bot.colors = {
         black:  "#000000",

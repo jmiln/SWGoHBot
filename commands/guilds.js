@@ -184,7 +184,8 @@ class Guilds extends Command {
                 });
             }
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
+            await msg.delete().catch(Bot.noop);
+            return message.channel.send({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
@@ -206,85 +207,61 @@ class Guilds extends Command {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return super.error(message, Bot.codeBlock(e), {
+                return super.error(msg, Bot.codeBlock(e), {
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit."
-                });
+                }, {edit: true});
             }
+
             // Possibly put this in the guildConf so guilds can have custom lists?
-            const guildChecklist = [
-                "Light Side",
-                ["BASTILASHAN",             "Bastila"],
-                ["BB8",                     "BB-8"],
-                ["C3POLEGENDARY",           "C-3PO"],
-                ["COMMANDERLUKESKYWALKER",  "CLS"],
-                ["ENFYSNEST",               "Enfys Nest"],
-                ["GENERALKENOBI",           "Gen. Kenobi"],
-                ["GRANDMASTERYODA",         "GM Yoda"],
-                ["HANSOLO",                 "Han Solo"],
-                ["HERMITYODA",              "Hermit Yoda"],
-                ["JEDIKNIGHTREVAN",         "Jedi Revan"],
-                ["R2D2_LEGENDARY",          "R2-D2"],
-                ["REYJEDITRAINING",         "Rey (JT)"],
-
-                "Dark Side",
-                ["BOSSK",                   "Bossk"],
-                ["MAUL",                    "Darth Maul"],
-                ["DARTHMALAK",              "Darth Malak"],
-                ["DARTHREVAN",              "Darth Revan"],
-                ["DARTHSION",               "Darth Sion"],
-                ["DARTHTRAYA",              "Darth Traya"],
-                ["GRIEVOUS",                "Gen Grievous"],
-                ["KYLORENUNMASKED",         "Kylo Unmask"],
-                ["VEERS",                   "Gen. Veers"],
-                ["EMPERORPALPATINE",        "Palpatine"],
-                ["MOTHERTALZIN",            "Talzin"],
-                ["GRANDADMIRALTHRAWN",      "Thrawn"],
-                ["WAMPA",                   "Wampa"],
-
-                "Ships",
-                ["CAPITALCHIMAERA",         "Chimaera"],
-                ["CAPITALJEDICRUISER",      "Endurance"],
-                ["CAPITALSTARDESTROYER",    "Executrix"],
-                ["CAPITALFINALIZER",        "Finalizer"],
-                ["CAPITALMONCALAMARICRUISER", "Home One"],
-                ["CAPITALMALEVOLENCE",      "Malevolence"],
-                ["CAPITALRADDUS",           "Raddus"]
-            ];
-
-            const allNames = guildChecklist.map(c => c[1]);
-            const longest = allNames.reduce((long, str) => Math.max(long, str.length), 0);
-
-            const unitHeader = [
-                `**\`${"Name" + " ".repeat(longest-4)}Total G12  G11   7*\`**`,
-                "**`===============================`**"
-            ];
-
-            let charOut = [];
-            guildChecklist.forEach((char, ix) => {
-                if (Array.isArray(char)) {
-                    const defId = char[0];
-                    const roster = guildMembers
-                        .filter(p => p.roster.find(c => c.defId === defId))
-                        .map(p => p.roster.find(c => c.defId === defId));
-
-                    let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
-                    if (roster && roster.length) {
-                        total = roster.length;
-                        g12 = roster.filter(c => c && c.gear === 12).length;
-                        g11 = roster.filter(c => c && c.gear === 11).length;
-                        sevenStar = roster.filter(c => c && c.rarity === 7).length;
-                    }
-                    const name = allNames[ix];
-                    charOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
-                } else {
-                    charOut.push(`\n**${char}**`);
-                    charOut.push(...unitHeader);
-                }
-            });
-            charOut = charOut.map(c => Bot.expandSpaces(c));
-
+            const guildCharacterChecklist = {
+                "Light Side": [
+                    ["BASTILASHAN",             "Bastila"],
+                    ["BB8",                     "BB-8"],
+                    ["C3POLEGENDARY",           "C-3PO"],
+                    ["COMMANDERLUKESKYWALKER",  "CLS"],
+                    ["ENFYSNEST",               "Enfys Nest"],
+                    ["GENERALKENOBI",           "Gen. Kenobi"],
+                    ["GRANDMASTERYODA",         "GM Yoda"],
+                    ["HANSOLO",                 "Han Solo"],
+                    ["HERMITYODA",              "Hermit Yoda"],
+                    ["JEDIKNIGHTREVAN",         "Jedi Revan"],
+                    ["R2D2_LEGENDARY",          "R2-D2"],
+                    ["REYJEDITRAINING",         "Rey (JT)"]
+                ],
+                "Dark Side": [
+                    ["BOSSK",                   "Bossk"],
+                    ["MAUL",                    "Darth Maul"],
+                    ["DARTHMALAK",              "Darth Malak"],
+                    ["DARTHREVAN",              "Darth Revan"],
+                    ["DARTHSION",               "Darth Sion"],
+                    ["DARTHTRAYA",              "Darth Traya"],
+                    ["GRIEVOUS",                "Gen Grievous"],
+                    ["KYLORENUNMASKED",         "Kylo Unmask"],
+                    ["VEERS",                   "Gen. Veers"],
+                    ["EMPERORPALPATINE",        "Palpatine"],
+                    ["MOTHERTALZIN",            "Talzin"],
+                    ["GRANDADMIRALTHRAWN",      "Thrawn"],
+                    ["WAMPA",                   "Wampa"]
+                ]
+            };
             const fields = [];
+            const charOut = twCategoryFormat(guildCharacterChecklist, 19, guildMembers, false);
+            fields.push(...charOut);
+
+            const guildShipChecklist = {
+                "Capital Ships": [
+                    ["CAPITALCHIMAERA",         "Chimaera"],
+                    ["CAPITALJEDICRUISER",      "Endurance"],
+                    ["CAPITALSTARDESTROYER",    "Executrix"],
+                    ["CAPITALFINALIZER",        "Finalizer"],
+                    ["CAPITALMONCALAMARICRUISER", "Home One"],
+                    ["CAPITALMALEVOLENCE",      "Malevolence"],
+                    ["CAPITALRADDUS",           "Raddus"]
+                ]
+            };
+            const shipOut = twCategoryFormat(guildShipChecklist, 8, guildMembers, true);
+            fields.push(...shipOut);
 
             if (options.defaults) {
                 fields.push({
@@ -298,12 +275,13 @@ class Guilds extends Command {
                     value: guildMembers.warnings.join("\n")
                 });
             }
+
             const footer = Bot.updatedFooter(guildMembers.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
+            await msg.delete().catch(Bot.noop);
+            return message.channel.send({embed: {
                 author: {
                     name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
                 },
-                description: charOut.join("\n"),
                 fields: fields,
                 footer: footer
             }});
@@ -378,6 +356,50 @@ class Guilds extends Command {
             }});
         }
     }
+}
+
+function twCategoryFormat(unitObj, divLen, guildMembers, ships=false) {
+    const fieldsOut = [];
+    for (const category of Object.keys(unitObj)) {
+        const unitOut = [];
+        const unitListArray = unitObj[category];
+        const longest = unitListArray.reduce((acc, curr) => Math.max(acc, curr[1].length), 0);
+        const divider = `**\`${"=".repeat(divLen + longest)}\`**`;
+        if (!ships) {
+            unitOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total G12  G11   7*\`**`);
+        } else {
+            unitOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total 7*\`**`);
+        }
+        unitOut.push(divider);
+
+        for (const unit of unitListArray) {
+            const defId = unit[0];
+            const roster = guildMembers
+                .filter(p => p.roster.find(c => c.defId === defId))
+                .map(p => p.roster.find(c => c.defId === defId));
+
+            let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
+            if (roster && roster.length) {
+                total = roster.length;
+                sevenStar = roster.filter(c => c && c.rarity === 7).length;
+                if (!ships) {
+                    g12 = roster.filter(c => c && c.gear === 12).length;
+                    g11 = roster.filter(c => c && c.gear === 11).length;
+                }
+            }
+            const name = unit[1];
+            if (!ships) {
+                unitOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
+            } else {
+                unitOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}  ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
+            }
+        }
+        fieldsOut.push({
+            name: category.toProperCase(),
+            value: unitOut.join("\n")
+        });
+    }
+    return fieldsOut;
 }
 
 module.exports = Guilds;
