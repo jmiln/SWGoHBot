@@ -22,6 +22,9 @@ class Guilds extends Command {
                 },
                 twsummary: {
                     aliases: ["tw"]
+                },
+                expand: {
+                    aliases: ["ex", "expanded"]
                 }
             },
             subArgs: {
@@ -194,6 +197,7 @@ class Guilds extends Command {
             }});
         } else if (options.flags.twsummary) {
             // Spit out a general summary of guild characters and such related to tw
+            const fields = [];
             let gRoster ;
             if (!guild || !guild.roster || !guild.roster.length) {
                 return super.error(msg, (message.language.get("BASE_SWGOH_NO_GUILD")), {edit: true, example: "guilds me -twsumary"});
@@ -213,6 +217,95 @@ class Guilds extends Command {
                 }, {edit: true});
             }
 
+            // Get overall stats for the guild
+            const charArenaMembers = guildMembers.filter(m => m?.arena?.char?.rank);
+            const charArenaAVG = (charArenaMembers.reduce((acc, curr) => acc + curr.arena.char.rank, 0) / charArenaMembers.length);
+            const shipArenaMembers = guildMembers.filter(m => m?.arena?.ship?.rank);
+            const shipArenaAVG = (shipArenaMembers.reduce((acc, curr) => acc + curr.arena.ship.rank, 0) / shipArenaMembers.length);
+            let zetaCount = 0;
+            for (const member of guildMembers) {
+                const zetaRoster = member.roster
+                    .map(char => char?.skills?.filter(s => s.isZeta && s.tier === s.tiers).length);
+                zetaCount += zetaRoster.reduce((acc, curr) => acc + curr, 0);
+            }
+            fields.push({
+                name: "General Stats",
+                value: Bot.codeBlock([
+                    `Members:        ${guild.roster.length}`,
+                    `GP:             ${guild.gp.shortenNum()}`,
+                    `AVG Char Arena: ${charArenaAVG.toFixed(2)}`,
+                    `AVG Ship Arena: ${shipArenaAVG.toFixed(2)}`,
+                    `Zetas:          ${zetaCount.toLocaleString()}`
+                ].join("\n"))
+            });
+
+            // Get the overall gear levels for the guild as a whole
+            const gearLvls = {};
+            const MAX_GEAR = 13;
+            for (let ix = MAX_GEAR; ix >= 1; ix--) {
+                let gearCount = 0;
+                for (const member of guildMembers) {
+                    gearCount += member.roster.filter(c => c && c.combatType === 1 && c.gear === ix).length;
+                }
+                if (gearCount > 0) {
+                    gearLvls[ix] = gearCount;
+                }
+            }
+            const tieredGear = Object.keys(gearLvls).reduce((acc, curr) => parseInt(acc, 10) + (gearLvls[curr] * curr), 0);
+            const totalGear = Object.keys(gearLvls).reduce((acc, curr) => parseInt(acc, 10) + gearLvls[curr]);
+            const avgGear = (tieredGear / totalGear);
+
+            fields.push({
+                name: "Character Gear Counts",
+                value: "*How many characters at each gear level*" +
+                Bot.codeBlock(Object.keys(gearLvls)
+                    .slice(options.flags.expand ? 0 : -4)
+                    .map(g => `G${g + " ".repeat(12-g.length)}:: ${" ".repeat(7-gearLvls[g].toLocaleString().length) + gearLvls[g].toLocaleString()}`).join("\n") +
+                    `\nAVG Gear Lvl :: ${" ".repeat(7-avgGear.toFixed(2).toString().length) + avgGear.toFixed(2)}`
+                )});
+
+            // Get the overall rarity levels for the guild as a whole
+            const rarityLvls = {};
+            for (let ix = 7; ix >= 1; ix--) {
+                let rarityCount = 0;
+                for (const member of guildMembers) {
+                    rarityCount += member.roster.filter(c => c && c.combatType === 1 && c.rarity === ix).length;
+                }
+                rarityLvls[ix] = rarityCount;
+            }
+            const tieredRarity = Object.keys(rarityLvls).reduce((acc, curr) => parseInt(acc, 10) + (rarityLvls[curr] * curr), 0);
+            const totalRarity = Object.keys(rarityLvls).reduce((acc, curr) => parseInt(acc, 10) + rarityLvls[curr]);
+            const avgRarity = (tieredRarity / totalRarity);
+            fields.push({
+                name: "Character Rarity Counts",
+                value: "*How many characters at each star level*" +
+                Bot.codeBlock(Object.keys(rarityLvls).splice(options.flags.expand ? 0 : -4).map(g => `${g}*           :: ${" ".repeat(7-rarityLvls[g].toLocaleString().length) + rarityLvls[g].toLocaleString()}`).join("\n") +
+                `\nAVG Star Lvl :: ${" ".repeat(7-avgRarity.toFixed(2).toString().length) + avgRarity.toFixed(2)}`)
+            });
+
+            // Get the overall relic levels for the guild as a whole
+            const relicLvls = {};
+            const MAX_RELIC = 8;
+            for (let ix = MAX_RELIC; ix >= 1; ix--) {
+                let relicCount = 0;
+                for (const member of guildMembers) {
+                    relicCount += member.roster.filter(c => c && c.combatType === 1 && c.relic?.currentTier-2 === ix).length;
+                }
+                if (relicCount > 0) {
+                    relicLvls[ix] = relicCount;
+                }
+            }
+            const tieredRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + (relicLvls[curr] * curr), 0);
+            const totalRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + relicLvls[curr]);
+            const avgRelic = (tieredRelic / totalRelic);
+            fields.push({
+                name: "Character Relic Counts",
+                value: "*How many characters at each relic tier*" +
+                Bot.codeBlock(Object.keys(relicLvls).splice(options.flags.expand ? 0 : -4).map(g => `R${g}            :: ${" ".repeat(7-relicLvls[g].toLocaleString().length) + relicLvls[g].toLocaleString()}`).join("\n") +
+                `\nAVG Relic Lvl :: ${" ".repeat(7-avgRelic.toFixed(2).toString().length) + avgRelic.toFixed(2)}`)
+            });
+
+            // Get general stats on how many of certain characters the guild has and at what gear
             // Possibly put this in the guildConf so guilds can have custom lists?
             const guildCharacterChecklist = {
                 "Light Side": [
@@ -245,7 +338,6 @@ class Guilds extends Command {
                     ["WAMPA",                   "Wampa"]
                 ]
             };
-            const fields = [];
             const charOut = twCategoryFormat(guildCharacterChecklist, 19, guildMembers, false);
             fields.push(...charOut);
 
@@ -276,7 +368,7 @@ class Guilds extends Command {
                 });
             }
 
-            const footer = Bot.updatedFooter(guildMembers.updated, message, "guild", cooldown);
+            const footer = Bot.updatedFooter(Math.min(...guildMembers.map(m => m.updated)), message, "guild", cooldown);
             await msg.delete().catch(Bot.noop);
             return message.channel.send({embed: {
                 author: {

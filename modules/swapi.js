@@ -147,7 +147,7 @@ module.exports = (Bot) => {
                 players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
             }
             const updated = options.force ? [] : players.filter(p => !isExpired(p.updated, cooldown));
-            const updatedAC = updated.map(p => p.allyCode);
+            const updatedAC = updated.map(p => parseInt(p.allyCode, 10));
             const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
 
             playerStats = playerStats.concat(updated);
