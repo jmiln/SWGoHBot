@@ -45,7 +45,7 @@ module.exports = (Bot) => {
             if (typeof name !== "string") name = name.toString();
 
             /** Try to get player's ally code from cache */
-            const player = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {name:name}, {allyCode: 1, _id: 0});
+            const player = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {name: new RegExp(name, "i")}, {name: 1, allyCode: 1, _id: 0});
 
             return player;
         } catch (e) {
