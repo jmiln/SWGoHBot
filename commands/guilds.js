@@ -308,6 +308,12 @@ class Guilds extends Command {
             // Get general stats on how many of certain characters the guild has and at what gear
             // Possibly put this in the guildConf so guilds can have custom lists?
             const guildCharacterChecklist = {
+                "Galactic Legends": [
+                    ["GLREY",                   "Rey"],
+                    ["GRANDMASTERLUKE",         "JM Luke"],
+                    ["SITHPALPATINE",           "SE Emperor"],
+                    ["SUPREMELEADERKYLOREN",    "SL Kylo Ren"]
+                ],
                 "Light Side": [
                     ["BASTILASHAN",             "Bastila"],
                     ["BB8",                     "BB-8"],
@@ -336,9 +342,9 @@ class Guilds extends Command {
                     ["MOTHERTALZIN",            "Talzin"],
                     ["GRANDADMIRALTHRAWN",      "Thrawn"],
                     ["WAMPA",                   "Wampa"]
-                ]
+                ],
             };
-            const charOut = twCategoryFormat(guildCharacterChecklist, 19, guildMembers, false);
+            const charOut = twCategoryFormat(guildCharacterChecklist, gearLvls, 19, guildMembers, false);
             fields.push(...charOut);
 
             const guildShipChecklist = {
@@ -352,7 +358,7 @@ class Guilds extends Command {
                     ["CAPITALRADDUS",           "Raddus"]
                 ]
             };
-            const shipOut = twCategoryFormat(guildShipChecklist, 8, guildMembers, true);
+            const shipOut = twCategoryFormat(guildShipChecklist, gearLvls, 8, guildMembers, true);
             fields.push(...shipOut);
 
             if (options.defaults) {
@@ -450,17 +456,23 @@ class Guilds extends Command {
     }
 }
 
-function twCategoryFormat(unitObj, divLen, guildMembers, ships=false) {
+function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships=false) {
     const fieldsOut = [];
+    const [gear1, gear2] = Object.keys(gearLvls).sort((a, b) => parseInt(a, 10) - parseInt(b, 10)).reverse().map(num => parseInt(num, 10));
+
     for (const category of Object.keys(unitObj)) {
         const unitOut = [];
         const unitListArray = unitObj[category];
         const longest = unitListArray.reduce((acc, curr) => Math.max(acc, curr[1].length), 0);
         const divider = `**\`${"=".repeat(divLen + longest)}\`**`;
-        if (!ships) {
-            unitOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total G12  G11   7*\`**`);
-        } else {
+        if (ships) {
             unitOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total 7*\`**`);
+        } else {
+            if (category === "Galactic Legends") {
+                unitOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total G${gear1}  G${gear2}  Ult\`**`);
+            } else {
+                unitOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total G${gear1}  G${gear2}   7*\`**`);
+            }
         }
         unitOut.push(divider);
 
@@ -470,20 +482,26 @@ function twCategoryFormat(unitObj, divLen, guildMembers, ships=false) {
                 .filter(p => p.roster.find(c => c.defId === defId))
                 .map(p => p.roster.find(c => c.defId === defId));
 
-            let total = 0, g12 = 0, g11 = 0, sevenStar = 0;
+            let total = 0, g1 = 0, g2 = 0, ult = 0, sevenStar = 0;
             if (roster && roster.length) {
                 total = roster.length;
-                sevenStar = roster.filter(c => c && c.rarity === 7).length;
+                if (category === "Galactic Legends") {
+                    ult = roster.filter(c => c && c.purchasedAbilityId.length).length;
+                } else {
+                    sevenStar = roster.filter(c => c && c.rarity === 7).length;
+                }
                 if (!ships) {
-                    g12 = roster.filter(c => c && c.gear === 12).length;
-                    g11 = roster.filter(c => c && c.gear === 11).length;
+                    g1 = roster.filter(c => c && c.gear === gear1).length;
+                    g2 = roster.filter(c => c && c.gear === gear2).length;
                 }
             }
             const name = unit[1];
-            if (!ships) {
-                unitOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g12.toString().length) + g12}   ${" ".repeat(2-g11.toString().length) + g11}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
-            } else {
+            if (category === "Galactic Legends") {
+                unitOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g1.toString().length) + g1}   ${" ".repeat(2-g2.toString().length) + g2}   ${" ".repeat(2-ult.toString().length) + ult}\``);
+            } else if (ships) {
                 unitOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}  ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
+            }  else {
+                unitOut.push(`\`${name + " ".repeat(longest-name.length)}  ${" ".repeat(2-total.toString().length) + total}   ${" ".repeat(2-g1.toString().length) + g1}   ${" ".repeat(2-g2.toString().length) + g2}   ${" ".repeat(2-sevenStar.toString().length) + sevenStar}\``);
             }
         }
         fieldsOut.push({
