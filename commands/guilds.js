@@ -458,7 +458,7 @@ class Guilds extends Command {
 
 function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships=false) {
     const fieldsOut = [];
-    const [gear1, gear2] = Object.keys(gearLvls).sort((a, b) => parseInt(a, 10) - parseInt(b, 10)).reverse().map(num => parseInt(num, 10));
+    const [gear1, gear2] = Object.keys(gearLvls).map(num => parseInt(num, 10)).sort((a, b) => b - a);
 
     for (const category of Object.keys(unitObj)) {
         const unitOut = [];
