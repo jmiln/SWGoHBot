@@ -955,6 +955,13 @@ module.exports = (Bot, client) => {
         };
     };
 
+    // Return a divider of  equals signs
+    Bot.getDivider = (count, divChar="=") => {
+        if (count <= 0) throw new Error("Invalid count value");
+        if (typeof divChar !== "string") throw new Error("divChar must be a string!");
+        return divChar.repeat(count);
+    };
+
     // Clean mentions out of messages and replace them with the text version
     Bot.cleanMentions = (guild, input) => {
         return input
