@@ -1839,6 +1839,21 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Whois command
+            COMMAND_WHOIS_HELP: {
+                description: "Find ally codes from a given name.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";whois <name>",
+                        args: {
+                            "name": "The name you want to find the ally code for"
+                        }
+                    }
+                ]
+            },
+
             // Zetas Command
             COMMAND_ZETA_NO_USER: "Sorry, but I don't have that user listed anywhere.",
             COMMAND_ZETA_NO_ZETAS: "You don't seem to have any abilities zetad.",
