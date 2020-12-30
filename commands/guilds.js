@@ -413,7 +413,7 @@ class Guilds extends Command {
                 guildShipGP += m.gpShip;
             });
             const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS",
-                guild.members,
+                guild.roster.length,
                 guild.required,
                 guild.gp.toLocaleString(),
                 guildCharGP.toLocaleString(),
