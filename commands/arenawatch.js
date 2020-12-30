@@ -8,7 +8,11 @@ class ArenaWatch extends Command {
             aliases: ["aw"],
             permissions: ["EMBED_LINKS"],
             flags: {},
-            subArgs: {}
+            subArgs: {
+                mark: {
+                    aliases: []
+                }
+            }
         });
     }
 
@@ -367,7 +371,8 @@ class ArenaWatch extends Command {
                             mention:  c.mention,
                             lastChar: player.arena.char ? player.arena.char.rank : null,
                             lastShip: player.arena.ship ? player.arena.ship.rank : null,
-                            poOffset: player.poUTCOffsetMinutes
+                            poOffset: player.poUTCOffsetMinutes,
+                            mark:     options.subArgs.mark ? options.subArgs.mark : null
                         });
                         outLog.push(c.code + " added!");
                     }
