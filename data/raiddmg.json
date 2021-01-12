@@ -6,7 +6,7 @@
             "1": {
                 "name": "Phase 1",
                 "dmg":  18730
-            }, 
+            },
             "2": {
                 "name": "Phase 2",
                 "dmg": 30550
@@ -18,6 +18,31 @@
             "4": {
                 "name": "Phase 4",
                 "dmg": 21080
+            }
+        }
+    },
+    {
+        "name": "cRancor",
+        "aliases": [
+            "Challenge Rancor",
+            "CR"
+        ],
+        "phases": {
+            "1": {
+                "name": "Phase 1",
+                "dmg":  155024800
+            },
+            "2": {
+                "name": "Phase 2",
+                "dmg": 41193988
+            },
+            "3": {
+                "name": "Phase 3",
+                "dmg": 39461352
+            },
+            "4": {
+                "name": "Phase 4",
+                "dmg": 37943604
             }
         }
     },
@@ -79,4 +104,3 @@
         }
     }
 ]
-
