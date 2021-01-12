@@ -24,8 +24,8 @@
     {
         "name": "cRancor",
         "aliases": [
-            "Challenge Rancor",
-            "CR"
+            "challengerancor",
+            "cr"
         ],
         "phases": {
             "1": {
