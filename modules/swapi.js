@@ -745,6 +745,9 @@ module.exports = (Bot) => {
                 }
             }
 
+            if (tempGuild.roster.length !== tempGuild.members) {
+                Bot.logger.error(`[swgohapi-guild] Missing players, only getting ${tempGuild.roster.length}/${tempGuild.members}`);
+            }
             guild = await cache.put(Bot.config.mongodb.swapidb, "guilds", {name: tempGuild.name}, tempGuild);
             if (warnings) guild.warnings = warnings;
         } else {

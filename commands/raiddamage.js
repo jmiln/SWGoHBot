@@ -65,11 +65,11 @@ class RaidDamage extends Command {
         const percent = amt.toString().endsWith("%");
         if (percent) {
             const tmpAmt = parseInt(amt.toString().replace(/\D/g, ""), 10);
-            outAmt = parseInt(tmpAmt * thisPhase.dmg, 10).toLocaleString() + " " + message.language.get("COMMAND_RAIDDAMAGE_DMG");
+            outAmt = parseInt((tmpAmt * thisPhase.dmg) / 100, 10).toLocaleString() + " " + message.language.get("COMMAND_RAIDDAMAGE_DMG");
         } else {
             const tmpAmt = parseInt(amt.toString().replace(/\D/g, ""), 10);
             amt = tmpAmt.toLocaleString();
-            outAmt = (tmpAmt / thisPhase.dmg).toFixed(2).toLocaleString() + "%";
+            outAmt = (100 * (tmpAmt / thisPhase.dmg)).toFixed(2).toLocaleString() + "%";
         }
 
         return message.channel.send({embed: {

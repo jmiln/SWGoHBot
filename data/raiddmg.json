@@ -24,17 +24,17 @@
     {
         "name": "cRancor",
         "aliases": [
-            "Challenge Rancor",
-            "CR"
+            "challengerancor",
+            "cr"
         ],
         "phases": {
             "1": {
                 "name": "Phase 1",
-                "dmg":  155024800
+                "dmg": 41193988
             },
             "2": {
                 "name": "Phase 2",
-                "dmg": 41193988
+                "dmg": 36423856
             },
             "3": {
                 "name": "Phase 3",
