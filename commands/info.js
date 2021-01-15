@@ -15,7 +15,7 @@ class Info extends Command {
         try {
             const guilds = await Bot.guildCount();
             const users = await Bot.userCount();
-            const content = message.language.get("COMMAND_INFO_OUTPUT");
+            const content = message.language.get("COMMAND_INFO_OUTPUT", message.client.shard.id);
             const fields = [];
             let desc = content.statHeader + "\n";
             const statTable = [
@@ -50,7 +50,7 @@ class Info extends Command {
 
             message.channel.send({embed: {
                 author: {
-                    name: content.header
+                    name: message.client.shard?.count ? content.shardHeader : content.header
                 },
                 description: Bot.codeBlock(desc, "asciidoc"),
                 fields: fields,
