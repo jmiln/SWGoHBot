@@ -7,6 +7,9 @@
     "node": true
   },
   "extends": "eslint:recommended",
+  "globals":{
+      "BigInt":true
+  },
   "rules": {
     "no-console": "off",
     "indent": [
