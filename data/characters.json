@@ -1126,6 +1126,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
+            "Mandalorian",
             "Old Republic",
             "Scoundrel"
         ],
@@ -2883,6 +2884,7 @@
         "factions": [
             "Empire",
             "Leader",
+            "Mandalorian",
             "Tank"
         ],
         "mods": {
@@ -3894,7 +3896,8 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Empire"
+            "Empire",
+            "Mandalorian"
         ],
         "mods": {
             "General": {
@@ -3931,6 +3934,7 @@
             "Attacker",
             "Bounty Hunters",
             "Leader",
+            "Mandalorian",
             "Scoundrel",
             "Separatist"
         ],
@@ -6164,6 +6168,7 @@
         "side": "light",
         "factions": [
             "Attacker",
+            "Mandalorian",
             "Phoenix",
             "Rebel"
         ],
@@ -6882,6 +6887,25 @@
         }
     },
     {
+        "name": "The Armorer",
+        "uniqueName": "ARMORER",
+        "aliases": [
+            "The Armorer"
+        ],
+        "nameVariant": [
+            "The Armorer"
+        ],
+        "url": "http://swgoh.gg/characters/the-armorer/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/ARMORER/",
+        "side": "light",
+        "factions": [
+            "Leader",
+            "Mandalorian",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "The Mandalorian",
         "uniqueName": "THEMANDALORIAN",
         "aliases": [
@@ -6898,6 +6922,7 @@
             "Attacker",
             "Bounty Hunters",
             "Leader",
+            "Mandalorian",
             "Scoundrel"
         ],
         "mods": {
@@ -6932,6 +6957,7 @@
         "factions": [
             "Attacker",
             "Leader",
+            "Mandalorian",
             "Scoundrel"
         ],
         "mods": {}
