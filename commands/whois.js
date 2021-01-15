@@ -13,8 +13,9 @@ class WhoIs extends Command {
         });
     }
 
-    async run(Bot, message, [name], options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, [...name], options) { // eslint-disable-line no-unused-vars
         if (!name?.length) return super.error(message, "Missing name");
+        name = name.length > 1 ? name.join(" ") : name[0];
         if (name.length > 50) return super.error(message, "Invalid name, max length is 50 characters");
         const players = await Bot.swgohAPI.playerByName(name);
 
