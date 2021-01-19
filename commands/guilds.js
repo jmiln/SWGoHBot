@@ -321,9 +321,11 @@ class Guilds extends Command {
                     ["COMMANDERLUKESKYWALKER",  "CLS"],
                     ["ENFYSNEST",               "Enfys Nest"],
                     ["GENERALKENOBI",           "Gen. Kenobi"],
+                    ["GENERALSKYWALKER",        "Gen. Skywalker"],
                     ["GRANDMASTERYODA",         "GM Yoda"],
                     ["HANSOLO",                 "Han Solo"],
                     ["HERMITYODA",              "Hermit Yoda"],
+                    ["JEDIKNIGHTLUKE",          "JK Luke"],
                     ["JEDIKNIGHTREVAN",         "Jedi Revan"],
                     ["R2D2_LEGENDARY",          "R2-D2"],
                     ["REYJEDITRAINING",         "Rey (JT)"]
@@ -349,13 +351,14 @@ class Guilds extends Command {
 
             const guildShipChecklist = {
                 "Capital Ships": [
-                    ["CAPITALCHIMAERA",         "Chimaera"],
-                    ["CAPITALJEDICRUISER",      "Endurance"],
-                    ["CAPITALSTARDESTROYER",    "Executrix"],
-                    ["CAPITALFINALIZER",        "Finalizer"],
+                    ["CAPITALCHIMAERA",           "Chimaera"],
+                    ["CAPITALJEDICRUISER",        "Endurance"],
+                    ["CAPITALSTARDESTROYER",      "Executrix"],
+                    ["CAPITALFINALIZER",          "Finalizer"],
                     ["CAPITALMONCALAMARICRUISER", "Home One"],
-                    ["CAPITALMALEVOLENCE",      "Malevolence"],
-                    ["CAPITALRADDUS",           "Raddus"]
+                    ["CAPITALMALEVOLENCE",        "Malevolence"],
+                    ["CAPITALNEGOTIATOR",         "Negotiator"],
+                    ["CAPITALRADDUS",             "Raddus"]
                 ]
             };
             const shipOut = twCategoryFormat(guildShipChecklist, gearLvls, 8, guildMembers, true);
