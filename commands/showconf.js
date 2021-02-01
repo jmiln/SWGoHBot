@@ -50,7 +50,7 @@ class Showconf extends Command {
 
         var array = [];
         if (guildConf) {
-            for (const key of Object.keys(guildConf)) {
+            for (const key of Object.keys(Bot.config.defaultSettings)) {
                 array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
             }
             var configKeys = array.join("\n");
