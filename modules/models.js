@@ -70,7 +70,6 @@ module.exports = (Sequelize, database) => {
             defaultValue: ""
         }
     });
-
     database.define("eventDBs", {
         eventID: {
             type: Sequelize.TEXT,
@@ -87,7 +86,7 @@ module.exports = (Sequelize, database) => {
             type: Sequelize.TEXT
         },
         countdown: {
-            type: Sequelize.TEXT
+            type: Sequelize.BOOLEAN
         },
         repeat: {
             type: Sequelize.JSONB
