@@ -172,16 +172,15 @@ module.exports = (Bot, client) => {
     /* ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    Bot.announceMsg = async (guild, announceMsg, channel="") => {
-        if (!guild || !guild.id) return;
-        const guildConf = await Bot.getGuildConf(guild.id);
+    Bot.announceMsg = async (guild, announceMsg, channel="", guildConf={}) => {
+        if (!guild?.id) return;
 
-        let announceChan = guildConf.announceChan;
-        if (channel !== "") {
+        let announceChan = guildConf.announceChan || "";
+        if (channel && channel !== "") {
             announceChan = channel;
         }
         // Try and get it by ID first
-        let chan = guild.channels.cache.get(announceChan.replace(/[^0-9]/g, ""));
+        let chan = guild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
 
         // If  that didn't work, try and get it by name
         if (!chan) {
@@ -189,13 +188,13 @@ module.exports = (Bot, client) => {
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
-        if (!chan || !chan.send || !chan.permissionsFor(client.user.id).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+        if (!chan || !chan.send || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
             return;
         } else {
             // If everything is ok, go ahead and try sending the message
             await chan.send(announceMsg).catch((err) => {
-                if (err.stack.toString().includes("user aborted a request")) return;
-                Bot.logger.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );
+                // if (err.stack.toString().includes("user aborted a request")) return;
+                console.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );
             });
         }
     };

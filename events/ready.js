@@ -16,6 +16,24 @@ module.exports = async (Bot, client) => {
     if (client.shard) {
         readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers. Shard #${client.shard.id}`;
         if (client.shard.id === 0) {
+            const io = require("socket.io-client");
+            Bot.socket = io("ws://localhost:3000");
+            Bot.socket.on("connect", () => {
+                console.log("[EventMgr] Connected to socket!");
+            });
+            Bot.socket.on("disconnect", () => {
+                console.log("[EventMgr] Disconnected from socket!");
+            });
+
+            // Check if there are any events that need to be processed & announced
+            setInterval(() => {
+                Bot.socket.emit("checkEvents", (eventsList) => {
+                    if (eventsList.length) {
+                        Bot.manageEvents(eventsList);
+                    }
+                });
+            }, 1 * 60 * 1000);
+
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
                 setInterval(async () => {
@@ -56,6 +74,4 @@ module.exports = async (Bot, client) => {
         Bot.swgohPlayerCount = await dbo.collection("playerStats").find({}).count();
         Bot.swgohGuildCount  = await dbo.collection("guilds").find({}).count();
     }, 5 * 60 * 1000);
-
-    Bot.loadAllEvents();
 };

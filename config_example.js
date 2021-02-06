@@ -25,6 +25,11 @@ const config = {
         "swapidb": "swapi"
     },
 
+    // The port to use for the event manager
+    eventServe: {
+        port: 3000
+    },
+
     // The default per-guild settings
     "defaultSettings": {
         "prefix": ";",
@@ -69,7 +74,7 @@ const config = {
 
     // If you want to use the ;changelog command
     "changelog": {
-        "changelogChannel": "channel-to-send-to",
+        "changelogChannel": "channel-id-to-send-to",
         "sendChangelogs": false
     },
 
@@ -79,7 +84,8 @@ const config = {
     "b4dToken": "",
 
     // Need a Patreon account for this
-    // "patreon": {                                                                 │50     //     "host"     : "",
+    // "patreon": {
+    //     "host"     : "",
     //     "clientID": "",
     //     "clientSecret": "",
     //     "creatorAccessToken": "",
@@ -97,4 +103,3 @@ const config = {
 };
 
 module.exports = config;
-

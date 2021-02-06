@@ -42,7 +42,6 @@ class Event extends Command {
     async run(Bot, message, args, options) {
         const level = options.level;
 
-        const maxSize = 1000;
         const guildConf = await Bot.getGuildConf(message.guild.id);
 
         const EVENTS_PER_PAGE = 5;
@@ -55,7 +54,7 @@ class Event extends Command {
             "eventDT": 1545299520000,
             "eventMessage": "eventMsg",
             "eventChan": "",
-            "countdown": "no",
+            "countdown": false,
             "repeat": {
                 "repeatDay": 0,
                 "repeatHour": 0,
@@ -66,11 +65,6 @@ class Event extends Command {
 
         let action = "";
         let eventName = "";
-        let eventMessage = "";
-        let repeatDay = 0;
-        let repeatHour = 0;
-        let repeatMin = 0;
-        let dayList = [];
 
         if (!args[0] || !actions.includes(args[0].toLowerCase())) {
             return super.error(message, message.language.get("COMMAND_EVENT_INVALID_ACTION", actions.join(", ")), {example: overallExample});
@@ -94,156 +88,57 @@ class Event extends Command {
                     return super.error(message, message.language.get("COMMAND_EVENT_TOO_MANY_EVENTS"));
                 }
                 if (!options.flags.json) {
-                    let repeatTime = options.subArgs["repeat"];
-                    const repeatDays = options.subArgs["repeatDay"];
-                    let eventChan = options.subArgs["channel"];
-                    let countdownOn = options.flags["countdown"];
-                    const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
-                    const dayReg  = /^[0-9,]*$/gi;
-
                     const [evName, evDate, evTime, ...evMsg] = args;
 
                     if (!evName || !evName.length) {
                         err.push(message.language.get("COMMAND_EVENT_NEED_NAME"));
                     }
 
+                    const eventID = `${message.guild.id}-${evName}`;
+
                     // Check if that name/ event already exists
-                    const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${evName}`}})
+                    const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}})
                         .then(token => token !== null)
                         .then(isUnique => isUnique);
                     if (exists) {
-                        err.push(message.language.get("COMMAND_EVENT_JSON_EXISTS"));
+                        return super.error(message, message.language.get("COMMAND_EVENT_JSON_EXISTS"));
                     }
 
-                    if (!evDate) {
-                        // If there is no date
-                        err.push(message.language.get("COMMAND_EVENT_NEED_DATE"));
-                    } else if (!momentTZ(evDate, "D/M/YYYY").isValid()) {
-                        // Or if the given date is not valid
-                        err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_DAY", evDate));
-                    }
-
-                    if (!evTime) {
-                        // If there is no time
-                        err.push(message.language.get("COMMAND_EVENT_NEED_TIME"));
-                    } else if (!momentTZ(evTime, "H:mm").isValid()) {
-                        // Or if the given time is not valid
-                        err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_TIME", evTime));
-                    }
-                    const eventDT = momentTZ.tz(`${evDate} ${evTime}`, "DD/MM/YYYY H:mm", guildConf.timezone).unix() * 1000;
-
-                    if (!evMsg) {
-                        eventMessage = "";
-                    } else {
-                        eventMessage = evMsg.join(" ");
-                    }
-
-                    if (eventMessage && (eventMessage.length + evName.length) > maxSize) {
-                        const currentSize = eventMessage.length + evName.length;
-                        err.push(message.language.get("COMMAND_EVENT_TOO_BIG", currentSize-maxSize));
-                    }
-
-                    if (momentTZ(eventDT).isBefore(momentTZ())) {
-                        var eventDATE = momentTZ.tz(eventDT, guildConf.timezone).format("D/M/YYYY H:mm");
-                        var nowDATE = momentTZ().tz(guildConf["timezone"]).format("D/M/YYYY H:mm");
-
-                        err.push(message.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
-                    }
-
-                    // If they try and set a repeat time and a repeating day schedule, tell em to pick just one
-                    if (repeatDays && repeatTime) {
-                        err.push(message.language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
-                    } else {
-                        // If the repeat is set, try to parse it
-                        if (repeatTime) {
-                            if (repeatTime.match(timeReg)) {
-                                repeatDay = parseInt(repeatTime.substring(0, repeatTime.indexOf("d")), 10);
-                                repeatTime = repeatTime.replace(/^\d{1,2}d/, "");
-                                repeatHour = parseInt(repeatTime.substring(0, repeatTime.indexOf("h")), 10);
-                                repeatTime = repeatTime.replace(/^\d{1,2}h/, "");
-                                repeatMin = parseInt(repeatTime.substring(0, repeatTime.indexOf("m")), 10);
-                            } else {
-                                err.push(message.language.get("COMMAND_EVENT_INVALID_REPEAT"));
-                            }
-                        } else {
-                            repeatTime = "0";
-                        }
-
-                        // If they chose repeatDay, split the days
-                        if (repeatDays) {
-                            if (repeatDays.match(dayReg)) {
-                                dayList = repeatDays.split(",");
-                                if (dayList.find(d => d <= 0)) {
-                                    err.push(message.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
-                                }
-                            } else {
-                                err.push(message.language.get("COMMAND_EVENT_USE_COMMAS"));
-                            }
-                        }
-                    }
-
-                    if (countdownOn === "yes") {
-                        countdownOn = "true";
-                    } else if (countdownOn === "no") {
-                        countdownOn = "false";
-                    }
-
-                    // If the event channel is something other than default, check to make sure it works, then set it
-                    const announceChannel = message.guild.channels.cache.find(c => c.name === guildConf["announceChan"]);
-                    if (eventChan) {
-                        // Try getting the channel by ID first
-                        let checkChan = message.guild.channels.cache.get(eventChan.replace(/[^0-9]/g, ""));
-                        // If it doesn't come up by ID, try it by name
-                        if (!checkChan) {
-                            if (eventChan.startsWith("#")) {
-                                eventChan = eventChan.replace(/^#/, "");
-                            }
-                            checkChan = message.guild.channels.cache.find(c => c.name === eventChan);
-                        }
-                        if (!checkChan) {   // Make sure it"s a real channel
-                            err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_CHANNEL", checkChan));
-                        } else if (!checkChan.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {   // Make sure it can send messages there
-                            err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS", checkChan));
-                        } else {
-                            // It found a valid channel and has permission to post there, so save the ID
-                            eventChan = checkChan.id;
-                        }
-                    } else if (!announceChannel) {
-                        err.push(message.language.get("COMMAND_EVENT_NEED_CHAN"));
-                    }
-
-                    if (err.length) {
-                        return super.error(message, Bot.codeBlock("* " + err.join("\n* ")));
-                    }
-
-                    const newEvent = {
-                        eventID: `${message.guild.id}-${evName}`,
-                        eventDT: eventDT,
-                        eventMessage: eventMessage,
-                        eventChan: eventChan ? eventChan.toString() : "",
-                        countdown: countdownOn,
-                        repeat: {
-                            "repeatDay": repeatDay,
-                            "repeatHour": repeatHour,
-                            "repeatMin": repeatMin
-                        },
-                        repeatDays: dayList
+                    const newEv = {
+                        name: evName,
+                        time: evTime,
+                        day: evDate,
+                        message: evMsg,
+                        channel: options.subArgs?.channel,
+                        countdown: options.flags?.countdown,
+                        repeat: options.subArgs?.repeat,
+                        repeatDay: options.subArgs?.repeatDay
                     };
-                    Bot.scheduleEvent(newEvent, guildConf.eventCountdown);
-                    await Bot.database.models.eventDBs.create(newEvent)
-                        .then(() => {
-                            return message.channel.send(message.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
-                        })
-                        .catch(error => {
-                            Bot.logger.error(`Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
-                            return message.channel.send(message.language.get("COMMAND_EVENT_NO_CREATE"));
-                        });
+
+                    let validEV = await validateEvents([newEv]);
+                    if (Array.isArray(validEV)) validEV = validEV[0];
+                    if (!validEV.valid) {
+                        return super.error(message, validEV.str);
+                    }
+                    await Bot.socket.emit("addEvents", validEV.event, (res) => {
+                        const ev = res[0];
+                        const evName = ev.evID.split("-").slice(1).join("-");
+                        if (ev.success) {
+                            return message.channel.send(message.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(validEV.event.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
+                        } else {
+                            return message.channel.send(message.language.get("COMMAND_EVENT_NO_CREATE") + "\n\n**" + evName + "**\n" + ev.error);
+                        }
+                    });
                 } else {
                     // Using the json code block method of creating events
-
                     const regex = new RegExp(/([`]{3})([^```]*)([`]{3})/g);
                     const match = regex.exec(message.content);
                     if (match) {
+                        // Make sure the event objects are in an array
+                        const matchWhole = match[2].replace(/\n/g, "");
+                        if (!matchWhole.startsWith("[") || !matchWhole.endsWith("]")) {
+                            return super.error(message, "Invalid json, please make sure the events are surrounded by square brackets (`[]`) at the beginning and end.");
+                        }
                         let jsonWhole;
                         try {
                             jsonWhole = JSON.parse(match[2]);
@@ -251,11 +146,7 @@ class Event extends Command {
                             return super.error(message, "**ERROR Parsing the json**" + Bot.codeBlock(e.message));
                         }
 
-                        if (!Array.isArray(jsonWhole)) {
-                            jsonWhole = [jsonWhole];
-                        }
-
-                        // ```{
+                        // ```[{
                         //     "name":      "Example",               // No spaces ?
                         //     "time":      "12:36",                 // hh:mm    (24hr format)
                         //     "day":       "28/09/18",              // dd/mm/yy
@@ -264,155 +155,40 @@ class Event extends Command {
                         //     "repeat":    "0d0h0m",                // you have both, it won't work
                         //     "countdown": false,                   // true if you want a countdown, false if not
                         //     "channel":   "327974285563920387"     // Channel ID, not name anymore
-                        // }```
+                        // }]```
 
                         // TODO Maybe add in a special help for -json  ";ev -jsonHelp" since it'll need more of a description
-                        const outArr = [];
-                        const nameArr = [];
-                        let evErr = false;
-                        let ix = 0;
-                        for (const json of jsonWhole) {
-                            ix = ix++;
-                            const err = [];
-                            const newEvent = {
-                                eventID: "",
-                                eventDT: "",
-                                eventMessage: "",
-                                eventChan: "",
-                                countdown: false,
-                                repeat: {
-                                    "repeatDay": 0,
-                                    "repeatHour": 0,
-                                    "repeatMin": 0
-                                },
-                                repeatDays: []
-                            };
-                            if (!json.name || !json.name.length) {
-                                err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
-                            } else if (json.name.indexOf(" ") > -1) {
-                                err.push(message.language.get("COMMAND_EVENT_JSON_NO_SPACES"));
-                            } else {
-                                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${json.name}`}})
-                                    .then(token => token !== null)
-                                    .then(isUnique => isUnique);
-                                if (exists) {
-                                    err.push(message.language.get("COMMAND_EVENT_JSON_EXISTS"));
-                                } else if (nameArr.includes(json.name)) {
-                                    err.push(message.language.get("COMMAND_EVENT_JSON_DUPLICATE"));
-                                } else {
-                                    nameArr.push(json.name);
-                                }
-                                newEvent.eventID = `${message.guild.id}-${json.name}`;
-                            }
-                            if (!json.day) {
-                                err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_DAY"));
-                            } else if (!json.day.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/) || !momentTZ(json.day, "D/M/YYYY").isValid()) {
-                                err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_DAY", json.day));
-                            }
-                            if (!json.time) {
-                                err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_TIME"));
-                            } else if (!json.time.match(/^\d{1,2}:\d{2}$/) || !momentTZ(json.time, "H:mm").isValid()) {
-                                err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_TIME", json.time));
-                            }
-                            newEvent.eventDT = momentTZ.tz(`${json.day} ${json.time}`, "DD/MM/YYYY H:mm", guildConf.timezone).unix() * 1000;
-                            if (momentTZ(newEvent.eventDT).isBefore(momentTZ())) {
-                                const eventDATE = momentTZ.tz(newEvent.eventDT, guildConf.timezone).format("D/M/YYYY H:mm");
-                                const nowDATE = momentTZ().tz(guildConf["timezone"]).format("D/M/YYYY H:mm");
-
-                                err.push(message.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
-                            }
-
-                            if (json.message?.length) {
-                                newEvent.eventMessage = json.message;
-                            }
-                            if (json.channel) {
-                                json.channel = json.channel.toString();
-                                let channel = message.guild.channels.cache.get(json.channel);
-                                if (!channel) {
-                                    channel = message.guild.channels.cache.find(c => c.name === json.channel);
-                                }
-                                if (!channel) {
-                                    err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_CHANNEL", json.channel));
-                                } else if (!channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                                    err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS", json.channel));
-                                } else {
-                                    newEvent.eventChan = channel.id;
-                                }
-                            }
-                            if (json.repeat && json.repeatDay) {
-                                err.push(message.language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
-                            } else {
-                                // If the repeat is set, try to parse it
-                                const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
-                                if (json.repeat) {
-                                    let repeat = json.repeat;
-                                    if (repeat.match(timeReg)) {
-                                        newEvent.repeat.repeatDay = parseInt(repeat.substring(0, repeat.indexOf("d")),  10);
-                                        repeat = repeat.replace(/^\d{1,2}d/, "");
-                                        newEvent.repeat.repeatHour = parseInt(repeat.substring(0, repeat.indexOf("h")), 10);
-                                        repeat = repeat.replace(/^\d{1,2}h/, "");
-                                        newEvent.repeat.repeatMin = parseInt(repeat.substring(0, repeat.indexOf("m")),  10);
-                                    } else {
-                                        err.push(message.language.get("COMMAND_EVENT_INVALID_REPEAT"));
-                                    }
-                                } else if (json.repeatDay) {
-                                    if (Array.isArray(json.repeatDay)) {
-                                        const breaker = json.repeatDay.forEach(r => {
-                                            if (r <= 0) {
-                                                err.push(message.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
-                                                return false;
-                                            }
-                                        });
-                                        if (!breaker) {
-                                            newEvent.repeatDays = json.repeatDay;
-                                        }
-                                    } else {
-                                        err.push(message.language.get("COMMAND_EVENT_JSON_BAD_FORMAT"));
-                                    }
-                                }
-                                if (!json.countdown || json.countdown === "false") {
-                                    newEvent.countdown = false;
-                                } else if (json.countdown === true || json.countdown === "true") {
-                                    newEvent.countdown = true;
-                                } else {
-                                    err.push(message.language.get("COMMAND_EVENT_JSON_COUNTDOWN_BOOL"));
-                                }
-                            }
-                            let outStr;
-                            if (err.length) {
-                                outStr = message.language.get("COMMAND_EVENT_JSON_ERROR_LIST", (ix+1), err.map(e => `* ${e}`).join("\n"));
-                                evErr = true;
-                            } else {
-                                outStr = message.language.get("COMMAND_EVENT_JSON_EVENT_VALID", (ix+1), json.name, json.time, json.day);
-                            }
-                            outArr.push({
-                                str: outStr,
-                                event: newEvent
-                            });
-                        }
-                        if (evErr) {
-                            return message.channel.send(message.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(outArr.map(e => e.str).join("\n\n"))));
+                        const result = await validateEvents(jsonWhole);
+                        if (result.filter(e => !e.valid).length) {
+                            return message.channel.send(message.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(result.map(e => e.str).join("\n\n"))));
                         } else {
                             // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
-                            const evAddLog = [];
-                            const evFailLog = [];
+                            await Bot.socket.emit("addEvents", result.map(e => e.event), (res) => {
+                                const evAddLog = [];
+                                const evFailLog = [];
 
-                            for (const ev of outArr) {
-                                await Bot.scheduleEvent(ev.event, guildConf.eventCountdown);
-                                await Bot.database.models.eventDBs.create(ev.event)
-                                    .then(() => {
-                                        evAddLog.push(message.language.get("COMMAND_EVENT_CREATED", ev.event.eventID.split("-").slice().join("-"), momentTZ.tz(ev.event.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
-                                    })
-                                    .catch(error => {
-                                        evFailLog.push(message.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", ev.event.name, error.message));
-                                    });
-                            }
-
-                            if (evFailLog.length) {
-                                return message.channel.send(message.language.get("COMMAND_EVENT_JSON_YES_NO", evFailLog.length, evFailLog.join("\n"), evAddLog.length. evAddLog.join("\n")));
-                            } else {
-                                return message.channel.send(message.language.get("COMMAND_EVENT_JSON_ADDED", evAddLog.length, evAddLog.join("\n")));
-                            }
+                                for (const ev of res) {
+                                    const evName = ev.evID.split("-").slice(1).join("-");
+                                    if (ev.success) {
+                                        evAddLog.push(message.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(ev.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
+                                    } else {
+                                        evFailLog.push(message.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", evName, ev.error));
+                                    }
+                                }
+                                return message.channel.send({embed: {
+                                    title: "Event(s) add log",
+                                    fields: [
+                                        {
+                                            name: "Success",
+                                            value: evAddLog.join("\n") || "N/A"
+                                        },
+                                        {
+                                            name: "Failures",
+                                            value: evFailLog.join("\n") || "N/A"
+                                        }
+                                    ]
+                                }});
+                            });
                         }
                     } else {
                         return message.channel.send(message.language.get("COMMAND_EVENT_JSON_BAD_JSON"));
@@ -423,71 +199,15 @@ class Event extends Command {
                 const array = [];
                 if (args[0]) {
                     // If they are looking to show a specific event
-                    const guildEvents = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${args[0]}`}});
-                    if (!guildEvents) {
-                        return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", args[0]));
-                    }
-                    const thisEvent = guildEvents.dataValues;
-                    if (thisEvent) {
-                        let eventName = thisEvent.eventID.split("-");
-                        eventName.splice(0, 1);
-                        eventName = eventName.join("-");
-                        const eventDate = momentTZ(parseInt(thisEvent.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+                    const eventName = args[0];
+                    const eventID = `${message.guild.id}-${eventName}`;
 
-                        let eventString = message.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
-                        eventString += message.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(thisEvent.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
-                        if (thisEvent.eventChan && thisEvent.eventChan !== "") {
-                            let chanName = "";
-                            if (message.guild.channels.cache.has(thisEvent.eventChan)) {
-                                chanName = message.guild.channels.cache.get(thisEvent.eventChan).name;
-                            } else {
-                                chanName = thisEvent.eventChan;
-                            }
-                            eventString += message.language.get("COMMAND_EVENT_CHAN", chanName);
-                        }
-                        if (thisEvent["repeatDays"].length > 0) {
-                            eventString += message.language.get("COMMAND_EVENT_SCHEDULE", thisEvent.repeatDays.join(", "));
-                        } else if (thisEvent["repeat"] && (thisEvent.repeat["repeatDay"] !== 0 || thisEvent.repeat["repeatHour"] !== 0 || thisEvent.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
-                            eventString += message.language.get("COMMAND_EVENT_REPEAT", thisEvent.repeat["repeatDay"], thisEvent.repeat["repeatHour"], thisEvent.repeat["repeatMin"]);
-                        }
-                        if (!options.flags.min && thisEvent.eventMessage != "") {
-                            // If they want to show all available events without the eventMessage showing
-                            eventString += message.language.get("COMMAND_EVENT_MESSAGE", removeTags(message, thisEvent.eventMessage));
-                        }
-                        return message.channel.send(eventString);
-                    } else {
-                        return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", args[0]));
-                    }
-                } else {
-                    // Grab all events for this guild
-                    const guildEvents = await Bot.database.models.eventDBs.findAll({where: {eventID: { [Bot.seqOps.like]: `${message.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
-                    const eventList = [];
-                    guildEvents.forEach(event => {
-                        eventList.push(event.dataValues);
-                    });
+                    await Bot.socket.emit("getEventsByID", eventID, async function(event) {
+                        // If it doesn't find the event, say so
+                        if (Array.isArray(event) && !event.length) return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
 
-                    // Sort the events by the time/ day
-                    let sortedEvents = eventList.sort((p, c) => p.eventDT - c.eventDT);
-
-                    // Grab the total # of events for later use
-                    const eventCount = sortedEvents.length;
-
-                    let PAGE_SELECTED = 1;
-                    const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
-                    if (guildConf["useEventPages"]) {
-                        PAGE_SELECTED = options.subArgs.pages || 0;
-                        if (PAGE_SELECTED < 1) PAGE_SELECTED = 1;
-                        if (PAGE_SELECTED > PAGES_NEEDED) PAGE_SELECTED = PAGES_NEEDED;
-
-                        // If they have pages enabled, remove everything that isn"t within the selected page
-                        if (PAGES_NEEDED > 1) {
-                            sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
-                        }
-                    }
-                    sortedEvents.forEach(event => {
-                        let eventName = event.eventID.split("-");
-                        eventName.splice(0, 1);
-                        eventName = eventName.join("-");
+                        // From here on, it should have the event found, so process for viewing
+                        if (Array.isArray(event)) event = event[0];
                         const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                         let eventString = message.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
@@ -507,40 +227,94 @@ class Event extends Command {
                             eventString += message.language.get("COMMAND_EVENT_REPEAT", event.repeat["repeatDay"], event.repeat["repeatHour"], event.repeat["repeatMin"]);
                         }
                         if (!options.flags.min && event.eventMessage != "") {
-                            // If they want to show all available events with the eventMessage showing
-                            const msg = removeTags(message, event.eventMessage);
-                            eventString += message.language.get("COMMAND_EVENT_MESSAGE", msg);
+                            // If they want to show all available events without the eventMessage showing
+                            eventString += message.language.get("COMMAND_EVENT_MESSAGE", removeTags(message, event.eventMessage));
                         }
-                        array.push(eventString);
+                        return message.channel.send(eventString);
                     });
-                    const evArray = Bot.msgArray(array, "\n\n");
-                    try {
-                        if (evArray.length === 0) {
-                            return message.channel.send(message.language.get("COMMAND_EVENT_NO_EVENT"));
-                        } else {
-                            if (evArray.length > 1) {
-                                evArray.forEach((evMsg, ix) => {
-                                    if (guildConf["useEventPages"]) {
-                                        return message.channel.send(message.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg), {split: true});
-                                    } else {
-                                        if (ix === 0) {
-                                            return message.channel.send(message.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg), {split: true});
-                                        } else {
-                                            return message.channel.send(evMsg, {split: true});
-                                        }
-                                    }
-                                });
-                            } else {
-                                if (guildConf["useEventPages"]) {
-                                    return message.channel.send(message.language.get("COMMAND_EVENT_SHOW_PAGED",eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
-                                } else {
-                                    return message.channel.send(message.language.get("COMMAND_EVENT_SHOW",eventCount, evArray[0]), {split: true});
-                                }
+                } else {
+                    await Bot.socket.emit("getEventsByGuild", message.guild.id, async function(eventList) {
+                        // If it doesn't find any events, say so
+                        if (Array.isArray(eventList) && eventList.length === 0) return message.channel.send("I could not find any events for this server");
+
+                        // Otherwise, process the events for viewing, and display em
+
+                        // Sort the events by the time/ day
+                        let sortedEvents = eventList.sort((p, c) => p.eventDT - c.eventDT);
+
+                        // Grab the total # of events for later use
+                        const eventCount = sortedEvents.length;
+
+                        let PAGE_SELECTED = 1;
+                        const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
+                        if (guildConf["useEventPages"]) {
+                            PAGE_SELECTED = options.subArgs.pages || 0;
+                            if (PAGE_SELECTED < 1) PAGE_SELECTED = 1;
+                            if (PAGE_SELECTED > PAGES_NEEDED) PAGE_SELECTED = PAGES_NEEDED;
+
+                            // If they have pages enabled, remove everything that isn"t within the selected page
+                            if (PAGES_NEEDED > 1) {
+                                sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
                             }
                         }
-                    } catch (e) {
-                        Bot.logger.error("Event View Broke! " + evArray);
-                    }
+                        sortedEvents.forEach(event => {
+                            let eventName = event.eventID.split("-");
+                            eventName.splice(0, 1);
+                            eventName = eventName.join("-");
+                            const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+
+                            let eventString = message.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
+                            eventString += message.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                            if (event.eventChan && event.eventChan !== "") {
+                                let chanName = "";
+                                if (message.guild.channels.cache.has(event.eventChan)) {
+                                    chanName = message.guild.channels.cache.get(event.eventChan).name;
+                                } else {
+                                    chanName = event.eventChan;
+                                }
+                                eventString += message.language.get("COMMAND_EVENT_CHAN", chanName);
+                            }
+                            if (event["repeatDays"].length > 0) {
+                                eventString += message.language.get("COMMAND_EVENT_SCHEDULE", event.repeatDays.join(", "));
+                            } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
+                                eventString += message.language.get("COMMAND_EVENT_REPEAT", event.repeat["repeatDay"], event.repeat["repeatHour"], event.repeat["repeatMin"]);
+                            }
+                            if (!options.flags.min && event.eventMessage != "") {
+                                // If they want to show all available events with the eventMessage showing
+                                const msg = removeTags(message, event.eventMessage);
+                                eventString += message.language.get("COMMAND_EVENT_MESSAGE", msg);
+                            }
+                            array.push(eventString);
+                        });
+                        const evArray = Bot.msgArray(array, "\n\n");
+                        try {
+                            if (evArray.length === 0) {
+                                return message.channel.send(message.language.get("COMMAND_EVENT_NO_EVENT"));
+                            } else {
+                                if (evArray.length > 1) {
+                                    evArray.forEach((evMsg, ix) => {
+                                        if (guildConf["useEventPages"]) {
+                                            return message.channel.send(message.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg), {split: true});
+                                        } else {
+                                            if (ix === 0) {
+                                                return message.channel.send(message.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg), {split: true});
+                                            } else {
+                                                return message.channel.send(evMsg, {split: true});
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    if (guildConf["useEventPages"]) {
+                                        return message.channel.send(message.language.get("COMMAND_EVENT_SHOW_PAGED",eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
+                                    } else {
+                                        return message.channel.send(message.language.get("COMMAND_EVENT_SHOW",eventCount, evArray[0]), {split: true});
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            Bot.logger.error("Event View Broke! " + evArray);
+                        }
+                    });
                 }
                 break;
             } case "delete": {
@@ -548,21 +322,20 @@ class Event extends Command {
                 eventName = args[0];
                 const eventID = `${message.guild.id}-${eventName}`;
 
-                // Check if that name/ event exists
-                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}})
-                    .then(token => token !== null)
-                    .then(isUnique => isUnique);
-                if (exists) {
-                    Bot.deleteEvent(eventID);
-                    return message.channel.send(message.language.get("COMMAND_EVENT_DELETED", eventName));
-                } else {
-                    return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
-                }
+                await Bot.socket.emit("delEvent", eventID, async (result) => {
+                    if (result.success) {
+                        return super.success(message, message.language.get("COMMAND_EVENT_DELETED", eventName));
+                    } else {
+                        return super.error(message, result.error);
+                    }
+                });
+                break;
             } case "trigger": {
                 if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME"));
                 eventName = args[0];
+                const eventID =  `${message.guild.id}-${eventName}`;
 
-                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}})
+                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}})
                     .then(token => token !== null)
                     .then(isUnique => isUnique);
 
@@ -570,33 +343,34 @@ class Event extends Command {
                 if (!exists) {
                     return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
                 } else {
-                    const events = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
-                    const event = events.dataValues;
-                    var channel = "";
-                    var announceMessage = `**${eventName}**\n${event.eventMessage}`;
-                    if (event["eventChan"] && event.eventChan !== "") {  // If they"ve set a channel, try using it
-                        channel = message.guild.channels.cache.get(event.eventChan);
-                        if (!channel) {
-                            channel = message.guild.channels.cache.find(c => c.name === event.eventChan);
+                    // As long as it does exist, go ahead and try triggering it
+                    await Bot.socket.emit("getEventsByID", eventID, async function(event) {
+                        if (Array.isArray(event)) event = event[0];
+                        var channel = "";
+                        var announceMessage = `**${eventName}**\n${event.eventMessage}`;
+                        if (event["eventChan"] && event.eventChan !== "") {  // If they"ve set a channel, try using it
+                            channel = message.guild.channels.cache.get(event.eventChan);
+                            if (!channel) {
+                                channel = message.guild.channels.cache.find(c => c.name === event.eventChan);
+                            }
+                        } else { // Else, use the default one from their settings
+                            channel = message.guild.channels.cache.find(c => c.name === guildConf["announceChan"]);
                         }
-                    } else { // Else, use the default one from their settings
-                        channel = message.guild.channels.cache.find(c => c.name === guildConf["announceChan"]);
-                    }
-                    if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                        try {
-                            return channel.send(announceMessage);
-                        } catch (e) {
-                            Bot.logger.error("Event trigger Broke! " + announceMessage);
+                        if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+                            try {
+                                return channel.send(announceMessage);
+                            } catch (e) {
+                                Bot.logger.error("Event trigger Broke! " + announceMessage);
+                            }
                         }
-                    }
+                    });
                 }
                 break;
-            }
-            case "edit": {
+            } case "edit": {
                 // Edit an event
                 if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME"));
                 eventName = args.splice(0,1);
-                eventName = eventName[0];
+                eventName = eventName.join("-");
 
                 const changable = ["name", "time", "date", "message", "channel", "countdown", "repeat", "repeatday"];
 
@@ -677,10 +451,11 @@ class Event extends Command {
                         }
                         case "message": {
                             // Accept pretty much any string (Within the limit of 1000 or 1800 characters or whatever
-                            if (!changeTo.length) return super.error(message, message.language.get("COMMAND_EVENT_EDIT_MISSING_MESSAGE"));
-                            let newMsg = changeTo.join(" ");
-                            if (newMsg === "null") newMsg = "";
-                            if (newMsg.length > 1800) return super.error(message, message.language.get("COMMAND_EVENT_EDIT_LONG_MESSAGE"));
+                            let newMsg = "";
+                            if (changeTo.length) {
+                                newMsg = changeTo.join(" ");
+                                if (newMsg.length > 1800) return super.error(message, message.language.get("COMMAND_EVENT_EDIT_LONG_MESSAGE"));
+                            }
                             if (!event.eventMessage) event.eventMessage = "";
                             if (event.eventMessage.length > 500) {
                                 cFrom = event.eventMessage.substring(0, 500) + "...";
@@ -806,10 +581,10 @@ class Event extends Command {
                     }
                     try {
                         const res = await updateEvent(oldId, event);
-                        if (res) {
+                        if (res.success) {
                             return super.error(message, removeTags(message, message.language.get("COMMAND_EVENT_EDIT_UPDATED", target, cFrom, cTo)), {title: "Success", color: "#00ff00"});
                         } else {
-                            return super.error(message, message.language.get("COMMAND_EVENT_EDIT_BROKE"));
+                            return super.error(message, message.language.get("COMMAND_EVENT_EDIT_BROKE") + "\n" + res.error);
                         }
                     } catch (e) {
                         return super.error(message, e.message);
@@ -819,15 +594,13 @@ class Event extends Command {
         }
 
         async function updateEvent(id, event) {
-            await Bot.deleteEvent(id);
-            Bot.scheduleEvent(event, guildConf.eventCountdown);
-            const out = await Bot.database.models.eventDBs.create(event)
+            const out = await Bot.database.models.eventDBs.update(event, {where: {eventID: event.eventID}})
                 .then(() => {
-                    return true;
+                    return { success: true, error: null };
                 })
                 .catch(error => {
                     Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \nMessage: ${message.content}\nError: ${error}`);
-                    return false;
+                    return { success: false, error: error };
                 });
             return out;
         }
@@ -869,6 +642,137 @@ class Event extends Command {
             }
             mess = mess.replace(/`/g, "");
             return mess;
+        }
+        function validateEvents(eventArray) {
+            const MAX_MSG_SIZE = 1000;
+            const outEvents = [];
+            const nameArr = [];
+            if (!Array.isArray(eventArray)) eventArray = [eventArray];
+
+            eventArray.forEach((event, ix) => {
+                const err = [];
+                const newEvent = {
+                    eventID: "",
+                    eventDT: "",
+                    eventMessage: "",
+                    eventChan: "",
+                    countdown: false,
+                    repeat: {
+                        "repeatDay": 0,
+                        "repeatHour": 0,
+                        "repeatMin": 0
+                    },
+                    repeatDays: []
+                };
+                if (!event.name || !event.name.length) {
+                    err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
+                } else if (event.name.indexOf(" ") > -1) {
+                    err.push(message.language.get("COMMAND_EVENT_JSON_NO_SPACES"));
+                } else {
+                    if (nameArr.includes(event.name)) {
+                        err.push(message.language.get("COMMAND_EVENT_JSON_DUPLICATE"));
+                    } else {
+                        nameArr.push(event.name);
+                    }
+                    newEvent.eventID = `${message.guild.id}-${event.name}`;
+                }
+                if (!event.day) {
+                    err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_DAY"));
+                } else if (!event.day.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/) || !momentTZ(event.day, "D/M/YYYY").isValid()) {
+                    err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_DAY", event.day));
+                }
+                if (!event.time) {
+                    err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_TIME"));
+                } else if (!event.time.match(/^\d{1,2}:\d{2}$/) || !momentTZ(event.time, "H:mm").isValid()) {
+                    err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_TIME", event.time));
+                }
+                newEvent.eventDT = momentTZ.tz(`${event.day} ${event.time}`, "DD/MM/YYYY H:mm", guildConf.timezone).unix() * 1000;
+                if (momentTZ(newEvent.eventDT).isBefore(momentTZ())) {
+                    const eventDATE = momentTZ.tz(newEvent.eventDT, guildConf.timezone).format("D/M/YYYY H:mm");
+                    const nowDATE = momentTZ().tz(guildConf["timezone"]).format("D/M/YYYY H:mm");
+
+                    err.push(message.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
+                }
+
+                if (event.message?.length) {
+                    if (event.message.length > MAX_MSG_SIZE) {
+                        err.push(`Events have a maximum message length of ${MAX_MSG_SIZE} characters, this one is ${event.message.length} characters long`);
+                    } else {
+                        newEvent.eventMessage = event.message;
+                    }
+                }
+                if (event.channel) {
+                    event.channel = event.channel.toString();
+                    let channel = message.guild.channels.cache.get(event.channel);
+                    if (!channel) {
+                        channel = message.guild.channels.cache.find(c => c.name === event.channel);
+                    }
+                    if (!channel) {
+                        err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_CHANNEL", event.channel));
+                    } else if (!channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+                        err.push(message.language.get("COMMAND_EVENT_JSON_MISSING_CHANNEL_PERMS", event.channel));
+                    } else {
+                        newEvent.eventChan = channel.id;
+                    }
+                } else {
+                    const announceChannel = message.guild.channels.cache.find(c => c.name === guildConf["announceChan"]);
+                    if (!announceChannel) {
+                        err.push(message.language.get("COMMAND_EVENT_NEED_CHAN"));
+                    }
+                }
+                if (event.repeat && event.repeatDay) {
+                    err.push(message.language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
+                } else {
+                    // If the repeat is set, try to parse it
+                    const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
+                    if (event.repeat) {
+                        let repeat = event.repeat;
+                        if (repeat.match(timeReg)) {
+                            newEvent.repeat.repeatDay = parseInt(repeat.substring(0, repeat.indexOf("d")),  10);
+                            repeat = repeat.replace(/^\d{1,2}d/, "");
+                            newEvent.repeat.repeatHour = parseInt(repeat.substring(0, repeat.indexOf("h")), 10);
+                            repeat = repeat.replace(/^\d{1,2}h/, "");
+                            newEvent.repeat.repeatMin = parseInt(repeat.substring(0, repeat.indexOf("m")),  10);
+                        } else {
+                            err.push(message.language.get("COMMAND_EVENT_INVALID_REPEAT"));
+                        }
+                    } else if (event.repeatDay) {
+                        if (Array.isArray(event.repeatDay)) {
+                            const breaker = event.repeatDay.forEach(r => {
+                                if (r <= 0) {
+                                    err.push(message.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
+                                    return false;
+                                }
+                            });
+                            if (!breaker) {
+                                newEvent.repeatDays = event.repeatDay;
+                            }
+                        } else {
+                            err.push(message.language.get("COMMAND_EVENT_JSON_BAD_FORMAT"));
+                        }
+                    }
+                    if (!event.countdown || event.countdown === "false" || event.countdown === "no") {
+                        newEvent.countdown = false;
+                    } else if (event.countdown === true || event.countdown === "true" || event.countdown === "yes") {
+                        newEvent.countdown = true;
+                    } else {
+                        err.push(message.language.get("COMMAND_EVENT_JSON_COUNTDOWN_BOOL"));
+                    }
+                }
+                let outStr;
+                if (err.length) {
+                    outStr = message.language.get("COMMAND_EVENT_JSON_ERROR_LIST", (ix+1), err.map(e => `* ${e}`).join("\n"));
+                } else {
+                    outStr = message.language.get("COMMAND_EVENT_JSON_EVENT_VALID", (ix+1), event.name, event.time, event.day);
+                }
+                const result = {
+                    event: newEvent,
+                    str:   outStr,
+                    valid: err.length ? false : true
+                };
+                outEvents.push(result);
+            });
+            return outEvents;
         }
     }
 }

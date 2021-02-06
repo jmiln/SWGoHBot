@@ -1,16 +1,16 @@
 const fs = require("fs");
 const fetch = require("node-fetch");
 
-const config = require("./config.js");
+const config = require("../config.js");
 const MongoClient = require("mongodb").MongoClient;
 
-const RANCOR_MOD_CACHE       = "./data/crouching-rancor-mods.json";
-const GG_CHAR_CACHE          = "./data/swgoh-gg-chars.json";
-const GG_SHIPS_CACHE         = "./data/swgoh-gg-ships.json";
-const SWGoH_Help_SQUAD_CACHE = "./data/squads.json";
-const CHARLOCATIONS          = "./data/charLocations.json";
-const SHIPLOCATIONS          = "./data/shipLocations.json";
-const GAMEDATA               = "./data/gameData.json";
+const RANCOR_MOD_CACHE       = "../data/crouching-rancor-mods.json";
+const GG_CHAR_CACHE          = "../data/swgoh-gg-chars.json";
+const GG_SHIPS_CACHE         = "../data/swgoh-gg-ships.json";
+const SWGoH_Help_SQUAD_CACHE = "../data/squads.json";
+const CHARLOCATIONS          = "../data/charLocations.json";
+const SHIPLOCATIONS          = "../data/shipLocations.json";
+const GAMEDATA               = "../data/gameData.json";
 const UNKNOWN                = "Unknown";
 
 // How long between being runs (In minutes)
@@ -98,9 +98,9 @@ async function updateIfChanged(localCachePath, dataSourceUri) {
 }
 
 async function updateRemoteData() {
-    const currentCharacters   = require("./data/characters.json");
+    const currentCharacters   = require("../data/characters.json");
     const currentCharSnapshot = JSON.parse(JSON.stringify(currentCharacters));
-    const currentShips        = require("./data/ships.json");
+    const currentShips        = require("../data/ships.json");
     const currentShipSnapshot = JSON.parse(JSON.stringify(currentShips));
     const log = [];
 
@@ -138,11 +138,11 @@ async function updateRemoteData() {
 
     if (JSON.stringify(currentCharSnapshot) !== JSON.stringify(currentCharacters)) {
         log.push("Changes detected in character data, saving updates and reloading");
-        saveFile("./data/characters.json", currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
+        saveFile("../data/characters.json", currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
     }
     if (JSON.stringify(currentShipSnapshot) !== JSON.stringify(currentShips)) {
         log.push("Changes detected in ship data, saving updates and reloading");
-        saveFile("./data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
+        saveFile("../data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
     }
 
     if (config.patreon) {
@@ -438,7 +438,7 @@ async function updatePatrons() {
         return;
     }
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
-    const cache = await require("./modules/cache.js")(mongo);
+    const cache = await require("../modules/cache.js")(mongo);
     try {
         let response = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns",
             {
