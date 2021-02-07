@@ -1,5 +1,6 @@
 /* eslint no-undef: 0 */
 // const {inspect} = require("util");
+const io = require("socket.io-client");
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
     client.shard.id = client.shard.ids[0];
@@ -15,16 +16,17 @@ module.exports = async (Bot, client) => {
     let readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`;
     if (client.shard) {
         readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers. Shard #${client.shard.id}`;
-        if (client.shard.id === 0) {
-            const io = require("socket.io-client");
-            Bot.socket = io("ws://localhost:3000");
-            Bot.socket.on("connect", () => {
-                console.log("[EventMgr] Connected to socket!");
-            });
-            Bot.socket.on("disconnect", () => {
-                console.log("[EventMgr] Disconnected from socket!");
-            });
 
+        // Connect the sockets and such
+        Bot.socket = io(`ws://localhost:${Bot.config.eventServe.port}`);
+        Bot.socket.on("connect", () => {
+            console.log(`[EventMgr](${client.shard.id}) Connected to socket!`);
+        });
+        Bot.socket.on("disconnect", () => {
+            console.log(`[EventMgr](${client.shard.id}) Disconnected from socket!`);
+        });
+
+        if (client.shard.id === 0) {
             // Check if there are any events that need to be processed & announced
             setInterval(() => {
                 Bot.socket.emit("checkEvents", (eventsList) => {

@@ -108,7 +108,7 @@ class Event extends Command {
                         name: evName,
                         time: evTime,
                         day: evDate,
-                        message: evMsg,
+                        message: Array.isArray(evMsg) && evMsg.length ? evMsg.join(" ") : evMsg,
                         channel: options.subArgs?.channel,
                         countdown: options.flags?.countdown,
                         repeat: options.subArgs?.repeat,
@@ -737,16 +737,29 @@ class Event extends Command {
                             err.push(message.language.get("COMMAND_EVENT_INVALID_REPEAT"));
                         }
                     } else if (event.repeatDay) {
-                        if (Array.isArray(event.repeatDay)) {
-                            const breaker = event.repeatDay.forEach(r => {
+                        const dayReg = /^[0-9,]*$/gi;
+                        let jsonRepDay = null;
+                        try {
+                            jsonRepDay = JSON.parse(event.repeatDay);
+                        } catch (e) {
+                            // Don't bother since it's just gonna be a parse error, and it's already null
+                        }
+                        if (Array.isArray(jsonRepDay)) {
+                            const breaker = jsonRepDay.forEach(r => {
                                 if (r <= 0) {
                                     err.push(message.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
                                     return false;
                                 }
                             });
                             if (!breaker) {
-                                newEvent.repeatDays = event.repeatDay;
+                                newEvent.repeatDays = jsonRepDay;
                             }
+                        } else if (event.repeatDay.toString().match(dayReg)) {
+                            const dayList = event.repeatDay.toString().split(",");
+                            if (dayList.find(d => d <= 0)) {
+                                return err.push(message.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
+                            }
+                            newEvent.repeatDays = dayList.map(d => parseInt(d, 10));
                         } else {
                             err.push(message.language.get("COMMAND_EVENT_JSON_BAD_FORMAT"));
                         }
