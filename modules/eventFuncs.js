@@ -32,6 +32,7 @@ module.exports = (Bot, client) => {
             } else {
                 chan = guildConf.announceChan;
             }
+            if (announceMessage) announceMessage = announceMessage.replace(/`/g, "\\`");
             try {
                 await client.shard.broadcastEval(`
                     (async () => {
