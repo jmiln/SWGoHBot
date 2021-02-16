@@ -26,7 +26,7 @@ class WhoIs extends Command {
             if (playerLen > 25) {
                 players = players.slice(0, 25);
             }
-            return message.channel.send(`>>> **Results for search: \`${name}\`**\n` + players.map(p => `\`${p.allyCode}\` - ${p.name}`).join("\n"), {split: {char: "\n"}});
+            return message.channel.send(`>>> **Results for search: \`${name}\`** ${playerLen > players.length ? `\n**Showing (${players.length}/${playerLen})**` : ""}\n` + players.map(p => `\`${p.allyCode}\` - ${p.name}`).join("\n"), {split: {char: "\n"}});
         }
     }
 }
