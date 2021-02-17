@@ -664,6 +664,12 @@ class Event extends Command {
                     },
                     repeatDays: []
                 };
+                // In case they lowercase the D in repeatDay
+                if (!event.repeatDay) {
+                    const rd = event[Object.keys(event).find(key => key.toLowerCase() === "repeatday")];
+                    if (rd) event.repeatDay = rd;
+                }
+
                 if (!event.name || !event.name.length) {
                     err.push(message.language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
                 } else if (event.name.indexOf(" ") > -1) {
