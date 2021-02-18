@@ -709,6 +709,10 @@ class Event extends Command {
                 }
                 if (event.channel) {
                     event.channel = event.channel.toString();
+                    if (Bot.isChannelMention(event.channel)) {
+                        // If it's a channe mention (<#1234...>), replace the brackets and #
+                        event.channel = event.channel.replace(/[^0-9]/g, "");
+                    }
                     let channel = message.guild.channels.cache.get(event.channel);
                     if (!channel) {
                         channel = message.guild.channels.cache.find(c => c.name === event.channel);
