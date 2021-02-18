@@ -247,6 +247,8 @@ class UserConf extends Command {
                     }
                     if (Bot.swgohLangList.map(l => l.toLowerCase()).indexOf(setting) > -1) {
                         user.lang.swgohLanguage = setting;
+                    } else {
+                        return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", setting, Bot.swgohLangList.join(", ")));
                     }
                 } else {
                     return super.error(message, message.language.get("COMMAND_USERCONF_LANG_INVALID_OPTION"), {title: "Invalid Option"});
