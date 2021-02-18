@@ -238,6 +238,8 @@ class UserConf extends Command {
                         const split = setting.split("_");
                         setting = split[0].toLowerCase() + "_" + split[1].toUpperCase();
                         user.lang.language = setting;
+                    } else {
+                        return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", setting, Object.keys(Bot.languages).join(", ")));
                     }
                 } else if (action === "swgohlanguage") {
                     if (!setting) {
