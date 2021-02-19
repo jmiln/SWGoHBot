@@ -332,7 +332,7 @@ class Guilds extends Command {
                 ],
                 "Dark Side": [
                     ["BOSSK",                   "Bossk"],
-                    ["MAUL",                    "Darth Maul"],
+                    ["DARTHVADER",              "Darth Vader"],
                     ["DARTHMALAK",              "Darth Malak"],
                     ["DARTHREVAN",              "Darth Revan"],
                     ["DARTHSION",               "Darth Sion"],
@@ -343,7 +343,8 @@ class Guilds extends Command {
                     ["EMPERORPALPATINE",        "Palpatine"],
                     ["MOTHERTALZIN",            "Talzin"],
                     ["GRANDADMIRALTHRAWN",      "Thrawn"],
-                    ["WAMPA",                   "Wampa"]
+                    ["WAMPA",                   "Wampa"],
+                    ["WATTAMBOR",               "Wat Tambor"]
                 ],
             };
             const charOut = twCategoryFormat(guildCharacterChecklist, gearLvls, 19, guildMembers, false);
