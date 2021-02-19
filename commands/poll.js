@@ -41,7 +41,7 @@ class Poll extends Command {
         // that the user has access to
         if (options.subArgs.pollID) {
             // If they're using the auto-incrementing ID to vote from anywhere
-            if (isNan(parseInt(options.subArgs.pollID, 10))) {
+            if (isNaN(parseInt(options.subArgs.pollID, 10))) {
                 return super.error(message, "Invalid poll ID");
             }
             exists = await Bot.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}})

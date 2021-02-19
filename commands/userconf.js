@@ -238,6 +238,8 @@ class UserConf extends Command {
                         const split = setting.split("_");
                         setting = split[0].toLowerCase() + "_" + split[1].toUpperCase();
                         user.lang.language = setting;
+                    } else {
+                        return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", setting, Object.keys(Bot.languages).join(", ")));
                     }
                 } else if (action === "swgohlanguage") {
                     if (!setting) {
@@ -245,6 +247,8 @@ class UserConf extends Command {
                     }
                     if (Bot.swgohLangList.map(l => l.toLowerCase()).indexOf(setting) > -1) {
                         user.lang.swgohLanguage = setting;
+                    } else {
+                        return super.error(message, message.language.get("COMMAND_SETCONF_INVALID_LANG", setting, Bot.swgohLangList.join(", ")));
                     }
                 } else {
                     return super.error(message, message.language.get("COMMAND_USERCONF_LANG_INVALID_OPTION"), {title: "Invalid Option"});

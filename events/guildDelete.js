@@ -8,6 +8,11 @@ module.exports = async (Bot, guild) => {
         .then(() => {})
         .catch(error => { Bot.log("ERROR",`Broke in guildDelete(settings) ${error}`); });
 
+    // Also kill off any events that were set up for that guild
+    await Bot.database.models.eventDBs.destroy({where: {eventID: { [Bot.seqOps.like]: `${guild.id}-%`}}})
+        .then(() => {})
+        .catch(error => { Bot.log("ERROR",`Broke in guildDelete(eventDBs) ${error}`); });
+
     // Log that the bot left
     Bot.logger.log(`[GuildDelete] I left ${guild.name}(${guild.id})`);
 };

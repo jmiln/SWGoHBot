@@ -32,6 +32,7 @@ module.exports = (Bot, client) => {
             } else {
                 chan = guildConf.announceChan;
             }
+            if (announceMessage) announceMessage = announceMessage.replace(/`/g, "\\`");
             try {
                 await client.shard.broadcastEval(`
                     (async () => {
@@ -133,7 +134,9 @@ module.exports = (Bot, client) => {
         if (doRepeat) {
             // If it's been updated,
             await Bot.database.models.eventDBs.update({eventDT: event.eventDT, repeatDays: event.repeatDays, repeat: event.repeat}, {where: {eventID: event.eventID}})
-                .then(() => { console.log(`Updating repeating event ${event.eventID}.`); })
+                .then(() => {
+                    // console.log(`Updating repeating event ${event.eventID}.`);
+                })
                 .catch(error => { Bot.logger.error(`Broke trying to replace event: ${error}`); });
         } else {
             // Just destroy it

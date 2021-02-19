@@ -82,13 +82,14 @@ module.exports = async (Bot, message) => {
     // Load the language file for whatever language they have set
     if (user && user.lang) {
         if (user.lang.language) {
-            message.guildSettings.language = user.lang.language;
+            message.guildSettings.language = user.lang.language || Bot.config.defaultSettings.language;
         }
         if (user.lang.swgohLanguage) {
-            message.guildSettings.swgohLanguage = user.lang.swgohLanguage;
+            message.guildSettings.swgohLanguage = user.lang.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
         }
     }
-    message.language = Bot.languages[message.guildSettings.language] || Bot.languages["en_US"];
+    message.language = Bot.languages[message.guildSettings.language] || Bot.languages[Bot.config.defaultSettings.language];
+    message.swgohLanguage = message.guildSettings.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
 
     // Some commands may not be useable in DMs. This check prevents those commands from running
     // and return a friendly error message.

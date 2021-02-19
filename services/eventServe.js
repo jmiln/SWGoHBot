@@ -22,7 +22,7 @@ async function init() {
         })
         .then(async () => {
             const eventCount = await database.models.eventDBs.count();
-            console.log(`Event Monitor online.\nMonitoring ${eventCount} events.`);
+            console.log(`Event Monitor online at port ${config.eventServe.port}.\nMonitoring ${eventCount} events.`);
         })
         .error((e) => console.log(e));
 
@@ -77,7 +77,7 @@ async function init() {
 
             // callback(pastEvents, futureCoutdownEvents);
             if (eventsOut.length) {
-                console.log(`Sending ${eventsOut.length} event(s) to the client`);
+                // console.log(`Sending ${eventsOut.length} event(s) to the client`);
             }
             return callback(eventsOut);
         });

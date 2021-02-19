@@ -17,7 +17,7 @@ module.exports = async (Bot, member) => {
             .replace(/{{server}}/gi, member.guild.name)
             .replace(/{{prefix}}/gi, guildConf.prefix);
         try {
-            Bot.announceMsg(guild, welcomeMessage);
+            Bot.announceMsg(guild, welcomeMessage, null, guildConf);
         } catch (e) {
             Bot.logger.error(`Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
         }
