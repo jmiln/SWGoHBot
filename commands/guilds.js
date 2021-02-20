@@ -332,7 +332,7 @@ class Guilds extends Command {
                 ],
                 "Dark Side": [
                     ["BOSSK",                   "Bossk"],
-                    ["DARTHVADER",              "Darth Vader"],
+                    ["VADER",                   "Darth Vader"],
                     ["DARTHMALAK",              "Darth Malak"],
                     ["DARTHREVAN",              "Darth Revan"],
                     ["DARTHSION",               "Darth Sion"],
