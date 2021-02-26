@@ -530,7 +530,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Cargo Ship",
             "Scoundrel",
             "Tank"
@@ -578,7 +578,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Droid",
             "Scoundrel"
         ],
@@ -863,6 +863,33 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Razor Crest",
+        "base_id": "RAZORCREST",
+        "url": "http://swgoh.gg/ships/razor-crest/",
+        "image": "/game-asset/u/RAZORCREST/",
+        "power": 85955,
+        "description": "Tenacious Bounty Hunter attacker with Breach synergy.",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Bounty Hunter",
+            "Cargo Ship",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Assist",
+            "Buff Immunity",
+            "Dispel",
+            "Stealth",
+            "Taunt"
+        ],
+        "role": "Attacker",
+        "capital_ship": false,
+        "activate_shard_count": 145
+    },
+    {
         "name": "Rebel Y-wing",
         "base_id": "YWINGREBEL",
         "url": "http://swgoh.gg/ships/rebel-y-wing/",
@@ -1006,7 +1033,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Cargo Ship",
             "Scoundrel"
         ],
@@ -1204,7 +1231,7 @@
         "combat_type": 2,
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Scoundrel",
             "Support"
         ],

@@ -1204,6 +1204,27 @@
         "abilities": {}
     },
     {
+        "name": "Razor Crest",
+        "uniqueName": "RAZORCREST",
+        "aliases": [
+            "Razor Crest"
+        ],
+        "nameVariant": [
+            "Razor Crest"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/razor-crest/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/RAZORCREST/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Cargo Ship",
+            "Scoundrel"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Rebel Y-wing",
         "uniqueName": "YWINGREBEL",
         "aliases": [

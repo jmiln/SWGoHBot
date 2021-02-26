@@ -305,7 +305,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -722,7 +722,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -821,7 +821,7 @@
         "avatarURL": "https://swgoh.gg/game-asset/u/BOSSK/",
         "side": "dark",
         "factions": [
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel",
             "Tank"
@@ -1090,7 +1090,7 @@
         "avatarURL": "https://swgoh.gg/game-asset/u/CADBANE/",
         "side": "dark",
         "factions": [
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel",
             "Support"
@@ -2210,7 +2210,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -2406,7 +2406,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -3407,7 +3407,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -3441,7 +3441,7 @@
         "avatarURL": "https://swgoh.gg/game-asset/u/GREEFKARGA/",
         "side": "light",
         "factions": [
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel",
             "Support"
@@ -3786,7 +3786,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Droid",
             "Leader",
             "Scoundrel"
@@ -3932,7 +3932,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Mandalorian",
             "Scoundrel",
@@ -6920,7 +6920,7 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Mandalorian",
             "Scoundrel"
@@ -7522,7 +7522,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],

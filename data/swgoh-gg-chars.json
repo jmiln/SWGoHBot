@@ -1553,7 +1553,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -3304,7 +3304,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -3662,7 +3662,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel",
             "Tank"
@@ -4018,7 +4018,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel",
             "Support"
@@ -9619,7 +9619,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -10319,7 +10319,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -14863,7 +14863,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
@@ -15039,7 +15039,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel",
             "Support"
@@ -16774,7 +16774,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Droid",
             "Leader",
             "Scoundrel"
@@ -17469,7 +17469,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Mandalorian",
             "Scoundrel",
@@ -31384,7 +31384,7 @@
         "alignment": "Light Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Mandalorian",
             "Scoundrel"
@@ -31580,8 +31580,8 @@
             "Tenacity Up"
         ],
         "role": "Leader",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "RAZORCREST",
+        "ship_slot": 0,
         "activate_shard_count": 330
     },
     {
@@ -34659,7 +34659,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "Bounty Hunters",
+            "Bounty Hunter",
             "Leader",
             "Scoundrel"
         ],
