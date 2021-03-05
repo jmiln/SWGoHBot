@@ -7708,6 +7708,181 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Dark Trooper",
+        "base_id": "DARKTROOPER",
+        "pk": 907,
+        "url": "http://swgoh.gg/characters/dark-trooper/",
+        "image": "/game-asset/u/DARKTROOPER/",
+        "power": 31624,
+        "description": "An Imperial Remnant attacker whose abilities are modified by the amount in Dark Trooper Squad",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "003",
+                    "005",
+                    "005",
+                    "004",
+                    "002",
+                    "002"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "033",
+                    "021",
+                    "023",
+                    "018",
+                    "004",
+                    "012"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "076",
+                    "049",
+                    "015",
+                    "027",
+                    "047",
+                    "060"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "082",
+                    "035",
+                    "057",
+                    "048",
+                    "055",
+                    "039"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "084",
+                    "049",
+                    "075",
+                    "050",
+                    "086",
+                    "068"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "098",
+                    "051",
+                    "077",
+                    "091",
+                    "081",
+                    "078"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "108",
+                    "109",
+                    "067",
+                    "082",
+                    "088",
+                    "094"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "100",
+                    "118",
+                    "086",
+                    "092",
+                    "112",
+                    "081"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "120",
+                    "125",
+                    "109",
+                    "108",
+                    "091",
+                    "172"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "117",
+                    "121",
+                    "129",
+                    "108",
+                    "099",
+                    "140"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "153",
+                    "173",
+                    "144",
+                    "131",
+                    "173",
+                    "137"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "164",
+                    "160",
+                    "171",
+                    "166",
+                    "G12Finisher_DARKTROOPER_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Droid",
+            "Empire",
+            "Imperial Remnant",
+            "Imperial Trooper"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "AoE",
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Up",
+            "Revive"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Darth Malak",
         "base_id": "DARTHMALAK",
         "pk": 342,
@@ -9445,6 +9620,7 @@
         "categories": [
             "Attacker",
             "Empire",
+            "Imperial Remnant",
             "Imperial Trooper"
         ],
         "ability_classes": [
@@ -22702,6 +22878,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
+            "Imperial Remnant",
             "Imperial Trooper",
             "Leader",
             "Support"
@@ -30002,6 +30179,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Empire",
+            "Imperial Remnant",
             "Imperial Trooper",
             "Tank"
         ],

@@ -1759,6 +1759,27 @@
         }
     },
     {
+        "name": "Dark Trooper",
+        "uniqueName": "DARKTROOPER",
+        "aliases": [
+            "Dark Trooper"
+        ],
+        "nameVariant": [
+            "Dark Trooper"
+        ],
+        "url": "http://swgoh.gg/characters/dark-trooper/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/DARKTROOPER/",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Droid",
+            "Empire",
+            "Imperial Remnant",
+            "Imperial Trooper"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Darth Malak",
         "uniqueName": "DARTHMALAK",
         "aliases": [
@@ -2149,6 +2170,7 @@
         "factions": [
             "Attacker",
             "Empire",
+            "Imperial Remnant",
             "Imperial Trooper"
         ],
         "mods": {
@@ -5012,6 +5034,7 @@
         "side": "dark",
         "factions": [
             "Empire",
+            "Imperial Remnant",
             "Imperial Trooper",
             "Leader",
             "Support"
@@ -6594,6 +6617,7 @@
         "side": "dark",
         "factions": [
             "Empire",
+            "Imperial Remnant",
             "Imperial Trooper",
             "Tank"
         ],
