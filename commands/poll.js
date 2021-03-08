@@ -222,8 +222,8 @@ class Poll extends Command {
             case "me": {
                 if (poll.question && poll.question.length) {
                     try {
-                        await message.author.send(message.language.get("COMMAND_POLL_ME1", poll.pollID, pollCheck(poll)));
-                        return message.author.send(message.language.get("COMMAND_POLL_ME2", message.guildSettings.prefix, poll.pollID));
+                        await message.author.send(message.language.get("COMMAND_POLL_ME1", poll.pollID, pollCheck(poll))).catch(() => {});
+                        return message.author.send(message.language.get("COMMAND_POLL_ME2", message.guildSettings.prefix, poll.pollID)).catch(() => {});
                     } catch (e) {
                         return super.error(message, message.language.get("BASE_CANNOT_DM"));
                     }
