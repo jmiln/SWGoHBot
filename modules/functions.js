@@ -516,12 +516,21 @@ module.exports = (Bot, client) => {
     });
 
     process.on("unhandledRejection", (err) => {
-        console.log(err);
         const errorMsg = err.stack.replace(new RegExp(process.cwd(), "g"), ".");
+
+        // If it's something I can't do anything about, ignore it
+        const ignoreArr = [
+            "Internal Server Error",                // Something on Discord's end
+            "Cannot send messages to this user",    // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
+            "Unknown Message"                       // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
+        ];
+        if (ignoreArr.some(elem => errorMsg.includes(elem))) return;
+
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
             Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
-        console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`, true);
+        // console.log(err);
+        Bot.logger.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
         try {
             if (Bot.config.logs.logToChannel) {
                 client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
