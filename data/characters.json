@@ -707,6 +707,26 @@
         }
     },
     {
+        "name": "Bo-Katan Kryze",
+        "uniqueName": "BOKATAN",
+        "aliases": [
+            "Bo-Katan Kryze"
+        ],
+        "nameVariant": [
+            "Bo-Katan Kryze"
+        ],
+        "url": "http://swgoh.gg/characters/bo-katan-kryze/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/BOKATAN/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Leader",
+            "Mandalorian",
+            "Scoundrel"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Boba Fett",
         "uniqueName": "BOBAFETT",
         "aliases": [

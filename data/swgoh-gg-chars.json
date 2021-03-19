@@ -3148,6 +3148,185 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Bo-Katan Kryze",
+        "base_id": "BOKATAN",
+        "pk": 938,
+        "url": "http://swgoh.gg/characters/bo-katan-kryze/",
+        "image": "/game-asset/u/BOKATAN/",
+        "power": 31624,
+        "description": "A Mandalorian leader that unites fellow Mandalorians and rallies them to assist.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "006",
+                    "006",
+                    "010",
+                    "001",
+                    "003",
+                    "001"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "026",
+                    "029",
+                    "017",
+                    "011",
+                    "012"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "049",
+                    "056",
+                    "034",
+                    "053",
+                    "069",
+                    "057"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "069",
+                    "043",
+                    "081",
+                    "074",
+                    "024",
+                    "036"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "069",
+                    "084",
+                    "079",
+                    "081",
+                    "024",
+                    "093"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "097",
+                    "089",
+                    "049",
+                    "092",
+                    "038",
+                    "048"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "040",
+                    "106",
+                    "087",
+                    "092",
+                    "091",
+                    "019"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "109",
+                    "108",
+                    "113",
+                    "172",
+                    "117",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "102",
+                    "113",
+                    "113",
+                    "173",
+                    "119",
+                    "125"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "103",
+                    "116",
+                    "112",
+                    "138",
+                    "173",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "112",
+                    "113",
+                    "138",
+                    "142",
+                    "141",
+                    "145"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "160",
+                    "165",
+                    "170",
+                    "171",
+                    "G12Finisher_BOKATAN_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Leader",
+            "Mandalorian",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Daze",
+            "Defense Up",
+            "Dispel",
+            "Leader: +Defense",
+            "Leader: +Tenacity",
+            "Leader: Assist",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Boba Fett",
         "base_id": "BOBAFETT",
         "pk": 164,
