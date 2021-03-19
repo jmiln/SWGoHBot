@@ -117,7 +117,10 @@ class Event extends Command {
 
                     let validEV = await validateEvents([newEv]);
                     if (Array.isArray(validEV)) validEV = validEV[0];
-                    if (!validEV.valid) {
+                    if (!validEV) {
+                        return super.error(message, "Something broke while trying to validate your event.");
+                    }
+                    if (!validEV?.valid) {
                         return super.error(message, validEV.str);
                     }
                     await Bot.socket.emit("addEvents", validEV.event, (res) => {
@@ -767,7 +770,7 @@ class Event extends Command {
                         } else if (event.repeatDay.toString().match(dayReg)) {
                             const dayList = event.repeatDay.toString().split(",");
                             if (dayList.find(d => d <= 0)) {
-                                return err.push(message.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
+                                err.push(message.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
                             }
                             newEvent.repeatDays = dayList.map(d => parseInt(d, 10));
                         } else {
