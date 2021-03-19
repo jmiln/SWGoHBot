@@ -102,15 +102,19 @@ class Zetas extends Command {
             }
 
             const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);
-            const desc = [], author = {};
+            const desc = [], author = {}, fields = [];
             if (!character) {
+                const formatted = sorted.map(character => `\`(${zetas[character].length})\` ${character}`);
+                const chunked = Bot.chunkArray(formatted, 50);
                 author.name = message.language.get("COMMAND_ZETA_ZETAS_HEADER", player.name, count);
                 desc.push("`------------------------------`");
-                sorted.forEach(character => {
-                    desc.push(`\`(${zetas[character].length})\` ${character}`);
+                chunked.forEach(chunk => {
+                    fields.push({
+                        name: "-",
+                        value: chunk.join("\n")
+                    });
                 });
-                desc.push("`------------------------------`");
-                desc.push(message.language.get("COMMAND_ZETA_MORE_INFO"));
+                fields.push({name: "-", value: message.language.get("COMMAND_ZETA_MORE_INFO")});
             } else {
                 author.name = `${player.name}'s ${character.name} (${count})`;
                 author.icon_url = character.avatarURL;
@@ -121,7 +125,6 @@ class Zetas extends Command {
                 }
             }
 
-            const fields = [];
             if (options.defaults) {
                 fields.push({
                     name: "Default flags used:",
