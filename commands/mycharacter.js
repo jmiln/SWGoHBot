@@ -81,8 +81,7 @@ class MyCharacter extends Command {
             thisChar.unit = await Bot.swgohAPI.langChar(thisChar, message.guildSettings.swgohLanguage);
 
             const stats = thisChar.stats;
-            // TODO This needs to change because of droid ships etc
-            const isShip = thisChar.crew.length ? true : false;
+            const isShip = thisChar.combatType === 2 ? true : false;
 
             let charImg;
             const charArr = [thisChar.defId];
@@ -90,7 +89,9 @@ class MyCharacter extends Command {
             charArr.push(thisChar.level);
             charArr.push(thisChar.gear);
             charArr.push(thisChar.skills.filter(s => s.isZeta && s.tier == s.tiers).length);  // Zeta count
-            charArr.push(thisChar.relic.currentTier);  // Relic count
+            if (thisChar.relic?.currentTier) {
+                charArr.push(thisChar.relic.currentTier);  // Relic count
+            }
             charArr.push(character.side);
 
             try {
@@ -225,7 +226,7 @@ class MyCharacter extends Command {
                     } else {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: `;
                         const str = stats.final[s] % 1 === 0 ? stats.final[s].toLocaleString() : (stats.final[s] * 100).toFixed(2)+"%";
-                        const modStr = stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s].toLocaleString()})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
+                        const modStr = isShip ? "" : stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s].toLocaleString()})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
                         statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
                     }
                 });
