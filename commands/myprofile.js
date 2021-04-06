@@ -156,17 +156,24 @@ class MyProfile extends Command {
             ].join("\n")
         });
 
-        //  Uncomment this to show the rarity stats/ averages
+        //  Show the rarity stats/ averages
         const totalChars    =  Object.keys(rarityCount).map(r => rarityCount[r].c).reduce((a,b) => a + b, 0);
         const avgCharRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].c).reduce((a,b) => a + b, 0) / totalChars).toFixed(2);
         const totalShips    =  Object.keys(rarityCount).map(r => rarityCount[r].s).reduce((a,b) => a + b, 0);
         const avgShipRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].s).reduce((a,b) => a + b, 0) / totalShips).toFixed(2);
         fields.push({
-            name: "Rarity",
+            name: message.language.get("COMMAND_MYPROFILE_RARITY_HEADER"),
             value: ["` * | Char | Ship `",
                 Object.keys(rarityCount).filter(r => rarityCount[r].c > 0 || rarityCount[r].s > 0).map(r => Bot.expandSpaces(`\` ${r} | ${" ".repeat(4 - rarityCount[r].c.toString().length)}${rarityCount[r].c} | ${" ".repeat(4 - rarityCount[r].s.toString().length)}${rarityCount[r].s} \``)).join("\n"),
                 `\`AVG| ${" ".repeat(4 - avgCharRarity.toString().length)}${avgCharRarity} | ${" ".repeat(4 - avgShipRarity.toString().length)}${avgShipRarity} \``
             ].join("\n")
+        });
+
+        // Show the relic counts
+        const relicOut = Object.keys(relicCount).map(r => `\`  ${r}  |     ${relicCount[r]}\``);
+        fields.push({
+            name: message.language.get("COMMAND_MYPROFILE_RELIC_HEADER"),
+            value: ["`Tier | Count`"].concat(relicOut).join("\n")
         });
 
         if (player.warnings) {
