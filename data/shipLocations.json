@@ -68,8 +68,8 @@
         "name": "BTL-B Y-wing Starfighter",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Republic Stalwart"
+                "type": "Hard Modes (L)",
+                "level": "7-C"
             }
         ]
     },
@@ -153,6 +153,15 @@
         ]
     },
     {
+        "name": "Finalizer",
+        "locations": [
+            {
+                "type": "Challenges",
+                "name": "Fleet Commander Training: General's Command"
+            }
+        ]
+    },
+    {
         "name": "First Order SF TIE Fighter",
         "locations": [
             {
@@ -166,6 +175,10 @@
         "locations": [
             {
                 "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Guild Event Shop",
                 "cost": "400/4"
             },
             {
@@ -291,6 +304,15 @@
         ]
     },
     {
+        "name": "Imperial TIE Bomber",
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "5-A"
+            }
+        ]
+    },
+    {
         "name": "Imperial TIE Fighter",
         "locations": [
             {
@@ -355,7 +377,15 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "1350-05-01T06:59:56.000Z"
+                "cost": "1350/5"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "2700/10"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "4050/15"
             }
         ]
     },
@@ -420,6 +450,33 @@
             {
                 "type": "Hard Modes (Fleet)",
                 "level": "3-A"
+            }
+        ]
+    },
+    {
+        "name": "Raddus",
+        "locations": [
+            {
+                "type": "Challenges",
+                "name": "Fleet Commander Training: Admiral's Maneuver"
+            }
+        ]
+    },
+    {
+        "name": "Razor Crest",
+        "locations": [
+            {
+                "type": "Special Event",
+                "name": "Galactic Battle: Conquest"
+            }
+        ]
+    },
+    {
+        "name": "Rebel Y-Wing",
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-C"
             }
         ]
     },

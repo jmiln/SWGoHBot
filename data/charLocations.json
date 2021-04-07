@@ -8,7 +8,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -17,15 +17,24 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Admiral Piett",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "6-B"
             }
         ]
     },
@@ -34,11 +43,11 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -51,7 +60,7 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -78,7 +87,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -109,7 +118,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -122,15 +131,15 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (D)",
                 "level": "5-C"
             },
             {
-                "type": "Hard Modes (D)",
-                "level": "5-E"
+                "type": "Cantina",
+                "level": "6-A"
             }
         ]
     },
@@ -183,15 +192,15 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -204,15 +213,23 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Bo-Katan Kryze",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)"
             }
         ]
     },
@@ -221,11 +238,11 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -242,7 +259,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -269,7 +286,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -296,7 +313,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -314,11 +331,11 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -327,11 +344,11 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -358,7 +375,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -367,7 +384,7 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -376,11 +393,11 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -389,11 +406,11 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -402,10 +419,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "3-E"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "5-E"
             }
         ]
     },
@@ -419,10 +432,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "2-C"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "3-E"
             }
         ]
     },
@@ -431,7 +440,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -449,7 +458,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -475,11 +484,11 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -488,11 +497,11 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -505,11 +514,19 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
+            }
+        ]
+    },
+    {
+        "name": "Dark Trooper",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)"
             }
         ]
     },
@@ -522,7 +539,15 @@
             },
             {
                 "type": "Guild Event Shop",
+                "cost": "1900/5"
+            },
+            {
+                "type": "Guild Event Shop",
                 "cost": "3800/10"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "5700/15"
             }
         ]
     },
@@ -531,11 +556,11 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -562,7 +587,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -596,7 +621,7 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -605,11 +630,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "3-B"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -631,7 +652,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -640,7 +661,7 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -662,7 +683,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -698,7 +719,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -724,11 +745,11 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -741,11 +762,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "7-A"
+                "cost": "450/10"
             }
         ]
     },
@@ -763,7 +780,7 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -772,7 +789,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -794,7 +811,7 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -811,7 +828,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -824,7 +841,7 @@
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -833,11 +850,11 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -846,11 +863,19 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Shard Shop",
-                "cost": "1125/5"
+                "cost": "2250/5"
+            },
+            {
+                "type": "Shard Shop",
+                "cost": "4500/10"
+            },
+            {
+                "type": "Shard Shop",
+                "cost": "13500/30"
             }
         ]
     },
@@ -858,8 +883,8 @@
         "name": "General Hux",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Ruthless General"
+                "type": "Hard Modes (D)",
+                "level": "6-A"
             }
         ]
     },
@@ -873,11 +898,32 @@
         ]
     },
     {
+        "name": "General Skywalker",
+        "locations": [
+            {
+                "type": "Epic Confrontation",
+                "name": "Clash on Kamino"
+            },
+            {
+                "type": "Shard Shop",
+                "cost": "1900/5"
+            },
+            {
+                "type": "Shard Shop",
+                "cost": "3800/10"
+            },
+            {
+                "type": "Shard Shop",
+                "cost": "5700/15"
+            }
+        ]
+    },
+    {
         "name": "General Veers",
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -907,7 +953,7 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -920,7 +966,7 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -947,15 +993,15 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -964,7 +1010,20 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Greef Karga",
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-C"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "level": "3-E"
             }
         ]
     },
@@ -986,7 +1045,7 @@
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -996,6 +1055,14 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "1350/5"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "2700/10"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "4050/15"
             }
         ]
     },
@@ -1004,7 +1071,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1013,11 +1080,11 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1030,11 +1097,19 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
                 "level": "3-B"
+            }
+        ]
+    },
+    {
+        "name": "Hunter",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)"
             }
         ]
     },
@@ -1047,7 +1122,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1056,15 +1131,20 @@
         ]
     },
     {
+        "name": "IG-11",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "3-B"
+            }
+        ]
+    },
+    {
         "name": "IG-86 Sentinel Droid",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "4-E"
-            },
-            {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1081,7 +1161,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1094,11 +1174,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "5-A"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1112,6 +1188,14 @@
             {
                 "type": "Territory Battle",
                 "name": "Imperial Retaliation"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "900/5"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "1800/10"
             }
         ]
     },
@@ -1120,7 +1204,7 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Cantina",
@@ -1147,10 +1231,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "4-F"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "6-B"
             }
         ]
     },
@@ -1159,7 +1239,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -1168,7 +1248,7 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1181,15 +1261,11 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
                 "level": "1-D"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "3-C"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1215,11 +1291,20 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
                 "level": "3-F"
+            }
+        ]
+    },
+    {
+        "name": "Jedi Knight Luke Skywalker",
+        "locations": [
+            {
+                "type": "Hero's Journey",
+                "name": "Luke Skywalker The Journey Continues"
             }
         ]
     },
@@ -1229,6 +1314,15 @@
             {
                 "type": "Hero's Journey",
                 "name": "Legend of the Old Republic"
+            }
+        ]
+    },
+    {
+        "name": "Jedi Master Luke Skywalker",
+        "locations": [
+            {
+                "type": "Hero's Journey",
+                "name": "The Journey's End"
             }
         ]
     },
@@ -1259,7 +1353,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -1268,11 +1362,11 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1281,11 +1375,11 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1307,7 +1401,16 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
+            }
+        ]
+    },
+    {
+        "name": "Kuiil",
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "5-A"
             }
         ]
     },
@@ -1320,7 +1423,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -1351,7 +1454,7 @@
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1373,7 +1476,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -1386,11 +1489,11 @@
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1403,7 +1506,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1420,7 +1523,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Cantina",
@@ -1428,7 +1531,7 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1441,11 +1544,11 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1463,7 +1566,25 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Moff Gideon",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "4-E"
+            }
+        ]
+    },
+    {
+        "name": "Mon Mothma",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "5-E"
             }
         ]
     },
@@ -1489,7 +1610,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -1498,7 +1619,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1533,7 +1654,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1546,7 +1667,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -1555,7 +1676,7 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1577,7 +1698,7 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1590,7 +1711,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -1603,7 +1724,7 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1612,11 +1733,11 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1629,7 +1750,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1646,11 +1767,11 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1668,7 +1789,7 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1696,6 +1817,32 @@
             {
                 "type": "Territory Battle",
                 "name": "Rebel Assault"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "900/10"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "1800/10"
+            }
+        ]
+    },
+    {
+        "name": "Resistance Hero Finn",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "8-C"
+            }
+        ]
+    },
+    {
+        "name": "Resistance Hero Poe",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "6-B"
             }
         ]
     },
@@ -1704,11 +1851,11 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1717,7 +1864,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1726,11 +1873,20 @@
         ]
     },
     {
+        "name": "Rey",
+        "locations": [
+            {
+                "type": "Galactic Ascension",
+                "name": "Heir to the Light Side"
+            }
+        ]
+    },
+    {
         "name": "Rey (Jedi Training)",
         "locations": [
             {
                 "type": "Hero's Journey",
-                "name": "Rey"
+                "name": "Rey Hero's Journey"
             }
         ]
     },
@@ -1739,7 +1895,7 @@
         "locations": [
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1773,7 +1929,7 @@
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1791,7 +1947,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1804,11 +1960,11 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1839,7 +1995,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -1849,6 +2005,15 @@
             {
                 "type": "Cantina",
                 "level": "8-B"
+            }
+        ]
+    },
+    {
+        "name": "Sith Eternal Emperor",
+        "locations": [
+            {
+                "type": "Galactic Ascension",
+                "name": "The Final Order"
             }
         ]
     },
@@ -1865,8 +2030,8 @@
         "name": "Sith Trooper",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Emperor's Elite"
+                "type": "Hard Modes (D)",
+                "level": "6-C"
             }
         ]
     },
@@ -1879,7 +2044,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1887,7 +2052,7 @@
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1896,7 +2061,7 @@
         "locations": [
             {
                 "type": "Cantina Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1904,7 +2069,7 @@
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1913,11 +2078,11 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -1926,11 +2091,20 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
+            }
+        ]
+    },
+    {
+        "name": "Supreme Leader Kylo Ren",
+        "locations": [
+            {
+                "type": "Galactic Ascension",
+                "name": "Heir to the Dark Side"
             }
         ]
     },
@@ -1952,7 +2126,7 @@
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1969,7 +2143,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1982,6 +2156,46 @@
         ]
     },
     {
+        "name": "The Armorer",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "9-C"
+            }
+        ]
+    },
+    {
+        "name": "The Mandalorian",
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "3-C"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "5-E"
+            }
+        ]
+    },
+    {
+        "name": "The Mandalorian (Beskar Armor)",
+        "locations": [
+            {
+                "type": "Hero's Journey",
+                "name": "The Mandalorian Hero's Journey"
+            }
+        ]
+    },
+    {
+        "name": "Threepio & Chewie",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "7-A"
+            }
+        ]
+    },
+    {
         "name": "TIE Fighter Pilot",
         "locations": [
             {
@@ -1990,11 +2204,11 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -2003,7 +2217,7 @@
         "locations": [
             {
                 "type": "GW Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -2016,11 +2230,11 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     },
@@ -2029,7 +2243,7 @@
         "locations": [
             {
                 "type": "Arena Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -2088,6 +2302,14 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "1350/5"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "2700/10"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "4050/15"
             }
         ]
     },
@@ -2109,7 +2331,7 @@
             },
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             }
         ]
     },
@@ -2161,11 +2383,11 @@
         "locations": [
             {
                 "type": "Fleet Shipments",
-                "cost": "400/5"
+                "cost": "400/10"
             },
             {
                 "type": "Guild Shop",
-                "cost": "450/5"
+                "cost": "450/10"
             }
         ]
     }
