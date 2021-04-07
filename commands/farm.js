@@ -20,13 +20,16 @@ class Farm extends Command {
         if (!searchChar || !searchChar.length) return super.error(message, message.language.get("COMMAND_FARM_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FARM_MISSING_CHARACTER"), example: "farm bb8"});
         searchChar = searchChar.join(" ");
         let chars;
-        if (options.flags.ships) {
-            chars = Bot.findChar(searchChar, Bot.ships, true);
-        } else {
+        if (!options.flags.ships) {
+            // If they don't specify ships, look for chars
             chars = Bot.findChar(searchChar, Bot.characters);
         }
+        if (options.flags.ships || !chars?.length) {
+            // If they are looking for a ship or if the char search doesn't work, then check ships in case
+            chars = Bot.findChar(searchChar, Bot.ships, true);
+        }
         let character;
-        if (!chars.length) {
+        if (!chars?.length) {
             // Didn't find one
             return super.error(message, message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         } else if (chars.length > 1) {
