@@ -3725,6 +3725,27 @@
         }
     },
     {
+        "name": "Hunter",
+        "uniqueName": "BADBATCHHUNTER",
+        "aliases": [
+            "Hunter"
+        ],
+        "nameVariant": [
+            "Hunter"
+        ],
+        "url": "http://swgoh.gg/characters/hunter/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/BADBATCHHUNTER/",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Bad Batch",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Leader"
+        ],
+        "mods": {}
+    },
+    {
         "name": "IG-100 MagnaGuard",
         "uniqueName": "MAGNAGUARD",
         "aliases": [

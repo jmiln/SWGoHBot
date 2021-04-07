@@ -16455,6 +16455,191 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Hunter",
+        "base_id": "BADBATCHHUNTER",
+        "pk": 975,
+        "url": "http://swgoh.gg/characters/hunter/",
+        "image": "/game-asset/u/BADBATCHHUNTER/",
+        "power": 31624,
+        "description": "Tactical leader of the Bad Batch who subtly destroys his enemies.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "003",
+                    "008",
+                    "003",
+                    "002",
+                    "006",
+                    "008"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "012",
+                    "021",
+                    "017",
+                    "028",
+                    "032",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "043",
+                    "044",
+                    "012",
+                    "043",
+                    "044",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "040",
+                    "059",
+                    "038",
+                    "063",
+                    "040",
+                    "064"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "042",
+                    "063",
+                    "061",
+                    "078",
+                    "083",
+                    "088"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "063",
+                    "079",
+                    "085",
+                    "080",
+                    "087",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "042",
+                    "097",
+                    "100",
+                    "040",
+                    "071",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "087",
+                    "042",
+                    "071",
+                    "100",
+                    "118",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "172",
+                    "114",
+                    "087",
+                    "119",
+                    "117",
+                    "118"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "115",
+                    "119",
+                    "119",
+                    "172",
+                    "139",
+                    "094"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "115",
+                    "110",
+                    "119",
+                    "140",
+                    "137",
+                    "172"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "164",
+                    "158",
+                    "170",
+                    "168",
+                    "G12Finisher_BADBATCHHUNTER_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Bad Batch",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Leader"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Bonus Attack",
+            "Counter",
+            "Defense Up",
+            "Evasion Up",
+            "Expose",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Evasion",
+            "Leader: +Max Health",
+            "Offense Up",
+            "Remove Turn Meter",
+            "Stealth",
+            "Stun",
+            "Target Lock",
+            "Taunt"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "IG-100 MagnaGuard",
         "base_id": "MAGNAGUARD",
         "pk": 17,
