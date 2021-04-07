@@ -13,6 +13,10 @@ const SHIPLOCATIONS          = "../data/shipLocations.json";
 const GAMEDATA               = "../data/gameData.json";
 const UNKNOWN                = "Unknown";
 
+const crinoloLocs = "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=";
+const charLocationLink = config.locations?.char ? config.locations.char : crinoloLocs + "false";
+const shipLocationLink = config.locations?.ship ? config.locations.ship : crinoloLocs + "true";
+
 // How long between being runs (In minutes)
 const INTERVAL = 30;
 
@@ -128,11 +132,11 @@ async function updateRemoteData() {
         log.push("Detected a squad change from swgoh.help.");
     }
 
-    if (await updateIfChanged(CHARLOCATIONS, "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=false")) {
+    if (await updateIfChanged(CHARLOCATIONS, charLocationLink)) {
         log.push("Detected a change in character locations.");
     }
 
-    if (await updateIfChanged(SHIPLOCATIONS, "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=true")) {
+    if (await updateIfChanged(SHIPLOCATIONS, shipLocationLink)) {
         log.push("Detected a change in ship locations.");
     }
 
