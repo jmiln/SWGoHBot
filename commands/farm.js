@@ -41,87 +41,10 @@ class Farm extends Command {
 
         const unit = await Bot.swgohAPI.units(character.uniqueName, message.swgohLanguage);
         if (!unit) {
-            return super.error(message, "Broke trying to get the unit.");
-        }
-        const recipe = await Bot.swgohAPI.recipes(unit.creationRecipeReference, message.swgohLanguage);
-        if (!recipe) {
-            return super.error(message, "Broke trying to get the recipe.");
-        }
-        const mat = recipe[0].ingredientsList.find(i => i.id.startsWith("unitshard"));
-        const material = await Bot.swgohAPI.materials(mat.id, message.swgohLanguage);
-        if (!material) {
-            return super.error(message, "Broke trying to get the unit.");
+            return super.error(message, "[FARM] Broke trying to get the unit.");
         }
 
-        const eventChars = message.language.get("COMMAND_FARM_EVENT_CHARS");
         let outList = [];
-        if (Object.keys(eventChars).includes(character.uniqueName)) {
-            outList.push(eventChars[character.uniqueName]);
-        }
-        const lookupList = material[0].lookupMissionList.filter(m => m.missionIdentifier.campaignId !== "EVENTS");
-        const raidLookupList = material[0].raidLookupList;
-        for (const mis of lookupList) {
-            let out = "";
-            const mission = mis.missionIdentifier;
-            if (mission.campaignMapId === "PRELUDE") continue;
-            const battle = await Bot.swgohAPI.battles(mission.campaignId);
-            const found = battle[0].campaignMapList.find(c => c.id === mission.campaignMapId);
-            out += parseInt(found.id.replace(/[^\d]/g, ""), 10);
-            let tier;
-            found.difficultyList.forEach(d => {
-                const node = d.nodeList.find(n => n.id === mission.campaignNodeId);
-                if (node) {
-                    if (d.difficulty === 5) out = message.language.get("COMMAND_FARM_HARD") + out;
-                    tier = node;
-                }
-            });
-            if (!tier) return super.error(message, "Something Broke: Cannot find tier");
-            if (tier.forceAlignment === "DARK") {
-                out = message.language.get("COMMAND_FARM_DARK") + out;
-            } else if (tier.forceAlignment === "LIGHT") {
-                out = message.language.get("COMMAND_FARM_LIGHT") + out;
-            } else if (mission.campaignId.endsWith("SP")) {
-                out = message.language.get("COMMAND_FARM_FLEET") + out;
-            } else if (tier.forceAlignment === "NEUTRAL") {
-                out = message.language.get("COMMAND_FARM_CANTINA") + out;
-            }
-            const diff = {
-                5: "HARDDIFF",
-                4: "NORMALDIFF"
-            };
-            if (Number.isInteger(mission.campaignNodeDifficulty)) {
-                mission.campaignNodeDifficulty = diff[mission.campaignNodeDifficulty];
-            }
-            const letter = Bot.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty][mission.campaignMissionId];
-            const nodeCost = Bot.missions[mission.campaignId][mission.campaignMapId][mission.campaignNodeDifficulty]["COST"];
-            out += letter + " - " + nodeCost + message.language.get("COMMAND_FARM_ENERGY_PER");
-            outList.push(out);
-        }
-        if (raidLookupList.length) {
-            // For han, gk, traya etc..
-            for (const mis of raidLookupList) {
-                let out = "";
-                const mission = mis.missionIdentifier;
-                const battle = await Bot.swgohAPI.battles(mission.campaignId);
-                const found = battle[0].campaignMapList.find(c => c.id === mission.campaignMapId);
-                let tier;
-                found.difficultyList.forEach(d => {
-                    const node = d.nodeList.find(n => n.id === mission.campaignNodeId);
-                    if (node) {
-                        tier = node;
-                    }
-                });
-                if (!tier) return super.error(message, "Something Broke: Cannot find tier");
-                out += tier.id.replace("_", " ").toProperCase() + " ";
-                const name =  tier.missionList.find(m => m.id === mission.campaignMissionId).nameKey;
-                if (name && name.length) {
-                    out = name.replace(/\[.*\]/, "").toProperCase() + out;
-                }
-
-                outList.push(out);
-            }
-        }
-
         if (options.flags.ships) {
             const ship = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
             if (ship) {
@@ -133,10 +56,27 @@ class Farm extends Command {
         } else {
             const char = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
             if (char) {
-                const shopLoc = char.locations.filter(l => l.cost);
-                if (shopLoc.length) {
-                    outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
-                }
+                char.locations.forEach(loc => {
+                    if (loc.cost) {
+                        // This will be anything in a store
+                        outList.push( `${loc.type} - ${loc.cost.replace("/", " per ")} shards`);
+                    } else if (loc.level) {
+                        // It's a node, fleet, cantina, light/ dark side
+                        loc.type = loc.type.replace("Hard Modes (", "").replace(")", "");
+                        if (loc.type === "L") {
+                            outList.push(`Light Side Hard ${loc.level}`);
+                        } else if (loc.type === "D") {
+                            outList.push(`Dark Side Hard ${loc.level}`);
+                        } else if (loc.type === "Fleet") {
+                            outList.push(`Fleet Hard ${loc.level}`);
+                        } else if (loc.type === "Cantina") {
+                            outList.push(`Cantina ${loc.level}`);
+                        }
+                    } else if (loc.name) {
+                        // This will be any of the events
+                        outList.push(Bot.expandSpaces(`__${loc.type}__: ${loc.name}`));
+                    }
+                });
             }
         }
         if (!outList.length) {
