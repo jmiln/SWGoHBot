@@ -32,7 +32,7 @@ module.exports = (Bot) => {
         battles: battles,
         units: units,
         recipes: recipes,
-        materials: materials,
+        // materials: materials,
         guild: guild,
         guildByName: guildByName,
         zetaRec: zetaRec,
@@ -651,43 +651,43 @@ module.exports = (Bot) => {
         }
     }
 
-    async function materials( matArray, lang, update=false ) {
-        lang = lang || "eng_us";
-        if (!matArray) {
-            throw new Error("You need to have a list of materials here");
-        } else if (!Array.isArray(matArray)) {
-            matArray = [matArray];
-        }
-
-        if (update) {
-            const mOut = [];
-            let matList = await Bot.swgoh.fetchAPI("/swgoh/data", {
-                "collection": "materialList",
-                "language": "eng_us",
-                "project": {
-                    "id": 1,
-                    "nameKey": 1,
-                    "descKey": 1,
-                    "lookupMissionList": 1,
-                    "raidLookupList": 1
-                }
-            });
-            matList = matList.result;
-
-            for (const mat of matList) {
-                mat.language = lang.toLowerCase();
-                if (matArray.includes(mat.id)) {
-                    mOut.push(mat);
-                }
-                await cache.put(Bot.config.mongodb.swapidb, "materials", {id: mat.id, language: lang}, mat);
-            }
-            return mOut;
-        } else {
-            // All the skills should be loaded, so just get em from the cache
-            const mOut = await cache.get(Bot.config.mongodb.swapidb, "materials", {id: {$in: matArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
-            return mOut;
-        }
-    }
+    // async function materials( matArray, lang, update=false ) {
+    //     lang = lang || "eng_us";
+    //     if (!matArray) {
+    //         throw new Error("You need to have a list of materials here");
+    //     } else if (!Array.isArray(matArray)) {
+    //         matArray = [matArray];
+    //     }
+    //
+    //     if (update) {
+    //         const mOut = [];
+    //         let matList = await Bot.swgoh.fetchAPI("/swgoh/data", {
+    //             "collection": "materialList",
+    //             "language": "eng_us",
+    //             "project": {
+    //                 "id": 1,
+    //                 "nameKey": 1,
+    //                 "descKey": 1,
+    //                 "lookupMissionList": 1,
+    //                 "raidLookupList": 1
+    //             }
+    //         });
+    //         matList = matList.result;
+    //
+    //         for (const mat of matList) {
+    //             mat.language = lang.toLowerCase();
+    //             if (matArray.includes(mat.id)) {
+    //                 mOut.push(mat);
+    //             }
+    //             await cache.put(Bot.config.mongodb.swapidb, "materials", {id: mat.id, language: lang}, mat);
+    //         }
+    //         return mOut;
+    //     } else {
+    //         // All the skills should be loaded, so just get em from the cache
+    //         const mOut = await cache.get(Bot.config.mongodb.swapidb, "materials", {id: {$in: matArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+    //         return mOut;
+    //     }
+    // }
 
     async function guild( allycode, lang="ENG_US", cooldown ) {
         lang = lang || "ENG_US";

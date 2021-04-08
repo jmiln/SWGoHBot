@@ -95,8 +95,8 @@ class ReloadData extends Command {
                         message.channel.send(`Updated gear for ${lang}`);
                         await Bot.swgohAPI.recipes([], lang, true);
                         message.channel.send(`Updated recipes for ${lang}`);
-                        await Bot.swgohAPI.materials([], lang, true);
-                        message.channel.send(`Updated mats for ${lang}`);
+                        // await Bot.swgohAPI.materials([], lang, true);
+                        // message.channel.send(`Updated mats for ${lang}`);
                         message.channel.send("Updated all local data for " + lang);
                     } else {
                         switch (args[0]) {
@@ -108,10 +108,10 @@ class ReloadData extends Command {
                                 await Bot.swgohAPI.gear([], lang, true);
                                 message.channel.send(`Updated gear for ${lang}`);
                                 break;
-                            case "materials":
-                                await Bot.swgohAPI.materials([], lang, true);
-                                message.channel.send(`Updated mats for ${lang}`);
-                                break;
+                            // case "materials":
+                            //     await Bot.swgohAPI.materials([], lang, true);
+                            //     message.channel.send(`Updated mats for ${lang}`);
+                            //     break;
                             case "recipes":
                                 await Bot.swgohAPI.recipes([], lang, true);
                                 message.channel.send(`Updated recipes for ${lang}`);
