@@ -38,6 +38,7 @@ class UserConf extends Command {
         }
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         switch (target) {
+            case "ac":
             case "allycodes":
             case "allycode": {
                 // Allycode   -> add/remove/makePrimary
