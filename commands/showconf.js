@@ -51,7 +51,8 @@ class Showconf extends Command {
         var array = [];
         if (guildConf) {
             for (const key of Object.keys(Bot.config.defaultSettings)) {
-                array.push(`* ${key}: ${util.inspect(guildConf[key])}`);
+                const value = key === "changelogWebhook" ? util.inspect(guildConf[key]).slice(0, 92) + "..." : util.inspect(guildConf[key]);
+                array.push(`* ${key}: ${value}`);
             }
             var configKeys = array.join("\n");
             return message.channel.send(message.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName), {split: true});
