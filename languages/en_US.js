@@ -334,18 +334,28 @@ module.exports = class extends Language {
                             ";arenawatch arena <both|fleet|char>",
                             ";arenawatch channel <channelMention> [char|fleet|ship]",
                             ";arenawatch enabled <on|off>",
+                        ].join("\n"),
+                        args: {
+                            "allycode": "Edit the list of ally codes. Use allycode:mention to mention a person",
+                            "arena": "Choose which arena's alerts you want",
+                            "channel": "Select which channel to output logs to",
+                            "enabled": "Toggle alerts for all selected allycodes",
+                        }
+                    },
+                    {
+                        action: "Arena Watch (Cont)",
+                        actionDesc: "Continuation of the Arena Watch section",
+                        usage: [
                             ";arenawatch result <allycode> <none|both|char|fleet>",
+                            ";arenawatch useMarksInLog <on|off>",
                             ";arenawatch view [allycode]",
                             ";arenawatch warn <allycode> <#ofMin> <none|both|char|fleet>",
                         ].join("\n"),
                         args: {
-                            "enabled": "Toggle alerts for all selected allycodes",
-                            "arena": "Choose which arena's alerts you want",
-                            "channel": "Select which channel to output logs to",
-                            "allycode": "Edit the list of ally codes. Use allycode:mention to mention a person",
                             "result": "Announce a player's final rank at payout",
+                            "useMarksInLog": "Use the players' marks in the arena log",
+                            "view": "View the current settings. Include an ally code to view settings for a specific person",
                             "warn": "Warn the player in the log channel, #ofMin before their payout",
-                            "view": "View the current settings. Include an ally code to view settings for a specific person"
                         }
                     },
                     {

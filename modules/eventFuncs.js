@@ -141,7 +141,7 @@ module.exports = (Bot, client) => {
         } else {
             // Just destroy it
             await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
-                .then(() => { console.log(`Deleting non-repeating event ${event.eventID}`); })
+                .then(() => { Bot.logger.debug(`Deleting non-repeating event ${event.eventID}`); })
                 .catch(error => { Bot.logger.error(`Broke trying to delete old event ${error}`); });
         }
     };

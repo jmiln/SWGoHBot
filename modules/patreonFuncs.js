@@ -453,7 +453,6 @@ module.exports = (Bot, client) => {
             // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
             let charOut = [];
             let shipOut = [];
-            // console.log(accountsToCheck);
             accountsToCheck.forEach((player, ix) => {
                 let newPlayer = newPlayers.find(p => p.allyCode === parseInt(player.allyCode, 10));
                 if (!newPlayer) {
@@ -473,7 +472,8 @@ module.exports = (Bot, client) => {
                         name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                         allyCode: player.allyCode,
                         oldRank: player.lastChar || 0,
-                        newRank: newPlayer.arena.char.rank
+                        newRank: newPlayer.arena.char.rank,
+                        mark: player.mark
                     });
                     player.lastChar = newPlayer.arena.char.rank;
                 }
@@ -482,14 +482,18 @@ module.exports = (Bot, client) => {
                         name: player.mention ? `<@${player.mention}>`: newPlayer.name,
                         allyCode: player.allyCode,
                         oldRank: player.lastShip || 0,
-                        newRank: newPlayer.arena.ship.rank
+                        newRank: newPlayer.arena.ship.rank,
+                        mark: player.mark
                     });
                     player.lastShip = newPlayer.arena.ship.rank;
                 }
 
                 if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
                     const payouts = getAllPayoutTimes(player);
-                    const pName = player.mention ? `<@${player.mention}>` : player.name;
+                    let pName = player.mention ? `<@${player.mention}>` : player.name;
+                    if (aw.useMarksInLog && player.mark) {
+                        pName = `${player.mark} ${pName}`;
+                    }
                     const charMinLeft  = Math.floor(payouts.charDuration  / 60000);
                     const fleetMinLeft = Math.floor(payouts.fleetDuration / 60000);
                     if (charMinLeft === 0 && ["char", "both"].includes(player.result)) {
@@ -517,10 +521,10 @@ module.exports = (Bot, client) => {
             });
 
             if (compChar.length && aw.arena.char.enabled) {
-                charOut = charOut.concat(checkRanks(compChar));
+                charOut = charOut.concat(checkRanks(compChar, aw));
             }
             if (compShip.length && aw.arena.fleet.enabled) {
-                shipOut = shipOut.concat(checkRanks(compShip));
+                shipOut = shipOut.concat(checkRanks(compShip, aw));
             }
 
             const charFields = [];
@@ -571,7 +575,7 @@ module.exports = (Bot, client) => {
     };
 
     // Compare ranks to see if we have both sides of the fight or not
-    function checkRanks(inArr) {
+    function checkRanks(inArr, aw) {
         const checked = [];
         const outArr = [];
         for (let ix = 0; ix < inArr.length; ix++) {
@@ -579,10 +583,12 @@ module.exports = (Bot, client) => {
                 const isChecked = checked.includes(inArr[ix].allyCode) || checked.includes(inArr[jx].allyCode);
                 if (!isChecked && inArr[ix].oldRank === inArr[jx].newRank && inArr[ix].newRank === inArr[jx].oldRank) {
                     // Then they likely swapped spots
+                    const ixName = inArr[ix].mark && aw.useMarksInLog ? `${inArr[ix].mark} ${inArr[ix].name}` : inArr[ix].name;
+                    const jxName = inArr[jx].mark && aw.useMarksInLog ? `${inArr[jx].mark} ${inArr[jx].name}` : inArr[jx].name;
                     if (inArr[ix].oldRank > inArr[ix].newRank) {
-                        outArr.push(`${inArr[ix].name} has hit ${inArr[jx].name} down from ${inArr[jx].oldRank} to ${inArr[jx].newRank}`);
+                        outArr.push(`${ixName} has hit ${jxName} down from ${inArr[jx].oldRank} to ${inArr[jx].newRank}`);
                     } else {
-                        outArr.push(`${inArr[jx].name} has hit ${inArr[ix].name} down from ${inArr[ix].oldRank} to ${inArr[ix].newRank}`);
+                        outArr.push(`${jxName} has hit ${ixName} down from ${inArr[ix].oldRank} to ${inArr[ix].newRank}`);
                     }
 
                     // Put the players into the checked array so we can make sure not to log it twice
@@ -593,7 +599,8 @@ module.exports = (Bot, client) => {
         }
         inArr.forEach(player => {
             if (!checked.includes(player.allyCode)) {
-                outArr.push(`${player.name} has ${player.oldRank < player.newRank ? "dropped" : "climbed"} from ${player.oldRank} to ${player.newRank}`);
+                const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${player.name}` : player.name;
+                outArr.push(`${pName} has ${player.oldRank < player.newRank ? "dropped" : "climbed"} from ${player.oldRank} to ${player.newRank}`);
             }
         });
         return outArr;

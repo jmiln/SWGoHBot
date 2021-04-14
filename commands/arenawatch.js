@@ -56,6 +56,7 @@ class ArenaWatch extends Command {
         if (!aw) {
             aw = {
                 enabled: false,
+                useMarksInLog: false,
                 arena: {
                     fleet: {
                         channel: null,
@@ -71,6 +72,7 @@ class ArenaWatch extends Command {
             };
         }
         if (!aw.payout) aw.payout = defPayout;
+        if (!aw.useMarksInLog) aw.useMarksInLog = false;
         if (aw.channel && (!aw.arena.fleet || !aw.arena.char)) {
             const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
             const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
@@ -492,6 +494,17 @@ class ArenaWatch extends Command {
                 aw.allycodes = aw.allycodes.filter(p => p.allyCode !== code);
                 exists.result = arena === "none" ? null : arena;
                 aw.allycodes.push(exists);
+                break;
+            }
+            case "usemarksinlog": {
+                const useMarksInLog = args[0];
+                if (onVar.includes(useMarksInLog)) {
+                    aw.useMarksInLog = true;
+                } else if (offVar.includes(useMarksInLog)) {
+                    aw.useMarksInLog = false;
+                } else {
+                    return super.error(message, message.language.get("COMMAND_ARENAALERT_INVALID_BOOL"));
+                }
                 break;
             }
             case "view": {
