@@ -20,6 +20,9 @@ class Guilds extends Command {
                 "reg": {
                     aliases: []
                 },
+                tickets: {
+                    aliases: ["t", "tic"]
+                },
                 twsummary: {
                     aliases: ["tw"]
                 },
@@ -62,6 +65,34 @@ class Guilds extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
+        const moment = require("moment-timezone");
+        if (options.flags.tickets) {
+            const rawGuild = await Bot.swgohAPI.getRawGuild(userID);
+            if (!rawGuild) return super.error(message, `Sorry, but I could not find a guild to match with ${userID}`);
+
+            const out = [];
+            const roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
+
+            const msTil  = rawGuild.nextChallengesRefresh - moment().unix();
+            const hrTil  = parseInt(msTil / 3600, 10);
+            const minTil = parseInt((msTil - (hrTil * 3600)) / 60, 10);
+            const timeUntilReset = `${hrTil > 0 ? hrTil + "hr " : ""}${minTil}min`;
+
+            for (const member of roster) {
+                const tickets = member.memberContribution["2"].currentValue;
+                out.push(`\`${tickets.toString().padStart(3)}\` - ${tickets < 600 ? "**" + member.playerName + "**" : member.playerName}`);
+            }
+            const footer = Bot.updatedFooter(rawGuild.updated, message, "guild", cooldown);
+            return message.channel.send({embed: {
+                author: {
+                    name: `${rawGuild.profile.name}'s Ticket Counts`
+                },
+                description: `***Time until reset: ${timeUntilReset}***\n\n${out.join("\n")}`,
+                footer: footer
+            }});
+        }
+
+
         let guild = null;
         try {
             if (acType) {

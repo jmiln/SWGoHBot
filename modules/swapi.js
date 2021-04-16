@@ -32,6 +32,7 @@ module.exports = (Bot) => {
         battles: battles,
         units: units,
         recipes: recipes,
+        getRawGuild: getRawGuild,
         guild: guild,
         guildByName: guildByName,
         zetaRec: zetaRec,
@@ -650,6 +651,79 @@ module.exports = (Bot) => {
         }
     }
 
+    async function getRawGuild(allycode, cooldown) {
+        const tempGuild = {};
+        if (cooldown) {
+            cooldown = cooldown.guild;
+            if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
+            if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
+        } else {
+            cooldown = guildMaxCooldown;
+        }
+        if (allycode) allycode = allycode.toString().replace(/[^\d]/g, "");
+        if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
+
+        const player = await Bot.swapiStub.getPlayer(allycode);
+        if (!player) throw new Error("I cannot find a matching profile for this allycode, please make sure it's typed in correctly");
+
+        let rawGuild  = await cache.get(Bot.config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
+        if ( !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true) ) {
+            try {
+                rawGuild = await Bot.swapiStub.getGuild(player.guildId, 0, true);
+            } catch (err) {
+                throw new Error(err);
+            }
+
+            rawGuild = rawGuild.guild;
+            const ignoreArr = [
+                "inviteStatus",
+                "raidStatus",
+                "raidResult",
+                "territoryBattleStatus",
+                "guildEvents",
+                "territoryBattleResult",
+                "territoryWarStatus",
+                "roomAvailable",
+                "arcadeRaidStatus",
+                "stat",
+                "recentRaidResult",
+                "recentTerritoryWarResult",
+            ];
+
+            // Only keep the useful parts of this mess
+            for (const key of Object.keys(rawGuild)) {
+                if (key === "member") {
+                    tempGuild["roster"] = [];
+                    for (const member of rawGuild.member) {
+                        const tempMember = {};
+                        const contribution = {};
+                        for (const contType of member.memberContribution) {
+                            contribution[contType.type] = {
+                                currentValue: contType.currentValue,
+                                lifetimeValue: contType.lifetimeValue
+                            };
+                        }
+                        tempMember.memberContribution = contribution;
+                        tempMember.playerName = member.playerName;
+                        tempMember.lastActivityTime = member.lastActivityTime;
+                        tempMember.playerId = member.playerId;
+                        tempGuild.roster.push(tempMember);
+                    }
+                } else if (!ignoreArr.includes(key)) {
+                    tempGuild[key] = rawGuild[key];
+                }
+            }
+            rawGuild = await cache.put(Bot.config.mongodb.swapidb, "rawGuilds", {id: player.guildId}, tempGuild);
+        } else {
+            /** If found and valid, serve from cache */
+            rawGuild = rawGuild[0];
+        }
+
+        if (!rawGuild) throw new Error("Sorry, that player is not in a guild");
+
+        // If it got this far, there's at least some sort of guild resposne there
+        return rawGuild;
+    }
     async function guild( allycode, lang="ENG_US", cooldown ) {
         lang = lang || "ENG_US";
 
