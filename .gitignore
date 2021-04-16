@@ -4,6 +4,7 @@
 /data/img/
 /swgoh
 /swgohAPI
+/testOutput
 
 # Specific Files
 config.js
