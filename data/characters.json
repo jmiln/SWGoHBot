@@ -6920,6 +6920,26 @@
         }
     },
     {
+        "name": "Tech",
+        "uniqueName": "BADBATCHTECH",
+        "aliases": [
+            "Tech"
+        ],
+        "nameVariant": [
+            "Tech"
+        ],
+        "url": "http://swgoh.gg/characters/tech/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/BADBATCHTECH/",
+        "side": "light",
+        "factions": [
+            "Bad Batch",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Teebo",
         "uniqueName": "TEEBO",
         "aliases": [

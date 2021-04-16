@@ -31429,6 +31429,186 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Tech",
+        "base_id": "BADBATCHTECH",
+        "pk": 1003,
+        "url": "http://swgoh.gg/characters/tech/",
+        "image": "/game-asset/u/BADBATCHTECH/",
+        "power": 31624,
+        "description": "Stealthy support character that gives Translation to other Clone Troopers and applies Target Lock to enemies.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "007",
+                    "007",
+                    "003",
+                    "008",
+                    "011",
+                    "010"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "030",
+                    "014",
+                    "018",
+                    "028",
+                    "027"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "034",
+                    "014",
+                    "027",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "068",
+                    "022",
+                    "037",
+                    "068",
+                    "049",
+                    "082"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "089",
+                    "065",
+                    "070",
+                    "015",
+                    "072",
+                    "088"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "070",
+                    "041",
+                    "041",
+                    "047",
+                    "073",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "018",
+                    "068",
+                    "070",
+                    "054",
+                    "083",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "095",
+                    "054",
+                    "117",
+                    "098",
+                    "098",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "105",
+                    "095",
+                    "172",
+                    "098",
+                    "114",
+                    "125"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "117",
+                    "172",
+                    "083",
+                    "114",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "129",
+                    "127",
+                    "146",
+                    "132",
+                    "137",
+                    "143"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "163",
+                    "162",
+                    "161",
+                    "168",
+                    "169",
+                    "G12Finisher_BADBATCHTECH_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Bad Batch",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Bonus Attack",
+            "Daze",
+            "Dispel",
+            "Foresight",
+            "Potency Up",
+            "Reduce Cooldowns",
+            "Reset Cooldown",
+            "Stealth",
+            "Stun",
+            "Target Lock",
+            "Tenacity Up"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Teebo",
         "base_id": "TEEBO",
         "pk": 168,
