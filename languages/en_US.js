@@ -817,13 +817,14 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guild [user]\n;guild [user] [-roster] [-sort] [-reg]\n;guild [user] [-roster] [-allycode] [-reg]",
+                        usage: ";guild [user]\n;guild [user] [-roster] [-sort] [-reg]\n;guild [user] [-roster] [-allycode] [-reg]\n;guild -tickets",
                         args: {
                             "user": "A way to identify the guild. (mention | allyCode | guildName)",
                             "-roster": "Show a list of all the members of the guild",
                             "-allycode": "Show a member's ally codes instead of GP",
                             "-sort": "Choose either name, rank, or gp to sort by",
-                            "-reg": "Show the discord names of anyone registered & on the server next to their name."
+                            "-reg": "Show the discord names of anyone registered & on the server next to their name.",
+                            "-tickets": "Show how many raid tickets each member has earned so far"
                         }
                     },
                     {
