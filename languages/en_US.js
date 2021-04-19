@@ -817,7 +817,7 @@ module.exports = class extends Language {
                     {
                         action: "",
                         actionDesc: "",
-                        usage: ";guild [user]\n;guild [user] [-roster] [-sort] [-reg]\n;guild [user] [-roster] [-allycode] [-reg]\n;guild -tickets",
+                        usage: ";guild [user]\n;guild [user] [-roster] [-sort] [-reg]\n;guild [user] [-roster] [-allycode] [-reg]\n;guild -tickets [allycode]",
                         args: {
                             "user": "A way to identify the guild. (mention | allyCode | guildName)",
                             "-roster": "Show a list of all the members of the guild",

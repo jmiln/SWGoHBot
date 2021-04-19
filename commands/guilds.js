@@ -1,4 +1,5 @@
 const Command = require("../base/Command");
+const moment = require("moment-timezone");
 
 class Guilds extends Command {
     constructor(Bot) {
@@ -65,7 +66,6 @@ class Guilds extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
-        const moment = require("moment-timezone");
         if (options.flags.tickets) {
             if (!acType || !userID) return super.error(message, `Cannot find a guild with ${userID}`);
             let rawGuild;
