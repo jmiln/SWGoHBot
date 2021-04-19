@@ -22,7 +22,7 @@ class Guilds extends Command {
                     aliases: []
                 },
                 tickets: {
-                    aliases: ["t", "tic"]
+                    aliases: ["t", "tic", "ticket"]
                 },
                 twsummary: {
                     aliases: ["tw"]
