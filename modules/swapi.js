@@ -666,6 +666,8 @@ module.exports = (Bot) => {
         const player = await Bot.swapiStub.getPlayer(allycode);
         if (!player) throw new Error("I cannot find a matching profile for this allycode, please make sure it's typed in correctly");
 
+        if (!player.guildId) throw new Error("This player is not in a guild");
+
         let rawGuild  = await cache.get(Bot.config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
         if ( !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true) ) {
             try {
@@ -724,6 +726,7 @@ module.exports = (Bot) => {
         // If it got this far, there's at least some sort of guild resposne there
         return rawGuild;
     }
+
     async function guild( allycode, lang="ENG_US", cooldown ) {
         lang = lang || "ENG_US";
 

@@ -67,8 +67,53 @@ class Guilds extends Command {
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         const moment = require("moment-timezone");
         if (options.flags.tickets) {
-            const rawGuild = await Bot.swgohAPI.getRawGuild(userID);
-            if (!rawGuild) return super.error(message, `Sorry, but I could not find a guild to match with ${userID}`);
+            if (!acType || !userID) return super.error(message, `Cannot find a guild with ${userID}`);
+            let rawGuild;
+            try {
+                rawGuild = await Bot.swgohAPI.getRawGuild(userID);
+            } catch (err) {
+                return super.error(message, "" + err);
+            }
+            if (!rawGuild) return super.error(message, "I could not get the info for your guild at this time.");
+            return await guildTickets(userID, rawGuild);
+        }
+
+        let guild = null;
+        try {
+            if (acType) {
+                guild = await Bot.swgohAPI.guild(userID, null, cooldown);
+            } else {
+                guild = await Bot.swgohAPI.guildByName(userID);
+            }
+        } catch (e) {
+            return super.error(msg, Bot.codeBlock(e), {edit: true, example: "guilds me"});
+        }
+
+        if (!guild) {
+            return super.error(msg, message.language.get("COMMAND_GUILDS_NO_GUILD"), {edit: true, example: "guilds me"});
+        }
+
+        if (options.flags.roster) {
+            // Display the roster with gp etc
+            try {
+                await guildRoster();
+            } catch (err) {
+                return super.error(msg, err, {edit: true, example: "guilds me"});
+            }
+        } else if (options.flags.twsummary) {
+            // Spit out a general summary of guild characters and such related to tw
+            try {
+                await twSummary();
+            } catch (err) {
+                return super.error(msg, err, {edit: true, example: "guilds me -twsumary"});
+            }
+        } else {
+            // Show basic stats/ info about the guild
+            await baseGuild();
+        }
+
+        async function guildTickets(userID, rawGuild) {
+            if (!rawGuild) return msg.edit(`Sorry, but I could not find a guild to match with ${userID}`);
 
             const out = [];
             const roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
@@ -92,26 +137,80 @@ class Guilds extends Command {
             }});
         }
 
+        async function baseGuild() {
+            const fields = [];
+            let desc = guild.desc ? `**${message.language.get("COMMAND_GUILDS_DESC")}:**\n\`${guild.desc}\`\n` : "";
+            desc += (guild.message && guild.message.length) ? `**${message.language.get("COMMAND_GUILDS_MSG")}:**\n\`${guild.message}\`` : "";
 
-        let guild = null;
-        try {
-            if (acType) {
-                guild = await Bot.swgohAPI.guild(userID, null, cooldown);
+            const raidStr = message.language.get("COMMAND_GUILDS_RAID_STRINGS");
+            let raids = "";
+
+            if (guild.raid && Object.keys(guild.raid).length) {
+                Object.keys(guild.raid).forEach(r => {
+                    raids += `${raidStr[r]}${guild.raid[r].includes("HEROIC") ? raidStr.heroic : guild.raid[r].replace("DIFF0", "T")}\n`;
+                });
             } else {
-                guild = await Bot.swgohAPI.guildByName(userID);
+                raids = "No raids available";
             }
-        } catch (e) {
-            return super.error(msg, Bot.codeBlock(e), {edit: true, example: "guilds me"});
+
+            fields.push({
+                name: raidStr.header,
+                value: Bot.codeBlock(raids),
+                inline: true
+            });
+
+            let guildCharGP = 0;
+            let guildShipGP = 0;
+            guild.roster.forEach(m => {
+                guildCharGP += m.gpChar;
+                guildShipGP += m.gpShip;
+            });
+            const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS",
+                guild.roster.length,
+                guild.required,
+                guild.gp.toLocaleString(),
+                guildCharGP.toLocaleString(),
+                guildShipGP.toLocaleString()
+            );
+            fields.push({
+                name: message.language.get("COMMAND_GUILDS_STAT_HEADER"),
+                value: Bot.codeBlock(stats),
+                inline: true
+            });
+
+            fields.push({
+                name: "-",
+                value: message.language.get("COMMAND_GUILDS_FOOTER", message.guildSettings.prefix)
+            });
+
+            if (options.defaults) {
+                fields.push({
+                    name: "Default flags used:",
+                    value: Bot.codeBlock(options.defaults)
+                });
+            }
+            if (guild.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: guild.warnings.join("\n")
+                });
+            }
+
+            const cooldown = await Bot.getPlayerCooldown(message.author.id);
+            const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
+            return msg.edit({embed: {
+                author: {
+                    name: guild.name
+                },
+                description: desc.length ? desc : "",
+                fields: fields.length ? fields : [],
+                footer: footer
+            }});
         }
 
-        if (!guild) {
-            return super.error(msg, message.language.get("COMMAND_GUILDS_NO_GUILD"), {edit: true, example: "guilds me"});
-        }
-
-        if (options.flags.roster) {
-            // Display the roster with gp etc
+        async function guildRoster() {
             if (!guild.roster.length) {
-                return super.error(msg, (message.language.get("COMMAND_GUILDS_NO_GUILD")), {edit: true, example: "guilds me"});
+                throw new Error(message.language.get("COMMAND_GUILDS_NO_GUILD"));
             }
             let sortedGuild;
             if (options.flags.a || (options.subArgs.sort && ["name", "rank"].indexOf(options.subArgs.sort.toLowerCase()) > -1)) {
@@ -226,12 +325,13 @@ class Guilds extends Command {
                 fields: fields,
                 footer: footer
             }});
-        } else if (options.flags.twsummary) {
-            // Spit out a general summary of guild characters and such related to tw
+        }
+
+        async function twSummary() {
             const fields = [];
             let gRoster ;
             if (!guild || !guild.roster || !guild.roster.length) {
-                return super.error(msg, (message.language.get("BASE_SWGOH_NO_GUILD")), {edit: true, example: "guilds me -twsumary"});
+                throw new Error(message.language.get("BASE_SWGOH_NO_GUILD"));
             } else {
                 msg.edit("Found guild `" + guild.name + "`!");
                 gRoster = guild.roster.map(m => m.allyCode);
@@ -242,10 +342,10 @@ class Guilds extends Command {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return super.error(msg, Bot.codeBlock(e), {
+                return msg.edit(Bot.codeBlock(e), {
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit."
-                }, {edit: true});
+                });
             }
 
             // Get overall stats for the guild
@@ -311,7 +411,7 @@ class Guilds extends Command {
                 name: "Character Rarity Counts",
                 value: "*How many characters at each star level*" +
                 Bot.codeBlock(Object.keys(rarityLvls).splice(options.flags.expand ? 0 : -4).map(g => `${g}*           :: ${" ".repeat(7-rarityLvls[g].toLocaleString().length) + rarityLvls[g].toLocaleString()}`).join("\n") +
-                `\nAVG Star Lvl :: ${" ".repeat(7-avgRarity.toFixed(2).toString().length) + avgRarity.toFixed(2)}`)
+                    `\nAVG Star Lvl :: ${" ".repeat(7-avgRarity.toFixed(2).toString().length) + avgRarity.toFixed(2)}`)
             });
 
             // Get the overall relic levels for the guild as a whole
@@ -333,7 +433,7 @@ class Guilds extends Command {
                 name: "Character Relic Counts",
                 value: "*How many characters at each relic tier*" +
                 Bot.codeBlock(Object.keys(relicLvls).splice(options.flags.expand ? 0 : -4).map(g => `R${g}            :: ${" ".repeat(7-relicLvls[g].toLocaleString().length) + relicLvls[g].toLocaleString()}`).join("\n") +
-                `\nAVG Relic Lvl :: ${" ".repeat(7-avgRelic.toFixed(2).toString().length) + avgRelic.toFixed(2)}`)
+                    `\nAVG Relic Lvl :: ${" ".repeat(7-avgRelic.toFixed(2).toString().length) + avgRelic.toFixed(2)}`)
             });
 
             // Get general stats on how many of certain characters the guild has and at what gear
@@ -418,78 +518,10 @@ class Guilds extends Command {
                 fields: fields,
                 footer: footer
             }});
-        } else {
-            // Show basic stats. info about the guild
-            const fields = [];
-            let desc = guild.desc ? `**${message.language.get("COMMAND_GUILDS_DESC")}:**\n\`${guild.desc}\`\n` : "";
-            desc += (guild.message && guild.message.length) ? `**${message.language.get("COMMAND_GUILDS_MSG")}:**\n\`${guild.message}\`` : "";
-
-            const raidStr = message.language.get("COMMAND_GUILDS_RAID_STRINGS");
-            let raids = "";
-
-            if (guild.raid && Object.keys(guild.raid).length) {
-                Object.keys(guild.raid).forEach(r => {
-                    raids += `${raidStr[r]}${guild.raid[r].includes("HEROIC") ? raidStr.heroic : guild.raid[r].replace("DIFF0", "T")}\n`;
-                });
-            } else {
-                raids = "No raids available";
-            }
-
-            fields.push({
-                name: raidStr.header,
-                value: Bot.codeBlock(raids),
-                inline: true
-            });
-
-            let guildCharGP = 0;
-            let guildShipGP = 0;
-            guild.roster.forEach(m => {
-                guildCharGP += m.gpChar;
-                guildShipGP += m.gpShip;
-            });
-            const stats = message.language.get("COMMAND_GUILDS_STAT_STRINGS",
-                guild.roster.length,
-                guild.required,
-                guild.gp.toLocaleString(),
-                guildCharGP.toLocaleString(),
-                guildShipGP.toLocaleString()
-            );
-            fields.push({
-                name: message.language.get("COMMAND_GUILDS_STAT_HEADER"),
-                value: Bot.codeBlock(stats),
-                inline: true
-            });
-
-            fields.push({
-                name: "-",
-                value: message.language.get("COMMAND_GUILDS_FOOTER", message.guildSettings.prefix)
-            });
-
-            if (options.defaults) {
-                fields.push({
-                    name: "Default flags used:",
-                    value: Bot.codeBlock(options.defaults)
-                });
-            }
-            if (guild.warnings) {
-                fields.push({
-                    name: "Warnings",
-                    value: guild.warnings.join("\n")
-                });
-            }
-
-            const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
-                author: {
-                    name: guild.name
-                },
-                description: desc.length ? desc : "",
-                fields: fields.length ? fields : [],
-                footer: footer
-            }});
         }
     }
 }
+
 
 function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships=false) {
     const fieldsOut = [];
