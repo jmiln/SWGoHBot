@@ -113,26 +113,43 @@ class Guilds extends Command {
         }
 
         async function guildTickets(userID, rawGuild) {
+            const momentDuration = require("moment-duration-format");
+            momentDuration(moment);
             if (!rawGuild) return msg.edit(`Sorry, but I could not find a guild to match with ${userID}`);
 
             const out = [];
             const roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
 
-            const msTil  = rawGuild.nextChallengesRefresh - moment().unix();
-            const hrTil  = parseInt(msTil / 3600, 10);
-            const minTil = parseInt((msTil - (hrTil * 3600)) / 60, 10);
-            const timeUntilReset = `${hrTil > 0 ? hrTil + "hr " : ""}${minTil}min`;
+            const dayMS = 86400000;
+            let timeUntilReset = null;
+            const chaTime = rawGuild.nextChallengesRefresh;
+            const nowTime = moment().unix();
+            if (chaTime > nowTime) {
+                // It's in the future
+                timeUntilReset = moment.duration(chaTime - nowTime, "seconds").format("h [hrs], m [min]");
+            } else {
+                // It's in the past, so calculate the next time
+                const dur = parseInt(chaTime, 10) + parseInt(dayMS, 10) - parseInt(nowTime, 10);
+                timeUntilReset = moment.duration(dur, "seconds").format("h [hrs], m [min]");
+            }
 
+            let maxed = 0;
             for (const member of roster) {
                 const tickets = member.memberContribution["2"].currentValue;
-                out.push(`\`${tickets.toString().padStart(3)}\` - ${tickets < 600 ? "**" + member.playerName + "**" : member.playerName}`);
+                if (tickets < 600) {
+                    out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${"**" + member.playerName + "**"}`));
+                } else {
+                    maxed += 1;
+                }
             }
             const footer = Bot.updatedFooter(rawGuild.updated, message, "guild", cooldown);
+            const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
+            const maxedString   = maxed > 0 ? `**${maxed}** members with 600 tickets\n\n` : "";
             return message.channel.send({embed: {
                 author: {
                     name: `${rawGuild.profile.name}'s Ticket Counts`
                 },
-                description: `***Time until reset: ${timeUntilReset}***\n\n${out.join("\n")}`,
+                description: `${timeTilString}${maxedString}${out.join("\n")}`,
                 footer: footer
             }});
         }

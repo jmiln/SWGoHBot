@@ -25,7 +25,7 @@ class Changelog extends Command {
             // If it's set up, send the changelog to all qualifying webhooks
             if (Bot.config.changelog.sendChangelogs) {
                 const logEmbed = parseLog(logMsg);
-                logEmbed.footer = {text: "Also listed at https://swgohbot.com/changelog/" + log.dataValues.id};
+                // logEmbed.footer = {text: "Also listed at https://swgohbot.com/changelog/" + log.dataValues.id};
                 logEmbed.author.url = "https://swgohbot.com/changelog/" + log.dataValues.id;
 
                 // Get a list of all the webhook urls that have been set up
