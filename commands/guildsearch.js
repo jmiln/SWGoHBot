@@ -704,11 +704,14 @@ class GuildSearch extends Command {
             }
 
             const charOut = {};
+            const hasRelic = sortedGuild.filter(mem => mem?.relic?.currentTier > 2).length;
             for (const member of sortedGuild) {
                 if (options.flags.zetas && !member.zetas.length) continue;
 
                 if (isNaN(parseInt(member.rarity, 10))) member.rarity = rarityMap[member.rarity];
-                const gearStr = "⚙" + member.gear + " ".repeat(2 - member.gear.toString().length);
+
+                const relicStr = member?.relic?.currentTier > 2 ? "r" + (Number(member.relic.currentTier) - 2) : "";
+                const gearStr = (`⚙${member.gear}${relicStr}`).padEnd(hasRelic ? 5 : 3);
                 let z = " | ";
                 zetas.forEach((zeta, ix) => {
                     const pZeta = member.zetas.find(pz => pz.id === zeta);
