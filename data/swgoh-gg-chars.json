@@ -701,7 +701,7 @@
         "role": "Leader",
         "ship": "JEDISTARFIGHTERAHSOKATANO",
         "ship_slot": 0,
-        "activate_shard_count": 25
+        "activate_shard_count": 10
     },
     {
         "name": "Ahsoka Tano (Fulcrum)",
@@ -8059,7 +8059,7 @@
         "role": "Attacker",
         "ship": "",
         "ship_slot": null,
-        "activate_shard_count": 25
+        "activate_shard_count": 10
     },
     {
         "name": "Darth Malak",
@@ -10340,6 +10340,184 @@
             "Tenacity Up"
         ],
         "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Echo",
+        "base_id": "BADBATCHECHO",
+        "pk": 1051,
+        "url": "http://swgoh.gg/characters/echo/",
+        "image": "/game-asset/u/BADBATCHECHO/",
+        "power": 31624,
+        "description": "Loyal Clone Trooper who supports his allies in battle",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "007",
+                    "007",
+                    "003",
+                    "008",
+                    "011",
+                    "010"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "030",
+                    "014",
+                    "018",
+                    "028",
+                    "032"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "034",
+                    "014",
+                    "028",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "068",
+                    "022",
+                    "037",
+                    "068",
+                    "049",
+                    "082"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "089",
+                    "065",
+                    "070",
+                    "015",
+                    "040",
+                    "088"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "045",
+                    "041",
+                    "041",
+                    "047",
+                    "073",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "068",
+                    "070",
+                    "054",
+                    "083",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "095",
+                    "054",
+                    "117",
+                    "103",
+                    "112",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "071",
+                    "095",
+                    "172",
+                    "113",
+                    "114",
+                    "125"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "117",
+                    "172",
+                    "083",
+                    "114",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "117",
+                    "136",
+                    "146",
+                    "131",
+                    "137",
+                    "144"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "162",
+                    "161",
+                    "168",
+                    "169",
+                    "G12Finisher_BADBATCHECHO_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Bad Batch",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Daze",
+            "Dispel",
+            "Evasion Up",
+            "Expose",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Reduce Cooldowns"
+        ],
+        "role": "Support",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -18887,7 +19065,7 @@
         "role": "Leader",
         "ship": "JEDISTARFIGHTERANAKIN",
         "ship_slot": 0,
-        "activate_shard_count": 80
+        "activate_shard_count": 10
     },
     {
         "name": "Jedi Knight Guardian",
@@ -21352,7 +21530,7 @@
         "role": "Tank",
         "ship": "TIESILENCER",
         "ship_slot": 0,
-        "activate_shard_count": 25
+        "activate_shard_count": 10
     },
     {
         "name": "L3-37",
@@ -21698,7 +21876,7 @@
         "role": "Leader",
         "ship": "",
         "ship_slot": null,
-        "activate_shard_count": 80
+        "activate_shard_count": 50
     },
     {
         "name": "Lobot",
@@ -23261,7 +23439,7 @@
         "role": "Support",
         "ship": "",
         "ship_slot": null,
-        "activate_shard_count": 25
+        "activate_shard_count": 50
     },
     {
         "name": "Mon Mothma",
@@ -24649,7 +24827,7 @@
         "role": "Tank",
         "ship": "",
         "ship_slot": null,
-        "activate_shard_count": 80
+        "activate_shard_count": 50
     },
     {
         "name": "Old Daka",
@@ -28122,7 +28300,7 @@
         "role": "Attacker",
         "ship": "MILLENNIUMFALCONEP7",
         "ship_slot": 0,
-        "activate_shard_count": 80
+        "activate_shard_count": 10
     },
     {
         "name": "Rose Tico",
@@ -31426,7 +31604,7 @@
         "role": "Leader",
         "ship": "",
         "ship_slot": null,
-        "activate_shard_count": 50
+        "activate_shard_count": 25
     },
     {
         "name": "Tech",
@@ -34705,6 +34883,185 @@
             "Stealth"
         ],
         "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Wrecker",
+        "base_id": "BADBATCHWRECKER",
+        "pk": 1031,
+        "url": "http://swgoh.gg/characters/wrecker/",
+        "image": "/game-asset/u/BADBATCHWRECKER/",
+        "power": 31624,
+        "description": "Resilient Clone Trooper who protects his allies and gets empowered when taking damage",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "002",
+                    "003",
+                    "007",
+                    "004",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "030",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "030",
+                    "048",
+                    "050",
+                    "041",
+                    "030",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "049",
+                    "048",
+                    "048",
+                    "055",
+                    "017",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "048",
+                    "043",
+                    "063",
+                    "060",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "038",
+                    "049",
+                    "034",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "100",
+                    "036",
+                    "099",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "172",
+                    "099",
+                    "108",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "172",
+                    "172",
+                    "105",
+                    "109",
+                    "106",
+                    "117"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "079",
+                    "117",
+                    "120",
+                    "125",
+                    "087",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "116",
+                    "129",
+                    "129",
+                    "134",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "162",
+                    "166",
+                    "168",
+                    "G12Finisher_BADBATCHWRECKER_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Bad Batch",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Tank"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Bonus Attack",
+            "Defense Up",
+            "Dispel",
+            "Gain Turn Meter",
+            "Speed Down",
+            "Stealth",
+            "Stun",
+            "Target Lock",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Tank",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
