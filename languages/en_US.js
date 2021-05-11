@@ -925,6 +925,27 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Guild Update Command
+            COMMAND_GUILDUPDATE_HELP: {
+                description: "Modify and view the settings for the guild update watcher.",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: [
+                            ";guildupdate allycode <allycode>",
+                            ";guildupdate channel <channelMention>",
+                            ";guildupdate enabled <on|off>",
+                        ].join("\n"),
+                        args: {
+                            "allycode": "The ally code it will check against for your guild",
+                            "channelMention": "Select which channel to output logs to",
+                            "enabled": "Toggle this on and off",
+                        }
+                    }
+                ]
+            },
+
             // Help Command
             COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
             COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,

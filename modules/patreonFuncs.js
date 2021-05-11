@@ -1,4 +1,5 @@
 const moment = require("moment-timezone");
+// const {inspect} = require("util");
 
 module.exports = (Bot, client) => {
     const honPat = 500;
@@ -40,7 +41,7 @@ module.exports = (Bot, client) => {
             };
         }
         if (patron.amount_cents >= 500) {
-            // If they have the $5 tier or higher, they get shorted guild & player times
+            // If they have the $5 tier or higher, they get shortened guild & player times
             return {
                 player: 60,
                 guild:  3*60
@@ -120,7 +121,9 @@ module.exports = (Bot, client) => {
                                             author: {name: "Arena Payout Alert"},
                                             description: `${player.name}'s character arena payout is in **${minTil}** minutes!\nYour current rank is ${player.arena.char.rank}`,
                                             color: "#00FF00"
-                                        }});
+                                        }})
+                                            .catch(() => {});
+                                        //.catch(err => console.log("[patFunc getRanks]", err));
                                     }
                                 }
                                 if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
@@ -128,7 +131,9 @@ module.exports = (Bot, client) => {
                                         author: {name: "Character arena"},
                                         description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
                                         color: "#00FF00"
-                                    }});
+                                    }})
+                                        .catch(() => {});
+                                    //.catch(err => console.log("[patFunc getRanks]", err));
                                 }
 
                                 if (player.arena.char.rank > acc.lastCharRank) {
@@ -140,7 +145,9 @@ module.exports = (Bot, client) => {
                                         footer: {
                                             text: payoutTime
                                         }
-                                    }});
+                                    }})
+                                        .catch(() => {});
+                                    //.catch(err => console.log("[patFunc getRanks]", err));
                                 }
                             } catch (e) {
                                 Bot.logger.error("Broke getting ranks: " + e);
@@ -168,7 +175,9 @@ module.exports = (Bot, client) => {
                                             author: {name: "Arena Payout Alert"},
                                             description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
                                             color: "#00FF00"
-                                        }});
+                                        }})
+                                            .catch(() => {});
+                                        //.catch(err => console.log("[patFunc getRanks]", err));
                                     }
                                 }
 
@@ -177,7 +186,9 @@ module.exports = (Bot, client) => {
                                         author: {name: "Fleet arena"},
                                         description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
                                         color: "#00FF00"
-                                    }});
+                                    }})
+                                        .catch(() => {});
+                                    //.catch(err => console.log("[patFunc getRanks]", err));
                                 }
 
                                 if (player.arena.ship.rank > acc.lastShipRank) {
@@ -188,7 +199,9 @@ module.exports = (Bot, client) => {
                                         footer: {
                                             text: payoutTime
                                         }
-                                    }});
+                                    }})
+                                        .catch(() => {});
+                                    //.catch(err => console.log("[patFunc getRanks]", err));
                                 }
                             } catch (e) {
                                 Bot.logger.error("Broke getting ranks: " + e);
@@ -240,6 +253,8 @@ module.exports = (Bot, client) => {
                 const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "char");
                 if (sentMessage) {
                     user.arenaWatch.payout["char"].msgID = sentMessage.id;
+                } else {
+                    // console.log(`Could not send char arena message for ${user.id}, patreon ${inspect(patron)}`);
                 }
             }
             // Then if fleet is enabled, send it there as well/ instead
@@ -249,6 +264,9 @@ module.exports = (Bot, client) => {
                 const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "fleet");
                 if (sentMessage) {
                     user.arenaWatch.payout["fleet"].msgID = sentMessage.id;
+                } else {
+                    // If it gets here, then someone couldn't be found
+                    // console.log(`Could not send fleet arena message for ${user.id}`);
                 }
             }
             // Update the user in case something changed (Likely message ID)
@@ -299,7 +317,7 @@ module.exports = (Bot, client) => {
             (async () => {
                 let channel = this.channels.cache.get('${payout[arena].channel}');
                 let msg, targetMsg;
-                if (channel) {
+                if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                     if (!${payout[arena].msgID}) {
                         targetMsg = await channel.send({embed: ${JSON.stringify(outEmbed)}});
                     } else {
@@ -309,9 +327,9 @@ module.exports = (Bot, client) => {
                             msg = null;
                         }
                         if (msg) {
-                            targetMsg = await msg.edit({embed: ${JSON.stringify(outEmbed)}});
+                            targetMsg = await msg.edit({embed: ${JSON.stringify(outEmbed)}}).catch(err => console.log("[sendPayoutUpdates]", err));
                         } else {
-                            targetMsg = await channel.send({embed: ${JSON.stringify(outEmbed)}});
+                            targetMsg = await channel.send({embed: ${JSON.stringify(outEmbed)}}).catch(err => console.log("[sendPayoutUpdates]", err));
                         }
                     }
                 }
@@ -321,6 +339,10 @@ module.exports = (Bot, client) => {
         const msg = messages.filter(a => !!a);
         return msg.length ? msg[0] : null;
     }
+    // else if (channel) {
+    //     console.log("Missing permissions to view/ send messages in" + channel.guild.name + "(#" + channel.name + "(" + channel.id + "))");
+    // }
+
 
     // Go through the given list and return how long til payouts
     function getPayoutTimes(players, arena) {
@@ -605,4 +627,98 @@ module.exports = (Bot, client) => {
         });
         return outArr;
     }
+
+    Bot.guildsUpdate = async () => {
+        const patrons = await getActivePatrons();
+        for (const patron of patrons) {
+            // This is only available for the $5 and up tier, so ignore anything else
+            if (!patron.discordID || patron.amount_cents < 500) continue;
+            const user = await Bot.userReg.getUser(patron.discordID);
+
+            // If the guild update isn't enabled, then move along
+            if (!user?.guildUpdate?.enabled) continue;
+            const gu = user.guildUpdate;
+
+            // This is what will be in the user.guildUpdate, possibly add something
+            // in to make it so it only shows above x gear lvl and such later?
+
+            // gu = {
+            //     enabled: false,          // If it's enabled or not
+            //     allycode: 123123123,     // Ally code to watch the guild of
+            //     channel: channelID,      // The channel to log all this into
+            // }
+
+            // Check if the bot is able to send messages into the set channel
+            const channels = await client.shard.broadcastEval(`
+                    (async () => {
+                        let channel = this.channels.cache.get('${gu.channel}');
+                        if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                            return true;
+                        }
+                        return false;
+                    })();
+                `);
+            const chanAvail = channels.some(ch => !!ch);
+
+            // If the channel is not available, move on
+            if (!chanAvail) continue;
+
+            // Get any updates for the guild
+            const guild = await Bot.swgohAPI.guild(gu.allycode);
+            let guildLog;
+            try {
+                guildLog = await Bot.swgohAPI.getPlayerUpdates(guild.roster.map(m => m.allyCode));
+            } catch (err) {
+                return console.log("[patreonFuncs/guildsUpdate] " + err);
+            }
+
+            // If there were not changes found, move along, not the changes we were looking for
+            if (!Object.keys(guildLog).length) continue;
+
+            // Processs the guild changes
+            const fields = [];
+            for (const memberName of Object.keys(guildLog).sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1)) {
+                const member = guildLog[memberName];
+                const fieldVal = [];
+                for (const cat of Object.keys(member)) {
+                    if (!member[cat].length) continue;
+                    fieldVal.push(...member[cat]);
+                }
+
+                // Run it through the splitter in case it needs it
+                const outVals = Bot.msgArray(fieldVal, "\n", 1900);
+                for (const [ix, val] of outVals.entries()) {
+                    fields.push({
+                        name: ix === 0 ? memberName : `${memberName} (cont)`,
+                        value: val
+                    });
+                }
+            }
+
+            // If something went wonky and there were no fields put in, move along
+            if (!fields.length) continue;
+
+            const MAX_FIELDS = 18;
+            const fieldsOut = Bot.chunkArray(fields, MAX_FIELDS);
+
+            for (const fieldChunk of fieldsOut) {
+                await client.shard.broadcastEval(`
+                        (async () => {
+                            let channel = this.channels.cache.get('${gu.channel}');
+                            if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                                return channel.send({embed: {
+                                    fields: ${JSON.stringify(fieldChunk)}
+                                }})
+                            }
+                            return false;
+                        })();
+                    `);
+            }
+        }
+    };
 };
+
+
+
+
+

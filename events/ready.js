@@ -51,6 +51,11 @@ module.exports = async (Bot, client) => {
                         // Update the shard payout monitors
                         await Bot.shardTimes();
                     }
+
+                    if (min % 60 === 0) {
+                        // Run the checker for guild member's roster changes
+                        await Bot.guildsUpdate();
+                    }
                 }, 1 * 60 * 1000);
             }
         }

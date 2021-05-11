@@ -29,10 +29,10 @@ module.exports = (Bot) => {
         getCharacter: getCharacter,
         character: character,
         gear: gear,
-        battles: battles,
         units: units,
         recipes: recipes,
         getRawGuild: getRawGuild,
+        getPlayerUpdates: getPlayerUpdates,
         guild: guild,
         guildByName: guildByName,
         zetaRec: zetaRec,
@@ -105,6 +105,94 @@ module.exports = (Bot) => {
                 };
             }
         }).filter(p => !!p);
+    }
+
+    async function getPlayerUpdates(allycodes) {
+        if (!Array.isArray(allycodes)) {
+            allycodes = [allycodes];
+        }
+
+        let tempBare = null, updatedBare = null;
+        const fetchStart = new Date();
+        if (allycodes.length > 25) {
+            tempBare = await swgoh.fetchPlayer({
+                allycode: allycodes.slice(0, Math.floor(allycodes.length/2))
+            });
+            updatedBare = tempBare.result;
+
+            // Then get the 2nd half
+            tempBare = await swgoh.fetchPlayer({
+                allycode: allycodes.slice(Math.floor(allycodes.length/2), allycodes.length)
+            });
+            updatedBare = updatedBare.concat(tempBare.result);
+        } else {
+            tempBare = await swgoh.fetchPlayer({
+                allycode: allycodes
+            });
+            updatedBare = tempBare.result;
+        }
+        const fetchEnd = new Date() - fetchStart;
+        console.log("Fetching the new players took %dms", fetchEnd);
+
+        const cacheStart = new Date();
+        const oldMembers = await cache.get(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes}});
+        const cacheEnd = new Date() - cacheStart;
+        console.log("Fetching cached players took %dms", cacheEnd);
+        const guildLog = {};
+
+        // For each of the up to 50 players in the guild
+        const processStart = new Date();
+        for (const newPlayer of updatedBare) {
+            const oldPlayer = oldMembers.find(p => p.allyCode === newPlayer.allyCode);
+            if (JSON.stringify(oldPlayer.roster) == JSON.stringify(newPlayer.roster)) continue;
+            if (!oldPlayer) continue;
+
+            const playerLog = {
+                unlocked: [],
+                leveled: [],
+                starred: [],
+                geared: [],
+                reliced: []
+            };
+
+            // Check through each of the 250ish? units in their roster for differences
+            let updated = false;
+            for (const newUnit of newPlayer.roster) {
+                const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
+                if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
+                const locChar = await Bot.swgohAPI.langChar({defId: newUnit.defId});
+                if (!oldUnit) {
+                    playerLog.unlocked.push(`Unlocked ${locChar.nameKey}!`);
+                    updated = true;
+                    continue;
+                }
+                if (oldUnit.level < newUnit.level) {
+                    playerLog.leveled.push(`Leveled up ${locChar.nameKey} to ${newUnit.level}!`);
+                    updated = true;
+                }
+                if (oldUnit.rarity < newUnit.rarity) {
+                    playerLog.starred.push(`Starred up ${locChar.nameKey} to ${newUnit.rarity} star!`);
+                    updated = true;
+                }
+                if (oldUnit.gear < newUnit.gear) {
+                    playerLog.geared.push(`Geared up ${locChar.nameKey} to G${newUnit.gear}!`);
+                    updated = true;
+                }
+                if (oldUnit?.relic?.currentTier < newUnit?.relic?.currentTier && (newUnit.relic.currentTier - 2) > 0) {
+                    playerLog.reliced.push(`Upgraded ${locChar.nameKey} to relic ${newUnit.relic.currentTier-2}!`);
+                    updated = true;
+                }
+            }
+            if (updated) {
+                guildLog[newPlayer.name] = playerLog;
+                await cache.put(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
+            }
+        }
+        const processEnd = new Date() - processStart;
+        console.log(`Processing ${updatedBare.length}`);
+        console.log("Processing took %dms", processEnd);
+
+        return guildLog;
     }
 
     async function unitStats(allycodes, cooldown, options={}) {
@@ -247,19 +335,23 @@ module.exports = (Bot) => {
         }
 
         // In case it has skillReferenceList
-        for (const skill in char.skillReferenceList) {
-            let skillName = await cache.get(Bot.config.mongodb.swapidb, "abilities", {skillId: char.skillReferenceList[skill].skillId, language: lang}, {nameKey: 1, _id: 0});
-            if (Array.isArray(skillName)) skillName = skillName[0];
-            if (!skillName) throw new Error("Cannot find skillName for " + char.skillReferenceList[skill].skillId);
-            char.skillReferenceList[skill].nameKey = skillName.nameKey;
+        if (char.skillReferenceList) {
+            for (const skill in char.skillReferenceList) {
+                let skillName = await cache.get(Bot.config.mongodb.swapidb, "abilities", {skillId: char.skillReferenceList[skill].skillId, language: lang}, {nameKey: 1, _id: 0});
+                if (Array.isArray(skillName)) skillName = skillName[0];
+                if (!skillName) throw new Error("Cannot find skillName for " + char.skillReferenceList[skill].skillId);
+                char.skillReferenceList[skill].nameKey = skillName.nameKey;
+            }
         }
 
         // In case it doesn't
-        for (const skill in char.skills) {
-            let skillName = await cache.get(Bot.config.mongodb.swapidb, "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
-            if (Array.isArray(skillName)) skillName = skillName[0];
-            if (!skillName) throw new Error("Cannot find skillName for " + char.skills[skill].id);
-            char.skills[skill].nameKey = skillName.nameKey;
+        if (char.skills) {
+            for (const skill in char.skills) {
+                let skillName = await cache.get(Bot.config.mongodb.swapidb, "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
+                if (Array.isArray(skillName)) skillName = skillName[0];
+                if (!skillName) throw new Error("Cannot find skillName for " + char.skills[skill].id);
+                char.skills[skill].nameKey = skillName.nameKey;
+            }
         }
         return char;
     }
@@ -621,33 +713,6 @@ module.exports = (Bot) => {
             // All the skills should be loaded, so just get em from the cache
             const rOut = await cache.get(Bot.config.mongodb.swapidb, "recipes", {id: {$in: recArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             return rOut;
-        }
-    }
-
-    async function battles( batId, update=false ) {
-        if (!batId) throw new Error("Missing batId");
-        if (update) {
-            let bOut;
-            let battleList = await Bot.swgoh.fetchAPI("/swgoh/battles", {
-                "language": "eng_us",
-                "enums":true
-            });
-
-            const errors = battleList.error;
-            if (errors) Bot.logger.error("In swapi Battles - Error: " + errors);
-            const warnings = battleList.warning;
-            if (warnings) Bot.logger.warn("In swapi Battles - Warning: " + warnings);
-            battleList = battleList.result.battles;
-
-            for (const battle of battleList) {
-                if (battle.id === batId) bOut = battle;
-                await cache.put(Bot.config.mongodb.swapidb, "battles", {id: battle.id}, battle);
-            }
-            return bOut;
-        } else {
-            // All the skills should be loaded, so just get em from the cache
-            const bOut = await cache.get(Bot.config.mongodb.swapidb, "battles", {id: batId}, {_id: 0, updated: 0});
-            return bOut;
         }
     }
 
