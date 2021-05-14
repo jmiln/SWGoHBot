@@ -132,12 +132,12 @@ module.exports = (Bot) => {
             updatedBare = tempBare.result;
         }
         const fetchEnd = new Date() - fetchStart;
-        console.log("Fetching the new players took %dms", fetchEnd);
+        Bot.logger.debug(`Fetching the new players took ${fetchEnd}ms`);
 
         const cacheStart = new Date();
         const oldMembers = await cache.get(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes}});
         const cacheEnd = new Date() - cacheStart;
-        console.log("Fetching cached players took %dms", cacheEnd);
+        Bot.logger.debug(`Fetching cached players took ${cacheEnd}ms`);
         const guildLog = {};
 
         // For each of the up to 50 players in the guild
@@ -189,8 +189,8 @@ module.exports = (Bot) => {
             }
         }
         const processEnd = new Date() - processStart;
-        console.log(`Processing ${updatedBare.length}`);
-        console.log("Processing took %dms", processEnd);
+        Bot.logger.debug(`Processing ${updatedBare.length}`);
+        Bot.logger.debug(`Processing took ${processEnd}ms`);
 
         return guildLog;
     }
