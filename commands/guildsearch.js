@@ -9,17 +9,17 @@ class GuildSearch extends Command {
             aliases: ["search", "gs"],
             permissions: ["EMBED_LINKS"],
             flags: {
-                ships: { aliases: ["s", "ship"] },
+                ships:   { aliases: ["s", "ship"] },
                 reverse: { aliases: ["rev"] },
-                mods: { aliases: ["mod", "m"] },
-                stars: { aliases: ["*", "star", "rarity"] },
-                gear: { aliases: ["g"] },
-                zetas: { aliases: ["zeta", "z"] }
+                mods:    { aliases: ["mod", "m"] },
+                stars:   { aliases: ["*", "star", "rarity"] },
+                gear:    { aliases: ["g"] },
+                zetas:   { aliases: ["zeta", "z"] }
             },
             subArgs: {
                 sort: { aliases: [] },
                 stat: { aliases: ["stats"] },
-                top: { aliases: [] }
+                top:  { aliases: [] }
             }
         });
     }
@@ -38,6 +38,7 @@ class GuildSearch extends Command {
             "SIXSTAR":   6,
             "SEVENSTAR": 7
         };
+
         let top = null;
         if (options.subArgs.top !== null) {
             const t = parseInt(options.subArgs.top, 10);
@@ -93,7 +94,6 @@ class GuildSearch extends Command {
             } else {
                 character = chars[0];
             }
-
         } else {
             tmp = await super.getUserAndChar(message, args, false);
             allyCode = tmp.allyCode;
@@ -113,7 +113,7 @@ class GuildSearch extends Command {
         }
         // Then check with stars instead of ships since those work together
         const checkArr2 = ["stars", "mods", "stat", "gear"];
-        const checkRes2 = Object.keys(options.flags).map(k => checkArr.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr.includes(k) ? options.subArgs[k] : null));
+        const checkRes2 = Object.keys(options.flags).map(k => checkArr2.includes(k) ? options.flags[k] : null).concat(Object.keys(options.subArgs).map(k => checkArr2.includes(k) ? options.subArgs[k] : null));
         if (checkRes2.filter(c => c).length > 1) {
             return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", Bot.codeBlock(checkArr2.map(c => "-" + c).join("\n"))));
         }

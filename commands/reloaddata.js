@@ -30,7 +30,6 @@ class ReloadData extends Command {
             case "debugLogs":
                 Bot.config.debugLogs = !Bot.config.debugLogs;
                 return super.success(message, `DebugLogs set to **${Bot.config.debugLogs}**`);
-                break;
             case "ev":
             case "events": // Reload the events
                 if (message.client.shard && message.client.shard.count > 0) {
