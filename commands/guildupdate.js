@@ -59,7 +59,7 @@ class GuildUpdate extends Command {
 
         switch (target) {
             case "enable":
-            case "enabled": {
+            case "enabled":
                 if (!args.length) {
                     // They didn't say which way, so just toggle it
                     gu.enabled = !gu.enabled;
@@ -77,9 +77,8 @@ class GuildUpdate extends Command {
                     }
                 }
                 break;
-            }
             case "ch":
-            case "channel": {
+            case "channel":
                 // This needs to make sure the person has an adminrole or something so they cannot just spam a chat with it
                 let [channel] = args;
                 if (!channel) {
@@ -104,9 +103,8 @@ class GuildUpdate extends Command {
                 // They got throught all that, go ahead and set it
                 gu.channel = channel;
                 break;
-            }
             case "ac":
-            case "allycode": {
+            case "allycode":
                 const [code] = args;
                 if (!code) {
                     // Remove the code
@@ -118,11 +116,10 @@ class GuildUpdate extends Command {
                         // Invalid code
                         return super.error(message, "I could not find a match for your ally code. Please double check that it is correct.");
                     }
-                    gu.allycode = parseInt(code);
+                    gu.allycode = parseInt(code, 10);
                 }
                 break;
-            }
-            case "view": {
+            case "view":
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
                 return message.channel.send({embed: {
                     title: `Guild update settings for ${message.author.name}`,
@@ -132,7 +129,6 @@ class GuildUpdate extends Command {
                         `Allycode: **${gu.allycode ? gu.allycode : "N/A"}**`
                     ].join("\n")
                 }});
-            }
             default:
                 return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_OPTION"));
         }
