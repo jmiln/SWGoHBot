@@ -860,7 +860,8 @@
         "alignment": "Light Side",
         "categories": [
             "Attacker",
-            "Rebel"
+            "Rebel",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "Counter",
@@ -1379,7 +1380,8 @@
             "Leader",
             "Nightsister",
             "Separatist",
-            "Support"
+            "Support",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "AoE",
@@ -6833,6 +6835,180 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Commander Ahsoka Tano",
+        "base_id": "COMMANDERAHSOKA",
+        "pk": 1084,
+        "url": "http://swgoh.gg/characters/commander-ahsoka-tano/",
+        "image": "/game-asset/u/COMMANDERAHSOKA.png",
+        "power": 36016,
+        "description": "Legendary Master of Jar'Kai and Shien form Attacker, who deals high damage to a single target.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "003",
+                    "003",
+                    "003",
+                    "007",
+                    "006"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "014",
+                    "012",
+                    "032",
+                    "028",
+                    "028",
+                    "010"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "040",
+                    "038",
+                    "049",
+                    "046",
+                    "046",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "040",
+                    "071",
+                    "071",
+                    "045",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "042",
+                    "063",
+                    "086",
+                    "071",
+                    "071",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "063",
+                    "098",
+                    "087",
+                    "095",
+                    "096",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "100",
+                    "172",
+                    "071",
+                    "095",
+                    "107",
+                    "172"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "071",
+                    "117",
+                    "117",
+                    "117",
+                    "172",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "173",
+                    "117",
+                    "173",
+                    "117",
+                    "117",
+                    "126"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "115",
+                    "132",
+                    "117",
+                    "173",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "119",
+                    "117",
+                    "173",
+                    "132",
+                    "141",
+                    "143"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "160",
+                    "168",
+                    "169",
+                    "G12Finisher_COMMANDERAHSOKA_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Galactic Republic",
+            "Scoundrel",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "Evasion Up",
+            "Gain Turn Meter"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Commander Luke Skywalker",
         "base_id": "COMMANDERLUKESKYWALKER",
         "pk": 238,
@@ -6990,7 +7166,8 @@
         "categories": [
             "Attacker",
             "Leader",
-            "Rebel"
+            "Rebel",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "Buff Immunity",
@@ -21340,7 +21517,8 @@
         "alignment": "Dark Side",
         "categories": [
             "Attacker",
-            "First Order"
+            "First Order",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "Advantage",
@@ -21515,7 +21693,8 @@
         "categories": [
             "First Order",
             "Leader",
-            "Tank"
+            "Tank",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "Advantage",
@@ -27934,7 +28113,8 @@
             "Attacker",
             "Galactic Legend",
             "Leader",
-            "Resistance"
+            "Resistance",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "AoE",
@@ -28109,7 +28289,8 @@
         "categories": [
             "Leader",
             "Resistance",
-            "Tank"
+            "Tank",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "Ability Block",
@@ -28290,7 +28471,8 @@
         "alignment": "Light Side",
         "categories": [
             "Attacker",
-            "Resistance"
+            "Resistance",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "Daze",
@@ -31240,7 +31422,8 @@
             "Attacker",
             "First Order",
             "Galactic Legend",
-            "Leader"
+            "Leader",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "Advantage",
@@ -34185,7 +34368,8 @@
         ],
         "alignment": "Light Side",
         "categories": [
-            "Healer"
+            "Healer",
+            "Unaligned Force User"
         ],
         "ability_classes": [
             "AoE",

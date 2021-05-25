@@ -198,7 +198,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Rebel"
+            "Rebel",
+            "Unaligned Force User"
         ],
         "mods": {
             "General": {
@@ -271,7 +272,8 @@
             "Leader",
             "Nightsister",
             "Separatist",
-            "Support"
+            "Support",
+            "Unaligned Force User"
         ],
         "mods": {
             "General": {
@@ -1645,6 +1647,26 @@
         }
     },
     {
+        "name": "Commander Ahsoka Tano",
+        "uniqueName": "COMMANDERAHSOKA",
+        "aliases": [
+            "Commander Ahsoka Tano"
+        ],
+        "nameVariant": [
+            "Commander Ahsoka Tano"
+        ],
+        "url": "http://swgoh.gg/characters/commander-ahsoka-tano/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/COMMANDERAHSOKA.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Galactic Republic",
+            "Scoundrel",
+            "Unaligned Force User"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Commander Luke Skywalker",
         "uniqueName": "COMMANDERLUKESKYWALKER",
         "aliases": [
@@ -1663,7 +1685,8 @@
         "factions": [
             "Attacker",
             "Leader",
-            "Rebel"
+            "Rebel",
+            "Unaligned Force User"
         ],
         "mods": {
             "General": {
@@ -4662,7 +4685,8 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "First Order"
+            "First Order",
+            "Unaligned Force User"
         ],
         "mods": {
             "General": {
@@ -4700,7 +4724,8 @@
         "factions": [
             "First Order",
             "Leader",
-            "Tank"
+            "Tank",
+            "Unaligned Force User"
         ],
         "mods": {
             "General": {
@@ -6054,7 +6079,8 @@
             "Attacker",
             "Galactic Legend",
             "Leader",
-            "Resistance"
+            "Resistance",
+            "Unaligned Force User"
         ],
         "mods": {}
     },
@@ -6077,7 +6103,8 @@
         "factions": [
             "Leader",
             "Resistance",
-            "Tank"
+            "Tank",
+            "Unaligned Force User"
         ],
         "mods": {
             "Raid": {
@@ -6127,7 +6154,8 @@
         "side": "light",
         "factions": [
             "Attacker",
-            "Resistance"
+            "Resistance",
+            "Unaligned Force User"
         ],
         "mods": {
             "General": {
@@ -6804,7 +6832,8 @@
             "Attacker",
             "First Order",
             "Galactic Legend",
-            "Leader"
+            "Leader",
+            "Unaligned Force User"
         ],
         "mods": {}
     },
@@ -7360,7 +7389,8 @@
         "avatarURL": "https://swgoh.gg/game-asset/u/VISASMARR.png",
         "side": "light",
         "factions": [
-            "Healer"
+            "Healer",
+            "Unaligned Force User"
         ],
         "mods": {
             "General": {
