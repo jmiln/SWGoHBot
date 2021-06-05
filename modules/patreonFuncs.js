@@ -665,11 +665,17 @@ module.exports = (Bot, client) => {
 
             // Get any updates for the guild
             const guild = await Bot.swgohAPI.guild(gu.allycode);
+            if (!guild?.roster) {
+                return console.log(`[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${guild}`);
+            }
             let guildLog;
             try {
+                if (!guild?.roster?.length) {
+                    return console.log("[patreonFuncs/guildsUpdate] Cannot get the roster for " + gu.allycode);
+                }
                 guildLog = await Bot.swgohAPI.getPlayerUpdates(guild.roster.map(m => m.allyCode));
             } catch (err) {
-                return console.log("[patreonFuncs/guildsUpdate] " + err);
+                return console.log(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n` + err);
             }
 
             // If there were not changes found, move along, not the changes we were looking for
@@ -717,8 +723,3 @@ module.exports = (Bot, client) => {
         }
     };
 };
-
-
-
-
-

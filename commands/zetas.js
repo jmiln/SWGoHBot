@@ -105,7 +105,7 @@ class Zetas extends Command {
             const desc = [], author = {}, fields = [];
             if (!character) {
                 const formatted = sorted.map(character => `\`(${zetas[character].length})\` ${character}`);
-                const chunked = Bot.chunkArray(formatted, 50);
+                const chunked = Bot.chunkArray(formatted, 45);
                 author.name = message.language.get("COMMAND_ZETA_ZETAS_HEADER", player.name, count);
                 desc.push("`------------------------------`");
                 chunked.forEach(chunk => {

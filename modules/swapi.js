@@ -144,8 +144,14 @@ module.exports = (Bot) => {
         const processStart = new Date();
         for (const newPlayer of updatedBare) {
             const oldPlayer = oldMembers.find(p => p.allyCode === newPlayer.allyCode);
+            if (!oldPlayer?.roster) {
+                // If they've not been in there before, stick em into the db
+                await cache.put(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
+
+                // Then move on, since there's no old data to compare against
+                continue;
+            }
             if (JSON.stringify(oldPlayer.roster) == JSON.stringify(newPlayer.roster)) continue;
-            if (!oldPlayer) continue;
 
             const playerLog = {
                 unlocked: [],
@@ -851,7 +857,7 @@ module.exports = (Bot) => {
             if (tempGuild.roster.length !== tempGuild.members) {
                 Bot.logger.error(`[swgohapi-guild] Missing players, only getting ${tempGuild.roster.length}/${tempGuild.members}`);
             }
-            guild = await cache.put(Bot.config.mongodb.swapidb, "guilds", {name: tempGuild.name}, tempGuild);
+            guild = await cache.put(Bot.config.mongodb.swapidb, "guilds", {id: tempGuild.id}, tempGuild);
             if (warnings) guild.warnings = warnings;
         } else {
             /** If found and valid, serve from cache */
@@ -862,7 +868,7 @@ module.exports = (Bot) => {
 
     async function guildByName( gName ) {
         try {
-            const guild  = await cache.get(Bot.config.mongodb.swapidb, "guilds", {name:gName});
+            const guild  = await cache.get(Bot.config.mongodb.swapidb, "guilds", {name: gName});
 
             if ( !guild || !guild[0] ) {
                 return null;
@@ -913,19 +919,19 @@ module.exports = (Bot) => {
         return events;
     }
 
-    function isExpired( updated, cooldown={}, guild=false ) {
-        if (!updated) return true;
+    function isExpired( lastUpdated, cooldown={}, guild=false ) {
+        if (!lastUpdated) return true;
         if (guild) {
             if (!cooldown) {
                 cooldown = guildMaxCooldown;
             }
-            const diff = Bot.convertMS( new Date() - new Date(updated) );
+            const diff = Bot.convertMS( new Date() - new Date(lastUpdated) );
             return diff.totalMin >= cooldown;
         } else {
             if (!cooldown) {
                 cooldown = playerMaxCooldown;
             }
-            const diff = Bot.convertMS( new Date() - new Date(updated) );
+            const diff = Bot.convertMS( new Date() - new Date(lastUpdated) );
             return diff.totalMin >= cooldown;
         }
     }
