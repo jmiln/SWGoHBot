@@ -29,6 +29,9 @@ class Guilds extends Command {
                 },
                 expand: {
                     aliases: ["ex", "expanded"]
+                },
+                relics: {
+                    aliases: ["rel", "relic"]
                 }
             },
             subArgs: {
@@ -107,9 +110,111 @@ class Guilds extends Command {
             } catch (err) {
                 return super.error(msg, err, {edit: true, example: "guilds me -twsumary"});
             }
+        } else if (options.flags.relics) {
+            try {
+                await guildRelics();
+            } catch (err) {
+                return super.error(msg, err, {edit: true, example: "guilds me -relics"});
+            }
         } else {
             // Show basic stats/ info about the guild
             await baseGuild();
+        }
+
+        async function guildRelics() {
+            const members = [];
+
+            // Make sure the guild roster exists, and grab all the ally codes
+            let gRoster ;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                throw new Error(message.language.get("BASE_SWGOH_NO_GUILD"));
+            } else {
+                msg.edit("Found guild `" + guild.name + "`!");
+                gRoster = guild.roster.map(m => m.allyCode);
+            }
+
+            // Use the ally codes to get all the other info for the guild
+            let guildMembers;
+            try {
+                guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
+            } catch (e) {
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
+                return msg.edit(Bot.codeBlock(e), {
+                    title: "Something Broke while getting your guild's characters",
+                    footer: "Please try again in a bit."
+                });
+            }
+
+            for (const member of guildMembers) {
+                const memberRoster = {
+                    // Just the name
+                    name: member.name,
+
+                    // The gear levels
+                    g1: 0, g2: 0, g3: 0, g4: 0, g5: 0, g6: 0, g7: 0, g8: 0, g9: 0, g10: 0, g11: 0, g12: 0,
+
+                    // The relics
+                    "r0-4": 0, "r5-7": 0, r8:  0
+                };
+                for (const char of member.roster) {
+                    if (char.gear === 13 && char?.relic?.currentTier-2 >= 0) {
+                        // If it's a g13 with a relic, check for the relic
+                        const rel = char.relic.currentTier - 2;
+                        if (rel <= 4) {
+                            memberRoster["r0-4"] += 1;
+                        } else if (rel <= 7) {
+                            memberRoster["r5-7"] += 1;
+                        } else {
+                            memberRoster.r8  += 1;
+                        }
+                    } else {
+                        // If it's not already there, then stick it in
+                        memberRoster["g" + char.gear] += 1;
+                    }
+                }
+                members.push(memberRoster);
+            }
+
+            // See what the top 4 tiers of gear/ relic are available for these members
+            let firstViableTier = null;
+            const tierKeys = Object.keys(members[0]).reverse();
+            for (const tier in tierKeys) {
+                if (members.filter(mem => mem[tierKeys[tier]] > 0).length) {
+                    firstViableTier = tier;
+                    break;
+                }
+            }
+
+            // Set up the formats for the table maker
+            const viableTiers = tierKeys.slice(firstViableTier, firstViableTier+4).reverse();
+            const tierFormat = {
+                [viableTiers[0]]: {value: viableTiers[0], startWith: "`[", endWith: "|",  align: "right"},
+                [viableTiers[1]]: {value: viableTiers[1],                  endWith: "|",  align: "right"},
+                [viableTiers[2]]: {value: viableTiers[2],                  endWith: "|",  align: "right"},
+                [viableTiers[3]]: {value: viableTiers[3],                  endWith: "]`",  align: "right"},
+                name:             {value: "",                                             align: "left"}
+            };
+
+            // Format all the output, then send it on
+            const memOut = Bot.makeTable(tierFormat, members.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+
+            // Chunk the info into sections so it'll fit in the embed fields
+            const fields = [];
+            const fieldVals = Bot.msgArray(memOut, "\n", 1000);
+
+            // Stick the formatted bits into the fields
+            for (const fieldVal of fieldVals) {
+                fields.push({
+                    name: "-",
+                    value: fieldVal
+                });
+            }
+
+            // Send the formatted info
+            return message.channel.send({embed: {
+                title: `${guild.name}'s Gear/ Relic summary`,
+                fields: fields
+            }});
         }
 
         async function guildTickets(userID, rawGuild) {
