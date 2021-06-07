@@ -792,7 +792,7 @@ module.exports = (Bot, client) => {
         boldHeader: true,
         useHeader:  true
     }) => {
-        if (!headers || !rows || !rows.length) throw new Error("Need both headers and rows");
+        if (!headers || !rows?.length) throw new Error("Need both headers and rows");
         const max = {};
         Object.keys(headers).forEach(h => {
             // Get the max length needed, then add a bit for padding

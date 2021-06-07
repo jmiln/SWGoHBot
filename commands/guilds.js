@@ -186,7 +186,7 @@ class Guilds extends Command {
             }
 
             // Set up the formats for the table maker
-            const viableTiers = tierKeys.slice(firstViableTier, firstViableTier+4).reverse();
+            const viableTiers = tierKeys.slice(parseInt(firstViableTier, 10), parseInt(firstViableTier, 10)+4).reverse();
             const tierFormat = {
                 [viableTiers[0]]: {value: viableTiers[0], startWith: "`[", endWith: "|",  align: "right"},
                 [viableTiers[1]]: {value: viableTiers[1],                  endWith: "|",  align: "right"},
