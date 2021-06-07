@@ -78,7 +78,7 @@ class GuildUpdate extends Command {
                 }
                 break;
             case "ch":
-            case "channel":
+            case "channel": {
                 // This needs to make sure the person has an adminrole or something so they cannot just spam a chat with it
                 let [channel] = args;
                 if (!channel) {
@@ -103,8 +103,9 @@ class GuildUpdate extends Command {
                 // They got throught all that, go ahead and set it
                 gu.channel = channel;
                 break;
+            }
             case "ac":
-            case "allycode":
+            case "allycode": {
                 const [code] = args;
                 if (!code) {
                     // Remove the code
@@ -119,6 +120,7 @@ class GuildUpdate extends Command {
                     gu.allycode = parseInt(code, 10);
                 }
                 break;
+            }
             case "view":
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
                 return message.channel.send({embed: {
