@@ -223,7 +223,12 @@ class Guilds extends Command {
             if (!rawGuild) return msg.edit(`Sorry, but I could not find a guild to match with ${userID}`);
 
             const out = [];
-            const roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
+            let roster = null;
+            if (["tic", "ticket", "tickets"].indexOf(options.subArgs.sort) > -1) {
+                roster = rawGuild.roster.sort((a, b) => a.memberContribution[2]?.currentValue > b.memberContribution[2]?.currentValue ? 1 : -1);
+            } else {
+                roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
+            }
 
             const dayMS = 86400000;
             let timeUntilReset = null;
