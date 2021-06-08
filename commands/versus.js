@@ -4,7 +4,7 @@ class Versus extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "versus",
-            category: "Dev",
+            category: "SWGoH",
             enabled: true,
             aliases: ["vs"],
             permissions: ["EMBED_LINKS"],
@@ -117,7 +117,11 @@ class Versus extends Command {
         const char1 = user1.roster.find(c => c.defId === char.uniqueName);
         const char2 = user2.roster.find(c => c.defId === char.uniqueName);
 
-        const isShip = char1.combatType === 1 ? false : true;
+        if (!char1 && !char2) {
+            return super.error(message, "Neither user seems to have that character unlocked!") ;
+        }
+
+        const isShip = (char1 ? char1.combatType : char2.combatType) === 1 ? false : true;
 
         const genOut = [];
 
@@ -174,12 +178,12 @@ class Versus extends Command {
         // For each stat in a list, add onto the statOut array
         const statOut = [];
         statList.forEach(stat => {
-            const s1 = char1.stats.final[stat.stat];
-            const s2 = char2.stats.final[stat.stat];
+            const s1 = char1?.stats?.final[stat.stat];
+            const s2 = char2?.stats?.final[stat.stat];
             statOut.push({
                 stat: stat.short,
-                user1: s1 % 1 === 0 ? s1.toLocaleString() : (s1 * 100).toFixed(2)+"%",
-                user2: s2 % 1 === 0 ? s2.toLocaleString() : (s2 * 100).toFixed(2)+"%",
+                user1: s1 ? (s1 % 1 === 0 ? s1.toLocaleString() : (s1 * 100).toFixed(2)+"%") : "N/A",
+                user2: s2 ? (s2 % 1 === 0 ? s2.toLocaleString() : (s2 * 100).toFixed(2)+"%") : "N/A",
             });
         });
 
