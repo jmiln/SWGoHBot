@@ -1874,6 +1874,22 @@ module.exports = class extends Language {
                 ]
             },
 
+            // Versus Command
+            COMMAND_VERSUS_HELP: {
+                description: "Compare a character from two players",
+                actions: [
+                    {
+                        action: "",
+                        actionDesc: "",
+                        usage: ";versus [user1] [user2] <character>",
+                        args: {
+                            "user": "The user(s) you want to compare the characters for.",
+                            "character": "The character that you want to compare."
+                        }
+                    }
+                ]
+            },
+
             // Whois command
             COMMAND_WHOIS_HELP: {
                 description: "Find ally codes from a given name.",
