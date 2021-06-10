@@ -187,7 +187,7 @@ class Versus extends Command {
             });
         });
 
-        const langChar = await Bot.swgohAPI.langChar({defId: char1.defId});
+        const langChar = await Bot.swgohAPI.langChar({defId: char1 ? char1.defId : char2.defId});
         const charName = langChar.nameKey;
         const statTable = Bot.makeTable({
             stat:  {value: "Stat", align: "right", endWith: "::"},
