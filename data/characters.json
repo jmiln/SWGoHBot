@@ -4341,6 +4341,28 @@
         }
     },
     {
+        "name": "Jedi Master Kenobi",
+        "uniqueName": "JEDIMASTERKENOBI",
+        "aliases": [
+            "Jedi Master Kenobi",
+            "JMK"
+        ],
+        "nameVariant": [
+            "Jedi Master Kenobi"
+        ],
+        "url": "http://swgoh.gg/characters/jedi-master-kenobi/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/JEDIMASTERKENOBI.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Galactic Legend",
+            "Galactic Republic",
+            "Jedi",
+            "Leader"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Jedi Master Luke Skywalker",
         "uniqueName": "GRANDMASTERLUKE",
         "aliases": [

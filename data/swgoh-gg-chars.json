@@ -19777,6 +19777,189 @@
         "activate_shard_count": 330
     },
     {
+        "name": "Jedi Master Kenobi",
+        "base_id": "JEDIMASTERKENOBI",
+        "pk": 1264,
+        "url": "http://swgoh.gg/characters/jedi-master-kenobi/",
+        "image": "/game-asset/u/JEDIMASTERKENOBI.png",
+        "power": 44173,
+        "description": "Renowned Jedi Master that provides damage and support through a diverse set of abilities",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "006",
+                    "001",
+                    "004",
+                    "005",
+                    "005",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "019",
+                    "017",
+                    "015",
+                    "028",
+                    "025",
+                    "004"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "004",
+                    "028",
+                    "049",
+                    "053",
+                    "060",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "061",
+                    "053",
+                    "056",
+                    "068",
+                    "073",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "076",
+                    "060",
+                    "074",
+                    "089",
+                    "079",
+                    "086"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "079",
+                    "089",
+                    "079",
+                    "086",
+                    "091",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "068",
+                    "093",
+                    "097",
+                    "110",
+                    "109",
+                    "113"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "112",
+                    "110",
+                    "109",
+                    "106",
+                    "117",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "172",
+                    "110",
+                    "126",
+                    "172",
+                    "116"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "172",
+                    "144",
+                    "172",
+                    "145",
+                    "138",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "117",
+                    "172",
+                    "173",
+                    "139",
+                    "142",
+                    "134"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "160",
+                    "159",
+                    "171",
+                    "171",
+                    "G12Finisher_JEDIMASTERKENOBI_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Galactic Legend",
+            "Galactic Republic",
+            "Jedi",
+            "Leader"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: Assist",
+            "Reset Cooldown",
+            "Stun",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Jedi Master Luke Skywalker",
         "base_id": "GRANDMASTERLUKE",
         "pk": 600,
