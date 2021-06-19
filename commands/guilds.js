@@ -569,13 +569,13 @@ class Guilds extends Command {
                 "Galactic Legends": [
                     ["GLREY",                   "Rey"],
                     ["GRANDMASTERLUKE",         "JM Luke"],
+                    ["JEDIMASTERKENOBI",        "JM Kenobi"],
                     ["SITHPALPATINE",           "SE Emperor"],
                     ["SUPREMELEADERKYLOREN",    "SL Kylo Ren"]
                 ],
                 "Light Side": [
-                    ["BASTILASHAN",             "Bastila"],
-                    ["BB8",                     "BB-8"],
                     ["C3POLEGENDARY",           "C-3PO"],
+                    ["C3POCHEWBACCA",           "C-3PO & Chewie"],
                     ["COMMANDERLUKESKYWALKER",  "CLS"],
                     ["ENFYSNEST",               "Enfys Nest"],
                     ["GENERALKENOBI",           "Gen. Kenobi"],
@@ -585,23 +585,24 @@ class Guilds extends Command {
                     ["HERMITYODA",              "Hermit Yoda"],
                     ["JEDIKNIGHTLUKE",          "JK Luke"],
                     ["JEDIKNIGHTREVAN",         "Jedi Revan"],
-                    ["R2D2_LEGENDARY",          "R2-D2"],
+                    ["MONMOTHMA",               "Mon Mothma"],
+                    ["PADMEAMIDALA",            "Padmé Amidala"],
                     ["REYJEDITRAINING",         "Rey (JT)"]
                 ],
                 "Dark Side": [
+                    ["ADMIRALPIETT",            "Admiral Piett"],
                     ["BOSSK",                   "Bossk"],
+                    ["DARKTROOPER",             "Dark Trooper"],
                     ["VADER",                   "Darth Vader"],
                     ["DARTHMALAK",              "Darth Malak"],
                     ["DARTHREVAN",              "Darth Revan"],
-                    ["DARTHSION",               "Darth Sion"],
                     ["DARTHTRAYA",              "Darth Traya"],
                     ["GRIEVOUS",                "Gen Grievous"],
+                    ["GEONOSIANBROODALPHA",     "Geo Brood Alpha"],
                     ["KYLORENUNMASKED",         "Kylo Unmask"],
-                    ["VEERS",                   "Gen. Veers"],
                     ["EMPERORPALPATINE",        "Palpatine"],
                     ["MOTHERTALZIN",            "Talzin"],
                     ["GRANDADMIRALTHRAWN",      "Thrawn"],
-                    ["WAMPA",                   "Wampa"],
                     ["WATTAMBOR",               "Wat Tambor"]
                 ],
             };
