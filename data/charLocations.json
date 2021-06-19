@@ -229,7 +229,8 @@
         "name": "Bo-Katan Kryze",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)"
+                "type": "Hard Modes (D)",
+                "level": "6-D"
             }
         ]
     },
@@ -445,6 +446,14 @@
         ]
     },
     {
+        "name": "Commander Ahsoka Tano",
+        "locations": [
+            {
+                "type": "Galactic Battle: Conquest"
+            }
+        ]
+    },
+    {
         "name": "Commander Luke Skywalker",
         "locations": [
             {
@@ -526,7 +535,8 @@
         "name": "Dark Trooper",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)"
+                "type": "Hard Modes (L)",
+                "cost": "1-C"
             }
         ]
     },
@@ -675,6 +685,14 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "8-B"
+            }
+        ]
+    },
+    {
+        "name": "Echo",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)"
             }
         ]
     },
@@ -1109,7 +1127,8 @@
         "name": "Hunter",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)"
+                "type": "Hard Modes (L)",
+                "level": "5-B"
             }
         ]
     },
@@ -1314,6 +1333,15 @@
             {
                 "type": "Hero's Journey",
                 "name": "Legend of the Old Republic"
+            }
+        ]
+    },
+    {
+        "name": "Jedi Master Kenobi",
+        "locations": [
+            {
+                "type": "Galactic Ascension",
+                "name": "What Must be Done"
             }
         ]
     },
@@ -2139,6 +2167,15 @@
         ]
     },
     {
+        "name": "Tech",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "5-F"
+            }
+        ]
+    },
+    {
         "name": "Teebo",
         "locations": [
             {
@@ -2345,6 +2382,14 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "8-A"
+            }
+        ]
+    },
+    {
+        "name": "Wrecker",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)"
             }
         ]
     },

@@ -466,8 +466,7 @@
         "name": "Razor Crest",
         "locations": [
             {
-                "type": "Special Event",
-                "name": "Galactic Battle: Conquest"
+                "type": "Galactic Battle: Conquest"
             }
         ]
     },
