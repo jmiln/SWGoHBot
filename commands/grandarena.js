@@ -130,6 +130,22 @@ class GrandArena extends Command {
             "MOTHERTALZIN"
         ];
 
+        // Quick mapping of gp to how many teams are needed
+        // const gpMap = {
+        //     //        |   General stuff   |        5v5 Specific stuff           |        3v3 Specific Stuff
+        //     7800000: { div: 1,  fleets: 2, teams5: 11, topX5: 110, kyber5: 44900, teams3: 15, topX3: 90, kyber3: 53200 },
+        //     6650000: { div: 2,  fleets: 2, teams5: 10, topX5: 100, kyber5: 43100, teams3: 14, topX3: 84, kyber3: 51400 },
+        //     6000000: { div: 3,  fleets: 2, teams5: 9,  topX5: 90,  kyber5: 40000, teams3: 13, topX3: 78, kyber3: 51400 },
+        //     5150000: { div: 4,  fleets: 2, teams5: 9,  topX5: 90,  kyber5: 40000, teams3: 12, topX3: 72, kyber3: 50500 },
+        //     4500000: { div: 5,  fleets: 2, teams5: 7,  topX5: 70,  kyber5: 34700, teams3: 11, topX3: 66, kyber3: 43500 },
+        //     3850000: { div: 6,  fleets: 2, teams5: 7,  topX5: 70,  kyber5: 34700, teams3: 11, topX3: 66, kyber3: 42300 },
+        //     3100000: { div: 7,  fleets: 2, teams5: 7,  topX5: 70,  kyber5: 33000, teams3: 10, topX3: 60, kyber3: 39600 },
+        //     2300000: { div: 8,  fleets: 1, teams5: 6,  topX5: 60,  kyber5: 29500, teams3: 8,  topX3: 48, kyber3: 32100 },
+        //     1600000: { div: 9,  fleets: 1, teams5: 5,  topX5: 50,  kyber5: 27700, teams3: 7,  topX3: 42, kyber3: 30300 },
+        //     1000000: { div: 10, fleets: 1, teams5: 4,  topX5: 40,  kyber5: 25800, teams3: 4,  topX3: 24, kyber3: 23300 },
+        //     0:       { div: 11, fleets: 1, teams5: 3,  topX5: 30,  kyber5: 24000, teams3: 3,  topX3: 18, kyber3: 21500 }
+        // };
+
         // In case the user wants to look for charcters from a specific faction
         if (options.subArgs.faction) {
             const fact = Bot.findFaction(options.subArgs.faction);
@@ -150,18 +166,31 @@ class GrandArena extends Command {
         }
 
         let overview = [];
-        const charList = Bot.characters.map(c => c.uniqueName);
-        const shipList = Bot.ships.map(s => s.uniqueName);
+        const user1CharRoster = user1.roster.filter(ch => ch.combatType === 1);
+        const user2CharRoster = user2.roster.filter(ch => ch.combatType === 1);
+
+        const user1ShipRoster = user1.roster.filter(ch => ch.combatType === 2);
+        const user2ShipRoster = user1.roster.filter(ch => ch.combatType === 2);
+
+        // Quick little function to add up all the gp frm a given chunk of roster
+        const sumGP = (rosterIn) => {
+            return rosterIn.reduce((a, b) => a + b.gp, 0).shortenNum(2);
+        };
 
         overview.push({
+            check: "Ttl GP",
+            user1: sumGP(user1.roster),
+            user2: sumGP(user2.roster)
+        });
+        overview.push({
             check: labels.charGP,
-            user1: user1.roster.reduce((a, b) => a + (charList.indexOf(b.defId) > -1 ? b.gp : 0), 0).shortenNum(2),
-            user2: user2.roster.reduce((a, b) => a + (charList.indexOf(b.defId) > -1 ? b.gp : 0), 0).shortenNum(2)
+            user1: sumGP(user1CharRoster),
+            user2: sumGP(user2CharRoster)
         });
         overview.push({
             check: labels.shipGP,
-            user1: user1.roster.reduce((a, b) => a + (shipList.indexOf(b.defId) > -1 ? b.gp : 0), 0).shortenNum(2),
-            user2: user2.roster.reduce((a, b) => a + (shipList.indexOf(b.defId) > -1 ? b.gp : 0), 0).shortenNum(2)
+            user1: sumGP(user1ShipRoster),
+            user2: sumGP(user2ShipRoster)
         });
         if (user1.arena && user2.arena) {
             if (user1.arena.char && user2.arena.char) {
