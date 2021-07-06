@@ -2428,7 +2428,9 @@
         "name": "Echo",
         "uniqueName": "BADBATCHECHO",
         "aliases": [
-            "Echo"
+            "Bad Batch Echo",
+            "BB Echo",
+            "BBEcho"
         ],
         "nameVariant": [
             "Echo"

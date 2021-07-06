@@ -470,7 +470,7 @@ module.exports = (Bot, client) => {
             if (!allyCodes || !allyCodes.length) continue;
 
             const newPlayers = await Bot.swgohAPI.getPlayersArena(allyCodes);
-            if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${newPlayers.length}/${allyCodes.length}`);
+            // if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${newPlayers.length}/${allyCodes.length}`);
 
             // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
             let charOut = [];
