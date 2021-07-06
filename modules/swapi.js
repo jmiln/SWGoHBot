@@ -82,7 +82,7 @@ module.exports = (Bot) => {
         await npmAsync.eachLimit(allycodes, MAX_CONCURRENT, async function(ac) {
             const p = await Bot.swapiStub.getPlayerArenaProfile(ac.toString())
                 .catch(() => {});
-                // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err?.response?.body ? err.response.body : err)}`));
+                // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
             playersOut.push(p);
         });
 
