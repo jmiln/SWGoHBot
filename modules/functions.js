@@ -1025,4 +1025,60 @@ module.exports = (Bot, client) => {
             .then(isUnique => isUnique);
         return exists ? true : false;
     };
+
+
+    Bot.summarizeGearLvls = (guildMembers) => {
+        // Get the overall gear levels for the guild as a whole
+        if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
+        const gearLvls = {};
+        const MAX_GEAR = 13;
+        for (let ix = MAX_GEAR; ix >= 1; ix--) {
+            let gearCount = 0;
+            for (const member of guildMembers) {
+                gearCount += member.roster.filter(c => c && c.combatType === 1 && c.gear === ix).length;
+            }
+            if (gearCount > 0) {
+                gearLvls[ix] = gearCount;
+            }
+        }
+        const tieredGear = Object.keys(gearLvls).reduce((acc, curr) => parseInt(acc, 10) + (gearLvls[curr] * curr), 0);
+        const totalGear = Object.keys(gearLvls).reduce((acc, curr) => parseInt(acc, 10) + gearLvls[curr]);
+        const avgGear = (tieredGear / totalGear).toFixed(2);
+
+        return [gearLvls, avgGear];
+    };
+
+    Bot.summarizeRarityLvls = (guildMembers) => {
+        if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
+        const rarityLvls = {};
+        for (let ix = 7; ix >= 1; ix--) {
+            let rarityCount = 0;
+            for (const member of guildMembers) {
+                rarityCount += member.roster.filter(c => c && c.combatType === 1 && c.rarity === ix).length;
+            }
+            rarityLvls[ix] = rarityCount;
+        }
+        const tieredRarity = Object.keys(rarityLvls).reduce((acc, curr) => parseInt(acc, 10) + (rarityLvls[curr] * curr), 0);
+        const totalRarity = Object.keys(rarityLvls).reduce((acc, curr) => parseInt(acc, 10) + rarityLvls[curr]);
+        const avgRarity = (tieredRarity / totalRarity).toFixed(2);
+
+        return [rarityLvls, avgRarity];
+    };
+    Bot.summarizeRelicLvls = (guildMembers) => {
+        if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
+        const relicLvls = {};
+        const MAX_RELIC = 8;
+        for (let ix = MAX_RELIC; ix >= 1; ix--) {
+            let relicCount = 0;
+            for (const member of guildMembers) {
+                relicCount += member.roster.filter(c => c && c.combatType === 1 && c?.relic?.currentTier - 2 === ix).length;
+            }
+            relicLvls[ix] = relicCount;
+        }
+        const tieredRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + (relicLvls[curr] * curr), 0);
+        const totalRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + relicLvls[curr]);
+        const avgRelic = (tieredRelic / totalRelic).toFixed(2);
+
+        return [relicLvls, avgRelic];
+    };
 };
