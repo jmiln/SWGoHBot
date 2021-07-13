@@ -1,5 +1,6 @@
 const Command = require("../base/Command");
 const moment = require("moment-timezone");
+const {charChecklist, shipChecklist} = require("../data/unitChecklist");
 
 class Guilds extends Command {
     constructor(Bot) {
@@ -498,47 +499,24 @@ class Guilds extends Command {
             });
 
             // Get the overall gear levels for the guild as a whole
-            const gearLvls = {};
-            const MAX_GEAR = 13;
-            for (let ix = MAX_GEAR; ix >= 1; ix--) {
-                let gearCount = 0;
-                for (const member of guildMembers) {
-                    gearCount += member.roster.filter(c => c && c.combatType === 1 && c.gear === ix).length;
-                }
-                if (gearCount > 0) {
-                    gearLvls[ix] = gearCount;
-                }
-            }
-            const tieredGear = Object.keys(gearLvls).reduce((acc, curr) => parseInt(acc, 10) + (gearLvls[curr] * curr), 0);
-            const totalGear = Object.keys(gearLvls).reduce((acc, curr) => parseInt(acc, 10) + gearLvls[curr]);
-            const avgGear = (tieredGear / totalGear);
-
+            const [gearLvls, avgGear] = Bot.summarizeGearLvls(guildMembers);
             fields.push({
                 name: "Character Gear Counts",
                 value: "*How many characters at each gear level*" +
                 Bot.codeBlock(Object.keys(gearLvls)
                     .slice(options.flags.expand ? 0 : -4)
                     .map(g => `G${g + " ".repeat(12-g.length)}:: ${" ".repeat(7-gearLvls[g].toLocaleString().length) + gearLvls[g].toLocaleString()}`).join("\n") +
-                    `\nAVG Gear Lvl :: ${" ".repeat(7-avgGear.toFixed(2).toString().length) + avgGear.toFixed(2)}`
-                )});
+                    `\nAVG Gear Lvl :: ${" ".repeat(7-avgGear.toString().length) + avgGear}`
+                )
+            });
 
             // Get the overall rarity levels for the guild as a whole
-            const rarityLvls = {};
-            for (let ix = 7; ix >= 1; ix--) {
-                let rarityCount = 0;
-                for (const member of guildMembers) {
-                    rarityCount += member.roster.filter(c => c && c.combatType === 1 && c.rarity === ix).length;
-                }
-                rarityLvls[ix] = rarityCount;
-            }
-            const tieredRarity = Object.keys(rarityLvls).reduce((acc, curr) => parseInt(acc, 10) + (rarityLvls[curr] * curr), 0);
-            const totalRarity = Object.keys(rarityLvls).reduce((acc, curr) => parseInt(acc, 10) + rarityLvls[curr]);
-            const avgRarity = (tieredRarity / totalRarity);
+            const [rarityLvls, avgRarity] = Bot.summarizeRarityLvls(guildMembers);
             fields.push({
                 name: "Character Rarity Counts",
                 value: "*How many characters at each star level*" +
                 Bot.codeBlock(Object.keys(rarityLvls).splice(options.flags.expand ? 0 : -4).map(g => `${g}*           :: ${" ".repeat(7-rarityLvls[g].toLocaleString().length) + rarityLvls[g].toLocaleString()}`).join("\n") +
-                    `\nAVG Star Lvl :: ${" ".repeat(7-avgRarity.toFixed(2).toString().length) + avgRarity.toFixed(2)}`)
+                    `\nAVG Star Lvl :: ${" ".repeat(7-avgRarity.toString().length) + avgRarity}`)
             });
 
             // Get the overall relic levels for the guild as a whole
@@ -565,63 +543,10 @@ class Guilds extends Command {
 
             // Get general stats on how many of certain characters the guild has and at what gear
             // Possibly put this in the guildConf so guilds can have custom lists?
-            const guildCharacterChecklist = {
-                "Galactic Legends": [
-                    ["GLREY",                   "Rey"],
-                    ["GRANDMASTERLUKE",         "JM Luke"],
-                    ["JEDIMASTERKENOBI",        "JM Kenobi"],
-                    ["SITHPALPATINE",           "SE Emperor"],
-                    ["SUPREMELEADERKYLOREN",    "SL Kylo Ren"]
-                ],
-                "Light Side": [
-                    ["C3POLEGENDARY",           "C-3PO"],
-                    ["C3POCHEWBACCA",           "C-3PO & Chewie"],
-                    ["COMMANDERLUKESKYWALKER",  "CLS"],
-                    ["ENFYSNEST",               "Enfys Nest"],
-                    ["GENERALKENOBI",           "Gen. Kenobi"],
-                    ["GENERALSKYWALKER",        "Gen. Skywalker"],
-                    ["GRANDMASTERYODA",         "GM Yoda"],
-                    ["HANSOLO",                 "Han Solo"],
-                    ["HERMITYODA",              "Hermit Yoda"],
-                    ["JEDIKNIGHTLUKE",          "JK Luke"],
-                    ["JEDIKNIGHTREVAN",         "Jedi Revan"],
-                    ["MONMOTHMA",               "Mon Mothma"],
-                    ["PADMEAMIDALA",            "Padmé Amidala"],
-                    ["REYJEDITRAINING",         "Rey (JT)"]
-                ],
-                "Dark Side": [
-                    ["ADMIRALPIETT",            "Admiral Piett"],
-                    ["BOSSK",                   "Bossk"],
-                    ["DARKTROOPER",             "Dark Trooper"],
-                    ["VADER",                   "Darth Vader"],
-                    ["DARTHMALAK",              "Darth Malak"],
-                    ["DARTHREVAN",              "Darth Revan"],
-                    ["DARTHTRAYA",              "Darth Traya"],
-                    ["GRIEVOUS",                "Gen Grievous"],
-                    ["GEONOSIANBROODALPHA",     "Geo Brood Alpha"],
-                    ["KYLORENUNMASKED",         "Kylo Unmask"],
-                    ["EMPERORPALPATINE",        "Palpatine"],
-                    ["MOTHERTALZIN",            "Talzin"],
-                    ["GRANDADMIRALTHRAWN",      "Thrawn"],
-                    ["WATTAMBOR",               "Wat Tambor"]
-                ],
-            };
-            const charOut = twCategoryFormat(guildCharacterChecklist, gearLvls, 19, guildMembers, false);
+            const charOut = twCategoryFormat(charChecklist, gearLvls, 19, guildMembers, false);
             fields.push(...charOut);
 
-            const guildShipChecklist = {
-                "Capital Ships": [
-                    ["CAPITALCHIMAERA",           "Chimaera"],
-                    ["CAPITALJEDICRUISER",        "Endurance"],
-                    ["CAPITALSTARDESTROYER",      "Executrix"],
-                    ["CAPITALFINALIZER",          "Finalizer"],
-                    ["CAPITALMONCALAMARICRUISER", "Home One"],
-                    ["CAPITALMALEVOLENCE",        "Malevolence"],
-                    ["CAPITALNEGOTIATOR",         "Negotiator"],
-                    ["CAPITALRADDUS",             "Raddus"]
-                ]
-            };
-            const shipOut = twCategoryFormat(guildShipChecklist, gearLvls, 8, guildMembers, true);
+            const shipOut = twCategoryFormat(shipChecklist, gearLvls, 8, guildMembers, true);
             fields.push(...shipOut);
 
             if (options.defaults) {

@@ -756,6 +756,7 @@ module.exports = class extends Language {
                 "spd10": "10+  Spd",
                 "spd15": "15+  Spd",
                 "spd20": "20+  Spd",
+                "spd25": "25+  Spd",
                 "off100": "100+ Off",
                 "level": "Lvl",
                 "gearLvl": "Gear",
