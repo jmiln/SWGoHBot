@@ -5489,6 +5489,25 @@
         }
     },
     {
+        "name": "Omega",
+        "uniqueName": "BADBATCHOMEGA",
+        "aliases": [
+            "Omega"
+        ],
+        "nameVariant": [
+            "Omega"
+        ],
+        "url": "http://swgoh.gg/characters/omega/",
+        "avatarURL": "https://swgoh.gg/game-asset/u/BADBATCHOMEGA.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Bad Batch",
+            "Clone Trooper"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Padmé Amidala",
         "uniqueName": "PADMEAMIDALA",
         "aliases": [

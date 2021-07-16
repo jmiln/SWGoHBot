@@ -25367,6 +25367,185 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Omega",
+        "base_id": "BADBATCHOMEGA",
+        "pk": 1417,
+        "url": "http://swgoh.gg/characters/omega/",
+        "image": "/game-asset/u/BADBATCHOMEGA.png",
+        "power": 33820,
+        "description": "Clever and empathetic attacker who utilizes buffs, debuffs, and the presence of her Bad Batch allies to take out her foes.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "002",
+                    "003",
+                    "003",
+                    "007",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "014",
+                    "012",
+                    "032",
+                    "028",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "040",
+                    "038",
+                    "049",
+                    "038",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "040",
+                    "071",
+                    "042",
+                    "040",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "042",
+                    "063",
+                    "086",
+                    "046",
+                    "071",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "063",
+                    "098",
+                    "087",
+                    "072",
+                    "096",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "100",
+                    "040",
+                    "106",
+                    "087",
+                    "100",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "117",
+                    "114",
+                    "100",
+                    "114",
+                    "118",
+                    "126"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "173",
+                    "173",
+                    "119",
+                    "100",
+                    "114",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "131",
+                    "132",
+                    "118",
+                    "119",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "118",
+                    "119",
+                    "138",
+                    "134",
+                    "144",
+                    "141"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "160",
+                    "160",
+                    "168",
+                    "169",
+                    "G12Finisher_BADBATCHOMEGA_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Bad Batch",
+            "Clone Trooper"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Counter",
+            "Daze",
+            "Defense Up",
+            "Dispel",
+            "Evasion Up",
+            "Expose",
+            "Gain Turn Meter",
+            "Remove Turn Meter",
+            "Stealth",
+            "Target Lock",
+            "Taunt"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Padmé Amidala",
         "base_id": "PADMEAMIDALA",
         "pk": 346,
