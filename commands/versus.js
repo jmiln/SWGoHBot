@@ -163,8 +163,18 @@ class Versus extends Command {
             if (user1Relic || user2Relic) {
                 genOut.push({
                     stat: "Relic",
-                    user1: user1Relic,
-                    user2: user2Relic
+                    user1: user1Relic > 0 ? user1Relic : "N/A",
+                    user2: user2Relic > 0 ? user2Relic : "N/A",
+                });
+            }
+
+            const user1Ult = char1?.purchasedAbilityId?.length;
+            const user2Ult = char2?.purchasedAbilityId?.length;
+            if (user1Ult || user2Ult) {
+                genOut.push({
+                    stat: "Ultimate",
+                    user1: user1Ult > 0 ? "✓" : "N/A",
+                    user2: user2Ult > 0 ? "✓" : "N/A",
                 });
             }
         }
