@@ -80,10 +80,10 @@ class Versus extends Command {
             // ship = true;
         }
         if (!char.length) {
-            //TODO return super.error(message, message.language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
+            return super.error(message, message.language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
         } else if (char.length > 1) {
             // If found more than 1 match
-            // TODO return error here about more than 1 match
+            return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", char.map(c => c.name).join("\n")));
         } else {
             // It only found one match
             if (Array.isArray(char)) char = char[0];
