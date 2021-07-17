@@ -53,7 +53,7 @@ class Versus extends Command {
                 character = character.join(" ");
             } else {
                 // Spit out an error because of no character
-                // TODO return error here
+                return super.error(message, "It looks like your first ally code is not valid, please double check it and try again.");
             }
         } else if (user1) {
             // Just user1 is valid, grab author's linked code and attach user2str to character
@@ -61,15 +61,15 @@ class Versus extends Command {
             user1 = await super.getUser(message, message.author.id, false);
             if (!user1) {
                 // Spit out an error because the message author is not registered
-                // TODO return error here
+                return super.error(message, "It looks like you are not registered, please try using an ally code instead.");
             }
             character = [user2str].concat(character).join(" ");
         } else if (user2) {
             // Something went wrong with user1, let's spit out an error
-            // TODO return error here
+            return super.error(message, "It looks like your second ally code is not valid, please double check it and try again.");
         } else {
             // Something really went wrong, and neither user is valid. Spit out a bigger error
-            // TODO return error here
+            return super.error(message, "One or both of the users were not found. Please try again.");
         }
 
 

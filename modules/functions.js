@@ -90,7 +90,7 @@ module.exports = (Bot, client) => {
             distance: 4
         };
         // In case of any extra spaces
-        searchName = searchName.trim().toLowerCase();
+        searchName = searchName.toString().trim().toLowerCase();
 
         // Check the names for an exact match
         for (let ix = 0; ix < charList.length; ix++) {
