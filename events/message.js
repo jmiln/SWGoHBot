@@ -1,4 +1,5 @@
 const {inspect} = require("util");
+
 module.exports = async (Bot, message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").

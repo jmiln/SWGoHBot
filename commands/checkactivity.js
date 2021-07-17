@@ -8,6 +8,7 @@ class CheckAct extends Command {
             name: "checkactivity",
             aliases: ["activity", "check", "ca"],
             guildOnly: true,
+            enabled: false,
             permLevel: 3,
             category: "Admin",
             flags: {

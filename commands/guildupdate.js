@@ -4,8 +4,7 @@ class GuildUpdate extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "guildupdate",
-            category: "Dev",
-            // category: "Patreon",
+            category: "Patreon",
             aliases: ["gu"],
             permissions: ["EMBED_LINKS"],
             flags: {},
@@ -53,7 +52,7 @@ class GuildUpdate extends Command {
 
         // GuildUpdate -> activate/ deactivate
         const pat = await Bot.getPatronUser(message.author.id);
-        if (!pat || pat.amount_cents < 500) {
+        if (!pat || pat.amount_cents < 100) {
             return super.error(message, message.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
