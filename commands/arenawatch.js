@@ -514,7 +514,7 @@ class ArenaWatch extends Command {
                     if (aw.arena.char.channel) {
                         charChan = message.guild ? message.guild.channels.cache.get(aw.arena.char.channel) : null;
                         if (!charChan) {
-                            charChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.char.channel}');`)
+                            charChan = await message.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.arena.char.channel), {context: aw})
                                 .then((thisChan) => {
                                     thisChan = thisChan.filter(a => !!a)[0];
                                     return thisChan ? `<#${thisChan.id}>` : "N/A";
@@ -524,7 +524,7 @@ class ArenaWatch extends Command {
                     if (aw.arena.fleet.channel) {
                         fleetChan = message.guild ? message.guild.channels.cache.get(aw.arena.fleet.channel) : null;
                         if (!fleetChan) {
-                            fleetChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.fleet.channel}');`)
+                            fleetChan = await message.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.arena.fleet.channel), {context: aw})
                                 .then((thisChan) => {
                                     thisChan = thisChan.filter(a => !!a)[0];
                                     return thisChan ? `<#${thisChan.id}>` : "N/A";
@@ -534,7 +534,7 @@ class ArenaWatch extends Command {
                     if (aw.payout.char.channel) {
                         charPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.char.channel) : null;
                         if (!charPayoutChan) {
-                            charPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.char.channel}');`)
+                            charPayoutChan = await message.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.payout.char.channel), {context: aw})
                                 .then((thisChan) => {
                                     thisChan = thisChan.filter(a => !!a)[0];
                                     return thisChan ? `<#${thisChan.id}>` : "N/A";
@@ -544,7 +544,7 @@ class ArenaWatch extends Command {
                     if (aw.payout.fleet.channel) {
                         fleetPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.fleet.channel) : null;
                         if (!fleetPayoutChan) {
-                            fleetPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.fleet.channel}');`)
+                            fleetPayoutChan = await message.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.payout.fleet.channel), {context: aw})
                                 .then((thisChan) => {
                                     thisChan = thisChan.filter(a => !!a)[0];
                                     return thisChan ? `<#${thisChan.id}>` : "N/A";
