@@ -35,7 +35,10 @@ class Help extends Command {
             sortedCat.forEach(category => {
                 output += `\n== ${category} ==\n${help[category]}`;
             });
-            message.channel.send({content: Bot.codeBlock(output, "asciidoc")}); //TODO, { split: {maxLength: 1500, char: "\n"} });
+            const chunkedMsg = Bot.msgArray(output.split("\n"));
+            for (const chunk of chunkedMsg) {
+                message.channel.send({content: Bot.codeBlock(chunk, "asciidoc")});
+            }
         } else { // Show the help for a specific command
             let command;
             if (client.commands.has(args[0])) {
