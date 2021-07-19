@@ -46,7 +46,7 @@ module.exports = (Bot, client) => {
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
-        if (message.member.hasPermission(["ADMINISTRATOR"]) || message.member.hasPermission(["MANAGE_GUILD"])) return permlvl = 3;
+        if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) return permlvl = 3;
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
