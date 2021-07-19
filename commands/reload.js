@@ -12,7 +12,6 @@ class Reload extends Command {
     }
 
     async run(Bot, message, [commandName]) {
-        console.log("in reload 2");
         let command;
         const client = message.client;
         if (client.commands.has(commandName)) {
