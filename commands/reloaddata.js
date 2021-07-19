@@ -21,7 +21,18 @@ class ReloadData extends Command {
             case "com":
             case "commands": // Reloads all the commands,
                 if (message.client.shard && message.client.shard.count > 0) {
-                    message.client.shard.broadcastEval(`this.reloadAllCommands('${id}'); `);
+                    console.log("Trying to shard reload all coms, id: " + id + " test");
+                    await message.client.shard.broadcastEval(async client =>  await client.reloadAllCommands())
+                        .then(res => {
+                            let errors = [];
+                            res.forEach(r => {
+                                if (r.errArr?.length) errors.push(...r.errArr);
+                            });
+                            errors = [...new Set(errors)];
+                            const resOut = res.map(r => `${r.succArr.length.toString().padStart(4)} | ${r.errArr.length}`);
+                            return message.channel.send({content: Bot.codeBlock(`Succ | Err\n${resOut.join("\n")}${errors.length ? "\n\nErrors in files:\n" + errors.join("\n") : ""}`)});
+                        })
+                        .catch(err => console.log("[ReloadData com]\n" + err));
                 } else {
                     client.reloadAllCommands(id);
                 }
@@ -33,7 +44,17 @@ class ReloadData extends Command {
             case "ev":
             case "events": // Reload the events
                 if (message.client.shard && message.client.shard.count > 0) {
-                    message.client.shard.broadcastEval(`this.reloadAllEvents('${id}'); `);
+                    message.client.shard.broadcastEval(client => client.reloadAllEvents())
+                        .then(res => {
+                            let errors = [];
+                            res.forEach(r => {
+                                if (r.errArr?.length) errors.push(...r.errArr);
+                            });
+                            errors = [...new Set(errors)];
+                            const resOut = res.map(r => `${r.succArr.length.toString().padStart(4)} | ${r.errArr.length}`);
+                            return message.channel.send({content: Bot.codeBlock(`Succ | Err\n${resOut.join("\n")}${errors.length ? "\n\nErrors in files:\n" + errors.join("\n") : ""}`)});
+                        })
+                        .catch(err => console.log("[ReloadData ev]\n" + err));
                 } else {
                     client.reloadAllEvents(id);
                 }
@@ -44,33 +65,77 @@ class ReloadData extends Command {
             case "function":
             case "functions": // Reload the functions file
                 if (message.client.shard && message.client.shard.count > 0) {
-                    message.client.shard.broadcastEval(`this.reloadFunctions('${id}'); `);
+                    message.client.shard.broadcastEval(client => client.reloadFunctions())
+                        .then(res => {
+                            let errors = [];
+                            res.forEach(r => {
+                                if (r.err) errors.push(r.err);
+                            });
+                            errors = [...new Set(errors)];
+                            return message.channel.send({
+                                content: errors.length ? "**ERROR**\n" + errors.join("\n") : "> Functions reloaded!"
+                            });
+                        })
+                        .catch(err => console.log("[ReloadData funct]\n" + err));
                 } else {
-                    client.reloadFunctions(id);
+                    client.reloadFunctions();
                 }
                 break;
             case "api":
             case "swapi": // Reload the swapi file
                 if (message.client.shard && message.client.shard.count > 0) {
-                    message.client.shard.broadcastEval(`this.reloadSwapi('${id}'); `);
+                    message.client.shard.broadcastEval(client => client.reloadSwapi())
+                        .then(res => {
+                            let errors = [];
+                            res.forEach(r => {
+                                if (r.err) errors.push(r.err);
+                            });
+                            errors = [...new Set(errors)];
+                            return message.channel.send({
+                                content: errors.length ? "**ERROR**\n" + errors.join("\n") : "> Swapi reloaded!"
+                            });
+                        })
+                        .catch(err => console.log("[ReloadData swapi]\n" + err));
                 } else {
-                    client.reloadSwapi(id);
+                    client.reloadSwapi();
                 }
                 break;
             case "data": // Reload the character/ ship data files
                 if (message.client.shard && message.client.shard.count > 0) {
-                    message.client.shard.broadcastEval(`this.reloadDataFiles('${id}'); `);
+                    message.client.shard.broadcastEval(client => client.reloadDataFiles())
+                        .then(res => {
+                            let errors = [];
+                            res.forEach(r => {
+                                if (r.err) errors.push(r.err);
+                            });
+                            errors = [...new Set(errors)];
+                            return message.channel.send({
+                                content: errors.length ? "**ERROR**\n" + errors.join("\n") : "> Data reloaded!"
+                            });
+                        })
+                        .catch(err => console.log("[ReloadData data]\n" + err));
                 } else {
-                    client.reloadDataFiles(id);
+                    client.reloadDataFiles();
                 }
                 break;
             case "lang":
             case "language":
             case "languages":
                 if (message.client.shard && message.client.shard.count > 0) {
-                    message.client.shard.broadcastEval(`this.reloadLanguages('${id}'); `);
+                    message.client.shard.broadcastEval(client => client.reloadLanguages())
+                        .then(res => {
+                            let errors = [];
+                            res.forEach(r => {
+                                if (r.err) errors.push(r.err);
+                            });
+                            errors = [...new Set(errors)];
+                            return message.channel.send({
+                                content: errors.length ? "**ERROR**\n" + errors.join("\n") : "> Languages reloaded!"
+                            });
+                        })
+                        .catch(err => console.log("[ReloadData data]\n" + err));
                 } else {
-                    client.reloadLanguages(id);
+                    client.reloadLanguages();
                 }
                 break;
             case "swlang": {
@@ -128,13 +193,24 @@ class ReloadData extends Command {
             }
             case "users": // Reload the users file
                 if (message.client.shard && message.client.shard.count > 0) {
-                    message.client.shard.broadcastEval(`this.reloadUserReg('${id}');`);
+                    message.client.shard.broadcastEval(client => client.reloadUserReg())
+                        .then(res => {
+                            let errors = [];
+                            res.forEach(r => {
+                                if (r.err) errors.push(r.err);
+                            });
+                            errors = [...new Set(errors)];
+                            return message.channel.send({
+                                content: errors.length ? "**ERROR**\n" + errors.join("\n") : "> Users reloaded!"
+                            });
+                        })
+                        .catch(err => console.log("[ReloadData users]\n" + err));
                 } else {
-                    client.reloadUserReg(id);
+                    client.reloadUserReg();
                 }
                 break;
             default:
-                return super.error(message, "You can only choose `api, commands, events, functions, languages, swlang, or data.`");
+                return super.error(message, "You can only choose `api, commands, events, functions, languages, swlang, users, or data.`");
         }
     }
 }

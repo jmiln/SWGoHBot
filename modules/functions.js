@@ -172,7 +172,7 @@ module.exports = (Bot, client) => {
     /* ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    Bot.announceMsg = async (guild, announceMsg, channel="", guildConf={}) => {
+    client.announceMsg = async (guild, announceMsg, channel="", guildConf={}) => {
         if (!guild?.id) return;
 
         let announceChan = guildConf.announceChan || "";
@@ -262,7 +262,7 @@ module.exports = (Bot, client) => {
     // Reloads all commads (even if they were not loaded before)
     // Will not remove a command it it's been loaded,
     // but will load a new command it it's been added
-    client.reloadAllCommands = async (msgID) => {
+    client.reloadAllCommands = async () => {
         client.commands.keyArray().forEach(c => {
             client.unloadCommand(c);
         });
@@ -286,14 +286,14 @@ module.exports = (Bot, client) => {
                 errArr.push(f);
             }
         });
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            channel.send(`Reloaded ${coms.length} commands, failed to reload ${errArr.length} commands.${errArr.length > 0 ? "\n```" + errArr.join("\n") + "```" : ""}`);
-        }
+        return {
+            succArr: coms,
+            errArr: errArr
+        };
     };
 
     // Reload the events files (message, guildCreate, etc)
-    client.reloadAllEvents = async (msgID) => {
+    client.reloadAllEvents = async () => {
         const ev = [], errEv = [];
 
         const evtFiles = await readdir("./events/");
@@ -302,7 +302,7 @@ module.exports = (Bot, client) => {
                 const eventName = file.split(".")[0];
                 client.removeAllListeners(eventName);
                 const event = require(`../events/${file}`);
-                if (eventName === "ready") {
+                if (["ready", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
                     client.on(eventName, event.bind(null, Bot, client));
                 } else {
                     client.on(eventName, event.bind(null, Bot));
@@ -314,14 +314,14 @@ module.exports = (Bot, client) => {
                 errEv.push(file);
             }
         });
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            channel.send(`Reloaded ${ev.length} events, failed to reload ${errEv.length} events.${errEv.length > 0 ? "\n```" + errEv.join("\n") + "```" : ""}`);
-        }
+        return {
+            succArr: ev,
+            errArr: errEv
+        };
     };
 
     // Reload the functions (this) file
-    client.reloadFunctions = async (msgID) => {
+    client.reloadFunctions = async () => {
         let err = false;
         try {
             delete require.cache[require.resolve("../modules/functions.js")];
@@ -337,57 +337,39 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded functions");
-            }
-        }
+        return {
+            succ: err ? false : true,
+            err: err
+        };
     };
 
     // Reload the swapi file
-    client.reloadSwapi = async (msgID) => {
-        let err = false;
+    client.reloadSwapi = async () => {
+        let err = null;
         try {
             delete require.cache[require.resolve("../modules/swapi.js")];
             Bot.swgohAPI = require("../modules/swapi.js")(Bot);
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded swapi");
-            }
-        }
+        return err;
     };
 
     // Reload the users file
-    client.reloadUserReg = async (msgID) => {
-        let err = false;
+    client.reloadUserReg = async () => {
+        let err = null;
         try {
             delete require.cache[require.resolve("../modules/users.js")];
             Bot.userReg = require("../modules/users.js")(Bot);
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded users");
-            }
-        }
+        return err;
     };
 
     // Reload the data files (ships, teams, characters)
-    client.reloadDataFiles = async (msgID) => {
-        let err = false;
+    client.reloadDataFiles = async () => {
+        let err = null;
         try {
             Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json"));
             Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
@@ -404,18 +386,11 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded data files.");
-            }
-        }
+        return err;
     };
 
     // Reload all the language files
-    client.reloadLanguages = async (chanID) => {
+    client.reloadLanguages = async () => {
         let err = false;
         try {
             Object.keys(Bot.languages).forEach(lang => {
@@ -431,14 +406,7 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.cache.get(chanID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded language files.");
-            }
-        }
+        return err;
     };
 
     /* SINGLE-LINE AWAITMESSAGE
@@ -450,7 +418,7 @@ module.exports = (Bot, client) => {
      */
     Bot.awaitReply = async (msg, question, limit = 60000) => {
         const filter = m => m.author.id === msg.author.id;
-        await msg.channel.send(question).catch(() => {Bot.logger.error("Broke in awaitReply");});
+        await msg.channel.send({content: question}).catch(() => {Bot.logger.error("Broke in awaitReply");});
         try {
             const collected = await msg.channel.awaitMessages(filter, {max: 1, time: limit, errors: ["time"]});
             return collected.first().content;
@@ -579,14 +547,14 @@ module.exports = (Bot, client) => {
                 }
             }
         });
-        message.channel.send({embed: {
+        message.channel.send({embeds: [{
             "color": "#605afc",
             "author": {
                 "name": language.get("BASE_COMMAND_HELP_HEADER", command.help.name)
             },
             "description": headerString,
             "fields": actionArr
-        }}).catch((e) => {Bot.logger.error(`Broke in helpOut (${command.help.name}):\n${e}`);});
+        }]}).catch((e) => {Bot.logger.error(`Broke in helpOut (${command.help.name}):\n${e}`);});
     };
 
 
@@ -708,7 +676,7 @@ module.exports = (Bot, client) => {
      */
     client.getEmoji = (id) => {
         if (client.shard && client.shard.count > 0) {
-            return client.shard.broadcastEval(`this.findEmoji('${id}');`)
+            return client.shard.broadcastEval((client, id) => client.findEmoji(id), {context: id})
                 .then(emojiArray => {
                     // Locate a non falsy result, which will be the emoji in question
                     const foundEmoji = emojiArray.find(emoji => emoji);
