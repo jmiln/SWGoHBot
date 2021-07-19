@@ -12,6 +12,7 @@ class Reload extends Command {
     }
 
     async run(Bot, message, [commandName]) {
+        console.log("in reload 2");
         let command;
         const client = message.client;
         if (client.commands.has(commandName)) {
@@ -26,7 +27,7 @@ class Reload extends Command {
             message.channel.send({content: `Reloading: ${command}`})
                 .then(async msg => {
                     if (message.client.shard && message.client.shard.count > 0) {
-                        await message.client.shard.broadcastEval(`this.reloadCommand("${command}");`)
+                        await message.client.shard.broadcastEval((client, command) => client.reloadCommand(command), {context: command})
                             .then(() => {
                                 msg.edit({content: message.language.get("COMMAND_RELOAD_SUCCESS", command)});
                             })
