@@ -63,8 +63,7 @@ module.exports = async (Bot, client) => {
         // If it's the last shard being started, load all the emotes in
         if ((client.shard.id + 1) === client.shard.count) {
             Bot.logger.log("Loading up emotes");
-            // TODO Make this work again on v13 stuff
-            // await client.shard.broadcastEval(client => client.loadAllEmotes());
+            await client.shard.broadcastEval(client => client.loadAllEmotes());
         }
     } else {
         await client.loadAllEmotes();

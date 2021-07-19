@@ -1,5 +1,5 @@
 const {inspect} = require("util");
-module.exports = async (Bot, member) => {
+module.exports = async (Bot, member, client) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
     const guildConf = await Bot.getGuildConf(guild.id);
@@ -17,7 +17,7 @@ module.exports = async (Bot, member) => {
             .replace(/{{server}}/gi,      member.guild.name)
             .replace(/{{prefix}}/gi,      guildConf.prefix);
         try {
-            Bot.announceMsg(guild, partMessage, null, guildConf);
+            client.announceMsg(guild, partMessage, null, guildConf);
         } catch (e) {
             Bot.logger.error(`Error sending partMessage:\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
         }
