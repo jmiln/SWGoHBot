@@ -313,36 +313,33 @@ module.exports = (Bot, client) => {
     async function sendPayoutUpdates(payout, outEmbed, arena) {
         // Use broadcastEval to check all shards for the channel, and if there's a valid message
         // there, edit it. If not, send a fresh copy of it.
-        const messages = await client.shard.broadcastEval(`
-            (async () => {
-                let channel = this.channels.cache.get('${payout[arena].channel}');
-                let msg, targetMsg;
-                if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                    if (!${payout[arena].msgID}) {
-                        targetMsg = await channel.send({embed: ${JSON.stringify(outEmbed)}});
+        const messages = await client.shard.broadcastEval(async (client, payout, arena) => {
+            const channel = this.channels.cache.get(payout[arena].channel);
+            let msg, targetMsg;
+            if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                if (!payout[arena].msgID) {
+                    targetMsg = await channel.send({embeds: [outEmbed]});
+                } else {
+                    try {
+                        msg = await channel.messages.fetch(payout[arena].msgID);
+                    } catch (e) {
+                        msg = null;
+                    }
+                    if (msg) {
+                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => console.log("[sendPayoutUpdates]", err));
                     } else {
-                        try {
-                            msg = await channel.messages.fetch('${payout[arena].msgID}');
-                        } catch (e) {
-                            msg = null;
-                        }
-                        if (msg) {
-                            targetMsg = await msg.edit({embeds: [${JSON.stringify(outEmbed)}]}).catch(err => console.log("[sendPayoutUpdates]", err));
-                        } else {
-                            targetMsg = await channel.send({embeds: [${JSON.stringify(outEmbed)}]}).catch(err => console.log("[sendPayoutUpdates]", err));
-                        }
+                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => console.log("[sendPayoutUpdates]", err));
                     }
                 }
-                return targetMsg;
-            })();
-        `);
+            }
+            return targetMsg;
+        }, {context: {
+            payout: payout,
+            arena: arena
+        }});
         const msg = messages.filter(a => !!a);
         return msg.length ? msg[0] : null;
     }
-    // else if (channel) {
-    //     console.log("Missing permissions to view/ send messages in" + channel.guild.name + "(#" + channel.name + "(" + channel.id + "))");
-    // }
-
 
     // Go through the given list and return how long til payouts
     function getPayoutTimes(players, arena) {
@@ -567,29 +564,29 @@ module.exports = (Bot, client) => {
                 if (aw.arena.char.channel === aw.arena.fleet.channel) {
                     // If they're both set to the same channel, send it all
                     const fields = charFields.concat(shipFields);
-                    client.shard.broadcastEval(`
-                        const chan = this.channels.cache.get("${aw.arena.char.channel}");
-                        if (chan && chan.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                            chan.send(\`>>> ${fields.join("\n")}\`);
+                    client.shard.broadcastEval((client) => {
+                        const chan = client.channels.cache.get(aw.arena.char.channel);
+                        if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                            chan.send(`>>> ${fields.join("\n")}`);
                         }
-                    `);
+                    }, {context: aw});
                 } else {
                     // Else they each have their own channels, so send em there
                     if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
-                        client.shard.broadcastEval(`
-                            const chan = this.channels.cache.get("${aw.arena.char.channel}");
-                            if (chan && chan.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                                chan.send(\`>>> ${charFields.join("\n")}\`);
+                        client.shard.broadcastEval((client) => {
+                            const chan = client.channels.cache.get(aw.arena.char.channel);
+                            if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                                chan.send(`>>> ${charFields.join("\n")}`);
                             }
-                        `);
+                        }, {context: aw});
                     }
                     if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
-                        client.shard.broadcastEval(`
-                            const chan = this.channels.cache.get("${aw.arena.fleet.channel}");
-                            if (chan && chan.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                                chan.send(\`>>> ${shipFields.join("\n")}\`);
+                        client.shard.broadcastEval((client) => {
+                            const chan = client.channels.cache.get(aw.arena.char.channel);
+                            if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                                chan.send(`>>> ${shipFields.join("\n")}`);
                             }
-                        `);
+                        }, {context: aw});
                     }
                 }
             }
@@ -649,15 +646,13 @@ module.exports = (Bot, client) => {
             // }
 
             // Check if the bot is able to send messages into the set channel
-            const channels = await client.shard.broadcastEval(`
-                    (async () => {
-                        let channel = this.channels.cache.get('${gu.channel}');
-                        if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                            return true;
-                        }
-                        return false;
-                    })();
-                `);
+            const channels = await client.shard.broadcastEval(async (client, gu) => {
+                const channel = client.channels.cache.get(gu.channel);
+                if (channel && channel.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                    return true;
+                }
+                return false;
+            }, {context: gu});
             const chanAvail = channels.some(ch => !!ch);
 
             // If the channel is not available, move on
@@ -708,17 +703,15 @@ module.exports = (Bot, client) => {
             const fieldsOut = Bot.chunkArray(fields, MAX_FIELDS);
 
             for (const fieldChunk of fieldsOut) {
-                await client.shard.broadcastEval(`
-                        (async () => {
-                            let channel = this.channels.cache.get('${gu.channel}');
-                            if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                                return channel.send({embed: {
-                                    fields: ${JSON.stringify(fieldChunk)}
-                                }})
-                            }
-                            return false;
-                        })();
-                    `);
+                await client.shard.broadcastEval(async (client, gu) => {
+                    const channel = client.channels.cache.get(gu.channel);
+                    if (channel && channel.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                        return channel.send({embeds: [{
+                            fields: fieldChunk
+                        }]});
+                    }
+                    return false;
+                }, {context: gu});
             }
         }
     };
