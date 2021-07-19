@@ -48,14 +48,14 @@ class Info extends Command {
                 });
             });
 
-            message.channel.send({embed: {
+            message.channel.send({embeds: [{
                 author: {
                     name: message.client.shard?.count ? content.shardHeader : content.header
                 },
                 description: Bot.codeBlock(desc, "asciidoc"),
                 fields: fields,
                 color: Math.floor(Math.random()*16777215)
-            }});
+            }]});
         } catch (e) {
             console.log("Error in info, caught error:");
             return Bot.logger.error(e);

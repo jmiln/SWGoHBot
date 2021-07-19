@@ -111,7 +111,7 @@ class Character extends Command {
         }
 
         message.channel.send({
-            embed: {
+            embeds: [{
                 "color": `${character.side === "light" ? "#5114e0" : "#e01414"}`,
                 "author": {
                     "name": character.name,
@@ -119,7 +119,7 @@ class Character extends Command {
                     "icon_url": character.avatarURL
                 },
                 "fields": fields
-            }
+            }]
         });
     }
 }

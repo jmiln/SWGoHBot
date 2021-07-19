@@ -51,21 +51,24 @@ class Challenges extends Command {
 
         switch (day) {
             case message.language.getDay("SUNDAY", "SHORT"): case  message.language.getDay("SUNDAY", "LONG"): case "Sun":
-                return message.channel.send(dayString("Sunday"), {code:"asciidoc"});
+                return sendDay("Sunday");
             case message.language.getDay("MONDAY", "SHORT"): case message.language.getDay("MONDAY", "LONG"): case "Mon":
-                return message.channel.send(dayString("Monday"), {code:"asciidoc"});
+                return sendDay("Monday");
             case message.language.getDay("TUESDAY", "SHORT"): case  message.language.getDay("TUESDAY", "LONG"): case "Tue":
-                return message.channel.send(dayString("Tuesday"), {code:"asciidoc"});
+                return sendDay("Tuesday");
             case message.language.getDay("WEDNESDAY", "SHORT"): case message.language.getDay("WEDNESDAY", "LONG"): case "Wed":
-                return message.channel.send(dayString("Wednesday"), {code:"asciidoc"});
+                return sendDay("Wednesday");
             case message.language.getDay("THURSDAY", "SHORT"): case message.language.getDay("THURSDAY", "LONG"): case "Thu":
-                return message.channel.send(dayString("Thursday"), {code:"asciidoc"});
+                return sendDay("Thursday");
             case message.language.getDay("FRIDAY", "SHORT"): case message.language.getDay("FRIDAY", "LONG"): case "Fri":
-                return message.channel.send(dayString("Friday"), {code:"asciidoc"});
+                return sendDay("Friday");
             case message.language.getDay("SATURDAY", "SHORT"): case message.language.getDay("SATURDAY", "LONG"): case "Sat":
-                return message.channel.send(dayString("Saturday"), {code:"asciidoc"});
+                return sendDay("Saturday");
             default:
                 return Bot.helpOut(message, this);
+        }
+        function sendDay(day) {
+            return message.channel.send({content: Bot.codeBlock(dayString(day), "asciidoc")});
         }
     }
 }

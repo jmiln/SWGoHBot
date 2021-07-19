@@ -138,24 +138,24 @@ class Faction extends Command {
                 }
 
                 const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-                return message.channel.send({embed: {
+                return message.channel.send({embeds: [{
                     author: {
                         name: player.name + "'s matches for " + searchName.toProperCase()
                     },
                     description: desc,
                     fields: fields,
                     footer: footer
-                }});
+                }]});
             } else {
                 return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
             }
         } else {
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: "Matches for " + searchName.toProperCase()
                 },
                 description: chars.map(c => c.nameKey).join("\n")
-            }});
+            }]});
         }
     }
 }

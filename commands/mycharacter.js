@@ -53,7 +53,7 @@ class MyCharacter extends Command {
             character = chars[0];
         }
 
-        const msg = await message.channel.send("Please wait while I look up your profile.");
+        const msg = await message.channel.send({content: "Please wait while I look up your profile."});
 
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let pName;
@@ -275,7 +275,7 @@ class MyCharacter extends Command {
                 }});
             } else {
                 // But if it could, go ahead and send it
-                return message.channel.send({embed: {
+                return message.channel.send({embeds: [{
                     author: {
                         name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
                         url: character.url,
@@ -294,7 +294,7 @@ class MyCharacter extends Command {
                         attachment: charImg,
                         name: "image.png"
                     }]
-                }});
+                }]});
             }
         } else {
             // You don't have the character

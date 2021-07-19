@@ -14,14 +14,14 @@ class Reboot extends Command {
         const client = message.client;
         const res = await Bot.awaitReply(message, "Are you sure you want to reboot?");
         if (res && ["y", "yes"].includes(res)) {
-            message.reply("Rebooting now");
+            message.channel.send({content: "Rebooting now"});
             if (client.shard) {
                 await client.shard.broadcastEval("process.exit(0)");
             } else {
                 process.exit(0);
             }
         }
-        return message.reply("Reboot aborted.");
+        return message.channel.send({content: "Reboot aborted."});
     }
 }
 

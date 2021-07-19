@@ -72,12 +72,12 @@ class RaidDamage extends Command {
             outAmt = (100 * (tmpAmt / thisPhase.dmg)).toFixed(2).toLocaleString() + "%";
         }
 
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {
                 name: message.language.get("COMMAND_RAIDDAMAGE_OUT_HEADER", thisRaid.name.toProperCase(), thisPhase.name.toProperCase())
             },
             description: percent ? message.language.get("COMMAND_RAIDDAMAGE_OUT_PERCENT", amt, outAmt) : message.language.get("COMMAND_RAIDDAMAGE_OUT_DMG", amt, outAmt)
-        }});
+        }]});
     }
 }
 

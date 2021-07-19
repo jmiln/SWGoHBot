@@ -111,7 +111,7 @@ class Squads extends Command {
 
                         footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
                     }
-                    return message.channel.send({embed: {
+                    return message.channel.send({embeds: [{
                         author: {
                             name: squadList[list].name.toProperCase().replace(/aat/gi, "AAT")
                         },
@@ -119,7 +119,7 @@ class Squads extends Command {
                         fields: fields,
                         footer: footer,
                         color: "#00FF00"
-                    }});
+                    }]});
                 } else {
                     const fields = [];
                     let counterName = squadList[list].phase[phase].team;
@@ -171,14 +171,14 @@ class Squads extends Command {
 
                         footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
                     }
-                    return message.channel.send({embed: {
+                    return message.channel.send({embeds: [{
                         author: {
                             name: `Counters for ${counterName}`
                         },
                         fields: fields,
                         footer: footer,
                         color: "#00FF00"
-                    }});
+                    }]});
                 }
 
             } else {

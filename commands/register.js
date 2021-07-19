@@ -71,7 +71,7 @@ class Register extends Command {
                 return a;
             });
         }
-        message.channel.send(message.language.get("COMMAND_REGISTER_PLEASE_WAIT")).then(async msg => {
+        message.channel.send({content: message.language.get("COMMAND_REGISTER_PLEASE_WAIT")}).then(async msg => {
             try {
                 let player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
                 if (Array.isArray(player)) player = player[0];

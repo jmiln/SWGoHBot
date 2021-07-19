@@ -23,7 +23,7 @@ class Charactergear extends Command {
         if (searchChar.length > 0 && !isNaN(parseInt(searchChar[searchChar.length-1], 10))) {
             gearLvl = parseInt(searchChar.pop(), 10);
             if (gearLvl < 0 || gearLvl > MAX_GEAR) {
-                return message.channel.send(message.language.get("COMMAND_CHARACTERGEAR_INVALID_GEAR"));
+                return message.channel.send({content: message.language.get("COMMAND_CHARACTERGEAR_INVALID_GEAR")});
             } else {
                 if (gearLvl < 1 || gearLvl > MAX_GEAR || isNaN(parseInt(gearLvl, 10)) ) {
                     gearLvl = 0;
@@ -36,7 +36,7 @@ class Charactergear extends Command {
 
         // Need to get the allycode from the db, then use that
         if (!userID) {
-            return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
+            return message.channel.send({content: message.language.get("BASE_SWGOH_MISSING_CHAR")});
         } else if (userID !== "me" && !Bot.isAllyCode(userID) && !Bot.isUserID(userID)) {
             // If they're just looking for a character for themselves, get the char
             searchChar = userID + " " + searchChar;
@@ -46,9 +46,9 @@ class Charactergear extends Command {
         if (userID) {
             const allyCodes = await Bot.getAllyCode(message, userID);
             if (!allyCodes.length) {
-                return message.channel.send(message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
+                return message.channel.send({content: message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix)});
             } else if (allyCodes.length > 1) {
-                return message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific");
+                return message.channel.send({content: "Found " + allyCodes.length + " matches. Please try being more specific"});
             }
             userID = allyCodes[0];
         }
@@ -58,20 +58,20 @@ class Charactergear extends Command {
         }
 
         if (!searchChar || !searchChar.length) {
-            return message.channel.send(message.language.get("BASE_SWGOH_MISSING_CHAR"));
+            return message.channel.send({content: message.language.get("BASE_SWGOH_MISSING_CHAR")});
         }
         const chars = Bot.findChar(searchChar, Bot.characters);
 
         let character;
         if (chars.length === 0) {
-            return message.channel.send(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+            return message.channel.send({content: message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar)});
         } else if (chars.length > 1) {
             const charL = [];
             const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
             charS.forEach(c => {
                 charL.push(c.name);
             });
-            return message.channel.send(message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return message.channel.send({content: message.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n"))});
         } else {
             character = chars[0];
         }
@@ -116,10 +116,9 @@ class Charactergear extends Command {
                         gearString += `* ${allGear[key]}x ${key}\n`;
                     }
                 }
-                message.channel.send(message.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), {
-                    code: "md",
-                    split: true
-                });
+                // TODO Find out how to replace split
+                message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "md")});
+                // , { split: true });
             } else {
                 // Format and send the requested data back
                 const gearList = char.unitTierList.filter(t => t.tier >= gearLvl);
@@ -145,7 +144,7 @@ class Charactergear extends Command {
                     }
                 }
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         "color": `${character.side === "light" ? "#5114e0" : "#e01414"}`,
                         "author": {
                             "name": character.name,
@@ -153,7 +152,7 @@ class Charactergear extends Command {
                             "icon_url": character.avatarURL
                         },
                         "fields": fields
-                    }
+                    }]
                 });
             }
         } else {
@@ -220,13 +219,13 @@ class Charactergear extends Command {
                     });
                 }
                 const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-                message.channel.send({embed: {
+                message.channel.send({embeds: [{
                     author: {
                         name: (gearLvl > 0) ? `${player.name}'s ${character.name} gear til g${gearLvl}` : `${player.name}'s ${character.name} needs:`
                     },
                     fields: fields,
                     footer: footer
-                }});
+                }]});
             }
         }
     }

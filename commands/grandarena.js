@@ -567,12 +567,12 @@ class GrandArena extends Command {
         }
 
         const footer = Bot.updatedFooter(Math.min(user1.updated, user2.updated), message, "player", cooldown);
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {name: message.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name)},
             // description: message.language.get("COMMAND_GRANDARENA_OUT_DESC", overview, modOverview),
             fields: fields,
             footer: footer
-        }});
+        }]});
     }
 }
 

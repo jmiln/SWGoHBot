@@ -118,7 +118,7 @@ class GuildSearch extends Command {
             return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", Bot.codeBlock(checkArr2.map(c => "-" + c).join("\n"))));
         }
 
-        const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
+        const msg = await message.channel.send({content: message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT")});
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
 
         let guild = null;
@@ -128,12 +128,12 @@ class GuildSearch extends Command {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(msg, "Sorry, but it looks like that player is not in a guild", {edit: true});
             }
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: "Something Broke while getting your guild's roster"
                 },
                 description: Bot.codeBlock(e) + "Please try again in a bit."
-            }});
+            }]});
         }
         if (!guild || !guild.roster || !guild.roster.length) {
             return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));

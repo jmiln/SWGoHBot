@@ -184,7 +184,7 @@ class MyProfile extends Command {
         }
 
         const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {
                 name: message.language.get("COMMAND_MYPROFILE_EMBED_HEADER", player.name, player.allyCode),
             },
@@ -192,7 +192,7 @@ class MyProfile extends Command {
             description: message.language.get("COMMAND_MYPROFILE_DESC", player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, gpFull.toLocaleString(), mods),
             fields: fields,
             footer: footer
-        }});
+        }]});
     }
 }
 

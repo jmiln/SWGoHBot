@@ -20,13 +20,13 @@ class WhoIs extends Command {
         let players = await Bot.swgohAPI.playerByName(name);
 
         if (!players.length) {
-            return message.channel.send("No results found for that name.\n Probably a wrong name or that person is not registered with the bot.");
+            return message.channel.send({content: "No results found for that name.\n Probably a wrong name or that person is not registered with the bot."});
         } else {
             const playerLen = players.length;
             if (playerLen > 25) {
                 players = players.slice(0, 25);
             }
-            return message.channel.send(`>>> **Results for search: \`${name}\`** ${playerLen > players.length ? `\n**Showing (${players.length}/${playerLen})**` : ""}\n` + players.map(p => `\`${p.allyCode}\` - ${p.name}`).join("\n"), {split: {char: "\n"}});
+            return message.channel.send({content: `>>> **Results for search: \`${name}\`** ${playerLen > players.length ? `\n**Showing (${players.length}/${playerLen})**` : ""}\n` + players.map(p => `\`${p.allyCode}\` - ${p.name}`).join("\n")}); //TODO , {split: {char: "\n"}});
         }
     }
 }

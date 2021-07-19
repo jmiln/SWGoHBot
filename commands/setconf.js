@@ -58,7 +58,7 @@ class Setconf extends Command {
                         } else if (key === "changelogWebhook") {
                             if (!value || !value.length) {
                                 Bot.database.models.settings.update({[key]: ""}, {where: {guildID: message.guild.id}});
-                                return message.channel.send("Removed webhook link.");
+                                return message.channel.send({content: "Removed webhook link."});
                             } else {
                                 const match = /discordapp.com\/api\/webhooks\/[^/]+\/[^/]+/.test(value);
                                 if (!match) {
@@ -67,7 +67,7 @@ class Setconf extends Command {
                             }
                         }
                         Bot.database.models.settings.update({[key]: value}, {where: {guildID: message.guild.id}});
-                        return message.channel.send("Config setting `" + key + "` changed to `" + value + "`");
+                        return message.channel.send({content: "Config setting `" + key + "` changed to `" + value + "`"});
                     case "TEXT[]": {
                         let action;
                         if (value[0]) {
@@ -102,7 +102,7 @@ class Setconf extends Command {
                             return super.error(message, message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
                         }
                         Bot.database.models.settings.update({[key]: [...new Set(valArray)]}, {where: {guildID: message.guild.id}});
-                        return message.channel.send(message.language.get("COMMAND_SETCONF_ARRAY_SUCCESS", key, value, (action === "add" ? "added to" : "removed from")));
+                        return message.channel.send({content: message.language.get("COMMAND_SETCONF_ARRAY_SUCCESS", key, value, (action === "add" ? "added to" : "removed from"))});
                     }
                     case "BOOLEAN":
                         if (!value[0]) {
@@ -116,7 +116,7 @@ class Setconf extends Command {
                             return super.error(message, message.language.get("COMMAND_INVALID_BOOL"));
                         }
                         Bot.database.models.settings.update({[key]: value}, {where: {guildID: message.guild.id}});
-                        return message.channel.send("Value for `" + key + "` changed to `" + value + "`");
+                        return message.channel.send({content: "Value for `" + key + "` changed to `" + value + "`"});
                     // case 'INTEGER':      // Don't have any of these yet
                     case "INTEGER[]": {
                         let action;
@@ -156,7 +156,7 @@ class Setconf extends Command {
                             return message.reply(message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
                         }
                         Bot.database.models.settings.update({[key]: [...new Set(valArray.sort((p,c) => p - c))]}, {where: {guildID: message.guild.id}});
-                        return message.channel.send(message.language.get("COMMAND_SETCONF_ARRAY_SUCCESS", key, value, (action === "add" ? "added to" : "removed from")));
+                        return message.channel.send({content: message.language.get("COMMAND_SETCONF_ARRAY_SUCCESS", key, value, (action === "add" ? "added to" : "removed from"))});
                     }
                     default:
                         // Didn't find it?

@@ -35,7 +35,7 @@ class Help extends Command {
             sortedCat.forEach(category => {
                 output += `\n== ${category} ==\n${help[category]}`;
             });
-            message.channel.send(output, { code: "asciidoc", split: {maxLength: 1500, char: "\n"} });
+            message.channel.send({content: Bot.codeBlock(output, "asciidoc")}); //TODO, { split: {maxLength: 1500, char: "\n"} });
         } else { // Show the help for a specific command
             let command;
             if (client.commands.has(args[0])) {

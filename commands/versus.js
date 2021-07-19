@@ -42,7 +42,7 @@ class Versus extends Command {
         // If it can't find a valid character, but can find a ship, set this to true so it knows how to format the data later
         // let ship = false;
 
-        const msg = await message.channel.send("Please wait while I process your data.");
+        const msg = await message.channel.send({content: "Please wait while I process your data."});
 
         let user1 = await super.getUser(message, user1str, false);
         let user2 = await super.getUser(message, user2str, false);

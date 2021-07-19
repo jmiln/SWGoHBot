@@ -23,7 +23,7 @@ class Reload extends Command {
             return super.error(message, message.language.get("COMMAND_RELOAD_INVALID_CMD", commandName));
         } else {
             command = command.help.name;
-            message.channel.send(`Reloading: ${command}`)
+            message.channel.send({content: `Reloading: ${command}`})
                 .then(async msg => {
                     if (message.client.shard && message.client.shard.count > 0) {
                         await message.client.shard.broadcastEval(`this.reloadCommand("${command}");`)

@@ -87,7 +87,7 @@ class ArenaAlert extends Command {
             user.arenaAlert.payoutWarning = parseInt(setting, 10);
         } else if (["view", "check"].indexOf(action) > -1) {
             // Show the current settings
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 title: message.language.get("COMMAND_ARENAALERT_VIEW_HEADER"),
                 description: [
                     `${message.language.get("COMMAND_ARENAALERT_VIEW_DM")}: **${user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"}**`,
@@ -95,7 +95,7 @@ class ArenaAlert extends Command {
                     `${message.language.get("COMMAND_ARENAALERT_VIEW_WARNING")}: **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min" : "disabled"}**`,
                     `${message.language.get("COMMAND_ARENAALERT_VIEW_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
                 ].join("\n")
-            }});
+            }]});
         } else {
             return super.error(message, message.language.get("COMMAND_ARENAALERT_INVALID_OPTION"), {title: "Invalid Option"});
         }

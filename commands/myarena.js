@@ -135,14 +135,14 @@ class MyArena extends Command {
         }
 
         const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {
                 name: message.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name)
             },
             description: desc,
             fields: fields,
             footer: footer
-        }});
+        }]});
     }
 }
 

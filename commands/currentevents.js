@@ -146,14 +146,14 @@ class CurrentEvents extends Command {
                     value: Bot.codeBlock(options.defaults)
                 });
             }
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_CURRENTEVENTS_HEADER")
                 },
                 color: "#0f0f0f",
                 description: message.language.get("COMMAND_CURRENTEVENTS_DESC", count),
                 fields: fields
-            }});
+            }]});
         } else if (count > 0) {
             if (options.defaults) {
                 fields.push({
@@ -161,16 +161,16 @@ class CurrentEvents extends Command {
                     value: Bot.codeBlock(options.defaults)
                 });
             }
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_CURRENTEVENTS_HEADER")
                 },
                 color: "#0f0f0f",
                 description: message.language.get("COMMAND_CURRENTEVENTS_DESC", count) + "\n" + desc + "\n`------------------------------`",
                 fields: fields
-            }});
+            }]});
         } else {
-            return message.channel.send("No events at this time");
+            return message.channel.send({content: "No events at this time"});
         }
     }
 }

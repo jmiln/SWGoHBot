@@ -73,7 +73,7 @@ class Ships extends Command {
             });
         }
         message.channel.send({
-            embed: {
+            embeds: [{
                 "color": `${ship.side === "light" ? "#5114e0" : "#e01414"}`,
                 "author": {
                     "name": ship.name.toProperCase(),
@@ -81,7 +81,7 @@ class Ships extends Command {
                     "icon_url": ship.avatarURL
                 },
                 "fields": fields
-            }
+            }]
         });
     }
 }

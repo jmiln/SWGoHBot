@@ -588,7 +588,7 @@ class ArenaWatch extends Command {
                     });
 
 
-                    return message.channel.send({embed: {
+                    return message.channel.send({embeds: [{
                         title: "Arena Watch Settings",
                         description: [
                             `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
@@ -596,13 +596,13 @@ class ArenaWatch extends Command {
                             `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
                         ].join("\n"),
                         fields: fields
-                    }});
+                    }]});
                 } else {
                     if (Bot.isAllyCode(args[0])) {
                         const ac = parseInt(args[0].replace(/[^\d]/g, ""), 10);
                         const player = aw.allycodes.find(p => parseInt(p.allyCode, 10) === parseInt(ac, 10));
                         if (!player) return super.error(message, "I cannot find that player in your list.");
-                        return message.channel.send({embed: {
+                        return message.channel.send({embeds: [{
                             title: `Arena Watch Settings (${ac})`,
                             description: [
                                 `Name: **${player.name}**`,
@@ -611,7 +611,7 @@ class ArenaWatch extends Command {
                                 `Warn Mins: **${player.warn ? player.warn.min : "N/A"}**`,
                                 `Warn Arena: **${player.warn ? player.warn.arena : "N/A"}**`
                             ].join("\n")
-                        }});
+                        }]});
                     }
                 }
                 break;

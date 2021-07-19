@@ -9,7 +9,7 @@ class Modsets extends Command {
     }
 
     run(Bot, message) {
-        message.channel.send(message.language.get("COMMAND_MODSETS_OUTPUT"), {code: "md"});
+        message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_MODSETS_OUTPUT"), "md")});
     }
 }
 

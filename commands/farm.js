@@ -89,14 +89,14 @@ class Farm extends Command {
                 value: Bot.codeBlock(options.defaults)
             });
         }
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {
                 name: character.name + message.language.get("COMMAND_FARM_LOCATIONS")
             },
             color: character.side === "light" ? "#0055ff" : "#e01414",
             description: `**${outList.map(f => "* " + f).join("\n")}**`,
             fields: fields
-        }});
+        }]});
     }
 }
 

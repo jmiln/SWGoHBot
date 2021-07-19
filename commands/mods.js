@@ -153,7 +153,7 @@ class Mods extends Command {
                     embed.fields = fields;
                 }
                 message.channel.send({
-                    embed: embed
+                    embeds: [embed]
                 });
             } else { // Embeds are disabled
                 const characterMods = getCharacterMods(character);
@@ -164,7 +164,7 @@ class Mods extends Command {
                     let modPrimaryString = message.language.get("COMMAND_MODS_CODE_STRING1", mods.square, mods.arrow, mods.diamond);
                     modPrimaryString += message.language.get("COMMAND_MODS_CODE_STRING2", mods.triangle, mods.circle, mods.cross);
 
-                    return message.channel.send(message.language.get("COMMAND_MODS_CODE_OUTPUT", character.name, modSetString, modPrimaryString), { code: "md", split: true });
+                    return message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_MODS_CODE_OUTPUT", character.name, modSetString, modPrimaryString), "md")}); //TODO , { code: "md", split: true });
                 }
             }
         });

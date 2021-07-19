@@ -57,7 +57,7 @@ class Zetas extends Command {
             }
         }
 
-        const msg = await message.channel.send(options.flags.g ? message.language.get("COMMAND_ZETA_WAIT_GUILD") : message.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas"));
+        const msg = await message.channel.send({content: options.flags.g ? message.language.get("COMMAND_ZETA_WAIT_GUILD") : message.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas")});
 
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let player;

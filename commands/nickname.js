@@ -24,7 +24,7 @@ class Nickname extends Command {
                 } else {
                     message.guild.member(client.user).setNickname("");
                 }
-                message.channel.send(message.language.get("COMMAND_NICKNAME_SUCCESS"));
+                message.channel.send({content: message.language.get("COMMAND_NICKNAME_SUCCESS")});
             } else {
                 super.error(message, message.language.get("COMMAND_NICKNAME_FAILURE"));
             }

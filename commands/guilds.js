@@ -54,7 +54,7 @@ class Guilds extends Command {
             userID = "me";
         }
 
-        const msg = await message.channel.send(message.language.get("COMMAND_GUILDS_PLEASE_WAIT"));
+        const msg = await message.channel.send({content: message.language.get("COMMAND_GUILDS_PLEASE_WAIT")});
 
         // Get the user's ally code from the message or psql db
         if (userID === "me" || Bot.isUserID(userID) || Bot.isAllyCode(userID)) {
@@ -212,10 +212,10 @@ class Guilds extends Command {
             }
 
             // Send the formatted info
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 title: `${guild.name}'s Gear/ Relic summary`,
                 fields: fields
-            }});
+            }]});
         }
 
         async function guildTickets(userID, rawGuild) {
@@ -256,13 +256,13 @@ class Guilds extends Command {
             const footer = Bot.updatedFooter(rawGuild.updated, message, "guild", cooldown);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
             const maxedString   = maxed > 0 ? `**${maxed}** members with 600 tickets\n\n` : "";
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: `${rawGuild.profile.name}'s Ticket Counts`
                 },
                 description: `${timeTilString}${maxedString}${out.join("\n")}`,
                 footer: footer
-            }});
+            }]});
         }
 
         async function baseGuild() {
@@ -446,13 +446,13 @@ class Guilds extends Command {
             }
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             await msg.delete().catch(Bot.noop);
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         }
 
         async function twSummary() {
@@ -564,13 +564,13 @@ class Guilds extends Command {
 
             const footer = Bot.updatedFooter(Math.min(...guildMembers.map(m => m.updated)), message, "guild", cooldown);
             await msg.delete().catch(Bot.noop);
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         }
     }
 }
