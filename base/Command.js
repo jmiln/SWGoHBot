@@ -73,7 +73,7 @@ class Command {
             if (!allyCodes.length) {
                 out.err = message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix);
             } else if (allyCodes.length > 1) {
-                out.err =  message.channel.send("Found " + allyCodes.length + " matches. Please try being more specific");
+                out.err =  message.channel.send({content: "Found " + allyCodes.length + " matches. Please try being more specific"});
             } else {
                 out.allyCode = allyCodes[0];
             }
@@ -149,7 +149,7 @@ class Command {
             } catch (e) {
                 console.log("base/Command Error: " + e.message);
                 console.log("base/Command Message: " + message.content);
-                return message.channel.send({embed: {
+                return message.channel.send({embeds: [{
                     author: {
                         name: title,
                         icon_url: options.iconURL || null
@@ -159,10 +159,10 @@ class Command {
                     footer: {
                         text: footer
                     }
-                }});
+                }]});
             }
         } else {
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: title,
                     icon_url: options.iconURL || null
@@ -172,7 +172,7 @@ class Command {
                 footer: {
                     text: footer
                 }
-            }});
+            }]});
         }
     }
 }
