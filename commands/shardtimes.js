@@ -279,8 +279,8 @@ class Shardtimes extends Command {
                         "name": message.language.get("COMMAND_SHARDTIMES_SHARD_HEADER")
                     },
                     "fields": fields
-                }
-            }]);
+                }]
+            });
         }
 
         function timeTil(zone, timeToAdd, type) {
