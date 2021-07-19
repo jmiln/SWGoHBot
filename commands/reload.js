@@ -28,7 +28,7 @@ class Reload extends Command {
                     if (message.client.shard && message.client.shard.count > 0) {
                         await message.client.shard.broadcastEval(`this.reloadCommand("${command}");`)
                             .then(() => {
-                                msg.edit(message.language.get("COMMAND_RELOAD_SUCCESS", command));
+                                msg.edit({content: message.language.get("COMMAND_RELOAD_SUCCESS", command)});
                             })
                             .catch(e => {
                                 super.error(msg, (message.language.get("COMMAND_RELOAD_FAILURE",command, e.stack)), {edit: true});
@@ -37,7 +37,7 @@ class Reload extends Command {
                         Bot.logger.log("Trying to reload out of shards");
                         Bot.reloadCommand(command)
                             .then(() => {
-                                msg.edit(message.language.get("COMMAND_RELOAD_SUCCESS", command));
+                                msg.edit({content: message.language.get("COMMAND_RELOAD_SUCCESS", command)});
                             })
                             .catch(e => {
                                 super.error(msg, (message.language.get("COMMAND_RELOAD_FAILURE", command, e.stack)), {edit: true});

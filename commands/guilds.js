@@ -130,7 +130,7 @@ class Guilds extends Command {
             if (!guild || !guild.roster || !guild.roster.length) {
                 throw new Error(message.language.get("BASE_SWGOH_NO_GUILD"));
             } else {
-                msg.edit("Found guild `" + guild.name + "`!");
+                msg.edit({content: "Found guild `" + guild.name + "`!"});
                 gRoster = guild.roster.map(m => m.allyCode);
             }
 
@@ -140,10 +140,11 @@ class Guilds extends Command {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return msg.edit(Bot.codeBlock(e), {
+                return msg.edit({embeds: [{
                     title: "Something Broke while getting your guild's characters",
+                    description: Bot.codeBlock(e),
                     footer: "Please try again in a bit."
-                });
+                }]});
             }
 
             for (const member of guildMembers) {
@@ -221,7 +222,7 @@ class Guilds extends Command {
         async function guildTickets(userID, rawGuild) {
             const momentDuration = require("moment-duration-format");
             momentDuration(moment);
-            if (!rawGuild) return msg.edit(`Sorry, but I could not find a guild to match with ${userID}`);
+            if (!rawGuild) return msg.edit({content: `Sorry, but I could not find a guild to match with ${userID}`});
 
             const out = [];
             let roster = null;
@@ -326,14 +327,14 @@ class Guilds extends Command {
 
             const cooldown = await Bot.getPlayerCooldown(message.author.id);
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: guild.name
                 },
                 description: desc.length ? desc : "",
                 fields: fields.length ? fields : [],
                 footer: footer
-            }});
+            }]});
         }
 
         async function guildRoster() {
@@ -461,7 +462,7 @@ class Guilds extends Command {
             if (!guild || !guild.roster || !guild.roster.length) {
                 throw new Error(message.language.get("BASE_SWGOH_NO_GUILD"));
             } else {
-                msg.edit("Found guild `" + guild.name + "`!");
+                msg.edit({content: "Found guild `" + guild.name + "`!"});
                 gRoster = guild.roster.map(m => m.allyCode);
             }
 
@@ -470,10 +471,11 @@ class Guilds extends Command {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return msg.edit(Bot.codeBlock(e), {
+                return msg.edit({embeds: [{
+                    description: Bot.codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit."
-                });
+                }]});
             }
 
             // Get overall stats for the guild

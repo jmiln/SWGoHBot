@@ -49,7 +49,7 @@ class Setconf extends Command {
                             }
                         } else if (key === "timezone") {
                             if (!moment.tz.zone(value)) { // Valid time zone
-                                return message.reply(message.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
+                                return message.reply({content: message.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE")});
                             }
                         } else if (key === "announceChan") {
                             const newChannel = message.guild.channels.cache.find(c => c.name ===  value);
@@ -73,10 +73,10 @@ class Setconf extends Command {
                         if (value[0]) {
                             action = value.splice(0, 1)[0];
                         } else {
-                            return message.reply(message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
+                            return message.reply({content: message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT")});
                         }
                         if (!value[0]) {
-                            return message.reply("You need a value to " + action);
+                            return message.reply({content: "You need a value to " + action});
                         }
                         value = value.join(" ");
 
@@ -153,7 +153,7 @@ class Setconf extends Command {
                                 return super.error(message, message.language.get("COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG", key, value));
                             }
                         } else {
-                            return message.reply(message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT"));
+                            return message.reply({content: message.language.get("COMMAND_SETCONF_ARRAY_MISSING_OPT")});
                         }
                         Bot.database.models.settings.update({[key]: [...new Set(valArray.sort((p,c) => p - c))]}, {where: {guildID: message.guild.id}});
                         return message.channel.send({content: message.language.get("COMMAND_SETCONF_ARRAY_SUCCESS", key, value, (action === "add" ? "added to" : "removed from"))});

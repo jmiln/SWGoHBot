@@ -206,7 +206,7 @@ class Versus extends Command {
         }, statOut, {boldHeader: false, useHeader: false});
 
         const footer = Bot.updatedFooter(Math.min(user1.updated, user2.updated), message, "player", cooldown);
-        return msg.edit("", {embed: {
+        return msg.edit({content: "", embeds: [{
             title: `${user1.name} vs. ${user2.name} (${charName})`,
             fields: [
                 {
@@ -219,7 +219,7 @@ class Versus extends Command {
                 }
             ],
             footer: footer
-        }});
+        }]});
     }
 }
 

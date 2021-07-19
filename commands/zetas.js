@@ -139,13 +139,13 @@ class Zetas extends Command {
             }
 
             const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-            msg.edit({embed: {
+            msg.edit({embeds: [{
                 color: "#000000",
                 author: author,
                 description: desc.join("\n"),
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         } else if (options.flags.r) {
             // Zeta recommendations
             const zetas = Bot.zetaRec;
@@ -208,14 +208,14 @@ class Zetas extends Command {
                 });
             }
             const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_ZETA_REC_AUTH", zetaLen, player.name)
                 },
                 description: desc,
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         } else if (options.flags.g) {
             let guild = null;
             let guildGG = null;
@@ -291,13 +291,13 @@ class Zetas extends Command {
             }
 
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
 
         }
     }

@@ -258,7 +258,7 @@ class MyCharacter extends Command {
 
             if (!charImg) {
                 // If it couldn't get an image for the character
-                return msg.edit({embed: {
+                return msg.edit({embeds: [{
                     author: {
                         name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
                         url: character.url,
@@ -272,7 +272,7 @@ class MyCharacter extends Command {
                         }
                     ].concat(fields),
                     footer: footer
-                }});
+                }]});
             } else {
                 // But if it could, go ahead and send it
                 return message.channel.send({embeds: [{
@@ -298,13 +298,13 @@ class MyCharacter extends Command {
             }
         } else {
             // You don't have the character
-            msg.edit({embed: {
+            msg.edit({embeds: [{
                 author: {
                     name: pName + "'s " + character.name
                 },
                 description: message.language.get("BASE_SWGOH_LOCKED_CHAR"),
                 footer: footer
-            }});
+            }]});
         }
     }
 }

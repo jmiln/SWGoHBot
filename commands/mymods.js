@@ -42,12 +42,12 @@ class MyMods extends Command {
         if (!options.subArgs.b) {
             let character;
             if (!searchChar) {
-                return msg.edit(message.language.get("BASE_SWGOH_MISSING_CHAR"));
+                return msg.edit({content: message.language.get("BASE_SWGOH_MISSING_CHAR")});
             }
 
             const chars = Bot.findChar(searchChar, Bot.characters);
             if (chars.length === 0) {
-                return msg.edit(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+                return msg.edit({content: message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar)});
             } else if (chars.length > 1) {
                 const charL = [];
                 const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
@@ -143,23 +143,23 @@ class MyMods extends Command {
                     });
                 }
 
-                msg.edit({embed: {
+                msg.edit({embeds: [{
                     author: {
                         name: `${player.name}'s ${character.name}`,
                         icon_url: character.avatarURL
                     },
                     fields: fields,
                     footer: footer
-                }});
+                }]});
             } else {
                 // They don't have the character
-                msg.edit({embed: {
+                msg.edit({embeds: [{
                     author: {
                         name: player.name + "'s " + character.name
                     },
                     description: message.language.get("BASE_SWGOH_LOCKED_CHAR"),
                     footer: footer
-                }});
+                }]});
             }
         } else {
             const checkableStats = {
@@ -316,14 +316,14 @@ class MyMods extends Command {
                 });
             }
 
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: author,
                 description: "==============================\n" + outStr + "==============================",
                 fields: fields,
                 footer: {
                     text: updated ? message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) : ""
                 }
-            }});
+            }]});
         }
     }
 }

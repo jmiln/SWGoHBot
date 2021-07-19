@@ -327,9 +327,9 @@ module.exports = (Bot, client) => {
                             msg = null;
                         }
                         if (msg) {
-                            targetMsg = await msg.edit({embed: ${JSON.stringify(outEmbed)}}).catch(err => console.log("[sendPayoutUpdates]", err));
+                            targetMsg = await msg.edit({embeds: [${JSON.stringify(outEmbed)}]}).catch(err => console.log("[sendPayoutUpdates]", err));
                         } else {
-                            targetMsg = await channel.send({embed: ${JSON.stringify(outEmbed)}}).catch(err => console.log("[sendPayoutUpdates]", err));
+                            targetMsg = await channel.send({embeds: [${JSON.stringify(outEmbed)}]}).catch(err => console.log("[sendPayoutUpdates]", err));
                         }
                     }
                 }
