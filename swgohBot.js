@@ -1,23 +1,24 @@
-const { Client, Collection, Intents } = require("discord.js");
+const { Client, Collection } = require("discord.js");
 const { promisify } = require("util");
 const { inspect } = require("util");
 const SwgohClientStub = require("swgoh-client-stub");
 const readdir = promisify(require("fs").readdir);
 const fs = require("fs");
 
-const client = new Client({
-    // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
-    messageCacheLifetime: 300, // How long a message should stay in the cache       (5min)
-    messageSweepInterval: 120, // How frequently to remove messages from the cache  (2min)
-    ws: { intents: new Intents(4619) }
-});
-
-const Sequelize = require("sequelize");
-
 const Bot = {};
 
 // Attach the config to the client so we can use it anywhere
 Bot.config = require("./config.js");
+
+const client = new Client({
+    // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
+    messageCacheLifetime: 300, // How long a message should stay in the cache       (5min)
+    messageSweepInterval: 120, // How frequently to remove messages from the cache  (2min)
+    intents: Bot.config.botIntents
+});
+
+const Sequelize = require("sequelize");
+
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
 Bot.abilityCosts = JSON.parse(fs.readFileSync("data/abilityCosts.json"));
