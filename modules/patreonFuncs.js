@@ -632,7 +632,7 @@ module.exports = (Bot, client) => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
             // This is only available for the $5 and up tier, so ignore anything else
-            if (!patron.discordID || patron.amount_cents < 500) continue;
+            if (!patron.discordID || patron.amount_cents < 100) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
 
             // If the guild update isn't enabled, then move along

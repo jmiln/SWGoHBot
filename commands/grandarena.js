@@ -154,7 +154,7 @@ class GrandArena extends Command {
 
         // Filter out just the ships
         const user1ShipRoster = user1.roster.filter(ch => ch.combatType === 2);
-        const user2ShipRoster = user1.roster.filter(ch => ch.combatType === 2);
+        const user2ShipRoster = user2.roster.filter(ch => ch.combatType === 2);
 
         // Quick little function to add up all the gp frm a given chunk of roster
         const sumGP = (rosterIn) => {
