@@ -275,26 +275,28 @@ class MyCharacter extends Command {
                 }]});
             } else {
                 // But if it could, go ahead and send it
-                return message.channel.send({embeds: [{
-                    author: {
-                        name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
-                        url: character.url,
-                        icon_url: character.avatarURL
-                    },
-                    thumbnail: { url: "attachment://image.png" },
-                    description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
-                    fields: [
-                        {
-                            name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                            value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
-                        }
-                    ].concat(fields),
-                    footer: footer,
+                return message.channel.send({
+                    embeds: [{
+                        author: {
+                            name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
+                            url: character.url,
+                            icon_url: character.avatarURL
+                        },
+                        thumbnail: { url: "attachment://image.png" },
+                        description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
+                        fields: [
+                            {
+                                name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                                value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
+                            }
+                        ].concat(fields),
+                        footer: footer,
+                    }],
                     files: [{
                         attachment: charImg,
                         name: "image.png"
                     }]
-                }]});
+                });
             }
         } else {
             // You don't have the character
