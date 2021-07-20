@@ -123,7 +123,7 @@ class Faction extends Command {
                 if (msgArray.length > 1) {
                     msgArray.forEach((m, ix) => {
                         fields.push({
-                            name: ix+1,
+                            name: `${ix+1}`,
                             value: m
                         });
                     });
