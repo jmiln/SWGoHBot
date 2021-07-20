@@ -18,7 +18,7 @@
         "async": "^3.2.0",
         "chalk": "^4.1.0",
         "cheerio": "^1.0.0-rc.3",
-        "discord.js": "^12.5.1",
+        "discord.js": "^13.0.0-dev.77784ac.1626696170",
         "fuse-js-latest": "^3.1.0",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.32",
