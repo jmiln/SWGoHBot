@@ -226,7 +226,7 @@ class Guilds extends Command {
             const out = [];
             let roster = null;
             if (["tic", "ticket", "tickets"].indexOf(options.subArgs.sort) > -1) {
-                roster = rawGuild.roster.sort((a, b) => a.memberContribution[2]?.currentValue > b.memberContribution[2]?.currentValue ? 1 : -1);
+                roster = rawGuild.roster.sort((a, b) => parseInt(a.memberContribution[2]?.currentValue, 10) > parseInt(b.memberContribution[2]?.currentValue, 10) ? 1 : -1);
             } else {
                 roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
             }
