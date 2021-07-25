@@ -154,11 +154,12 @@ module.exports = (Bot) => {
             if (JSON.stringify(oldPlayer.roster) == JSON.stringify(newPlayer.roster)) continue;
 
             const playerLog = {
-                unlocked: [],
-                leveled: [],
-                starred: [],
+                abilities: [],
                 geared: [],
-                reliced: []
+                leveled: [],
+                reliced: [],
+                starred: [],
+                unlocked: []
             };
 
             // Check through each of the 250ish? units in their roster for differences
@@ -166,7 +167,7 @@ module.exports = (Bot) => {
             for (const newUnit of newPlayer.roster) {
                 const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
                 if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
-                const locChar = await Bot.swgohAPI.langChar({defId: newUnit.defId});
+                const locChar = await Bot.swgohAPI.langChar({defId: newUnit.defId, skills: newUnit.skills});
                 if (!oldUnit) {
                     playerLog.unlocked.push(`Unlocked ${locChar.nameKey}!`);
                     updated = true;
@@ -179,6 +180,23 @@ module.exports = (Bot) => {
                 if (oldUnit.rarity < newUnit.rarity) {
                     playerLog.starred.push(`Starred up ${locChar.nameKey} to ${newUnit.rarity} star!`);
                     updated = true;
+                }
+                for (const skillId of newUnit.skills.map(s => s.id)) {
+                    // For each of the skills, see if it's changed
+                    const oldSkill = oldUnit.skills.find(s => s.id === skillId);
+                    const newSkill = newUnit.skills.find(s => s.id === skillId);
+                    if (oldSkill?.tier < newSkill?.tier) {
+                        const locSkill = locChar.skills.find(s => s.id == skillId);
+
+                        if (newSkill.isZeta && newSkill.tier == newSkill.tiers) {
+                            // If the skill's been zeta'd
+                            playerLog.abilities.push(`Zeta'd ${locChar.nameKey}'s **${locSkill.nameKey}**`);
+                        } else {
+                            // Or if it's just a normal upgrade
+                            playerLog.abilities.push(`Upgraded ${locChar.nameKey}'s **${locSkill.nameKey}** to level ${newSkill.tier}`);
+                        }
+                        updated = true;
+                    }
                 }
                 if (oldUnit.gear < newUnit.gear) {
                     playerLog.geared.push(`Geared up ${locChar.nameKey} to G${newUnit.gear}!`);
