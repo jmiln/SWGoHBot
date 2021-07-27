@@ -57,6 +57,8 @@ class ArenaWatch extends Command {
             aw = {
                 enabled: false,
                 useMarksInLog: false,
+                report: "both",     // This can be climb, drop, or both
+                showvs: true,       // Show both sides of a battle between monitored players
                 arena: {
                     fleet: {
                         channel: null,
@@ -73,6 +75,8 @@ class ArenaWatch extends Command {
         }
         if (!aw.payout) aw.payout = defPayout;
         if (!aw.useMarksInLog) aw.useMarksInLog = false;
+        if (!aw.report) aw.report = "both";
+        if (!aw.showvs) aw.showvs = true;
         if (aw.channel && (!aw.arena.fleet || !aw.arena.char)) {
             const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
             const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
@@ -442,6 +446,33 @@ class ArenaWatch extends Command {
                     // Invalid action?
                     return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_ACTION"));
                 }
+                break;
+            }
+            case "report": {
+                const [action] = args;
+                const possibles = ["both", "drop", "climb"];
+
+                if (!possibles.includes(action.toLowerCase())) {
+                    return super.error(message, `${action} is not a valid report type. Please choose from one of these: \`${possibles.join(", ")}\``);
+                }
+                aw.report = action.toLowerCase();
+                outLog.push(`Your report setting has changed to \`${action.toLowerCase()}\``);
+                break;
+            }
+            case "showvs": {
+                // Enable or disable showing when one person hits another
+                const [action] = args;
+                const possibles = ["true", "false", "yes", "no"];
+
+                if (!possibles.includes(action.toLowerCase())) {
+                    return super.error(message, `${action} is not valid. Please choose from one of these: \`${possibles.join(", ")}\``);
+                }
+                if (["true", "yes"].includes(action.toLowerCase())) {
+                    aw.showvs = true;
+                } else {
+                    aw.showvs = false;
+                }
+                outLog.push(`The log will ${aw.showvs ? "now" : "not"} show when someone hits someone else.`);
                 break;
             }
             case "warn": {

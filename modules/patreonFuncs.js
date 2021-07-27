@@ -597,29 +597,37 @@ module.exports = (Bot, client) => {
     function checkRanks(inArr, aw) {
         const checked = [];
         const outArr = [];
-        for (let ix = 0; ix < inArr.length; ix++) {
-            for (let jx = 0; jx < inArr.length; jx++) {
-                const isChecked = checked.includes(inArr[ix].allyCode) || checked.includes(inArr[jx].allyCode);
-                if (!isChecked && inArr[ix].oldRank === inArr[jx].newRank && inArr[ix].newRank === inArr[jx].oldRank) {
-                    // Then they likely swapped spots
-                    const ixName = inArr[ix].mark && aw.useMarksInLog ? `${inArr[ix].mark} ${inArr[ix].name}` : inArr[ix].name;
-                    const jxName = inArr[jx].mark && aw.useMarksInLog ? `${inArr[jx].mark} ${inArr[jx].name}` : inArr[jx].name;
-                    if (inArr[ix].oldRank > inArr[ix].newRank) {
-                        outArr.push(`${ixName} has hit ${jxName} down from ${inArr[jx].oldRank} to ${inArr[jx].newRank}`);
-                    } else {
-                        outArr.push(`${jxName} has hit ${ixName} down from ${inArr[ix].oldRank} to ${inArr[ix].newRank}`);
-                    }
+        if (!aw.showvs) {
+            // If the setting is off, don't bother showing when the ranks match up
+            // This could be common when not reporting on a shard, but instead on members of a guild
+            for (let ix = 0; ix < inArr.length; ix++) {
+                for (let jx = 0; jx < inArr.length; jx++) {
+                    const isChecked = checked.includes(inArr[ix].allyCode) || checked.includes(inArr[jx].allyCode);
+                    if (!isChecked && inArr[ix].oldRank === inArr[jx].newRank && inArr[ix].newRank === inArr[jx].oldRank) {
+                        // Then they likely swapped spots
+                        const ixName = inArr[ix].mark && aw.useMarksInLog ? `${inArr[ix].mark} ${inArr[ix].name}` : inArr[ix].name;
+                        const jxName = inArr[jx].mark && aw.useMarksInLog ? `${inArr[jx].mark} ${inArr[jx].name}` : inArr[jx].name;
+                        if (inArr[ix].oldRank > inArr[ix].newRank) {
+                            outArr.push(`${ixName} has hit ${jxName} down from ${inArr[jx].oldRank} to ${inArr[jx].newRank}`);
+                        } else {
+                            outArr.push(`${jxName} has hit ${ixName} down from ${inArr[ix].oldRank} to ${inArr[ix].newRank}`);
+                        }
 
-                    // Put the players into the checked array so we can make sure not to log it twice
-                    checked.push(inArr[ix].allyCode);
-                    checked.push(inArr[jx].allyCode);
+                        // Put the players into the checked array so we can make sure not to log it twice
+                        checked.push(inArr[ix].allyCode);
+                        checked.push(inArr[jx].allyCode);
+                    }
                 }
             }
         }
         inArr.forEach(player => {
             if (!checked.includes(player.allyCode)) {
                 const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${player.name}` : player.name;
-                outArr.push(`${pName} has ${player.oldRank < player.newRank ? "dropped" : "climbed"} from ${player.oldRank} to ${player.newRank}`);
+                if (player.oldRank < player.newRank && aw.report !== "climb") {
+                    outArr.push(`${pName} has dropped from ${player.oldRank} to ${player.newRank}`);
+                } else if (aw.report !== "drop") {
+                    outArr.push(`${pName} has climbed from ${player.oldRank} to ${player.newRank}`);
+                }
             }
         });
         return outArr;

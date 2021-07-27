@@ -346,14 +346,26 @@ module.exports = class extends Language {
                         action: "Arena Watch (Cont)",
                         actionDesc: "Continuation of the Arena Watch section",
                         usage: [
+                            ";arenawatch report <both|climb|drop>",
                             ";arenawatch result <allycode> <none|both|char|fleet>",
+                            ";arenawatch showvs <on|off>",
                             ";arenawatch useMarksInLog <on|off>",
+                        ].join("\n"),
+                        args: {
+                            "report": "Tell it to report on just climbs, drops, or both",
+                            "result": "Announce a player's final rank at payout",
+                            "showVs": "Toggle showing both sides of a battle",
+                            "useMarksInLog": "Use the players' marks in the arena log",
+                        }
+                    },
+                    {
+                        action: "Arena Watch (Cont v2)",
+                        actionDesc: "Another continuation of the Arena Watch section",
+                        usage: [
                             ";arenawatch view [allycode]",
                             ";arenawatch warn <allycode> <#ofMin> <none|both|char|fleet>",
                         ].join("\n"),
                         args: {
-                            "result": "Announce a player's final rank at payout",
-                            "useMarksInLog": "Use the players' marks in the arena log",
                             "view": "View the current settings. Include an ally code to view settings for a specific person",
                             "warn": "Warn the player in the log channel, #ofMin before their payout",
                         }
