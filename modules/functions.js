@@ -737,7 +737,7 @@ module.exports = (Bot, client) => {
      */
     Bot.isAllyCode = (aCode) => {
         if (!aCode || !aCode.toString().length) return false;
-        const match = aCode.toString().replace(/[^\d]*/g, "").match(/\d{9}/);
+        const match = aCode.toString().replace(/[^\d]*/g, "").match(/^\d{9}$/);
         return match ? true : false;
     };
 
