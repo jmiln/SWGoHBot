@@ -54,6 +54,7 @@ Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR",
 
 client.commands = new Collection();
 client.aliases = new Collection();
+client.slashcmds = new Collection();
 
 Bot.evCountdowns = {};
 
@@ -164,12 +165,24 @@ const init = async () => {
         Bot.logger.warn("cmdLoad: " + cmdError.join("\n"));
     }
 
+    readdir("./slash", (err, files) => {
+        if (err) return console.error(err);
+        files.forEach(file => {
+            if (!file.endsWith(".js")) return;
+            const props = new (require(`./slash/${file}`))(Bot);
+            const commandName = file.split(".")[0];
+            console.log(`Loading Slash command: ${commandName}. 👌`, "log");
+            // Now set the name of the command with it's properties.
+            client.slashcmds.set(props.commandData.name, props);
+        });
+    });
+
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
-        if (eventName === "ready") {
+        if (["ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
             client.on(eventName, event.bind(null, Bot, client));
         } else {
             client.on(eventName, event.bind(null, Bot));

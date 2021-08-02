@@ -1,9 +1,9 @@
 const {inspect} = require("util");
 
-module.exports = async (Bot, message) => {
+module.exports = async (Bot, client, message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
-    if (message.author.bot) return;
+    if (message?.author?.bot || message?.user?.bot) return;
 
     // Grab the settings for this server
     // If there is no guild, get default conf (DMs)
@@ -15,25 +15,25 @@ module.exports = async (Bot, message) => {
     }
 
     // If the guild has the activity log turned on, log the user's last activity
-    if (message.guild && guildSettings.useActivityLog && !Bot.talkedRecently.has(message.author.id)) {
-        let activityLog = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: message.guild.id});
-        if (Array.isArray(activityLog)) activityLog = activityLog[0];
-        if (!activityLog) {
-            activityLog = {
-                guildID: message.guild.id,
-                log: {}
-            };
-        }
-        activityLog.log[message.author.id] = new Date().getTime();
-        await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: message.guild.id}, activityLog);
-
-        // Add em to the recently talked
-        Bot.talkedRecently.add(message.author.id);
-        setTimeout(() => {
-            // Removes the user from the set after 2.5 seconds
-            Bot.talkedRecently.delete(message.author.id);
-        }, 2500);
-    }
+    // if (message.guild && guildSettings.useActivityLog && !Bot.talkedRecently.has(message.author.id)) {
+    //     let activityLog = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: message.guild.id});
+    //     if (Array.isArray(activityLog)) activityLog = activityLog[0];
+    //     if (!activityLog) {
+    //         activityLog = {
+    //             guildID: message.guild.id,
+    //             log: {}
+    //         };
+    //     }
+    //     activityLog.log[message.author.id] = new Date().getTime();
+    //     await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: message.guild.id}, activityLog);
+    //
+    //     // Add em to the recently talked
+    //     Bot.talkedRecently.add(message.author.id);
+    //     setTimeout(() => {
+    //         // Removes the user from the set after 2.5 seconds
+    //         Bot.talkedRecently.delete(message.author.id);
+    //     }, 2500);
+    // }
 
     // If we don't have permission to respond, don't bother
     if (message.guild && message.channel.permissionsFor(message.guild.me) && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
@@ -44,14 +44,14 @@ module.exports = async (Bot, message) => {
     message.guildSettings = guildSettings;
 
     // If the message is just mentioning the bot, tell them what the prefix is
-    if (message.content === message.client.user.toString() || (message.guild && typeof message.guild.me !== "undefined" && message.content === message.guild.me.toString())) {
+    if (message.content === client.user.toString() || (message.guild && typeof message.guild.me !== "undefined" && message.content === message.guild.me.toString())) {
         return message.channel.send(`The prefix is \`${message.guildSettings.prefix}\`.`);
     }
 
     // https://discordjs.guide/popular-topics/miscellaneous-examples.html#mention-prefix
     // Used to convert special characters into literal characters by escaping them, so that they don't terminate the pattern within the regex
     const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const prefixRegex = new RegExp(`^(<@!?${message.client.user.id}>|${escapeRegex(message.guildSettings.prefix)})\\s*`);
+    const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(message.guildSettings.prefix)})\\s*`);
     if (!prefixRegex.test(message.content)) return;
     const [, matchedPrefix] = message.content.match(prefixRegex);
 
@@ -74,7 +74,7 @@ module.exports = async (Bot, message) => {
     const level = Bot.permlevel(message);
 
     // Check whether the command, or alias, exist in the collections defined in swgohbot.js.
-    const cmd = message.client.commands.get(command) || message.client.commands.get(message.client.aliases.get(command));
+    const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
     if (!cmd || !cmd.conf.enabled) return;
 

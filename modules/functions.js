@@ -302,7 +302,7 @@ module.exports = (Bot, client) => {
                 const eventName = file.split(".")[0];
                 client.removeAllListeners(eventName);
                 const event = require(`../events/${file}`);
-                if (["ready", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
+                if (["ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
                     client.on(eventName, event.bind(null, Bot, client));
                 } else {
                     client.on(eventName, event.bind(null, Bot));
