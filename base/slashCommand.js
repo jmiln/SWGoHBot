@@ -46,7 +46,7 @@ class slashCommand {
         const color = options.color;
         if (options.edit) {
             try {
-                if (interaction.author.id !== interaction.client.user.id) {
+                if (interaction.user.id !== interaction.client.user.id) {
                     console.log("Trying to edit someone else's message" + interaction.content);
                     throw new Error("Can't edit someone else's message");
                 }
@@ -62,8 +62,8 @@ class slashCommand {
                     }
                 }});
             } catch (e) {
-                console.log("base/Command Error: " + e.message);
-                console.log("base/Command Message: " + interaction.content);
+                console.log("base/slashCommand Error: " + e.message);
+                console.log("base/slashCommand Message: " + interaction.content);
                 return interaction.channel.send({embeds: [{
                     author: {
                         name: title,
