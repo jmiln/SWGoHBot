@@ -138,6 +138,7 @@ module.exports = (Bot, client) => {
     Bot.sendWebhook = (hookUrl, embed) => {
         const h = parseWebhook(hookUrl);
         const hook = new Discord.WebhookClient(h.id, h.token);
+        const hook = new Discord.WebhookClient({id: h.id, token: h.token});
         hook.send({embeds: [
             embed
         ]}).catch(() => {});

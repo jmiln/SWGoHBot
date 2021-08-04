@@ -12,8 +12,6 @@ Bot.config = require("./config.js");
 
 const client = new Client({
     // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
-    messageCacheLifetime: 300, // How long a message should stay in the cache       (5min)
-    messageSweepInterval: 120, // How frequently to remove messages from the cache  (2min)
     intents: Bot.config.botIntents
 });
 
@@ -98,7 +96,7 @@ Bot.database.authenticate().then(async () => {
 
     init();
     client.login(Bot.config.token).then(() => {
-        const guildList = client.guilds.cache.keyArray();
+        const guildList = client.guilds.cache.keys();
         for (let ix = 0; ix < guildList.length; ix++) {
             Bot.database.models.settings.findOrBuild({
                 where: {
