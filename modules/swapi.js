@@ -278,28 +278,30 @@ module.exports = (Bot) => {
                     return players;
                 }
                 for (const bareP of updatedBare) {
-                    try {
-                        if (Bot.config.fakeSwapiConfig.statCalc?.url) {
-                            const statRoster = await fetch(Bot.config.fakeSwapiConfig.statCalc.url + "/api?flags=gameStyle,calcGP", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(bareP.roster)
-                            }).then(res => res.json());
-                            bareP.roster = statRoster;
-                        } else {
-                            await statCalculator.calcRosterStats( bareP.roster , {
-                                gameStyle: true,
-                                language: statLang,
-                                calcGP: true
-                            });
+                    if (bareP?.roster?.length) {
+                        try {
+                            if (Bot.config.fakeSwapiConfig.statCalc?.url) {
+                                const statRoster = await fetch(Bot.config.fakeSwapiConfig.statCalc.url + "/api?flags=gameStyle,calcGP", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(bareP.roster)
+                                }).then(res => res.json());
+                                bareP.roster = statRoster;
+                            } else {
+                                await statCalculator.calcRosterStats( bareP.roster , {
+                                    gameStyle: true,
+                                    language: statLang,
+                                    calcGP: true
+                                });
+                            }
+                        } catch (error) {
+                            throw new Error("Error getting player stats: " + error);
                         }
-                    } catch (error) {
-                        throw new Error("Error getting player stats: " + error);
-                    }
 
-                    const charStats = await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: bareP.allyCode}, bareP);
-                    charStats.warnings = warning;
-                    playerStats.push(charStats);
+                        const charStats = await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: bareP.allyCode}, bareP);
+                        charStats.warnings = warning;
+                        playerStats.push(charStats);
+                    }
                 }
                 if (options && options.defId) {
                     playerStats.forEach(p => {
