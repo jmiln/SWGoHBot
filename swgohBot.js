@@ -96,7 +96,7 @@ Bot.database.authenticate().then(async () => {
 
     init();
     client.login(Bot.config.token).then(() => {
-        const guildList = client.guilds.cache.keys();
+        const guildList = [...client.guilds.cache.keys()];
         for (let ix = 0; ix < guildList.length; ix++) {
             Bot.database.models.settings.findOrBuild({
                 where: {
