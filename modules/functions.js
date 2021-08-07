@@ -40,8 +40,9 @@ module.exports = (Bot, client) => {
         const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
-        if (message.channel.type === "text" && message.guild && message.guild.owner) {
-            if (message.author.id === message.guild.owner.id) return permlvl = 4;
+        const gOwner = message.guild.fetchOwner();
+        if (message.channel.type === "text" && message.guild && gOwner) {
+            if (message.author.id === gOwner.id) return permlvl = 4;
         }
 
         // Also giving them the permissions if they have the manage server role,
@@ -137,7 +138,6 @@ module.exports = (Bot, client) => {
     // Send a message to a webhook url, takes the url & the embed to send
     Bot.sendWebhook = (hookUrl, embed) => {
         const h = parseWebhook(hookUrl);
-        const hook = new Discord.WebhookClient(h.id, h.token);
         const hook = new Discord.WebhookClient({id: h.id, token: h.token});
         hook.send({embeds: [
             embed
@@ -884,7 +884,13 @@ module.exports = (Bot, client) => {
         let uID;
         if (!user || user === "me" || Bot.isUserID(user)) {
             if ((!user || user === "me") && useMessageId) {
-                uID = message.author.id;
+                if (message.author) {
+                    // Message.author for messages
+                    uID = message.author.id;
+                } else {
+                    // Message.user for interactions
+                    uID = message.user.id;
+                }
             } else {
                 uID = user.replace(/[^\d]*/g, "");
             }
