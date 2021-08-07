@@ -38,19 +38,20 @@ class slashCommand {
     }
 
     async embed(interaction, out, options) {
-        if (!interaction || !interaction.channel) throw new Error("Missing message");
+        if (!interaction || !interaction.channel) throw new Error("Missing interaction");
         if (!out) throw new Error("Missing outgoing message");
         if (!options) options = {};
         const title = options.title || "TITLE HERE";
         const footer = options.footer || "";
         const color = options.color;
-        if (options.edit) {
+        const wasRepliedTo = await interaction.fetchReply();
+        if (options.edit || wasRepliedTo) {
             try {
-                if (interaction.user.id !== interaction.client.user.id) {
+                if (wasRepliedTo.author.id !== interaction.client.user.id) {
                     console.log("Trying to edit someone else's message" + interaction.content);
                     throw new Error("Can't edit someone else's message");
                 }
-                return interaction.edit({embed: {
+                return interaction.editReply({embeds: [{
                     author: {
                         name: title,
                         icon_url: options.iconURL || null
@@ -60,7 +61,7 @@ class slashCommand {
                     footer: {
                         text: footer
                     }
-                }});
+                }]});
             } catch (e) {
                 console.log("base/slashCommand Error: " + e.message);
                 console.log("base/slashCommand Message: " + interaction.content);

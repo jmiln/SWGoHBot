@@ -135,7 +135,7 @@ class Command {
                     console.log("Trying to edit someone else's message" + message.content);
                     throw new Error("Can't edit someone else's message");
                 }
-                return message.edit({embed: {
+                return message.edit({embeds: [{
                     author: {
                         name: title,
                         icon_url: options.iconURL || null
@@ -145,7 +145,7 @@ class Command {
                     footer: {
                         text: footer
                     }
-                }});
+                }]});
             } catch (e) {
                 console.log("base/Command Error: " + e.message);
                 console.log("base/Command Message: " + message.content);
