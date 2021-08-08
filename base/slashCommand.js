@@ -44,13 +44,8 @@ class slashCommand {
         const title = options.title || "TITLE HERE";
         const footer = options.footer || "";
         const color = options.color;
-        const wasRepliedTo = await interaction.fetchReply();
-        if (options.edit || wasRepliedTo) {
+        if (interaction.replied || interaction.deferred) {
             try {
-                if (wasRepliedTo.author.id !== interaction.client.user.id) {
-                    console.log("Trying to edit someone else's message" + interaction.content);
-                    throw new Error("Can't edit someone else's message");
-                }
                 return interaction.editReply({embeds: [{
                     author: {
                         name: title,
