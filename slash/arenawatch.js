@@ -385,11 +385,6 @@ class ArenaWatch extends Command {
         if (!target) {
             target = interaction.options.getSubcommand();
         }
-        // return console.log("Options: " + inspect(interaction.options, {depth: 5}));
-
-        // Tell the interaction to wait (Up to 15 seconds...)
-        // await interaction.deferReply();
-
         let cmdOut = null;
 
         const outLog = [];
@@ -842,7 +837,6 @@ class ArenaWatch extends Command {
             case "view": {
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
                 const allycode = interaction.options.getString("allycode")?.replace(/[^\d]/g, "");
-                console.log("AC: " + allycode);
 
                 if (!allycode) {
                     let charChan, fleetChan, charPayoutChan, fleetPayoutChan;
