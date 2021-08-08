@@ -23,6 +23,25 @@ module.exports = (Bot, client) => {
         yellow: "#FFFF00",
     };
 
+    // Permissions mapping
+    Bot.permMap = {
+        // Can do anything, access to the dev commands, etc
+        BOT_OWNER: 10,
+
+        // Can help out with the bot as needed, some extra stuff possibly
+        HELPER: 8,
+
+        // Owner of the server a command is being run in
+        GUILD_OWNER: 7,
+
+        // Has ADMIN or MANAGE_GUILD, or has one of the
+        // configured roles from the guild's settings
+        GUILD_ADMIN: 6,
+
+        // Base users, anyone that's not included above
+        BASE_USER: 0
+    };
+
     /*  PERMISSION LEVEL FUNCTION
      *  This is a very basic permission system for commands which uses "levels"
      *  "spaces" are intentionally left black so you can add them if you want.
@@ -32,22 +51,33 @@ module.exports = (Bot, client) => {
     Bot.permlevel = message => {
         let permlvl = 0;
 
+        // Depending on message or interaction, grab the ID of the user
+        const authId = message.author ? message.author.id : message.user.id;
+
         // If bot owner, return max perm level
-        if (message.author.id === Bot.config.ownerid) return 10;
+        if (authId === Bot.config.ownerid) {
+            return Bot.permMap.BOT_OWNER;
+        }
 
         // If DMs or webhook, return 0 perm level.
-        if (!message.guild || !message.member) return 0;
+        if (!message.guild || !message.member) {
+            return Bot.permMap.BASE_USER;
+        }
         const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
         const gOwner = message.guild.fetchOwner();
         if (message.channel.type === "text" && message.guild && gOwner) {
-            if (message.author.id === gOwner.id) return permlvl = 4;
+            if (message.author.id === gOwner.id) {
+                return permlvl = Bot.permMap.GUILD_OWNER;
+            }
         }
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
-        if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) return permlvl = 3;
+        if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) {
+            return permlvl = Bot.permMap.GUILD_ADMIN;
+        }
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
@@ -56,7 +86,9 @@ module.exports = (Bot, client) => {
 
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
                 const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase());
-                if (adminRole && message.member.roles.cache.has(adminRole.id)) return permlvl = 3;
+                if (adminRole && message.member.roles.cache.has(adminRole.id)) {
+                    return permlvl = Bot.permMap.GUILD_ADMIN;
+                }
             }
         } catch (e) {() => {};}
         return permlvl;
@@ -877,49 +909,48 @@ module.exports = (Bot, client) => {
 
     // Get the ally code of someone that's registered
     Bot.getAllyCode = async (message, user, useMessageId=true) => {
+        const otherCodeRegex = /^-\d{1,2}$/;
         if (Array.isArray(user)) user = user.join(" ");
         if (user) {
             user = user.toString().trim();
         }
-        let uID;
-        if (!user || user === "me" || Bot.isUserID(user)) {
-            if ((!user || user === "me") && useMessageId) {
-                if (message.author) {
-                    // Message.author for messages
-                    uID = message.author.id;
-                } else {
-                    // Message.user for interactions
-                    uID = message.user.id;
-                }
+
+        let userAcct = null;
+        if ((!user || user === "me" || user.match(otherCodeRegex)) && useMessageId) {
+            // Grab the sender's primary code
+            if (message.author) {
+                // Message.author for messages
+                userAcct = await Bot.userReg.getUser(message.author.id);
             } else {
-                uID = user.replace(/[^\d]*/g, "");
+                // Message.user for interactions
+                userAcct = await Bot.userReg.getUser(message.user.id);
             }
-            try {
-                const exists = await Bot.userReg.getUser(uID);
-                if (exists && exists.accounts.length) {
-                    const account = exists.accounts.find(a => a.primary);
-                    return [account.allyCode];
-                } else {
-                    return [];
-                }
-            } catch (e) {
-                return [];
-            }
+        } else if (Bot.isUserID(user)) {
+            // Try to grab the primary code for the mentioned user
+            userAcct = await Bot.userReg.getUser(user.replace(/[^\d]*/g, ""));
         }  else if (Bot.isAllyCode(user)) {
+            // Otherwise, just scrap everything but numbers, and send it back
             return [user.replace(/[^\d]*/g, "")];
         }
-        // }  else {
-        //     const outArr = [];
-        //     const results = await Bot.swgohAPI.playerByName(user);
-        //     if (results.length > 1) {
-        //         results.forEach(p => {
-        //             outArr.push(p.allyCode);
-        //         });
-        //     } else if (results.length ===  1) {
-        //         outArr.push(results[0].allyCode);
-        //     }
-        //     return outArr;
-        // }
+
+        try {
+            if (userAcct && userAcct.accounts.length) {
+                if (user.match(otherCodeRegex)) {
+                    // If it's a -1/ -2 code, try to grab the specified code
+                    const index = parseInt(user.replace("-", ""), 10) - 1;
+                    const account = userAcct.accounts[index];
+                    return account ? [account.allyCode] : [];
+                } else {
+                    // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
+                    const account = userAcct.accounts.find(a => a.primary);
+                    return account ? [account.allyCode] : [];
+                }
+            } else {
+                return [];
+            }
+        } catch (e) {
+            return [];
+        }
     };
 
     // Convert from milliseconds
