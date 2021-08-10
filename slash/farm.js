@@ -1,4 +1,4 @@
-const Command = require("../base/Command");
+const Command = require("../base/slashCommand");
 
 class Farm extends Command {
     constructor(Bot) {
@@ -7,47 +7,49 @@ class Farm extends Command {
             category: "SWGoH",
             aliases: [],
             permissions: ["EMBED_LINKS"],
-            flags: {
-                ships: {
-                    aliases: ["s"]
+            options: [
+                {
+                    name: "character",
+                    description: "The character or ship you want to search for",
+                    type: "STRING",
+                    required: true
                 }
-            }
+            ]
         });
     }
 
-    async run(Bot, message, [...searchChar], options) {
+    async run(Bot, interaction) {
+        // Grab the character they're looking for
+        const searchChar = interaction.options.getString("character");
+        let isChar = true;
 
-        if (!searchChar || !searchChar.length) return super.error(message, message.language.get("COMMAND_FARM_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FARM_MISSING_CHARACTER"), example: "farm bb8"});
-        searchChar = searchChar.join(" ");
-        let chars;
-        if (!options.flags.ships) {
-            // If they don't specify ships, look for chars
-            chars = Bot.findChar(searchChar, Bot.characters);
-        }
-        if (options.flags.ships || !chars?.length) {
-            // If they are looking for a ship or if the char search doesn't work, then check ships in case
+        // Check the characters list
+        let chars = Bot.findChar(searchChar, Bot.characters);
+
+        // If there was no luck with characters, try checking the ships
+        if (!chars?.length) {
+            isChar = false;
             chars = Bot.findChar(searchChar, Bot.ships, true);
-            options.flags.ships = true;
         }
-        let character;
         if (!chars?.length) {
             // Didn't find one
-            return super.error(message, message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         } else if (chars.length > 1) {
             // Found too many
-            return super.error(message, message.language.get("BASE_SWGOH_CHAR_LIST", chars.map(c => c.name).join("\n")));
-        } else {
-            character = chars[0];
+            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", chars.map(c => c.name).join("\n")));
         }
 
-        const unit = await Bot.swgohAPI.units(character.uniqueName, message.swgohLanguage);
+        // There was only one result, so lets use it
+        const character = chars[0];
+
+        const unit = await Bot.swgohAPI.units(character.uniqueName, interaction.swgohLanguage);
         if (!unit) {
-            return super.error(message, "[FARM] Broke trying to get the unit.");
+            return super.error(interaction, "[FARM] Broke trying to get the unit.");
         }
 
         const outList = [];
         let unitLocs = null;
-        if (options.flags.ships) {
+        if (!isChar) {
             unitLocs = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
         } else {
             unitLocs = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
@@ -77,22 +79,14 @@ class Farm extends Command {
             });
         }
         if (!outList.length) {
-            return super.error(message, message.language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
+            return super.error(interaction, interaction.language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
         }
-        const fields = [];
-        if (options.defaults) {
-            fields.push({
-                name: "Default flags used:",
-                value: Bot.codeBlock(options.defaults)
-            });
-        }
-        return message.channel.send({embeds: [{
+        return interaction.reply({embeds: [{
             author: {
-                name: character.name + message.language.get("COMMAND_FARM_LOCATIONS")
+                name: character.name + interaction.language.get("COMMAND_FARM_LOCATIONS")
             },
             color: character.side === "light" ? "#0055ff" : "#e01414",
-            description: `**${outList.map(f => "* " + f).join("\n")}**`,
-            fields: fields
+            description: `**${outList.map(f => "* " + f).join("\n")}**`
         }]});
     }
 }
