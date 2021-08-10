@@ -635,7 +635,7 @@ module.exports = class extends Language {
                         actionDesc: "Create a new event listing",
                         usage: ";event create --json <codeBlock w/ json>",
                         args: {
-                            "--json <codeBlock>": "Example: ```[]{\n    \"name\": \"\",\n    \"time\": \"\",\n    \"day\":  \"\",\n    \"message\": \"\",\n    \"repeatDay\": [0, 0, 0],\n    \"repeat\": \"0d0h0m\",\n    \"countdown\": false,\n    \"channel\": \"\"\n}]```"
+                            "--json <codeBlock>": "Example: ```[{\n    \"name\": \"\",\n    \"time\": \"\",\n    \"day\":  \"\",\n    \"message\": \"\",\n    \"repeatDay\": [0, 0, 0],\n    \"repeat\": \"0d0h0m\",\n    \"countdown\": false,\n    \"channel\": \"\"\n}]```"
                         }
                     },
                     {
