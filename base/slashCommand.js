@@ -15,6 +15,24 @@ class slashCommand {
         this.guildOnly = guildOnly;
     }
 
+    async getUser(message, userID, useAuth=false) {
+        let out = null;
+        if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
+            // No valid user, so use the message's author as the user
+            userID = message.author.id;
+        }
+        if (userID) {
+            // If it got this far, it's got a valid userID (ally code or Discord ID)
+            // so regardless of which, grab an ally code
+            const allyCodes = await this.Bot.getAllyCode(message, userID);
+            if (allyCodes && allyCodes.length) {
+                out = allyCodes[0];
+            }
+        }
+
+        return out;
+    }
+
     async error(interaction, err, options) {
         if (!interaction || !interaction.channel) throw new Error(`[${this.name}] Missing message`);
         if (!err) throw new Error(`[${this.name}] Missing error message`);
