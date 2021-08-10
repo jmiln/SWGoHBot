@@ -1,3 +1,4 @@
+const {inspect} = require("util");
 module.exports = async (Bot, client, interaction) => {
     // If it's not a command, don't bother trying to do anything
     if (!interaction.isCommand()) return;
@@ -20,14 +21,11 @@ module.exports = async (Bot, client, interaction) => {
         guildSettings = await Bot.getGuildConf(interaction.guild.id);
     }
 
-    // If we don't have permission to respond, don't bother
-    // if (interaction.guild && interaction.channel.permissionsFor(interaction.guild.me) && !interaction.channel.permissionsFor(interaction.guild.me).has("SEND_interactionS")) return;
-
     // Attach the guildsettings to the interaction to make it easier to grab later
     interaction.guildSettings = guildSettings;
 
-    // // Get the user or member's permission level from the elevation
-    // const level = Bot.permlevel(interaction);
+    // Get the user or member's permission level from the elevation
+    const level = Bot.permlevel(interaction);
 
     // // Load the language file for whatever language they have set
     const user = await Bot.userReg.getUser(interaction.user.id);
@@ -42,10 +40,19 @@ module.exports = async (Bot, client, interaction) => {
     interaction.language = Bot.languages[interaction.guildSettings.language] || Bot.languages[Bot.config.defaultSettings.language];
     interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
 
-    // TODO Should work out some way to get the me, -2, -3, ... working for ally codes
-    // TODO Also need to figure out the permissions stuff
-    // TODO Also put in the help? Or just swap back to needign to use /help
-
     // Run the command
-    cmd.run(Bot, interaction);
+    if (cmd && level >= cmd.commandData.permLevel) {
+        try {
+            await cmd.run(Bot, interaction, { level: level });
+        } catch (err) {
+            if (cmd.commandData.name === "test") {
+                console.log(`ERROR(inter) I broke with ${cmd.commandData.name}: \nContent: ${interaction.content} \n${inspect(err)}`, true);
+            } else {
+                Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \nContent: ${interaction.content} \n${inspect(err)}`, true);
+            }
+
+        }
+    } else {
+        return interaction.reply("Sorry, but you don't have permission to run that command.");
+    }
 };

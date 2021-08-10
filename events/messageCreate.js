@@ -14,30 +14,8 @@ module.exports = async (Bot, client, message) => {
         guildSettings = await Bot.getGuildConf(message.guild.id);
     }
 
-    // If the guild has the activity log turned on, log the user's last activity
-    // if (message.guild && guildSettings.useActivityLog && !Bot.talkedRecently.has(message.author.id)) {
-    //     let activityLog = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: message.guild.id});
-    //     if (Array.isArray(activityLog)) activityLog = activityLog[0];
-    //     if (!activityLog) {
-    //         activityLog = {
-    //             guildID: message.guild.id,
-    //             log: {}
-    //         };
-    //     }
-    //     activityLog.log[message.author.id] = new Date().getTime();
-    //     await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "activityLog", {guildID: message.guild.id}, activityLog);
-    //
-    //     // Add em to the recently talked
-    //     Bot.talkedRecently.add(message.author.id);
-    //     setTimeout(() => {
-    //         // Removes the user from the set after 2.5 seconds
-    //         Bot.talkedRecently.delete(message.author.id);
-    //     }, 2500);
-    // }
-
     // If we don't have permission to respond, don't bother
     if (message.guild && message.channel.permissionsFor(message.guild.me) && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
-
 
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.guildSettings` is accessible.
