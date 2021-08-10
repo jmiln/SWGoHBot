@@ -69,11 +69,11 @@ class ReloadData extends Command {
                         .then(res => {
                             let errors = [];
                             res.forEach(r => {
-                                if (r.err) errors.push(r.err);
+                                if (r?.err) errors.push(r.err);
                             });
                             errors = [...new Set(errors)];
                             return message.channel.send({
-                                content: errors.length ? "**ERROR**\n" + errors.join("\n") : "> Functions reloaded!"
+                                content: errors.length ? "**ERROR**\n" + Bot.codeBlock(errors.join("\n")) : "> Functions reloaded!"
                             });
                         })
                         .catch(err => console.log("[ReloadData funct]\n" + err));
@@ -88,7 +88,7 @@ class ReloadData extends Command {
                         .then(res => {
                             let errors = [];
                             res.forEach(r => {
-                                if (r.err) errors.push(r.err);
+                                if (r?.err) errors.push(r.err);
                             });
                             errors = [...new Set(errors)];
                             return message.channel.send({
@@ -106,11 +106,11 @@ class ReloadData extends Command {
                         .then(res => {
                             let errors = [];
                             res.forEach(r => {
-                                if (r.err) errors.push(r.err);
+                                if (r?.err) errors.push(r.err);
                             });
                             errors = [...new Set(errors)];
                             return message.channel.send({
-                                content: errors.length ? "**ERROR**\n" + errors.join("\n") : "> Data reloaded!"
+                                content: errors.length ? "**ERROR**\n" + Bot.codeBlock(errors.join("\n")) : "> Data reloaded!"
                             });
                         })
                         .catch(err => console.log("[ReloadData data]\n" + err));

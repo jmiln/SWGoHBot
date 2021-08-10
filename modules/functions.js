@@ -355,7 +355,6 @@ module.exports = (Bot, client) => {
 
     // Reload the functions (this) file
     client.reloadFunctions = async () => {
-        let err = false;
         try {
             delete require.cache[require.resolve("../modules/functions.js")];
             require("../modules/functions.js")(Bot, client);
@@ -367,13 +366,9 @@ module.exports = (Bot, client) => {
             delete Bot.logger;
             const Logger = require("../modules/Logger.js");
             Bot.logger = new Logger(Bot, client);
-        } catch (e) {
-            err = e;
+        } catch (err) {
+            return {err: err.stack};
         }
-        return {
-            succ: err ? false : true,
-            err: err
-        };
     };
 
     // Reload the swapi file
@@ -402,7 +397,6 @@ module.exports = (Bot, client) => {
 
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async () => {
-        let err = null;
         try {
             Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json"));
             Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
@@ -416,10 +410,9 @@ module.exports = (Bot, client) => {
             Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
             const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json"));
             Bot.statCalculator.setGameData(gameData);
-        } catch (e) {
-            err = e;
+        } catch (err) {
+            return {err: err.stack};
         }
-        return err;
     };
 
     // Reload all the language files
