@@ -926,22 +926,18 @@ module.exports = (Bot, client) => {
             return [user.replace(/[^\d]*/g, "")];
         }
 
-        try {
-            if (userAcct && userAcct.accounts.length) {
-                if (user.match(otherCodeRegex)) {
-                    // If it's a -1/ -2 code, try to grab the specified code
-                    const index = parseInt(user.replace("-", ""), 10) - 1;
-                    const account = userAcct.accounts[index];
-                    return account ? [account.allyCode] : [];
-                } else {
-                    // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
-                    const account = userAcct.accounts.find(a => a.primary);
-                    return account ? [account.allyCode] : [];
-                }
+        if (userAcct?.accounts?.length) {
+            if (user?.match(otherCodeRegex)) {
+                // If it's a -1/ -2 code, try to grab the specified code
+                const index = parseInt(user.replace("-", ""), 10) - 1;
+                const account = userAcct.accounts[index];
+                return account ? [account.allyCode] : [];
             } else {
-                return [];
+                // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
+                const account = userAcct.accounts.find(a => a.primary);
+                return account ? [account.allyCode] : [];
             }
-        } catch (e) {
+        } else {
             return [];
         }
     };
