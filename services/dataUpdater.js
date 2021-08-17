@@ -161,6 +161,7 @@ async function updateShips(currentShips) {
 
     for (var ggShipKey in ggShipList) {
         const ggShip = ggShipList[ggShipKey];
+
         let found = false;
         for (var currentShipKey in currentShips) {
             const currentShip = currentShips[currentShipKey];
@@ -200,6 +201,11 @@ async function updateShips(currentShips) {
                     currentShip.nameVariant.push(ggShip.name);
                     updated = true;
                 }
+                if (!currentShip.avatarURL || currentShip.avatarURL !== ggShip.image) {
+                    console.log("UpdateRemoteData", "Automatically reconciling " + currentShip.name + "'s swgoh.gg image url");
+                    currentShip.avatarURL = ggShip.image;
+                    updated = true;
+                }
 
                 //updated = true; // force an update of everything
 
@@ -207,7 +213,6 @@ async function updateShips(currentShips) {
                     console.log("Updated: " + ggShip.name);
                     currentShip.factions = ggShip.categories;
                     currentShip.side = ggShip.alignment === "Light Side" ? "light" : "dark";
-                    currentShip.avatarURL = "https://swgoh.gg" + ggShip.image;
                 }
                 break;
             }
@@ -220,7 +225,7 @@ async function updateShips(currentShips) {
 
             newShip.factions = ggShip.categories;
             newShip.side = ggShip.alignment === "Light Side" ? "light" : "dark";
-            newShip.avatarURL = "https://swgoh.gg" + ggShip.image;
+            newShip.avatarURL = ggShip.image;
             currentShips.push(newShip);
         }
     }
@@ -300,6 +305,11 @@ async function updateCharacters(currentCharacters) {
                     currentChar.nameVariant.push(ggChar.name);
                     updated = true;
                 }
+                if (!currentChar.avatarURL || currentChar.avatarURL !== ggChar.image) {
+                    console.log("UpdateRemoteData", "Automatically reconciling " + currentChar.name + "'s swgoh.gg image url");
+                    currentChar.avatarURL = ggChar.image;
+                    updated = true;
+                }
 
                 updated = true; // force an update of everything
 
@@ -307,7 +317,6 @@ async function updateCharacters(currentCharacters) {
                     // Some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
                     currentChar.factions = ggChar.categories;
                     currentChar.side = ggChar.alignment === "Light Side" ? "light" : "dark";
-                    currentChar.avatarURL = "https://swgoh.gg" + ggChar.image;
                 }
                 break;
             }
@@ -318,7 +327,7 @@ async function updateCharacters(currentCharacters) {
             const newCharacter = createEmptyChar(ggChar.name, ggChar.url, ggChar.base_id);
             newCharacter.factions = ggChar.categories;
             newCharacter.side = ggChar.alignment === "Light Side" ? "light" : "dark";
-            newCharacter.avatarURL = "https://swgoh.gg" + ggChar.image;
+            newCharacter.avatarURL = ggChar.image;
             currentCharacters.push(newCharacter);
         }
     }
