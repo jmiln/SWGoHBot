@@ -1021,6 +1021,19 @@ module.exports = (Bot, client) => {
         return exists ? true : false;
     };
 
+    // Returns a gear string (9+4 or 13r5), etc
+    Bot.getGearStr = (charIn, preStr="") => {
+        // If the character is not unlocked
+        if (!charIn?.gear) return "N/A";
+
+        let charGearOut = preStr + charIn.gear.toString();
+        if (charIn.equipped?.length) {
+            charGearOut += `+${charIn.equipped.length}`;
+        } else if (charIn?.relic?.currentTier > 2) {
+            charGearOut += `r${charIn.relic.currentTier-2}`;
+        }
+        return charGearOut;
+    };
 
     Bot.summarizeGearLvls = (guildMembers) => {
         // Get the overall gear levels for the guild as a whole
