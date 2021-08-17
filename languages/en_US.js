@@ -875,7 +875,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NO_CHARACTER_STAR: (star) => `It seems that no one in your guild has this character unlocked at ${star}* or higher.`,
             COMMAND_GUILDSEARCH_NO_SHIP_STAR: (star) => `It seems that no one in your guild has this ship unlocked at ${star}* or higher.`,
             COMMAND_GUILDSEARCH_NO_ZETAS: "It looks like no one in your guild has applied any zetas to this character.",
-            COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (Sorted by ${sort})`,
+            COMMAND_GUILDSEARCH_SORTED_BY: (char, sort, doReverse) => `${char} (Sorted by ${doReverse ? `lowest ${sort} first` : sort})`,
             COMMAND_GUILDSEARCH_MODS_HEADER: (guildName) => `${guildName}'s mods`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
