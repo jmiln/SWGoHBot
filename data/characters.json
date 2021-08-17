@@ -9,7 +9,6 @@
             "ARC Trooper"
         ],
         "url": "http://swgoh.gg/characters/arc-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ARCTROOPER501ST.png",
         "side": "light",
         "factions": [
             "501st",
@@ -32,7 +31,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_arc.png"
     },
     {
         "name": "Aayla Secura",
@@ -45,7 +45,6 @@
             "Aayla Secura"
         ],
         "url": "http://swgoh.gg/characters/aayla-secura/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/AAYLASECURA.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -68,7 +67,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_aaylasecura.png"
     },
     {
         "name": "Admiral Ackbar",
@@ -82,7 +82,6 @@
             "Admiral Ackbar"
         ],
         "url": "http://swgoh.gg/characters/admiral-ackbar/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ADMIRALACKBAR.png",
         "side": "light",
         "factions": [
             "Fleet Commander",
@@ -105,7 +104,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ackbaradmiral.png"
     },
     {
         "name": "Admiral Piett",
@@ -117,10 +117,10 @@
             "Admiral Piett"
         ],
         "url": "http://swgoh.gg/characters/admiral-piett/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ADMIRALPIETT.png",
         "side": "dark",
         "factions": [
             "Empire",
+            "Fleet Commander",
             "Imperial Trooper",
             "Leader",
             "Support"
@@ -140,7 +140,8 @@
                 "cross": "Defense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_piett.png"
     },
     {
         "name": "Ahsoka Tano",
@@ -154,7 +155,6 @@
             "Ahsoka Tano"
         ],
         "url": "http://swgoh.gg/characters/ahsoka-tano/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/AHSOKATANO.png",
         "side": "light",
         "factions": [
             "501st",
@@ -178,7 +178,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ahsoka.png"
     },
     {
         "name": "Ahsoka Tano (Fulcrum)",
@@ -194,7 +195,6 @@
             "Ahsoka Tano (Fulcrum)"
         ],
         "url": "http://swgoh.gg/characters/ahsoka-tano-fulcrum/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FULCRUMAHSOKA.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -216,7 +216,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ahsokaadult.png"
     },
     {
         "name": "Amilyn Holdo",
@@ -229,7 +230,6 @@
             "Amilyn Holdo"
         ],
         "url": "http://swgoh.gg/characters/amilyn-holdo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/AMILYNHOLDO.png",
         "side": "light",
         "factions": [
             "Fleet Commander",
@@ -251,7 +251,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_holdo.png"
     },
     {
         "name": "Asajj Ventress",
@@ -266,7 +267,6 @@
             "Asajj Ventress"
         ],
         "url": "http://swgoh.gg/characters/asajj-ventress/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ASAJVENTRESS.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -290,7 +290,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ventress.png"
     },
     {
         "name": "Aurra Sing",
@@ -303,7 +304,6 @@
             "Aurra Sing"
         ],
         "url": "http://swgoh.gg/characters/aurra-sing/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/AURRA_SING.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -326,7 +326,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_aurrasing.png"
     },
     {
         "name": "B1 Battle Droid",
@@ -338,7 +339,6 @@
             "B1 Battle Droid"
         ],
         "url": "http://swgoh.gg/characters/b1-battle-droid/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/B1BATTLEDROIDV2.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -360,7 +360,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_b1.png"
     },
     {
         "name": "B2 Super Battle Droid",
@@ -374,7 +375,6 @@
             "B2 Super Battle Droid"
         ],
         "url": "http://swgoh.gg/characters/b2-super-battle-droid/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/B2SUPERBATTLEDROID.png",
         "side": "dark",
         "factions": [
             "Droid",
@@ -410,7 +410,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_b2.png"
     },
     {
         "name": "BB-8",
@@ -423,7 +424,6 @@
             "BB-8"
         ],
         "url": "http://swgoh.gg/characters/bb-8/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BB8.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -487,7 +487,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb8.png"
     },
     {
         "name": "Barriss Offee",
@@ -502,7 +503,6 @@
             "Barriss Offee"
         ],
         "url": "http://swgoh.gg/characters/barriss-offee/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BARRISSOFFEE.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -525,7 +525,8 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_barriss_light.png"
     },
     {
         "name": "Bastila Shan",
@@ -538,7 +539,6 @@
             "Bastila Shan"
         ],
         "url": "http://swgoh.gg/characters/bastila-shan/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BASTILASHAN.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -561,7 +561,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bastilashan.png"
     },
     {
         "name": "Bastila Shan (Fallen)",
@@ -578,7 +579,6 @@
             "Bastila Shan Fallen"
         ],
         "url": "http://swgoh.gg/characters/bastila-shan-fallen/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BASTILASHANDARK.png",
         "side": "dark",
         "factions": [
             "Sith",
@@ -600,7 +600,8 @@
                 "cross": "Potency/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bastilashan_dark.png"
     },
     {
         "name": "Baze Malbus",
@@ -613,7 +614,6 @@
             "Baze Malbus"
         ],
         "url": "http://swgoh.gg/characters/baze-malbus/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BAZEMALBUS.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -636,7 +636,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bazemalbus.png"
     },
     {
         "name": "Biggs Darklighter",
@@ -649,7 +650,6 @@
             "Biggs Darklighter"
         ],
         "url": "http://swgoh.gg/characters/biggs-darklighter/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BIGGSDARKLIGHTER.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -671,7 +671,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelpilot_biggs.png"
     },
     {
         "name": "Bistan",
@@ -683,7 +684,6 @@
             "Bistan"
         ],
         "url": "http://swgoh.gg/characters/bistan/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BISTAN.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -706,7 +706,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bistan.png"
     },
     {
         "name": "Bo-Katan Kryze",
@@ -720,7 +721,6 @@
             "Bo-Katan Kryze"
         ],
         "url": "http://swgoh.gg/characters/bo-katan-kryze/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BOKATAN.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -728,7 +728,8 @@
             "Mandalorian",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bokatan.png"
     },
     {
         "name": "Boba Fett",
@@ -742,7 +743,6 @@
             "Boba Fett"
         ],
         "url": "http://swgoh.gg/characters/boba-fett/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BOBAFETT.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -793,7 +793,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bobafett.png"
     },
     {
         "name": "Bodhi Rook",
@@ -806,7 +807,6 @@
             "Bodhi Rook"
         ],
         "url": "http://swgoh.gg/characters/bodhi-rook/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BODHIROOK.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -829,7 +829,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bodhi.png"
     },
     {
         "name": "Bossk",
@@ -842,7 +843,6 @@
             "Bossk"
         ],
         "url": "http://swgoh.gg/characters/bossk/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BOSSK.png",
         "side": "dark",
         "factions": [
             "Bounty Hunter",
@@ -865,7 +865,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bossk.png"
     },
     {
         "name": "C-3PO",
@@ -880,7 +881,6 @@
             "C-3PO"
         ],
         "url": "http://swgoh.gg/characters/c-3po/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/C3POLEGENDARY.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -904,7 +904,8 @@
                 "cross": "Health/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_c3p0.png"
     },
     {
         "name": "CC-2224 \"Cody\"",
@@ -919,7 +920,6 @@
             "CC-2224 \"Cody\""
         ],
         "url": "http://swgoh.gg/characters/cc-2224-cody/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CC2224.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -956,7 +956,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_cody.png"
     },
     {
         "name": "CT-21-0408 \"Echo\"",
@@ -970,7 +971,6 @@
             "CT-21-0408 \"Echo\""
         ],
         "url": "http://swgoh.gg/characters/ct-21-0408-echo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CT210408.png",
         "side": "light",
         "factions": [
             "501st",
@@ -993,7 +993,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_echo.png"
     },
     {
         "name": "CT-5555 \"Fives\"",
@@ -1008,7 +1009,6 @@
             "CT-5555 \"Fives\""
         ],
         "url": "http://swgoh.gg/characters/ct-5555-fives/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CT5555.png",
         "side": "light",
         "factions": [
             "501st",
@@ -1046,7 +1046,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_fives.png"
     },
     {
         "name": "CT-7567 \"Rex\"",
@@ -1060,7 +1061,6 @@
             "CT-7567 \"Rex\""
         ],
         "url": "http://swgoh.gg/characters/ct-7567-rex/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CT7567.png",
         "side": "light",
         "factions": [
             "501st",
@@ -1098,7 +1098,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_rex.png"
     },
     {
         "name": "Cad Bane",
@@ -1111,7 +1112,6 @@
             "Cad Bane"
         ],
         "url": "http://swgoh.gg/characters/cad-bane/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CADBANE.png",
         "side": "dark",
         "factions": [
             "Bounty Hunter",
@@ -1134,7 +1134,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_cadbane.png"
     },
     {
         "name": "Canderous Ordo",
@@ -1146,7 +1147,6 @@
             "Canderous Ordo"
         ],
         "url": "http://swgoh.gg/characters/canderous-ordo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CANDEROUSORDO.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1169,7 +1169,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_canderous.png"
     },
     {
         "name": "Captain Han Solo",
@@ -1183,7 +1184,6 @@
             "Captain Han Solo"
         ],
         "url": "http://swgoh.gg/characters/captain-han-solo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HOTHHAN.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -1219,7 +1219,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hoth_han.png"
     },
     {
         "name": "Captain Phasma",
@@ -1232,7 +1233,6 @@
             "Captain Phasma"
         ],
         "url": "http://swgoh.gg/characters/captain-phasma/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/PHASMA.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -1254,7 +1254,8 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_phasma.png"
     },
     {
         "name": "Cara Dune",
@@ -1266,7 +1267,6 @@
             "Cara Dune"
         ],
         "url": "http://swgoh.gg/characters/cara-dune/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CARADUNE.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -1289,7 +1289,8 @@
                 "cross": "Tenacity/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_caradune.png"
     },
     {
         "name": "Carth Onasi",
@@ -1301,7 +1302,6 @@
             "Carth Onasi"
         ],
         "url": "http://swgoh.gg/characters/carth-onasi/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CARTHONASI.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1323,7 +1323,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_carth.png"
     },
     {
         "name": "Cassian Andor",
@@ -1336,7 +1337,6 @@
             "Cassian Andor"
         ],
         "url": "http://swgoh.gg/characters/cassian-andor/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CASSIANANDOR.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -1359,7 +1359,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_cassian.png"
     },
     {
         "name": "Chewbacca",
@@ -1371,7 +1372,6 @@
             "Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/chewbacca/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CHEWBACCALEGENDARY.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1394,7 +1394,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca_ot.png"
     },
     {
         "name": "Chief Chirpa",
@@ -1407,7 +1408,6 @@
             "Chief Chirpa"
         ],
         "url": "http://swgoh.gg/characters/chief-chirpa/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CHIEFCHIRPA.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -1429,7 +1429,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_chirpa.png"
     },
     {
         "name": "Chief Nebit",
@@ -1442,7 +1443,6 @@
             "Chief Nebit"
         ],
         "url": "http://swgoh.gg/characters/chief-nebit/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CHIEFNEBIT.png",
         "side": "light",
         "factions": [
             "Jawa",
@@ -1464,7 +1464,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_nebit.png"
     },
     {
         "name": "Chirrut Îmwe",
@@ -1477,7 +1478,6 @@
             "Chirrut Îmwe"
         ],
         "url": "http://swgoh.gg/characters/chirrut-imwe/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CHIRRUTIMWE.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1500,7 +1500,8 @@
                 "cross": "Offense/ Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chirrut.png"
     },
     {
         "name": "Chopper",
@@ -1512,7 +1513,6 @@
             "Chopper"
         ],
         "url": "http://swgoh.gg/characters/chopper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CHOPPERS3.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -1535,7 +1535,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chopper.png"
     },
     {
         "name": "Clone Sergeant - Phase I",
@@ -1549,7 +1550,6 @@
             "Clone Sergeant - Phase I"
         ],
         "url": "http://swgoh.gg/characters/clone-sergeant-phase-i/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CLONESERGEANTPHASEI.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1571,7 +1571,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclonegreen.png"
     },
     {
         "name": "Clone Wars Chewbacca",
@@ -1585,7 +1586,6 @@
             "Clone Wars Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/clone-wars-chewbacca/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CLONEWARSCHEWBACCA.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -1608,7 +1608,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca.png"
     },
     {
         "name": "Colonel Starck",
@@ -1622,7 +1623,6 @@
             "Colonel Starck"
         ],
         "url": "http://swgoh.gg/characters/colonel-starck/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/COLONELSTARCK.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -1644,7 +1644,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_colonel_stark.png"
     },
     {
         "name": "Commander Ahsoka Tano",
@@ -1656,7 +1657,6 @@
             "Commander Ahsoka Tano"
         ],
         "url": "http://swgoh.gg/characters/commander-ahsoka-tano/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/COMMANDERAHSOKA.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1664,7 +1664,8 @@
             "Scoundrel",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_commanderahsokatano.png"
     },
     {
         "name": "Commander Luke Skywalker",
@@ -1680,7 +1681,6 @@
             "Commander Luke Skywalker"
         ],
         "url": "http://swgoh.gg/characters/commander-luke-skywalker/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/COMMANDERLUKESKYWALKER.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1717,7 +1717,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_lukebespin.png"
     },
     {
         "name": "Coruscant Underworld Police",
@@ -1730,7 +1731,6 @@
             "Coruscant Underworld Police"
         ],
         "url": "http://swgoh.gg/characters/coruscant-underworld-police/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/CORUSCANTUNDERWORLDPOLICE.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -1751,7 +1751,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_coruscantpolice.png"
     },
     {
         "name": "Count Dooku",
@@ -1764,7 +1765,6 @@
             "Count Dooku"
         ],
         "url": "http://swgoh.gg/characters/count-dooku/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/COUNTDOOKU.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1801,7 +1801,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_dooku.png"
     },
     {
         "name": "Dark Trooper",
@@ -1813,7 +1814,6 @@
             "Dark Trooper"
         ],
         "url": "http://swgoh.gg/characters/dark-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DARKTROOPER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1822,7 +1822,8 @@
             "Imperial Remnant",
             "Imperial Trooper"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darktrooper.png"
     },
     {
         "name": "Darth Malak",
@@ -1834,7 +1835,6 @@
             "Darth Malak"
         ],
         "url": "http://swgoh.gg/characters/darth-malak/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DARTHMALAK.png",
         "side": "dark",
         "factions": [
             "Sith",
@@ -1856,7 +1856,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darthmalak.png"
     },
     {
         "name": "Darth Maul",
@@ -1869,7 +1870,6 @@
             "Darth Maul"
         ],
         "url": "http://swgoh.gg/characters/darth-maul/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/MAUL.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1891,7 +1891,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_maul.png"
     },
     {
         "name": "Darth Nihilus",
@@ -1905,7 +1906,6 @@
             "Darth Nihilus"
         ],
         "url": "http://swgoh.gg/characters/darth-nihilus/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DARTHNIHILUS.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -1941,7 +1941,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nihilus.png"
     },
     {
         "name": "Darth Revan",
@@ -1954,7 +1955,6 @@
             "Darth Revan"
         ],
         "url": "http://swgoh.gg/characters/darth-revan/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DARTHREVAN.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1977,7 +1977,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithrevan.png"
     },
     {
         "name": "Darth Sidious",
@@ -1991,7 +1992,6 @@
             "Darth Sidious"
         ],
         "url": "http://swgoh.gg/characters/darth-sidious/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DARTHSIDIOUS.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2013,7 +2013,8 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sidious.png"
     },
     {
         "name": "Darth Sion",
@@ -2026,7 +2027,6 @@
             "Darth Sion"
         ],
         "url": "http://swgoh.gg/characters/darth-sion/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DARTHSION.png",
         "side": "dark",
         "factions": [
             "Sith",
@@ -2047,7 +2047,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sion.png"
     },
     {
         "name": "Darth Traya",
@@ -2061,7 +2062,6 @@
             "Darth Traya"
         ],
         "url": "http://swgoh.gg/characters/darth-traya/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DARTHTRAYA.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -2083,7 +2083,8 @@
                 "cross": "Health/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_traya.png"
     },
     {
         "name": "Darth Vader",
@@ -2097,7 +2098,6 @@
             "Darth Vader"
         ],
         "url": "http://swgoh.gg/characters/darth-vader/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/VADER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2162,7 +2162,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_vader.png"
     },
     {
         "name": "Dathcha",
@@ -2175,7 +2176,6 @@
             "Dathcha"
         ],
         "url": "http://swgoh.gg/characters/dathcha/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DATHCHA.png",
         "side": "light",
         "factions": [
             "Jawa",
@@ -2197,7 +2197,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_dathcha.png"
     },
     {
         "name": "Death Trooper",
@@ -2210,7 +2211,6 @@
             "Death Trooper"
         ],
         "url": "http://swgoh.gg/characters/death-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DEATHTROOPER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2261,7 +2261,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperdeath.png"
     },
     {
         "name": "Dengar",
@@ -2273,7 +2274,6 @@
             "Dengar"
         ],
         "url": "http://swgoh.gg/characters/dengar/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DENGAR.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2310,7 +2310,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_dengar.png"
     },
     {
         "name": "Director Krennic",
@@ -2324,7 +2325,6 @@
             "Director Krennic"
         ],
         "url": "http://swgoh.gg/characters/director-krennic/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DIRECTORKRENNIC.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -2388,7 +2388,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_krennic.png"
     },
     {
         "name": "Droideka",
@@ -2400,7 +2401,6 @@
             "Droideka"
         ],
         "url": "http://swgoh.gg/characters/droideka/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DROIDEKA.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2422,7 +2422,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_droideka.png"
     },
     {
         "name": "Echo",
@@ -2436,7 +2437,6 @@
             "Echo"
         ],
         "url": "http://swgoh.gg/characters/echo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BADBATCHECHO.png",
         "side": "light",
         "factions": [
             "Bad Batch",
@@ -2444,7 +2444,8 @@
             "Galactic Republic",
             "Support"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_echo.png"
     },
     {
         "name": "Eeth Koth",
@@ -2456,7 +2457,6 @@
             "Eeth Koth"
         ],
         "url": "http://swgoh.gg/characters/eeth-koth/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/EETHKOTH.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -2479,7 +2479,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_eethkoth.png"
     },
     {
         "name": "Embo",
@@ -2491,7 +2492,6 @@
             "Embo"
         ],
         "url": "http://swgoh.gg/characters/embo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/EMBO.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2514,7 +2514,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_embo.png"
     },
     {
         "name": "Emperor Palpatine",
@@ -2529,7 +2530,6 @@
             "Emperor Palpatine"
         ],
         "url": "http://swgoh.gg/characters/emperor-palpatine/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/EMPERORPALPATINE.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -2566,7 +2566,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_palpatineemperor.png"
     },
     {
         "name": "Enfys Nest",
@@ -2579,7 +2580,6 @@
             "Enfys Nest"
         ],
         "url": "http://swgoh.gg/characters/enfys-nest/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ENFYSNEST.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -2601,7 +2601,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_enfys.png"
     },
     {
         "name": "Ewok Elder",
@@ -2613,7 +2614,6 @@
             "Ewok Elder"
         ],
         "url": "http://swgoh.gg/characters/ewok-elder/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/EWOKELDER.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -2634,7 +2634,8 @@
                 "cross": "Health/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_chief.png"
     },
     {
         "name": "Ewok Scout",
@@ -2646,7 +2647,6 @@
             "Ewok Scout"
         ],
         "url": "http://swgoh.gg/characters/ewok-scout/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/EWOKSCOUT.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -2667,7 +2667,8 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_scout.png"
     },
     {
         "name": "Ezra Bridger",
@@ -2679,7 +2680,6 @@
             "Ezra Bridger"
         ],
         "url": "http://swgoh.gg/characters/ezra-bridger/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/EZRABRIDGERS3.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -2702,7 +2702,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ezra_s3.png"
     },
     {
         "name": "Finn",
@@ -2714,7 +2715,6 @@
             "Finn"
         ],
         "url": "http://swgoh.gg/characters/finn/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FINN.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -2750,7 +2750,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_finnjakku.png"
     },
     {
         "name": "First Order Executioner",
@@ -2765,7 +2766,6 @@
             "First Order Executioner"
         ],
         "url": "http://swgoh.gg/characters/first-order-executioner/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FIRSTORDEREXECUTIONER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2786,7 +2786,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_executioner.png"
     },
     {
         "name": "First Order Officer",
@@ -2799,7 +2800,6 @@
             "First Order Officer"
         ],
         "url": "http://swgoh.gg/characters/first-order-officer/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FIRSTORDEROFFICERMALE.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -2820,7 +2820,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorderofficer.png"
     },
     {
         "name": "First Order SF TIE Pilot",
@@ -2834,7 +2835,6 @@
             "First Order SF TIE Pilot"
         ],
         "url": "http://swgoh.gg/characters/first-order-sf-tie-pilot/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FIRSTORDERSPECIALFORCESPILOT.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2855,7 +2855,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_pilot.png"
     },
     {
         "name": "First Order Stormtrooper",
@@ -2868,7 +2869,6 @@
             "First Order Stormtrooper"
         ],
         "url": "http://swgoh.gg/characters/first-order-stormtrooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FIRSTORDERTROOPER.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -2889,7 +2889,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertrooper.png"
     },
     {
         "name": "First Order TIE Pilot",
@@ -2902,7 +2903,6 @@
             "First Order TIE Pilot"
         ],
         "url": "http://swgoh.gg/characters/first-order-tie-pilot/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FIRSTORDERTIEPILOT.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2923,7 +2923,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertiepilot.png"
     },
     {
         "name": "Gamorrean Guard",
@@ -2935,7 +2936,6 @@
             "Gamorrean Guard"
         ],
         "url": "http://swgoh.gg/characters/gamorrean-guard/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GAMORREANGUARD.png",
         "side": "dark",
         "factions": [
             "Scoundrel",
@@ -2956,7 +2956,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_gamorreanguard.png"
     },
     {
         "name": "Gar Saxon",
@@ -2968,7 +2969,6 @@
             "Gar Saxon"
         ],
         "url": "http://swgoh.gg/characters/gar-saxon/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GARSAXON.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -2991,7 +2991,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_gar_saxon.png"
     },
     {
         "name": "Garazeb \"Zeb\" Orrelios",
@@ -3005,7 +3006,6 @@
             "Garazeb \"Zeb\" Orrelios"
         ],
         "url": "http://swgoh.gg/characters/garazeb-zeb-orrelios/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ZEBS3.png",
         "side": "light",
         "factions": [
             "Phoenix",
@@ -3041,7 +3041,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zeb_s3.png"
     },
     {
         "name": "General Grievous",
@@ -3054,7 +3055,6 @@
             "General Grievous"
         ],
         "url": "http://swgoh.gg/characters/general-grievous/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GRIEVOUS.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3078,7 +3078,8 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_grievous.png"
     },
     {
         "name": "General Hux",
@@ -3090,7 +3091,6 @@
             "General Hux"
         ],
         "url": "http://swgoh.gg/characters/general-hux/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GENERALHUX.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -3113,7 +3113,8 @@
                 "cross": "Protection/ Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_generalhux.png"
     },
     {
         "name": "General Kenobi",
@@ -3126,7 +3127,6 @@
             "General Kenobi"
         ],
         "url": "http://swgoh.gg/characters/general-kenobi/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GENERALKENOBI.png",
         "side": "light",
         "factions": [
             "Fleet Commander",
@@ -3150,7 +3150,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_obiwangeneral.png"
     },
     {
         "name": "General Skywalker",
@@ -3163,7 +3164,6 @@
             "General Skywalker"
         ],
         "url": "http://swgoh.gg/characters/general-skywalker/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GENERALSKYWALKER.png",
         "side": "light",
         "factions": [
             "501st",
@@ -3187,7 +3187,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_generalanakin.png"
     },
     {
         "name": "General Veers",
@@ -3199,7 +3200,6 @@
             "General Veers"
         ],
         "url": "http://swgoh.gg/characters/general-veers/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/VEERS.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -3222,7 +3222,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_veers.png"
     },
     {
         "name": "Geonosian Brood Alpha",
@@ -3235,7 +3236,6 @@
             "Geonosian Brood Alpha"
         ],
         "url": "http://swgoh.gg/characters/geonosian-brood-alpha/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GEONOSIANBROODALPHA.png",
         "side": "dark",
         "factions": [
             "Geonosian",
@@ -3258,7 +3258,8 @@
                 "cross": "Tenacity",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_broodalpha.png"
     },
     {
         "name": "Geonosian Soldier",
@@ -3270,7 +3271,6 @@
             "Geonosian Soldier"
         ],
         "url": "http://swgoh.gg/characters/geonosian-soldier/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GEONOSIANSOLDIER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3292,7 +3292,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_soldier.png"
     },
     {
         "name": "Geonosian Spy",
@@ -3304,7 +3305,6 @@
             "Geonosian Spy"
         ],
         "url": "http://swgoh.gg/characters/geonosian-spy/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GEONOSIANSPY.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3326,7 +3326,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_spy.png"
     },
     {
         "name": "Grand Admiral Thrawn",
@@ -3340,7 +3341,6 @@
             "Grand Admiral Thrawn"
         ],
         "url": "http://swgoh.gg/characters/grand-admiral-thrawn/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GRANDADMIRALTHRAWN.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -3391,7 +3391,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_thrawn.png"
     },
     {
         "name": "Grand Master Yoda",
@@ -3406,7 +3407,6 @@
             "Grand Master Yoda"
         ],
         "url": "http://swgoh.gg/characters/grand-master-yoda/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GRANDMASTERYODA.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -3443,7 +3443,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_yodagrandmaster.png"
     },
     {
         "name": "Grand Moff Tarkin",
@@ -3457,7 +3458,6 @@
             "Grand Moff Tarkin"
         ],
         "url": "http://swgoh.gg/characters/grand-moff-tarkin/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GRANDMOFFTARKIN.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -3480,7 +3480,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tarkinadmiral.png"
     },
     {
         "name": "Greedo",
@@ -3492,7 +3493,6 @@
             "Greedo"
         ],
         "url": "http://swgoh.gg/characters/greedo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GREEDO.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3515,7 +3515,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_greedo.png"
     },
     {
         "name": "Greef Karga",
@@ -3527,7 +3528,6 @@
             "Greef Karga"
         ],
         "url": "http://swgoh.gg/characters/greef-karga/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GREEFKARGA.png",
         "side": "light",
         "factions": [
             "Bounty Hunter",
@@ -3550,7 +3550,8 @@
                 "cross": "Protection/ Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_greefkarga.png"
     },
     {
         "name": "HK-47",
@@ -3564,7 +3565,6 @@
             "HK-47"
         ],
         "url": "http://swgoh.gg/characters/hk-47/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HK47.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3587,7 +3587,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hk47.png"
     },
     {
         "name": "Han Solo",
@@ -3599,7 +3600,6 @@
             "Han Solo"
         ],
         "url": "http://swgoh.gg/characters/han-solo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HANSOLO.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -3622,7 +3622,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_han.png"
     },
     {
         "name": "Hera Syndulla",
@@ -3634,7 +3635,6 @@
             "Hera Syndulla"
         ],
         "url": "http://swgoh.gg/characters/hera-syndulla/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HERASYNDULLAS3.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -3657,7 +3657,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hera_s3.png"
     },
     {
         "name": "Hermit Yoda",
@@ -3674,7 +3675,6 @@
             "Hermit Yoda"
         ],
         "url": "http://swgoh.gg/characters/hermit-yoda/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HERMITYODA.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -3695,7 +3695,8 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_yodahermit.png"
     },
     {
         "name": "Hoth Rebel Scout",
@@ -3709,7 +3710,6 @@
             "Hoth Rebel Scout"
         ],
         "url": "http://swgoh.gg/characters/hoth-rebel-scout/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HOTHREBELSCOUT.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -3731,7 +3731,8 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelhothscout.png"
     },
     {
         "name": "Hoth Rebel Soldier",
@@ -3745,7 +3746,6 @@
             "Hoth Rebel Soldier"
         ],
         "url": "http://swgoh.gg/characters/hoth-rebel-soldier/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HOTHREBELSOLDIER.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -3767,7 +3767,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelhoth.png"
     },
     {
         "name": "Hunter",
@@ -3779,7 +3780,6 @@
             "Hunter"
         ],
         "url": "http://swgoh.gg/characters/hunter/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BADBATCHHUNTER.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -3788,7 +3788,8 @@
             "Galactic Republic",
             "Leader"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_hunter.png"
     },
     {
         "name": "IG-100 MagnaGuard",
@@ -3802,7 +3803,6 @@
             "IG-100 MagnaGuard"
         ],
         "url": "http://swgoh.gg/characters/ig-100-magnaguard/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/MAGNAGUARD.png",
         "side": "dark",
         "factions": [
             "Droid",
@@ -3824,7 +3824,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_magnaguard.png"
     },
     {
         "name": "IG-11",
@@ -3837,14 +3838,14 @@
             "IG-11"
         ],
         "url": "http://swgoh.gg/characters/ig-11/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/IG11.png",
         "side": "light",
         "factions": [
             "Droid",
             "Healer",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig11_nurse.png"
     },
     {
         "name": "IG-86 Sentinel Droid",
@@ -3858,7 +3859,6 @@
             "IG-86 Sentinel Droid"
         ],
         "url": "http://swgoh.gg/characters/ig-86-sentinel-droid/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/IG86SENTINELDROID.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3879,7 +3879,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig86.png"
     },
     {
         "name": "IG-88",
@@ -3892,7 +3893,6 @@
             "IG-88"
         ],
         "url": "http://swgoh.gg/characters/ig-88/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/IG88.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3916,7 +3916,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig88.png"
     },
     {
         "name": "Ima-Gun Di",
@@ -3930,7 +3931,6 @@
             "Ima-Gun Di"
         ],
         "url": "http://swgoh.gg/characters/ima-gun-di/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/IMAGUNDI.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -3953,7 +3953,8 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_imagundi.png"
     },
     {
         "name": "Imperial Probe Droid",
@@ -3967,7 +3968,6 @@
             "Imperial Probe Droid"
         ],
         "url": "http://swgoh.gg/characters/imperial-probe-droid/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/IMPERIALPROBEDROID.png",
         "side": "dark",
         "factions": [
             "Droid",
@@ -3989,7 +3989,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_probedroid.png"
     },
     {
         "name": "Imperial Super Commando",
@@ -4002,7 +4003,6 @@
             "Imperial Super Commando"
         ],
         "url": "http://swgoh.gg/characters/imperial-super-commando/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/IMPERIALSUPERCOMMANDO.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -4024,7 +4024,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_imperial_super_commando.png"
     },
     {
         "name": "Jango Fett",
@@ -4038,7 +4039,6 @@
             "Jango Fett"
         ],
         "url": "http://swgoh.gg/characters/jango-fett/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JANGOFETT.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -4063,7 +4063,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jangofett.png"
     },
     {
         "name": "Jawa",
@@ -4075,7 +4076,6 @@
             "Jawa"
         ],
         "url": "http://swgoh.gg/characters/jawa/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JAWA.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4096,7 +4096,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_jawa.png"
     },
     {
         "name": "Jawa Engineer",
@@ -4108,7 +4109,6 @@
             "Jawa Engineer"
         ],
         "url": "http://swgoh.gg/characters/jawa-engineer/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JAWAENGINEER.png",
         "side": "light",
         "factions": [
             "Healer",
@@ -4129,7 +4129,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_engineer.png"
     },
     {
         "name": "Jawa Scavenger",
@@ -4141,7 +4142,6 @@
             "Jawa Scavenger"
         ],
         "url": "http://swgoh.gg/characters/jawa-scavenger/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JAWASCAVENGER.png",
         "side": "light",
         "factions": [
             "Jawa",
@@ -4162,7 +4162,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_scavenger.png"
     },
     {
         "name": "Jedi Consular",
@@ -4174,7 +4175,6 @@
             "Jedi Consular"
         ],
         "url": "http://swgoh.gg/characters/jedi-consular/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JEDIKNIGHTCONSULAR.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -4196,7 +4196,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jedi_consular_03.png"
     },
     {
         "name": "Jedi Knight Anakin",
@@ -4211,7 +4212,6 @@
             "Jedi Knight Anakin"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-anakin/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ANAKINKNIGHT.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4234,7 +4234,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_anakinknight.png"
     },
     {
         "name": "Jedi Knight Guardian",
@@ -4247,7 +4248,6 @@
             "Jedi Knight Guardian"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-guardian/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JEDIKNIGHTGUARDIAN.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -4269,7 +4269,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jedi_guardian_01.png"
     },
     {
         "name": "Jedi Knight Luke Skywalker",
@@ -4281,7 +4282,6 @@
             "Jedi Knight Luke Skywalker"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-luke-skywalker/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JEDIKNIGHTLUKE.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4303,7 +4303,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_jediknight.png"
     },
     {
         "name": "Jedi Knight Revan",
@@ -4317,7 +4318,6 @@
             "Jedi Knight Revan"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-revan/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JEDIKNIGHTREVAN.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4340,7 +4340,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jedirevan.png"
     },
     {
         "name": "Jedi Master Kenobi",
@@ -4353,7 +4354,6 @@
             "Jedi Master Kenobi"
         ],
         "url": "http://swgoh.gg/characters/jedi-master-kenobi/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JEDIMASTERKENOBI.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4362,7 +4362,8 @@
             "Jedi",
             "Leader"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_globiwan.png"
     },
     {
         "name": "Jedi Master Luke Skywalker",
@@ -4374,7 +4375,6 @@
             "Jedi Master Luke Skywalker"
         ],
         "url": "http://swgoh.gg/characters/jedi-master-luke-skywalker/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GRANDMASTERLUKE.png",
         "side": "light",
         "factions": [
             "Galactic Legend",
@@ -4382,7 +4382,8 @@
             "Leader",
             "Tank"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_jml.png"
     },
     {
         "name": "Jolee Bindo",
@@ -4396,7 +4397,6 @@
             "Jolee Bido"
         ],
         "url": "http://swgoh.gg/characters/jolee-bindo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JOLEEBINDO.png",
         "side": "light",
         "factions": [
             "Healer",
@@ -4418,7 +4418,8 @@
                 "cross": "Health/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_joleebindo.png"
     },
     {
         "name": "Juhani",
@@ -4430,7 +4431,6 @@
             "Juhani"
         ],
         "url": "http://swgoh.gg/characters/juhani/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JUHANI.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -4452,7 +4452,8 @@
                 "cross": "Potency/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_juhani.png"
     },
     {
         "name": "Jyn Erso",
@@ -4464,7 +4465,6 @@
             "Jyn Erso"
         ],
         "url": "http://swgoh.gg/characters/jyn-erso/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/JYNERSO.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4502,7 +4502,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jyn.png"
     },
     {
         "name": "K-2SO",
@@ -4517,7 +4518,6 @@
             "K-2SO"
         ],
         "url": "http://swgoh.gg/characters/k-2so/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/K2SO.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -4555,7 +4555,8 @@
                 "cross": "Potency/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_k2so.png"
     },
     {
         "name": "Kanan Jarrus",
@@ -4567,7 +4568,6 @@
             "Kanan Jarrus"
         ],
         "url": "http://swgoh.gg/characters/kanan-jarrus/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/KANANJARRUSS3.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -4604,20 +4604,21 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kanan_s3.png"
     },
     {
         "name": "Ki-Adi-Mundi",
         "uniqueName": "KIADIMUNDI",
         "aliases": [
             "Ki-Adi-Mundi",
-            "Ki Adi Mundi"
+            "Ki Adi Mundi",
+            "KAM"
         ],
         "nameVariant": [
             "Ki-Adi-Mundi"
         ],
         "url": "http://swgoh.gg/characters/ki-adi-mundi/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/KIADIMUNDI.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4639,7 +4640,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kiadimundi.png"
     },
     {
         "name": "Kit Fisto",
@@ -4651,7 +4653,6 @@
             "Kit Fisto"
         ],
         "url": "http://swgoh.gg/characters/kit-fisto/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/KITFISTO.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4674,7 +4675,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kitfisto.png"
     },
     {
         "name": "Kuiil",
@@ -4686,13 +4688,13 @@
             "Kuiil"
         ],
         "url": "http://swgoh.gg/characters/kuiil/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/KUIIL.png",
         "side": "light",
         "factions": [
             "Scoundrel",
             "Support"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kuiil.png"
     },
     {
         "name": "Kylo Ren",
@@ -4705,7 +4707,6 @@
             "Kylo Ren"
         ],
         "url": "http://swgoh.gg/characters/kylo-ren/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/KYLOREN.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -4727,7 +4728,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kyloren.png"
     },
     {
         "name": "Kylo Ren (Unmasked)",
@@ -4743,7 +4745,6 @@
             "Kylo Ren (Unmasked)"
         ],
         "url": "http://swgoh.gg/characters/kylo-ren-unmasked/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/KYLORENUNMASKED.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -4780,7 +4781,8 @@
                 "cross": "Health/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kylo_unmasked.png"
     },
     {
         "name": "L3-37",
@@ -4793,7 +4795,6 @@
             "L3-37"
         ],
         "url": "http://swgoh.gg/characters/l3-37/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/L3_37.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -4816,7 +4817,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_l337.png"
     },
     {
         "name": "Lando Calrissian",
@@ -4828,7 +4830,6 @@
             "Lando Calrissian"
         ],
         "url": "http://swgoh.gg/characters/lando-calrissian/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ADMINISTRATORLANDO.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4852,7 +4853,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_landobespin.png"
     },
     {
         "name": "Lobot",
@@ -4864,7 +4866,6 @@
             "Lobot"
         ],
         "url": "http://swgoh.gg/characters/lobot/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/LOBOT.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -4886,7 +4887,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_lobot.png"
     },
     {
         "name": "Logray",
@@ -4898,7 +4900,6 @@
             "Logray"
         ],
         "url": "http://swgoh.gg/characters/logray/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/LOGRAY.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -4919,7 +4920,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_logray.png"
     },
     {
         "name": "Luke Skywalker (Farmboy)",
@@ -4936,7 +4938,6 @@
             "Luke Skywalker (Farmboy)"
         ],
         "url": "http://swgoh.gg/characters/luke-skywalker-farmboy/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/LUKESKYWALKER.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4958,7 +4959,8 @@
                 "cross": "Potency/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_ep4.png"
     },
     {
         "name": "Luminara Unduli",
@@ -4970,7 +4972,6 @@
             "Luminara Unduli"
         ],
         "url": "http://swgoh.gg/characters/luminara-unduli/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/LUMINARAUNDULI.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -4993,7 +4994,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luminara.png"
     },
     {
         "name": "Mace Windu",
@@ -5005,7 +5007,6 @@
             "Mace Windu"
         ],
         "url": "http://swgoh.gg/characters/mace-windu/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/MACEWINDU.png",
         "side": "light",
         "factions": [
             "Fleet Commander",
@@ -5029,7 +5030,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_macewindu.png"
     },
     {
         "name": "Magmatrooper",
@@ -5041,7 +5043,6 @@
             "Magmatrooper"
         ],
         "url": "http://swgoh.gg/characters/magmatrooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/MAGMATROOPER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5063,7 +5064,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperstorm_magma.png"
     },
     {
         "name": "Mission Vao",
@@ -5075,7 +5077,6 @@
             "Mission Vao"
         ],
         "url": "http://swgoh.gg/characters/mission-vao/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/MISSIONVAO.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5097,7 +5098,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mission.png"
     },
     {
         "name": "Mob Enforcer",
@@ -5109,7 +5111,6 @@
             "Mob Enforcer"
         ],
         "url": "http://swgoh.gg/characters/mob-enforcer/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HUMANTHUG.png",
         "side": "dark",
         "factions": [
             "Scoundrel",
@@ -5130,7 +5131,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_thug_female_01.png"
     },
     {
         "name": "Moff Gideon",
@@ -5142,7 +5144,6 @@
             "Moff Gideon"
         ],
         "url": "http://swgoh.gg/characters/moff-gideon/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/MOFFGIDEONS1.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -5151,7 +5152,8 @@
             "Leader",
             "Support"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_moffgideon.png"
     },
     {
         "name": "Mon Mothma",
@@ -5163,7 +5165,6 @@
             "Mon Mothma"
         ],
         "url": "http://swgoh.gg/characters/mon-mothma/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/MONMOTHMA.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -5185,7 +5186,8 @@
                 "cross": "Tenacity/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_monmothma.png"
     },
     {
         "name": "Mother Talzin",
@@ -5198,7 +5200,6 @@
             "Mother Talzin"
         ],
         "url": "http://swgoh.gg/characters/mother-talzin/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/MOTHERTALZIN.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -5234,7 +5235,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsisters_talzin.png"
     },
     {
         "name": "Nightsister Acolyte",
@@ -5246,7 +5248,6 @@
             "Nightsister Acolyte"
         ],
         "url": "http://swgoh.gg/characters/nightsister-acolyte/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/NIGHTSISTERACOLYTE.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5267,7 +5268,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsister_acolyte.png"
     },
     {
         "name": "Nightsister Initiate",
@@ -5279,7 +5281,6 @@
             "Nightsister Initiate"
         ],
         "url": "http://swgoh.gg/characters/nightsister-initiate/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/NIGHTSISTERINITIATE.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5300,7 +5301,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsister_initiate.png"
     },
     {
         "name": "Nightsister Spirit",
@@ -5312,7 +5314,6 @@
             "Nightsister Spirit"
         ],
         "url": "http://swgoh.gg/characters/nightsister-spirit/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/NIGHTSISTERSPIRIT.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5333,7 +5334,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsisters_wraith.png"
     },
     {
         "name": "Nightsister Zombie",
@@ -5345,7 +5347,6 @@
             "Nightsister Zombie"
         ],
         "url": "http://swgoh.gg/characters/nightsister-zombie/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/NIGHTSISTERZOMBIE.png",
         "side": "dark",
         "factions": [
             "Nightsister",
@@ -5366,7 +5367,8 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsisters_zombie.png"
     },
     {
         "name": "Nute Gunray",
@@ -5378,7 +5380,6 @@
             "Nute Gunray"
         ],
         "url": "http://swgoh.gg/characters/nute-gunray/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/NUTEGUNRAY.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -5401,7 +5402,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nutegunray.png"
     },
     {
         "name": "Obi-Wan Kenobi (Old Ben)",
@@ -5415,7 +5417,6 @@
             "Obi-Wan Kenobi (Old Ben)"
         ],
         "url": "http://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/OLDBENKENOBI.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -5438,7 +5439,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_obiwanep4.png"
     },
     {
         "name": "Old Daka",
@@ -5450,7 +5452,6 @@
             "Old Daka"
         ],
         "url": "http://swgoh.gg/characters/old-daka/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/DAKA.png",
         "side": "dark",
         "factions": [
             "Healer",
@@ -5486,7 +5487,8 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_daka.png"
     },
     {
         "name": "Omega",
@@ -5498,14 +5500,14 @@
             "Omega"
         ],
         "url": "http://swgoh.gg/characters/omega/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BADBATCHOMEGA.png",
         "side": "light",
         "factions": [
             "Attacker",
             "Bad Batch",
             "Clone Trooper"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_badbatchomega.png"
     },
     {
         "name": "Padmé Amidala",
@@ -5519,7 +5521,6 @@
             "Padme Amidala"
         ],
         "url": "http://swgoh.gg/characters/padme-amidala/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/PADMEAMIDALA.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -5541,7 +5542,8 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_padme_geonosis.png"
     },
     {
         "name": "Pao",
@@ -5553,7 +5555,6 @@
             "Pao"
         ],
         "url": "http://swgoh.gg/characters/pao/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/PAO.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5576,7 +5577,8 @@
                 "cross": "Protection/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_pao.png"
     },
     {
         "name": "Paploo",
@@ -5588,7 +5590,6 @@
             "Paploo"
         ],
         "url": "http://swgoh.gg/characters/paploo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/PAPLOO.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -5609,7 +5610,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_paploo.png"
     },
     {
         "name": "Plo Koon",
@@ -5621,7 +5623,6 @@
             "Plo Koon"
         ],
         "url": "http://swgoh.gg/characters/plo-koon/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/PLOKOON.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -5644,7 +5645,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_plokoon.png"
     },
     {
         "name": "Poe Dameron",
@@ -5656,7 +5658,6 @@
             "Poe Dameron"
         ],
         "url": "http://swgoh.gg/characters/poe-dameron/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/POE.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -5678,7 +5679,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_poe.png"
     },
     {
         "name": "Poggle the Lesser",
@@ -5690,7 +5692,6 @@
             "Poggle the Lesser"
         ],
         "url": "http://swgoh.gg/characters/poggle-the-lesser/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/POGGLETHELESSER.png",
         "side": "dark",
         "factions": [
             "Geonosian",
@@ -5713,7 +5714,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_poggle.png"
     },
     {
         "name": "Princess Leia",
@@ -5725,7 +5727,6 @@
             "Princess Leia"
         ],
         "url": "http://swgoh.gg/characters/princess-leia/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/PRINCESSLEIA.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5747,7 +5748,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_leia_princess.png"
     },
     {
         "name": "Qi'ra",
@@ -5761,7 +5763,6 @@
             "Qi'ra"
         ],
         "url": "http://swgoh.gg/characters/qira/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/QIRA.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -5784,7 +5785,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_qira.png"
     },
     {
         "name": "Qui-Gon Jinn",
@@ -5798,7 +5800,6 @@
             "Qui-Gon Jinn"
         ],
         "url": "http://swgoh.gg/characters/qui-gon-jinn/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/QUIGONJINN.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -5821,7 +5822,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_quigon.png"
     },
     {
         "name": "R2-D2",
@@ -5835,7 +5837,6 @@
             "R2-D2"
         ],
         "url": "http://swgoh.gg/characters/r2-d2/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/R2D2_LEGENDARY.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -5887,7 +5888,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_astromech_r2d2.png"
     },
     {
         "name": "Range Trooper",
@@ -5899,7 +5901,6 @@
             "Range Trooper"
         ],
         "url": "http://swgoh.gg/characters/range-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/RANGETROOPER.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -5921,7 +5922,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperranger.png"
     },
     {
         "name": "Rebel Officer Leia Organa",
@@ -5934,7 +5936,6 @@
             "Rebel Officer Leia Organa"
         ],
         "url": "http://swgoh.gg/characters/rebel-officer-leia-organa/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/HOTHLEIA.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5956,7 +5957,8 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_leiahoth.png"
     },
     {
         "name": "Resistance Hero Finn",
@@ -5970,7 +5972,6 @@
             "Resistance Hero Finn"
         ],
         "url": "http://swgoh.gg/characters/resistance-hero-finn/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/EPIXFINN.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5991,7 +5992,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_finn.png"
     },
     {
         "name": "Resistance Hero Poe",
@@ -6003,7 +6005,6 @@
             "Resistance Hero Poe"
         ],
         "url": "http://swgoh.gg/characters/resistance-hero-poe/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/EPIXPOE.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6024,7 +6025,8 @@
                 "cross": "Potency/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_poe_tros.png"
     },
     {
         "name": "Resistance Pilot",
@@ -6036,7 +6038,6 @@
             "Resistance Pilot"
         ],
         "url": "http://swgoh.gg/characters/resistance-pilot/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/RESISTANCEPILOT.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6057,7 +6058,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_resistancepilot.png"
     },
     {
         "name": "Resistance Trooper",
@@ -6069,7 +6071,6 @@
             "Resistance Trooper"
         ],
         "url": "http://swgoh.gg/characters/resistance-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/RESISTANCETROOPER.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6104,7 +6105,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_resistancetrooper.png"
     },
     {
         "name": "Rey",
@@ -6116,7 +6118,6 @@
             "Rey"
         ],
         "url": "http://swgoh.gg/characters/rey/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/GLREY.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6125,7 +6126,8 @@
             "Resistance",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rey_tros.png"
     },
     {
         "name": "Rey (Jedi Training)",
@@ -6141,7 +6143,6 @@
             "Rey Jedi Training"
         ],
         "url": "http://swgoh.gg/characters/rey-jedi-training/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/REYJEDITRAINING.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -6178,7 +6179,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rey_tlj.png"
     },
     {
         "name": "Rey (Scavenger)",
@@ -6193,7 +6195,6 @@
             "Rey Scavenger"
         ],
         "url": "http://swgoh.gg/characters/rey-scavenger/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/REY.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6215,7 +6216,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_reyjakku.png"
     },
     {
         "name": "Rose Tico",
@@ -6227,7 +6229,6 @@
             "Rose Tico"
         ],
         "url": "http://swgoh.gg/characters/rose-tico/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ROSETICO.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6276,7 +6277,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rose.png"
     },
     {
         "name": "Royal Guard",
@@ -6288,7 +6290,6 @@
             "Royal Guard"
         ],
         "url": "http://swgoh.gg/characters/royal-guard/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ROYALGUARD.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -6309,7 +6310,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_royalguard.png"
     },
     {
         "name": "Sabine Wren",
@@ -6321,7 +6323,6 @@
             "Sabine Wren"
         ],
         "url": "http://swgoh.gg/characters/sabine-wren/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SABINEWRENS3.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6344,7 +6345,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sabine_s3.png"
     },
     {
         "name": "Savage Opress",
@@ -6356,7 +6358,6 @@
             "Savage Opress"
         ],
         "url": "http://swgoh.gg/characters/savage-opress/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SAVAGEOPRESS.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6406,7 +6407,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_savageopress.png"
     },
     {
         "name": "Scarif Rebel Pathfinder",
@@ -6419,7 +6421,6 @@
             "Scarif Rebel Pathfinder"
         ],
         "url": "http://swgoh.gg/characters/scarif-rebel-pathfinder/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SCARIFREBEL.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -6442,7 +6443,8 @@
                 "cross": "Health/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebel_scarif.png"
     },
     {
         "name": "Shaak Ti",
@@ -6454,7 +6456,6 @@
             "Shaak Ti"
         ],
         "url": "http://swgoh.gg/characters/shaak-ti/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SHAAKTI.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -6477,7 +6478,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_shaakti.png"
     },
     {
         "name": "Shoretrooper",
@@ -6490,7 +6492,6 @@
             "Shoretrooper"
         ],
         "url": "http://swgoh.gg/characters/shoretrooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SHORETROOPER.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -6512,7 +6513,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_troopershore.png"
     },
     {
         "name": "Sith Assassin",
@@ -6525,7 +6527,6 @@
             "Sith Assassin"
         ],
         "url": "http://swgoh.gg/characters/sith-assassin/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SITHASSASSIN.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6547,7 +6548,8 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithassassin.png"
     },
     {
         "name": "Sith Empire Trooper",
@@ -6560,7 +6562,6 @@
             "Sith Empire Trooper"
         ],
         "url": "http://swgoh.gg/characters/sith-empire-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SITHTROOPER.png",
         "side": "dark",
         "factions": [
             "Sith",
@@ -6582,7 +6583,8 @@
                 "cross": "Protection/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithtrooper.png"
     },
     {
         "name": "Sith Eternal Emperor",
@@ -6594,7 +6596,6 @@
             "Sith Eternal Emperor"
         ],
         "url": "http://swgoh.gg/characters/sith-eternal-emperor/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SITHPALPATINE.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6602,7 +6603,8 @@
             "Leader",
             "Sith"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_espalpatine_pre.png"
     },
     {
         "name": "Sith Marauder",
@@ -6614,7 +6616,6 @@
             "Sith Marauder"
         ],
         "url": "http://swgoh.gg/characters/sith-marauder/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SITHMARAUDER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6650,7 +6651,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithmarauder.png"
     },
     {
         "name": "Sith Trooper",
@@ -6665,7 +6667,6 @@
             "Sith Trooper"
         ],
         "url": "http://swgoh.gg/characters/sith-trooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/FOSITHTROOPER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6701,7 +6702,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_sithtrooper.png"
     },
     {
         "name": "Snowtrooper",
@@ -6713,7 +6715,6 @@
             "Snowtrooper"
         ],
         "url": "http://swgoh.gg/characters/snowtrooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SNOWTROOPER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6735,7 +6736,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_troopersnow.png"
     },
     {
         "name": "Stormtrooper",
@@ -6747,7 +6749,6 @@
             "Stormtrooper"
         ],
         "url": "http://swgoh.gg/characters/stormtrooper/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/STORMTROOPER.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -6784,7 +6785,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperstorm.png"
     },
     {
         "name": "Stormtrooper Han",
@@ -6797,7 +6799,6 @@
             "Stormtrooper Han"
         ],
         "url": "http://swgoh.gg/characters/stormtrooper-han/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/STORMTROOPERHAN.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -6820,7 +6821,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperstorm_han.png"
     },
     {
         "name": "Sun Fac",
@@ -6832,7 +6834,6 @@
             "Sun Fac"
         ],
         "url": "http://swgoh.gg/characters/sun-fac/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SUNFAC.png",
         "side": "dark",
         "factions": [
             "Geonosian",
@@ -6854,7 +6855,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_sunfac.png"
     },
     {
         "name": "Supreme Leader Kylo Ren",
@@ -6869,7 +6871,6 @@
             "Supreme Leader Kylo Ren"
         ],
         "url": "http://swgoh.gg/characters/supreme-leader-kylo-ren/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SUPREMELEADERKYLOREN.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6878,7 +6879,8 @@
             "Leader",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kyloren_tros.png"
     },
     {
         "name": "T3-M4",
@@ -6891,7 +6893,6 @@
             "T3-M4"
         ],
         "url": "http://swgoh.gg/characters/t3-m4/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/T3_M4.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -6941,7 +6942,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_t3m4.png"
     },
     {
         "name": "TIE Fighter Pilot",
@@ -6954,7 +6956,6 @@
             "TIE Fighter Pilot"
         ],
         "url": "http://swgoh.gg/characters/tie-fighter-pilot/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/TIEFIGHTERPILOT.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6975,7 +6976,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiepilot.png"
     },
     {
         "name": "Talia",
@@ -6987,7 +6989,6 @@
             "Talia"
         ],
         "url": "http://swgoh.gg/characters/talia/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/TALIA.png",
         "side": "dark",
         "factions": [
             "Healer",
@@ -7009,7 +7010,8 @@
                 "cross": "Health",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsister_talia.png"
     },
     {
         "name": "Tech",
@@ -7021,7 +7023,6 @@
             "Tech"
         ],
         "url": "http://swgoh.gg/characters/tech/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BADBATCHTECH.png",
         "side": "light",
         "factions": [
             "Bad Batch",
@@ -7029,7 +7030,8 @@
             "Galactic Republic",
             "Support"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_tech.png"
     },
     {
         "name": "Teebo",
@@ -7041,7 +7043,6 @@
             "Teebo"
         ],
         "url": "http://swgoh.gg/characters/teebo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/TEEBO.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -7063,7 +7064,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_teebo.png"
     },
     {
         "name": "The Armorer",
@@ -7075,14 +7077,14 @@
             "The Armorer"
         ],
         "url": "http://swgoh.gg/characters/the-armorer/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ARMORER.png",
         "side": "light",
         "factions": [
             "Leader",
             "Mandalorian",
             "Support"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_armorer.png"
     },
     {
         "name": "The Mandalorian",
@@ -7095,7 +7097,6 @@
             "The Mandalorian"
         ],
         "url": "http://swgoh.gg/characters/the-mandalorian/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/THEMANDALORIAN.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7119,7 +7120,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mandalorian.png"
     },
     {
         "name": "The Mandalorian (Beskar Armor)",
@@ -7131,7 +7133,6 @@
             "The Mandalorian (Beskar Armor)"
         ],
         "url": "http://swgoh.gg/characters/the-mandalorian-beskar-armor/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/THEMANDALORIANBESKARARMOR.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7139,7 +7140,8 @@
             "Mandalorian",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mandobeskar.png"
     },
     {
         "name": "Threepio & Chewie",
@@ -7154,7 +7156,6 @@
             "Threepio & Chewie"
         ],
         "url": "http://swgoh.gg/characters/threepio-chewie/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/C3POCHEWBACCA.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7176,7 +7177,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca_c3po.png"
     },
     {
         "name": "Tusken Raider",
@@ -7188,7 +7190,6 @@
             "Tusken Raider"
         ],
         "url": "http://swgoh.gg/characters/tusken-raider/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/TUSKENRAIDER.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -7209,7 +7210,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tuskenraider.png"
     },
     {
         "name": "Tusken Shaman",
@@ -7221,7 +7223,6 @@
             "Tusken Shaman"
         ],
         "url": "http://swgoh.gg/characters/tusken-shaman/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/TUSKENSHAMAN.png",
         "side": "dark",
         "factions": [
             "Healer",
@@ -7242,7 +7243,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tuskenshaman.png"
     },
     {
         "name": "URoRRuR'R'R",
@@ -7257,7 +7259,6 @@
             "URoRRuR'R'R"
         ],
         "url": "http://swgoh.gg/characters/urorrurrr/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/URORRURRR.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -7279,7 +7280,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_urorrurrr.png"
     },
     {
         "name": "Ugnaught",
@@ -7291,7 +7293,6 @@
             "Ugnaught"
         ],
         "url": "http://swgoh.gg/characters/ugnaught/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/UGNAUGHT.png",
         "side": "light",
         "factions": [
             "Support"
@@ -7311,7 +7312,8 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ugnaught.png"
     },
     {
         "name": "Vandor Chewbacca",
@@ -7323,7 +7325,6 @@
             "Vandor Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/vandor-chewbacca/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/YOUNGCHEWBACCA.png",
         "side": "light",
         "factions": [
             "Scoundrel",
@@ -7345,7 +7346,8 @@
                 "cross": "Health/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca_vandor.png"
     },
     {
         "name": "Veteran Smuggler Chewbacca",
@@ -7357,7 +7359,6 @@
             "Veteran Smuggler Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/veteran-smuggler-chewbacca/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SMUGGLERCHEWBACCA.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7380,7 +7381,8 @@
                 "cross": "Offense/ Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tfa_chewbacca.png"
     },
     {
         "name": "Veteran Smuggler Han Solo",
@@ -7394,7 +7396,6 @@
             "Veteran Smuggler Han Solo"
         ],
         "url": "http://swgoh.gg/characters/veteran-smuggler-han-solo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/SMUGGLERHAN.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7417,7 +7418,8 @@
                 "cross": "Potency/ Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tfa_han.png"
     },
     {
         "name": "Visas Marr",
@@ -7429,7 +7431,6 @@
             "Visas Marr"
         ],
         "url": "http://swgoh.gg/characters/visas-marr/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/VISASMARR.png",
         "side": "light",
         "factions": [
             "Healer",
@@ -7450,7 +7451,8 @@
                 "cross": "Health/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_visas.png"
     },
     {
         "name": "Wampa",
@@ -7462,7 +7464,6 @@
             "Wampa"
         ],
         "url": "http://swgoh.gg/characters/wampa/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/WAMPA.png",
         "side": "dark",
         "factions": [
             "Attacker"
@@ -7482,7 +7483,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_wampa.png"
     },
     {
         "name": "Wat Tambor",
@@ -7494,7 +7496,6 @@
             "Wat Tambor"
         ],
         "url": "http://swgoh.gg/characters/wat-tambor/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/WATTAMBOR.png",
         "side": "dark",
         "factions": [
             "Separatist",
@@ -7515,7 +7516,8 @@
                 "cross": "Health/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_wattambor.png"
     },
     {
         "name": "Wedge Antilles",
@@ -7527,7 +7529,6 @@
             "Wedge Antilles"
         ],
         "url": "http://swgoh.gg/characters/wedge-antilles/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/WEDGEANTILLES.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7550,7 +7551,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelpilot_wedge.png"
     },
     {
         "name": "Wicket",
@@ -7562,7 +7564,6 @@
             "Wicket"
         ],
         "url": "http://swgoh.gg/characters/wicket/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/WICKET.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7583,7 +7584,8 @@
                 "cross": "Offense/ Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_wicket.png"
     },
     {
         "name": "Wrecker",
@@ -7595,7 +7597,6 @@
             "Wrecker"
         ],
         "url": "http://swgoh.gg/characters/wrecker/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/BADBATCHWRECKER.png",
         "side": "light",
         "factions": [
             "Bad Batch",
@@ -7603,7 +7604,8 @@
             "Galactic Republic",
             "Tank"
         ],
-        "mods": {}
+        "mods": {},
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_wrecker.png"
     },
     {
         "name": "Young Han Solo",
@@ -7616,7 +7618,6 @@
             "Young Han Solo"
         ],
         "url": "http://swgoh.gg/characters/young-han-solo/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/YOUNGHAN.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7638,7 +7639,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_han_young.png"
     },
     {
         "name": "Young Lando Calrissian",
@@ -7650,7 +7652,6 @@
             "Young Lando Calrissian"
         ],
         "url": "http://swgoh.gg/characters/young-lando-calrissian/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/YOUNGLANDO.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7672,7 +7673,8 @@
                 "cross": "Offense",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_younglando.png"
     },
     {
         "name": "Zaalbar",
@@ -7684,7 +7686,6 @@
             "Zaalbar"
         ],
         "url": "http://swgoh.gg/characters/zaalbar/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ZAALBAR.png",
         "side": "light",
         "factions": [
             "Old Republic",
@@ -7706,7 +7707,8 @@
                 "cross": "Protection",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zaalbar.png"
     },
     {
         "name": "Zam Wesell",
@@ -7718,7 +7720,6 @@
             "Zam Wesell"
         ],
         "url": "http://swgoh.gg/characters/zam-wesell/",
-        "avatarURL": "https://swgoh.gg/game-asset/u/ZAMWESELL.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -7741,6 +7742,7 @@
                 "cross": "Potency",
                 "source": "Crouching Rancor"
             }
-        }
+        },
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zamwesell.png"
     }
 ]
