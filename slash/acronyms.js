@@ -50,8 +50,7 @@ class Acronyms extends Command {
                 acronymMeaningMessage += "\n";
             }
             /*
-             * TODO
-             * This next line won't translate well, as is. BUT we could move this to
+             * TODO This next line won't translate well, as is. BUT we could move this to
              * const acronymMeaning = message.language.get("COMMAND_ACRONYM_" + matchingItems[i]);
              * acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymMeaning}`;
              */
