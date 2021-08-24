@@ -46,9 +46,9 @@ module.exports = async (Bot, client, interaction) => {
             await cmd.run(Bot, interaction, { level: level });
         } catch (err) {
             if (cmd.commandData.name === "test") {
-                console.log(`ERROR(inter) I broke with ${cmd.commandData.name}: \nContent: ${interaction.content} \n${inspect(err)}`, true);
+                console.log(`ERROR(inter) I broke with ${cmd.commandData.name}: \nContent: ${interaction.content} \n${inspect(err, {depth: 5})}`, true);
             } else {
-                Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \nContent: ${interaction.content} \n${inspect(err)}`, true);
+                Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \nContent: ${interaction.content} \n${inspect(err, {depth: 5})}`, true);
             }
 
         }

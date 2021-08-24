@@ -142,7 +142,7 @@ module.exports = async (Bot, client, message) => {
                 if (cmd.help.name === "test") {
                     console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
                 } else {
-                    Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+                    Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err, {depth: 5})}`, true);
                 }
             }
         }
