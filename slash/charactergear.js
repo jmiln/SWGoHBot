@@ -6,7 +6,7 @@ class Charactergear extends Command {
             name: "charactergear",
             description: "Show the gear required for a specified character",
             category: "Star Wars",
-            guildOnly: true,
+            guildOnly: false,
             aliases: ["chargear", "gear"],
             permissions: ["EMBED_LINKS"],
             options: [

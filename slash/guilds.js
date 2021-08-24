@@ -6,6 +6,7 @@ class Guilds extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "guilds",
+            guildOnly: false,
             category: "SWGoH",
             aliases: ["guild", "g"],
             permissions: ["EMBED_LINKS"],

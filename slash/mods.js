@@ -4,6 +4,7 @@ class Mods extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "mods",
+            guildOnly: false,
             aliases: ["m", "mod"],
             category: "Star Wars",
             permissions: ["EMBED_LINKS"],

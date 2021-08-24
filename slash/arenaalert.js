@@ -6,7 +6,7 @@ class ArenaAlert extends Command {
             name: "arenaalert",
             category: "Patreon",
             description: "Change settings for your arena alerts",
-            guildOnly: true,
+            guildOnly: false,
             options: [
                 {
                     name: "enabledms",

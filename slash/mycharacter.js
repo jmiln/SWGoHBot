@@ -8,7 +8,7 @@ class MyCharacter extends Command {
             name: "mycharacter",
             category: "SWGoH",
             description: "Display overall stats & mod info for the selected character",
-            guildOnly: true,
+            guildOnly: false,
             enabled: true,
             aliases: ["mc", "mychar"],
             permissions: ["EMBED_LINKS", "ATTACH_FILES"],

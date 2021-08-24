@@ -10,8 +10,8 @@ const EVENTS_PER_PAGE = 5;
 class Event extends Command {
     constructor(Bot) {
         super(Bot, {
-            guildOnly: true,
             name: "event",
+            guildOnly: false,
             category: "Misc",
             aliases: ["events", "ev"],
             options: [

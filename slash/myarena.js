@@ -6,6 +6,7 @@ class MyArena extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "myarena",
+            guildOnly: false,
             category: "SWGoH",
             aliases: ["ma", "userarena", "ua"],
             permissions: ["EMBED_LINKS"],

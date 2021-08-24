@@ -5,6 +5,7 @@ class GuildUpdate extends Command {
         super(Bot, {
             name: "guildupdate",
             category: "Patreon",
+            guildOnly: false,
             aliases: ["gu"],
             description: "Set up the guild watcher to alert you for changes in guild member's rosters",
             options: [

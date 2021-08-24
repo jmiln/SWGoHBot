@@ -4,6 +4,7 @@ class Character extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "character",
+            guildOnly: false,
             description: "Show overall info for the given character",
             category: "Star Wars",
             aliases: ["characters", "char", "ab", "abilities"],

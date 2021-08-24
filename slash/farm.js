@@ -4,6 +4,7 @@ class Farm extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "farm",
+            guildOnly: false,
             category: "SWGoH",
             aliases: [],
             permissions: ["EMBED_LINKS"],

@@ -11,7 +11,7 @@ class Acronyms extends Command {
             description: "Spit out what common acronyms mean",
             category: "Misc",
             aliases: ["acr", "acronym"],
-            guildOnly: true,
+            guildOnly: false,
             options: [{
                 name: "acronym",
                 type: "STRING",

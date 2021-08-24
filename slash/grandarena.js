@@ -21,7 +21,7 @@ class GrandArena extends Command {
         super(Bot, {
             name: "grandarena",
             category: "SWGoH",
-            enabled: true,
+            guildOnly: false,
             aliases: ["ga"],
             permissions: ["EMBED_LINKS"],
             subArgs: {

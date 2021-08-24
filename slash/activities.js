@@ -8,7 +8,7 @@ class Activites extends Command {
             description: "Shows daily guild activities",
             category: "Star Wars",
             aliases: ["act"],
-            guildOnly: true,
+            guildOnly: false,
             options: [{
                 name: "day",
                 type: "STRING",

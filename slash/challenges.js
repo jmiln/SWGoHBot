@@ -6,7 +6,7 @@ class Challenges extends Command {
         super(Bot, {
             name: "challenges",
             description: "Show daily guild challenges",
-            guildOnly: true,
+            guildOnly: false,
             category: "Star Wars",
             aliases: ["challenge", "chal"],
             options: [{

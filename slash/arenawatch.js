@@ -8,6 +8,7 @@ class ArenaWatch extends Command {
             category: "Patreon",
             aliases: ["aw"],
             permissions: ["EMBED_LINKS"],
+            guildOnly: false,
             options: [
                 {
                     name: "allycode",

@@ -6,6 +6,7 @@ class Info extends Command {
         super(Bot, {
             aliases: ["invite", "inv"],
             name: "info",
+            guildOnly: false,
             category: "Misc",
             permissions: ["EMBED_LINKS"],
             description: "Displays general stats & info about the bot"
