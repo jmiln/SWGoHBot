@@ -48,9 +48,39 @@ class Deploy extends Command {
                         debugLog("> checking " + cmd.options[ix]?.name);
                         for (const op of Object.keys(cmd.options[ix])) {
                             debugLog("  * Checking: " + op);
-                            if (!cmd.options[ix] || !thisCom.options[ix] || cmd.options[ix][op] !== thisCom.options[ix][op]) {
+                            if (op === "choices") {
+                                if (cmd.options[ix]?.choices?.length && thisCom.options[ix]?.choices?.length) {
+                                    // Make sure they both have some number of choices
+                                    if (cmd.options[ix]?.choices?.length !== thisCom.options[ix]?.choices?.length) {
+                                        // One of em is different than the other, so definitely needs an update
+                                        isDiff = true;
+                                    } else {
+                                        // If they have the same option count, make sure that the choices are the same inside
+                                        cmd.options[ix].choices.forEach((c, jx) => {
+                                            if (JSON.stringify(c) !== JSON.stringify(thisCom.options[ix].choices[jx])) {
+                                                // They have a different choice here, needs updating
+                                                isDiff = true;
+                                                return;
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    // One or both have no choices
+                                    if (cmd.options[ix]?.choices?.length && thisCom.options[ix]?.choices?.length) {
+                                        // At least one of em has an entry, so it needs updating
+                                        isDiff = true;
+                                    } else {
+                                        // Neither of em have any, so nothing to do here
+                                        continue;
+                                    }
+                                }
+                                if (isDiff) {
+                                    debugLog(`    - ${cmd.options[ix] ? inspect(cmd.options[ix]?.choices) : null}\n    - ${thisCom.options[ix] ? inspect(thisCom.options[ix]?.choices) : null}`);
+                                    break;
+                                }
+                            } else if (!cmd.options[ix] || !thisCom.options[ix] || cmd.options[ix][op] !== thisCom.options[ix][op]) {
                                 isDiff = true;
-                                debugLog(`    - ${cmd.options[ix] ? cmd.options[ix][op] : null}\n    - ${thisCom.options[ix] ? thisCom.options[ix][op] : null}`);
+                                debugLog(`    - ${cmd.options[ix] ? inspect(cmd.options[ix][op]) : null}\n    - ${thisCom.options[ix] ? inspect(thisCom.options[ix][op]) : null}`);
                                 break;
                             }
                         }
