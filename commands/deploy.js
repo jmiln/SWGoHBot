@@ -1,6 +1,8 @@
 // Copied from https://github.com/AnIdiotsGuide/guidebot/blob/class-v13-update/commands/deploy.js
 const Command = require("../base/Command.js");
 const {inspect} = require("util");
+const DEBUG = false;
+// const DEBUG = true;
 
 class Deploy extends Command {
     constructor(client) {
@@ -36,14 +38,19 @@ class Deploy extends Command {
                     return newGuildComs.push(cmd);
                 } else {
                     // Fill in various options info, just in case
+                    debugLog("\nChecking " + cmd.name);
                     for (const ix in cmd.options) {
+                        if (!cmd.options[ix]) cmd.options[ix] = {};
                         if (!cmd.options[ix].required) cmd.options[ix].required = false;
                         if (!cmd.options[ix].choices) cmd.options[ix].choices = undefined;
                         if (!cmd.options[ix].options) cmd.options[ix].options = undefined;
 
+                        debugLog("> checking " + cmd.options[ix]?.name);
                         for (const op of Object.keys(cmd.options[ix])) {
-                            if (cmd.options[op] !== thisCom.options[op]) {
+                            debugLog("  * Checking: " + op);
+                            if (!cmd.options[ix] || !thisCom.options[ix] || cmd.options[ix][op] !== thisCom.options[ix][op]) {
                                 isDiff = true;
+                                debugLog(`    - ${cmd.options[ix] ? cmd.options[ix][op] : null}\n    - ${thisCom.options[ix] ? thisCom.options[ix][op] : null}`);
                                 break;
                             }
                         }
@@ -92,6 +99,11 @@ class Deploy extends Command {
         } catch (err) {
             Bot.logger.error(inspect(err, {depth: 5}));
         }
+    }
+}
+function debugLog(str) {
+    if (DEBUG) {
+        console.log(str);
     }
 }
 
