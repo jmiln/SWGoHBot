@@ -148,15 +148,14 @@ const init = async () => {
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
     const cmdError = [];
-    cmdFiles.forEach(f => {
+    cmdFiles.forEach(file => {
         try {
-            const props = new(require(`./commands/${f}`))(Bot);
-            if (f.split(".").slice(-1)[0] !== "js") return;
-            if (props.help.category === "SWGoH" && !Bot.swgohAPI) return;
-            const result = client.loadCommand(props.help.name);
-            if (result) cmdError.push(`Unable to load command: ${f}`);
+            if (!file.endsWith(".js")) return;
+            const commandName = file.split(".")[0];
+            const result = client.loadCommand(commandName);
+            if (result) cmdError.push(`Unable to load command: ${commandName}`);
         } catch (e) {
-            Bot.logger.warn(`[INIT] Unable to load command ${f}: ${e}`);
+            Bot.logger.warn(`[INIT] Unable to load command ${file}: ${e}`);
         }
     });
     if (cmdError.length) {
@@ -167,11 +166,9 @@ const init = async () => {
         if (err) return console.error(err);
         files.forEach(file => {
             if (!file.endsWith(".js")) return;
-            const props = new (require(`./slash/${file}`))(Bot);
             const commandName = file.split(".")[0];
-            console.log(`Loading Slash command: ${commandName}. 👌`, "log");
-            // Now set the name of the command with it's properties.
-            client.slashcmds.set(props.commandData.name, props);
+            const result = client.loadSlash(commandName);
+            if (result) cmdError.push(`Unable to load command: ${commandName}`);
         });
     });
 
