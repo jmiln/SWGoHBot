@@ -5,6 +5,7 @@ class Reload extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "reload",
+            guildOnly: true,
             aliases: ["r"],
             permLevel: 10,
             category: "Dev",
