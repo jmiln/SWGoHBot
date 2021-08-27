@@ -18,7 +18,7 @@ class Help extends Command {
 
         if (!args[0]) { // Show the list of commands
             const commandList = client.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
-            const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
+            const longest = [...commandList.keys()].reduce((long, str) => Math.max(long, str.length), 0);
 
             let output = message.language.get("COMMAND_HELP_HEADER", Bot.config.prefix);
 
