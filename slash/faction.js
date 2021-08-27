@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const factionMap = require("../data/factionMap");
 
 class Faction extends Command {
     constructor(Bot) {
@@ -10,10 +11,16 @@ class Faction extends Command {
             permissions: ["EMBED_LINKS"],
             options: [
                 {
-                    name: "faction",
+                    name: "faction_group_1",
                     description: "The faction you want to look up",
                     type: "STRING",
-                    required: true
+                    choices: factionMap.slice(0, 20)
+                },
+                {
+                    name: "faction_group_2",
+                    description: "The faction you want to look up",
+                    type: "STRING",
+                    choices: factionMap.slice(20, 40)
                 },
                 {
                     name: "allycode",
@@ -37,7 +44,15 @@ class Faction extends Command {
     async run(Bot, interaction) {
         const charList = Bot.characters;
 
-        const faction = interaction.options.getString("faction");
+        const faction1 = interaction.options.getString("faction_group_1");
+        const faction2 = interaction.options.getString("faction_group_2");
+
+        if (faction1 && faction2) {
+            return super.error(interaction, "This command only supports displaying one faction at a time, please don't choose more than that");
+        } else if (!faction1 && !faction2) {
+            return super.error(interaction, "You need to select a faction to search for");
+        }
+
         const isLeader = interaction.options.getBoolean("leader");
         const isZeta = interaction.options.getBoolean("zeta");
         let allycode = interaction.options.getString("allycode");
@@ -59,17 +74,12 @@ class Faction extends Command {
             }
         }
 
-        const searchName = faction.toLowerCase().replace(/[^\w\s]/gi, "");
-
-        if (!searchName || !searchName.length) {
-            return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE", interaction.guildSettings.prefix), {title: interaction.language.get("COMMAND_FACTION_MISSING_FACTION"), example: "faction sith"});
-        }
-
         const factionChars = [];
-        let search = searchName.replace(/[^\w\s]/g, "").replace(/s$/, "");
-        if (search === "galactic republic") search = "affiliation_republic";
-        const query = new RegExp(`^(?!.*selftag).*${search}.*`, "gi");
-        let chars = await Bot.cache.get(Bot.config.mongodb.swapidb, "units", {categoryIdList: query, language: interaction.guildSettings.swgohLanguage.toLowerCase()}, {_id: 0, baseId: 1, nameKey: 1});
+        const query = faction1 ? faction1 : faction2;
+        let chars = await Bot.cache.get(Bot.config.mongodb.swapidb, "units",
+            {categoryIdList: query, language: interaction.guildSettings.swgohLanguage.toLowerCase()},
+            {_id: 0, baseId: 1, nameKey: 1});
+        const searchName = factionMap.find(f => f.value === query)?.name;
 
         // Filter out any ships that show up
         chars = chars.filter(c => charList.find(char => char.uniqueName === c.baseId));
