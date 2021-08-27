@@ -106,6 +106,9 @@ module.exports = (Bot, client) => {
     };
 
     // This finds any character that matches the search, and returns them in an array
+    // TODO Make this better, maybe remove the dependence on 3rd party module
+    // TODO Possibly make it so it checks both ships & characters, and returns an array of any matches from both
+    // TODO Remove the need for it to be passed the list to look through, it has access to it already
     Bot.findChar = (searchName, charList, ship=false) => {
         if (!searchName || !searchName.length) {
             return [];
@@ -232,6 +235,41 @@ module.exports = (Bot, client) => {
         }
     };
 
+    client.unloadSlash = commandName => {
+        if (client.slashcmds.has(commandName)) {
+            const command = client.slashcmds.get(commandName);
+            client.slashcmds.delete(command);
+            delete require.cache[require.resolve(`../slash/${command.commandData.name}.js`)];
+            console.log("Unloading " + commandName);
+        }
+        return;
+    };
+    client.loadSlash = commandName => {
+        try {
+            const cmd = new (require(`../slash/${commandName}`))(Bot);
+            if (!cmd.commandData.enabled) {
+                return commandName + " is not enabled";
+            }
+            client.slashcmds.set(cmd.commandData.name, cmd);
+            console.log(`Loaded slash command: ${commandName}`);
+            return false;
+        } catch (e) {
+            return `Unable to load command ${commandName}: ${e}`;
+        }
+    };
+    client.reloadSlash = async (commandName) => {
+        let response = client.unloadSlash(commandName);
+        if (response) {
+            return new Error(`Error Unloading: ${response}`);
+        } else {
+            response = client.loadSlash(commandName);
+            if (response) {
+                return new Error(`Error Loading: ${response}`);
+            }
+        }
+        return commandName;
+    };
+
     // Loads the given command
     client.loadCommand = (commandName) => {
         try {
@@ -296,7 +334,7 @@ module.exports = (Bot, client) => {
     // Will not remove a command it it's been loaded,
     // but will load a new command it it's been added
     client.reloadAllCommands = async () => {
-        client.commands.keyArray().forEach(c => {
+        [...client.commands.keys()].forEach(c => {
             client.unloadCommand(c);
         });
         const cmdFiles = await readdir("./commands/");

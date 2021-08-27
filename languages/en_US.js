@@ -1202,7 +1202,7 @@ module.exports = class extends Language {
             COMMAND_NEED_ALL_CHAR: "Congrats, you have all the characters at 7*",
             COMMAND_NEED_ALL_SHIP: "Congrats, you have all the ships at 7*",
             COMMAND_NEED_PARTIAL: (percent) => `You're about **${percent}%** complete.`,
-            COMMAND_NEED_HEADER: (player, search) => `${player}'s ${search} needs`,
+            COMMAND_NEED_HEADER: (player, search) => `${player}'s needs for ${search}`,
             COMMAND_NEED_HELP: {
                 description: "Shows your progress towards 7* characters from a faction or shop.",
                 actions: [
