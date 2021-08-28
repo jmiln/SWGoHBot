@@ -77,7 +77,7 @@ class MyMods extends Command {
         let allycode = interaction.options.getString("allycode");
         allycode = await Bot.getAllyCode(interaction, allycode);
 
-        if (!allycode?.length) {
+        if (!allycode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
         }
         await interaction.reply({content: interaction.language.get("COMMAND_MYMODS_WAIT")});

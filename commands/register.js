@@ -26,9 +26,7 @@ class Register extends Command {
                 }
             } else if (Bot.isAllyCode(userID)) {
                 allyCode = await Bot.getAllyCode(message, userID);
-                if (allyCode.length) {
-                    allyCode = allyCode[0];
-                } else {
+                if (!allyCode) {
                     return super.error(message, message.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
                 }
                 userID = message.author.id;

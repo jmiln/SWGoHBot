@@ -56,6 +56,7 @@ class Faction extends Command {
         const isLeader = interaction.options.getBoolean("leader");
         const isZeta = interaction.options.getBoolean("zeta");
         let allycode = interaction.options.getString("allycode");
+        allycode = await Bot.getAllyCode(interaction, allycode, false);
 
         let extra = "";
         if (isLeader && isZeta) {
@@ -66,13 +67,6 @@ class Faction extends Command {
             extra = " with zeta abilities";
         }
 
-        if (allycode) {
-            try {
-                allycode = await Bot.getAllyCode(interaction, allycode);
-            } catch (e) {
-                return super.error(interaction, e.message);
-            }
-        }
 
         const factionChars = [];
         const query = faction1 ? faction1 : faction2;

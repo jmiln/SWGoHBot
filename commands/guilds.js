@@ -59,10 +59,9 @@ class Guilds extends Command {
         // Get the user's ally code from the message or psql db
         if (userID === "me" || Bot.isUserID(userID) || Bot.isAllyCode(userID)) {
             userID = await Bot.getAllyCode(message, userID);
-            if (!userID.length) {
+            if (!userID) {
                 return super.error(msg, message.language.get("COMMAND_GUILDS_REG_NEEDED"), {edit: true, example: "guilds me"});
             }
-            userID = userID[0];
         } else {
             // Or, if they don't have one of those, try getting the guild by name
             userID += args.length ? " " + args.join(" ") : "";

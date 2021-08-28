@@ -22,10 +22,9 @@ class MyProfile extends Command {
         let allycode = interaction.options.getString("allycode");
         allycode = await Bot.getAllyCode(interaction, allycode);
 
-        if (!allycode?.length) {
+        if (!allycode) {
             return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_ALLY", interaction.guildSettings.prefix));
         }
-        allycode = allycode[0];
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
         let player;

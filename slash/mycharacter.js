@@ -40,7 +40,7 @@ class MyCharacter extends Command {
         let allycode     = interaction.options.getString("allycode");
         allycode = await Bot.getAllyCode(interaction, allycode);
 
-        if (!allycode?.length) {
+        if (!allycode) {
             return super.error(interaction, "I could not find a valid allycode. Please make sure you're using a valid code.");
         }
 

@@ -45,12 +45,9 @@ class Charactergear extends Command {
         } else if (userID == "me" || Bot.isAllyCode(userID) || Bot.isUserID(userID)) {
             // Use their primary registered code
             const allyCodes = await Bot.getAllyCode(message, userID);
-            if (!allyCodes.length) {
+            if (!allyCodes) {
                 return message.channel.send({content: message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix)});
-            } else if (allyCodes.length > 1) {
-                return message.channel.send({content: "Found " + allyCodes.length + " matches. Please try being more specific"});
             }
-            userID = allyCodes[0];
         } else {
             // If they don't have anything valid, error em
             return super.error(message, "Invalid ally code: " + userID);
