@@ -947,7 +947,7 @@ module.exports = (Bot, client) => {
         }
 
         let userAcct = null;
-        if ((!user || user === "me" || user.match(otherCodeRegex)) && useMessageId) {
+        if (user === "me" || ((!user || user.match(otherCodeRegex)) && useMessageId)) {
             // Grab the sender's primary code
             if (message.author) {
                 // Message.author for messages
@@ -961,7 +961,7 @@ module.exports = (Bot, client) => {
             userAcct = await Bot.userReg.getUser(user.replace(/[^\d]*/g, ""));
         }  else if (Bot.isAllyCode(user)) {
             // Otherwise, just scrap everything but numbers, and send it back
-            return [user.replace(/[^\d]*/g, "")];
+            return user.replace(/[^\d]*/g, "");
         }
 
         if (userAcct?.accounts?.length) {
@@ -969,14 +969,14 @@ module.exports = (Bot, client) => {
                 // If it's a -1/ -2 code, try to grab the specified code
                 const index = parseInt(user.replace("-", ""), 10) - 1;
                 const account = userAcct.accounts[index];
-                return account ? [account.allyCode] : [];
+                return account ? account.allyCode : null;
             } else {
                 // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
                 const account = userAcct.accounts.find(a => a.primary);
-                return account ? [account.allyCode] : [];
+                return account ? account.allyCode : null;
             }
         } else {
-            return [];
+            return null;
         }
     };
 
