@@ -363,6 +363,39 @@ module.exports = (Bot, client) => {
         };
     };
 
+    // Reloads all slash commads (even if they were not loaded before)
+    // Will not remove a command if it's been loaded,
+    // but will load a new command if it's been added
+    client.reloadAllSlashCommands = async () => {
+        [...client.slashcmds.keys()].forEach(c => {
+            client.unloadSlash(c);
+        });
+        const cmdFiles = await readdir("./slash/");
+        const coms = [], errArr = [];
+        cmdFiles.forEach(async (f) => {
+            try {
+                const cmd = f.split(".")[0];
+                if (f.split(".").slice(-1)[0] !== "js") {
+                    errArr.push(f);
+                } else {
+                    const res = client.loadSlash(cmd);
+                    if (!res) {
+                        coms.push(cmd);
+                    } else {
+                        errArr.push(f);
+                    }
+                }
+            } catch (e) {
+                Bot.logger.error("Error: " + e);
+                errArr.push(f);
+            }
+        });
+        return {
+            succArr: coms,
+            errArr: errArr
+        };
+    };
+
     // Reload the events files (message, guildCreate, etc)
     client.reloadAllEvents = async () => {
         const ev = [], errEv = [];

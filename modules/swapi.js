@@ -732,6 +732,7 @@ module.exports = (Bot) => {
                 if (recArray.includes(rec.id)) {
                     rOut.push(rec);
                 }
+                await cache.wipe(Bot.config.mongodb.swapidb, "recipes");
                 await cache.put(Bot.config.mongodb.swapidb, "recipes", {id: rec.id, language: lang}, rec);
             }
             return rOut;
