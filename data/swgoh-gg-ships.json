@@ -309,7 +309,8 @@
             "Foresight",
             "Stealth",
             "Stun",
-            "Taunt"
+            "Taunt",
+            "Tenacity Up"
         ],
         "role": "Capital Ship",
         "capital_ship": true,

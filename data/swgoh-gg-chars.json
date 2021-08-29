@@ -23285,6 +23285,187 @@
         "activate_shard_count": 10
     },
     {
+        "name": "Maul",
+        "base_id": "MAULS7",
+        "pk": 1575,
+        "url": "http://swgoh.gg/characters/maul/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_maul_cyborg.png",
+        "power": 37197,
+        "description": "Unrelenting attacker that uses his anguish to crush his foes",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "004",
+                    "005",
+                    "006",
+                    "003",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "003",
+                    "003",
+                    "021",
+                    "015",
+                    "034",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "032",
+                    "037",
+                    "039",
+                    "040",
+                    "058",
+                    "076"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "060",
+                    "056",
+                    "024",
+                    "068",
+                    "074",
+                    "064"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "039",
+                    "040",
+                    "061",
+                    "074",
+                    "093",
+                    "084"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "055",
+                    "073",
+                    "102",
+                    "102",
+                    "087",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "077",
+                    "089",
+                    "089",
+                    "102",
+                    "091",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "064",
+                    "104",
+                    "117",
+                    "113",
+                    "112",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "088",
+                    "088",
+                    "099",
+                    "108",
+                    "121",
+                    "173"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "116",
+                    "118",
+                    "109",
+                    "063",
+                    "060",
+                    "172"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "124",
+                    "117",
+                    "141",
+                    "108",
+                    "172",
+                    "150"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "160",
+                    "166",
+                    "171",
+                    "G12Finisher_MAULS7_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Leader",
+            "Mandalorian",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Counter",
+            "Dispel",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: Assist",
+            "Offense Down",
+            "Reduce Cooldowns",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Mission Vao",
         "base_id": "MISSIONVAO",
         "pk": 287,
