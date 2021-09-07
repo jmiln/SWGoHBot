@@ -10,11 +10,6 @@ class MyArena extends Command {
             category: "SWGoH",
             aliases: ["ma", "userarena", "ua"],
             permissions: ["EMBED_LINKS"],
-            flags: {
-                stats: {
-                    aliases: ["s"]
-                }
-            },
             options: [
                 {
                     name: "allycode",
