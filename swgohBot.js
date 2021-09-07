@@ -12,7 +12,8 @@ Bot.config = require("./config.js");
 
 const client = new Client({
     // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
-    intents: Bot.config.botIntents
+    intents: Bot.config.botIntents,
+    partials: Bot.config.partials
 });
 
 const Sequelize = require("sequelize");
