@@ -69,14 +69,14 @@ module.exports = (Bot, client) => {
         const gOwner = message.guild.fetchOwner();
         if (message.channel.type === "text" && message.guild && gOwner) {
             if (message.author.id === gOwner.id) {
-                return permlvl = Bot.permMap.GUILD_OWNER;
+                return Bot.permMap.GUILD_OWNER;
             }
         }
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
         if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) {
-            return permlvl = Bot.permMap.GUILD_ADMIN;
+            return Bot.permMap.GUILD_ADMIN;
         }
 
         // The rest of the perms rely on roles. If those roles are not found
@@ -85,7 +85,7 @@ module.exports = (Bot, client) => {
             const adminRoles = guildConf.adminRole;
 
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
-                const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase());
+                const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix]);
                 if (adminRole && message.member.roles.cache.has(adminRole.id)) {
                     return permlvl = Bot.permMap.GUILD_ADMIN;
                 }
