@@ -1,7 +1,7 @@
 const moment = require("moment-timezone")
 const Command = require("../base/slashCommand");
 const { typedDefaultSettings } = require("../config.js");
-const { inspect } = require("util");
+// const { inspect } = require("util");
 
 // Set the base subargs up
 const options = {
@@ -54,7 +54,7 @@ Object.keys(typedDefaultSettings).forEach(set => {
 class SetConf extends Command {
     constructor(Bot) {
         super(Bot, {
-            guildOnly: true,
+            guildOnly: false,
             name: "setconf",
             aliases: ["setconfig"],
             permLevel: 3,
