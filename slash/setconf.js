@@ -125,7 +125,6 @@ class SetConf extends Command {
         }
 
         function changeSetting(action, key, setting) {
-            console.log(`[changeSetting] ${action}, ${key}, ${setting}, ${inspect(guildConf[key])}`);
             if (setting === null) return null;
             if (action === "set") {
                 // Just send back the setting
