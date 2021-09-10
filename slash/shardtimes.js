@@ -175,7 +175,6 @@ class Shardtimes extends Command {
                     return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
                 }
             }
-            console.log("Flag: " + flag);
             if (flag) {
                 if (flag.match(/<:.+:\d+>/)) {
                     flag = flag.replace(/<:.*:/, "").replace(/>$/, "");
