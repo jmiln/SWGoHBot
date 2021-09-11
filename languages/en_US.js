@@ -864,7 +864,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Sorry, but \`${sortType}\` is not a supported sorting method. Only \`${filters.join(", ")}\` supported.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: "You need to enter a character to check for",
             COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `I did not find any results for ${character}`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`asciidoc\n${chars}\`\`\``,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `No one in your guild seems to have this character at ${starLvl} stars.`,
             COMMAND_GUILDSEARCH_NO_CHAR: "No one in your guild seems to have this character.",
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Not Activated (${count})`,
