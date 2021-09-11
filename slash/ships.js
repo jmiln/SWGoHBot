@@ -5,6 +5,7 @@ class Ships extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "ships",
+            guildOnly: false,
             aliases: ["s", "ship"],
             category: "Star Wars",
             options: [
