@@ -144,12 +144,12 @@ class SetConf extends Command {
                 return [...new Set(newArr)];
             } else if (action === "remove") {
                 // Take out a setting from an array
-                const newArr = [...guildConf[key]];
+                let newArr = [...guildConf[key]];
                 if (key === "adminRole") {
-                    newArr.filter(s => s !== setting.id && s !== setting.name);
+                    newArr = newArr.filter(s => s !== setting.id && s !== setting.name);
                     changeLog.push(`Removed ${setting.id} from ${key}`);
                 } else {
-                    newArr.filter(s => s !== setting);
+                    newArr = newArr.filter(s => s !== setting);
                     changeLog.push(`Removed ${setting} from ${key}`);
                 }
 
@@ -162,14 +162,18 @@ class SetConf extends Command {
             return super.error(interaction, Bot.codeBlock(errors.map(e => "* " + e).join("\n")));
         }
 
-        // Go through and make all the changes to the guildConf
-        for (const key of Object.keys(settingsIn)) {
-            guildConf[key] = settingsIn[key];
-        }
+        if (Object.keys(settingsIn)?.length) {
+            // Go through and make all the changes to the guildConf
+            for (const key of Object.keys(settingsIn)) {
+                guildConf[key] = settingsIn[key];
+            }
 
-        // Actually change stuff in the db
-        await Bot.database.models.settings.update(guildConf, {where: {guildID: interaction.guild.id}});
-        return super.success(interaction, Bot.codeBlock(changeLog.map(c => `* ${c}`)));
+            // Actually change stuff in the db
+            await Bot.database.models.settings.update(guildConf, {where: {guildID: interaction.guild.id}});
+            return super.success(interaction, Bot.codeBlock(changeLog.map(c => `* ${c}`)));
+        } else {
+            return super.error(interaction, "It looks like nothing needed to be updated");
+        }
     }
 }
 
