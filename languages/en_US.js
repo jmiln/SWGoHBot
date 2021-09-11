@@ -1703,7 +1703,7 @@ module.exports = class extends Language {
             },
 
             // Showconf Command
-            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`${configKeys}\`\`\``,
+            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`asciidoc\n\n${configKeys.replace(/\_/g, "＿")}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
                 description: "Shows the current configs for your server.",
                 actions: [

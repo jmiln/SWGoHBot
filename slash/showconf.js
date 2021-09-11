@@ -47,13 +47,45 @@ class Showconf extends Command {
 
         const guildConf = await Bot.getGuildConf(guildID);
 
-        var array = [];
+        var outArr = [];
         if (guildConf) {
+            // TODO Make this show nicer instead of just a basic code block
+            // Change it so adminRoles show the names instead of ID
+            // Change eventCountdown so it shows just a list of numbers instead of as an array, same for the rest, make it look nicer instead of inspected strings and such
             for (const key of Object.keys(Bot.config.typedDefaultSettings)) {
-                const value = key === "changelogWebhook" && guildConf[key]?.length ? util.inspect(guildConf[key]).slice(0, 92) + "..." : util.inspect(guildConf[key]);
-                array.push(`* ${key}: ${value}`);
+                switch (key) {
+                    case "adminRole": {
+                        const roleArr = [];
+                        if (guildConf.adminRole?.length) {
+                            for (const role of guildConf.adminRole) {
+                                if (Bot.isUserID(role)) {
+                                    // If it's a role ID, try and get a name for it
+                                    const roleName = await interaction.guild.roles.cache.find(r => r.id === role);
+                                    roleArr.push(roleName.name);
+                                } else {
+                                    roleArr.push(role);
+                                }
+                            }
+                            outArr.push(`* ${key}: \n${roleArr.sort().map(r => "  - " + r).join("\n")}`);
+                        } else {
+                            outArr.push(`* ${key}: N/A`);
+                        }
+                        break;
+                    }
+                    case "eventCountdown": {
+                        if (guildConf.eventCountdown?.length) {
+                            outArr.push(`* ${key}: ${guildConf.eventCountdown.join(", ")}`);
+                        } else {
+                            outArr.push(`* ${key}: N/A`);
+                        }
+                        break;
+                    }
+                    default:
+                        outArr.push(`* ${key}: ${guildConf[key]}`);
+                        break;
+                }
             }
-            var configKeys = array.join("\n");
+            var configKeys = outArr.join("\n");
             return interaction.reply({content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName)});
         } else {
             Bot.logger.error("Something broke in showconf");
