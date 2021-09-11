@@ -1,0 +1,64 @@
+const util = require("util");
+const Command = require("../base/slashCommand");
+
+class Showconf extends Command {
+    constructor(Bot) {
+        super(Bot, {
+            guildOnly: true,
+            name: "showconf",
+            aliases: ["showconfs", "showconfig", "showconfigs"],
+            category: "Admin",
+            permLevel: 3
+        });
+    }
+
+    async run(Bot, interaction) {
+        let guildID = interaction.guild.id;
+        let guildName = "";
+
+        // If I or an adminHelper adds a guild ID here, pull up that instead
+//         if (args[0] && options && options.level >= 9) {
+//             let found = false;
+//             if (!client.guilds.cache.has(args[0]) && client.shard) {
+//                 const names = await client.shard.broadcastEval((client, args) => {
+//                     if (client.guilds.cache.has(args[0])) {
+//                         return client.guilds.cache.get(args[0]).name;
+//                     }
+//                 }, {context: args});
+//                 names.forEach(gName => {
+//                     if (gName !== null) {
+//                         found = true;
+//                         guildName = gName;
+//                     }
+//                 });
+//             } else {
+//                 guildName = client.guilds.cache.get(guildID).name;
+//                 found = true;
+//             }
+//             if (found) {
+//                 guildID = args[0];
+//             } else {
+//                 return super.error(interaction, `Sorry, but I don't seem to be in the guild ${args[0]}.`);
+//             }
+//
+//         } else {
+        guildName = interaction.guild.name;
+        // }
+
+        const guildConf = await Bot.getGuildConf(guildID);
+
+        var array = [];
+        if (guildConf) {
+            for (const key of Object.keys(Bot.config.typedDefaultSettings)) {
+                const value = key === "changelogWebhook" && guildConf[key]?.length ? util.inspect(guildConf[key]).slice(0, 92) + "..." : util.inspect(guildConf[key]);
+                array.push(`* ${key}: ${value}`);
+            }
+            var configKeys = array.join("\n");
+            return interaction.reply({content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName)});
+        } else {
+            Bot.logger.error("Something broke in showconf");
+        }
+    }
+}
+
+module.exports = Showconf;
