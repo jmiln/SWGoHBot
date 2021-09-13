@@ -2440,6 +2440,7 @@
             "Advantage",
             "AoE",
             "Counter",
+            "Deathmark",
             "Dispel",
             "Evasion Down",
             "Expose",
@@ -2447,7 +2448,8 @@
             "Gain Turn Meter",
             "Offense Down",
             "Reduce Cooldowns",
-            "Speed Down"
+            "Speed Down",
+            "Stagger"
         ],
         "role": "Support",
         "ship": "",
@@ -3142,6 +3144,7 @@
         ],
         "ability_classes": [
             "DoT",
+            "Frenzy",
             "Gain Turn Meter",
             "Remove Turn Meter"
         ],
@@ -3322,7 +3325,8 @@
             "Leader: +Tenacity",
             "Leader: Assist",
             "Taunt",
-            "Tenacity Up"
+            "Tenacity Up",
+            "Vulnerable"
         ],
         "role": "Leader",
         "ship": "",
@@ -3852,6 +3856,7 @@
         "ability_classes": [
             "Assist",
             "Dispel",
+            "Frenzy",
             "Leader: +Defense",
             "Leader: +Speed",
             "Leader: +Tenacity",
@@ -4386,6 +4391,7 @@
         "ability_classes": [
             "AoE",
             "Bonus Attack",
+            "Deathmark",
             "DoT",
             "Gain Turn Meter",
             "Offense Down",
@@ -6828,7 +6834,8 @@
             "Defense Down",
             "Dispel",
             "Gain Turn Meter",
-            "Remove Turn Meter"
+            "Remove Turn Meter",
+            "Stagger"
         ],
         "role": "Support",
         "ship": "",
@@ -6998,6 +7005,7 @@
         ],
         "ability_classes": [
             "Advantage",
+            "Armor Shred",
             "Assist",
             "Counter",
             "Dispel",
@@ -8933,6 +8941,7 @@
             "Assist",
             "Bonus Attack",
             "Buff Immunity",
+            "Deathmark",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
@@ -9984,6 +9993,7 @@
             "AoE",
             "Bonus Attack",
             "Daze",
+            "Deathmark",
             "Dispel",
             "Gain Turn Meter",
             "Healing Immunity",
@@ -10342,6 +10352,7 @@
             "Leader: +Critical",
             "Revive",
             "Speed Down",
+            "Stagger",
             "Stun",
             "Tenacity Down"
         ],
@@ -10512,6 +10523,7 @@
         ],
         "ability_classes": [
             "Assist",
+            "Damage Immunity",
             "Dispel",
             "Gain Turn Meter",
             "Target Lock",
@@ -13462,6 +13474,7 @@
             "Daze",
             "Expose",
             "Gain Turn Meter",
+            "Stagger",
             "Stun",
             "Tenacity Up"
         ],
@@ -14169,6 +14182,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Armor Shred",
             "Counter",
             "Daze",
             "Dispel",
@@ -15224,6 +15238,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Defense Penetration Up",
             "Foresight",
             "Gain Turn Meter",
             "Leader: +Critical",
@@ -15760,6 +15775,7 @@
             "Assist",
             "Counter",
             "Daze",
+            "Defense Penetration Up",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Critical",
@@ -16459,6 +16475,7 @@
         "ability_classes": [
             "AoE",
             "Counter",
+            "Deathmark",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Critical",
@@ -18375,6 +18392,7 @@
         "ability_classes": [
             "AoE",
             "Counter",
+            "Damage Immunity",
             "Dispel",
             "Gain Turn Meter",
             "Healing Immunity",
@@ -18382,6 +18400,7 @@
             "Leader: +Speed",
             "Leader: +Tenacity",
             "Revive",
+            "Stagger",
             "Taunt"
         ],
         "role": "Leader",
@@ -19580,13 +19599,15 @@
         "ability_classes": [
             "AoE",
             "Assist",
+            "Blind",
             "Counter",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Critical",
             "Leader: +Speed",
             "Leader: Assist",
-            "Stun"
+            "Stun",
+            "Vulnerable"
         ],
         "role": "Leader",
         "ship": "",
@@ -19942,8 +19963,11 @@
         ],
         "ability_classes": [
             "Ability Block",
+            "AoE",
             "Assist",
             "Counter",
+            "Damage Immunity",
+            "Defense Penetration Up",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
@@ -19952,9 +19976,11 @@
             "Leader: +Speed",
             "Leader: Assist",
             "Reset Cooldown",
+            "Stealth",
             "Stun",
             "Taunt",
-            "Tenacity Up"
+            "Tenacity Up",
+            "Vulnerable"
         ],
         "role": "Leader",
         "ship": "",
@@ -20488,6 +20514,7 @@
             "Counter",
             "Dispel",
             "Offense Up",
+            "Stagger",
             "Stealth",
             "Stun",
             "Taunt"
@@ -21185,6 +21212,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Armor Shred",
             "Bonus Attack",
             "Counter",
             "Daze",
@@ -22591,6 +22619,193 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Lord Vader",
+        "base_id": "LORDVADER",
+        "pk": 1712,
+        "url": "http://swgoh.gg/characters/lord-vader/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_lordvader.png",
+        "power": 44569,
+        "description": "Legendary Sith Lord who utilizes the actions of others to empower his own potential and is not to be underestimated",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "006",
+                    "001",
+                    "004",
+                    "005",
+                    "005",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "019",
+                    "017",
+                    "015",
+                    "028",
+                    "025",
+                    "004"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "004",
+                    "028",
+                    "049",
+                    "053",
+                    "060",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "061",
+                    "053",
+                    "056",
+                    "068",
+                    "073",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "060",
+                    "060",
+                    "074",
+                    "089",
+                    "079",
+                    "086"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "079",
+                    "089",
+                    "079",
+                    "086",
+                    "091",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "087",
+                    "093",
+                    "097",
+                    "110",
+                    "109",
+                    "106"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "112",
+                    "110",
+                    "109",
+                    "106",
+                    "117",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "172",
+                    "110",
+                    "104",
+                    "172",
+                    "116"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "172",
+                    "144",
+                    "172",
+                    "145",
+                    "129",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "117",
+                    "172",
+                    "173",
+                    "139",
+                    "142",
+                    "134"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "160",
+                    "159",
+                    "171",
+                    "171",
+                    "G12Finisher_LORDVADER_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Empire",
+            "Galactic Legend",
+            "Leader",
+            "Sith"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Buff Immunity",
+            "Counter",
+            "Daze",
+            "Dispel",
+            "DoT",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Critical",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Reduce Cooldowns",
+            "Speed Up",
+            "Stealth",
+            "Stun",
+            "Taunt",
+            "Thermal Detonator"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Luke Skywalker (Farmboy)",
         "base_id": "LUKESKYWALKER",
         "pk": 24,
@@ -23285,6 +23500,188 @@
         "activate_shard_count": 10
     },
     {
+        "name": "Maul",
+        "base_id": "MAULS7",
+        "pk": 1575,
+        "url": "http://swgoh.gg/characters/maul/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_maul_cyborg.png",
+        "power": 37197,
+        "description": "Unrelenting attacker that uses his anguish to crush his foes",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "004",
+                    "005",
+                    "006",
+                    "003",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "003",
+                    "003",
+                    "021",
+                    "015",
+                    "034",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "032",
+                    "037",
+                    "039",
+                    "040",
+                    "058",
+                    "076"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "060",
+                    "056",
+                    "024",
+                    "068",
+                    "074",
+                    "064"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "039",
+                    "040",
+                    "061",
+                    "074",
+                    "093",
+                    "084"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "055",
+                    "073",
+                    "102",
+                    "102",
+                    "087",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "077",
+                    "089",
+                    "089",
+                    "102",
+                    "091",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "064",
+                    "104",
+                    "117",
+                    "113",
+                    "112",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "088",
+                    "088",
+                    "099",
+                    "108",
+                    "121",
+                    "173"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "116",
+                    "118",
+                    "109",
+                    "063",
+                    "060",
+                    "172"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "124",
+                    "117",
+                    "141",
+                    "108",
+                    "172",
+                    "150"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "160",
+                    "166",
+                    "171",
+                    "G12Finisher_MAULS7_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Leader",
+            "Mandalorian",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Counter",
+            "Dispel",
+            "Frenzy",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: Assist",
+            "Offense Down",
+            "Reduce Cooldowns",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Mission Vao",
         "base_id": "MISSIONVAO",
         "pk": 287,
@@ -23446,6 +23843,7 @@
         ],
         "ability_classes": [
             "Assist",
+            "Blind",
             "Daze",
             "Dispel",
             "DoT",
@@ -23791,6 +24189,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Armor Shred",
             "Assist",
             "Counter",
             "Daze",
@@ -25530,8 +25929,10 @@
         ],
         "ability_classes": [
             "Assist",
+            "Blind",
             "Counter",
             "Daze",
+            "Defense Penetration Up",
             "Defense Up",
             "Dispel",
             "Evasion Up",
@@ -26926,12 +27327,14 @@
             "Assist",
             "Counter",
             "Daze",
+            "Defense Penetration Up",
             "Dispel",
             "Expose",
             "Gain Turn Meter",
             "Leader: +Critical",
             "Leader: +Speed",
-            "Offense Down"
+            "Offense Down",
+            "Stagger"
         ],
         "role": "Support",
         "ship": "",
@@ -27972,7 +28375,9 @@
             "Daze",
             "Dispel",
             "DoT",
-            "Stun"
+            "Stagger",
+            "Stun",
+            "Vulnerable"
         ],
         "role": "Attacker",
         "ship": "",
@@ -28483,6 +28888,7 @@
         "ability_classes": [
             "AoE",
             "Counter",
+            "Damage Immunity",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Max Health",
@@ -29028,7 +29434,7 @@
         "pk": 18,
         "url": "http://swgoh.gg/characters/royal-guard/",
         "image": "https://game-assets.swgoh.gg/tex.charui_royalguard.png",
-        "power": 29040,
+        "power": 31236,
         "description": "Versatile Empire Tank that punishes enemies for attacking other allies",
         "combat_type": 1,
         "gear_levels": [
@@ -29182,8 +29588,8 @@
             "Tank"
         ],
         "ability_classes": [
+            "Counter",
             "Defense Up",
-            "Gain Turn Meter",
             "Speed Down",
             "Stun",
             "Taunt"
@@ -29356,10 +29762,12 @@
         ],
         "ability_classes": [
             "AoE",
+            "Armor Shred",
             "Counter",
             "Expose",
             "Offense Up",
-            "Reduce Cooldowns"
+            "Reduce Cooldowns",
+            "Stagger"
         ],
         "role": "Attacker",
         "ship": "PHANTOM2",
@@ -31614,12 +32022,14 @@
             "Tank"
         ],
         "ability_classes": [
+            "Blind",
             "Counter",
             "Daze",
             "Defense Up",
             "Dispel",
             "Offense Down",
             "Remove Turn Meter",
+            "Stagger",
             "Taunt"
         ],
         "role": "Tank",
@@ -31799,6 +32209,7 @@
             "Leader: +Max Health",
             "Leader: +Speed",
             "Revive",
+            "Stagger",
             "Stun",
             "Taunt"
         ],
@@ -32146,7 +32557,8 @@
             "DoT",
             "Gain Turn Meter",
             "Leader: +Evasion",
-            "Leader: +Max Health"
+            "Leader: +Max Health",
+            "Stagger"
         ],
         "role": "Leader",
         "ship": "",
@@ -32665,6 +33077,7 @@
             "Support"
         ],
         "ability_classes": [
+            "Armor Shred",
             "Assist",
             "Counter",
             "Dispel"
@@ -33016,6 +33429,7 @@
             "AoE",
             "Assist",
             "Counter",
+            "Damage Immunity",
             "Dispel",
             "DoT",
             "Gain Turn Meter",
@@ -33195,6 +33609,7 @@
             "Advantage",
             "AoE",
             "Assist",
+            "Blind",
             "Counter",
             "Dispel",
             "Evasion Down",
@@ -34569,6 +34984,7 @@
             "Counter",
             "Gain Turn Meter",
             "Reset Cooldown",
+            "Stagger",
             "Stun"
         ],
         "role": "Attacker",
@@ -34739,6 +35155,7 @@
             "AoE",
             "Assist",
             "Counter",
+            "Defense Penetration Up",
             "Dispel",
             "Revive"
         ],
@@ -34914,6 +35331,7 @@
             "Expose",
             "Gain Turn Meter",
             "Healing Immunity",
+            "Stagger",
             "Stun"
         ],
         "role": "Attacker",
@@ -36121,6 +36539,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Armor Shred",
             "Counter",
             "DoT",
             "Taunt"
