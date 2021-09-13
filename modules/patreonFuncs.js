@@ -638,6 +638,7 @@ module.exports = (Bot, client) => {
             // If the guild update isn't enabled, then move along
             if (!user?.guildUpdate?.enabled) continue;
             const gu = user.guildUpdate;
+            if (!gu?.allycode) continue;
 
             // This is what will be in the user.guildUpdate, possibly add something
             // in to make it so it only shows above x gear lvl and such later?
@@ -664,7 +665,14 @@ module.exports = (Bot, client) => {
             if (!chanAvail) continue;
 
             // Get any updates for the guild
-            const guild = await Bot.swgohAPI.guild(gu.allycode);
+            let guild = null;
+            try {
+                guild = await Bot.swgohAPI.guild(gu.allycode);
+            } catch (err) {
+                console.log(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
+                continue;
+            }
+            // const guild = await Bot.swgohAPI.guild(gu.allycode);
             if (!guild?.roster) {
                 return console.log(`[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${guild}`);
             }
@@ -704,7 +712,7 @@ module.exports = (Bot, client) => {
             // If something went wonky and there were no fields put in, move along
             if (!fields.length) continue;
 
-            const MAX_FIELDS = 18;
+            const MAX_FIELDS = 3;
             const fieldsOut = Bot.chunkArray(fields, MAX_FIELDS);
 
             for (const fieldChunk of fieldsOut) {
