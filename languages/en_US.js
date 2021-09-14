@@ -83,7 +83,7 @@ module.exports = class extends Language {
 
             // Base swgohAPI
             BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode  add <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user, prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NOT_REG: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\``,
             BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\``,
             BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\``,
             BASE_SWGOH_NO_GUILD: "I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.",
@@ -1792,7 +1792,7 @@ module.exports = class extends Language {
             // UserConf
             COMMAND_USERCONF_CANNOT_VIEW_OTHER: "Sorry, but you cannot view other's configs",
             COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED: "You already have this ally code registered",
-            COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `Removed ${name}(${ac}) from your config`,
+            COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `Removed ${name} (${ac}) from your config`,
             COMMAND_USERCONF_ALLYCODE_TOO_MANY: "Sorry, but you cannot have more than 10 accounts registered.",
             COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED: "You do not have this ally code registered",
             COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "That ally code is already marked as the primary one.",
