@@ -1651,7 +1651,8 @@
         "name": "Commander Ahsoka Tano",
         "uniqueName": "COMMANDERAHSOKA",
         "aliases": [
-            "Commander Ahsoka Tano"
+            "Commander Ahsoka Tano",
+            "CAT"
         ],
         "nameVariant": [
             "Commander Ahsoka Tano"
@@ -4612,7 +4613,8 @@
         "uniqueName": "KIADIMUNDI",
         "aliases": [
             "Ki-Adi-Mundi",
-            "Ki Adi Mundi"
+            "Ki Adi Mundi",
+            "KAM"
         ],
         "nameVariant": [
             "Ki-Adi-Mundi"
