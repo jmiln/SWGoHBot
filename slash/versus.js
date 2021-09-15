@@ -5,6 +5,7 @@ class Versus extends Command {
         super(Bot, {
             name: "versus",
             category: "SWGoH",
+            guildOnly: false,
             enabled: true,
             aliases: ["vs"],
             permissions: ["EMBED_LINKS"],
