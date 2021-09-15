@@ -980,7 +980,7 @@ module.exports = (Bot, client) => {
         }
 
         let userAcct = null;
-        if (user === "me" || ((!user || user.match(otherCodeRegex)) && useMessageId)) {
+        if (user === "me" || user.match(otherCodeRegex) || (!user && useMessageId)) {
             // Grab the sender's primary code
             if (message.author) {
                 // Message.author for messages
