@@ -5,6 +5,7 @@ class Zetas extends Command {
         super(Bot, {
             name: "zetas",
             category: "SWGoH",
+            guildOnly: false,
             aliases: ["zeta", "z"],
             permissions: ["EMBED_LINKS"],
             options: [
