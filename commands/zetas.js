@@ -31,6 +31,7 @@ class Zetas extends Command {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
         if (err) {
+            console.log(err);
             return super.error(message, err);
         }
 
@@ -67,7 +68,7 @@ class Zetas extends Command {
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
             Bot.logger.error("Error: Broke while trying to get player data in zetas: " + e);
-            return super.error(msg, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});
+            return super.error(msg, message.language.get("BASE_SWGOH_NO_ACCT"), {edit: true});
         }
 
         if (!player || !player.roster) return super.error(message, "I cannot get this player's info right not. Please try again later");
@@ -153,7 +154,7 @@ class Zetas extends Command {
 
             const sortBy = searchChar ? searchChar : "versa";
             if (!zetas || !zetas.zetas) {
-                return super.error(msg, ("Something broke, I can't find the zetas list"), {edit: true});
+                return super.error(msg, "Something broke, I can't find the zetas list", {edit: true});
             }
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {

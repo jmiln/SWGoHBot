@@ -1074,6 +1074,7 @@ module.exports = (Bot, client) => {
     };
     Bot.chunkArray = (inArray, chunkSize) => {
         var res = [];
+        if (!Array.isArray(inArray)) inArray = [inArray];
         for (let ix = 0, len = inArray.length; ix < len; ix += chunkSize) {
             res.push(inArray.slice(ix, ix + chunkSize));
         }
