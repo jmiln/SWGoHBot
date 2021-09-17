@@ -7,6 +7,7 @@ class Time extends Command {
         super(Bot, {
             name: "time",
             category: "Misc",
+            guildOnly: false,
             options: [
                 {
                     name: "timezone",

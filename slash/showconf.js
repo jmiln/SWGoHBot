@@ -1,4 +1,4 @@
-const util = require("util");
+// const util = require("util");
 const Command = require("../base/slashCommand");
 
 class Showconf extends Command {
@@ -6,6 +6,7 @@ class Showconf extends Command {
         super(Bot, {
             guildOnly: true,
             name: "showconf",
+            guildOnly: false,
             aliases: ["showconfs", "showconfig", "showconfigs"],
             category: "Admin",
             permLevel: 3

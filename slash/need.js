@@ -28,6 +28,7 @@ class Need extends Command {
             description: "Shows your progress towards 7* characters from a faction or shop.",
             category: "SWGoH",
             enabled: true,
+            guildOnly: false,
             permissions: ["EMBED_LINKS"],
             options: [
                 // Allycode (Of course)

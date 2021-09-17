@@ -6,6 +6,7 @@ class ReloadData extends Command {
             name: "reloaddata",
             category: "Dev",
             enabled: true,
+            guildOnly: true,
             aliases: ["rdata", "rd"],
             subArgs: {
                 lang: { aliases: [] }
@@ -34,7 +35,7 @@ class ReloadData extends Command {
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
         const channelId = interaction.channel.id;
         const action = interaction.options.getString("target").toLowerCase();
 

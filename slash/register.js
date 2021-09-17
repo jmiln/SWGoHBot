@@ -6,6 +6,7 @@ class Register extends Command {
             name: "register",
             category: "Misc",
             aliases: ["reg"],
+            guildOnly: false,
             permissions: ["EMBED_LINKS"],
             options: [
                 {

@@ -5,6 +5,7 @@ class Randomchar extends Command {
         super(Bot, {
             name: "randomchar",
             aliases: ["rand", "random"],
+            guildOnly: false,
             category: "Star Wars",
             permissions: ["EMBED_LINKS"],
             options: [
