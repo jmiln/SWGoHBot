@@ -108,9 +108,14 @@ class Charactergear extends Command {
                         gearString += `* ${allGear[key]}x ${key}\n`;
                     }
                 }
-                // TODO Find out how to replace split
-                return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "md")});
-                // , { split: true });
+                const msgArr = Bot.messageArray(interaction.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
+                for (const [ix, msg] of msgArr.entries()) {
+                    if (ix === 0) {
+                        interaction.reply({content: Bot.codeBlock(msg, "md")});
+                    } else {
+                        interaction.followUp({content: Bot.codeBlock(msg, "md")});
+                    }
+                }
             } else {
                 // Format and send the requested data back
                 const gearList = char.unitTierList.filter(t => t.tier >= gearLvl);

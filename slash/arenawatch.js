@@ -374,8 +374,7 @@ class ArenaWatch extends Command {
         });
     }
 
-    async run(Bot, interaction, options = {}) { // eslint-disable-line no-unused-vars
-        // const channel = interaction.options.getChannel("channel");
+    async run(Bot, interaction) {
         let target = interaction.options.getSubcommandGroup(false);
         if (!target) {
             target = interaction.options.getSubcommand();
@@ -385,16 +384,6 @@ class ArenaWatch extends Command {
         const outLog = [];
 
         const userID = interaction.user.id;
-
-        // TODO Fiddle with the levels and such
-        // if (options.subArgs.user && options.level < 9) {
-        //     return super.error(interaction, interaction.language.get("COMMAND_USERCONF_CANNOT_VIEW_OTHER"));
-        // } else if (options.subArgs.user) {
-        //     userID = options.subArgs.user.replace(/[^\d]*/g, "");
-        //     if (!Bot.isUserID(userID)) {
-        //         return super.error(interaction, "Invalid user ID");
-        //     }
-        // }
 
         const user = await Bot.userReg.getUser(userID);
         if (!user) {
@@ -475,7 +464,7 @@ class ArenaWatch extends Command {
             return [parseInt(ac, 10), mention];
         }
 
-        function checkPlayer(players, user, code) {
+        function checkPlayer(players, code) {
             if (!players) throw new Error("Missing players in checkPlayer");
             const player = players.find(p => parseInt(p.allyCode, 10) === parseInt(code.code, 10));
             if (!player) {
@@ -508,10 +497,9 @@ class ArenaWatch extends Command {
 
                 // If it gets this far, it should be a valid code
                 // Need to make sure that the user has the correct permissions to set this up
-                // TODO Make this work
-                // if (options.level < 3) {
-                //     return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
-                // }
+                if (options.level < 3) {
+                    return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+                }
 
                 // They got throught all that, go ahead and set it
                 switch (targetArena) {
@@ -561,10 +549,9 @@ class ArenaWatch extends Command {
                     const targetArena = interaction.options.getString("arena");
 
                     // Need to make sure that the user has the correct permissions to set this up
-                    // TODO Make this work
-                    // if (options.level < 3) {
-                    //     return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
-                    // }
+                    if (options.level < 3) {
+                        return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+                    }
 
                     // They got throught all that, go ahead and set it
                     if (targetArena === "char") {
@@ -671,7 +658,7 @@ class ArenaWatch extends Command {
                     for (const c of codes) {
                         let player;
                         try {
-                            player = checkPlayer(players, user, c);
+                            player = checkPlayer(players, c);
                         } catch (e) {
                             outLog.push(e);
                             continue;
@@ -720,7 +707,7 @@ class ArenaWatch extends Command {
                     try {
                         await interaction.deferReply();
                         const players = await Bot.swgohAPI.unitStats(ac);
-                        player = checkPlayer(players, user, {code: ac});
+                        player = checkPlayer(players, {code: ac});
                     } catch (e) {
                         return super.error(interaction, "Error getting player info.\n" + e);
                     }

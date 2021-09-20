@@ -231,7 +231,7 @@ class Zetas extends Command {
                 const sortedChars = zOut
                     .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
                     .map(c => c.name + "\n" + c.abilities);
-                const MAX_FIELDS = 3;
+                const MAX_FIELDS = 5;
                 const msgArr = Bot.msgArray(sortedChars, "", 1000);
                 msgArr.forEach(m => {
                     fields.push({

@@ -83,7 +83,6 @@ class GuildUpdate extends Command {
                 if (options.level < 3) {
                     return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
                 }
-                // TODO Make sure the user actually has permission to mess with setting things up for channels
                 // This would be at lease MANAGE_CHANNEL perms, or the adminrole under the guildconf
                 gu.channel = channel.id;
                 updatedArr.push(`Channel: <#${channel.id}>`);
