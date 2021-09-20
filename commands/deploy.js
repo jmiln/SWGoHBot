@@ -35,7 +35,7 @@ class Deploy extends Command {
             // Set the guild commands like this.
             if (newGuildComs.length) {
                 for (const newGuildCom of newGuildComs) {
-                    console.log(`Adding ${newCom.name} to Guild commands`);
+                    console.log(`Adding ${newGuildCom.name} to Guild commands`);
                     await message.client.guilds.cache.get(message.guild.id)?.commands.create(newGuildCom);
                 }
             }
