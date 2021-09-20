@@ -12,13 +12,14 @@ class MyProfile extends Command {
                 {
                     name: "allycode",
                     description: "The ally code for the profile you want view",
-                    type: "STRING"
+                    type: "STRING",
+                    required: true
                 },
             ]
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
         let allycode = interaction.options.getString("allycode");
         allycode = await Bot.getAllyCode(interaction, allycode);
 
