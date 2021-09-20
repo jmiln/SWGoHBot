@@ -240,7 +240,6 @@ module.exports = (Bot, client) => {
             const command = client.slashcmds.get(commandName);
             client.slashcmds.delete(command);
             delete require.cache[require.resolve(`../slash/${command.commandData.name}.js`)];
-            console.log("Unloading " + commandName);
         }
         return;
     };
@@ -251,7 +250,6 @@ module.exports = (Bot, client) => {
                 return commandName + " is not enabled";
             }
             client.slashcmds.set(cmd.commandData.name, cmd);
-            console.log(`Loaded slash command: ${commandName}`);
             return false;
         } catch (e) {
             return `Unable to load command ${commandName}: ${e}`;
@@ -902,13 +900,11 @@ module.exports = (Bot, client) => {
         }
         rows.forEach(r => {
             let row = "";
-            Object.keys(headers).forEach((h, ix) => {
-                const rowMax = max[h];
-                const head = headers[h];
-                let value = r[h];
-                if (!value) {
-                    value = 0;
-                }
+            Object.keys(headers).forEach((header, ix) => {
+                const rowMax = max[header];
+                const head = headers[header];
+                let value = r[header];
+                if (!value) value = 0;
                 const pad = rowMax - value.toString().length;
                 row += head.startWith ? head.startWith : "";
                 if (!head.align || (head.align && head.align === "center")) {
@@ -917,7 +913,7 @@ module.exports = (Bot, client) => {
                     if (padBefore) row += " ".repeat(padBefore);
                     row += value;
                     if (padAfter) row  += " ".repeat(padAfter);
-                } else if (head.align === "left" && ix === 0 && !h.startWith) {
+                } else if (head.align === "left" && ix === 0 && !header.startWith) {
                     row += value + " ".repeat(pad-1);
                 } else if (head.align === "left") {
                     row += " " + value + " ".repeat(pad-1);
@@ -957,7 +953,7 @@ module.exports = (Bot, client) => {
         return false;
     };
 
-    // Expand multiple spaces to have zero width spaces between so
+    // Expand multiple spaces to have zero width spaces between them so
     // Discord doesn't collapse em
     Bot.expandSpaces = (str) => {
         let outStr = "";
@@ -1029,7 +1025,7 @@ module.exports = (Bot, client) => {
         };
     };
 
-    // Return a divider of  equals signs
+    // Return a divider of equals signs
     Bot.getDivider = (count, divChar="=") => {
         if (count <= 0) throw new Error("Invalid count value");
         if (typeof divChar !== "string") throw new Error("divChar must be a string!");

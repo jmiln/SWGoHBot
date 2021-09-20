@@ -20,11 +20,10 @@ class MyProfile extends Command {
     }
 
     async run(Bot, interaction) { // eslint-disable-line no-unused-vars
-        let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode);
-
+        const allycodeIn = interaction.options.getString("allycode");
+        const allycode = await Bot.getAllyCode(interaction, allycodeIn);
         if (!allycode) {
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_ALLY", interaction.guildSettings.prefix));
+            return super.error(interaction, `Sorry, but ${allycodeIn} is not a valid allycode`);
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
