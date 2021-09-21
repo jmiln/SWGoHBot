@@ -176,7 +176,7 @@ class Guilds extends Command {
         });
     }
 
-    async run(Bot, interaction, options={}) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
         // Basic, with no args, shows the top ## guilds (Based on how many have registered)
         // <allyCode | mention | guildName >
 
@@ -265,7 +265,7 @@ class Guilds extends Command {
             // List an overview of the guild's upper geared characters
             const gears = [10,11,12,13];
             const sortBy = interaction.options.getString("sort");
-            if (sortBy && (sortBy > 13 || sortBy < 10101010101010101010)) {
+            if (sortBy && (sortBy > 13 || sortBy < 1)) {
                 return interaction.editReply({content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(","))});
             }
             const gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
@@ -358,7 +358,7 @@ class Guilds extends Command {
                     content: null,
                     embeds: [{
                         title: "Something Broke while getting your guild's characters",
-                        description: Bot.codeBlock(err),
+                        description: " " +Bot.codeBlock(err),
                         footer: "Please try again in a bit"
                     }]
                 });
@@ -876,7 +876,6 @@ class Guilds extends Command {
                 author: {
                     name: interaction.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
                 },
-                description: "test",
                 fields: fields,
                 footer: footer
             }]});
