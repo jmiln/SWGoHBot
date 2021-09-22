@@ -250,7 +250,7 @@ class Event extends Command {
                     repeatDay: repeatDay
                 };
 
-                let validEV = await validateEvents([newEv]);
+                let validEV = validateEvents([newEv]);
                 if (Array.isArray(validEV)) validEV = validEV[0];
                 if (!validEV) {
                     return super.error(interaction, "Something broke while trying to validate your event.");
@@ -303,7 +303,7 @@ class Event extends Command {
                     // }]```
 
                     // TODO Maybe add in a special help for -json  ";ev -jsonHelp" since it'll need more of a description
-                    const result = await validateEvents(jsonWhole);
+                    const result = validateEvents(jsonWhole);
                     if (result.filter(e => !e.valid).length) {
                         return interaction.reply({content: interaction.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(result.map(e => e.str).join("\n\n")))});
                     } else {
@@ -596,9 +596,9 @@ class Event extends Command {
                                         to = validEvent.event[field].toString().length ? validEvent.event[field].toString() : "N/A";
                                     }
                                     if (code) {
-                                        outLog.push(`Updated **${field.toProperCase()}** from \`${from}\` to \`${to}\``);
+                                        outLog.push(`Updated **${Bot.toProperCase(field)}** from \`${from}\` to \`${to}\``);
                                     } else {
-                                        outLog.push(`Updated **${field.toProperCase()}** from ${from} to ${to}`);
+                                        outLog.push(`Updated **${Bot.toProperCase(field)}** from ${from} to ${to}`);
                                     }
                                 }
                             }

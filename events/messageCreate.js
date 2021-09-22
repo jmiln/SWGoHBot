@@ -90,7 +90,7 @@ module.exports = async (Bot, client, message) => {
                     // If it can't send messages, don't bother trying
                     if (missingPerms.includes("VIEW_CHANNEL") || missingPerms.includes("SEND_MESSAGES")) return;
                     // Make it more readable
-                    missingPerms.forEach((p, ix) => {missingPerms[ix] = p.replace("_", " ").toProperCase();});
+                    missingPerms.forEach((p, ix) => {missingPerms[ix] = Bot.toProperCase(p.replace("_", " "));});
                     return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(", ")}\``);
                 }
             }

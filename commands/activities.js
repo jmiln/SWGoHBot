@@ -17,12 +17,12 @@ class Activites extends Command {
 
         if (!args[0]) {
             if (!guildConf["timezone"]) {
-                day = moment().format("ddd").toProperCase();
+                day = Bot.toProperCase(moment().format("ddd"));
             } else {
-                day = moment().tz(guildConf["timezone"]).format("ddd").toProperCase();
+                day = Bot.toProperCase(moment().tz(guildConf["timezone"]).format("ddd"));
             }
         } else {
-            day = String(args[0]).toProperCase();
+            day = Bot.toProperCase(String(args[0]));
         }
 
         switch (day) {

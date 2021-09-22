@@ -119,7 +119,7 @@ class MyMods extends Command {
                 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
                 Object.keys(slots).forEach(mod => {
                     let typeIcon  = slots[mod].type;
-                    let shapeIcon = modSlots[mod-1].toProperCase();
+                    let shapeIcon = Bot.toProperCase(modSlots[mod-1]);
                     const stats = slots[mod].stats;
                     // If the bot has the right perms to use external emotes, go for it
                     if (!message.guild || message.channel.permissionsFor(message.guild.me).has("USE_EXTERNAL_EMOJIS")) {
@@ -200,7 +200,7 @@ class MyMods extends Command {
             let found = false;
             if (searchChar && searchChar.length) options.subArgs.b = options.subArgs.b + " " + searchChar;
             if (Object.keys(checkableStats).filter(c => c.toLowerCase() === options.subArgs.b.toLowerCase()).length > 0) {
-                options.subArgs.b =  options.subArgs.b.toProperCase();
+                options.subArgs.b = Bot.toProperCase(options.subArgs.b);
                 found = true;
             } else {
                 Object.keys(checkableStats).forEach(s => {

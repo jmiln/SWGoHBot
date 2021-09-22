@@ -66,7 +66,7 @@ class Challenges extends Command {
         };
 
         const dayString = (day) => {
-            let dayString = `== Challenges for ${interaction.language.getDay(day.toUpperCase(), "LONG").toProperCase()} ==`;
+            let dayString = `== Challenges for ${Bot.toProperCase(interaction.language.getDay(day.toUpperCase(), "LONG"))} ==`;
             for (var challenge in challenges) {
                 if (challenges[challenge].includes(day)) {
                     dayString += `\n* ${challenge}`;
@@ -79,9 +79,9 @@ class Challenges extends Command {
 
         if (!day) {
             if (!guildConf["timezone"]) {
-                day = "day_" + moment().format("dddd").toProperCase();
+                day = "day_" + Bot.toProperCase(moment().format("dddd"));
             } else {
-                day = "day_" + moment().tz(guildConf["timezone"]).format("dddd").toProperCase();
+                day = "day_" + Bot.toProperCase(moment().tz(guildConf["timezone"]).format("dddd"));
             }
         }
 

@@ -278,7 +278,7 @@ module.exports = (Bot, client) => {
     function formatPayouts(players, arena) {
         const times = {};
         arena = (arena === "fleet") ? "ship" : arena;
-        const arenaString = "last" + arena.toProperCase();
+        const arenaString = "last" + Bot.toProperCase(arena);
 
         for (const player of players) {
             const rankString = player[arenaString].toString().padStart(3);
@@ -313,7 +313,7 @@ module.exports = (Bot, client) => {
     async function sendPayoutUpdates(payout, outEmbed, arena) {
         // Use broadcastEval to check all shards for the channel, and if there's a valid message
         // there, edit it. If not, send a fresh copy of it.
-        const messages = await client.shard.broadcastEval(async (client, payout, arena) => {
+        const messages = await client.shard.broadcastEval(async (payout, arena) => {
             const channel = this.channels.cache.get(payout[arena].channel);
             let msg, targetMsg;
             if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {

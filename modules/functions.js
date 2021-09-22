@@ -973,6 +973,8 @@ module.exports = (Bot, client) => {
         if (Array.isArray(user)) user = user.join(" ");
         if (user) {
             user = user.toString().trim();
+        } else {
+            user = "";
         }
 
         let userAcct = null;
@@ -1156,5 +1158,11 @@ module.exports = (Bot, client) => {
         const avgRelic = (tieredRelic / totalRelic).toFixed(2);
 
         return [relicLvls, avgRelic];
+    };
+
+    Bot.toProperCase = function (strIn) {
+        return strIn.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
     };
 };

@@ -74,7 +74,7 @@ class Need extends Command {
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
         let allycode = interaction.options.getString("allycode");
@@ -214,7 +214,7 @@ class Need extends Command {
             await interaction.editReply({content: null, embeds: [
                 {
                     author: {
-                        name: interaction.language.get("COMMAND_NEED_HEADER", player.name, headerNames.join(", ").toProperCase())
+                        name: interaction.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(headerNames.join(", ")))
                     },
                     description: desc,
                     fields: fields.slice(0, Math.floor(fields.length/2))
@@ -229,7 +229,7 @@ class Need extends Command {
             // It's small enough for one embed, just send it
             return interaction.editReply({content: null, embeds: [{
                 author: {
-                    name: interaction.language.get("COMMAND_NEED_HEADER", player.name, headerNames.join(", ").toProperCase())
+                    name: interaction.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(headerNames.join(", ")))
                 },
                 description: desc,
                 fields: fields

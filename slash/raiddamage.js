@@ -97,7 +97,7 @@ class RaidDamage extends Command {
 
         return interaction.reply({embeds: [{
             author: {
-                name: interaction.language.get("COMMAND_RAIDDAMAGE_OUT_HEADER", thisRaid.name.toProperCase(), thisPhase.name.toProperCase())
+                name: interaction.language.get("COMMAND_RAIDDAMAGE_OUT_HEADER", Bot.toProperCase(thisRaid.name), Bot.toProperCase(thisPhase.name))
             },
             description: percent ? interaction.language.get("COMMAND_RAIDDAMAGE_OUT_PERCENT", amount, outAmt) : interaction.language.get("COMMAND_RAIDDAMAGE_OUT_DMG", amount, outAmt)
         }]});

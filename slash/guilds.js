@@ -933,7 +933,7 @@ function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships=false) 
             }
         }
         fieldsOut.push({
-            name: category.toProperCase(),
+            name: Bot.toProperCase(category),
             value: unitOut.join("\n")
         });
     }

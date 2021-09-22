@@ -54,9 +54,9 @@ class Activites extends Command {
 
         if (!day) {
             if (!guildConf["timezone"]) {
-                day = "day_" + moment().format("dddd").toProperCase();
+                day = "day_" + Bot.toProperCase(moment().format("dddd"));
             } else {
-                day = "day_" + moment().tz(guildConf["timezone"]).format("dddd").toProperCase();
+                day = "day_" + Bot.toProperCase(moment().tz(guildConf["timezone"]).format("dddd"));
             }
         }
 

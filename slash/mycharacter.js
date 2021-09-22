@@ -140,7 +140,7 @@ class MyCharacter extends Command {
                 gearStr = Bot.expandSpaces(gearStr);
             }
             thisChar.skills.forEach(a => {
-                a.type = a.id.split("_")[0].replace("skill", "").toProperCase();
+                a.type = Bot.toProperCase(a.id.split("_")[0].replace("skill", ""));
                 if (a.tier === a.tiers) {
                     if (a.isZeta) {
                         // Maxed Zeta ability

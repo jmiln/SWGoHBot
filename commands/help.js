@@ -23,7 +23,7 @@ class Help extends Command {
             let output = message.language.get("COMMAND_HELP_HEADER", Bot.config.prefix);
 
             commandList.forEach(c => {
-                const cat = c.help.category.toProperCase();
+                const cat = Bot.toProperCase(c.help.category);
                 // If the categry isn't there, then make it
                 if (!help[cat]) {
                     help[cat] = `${Bot.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language.get(`COMMAND_${c.help.name.toUpperCase()}_HELP`).description}\n`;

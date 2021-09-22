@@ -56,7 +56,7 @@ class Character extends Command {
         if (char.factions.length) {
             fields.push({
                 name: "Factions",
-                value: char.factions.map(f => f.toProperCase()).join(", ")
+                value: char.factions.map(f => Bot.toProperCase(f)).join(", ")
             });
         }
 
@@ -66,7 +66,7 @@ class Character extends Command {
             let type = "Basic";
             types.forEach(t => {
                 if (ability.skillId.startsWith(t)) {
-                    type = t.toProperCase();
+                    type = Bot.toProperCase(t);
                 }
             });
 

@@ -136,7 +136,7 @@ class Faction extends Command {
                 const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
                 return message.channel.send({embeds: [{
                     author: {
-                        name: player.name + "'s matches for " + searchName.toProperCase()
+                        name: player.name + "'s matches for " + Bot.toProperCase(searchName)
                     },
                     description: desc,
                     fields: fields,
@@ -148,7 +148,7 @@ class Faction extends Command {
         } else {
             return message.channel.send({embeds: [{
                 author: {
-                    name: "Matches for " + searchName.toProperCase()
+                    name: "Matches for " + Bot.toProperCase(searchName)
                 },
                 description: chars.map(c => c.nameKey).join("\n")
             }]});

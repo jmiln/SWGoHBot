@@ -70,7 +70,7 @@ class MyMods extends Command {
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
 
         const subCommand = interaction.options.getSubcommand();
@@ -164,7 +164,7 @@ class MyMods extends Command {
                 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
                 Object.keys(slots).forEach(mod => {
                     let typeIcon  = slots[mod].type;
-                    let shapeIcon = modSlots[mod-1].toProperCase();
+                    let shapeIcon = Bot.toProperCase(modSlots[mod-1]);
                     const stats = slots[mod].stats;
                     // If the bot has the right perms to use external emotes, go for it
                     if (!interaction.guild || interaction.channel.permissionsFor(interaction.guild.me).has("USE_EXTERNAL_EMOJIS")) {
