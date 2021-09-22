@@ -159,7 +159,8 @@ module.exports = (Bot) => {
                 leveled: [],
                 reliced: [],
                 starred: [],
-                unlocked: []
+                unlocked: [],
+                ultimate: []
             };
 
             // Check through each of the 250ish? units in their roster for differences
@@ -205,6 +206,9 @@ module.exports = (Bot) => {
                 if (oldUnit?.relic?.currentTier < newUnit?.relic?.currentTier && (newUnit.relic.currentTier - 2) > 0) {
                     playerLog.reliced.push(`Upgraded ${locChar.nameKey} to relic ${newUnit.relic.currentTier-2}!`);
                     updated = true;
+                }
+                if (oldUnit?.purchasedAbilityId?.length < newUnit?.purchasedAbilityId?.length) {
+                    playerLog.ultimate.push(`Unlocked ${locChar.nameKey}'s **ultimate**'`);
                 }
             }
             if (updated) {

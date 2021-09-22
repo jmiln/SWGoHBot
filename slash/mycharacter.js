@@ -215,6 +215,7 @@ class MyCharacter extends Command {
             };
 
             if (!stats) return super.error(interaction, "Something went wrong. Please make sure you have that character unlocked");
+            if (!stats.final) return super.error(interaction, "Something went wrong, I couldn't get the stats for that character");
 
             let keys = Object.keys(stats.final);
             if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
