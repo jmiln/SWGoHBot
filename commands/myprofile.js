@@ -19,13 +19,10 @@ class MyProfile extends Command {
         if (user && user !== "me" && !Bot.isAllyCode(user) && !Bot.isUserID(user)) {
             return super.error(message, "Invalid user ID, you need to use either the `me` keyword, an ally code, or mention a Discord user");
         }
-        const allyCodes = await Bot.getAllyCode(message, user);
-        if (!allyCodes.length) {
+        const allyCode = await Bot.getAllyCode(message, user);
+        if (!allyCode) {
             return super.error(message, message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix));
-        } else if (allyCodes.length > 1) {
-            return super.error(message, "Found " + allyCodes.length + " matches. Please try being more specific");
         }
-        const allyCode = allyCodes[0];
 
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let player;

@@ -89,9 +89,9 @@ class Command {
         if (userID) {
             // If it got this far, it's got a valid userID (ally code or Discord ID)
             // so regardless of which, grab an ally code
-            const allyCodes = await this.Bot.getAllyCode(message, userID);
-            if (allyCodes && allyCodes.length) {
-                out = allyCodes[0];
+            const allyCode = await this.Bot.getAllyCode(message, userID);
+            if (allyCode) {
+                return allyCode;
             }
         }
 

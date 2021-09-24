@@ -259,7 +259,7 @@ class MyCharacter extends Command {
 
             if (!charImg) {
                 // If it couldn't get an image for the character
-                return msg.edit({embeds: [{
+                return msg.edit({content: null, embeds: [{
                     author: {
                         name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
                         url: character.url,
@@ -301,7 +301,7 @@ class MyCharacter extends Command {
             }
         } else {
             // You don't have the character
-            msg.edit({embeds: [{
+            return msg.edit({content: null, embeds: [{
                 author: {
                     name: pName + "'s " + character.name
                 },
