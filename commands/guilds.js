@@ -54,15 +54,14 @@ class Guilds extends Command {
             userID = "me";
         }
 
-        const msg = await message.channel.send(message.language.get("COMMAND_GUILDS_PLEASE_WAIT"));
+        const msg = await message.channel.send({content: message.language.get("COMMAND_GUILDS_PLEASE_WAIT")});
 
         // Get the user's ally code from the message or psql db
         if (userID === "me" || Bot.isUserID(userID) || Bot.isAllyCode(userID)) {
             userID = await Bot.getAllyCode(message, userID);
-            if (!userID.length) {
+            if (!userID) {
                 return super.error(msg, message.language.get("COMMAND_GUILDS_REG_NEEDED"), {edit: true, example: "guilds me"});
             }
-            userID = userID[0];
         } else {
             // Or, if they don't have one of those, try getting the guild by name
             userID += args.length ? " " + args.join(" ") : "";
@@ -130,7 +129,7 @@ class Guilds extends Command {
             if (!guild || !guild.roster || !guild.roster.length) {
                 throw new Error(message.language.get("BASE_SWGOH_NO_GUILD"));
             } else {
-                msg.edit("Found guild `" + guild.name + "`!");
+                msg.edit({content: "Found guild `" + guild.name + "`!"});
                 gRoster = guild.roster.map(m => m.allyCode);
             }
 
@@ -140,10 +139,11 @@ class Guilds extends Command {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return msg.edit(Bot.codeBlock(e), {
+                return msg.edit({embeds: [{
                     title: "Something Broke while getting your guild's characters",
+                    description: Bot.codeBlock(e),
                     footer: "Please try again in a bit."
-                });
+                }]});
             }
 
             for (const member of guildMembers) {
@@ -212,16 +212,16 @@ class Guilds extends Command {
             }
 
             // Send the formatted info
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 title: `${guild.name}'s Gear/ Relic summary`,
                 fields: fields
-            }});
+            }]});
         }
 
         async function guildTickets(userID, rawGuild) {
             const momentDuration = require("moment-duration-format");
             momentDuration(moment);
-            if (!rawGuild) return msg.edit(`Sorry, but I could not find a guild to match with ${userID}`);
+            if (!rawGuild) return msg.edit({content: `Sorry, but I could not find a guild to match with ${userID}`});
 
             const out = [];
             let roster = null;
@@ -256,13 +256,13 @@ class Guilds extends Command {
             const footer = Bot.updatedFooter(rawGuild.updated, message, "guild", cooldown);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
             const maxedString   = maxed > 0 ? `**${maxed}** members with 600 tickets\n\n` : "";
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: `${rawGuild.profile.name}'s Ticket Counts`
                 },
                 description: `${timeTilString}${maxedString}${out.join("\n")}`,
                 footer: footer
-            }});
+            }]});
         }
 
         async function baseGuild() {
@@ -326,14 +326,14 @@ class Guilds extends Command {
 
             const cooldown = await Bot.getPlayerCooldown(message.author.id);
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: guild.name
                 },
                 description: desc.length ? desc : "",
                 fields: fields.length ? fields : [],
                 footer: footer
-            }});
+            }]});
         }
 
         async function guildRoster() {
@@ -446,13 +446,13 @@ class Guilds extends Command {
             }
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             await msg.delete().catch(Bot.noop);
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         }
 
         async function twSummary() {
@@ -461,7 +461,7 @@ class Guilds extends Command {
             if (!guild || !guild.roster || !guild.roster.length) {
                 throw new Error(message.language.get("BASE_SWGOH_NO_GUILD"));
             } else {
-                msg.edit("Found guild `" + guild.name + "`!");
+                msg.edit({content: "Found guild `" + guild.name + "`!"});
                 gRoster = guild.roster.map(m => m.allyCode);
             }
 
@@ -470,10 +470,11 @@ class Guilds extends Command {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return msg.edit(Bot.codeBlock(e), {
+                return msg.edit({embeds: [{
+                    description: Bot.codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit."
-                });
+                }]});
             }
 
             // Get overall stats for the guild
@@ -564,13 +565,13 @@ class Guilds extends Command {
 
             const footer = Bot.updatedFooter(Math.min(...guildMembers.map(m => m.updated)), message, "guild", cooldown);
             await msg.delete().catch(Bot.noop);
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         }
     }
 }
@@ -625,7 +626,7 @@ function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships=false) 
             }
         }
         fieldsOut.push({
-            name: category.toProperCase(),
+            name: Bot.toProperCase(category),
             value: unitOut.join("\n")
         });
     }

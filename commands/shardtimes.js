@@ -136,9 +136,9 @@ class Shardtimes extends Command {
             await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
                 .then(() => {
                     if (tempUser) {
-                        return message.channel.send(message.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone));
+                        return message.channel.send({content: message.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone)});
                     }
-                    return message.channel.send(message.language.get("COMMAND_SHARDTIMES_USER_ADDED"));
+                    return message.channel.send({content: message.language.get("COMMAND_SHARDTIMES_USER_ADDED")});
                 })
                 .catch(() => {
                     return super.error(message, message.language.get("COMMAND_SHARDTIMES_USER_NOT_ADDED"));
@@ -158,7 +158,7 @@ class Shardtimes extends Command {
                 delete shardTimes[userID];
                 await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
                     .then(() => {
-                        return message.channel.send(message.language.get("COMMAND_SHARDTIMES_REM_SUCCESS"));
+                        return message.channel.send({content: message.language.get("COMMAND_SHARDTIMES_REM_SUCCESS")});
                     })
                     .catch(() => {
                         return super.error(message, message.language.get("COMMAND_SHARDTIMES_REM_FAIL"));
@@ -201,7 +201,7 @@ class Shardtimes extends Command {
                 // If there's no shard info in the destination channel
                 await Bot.database.models.shardtimes.create({ id: destShardID, times: shardTimes })
                     .then(() => {
-                        return message.channel.send(message.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id));
+                        return message.channel.send({content: message.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id)});
                     })
                     .catch((err) => {
                         return super.error(message, err.message);
@@ -217,7 +217,7 @@ class Shardtimes extends Command {
                     // Or if there is shard info there, but no listings
                     await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: destShardID}})
                         .then(() => {
-                            return message.channel.send(message.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id));
+                            return message.channel.send({content: message.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id)});
                         })
                         .catch(() => {
                             return super.error(message, message.language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
@@ -274,12 +274,12 @@ class Shardtimes extends Command {
                 });
             }
             return message.channel.send({
-                embed: {
+                embeds: [{
                     "author": {
                         "name": message.language.get("COMMAND_SHARDTIMES_SHARD_HEADER")
                     },
                     "fields": fields
-                }
+                }]
             });
         }
 

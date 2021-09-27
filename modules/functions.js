@@ -23,6 +23,25 @@ module.exports = (Bot, client) => {
         yellow: "#FFFF00",
     };
 
+    // Permissions mapping
+    Bot.permMap = {
+        // Can do anything, access to the dev commands, etc
+        BOT_OWNER: 10,
+
+        // Can help out with the bot as needed, some extra stuff possibly
+        HELPER: 8,
+
+        // Owner of the server a command is being run in
+        GUILD_OWNER: 7,
+
+        // Has ADMIN or MANAGE_GUILD, or has one of the
+        // configured roles from the guild's settings
+        GUILD_ADMIN: 6,
+
+        // Base users, anyone that's not included above
+        BASE_USER: 0
+    };
+
     /*  PERMISSION LEVEL FUNCTION
      *  This is a very basic permission system for commands which uses "levels"
      *  "spaces" are intentionally left black so you can add them if you want.
@@ -32,21 +51,33 @@ module.exports = (Bot, client) => {
     Bot.permlevel = message => {
         let permlvl = 0;
 
+        // Depending on message or interaction, grab the ID of the user
+        const authId = message.author ? message.author.id : message.user.id;
+
         // If bot owner, return max perm level
-        if (message.author.id === Bot.config.ownerid) return 10;
+        if (authId === Bot.config.ownerid) {
+            return Bot.permMap.BOT_OWNER;
+        }
 
         // If DMs or webhook, return 0 perm level.
-        if (!message.guild || !message.member) return 0;
+        if (!message.guild || !message.member) {
+            return Bot.permMap.BASE_USER;
+        }
         const guildConf = message.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
-        if (message.channel.type === "text" && message.guild && message.guild.owner) {
-            if (message.author.id === message.guild.owner.id) return permlvl = 4;
+        const gOwner = message.guild.fetchOwner();
+        if (message.channel.type === "text" && message.guild && gOwner) {
+            if (message.author.id === gOwner.id) {
+                return Bot.permMap.GUILD_OWNER;
+            }
         }
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
-        if (message.member.hasPermission(["ADMINISTRATOR"]) || message.member.hasPermission(["MANAGE_GUILD"])) return permlvl = 3;
+        if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) {
+            return Bot.permMap.GUILD_ADMIN;
+        }
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
@@ -54,8 +85,10 @@ module.exports = (Bot, client) => {
             const adminRoles = guildConf.adminRole;
 
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
-                const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase());
-                if (adminRole && message.member.roles.cache.has(adminRole.id)) return permlvl = 3;
+                const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix]);
+                if (adminRole && message.member.roles.cache.has(adminRole.id)) {
+                    return permlvl = Bot.permMap.GUILD_ADMIN;
+                }
             }
         } catch (e) {() => {};}
         return permlvl;
@@ -73,6 +106,9 @@ module.exports = (Bot, client) => {
     };
 
     // This finds any character that matches the search, and returns them in an array
+    // TODO Make this better, maybe remove the dependence on 3rd party module
+    // TODO Possibly make it so it checks both ships & characters, and returns an array of any matches from both
+    // TODO Remove the need for it to be passed the list to look through, it has access to it already
     Bot.findChar = (searchName, charList, ship=false) => {
         if (!searchName || !searchName.length) {
             return [];
@@ -137,7 +173,7 @@ module.exports = (Bot, client) => {
     // Send a message to a webhook url, takes the url & the embed to send
     Bot.sendWebhook = (hookUrl, embed) => {
         const h = parseWebhook(hookUrl);
-        const hook = new Discord.WebhookClient(h.id, h.token);
+        const hook = new Discord.WebhookClient({id: h.id, token: h.token});
         hook.send({embeds: [
             embed
         ]}).catch(() => {});
@@ -172,7 +208,7 @@ module.exports = (Bot, client) => {
     /* ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    Bot.announceMsg = async (guild, announceMsg, channel="", guildConf={}) => {
+    client.announceMsg = async (guild, announceMsg, channel="", guildConf={}) => {
         if (!guild?.id) return;
 
         let announceChan = guildConf.announceChan || "";
@@ -197,6 +233,39 @@ module.exports = (Bot, client) => {
                 console.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );
             });
         }
+    };
+
+    client.unloadSlash = commandName => {
+        if (client.slashcmds.has(commandName)) {
+            const command = client.slashcmds.get(commandName);
+            client.slashcmds.delete(command);
+            delete require.cache[require.resolve(`../slash/${command.commandData.name}.js`)];
+        }
+        return;
+    };
+    client.loadSlash = commandName => {
+        try {
+            const cmd = new (require(`../slash/${commandName}`))(Bot);
+            if (!cmd.commandData.enabled) {
+                return commandName + " is not enabled";
+            }
+            client.slashcmds.set(cmd.commandData.name, cmd);
+            return false;
+        } catch (e) {
+            return `Unable to load command ${commandName}: ${e}`;
+        }
+    };
+    client.reloadSlash = async (commandName) => {
+        let response = client.unloadSlash(commandName);
+        if (response) {
+            return new Error(`Error Unloading: ${response}`);
+        } else {
+            response = client.loadSlash(commandName);
+            if (response) {
+                return new Error(`Error Loading: ${response}`);
+            }
+        }
+        return commandName;
     };
 
     // Loads the given command
@@ -262,8 +331,8 @@ module.exports = (Bot, client) => {
     // Reloads all commads (even if they were not loaded before)
     // Will not remove a command it it's been loaded,
     // but will load a new command it it's been added
-    client.reloadAllCommands = async (msgID) => {
-        client.commands.keyArray().forEach(c => {
+    client.reloadAllCommands = async () => {
+        [...client.commands.keys()].forEach(c => {
             client.unloadCommand(c);
         });
         const cmdFiles = await readdir("./commands/");
@@ -286,14 +355,47 @@ module.exports = (Bot, client) => {
                 errArr.push(f);
             }
         });
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            channel.send(`Reloaded ${coms.length} commands, failed to reload ${errArr.length} commands.${errArr.length > 0 ? "\n```" + errArr.join("\n") + "```" : ""}`);
-        }
+        return {
+            succArr: coms,
+            errArr: errArr
+        };
+    };
+
+    // Reloads all slash commads (even if they were not loaded before)
+    // Will not remove a command if it's been loaded,
+    // but will load a new command if it's been added
+    client.reloadAllSlashCommands = async () => {
+        [...client.slashcmds.keys()].forEach(c => {
+            client.unloadSlash(c);
+        });
+        const cmdFiles = await readdir("./slash/");
+        const coms = [], errArr = [];
+        cmdFiles.forEach(async (f) => {
+            try {
+                const cmd = f.split(".")[0];
+                if (f.split(".").slice(-1)[0] !== "js") {
+                    errArr.push(f);
+                } else {
+                    const res = client.loadSlash(cmd);
+                    if (!res) {
+                        coms.push(cmd);
+                    } else {
+                        errArr.push(f);
+                    }
+                }
+            } catch (e) {
+                Bot.logger.error("Error: " + e);
+                errArr.push(f);
+            }
+        });
+        return {
+            succArr: coms,
+            errArr: errArr
+        };
     };
 
     // Reload the events files (message, guildCreate, etc)
-    client.reloadAllEvents = async (msgID) => {
+    client.reloadAllEvents = async () => {
         const ev = [], errEv = [];
 
         const evtFiles = await readdir("./events/");
@@ -302,7 +404,7 @@ module.exports = (Bot, client) => {
                 const eventName = file.split(".")[0];
                 client.removeAllListeners(eventName);
                 const event = require(`../events/${file}`);
-                if (eventName === "ready") {
+                if (["ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
                     client.on(eventName, event.bind(null, Bot, client));
                 } else {
                     client.on(eventName, event.bind(null, Bot));
@@ -314,15 +416,14 @@ module.exports = (Bot, client) => {
                 errEv.push(file);
             }
         });
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            channel.send(`Reloaded ${ev.length} events, failed to reload ${errEv.length} events.${errEv.length > 0 ? "\n```" + errEv.join("\n") + "```" : ""}`);
-        }
+        return {
+            succArr: ev,
+            errArr: errEv
+        };
     };
 
     // Reload the functions (this) file
-    client.reloadFunctions = async (msgID) => {
-        let err = false;
+    client.reloadFunctions = async () => {
         try {
             delete require.cache[require.resolve("../modules/functions.js")];
             require("../modules/functions.js")(Bot, client);
@@ -334,60 +435,37 @@ module.exports = (Bot, client) => {
             delete Bot.logger;
             const Logger = require("../modules/Logger.js");
             Bot.logger = new Logger(Bot, client);
-        } catch (e) {
-            err = e;
-        }
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded functions");
-            }
+        } catch (err) {
+            return {err: err.stack};
         }
     };
 
     // Reload the swapi file
-    client.reloadSwapi = async (msgID) => {
-        let err = false;
+    client.reloadSwapi = async () => {
+        let err = null;
         try {
             delete require.cache[require.resolve("../modules/swapi.js")];
             Bot.swgohAPI = require("../modules/swapi.js")(Bot);
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded swapi");
-            }
-        }
+        return err;
     };
 
     // Reload the users file
-    client.reloadUserReg = async (msgID) => {
-        let err = false;
+    client.reloadUserReg = async () => {
+        let err = null;
         try {
             delete require.cache[require.resolve("../modules/users.js")];
             Bot.userReg = require("../modules/users.js")(Bot);
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded users");
-            }
-        }
+        return err;
     };
 
     // Reload the data files (ships, teams, characters)
-    client.reloadDataFiles = async (msgID) => {
-        let err = false;
+    client.reloadDataFiles = async () => {
         try {
             Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json"));
             Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
@@ -401,21 +479,13 @@ module.exports = (Bot, client) => {
             Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
             const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json"));
             Bot.statCalculator.setGameData(gameData);
-        } catch (e) {
-            err = e;
-        }
-        const channel = client.channels.cache.get(msgID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded data files.");
-            }
+        } catch (err) {
+            return {err: err.stack};
         }
     };
 
     // Reload all the language files
-    client.reloadLanguages = async (chanID) => {
+    client.reloadLanguages = async () => {
         let err = false;
         try {
             Object.keys(Bot.languages).forEach(lang => {
@@ -431,14 +501,7 @@ module.exports = (Bot, client) => {
         } catch (e) {
             err = e;
         }
-        const channel = client.channels.cache.get(chanID);
-        if (channel) {
-            if (err) {
-                channel.send(`Something broke: ${err}`);
-            } else {
-                channel.send("Reloaded language files.");
-            }
-        }
+        return err;
     };
 
     /* SINGLE-LINE AWAITMESSAGE
@@ -450,7 +513,7 @@ module.exports = (Bot, client) => {
      */
     Bot.awaitReply = async (msg, question, limit = 60000) => {
         const filter = m => m.author.id === msg.author.id;
-        await msg.channel.send(question).catch(() => {Bot.logger.error("Broke in awaitReply");});
+        await msg.channel.send({content: question}).catch(() => {Bot.logger.error("Broke in awaitReply");});
         try {
             const collected = await msg.channel.awaitMessages(filter, {max: 1, time: limit, errors: ["time"]});
             return collected.first().content;
@@ -579,14 +642,14 @@ module.exports = (Bot, client) => {
                 }
             }
         });
-        message.channel.send({embed: {
+        message.channel.send({embeds: [{
             "color": "#605afc",
             "author": {
                 "name": language.get("BASE_COMMAND_HELP_HEADER", command.help.name)
             },
             "description": headerString,
             "fields": actionArr
-        }}).catch((e) => {Bot.logger.error(`Broke in helpOut (${command.help.name}):\n${e}`);});
+        }]}).catch((e) => {Bot.logger.error(`Broke in helpOut (${command.help.name}):\n${e}`);});
     };
 
 
@@ -708,7 +771,7 @@ module.exports = (Bot, client) => {
      */
     client.getEmoji = (id) => {
         if (client.shard && client.shard.count > 0) {
-            return client.shard.broadcastEval(`this.findEmoji('${id}');`)
+            return client.shard.broadcastEval((client, id) => client.findEmoji(id), {context: id})
                 .then(emojiArray => {
                     // Locate a non falsy result, which will be the emoji in question
                     const foundEmoji = emojiArray.find(emoji => emoji);
@@ -769,7 +832,7 @@ module.exports = (Bot, client) => {
      */
     Bot.isAllyCode = (aCode) => {
         if (!aCode || !aCode.toString().length) return false;
-        const match = aCode.toString().replace(/[^\d]*/g, "").match(/\d{9}/);
+        const match = aCode.toString().replace(/[^\d]*/g, "").match(/^\d{9}$/);
         return match ? true : false;
     };
 
@@ -837,13 +900,11 @@ module.exports = (Bot, client) => {
         }
         rows.forEach(r => {
             let row = "";
-            Object.keys(headers).forEach((h, ix) => {
-                const rowMax = max[h];
-                const head = headers[h];
-                let value = r[h];
-                if (!value) {
-                    value = 0;
-                }
+            Object.keys(headers).forEach((header, ix) => {
+                const rowMax = max[header];
+                const head = headers[header];
+                let value = r[header];
+                if (!value) value = 0;
                 const pad = rowMax - value.toString().length;
                 row += head.startWith ? head.startWith : "";
                 if (!head.align || (head.align && head.align === "center")) {
@@ -852,7 +913,7 @@ module.exports = (Bot, client) => {
                     if (padBefore) row += " ".repeat(padBefore);
                     row += value;
                     if (padAfter) row  += " ".repeat(padAfter);
-                } else if (head.align === "left" && ix === 0 && !h.startWith) {
+                } else if (head.align === "left" && ix === 0 && !header.startWith) {
                     row += value + " ".repeat(pad-1);
                 } else if (head.align === "left") {
                     row += " " + value + " ".repeat(pad-1);
@@ -892,7 +953,7 @@ module.exports = (Bot, client) => {
         return false;
     };
 
-    // Expand multiple spaces to have zero width spaces between so
+    // Expand multiple spaces to have zero width spaces between them so
     // Discord doesn't collapse em
     Bot.expandSpaces = (str) => {
         let outStr = "";
@@ -908,43 +969,46 @@ module.exports = (Bot, client) => {
 
     // Get the ally code of someone that's registered
     Bot.getAllyCode = async (message, user, useMessageId=true) => {
+        const otherCodeRegex = /^-\d{1,2}$/;
         if (Array.isArray(user)) user = user.join(" ");
         if (user) {
             user = user.toString().trim();
+        } else {
+            user = "";
         }
-        let uID;
-        if (!user || user === "me" || Bot.isUserID(user)) {
-            if ((!user || user === "me") && useMessageId) {
-                uID = message.author.id;
+
+        let userAcct = null;
+        if (user === "me" || user.match(otherCodeRegex) || (!user && useMessageId)) {
+            // Grab the sender's primary code
+            if (message.author) {
+                // Message.author for messages
+                userAcct = await Bot.userReg.getUser(message.author.id);
             } else {
-                uID = user.replace(/[^\d]*/g, "");
+                // Message.user for interactions
+                userAcct = await Bot.userReg.getUser(message.user.id);
             }
-            try {
-                const exists = await Bot.userReg.getUser(uID);
-                if (exists && exists.accounts.length) {
-                    const account = exists.accounts.find(a => a.primary);
-                    return [account.allyCode];
-                } else {
-                    return [];
-                }
-            } catch (e) {
-                return [];
-            }
+        } else if (Bot.isUserID(user)) {
+            // Try to grab the primary code for the mentioned user
+            userAcct = await Bot.userReg.getUser(user.replace(/[^\d]*/g, ""));
         }  else if (Bot.isAllyCode(user)) {
-            return [user.replace(/[^\d]*/g, "")];
+            // Otherwise, just scrap everything but numbers, and send it back
+            return user.replace(/[^\d]*/g, "");
         }
-        // }  else {
-        //     const outArr = [];
-        //     const results = await Bot.swgohAPI.playerByName(user);
-        //     if (results.length > 1) {
-        //         results.forEach(p => {
-        //             outArr.push(p.allyCode);
-        //         });
-        //     } else if (results.length ===  1) {
-        //         outArr.push(results[0].allyCode);
-        //     }
-        //     return outArr;
-        // }
+
+        if (userAcct?.accounts?.length) {
+            if (user?.match(otherCodeRegex)) {
+                // If it's a -1/ -2 code, try to grab the specified code
+                const index = parseInt(user.replace("-", ""), 10) - 1;
+                const account = userAcct.accounts[index];
+                return account ? account.allyCode : null;
+            } else {
+                // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
+                const account = userAcct.accounts.find(a => a.primary);
+                return account ? account.allyCode : null;
+            }
+        } else {
+            return null;
+        }
     };
 
     // Convert from milliseconds
@@ -963,7 +1027,7 @@ module.exports = (Bot, client) => {
         };
     };
 
-    // Return a divider of  equals signs
+    // Return a divider of equals signs
     Bot.getDivider = (count, divChar="=") => {
         if (count <= 0) throw new Error("Invalid count value");
         if (typeof divChar !== "string") throw new Error("divChar must be a string!");
@@ -1008,6 +1072,7 @@ module.exports = (Bot, client) => {
     };
     Bot.chunkArray = (inArray, chunkSize) => {
         var res = [];
+        if (!Array.isArray(inArray)) inArray = [inArray];
         for (let ix = 0, len = inArray.length; ix < len; ix += chunkSize) {
             res.push(inArray.slice(ix, ix + chunkSize));
         }
@@ -1026,6 +1091,19 @@ module.exports = (Bot, client) => {
         return exists ? true : false;
     };
 
+    // Returns a gear string (9+4 or 13r5), etc
+    Bot.getGearStr = (charIn, preStr="") => {
+        // If the character is not unlocked
+        if (!charIn?.gear) return "N/A";
+
+        let charGearOut = preStr + charIn.gear.toString();
+        if (charIn.equipped?.length) {
+            charGearOut += `+${charIn.equipped.length}`;
+        } else if (charIn?.relic?.currentTier > 2) {
+            charGearOut += `r${charIn.relic.currentTier-2}`;
+        }
+        return charGearOut;
+    };
 
     Bot.summarizeGearLvls = (guildMembers) => {
         // Get the overall gear levels for the guild as a whole
@@ -1080,5 +1158,11 @@ module.exports = (Bot, client) => {
         const avgRelic = (tieredRelic / totalRelic).toFixed(2);
 
         return [relicLvls, avgRelic];
+    };
+
+    Bot.toProperCase = function (strIn) {
+        return strIn.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
     };
 };

@@ -7,7 +7,7 @@ class CommandReport extends Command {
         super(Bot, {
             name: "commandreport",
             category: "Dev",
-            enabled: true,
+            enabled: false,
             aliases: ["comreport", "cr"],
             permissions: ["EMBED_LINKS"],
             permLevel: 10
@@ -39,12 +39,12 @@ class CommandReport extends Command {
         sortedComs.forEach(com => {
             comArr.push(`${com + " ".repeat(longest - com.length)} : ${coms[com]}`);
         });
-        message.channel.send({embed: {
+        message.channel.send({embeds: [{
             author: {
                 name: "Command report for the last 10 days"
             },
             description: "```" + comArr.join("\n") + "```"
-        }});
+        }]});
     }
 }
 

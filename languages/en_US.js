@@ -83,7 +83,7 @@ module.exports = class extends Language {
 
             // Base swgohAPI
             BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode  add <allycode>\``,
-            BASE_SWGOH_NOT_REG: (user, prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NOT_REG: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\``,
             BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\``,
             BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\``,
             BASE_SWGOH_NO_GUILD: "I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.",
@@ -346,14 +346,26 @@ module.exports = class extends Language {
                         action: "Arena Watch (Cont)",
                         actionDesc: "Continuation of the Arena Watch section",
                         usage: [
+                            ";arenawatch report <both|climb|drop>",
                             ";arenawatch result <allycode> <none|both|char|fleet>",
+                            ";arenawatch showvs <on|off>",
                             ";arenawatch useMarksInLog <on|off>",
+                        ].join("\n"),
+                        args: {
+                            "report": "Tell it to report on just climbs, drops, or both",
+                            "result": "Announce a player's final rank at payout",
+                            "showVs": "Toggle showing both sides of a battle",
+                            "useMarksInLog": "Use the players' marks in the arena log",
+                        }
+                    },
+                    {
+                        action: "Arena Watch (Cont v2)",
+                        actionDesc: "Another continuation of the Arena Watch section",
+                        usage: [
                             ";arenawatch view [allycode]",
                             ";arenawatch warn <allycode> <#ofMin> <none|both|char|fleet>",
                         ].join("\n"),
                         args: {
-                            "result": "Announce a player's final rank at payout",
-                            "useMarksInLog": "Use the players' marks in the arena log",
                             "view": "View the current settings. Include an ally code to view settings for a specific person",
                             "warn": "Warn the player in the log channel, #ofMin before their payout",
                         }
@@ -623,7 +635,7 @@ module.exports = class extends Language {
                         actionDesc: "Create a new event listing",
                         usage: ";event create --json <codeBlock w/ json>",
                         args: {
-                            "--json <codeBlock>": "Example: ```[]{\n    \"name\": \"\",\n    \"time\": \"\",\n    \"day\":  \"\",\n    \"message\": \"\",\n    \"repeatDay\": [0, 0, 0],\n    \"repeat\": \"0d0h0m\",\n    \"countdown\": false,\n    \"channel\": \"\"\n}]```"
+                            "--json <codeBlock>": "Example: ```[{\n    \"name\": \"\",\n    \"time\": \"\",\n    \"day\":  \"\",\n    \"message\": \"\",\n    \"repeatDay\": [0, 0, 0],\n    \"repeat\": \"0d0h0m\",\n    \"countdown\": false,\n    \"channel\": \"\"\n}]```"
                         }
                     },
                     {
@@ -852,7 +864,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Sorry, but \`${sortType}\` is not a supported sorting method. Only \`${filters.join(", ")}\` supported.`,
             COMMAND_GUILDSEARCH_MISSING_CHAR: "You need to enter a character to check for",
             COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `I did not find any results for ${character}`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`asciidoc\n${chars}\`\`\``,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `No one in your guild seems to have this character at ${starLvl} stars.`,
             COMMAND_GUILDSEARCH_NO_CHAR: "No one in your guild seems to have this character.",
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Not Activated (${count})`,
@@ -863,7 +875,7 @@ module.exports = class extends Language {
             COMMAND_GUILDSEARCH_NO_CHARACTER_STAR: (star) => `It seems that no one in your guild has this character unlocked at ${star}* or higher.`,
             COMMAND_GUILDSEARCH_NO_SHIP_STAR: (star) => `It seems that no one in your guild has this ship unlocked at ${star}* or higher.`,
             COMMAND_GUILDSEARCH_NO_ZETAS: "It looks like no one in your guild has applied any zetas to this character.",
-            COMMAND_GUILDSEARCH_SORTED_BY: (char, sort) => `${char} (Sorted by ${sort})`,
+            COMMAND_GUILDSEARCH_SORTED_BY: (char, sort, doReverse) => `${char} (Sorted by ${doReverse ? `lowest ${sort} first` : sort})`,
             COMMAND_GUILDSEARCH_MODS_HEADER: (guildName) => `${guildName}'s mods`,
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Shows the star level of the selected character for everyone in the guild.",
@@ -1190,7 +1202,7 @@ module.exports = class extends Language {
             COMMAND_NEED_ALL_CHAR: "Congrats, you have all the characters at 7*",
             COMMAND_NEED_ALL_SHIP: "Congrats, you have all the ships at 7*",
             COMMAND_NEED_PARTIAL: (percent) => `You're about **${percent}%** complete.`,
-            COMMAND_NEED_HEADER: (player, search) => `${player}'s ${search} needs`,
+            COMMAND_NEED_HEADER: (player, search) => `${player}'s needs for ${search}`,
             COMMAND_NEED_HELP: {
                 description: "Shows your progress towards 7* characters from a faction or shop.",
                 actions: [
@@ -1691,7 +1703,7 @@ module.exports = class extends Language {
             },
 
             // Showconf Command
-            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`${configKeys}\`\`\``,
+            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`asciidoc\n\n${configKeys.replace(/\_/g, "＿")}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
                 description: "Shows the current configs for your server.",
                 actions: [
@@ -1780,7 +1792,7 @@ module.exports = class extends Language {
             // UserConf
             COMMAND_USERCONF_CANNOT_VIEW_OTHER: "Sorry, but you cannot view other's configs",
             COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED: "You already have this ally code registered",
-            COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `Removed ${name}(${ac}) from your config`,
+            COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS: (name, ac) => `Removed ${name} (${ac}) from your config`,
             COMMAND_USERCONF_ALLYCODE_TOO_MANY: "Sorry, but you cannot have more than 10 accounts registered.",
             COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED: "You do not have this ally code registered",
             COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "That ally code is already marked as the primary one.",

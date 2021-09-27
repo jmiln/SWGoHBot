@@ -17,35 +17,35 @@ class Activites extends Command {
 
         if (!args[0]) {
             if (!guildConf["timezone"]) {
-                day = moment().format("ddd").toProperCase();
+                day = Bot.toProperCase(moment().format("ddd"));
             } else {
-                day = moment().tz(guildConf["timezone"]).format("ddd").toProperCase();
+                day = Bot.toProperCase(moment().tz(guildConf["timezone"]).format("ddd"));
             }
         } else {
-            day = String(args[0]).toProperCase();
+            day = Bot.toProperCase(String(args[0]));
         }
 
         switch (day) {
             case message.language.getDay("SUNDAY", "SHORT"): case message.language.getDay("SUNDAY", "LONG"): case "Sun":
-                message.channel.send(message.language.get("COMMAND_ACTIVITIES_SUNDAY"), {code:"asciidoc"});
+                message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_ACTIVITIES_SUNDAY"), "asciidoc")});
                 break;
             case message.language.getDay("MONDAY", "SHORT"): case message.language.getDay("MONDAY", "LONG"): case "Mon":
-                message.channel.send(message.language.get("COMMAND_ACTIVITIES_MONDAY"), {code:"asciidoc"});
+                message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_ACTIVITIES_MONDAY"), "asciidoc")});
                 break;
             case message.language.getDay("TUESDAY", "SHORT"): case message.language.getDay("TUESDAY", "LONG"): case "Tue":
-                message.channel.send(message.language.get("COMMAND_ACTIVITIES_TUESDAY"), {code:"asciidoc"});
+                message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_ACTIVITIES_TUESDAY"), "asciidoc")});
                 break;
             case message.language.getDay("WEDNESDAY", "SHORT"): case message.language.getDay("WEDNESDAY", "LONG"): case "Wed":
-                message.channel.send(message.language.get("COMMAND_ACTIVITIES_WEDNESDAY"), {code:"asciidoc"});
+                message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_ACTIVITIES_WEDNESDAY"), "asciidoc")});
                 break;
             case message.language.getDay("THURSDAY", "SHORT"): case message.language.getDay("THURSDAY", "LONG"): case "Thu":
-                message.channel.send(message.language.get("COMMAND_ACTIVITIES_THURSDAY"), {code:"asciidoc"});
+                message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_ACTIVITIES_THURSDAY"), "asciidoc")});
                 break;
             case message.language.getDay("FRIDAY", "SHORT"): case message.language.getDay("FRIDAY", "LONG"): case "Fri":
-                message.channel.send(message.language.get("COMMAND_ACTIVITIES_FRIDAY"), {code:"asciidoc"});
+                message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_ACTIVITIES_FRIDAY"), "asciidoc")});
                 break;
             case message.language.getDay("SATURDAY", "SHORT"): case message.language.getDay("SATURDAY", "LONG"): case "Sat":
-                message.channel.send(message.language.get("COMMAND_ACTIVITIES_SATURDAY"), {code:"asciidoc"});
+                message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_ACTIVITIES_SATURDAY"), "asciidoc")});
                 break;
             default:
                 return Bot.helpOut(message, this);

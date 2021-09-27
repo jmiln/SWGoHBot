@@ -43,7 +43,7 @@ class Acronyms extends Command {
             acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymsLookup[matchingItems[i]]}`;
         }
 
-        return message.channel.send(acronymMeaningMessage);
+        return message.channel.send({content: acronymMeaningMessage});
     }
 }
 

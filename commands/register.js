@@ -26,9 +26,7 @@ class Register extends Command {
                 }
             } else if (Bot.isAllyCode(userID)) {
                 allyCode = await Bot.getAllyCode(message, userID);
-                if (allyCode.length) {
-                    allyCode = allyCode[0];
-                } else {
+                if (!allyCode) {
                     return super.error(message, message.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
                 }
                 userID = message.author.id;
@@ -71,7 +69,7 @@ class Register extends Command {
                 return a;
             });
         }
-        message.channel.send(message.language.get("COMMAND_REGISTER_PLEASE_WAIT")).then(async msg => {
+        message.channel.send({content: message.language.get("COMMAND_REGISTER_PLEASE_WAIT")}).then(async msg => {
             try {
                 let player = await Bot.swgohAPI.unitStats(allyCode, cooldown);
                 if (Array.isArray(player)) player = player[0];

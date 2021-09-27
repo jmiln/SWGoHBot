@@ -10,7 +10,7 @@ class Need extends Command {
         });
     }
 
-    async run(Bot, message, args, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, message, args) { // eslint-disable-line no-unused-vars
         const shardsLeftAtStar = {
             0: 330,
             1: 320,
@@ -140,13 +140,13 @@ class Need extends Command {
             value: "**Check out `" + message.guildSettings.prefix + "help need` for other searches**"
         });
 
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {
-                name: message.language.get("COMMAND_NEED_HEADER", player.name, search.toProperCase())
+                name: message.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(search))
             },
             description: desc,
             fields: fields
-        }});
+        }]});
 
         async function getUnitsExact(searchName) {
             let units = Bot.charLocs.filter(c => c.locations.filter(l => l.type === searchName).length);

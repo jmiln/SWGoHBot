@@ -42,7 +42,7 @@ class Versus extends Command {
         // If it can't find a valid character, but can find a ship, set this to true so it knows how to format the data later
         // let ship = false;
 
-        const msg = await message.channel.send("Please wait while I process your data.");
+        const msg = await message.channel.send({content: "Please wait while I process your data."});
 
         let user1 = await super.getUser(message, user1str, false);
         let user2 = await super.getUser(message, user2str, false);
@@ -53,7 +53,7 @@ class Versus extends Command {
                 character = character.join(" ");
             } else {
                 // Spit out an error because of no character
-                return super.error(message, "It looks like your first ally code is not valid, please double check it and try again.");
+                return super.error(message, "Invalid character, you need to specify a character to compare", {example: "versus 987654321 123456789 Maul"});
             }
         } else if (user1) {
             // Just user1 is valid, grab author's linked code and attach user2str to character
@@ -206,7 +206,7 @@ class Versus extends Command {
         }, statOut, {boldHeader: false, useHeader: false});
 
         const footer = Bot.updatedFooter(Math.min(user1.updated, user2.updated), message, "player", cooldown);
-        return msg.edit("", {embed: {
+        return msg.edit({embeds: [{
             title: `${user1.name} vs. ${user2.name} (${charName})`,
             fields: [
                 {
@@ -219,7 +219,7 @@ class Versus extends Command {
                 }
             ],
             footer: footer
-        }});
+        }]});
     }
 }
 

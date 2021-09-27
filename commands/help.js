@@ -18,12 +18,12 @@ class Help extends Command {
 
         if (!args[0]) { // Show the list of commands
             const commandList = client.commands.filter(c => c.conf.permLevel <= level && !c.conf.hidden);
-            const longest = commandList.keyArray().reduce((long, str) => Math.max(long, str.length), 0);
+            const longest = [...commandList.keys()].reduce((long, str) => Math.max(long, str.length), 0);
 
             let output = message.language.get("COMMAND_HELP_HEADER", Bot.config.prefix);
 
             commandList.forEach(c => {
-                const cat = c.help.category.toProperCase();
+                const cat = Bot.toProperCase(c.help.category);
                 // If the categry isn't there, then make it
                 if (!help[cat]) {
                     help[cat] = `${Bot.config.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${message.language.get(`COMMAND_${c.help.name.toUpperCase()}_HELP`).description}\n`;
@@ -35,7 +35,10 @@ class Help extends Command {
             sortedCat.forEach(category => {
                 output += `\n== ${category} ==\n${help[category]}`;
             });
-            message.channel.send(output, { code: "asciidoc", split: {maxLength: 1500, char: "\n"} });
+            const chunkedMsg = Bot.msgArray(output.split("\n"));
+            for (const chunk of chunkedMsg) {
+                message.channel.send({content: Bot.codeBlock(chunk, "asciidoc")});
+            }
         } else { // Show the help for a specific command
             let command;
             if (client.commands.has(args[0])) {

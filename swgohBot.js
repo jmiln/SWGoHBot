@@ -1,23 +1,23 @@
-const { Client, Collection, Intents } = require("discord.js");
+const { Client, Collection } = require("discord.js");
 const { promisify } = require("util");
 const { inspect } = require("util");
 const SwgohClientStub = require("swgoh-client-stub");
 const readdir = promisify(require("fs").readdir);
 const fs = require("fs");
 
-const client = new Client({
-    // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
-    messageCacheLifetime: 300, // How long a message should stay in the cache       (5min)
-    messageSweepInterval: 120, // How frequently to remove messages from the cache  (2min)
-    ws: { intents: new Intents(4619) }
-});
-
-const Sequelize = require("sequelize");
-
 const Bot = {};
 
 // Attach the config to the client so we can use it anywhere
 Bot.config = require("./config.js");
+
+const client = new Client({
+    // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
+    intents: Bot.config.botIntents,
+    partials: Bot.config.partials
+});
+
+const Sequelize = require("sequelize");
+
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
 Bot.abilityCosts = JSON.parse(fs.readFileSync("data/abilityCosts.json"));
@@ -53,6 +53,7 @@ Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR",
 
 client.commands = new Collection();
 client.aliases = new Collection();
+client.slashcmds = new Collection();
 
 Bot.evCountdowns = {};
 
@@ -96,7 +97,7 @@ Bot.database.authenticate().then(async () => {
 
     init();
     client.login(Bot.config.token).then(() => {
-        const guildList = client.guilds.cache.keyArray();
+        const guildList = [...client.guilds.cache.keys()];
         for (let ix = 0; ix < guildList.length; ix++) {
             Bot.database.models.settings.findOrBuild({
                 where: {
@@ -148,27 +149,36 @@ const init = async () => {
     // here and everywhere else.
     const cmdFiles = await readdir("./commands/");
     const cmdError = [];
-    cmdFiles.forEach(f => {
+    cmdFiles.forEach(file => {
         try {
-            const props = new(require(`./commands/${f}`))(Bot);
-            if (f.split(".").slice(-1)[0] !== "js") return;
-            if (props.help.category === "SWGoH" && !Bot.swgohAPI) return;
-            const result = client.loadCommand(props.help.name);
-            if (result) cmdError.push(`Unable to load command: ${f}`);
+            if (!file.endsWith(".js")) return;
+            const commandName = file.split(".")[0];
+            const result = client.loadCommand(commandName);
+            if (result) cmdError.push(`Unable to load command: ${commandName}`);
         } catch (e) {
-            Bot.logger.warn(`[INIT] Unable to load command ${f}: ${e}`);
+            Bot.logger.warn(`[INIT] Unable to load command ${file}: ${e}`);
         }
     });
     if (cmdError.length) {
         Bot.logger.warn("cmdLoad: " + cmdError.join("\n"));
     }
 
+    readdir("./slash", (err, files) => {
+        if (err) return console.error(err);
+        files.forEach(file => {
+            if (!file.endsWith(".js")) return;
+            const commandName = file.split(".")[0];
+            const result = client.loadSlash(commandName);
+            if (result) cmdError.push(`Unable to load command: ${commandName}`);
+        });
+    });
+
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir("./events/");
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
-        if (eventName === "ready") {
+        if (["ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
             client.on(eventName, event.bind(null, Bot, client));
         } else {
             client.on(eventName, event.bind(null, Bot));

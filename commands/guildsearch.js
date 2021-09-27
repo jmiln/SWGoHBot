@@ -118,7 +118,7 @@ class GuildSearch extends Command {
             return super.error(message, message.language.get("COMMAND_GUILDSEARCH_CONFLICTING", Bot.codeBlock(checkArr2.map(c => "-" + c).join("\n"))));
         }
 
-        const msg = await message.channel.send(message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT"));
+        const msg = await message.channel.send({content: message.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT")});
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
 
         let guild = null;
@@ -128,17 +128,17 @@ class GuildSearch extends Command {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(msg, "Sorry, but it looks like that player is not in a guild", {edit: true});
             }
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: "Something Broke while getting your guild's roster"
                 },
                 description: Bot.codeBlock(e) + "Please try again in a bit."
-            }});
+            }]});
         }
         if (!guild || !guild.roster || !guild.roster.length) {
-            return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+            return msg.edit({content: message.language.get("BASE_SWGOH_NO_GUILD")});
         } else {
-            msg.edit("Found guild `" + guild.name + "`!");
+            msg.edit({content: "Found guild `" + guild.name + "`!"});
             const oldLen = guild.roster.length;
             guild.roster = guild.roster.filter(m => m.allyCode !== null);
             if (guild.roster.length !== oldLen) {
@@ -159,7 +159,7 @@ class GuildSearch extends Command {
             const gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
 
             if (!gRoster.length) {
-                return msg.edit("I can't find any players in the requested guild.");
+                return msg.edit({content: "I can't find any players in the requested guild."});
             }
             let guildGG;
             try {
@@ -228,13 +228,13 @@ class GuildSearch extends Command {
             }
 
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: `${guild.name} ${message.language.get("COMMAND_GUILDSEARCH_GEAR_SUM")}`
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         } else if (options.flags.stars) {
             // List an overview of the guild's upper starred characters
             let sortBy = null;
@@ -246,9 +246,9 @@ class GuildSearch extends Command {
             }
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
-                return msg.edit(message.language.get("BASE_SWGOH_NO_GUILD"));
+                return msg.edit({content: message.language.get("BASE_SWGOH_NO_GUILD")});
             } else {
-                msg.edit("Found guild `" + guild.name + "`!");
+                msg.edit({content: "Found guild `" + guild.name + "`!"});
                 const oldLen = guild.roster.length;
                 guild.roster = guild.roster.filter(m => m.allyCode !== null);
                 if (guild.roster.length !== oldLen) {
@@ -259,7 +259,7 @@ class GuildSearch extends Command {
             }
 
             if (!gRoster.length) {
-                return msg.edit("I can't find any players in the requested guild.");
+                return msg.edit({content: "I can't find any players in the requested guild."});
             }
             let guildGG;
             try {
@@ -355,13 +355,13 @@ class GuildSearch extends Command {
 
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
             const header = options.flags.ships ? message.language.get("COMMAND_GUILDSEARCH_SHIP_STAR_SUM") : message.language.get("COMMAND_GUILDSEARCH_CHAR_STAR_SUM");
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: guild.name + "'s " + header
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         } else if (options.subArgs.stat !== null) {
             // Looking for a stat
             const outArr = [];
@@ -516,13 +516,13 @@ class GuildSearch extends Command {
             }
 
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: guild.name
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         } else if (options.flags.mods) {
             // Give a general overview of important mods (6*, +15, +20 speed, +100 offense?)
             const availableSorts = ["speed", "offense", "6", "name"];
@@ -607,10 +607,10 @@ class GuildSearch extends Command {
                 });
             }
 
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {name: message.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name)},
                 fields: fields
-            }});
+            }]});
         } else {
             const availableSorts = ["gp", "gear", "name"];
             const sortType = options.subArgs.sort ? options.subArgs.sort.toLowerCase() : "name";
@@ -803,13 +803,13 @@ class GuildSearch extends Command {
 
             const footer = Bot.updatedFooter(guildChar.updated, message, "guild", cooldown);
             try {
-                msg.edit({embed: {
+                msg.edit({embeds: [{
                     author: {
                         name: message.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
                     },
                     fields: fields,
                     footer: footer
-                }});
+                }]});
             } catch (e) {
                 Bot.logger.error("ERROR", "Error sending message in guildsearch - " + e);
                 Bot.logger.error(fields);

@@ -122,14 +122,14 @@ class GuildUpdate extends Command {
             }
             case "view":
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
-                return message.channel.send({embed: {
+                return message.channel.send({embeds: [{
                     title: `Guild update settings for ${message.author.name}`,
                     description: [
                         `Enabled:  **${gu.enabled ? "ON" : "OFF"}**`,
                         `Channel:  **${gu.channel ? "<#" + gu.channel + ">" : "N/A"}**`,
                         `Allycode: **${gu.allycode ? gu.allycode : "N/A"}**`
                     ].join("\n")
-                }});
+                }]});
             default:
                 return super.error(message, message.language.get("COMMAND_ARENAWATCH_INVALID_OPTION"));
         }

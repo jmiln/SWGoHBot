@@ -3,12 +3,14 @@ module.exports.charChecklist = {
         ["GLREY",                   "Rey"],
         ["JEDIMASTERKENOBI",        "JM Kenobi"],
         ["GRANDMASTERLUKE",         "JM Luke"],
+        ["LORDVADER",               "Lord Vader"],
         ["SITHPALPATINE",           "SE Emperor"],
         ["SUPREMELEADERKYLOREN",    "SL Kylo Ren"]
     ],
     "Light Side": [
         ["C3POLEGENDARY",           "C-3PO"],
         ["C3POCHEWBACCA",           "C-3PO & Chewie"],
+        ["COMMANDERAHSOKA",         "Cmdr Ahsoka"],
         ["COMMANDERLUKESKYWALKER",  "CLS"],
         ["ENFYSNEST",               "Enfys Nest"],
         ["GENERALKENOBI",           "Gen. Kenobi"],
@@ -33,6 +35,7 @@ module.exports.charChecklist = {
         ["GRIEVOUS",                "Gen Grievous"],
         ["GEONOSIANBROODALPHA",     "Geo Brood Alpha"],
         ["KYLORENUNMASKED",         "Kylo Unmask"],
+        ["MAULS7",                  "Maul"],
         ["EMPERORPALPATINE",        "Palpatine"],
         ["MOTHERTALZIN",            "Talzin"],
         ["GRANDADMIRALTHRAWN",      "Thrawn"],
@@ -44,6 +47,7 @@ module.exports.shipChecklist = {
     "Capital Ships": [
         ["CAPITALCHIMAERA",           "Chimaera"],
         ["CAPITALJEDICRUISER",        "Endurance"],
+        ["CAPITALEXECUTOR",           "Executor"],
         ["CAPITALSTARDESTROYER",      "Executrix"],
         ["CAPITALFINALIZER",          "Finalizer"],
         ["CAPITALMONCALAMARICRUISER", "Home One"],

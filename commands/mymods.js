@@ -29,25 +29,25 @@ class MyMods extends Command {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
         if (err) {
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
                     name: "Error"
                 },
                 description: Bot.codeBlock(err)
-            }});
+            }]});
         }
 
-        const msg = await message.channel.send(message.language.get("COMMAND_MYMODS_WAIT"));
+        const msg = await message.channel.send({content: message.language.get("COMMAND_MYMODS_WAIT")});
 
         if (!options.subArgs.b) {
             let character;
             if (!searchChar) {
-                return msg.edit(message.language.get("BASE_SWGOH_MISSING_CHAR"));
+                return msg.edit({content: message.language.get("BASE_SWGOH_MISSING_CHAR")});
             }
 
             const chars = Bot.findChar(searchChar, Bot.characters);
             if (chars.length === 0) {
-                return msg.edit(message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+                return msg.edit({content: message.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar)});
             } else if (chars.length > 1) {
                 const charL = [];
                 const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
@@ -119,7 +119,7 @@ class MyMods extends Command {
                 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
                 Object.keys(slots).forEach(mod => {
                     let typeIcon  = slots[mod].type;
-                    let shapeIcon = modSlots[mod-1].toProperCase();
+                    let shapeIcon = Bot.toProperCase(modSlots[mod-1]);
                     const stats = slots[mod].stats;
                     // If the bot has the right perms to use external emotes, go for it
                     if (!message.guild || message.channel.permissionsFor(message.guild.me).has("USE_EXTERNAL_EMOJIS")) {
@@ -143,23 +143,23 @@ class MyMods extends Command {
                     });
                 }
 
-                msg.edit({embed: {
+                msg.edit({embeds: [{
                     author: {
                         name: `${player.name}'s ${character.name}`,
                         icon_url: character.avatarURL
                     },
                     fields: fields,
                     footer: footer
-                }});
+                }]});
             } else {
                 // They don't have the character
-                msg.edit({embed: {
+                msg.edit({embeds: [{
                     author: {
                         name: player.name + "'s " + character.name
                     },
                     description: message.language.get("BASE_SWGOH_LOCKED_CHAR"),
                     footer: footer
-                }});
+                }]});
             }
         } else {
             const checkableStats = {
@@ -200,7 +200,7 @@ class MyMods extends Command {
             let found = false;
             if (searchChar && searchChar.length) options.subArgs.b = options.subArgs.b + " " + searchChar;
             if (Object.keys(checkableStats).filter(c => c.toLowerCase() === options.subArgs.b.toLowerCase()).length > 0) {
-                options.subArgs.b =  options.subArgs.b.toProperCase();
+                options.subArgs.b = Bot.toProperCase(options.subArgs.b);
                 found = true;
             } else {
                 Object.keys(checkableStats).forEach(s => {
@@ -316,14 +316,14 @@ class MyMods extends Command {
                 });
             }
 
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: author,
                 description: "==============================\n" + outStr + "==============================",
                 fields: fields,
                 footer: {
                     text: updated ? message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) : ""
                 }
-            }});
+            }]});
         }
     }
 }

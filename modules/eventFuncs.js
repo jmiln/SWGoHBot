@@ -34,14 +34,16 @@ module.exports = (Bot, client) => {
             }
             if (announceMessage) announceMessage = announceMessage.replace(/`/g, "\\`");
             try {
-                await client.shard.broadcastEval(`
-                    (async () => {
-                        const targetGuild = await this.guilds.cache.find(g => g.id === "${guildID}");
-                        if (targetGuild) {
-                            (${Bot.announceMsg})(targetGuild, \`${announceMessage}\`, "${chan}", ${JSON.stringify(guildConf)})
-                        }
-                    })();
-                `);
+                await client.shard.broadcastEval(async (client, guildID, announceMessage, chan) => {
+                    const targetGuild = await client.guilds.cache.find(g => g.id === guildID);
+                    if (targetGuild) {
+                        client.announceMsg(targetGuild, announceMessage, chan, guildConf);
+                    }
+                }, {context: {
+                    guildID: guildID,
+                    announceMessage: announceMessage,
+                    chan: chan
+                }});
             } catch (e) {
                 Bot.logger.error(`Broke trying to announce event with ID: ${event.eventID} \n${e.stack}`);
             }

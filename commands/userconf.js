@@ -150,19 +150,19 @@ class UserConf extends Command {
                     // Add arg(s) to selected command
                     if (!Object.keys(command.conf.subArgs).length && !Object.keys(command.conf.flags).length) {
                         // If there are no subArgs or flags for the command, no point setting any
-                        return super.error(message, message.language.get("COMMAND_USERCONF_DEFAULTS_NO_FLAGS", command.help.name.toProperCase()));
+                        return super.error(message, message.language.get("COMMAND_USERCONF_DEFAULTS_NO_FLAGS", Bot.toProperCase(command.help.name)));
                     } else if (cmdBlacklist.includes(command.help.name)) {
                         return super.error(message, message.langauge.get("COMMAND_USERCONF_DEFAULTS_INVALID_CMD", command.help.name));
                     }
                     user.defaults[command.help.name] = flag.join(" ");
-                    message.channel.send(message.language.get("COMMAND_USERCONF_DEFAULTS_SET_DEFAULTS", command.help.name, flag.join(" ")));
+                    message.channel.send({content: message.language.get("COMMAND_USERCONF_DEFAULTS_SET_DEFAULTS", command.help.name, flag.join(" "))});
                 } else if (action === "clear") {
                     // Clear the flags etc. from this command
                     if (!user.defaults[command.help.name]) {
                         return super.error(message, message.language.get("COMMAND_USERCONF_DEFAULTS_NO_DEFAULTS", command.help.name));
                     }
                     delete user.defaults[command.help.name];
-                    message.channel.send(message.language.get("COMMAND_USERCONF_DEFAULTS_CLEARED", command.help.name));
+                    message.channel.send({content: message.language.get("COMMAND_USERCONF_DEFAULTS_CLEARED", command.help.name)});
                 }
                 await Bot.userReg.updateUser(userID, user);
                 break;
@@ -288,10 +288,10 @@ class UserConf extends Command {
                     ].join("\n")
                 });
                 const u = await message.client.users.fetch(userID);
-                return message.channel.send({embed: {
+                return message.channel.send({embeds: [{
                     author: {name: u.username},
                     fields: fields
-                }});
+                }]});
             }
             default: {
                 return super.error(message, "Try one of these: `allycodes, defaults, lang, arenaAlert, view`",{title: "Invalid option"});

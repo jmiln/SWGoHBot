@@ -17,7 +17,6 @@ class Arenarank extends Command {
         const currentRank = parseInt(args[0], 10);
         const rankHops = parseInt(args[1], 10) || 5;
         if (isNaN(currentRank) || !currentRank) {
-            // return message.channel.send();
             return super.error(message, message.language.get("COMMAND_ARENARANK_INVALID_NUMBER"), {example: "arenarank 55"});
         }
 
@@ -26,7 +25,7 @@ class Arenarank extends Command {
         }
 
         // If they are rank 1, don't bother calculating anything
-        if (currentRank === 1) return message.channel.send(message.language.get("COMMAND_ARENARANK_BEST_RANK"));
+        if (currentRank === 1) return message.channel.send({content: message.language.get("COMMAND_ARENARANK_BEST_RANK")});
 
         // Mark em as estimates if needed
         let est = false;
@@ -41,7 +40,7 @@ class Arenarank extends Command {
             if (newRank === 1) break;
         }
 
-        return message.channel.send(message.language.get("COMMAND_ARENARANK_RANKLIST", currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? "s" : "", est ? "**(estimate)**" : "", arenaBattles.join(" → ")));
+        return message.channel.send({content: message.language.get("COMMAND_ARENARANK_RANKLIST", currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? "s" : "", est ? "**(estimate)**" : "", arenaBattles.join(" → "))});
 
 
         function findNextRank(currentRank) {

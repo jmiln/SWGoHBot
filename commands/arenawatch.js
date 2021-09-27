@@ -57,6 +57,8 @@ class ArenaWatch extends Command {
             aw = {
                 enabled: false,
                 useMarksInLog: false,
+                report: "both",     // This can be climb, drop, or both
+                showvs: true,       // Show both sides of a battle between monitored players
                 arena: {
                     fleet: {
                         channel: null,
@@ -73,6 +75,8 @@ class ArenaWatch extends Command {
         }
         if (!aw.payout) aw.payout = defPayout;
         if (!aw.useMarksInLog) aw.useMarksInLog = false;
+        if (!aw.report) aw.report = "both";
+        if (!aw.showvs) aw.showvs = true;
         if (aw.channel && (!aw.arena.fleet || !aw.arena.char)) {
             const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
             const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
@@ -444,6 +448,33 @@ class ArenaWatch extends Command {
                 }
                 break;
             }
+            case "report": {
+                const [action] = args;
+                const possibles = ["both", "drop", "climb"];
+
+                if (!possibles.includes(action.toLowerCase())) {
+                    return super.error(message, `${action} is not a valid report type. Please choose from one of these: \`${possibles.join(", ")}\``);
+                }
+                aw.report = action.toLowerCase();
+                outLog.push(`Your report setting has changed to \`${action.toLowerCase()}\``);
+                break;
+            }
+            case "showvs": {
+                // Enable or disable showing when one person hits another
+                const [action] = args;
+                const possibles = ["true", "false", "yes", "no"];
+
+                if (!possibles.includes(action.toLowerCase())) {
+                    return super.error(message, `${action} is not valid. Please choose from one of these: \`${possibles.join(", ")}\``);
+                }
+                if (["true", "yes"].includes(action.toLowerCase())) {
+                    aw.showvs = true;
+                } else {
+                    aw.showvs = false;
+                }
+                outLog.push(`The log will ${aw.showvs ? "now" : "not"} show when someone hits someone else.`);
+                break;
+            }
             case "warn": {
                 // ;aw warn 123123123 <# of min> <none|both|char|fleet>
                 const code = args[0] ? parseInt(args[0].replace(/[^\d]/g, ""), 10) : null;
@@ -514,7 +545,7 @@ class ArenaWatch extends Command {
                     if (aw.arena.char.channel) {
                         charChan = message.guild ? message.guild.channels.cache.get(aw.arena.char.channel) : null;
                         if (!charChan) {
-                            charChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.char.channel}');`)
+                            charChan = await message.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.arena.char.channel), {context: aw})
                                 .then((thisChan) => {
                                     thisChan = thisChan.filter(a => !!a)[0];
                                     return thisChan ? `<#${thisChan.id}>` : "N/A";
@@ -524,7 +555,7 @@ class ArenaWatch extends Command {
                     if (aw.arena.fleet.channel) {
                         fleetChan = message.guild ? message.guild.channels.cache.get(aw.arena.fleet.channel) : null;
                         if (!fleetChan) {
-                            fleetChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.arena.fleet.channel}');`)
+                            fleetChan = await message.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.arena.fleet.channel), {context: aw})
                                 .then((thisChan) => {
                                     thisChan = thisChan.filter(a => !!a)[0];
                                     return thisChan ? `<#${thisChan.id}>` : "N/A";
@@ -534,7 +565,7 @@ class ArenaWatch extends Command {
                     if (aw.payout.char.channel) {
                         charPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.char.channel) : null;
                         if (!charPayoutChan) {
-                            charPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.char.channel}');`)
+                            charPayoutChan = await message.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.payout.char.channel), {context: aw})
                                 .then((thisChan) => {
                                     thisChan = thisChan.filter(a => !!a)[0];
                                     return thisChan ? `<#${thisChan.id}>` : "N/A";
@@ -544,7 +575,7 @@ class ArenaWatch extends Command {
                     if (aw.payout.fleet.channel) {
                         fleetPayoutChan = message.guild ? message.guild.channels.cache.get(aw.payout.fleet.channel) : null;
                         if (!fleetPayoutChan) {
-                            fleetPayoutChan = await message.client.shard.broadcastEval(`this.channels.cache.get('${aw.payout.fleet.channel}');`)
+                            fleetPayoutChan = await message.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.payout.fleet.channel), {context: aw})
                                 .then((thisChan) => {
                                     thisChan = thisChan.filter(a => !!a)[0];
                                     return thisChan ? `<#${thisChan.id}>` : "N/A";
@@ -588,7 +619,7 @@ class ArenaWatch extends Command {
                     });
 
 
-                    return message.channel.send({embed: {
+                    return message.channel.send({embeds: [{
                         title: "Arena Watch Settings",
                         description: [
                             `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
@@ -596,13 +627,13 @@ class ArenaWatch extends Command {
                             `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
                         ].join("\n"),
                         fields: fields
-                    }});
+                    }]});
                 } else {
                     if (Bot.isAllyCode(args[0])) {
                         const ac = parseInt(args[0].replace(/[^\d]/g, ""), 10);
                         const player = aw.allycodes.find(p => parseInt(p.allyCode, 10) === parseInt(ac, 10));
                         if (!player) return super.error(message, "I cannot find that player in your list.");
-                        return message.channel.send({embed: {
+                        return message.channel.send({embeds: [{
                             title: `Arena Watch Settings (${ac})`,
                             description: [
                                 `Name: **${player.name}**`,
@@ -611,7 +642,7 @@ class ArenaWatch extends Command {
                                 `Warn Mins: **${player.warn ? player.warn.min : "N/A"}**`,
                                 `Warn Arena: **${player.warn ? player.warn.arena : "N/A"}**`
                             ].join("\n")
-                        }});
+                        }]});
                     }
                 }
                 break;

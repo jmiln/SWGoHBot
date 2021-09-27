@@ -53,12 +53,12 @@ class Resources extends Command {
                 "value": msg
             });
         });
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {
                 name: message.language.get("COMMAND_RESOURCES_HEADER")
             },
             fields: fields
-        }});
+        }]});
     }
 }
 

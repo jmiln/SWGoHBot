@@ -1,6 +1,6 @@
 const Command = require("../base/Command");
 const nodeFetch = require("node-fetch");
-const {promisify, inspect} = require("util");      // eslint-disable-line no-unused-vars
+const {inspect} = require("util");      // eslint-disable-line no-unused-vars
 
 // const {statEnum, base, pct} = require("../data/statEnums");
 
@@ -53,7 +53,7 @@ class MyCharacter extends Command {
             character = chars[0];
         }
 
-        const msg = await message.channel.send("Please wait while I look up your profile.");
+        const msg = await message.channel.send({content: "Please wait while I look up your profile."});
 
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let pName;
@@ -124,7 +124,7 @@ class MyCharacter extends Command {
                 gearStr = Bot.expandSpaces(gearStr);
             }
             thisChar.skills.forEach(a => {
-                a.type = a.id.split("_")[0].replace("skill", "").toProperCase();
+                a.type = Bot.toProperCase(a.id.split("_")[0].replace("skill", ""));
                 if (a.tier === a.tiers) {
                     if (a.isZeta) {
                         // Maxed Zeta ability
@@ -199,6 +199,7 @@ class MyCharacter extends Command {
             };
 
             if (!stats) return super.error(message, "Something went wrong. Please make sure you have that character unlocked");
+            if (!stats.final) return super.error(message, "Something went wrong, I couldn't get the stats for that character");
 
             let keys = Object.keys(stats.final);
             if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
@@ -258,7 +259,7 @@ class MyCharacter extends Command {
 
             if (!charImg) {
                 // If it couldn't get an image for the character
-                return msg.edit({embed: {
+                return msg.edit({content: null, embeds: [{
                     author: {
                         name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
                         url: character.url,
@@ -272,39 +273,41 @@ class MyCharacter extends Command {
                         }
                     ].concat(fields),
                     footer: footer
-                }});
+                }]});
             } else {
                 // But if it could, go ahead and send it
-                return message.channel.send({embed: {
-                    author: {
-                        name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
-                        url: character.url,
-                        icon_url: character.avatarURL
-                    },
-                    thumbnail: { url: "attachment://image.png" },
-                    description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
-                    fields: [
-                        {
-                            name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                            value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
-                        }
-                    ].concat(fields),
-                    footer: footer,
+                return message.channel.send({
+                    embeds: [{
+                        author: {
+                            name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
+                            url: character.url,
+                            icon_url: character.avatarURL
+                        },
+                        thumbnail: { url: "attachment://image.png" },
+                        description: `\`${message.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
+                        fields: [
+                            {
+                                name: message.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                                value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
+                            }
+                        ].concat(fields),
+                        footer: footer,
+                    }],
                     files: [{
                         attachment: charImg,
                         name: "image.png"
                     }]
-                }});
+                });
             }
         } else {
             // You don't have the character
-            msg.edit({embed: {
+            return msg.edit({content: null, embeds: [{
                 author: {
                     name: pName + "'s " + character.name
                 },
                 description: message.language.get("BASE_SWGOH_LOCKED_CHAR"),
                 footer: footer
-            }});
+            }]});
         }
     }
 }

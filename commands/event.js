@@ -127,9 +127,9 @@ class Event extends Command {
                         const ev = res[0];
                         const evName = ev.evID.split("-").slice(1).join("-");
                         if (ev.success) {
-                            return message.channel.send(message.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(validEV.event.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
+                            return message.channel.send({content: message.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(validEV.event.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm"))});
                         } else {
-                            return message.channel.send(message.language.get("COMMAND_EVENT_NO_CREATE") + "\n\n**" + evName + "**\n" + ev.error);
+                            return message.channel.send({content: message.language.get("COMMAND_EVENT_NO_CREATE") + "\n\n**" + evName + "**\n" + ev.error});
                         }
                     });
                 } else {
@@ -163,7 +163,7 @@ class Event extends Command {
                         // TODO Maybe add in a special help for -json  ";ev -jsonHelp" since it'll need more of a description
                         const result = await validateEvents(jsonWhole);
                         if (result.filter(e => !e.valid).length) {
-                            return message.channel.send(message.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(result.map(e => e.str).join("\n\n"))));
+                            return message.channel.send({content: message.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(result.map(e => e.str).join("\n\n")))});
                         } else {
                             // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
                             await Bot.socket.emit("addEvents", result.map(e => e.event), (res) => {
@@ -178,7 +178,7 @@ class Event extends Command {
                                         evFailLog.push(message.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", evName, ev.error));
                                     }
                                 }
-                                return message.channel.send({embed: {
+                                return message.channel.send({embeds: [{
                                     title: "Event(s) add log",
                                     fields: [
                                         {
@@ -190,11 +190,11 @@ class Event extends Command {
                                             value: evFailLog.join("\n") || "N/A"
                                         }
                                     ]
-                                }});
+                                }]});
                             });
                         }
                     } else {
-                        return message.channel.send(message.language.get("COMMAND_EVENT_JSON_BAD_JSON"));
+                        return message.channel.send({content: message.language.get("COMMAND_EVENT_JSON_BAD_JSON")});
                     }
                 }
                 break;
@@ -207,7 +207,7 @@ class Event extends Command {
 
                     await Bot.socket.emit("getEventsByID", eventID, async function(event) {
                         // If it doesn't find the event, say so
-                        if (Array.isArray(event) && !event.length) return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
+                        if (Array.isArray(event) && !event.length) return message.channel.send({content: message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
 
                         // From here on, it should have the event found, so process for viewing
                         if (Array.isArray(event)) event = event[0];
@@ -233,12 +233,12 @@ class Event extends Command {
                             // If they want to show all available events without the eventMessage showing
                             eventString += message.language.get("COMMAND_EVENT_MESSAGE", removeTags(message, event.eventMessage));
                         }
-                        return message.channel.send(eventString);
+                        return message.channel.send({content: eventString});
                     });
                 } else {
                     await Bot.socket.emit("getEventsByGuild", message.guild.id, async function(eventList) {
                         // If it doesn't find any events, say so
-                        if (Array.isArray(eventList) && eventList.length === 0) return message.channel.send("I could not find any events for this server");
+                        if (Array.isArray(eventList) && eventList.length === 0) return message.channel.send({content: "I could not find any events for this server"});
 
                         // Otherwise, process the events for viewing, and display em
 
@@ -292,25 +292,32 @@ class Event extends Command {
                         const evArray = Bot.msgArray(array, "\n\n");
                         try {
                             if (evArray.length === 0) {
-                                return message.channel.send(message.language.get("COMMAND_EVENT_NO_EVENT"));
+                                return message.channel.send({content: message.language.get("COMMAND_EVENT_NO_EVENT")});
                             } else {
                                 if (evArray.length > 1) {
                                     evArray.forEach((evMsg, ix) => {
                                         if (guildConf["useEventPages"]) {
-                                            return message.channel.send(message.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg), {split: true});
+                                            return message.channel.send({content: message.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg)});
+                                            // TODO, {split: true});
                                         } else {
                                             if (ix === 0) {
-                                                return message.channel.send(message.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg), {split: true});
+                                                return message.channel.send({content: message.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg)});
+                                                // TODO , {split: true});
                                             } else {
-                                                return message.channel.send(evMsg, {split: true});
+                                                return message.channel.send({content: evMsg});
+                                                // TODO, {split: true});
                                             }
                                         }
                                     });
                                 } else {
                                     if (guildConf["useEventPages"]) {
-                                        return message.channel.send(message.language.get("COMMAND_EVENT_SHOW_PAGED",eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]), {split: true});
+                                        // TODO Figure out the split
+                                        return message.channel.send({content: message.language.get("COMMAND_EVENT_SHOW_PAGED",eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0])});
+                                        //, {split: true});
                                     } else {
-                                        return message.channel.send(message.language.get("COMMAND_EVENT_SHOW",eventCount, evArray[0]), {split: true});
+                                        // TODO Figure out the split
+                                        return message.channel.send({content: message.language.get("COMMAND_EVENT_SHOW",eventCount, evArray[0])});
+                                        //, {split: true});
                                     }
                                 }
                             }
@@ -321,7 +328,7 @@ class Event extends Command {
                 }
                 break;
             } case "delete": {
-                if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_DELETE_NEED_NAME"));
+                if (!args[0]) return message.channel.send({content: message.language.get("COMMAND_EVENT_DELETE_NEED_NAME")});
                 eventName = args[0];
                 const eventID = `${message.guild.id}-${eventName}`;
 
@@ -334,7 +341,7 @@ class Event extends Command {
                 });
                 break;
             } case "trigger": {
-                if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME"));
+                if (!args[0]) return message.channel.send({content: message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME")});
                 eventName = args[0];
                 const eventID =  `${message.guild.id}-${eventName}`;
 
@@ -344,7 +351,7 @@ class Event extends Command {
 
                 // Check if that name/ event already exists
                 if (!exists) {
-                    return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
+                    return message.channel.send({content: message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
                 } else {
                     // As long as it does exist, go ahead and try triggering it
                     await Bot.socket.emit("getEventsByID", eventID, async function(event) {
@@ -361,7 +368,7 @@ class Event extends Command {
                         }
                         if (channel && channel.permissionsFor(message.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                             try {
-                                return channel.send(announceMessage);
+                                return channel.send({content: announceMessage});
                             } catch (e) {
                                 Bot.logger.error("Event trigger Broke! " + announceMessage);
                             }
@@ -371,7 +378,7 @@ class Event extends Command {
                 break;
             } case "edit": {
                 // Edit an event
-                if (!args[0]) return message.channel.send(message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME"));
+                if (!args[0]) return message.channel.send({content: message.language.get("COMMAND_EVENT_TRIGGER_NEED_NAME")});
                 eventName = args.splice(0,1);
                 eventName = eventName.join("-");
 
@@ -383,7 +390,7 @@ class Event extends Command {
 
                 // Check if that name/ event already exists
                 if (!exists) {
-                    return message.channel.send(message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
+                    return message.channel.send({content: message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
                 } else {
                     const events = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
                     const event = events.dataValues;

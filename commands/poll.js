@@ -127,13 +127,13 @@ class Poll extends Command {
                 })
                     .then((thisPoll) => {
                         poll.pollID = thisPoll.dataValues.pollId;
-                        return message.channel.send(message.language.get("COMMAND_POLL_CREATED", message.author.tag, message.guildSettings.prefix), {embed: {
+                        return message.channel.send({content: message.language.get("COMMAND_POLL_CREATED", message.author.tag, message.guildSettings.prefix), embeds: [{
                             author: {
                                 name: poll.question
                             },
                             description: pollCheck(poll),
                             footer: getFooter(poll)
-                        }});
+                        }]});
                     });
                 break;
             }
@@ -145,21 +145,21 @@ class Poll extends Command {
                 } else {
                     if (poll.question.length > 256) {
                         // Should not happen, but just in case
-                        return message.channel.send({embed: {
+                        return message.channel.send({embeds: [{
                             author: {
                                 name: "Current Poll"
                             },
                             description: `**${poll.question}**\n\n${pollCheck(poll)}`,
                             footer: getFooter(poll)
-                        }});
+                        }]});
                     } else {
-                        return message.channel.send({embed: {
+                        return message.channel.send({embeds: [{
                             author: {
                                 name: poll.question
                             },
                             description: pollCheck(poll),
                             footer: getFooter(poll)
-                        }});
+                        }]});
                     }
                 }
             }
@@ -176,12 +176,12 @@ class Poll extends Command {
                     await Bot.database.models.polls.destroy({where: {id: pollID}})
                         .then(() => {
                             // Then send a message showing the final results
-                            return message.channel.send({embed: {
+                            return message.channel.send({embeds: [{
                                 author: {
                                     name: message.language.get("COMMAND_POLL_FINAL", "")
                                 },
                                 description: `**${poll.question}**\n${pollCheck(poll, true)}`
-                            }});
+                            }]});
                         })
                         .catch(() => {
                             // Or, if it breaks, tell them that it broke
@@ -210,9 +210,9 @@ class Poll extends Command {
                         await Bot.database.models.polls.update({poll: poll}, {where: {id: pollID}})
                             .then(() => {
                                 if (voted !== -1) {
-                                    return message.channel.send(message.language.get("COMMAND_POLL_CHANGED_OPT", poll.options[voted], poll.options[opt]));
+                                    return message.channel.send({content: message.language.get("COMMAND_POLL_CHANGED_OPT", poll.options[voted], poll.options[opt])});
                                 } else {
-                                    return message.channel.send(message.language.get("COMMAND_POLL_REGISTERED", poll.options[opt]));
+                                    return message.channel.send({content: message.language.get("COMMAND_POLL_REGISTERED", poll.options[opt])});
                                 }
                             });
                     }
@@ -222,8 +222,8 @@ class Poll extends Command {
             case "me": {
                 if (poll.question && poll.question.length) {
                     try {
-                        await message.author.send(message.language.get("COMMAND_POLL_ME1", poll.pollID, pollCheck(poll))).catch(() => {});
-                        return message.author.send(message.language.get("COMMAND_POLL_ME2", message.guildSettings.prefix, poll.pollID)).catch(() => {});
+                        await message.author.send({content: message.language.get("COMMAND_POLL_ME1", poll.pollID, pollCheck(poll))});
+                        return message.author.send({content: message.language.get("COMMAND_POLL_ME2", message.guildSettings.prefix, poll.pollID)});
                     } catch (e) {
                         return super.error(message, message.language.get("BASE_CANNOT_DM"));
                     }

@@ -5,10 +5,10 @@ module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
     client.shard.id = client.shard.ids[0];
 
-    const application = await client.fetchApplication();
+    const application = client.application;
     if (!Bot.isMain() && application.botPublic && application.owner.id !== "124579977474736129") {
         Bot.logger.error(Buffer.from("RkFUQUwgRVJST1I6IElOVkFMSUQgQk9UIFNFVFVQCgpHbyB0byB5b3VyIEJvdCdzIGFwcGxpY2F0aW9uIHBhZ2UgaW4gRGlzY29yZCBEZXZlbG9wZXJzIHNpdGUgYW5kIGRpc2FibGUgdGhlICJQdWJsaWMgQm90IiBvcHRpb24uCgpQbGVhc2UgY29udGFjdCB0aGUgc3VwcG9ydCB0ZWFtIGF0IFNXR29IQm90IEhRIC0gaHR0cHM6Ly9kaXNjb3JkLmdnL0Zmd0d2aHIgLSBmb3IgbW9yZSBpbmZvcm1hdGlvbi4=", "base64").toString("utf-8"));
-        if (client.shard) { await client.shard.broadcastEval("this.destroy()");
+        if (client.shard) { await client.shard.broadcastEval(client => client.destroy());
         } else { process.exit(); }
         return null;
     }
@@ -63,7 +63,7 @@ module.exports = async (Bot, client) => {
         // If it's the last shard being started, load all the emotes in
         if ((client.shard.id + 1) === client.shard.count) {
             Bot.logger.log("Loading up emotes");
-            await client.shard.broadcastEval("this.loadAllEmotes()");
+            await client.shard.broadcastEval(client => client.loadAllEmotes());
         }
     } else {
         await client.loadAllEmotes();
@@ -73,7 +73,11 @@ module.exports = async (Bot, client) => {
 
     // Sets the status as the current server count and help command
     const playingString =  `${Bot.config.prefix}help ~ swgohbot.com`;
-    client.user.setPresence({ game: { name: playingString, type: 0 } }).catch(console.error);
+    try {
+        client.user.setPresence({ activity: { name: playingString, type: 0} });
+    } catch (err) {
+        console.log("[READY] Error when setting presence.\n" + err);
+    }
 
     // Update the player/ guild count every 5 min
     setInterval(async () => {

@@ -55,7 +55,7 @@ class Logger {
             // If it's set to, send it to the webhook too
             if (this.Bot.config.logs.logToChannel && this.Bot.config.webhookURL) {
                 this.Bot.sendWebhook(this.Bot.config.webhookURL, {
-                    title: type ? type.toProperCase() + shard : null,
+                    title: type ? this.Bot.toProperCase(type) + shard : null,
                     description: content,
                     color: color ? color : null,
                     footer: {text: time}

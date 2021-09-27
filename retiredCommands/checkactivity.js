@@ -169,12 +169,12 @@ class CheckAct extends Command {
             });
 
             const desc = fields.shift();
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {name: message.language.get("COMMAND_CHECKACTIVITY_LOG_HEADER", message.guild.name, objArr.length)},
                 description: desc.value,
                 fields: fields,
                 color: "#00FF00"
-            }});
+            }]});
         } else {
             // Make sure it's a valid userID
             if (!Bot.isUserID(userID)) {

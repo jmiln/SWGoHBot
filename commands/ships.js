@@ -44,19 +44,19 @@ class Ships extends Command {
             });
             fields.push({
                 "name": message.language.get("COMMAND_SHIPS_CREW"),
-                "value": crew.join(", ").toProperCase()
+                "value": Bot.toProperCase(crew.join(", "))
             });
         }
         if (unit.factions.length) {
             fields.push({
                 "name": message.language.get("COMMAND_SHIPS_FACTIONS"),
-                "value": unit.factions.join(", ").toProperCase()
+                "value": Bot.toProperCase(unit.factions.join(", "))
             });
         }
         if (shipAbilities.length) {
             for (const ability of shipAbilities) {
                 const a = {
-                    type: ability.skillId.split("_")[0].replace("skill", "").toProperCase(),
+                    type: Bot.toProperCase(ability.skillId.split("_")[0].replace("skill", "")),
                     abilityCooldown: ability.cooldown,
                     abilityDesc: ability.desc
                 };
@@ -73,15 +73,15 @@ class Ships extends Command {
             });
         }
         message.channel.send({
-            embed: {
+            embeds: [{
                 "color": `${ship.side === "light" ? "#5114e0" : "#e01414"}`,
                 "author": {
-                    "name": ship.name.toProperCase(),
+                    "name": Bot.toProperCase(ship.name),
                     "url": ship.url,
                     "icon_url": ship.avatarURL
                 },
                 "fields": fields
-            }
+            }]
         });
     }
 }

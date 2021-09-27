@@ -99,7 +99,7 @@ class Randomchar extends Command {
         }
         const charString = charOut.join("\n");
 
-        return message.channel.send("```\n" + charString + "```");
+        return message.channel.send({content: Bot.codeBlock(charString)});
     }
 }
 module.exports = Randomchar;

@@ -21,11 +21,11 @@ class Showconf extends Command {
         if (args[0] && options && options.level >= 9) {
             let found = false;
             if (!client.guilds.cache.has(args[0]) && client.shard) {
-                const names = await client.shard.broadcastEval(`
-                    if (this.guilds.cache.has('${args[0]}')) {
-                        this.guilds.cache.get('${args[0]}').name;
+                const names = await client.shard.broadcastEval((client, args) => {
+                    if (client.guilds.cache.has(args[0])) {
+                        return client.guilds.cache.get(args[0]).name;
                     }
-                `);
+                }, {context: args});
                 names.forEach(gName => {
                     if (gName !== null) {
                         found = true;
@@ -51,11 +51,11 @@ class Showconf extends Command {
         var array = [];
         if (guildConf) {
             for (const key of Object.keys(Bot.config.defaultSettings)) {
-                const value = key === "changelogWebhook" ? util.inspect(guildConf[key]).slice(0, 92) + "..." : util.inspect(guildConf[key]);
+                const value = key === "changelogWebhook" && guildConf[key]?.length ? util.inspect(guildConf[key]).slice(0, 92) + "..." : util.inspect(guildConf[key]);
                 array.push(`* ${key}: ${value}`);
             }
             var configKeys = array.join("\n");
-            return message.channel.send(message.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName), {split: true});
+            return message.channel.send({content: message.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName)}); //TODO , {split: true});
         } else {
             Bot.logger.error("Something broke in showconf");
         }

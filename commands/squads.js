@@ -56,7 +56,7 @@ class Squads extends Command {
                 // They've chosen a list, show em the phase list
                 const outList = squadList[list].phase.map((p, ix) => {
                     if (p && p.name) {
-                        return "`" + (ix + 1) + "`"+ ": " + p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT").trim();
+                        return "`" + (ix + 1) + "`"+ ": " + Bot.toProperCase(p.name.replace("&amp;", "&")).replace(/aat/gi, "AAT").trim();
                     } else {
                         let tmp = p.team;
                         if (tmp === tmp.toUpperCase()) {
@@ -66,16 +66,16 @@ class Squads extends Command {
                             }
                             tmp = char.name;
                         }
-                        return "`" + (ix + 1) + "`"+ ": " + tmp.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT").trim();
+                        return "`" + (ix + 1) + "`"+ ": " + Bot.toProperCase(tmp.replace("&amp;", "&")).replace(/aat/gi, "AAT").trim();
                     }
                 }).join("\n");
-                return super.error(message, message.language.get("COMMAND_SQUADS_SHOW_LIST", list.toProperCase().replace(/aat/gi, "AAT"), outList), {title: "Missing phase", example: example});
+                return super.error(message, message.language.get("COMMAND_SQUADS_SHOW_LIST", Bot.toProperCase(list).replace(/aat/gi, "AAT"), outList), {title: "Missing phase", example: example});
             } else if (phase > 0 && phase <= squadList[list].phase.length) {
                 phase = phase - 1;
                 const sqArray = [];
                 if (list !== "twcounters") {
                     if (squadList[list].phase[phase].name) {
-                        squadList[list].phase[phase].name = squadList[list].phase[phase].name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT");
+                        squadList[list].phase[phase].name = Bot.toProperCase(squadList[list].phase[phase].name.replace("&amp;", "&")).replace(/aat/gi, "AAT");
                     }
                     for (const s of squadList[list].phase[phase].squads) {
                         let outStr = s.name ? `**${s.name}**\n` : "";
@@ -111,15 +111,15 @@ class Squads extends Command {
 
                         footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
                     }
-                    return message.channel.send({embed: {
+                    return message.channel.send({embeds: [{
                         author: {
-                            name: squadList[list].name.toProperCase().replace(/aat/gi, "AAT")
+                            name: Bot.toProperCase(squadList[list].name).replace(/aat/gi, "AAT")
                         },
                         description: `**${squadList[list].phase[phase].name}**\n${squadList[list].rarity}* ${shipEv ? "" : `| g${squadList[list].gear}`} | lvl${squadList[list].level}`,
                         fields: fields,
                         footer: footer,
                         color: "#00FF00"
-                    }});
+                    }]});
                 } else {
                     const fields = [];
                     let counterName = squadList[list].phase[phase].team;
@@ -171,18 +171,18 @@ class Squads extends Command {
 
                         footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
                     }
-                    return message.channel.send({embed: {
+                    return message.channel.send({embeds: [{
                         author: {
                             name: `Counters for ${counterName}`
                         },
                         fields: fields,
                         footer: footer,
                         color: "#00FF00"
-                    }});
+                    }]});
                 }
 
             } else {
-                const outList = squadList[list].phase.map((p, ix) => "`" + (ix + 1) + "`"+ ": " + (p.name ? p.name.replace("&amp;", "&").toProperCase().replace(/aat/gi, "AAT") : "N/A")).join("\n");
+                const outList = squadList[list].phase.map((p, ix) => "`" + (ix + 1) + "`"+ ": " + (p.name ? Bot.toProperCase(p.name.replace("&amp;", "&")).replace(/aat/gi, "AAT") : "N/A")).join("\n");
                 return super.error(message, message.language.get("COMMAND_SQUAD_INVALID_PHASE", outList), {example: example});
             }
         } else {

@@ -33,7 +33,7 @@ class RaidDamage extends Command {
         }
 
         if (!phase) {
-            return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_PHASE_STR", thisRaid.name, Object.keys(thisRaid.phases).map(ix => "`" + ix + "`: " + thisRaid.phases[ix].name.toProperCase()).join("\n")), {
+            return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_PHASE_STR", thisRaid.name, Object.keys(thisRaid.phases).map(ix => "`" + ix + "`: " + Bot.toProperCase(thisRaid.phases[ix].name)).join("\n")), {
                 title: message.language.get("COMMAND_RAIDDAMAGE_MISSING_PHASE"),
                 example: examples.join("\n")
             });
@@ -43,7 +43,7 @@ class RaidDamage extends Command {
         }
         const thisPhase = thisRaid.phases[phase];
         if (!thisPhase) {
-            return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_PHASE_STR", thisRaid.name, Object.keys(thisRaid.phases).map(ix => "`" + ix + "`: " + thisRaid.phases[ix].name.toProperCase()).join("\n")), {
+            return super.error(message, message.language.get("COMMAND_RAIDDAMAGE_PHASE_STR", thisRaid.name, Object.keys(thisRaid.phases).map(ix => "`" + ix + "`: " + Bot.toProperCase(thisRaid.phases[ix].name)).join("\n")), {
                 title: message.language.get("COMMAND_RAIDDAMAGE_INVALID_PHASE"),
                 example: examples.join("\n")
             });
@@ -72,12 +72,12 @@ class RaidDamage extends Command {
             outAmt = (100 * (tmpAmt / thisPhase.dmg)).toFixed(2).toLocaleString() + "%";
         }
 
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {
-                name: message.language.get("COMMAND_RAIDDAMAGE_OUT_HEADER", thisRaid.name.toProperCase(), thisPhase.name.toProperCase())
+                name: message.language.get("COMMAND_RAIDDAMAGE_OUT_HEADER", Bot.toProperCase(thisRaid.name), Bot.toProperCase(thisPhase.name))
             },
             description: percent ? message.language.get("COMMAND_RAIDDAMAGE_OUT_PERCENT", amt, outAmt) : message.language.get("COMMAND_RAIDDAMAGE_OUT_DMG", amt, outAmt)
-        }});
+        }]});
     }
 }
 

@@ -26,11 +26,7 @@ class Faction extends Command {
         }
         if (args[0].toLowerCase() === "me" || Bot.isAllyCode(args[0]) || Bot.isUserID(args[0])) {
             allyCode = args.splice(0, 1);
-            try {
-                allyCode = await Bot.getAllyCode(message, allyCode);
-            } catch (e) {
-                return super.error(message, e.message);
-            }
+            allyCode = await Bot.getAllyCode(message, allyCode);
         }
 
         const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
@@ -123,7 +119,7 @@ class Faction extends Command {
                 if (msgArray.length > 1) {
                     msgArray.forEach((m, ix) => {
                         fields.push({
-                            name: ix+1,
+                            name: `${ix+1}`,
                             value: m
                         });
                     });
@@ -138,24 +134,24 @@ class Faction extends Command {
                 }
 
                 const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-                return message.channel.send({embed: {
+                return message.channel.send({embeds: [{
                     author: {
-                        name: player.name + "'s matches for " + searchName.toProperCase()
+                        name: player.name + "'s matches for " + Bot.toProperCase(searchName)
                     },
                     description: desc,
                     fields: fields,
                     footer: footer
-                }});
+                }]});
             } else {
                 return super.error(message, message.language.get("COMMAND_FACTION_USAGE", message.guildSettings.prefix), {title: message.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
             }
         } else {
-            return message.channel.send({embed: {
+            return message.channel.send({embeds: [{
                 author: {
-                    name: "Matches for " + searchName.toProperCase()
+                    name: "Matches for " + Bot.toProperCase(searchName)
                 },
                 description: chars.map(c => c.nameKey).join("\n")
-            }});
+            }]});
         }
     }
 }

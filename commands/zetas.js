@@ -31,6 +31,7 @@ class Zetas extends Command {
         const {allyCode, searchChar, err} = await super.getUserAndChar(message, args, false);
 
         if (err) {
+            console.log(err);
             return super.error(message, err);
         }
 
@@ -57,7 +58,7 @@ class Zetas extends Command {
             }
         }
 
-        const msg = await message.channel.send(options.flags.g ? message.language.get("COMMAND_ZETA_WAIT_GUILD") : message.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas"));
+        const msg = await message.channel.send({content: options.flags.g ? message.language.get("COMMAND_ZETA_WAIT_GUILD") : message.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas")});
 
         const cooldown = await Bot.getPlayerCooldown(message.author.id);
         let player;
@@ -67,7 +68,7 @@ class Zetas extends Command {
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
             Bot.logger.error("Error: Broke while trying to get player data in zetas: " + e);
-            return super.error(msg, (message.language.get("BASE_SWGOH_NO_ACCT")), {edit: true});
+            return super.error(msg, message.language.get("BASE_SWGOH_NO_ACCT"), {edit: true});
         }
 
         if (!player || !player.roster) return super.error(message, "I cannot get this player's info right not. Please try again later");
@@ -139,13 +140,13 @@ class Zetas extends Command {
             }
 
             const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-            msg.edit({embed: {
+            msg.edit({embeds: [{
                 color: "#000000",
                 author: author,
                 description: desc.join("\n"),
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         } else if (options.flags.r) {
             // Zeta recommendations
             const zetas = Bot.zetaRec;
@@ -153,7 +154,7 @@ class Zetas extends Command {
 
             const sortBy = searchChar ? searchChar : "versa";
             if (!zetas || !zetas.zetas) {
-                return super.error(msg, ("Something broke, I can't find the zetas list"), {edit: true});
+                return super.error(msg, "Something broke, I can't find the zetas list", {edit: true});
             }
             const zetaSort = sortBy ? zetas.zetas.sort((a, b) => a[sortBy] - b[sortBy]) : zetas.zetas.sort((a, b) => a.toon - b.toon);
             for (let ix = 0; ix < zetaSort.length; ix ++) {
@@ -208,14 +209,14 @@ class Zetas extends Command {
                 });
             }
             const footer = Bot.updatedFooter(player.updated, message, "player", cooldown);
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_ZETA_REC_AUTH", zetaLen, player.name)
                 },
                 description: desc,
                 fields: fields,
                 footer: footer
-            }});
+            }]});
         } else if (options.flags.g) {
             let guild = null;
             let guildGG = null;
@@ -291,13 +292,13 @@ class Zetas extends Command {
             }
 
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            return msg.edit({embed: {
+            return msg.edit({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
                 },
                 fields: fields,
                 footer: footer
-            }});
+            }]});
 
         }
     }

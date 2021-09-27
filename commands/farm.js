@@ -27,6 +27,7 @@ class Farm extends Command {
         if (options.flags.ships || !chars?.length) {
             // If they are looking for a ship or if the char search doesn't work, then check ships in case
             chars = Bot.findChar(searchChar, Bot.ships, true);
+            options.flags.ships = true;
         }
         let character;
         if (!chars?.length) {
@@ -44,40 +45,36 @@ class Farm extends Command {
             return super.error(message, "[FARM] Broke trying to get the unit.");
         }
 
-        let outList = [];
+        const outList = [];
+        let unitLocs = null;
         if (options.flags.ships) {
-            const ship = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
-            if (ship) {
-                const shopLoc = ship.locations.filter(l => l.cost);
-                if (shopLoc.length) {
-                    outList = outList.concat(shopLoc.map(l => `${l.type} - ${l.cost.replace("/", " per ")} shards`));
-                }
-            }
+            unitLocs = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
         } else {
-            const char = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
-            if (char) {
-                char.locations.forEach(loc => {
-                    if (loc.cost) {
-                        // This will be anything in a store
-                        outList.push( `${loc.type} - ${loc.cost.replace("/", " per ")} shards`);
-                    } else if (loc.level) {
-                        // It's a node, fleet, cantina, light/ dark side
-                        loc.type = loc.type.replace("Hard Modes (", "").replace(")", "");
-                        if (loc.type === "L") {
-                            outList.push(`Light Side Hard ${loc.level}`);
-                        } else if (loc.type === "D") {
-                            outList.push(`Dark Side Hard ${loc.level}`);
-                        } else if (loc.type === "Fleet") {
-                            outList.push(`Fleet Hard ${loc.level}`);
-                        } else if (loc.type === "Cantina") {
-                            outList.push(`Cantina ${loc.level}`);
-                        }
-                    } else if (loc.name) {
-                        // This will be any of the events
-                        outList.push(Bot.expandSpaces(`__${loc.type}__: ${loc.name}`));
+            unitLocs = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
+        }
+
+        if (unitLocs) {
+            unitLocs.locations.forEach(loc => {
+                if (loc.cost) {
+                    // This will be anything in a store
+                    outList.push( `${loc.type} - ${loc.cost.replace("/", " per ")} shards`);
+                } else if (loc.level) {
+                    // It's a node, fleet, cantina, light/ dark side
+                    loc.type = loc.type.replace("Hard Modes (", "").replace(")", "");
+                    if (loc.type === "L") {
+                        outList.push(`Light Side Hard ${loc.level}`);
+                    } else if (loc.type === "D") {
+                        outList.push(`Dark Side Hard ${loc.level}`);
+                    } else if (loc.type === "Fleet") {
+                        outList.push(`Fleet Hard ${loc.level}`);
+                    } else if (loc.type === "Cantina") {
+                        outList.push(`Cantina ${loc.level}`);
                     }
-                });
-            }
+                } else if (loc.name) {
+                    // This will be any of the events
+                    outList.push(Bot.expandSpaces(`__${loc.type}__: ${loc.name}`));
+                }
+            });
         }
         if (!outList.length) {
             return super.error(message, message.language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
@@ -89,14 +86,14 @@ class Farm extends Command {
                 value: Bot.codeBlock(options.defaults)
             });
         }
-        return message.channel.send({embed: {
+        return message.channel.send({embeds: [{
             author: {
                 name: character.name + message.language.get("COMMAND_FARM_LOCATIONS")
             },
             color: character.side === "light" ? "#0055ff" : "#e01414",
             description: `**${outList.map(f => "* " + f).join("\n")}**`,
             fields: fields
-        }});
+        }]});
     }
 }
 
