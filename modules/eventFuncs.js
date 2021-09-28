@@ -7,9 +7,6 @@ module.exports = (Bot, client) => {
     const hourMS = 3600000;
     const minMS  = 60000;
 
-    // The scheduler for events
-    Bot.schedule = require("node-schedule");
-
     // Handle any events that have been found via the checker
     Bot.manageEvents = async (eventList) => {
         for (const event of eventList) {
