@@ -593,7 +593,7 @@ module.exports = (Bot, client) => {
             Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
         // console.log(err);
-        Bot.logger.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
+        console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
         try {
             if (Bot.config.logs.logToChannel) {
                 client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
