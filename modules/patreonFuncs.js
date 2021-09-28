@@ -101,8 +101,12 @@ module.exports = (Bot, client) => {
                 const now = moment();
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
-                if (!player || !player.arena) continue;
-                if (!player.arena?.char?.rank && !player.arena?.fleet?.rank) continue;
+                if (!player || !player.arena) {
+                    continue;
+                }
+                if (!player.arena?.char?.rank && !player.arena?.fleet?.rank) {
+                    continue;
+                }
 
                 if (player.arena?.char?.rank) {
                     if (["both", "char"].includes(user.arenaAlert.arena)) {
@@ -118,37 +122,37 @@ module.exports = (Bot, client) => {
                             try {
                                 if (user.arenaAlert.payoutWarning > 0) {
                                     if (user.arenaAlert.payoutWarning  === minTil) {
-                                        pUser.send({embed: {
+                                        pUser.send({embeds: [{
                                             author: {name: "Arena Payout Alert"},
                                             description: `${player.name}'s character arena payout is in **${minTil}** minutes!\nYour current rank is ${player.arena.char.rank}`,
                                             color: "#00FF00"
-                                        }})
                                             .catch(() => {});
                                         //.catch(err => console.log("[patFunc getRanks]", err));
+                                        }]})
                                     }
                                 }
                                 if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                                    pUser.send({embed: {
+                                    pUser.send({embeds: [{
                                         author: {name: "Character arena"},
                                         description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
                                         color: "#00FF00"
-                                    }})
                                         .catch(() => {});
                                     //.catch(err => console.log("[patFunc getRanks]", err));
+                                    }]})
                                 }
 
                                 if (player.arena.char.rank > acc.lastCharRank) {
                                     // DM user that they dropped
-                                    pUser.send({embed: {
+                                    pUser.send({embeds: [{
                                         author: {name: "Character Arena"},
                                         description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
                                         color: "#ff0000",
                                         footer: {
                                             text: payoutTime
                                         }
-                                    }})
                                         .catch(() => {});
                                     //.catch(err => console.log("[patFunc getRanks]", err));
+                                    }]})
                                 }
                             } catch (e) {
                                 Bot.logger.error("Broke getting ranks: " + e);
@@ -172,37 +176,37 @@ module.exports = (Bot, client) => {
                             try {
                                 if (user.arenaAlert.payoutWarning > 0) {
                                     if (user.arenaAlert.payoutWarning  === minTil) {
-                                        pUser.send({embed: {
+                                        pUser.send({embeds: [{
                                             author: {name: "Arena Payout Alert"},
                                             description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
                                             color: "#00FF00"
-                                        }})
                                             .catch(() => {});
                                         //.catch(err => console.log("[patFunc getRanks]", err));
+                                        }]})
                                     }
                                 }
 
                                 if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                                    pUser.send({embed: {
+                                    pUser.send({embeds: [{
                                         author: {name: "Fleet arena"},
                                         description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
                                         color: "#00FF00"
-                                    }})
                                         .catch(() => {});
                                     //.catch(err => console.log("[patFunc getRanks]", err));
+                                    }]})
                                 }
 
                                 if (player.arena.ship.rank > acc.lastShipRank) {
-                                    pUser.send({embed: {
+                                    pUser.send({embeds: [{
                                         author: {name: "Fleet Arena"},
                                         description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
                                         color: "#ff0000",
                                         footer: {
                                             text: payoutTime
                                         }
-                                    }})
                                         .catch(() => {});
                                     //.catch(err => console.log("[patFunc getRanks]", err));
+                                    }]})
                                 }
                             } catch (e) {
                                 Bot.logger.error("Broke getting ranks: " + e);
