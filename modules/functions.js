@@ -659,6 +659,7 @@ module.exports = (Bot, client) => {
      */
     Bot.msgArray = (arr, join="\n", maxLen=1900) => {
         const messages = [];
+        if (!Array.isArray(arr)) arr = arr.toString().split("\n");
         arr.forEach((elem) => {
             elem = Bot.expandSpaces(elem);
             if (typeof elem !== "string") Bot.logger.error("In msgArray, " + elem + " Is not a string!");
