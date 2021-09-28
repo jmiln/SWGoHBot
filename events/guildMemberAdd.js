@@ -1,7 +1,11 @@
 const {inspect} = require("util");
-module.exports = async (Bot, member, client) => {
+module.exports = async (Bot, client, member) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
+    if (!guild) {
+        console.log("Missing guild");
+        return;
+    }
     const guildConf = await Bot.getGuildConf(guild.id);
 
     // Make sure the config option exists. Should not need this, but just in case

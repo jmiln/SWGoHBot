@@ -1,5 +1,5 @@
 const {inspect} = require("util");
-module.exports = async (Bot, member, client) => {
+module.exports = async (Bot, client, member) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
     const guildConf = await Bot.getGuildConf(guild.id);
