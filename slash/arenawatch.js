@@ -374,7 +374,7 @@ class ArenaWatch extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot, interaction, options) {
         let target = interaction.options.getSubcommandGroup(false);
         if (!target) {
             target = interaction.options.getSubcommand();

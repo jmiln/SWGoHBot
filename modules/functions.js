@@ -1160,7 +1160,7 @@ module.exports = (Bot, client) => {
         return [relicLvls, avgRelic];
     };
 
-    Bot.toProperCase = function (strIn) {
+    Bot.toProperCase = function(strIn) {
         return strIn.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });

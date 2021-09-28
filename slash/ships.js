@@ -31,9 +31,9 @@ class Ships extends Command {
             return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", ships.map(s => {
                 let outStr = null;
                 if (s.crew?.length) {
-                    outStr = `${s.name}${"\n" + s.crew.map(c => "- " + c).join("\n") + "\n"}`
+                    outStr = `${s.name}${"\n" + s.crew.map(c => "- " + c).join("\n") + "\n"}`;
                 } else {
-                    outStr = s.name
+                    outStr = s.name;
                 }
                 return outStr;
             }).join("\n")));

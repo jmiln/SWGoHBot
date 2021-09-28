@@ -100,7 +100,7 @@ class Zetas extends Command {
             // Display zetas for a single player
             const zetas = {};
             let count = 0;
-            let character = null;
+            const character = null;
 
             // This will grab the character info for any entered character
             async function getCharInfo(thisChar) {
@@ -129,7 +129,7 @@ class Zetas extends Command {
             const desc = [], author = {}, fields = [];
             if (character) {
                 // Grab just the one character from the roster
-                let char = player.roster.find(c => c.defId === character.uniqueName);
+                const char = player.roster.find(c => c.defId === character.uniqueName);
                 await getCharInfo(char);
                 const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);
 
@@ -142,7 +142,7 @@ class Zetas extends Command {
                 }
             } else {
                 // Loop through and get all of the applicable ones
-                for (let char of player.roster) {
+                for (const char of player.roster) {
                     await getCharInfo(char);
                 }
                 const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);

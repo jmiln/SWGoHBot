@@ -46,25 +46,25 @@ class Deploy extends Command {
                 }
             }
 
-             // Then filter out global commands by inverting the filter
-             const globalCmds = message.client.slashcmds.filter(c => !c.guildOnly).map(c => c.commandData);
-             // Get the currently deployed global commands
-             const currentGlobalCommands = await message.client.application?.commands?.fetch()
+            // Then filter out global commands by inverting the filter
+            const globalCmds = message.client.slashcmds.filter(c => !c.guildOnly).map(c => c.commandData);
+            // Get the currently deployed global commands
+            const currentGlobalCommands = await message.client.application?.commands?.fetch();
 
-             const { newComs: newGlobalComs, changedComs: changedGlobalComs } = checkCmds(globalCmds, currentGlobalCommands);
+            const { newComs: newGlobalComs, changedComs: changedGlobalComs } = checkCmds(globalCmds, currentGlobalCommands);
 
-             if (newGlobalComs.length) {
-                 for (const newGlobalCom of newGlobalComs) {
-                     console.log(`Adding ${newGlobalCom.name} to Global commands`);
-                     await message.client.application?.commands.create(newGlobalCom);
-                 }
-             }
-             if (changedGlobalComs.length) {
-                 for (const diffGlobalCom of changedGlobalComs) {
-                     console.log(`Updating ${diffGlobalCom.com.name} in Global commands`);
-                     await message.client.application?.commands.edit(diffGlobalCom.id, diffGlobalCom.com);
-                 }
-             }
+            if (newGlobalComs.length) {
+                for (const newGlobalCom of newGlobalComs) {
+                    console.log(`Adding ${newGlobalCom.name} to Global commands`);
+                    await message.client.application?.commands.create(newGlobalCom);
+                }
+            }
+            if (changedGlobalComs.length) {
+                for (const diffGlobalCom of changedGlobalComs) {
+                    console.log(`Updating ${diffGlobalCom.com.name} in Global commands`);
+                    await message.client.application?.commands.edit(diffGlobalCom.id, diffGlobalCom.com);
+                }
+            }
 
             const outLog = [];
             // The new guild commands
@@ -99,7 +99,7 @@ class Deploy extends Command {
                         fields: outLog
                     }
                 ]
-            })
+            });
         } catch (err) {
             Bot.logger.error(inspect(err, {depth: 5}));
         }
@@ -143,7 +143,7 @@ class Deploy extends Command {
                                             if (c.name !== thisChoice.name || c.value !== thisChoice.value) {
                                                 // They have a different choice here, needs updating
                                                 console.log("Diff choices");
-                                                console.log(c, thisOpt);
+                                                console.log(c, thisChoice);
                                                 isDiff = true;
                                                 return;
                                             }
@@ -153,7 +153,7 @@ class Deploy extends Command {
                                     // One or both have no choices
                                     if (cmd.options[ix]?.choices?.length && thisCom.options[ix]?.choices?.length) {
                                         // At least one of em has an entry, so it needs updating
-                                        console.log("choiceLen2 is diff")
+                                        console.log("choiceLen2 is diff");
                                         isDiff = true;
                                     } else {
                                         // Neither of em have any, so nothing to do here

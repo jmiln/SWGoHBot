@@ -1,4 +1,4 @@
-const moment = require("moment-timezone")
+const moment = require("moment-timezone");
 const Command = require("../base/slashCommand");
 const { typedDefaultSettings } = require("../config.js");
 // const { inspect } = require("util");
@@ -33,7 +33,7 @@ Object.keys(typedDefaultSettings).forEach(set => {
         name: set.replace(/[A-Z]/g, char => "_" + char.toLowerCase()),
         type: thisSet.type,
         description: thisSet.description
-    }
+    };
     if (thisSet?.choices) {
         optOut["choices"] = thisSet.choices.map(choice => {
             return {
@@ -91,7 +91,7 @@ class SetConf extends Command {
                     continue;
                 } else if (key === "timezone" && !moment.tz.zone(settingStr)) {
                     // If it's not a valid timezone, let em know
-                    errors.push(message.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
+                    errors.push(interaction.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
                     continue;
                 }
             } else if (keyType === "INTEGER") {

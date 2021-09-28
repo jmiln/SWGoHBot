@@ -545,10 +545,20 @@ class Guilds extends Command {
             // Get general stats on how many of certain characters the guild has and at what gear
             // Possibly put this in the guildConf so guilds can have custom lists?
             const charOut = twCategoryFormat(charChecklist, gearLvls, 19, guildMembers, false);
-            fields.push(...charOut);
+            fields.push(...charOut.map(char => {
+                return {
+                    name: Bot.toProperCase(char.name),
+                    value: char.value
+                };
+            }));
 
             const shipOut = twCategoryFormat(shipChecklist, gearLvls, 8, guildMembers, true);
-            fields.push(...shipOut);
+            fields.push(...shipOut.map(ship => {
+                return {
+                    name: Bot.toProperCase(ship.name),
+                    value: ship.value
+                };
+            }));
 
             if (options.defaults) {
                 fields.push({
@@ -626,7 +636,7 @@ function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships=false) 
             }
         }
         fieldsOut.push({
-            name: Bot.toProperCase(category),
+            name: category,
             value: unitOut.join("\n")
         });
     }

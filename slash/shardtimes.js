@@ -97,7 +97,7 @@ class Shardtimes extends Command {
         // Shard ID will be guild.id-channel.id
         const shardID = `${interaction.guild.id}-${interaction.channel.id}`;
 
-        let exists = await Bot.database.models.shardtimes.findOne({where: {id: shardID}})
+        let exists = await Bot.database.models.shardtimes.findOne({where: {id: shardID}});
 
         let shardTimes = {};
         if (!exists?.dataValues) {
@@ -261,23 +261,23 @@ class Shardtimes extends Command {
 
             // Check and make sure the bot has permissions to see/ send in the specified channel
             if (!destChannel.permissionsFor(interaction.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChan.id));
+                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
             }
 
             // Make sure the to/ from channels aren't the same
-            if (interaction.channel.id === destChan.id) {
+            if (interaction.channel.id === destChannel.id) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_SAME_CHAN"));
             }
 
             const destShardID = `${interaction.guild.id}-${destChannel.id}`;
 
-            const destExists = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}})
+            const destExists = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}});
 
             if (!destExists?.dataValues) {
                 // If there's no shard info in the destination channel
                 await Bot.database.models.shardtimes.create({ id: destShardID, times: shardTimes })
                     .then(() => {
-                        return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id)});
+                        return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
                     })
                     .catch((err) => {
                         return super.error(interaction, err.message);
@@ -293,7 +293,7 @@ class Shardtimes extends Command {
                     // Or if there is shard info there, but no listings
                     await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: destShardID}})
                         .then(() => {
-                            return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChan.id)});
+                            return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
                         })
                         .catch(() => {
                             return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
@@ -305,7 +305,7 @@ class Shardtimes extends Command {
             const isShip = interaction.options.getBoolean("ships");
 
             // View the shard table
-            let timeToAdd = isShip ? 19 : 18;
+            const timeToAdd = isShip ? 19 : 18;
             const shardOut = {};
             Object.keys(shardTimes).forEach(user => {
                 const diff = timeTil(shardTimes[user].timezone, timeToAdd, (shardTimes[user].zoneType ? shardTimes[user].zoneType : "zone"));

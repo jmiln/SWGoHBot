@@ -116,8 +116,8 @@ class Charactergear extends Command {
                         gearString += `* ${allGear[key]}x ${key}\n`;
                     }
                 }
-                const msgArr = Bot.messageArray(interaction.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
-                for (const [ix, msg] of msgArr.entries()) {
+                const msgArr = Bot.messageArray(message.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
+                for (const msg of msgArr) {
                     message.channel.send({content: Bot.codeBlock(msg, "md")});
                 }
             } else {

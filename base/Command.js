@@ -81,7 +81,7 @@ class Command {
     }
 
     async getUser(message, userID, useAuth=false) {
-        let out = null;
+        const out = null;
         if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
             userID = message.author.id;

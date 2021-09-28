@@ -111,7 +111,7 @@ class UserConf extends Command {
                                 return {
                                     name: lang,
                                     value: lang
-                                }
+                                };
                             })
                         },
                         {
@@ -122,7 +122,7 @@ class UserConf extends Command {
                                 return {
                                     name: lang,
                                     value: lang
-                                }
+                                };
                             })
                         }
                     ]
@@ -269,7 +269,7 @@ class UserConf extends Command {
                     const payoutWarning = interaction.options.getInteger("payout_warning");
                     if (payoutWarning < 0 || payoutWarning > 1440) {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ARENA_INVALID_NUMBER"));
-                    } else if (payoutWarning !== null){
+                    } else if (payoutWarning !== null) {
                         user.arenaAlert.payoutWarning = payoutWarning;
                         updateLog.push(`Changed PayoutWarning to ${payoutWarning}`);
                     }

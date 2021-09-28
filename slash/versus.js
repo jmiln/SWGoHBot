@@ -48,7 +48,7 @@ class Versus extends Command {
         ];
         const user1str = interaction.options.getString("allycode_1");
         const user2str = interaction.options.getString("allycode_2");
-        let character = interaction.options.getString("character");
+        const character = interaction.options.getString("character");
         /*
          * If user1str AND user2str are both valid users, use both
          *

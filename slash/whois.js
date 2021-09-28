@@ -22,7 +22,7 @@ class WhoIs extends Command {
 
     async run(Bot, interaction) { // eslint-disable-line no-unused-vars
         const name = interaction.options.getString("name");
-        if (name.length > 50) return super.error(message, "Invalid name, max length is 50 characters");
+        if (name.length > 50) return super.error(interaction, "Invalid name, max length is 50 characters");
 
         let players = await Bot.swgohAPI.playerByName(name);
 
