@@ -68,7 +68,7 @@ module.exports = (Bot, client) => {
             if (patron.amount_cents < 100) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
             // If they're not registered with anything or don't have any ally codes
-            if (!user || !user.accounts.length) continue;
+            if (!user?.accounts?.length) continue;
 
             // If they don't want any alerts
             if (!user.arenaAlert || user.arenaAlert.enableRankDMs === "off") continue;
@@ -102,8 +102,9 @@ module.exports = (Bot, client) => {
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
                 if (!player || !player.arena) continue;
+                if (!player.arena?.char?.rank && !player.arena?.fleet?.rank) continue;
 
-                if (player.arena.char && player.arena.char.rank) {
+                if (player.arena?.char?.rank) {
                     if (["both", "char"].includes(user.arenaAlert.arena)) {
                         let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(6, "h");
                         if (then.unix() < now.unix()) {
@@ -157,7 +158,7 @@ module.exports = (Bot, client) => {
                     acc.lastCharClimb = acc.lastCharClimb ? (player.arena.char.rank < acc.lastCharRank ? player.arena.char.rank : acc.lastCharClimb) : player.arena.char.rank;
                     acc.lastCharRank = player.arena.char.rank;
                 }
-                if (player.arena.ship && player.arena.ship.rank) {
+                if (player.arena.ship?.rank) {
                     if (["both", "fleet"].includes(user.arenaAlert.arena)) {
                         let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(5, "h");
                         if (then.unix() < now.unix()) {
@@ -235,7 +236,8 @@ module.exports = (Bot, client) => {
             const aw = user.arenaWatch;
 
             // Make sure at least one of the alerts is enabled, no point otherwise
-            if ((!aw.payout.char.enabled || !aw.payout.char.channel) && (!aw.payout.fleet.enabled || !aw.payout.fleet.channel)) continue;
+            if (!aw?.payout) continue;
+            if ((!aw.payout?.char.enabled || !aw.payout.char.channel) && (!aw.payout?.fleet.enabled || !aw.payout.fleet.channel)) continue;
 
             // Make a copy just in case, so nothing goes wonky
             let acctCount = 0;
@@ -247,7 +249,7 @@ module.exports = (Bot, client) => {
             if (!players || !players.length) continue;
 
             // If char is enabled, send it there
-            if (aw.payout.char.enabled && aw.payout.char.channel) {
+            if (aw?.payout?.char && aw.payout.char.enabled && aw.payout.char.channel) {
                 const playerTimes    = getPayoutTimes(players, "char");
                 const formattedEmbed = formatPayouts(playerTimes, "char");
                 const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "char");
@@ -258,7 +260,7 @@ module.exports = (Bot, client) => {
                 }
             }
             // Then if fleet is enabled, send it there as well/ instead
-            if (aw.payout.fleet.enabled && aw.payout.fleet.channel) {
+            if (aw.payout?.fleet && aw.payout.fleet.enabled && aw.payout.fleet.channel) {
                 const playerTimes    = getPayoutTimes(players, "fleet");
                 const formattedEmbed = formatPayouts(playerTimes, "fleet");
                 const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "fleet");
@@ -313,15 +315,17 @@ module.exports = (Bot, client) => {
     async function sendPayoutUpdates(payout, outEmbed, arena) {
         // Use broadcastEval to check all shards for the channel, and if there's a valid message
         // there, edit it. If not, send a fresh copy of it.
-        const messages = await client.shard.broadcastEval(async (payout, arena) => {
-            const channel = this.channels.cache.get(payout[arena].channel);
+        if (!payout[arena]?.channel) return;
+        const messages = await client.shard.broadcastEval(async (client, {msgIdIn, chanIn, outEmbed}) => {
+            const channel = client.channels.cache.find(chan => chan.id === chanIn || chan.name === chanIn);
+
             let msg, targetMsg;
-            if (channel && channel.permissionsFor(this.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                if (!payout[arena].msgID) {
+            if (channel && channel?.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                if (!msgIdIn) {
                     targetMsg = await channel.send({embeds: [outEmbed]});
                 } else {
                     try {
-                        msg = await channel.messages.fetch(payout[arena].msgID);
+                        msg = await channel.messages.fetch(msgIdIn);
                     } catch (e) {
                         msg = null;
                     }
@@ -334,8 +338,9 @@ module.exports = (Bot, client) => {
             }
             return targetMsg;
         }, {context: {
-            payout: payout,
-            arena: arena
+            msgIdIn: payout[arena].msgID,
+            chanIn: payout[arena].channel,
+            outEmbed: outEmbed
         }});
         const msg = messages.filter(a => !!a);
         return msg.length ? msg[0] : null;
@@ -451,7 +456,7 @@ module.exports = (Bot, client) => {
             const aw = user.arenaWatch;
 
             // If they don't want any alerts
-            if (!aw.enabled
+            if (!aw?.enabled
                 || (!aw.arena?.fleet?.channel && !aw.arena?.char?.channel)
                 || (!aw.arena?.fleet?.enabled && !aw.arena?.char?.enabled)) {
                 continue;
@@ -473,11 +478,11 @@ module.exports = (Bot, client) => {
             let charOut = [];
             let shipOut = [];
             accountsToCheck.forEach((player, ix) => {
-                let newPlayer = newPlayers.find(p => p.allyCode === parseInt(player.allyCode, 10));
+                let newPlayer = newPlayers.find(p => parseInt(p.allyCode, 10) === parseInt(player.allyCode, 10));
                 if (!newPlayer) {
-                    newPlayer = newPlayers.find(p => p.allyCode === parseInt(player, 10));
+                    newPlayer = newPlayers.find(p => parseInt(p.allyCode, 10) === parseInt(player, 10));
                 }
-                if (!newPlayer) {
+                if (!newPlayer?.arena?.char?.rank || !newPlayer?.arena?.fleet?.rank) {
                     return;
                 }
                 if (!player.name) {
@@ -539,10 +544,10 @@ module.exports = (Bot, client) => {
                 accountsToCheck[ix] = player;
             });
 
-            if (compChar.length && aw.arena.char.enabled) {
+            if (compChar.length && aw.arena?.char.enabled) {
                 charOut = charOut.concat(checkRanks(compChar, aw));
             }
-            if (compShip.length && aw.arena.fleet.enabled) {
+            if (compShip.length && aw.arena?.fleet.enabled) {
                 shipOut = shipOut.concat(checkRanks(compShip, aw));
             }
 
@@ -564,29 +569,29 @@ module.exports = (Bot, client) => {
                 if (aw.arena.char.channel === aw.arena.fleet.channel) {
                     // If they're both set to the same channel, send it all
                     const fields = charFields.concat(shipFields);
-                    client.shard.broadcastEval((client) => {
+                    client.shard.broadcastEval((client, {aw, fields}) => {
                         const chan = client.channels.cache.get(aw.arena.char.channel);
                         if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                             chan.send(`>>> ${fields.join("\n")}`);
                         }
-                    }, {context: aw});
+                    }, {context: {aw: aw, fields: fields}});
                 } else {
                     // Else they each have their own channels, so send em there
                     if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
-                        client.shard.broadcastEval((client) => {
+                        client.shard.broadcastEval((client, {aw, charFields}) => {
                             const chan = client.channels.cache.get(aw.arena.char.channel);
                             if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                                 chan.send(`>>> ${charFields.join("\n")}`);
                             }
-                        }, {context: aw});
+                        }, {context: {aw: aw, charFields: charFields}});
                     }
                     if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
-                        client.shard.broadcastEval((client) => {
-                            const chan = client.channels.cache.get(aw.arena.char.channel);
+                        client.shard.broadcastEval((client, {aw, shipFields}) => {
+                            const chan = client.channels.cache.get(aw.arena.fleet.channel);
                             if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                                 chan.send(`>>> ${shipFields.join("\n")}`);
                             }
-                        }, {context: aw});
+                        }, {context: {aw: aw, shipFields: shipFields}});
                     }
                 }
             }
@@ -644,6 +649,7 @@ module.exports = (Bot, client) => {
             if (!user?.guildUpdate?.enabled) continue;
             const gu = user.guildUpdate;
             if (!gu?.allycode) continue;
+            if (!gu?.channel) continue;
 
             // This is what will be in the user.guildUpdate, possibly add something
             // in to make it so it only shows above x gear lvl and such later?
@@ -655,13 +661,13 @@ module.exports = (Bot, client) => {
             // }
 
             // Check if the bot is able to send messages into the set channel
-            const channels = await client.shard.broadcastEval(async (client, gu) => {
-                const channel = client.channels.cache.get(gu.channel);
+            const channels = await client.shard.broadcastEval(async (client, {guChan}) => {
+                const channel = client.channels.cache.get(guChan);
                 if (channel && channel.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                     return true;
                 }
                 return false;
-            }, {context: gu});
+            }, {context: {guChan: gu.channel}});
             const chanAvail = channels.some(ch => !!ch);
 
             // If the channel is not available, move on
@@ -719,15 +725,17 @@ module.exports = (Bot, client) => {
             const fieldsOut = Bot.chunkArray(fields, MAX_FIELDS);
 
             for (const fieldChunk of fieldsOut) {
-                await client.shard.broadcastEval(async (client, gu) => {
-                    const channel = client.channels.cache.get(gu.channel);
+                await client.shard.broadcastEval(async (client, {guChan, fieldChunk}) => {
+                    const channel = client.channels.cache.get(guChan);
                     if (channel && channel.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                         return channel.send({embeds: [{
                             fields: fieldChunk
                         }]});
                     }
                     return false;
-                }, {context: gu});
+                }, {context: {
+                        guChan: gu.channel,
+                        fieldChunk: fieldChunk}});
             }
         }
     };
