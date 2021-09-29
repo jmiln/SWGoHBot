@@ -103,7 +103,7 @@ class Zetas extends Command {
             const character = null;
 
             // This will grab the character info for any entered character
-            async function getCharInfo(thisChar) {
+            const getCharInfo = async (thisChar) => {
                 thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
                 if (!thisChar.nameKey) {
                     const tmp = Bot.characters.filter(c => c.uniqueName === thisChar.defId);
@@ -122,7 +122,7 @@ class Zetas extends Command {
                         }
                     }
                 });
-            }
+            };
 
             await interaction.reply({ content: interaction.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas") });
 
