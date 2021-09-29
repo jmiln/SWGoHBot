@@ -102,9 +102,13 @@ module.exports = (Bot, client) => {
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
                 if (!player || !player.arena) {
+                    console.log("No player arena:");
+                    console.log(player.arena);
                     continue;
                 }
-                if (!player.arena?.char?.rank && !player.arena?.fleet?.rank) {
+                if (!player.arena?.char?.rank && !player.arena?.ship?.rank) {
+                    console.log("No arena ranks");
+                    console.log(player.arena);
                     continue;
                 }
 
@@ -126,9 +130,9 @@ module.exports = (Bot, client) => {
                                             author: {name: "Arena Payout Alert"},
                                             description: `${player.name}'s character arena payout is in **${minTil}** minutes!\nYour current rank is ${player.arena.char.rank}`,
                                             color: "#00FF00"
-                                            .catch(() => {});
-                                        //.catch(err => console.log("[patFunc getRanks]", err));
                                         }]})
+                                            .catch(() => {});
+                                        // .catch(err => console.log("[patFunc getRanks]", err));
                                     }
                                 }
                                 if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
@@ -136,9 +140,9 @@ module.exports = (Bot, client) => {
                                         author: {name: "Character arena"},
                                         description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
                                         color: "#00FF00"
-                                        .catch(() => {});
-                                    //.catch(err => console.log("[patFunc getRanks]", err));
                                     }]})
+                                        .catch(() => {});
+                                    // .catch(err => console.log("[patFunc getRanks]", err));
                                 }
 
                                 if (player.arena.char.rank > acc.lastCharRank) {
@@ -150,9 +154,9 @@ module.exports = (Bot, client) => {
                                         footer: {
                                             text: payoutTime
                                         }
-                                        .catch(() => {});
-                                    //.catch(err => console.log("[patFunc getRanks]", err));
                                     }]})
+                                        .catch(() => {});
+                                    // .catch(err => console.log("[patFunc getRanks]", err));
                                 }
                             } catch (e) {
                                 Bot.logger.error("Broke getting ranks: " + e);
@@ -180,9 +184,9 @@ module.exports = (Bot, client) => {
                                             author: {name: "Arena Payout Alert"},
                                             description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
                                             color: "#00FF00"
-                                            .catch(() => {});
-                                        //.catch(err => console.log("[patFunc getRanks]", err));
                                         }]})
+                                            .catch(() => {});
+                                        // .catch(err => console.log("[patFunc getRanks]", err));
                                     }
                                 }
 
@@ -191,9 +195,9 @@ module.exports = (Bot, client) => {
                                         author: {name: "Fleet arena"},
                                         description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
                                         color: "#00FF00"
-                                        .catch(() => {});
-                                    //.catch(err => console.log("[patFunc getRanks]", err));
                                     }]})
+                                        .catch(() => {});
+                                    // .catch(err => console.log("[patFunc getRanks]", err));
                                 }
 
                                 if (player.arena.ship.rank > acc.lastShipRank) {
@@ -204,9 +208,9 @@ module.exports = (Bot, client) => {
                                         footer: {
                                             text: payoutTime
                                         }
-                                        .catch(() => {});
-                                    //.catch(err => console.log("[patFunc getRanks]", err));
                                     }]})
+                                        .catch(() => {});
+                                    // .catch(err => console.log("[patFunc getRanks]", err));
                                 }
                             } catch (e) {
                                 Bot.logger.error("Broke getting ranks: " + e);
@@ -486,7 +490,8 @@ module.exports = (Bot, client) => {
                 if (!newPlayer) {
                     newPlayer = newPlayers.find(p => parseInt(p.allyCode, 10) === parseInt(player, 10));
                 }
-                if (!newPlayer?.arena?.char?.rank || !newPlayer?.arena?.fleet?.rank) {
+                if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
+                    // Both, since low level players can have just char arena I believe
                     return;
                 }
                 if (!player.name) {
