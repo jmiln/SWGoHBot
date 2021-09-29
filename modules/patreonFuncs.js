@@ -742,9 +742,12 @@ module.exports = (Bot, client) => {
                         }]});
                     }
                     return false;
-                }, {context: {
+                }, {
+                    context: {
                         guChan: gu.channel,
-                        fieldChunk: fieldChunk}});
+                        fieldChunk: fieldChunk
+                    }
+                });
             }
         }
     };
