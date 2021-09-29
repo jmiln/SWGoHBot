@@ -261,7 +261,7 @@ class ArenaWatch extends Command {
                             description: "Set an arena's logs to a specified channel",
                             options: [
                                 {
-                                    name: "channel",
+                                    name: "target_channel",
                                     type: "CHANNEL",
                                     description: "The channel to send to",
                                     required: true
@@ -348,7 +348,7 @@ class ArenaWatch extends Command {
                     ]
                 },
                 {
-                    name: "usemarksinlog",
+                    name: "use_marks_in_log",
                     type: "SUB_COMMAND",
                     description: "Toggle showing players' marks in the arena log",
                     options: [
@@ -364,11 +364,13 @@ class ArenaWatch extends Command {
                     name: "view",
                     type: "SUB_COMMAND",
                     description: "View your arenaWatch settings",
-                    options: [{
-                        name: "allycode",
-                        type: "STRING",
-                        description: "An allycode to check the specific settings for"
-                    }]
+                    options: [
+                        {
+                            name: "allycode",
+                            type: "STRING",
+                            description: "An allycode to check the specific settings for"
+                        }
+                    ]
                 }
             ]
         });
@@ -487,7 +489,7 @@ class ArenaWatch extends Command {
             }
             case "channel": {
                 // This needs to make sure the person has an adminrole or something so they cannot just spam a chat with it
-                const channel = interaction.options.getChannel("channel");
+                const channel = interaction.options.getChannel("target_channel");
                 const targetArena = interaction.options.getString("arena");
 
                 if (channel.guild.id !== interaction.guild.id) {
@@ -808,8 +810,8 @@ class ArenaWatch extends Command {
                 aw.allycodes.push(exists);
                 break;
             }
-            case "usemarksinlog": {
-                const useMarksInLog = interaction.options.getBoolean("usemarksinlog");
+            case "use_marks_in_log": {
+                const useMarksInLog = interaction.options.getBoolean("enabled");
                 if (aw.useMarksInLog === useMarksInLog) {
                     return super.error(interaction, `UseMarksInLog is already set to ${aw.useMarksInLog.toString()}`);
                 }
