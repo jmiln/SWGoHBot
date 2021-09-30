@@ -69,7 +69,7 @@ class slashCommand {
                         name: title,
                         icon_url: options.iconURL || null
                     },
-                    description: out,
+                    description: out.toString().substring(0, 1900) + "...",
                     color: color,
                     footer: {
                         text: footer

@@ -264,7 +264,7 @@ class Guilds extends Command {
         async function guildGear() {
             // List an overview of the guild's upper geared characters
             const gears = [10,11,12,13];
-            const sortBy = interaction.options.getString("sort");
+            const sortBy = interaction.options.getInteger("sort");
             if (sortBy && (sortBy > 13 || sortBy < 1)) {
                 return interaction.editReply({content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(","))});
             }
