@@ -263,7 +263,7 @@
         "level": 80,
         "phase": [
             {
-                "name": "PHASE 1 - GENERAL GRIEVOUS & DROIDS",
+                "name": "PHASE 1 - GENERAL GRIEVOUS &amp; DROIDS",
                 "squads": [
                     {
                         "name": "TEAM ONE",
@@ -483,7 +483,7 @@
         "level": 85,
         "phase": [
             {
-                "name": "PHASE 1 - GENERAL GRIEVOUS & DROIDS",
+                "name": "PHASE 1 - GENERAL GRIEVOUS &amp; DROIDS",
                 "squads": [
                     {
                         "name": "CLS FRIENDS",
@@ -1116,7 +1116,7 @@
         "level": 85,
         "phase": [
             {
-                "name": "PHASE 1 - DARTH NIHILUS, SITH ASSASSIN & SITH MARAUDER",
+                "name": "PHASE 1 - DARTH NIHILUS, SITH ASSASSIN &amp; SITH MARAUDER",
                 "squads": [
                     {
                         "name": "[α] RJT REY R2",
@@ -1220,7 +1220,7 @@
                 ]
             },
             {
-                "name": "PHASE 2 - DARTH SION, SITH MARAUDER & SITH ASSASSIN",
+                "name": "PHASE 2 - DARTH SION, SITH MARAUDER &amp; SITH ASSASSIN",
                 "squads": [
                     {
                         "name": "[α] GK HW",
@@ -1676,7 +1676,7 @@
                 ]
             },
             {
-                "name": "PHASE 3 - DARTH TRAYA & 3 LIGHTSABERS",
+                "name": "PHASE 3 - DARTH TRAYA &amp; 3 LIGHTSABERS",
                 "squads": [
                     {
                         "name": "[α] CHEX MIX",
@@ -1685,7 +1685,7 @@
                         "url": "https://youtu.be/lzq1TwKyAH4",
                         "team": [
                             "COMMANDERLUKESKYWALKER",
-                            "HANSOLO",
+                            "HANSOLO:uniqueskill_HANSOLO01",
                             "DEATHTROOPER",
                             "PAO",
                             "CHIRRUTIMWE"
@@ -2154,7 +2154,7 @@
                 ]
             },
             {
-                "name": "PIECES & PLANS",
+                "name": "PIECES &amp; PLANS",
                 "anchor": "bb8",
                 "squads": [
                     {
