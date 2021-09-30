@@ -877,20 +877,20 @@ class ArenaWatch extends Command {
                     });
 
                     const fields = [];
-                    if (ac.length > 25) {
-                        fields.push({
-                            name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
-                            value: ac.slice(0,25).join("\n")
-                        });
-                        fields.push({
-                            name: "-",
-                            value: ac.slice(25).join("\n")
-                        });
-                    } else {
-                        fields.push({
-                            name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
-                            value: `${ac.length ? ac.join("\n") : "**N/A**"}`
-                        });
+                    // Chunk the codes down so they'll fit within the 1024 character limit of a field value
+                    const acChunks = Bot.msgArray(ac, "\n", 1000);
+                    for (const [ ix, chunk ] of acChunks.entries()) {
+                        if (ix === 0) {
+                            fields.push({
+                                name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
+                                value: chunk
+                            });
+                        } else {
+                            fields.push({
+                                name: "-",
+                                value: chunk
+                            });
+                        }
                     }
                     fields.push({
                         name: "**Payout Settings**",

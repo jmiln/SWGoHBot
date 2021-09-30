@@ -11,6 +11,9 @@ class ArenaWatch extends Command {
             subArgs: {
                 mark: {
                     aliases: []
+                },
+                user: {
+                    aliases: ["u"]
                 }
             }
         });
@@ -115,7 +118,7 @@ class ArenaWatch extends Command {
             return [parseInt(ac, 10), mention];
         }
 
-        function checkPlayer(players, user, code) {
+        function checkPlayer(players, code) {
             if (!players) throw new Error("Missing players in checkPlayer");
             const player = players.find(p => parseInt(p.allyCode, 10) === parseInt(code.code, 10));
             if (!player) {
@@ -365,7 +368,7 @@ class ArenaWatch extends Command {
                     for (const c of codes) {
                         let player;
                         try {
-                            player = checkPlayer(players, user, c);
+                            player = checkPlayer(players, c);
                         } catch (e) {
                             outLog.push(e);
                             continue;
@@ -410,7 +413,7 @@ class ArenaWatch extends Command {
                         let player;
                         try {
                             const players = await Bot.swgohAPI.unitStats(ac);
-                            player = checkPlayer(players, user, {code: ac});
+                            player = checkPlayer(players, {code: ac});
                         } catch (e) {
                             return super.error(message, "Error getting player info.\n" + e);
                         }
@@ -595,20 +598,20 @@ class ArenaWatch extends Command {
                     });
 
                     const fields = [];
-                    if (ac.length > 25) {
-                        fields.push({
-                            name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
-                            value: ac.slice(0,25).join("\n")
-                        });
-                        fields.push({
-                            name: "-",
-                            value: ac.slice(25).join("\n")
-                        });
-                    } else {
-                        fields.push({
-                            name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
-                            value: `${ac.length ? ac.join("\n") : "**N/A**"}`
-                        });
+                    // Chunk the codes down so they'll fit within the 1024 character limit of a field value
+                    const acChunks = Bot.msgArray(ac, "\n", 1000);
+                    for (const [ ix, chunk ] of acChunks.entries()) {
+                        if (ix === 0) {
+                            fields.push({
+                                name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
+                                value: chunk
+                            });
+                        } else {
+                            fields.push({
+                                name: "-",
+                                value: chunk
+                            });
+                        }
                     }
                     fields.push({
                         name: "**Payout Settings**",
