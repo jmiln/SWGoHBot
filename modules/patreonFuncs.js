@@ -611,9 +611,8 @@ module.exports = (Bot, client) => {
     function checkRanks(inArr, aw) {
         const checked = [];
         const outArr = [];
-        if (!aw.showvs) {
-            // If the setting is off, don't bother showing when the ranks match up
-            // This could be common when not reporting on a shard, but instead on members of a guild
+        if (aw.showvs) {
+            // If the setting is on, show when the ranks match up
             for (let ix = 0; ix < inArr.length; ix++) {
                 for (let jx = 0; jx < inArr.length; jx++) {
                     const isChecked = checked.includes(inArr[ix].allyCode) || checked.includes(inArr[jx].allyCode);
@@ -634,6 +633,7 @@ module.exports = (Bot, client) => {
                 }
             }
         }
+        // Then check for anyone that wasn't matched up with a partner
         inArr.forEach(player => {
             if (!checked.includes(player.allyCode)) {
                 const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${player.name}` : player.name;
