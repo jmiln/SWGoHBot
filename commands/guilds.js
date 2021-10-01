@@ -199,6 +199,27 @@ class Guilds extends Command {
             // Format all the output, then send it on
             const memOut = Bot.makeTable(tierFormat, members.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
+            // Get the totals for each column
+            const tierTotals = {
+                [viableTiers[0]]: 0,
+                [viableTiers[1]]: 0,
+                [viableTiers[2]]: 0,
+                [viableTiers[3]]: 0
+            };
+
+            const totalsFormat = {
+                [viableTiers[0]]: {value: viableTiers[0], startWith: "`[", endWith: "|",  align: "right"},
+                [viableTiers[1]]: {value: viableTiers[1],                  endWith: "|",  align: "right"},
+                [viableTiers[2]]: {value: viableTiers[2],                  endWith: "|",  align: "right"},
+                [viableTiers[3]]: {value: viableTiers[3],                  endWith: "]`",  align: "right"}
+            };
+            for (const member of members) {
+                for (const key of Object.keys(tierTotals)) {
+                    tierTotals[key] += member[key];
+                }
+            }
+            const totalOut = Bot.makeTable(totalsFormat, [tierTotals]);
+
             // Chunk the info into sections so it'll fit in the embed fields
             const fields = [];
             const fieldVals = Bot.msgArray(memOut, "\n", 1000);
@@ -210,6 +231,10 @@ class Guilds extends Command {
                     value: fieldVal
                 });
             }
+            fields.push({
+                name: "TOTALS",
+                value: totalOut.join("\n")
+            });
 
             // Send the formatted info
             return message.channel.send({embeds: [{
