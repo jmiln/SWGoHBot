@@ -82,10 +82,9 @@ module.exports = class extends Language {
             BASE_EVENT_LATE: "Sorry, but this event was triggered later than expected. If it is set to repeat, the next alert should be on time.",
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode  add <allycode>\``,
-            BASE_SWGOH_NOT_REG: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\``,
-            BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\``,
-            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\``,
+            BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
+            BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
+            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
             BASE_SWGOH_NO_GUILD: "I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.",
             BASE_SWGOH_MISSING_CHAR: "You need to enter a character to check for",
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
@@ -199,8 +198,8 @@ module.exports = class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
 
             // Abilities Command
-            COMMAND_CHARACTER_NEED_CHARACTER: (prefix) => `Missing character. \nUsage is \`${prefix}abilities <characterName>\``,
-            COMMAND_CHARACTER_INVALID_CHARACTER: (prefix) => `Invalid character. \nUsage is \`${prefix}abilities <characterName>\``,
+            COMMAND_CHARACTER_NEED_CHARACTER: (prefix) => `Missing character. \nUsage is \`${prefix}character <characterName>\` or the \`/character\` command`,
+            COMMAND_CHARACTER_INVALID_CHARACTER: (prefix) => `Invalid character. \nUsage is \`${prefix}character <characterName>\``,
             COMMAND_CHARACTER_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
             COMMAND_CHARACTER_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}\n**Ability mats needed:     ${mat}**\n${cdString}${aDesc}`,
             COMMAND_CHARACTER_HELP: {
