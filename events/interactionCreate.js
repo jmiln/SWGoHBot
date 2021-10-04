@@ -12,20 +12,17 @@ module.exports = async (Bot, client, interaction) => {
     // If that command doesn't exist, silently exit and do nothing
     if (!cmd) return;
 
-    // Grab the settings for this server
-    // If there is no guild, get default conf (DMs)
-    let guildSettings;
-    if (!interaction.guild) {
-        guildSettings = Bot.config.defaultSettings;
-    } else {
-        guildSettings = await Bot.getGuildConf(interaction.guild.id);
-    }
-
+    // Grab the settings for this server, and if there's no guild, just give it the defaults
     // Attach the guildsettings to the interaction to make it easier to grab later
-    interaction.guildSettings = guildSettings;
+    interaction.guildSettings = await Bot.getGuildConf(interaction?.guild?.id);
 
     // Get the user or member's permission level from the elevation
     const level = Bot.permlevel(interaction);
+
+    // Make sure the user has the correct perms to run the command
+    if (level < cmd.commandData.permLevel) {
+        return interaction.reply({content: "Sorry, but you don't have permission to run that command.", ephemeral: true});
+    }
 
     // // Load the language file for whatever language they have set
     const user = await Bot.userReg.getUser(interaction.user.id);
@@ -41,18 +38,25 @@ module.exports = async (Bot, client, interaction) => {
     interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
 
     // Run the command
-    if (cmd && level >= cmd.commandData.permLevel) {
-        try {
-            await cmd.run(Bot, interaction, { level: level });
-        } catch (err) {
-            if (cmd.commandData.name === "test") {
-                console.log(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
-            } else {
-                Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
-            }
-
+    try {
+        await cmd.run(Bot, interaction, { level: level });
+    } catch (err) {
+        if (cmd.commandData.name === "test") {
+            return console.log(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
         }
-    } else {
-        return interaction.reply("Sorry, but you don't have permission to run that command.");
+
+        Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
+
+        const replyObj = {content: `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`, ephemeral: true};
+        if (interaction.replied) {
+            return interaction.followUp(replyObj)
+                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send error message: \n${e}`));
+        } else if (interaction.deferred) {
+            return interaction.editReply(replyObj)
+                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send error message: \n${e}`));
+        } else {
+            return interaction.reply(replyObj)
+                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send error message: \n${e}`));
+        }
     }
 };

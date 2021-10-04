@@ -23,6 +23,10 @@ module.exports = (Bot, client) => {
         yellow: "#FFFF00",
     };
 
+    Bot.constants = {
+        invite: "https://discord.com/invite/FfwGvhr"
+    }
+
     // Permissions mapping
     Bot.permMap = {
         // Can do anything, access to the dev commands, etc
@@ -404,7 +408,7 @@ module.exports = (Bot, client) => {
                 const eventName = file.split(".")[0];
                 client.removeAllListeners(eventName);
                 const event = require(`../events/${file}`);
-                if (["ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
+                if (["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
                     client.on(eventName, event.bind(null, Bot, client));
                 } else {
                     client.on(eventName, event.bind(null, Bot));
