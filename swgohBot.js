@@ -72,7 +72,7 @@ Bot.database = new Sequelize(
 
 
 Bot.database.authenticate().then(async () => {
-    await require("./modules/models")(Sequelize, Bot.database);
+    require("./modules/models")(Sequelize, Bot.database);
 
     // Get all the models
     const rawAttr = Bot.database.models.settings.rawAttributes;
@@ -116,8 +116,8 @@ const init = async () => {
     const MongoClient = require("mongodb").MongoClient;
     Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
     // Set up the caching
-    Bot.cache = await require("./modules/cache.js")(Bot.mongo);
-    Bot.userReg = await require("./modules/users.js")(Bot);
+    Bot.cache = require("./modules/cache.js")(Bot.mongo);
+    Bot.userReg = require("./modules/users.js")(Bot);
 
     Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("playerStats").find({}).count();
     Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").find({}).count();
