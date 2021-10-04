@@ -33,7 +33,7 @@ class MyMods extends Command {
                 author: {
                     name: "Error"
                 },
-                description: Bot.codeBlock(err)
+                description: err
             }]});
         }
 
