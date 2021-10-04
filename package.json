@@ -33,6 +33,6 @@
         "swgoh-stat-calc": "^1.1.1"
     },
     "engines": {
-        "node": ">8.4.0"
+        "node": ">=16"
     }
 }
