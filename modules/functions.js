@@ -25,7 +25,7 @@ module.exports = (Bot, client) => {
 
     Bot.constants = {
         invite: "https://discord.com/invite/FfwGvhr"
-    }
+    };
 
     // Permissions mapping
     Bot.permMap = {

@@ -44,8 +44,9 @@ class Charactergear extends Command {
             userID = null;
         } else if (userID == "me" || Bot.isAllyCode(userID) || Bot.isUserID(userID)) {
             // Use their primary registered code
-            const allyCodes = await Bot.getAllyCode(message, userID);
-            if (!allyCodes) {
+            const allycode = await Bot.getAllyCode(message, userID);
+            userID = allycode;
+            if (!allycode) {
                 return message.channel.send({content: message.language.get("BASE_SWGOH_NO_ALLY", message.guildSettings.prefix)});
             }
         } else {
