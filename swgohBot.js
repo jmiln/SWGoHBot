@@ -1,17 +1,13 @@
 const { Client, Collection } = require("discord.js");
-const { promisify } = require("util");
-const { inspect } = require("util");
+const { reddirSync, readFileSync } = require("fs");
 const SwgohClientStub = require("swgoh-client-stub");
-const readdir = promisify(require("fs").readdir);
-const fs = require("fs");
 
 const Bot = {};
 
-// Attach the config to the client so we can use it anywhere
+// Attach the config to the Bot so we can use it anywhere
 Bot.config = require("./config.js");
 
 const client = new Client({
-    // https://discord.js.org/#/docs/main/stable/typedef/ClientOptions?scrollTo=messageCacheLifetime
     intents: Bot.config.botIntents,
     partials: Bot.config.partials
 });
@@ -20,19 +16,20 @@ const Sequelize = require("sequelize");
 
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
-Bot.abilityCosts = JSON.parse(fs.readFileSync("data/abilityCosts.json"));
-Bot.characters   = JSON.parse(fs.readFileSync("data/characters.json"));
-Bot.charLocs     = JSON.parse(fs.readFileSync("data/charLocations.json"));
+Bot.abilityCosts = JSON.parse(readFileSync("data/abilityCosts.json"));
+Bot.acronyms     = JSON.parse(readFileSync("data/acronyms.json"));
+Bot.arenaJumps   = JSON.parse(readFileSync("data/arenaJumps.json"));
+Bot.charLocs     = JSON.parse(readFileSync("data/charLocations.json"));
+Bot.characters   = JSON.parse(readFileSync("data/characters.json"));
 Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
-Bot.ships        = JSON.parse(fs.readFileSync("data/ships.json"));
-Bot.shipLocs     = JSON.parse(fs.readFileSync("data/shipLocations.json"));
-Bot.squads       = JSON.parse(fs.readFileSync("data/squads.json"));
-Bot.missions     = JSON.parse(fs.readFileSync("data/missions.json"));
-Bot.resources    = JSON.parse(fs.readFileSync("data/resources.json"));
-Bot.arenaJumps   = JSON.parse(fs.readFileSync("data/arenaJumps.json"));
-Bot.acronyms     = JSON.parse(fs.readFileSync("data/acronyms.json"));
-const gameData   = JSON.parse(fs.readFileSync("data/gameData.json"));
+Bot.missions     = JSON.parse(readFileSync("data/missions.json"));
+Bot.resources    = JSON.parse(readFileSync("data/resources.json"));
+Bot.shipLocs     = JSON.parse(readFileSync("data/shipLocations.json"));
+Bot.ships        = JSON.parse(readFileSync("data/ships.json"));
+Bot.squads       = JSON.parse(readFileSync("data/squads.json"));
 Bot.emotes       = {};
+
+const gameData   = JSON.parse(readFileSync("data/gameData.json"));
 
 // Load in various general functions for the bot
 require("./modules/functions.js")(Bot, client);
@@ -48,11 +45,11 @@ require("./modules/prototypes.js");
 
 // Languages
 Bot.languages = {};
-client.reloadLanguages();
 Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
+client.reloadLanguages();
 
-client.commands = new Collection();
-client.aliases = new Collection();
+client.commands  = new Collection();
+client.aliases   = new Collection();
 client.slashcmds = new Collection();
 
 Bot.evCountdowns = {};
@@ -116,7 +113,7 @@ const init = async () => {
     const MongoClient = require("mongodb").MongoClient;
     Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
     // Set up the caching
-    Bot.cache = require("./modules/cache.js")(Bot.mongo);
+    Bot.cache   = require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = require("./modules/users.js")(Bot);
 
     Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("playerStats").find({}).count();
@@ -138,7 +135,7 @@ const init = async () => {
             Bot.swapiStub = new SwgohClientStub(Bot.config.fakeSwapiConfig.clientStub);
         }
 
-        // Load up the zeta recommendstions
+        // Load up the zeta recommendations
         Bot.zetaRec = await Bot.swgohAPI.zetaRec();
     }
 
@@ -147,7 +144,7 @@ const init = async () => {
 
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
-    const cmdFiles = await readdir("./commands/");
+    const cmdFiles = reddirSync("./commands/");
     const cmdError = [];
     cmdFiles.forEach(file => {
         try {
@@ -163,7 +160,7 @@ const init = async () => {
         Bot.logger.warn("cmdLoad: " + cmdError.join("\n"));
     }
 
-    readdir("./slash", (err, files) => {
+    reddirSync("./slash", (err, files) => {
         if (err) return console.error(err);
         files.forEach(file => {
             if (!file.endsWith(".js")) return;
@@ -174,7 +171,7 @@ const init = async () => {
     });
 
     // Then we load events, which will include our message and ready event.
-    const evtFiles = await readdir("./events/");
+    const evtFiles = reddirSync("./events/");
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
@@ -186,11 +183,3 @@ const init = async () => {
         delete require.cache[require.resolve(`./events/${file}`)];
     });
 };
-
-client.on("error", (err) => {
-    if (err.error.toString().indexOf("ECONNRESET") > -1) {
-        Bot.logger.error("Connection error");
-    } else {
-        Bot.logger.error("ERROR", inspect(err.error), true);
-    }
-});

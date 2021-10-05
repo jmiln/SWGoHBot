@@ -1,3 +1,8 @@
-module.exports = async (Bot, client, error) => {
-    Bot.logger.error(`An error event was sent by Discord.js: \n${JSON.stringify(error)}`, "error");
+const {inspect} = require("util");
+module.exports = async (Bot, client, err) => {
+    if (err.error.toString().indexOf("ECONNRESET") > -1) {
+        Bot.logger.error("Connection error");
+    } else {
+        Bot.logger.error("ERROR", inspect(err.error), true);
+    }
 };
