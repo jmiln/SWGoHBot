@@ -11929,6 +11929,183 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Fennec Shand",
+        "base_id": "FENNECSHAND",
+        "pk": 1926,
+        "url": "http://swgoh.gg/characters/fennec-shand/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_fennec.png",
+        "power": 35311,
+        "description": "Lethal Bounty Hunter capable of taking on the most dangerous foes",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "002",
+                    "002",
+                    "005",
+                    "005",
+                    "009",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "015",
+                    "041",
+                    "016",
+                    "016",
+                    "032",
+                    "026"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "055",
+                    "050",
+                    "050",
+                    "045",
+                    "017",
+                    "026"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "061",
+                    "055",
+                    "077",
+                    "039",
+                    "065",
+                    "047"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "095",
+                    "056",
+                    "040",
+                    "089",
+                    "091",
+                    "047"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "097",
+                    "091",
+                    "091",
+                    "081",
+                    "050",
+                    "026"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "080",
+                    "099",
+                    "077",
+                    "068",
+                    "077"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "077",
+                    "117",
+                    "173",
+                    "043",
+                    "061",
+                    "094"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "099",
+                    "111",
+                    "077",
+                    "118",
+                    "125",
+                    "067"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "080",
+                    "143",
+                    "097",
+                    "173",
+                    "098",
+                    "067"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "111",
+                    "130",
+                    "142",
+                    "070",
+                    "117",
+                    "173"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "161",
+                    "164",
+                    "159",
+                    "168",
+                    "169",
+                    "G12Finisher_FENNECSHAND_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Bounty Hunter",
+            "Leader",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Armor Shred",
+            "Counter",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Offense Up",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Finn",
         "base_id": "FINN",
         "pk": 66,
