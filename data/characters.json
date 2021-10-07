@@ -2709,6 +2709,27 @@
         }
     },
     {
+        "name": "Fennec Shand",
+        "uniqueName": "FENNECSHAND",
+        "aliases": [
+            "Fennec Shand",
+            "FS"
+        ],
+        "nameVariant": [
+            "Fennec Shand"
+        ],
+        "url": "http://swgoh.gg/characters/fennec-shand/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_fennec.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Leader",
+            "Scoundrel"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Finn",
         "uniqueName": "FINN",
         "aliases": [
