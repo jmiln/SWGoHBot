@@ -319,6 +319,15 @@
         ]
     },
     {
+        "name": "Cara Dune",
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "5-E"
+            }
+        ]
+    },
+    {
         "name": "Carth Onasi",
         "locations": [
             {
@@ -769,6 +778,14 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Fennec Shand",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)"
             }
         ]
     },
@@ -1510,6 +1527,15 @@
         ]
     },
     {
+        "name": "Lord Vader",
+        "locations": [
+            {
+                "type": "Galactic Ascension",
+                "name": "Hero's Fall"
+            }
+        ]
+    },
+    {
         "name": "Luke Skywalker (Farmboy)",
         "locations": [
             {
@@ -1578,6 +1604,14 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Maul",
+        "locations": [
+            {
+                "type": "Galactic Battle: Conquest"
             }
         ]
     },
