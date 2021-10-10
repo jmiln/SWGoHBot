@@ -451,7 +451,7 @@ async function updatePatrons() {
         return;
     }
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
-    const cache = await require("../modules/cache.js")(mongo);
+    const cache = require("../modules/cache.js")(mongo);
     try {
         let response = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns",
             {

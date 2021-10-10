@@ -1,5 +1,5 @@
 const { Client, Collection } = require("discord.js");
-const { reddirSync, readFileSync } = require("fs");
+const { readdirSync, readFileSync } = require("fs");
 const SwgohClientStub = require("swgoh-client-stub");
 
 const Bot = {};
@@ -144,7 +144,7 @@ const init = async () => {
 
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
-    const cmdFiles = reddirSync("./commands/");
+    const cmdFiles = readdirSync("./commands/");
     const cmdError = [];
     cmdFiles.forEach(file => {
         try {
@@ -160,18 +160,24 @@ const init = async () => {
         Bot.logger.warn("cmdLoad: " + cmdError.join("\n"));
     }
 
-    reddirSync("./slash", (err, files) => {
-        if (err) return console.error(err);
-        files.forEach(file => {
+    const slashFiles = readdirSync("./slash/");
+    const slashError = [];
+    slashFiles.forEach(file => {
+        try {
             if (!file.endsWith(".js")) return;
             const commandName = file.split(".")[0];
             const result = client.loadSlash(commandName);
-            if (result) cmdError.push(`Unable to load command: ${commandName}`);
-        });
+            if (result) slashError.push(`Unable to load command: ${commandName}`);
+        } catch (err) {
+            return console.error(err);
+        }
     });
+    if (slashError.length) {
+        Bot.logger.warn("slashLoad: " + slashError.join("\n"));
+    }
 
     // Then we load events, which will include our message and ready event.
-    const evtFiles = reddirSync("./events/");
+    const evtFiles = readdirSync("./events/");
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
         const event = require(`./events/${file}`);
