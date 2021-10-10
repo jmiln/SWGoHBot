@@ -441,10 +441,10 @@ class Guilds extends Command {
             }
             const fields = [];
             if (!options.flags.min) {
-                const msgArray = Bot.msgArray(users, "\n", 1000);
-                msgArray.forEach((m, ix) => {
+                const msgArr = Bot.msgArray(users, "\n", 1000);
+                msgArr.forEach((m, ix) => {
                     fields.push({
-                        name: message.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArray.length),
+                        name: message.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArr.length),
                         value: m
                     });
                 });
@@ -470,8 +470,7 @@ class Guilds extends Command {
                 });
             }
             const footer = Bot.updatedFooter(guild.updated, message, "guild", cooldown);
-            await msg.delete().catch(Bot.noop);
-            return message.channel.send({embeds: [{
+            return msg.edit({content: null, embeds: [{
                 author: {
                     name: message.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
@@ -495,7 +494,7 @@ class Guilds extends Command {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
-                return msg.edit({embeds: [{
+                return msg.edit({content: null, embeds: [{
                     description: Bot.codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit."
@@ -525,7 +524,7 @@ class Guilds extends Command {
             });
 
             // Get the overall gear levels for the guild as a whole
-            const [gearLvls, avgGear] = Bot.summarizeGearLvls(guildMembers);
+            const [gearLvls, avgGear] = Bot.summarizeCharLevels(guildMembers, "gear");
             fields.push({
                 name: "Character Gear Counts",
                 value: "*How many characters at each gear level*" +
@@ -537,7 +536,7 @@ class Guilds extends Command {
             });
 
             // Get the overall rarity levels for the guild as a whole
-            const [rarityLvls, avgRarity] = Bot.summarizeRarityLvls(guildMembers);
+            const [rarityLvls, avgRarity] = Bot.summarizeCharLevels(guildMembers, "rarity");
             fields.push({
                 name: "Character Rarity Counts",
                 value: "*How many characters at each star level*" +
@@ -599,8 +598,7 @@ class Guilds extends Command {
             }
 
             const footer = Bot.updatedFooter(Math.min(...guildMembers.map(m => m.updated)), message, "guild", cooldown);
-            await msg.delete().catch(Bot.noop);
-            return message.channel.send({embeds: [{
+            return msg.edit({embeds: [{
                 author: {
                     name: message.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
                 },

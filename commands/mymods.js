@@ -1,6 +1,4 @@
 const Command = require("../base/Command");
-// const moment = require('moment');
-require("moment-duration-format");
 
 class MyMods extends Command {
     constructor(Bot) {

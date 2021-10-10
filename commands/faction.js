@@ -113,18 +113,18 @@ class Faction extends Command {
                     const zetas   = "z".repeat(c.skills.filter(s => s.isZeta && s.tier === s.tiers).length);
                     factionChars.push(`**\`[ ${c.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${c.nameKey}**`);
                 });
-                const msgArray = Bot.msgArray(factionChars, "\n", 1000);
+                const msgArr = Bot.msgArray(factionChars, "\n", 1000);
                 const fields = [];
                 let desc;
-                if (msgArray.length > 1) {
-                    msgArray.forEach((m, ix) => {
+                if (msgArr.length > 1) {
+                    msgArr.forEach((m, ix) => {
                         fields.push({
                             name: `${ix+1}`,
                             value: m
                         });
                     });
                 } else {
-                    desc = msgArray[0];
+                    desc = msgArr[0];
                 }
                 if (options.defaults) {
                     fields.push({

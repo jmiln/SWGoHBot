@@ -25,7 +25,7 @@ module.exports = (Bot, client) => {
     };
 
     // Permissions mapping
-    Bot.permMap = {
+    const permMap = {
         // Can do anything, access to the dev commands, etc
         BOT_OWNER: 10,
 
@@ -57,12 +57,12 @@ module.exports = (Bot, client) => {
 
         // If bot owner, return max perm level
         if (authId === Bot.config.ownerid) {
-            return Bot.permMap.BOT_OWNER;
+            return permMap.BOT_OWNER;
         }
 
         // If DMs or webhook, return 0 perm level.
         if (!message.guild || !message.member) {
-            return Bot.permMap.BASE_USER;
+            return permMap.BASE_USER;
         }
         const guildConf = message.guildSettings;
 
@@ -70,14 +70,14 @@ module.exports = (Bot, client) => {
         const gOwner = message.guild.fetchOwner();
         if (message.channel.type === "text" && message.guild && gOwner) {
             if (message.author.id === gOwner.id) {
-                return Bot.permMap.GUILD_OWNER;
+                return permMap.GUILD_OWNER;
             }
         }
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
         if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) {
-            return Bot.permMap.GUILD_ADMIN;
+            return permMap.GUILD_ADMIN;
         }
 
         // The rest of the perms rely on roles. If those roles are not found
@@ -88,7 +88,7 @@ module.exports = (Bot, client) => {
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
                 const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix]);
                 if (adminRole && message.member.roles.cache.has(adminRole.id)) {
-                    return permlvl = Bot.permMap.GUILD_ADMIN;
+                    return permlvl = permMap.GUILD_ADMIN;
                 }
             }
         } catch (e) {() => {};}

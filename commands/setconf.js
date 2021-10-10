@@ -167,24 +167,6 @@ class Setconf extends Command {
                 return super.error(message, message.language.get("COMMAND_SETCONF_NO_KEY", guildConf.prefix));
             }
         }
-
-        //         case "reset":
-        //             await Bot.database.models.settings.destroy({where: {guildID: message.guild.id}})
-        //                 .then(() => {})
-        //                 .catch(error => { Bot.log('ERROR',`Broke in setconf reset delete: ${error}`); });
-        //             Bot.database.models.settings.create({
-        //                 guildID: message.guild.id,
-        //                 adminRole: defSet.adminRole,
-        //                 enableWelcome: defSet.enableWelcome,
-        //                 welcomeMessage: defSet.welcomeMessage,
-        //                 useEmbeds: defSet.useEmbeds,
-        //                 timezone: defSet.timezone,
-        //                 announceChan: defSet.announceChan,
-        //                 useEventPages: defSet.useEventPages,
-        //                 language: defSet.language
-        //             })
-        //                 .then(() => {})
-        //                 .catch(error => { Bot.log('ERROR'`Broke in setconf reset create: ${error}`); });
     }
 }
 

@@ -65,7 +65,7 @@ class Challenges extends Command {
             case message.language.getDay("SATURDAY", "SHORT"): case message.language.getDay("SATURDAY", "LONG"): case "Sat":
                 return sendDay("Saturday");
             default:
-                return Bot.helpOut(message, this);
+                return super.error(message, "Invalid usage, try `;challenges` or `;challenges <dayOfWeek>`\nEx: `;challenges Monday`");
         }
         function sendDay(day) {
             return message.channel.send({content: Bot.codeBlock(dayString(day), "asciidoc")});
