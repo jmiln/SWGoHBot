@@ -49,7 +49,7 @@ module.exports = (Bot, client) => {
      *  NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
      *  command including the VERY DANGEROUS `eval` and `exec` commands!
      */
-    Bot.permlevel = message => {
+    Bot.permLevel = message => {
         let permlvl = 0;
 
         // Depending on message or interaction, grab the ID of the user
@@ -93,6 +93,12 @@ module.exports = (Bot, client) => {
             }
         } catch (e) {() => {};}
         return permlvl;
+    };
+
+    // Check if the bot's account is the main (real) bot
+    Bot.isMain = () => {
+        if (client.user.id === "315739499932024834") return true;
+        return false;
     };
 
     // Default formatting for current US/Pacific time
