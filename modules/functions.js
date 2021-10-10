@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const Fuse = require("fuse-js-latest");
 const moment = require("moment-timezone");
 require("moment-duration-format");
 const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
@@ -7,28 +6,26 @@ const fs = require("fs");
 const readdir = promisify(require("fs").readdir);
 
 module.exports = (Bot, client) => {
-    // A zero-width-space
-    Bot.zws = "\u200B";
-
-    // No-op (Do nothing)
-    Bot.noop = () => {};
-
-    // Some normal color codes
-    Bot.colors = {
-        black:  "#000000",
-        blue:   "#0000FF",
-        green:  "#00FF00",
-        red:    "#FF0000",
-        white:  "#FFFFFF",
-        yellow: "#FFFF00",
-    };
-
     Bot.constants = {
-        invite: "https://discord.com/invite/FfwGvhr"
+        // The main invite for the support server
+        invite: "https://discord.com/invite/FfwGvhr",
+
+        // Zero width space
+        zws: "\u200B",
+
+        // Some normal color codes
+        colors: {
+            black:  "#000000",
+            blue:   "#0000FF",
+            green:  "#00FF00",
+            red:    "#FF0000",
+            white:  "#FFFFFF",
+            yellow: "#FFFF00",
+        }
     };
 
     // Permissions mapping
-    Bot.permMap = {
+    const permMap = {
         // Can do anything, access to the dev commands, etc
         BOT_OWNER: 10,
 
@@ -52,7 +49,7 @@ module.exports = (Bot, client) => {
      *  NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
      *  command including the VERY DANGEROUS `eval` and `exec` commands!
      */
-    Bot.permlevel = message => {
+    Bot.permLevel = message => {
         let permlvl = 0;
 
         // Depending on message or interaction, grab the ID of the user
@@ -60,12 +57,12 @@ module.exports = (Bot, client) => {
 
         // If bot owner, return max perm level
         if (authId === Bot.config.ownerid) {
-            return Bot.permMap.BOT_OWNER;
+            return permMap.BOT_OWNER;
         }
 
         // If DMs or webhook, return 0 perm level.
         if (!message.guild || !message.member) {
-            return Bot.permMap.BASE_USER;
+            return permMap.BASE_USER;
         }
         const guildConf = message.guildSettings;
 
@@ -73,14 +70,14 @@ module.exports = (Bot, client) => {
         const gOwner = message.guild.fetchOwner();
         if (message.channel.type === "text" && message.guild && gOwner) {
             if (message.author.id === gOwner.id) {
-                return Bot.permMap.GUILD_OWNER;
+                return permMap.GUILD_OWNER;
             }
         }
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
         if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) {
-            return Bot.permMap.GUILD_ADMIN;
+            return permMap.GUILD_ADMIN;
         }
 
         // The rest of the perms rely on roles. If those roles are not found
@@ -91,16 +88,11 @@ module.exports = (Bot, client) => {
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
                 const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix]);
                 if (adminRole && message.member.roles.cache.has(adminRole.id)) {
-                    return permlvl = Bot.permMap.GUILD_ADMIN;
+                    return permlvl = permMap.GUILD_ADMIN;
                 }
             }
         } catch (e) {() => {};}
         return permlvl;
-    };
-
-    // Default formatting for current US/Pacific time
-    Bot.myTime = () => {
-        return moment.tz("US/Pacific").format("M/D/YYYY h:mma");
     };
 
     // Check if the bot's account is the main (real) bot
@@ -109,60 +101,49 @@ module.exports = (Bot, client) => {
         return false;
     };
 
-    // This finds any character that matches the search, and returns them in an array
-    // TODO Make this better, maybe remove the dependence on 3rd party module
-    // TODO Possibly make it so it checks both ships & characters, and returns an array of any matches from both
-    // TODO Remove the need for it to be passed the list to look through, it has access to it already
-    Bot.findChar = (searchName, charList, ship=false) => {
-        if (!searchName || !searchName.length) {
-            return [];
-        }
-        const options = {
-            tokenize: true,
-            matchAllTokens: true,
-            threshold: 0,
-            distance: 0,
-            keys: [ "name", "aliases" ]
-        };
-        const options2 = {
-            keys: ["name", "aliases"],
-            threshold: .1,
-            distance: 4
-        };
-        // In case of any extra spaces
-        searchName = searchName.toString().trim().toLowerCase();
-
-        // Check the names for an exact match
-        for (let ix = 0; ix < charList.length; ix++) {
-            if (charList[ix].name.toLowerCase() === searchName || charList[ix].aliases.map(a => a.toLowerCase()).includes(searchName)) {
-                return [charList[ix]];
-            }
-        }
-
-        // If there's not an exact name match, fuzzy search it
-        if (ship) options.keys.push("crew");
-        const fuse = new Fuse(charList, options);
-        let chars = fuse.search(searchName);
-        if (chars.length >= 1) {
-            return chars;
-        }
-
-        // If it's not exact, send back the big mess
-        if (ship) options2.keys.push("crew");
-        const fuse2 = new Fuse(charList, options2);
-        chars = fuse2.search(searchName);
-        return chars;
+    // Default formatting for current US/Pacific time
+    Bot.myTime = () => {
+        return moment.tz("US/Pacific").format("M/D/YYYY h:mma");
     };
 
-    // This find one character that matches the search, and returns it
-    Bot.findCharByName = (searchName, charList) => {
-        var options = {
-            keys: ["name"],
-            threshold: 0.0
-        };
-        const fuse = new Fuse(charList, options);
-        const char = fuse.search(searchName);
-        return char[0];
+    // This finds any character that matches the search, and returns them in an array
+    Bot.findChar = (searchName, charList, ship=false) => {
+        if (!searchName?.length || typeof searchName !== "string") {
+            return [];
+        }
+
+        searchName = searchName.trim().toLowerCase();
+
+        // Try finding an exact match for the name or aliases
+        let foundChar = charList.filter(char => char.name.toLowerCase() === searchName);
+        if (!foundChar.length) {
+            foundChar = charList.filter(char => char.aliases.some(alias => alias.toLowerCase() === searchName));
+        }
+        if (ship && !foundChar.length) {
+            foundChar = charList.filter(ship => ship.crew?.some(crew => crew.toLowerCase() === searchName));
+        }
+        if (foundChar?.length) {
+            return foundChar;
+        }
+
+        // Then see if the searchName is a part of one of the names or aliases
+        foundChar = charList.filter(char => char.name.toLowerCase().split(" ").includes(searchName));
+        if (!foundChar.length) {
+            foundChar = charList.filter(char => char.aliases.some(alias => alias.toLowerCase().split(" ").includes(searchName)));
+        }
+        if (ship && !foundChar.length) {
+            foundChar = charList.filter(ship => ship.crew?.some(crew => crew.toLowerCase().split(" ").includes(searchName)));
+        }
+        if (foundChar?.length) {
+            return foundChar;
+        }
+
+        // Then try to split up the search by spaces, and see if any part of that finds any matches
+        const splitName = searchName.split(" ");
+        foundChar = charList.filter(char => splitName.some(name => char.name.toLowerCase().includes(name)));
+        if (foundChar?.length) {
+            return foundChar;
+        }
     };
 
     // Parse the webhook url, and get the id & token from the end
@@ -181,32 +162,6 @@ module.exports = (Bot, client) => {
         hook.send({embeds: [
             embed
         ]}).catch(() => {});
-    };
-
-    /* LOGGING FUNCTION
-     * Logs to console & if set up, the log channel
-     */
-    Bot.log = (title="Log", msg, options={}) => {
-        console.log(`[${Bot.myTime()}][${title}]${msg}`);
-        if (!options.noSend) {
-            if (client.shard) {
-                title = title + ` (${client.shard.id})`;
-            }
-            try {
-                // Sends the logs to the channel I have set up for it.
-                if (Bot.config.logs.logToChannel && Bot.config.webhookURL) {
-                    Bot.sendWebhook(Bot.config.webhookURL, {
-                        title: title ? title : null,
-                        description: msg,
-                        color: options.color ? options.color : null,
-                        footer: {text: Bot.myTime()}
-                    });
-                }
-            } catch (e) {
-                // Probably broken because it's not started yet
-                console.log(`[${Bot.myTime()}] I couldn't send a log:\n${e}`);
-            }
-        }
     };
 
     /* ANNOUNCEMENT MESSAGE
@@ -527,15 +482,15 @@ module.exports = (Bot, client) => {
     };
 
     // String Truncate function
-    Bot.truncate = (string, len, terminator="...") => {
-        const termLength = terminator.length;
-
-        if (string.length > len) {
-            return string.substring(0, len - termLength) + terminator;
-        } else {
-            return string;
-        }
-    };
+    // Bot.truncate = (string, len, terminator="...") => {
+    //     const termLength = terminator.length;
+    //
+    //     if (string.length > len) {
+    //         return string.substring(0, len - termLength) + terminator;
+    //     } else {
+    //         return string;
+    //     }
+    // };
 
     /* MESSAGE CLEAN FUNCTION
      * "Clean" removes @everyone pings, as well as tokens, and makes code blocks
@@ -543,119 +498,26 @@ module.exports = (Bot, client) => {
      * and stringifies objects!
      * This is mostly only used by the Eval and Exec commands.
      */
-    Bot.clean = async (client, text) => {
-        if (text && text.constructor.name == "Promise")
-            text = await text;
-        if (typeof evaled !== "string")
-            text = inspect(text, {
-                depth: 0
-            });
-
-        text = text
-            .replace(/`/g, "`" + String.fromCharCode(8203))
-            .replace(/@/g, "@" + String.fromCharCode(8203))
-            .replace(client.token, "mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0");
-
-        return text;
-    };
+    // Bot.clean = async (client, text) => {
+    //     if (text && text.constructor.name == "Promise")
+    //         text = await text;
+    //     if (typeof evaled !== "string")
+    //         text = inspect(text, {
+    //             depth: 0
+    //         });
+    //
+    //     text = text
+    //         .replace(/`/g, "`" + String.fromCharCode(8203))
+    //         .replace(/@/g, "@" + String.fromCharCode(8203))
+    //         .replace(client.token, "mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0");
+    //
+    //     return text;
+    // };
 
     /* MISCELANEOUS NON-CRITICAL FUNCTIONS */
 
     // `await wait(1000);` to "pause" for 1 second.
     Bot.wait = promisify(setTimeout);
-
-    // These 2 simply handle unhandled things. Like Magic. /shrug
-    process.on("uncaughtException", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(`${process.cwd()}`, "g"), ".");
-        console.error(`[${Bot.myTime()}] Uncaught Exception: `, errorMsg);
-
-        // If it's that error, don't bother showing it again
-        try {
-            if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
-            }
-        } catch (e) {
-            // Don't bother doing anything
-        }
-        // Always best practice to let the code crash on uncaught exceptions.
-        // Because you should be catching them anyway.
-        process.exit(1);
-    });
-
-    process.on("unhandledRejection", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(process.cwd(), "g"), ".");
-
-        // If it's something I can't do anything about, ignore it
-        const ignoreArr = [
-            "Internal Server Error",                // Something on Discord's end
-            "Cannot send messages to this user",    // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
-            "Unknown Message"                       // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
-        ];
-        if (ignoreArr.some(elem => errorMsg.includes(elem))) return;
-
-        if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
-            Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
-        }
-        // console.log(err);
-        console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
-        try {
-            if (Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
-            }
-        } catch (e) {
-            // Don't bother doing anything
-        }
-    });
-
-    /*  COMMAND HELP OUTPUT
-     *  Input the language and the command, and it'll give ya back the embed object to send
-     */
-    Bot.helpOut = (message, command) => {
-        const language = message.language;
-        const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
-        if (!help || !help.actions) Bot.logger.error("Broke in helpOut with " + message.content);
-        const actions = help.actions ? help.actions.slice() : [];
-        let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(", ") : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
-
-        // Stick the extra help bit in
-        actions.push(language.get("BASE_COMMAND_HELP_HELP", command.help.name.toLowerCase()));
-        const actionArr = [];
-
-        actions.forEach(action => {
-            const outAct = {};
-            const keys = Object.keys(action.args);
-            let argString = "";
-            if (keys.length > 0) {
-                keys.forEach(key => {
-                    argString += `**${key}**  ${action.args[key]}\n`;
-                });
-            }
-            if (action.action && action.action.length) {
-                outAct.name = action.action;
-                if (action.usage && action.usage.length) {
-                    outAct.value = `${action.actionDesc === "" ? "" : action.actionDesc} \n\`\`\`${action.usage}\`\`\`${argString}\n`;
-                } else {
-                    outAct.value = `${action.actionDesc === "" ? "" : action.actionDesc} \n${argString}\n`;
-                }
-                actionArr.push(outAct);
-            } else {
-                if (action.usage && action.usage.length) {
-                    headerString += `\`\`\`${action.usage}\`\`\`${argString}`;
-                } else {
-                    headerString += argString;
-                }
-            }
-        });
-        message.channel.send({embeds: [{
-            "color": "#605afc",
-            "author": {
-                "name": language.get("BASE_COMMAND_HELP_HEADER", command.help.name)
-            },
-            "description": headerString,
-            "fields": actionArr
-        }]}).catch((e) => {Bot.logger.error(`Broke in helpOut (${command.help.name}):\n${e}`);});
-    };
-
 
     /*  MESSAGE SPLITTER
      *  Input an array of strings, and it will put them together so that it
@@ -694,6 +556,7 @@ module.exports = (Bot, client) => {
 
     // Return a duration string
     Bot.duration = (time, message=null) => {
+        if (!message) return "N/A";
         const lang = message ? message.language : Bot.languages[Bot.config.defaultSettings.language];
         return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
     };
@@ -1042,13 +905,13 @@ module.exports = (Bot, client) => {
     // Clean mentions out of messages and replace them with the text version
     Bot.cleanMentions = (guild, input) => {
         return input
-            .replace(/@(here|everyone)/g, `@${Bot.zws}$1`)
+            .replace(/@(here|everyone)/g, `@${Bot.constants.zws}$1`)
             .replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
                 switch (type) {
                     case "@":
                     case "@!": {
                         const  user = guild.members.cache.get(id);
-                        return user ? `@${user.displayname}` : `<${type}${Bot.zws}${id}>`;
+                        return user ? `@${user.displayname}` : `<${type}${Bot.constants.zws}${id}>`;
                     }
                     case "@&": {
                         const  role = guild.roles.cache.get(id);
@@ -1056,9 +919,9 @@ module.exports = (Bot, client) => {
                     }
                     case "#": {
                         const  channel  = guild.channels.cache.get(id);
-                        return channel ? `#${channel.name}` : `<${type}${Bot.zws}${id}>`;
+                        return channel ? `#${channel.name}` : `<${type}${Bot.constants.zws}${id}>`;
                     }
-                    default: return `<${type}${Bot.zws}${id}>`;
+                    default: return `<${type}${Bot.constants.zws}${id}>`;
                 }
             });
     };
@@ -1110,59 +973,35 @@ module.exports = (Bot, client) => {
         return charGearOut;
     };
 
-    Bot.summarizeGearLvls = (guildMembers) => {
-        // Get the overall gear levels for the guild as a whole
+    // Get the overall levels for a guild as a whole (Gear, rarity, relic, etc)
+    Bot.summarizeCharLevels = (guildMembers, type) => {
+        const max = {
+            gear: 13,
+            relic: 9,
+            rarity: 7
+        };
+        if (!Object.keys(max).includes(type)) return new Error(`[summarizeLevels] Invalid type (${type})`);
         if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
-        const gearLvls = {};
-        const MAX_GEAR = 13;
-        for (let ix = MAX_GEAR; ix >= 1; ix--) {
-            let gearCount = 0;
+
+        const levels = {};
+        for (let ix = max[type]; ix >= 1; ix--) {
+            let lvlCount = 0;
             for (const member of guildMembers) {
-                gearCount += member.roster.filter(c => c && c.combatType === 1 && c.gear === ix).length;
+                if (type === "relic") {
+                    lvlCount += member.roster.filter(c => c?.combatType === 1 && c.relic?.currentTier-2 === ix).length;
+                } else {
+                    lvlCount += member.roster.filter(c => c?.combatType === 1 && c[type] === ix).length;
+                }
             }
-            if (gearCount > 0) {
-                gearLvls[ix] = gearCount;
+            if (lvlCount > 0) {
+                levels[ix] = lvlCount;
             }
         }
-        const tieredGear = Object.keys(gearLvls).reduce((acc, curr) => parseInt(acc, 10) + (gearLvls[curr] * curr), 0);
-        const totalGear = Object.keys(gearLvls).reduce((acc, curr) => parseInt(acc, 10) + gearLvls[curr]);
-        const avgGear = (tieredGear / totalGear).toFixed(2);
+        const tieredLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + (levels[curr] * curr), 0);
+        const totalLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + levels[curr]);
+        const avgLvls = (tieredLvl / totalLvl).toFixed(2);
 
-        return [gearLvls, avgGear];
-    };
-
-    Bot.summarizeRarityLvls = (guildMembers) => {
-        if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
-        const rarityLvls = {};
-        for (let ix = 7; ix >= 1; ix--) {
-            let rarityCount = 0;
-            for (const member of guildMembers) {
-                rarityCount += member.roster.filter(c => c && c.combatType === 1 && c.rarity === ix).length;
-            }
-            rarityLvls[ix] = rarityCount;
-        }
-        const tieredRarity = Object.keys(rarityLvls).reduce((acc, curr) => parseInt(acc, 10) + (rarityLvls[curr] * curr), 0);
-        const totalRarity = Object.keys(rarityLvls).reduce((acc, curr) => parseInt(acc, 10) + rarityLvls[curr]);
-        const avgRarity = (tieredRarity / totalRarity).toFixed(2);
-
-        return [rarityLvls, avgRarity];
-    };
-    Bot.summarizeRelicLvls = (guildMembers) => {
-        if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
-        const relicLvls = {};
-        const MAX_RELIC = 8;
-        for (let ix = MAX_RELIC; ix >= 1; ix--) {
-            let relicCount = 0;
-            for (const member of guildMembers) {
-                relicCount += member.roster.filter(c => c && c.combatType === 1 && c?.relic?.currentTier - 2 === ix).length;
-            }
-            relicLvls[ix] = relicCount;
-        }
-        const tieredRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + (relicLvls[curr] * curr), 0);
-        const totalRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + relicLvls[curr]);
-        const avgRelic = (tieredRelic / totalRelic).toFixed(2);
-
-        return [relicLvls, avgRelic];
+        return [levels, avgLvls];
     };
 
     Bot.toProperCase = function(strIn) {

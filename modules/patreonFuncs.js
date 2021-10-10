@@ -292,7 +292,7 @@ module.exports = (Bot, client) => {
 
         for (const player of players) {
             const rankString = player[arenaString].toString().padStart(3);
-            player.outString = Bot.expandSpaces(`**\`${Bot.zws} ${rankString} ${Bot.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
+            player.outString = Bot.expandSpaces(`**\`${Bot.constants.zws} ${rankString} ${Bot.constants.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
             if (times[player.timeTil]) {
                 times[player.timeTil].players.push(player);
             } else {

@@ -48,7 +48,7 @@ class Activites extends Command {
                 message.channel.send({content: Bot.codeBlock(message.language.get("COMMAND_ACTIVITIES_SATURDAY"), "asciidoc")});
                 break;
             default:
-                return Bot.helpOut(message, this);
+                return super.error(message, "Invalid usage, try `;activities` or `;activities <dayOfWeek>`\nEx: `;activities Monday`");
         }
     }
 }

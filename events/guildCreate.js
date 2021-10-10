@@ -27,6 +27,6 @@ module.exports = async (Bot, guild) => {
             .catch(error => { Bot.logger.error(error, guild.id); });
     } else {
         // Log that it joined another guild (Again)
-        // Bot.log("GuildCreate", `I re-joined ${guild.name}(${guild.id})`, {color: Bot.colors.green});
+        // Bot.log("GuildCreate", `I re-joined ${guild.name}(${guild.id})`, {color: Bot.constants.colors.green});
     }
 };

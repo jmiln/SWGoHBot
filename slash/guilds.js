@@ -761,10 +761,10 @@ class Guilds extends Command {
                 }
             }
             const fields = [];
-            const msgArray = Bot.msgArray(users, "\n", 1000);
-            msgArray.forEach((m, ix) => {
+            const msgArr = Bot.msgArray(users, "\n", 1000);
+            msgArr.forEach((m, ix) => {
                 fields.push({
-                    name: interaction.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArray.length),
+                    name: interaction.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArr.length),
                     value: m
                 });
             });
@@ -839,7 +839,7 @@ class Guilds extends Command {
             });
 
             // Get the overall gear levels for the guild as a whole
-            const [gearLvls, avgGear] = Bot.summarizeGearLvls(guildMembers);
+            const [gearLvls, avgGear] = Bot.summarizeCharLevels(guildMembers, "gear");
             fields.push({
                 name: "Character Gear Counts",
                 value: "*How many characters at each gear level*" +
@@ -851,7 +851,7 @@ class Guilds extends Command {
             });
 
             // Get the overall rarity levels for the guild as a whole
-            const [rarityLvls, avgRarity] = Bot.summarizeRarityLvls(guildMembers);
+            const [rarityLvls, avgRarity] = Bot.summarizeCharLevels(guildMembers, "rarity");
             fields.push({
                 name: "Character Rarity Counts",
                 value: "*How many characters at each star level*" +

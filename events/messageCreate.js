@@ -49,7 +49,7 @@ module.exports = async (Bot, client, message) => {
     if (!command) return;
 
     // Get the user or member's permission level from the elevation
-    const level = Bot.permlevel(message);
+    const level = Bot.permLevel(message);
 
     // Check whether the command, or alias, exist in the collections defined in swgohbot.js.
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
@@ -120,30 +120,18 @@ module.exports = async (Bot, client, message) => {
         }
 
         // If they're just looking for the help, don't bother going through the command
-        if (args.length === 1 && args[0].toLowerCase() === "help") {
-            try {
-                Bot.helpOut(message, cmd);
-            } catch (err) {
-                if (cmd.help.name === "test") {
-                    console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
-                } else {
-                    Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
-                }
-            }
-        } else {
-            try {
-                await cmd.run(Bot, message, args, {
-                    level: level,
-                    flags: flagArgs.flags,
-                    subArgs: flagArgs.subArgs,
-                    defaults: def
-                });
-            } catch (err) {
-                if (cmd.help.name === "test") {
-                    console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
-                } else {
-                    Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err, {depth: 5})}`, true);
-                }
+        try {
+            await cmd.run(Bot, message, args, {
+                level: level,
+                flags: flagArgs.flags,
+                subArgs: flagArgs.subArgs,
+                defaults: def
+            });
+        } catch (err) {
+            if (cmd.help.name === "test") {
+                console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+            } else {
+                Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err, {depth: 5})}`, true);
             }
         }
         if (Bot.config.logs.logComs) {

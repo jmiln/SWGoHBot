@@ -298,8 +298,8 @@ class GrandArena extends Command {
 
         // Get the overall gear levels for each user
         let gearOverview = [];
-        const [u1GearLvls, u1AvgGear] = Bot.summarizeGearLvls(user1);
-        const [u2GearLvls, u2AvgGear] = Bot.summarizeGearLvls(user2);
+        const [u1GearLvls, u1AvgGear] =Bot.summarizeCharLevels(user1, "gear");
+        const [u2GearLvls, u2AvgGear] =Bot.summarizeCharLevels(user2, "gear");
         const maxGear = Math.max(Math.max(...Object.keys(u1GearLvls)), Math.max(...Object.keys(u2GearLvls)));
         for (let ix = maxGear-3; ix <= maxGear; ix++) {
             gearOverview.push({
@@ -326,8 +326,8 @@ class GrandArena extends Command {
 
         // Get the overall rarity levels for each user
         let rarityOverview = [];
-        const [u1RarityLvls, u1AvgRarity] = Bot.summarizeRarityLvls(user1);
-        const [u2RarityLvls, u2AvgRarity] = Bot.summarizeRarityLvls(user2);
+        const [u1RarityLvls, u1AvgRarity] =Bot.summarizeCharLevels(user1, "rarity");
+        const [u2RarityLvls, u2AvgRarity] =Bot.summarizeCharLevels(user2, "rarity");
         const maxRarity = Math.max(Math.max(...Object.keys(u1RarityLvls)), Math.max(...Object.keys(u2RarityLvls)));
         for (let ix = maxRarity-3; ix <= maxRarity; ix++) {
             rarityOverview.push({
@@ -383,8 +383,8 @@ class GrandArena extends Command {
 
         // Get the overall relic levels for each user
         let relicOverview = [];
-        const [u1RelicLvls, u1AvgRelic] = Bot.summarizeRelicLvls(user1);
-        const [u2RelicLvls, u2AvgRelic] = Bot.summarizeRelicLvls(user2);
+        const [u1RelicLvls, u1AvgRelic] =Bot.summarizeCharLevels(user1, "relic");
+        const [u2RelicLvls, u2AvgRelic] =Bot.summarizeCharLevels(user2, "relic");
         const maxRelic = Math.max(Math.max(...Object.keys(u1RelicLvls)), Math.max(...Object.keys(u2RelicLvls)));
         for (let ix = 1; ix <= maxRelic; ix++) {
             relicOverview.push({

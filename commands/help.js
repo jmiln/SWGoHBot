@@ -49,7 +49,55 @@ class Help extends Command {
                 return super.error(message, message.language.get("COMMAND_RELOAD_INVALID_CMD", args[0]));
             }
 
-            Bot.helpOut(message, command);
+            helpOut(message, command);
+        }
+        /*  COMMAND HELP OUTPUT
+         *  Input the language and the command, and it'll give ya back the embed object to send
+         */
+        function helpOut(message, command) {
+            const language = message.language;
+            const help = language.get(`COMMAND_${command.help.name.toUpperCase()}_HELP`);
+            if (!help || !help.actions) Bot.logger.error("Broke in helpOut with " + message.content);
+            const actions = help.actions ? help.actions.slice() : [];
+            let headerString = `**Aliases:** \`${command.conf.aliases.length > 0 ? command.conf.aliases.join(", ") : "No aliases for this command"}\`\n**Description:** ${help.description}\n`;
+
+            // Stick the extra help bit in
+            actions.push(language.get("BASE_COMMAND_HELP_HELP", command.help.name.toLowerCase()));
+            const actionArr = [];
+
+            actions.forEach(action => {
+                const outAct = {};
+                const keys = Object.keys(action.args);
+                let argString = "";
+                if (keys.length > 0) {
+                    keys.forEach(key => {
+                        argString += `**${key}**  ${action.args[key]}\n`;
+                    });
+                }
+                if (action.action && action.action.length) {
+                    outAct.name = action.action;
+                    if (action.usage && action.usage.length) {
+                        outAct.value = `${action.actionDesc === "" ? "" : action.actionDesc} \n\`\`\`${action.usage}\`\`\`${argString}\n`;
+                    } else {
+                        outAct.value = `${action.actionDesc === "" ? "" : action.actionDesc} \n${argString}\n`;
+                    }
+                    actionArr.push(outAct);
+                } else {
+                    if (action.usage && action.usage.length) {
+                        headerString += `\`\`\`${action.usage}\`\`\`${argString}`;
+                    } else {
+                        headerString += argString;
+                    }
+                }
+            });
+            message.channel.send({embeds: [{
+                "color": "#605afc",
+                "author": {
+                    "name": language.get("BASE_COMMAND_HELP_HEADER", command.help.name)
+                },
+                "description": headerString,
+                "fields": actionArr
+            }]}).catch((e) => {Bot.logger.error(`Broke in helpOut (${command.help.name}):\n${e}`);});
         }
     }
 }
