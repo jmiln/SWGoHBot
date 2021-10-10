@@ -18,34 +18,34 @@ class Logger {
         let color = null;
         switch (type) {
             case "log": {
-                color = this.Bot.colors.blue;
+                color = this.Bot.constants.colors.blue;
                 out = `${timestamp} ${chalk.white.bgBlue(type.toUpperCase())} ${content} `;
                 break;
             }
             case "warn": {
-                color = this.Bot.colors.yellow;
+                color = this.Bot.constants.colors.yellow;
                 out =`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content} `;
                 break;
             }
             case "error": {
-                color = this.Bot.colors.red;
+                color = this.Bot.constants.colors.red;
                 out =`${timestamp} ${chalk.black.bgRed(type.toUpperCase())} ${content} `;
                 break;
             }
             case "debug": {
                 // Only print debug logs if it's set to
                 if (!this.Bot.config.debugLogs) return;
-                color = this.Bot.colors.green;
+                color = this.Bot.constants.colors.green;
                 out =`${timestamp} ${chalk.green(type.toUpperCase())} ${content} `;
                 break;
             }
             case "cmd": {
-                color = this.Bot.colors.white;
+                color = this.Bot.constants.colors.white;
                 out =`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`;
                 break;
             }
             case "ready": {
-                color = this.Bot.colors.green;
+                color = this.Bot.constants.colors.green;
                 out =`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${content}`;
                 break;
             }
