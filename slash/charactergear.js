@@ -263,7 +263,7 @@ async function expandPieces(Bot, list) {
 async function getParts(Bot, gr, partList=[], amt=1) {
     if (Array.isArray(gr)) gr = gr[0];
     if (!gr) return;
-    if (gr.recipeId && gr.recipeId.length) {
+    if (gr.recipeId?.length) {
         let rec = await Bot.cache.get(Bot.config.mongodb.swapidb, "recipes", {
             id: gr.recipeId,
             language: "eng_us"

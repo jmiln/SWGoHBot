@@ -716,7 +716,7 @@ module.exports = (Bot) => {
             const rOut = [];
             let recList = await Bot.swgoh.fetchAPI("/swgoh/data", {
                 "collection": "recipeList",
-                "language": "eng_us",
+                "language": lang,
                 "enums":true,
                 "project": {
                     "id": 1,
@@ -731,12 +731,15 @@ module.exports = (Bot) => {
 
             if (!recList) return Bot.logger.error("No recList for " + lang);
 
+            // Wipe out all the old data because it breaks even when it shouldn't
+            await cache.wipe(Bot.config.mongodb.swapidb, "recipes");
+
+            // For each of the recipes it fetched, give them a language & stick em in
             for (const rec of recList) {
                 rec.language = lang.toLowerCase();
                 if (recArray.includes(rec.id)) {
                     rOut.push(rec);
                 }
-                await cache.wipe(Bot.config.mongodb.swapidb, "recipes");
                 await cache.put(Bot.config.mongodb.swapidb, "recipes", {id: rec.id, language: lang}, rec);
             }
             return rOut;

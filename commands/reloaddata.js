@@ -159,8 +159,12 @@ class ReloadData extends Command {
                         await Bot.swgohAPI.units("", lang, true);
                         message.channel.send({content: `Updated units for ${lang}`});
                         await Bot.swgohAPI.abilities([], lang, true);
-                        message.channel.send({content: `Updated abilities for ${lang}`});
-                        await Bot.swgohAPI.gear([], lang, true);
+                        if (lang === "eng_us") {
+                            message.channel.send({content: `Updated abilities for ${lang}`});
+                            await Bot.swgohAPI.gear([], lang, true);
+                        } else {
+                            message.channel.send({content: "Skipping recipes for " + lang});
+                        }
                         message.channel.send({content: `Updated gear for ${lang}`});
                         await Bot.swgohAPI.recipes([], lang, true);
                         message.channel.send({content: `Updated recipes for ${lang}`});
@@ -176,8 +180,12 @@ class ReloadData extends Command {
                                 message.channel.send({content: `Updated gear for ${lang}`});
                                 break;
                             case "recipes":
-                                await Bot.swgohAPI.recipes([], lang, true);
-                                message.channel.send({content: `Updated recipes for ${lang}`});
+                                if (lang.toLowerCase() === "eng_us") {
+                                    await Bot.swgohAPI.recipes([], lang, true);
+                                    message.channel.send({content: `Updated recipes for ${lang}`});
+                                } else {
+                                    message.channel.send({content: "Skipping recipes for " + lang});
+                                }
                                 break;
                             case "units":
                                 await Bot.swgohAPI.units("", lang, true);
