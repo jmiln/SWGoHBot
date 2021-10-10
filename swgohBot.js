@@ -1,5 +1,6 @@
 const { Client, Collection } = require("discord.js");
 const { readdirSync, readFileSync } = require("fs");
+const { inspect } = require("util");
 const SwgohClientStub = require("swgoh-client-stub");
 
 const Bot = {};
@@ -187,5 +188,47 @@ const init = async () => {
             client.on(eventName, event.bind(null, Bot));
         }
         delete require.cache[require.resolve(`./events/${file}`)];
+    });
+
+    process.on("uncaughtException", (err) => {
+        const errorMsg = err.stack.replace(new RegExp(`${process.cwd()}`, "g"), ".");
+        console.error(`[${Bot.myTime()}] Uncaught Exception: ${errorMsg}`);
+
+        // If it's that error, don't bother showing it again
+        try {
+            if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
+                client.channels.cache.get(Bot.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
+            }
+        } catch (e) {
+            // Don't bother doing anything
+        }
+        // Always best practice to let the code crash on uncaught exceptions.
+        // Because you should be catching them anyway.
+        process.exit(1);
+    });
+
+    process.on("unhandledRejection", (err) => {
+        const errorMsg = err.stack.replace(new RegExp(process.cwd(), "g"), ".");
+
+        // If it's something I can't do anything about, ignore it
+        const ignoreArr = [
+            "Internal Server Error",                // Something on Discord's end
+            "Cannot send messages to this user",    // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
+            "Unknown Message"                       // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
+        ];
+        if (ignoreArr.some(elem => errorMsg.includes(elem))) return;
+
+        if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
+            Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
+        }
+        // console.log(err);
+        console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
+        try {
+            if (Bot.config.logs.logToChannel) {
+                client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
+            }
+        } catch (e) {
+            // Don't bother doing anything
+        }
     });
 };
