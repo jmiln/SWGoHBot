@@ -692,7 +692,8 @@
         "name": "Echo",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)"
+                "type": "Hard Modes (L)",
+                "level": "7-D"
             }
         ]
     },
@@ -1713,6 +1714,15 @@
         ]
     },
     {
+        "name": "Omega",
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-D"
+            }
+        ]
+    },
+    {
         "name": "Padmé Amidala",
         "locations": [
             {
@@ -2389,7 +2399,8 @@
         "name": "Wrecker",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)"
+                "type": "Hard Modes (L)",
+                "level": "7-C"
             }
         ]
     },
