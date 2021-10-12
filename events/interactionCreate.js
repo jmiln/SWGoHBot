@@ -17,7 +17,7 @@ module.exports = async (Bot, client, interaction) => {
     interaction.guildSettings = await Bot.getGuildConf(interaction?.guild?.id);
 
     // Get the user or member's permission level from the elevation
-    const level = Bot.permlevel(interaction);
+    const level = Bot.permLevel(interaction);
 
     // Make sure the user has the correct perms to run the command
     if (level < cmd.commandData.permLevel) {
