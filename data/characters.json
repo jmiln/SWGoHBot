@@ -4392,7 +4392,9 @@
         "name": "Jedi Master Luke Skywalker",
         "uniqueName": "GRANDMASTERLUKE",
         "aliases": [
-            "Jedi Master Luke Skywalker"
+            "Jedi Master Luke Skywalker",
+            "JMLS",
+            "JML"
         ],
         "nameVariant": [
             "Jedi Master Luke Skywalker"

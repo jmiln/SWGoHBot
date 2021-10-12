@@ -144,6 +144,9 @@ module.exports = (Bot, client) => {
         if (foundChar?.length) {
             return foundChar;
         }
+
+        // If by here, it hasn't found any matching character or ship, return an empty array
+        return [];
     };
 
     // Parse the webhook url, and get the id & token from the end
