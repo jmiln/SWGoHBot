@@ -62,23 +62,46 @@ class slashCommand {
         const title = options.title || "TITLE HERE";
         const footer = options.footer || "";
         const color = options.color;
+        const ephemeral = options.ephemeral || false;
         if (interaction.replied || interaction.deferred) {
             try {
-                return interaction.editReply({embeds: [{
-                    author: {
-                        name: title,
-                        icon_url: options.iconURL || null
-                    },
-                    description: out.toString().substring(0, 1900) + "...",
-                    color: color,
-                    footer: {
-                        text: footer
-                    }
-                }]});
+                return interaction.editReply({
+                    content: null,
+                    embeds: [{
+                        author: {
+                            name: title,
+                            icon_url: options.iconURL || null
+                        },
+                        description: out.toString().substring(0, 1900) + "...",
+                        color: color,
+                        footer: {
+                            text: footer
+                        }
+                    }],
+                    ephemeral: ephemeral
+                });
             } catch (e) {
                 console.log("base/slashCommand Error: " + e.message);
                 console.log("base/slashCommand Message: " + interaction.content);
-                return interaction.channel.send({embeds: [{
+                return interaction.channel.send({
+                    content: null,
+                    embeds: [{
+                        author: {
+                            name: title,
+                            icon_url: options.iconURL || null
+                        },
+                        description: out,
+                        color: color,
+                        footer: {
+                            text: footer
+                        }
+                    }],
+                    ephemeral: ephemeral
+                });
+            }
+        } else {
+            return interaction.reply({
+                embeds: [{
                     author: {
                         name: title,
                         icon_url: options.iconURL || null
@@ -88,20 +111,9 @@ class slashCommand {
                     footer: {
                         text: footer
                     }
-                }]});
-            }
-        } else {
-            return interaction.reply({embeds: [{
-                author: {
-                    name: title,
-                    icon_url: options.iconURL || null
-                },
-                description: out,
-                color: color,
-                footer: {
-                    text: footer
-                }
-            }]});
+                }],
+                ephemeral: ephemeral
+            });
         }
     }
 }

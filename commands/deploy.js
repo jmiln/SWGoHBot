@@ -19,6 +19,8 @@ class Deploy extends Command {
 
     async run(Bot, message) {
         if (!message?.guild) return super.error(message, "This command can only be run in a server");
+        const outLog = [];
+
         try {
             // Filter the slash commands to find guild only ones.
             const guildCmds = message.client.slashcmds.filter(c => c.guildOnly).map(c => c.commandData);
@@ -46,27 +48,6 @@ class Deploy extends Command {
                 }
             }
 
-            // Then filter out global commands by inverting the filter
-            const globalCmds = message.client.slashcmds.filter(c => !c.guildOnly).map(c => c.commandData);
-            // Get the currently deployed global commands
-            const currentGlobalCommands = await message.client.application?.commands?.fetch();
-
-            const { newComs: newGlobalComs, changedComs: changedGlobalComs } = checkCmds(globalCmds, currentGlobalCommands);
-
-            if (newGlobalComs.length) {
-                for (const newGlobalCom of newGlobalComs) {
-                    console.log(`Adding ${newGlobalCom.name} to Global commands`);
-                    await message.client.application?.commands.create(newGlobalCom);
-                }
-            }
-            if (changedGlobalComs.length) {
-                for (const diffGlobalCom of changedGlobalComs) {
-                    console.log(`Updating ${diffGlobalCom.com.name} in Global commands`);
-                    await message.client.application?.commands.edit(diffGlobalCom.id, diffGlobalCom.com);
-                }
-            }
-
-            const outLog = [];
             // The new guild commands
             outLog.push({
                 name: "**Added Guild**",
@@ -79,17 +60,40 @@ class Deploy extends Command {
                 value: changedGuildComs?.length ? changedGuildComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
             });
 
-            // The new global commands
-            outLog.push({
-                name: "**Added Global**",
-                value: newGlobalComs?.length ? newGlobalComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
-            });
 
-            // The edited global commands
-            outLog.push({
-                name: "**Changed Global**",
-                value: changedGlobalComs?.length ? changedGlobalComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
-            });
+            if (Bot.config.enableGlobalCmds) {
+                // Then filter out global commands by inverting the filter
+                const globalCmds = message.client.slashcmds.filter(c => !c.guildOnly).map(c => c.commandData);
+                // Get the currently deployed global commands
+                const currentGlobalCommands = await message.client.application?.commands?.fetch();
+
+                const { newComs: newGlobalComs, changedComs: changedGlobalComs } = checkCmds(globalCmds, currentGlobalCommands);
+
+                if (newGlobalComs.length) {
+                    for (const newGlobalCom of newGlobalComs) {
+                        console.log(`Adding ${newGlobalCom.name} to Global commands`);
+                        await message.client.application?.commands.create(newGlobalCom);
+                    }
+                }
+                if (changedGlobalComs.length) {
+                    for (const diffGlobalCom of changedGlobalComs) {
+                        console.log(`Updating ${diffGlobalCom.com.name} in Global commands`);
+                        await message.client.application?.commands.edit(diffGlobalCom.id, diffGlobalCom.com);
+                    }
+                }
+
+                // The new global commands
+                outLog.push({
+                    name: "**Added Global**",
+                    value: newGlobalComs?.length ? newGlobalComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
+                });
+
+                // The edited global commands
+                outLog.push({
+                    name: "**Changed Global**",
+                    value: changedGlobalComs?.length ? changedGlobalComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
+                });
+            }
 
             return message.channel.send({
                 content: null,
