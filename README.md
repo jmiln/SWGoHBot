@@ -10,6 +10,8 @@ It has since become so much more than I'd initially planned, and should become m
 
 ### Support me on
 - **[Patreon](https://www.patreon.com/swgohbot)**
+
+### Check out the bot
 - **[Official Server](http://www.swgohbot.com/server)**
 - **[Invite SWGoHBot](http://www.swgohbot.com/invite)**
 
@@ -17,6 +19,7 @@ If you have an idea for what could be useful to add (New command or feature), co
 
 If you want to support me and this bot through [Patreon](https://www.patreon.com/swgohbot), you can unlock additional functionality such as:
 - Your in-game data can be updated more often
-- Alerts if when your rank in either or both arena changes
+- Alerts you if/ when your rank in either or both arena changes
 - Logs in a Discord channel when anyone in a list of players (Based on in-game ally codes, manually added) changes rank
 - An updated message in a given channel that updates every 5 minutes and shows how long until each player's arena payouts
+- Can let you know when a member of your guild unlocks or upgrades a character
