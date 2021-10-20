@@ -797,7 +797,16 @@ class Guilds extends Command {
             const doExpand = interaction.options.getBoolean("expand");
             let gRoster ;
             if (!guild || !guild.roster || !guild.roster.length) {
-                throw new Error(interaction.language.get("BASE_SWGOH_NO_GUILD"));
+                return interaction.editReply({
+                    content: null,
+                    embeds: [
+                        {
+                            title: "Missing Guild",
+                            description: interaction.language.get("BASE_SWGOH_NO_GUILD"),
+                            color: Bot.constants.color.red
+                        }
+                    ]
+                });
             } else {
                 await interaction.editReply({content: `Found guild \`${guild.name}\`!`});
                 gRoster = guild.roster.map(m => m.allyCode);

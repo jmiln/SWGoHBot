@@ -128,6 +128,8 @@ module.exports = async (Bot, client, message) => {
                 defaults: def
             });
         } catch (err) {
+            // Ignore specific annoying errors that I can't do anything about
+            if (err.stack.toString().includes("Internal Server Error")) return;
             if (cmd.help.name === "test") {
                 console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
             } else {

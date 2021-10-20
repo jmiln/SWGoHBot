@@ -103,7 +103,7 @@ module.exports = (Bot, client) => {
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
                 if (!player || !player.arena) {
                     console.log("No player arena:");
-                    console.log(player.arena);
+                    console.log(player?.arena);
                     continue;
                 }
                 if (!player.arena?.char?.rank && !player.arena?.ship?.rank) {

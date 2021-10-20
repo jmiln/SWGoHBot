@@ -1001,7 +1001,7 @@ module.exports = (Bot, client) => {
             }
         }
         const tieredLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + (levels[curr] * curr), 0);
-        const totalLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + levels[curr]);
+        const totalLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + levels[curr], 0);
         const avgLvls = (tieredLvl / totalLvl).toFixed(2);
 
         return [levels, avgLvls];
