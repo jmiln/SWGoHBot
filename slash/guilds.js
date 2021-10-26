@@ -820,6 +820,7 @@ class Guilds extends Command {
                 return interaction.editReply({content: null, embeds: [{
                     description: Bot.codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
+                    color: Bot.constants.color.red,
                     footer: "Please try again in a bit."
                 }]});
             }
