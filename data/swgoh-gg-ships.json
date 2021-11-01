@@ -13,12 +13,7 @@
             "Galactic Republic",
             "Jedi"
         ],
-        "ability_classes": [
-            "Dispel",
-            "Gain Turn Meter",
-            "Offense Up",
-            "Reset Cooldown"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -37,13 +32,7 @@
             "Galactic Republic",
             "Jedi"
         ],
-        "ability_classes": [
-            "AoE",
-            "Buff Immunity",
-            "Expose",
-            "Healing Immunity",
-            "Offense Up"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -62,13 +51,7 @@
             "Sith Empire",
             "Tank"
         ],
-        "ability_classes": [
-            "AoE",
-            "Daze",
-            "Defense Up",
-            "Dispel",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -86,9 +69,7 @@
             "Rebel",
             "Tank"
         ],
-        "ability_classes": [
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -107,12 +88,7 @@
             "Rogue One",
             "Support"
         ],
-        "ability_classes": [
-            "Assist",
-            "Gain Turn Meter",
-            "Stealth",
-            "Tenacity Down"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 50
@@ -130,11 +106,7 @@
             "Galactic Republic",
             "Tank"
         ],
-        "ability_classes": [
-            "Counter",
-            "Dispel",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -153,14 +125,7 @@
             "Rogue One",
             "Support"
         ],
-        "ability_classes": [
-            "AoE",
-            "Counter",
-            "Defense Down",
-            "Dispel",
-            "Gain Turn Meter",
-            "Offense Down"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -178,19 +143,7 @@
             "Capital Ship",
             "Empire"
         ],
-        "ability_classes": [
-            "Ability Block",
-            "AoE",
-            "Assist",
-            "Defense Down",
-            "Defense Up",
-            "Foresight",
-            "Heal",
-            "Offense Down",
-            "Offense Up",
-            "Remove Turn Meter",
-            "Speed Down"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 145
@@ -209,10 +162,7 @@
             "Galactic Republic",
             "Tank"
         ],
-        "ability_classes": [
-            "Defense Up",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -231,14 +181,7 @@
             "Old Republic",
             "Support"
         ],
-        "ability_classes": [
-            "AoE",
-            "Bonus Attack",
-            "Dispel",
-            "Evasion Down",
-            "Foresight",
-            "Gain Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -257,12 +200,7 @@
             "Sith",
             "Support"
         ],
-        "ability_classes": [
-            "Dispel",
-            "Offense Up",
-            "Taunt",
-            "Tenacity Down"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -281,9 +219,7 @@
             "Galactic Republic",
             "Jedi"
         ],
-        "ability_classes": [
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 10
@@ -301,17 +237,7 @@
             "Capital Ship",
             "Empire"
         ],
-        "ability_classes": [
-            "AoE",
-            "Assist",
-            "Dispel",
-            "Expose",
-            "Foresight",
-            "Stealth",
-            "Stun",
-            "Taunt",
-            "Tenacity Up"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 80
@@ -329,15 +255,7 @@
             "Capital Ship",
             "Empire"
         ],
-        "ability_classes": [
-            "Ability Block",
-            "AoE",
-            "Expose",
-            "Gain Turn Meter",
-            "Offense Up",
-            "Stun",
-            "Tenacity Down"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 10
@@ -355,14 +273,7 @@
             "Capital Ship",
             "First Order"
         ],
-        "ability_classes": [
-            "AoE",
-            "Assist",
-            "Dispel",
-            "Gain Turn Meter",
-            "Offense Down",
-            "Offense Up"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 80
@@ -380,10 +291,7 @@
             "Attacker",
             "First Order"
         ],
-        "ability_classes": [
-            "AoE",
-            "DoT"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -401,10 +309,7 @@
             "Attacker",
             "First Order"
         ],
-        "ability_classes": [
-            "Bonus Attack",
-            "Gain Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -422,9 +327,7 @@
             "Empire",
             "Support"
         ],
-        "ability_classes": [
-            "Heal"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -443,12 +346,7 @@
             "Geonosian",
             "Separatist"
         ],
-        "ability_classes": [
-            "Assist",
-            "Gain Turn Meter",
-            "Offense Up",
-            "Remove Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -467,10 +365,7 @@
             "Geonosian",
             "Separatist"
         ],
-        "ability_classes": [
-            "Stealth",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -490,11 +385,7 @@
             "Phoenix",
             "Rebel"
         ],
-        "ability_classes": [
-            "AoE",
-            "Speed Down",
-            "Stealth"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -514,11 +405,7 @@
             "Rebel",
             "Scoundrel"
         ],
-        "ability_classes": [
-            "Assist",
-            "Dispel",
-            "Foresight"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 145
@@ -536,14 +423,7 @@
             "Capital Ship",
             "Rebel"
         ],
-        "ability_classes": [
-            "Advantage",
-            "AoE",
-            "Assist",
-            "Dispel",
-            "Gain Turn Meter",
-            "Reset Cooldown"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 10
@@ -563,11 +443,7 @@
             "Scoundrel",
             "Tank"
         ],
-        "ability_classes": [
-            "Counter",
-            "Dispel",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -586,11 +462,7 @@
             "Separatist",
             "Tank"
         ],
-        "ability_classes": [
-            "AoE",
-            "Dispel",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -610,12 +482,7 @@
             "Droid",
             "Scoundrel"
         ],
-        "ability_classes": [
-            "AoE",
-            "Bonus Attack",
-            "Offense Up",
-            "Stun"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -633,12 +500,7 @@
             "Empire",
             "Tank"
         ],
-        "ability_classes": [
-            "AoE",
-            "Assist",
-            "Dispel",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -656,11 +518,7 @@
             "Attacker",
             "Empire"
         ],
-        "ability_classes": [
-            "Buff Immunity",
-            "Foresight",
-            "Remove Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -679,11 +537,7 @@
             "Jedi",
             "Support"
         ],
-        "ability_classes": [
-            "Assist",
-            "Defense Up",
-            "Heal"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -701,13 +555,7 @@
             "First Order",
             "Support"
         ],
-        "ability_classes": [
-            "Ability Block",
-            "Dispel",
-            "Gain Turn Meter",
-            "Healing Immunity",
-            "Remove Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -726,10 +574,7 @@
             "Cargo Ship",
             "Scoundrel"
         ],
-        "ability_classes": [
-            "Counter",
-            "Dispel"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -748,15 +593,7 @@
             "Droid",
             "Separatist"
         ],
-        "ability_classes": [
-            "AoE",
-            "Assist",
-            "Dispel",
-            "Gain Turn Meter",
-            "Offense Down",
-            "Remove Turn Meter",
-            "Stun"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 145
@@ -775,16 +612,7 @@
             "Galactic Republic",
             "Jedi"
         ],
-        "ability_classes": [
-            "AoE",
-            "Assist",
-            "Daze",
-            "Dispel",
-            "Gain Turn Meter",
-            "Offense Down",
-            "Offense Up",
-            "Stealth"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 145
@@ -804,14 +632,7 @@
             "Phoenix",
             "Rebel"
         ],
-        "ability_classes": [
-            "Advantage",
-            "Dispel",
-            "Foresight",
-            "Offense Up",
-            "Stealth",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -830,10 +651,7 @@
             "Jedi",
             "Support"
         ],
-        "ability_classes": [
-            "Dispel",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -851,13 +669,7 @@
             "Attacker",
             "Resistance"
         ],
-        "ability_classes": [
-            "Daze",
-            "Dispel",
-            "Foresight",
-            "Gain Turn Meter",
-            "Offense Up"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 50
@@ -875,17 +687,7 @@
             "Capital Ship",
             "Resistance"
         ],
-        "ability_classes": [
-            "AoE",
-            "Assist",
-            "Buff Immunity",
-            "Dispel",
-            "Expose",
-            "Foresight",
-            "Gain Turn Meter",
-            "Healing Immunity",
-            "Tenacity Up"
-        ],
+        "ability_classes": [],
         "role": "Capital Ship",
         "capital_ship": true,
         "activate_shard_count": 80
@@ -905,14 +707,7 @@
             "Cargo Ship",
             "Scoundrel"
         ],
-        "ability_classes": [
-            "Ability Block",
-            "Assist",
-            "Buff Immunity",
-            "Dispel",
-            "Stealth",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 145
@@ -930,11 +725,7 @@
             "Rebel",
             "Tank"
         ],
-        "ability_classes": [
-            "Assist",
-            "Dispel",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -952,13 +743,7 @@
             "Resistance",
             "Support"
         ],
-        "ability_classes": [
-            "Assist",
-            "Daze",
-            "Dispel",
-            "Expose",
-            "Remove Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -977,9 +762,7 @@
             "Galactic Republic",
             "Tank"
         ],
-        "ability_classes": [
-            "Remove Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 50
@@ -998,10 +781,7 @@
             "Cargo Ship",
             "Resistance"
         ],
-        "ability_classes": [
-            "Counter",
-            "Gain Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -1019,10 +799,7 @@
             "Sith",
             "Support"
         ],
-        "ability_classes": [
-            "Remove Turn Meter",
-            "Stealth"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 50
@@ -1041,11 +818,7 @@
             "Sith",
             "Sith Empire"
         ],
-        "ability_classes": [
-            "Foresight",
-            "Gain Turn Meter",
-            "Healing Immunity"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -1065,15 +838,7 @@
             "Cargo Ship",
             "Scoundrel"
         ],
-        "ability_classes": [
-            "Ability Block",
-            "AoE",
-            "Counter",
-            "Dispel",
-            "Gain Turn Meter",
-            "Reset Cooldown",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -1092,12 +857,7 @@
             "Separatist",
             "Tank"
         ],
-        "ability_classes": [
-            "Gain Turn Meter",
-            "Remove Turn Meter",
-            "Stun",
-            "Taunt"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -1116,12 +876,7 @@
             "Empire",
             "Sith"
         ],
-        "ability_classes": [
-            "AoE",
-            "DoT",
-            "Gain Turn Meter",
-            "Offense Down"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 80
@@ -1139,13 +894,7 @@
             "Empire",
             "Support"
         ],
-        "ability_classes": [
-            "AoE",
-            "Defense Down",
-            "Gain Turn Meter",
-            "Offense Down",
-            "Remove Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 50
@@ -1163,14 +912,7 @@
             "Attacker",
             "First Order"
         ],
-        "ability_classes": [
-            "Advantage",
-            "Dispel",
-            "Foresight",
-            "Gain Turn Meter",
-            "Reduce Cooldowns",
-            "Stun"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 10
@@ -1189,15 +931,7 @@
             "Galactic Republic",
             "Tank"
         ],
-        "ability_classes": [
-            "AoE",
-            "Counter",
-            "Defense Down",
-            "Dispel",
-            "Gain Turn Meter",
-            "Offense Down",
-            "Remove Turn Meter"
-        ],
+        "ability_classes": [],
         "role": "Tank",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -1216,14 +950,7 @@
             "Droid",
             "Separatist"
         ],
-        "ability_classes": [
-            "Ability Block",
-            "AoE",
-            "Assist",
-            "Buff Immunity",
-            "Dispel",
-            "Reset Cooldown"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -1241,12 +968,7 @@
             "Attacker",
             "Rebel"
         ],
-        "ability_classes": [
-            "Buff Immunity",
-            "DoT",
-            "Gain Turn Meter",
-            "Healing Immunity"
-        ],
+        "ability_classes": [],
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 25
@@ -1265,13 +987,7 @@
             "Scoundrel",
             "Support"
         ],
-        "ability_classes": [
-            "AoE",
-            "Assist",
-            "Bonus Attack",
-            "Counter",
-            "Defense Down"
-        ],
+        "ability_classes": [],
         "role": "Support",
         "capital_ship": false,
         "activate_shard_count": 25

@@ -797,6 +797,26 @@
         }
     },
     {
+        "name": "Boba Fett, Scion of Jango",
+        "uniqueName": "BOBAFETTSCION",
+        "aliases": [
+            "Boba Fett, Scion of Jango"
+        ],
+        "nameVariant": [
+            "Boba Fett, Scion of Jango"
+        ],
+        "url": "http://swgoh.gg/characters/boba-fett-scion-of-jango/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bobafettold.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Leader",
+            "Scoundrel"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Bodhi Rook",
         "uniqueName": "BODHIROOK",
         "aliases": [
