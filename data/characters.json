@@ -2188,6 +2188,26 @@
         }
     },
     {
+        "name": "Dash Rendar",
+        "uniqueName": "DASHRENDAR",
+        "aliases": [
+            "Dash Rendar"
+        ],
+        "nameVariant": [
+            "Dash Rendar"
+        ],
+        "url": "http://swgoh.gg/characters/dash-rendar/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_dashrendar.png",
+        "side": "light",
+        "factions": [
+            "Leader",
+            "Scoundrel",
+            "Smuggler",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Dathcha",
         "uniqueName": "DATHCHA",
         "aliases": [
