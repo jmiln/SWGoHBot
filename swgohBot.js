@@ -97,13 +97,9 @@ Bot.database.authenticate().then(async () => {
     client.login(Bot.config.token).then(() => {
         const guildList = [...client.guilds.cache.keys()];
         for (let ix = 0; ix < guildList.length; ix++) {
-            Bot.database.models.settings.findOrBuild({
+            Bot.database.models.settings.findOrCreate({
                 where: {
                     guildID: guildList[ix]
-                }
-            }).spread((gModel, initialized) => {
-                if (initialized) {
-                    return gModel.save();
                 }
             }).catch((e) =>  Bot.logger.error("Error in init (Models.spread): " + e, true));
         }
