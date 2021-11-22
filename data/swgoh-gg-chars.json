@@ -3518,6 +3518,189 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Boba Fett, Scion of Jango",
+        "base_id": "BOBAFETTSCION",
+        "pk": 1942,
+        "url": "http://swgoh.gg/characters/boba-fett-scion-of-jango/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_bobafettold.png",
+        "power": 35676,
+        "description": "Infamous Bounty Hunter Attacker with a variety of debuffs and synergy with both Bounty Hunters and Scoundrels",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "001",
+                    "003",
+                    "005",
+                    "003",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "003",
+                    "022",
+                    "016",
+                    "021",
+                    "021",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "021",
+                    "043",
+                    "055",
+                    "050",
+                    "062",
+                    "055"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "039",
+                    "058",
+                    "060",
+                    "055",
+                    "063",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "021",
+                    "038",
+                    "041",
+                    "040",
+                    "064",
+                    "089"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "079",
+                    "084",
+                    "086",
+                    "075",
+                    "084",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "077",
+                    "055",
+                    "064",
+                    "092",
+                    "099",
+                    "110"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "110",
+                    "084",
+                    "082",
+                    "064",
+                    "092",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "125",
+                    "113",
+                    "117",
+                    "108",
+                    "118",
+                    "118"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "107",
+                    "129",
+                    "120",
+                    "172",
+                    "135",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "129",
+                    "145",
+                    "138",
+                    "139",
+                    "116",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "158",
+                    "160",
+                    "170",
+                    "171",
+                    "G12Finisher_BOBAFETTSCION_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Bounty Hunter",
+            "Leader",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Armor Shred",
+            "Counter",
+            "Dispel",
+            "DoT",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Potency Down",
+            "Stun",
+            "Taunt",
+            "Tenacity Down",
+            "Tenacity Up"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Bodhi Rook",
         "base_id": "BODHIROOK",
         "pk": 232,
@@ -4741,6 +4924,7 @@
             "Counter",
             "Defense Down",
             "Gain Turn Meter",
+            "Leader: +Speed",
             "Leader: Assist",
             "Speed Down"
         ],
@@ -9653,6 +9837,185 @@
         "ship": "TIEADVANCED",
         "ship_slot": 0,
         "activate_shard_count": 80
+    },
+    {
+        "name": "Dash Rendar",
+        "base_id": "DASHRENDAR",
+        "pk": 2063,
+        "url": "http://swgoh.gg/characters/dash-rendar/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_dashrendar.png",
+        "power": 35311,
+        "description": "Charismatic Scoundrel Leader who gives Scoundrel allies Prepared",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "006",
+                    "010",
+                    "003",
+                    "002",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "026",
+                    "025",
+                    "021",
+                    "014",
+                    "010",
+                    "012"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "037",
+                    "056",
+                    "053",
+                    "050",
+                    "060",
+                    "040"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "081",
+                    "061",
+                    "045",
+                    "051",
+                    "069",
+                    "050"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "079",
+                    "089",
+                    "081",
+                    "061",
+                    "028",
+                    "053"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "097",
+                    "096",
+                    "091",
+                    "093",
+                    "024",
+                    "036"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "113",
+                    "099",
+                    "103",
+                    "096",
+                    "102",
+                    "105"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "111",
+                    "109",
+                    "089",
+                    "103",
+                    "101",
+                    "109"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "125",
+                    "172",
+                    "173",
+                    "107",
+                    "117",
+                    "115"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "145",
+                    "131",
+                    "138",
+                    "129",
+                    "138",
+                    "108"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "134",
+                    "173",
+                    "140",
+                    "138",
+                    "133",
+                    "153"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "164",
+                    "160",
+                    "165",
+                    "170",
+                    "168",
+                    "G12Finisher_DASHRENDAR_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Leader",
+            "Scoundrel",
+            "Smuggler",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Daze",
+            "Defense Down",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Offense Up",
+            "Stealth",
+            "Stun"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Dathcha",
@@ -32383,7 +32746,6 @@
             "Counter",
             "Dispel",
             "Gain Turn Meter",
-            "Leader: +Max Health",
             "Leader: +Speed",
             "Revive",
             "Stagger",

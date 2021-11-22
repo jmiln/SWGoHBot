@@ -112,7 +112,10 @@ module.exports = (Bot, client) => {
             return [];
         }
 
-        searchName = searchName.trim().toLowerCase();
+        searchName = searchName
+            .replace(/’/g, "'")
+            .trim()
+            .toLowerCase();
 
         // Try finding an exact match for the name or aliases
         let foundChar = charList.filter(char => char.name.toLowerCase() === searchName);

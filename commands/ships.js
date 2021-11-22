@@ -60,9 +60,20 @@ class Ships extends Command {
                     abilityCooldown: ability.cooldown,
                     abilityDesc: ability.desc
                 };
-                fields.push({
-                    "name": ability.name,
-                    "value": message.language.get("COMMAND_SHIPS_ABILITIES", a)
+
+                const msgArr = Bot.msgArray(Bot.expandSpaces(message.language.get("COMMAND_SHIPS_ABILITIES", a)).split(" "), " ", 1000);
+                msgArr.forEach((m, ix) => {
+                    if (ix === 0) {
+                        fields.push({
+                            "name": ability.name,
+                            "value": m
+                        });
+                    } else {
+                        fields.push({
+                            "name": "-",
+                            "value": m
+                        });
+                    }
                 });
             }
         }

@@ -176,34 +176,30 @@ class Guilds extends Command {
         });
     }
 
-    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
-        // Basic, with no args, shows the top ## guilds (Based on how many have registered)
-        // <allyCode | mention | guildName >
-
-        // Shows your guild's total GP, average GP, and a list of your members
-        // Not trying to get any specific guild, show em the top ones
+    async run(Bot, interaction) {
+        await interaction.reply({content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT")});
 
         const subCommand = interaction.options.getSubcommand();
-        const allycode = interaction.options.getString("allycode");
-        const userID = await Bot.getAllyCode(interaction, allycode, true);
+        if (!subCommand) return console.error("[slash/guilds] Somehow missing subCommand");
+
+        const allycode   = interaction.options.getString("allycode");
+        const userAC     = await Bot.getAllyCode(interaction, allycode, true);
 
         // If it hasn't found a valid ally code, grumble at the user, since that's required
-        if (!userID) {
+        if (!userAC) {
             return super.error(interaction, "No valid ally code found. Please make sure that you have a registered ally code via the `userconf` command, or have entered a valid ally code");
         }
-
-        await interaction.reply({content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT")});
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {
-            return await guildTickets(userID);
+            return await guildTickets(userAC);
         }
 
         let guild = null;
         try {
-            guild = await Bot.swgohAPI.guild(userID, null, cooldown);
+            guild = await Bot.swgohAPI.guild(userAC, null, cooldown);
         } catch (e) {
             return super.error(interaction, Bot.codeBlock(e));
         }
@@ -556,7 +552,7 @@ class Guilds extends Command {
             }]});
         }
 
-        async function guildTickets(userID) {
+        async function guildTickets(userAC) {
             const momentDuration = require("moment-duration-format");
             momentDuration(moment);
 
@@ -564,12 +560,12 @@ class Guilds extends Command {
 
             let rawGuild;
             try {
-                rawGuild = await Bot.swgohAPI.getRawGuild(userID);
+                rawGuild = await Bot.swgohAPI.getRawGuild(userAC);
             } catch (err) {
                 return interaction.editReply({content: err.toString()});
             }
 
-            if (!rawGuild) return interaction.editReply({content: `Sorry, but I could not find a guild to match with ${userID}`});
+            if (!rawGuild) return interaction.editReply({content: `Sorry, but I could not find a guild to match with ${userAC}`});
 
             const out = [];
             let roster = null;
@@ -820,6 +816,7 @@ class Guilds extends Command {
                 return interaction.editReply({content: null, embeds: [{
                     description: Bot.codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
+                    color: Bot.constants.color.red,
                     footer: "Please try again in a bit."
                 }]});
             }

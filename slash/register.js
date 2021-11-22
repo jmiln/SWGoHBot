@@ -47,7 +47,7 @@ class Register extends Command {
         if (user.id !== interaction.user.id && options.level < 3) {
             // If they are trying to change someone else and they don't have the right permissions
             return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
-        } else if (!interaction.guild.members.cache.has(user.id)) {
+        } else if (interaction.guild && !interaction.guild.members.cache.has(user.id)) {
             // If they are trying to change something for someone in a different server
             return super.error(interaction, interaction.language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
         }

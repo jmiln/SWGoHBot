@@ -1,4 +1,5 @@
 const Command = require("../base/Command");
+const {inspect} = require("util");
 
 class Character extends Command {
     constructor(Bot) {
@@ -17,9 +18,10 @@ class Character extends Command {
         const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
 
-        const zeta = Bot.emotes["zetaMat"];
-        const omega = Bot.emotes["omegaMat"];
         const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
+        const omega = Bot.emotes["omegaMat"];
+        const zeta = Bot.emotes["zetaMat"];
+        const omnicron = Bot.emotes["omnicronMat"];
 
         // Make sure they gave a character to find
         if (searchName === "") {
@@ -74,6 +76,9 @@ class Character extends Command {
 
             const costs = [];
             if (ability.cost) {
+                if (ability.cost.AbilityMatOmnicron > 0) {
+                    costs.push(`${ability.cost.AbilityMatOmnicron} ${omnicron}`);
+                }
                 if (ability.cost.AbilityMatZeta > 0) {
                     costs.push(`${ability.cost.AbilityMatZeta} ${zeta}`);
                 }
@@ -84,7 +89,7 @@ class Character extends Command {
                     costs.push(`${ability.cost.AbilityMatMk3} ${abilityMatMK3}`);
                 }
             } else {
-                Bot.logger.log(ability);
+                Bot.logger.log(`[commands/character] Missing ability cost: \n${inspect(ability)}`);
             }
             const costStr = costs.length > 0 ? costs.join(" | ") : "";
 

@@ -4,7 +4,7 @@
         "AbilityMatMk1": 45,
         "AbilityMatMk2": 38,
         "AbilityMatMk3": 24,
-        "AbilityMatOmega": 5, 
+        "AbilityMatOmega": 5,
         "AbilityMatZeta": 0
     },
     "SKILLRECIPE_SPECIAL_T7": {
@@ -70,6 +70,21 @@
         "AbilityMatMk3": 34,
         "AbilityMatOmega": 10,
         "AbilityMatZeta": 20
+    },
+    "SKILLRECIPE_LEADER_T7_OMICRON": {
+        "Credits": 0,
+        "AbilityMatMk1": 0,
+        "AbilityMatMk2": 0,
+        "AbilityMatMk3": 20,
+        "AbilityMatOmega": 10,
+        "AbilityMatZeta": 0,
+        "AbilityMatOmnicron": 20
+    },
+    "SKILLRECIPE_LEADER_T8_OMICRON": {
+        "AbilityMatOmnicron": 20
+    },
+    "SKILLRECIPE_PASSIVE_T8_OMICRON": {
+        "AbilityMatOmnicron": 20
     },
     "SKILLRECIPE_CONTRACT_T2": {
         "Credits": 168100,
