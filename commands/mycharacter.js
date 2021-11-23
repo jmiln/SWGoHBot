@@ -84,18 +84,23 @@ class MyCharacter extends Command {
             const isShip = thisChar.combatType === 2 ? true : false;
 
             let charImg;
-            const charArr = [thisChar.defId];
-            charArr.push(thisChar.rarity);
-            charArr.push(thisChar.level);
-            charArr.push(thisChar.gear);
-            charArr.push(thisChar.skills.filter(s => s.isZeta && s.tier == s.tiers).length);  // Zeta count
-            if (thisChar.relic?.currentTier) {
-                charArr.push(thisChar.relic.currentTier);  // Relic count
-            }
-            charArr.push(character.side);
+            const fetchBody = {
+                defId: thisChar.defId,
+                charUrl: character.avatarURL,
+                rarity: thisChar.rarity,
+                level: thisChar.level,
+                gear: thisChar.gear,
+                zetas: thisChar.skills.filter(s => s.isZeta && s.tier == s.tiers).length,
+                relic: thisChar.relic?.currentTier ? thisChar.relic.currentTier : 0,
+                side: character.side
+            };
 
             try {
-                await nodeFetch(Bot.config.imageServIP_Port + "/char/" + charArr.join("/"))
+                await nodeFetch(Bot.config.imageServIP_Port + "/char/", {
+                    method: "post",
+                    body: JSON.stringify(fetchBody),
+                    headers: { "Content-Type": "application/json" }
+                })
                     .then(response => response.buffer())
                     .then(image => {
                         charImg = image;
