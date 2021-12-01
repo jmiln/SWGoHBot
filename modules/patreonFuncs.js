@@ -84,7 +84,6 @@ module.exports = (Bot, client) => {
                 try {
                     player = await Bot.swgohAPI.getPlayersArena(acc.allyCode);
                     if (Array.isArray(player)) player = player[0];
-                    // player = await Bot.swgohAPI.fastPlayer(acc.allyCode);
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
                     await Bot.wait(750);
@@ -101,14 +100,18 @@ module.exports = (Bot, client) => {
                 const now = moment();
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
-                if (!player || !player.arena) {
-                    console.log("No player arena:");
-                    console.log(player?.arena);
+                if (!player) {
+                    console.log(`[patreonFuncs/getRanks] Missing player object for ${acc.allyCode}`);
+                    continue;
+                }
+                if (!player?.arena) {
+                    console.log("[patreonFuncs/getRanks] No player arena:");
+                    console.log(player);
                     continue;
                 }
                 if (!player.arena?.char?.rank && !player.arena?.ship?.rank) {
-                    console.log("No arena ranks");
-                    console.log(player.arena);
+                    console.log("[patreonFuncs/getRanks] No arena ranks");
+                    console.log(player);
                     continue;
                 }
 
