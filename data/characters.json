@@ -2073,6 +2073,24 @@
         }
     },
     {
+        "name": "Darth Talon",
+        "uniqueName": "DARTHTALON",
+        "aliases": [
+            "Darth Talon"
+        ],
+        "nameVariant": [
+            "Darth Talon"
+        ],
+        "url": "http://swgoh.gg/characters/darth-talon/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darthtalon.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Sith"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Darth Traya",
         "uniqueName": "DARTHTRAYA",
         "aliases": [
@@ -4758,6 +4776,26 @@
         "factions": [
             "Scoundrel",
             "Support"
+        ],
+        "mods": {}
+    },
+    {
+        "name": "Kyle Katarn",
+        "uniqueName": "KYLEKATARN",
+        "aliases": [
+            "Kyle Katarn"
+        ],
+        "nameVariant": [
+            "Kyle Katarn"
+        ],
+        "url": "http://swgoh.gg/characters/kyle-katarn/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kylekatarn.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Jedi",
+            "Rebel",
+            "Rebel Fighter"
         ],
         "mods": {}
     },
