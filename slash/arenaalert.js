@@ -65,6 +65,8 @@ class ArenaAlert extends Command {
                     name: "payout_warning",
                     type: "INTEGER",
                     description: "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
+                    min_value: 0,
+                    max_value: 1440,
                 }
             ]
         });

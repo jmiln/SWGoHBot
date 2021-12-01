@@ -7,6 +7,7 @@ class Poll extends Command {
             category: "Misc",
             aliases: ["vote"],
             permissions: ["EMBED_LINKS"],
+            guildOnly: false,
             options: [
                 // Subcommands for create, view, end, cancel, vote
                 {
@@ -60,7 +61,9 @@ class Poll extends Command {
                             name: "option",
                             required: true,
                             description: "The poll option you want to vote for",
-                            type: "INTEGER"
+                            type: "INTEGER",
+                            min_value: 0,
+                            max_value: 10,
                         }
                     ]
                 }

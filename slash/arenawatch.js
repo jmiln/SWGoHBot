@@ -189,7 +189,9 @@ class ArenaWatch extends Command {
                             name: "mins",
                             type: "INTEGER",
                             description: "(1-1439) The number of minutes before their payout to warn them",
-                            required: true
+                            required: true,
+                            min_value: 0,
+                            max_value: 1439,
                         },
                         {
                             name: "arena",

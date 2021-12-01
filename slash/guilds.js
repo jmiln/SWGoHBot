@@ -24,7 +24,9 @@ class Guilds extends Command {
                         {
                             name: "sort",
                             description: "Which gear level you'd like it sorted by (9-13)",
-                            type: "INTEGER"
+                            type: "INTEGER",
+                            min_value: 9,
+                            max_value: 13,
                         }
                     ]
                 },
