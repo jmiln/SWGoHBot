@@ -72,12 +72,13 @@
         "AbilityMatZeta": 20
     },
     "SKILLRECIPE_LEADER_T7_OMICRON": {
-        "Credits": 0,
-        "AbilityMatMk1": 0,
-        "AbilityMatMk2": 0,
         "AbilityMatMk3": 20,
         "AbilityMatOmega": 10,
-        "AbilityMatZeta": 0,
+        "AbilityMatOmnicron": 20
+    },
+    "SKILLRECIPE_PASSIVE_T7_OMICRON": {
+        "AbilityMatMk3": 20,
+        "AbilityMatOmega": 10,
         "AbilityMatOmnicron": 20
     },
     "SKILLRECIPE_LEADER_T8_OMICRON": {
