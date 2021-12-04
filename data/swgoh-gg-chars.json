@@ -6150,9 +6150,12 @@
         ],
         "ability_classes": [
             "Assist",
+            "Dispel",
+            "Gain Turn Meter",
             "Leader: +Critical",
             "Stealth",
-            "Taunt"
+            "Taunt",
+            "Thermal Detonator"
         ],
         "role": "Tank",
         "ship": "",
@@ -9480,6 +9483,181 @@
             "Taunt"
         ],
         "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Darth Talon",
+        "base_id": "DARTHTALON",
+        "pk": 2296,
+        "url": "http://swgoh.gg/characters/darth-talon/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_darthtalon.png",
+        "power": 35101,
+        "description": "Nimble Sith attacker whose loyalty and lethality is without question",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "001",
+                    "005",
+                    "005",
+                    "003",
+                    "004"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "021",
+                    "026",
+                    "016",
+                    "032",
+                    "022",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "062",
+                    "043",
+                    "038",
+                    "026",
+                    "043",
+                    "048"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "049",
+                    "051",
+                    "069",
+                    "060",
+                    "063",
+                    "028"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "042",
+                    "055",
+                    "003",
+                    "049",
+                    "046",
+                    "038"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "079",
+                    "079",
+                    "075",
+                    "061",
+                    "061"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "060",
+                    "069",
+                    "075",
+                    "081",
+                    "099",
+                    "110"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "118",
+                    "172",
+                    "109",
+                    "112",
+                    "112",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "111",
+                    "108",
+                    "125",
+                    "113",
+                    "172",
+                    "118"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "103",
+                    "129",
+                    "100",
+                    "145",
+                    "172",
+                    "109"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "134",
+                    "125",
+                    "113",
+                    "139",
+                    "113",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "160",
+                    "159",
+                    "158",
+                    "166",
+                    "167",
+                    "G12Finisher_DARTHTALON_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Sith"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Buff Immunity",
+            "Counter",
+            "Dispel",
+            "Frenzy",
+            "Gain Turn Meter",
+            "Stealth",
+            "Taunt"
+        ],
+        "role": "Attacker",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -22114,6 +22292,184 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Kyle Katarn",
+        "base_id": "KYLEKATARN",
+        "pk": 2243,
+        "url": "http://swgoh.gg/characters/kyle-katarn/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_kylekatarn.png",
+        "power": 34317,
+        "description": "A Force-sensitive Rebel operative and Jedi Knight",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "001",
+                    "003",
+                    "005",
+                    "002",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "003",
+                    "016",
+                    "016",
+                    "021",
+                    "021",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "037",
+                    "043",
+                    "055",
+                    "050",
+                    "062",
+                    "055"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "039",
+                    "058",
+                    "060",
+                    "055",
+                    "063",
+                    "012"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "048",
+                    "044",
+                    "041",
+                    "040",
+                    "064",
+                    "089"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "079",
+                    "084",
+                    "086",
+                    "075",
+                    "084",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "045",
+                    "102",
+                    "064",
+                    "092",
+                    "099",
+                    "110"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "042",
+                    "100",
+                    "079",
+                    "112",
+                    "092",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "074",
+                    "112",
+                    "117",
+                    "108",
+                    "173",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "120",
+                    "173",
+                    "173",
+                    "138",
+                    "135",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "129",
+                    "129",
+                    "103",
+                    "139",
+                    "116",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "158",
+                    "160",
+                    "170",
+                    "171",
+                    "G12Finisher_KYLEKATARN_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Jedi",
+            "Rebel",
+            "Rebel Fighter"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Counter",
+            "Defense Up",
+            "Dispel",
+            "Gain Turn Meter",
+            "Potency Up",
+            "Reset Cooldown",
+            "Speed Up"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Kylo Ren",
         "base_id": "KYLOREN",
         "pk": 141,
@@ -28045,13 +28401,16 @@
         "ability_classes": [
             "Assist",
             "Counter",
+            "Damage Immunity",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
             "Leader: +Speed",
             "Leader: Foresight",
             "Offense Up",
-            "Remove Turn Meter"
+            "Remove Turn Meter",
+            "Revive",
+            "Stealth"
         ],
         "role": "Support",
         "ship": "",
@@ -28571,6 +28930,7 @@
             "Foresight",
             "Gain Turn Meter",
             "Leader: +Critical",
+            "Leader: +Speed",
             "Leader: +Tenacity",
             "Leader: Foresight"
         ],

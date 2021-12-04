@@ -57,12 +57,16 @@ class GuildSearch extends Command {
                 {
                     name: "top",
                     description: "View only the top x in the list (1-50)",
-                    type: "INTEGER"
+                    type: "INTEGER",
+                    min_value: 0,
+                    max_value: 1440,
                 },
                 {
                     name: "rarity",
                     description: "View only X rarity (Star lvl) and above. (1-7)",
-                    type: "INTEGER"
+                    type: "INTEGER",
+                    min_value: 0,
+                    max_value: 7,
                 },
                 // BOOL: ship, reverse, zetas
                 {

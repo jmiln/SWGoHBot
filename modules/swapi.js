@@ -518,12 +518,10 @@ module.exports = (Bot) => {
             s.name = skill.nameKey
                 .replace(/\\n/g, " ")
                 .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
-            /* This is here to un-mess up the last line marking everything ahead as a comment */
             s.cooldown = skill.cooldown;
             s.desc = skill.descKey
                 .replace(/\\n/g, " ")
                 .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
-            /* This is here to un-mess up the last line marking everything ahead as a comment */
             if (skill.tierList.length) {
                 s.cost = costs[skill.tierList[skill.tierList.length - 1].recipeId];
             }
@@ -661,33 +659,32 @@ module.exports = (Bot) => {
 
         if (update) {
             let uOut;
-            let unitList = await Bot.swgoh.fetchAPI("/swgoh/data", {
-                "collection": "unitsList",
-                "language": lang,
-                "enums":true,
-                "match": {
-                    "rarity": 7,
-                    "obtainable": true,
-                    "obtainableTime": 0
+            const unitList = await Bot.swgoh.fetchAPI("/swgoh/data", {
+                collection: "unitsList",
+                language: lang,
+                enums: true,
+                match: {
+                    rarity: 7,
+                    obtainable: true,
+                    obtainableTime: 0
                 },
-                "project": {
-                    "baseId": 1,
-                    "nameKey": 1,
-                    "categoryIdList": 1,
+                project: {
+                    baseId: 1,
+                    nameKey: 1,
+                    categoryIdList: 1,
                     skillReferenceList: 1,
-                    "unitTierList": {
-                        "tier": 1,
-                        "equipmentSetList": 1
+                    unitTierList: {
+                        tier: 1,
+                        equipmentSetList: 1
                     },
                     crewList: 1,
-                    "creationRecipeReference": 1
+                    creationRecipeReference: 1
                 }
             });
-            unitList = unitList.result;
 
-            if (!unitList) return Bot.logger.error("No unitList for " + lang);
+            if (!unitList?.result) return Bot.logger.error("No unitList for " + lang);
 
-            for (const unit of unitList) {
+            for (const unit of unitList.result) {
                 unit.language = lang.toLowerCase();
                 if (unit.baseId === defId) {
                     uOut = unit.nameKey;

@@ -29,7 +29,9 @@ class Charactergear extends Command {
                 {
                     name: "gearlevel",
                     type: "INTEGER",
-                    description: "The gear level you want to see the requirements for"
+                    description: "The gear level you want to see the requirements for",
+                    min_value: 1,
+                    max_value: 13,
                 }
             ]
         });

@@ -126,9 +126,11 @@ class Deploy extends Command {
                     debugLog("\nChecking " + cmd.name);
                     for (const ix in cmd.options) {
                         if (!cmd.options[ix]) cmd.options[ix] = {};
-                        if (cmd.options[ix].required == undefined) cmd.options[ix].required = false;
-                        if (!cmd.options[ix].choices) cmd.options[ix].choices = undefined;
-                        if (!cmd.options[ix].options) cmd.options[ix].options = undefined;
+                        if (!cmd.options[ix].required)                                      cmd.options[ix].required     = false;
+                        if (!cmd.options[ix].autocomplete)                                  cmd.options[ix].autocomplete = undefined;
+                        if (!cmd.options[ix].choices)                                       cmd.options[ix].choices      = undefined;
+                        if (!cmd.options[ix].options || !cmd.options[ix].options?.length)   cmd.options[ix].options      = undefined;
+                        if (!cmd.options[ix].channelTypes)                                  cmd.options[ix].channelTypes = undefined;
 
                         debugLog("> checking " + cmd.options[ix]?.name);
                         for (const op of Object.keys(cmd.options[ix])) {
@@ -171,14 +173,24 @@ class Deploy extends Command {
                             } else {
                                 const newOpt = cmd.options[ix];
                                 const thisOpt = thisCom.options[ix];
-                                if ((newOpt.required !== thisOpt.required && (newOpt.required || thisOpt.required)) ||
-                                    (newOpt.name !== thisOpt.name && (newOpt.name || thisOpt.name)) ||
-                                    (newOpt.description !== thisOpt.description && (newOpt.description || thisOpt.description)) ||
+                                if (!thisOpt) {
+                                    debugLog("Missing opt for: newOpt");
+                                    break;
+                                }
+                                if (!newOpt) {
+                                    debugLog("Missing opt for: newOpt");
+                                    break;
+                                }
+                                if ((newOpt.required !== thisOpt.required               && (newOpt.required || thisOpt.required)) ||
+                                    (newOpt.name !== thisOpt.name                       && (newOpt.name || thisOpt.name)) ||
+                                    (newOpt.description !== thisOpt.description         && (newOpt.description || thisOpt.description)) ||
+                                    (newOpt.min_value !== thisOpt.min_value             && (newOpt.min_value || thisOpt.min_value)) ||
+                                    (newOpt.max_value !== thisOpt.max_value             && (newOpt.max_value || thisOpt.max_value)) ||
                                     (newOpt.choices?.length !== thisOpt.choices?.length && (newOpt.choices || thisOpt.choices)) ||
                                     (newOpt.options?.length !== thisOpt.options?.length && (newOpt.options || thisOpt.options))
                                 ) {
                                     isDiff = true;
-                                    debugLog(`   [NEW] - ${newOpt ? inspect(newOpt[op]) : null}\n   [OLD] - ${thisOpt ? inspect(thisOpt[op]) : null}`);
+                                    debugLog(`   [NEW] - ${newOpt ? inspect(newOpt) : null}\n   [OLD] - ${thisOpt ? inspect(thisOpt) : null}`);
                                     break;
                                 }
                             }
