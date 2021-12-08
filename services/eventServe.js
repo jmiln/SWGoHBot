@@ -16,15 +16,17 @@ const database = new Sequelize(
 );
 
 async function init() {
-    await database.authenticate()
-        .then(async () => {
-            await require("../modules/models")(Sequelize, database);
-        })
-        .then(async () => {
-            const eventCount = await database.models.eventDBs.count();
-            console.log(`Event Monitor online at port ${config.eventServe.port}.\nMonitoring ${eventCount} events.`);
-        })
-        .error((e) => console.log(e));
+    try {
+        await database.authenticate()
+            .then(async () => {
+                await require("../modules/models")(Sequelize, database);
+                const eventCount = await database.models.eventDBs.count();
+                console.log(`Event Monitor online at port ${config.eventServe.port}.\nMonitoring ${eventCount} events.`);
+            });
+    } catch (err) {
+        console.log("[ERROR] Cannot start event db");
+        return console.error(err);
+    }
 
     io.on("connection", async socket => {
         console.log("Socket connected");
