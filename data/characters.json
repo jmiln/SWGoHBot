@@ -5192,6 +5192,25 @@
         }
     },
     {
+        "name": "Mara Jade, The Emperor's Hand",
+        "uniqueName": "MARAJADE",
+        "aliases": [
+            "Mara Jade, The Emperor's Hand"
+        ],
+        "nameVariant": [
+            "Mara Jade, The Emperor's Hand"
+        ],
+        "url": "http://swgoh.gg/characters/mara-jade-the-emperors-hand/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_marajade.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Empire",
+            "Unaligned Force User"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Maul",
         "uniqueName": "MAULS7",
         "aliases": [
@@ -6883,6 +6902,24 @@
                 "source": "Crouching Rancor"
             }
         }
+    },
+    {
+        "name": "Starkiller",
+        "uniqueName": "STARKILLER",
+        "aliases": [
+            "Starkiller"
+        ],
+        "nameVariant": [
+            "Starkiller"
+        ],
+        "url": "http://swgoh.gg/characters/starkiller/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_starkiller.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Unaligned Force User"
+        ],
+        "mods": {}
     },
     {
         "name": "Stormtrooper",
