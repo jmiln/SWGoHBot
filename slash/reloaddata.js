@@ -196,12 +196,20 @@ class ReloadData extends Command {
                 for (const lang of langList) {
                     await Bot.swgohAPI.units("", lang, true);
                     progressOut(`Updated units for ${lang}`);
+
                     await Bot.swgohAPI.abilities([], lang, true);
                     progressOut(`Updated abilities for ${lang}`);
+
                     await Bot.swgohAPI.gear([], lang, true);
                     progressOut(`Updated gear for ${lang}`);
-                    await Bot.swgohAPI.recipes([], lang, true);
-                    progressOut(`Updated recipes for ${lang}`);
+
+                    if (lang.toLowerCase() === "eng_us") {
+                        await Bot.swgohAPI.recipes([], lang, true);
+                        progressOut(`Updated recipes for ${lang}`);
+                    } else {
+                        progressOut(`Skipping recipes for ${lang}`);
+                    }
+
                     progressOut(`Updated all local data for ${lang}`);
                 }
                 interaction.editReply({content: "API Language update complete"});
