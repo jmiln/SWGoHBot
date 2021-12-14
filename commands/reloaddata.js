@@ -159,15 +159,19 @@ class ReloadData extends Command {
                         await Bot.swgohAPI.units("", lang, true);
                         message.channel.send({content: `Updated units for ${lang}`});
                         await Bot.swgohAPI.abilities([], lang, true);
-                        if (lang === "eng_us") {
-                            message.channel.send({content: `Updated abilities for ${lang}`});
-                            await Bot.swgohAPI.gear([], lang, true);
+                        message.channel.send({content: `Updated abilities for ${lang}`});
+
+                        // I only check for English ones anyways, so don't bother grabbing the resOut
+                        // * Also, it seems to bork everything for whatever reason
+                        if (lang.toLowerCase() === "eng_us") {
+                            await Bot.swgohAPI.recipes([], lang, true);
+                            message.channel.send({content: `Updated recipes for ${lang}`});
                         } else {
                             message.channel.send({content: "Skipping recipes for " + lang});
                         }
+
+                        await Bot.swgohAPI.gear([], lang, true);
                         message.channel.send({content: `Updated gear for ${lang}`});
-                        await Bot.swgohAPI.recipes([], lang, true);
-                        message.channel.send({content: `Updated recipes for ${lang}`});
                         message.channel.send({content: "Updated all local data for " + lang});
                     } else {
                         switch (args[0]) {
