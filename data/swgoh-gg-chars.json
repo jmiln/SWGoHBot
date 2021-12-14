@@ -5980,6 +5980,7 @@
             "Counter",
             "Gain Turn Meter",
             "Heal",
+            "Leader: +Speed",
             "Leader: Assist",
             "Speed Up"
         ],
@@ -10005,6 +10006,7 @@
             "Dispel",
             "DoT",
             "Gain Turn Meter",
+            "Offense Up",
             "Remove Turn Meter",
             "Speed Down",
             "Stealth",
@@ -24396,6 +24398,186 @@
         "activate_shard_count": 10
     },
     {
+        "name": "Mara Jade, The Emperor's Hand",
+        "base_id": "MARAJADE",
+        "pk": 2494,
+        "url": "http://swgoh.gg/characters/mara-jade-the-emperors-hand/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_marajade.png",
+        "power": 36513,
+        "description": "Dark Side force user Attacker who uses her allies to boost her own power and supports Emperor Palpatine",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "009",
+                    "010",
+                    "003",
+                    "011",
+                    "006",
+                    "002"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "017",
+                    "015",
+                    "033",
+                    "033",
+                    "015"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "012",
+                    "028",
+                    "037",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "069",
+                    "053",
+                    "078",
+                    "056",
+                    "060",
+                    "078"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "049",
+                    "049",
+                    "059",
+                    "027",
+                    "089",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "096",
+                    "055",
+                    "033",
+                    "033",
+                    "072",
+                    "072"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "028",
+                    "105",
+                    "024",
+                    "113",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "113",
+                    "098",
+                    "098",
+                    "033",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "173",
+                    "096",
+                    "113",
+                    "112",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "122",
+                    "138",
+                    "125",
+                    "122",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "173",
+                    "117",
+                    "173",
+                    "132",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "165",
+                    "161",
+                    "168",
+                    "170",
+                    "G12Finisher_MARAJADE_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Empire",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Blind",
+            "Counter",
+            "Daze",
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Down",
+            "Stagger",
+            "Stealth",
+            "Stun",
+            "Tenacity Down",
+            "Vulnerable"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Maul",
         "base_id": "MAULS7",
         "pk": 1575,
@@ -32417,6 +32599,186 @@
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 10
+    },
+    {
+        "name": "Starkiller",
+        "base_id": "STARKILLER",
+        "pk": 2476,
+        "url": "http://swgoh.gg/characters/starkiller/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_starkiller.png",
+        "power": 36877,
+        "description": "A powerful Dark Side Force User whose inner conflict lifts up other Force Users",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "006",
+                    "006",
+                    "010",
+                    "001",
+                    "003",
+                    "001"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "026",
+                    "029",
+                    "017",
+                    "011",
+                    "012"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "049",
+                    "056",
+                    "034",
+                    "053",
+                    "069",
+                    "057"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "069",
+                    "049",
+                    "081",
+                    "074",
+                    "024",
+                    "036"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "069",
+                    "084",
+                    "079",
+                    "081",
+                    "024",
+                    "040"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "097",
+                    "089",
+                    "049",
+                    "092",
+                    "101",
+                    "048"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "108",
+                    "106",
+                    "087",
+                    "101",
+                    "091",
+                    "102"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "109",
+                    "108",
+                    "113",
+                    "172",
+                    "117",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "092",
+                    "173",
+                    "113",
+                    "117",
+                    "119",
+                    "125"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "103",
+                    "116",
+                    "129",
+                    "138",
+                    "173",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "172",
+                    "149",
+                    "138",
+                    "142",
+                    "141",
+                    "145"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "160",
+                    "165",
+                    "170",
+                    "171",
+                    "G12Finisher_STARKILLER_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Counter",
+            "Damage Immunity",
+            "Daze",
+            "Dispel",
+            "Heal",
+            "Healing Immunity",
+            "Reduce Cooldowns",
+            "Reset Cooldown",
+            "Stun",
+            "Taunt",
+            "Vulnerable"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Stormtrooper",
