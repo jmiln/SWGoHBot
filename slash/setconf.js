@@ -82,6 +82,7 @@ class SetConf extends Command {
             const optionKey = key.replace(/[A-Z]/g, char => "_" + char.toLowerCase());
             const keyType = typedDefaultSettings[key]?.type;
             let settingStr = null;
+            let nameStr = null;
             if (keyType === "STRING") {
                 settingStr = interaction.options.getString(optionKey);
                 if (!settingStr) continue;
@@ -106,7 +107,9 @@ class SetConf extends Command {
                 settingStr = interaction.options.getBoolean(optionKey);
                 if (!settingStr) continue;
             } else if (keyType === "CHANNEL") {
-                settingStr = interaction.options.getChannel(optionKey);
+                const channel = interaction.options.getChannel(optionKey);
+                nameStr = "#" + channel.name;
+                settingStr = channel.id;
                 if (!settingStr) continue;
             } else if (keyType === "ROLE") {
                 settingStr = interaction.options.getRole(optionKey);
@@ -116,7 +119,7 @@ class SetConf extends Command {
                 continue;
             }
 
-            const newSetting = changeSetting(subCommand, key, settingStr);
+            const newSetting = changeSetting(subCommand, key, settingStr, nameStr);
 
             // If it got here, then the setting should be valid and changed
             if (newSetting !== null && newSetting !== guildConf[key]) {
@@ -124,11 +127,11 @@ class SetConf extends Command {
             }
         }
 
-        function changeSetting(action, key, setting) {
+        function changeSetting(action, key, setting, name) {
             if (setting === null) return null;
             if (action === "set") {
                 // Just send back the setting
-                changeLog.push(`Set ${key} to ${setting}`);
+                changeLog.push(`Set ${key} to ${name ? name : setting}`);
                 return setting;
             } else if (action === "add") {
                 // Stick it into the old one
