@@ -73,7 +73,6 @@ class Poll extends Command {
 
     async run(Bot, interaction, options) {
         const level = options.level;
-        const pollID = `${interaction.guild.id}-${interaction.channel.id}`;
 
         const action = interaction.options.getSubcommand();
 
@@ -88,8 +87,10 @@ class Poll extends Command {
 
         if (!interaction.guild) {
             // This is not available in DMs
-            return super.error(interaction, interaction.language.get("COMMAND_POLL_DM_USE", interaction.guildSettings.prefix));
+            // TODO Lang this
+            return super.error(interaction, "Sorry, but this command is not available in DMs. If you are voting with `/poll vote`, it will only show for you.");
         }
+        const pollID = `${interaction.guild.id}-${interaction.channel.id}`;
 
         // If they're just voting on the channel's poll
         const oldPoll = await Bot.database.models.polls.findOne({where: {id: pollID}});
