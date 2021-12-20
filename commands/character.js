@@ -89,7 +89,7 @@ class Character extends Command {
                     costs.push(`${ability.cost.AbilityMatMk3} ${abilityMatMK3}`);
                 }
             } else {
-                Bot.logger.log(`[commands/character] Missing ability cost: \n${inspect(ability)}`);
+                Bot.logger.log(`[commands/character] Missing ability cost (Check data/skillList for skillId): \n${inspect(ability)}`);
             }
             const costStr = costs.length > 0 ? costs.join(" | ") : "";
 

@@ -101,12 +101,12 @@ module.exports = (Bot, client) => {
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
                 if (!player) {
-                    console.log(`[patreonFuncs/getRanks] Missing player object for ${acc.allyCode}`);
+                    Bot.logger.log(`[patreonFuncs/getRanks] Missing player object for ${acc.allyCode}`);
                     continue;
                 }
                 if (!player?.arena) {
-                    console.log("[patreonFuncs/getRanks] No player arena:");
-                    console.log(player);
+                    Bot.logger.log("[patreonFuncs/getRanks] No player arena:");
+                    Bot.logger.log(player);
                     continue;
                 }
                 if (!player.arena?.char?.rank && !player.arena?.ship?.rank) {
