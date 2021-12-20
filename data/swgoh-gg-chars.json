@@ -16845,9 +16845,12 @@
         ],
         "ability_classes": [
             "Assist",
+            "Counter",
             "Dispel",
             "Expose",
             "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Leader: +Speed",
             "Reduce Cooldowns",
             "Revive"
         ],
@@ -18761,12 +18764,14 @@
         ],
         "ability_classes": [
             "AoE",
+            "Counter",
             "Dispel",
             "Expose",
             "Gain Turn Meter",
             "Remove Turn Meter",
             "Revive",
-            "Target Lock"
+            "Target Lock",
+            "Taunt"
         ],
         "role": "Support",
         "ship": "",
