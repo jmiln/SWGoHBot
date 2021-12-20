@@ -721,7 +721,7 @@ module.exports = (Bot, client) => {
                 }
 
                 // Run it through the splitter in case it needs it
-                const outVals = Bot.msgArray(fieldVal, "\n", 1900);
+                const outVals = Bot.msgArray(fieldVal, "\n", 900);
                 for (const [ix, val] of outVals.entries()) {
                     fields.push({
                         name: ix === 0 ? memberName : `${memberName} (cont)`,
@@ -733,7 +733,7 @@ module.exports = (Bot, client) => {
             // If something went wonky and there were no fields put in, move along
             if (!fields.length) continue;
 
-            const MAX_FIELDS = 3;
+            const MAX_FIELDS = 6;
             const fieldsOut = Bot.chunkArray(fields, MAX_FIELDS);
 
             for (const fieldChunk of fieldsOut) {
