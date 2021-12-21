@@ -19,9 +19,9 @@ class Character extends Command {
 
 
         const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
-        const omega = Bot.emotes["omegaMat"];
-        const zeta = Bot.emotes["zetaMat"];
-        const omnicron = Bot.emotes["omnicronMat"];
+        const omega         = Bot.emotes["omegaMat"];
+        const zeta          = Bot.emotes["zetaMat"];
+        const omnicron      = Bot.emotes["omnicronMat"];
 
         // Make sure they gave a character to find
         if (searchName === "") {
