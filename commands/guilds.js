@@ -506,11 +506,21 @@ class Guilds extends Command {
             const charArenaAVG = (charArenaMembers.reduce((acc, curr) => acc + curr.arena.char.rank, 0) / charArenaMembers.length);
             const shipArenaMembers = guildMembers.filter(m => m?.arena?.ship?.rank);
             const shipArenaAVG = (shipArenaMembers.reduce((acc, curr) => acc + curr.arena.ship.rank, 0) / shipArenaMembers.length);
+
             let zetaCount = 0;
+            // let omicronCount = 0;
             for (const member of guildMembers) {
                 const zetaRoster = member.roster
                     .map(char => char?.skills?.filter(s => s.isZeta && s.tier === s.tiers).length);
                 zetaCount += zetaRoster.reduce((acc, curr) => acc + curr, 0);
+
+                // const zetaRoster = member.roster
+                //     .map(char => char?.skills?.filter(s => s.isZeta && s.tier === s.zetaTier).length);
+                // zetaCount += zetaRoster.reduce((acc, curr) => acc + curr, 0);
+
+                // const omicronRoster = member.roster
+                //     .map(char => char?.skills?.filter(s => s.isOmicron && s.tier === s.omicronTier).length);
+                // omicronCount += omicronRoster.reduce((acc, curr) => acc + curr, 0);
             }
             fields.push({
                 name: "General Stats",
@@ -519,7 +529,8 @@ class Guilds extends Command {
                     `GP:             ${guild.gp.shortenNum()}`,
                     `AVG Char Arena: ${charArenaAVG.toFixed(2)}`,
                     `AVG Ship Arena: ${shipArenaAVG.toFixed(2)}`,
-                    `Zetas:          ${zetaCount.toLocaleString()}`
+                    `Zetas:          ${zetaCount.toLocaleString()}`,
+                    // `Omicrons:       ${omicronCount.toLocaleString()}`
                 ].join("\n"))
             });
 
