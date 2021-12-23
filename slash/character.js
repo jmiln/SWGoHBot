@@ -25,9 +25,10 @@ class Character extends Command {
 
         const searchName = interaction.options.getString("character");
 
-        const zeta = Bot.emotes["zetaMat"];
-        const omega = Bot.emotes["omegaMat"];
         const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
+        const omega         = Bot.emotes["omegaMat"];
+        const zeta          = Bot.emotes["zetaMat"];
+        const omicron      = Bot.emotes["omicronMat"];
 
         // Find any characters that match what they're looking for
         const chars = Bot.findChar(searchName, charList);
@@ -72,6 +73,9 @@ class Character extends Command {
 
             const costs = [];
             if (ability.cost) {
+                if (ability.cost.AbilityMatOmicron > 0) {
+                    costs.push(`${ability.cost.AbilityMatOmicron} ${omicron}`);
+                }
                 if (ability.cost.AbilityMatZeta > 0) {
                     costs.push(`${ability.cost.AbilityMatZeta} ${zeta}`);
                 }

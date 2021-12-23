@@ -19,9 +19,9 @@ class Character extends Command {
 
 
         const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
-        const omega = Bot.emotes["omegaMat"];
-        const zeta = Bot.emotes["zetaMat"];
-        const omnicron = Bot.emotes["omnicronMat"];
+        const omega         = Bot.emotes["omegaMat"];
+        const zeta          = Bot.emotes["zetaMat"];
+        const omicron       = Bot.emotes["omicronMat"];
 
         // Make sure they gave a character to find
         if (searchName === "") {
@@ -76,8 +76,8 @@ class Character extends Command {
 
             const costs = [];
             if (ability.cost) {
-                if (ability.cost.AbilityMatOmnicron > 0) {
-                    costs.push(`${ability.cost.AbilityMatOmnicron} ${omnicron}`);
+                if (ability.cost.AbilityMatOmicron > 0) {
+                    costs.push(`${ability.cost.AbilityMatOmicron} ${omicron}`);
                 }
                 if (ability.cost.AbilityMatZeta > 0) {
                     costs.push(`${ability.cost.AbilityMatZeta} ${zeta}`);

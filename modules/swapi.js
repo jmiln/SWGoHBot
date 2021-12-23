@@ -469,10 +469,18 @@ module.exports = (Bot) => {
                     delete a.tierList;
                 }
                 if (skill) {
-                    a.isZeta = skill.isZeta;
-                    a.skillId = skill.id;
-                    a.tierList = skill.tierList;
-                    a.language = lang.toLowerCase();
+                    const isOmicron = skill.tierList.some(sk => sk.powerOverrideTag?.toLowerCase()?.indexOf("omicron") > -1 || sk.recipeId?.toLowerCase()?.indexOf("omicron") > -1);
+                    a.isZeta        = skill.isZeta;
+                    a.isOmicron     = isOmicron ? true : false;
+                    a.skillId       = skill.id;
+                    a.tierList      = skill.tierList;
+                    a.language      = lang.toLowerCase();
+                    if (a.isOmicron) {
+                        a.omicronTier = skill.tierList.length;
+                    }
+                    if (a.isZeta) {
+                        a.zetaTier = isOmicron ? skill.tierList.length - 1 : skill.tierList.length;
+                    }
                 }
             });
 

@@ -3,7 +3,7 @@ module.exports = {
     abilityMatMK3: "351808811213783040",
     omegaMat:      "351808811356520452",
     zetaMat:       "351808811817893888",
-    omnicronMat:   "912084903036874802",
+    omicronMat:    "912084903036874802",
 
     // Base grey mod shapes
     squareMod:   "362066327101243392",

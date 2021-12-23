@@ -74,18 +74,18 @@
     "SKILLRECIPE_LEADER_T7_OMICRON": {
         "AbilityMatMk3": 20,
         "AbilityMatOmega": 10,
-        "AbilityMatOmnicron": 20
+        "AbilityMatOmicron": 20
     },
     "SKILLRECIPE_PASSIVE_T7_OMICRON": {
         "AbilityMatMk3": 20,
         "AbilityMatOmega": 10,
-        "AbilityMatOmnicron": 20
+        "AbilityMatOmicron": 20
     },
     "SKILLRECIPE_LEADER_T8_OMICRON": {
-        "AbilityMatOmnicron": 20
+        "AbilityMatOmicron": 20
     },
     "SKILLRECIPE_PASSIVE_T8_OMICRON": {
-        "AbilityMatOmnicron": 20
+        "AbilityMatOmicron": 20
     },
     "SKILLRECIPE_CONTRACT_T2": {
         "Credits": 168100,
