@@ -7,7 +7,7 @@ const MongoClient = require("mongodb").MongoClient;
 const RANCOR_MOD_CACHE       = "../data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE          = "../data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE         = "../data/swgoh-gg-ships.json";
-const SWGoH_Help_SQUAD_CACHE = "../data/squads.json";
+const SWGOH_HELP_SQUAD_CACHE = "../data/squads.json";
 const CHARLOCATIONS          = "../data/charLocations.json";
 const SHIPLOCATIONS          = "../data/shipLocations.json";
 const GAMEDATA               = "../data/gameData.json";
@@ -128,7 +128,7 @@ async function updateRemoteData() {
         await updateCharacterMods(currentCharacters);
     }
 
-    if (await updateIfChanged(SWGoH_Help_SQUAD_CACHE, "https://swgoh.help/data/squads.json")) {
+    if (await updateIfChanged(SWGOH_HELP_SQUAD_CACHE, "https://swgoh.help/data/squads.json")) {
         log.push("Detected a squad change from swgoh.help.");
     }
 
