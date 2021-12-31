@@ -87,6 +87,12 @@
     "SKILLRECIPE_PASSIVE_T8_OMICRON": {
         "AbilityMatOmicron": 20
     },
+    "SKILLRECIPE_SPECIAL_T7_OMICRON": {
+        "Credits": 145000,
+        "AbilityMatMk3": 40,
+        "AbilityMatOmega": 16,
+        "AbilityMatOmicron": 20
+    },
     "SKILLRECIPE_CONTRACT_T2": {
         "Credits": 168100,
         "AbilityMatMk1": 40,
