@@ -1,12 +1,13 @@
 const fs = require("fs");
 const fetch = require("node-fetch");
+const cheerio = require("cheerio");
 
 const config = require("../config.js");
 const MongoClient = require("mongodb").MongoClient;
 
-const RANCOR_MOD_CACHE       = "../data/crouching-rancor-mods.json";
 const GG_CHAR_CACHE          = "../data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE         = "../data/swgoh-gg-ships.json";
+const GG_MOD_CACHE           = "../data/swgoh-gg-mods.json";
 const SWGOH_HELP_SQUAD_CACHE = "../data/squads.json";
 const CHARLOCATIONS          = "../data/charLocations.json";
 const SHIPLOCATIONS          = "../data/shipLocations.json";
@@ -17,11 +18,12 @@ const crinoloLocs = "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6
 const charLocationLink = config.locations?.char ? config.locations.char : crinoloLocs + "false";
 const shipLocationLink = config.locations?.ship ? config.locations.ship : crinoloLocs + "true";
 
-// How long between being runs (In minutes)
-const INTERVAL = 30;
-
 console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
+// How long between being runs (In minutes)
+const INTERVAL = 60;
+
+// Run the upater when it's started, then every ${INTERVAL} minutes after that
 runUpdater();
 setInterval(async () => {
     await runUpdater();
@@ -38,29 +40,6 @@ async function runUpdater() {
     }
 }
 
-function getModType(type) {
-    switch (type) {
-        case "CC":
-            return "Critical Chance x2";
-        case "CD":
-            return "Critical Damage x4";
-        case "SPE":
-            return "Speed x4";
-        case "TEN":
-            return "Tenacity x2";
-        case "OFF":
-            return "Offense x4";
-        case "POT":
-            return "Potency x2";
-        case "HP":
-            return "Health x2";
-        case "DEF":
-            return "Defense x2";
-        default:
-            return "";
-    }
-}
-
 function saveFile(filePath, jsonData) {
     try {
         fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4), "utf8");
@@ -71,31 +50,43 @@ function saveFile(filePath, jsonData) {
     }
 }
 
-async function updateIfChanged(localCachePath, dataSourceUri) {
+async function updateIfChanged({localCachePath, dataSourceUri, dataObject}) {
     let updated = false;
 
     let localCache = {};
-
-    try {
-        // console.log("UpdateRemoteData", "Fetching " + dataSourceUri);
-        const remoteData = await fetch(dataSourceUri).then(res => res.json());
-
+    if (!dataSourceUri && !dataObject) throw new Error("Missing data to compare!");
+    if (dataSourceUri && dataObject)   throw new Error("Found URL & data, use one or the other");
+    if (dataSourceUri && !dataObject) {
         try {
-            localCache = JSON.parse(fs.readFileSync(localCachePath));
+            // console.log("UpdateRemoteData", "Fetching " + dataSourceUri);
+            const remoteData = await fetch(dataSourceUri).then(res => res.json());
+
+            try {
+                localCache = JSON.parse(fs.readFileSync(localCachePath));
+            } catch (err) {
+                const reason = err || "unknown error";
+                localCache = {};
+                console.log("UpdateRemoteData", "Error reading local cache for " + dataSourceUri + ", reason: " + reason);
+            }
+
+            if (remoteData.generatedAt) delete remoteData.generatedAt;
+            if (JSON.stringify(remoteData) !== JSON.stringify(localCache)) {
+                saveFile(localCachePath, remoteData);
+                updated = true;
+            }
         } catch (err) {
             const reason = err || "unknown error";
-            localCache = {};
-            console.log("UpdateRemoteData", "Error reading local cache for " + dataSourceUri + ", reason: " + reason);
+            return console.log("UpdateRemoteData", "Unable to update cache for " + dataSourceUri + ", reason: " + reason);
         }
+    } else {
+        // Logic for when there's data itself instead of a url
+        const dataFile = fs.readFileSync(localCachePath);
+        const dataJSON = JSON.parse(dataFile);
 
-        if (remoteData.generatedAt) delete remoteData.generatedAt;
-        if (JSON.stringify(remoteData) !== JSON.stringify(localCache)) {
-            saveFile(localCachePath, remoteData);
+        if (JSON.stringify(dataJSON) !== JSON.stringify(dataObject)) {
+            saveFile(localCachePath, dataObject);
             updated = true;
         }
-    } catch (err) {
-        const reason = err || "unknown error";
-        return console.log("UpdateRemoteData", "Unable to update cache for " + dataSourceUri + ", reason: " + reason);
     }
 
     return updated;
@@ -110,33 +101,34 @@ async function updateRemoteData() {
 
     // Disabled for now since glitch shut it down temporarily
     // if (await updateIfChanged(GAMEDATA, "https://swgoh-stat-calc.glitch.me/gameData.json")) {
-    if (await updateIfChanged(GAMEDATA, "http://swgoh-api-stat-calc.glitch.me/gameData.json")) {
+    if (await updateIfChanged({localCachePath: GAMEDATA, dataSourceUri: "http://swgoh-api-stat-calc.glitch.me/gameData.json"})) {
         log.push("Detected a change in Crinolo's Game Data.");
     }
-    if (await updateIfChanged(GG_SHIPS_CACHE, "https://swgoh.gg/api/ships/?format=json")) {
+    if (await updateIfChanged({ localCachePath: GG_SHIPS_CACHE, dataSourceUri: "https://swgoh.gg/api/ships/?format=json" })) {
         log.push("Detected a change in ships from swgoh.gg");
         await updateShips(currentShips);
     }
 
-    if (await updateIfChanged(GG_CHAR_CACHE, "https://swgoh.gg/api/characters/?format=json")) {
+    if (await updateIfChanged({ localCachePath: GG_CHAR_CACHE, dataSourceUri: "https://swgoh.gg/api/characters/?format=json" })) {
         log.push("Detected a change in characters from swgoh.gg");
         await updateCharacters(currentCharacters);
     }
 
-    if (await updateIfChanged(RANCOR_MOD_CACHE, "http://apps.crouchingrancor.com/mods/advisor.json")) {
-        log.push("Detected a change in mods from Crouching Rancor");
-        await updateCharacterMods(currentCharacters);
+    const ggModData = await getGgChars();
+    if (await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
+        log.push("Detected a change in mods from swgoh.gg");
+        await updateCharacterMods(currentCharacters, ggModData);
     }
 
-    if (await updateIfChanged(SWGOH_HELP_SQUAD_CACHE, "https://swgoh.help/data/squads.json")) {
+    if (await updateIfChanged({ localCachePath: SWGOH_HELP_SQUAD_CACHE, dataSourceUri: "https://swgoh.help/data/squads.json" })) {
         log.push("Detected a squad change from swgoh.help.");
     }
 
-    if (await updateIfChanged(CHARLOCATIONS, charLocationLink)) {
+    if (await updateIfChanged({ localCachePath: CHARLOCATIONS, dataSourceUri: charLocationLink })) {
         log.push("Detected a change in character locations.");
     }
 
-    if (await updateIfChanged(SHIPLOCATIONS, shipLocationLink)) {
+    if (await updateIfChanged({ localCachePath: SHIPLOCATIONS, dataSourceUri: shipLocationLink })) {
         log.push("Detected a change in ship locations.");
     }
 
@@ -333,81 +325,114 @@ async function updateCharacters(currentCharacters) {
     }
 }
 
-async function updateCharacterMods(currentCharacters) {
-    const rancorFile = fs.readFileSync(RANCOR_MOD_CACHE);
-    const rancorData = JSON.parse(rancorFile);
-    const rancorCharacterList = rancorData.data;
-    const RANCOR_SOURCE = "Crouching Rancor";
+async function getGgChars() {
+    const response = await fetch("https://swgoh.gg/stats/mod-meta-report/guilds_100_gp/");
+    const ggPage = await response.text();
 
-    // Clear out old crouching rancor mod advice
-    currentCharacters.forEach(currentChar => {
-        for (var thisSet in currentChar.mods) {
-            const set = currentChar.mods[thisSet];
-            if (set.source === RANCOR_SOURCE) {
-                delete currentChar.mods[thisSet];
+    const modSetCounts = {
+        "Crit Chance":     "Critical Chance x2",
+        "Crit Damage":     "Critical Damage x4",
+        "Critical Chance": "Critical Chance x2",
+        "Critical Damage": "Critical Damage x4",
+        "Defense":         "Defense x2",
+        "Health":          "Health x2",
+        "Offense":         "Offense x4",
+        "Potency":         "Potency x2",
+        "Speed":           "Speed x4",
+        "Tenacity":        "Tenacity x2"
+    };
+
+    const $ = cheerio.load(ggPage);
+
+    const charOut = [];
+
+    $("body > div.container.p-t-md > div.content-container > div.content-container-primary.character-list > ul > li:nth-child(3) > table > tbody > tr")
+        .each((i, elem) => {
+            let [name, sets, receiver, holo, data, multiplexer] = $(elem).children();
+            const defId = $(name).find("img").attr("data-base-id");
+            const imgUrl =  $(name).find("img").attr("src");
+            const side = $(name).find("div").attr("class").indexOf("light-side") > -1 ? "Light Side" : "Dark Side";
+            const [url, modUrl] = $(name).find("a").toArray().map(link => {
+                return $(link).attr("href").trim();
+            });
+            name = cleanName($(name).text());
+            sets = $(sets).find("div").toArray().map(div => {
+                return countSet($(div).attr("data-title").trim());
+            });
+            receiver    = cleanModType($(receiver).text());
+            holo        = cleanModType($(holo).text());
+            data        = cleanModType($(data).text());
+            multiplexer = cleanModType($(multiplexer).text());
+            charOut.push({
+                name:     name,
+                defId:    defId,
+                charUrl:  "https://swgoh.gg" + url,
+                image:    imgUrl,
+                side:     side,
+                modsUrl:  "https://swgoh.gg" + modUrl,
+                mods: {
+                    sets:     sets,
+                    square:   "Offense",
+                    arrow:    receiver,
+                    diamond:  "Defense",
+                    triangle: holo,
+                    circle:   data,
+                    cross:    multiplexer
+                }
+            });
+        });
+
+    // Clean up the mod names (Wipe out extra spaces or condense long names)
+    function cleanModType(types) {
+        if (!types || typeof types !== "string") return null;
+        return types.trim()
+            .replace(/\s+\/\s/g, "/ ")
+            .replace("Critical Damage", "Crit. Damage");
+    }
+
+    // This is mainly to clean up Padme's name for now
+    function cleanName(name) {
+        if (!name || typeof name !== "string") return;
+        return name.trim().replace("é", "e");
+    }
+
+    // Put the number of mods for each set
+    function countSet(setName) {
+        return modSetCounts[setName] || setName;
+    }
+    return charOut;
+}
+
+async function updateCharacterMods(currentCharacters, freshMods) {
+    const GG_SOURCE = "swgoh.gg";
+
+    // Iterate the data from swgoh.gg, put new mods in as needed, and if there's a new character, put them in too
+    for (const character of freshMods) {
+        const thisChar = currentCharacters.find(ch => ch.uniqueName === character.defId);
+        const mods = {
+            "General": {
+                url:      character.modsUrl,
+                sets:     character.mods.sets,
+                square:   character.mods.square,
+                arrow:    character.mods.arrow,
+                diamond:  character.mods.diamond,
+                triangle: character.mods.triangle,
+                circle:   character.mods.circle,
+                cross:    character.mods.cross,
+                source:   GG_SOURCE
             }
-        }
-    });
-
-    // Iterate the crouching rancor data (may contain currently unknown characters)
-    for (var rancorCharKey in rancorCharacterList) {
-        const rancorChar = rancorCharacterList[rancorCharKey];
-
-        // skip garbage data
-        if (typeof rancorChar.cname === "undefined") return;
-
-        let found = false;
-
-        const modObject = {
-            "sets": [
-                getModType(rancorChar.set1),
-                getModType(rancorChar.set2),
-                getModType(rancorChar.set3)
-            ],
-            // Take out the space behind any slashes
-            "square": rancorChar.square.replace(/\s+\/\s/g, "/ "),
-            "arrow": rancorChar.arrow.replace(/\s+\/\s/g, "/ "),
-            "diamond": rancorChar.diamond.replace(/\s+\/\s/g, "/ "),
-            "triangle": rancorChar.triangle.replace(/\s+\/\s/g, "/ "),
-            "circle": rancorChar.circle.replace(/\s+\/\s/g, "/ "),
-            "cross": rancorChar.cross.replace(/\s+\/\s/g, "/ "),
-            "source": RANCOR_SOURCE
         };
 
-        let setName = "";
-        if (rancorChar.name.includes(rancorChar.cname)) {
-            setName = rancorChar.name.split(" ").splice(rancorChar.cname.split(" ").length).join(" ");
-            if (setName === "") {
-                setName = "General";
-            }
+        if (thisChar) {
+            thisChar.mods = mods;
         } else {
-            setName = rancorChar.name;
-        }
+            // This shouldn't really happen since it should be caught in updateCharacters
+            console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})`);
+            const newCharacter = createEmptyChar(character.name, character.url, character.defId);
 
-        // Make a guess at the character URL in case of poor matchup to swgoh.gg's API by name
-        let charLink = "https://swgoh.gg/characters/";
-        const linkName = rancorChar.cname.replace(/[^\w\s-]+/g, "");  // Get rid of non-alphanumeric characters besides dashes
-        charLink += linkName.replace(/\s+/g, "-").toLowerCase();  // Get rid of extra spaces, and format em to be dashes
-        charLink += "/"; // add trailing slash to be consistent with swgoh.gg's conventions
-
-        // Iterate all known characters to find a match
-        currentCharacters.forEach(currentChar => {
-            if (isSameCharacter(currentChar, rancorChar, "cname") ||
-                    (currentChar.url && currentChar.url !== UNKNOWN && currentChar.url === charLink)) {
-                found = true;
-
-                if (currentChar.mods[setName]) {
-                    setName = rancorChar.name;
-                }
-                currentChar.mods[setName] = modObject;
-            }
-        });
-        if (!found) {
-            // create a new character
-            console.log("UpdateRemoteData", "New character discovered from crouching rancor: " + rancorChar.cname);
-            const newCharacter = createEmptyChar(rancorChar.cname, charLink, UNKNOWN);
-
-            newCharacter.mods[setName] = modObject;
+            newCharacter.mods = mods;
+            newCharacter.avatarURL = character.imgUrl;
+            newCharacter.side = character.side;
 
             currentCharacters.push(newCharacter);
         }
@@ -416,32 +441,30 @@ async function updateCharacterMods(currentCharacters) {
 
 function createEmptyChar(name, url, uniqueName) {
     return {
-        "name": name,
-        "uniqueName": uniqueName,
-        "aliases": [name], // common community names
+        "name":        name,
+        "uniqueName":  uniqueName,
+        "aliases":     [name], // common community names
         "nameVariant": [name], // names used by remote data sources, for unique matches
-        "url": url,
-        "avatarURL": "",
-        "side": "",
-        "factions": [],
-        "mods": {
-        }
+        "url":         url,
+        "avatarURL":   "",
+        "side":        "",
+        "factions":    [],
+        "mods":        {}
     };
 }
 
 function createEmptyShip(name, url, uniqueName) {
     return {
-        "name": name,
-        "uniqueName": uniqueName,
-        "aliases": [name], // common community names
+        "name":        name,
+        "uniqueName":  uniqueName,
+        "aliases":     [name], // common community names
         "nameVariant": [name], // names used by remote data sources, for unique matches
-        "crew": [],
-        "url": url,
-        "avatarURL": "",
-        "side": "",
-        "factions": [],
-        "abilities": {
-        }
+        "crew":        [],
+        "url":         url,
+        "avatarURL":   "",
+        "side":        "",
+        "factions":    [],
+        "abilities":   {}
     };
 }
 
@@ -493,3 +516,4 @@ async function updatePatrons() {
         console.log("Error getting patrons");
     }
 }
+

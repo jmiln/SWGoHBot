@@ -143,8 +143,8 @@ class Mods extends Command {
                         "icon_url": character.avatarURL
                     },
                     "footer": {
-                        "icon_url": "https://cdn.discordapp.com/attachments/329514150105448459/361268366180352002/crouchingRancor.png",
-                        "text": "Mods via apps.crouchingrancor.com"
+                        "icon_url": "https://swgoh.gg/static/img/swgohgg-nav-orange.png",
+                        "text": "Mods via https://www.swgoh.gg"
                     }
                 };
                 if (!fields.length) { // If there are no sets there

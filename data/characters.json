@@ -19,18 +19,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/arc-trooper/best-mods/",
                 "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Offense x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage/ Offense",
-                "circle": "Protection",
+                "triangle": "Offense",
+                "circle": "Health/ Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -55,18 +55,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/aayla-secura/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Chance x2",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
+                "triangle": "Critical Chance",
+                "circle": "Protection/ Health",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -92,18 +93,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/admiral-ackbar/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -128,18 +129,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/admiral-piett/best-mods/",
                 "sets": [
                     "Health x2",
-                    "Speed x4",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Defense",
-                "circle": "Health/ Protection",
-                "cross": "Defense",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Protection/ Health",
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -166,18 +167,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ahsoka-tano/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Offense x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "circle": "Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -204,18 +205,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -239,10 +240,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/amilyn-holdo/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -250,7 +252,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -278,10 +280,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/asajj-ventress/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -289,7 +291,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Health",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -314,18 +316,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/aurra-sing/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -348,18 +350,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/b1-battle-droid/best-mods/",
                 "sets": [
                     "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Offense",
-                "circle": "Health/ Protection",
+                "circle": "Protection/ Health",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -383,33 +385,20 @@
             "Tank"
         ],
         "mods": {
-            "B2 with HK-47 lead": {
+            "General": {
+                "url": "https://swgoh.gg/characters/b2-super-battle-droid/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Accuracy",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
-            "B2 without HK-47": {
-                "sets": [
-                    "Offense x4",
                     "Potency x2",
-                    ""
+                    "Potency x2",
+                    "Potency x2"
                 ],
                 "square": "Offense",
-                "arrow": "Accuracy",
+                "arrow": "Critical Avoidance",
                 "diamond": "Defense",
-                "triangle": "Offense",
+                "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -432,61 +421,19 @@
             "Support"
         ],
         "mods": {
-            "HK-47 Lead - Damage": {
+            "General": {
+                "url": "https://swgoh.gg/characters/bb-8/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Critical Chance/ Protection",
                 "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
-            },
-            "HK-47 Lead - Secret Intel Taunt": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
-            },
-            "Finn Lead": {
-                "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
-            },
-            "RJT lead": {
-                "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage/ Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -513,6 +460,7 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/barriss-offee/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
@@ -524,7 +472,7 @@
                 "triangle": "Health",
                 "circle": "Health",
                 "cross": "Health",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -549,18 +497,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/bastila-shan/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
+                "triangle": "Protection/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -588,18 +536,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/bastila-shan-fallen/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage/ Protection",
-                "circle": "Protection",
-                "cross": "Potency/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -624,18 +572,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/baze-malbus/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
                     "Health x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed",
+                "arrow": "Speed/ Protection",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -659,18 +608,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/biggs-darklighter/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -694,18 +643,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/bistan/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Potency x2",
+                    "Potency x2",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "circle": "Protection/ Health",
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -729,7 +679,22 @@
             "Mandalorian",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/bo-katan-kryze/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Crit. Damage x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Boba Fett",
@@ -752,47 +717,19 @@
             "Scoundrel"
         ],
         "mods": {
-            "leader": {
+            "General": {
+                "url": "https://swgoh.gg/characters/boba-fett/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
-            "attacker": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
-            "support": {
-                "sets": [
-                    "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -837,18 +774,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/bodhi-rook/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Offense/ Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -873,10 +810,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/bossk/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -884,7 +821,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -912,18 +849,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/c-3po/best-mods/",
                 "sets": [
-                    "Health x2",
-                    "Health x2",
-                    "Health x2"
+                    "Speed x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health/ Protection",
+                "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Health/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -949,33 +886,19 @@
             "Leader"
         ],
         "mods": {
-            "CC-2224 Cody leader": {
+            "General": {
+                "url": "https://swgoh.gg/characters/cc-2224-cody/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Crit. Damage/ Critical Chance",
                 "circle": "Protection",
                 "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
-            "CC-2224 Cody attacker": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1002,19 +925,19 @@
             "Support"
         ],
         "mods": {
-            "CT-21-0408 Echo": {
+            "General": {
+                "url": "https://swgoh.gg/characters/ct-21-0408-echo/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
+                "circle": "Health/ Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1041,33 +964,20 @@
             "Tank"
         ],
         "mods": {
-            "CT-5555 Fives Raid w/ clones": {
+            "General": {
+                "url": "https://swgoh.gg/characters/ct-5555-fives/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Offense",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
-            "CT-5555 Fives GK Lead": {
-                "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
-                "arrow": "Offense",
+                "arrow": "Speed/ Protection",
                 "diamond": "Defense",
-                "triangle": "Health",
-                "circle": "Health",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Protection/ Health",
+                "circle": "Protection/ Health",
+                "cross": "Protection/ Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1093,33 +1003,19 @@
             "Support"
         ],
         "mods": {
-            "CT-7567 Rex leader": {
+            "General": {
+                "url": "https://swgoh.gg/characters/ct-7567-rex/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
-            },
-            "CT-7567 Rex support": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1144,18 +1040,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/cad-bane/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1179,18 +1075,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/canderous-ordo/best-mods/",
                 "sets": [
                     "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1214,7 +1110,8 @@
             "Support"
         ],
         "mods": {
-            "TB": {
+            "General": {
+                "url": "https://swgoh.gg/characters/captain-han-solo/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
@@ -1223,24 +1120,10 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Health",
-                "cross": "Potency/ Health",
-                "source": "Crouching Rancor"
-            },
-            "PvP": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Health/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1264,18 +1147,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/captain-phasma/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Critical Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1299,6 +1182,7 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/cara-dune/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
@@ -1307,10 +1191,10 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection/ Health",
-                "circle": "Protection/ Health",
-                "cross": "Tenacity/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1333,18 +1217,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/carth-onasi/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Damage x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1369,18 +1253,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/cassian-andor/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage/ Protection",
                 "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1404,18 +1288,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/chewbacca/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Tenacity x2",
+                    "Tenacity x2",
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1439,18 +1324,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/chief-chirpa/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Critical Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Defense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1474,10 +1359,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/chief-nebit/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -1485,7 +1371,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1509,19 +1395,19 @@
             "Rogue One"
         ],
         "mods": {
-            "Chirrut Imwe": {
+            "General": {
+                "url": "https://swgoh.gg/characters/chirrut-imwe/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Health",
-                "cross": "Offense/ Health",
-                "source": "Crouching Rancor"
+                "circle": "Protection",
+                "cross": "Protection/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1545,18 +1431,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/chopper/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
-                "arrow": "Speed/ Protection",
+                "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1580,19 +1466,19 @@
             "Galactic Republic"
         ],
         "mods": {
-            "Clone Sergeant P1": {
+            "General": {
+                "url": "https://swgoh.gg/characters/clone-sergeant-phase-i/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1618,6 +1504,7 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/clone-wars-chewbacca/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
@@ -1626,10 +1513,10 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Protection/ Defense",
+                "circle": "Protection/ Health",
+                "cross": "Protection/ Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1653,19 +1540,19 @@
             "Support"
         ],
         "mods": {
-            "PvE": {
+            "General": {
+                "url": "https://swgoh.gg/characters/colonel-starck/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1688,7 +1575,22 @@
             "Scoundrel",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/commander-ahsoka-tano/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Commander Luke Skywalker",
@@ -1714,32 +1616,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/commander-luke-skywalker/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Offense x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
-            "Raid": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1761,19 +1649,19 @@
             "Support"
         ],
         "mods": {
-            "why ?!": {
+            "General": {
+                "url": "https://swgoh.gg/characters/coruscant-underworld-police/best-mods/",
                 "sets": [
-                    "Health x2",
-                    "Health x2",
+                    "Speed x4",
                     "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Health/ Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1798,32 +1686,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/count-dooku/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Speed x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
-            "DN Lead": {
-                "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1846,7 +1720,22 @@
             "Imperial Remnant",
             "Imperial Trooper"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/dark-trooper/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Offense x4"
+                ],
+                "square": "Offense",
+                "arrow": "Offense",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Health/ Protection",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Darth Malak",
@@ -1867,10 +1756,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/darth-malak/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
+                    "Tenacity x2",
+                    "Tenacity x2",
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -1878,7 +1768,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1901,18 +1791,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/darth-maul/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1937,32 +1827,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/darth-nihilus/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
-            },
-            "leader": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Protection/ Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -1987,18 +1863,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/darth-revan/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
+                "circle": "Protection/ Health",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2023,18 +1899,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/darth-sidious/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Speed x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage/ Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2057,18 +1933,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/darth-sion/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Health",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2088,7 +1964,22 @@
             "Attacker",
             "Sith"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/darth-talon/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Offense x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense/ Protection",
+                "circle": "Protection",
+                "cross": "Offense/ Protection",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Darth Traya",
@@ -2111,18 +2002,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/darth-traya/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health/ Offense",
-                "circle": "Health",
-                "cross": "Health/ Offense",
-                "source": "Crouching Rancor"
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2147,61 +2038,19 @@
             "Sith"
         ],
         "mods": {
-            "DN lead": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
-            },
             "General": {
+                "url": "https://swgoh.gg/characters/darth-vader/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
-            "Raid": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage/ Crit. Chance",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
-            },
-            "Lead": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
+                "circle": "Protection/ Health",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2223,7 +2072,22 @@
             "Smuggler",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/dash-rendar/best-mods/",
+                "sets": [
+                    "Speed x4",
+                    "Crit. Chance x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Critical Chance",
+                "circle": "Health",
+                "cross": "Offense/ Potency",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Dathcha",
@@ -2245,18 +2109,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/dathcha/best-mods/",
                 "sets": [
-                    "Offense x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense",
+                "triangle": "Protection/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2280,47 +2145,19 @@
             "Imperial Trooper"
         ],
         "mods": {
-            "Veers lead": {
+            "General": {
+                "url": "https://swgoh.gg/characters/death-trooper/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
-            },
-            "Krennic/EP lead": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
-            },
-            "Thrawn lead": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2343,33 +2180,19 @@
             "Scoundrel"
         ],
         "mods": {
-            "Raid": {
-                "sets": [
-                    "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Critical Chance x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
             "General": {
+                "url": "https://swgoh.gg/characters/dengar/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance",
+                "triangle": "Critical Chance",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2393,61 +2216,19 @@
             "Support"
         ],
         "mods": {
-            "Vader lead": {
-                "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
-            "leader": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
-            "Palp lead": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
-            "Raid - Thrawn lead": {
+            "General": {
+                "url": "https://swgoh.gg/characters/director-krennic/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2470,18 +2251,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/droideka/best-mods/",
                 "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Offense x4"
                 ],
                 "square": "Offense",
-                "arrow": "Speed",
+                "arrow": "Offense/ Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
+                "triangle": "Offense",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2505,7 +2286,22 @@
             "Galactic Republic",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/echo/best-mods/",
+                "sets": [
+                    "Speed x4",
+                    "Potency x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Protection/ Health",
+                "cross": "Potency",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Eeth Koth",
@@ -2527,18 +2323,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/eeth-koth/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Protection/ Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Protection/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2562,18 +2359,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/embo/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage/ Crit. Chance",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2599,33 +2396,19 @@
             "Support"
         ],
         "mods": {
-            "leader": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
-            },
             "General": {
+                "url": "https://swgoh.gg/characters/emperor-palpatine/best-mods/",
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Speed x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Offense",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2649,18 +2432,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/enfys-nest/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Tenacity x2",
+                    "Tenacity x2",
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "circle": "Health",
+                "cross": "Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2682,18 +2466,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ewok-elder/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health/ Protection",
+                "triangle": "Health",
                 "circle": "Health/ Protection",
-                "cross": "Health/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Health/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2715,18 +2499,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ewok-scout/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2750,18 +2534,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ezra-bridger/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2784,7 +2568,22 @@
             "Leader",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/fennec-shand/best-mods/",
+                "sets": [
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Finn",
@@ -2805,32 +2604,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/finn/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
-            "Raid with BB-8": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2855,18 +2640,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/first-order-executioner/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
+                "circle": "Health",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2889,18 +2674,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/first-order-officer/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Critical Chance",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2924,10 +2709,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/first-order-sf-tie-pilot/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -2935,7 +2720,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2958,10 +2743,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/first-order-stormtrooper/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -2969,7 +2755,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -2992,10 +2778,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/first-order-tie-pilot/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -3003,7 +2789,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3024,19 +2810,20 @@
             "Tank"
         ],
         "mods": {
-            "Vader lead": {
+            "General": {
+                "url": "https://swgoh.gg/characters/gamorrean-guard/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3060,18 +2847,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/gar-saxon/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Crit. Damage/ Offense",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3096,32 +2883,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/garazeb-zeb-orrelios/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage/ Protection",
                 "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
-            },
-            "'Garazeb Zeb Orrelios Offensive variant'": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3147,18 +2920,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/general-grievous/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
                     "Health x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed",
+                "arrow": "Health",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Health",
                 "cross": "Health",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3182,18 +2956,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/general-hux/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Tenacity x2",
-                    ""
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection/ Crit. Damage",
+                "triangle": "Protection/ Health",
                 "circle": "Protection",
-                "cross": "Protection/ Health",
-                "source": "Crouching Rancor"
+                "cross": "Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3219,18 +2993,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/general-kenobi/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3256,10 +3031,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/general-skywalker/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Offense x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -3267,7 +3042,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3290,19 +3065,19 @@
             "Support"
         ],
         "mods": {
-            "Leader": {
+            "General": {
+                "url": "https://swgoh.gg/characters/general-veers/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3327,18 +3102,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/geonosian-brood-alpha/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Tenacity x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health",
+                "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Tenacity",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3361,18 +3136,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/geonosian-soldier/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Critical Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3395,18 +3170,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/geonosian-spy/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3432,46 +3207,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/grand-admiral-thrawn/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection/ Tenacity",
-                "source": "Crouching Rancor"
-            },
-            "Raid": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Offense",
-                "source": "Crouching Rancor"
-            },
-            "Grand Admiral Thrawn Raid": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3497,33 +3244,19 @@
             "Support"
         ],
         "mods": {
-            "Revan lead": {
-                "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage/ Offense",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
-            },
             "General": {
+                "url": "https://swgoh.gg/characters/grand-master-yoda/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage/ Crit. Chance",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3549,18 +3282,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/grand-moff-tarkin/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3584,18 +3317,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/greedo/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Critical Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3619,18 +3352,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/greef-karga/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection/ Crit. Chance",
-                "circle": "Health/ Protection",
-                "cross": "Protection/ Health",
-                "source": "Crouching Rancor"
+                "triangle": "Protection/ Critical Chance",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3656,18 +3389,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/hk-47/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3691,10 +3424,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/han-solo/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -3702,7 +3435,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3726,18 +3459,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/hera-syndulla/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Offense",
                 "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3764,18 +3497,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/hermit-yoda/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health",
-                "circle": "Health",
-                "cross": "Health",
-                "source": "Crouching Rancor"
+                "triangle": "Health/ Protection",
+                "circle": "Protection/ Health",
+                "cross": "Health/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3800,18 +3533,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/hoth-rebel-scout/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
+                "triangle": "Critical Chance/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3836,10 +3569,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/hoth-rebel-soldier/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -3847,7 +3581,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3870,7 +3604,22 @@
             "Galactic Republic",
             "Leader"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/hunter/best-mods/",
+                "sets": [
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "IG-100 MagnaGuard",
@@ -3893,18 +3642,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ig-100-magnaguard/best-mods/",
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed",
+                "arrow": "Protection/ Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3926,7 +3676,23 @@
             "Healer",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/ig-11/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "IG-86 Sentinel Droid",
@@ -3948,18 +3714,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ig-86-sentinel-droid/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -3985,18 +3751,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ig-88/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4022,18 +3788,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ima-gun-di/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Protection/ Health",
+                "cross": "Protection/ Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4058,18 +3825,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/imperial-probe-droid/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health/ Defense",
-                "circle": "Health",
+                "triangle": "Protection/ Health",
+                "circle": "Protection/ Health",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4093,18 +3860,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/imperial-super-commando/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "circle": "Protection/ Health",
+                "cross": "Offense/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4132,18 +3899,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jango-fett/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4165,18 +3932,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jawa/best-mods/",
                 "sets": [
-                    "Offense x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
+                "triangle": "Protection/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4198,18 +3966,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jawa-engineer/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Health",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4231,18 +3999,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jawa-scavenger/best-mods/",
                 "sets": [
-                    "Critical Chance x2",
-                    "Critical Chance x2",
-                    "Critical Chance x2"
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance",
+                "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4265,6 +4034,7 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jedi-consular/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
@@ -4273,10 +4043,10 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Health/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4303,18 +4073,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jedi-knight-anakin/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "circle": "Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4338,6 +4108,7 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jedi-knight-guardian/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
@@ -4346,10 +4117,10 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage/ Defense",
+                "circle": "Health/ Protection",
+                "cross": "Tenacity/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4372,10 +4143,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jedi-knight-luke-skywalker/best-mods/",
                 "sets": [
                     "Offense x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -4383,7 +4154,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4409,18 +4180,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jedi-knight-revan/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage/ Health",
+                "circle": "Health/ Protection",
+                "cross": "Health/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4444,7 +4215,22 @@
             "Jedi",
             "Leader"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/jedi-master-kenobi/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Jedi Master Luke Skywalker",
@@ -4466,7 +4252,22 @@
             "Leader",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/jedi-master-luke-skywalker/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Jolee Bindo",
@@ -4489,18 +4290,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jolee-bindo/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health/ Protection",
-                "circle": "Protection",
-                "cross": "Health/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4523,18 +4325,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/juhani/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
-                    "Tenacity x2"
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Potency/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4559,32 +4362,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/jyn-erso/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance",
+                "triangle": "Critical Chance",
                 "circle": "Protection",
-                "cross": "Potency/ Protection",
-                "source": "Crouching Rancor"
-            },
-            "Raid": {
-                "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4612,32 +4401,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/k-2so/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
-            },
-            "Raid": {
-                "sets": [
-                    "Potency x2",
-                    "Potency x2",
-                    "Potency x2"
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4661,10 +4437,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/kanan-jarrus/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -4672,21 +4449,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
-            },
-            "with jedi": {
-                "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4711,18 +4474,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ki-adi-mundi/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
+                    "Offense x4",
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4746,18 +4509,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/kit-fisto/best-mods/",
                 "sets": [
-                    "Offense x4",
                     "Health x2",
-                    ""
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Protection",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Offense/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4777,7 +4540,22 @@
             "Scoundrel",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/kuiil/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Protection",
+                "circle": "Health/ Protection",
+                "cross": "Potency/ Health",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Kyle Katarn",
@@ -4797,7 +4575,22 @@
             "Rebel",
             "Rebel Fighter"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/kyle-katarn/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Kylo Ren",
@@ -4819,18 +4612,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/kylo-ren/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4858,10 +4651,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/kylo-ren-unmasked/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -4869,21 +4663,7 @@
                 "triangle": "Health",
                 "circle": "Health",
                 "cross": "Health",
-                "source": "Crouching Rancor"
-            },
-            "Leader": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Health",
-                "cross": "Health/ Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4908,18 +4688,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/l3-37/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed",
+                "arrow": "Protection/ Speed",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4944,18 +4725,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/lando-calrissian/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -4978,18 +4759,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/lobot/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Defense/ Crit. Damage",
+                "circle": "Health/ Protection",
+                "cross": "Tenacity/ Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5011,18 +4792,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/logray/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Protection",
-                "circle": "Protection",
+                "triangle": "Critical Chance/ Protection",
+                "circle": "Protection/ Health",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5045,7 +4826,22 @@
             "Leader",
             "Sith"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/lord-vader/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Luke Skywalker (Farmboy)",
@@ -5071,18 +4867,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/luke-skywalker-farmboy/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Crit. Damage/ Critical Chance",
                 "circle": "Protection",
-                "cross": "Potency/ Offense",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5106,18 +4902,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/luminara-unduli/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Health/ Protection",
-                "circle": "Health/ Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "circle": "Health",
+                "cross": "Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5142,18 +4939,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/mace-windu/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Crit. Damage/ Protection",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5176,18 +4974,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/magmatrooper/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Tenacity/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5208,7 +5006,22 @@
             "Empire",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/mara-jade-the-emperors-hand/best-mods/",
+                "sets": [
+                    "Speed x4",
+                    "Potency x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Protection/ Health",
+                "cross": "Potency",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Maul",
@@ -5228,7 +5041,22 @@
             "Mandalorian",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/maul/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Offense x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Mission Vao",
@@ -5249,10 +5077,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/mission-vao/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -5260,7 +5088,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5281,19 +5109,20 @@
             "Tank"
         ],
         "mods": {
-            "why ?!": {
+            "General": {
+                "url": "https://swgoh.gg/characters/mob-enforcer/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
-                    "Potency x2"
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage/ Critical Chance",
+                "circle": "Health/ Protection",
+                "cross": "Potency/ Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5316,7 +5145,22 @@
             "Leader",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/moff-gideon/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection/ Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Tenacity/ Protection",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Mon Mothma",
@@ -5337,18 +5181,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/mon-mothma/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Tenacity x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health/ Protection",
+                "triangle": "Protection/ Health",
                 "circle": "Health/ Protection",
-                "cross": "Tenacity/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5372,32 +5216,18 @@
         ],
         "mods": {
             "General": {
-                "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
-            },
-            "Asajj Lead": {
+                "url": "https://swgoh.gg/characters/mother-talzin/best-mods/",
                 "sets": [
                     "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Offense",
+                "circle": "Health",
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5419,18 +5249,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/nightsister-acolyte/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage/ Critical Chance",
+                "circle": "Protection/ Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5452,18 +5282,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/nightsister-initiate/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Chance x2",
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "triangle": "Critical Chance",
+                "circle": "Protection/ Health",
+                "cross": "Offense/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5485,18 +5316,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/nightsister-spirit/best-mods/",
                 "sets": [
                     "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
+                "triangle": "Crit. Damage",
+                "circle": "Health/ Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5518,10 +5349,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/nightsister-zombie/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -5529,7 +5360,7 @@
                 "triangle": "Health",
                 "circle": "Health",
                 "cross": "Health",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5553,18 +5384,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/nute-gunray/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Health x2",
-                    ""
+                    "Speed x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
+                "triangle": "Protection/ Health",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5590,10 +5421,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -5601,7 +5432,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5624,32 +5455,19 @@
         ],
         "mods": {
             "General": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Health",
-                "circle": "Health",
-                "cross": "Health",
-                "source": "Crouching Rancor"
-            },
-            "Asajj Lead - if Zeta": {
+                "url": "https://swgoh.gg/characters/old-daka/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
                     "Health x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed",
+                "arrow": "Speed/ Health",
                 "diamond": "Defense",
                 "triangle": "Health",
                 "circle": "Health",
                 "cross": "Health",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5670,7 +5488,22 @@
             "Bad Batch",
             "Clone Trooper"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/omega/best-mods/",
+                "sets": [
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Padmé Amidala",
@@ -5693,10 +5526,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/padme-amidala/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -5704,7 +5538,7 @@
                 "triangle": "Health",
                 "circle": "Health",
                 "cross": "Health",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5728,18 +5562,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/pao/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Crit. Damage/ Offense",
                 "circle": "Protection",
-                "cross": "Protection/ Offense",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5761,18 +5595,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/paploo/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
-                "arrow": "Protection",
+                "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Defense",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5796,18 +5630,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/plo-koon/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage/ Protection",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5830,18 +5665,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/poe-dameron/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Defense",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5865,10 +5700,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/poggle-the-lesser/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -5876,7 +5711,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5899,18 +5734,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/princess-leia/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5936,18 +5771,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/qira/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Crit. Damage/ Critical Chance",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Protection/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -5973,18 +5808,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/qui-gon-jinn/best-mods/",
                 "sets": [
-                    "Offense x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense",
+                "triangle": "Offense/ Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6010,47 +5845,19 @@
             "Support"
         ],
         "mods": {
-            "burn": {
+            "General": {
+                "url": "https://swgoh.gg/characters/r2-d2/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
-            "self-dispel": {
-                "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Chance/ Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
-            "RJT lead": {
-                "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage/ Crit. Chance",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Offense/ Critical Chance",
+                "circle": "Health/ Protection",
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6073,18 +5880,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/range-trooper/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6107,19 +5914,19 @@
             "Rebel"
         ],
         "mods": {
-            "TB": {
+            "General": {
+                "url": "https://swgoh.gg/characters/rebel-officer-leia-organa/best-mods/",
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
-                "arrow": "Speed/ Offense",
+                "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6143,18 +5950,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/resistance-hero-finn/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage/ Crit. Chance",
-                "circle": "Health/ Protection",
+                "triangle": "Crit. Damage",
+                "circle": "Protection/ Health",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6176,18 +5983,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/resistance-hero-poe/best-mods/",
                 "sets": [
                     "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage/ Offense",
+                "triangle": "Crit. Damage",
                 "circle": "Protection/ Health",
-                "cross": "Potency/ Offense",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6209,18 +6016,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/resistance-pilot/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Speed x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Potency/ Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6242,24 +6049,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/resistance-trooper/best-mods/",
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
-            },
-            "with BB-8": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -6267,7 +6060,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6290,7 +6083,22 @@
             "Resistance",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/rey/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Offense x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Offense",
+                "circle": "Health",
+                "cross": "Health/ Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Rey (Jedi Training)",
@@ -6315,33 +6123,19 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "Raid": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
             "General": {
+                "url": "https://swgoh.gg/characters/rey-jedi-training/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6367,10 +6161,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/rey-scavenger/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -6378,7 +6172,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6399,47 +6193,20 @@
             "Resistance"
         ],
         "mods": {
-            "RJT Lead": {
+            "General": {
+                "url": "https://swgoh.gg/characters/rose-tico/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Crit. Damage/ Critical Chance",
                 "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
-            },
-            "zFinn Lead - Raid": {
-                "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
-            },
-            "zFinn Lead - PVP": {
-                "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6461,18 +6228,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/royal-guard/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
-                    "Defense x2"
+                    "Health x2"
                 ],
                 "square": "Offense",
-                "arrow": "Protection",
+                "arrow": "Health",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6496,18 +6264,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/sabine-wren/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6530,46 +6298,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/savage-opress/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Health",
-                "circle": "Protection",
-                "cross": "Offense/ Health",
-                "source": "Crouching Rancor"
-            },
-            "Nihilus Lead": {
-                "sets": [
-                    "Offense x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
-            },
-            "DN Lead": {
-                "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage",
+                "circle": "Protection/ Health",
+                "cross": "Protection/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6594,18 +6335,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/scarif-rebel-pathfinder/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health",
-                "circle": "Health",
-                "cross": "Health/ Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Protection/ Health",
+                "circle": "Protection",
+                "cross": "Protection/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6629,18 +6371,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/shaak-ti/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Health",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6663,11 +6405,12 @@
             "Tank"
         ],
         "mods": {
-            "tank": {
+            "General": {
+                "url": "https://swgoh.gg/characters/shoretrooper/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Protection",
@@ -6675,7 +6418,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6699,18 +6442,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/sith-assassin/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Protection/ Health",
                 "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6734,18 +6477,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/sith-empire-trooper/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Defense x2",
-                    ""
+                    "Defense x2",
+                    "Defense x2"
                 ],
                 "square": "Offense",
                 "arrow": "Protection",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
-                "cross": "Protection/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6768,7 +6512,23 @@
             "Leader",
             "Sith"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/sith-eternal-emperor/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed/ Health",
+                "diamond": "Defense",
+                "triangle": "Health",
+                "circle": "Health",
+                "cross": "Health",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Sith Marauder",
@@ -6789,10 +6549,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/sith-marauder/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -6800,21 +6560,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
-            },
-            "DN Lead": {
-                "sets": [
-                    "Offense x4",
-                    "Health x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Offense",
-                "circle": "Health",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6839,33 +6585,19 @@
             "Sith"
         ],
         "mods": {
-            "Palp lead": {
-                "sets": [
-                    "Defense x2",
-                    "Defense x2",
-                    "Defense x2"
-                ],
-                "square": "Offense",
-                "arrow": "Protection",
-                "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
-            },
             "General": {
+                "url": "https://swgoh.gg/characters/sith-trooper/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Tenacity x2",
-                    "Health x2"
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
-                "circle": "Protection/ Health",
+                "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6888,10 +6620,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/snowtrooper/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -6899,7 +6631,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6919,7 +6651,22 @@
             "Attacker",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/starkiller/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Stormtrooper",
@@ -6940,33 +6687,20 @@
             "Tank"
         ],
         "mods": {
-            "Thrawn lead": {
+            "General": {
+                "url": "https://swgoh.gg/characters/stormtrooper/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Health x2",
-                    ""
+                    "Defense x2",
+                    "Defense x2",
+                    "Defense x2"
                 ],
                 "square": "Offense",
-                "arrow": "Speed",
+                "arrow": "Speed/ Protection",
                 "diamond": "Defense",
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
-            },
-            "Veers lead": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -6991,10 +6725,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/stormtrooper-han/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -7002,7 +6737,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7025,10 +6760,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/sun-fac/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -7036,7 +6772,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7062,7 +6798,22 @@
             "Leader",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/supreme-leader-kylo-ren/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Crit. Damage",
+                "circle": "Health",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "T3-M4",
@@ -7083,47 +6834,19 @@
             "Support"
         ],
         "mods": {
-            "with HK-47": {
-                "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
-            },
             "General": {
+                "url": "https://swgoh.gg/characters/t3-m4/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Protection/ Critical Chance",
                 "circle": "Protection",
-                "cross": "Protection",
-                "source": "Crouching Rancor"
-            },
-            "with HK-47 - alternate": {
-                "sets": [
-                    "Offense x4",
-                    "Critical Chance x2",
-                    ""
-                ],
-                "square": "Offense",
-                "arrow": "Speed",
-                "diamond": "Defense",
-                "triangle": "Crit. Damage",
-                "circle": "Protection",
-                "cross": "Offense",
-                "source": "Crouching Rancor"
+                "cross": "Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7146,18 +6869,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/tie-fighter-pilot/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Speed x4",
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7180,18 +6903,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/talia/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health",
+                "triangle": "Offense/ Health",
                 "circle": "Health",
-                "cross": "Health",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7213,7 +6936,22 @@
             "Galactic Republic",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/tech/best-mods/",
+                "sets": [
+                    "Speed x4",
+                    "Potency x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Health/ Offense",
+                "circle": "Health/ Protection",
+                "cross": "Potency",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Teebo",
@@ -7234,18 +6972,19 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/teebo/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Potency x2",
-                    ""
+                    "Potency x2",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Protection",
+                "triangle": "Protection/ Crit. Damage",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7266,7 +7005,22 @@
             "Mandalorian",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/the-armorer/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Speed x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "The Mandalorian",
@@ -7290,10 +7044,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/the-mandalorian/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -7301,7 +7055,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7323,7 +7077,22 @@
             "Mandalorian",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/the-mandalorian-beskar-armor/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Offense x4"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Offense",
+                "circle": "Protection",
+                "cross": "Offense",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Threepio & Chewie",
@@ -7347,10 +7116,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/threepio-chewie/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -7358,7 +7127,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7380,18 +7149,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/tusken-raider/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Tenacity x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Protection",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7413,18 +7182,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/tusken-shaman/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
+                "triangle": "Critical Chance/ Health",
+                "circle": "Protection/ Health",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7450,18 +7219,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/urorrurrr/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
-                "cross": "Potency",
-                "source": "Crouching Rancor"
+                "triangle": "Crit. Damage/ Offense",
+                "circle": "Health/ Protection",
+                "cross": "Health/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7482,18 +7251,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/ugnaught/best-mods/",
                 "sets": [
-                    "Offense x4",
-                    "Potency x2",
-                    ""
+                    "Speed x4",
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
-                "circle": "Protection",
+                "triangle": "Critical Chance/ Crit. Damage",
+                "circle": "Health/ Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7516,6 +7285,7 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/vandor-chewbacca/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
@@ -7524,10 +7294,10 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health/ Offense",
+                "triangle": "Health",
                 "circle": "Health",
-                "cross": "Health/ Offense",
-                "source": "Crouching Rancor"
+                "cross": "Health",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7551,18 +7321,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
-                "arrow": "Offense/ Speed",
+                "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Potency",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7588,18 +7358,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/veteran-smuggler-han-solo/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Potency/ Offense",
-                "source": "Crouching Rancor"
+                "cross": "Offense/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7621,6 +7391,7 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/visas-marr/best-mods/",
                 "sets": [
                     "Health x2",
                     "Health x2",
@@ -7629,10 +7400,10 @@
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Health/ Protection",
+                "triangle": "Crit. Damage/ Health",
                 "circle": "Health",
-                "cross": "Health/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Health/ Tenacity",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7653,18 +7424,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/wampa/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Offense/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7686,18 +7457,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/wat-tambor/best-mods/",
                 "sets": [
-                    "Speed x4",
                     "Health x2",
-                    ""
+                    "Speed x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Health",
                 "circle": "Health",
-                "cross": "Health/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Health/ Potency",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7721,18 +7492,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/wedge-antilles/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7754,18 +7525,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/wicket/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Crit. Chance x2",
+                    "Crit. Damage x4"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Chance/ Crit. Damage",
+                "triangle": "Crit. Damage",
                 "circle": "Protection",
-                "cross": "Offense/ Protection",
-                "source": "Crouching Rancor"
+                "cross": "Offense",
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7787,7 +7558,23 @@
             "Galactic Republic",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "General": {
+                "url": "https://swgoh.gg/characters/wrecker/best-mods/",
+                "sets": [
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
+                ],
+                "square": "Offense",
+                "arrow": "Speed",
+                "diamond": "Defense",
+                "triangle": "Protection",
+                "circle": "Protection",
+                "cross": "Protection",
+                "source": "swgoh.gg"
+            }
+        }
     },
     {
         "name": "Young Han Solo",
@@ -7809,10 +7596,10 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/young-han-solo/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -7820,7 +7607,7 @@
                 "triangle": "Crit. Damage",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7843,18 +7630,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/young-lando-calrissian/best-mods/",
                 "sets": [
-                    "Critical Damage x4",
-                    "Critical Chance x2",
-                    ""
+                    "Offense x4",
+                    "Crit. Chance x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Crit. Damage",
+                "triangle": "Crit. Damage/ Offense",
                 "circle": "Protection",
                 "cross": "Offense",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7877,10 +7664,11 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/zaalbar/best-mods/",
                 "sets": [
-                    "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Health x2",
+                    "Health x2",
+                    "Health x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
@@ -7888,7 +7676,7 @@
                 "triangle": "Protection",
                 "circle": "Protection",
                 "cross": "Protection",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     },
@@ -7912,18 +7700,18 @@
         ],
         "mods": {
             "General": {
+                "url": "https://swgoh.gg/characters/zam-wesell/best-mods/",
                 "sets": [
                     "Speed x4",
-                    "Potency x2",
-                    ""
+                    "Potency x2"
                 ],
                 "square": "Offense",
                 "arrow": "Speed",
                 "diamond": "Defense",
-                "triangle": "Protection",
+                "triangle": "Crit. Damage/ Offense",
                 "circle": "Protection",
                 "cross": "Potency",
-                "source": "Crouching Rancor"
+                "source": "swgoh.gg"
             }
         }
     }
