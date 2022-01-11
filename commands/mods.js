@@ -139,7 +139,7 @@ class Mods extends Command {
                     "color": `${character.side === "light" ? "#0055FF" : "#E01414"}`,
                     "author": {
                         "name": character.name,
-                        "url": character.url,
+                        "url": character.mods["General"].url,
                         "icon_url": character.avatarURL
                     },
                     "footer": {
