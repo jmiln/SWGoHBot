@@ -341,9 +341,9 @@ module.exports = (Bot, client) => {
                         msg = null;
                     }
                     if (msg) {
-                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => console.log("[sendPayoutUpdates]", err));
+                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendPayoutUpdates]", err));
                     } else {
-                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => console.log("[sendPayoutUpdates]", err));
+                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendPayoutUpdates]", err));
                     }
                 }
             }
