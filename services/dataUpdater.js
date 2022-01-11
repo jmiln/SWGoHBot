@@ -18,10 +18,10 @@ const crinoloLocs = "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6
 const charLocationLink = config.locations?.char ? config.locations.char : crinoloLocs + "false";
 const shipLocationLink = config.locations?.ship ? config.locations.ship : crinoloLocs + "true";
 
-console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
 // How long between being runs (In minutes)
 const INTERVAL = 60;
+console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
 // Run the upater when it's started, then every ${INTERVAL} minutes after that
 runUpdater();
@@ -410,17 +410,15 @@ async function updateCharacterMods(currentCharacters, freshMods) {
     for (const character of freshMods) {
         const thisChar = currentCharacters.find(ch => ch.uniqueName === character.defId);
         const mods = {
-            "General": {
-                url:      character.modsUrl,
-                sets:     character.mods.sets,
-                square:   character.mods.square,
-                arrow:    character.mods.arrow,
-                diamond:  character.mods.diamond,
-                triangle: character.mods.triangle,
-                circle:   character.mods.circle,
-                cross:    character.mods.cross,
-                source:   GG_SOURCE
-            }
+            url:      character.modsUrl,
+            sets:     character.mods.sets,
+            square:   character.mods.square,
+            arrow:    character.mods.arrow,
+            diamond:  character.mods.diamond,
+            triangle: character.mods.triangle,
+            circle:   character.mods.circle,
+            cross:    character.mods.cross,
+            source:   GG_SOURCE
         };
 
         if (thisChar) {

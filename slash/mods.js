@@ -4,7 +4,7 @@ class Mods extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "mods",
-            guildOnly: false,
+            guildOnly: true,
             aliases: ["m", "mod"],
             category: "Star Wars",
             permissions: ["EMBED_LINKS"],
@@ -22,7 +22,6 @@ class Mods extends Command {
 
     async run(Bot, interaction) {
         const charList = Bot.characters;
-        const client = interaction.client;
 
         const getLocalizedModString = function(key) {
             const localizationKeyMap = {
@@ -34,7 +33,7 @@ class Mods extends Command {
                 "Potency x2"         : "COMMAND_MODS_POTENCY_SET",
                 "Health x2"          : "COMMAND_MODS_HEALTH_SET",
                 "Defense x2"         : "COMMAND_MODS_DEFENSE_SET",
-                ""                   : "COMMAND_MODS_EMPTY_SET",
+                ""                   : " ",
                 "Accuracy"           : "COMMAND_MODS_ACCURACY_STAT",
                 "Crit. Chance"       : "COMMAND_MODS_CRIT_CHANCE_STAT",
                 "Crit. Damage"       : "COMMAND_MODS_CRIT_DAMAGE_STAT",
@@ -86,38 +85,14 @@ class Mods extends Command {
             return modOut;
         };
 
-        const getCharacterMods = function(character) {
-            let mods = character.defaultMods;
-            if (JSON.stringify(character.mods) !== JSON.stringify({})) {
-                mods = character.mods;
-            }
-
-            return mods;
-        };
-
-        // Remove any junk from the name
+        // Grab the character that they're searching for
         const searchName = interaction.options.getString("character");
-
-        // Check if it should send as an embed or a code block
-        const guildConf = interaction.guildSettings;
-        let embeds = true;
-        if (interaction.guild) {
-            if (guildConf["useEmbeds"] !== true || !interaction.channel.permissionsFor(client.user).has("EMBED_LINKS")) {
-                embeds = false;
-            }
-        }
-
-        // Make sure they gave a character to find
-        if (searchName === "") {
-            return super.error(interaction, interaction.language.get("COMMAND_MODS_NEED_CHARACTER", interaction.guildSettings.prefix));
-        }
 
         // Find any characters that match that
         const chars = Bot.findChar(searchName, charList);
         if (!chars || chars.length <= 0) {
             return super.error(interaction, interaction.language.get("COMMAND_MODS_USAGE", interaction.guildSettings.prefix), {
                 title: interaction.language.get("COMMAND_MODS_INVALID_CHARACTER_HEADER"),
-                example: "mods darth vader"
             });
         } else if (chars.length > 1) {
             const charL = [];
@@ -128,55 +103,31 @@ class Mods extends Command {
             return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
 
-        chars.forEach(character => {
-            if (embeds) { // If Embeds are enabled
-                const fields = [];
-                const characterMods = getCharacterMods(character);
-                for (var modSet in characterMods) {
-                    const mods = getLocalizedModAdvice(characterMods[modSet]);
-                    const modSetString = "* " + mods.sets.join("\n* ");
+        const character = chars[0];
+        const mods = getLocalizedModAdvice(character.mods);
+        const modSetString = "* " + mods.sets.join("\n* ");
 
-                    let modPrimaryString = interaction.language.get("COMMAND_MODS_EMBED_STRING1", mods.square, mods.arrow, mods.diamond);
-                    modPrimaryString += interaction.language.get("COMMAND_MODS_EMBED_STRING2", mods.triangle, mods.circle, mods.cross);
+        let modPrimaryString = interaction.language.get("COMMAND_MODS_EMBED_STRING1", mods.square, mods.arrow, mods.diamond);
+        modPrimaryString += interaction.language.get("COMMAND_MODS_EMBED_STRING2", mods.triangle, mods.circle, mods.cross);
 
-                    fields.push({
-                        "name": modSet,
-                        "value": interaction.language.get("COMMAND_MODS_EMBED_OUTPUT", modSetString, modPrimaryString),
-                        "inline": true
-                    });
+        let description = interaction.language.get("COMMAND_NO_MODSETS");
+        if (mods) {
+            description = interaction.language.get("COMMAND_MODS_EMBED_OUTPUT", modSetString, modPrimaryString);
+        }
+        return interaction.reply({
+            embeds: [{
+                color: character.side === "light" ? "#0055FF" : "#E01414",
+                author: {
+                    name: character.name,
+                    url: character.mods.url,
+                    icon_url: character.avatarURL
+                },
+                description: description,
+                footer: {
+                    icon_url: "https://swgoh.gg/static/img/swgohgg-nav-orange.png",
+                    text: "Mods via https://www.swgoh.gg"
                 }
-                const embed = {
-                    "color": `${character.side === "light" ? "#0055FF" : "#E01414"}`,
-                    "author": {
-                        "name": character.name,
-                        "url": character.url,
-                        "icon_url": character.avatarURL
-                    },
-                    "footer": {
-                        "icon_url": "https://cdn.discordapp.com/attachments/329514150105448459/361268366180352002/crouchingRancor.png",
-                        "text": "Mods via apps.crouchingrancor.com"
-                    }
-                };
-                if (!fields.length) { // If there are no sets there
-                    embed.description = interaction.language.get("COMMAND_NO_MODSETS");
-                } else {
-                    embed.fields = fields;
-                }
-                return interaction.reply({
-                    embeds: [embed]
-                });
-            } else { // Embeds are disabled
-                const characterMods = getCharacterMods(character);
-                for (const modSet in characterMods) {
-                    const mods = getLocalizedModAdvice(characterMods[modSet]);
-                    const modSetString = "* " + mods.sets.join("\n* ");
-
-                    let modPrimaryString = interaction.language.get("COMMAND_MODS_CODE_STRING1", mods.square, mods.arrow, mods.diamond);
-                    modPrimaryString += interaction.language.get("COMMAND_MODS_CODE_STRING2", mods.triangle, mods.circle, mods.cross);
-
-                    return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_MODS_CODE_OUTPUT", character.name, modSetString, modPrimaryString), "md")}); //TODO , { code: "md", split: true });
-                }
-            }
+            }]
         });
     }
 }
