@@ -117,6 +117,7 @@ class MyProfile extends Command {
 
         // Get the Character stats
         let zetaCount = 0;
+        let omicronCount = 0;
         const charList = player.roster.filter(u => u.combatType === "CHARACTER" || u.combatType === 1);
         charList.forEach(char => {
             rarityCount[char.rarity].c += 1;
@@ -126,10 +127,26 @@ class MyProfile extends Command {
                 }
                 relicCount[relicTiers[char.relic.currentTier]] += 1;
             }
-            const thisZ = char.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get all zetas for that character
-            zetaCount += thisZ.length;
+            for (const skill of char.skills) {
+                if (skill.isOmicron && skill.isZeta) {
+                    if (skill.tier === skill.tiers) {
+                        // If it's max level, then it has both zeta and omicronCount
+                        omicronCount += 1;
+                        zetaCount += 1;
+                    } else if (skill.tier === skill.tiers-1) {
+                        // It's 1 under max level, so it's a zeta
+                        zetaCount += 1;
+                    }
+                } else if (skill.isOmicron && skill.tier === skill.tiers) {
+                    // Maxed out omicron skill, so up that
+                    omicronCount += 1;
+                } else if (skill.isZeta && skill.tier === skill.tiers) {
+                    // Maxed out zeta ability, up you go
+                    zetaCount += 1;
+                }
+            }
         });
-        const charOut = interaction.language.get("COMMAND_MYPROFILE_CHARS", gpChar.toLocaleString(), charList, zetaCount, relicCount);
+        const charOut = interaction.language.get("COMMAND_MYPROFILE_CHARS", gpChar.toLocaleString(), charList, zetaCount, relicCount, omicronCount);
         fields.push({
             name: charOut.header,
             value: [
