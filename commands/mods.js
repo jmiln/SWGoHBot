@@ -103,14 +103,15 @@ class Mods extends Command {
 
 
         const character = chars[0];
-        const mods = getLocalizedModAdvice(character.mods);
-        const modSetString = "* " + mods.sets.join("\n* ");
-
-        let modPrimaryString = message.language.get("COMMAND_MODS_EMBED_STRING1", mods.square,   mods.arrow,  mods.diamond);
-        modPrimaryString    += message.language.get("COMMAND_MODS_EMBED_STRING2", mods.triangle, mods.circle, mods.cross);
-
         let description = message.language.get("COMMAND_NO_MODSETS");
-        if (mods) {
+
+        if (character.mods && Object.keys(character.mods).length) {
+            const mods = getLocalizedModAdvice(character.mods);
+            const modSetString = "* " + mods.sets.join("\n* ");
+
+            let modPrimaryString = message.language.get("COMMAND_MODS_EMBED_STRING1", mods.square,   mods.arrow,  mods.diamond);
+            modPrimaryString    += message.language.get("COMMAND_MODS_EMBED_STRING2", mods.triangle, mods.circle, mods.cross);
+
             description = message.language.get("COMMAND_MODS_EMBED_OUTPUT", modSetString, modPrimaryString);
         }
 
