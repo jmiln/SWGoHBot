@@ -604,7 +604,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
-            "cross": "Protection/ Health"
+            "cross": "Health/ Protection"
         }
     },
     {
@@ -1147,7 +1147,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Critical Chance",
             "circle": "Health",
             "cross": "Offense/ Potency"
         }
@@ -1289,7 +1289,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Protection/ Critical Chance",
             "circle": "Protection/ Health",
             "cross": "Protection/ Tenacity"
         }
@@ -1572,7 +1572,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Protection/ Health",
             "circle": "Protection",
             "cross": "Protection"
         }
@@ -2304,7 +2304,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Defense",
             "circle": "Health/ Protection",
-            "cross": "Tenacity/ Protection"
+            "cross": "Tenacity/ Health"
         }
     },
     {
@@ -2528,7 +2528,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection/ Health",
-            "cross": "Offense/ Tenacity"
+            "cross": "Tenacity/ Offense"
         }
     },
     {
@@ -2567,7 +2567,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Offense"
         }
     },
@@ -2810,7 +2810,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Damage/ Critical Chance",
             "circle": "Protection/ Health",
             "cross": "Potency"
         }
@@ -2912,7 +2912,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection/ Health",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Tenacity"
         }
     },
@@ -3680,7 +3680,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Health/ Speed",
+            "arrow": "Speed/ Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -3757,7 +3757,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Critical Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -3987,7 +3987,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
@@ -4330,7 +4330,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },

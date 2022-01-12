@@ -1063,7 +1063,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
-            "cross": "Protection/ Health",
+            "cross": "Health/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -1969,7 +1969,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Critical Chance",
             "circle": "Health",
             "cross": "Offense/ Potency",
             "source": "swgoh.gg"
@@ -2205,7 +2205,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Protection/ Critical Chance",
             "circle": "Protection/ Health",
             "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
@@ -2665,7 +2665,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Protection/ Health",
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
@@ -3892,7 +3892,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Defense",
             "circle": "Health/ Protection",
-            "cross": "Tenacity/ Protection",
+            "cross": "Tenacity/ Health",
             "source": "swgoh.gg"
         }
     },
@@ -4270,7 +4270,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection/ Health",
-            "cross": "Offense/ Tenacity",
+            "cross": "Tenacity/ Offense",
             "source": "swgoh.gg"
         }
     },
@@ -4333,7 +4333,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -4740,7 +4740,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Damage/ Critical Chance",
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
@@ -4904,7 +4904,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection/ Health",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Tenacity",
             "source": "swgoh.gg"
         }
@@ -6159,7 +6159,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Health/ Speed",
+            "arrow": "Speed/ Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -6286,7 +6286,7 @@
             "url": "https://swgoh.gg/characters/starkiller/best-mods/",
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Critical Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6661,7 +6661,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -7213,7 +7213,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
