@@ -5,6 +5,8 @@ const fetch = require("node-fetch");
 
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
+let omicronList = null;
+
 module.exports = (Bot) => {
     const swgoh = Bot.swgoh;
     const cache = Bot.cache;
@@ -36,8 +38,22 @@ module.exports = (Bot) => {
         guild: guild,
         guildByName: guildByName,
         zetaRec: zetaRec,
-        events: events
+        events: events,
+        getOmicrons: getOmicrons,
     };
+
+    async function getOmicrons() {
+        if (!omicronList) {
+            omicronList = await cache.get(Bot.config.mongodb.swapidb, "abilities", {
+                isOmicron: true,
+                language: "eng_us"
+            }, {
+                skillId: 1, _id: 0
+            });
+            omicronList = omicronList.map(skill => skill.skillId);
+        }
+        return omicronList;
+    }
 
     async function playerByName(name) {
         try {
@@ -225,16 +241,17 @@ module.exports = (Bot) => {
 
     async function unitStats(allycodes, cooldown, options={}) {
         // Make sure the allycode(s) are in an array
+        if (!allycodes) return false;
         if (!Array.isArray(allycodes)) {
-            if (!allycodes) {
-                return false;
-            }
             allycodes = [allycodes];
         }
+
+        const omicronAbilities = await getOmicrons();
 
         // Check the cooldown to see if it should update stuff or not
         if (!options.force) {
             if (allycodes.length > 5) {
+                // If there's more than 5 ally codes, apply the guild cooldown
                 if (cooldown && cooldown.guild) {
                     cooldown = cooldown.guild;
                     if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
@@ -243,6 +260,7 @@ module.exports = (Bot) => {
                     cooldown = guildMaxCooldown;
                 }
             } else if (cooldown && cooldown.player) {
+                // Otherwise, apply the player cooldown
                 cooldown = cooldown.player;
                 if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
                 if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
@@ -252,15 +270,21 @@ module.exports = (Bot) => {
         }
         let playerStats = [];
         try {
-            if (allycodes && allycodes.length) allycodes = allycodes.filter(a => !!a).map(a => a.toString()).filter(a => a.length === 9);
-            if (!allycodes.length) throw new Error("No valid ally code(s) entered");
+            if (allycodes?.length) {
+                allycodes = allycodes.filter(a => !!a).map(a => a.toString()).filter(a => a.length === 9);
+            } else {
+                throw new Error("No valid ally code(s) entered");
+            }
             allycodes = allycodes.map(a => parseInt(a, 10));
 
             let players;
-            if (options && options.defId) {
-                players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, roster: {$elemMatch: {defId: options.defId}}, updated: 1});
-            } else {
-                players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
+            if (!options.force) {
+                // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
+                if (options && options.defId) {
+                    players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, roster: {$elemMatch: {defId: options.defId}}, updated: 1});
+                } else {
+                    players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
+                }
             }
             const updated = options.force ? [] : players.filter(p => !isExpired(p.updated, cooldown));
             const updatedAC = updated.map(p => parseInt(p.allyCode, 10));
@@ -299,6 +323,7 @@ module.exports = (Bot) => {
                     // Couldn't get the data from the api, so send old stuff
                     return players;
                 }
+
                 for (const bareP of updatedBare) {
                     if (bareP?.roster?.length) {
                         try {
@@ -318,6 +343,14 @@ module.exports = (Bot) => {
                             }
                         } catch (error) {
                             throw new Error("Error getting player stats: " + error);
+                        }
+
+                        for (const char of bareP.roster) {
+                            for (const ability of char.skills) {
+                                if (omicronAbilities.includes(ability.id)) {
+                                    ability.isOmicron = true;
+                                }
+                            }
                         }
 
                         const charStats = await cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: bareP.allyCode}, bareP);
@@ -468,19 +501,18 @@ module.exports = (Bot) => {
                     a.descKey = a.tierList[a.tierList.length - 1].descKey;
                     delete a.tierList;
                 }
-                if (skill) {
-                    const isOmicron = skill.tierList.some(sk => sk.powerOverrideTag?.toLowerCase()?.indexOf("omicron") > -1 || sk.recipeId?.toLowerCase()?.indexOf("omicron") > -1);
-                    a.isZeta        = skill.isZeta;
-                    a.isOmicron     = isOmicron ? true : false;
-                    a.skillId       = skill.id;
-                    a.tierList      = skill.tierList;
-                    a.language      = lang.toLowerCase();
-                    if (a.isOmicron) {
-                        a.omicronTier = skill.tierList.length;
-                    }
-                    if (a.isZeta) {
-                        a.zetaTier = isOmicron ? skill.tierList.length - 1 : skill.tierList.length;
-                    }
+                if (!skill) return;
+                const isOmicron = skill.tierList.some(sk => sk.powerOverrideTag?.toLowerCase()?.indexOf("omicron") > -1 || sk.recipeId?.toLowerCase()?.indexOf("omicron") > -1);
+                a.isZeta        = skill.isZeta;
+                a.isOmicron     = isOmicron ? true : false;
+                a.skillId       = skill.id;
+                a.tierList      = skill.tierList;
+                a.language      = lang.toLowerCase();
+                if (a.isOmicron) {
+                    a.omicronTier = skill.tierList.length;
+                }
+                if (a.isZeta) {
+                    a.zetaTier = isOmicron ? skill.tierList.length - 1 : skill.tierList.length;
                 }
             });
 
