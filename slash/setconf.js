@@ -108,9 +108,9 @@ class SetConf extends Command {
                 if (!settingStr) continue;
             } else if (keyType === "CHANNEL") {
                 const channel = interaction.options.getChannel(optionKey);
+                if (!channel) continue;
                 nameStr = "#" + channel.name;
                 settingStr = channel.id;
-                if (!settingStr) continue;
             } else if (keyType === "ROLE") {
                 settingStr = interaction.options.getRole(optionKey);
                 if (!settingStr) continue;
@@ -138,7 +138,7 @@ class SetConf extends Command {
                 const newArr = [...guildConf[key]];
                 if (key === "adminRole") {
                     newArr.push(setting.id);
-                    changeLog.push(`Added ${setting.name} to AdminRoles`);
+                    changeLog.push(`Added ${setting?.name} to AdminRoles`);
                 } else {
                     newArr.push(setting);
                     changeLog.push(`Added ${setting} to ${key}`);
