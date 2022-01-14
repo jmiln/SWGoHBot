@@ -5272,8 +5272,11 @@
         "ability_classes": [
             "AoE",
             "Assist",
+            "Counter",
             "DoT",
             "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Max Health",
             "Leader: +Tenacity",
             "Leader: Assist",
             "Offense Up",
@@ -17737,6 +17740,186 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Iden Versio",
+        "base_id": "IDENVERSIOEMPIRE",
+        "pk": 2598,
+        "url": "http://swgoh.gg/characters/iden-versio/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_idenversioempire.png",
+        "power": 35101,
+        "description": "Tenacious Empire Attacker who expertly takes out foes while supporting her squad",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "002",
+                    "002",
+                    "005",
+                    "005",
+                    "009",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "015",
+                    "041",
+                    "016",
+                    "016",
+                    "032",
+                    "026"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "055",
+                    "050",
+                    "050",
+                    "045",
+                    "017",
+                    "026"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "061",
+                    "055",
+                    "077",
+                    "039",
+                    "065",
+                    "047"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "074",
+                    "056",
+                    "040",
+                    "089",
+                    "047",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "097",
+                    "091",
+                    "091",
+                    "081",
+                    "053",
+                    "026"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "080",
+                    "099",
+                    "044",
+                    "068",
+                    "077"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "077",
+                    "117",
+                    "173",
+                    "043",
+                    "061",
+                    "094"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "099",
+                    "111",
+                    "077",
+                    "118",
+                    "125",
+                    "067"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "117",
+                    "119",
+                    "173",
+                    "173",
+                    "119",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "111",
+                    "138",
+                    "134",
+                    "117",
+                    "138",
+                    "141"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "160",
+                    "160",
+                    "159",
+                    "168",
+                    "170",
+                    "G12Finisher_IDENVERSIOEMPIRE_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Empire",
+            "Imperial Trooper",
+            "Leader"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Dispel",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Critical",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Revive",
+            "Stun",
+            "Vulnerable"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "IG-100 MagnaGuard",
         "base_id": "MAGNAGUARD",
         "pk": 17,
@@ -28592,6 +28775,7 @@
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
+            "Heal",
             "Leader: +Speed",
             "Leader: Foresight",
             "Offense Up",
