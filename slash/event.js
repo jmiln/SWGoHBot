@@ -258,7 +258,6 @@ class Event extends Command {
                 if (!validEV?.valid) {
                     return super.error(interaction, validEV.str);
                 }
-                console.log("Event is valid, trying to save");
                 await Bot.socket.emit("addEvents", validEV.event, (res) => {
                     const ev = res[0];
                     const evName = ev.evID.split("-").slice(1).join("-");
@@ -566,6 +565,7 @@ class Event extends Command {
 
                     const validEvent = validateEvents(newEvent)[0];
                     if (!validEvent.valid) {
+                        console.log("Issue validating an event:");
                         console.log(validEvent);
                         return super.error(interaction, "There was an issue with that: " + validEvent.str);
                     }
