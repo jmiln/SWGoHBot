@@ -336,6 +336,7 @@
         "ability_classes": [
             "Assist",
             "Dispel",
+            "Dispel - All Allies",
             "Gain Turn Meter",
             "Heal",
             "Leader: +Speed",
@@ -516,6 +517,7 @@
             "Daze",
             "Defense Up",
             "Dispel",
+            "Dispel - All Enemies",
             "Gain Turn Meter",
             "Leader: +Defense",
             "Leader: +Speed",
@@ -697,7 +699,8 @@
             "Foresight",
             "Gain Turn Meter",
             "Heal",
-            "Leader: +Evasion"
+            "Leader: +Evasion",
+            "Protection Up"
         ],
         "role": "Leader",
         "ship": "JEDISTARFIGHTERAHSOKATANO",
@@ -870,6 +873,7 @@
             "DoT",
             "Foresight",
             "Gain Turn Meter",
+            "Protection Up",
             "Taunt"
         ],
         "role": "Attacker",
@@ -1389,6 +1393,7 @@
             "Counter",
             "Defense Down",
             "Dispel",
+            "Dispel - All Enemies",
             "Gain Turn Meter",
             "Leader: +Speed",
             "Remove Turn Meter",
@@ -1562,6 +1567,7 @@
         ],
         "ability_classes": [
             "Counter",
+            "Critical Chance Up",
             "Gain Turn Meter",
             "Offense Up",
             "Reset Cooldown",
@@ -1910,6 +1916,7 @@
         "ability_classes": [
             "AoE",
             "Buff Immunity",
+            "Critical Damage Down",
             "Dispel",
             "Dispel - All Enemies",
             "Gain Turn Meter",
@@ -2264,9 +2271,12 @@
             "Assist",
             "Buff Immunity",
             "Counter",
+            "Critical Chance Up",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Tenacity",
+            "Leader: Protection Up",
+            "Protection Up",
             "Stun",
             "Taunt"
         ],
@@ -2440,6 +2450,7 @@
             "Advantage",
             "AoE",
             "Counter",
+            "Critical Damage Down",
             "Deathmark",
             "Dispel",
             "Evasion Down",
@@ -2622,6 +2633,7 @@
             "Assist",
             "Counter",
             "Dispel",
+            "Dispel - All Enemies",
             "Gain Turn Meter",
             "Speed Down",
             "Taunt"
@@ -2796,6 +2808,8 @@
             "AoE",
             "Assist",
             "Counter",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Daze",
             "Dispel",
             "Expose",
@@ -2973,6 +2987,8 @@
         ],
         "ability_classes": [
             "Assist",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Evasion Up",
             "Gain Turn Meter"
         ],
@@ -3321,6 +3337,7 @@
             "Daze",
             "Defense Up",
             "Dispel",
+            "Dispel - All Enemies",
             "Leader: +Defense",
             "Leader: +Tenacity",
             "Leader: Assist",
@@ -3690,6 +3707,7 @@
             "Leader: +Speed",
             "Leader: +Tenacity",
             "Potency Down",
+            "Protection Up",
             "Stun",
             "Taunt",
             "Tenacity Down",
@@ -4223,6 +4241,7 @@
             "Gain Turn Meter",
             "Offense Down",
             "Potency Up",
+            "Protection Up",
             "Reduce Cooldowns",
             "Reset Cooldown",
             "Stealth"
@@ -4574,6 +4593,8 @@
         "ability_classes": [
             "AoE",
             "Bonus Attack",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Deathmark",
             "DoT",
             "Gain Turn Meter",
@@ -5460,6 +5481,7 @@
             "Healing Immunity",
             "Offense Down",
             "Potency Up",
+            "Protection Up",
             "Speed Down",
             "Tenacity Up"
         ],
@@ -5806,8 +5828,10 @@
             "Ability Block",
             "AoE",
             "Assist",
+            "Critical Chance Up",
             "Daze",
             "Dispel",
+            "Dispel - All Enemies",
             "Offense Up",
             "Reset Cooldown",
             "Stun",
@@ -6154,9 +6178,11 @@
         ],
         "ability_classes": [
             "Assist",
+            "Critical Chance Down",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Critical",
+            "Protection Up",
             "Stealth",
             "Taunt",
             "Thermal Detonator"
@@ -6505,6 +6531,7 @@
             "Dispel",
             "Gain Turn Meter",
             "Offense Up",
+            "Protection Up",
             "Reduce Cooldowns",
             "Speed Up",
             "Stun",
@@ -7022,6 +7049,8 @@
         ],
         "ability_classes": [
             "AoE",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Defense Down",
             "Dispel",
             "Gain Turn Meter",
@@ -7199,6 +7228,7 @@
             "Armor Shred",
             "Assist",
             "Counter",
+            "Critical Damage Up",
             "Dispel",
             "Evasion Up",
             "Gain Turn Meter"
@@ -7900,7 +7930,9 @@
         "ability_classes": [
             "AoE",
             "Assist",
+            "Critical Damage Up",
             "Dispel",
+            "Dispel - All Enemies",
             "Stun",
             "Taunt"
         ],
@@ -9829,10 +9861,12 @@
         "ability_classes": [
             "Ability Block",
             "Counter",
+            "Critical Damage Up",
             "Daze",
             "Dispel",
             "Healing Immunity",
             "Leader: +Max Health",
+            "Protection Up",
             "Reduce Cooldowns",
             "Tenacity Down"
         ],
@@ -10185,6 +10219,8 @@
         "ability_classes": [
             "AoE",
             "Assist",
+            "Critical Damage Down",
+            "Critical Damage Up",
             "Daze",
             "Defense Down",
             "Dispel",
@@ -10541,6 +10577,7 @@
             "Daze",
             "Deathmark",
             "Dispel",
+            "Dispel - All Enemies",
             "Gain Turn Meter",
             "Healing Immunity",
             "Revive",
@@ -11247,6 +11284,7 @@
             "Buff Immunity",
             "Daze",
             "Dispel",
+            "Dispel - All Enemies",
             "Evasion Up",
             "Expose",
             "Gain Turn Meter",
@@ -12467,6 +12505,7 @@
             "Defense Up",
             "Dispel",
             "Gain Turn Meter",
+            "Protection Up",
             "Reset Cooldown"
         ],
         "role": "Attacker",
@@ -12819,6 +12858,7 @@
             "Expose",
             "Gain Turn Meter",
             "Leader: +Defense",
+            "Reduce Cooldowns",
             "Stun",
             "Taunt"
         ],
@@ -14197,6 +14237,7 @@
             "Daze",
             "Expose",
             "Gain Turn Meter",
+            "Protection Up",
             "Stagger",
             "Stun",
             "Tenacity Up"
@@ -14733,6 +14774,7 @@
             "Leader: +Max Health",
             "Leader: Assist",
             "Offense Up",
+            "Protection Up",
             "Stealth",
             "Taunt"
         ],
@@ -15262,7 +15304,9 @@
             "AoE",
             "Assist",
             "Counter",
+            "Critical Damage Up",
             "Dispel",
+            "Dispel - All Enemies",
             "Expose",
             "Gain Turn Meter",
             "Leader: +Max Health",
@@ -15609,6 +15653,7 @@
         "ability_classes": [
             "AoE",
             "Counter",
+            "Critical Chance Up",
             "Dispel",
             "Evasion Down",
             "Expose",
@@ -15961,6 +16006,8 @@
         ],
         "ability_classes": [
             "AoE",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Defense Penetration Up",
             "Foresight",
             "Gain Turn Meter",
@@ -15968,6 +16015,7 @@
             "Leader: +Tenacity",
             "Offense Up",
             "Potency Down",
+            "Protection Up",
             "Remove Turn Meter",
             "Stealth",
             "Stun",
@@ -16142,6 +16190,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Critical Chance Down",
             "Defense Down",
             "Expose",
             "Gain Turn Meter",
@@ -16321,6 +16370,7 @@
             "AoE",
             "Bonus Attack",
             "Counter",
+            "Critical Chance Up",
             "Dispel",
             "Gain Turn Meter",
             "Potency Up",
@@ -16497,12 +16547,15 @@
         "ability_classes": [
             "Assist",
             "Counter",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Daze",
             "Defense Penetration Up",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Critical",
             "Offense Up",
+            "Reduce Cooldowns",
             "Stealth",
             "Tenacity Up"
         ],
@@ -16674,6 +16727,8 @@
         ],
         "ability_classes": [
             "Counter",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Evasion Up",
             "Gain Turn Meter",
             "Remove Turn Meter",
@@ -17206,6 +17261,7 @@
             "Gain Turn Meter",
             "Leader: +Critical",
             "Offense Up",
+            "Protection Up",
             "Reset Cooldown",
             "Tenacity Down"
         ],
@@ -17720,6 +17776,7 @@
             "AoE",
             "Bonus Attack",
             "Counter",
+            "Critical Chance Up",
             "Defense Up",
             "Evasion Up",
             "Expose",
@@ -17904,12 +17961,14 @@
             "AoE",
             "Assist",
             "Counter",
+            "Critical Damage Up",
             "Dispel",
             "Gain Turn Meter",
             "Healing Immunity",
             "Leader: +Critical",
             "Leader: +Max Health",
             "Leader: +Speed",
+            "Protection Up",
             "Revive",
             "Stun",
             "Vulnerable"
@@ -18949,6 +19008,7 @@
             "AoE",
             "Counter",
             "Dispel",
+            "Dispel - All Enemies",
             "Expose",
             "Gain Turn Meter",
             "Remove Turn Meter",
@@ -19646,6 +19706,7 @@
             "Jawa"
         ],
         "ability_classes": [
+            "Critical Chance Up",
             "Gain Turn Meter",
             "Heal",
             "Revive",
@@ -20164,9 +20225,12 @@
             "Advantage",
             "AoE",
             "Buff Immunity",
+            "Critical Chance Up",
             "Dispel",
+            "Dispel - All Enemies",
             "Healing Immunity",
-            "Offense Up"
+            "Offense Up",
+            "Protection Up"
         ],
         "role": "Leader",
         "ship": "JEDISTARFIGHTERANAKIN",
@@ -20690,6 +20754,7 @@
             "Assist",
             "Buff Immunity",
             "Counter",
+            "Critical Damage Up",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
@@ -20883,6 +20948,8 @@
             "Leader: +Max Health",
             "Leader: +Speed",
             "Leader: Assist",
+            "Leader: Protection Up",
+            "Protection Up",
             "Reset Cooldown",
             "Stealth",
             "Stun",
@@ -21063,6 +21130,7 @@
             "Assist",
             "Buff Immunity",
             "Counter",
+            "Critical Damage Up",
             "Daze",
             "Defense Up",
             "Dispel",
@@ -21250,6 +21318,7 @@
             "Assist",
             "Dispel",
             "Gain Turn Meter",
+            "Protection Up",
             "Revive"
         ],
         "role": "Healer",
@@ -21951,6 +22020,7 @@
             "Foresight",
             "Gain Turn Meter",
             "Offense Down",
+            "Protection Up",
             "Taunt"
         ],
         "role": "Tank",
@@ -22647,6 +22717,7 @@
             "AoE",
             "Assist",
             "Counter",
+            "Critical Chance Up",
             "Defense Up",
             "Dispel",
             "Gain Turn Meter",
@@ -23348,6 +23419,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Critical Chance Up",
             "Leader: +Speed",
             "Reset Cooldown"
         ],
@@ -23519,6 +23591,7 @@
         "ability_classes": [
             "Defense Down",
             "Dispel",
+            "Dispel - All Allies",
             "Gain Turn Meter",
             "Heal",
             "Leader: +Speed"
@@ -25114,6 +25187,7 @@
             "Dispel",
             "DoT",
             "Gain Turn Meter",
+            "Protection Up",
             "Stealth"
         ],
         "role": "Attacker",
@@ -25462,6 +25536,7 @@
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Max Health",
+            "Protection Up",
             "Revive",
             "Taunt"
         ],
@@ -26151,6 +26226,7 @@
         "ability_classes": [
             "Buff Immunity",
             "Counter",
+            "Critical Chance Up",
             "DoT"
         ],
         "role": "Attacker",
@@ -27197,6 +27273,7 @@
             "Assist",
             "Blind",
             "Counter",
+            "Critical Chance Up",
             "Daze",
             "Defense Penetration Up",
             "Defense Up",
@@ -27204,6 +27281,7 @@
             "Evasion Up",
             "Expose",
             "Gain Turn Meter",
+            "Protection Up",
             "Remove Turn Meter",
             "Stealth",
             "Target Lock",
@@ -27379,6 +27457,8 @@
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Max Health",
+            "Leader: Protection Up",
+            "Protection Up",
             "Stun"
         ],
         "role": "Support",
@@ -28416,6 +28496,8 @@
         ],
         "ability_classes": [
             "Bonus Attack",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Foresight",
             "Gain Turn Meter",
             "Leader: +Critical",
@@ -28595,6 +28677,7 @@
             "Daze",
             "Defense Penetration Up",
             "Dispel",
+            "Dispel - All Enemies",
             "Expose",
             "Gain Turn Meter",
             "Leader: +Critical",
@@ -29127,7 +29210,8 @@
         ],
         "ability_classes": [
             "Assist",
-            "Counter"
+            "Counter",
+            "Protection Up"
         ],
         "role": "Support",
         "ship": "",
@@ -30337,6 +30421,7 @@
             "Ability Block",
             "Assist",
             "Counter",
+            "Critical Damage Up",
             "Daze",
             "Dispel",
             "Expose",
@@ -31035,6 +31120,7 @@
             "AoE",
             "Armor Shred",
             "Counter",
+            "Critical Chance Up",
             "Expose",
             "Offense Up",
             "Reduce Cooldowns",
@@ -31206,6 +31292,8 @@
             "Sith"
         ],
         "ability_classes": [
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Defense Up",
             "Dispel",
             "Gain Turn Meter",
@@ -31559,6 +31647,7 @@
             "Assist",
             "Bonus Attack",
             "Counter",
+            "Critical Chance Up",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Max Health",
@@ -31736,6 +31825,7 @@
         ],
         "ability_classes": [
             "Counter",
+            "Critical Chance Down",
             "Gain Turn Meter",
             "Heal",
             "Taunt"
@@ -32087,6 +32177,7 @@
             "Defense Down",
             "Defense Up",
             "Offense Down",
+            "Protection Up",
             "Taunt"
         ],
         "role": "Tank",
@@ -32782,6 +32873,7 @@
         "ability_classes": [
             "Ability Block",
             "AoE",
+            "Critical Damage Up",
             "Gain Turn Meter"
         ],
         "role": "Attacker",
@@ -32956,6 +33048,7 @@
             "Damage Immunity",
             "Daze",
             "Dispel",
+            "Dispel - All Enemies",
             "Heal",
             "Healing Immunity",
             "Reduce Cooldowns",
@@ -33132,6 +33225,7 @@
         ],
         "ability_classes": [
             "Expose",
+            "Protection Up",
             "Remove Turn Meter",
             "Taunt"
         ],
@@ -33475,6 +33569,7 @@
         "ability_classes": [
             "Blind",
             "Counter",
+            "Critical Chance Down",
             "Daze",
             "Defense Up",
             "Dispel",
@@ -33655,7 +33750,9 @@
             "AoE",
             "Buff Immunity",
             "Counter",
+            "Critical Damage Up",
             "Dispel",
+            "Dispel - All Enemies",
             "Gain Turn Meter",
             "Leader: +Speed",
             "Revive",
@@ -33831,7 +33928,9 @@
         "ability_classes": [
             "Ability Block",
             "AoE",
+            "Critical Chance Down",
             "Dispel",
+            "Dispel - All Enemies",
             "Offense Down",
             "Offense Up",
             "Remove Turn Meter",
@@ -34530,7 +34629,9 @@
             "Armor Shred",
             "Assist",
             "Counter",
-            "Dispel"
+            "Dispel",
+            "Leader: Protection Up",
+            "Protection Up"
         ],
         "role": "Support",
         "ship": "",
@@ -34702,6 +34803,8 @@
         "ability_classes": [
             "Assist",
             "Counter",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Gain Turn Meter",
             "Leader: +Critical",
             "Leader: +Speed",
@@ -35062,6 +35165,7 @@
             "Blind",
             "Counter",
             "Dispel",
+            "Dispel - All Enemies",
             "Evasion Down",
             "Revive"
         ],
@@ -36084,6 +36188,7 @@
             "Advantage",
             "AoE",
             "Counter",
+            "Protection Up",
             "Revive"
         ],
         "role": "Tank",
@@ -36781,6 +36886,7 @@
             "Expose",
             "Gain Turn Meter",
             "Healing Immunity",
+            "Protection Up",
             "Stagger",
             "Stun"
         ],
@@ -37295,6 +37401,8 @@
         "ability_classes": [
             "AoE",
             "Assist",
+            "Critical Chance Up",
+            "Critical Damage Up",
             "Gain Turn Meter",
             "Stealth"
         ],
@@ -37645,6 +37753,8 @@
         "ability_classes": [
             "Assist",
             "Counter",
+            "Critical Damage Up",
+            "Protection Up",
             "Speed Down"
         ],
         "role": "Attacker",
