@@ -144,6 +144,15 @@
         ]
     },
     {
+        "name": "Executor",
+        "locations": [
+            {
+                "type": "Legendary Event",
+                "name": "Discarded Doctrine"
+            }
+        ]
+    },
+    {
         "name": "Executrix",
         "locations": [
             {
@@ -290,7 +299,8 @@
         "name": "Hyena Bomber",
         "locations": [
             {
-                "type": "Intro P2 (Crystals/Packs)"
+                "type": "Hard Modes (D)",
+                "level": "8-B"
             }
         ]
     },

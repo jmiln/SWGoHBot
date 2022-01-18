@@ -256,6 +256,14 @@
         ]
     },
     {
+        "name": "Boba Fett, Scion of Jango",
+        "locations": [
+            {
+                "type": "Galactic Battle: Conquest"
+            }
+        ]
+    },
+    {
         "name": "Bodhi Rook",
         "locations": [
             {
@@ -624,6 +632,15 @@
         ]
     },
     {
+        "name": "Darth Talon",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Hand of the One Sith"
+            }
+        ]
+    },
+    {
         "name": "Darth Traya",
         "locations": [
             {
@@ -641,6 +658,15 @@
             {
                 "type": "Fleet Shipments",
                 "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Dash Rendar",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "7-E"
             }
         ]
     },
@@ -785,7 +811,8 @@
         "name": "Fennec Shand",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)"
+                "type": "Hard Modes (L)",
+                "level": "6-C"
             }
         ]
     },
@@ -967,7 +994,7 @@
             },
             {
                 "type": "Hard Modes (L)",
-                "level": "6-C"
+                "level": "4-C"
             }
         ]
     },
@@ -1151,6 +1178,15 @@
         ]
     },
     {
+        "name": "Iden Versio",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Embers of the Empire"
+            }
+        ]
+    },
+    {
         "name": "IG-100 MagnaGuard",
         "locations": [
             {
@@ -1206,8 +1242,8 @@
         "name": "Ima-Gun Di",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "7-E"
+                "type": "Hard Modes (D)",
+                "level": "5-C"
             },
             {
                 "type": "Guild Shop",
@@ -1461,6 +1497,15 @@
         ]
     },
     {
+        "name": "Kyle Katarn",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Dark Forces"
+            }
+        ]
+    },
+    {
         "name": "Kylo Ren",
         "locations": [
             {
@@ -1604,6 +1649,15 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Mara Jade",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "By the Emperor's Hand"
             }
         ]
     },
@@ -2125,6 +2179,15 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Starkiller",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "The Force Unleashed"
             }
         ]
     },
