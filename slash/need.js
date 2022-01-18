@@ -147,9 +147,10 @@ class Need extends Command {
             if (!u) {
                 // If Malak (I don't remember why...)
                 if (unit.baseId === "DARTHMALAK") continue;
-                u = {};
-                u.rarity = 0;
-                u.nameKey = unit.name;
+                u = {
+                    rarity:  0,
+                    nameKey: unit.nameKey || unit.name
+                };
             }
             if (u.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[u.rarity];
