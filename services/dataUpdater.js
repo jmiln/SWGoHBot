@@ -387,7 +387,8 @@ async function getGgChars() {
         if (!types || typeof types !== "string") return null;
         return types.trim()
             .replace(/\s+\/\s/g, "/ ")
-            .replace("Critical Damage", "Crit. Damage");
+            .replace("Critical Damage", "Crit. Damage")
+            .replace("Critical Chance", "Crit. Chance");
     }
 
     // This is mainly to clean up Padme's name for now
