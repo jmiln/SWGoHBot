@@ -113,9 +113,9 @@ class Charactergear extends Command {
                 const msgArr = Bot.msgArray(interaction.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
                 for (const [ix, msg] of msgArr.entries()) {
                     if (ix === 0) {
-                        interaction.reply({content: Bot.codeBlock(msg, "md")});
-                    } else {
-                        interaction.followUp({content: Bot.codeBlock(msg, "md")});
+                        await interaction.reply({content: Bot.codeBlock(msg, "md")});
+                    } else if (ix > 0) {
+                        await interaction.followUp({content: Bot.codeBlock(msg, "md")});
                     }
                 }
             } else {
