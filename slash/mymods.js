@@ -278,8 +278,9 @@ class MyMods extends Command {
             });
             const longest = out.reduce((max, s) => Math.max(max, s.stat.length), 0);
             let outStr = "";
-            for (let ix = 0; ix < 10; ix++) {
-                outStr += "`" + out[ix].stat + ` ${Bot.zws}`.repeat(longest-out[ix].stat.length) + "`**" + out[ix].name + "**\n";
+            for (let ix = 0; ix < 20; ix++) {
+                console.log(out[ix]);
+                outStr += "`" + out[ix].stat + ` ${Bot.constants.zws}`.repeat(longest-out[ix].stat.length) + "`**" + out[ix].name + "**\n";
             }
             const author = {};
             if (showTotal) {
