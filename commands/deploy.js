@@ -31,7 +31,7 @@ class Deploy extends Command {
 
 
             // Give the user a notification the commands are deploying.
-            await message.channel.send("Deploying commands!");
+            const msg = await message.channel.send("Deploying commands!");
 
             // We'll use set but please keep in mind that `set` is overkill for a singular command.
             // Set the guild commands like this.
@@ -95,7 +95,7 @@ class Deploy extends Command {
                 });
             }
 
-            return message.channel.send({
+            return msg.edit({
                 content: null,
                 embeds: [
                     {
@@ -126,11 +126,11 @@ class Deploy extends Command {
                     debugLog("\nChecking " + cmd.name);
                     for (const ix in cmd.options) {
                         if (!cmd.options[ix]) cmd.options[ix] = {};
-                        if (!cmd.options[ix].required)                                      cmd.options[ix].required     = false;
-                        if (!cmd.options[ix].autocomplete)                                  cmd.options[ix].autocomplete = undefined;
-                        if (!cmd.options[ix].choices)                                       cmd.options[ix].choices      = undefined;
+                        if (!cmd.options[ix].required)     cmd.options[ix].required     = false;
+                        if (!cmd.options[ix].autocomplete) cmd.options[ix].autocomplete = undefined;
+                        if (!cmd.options[ix].choices)      cmd.options[ix].choices      = undefined;
+                        if (!cmd.options[ix].channelTypes) cmd.options[ix].channelTypes = undefined;
                         if (!cmd.options[ix].options || !cmd.options[ix].options?.length)   cmd.options[ix].options      = undefined;
-                        if (!cmd.options[ix].channelTypes)                                  cmd.options[ix].channelTypes = undefined;
 
                         debugLog("> checking " + cmd.options[ix]?.name);
                         for (const op of Object.keys(cmd.options[ix])) {
@@ -193,6 +193,26 @@ class Deploy extends Command {
                                     debugLog(`   [NEW] - ${newOpt ? inspect(newOpt) : null}\n   [OLD] - ${thisOpt ? inspect(thisOpt) : null}`);
                                     break;
                                 }
+
+                                if (thisOpt?.type === "SUB_COMMAND") {
+                                    for (const optIx in thisOpt.options) {
+                                        const thisSubOpt = thisOpt.options[optIx];
+                                        const newSubOpt  = newOpt.options[optIx];
+
+                                        if ((newSubOpt.required !== thisSubOpt.required               && (newSubOpt.required || thisSubOpt.required)) ||
+                                            (newSubOpt.name !== thisSubOpt.name                       && (newSubOpt.name || thisSubOpt.name)) ||
+                                            (newSubOpt.description !== thisSubOpt.description         && (newSubOpt.description || thisSubOpt.description)) ||
+                                            (newSubOpt.min_value !== thisSubOpt.min_value             && (newSubOpt.min_value || thisSubOpt.min_value)) ||
+                                            (newSubOpt.max_value !== thisSubOpt.max_value             && (newSubOpt.max_value || thisSubOpt.max_value)) ||
+                                            (newSubOpt.choices?.length !== thisSubOpt.choices?.length && (newSubOpt.choices || thisSubOpt.choices)) ||
+                                            (newSubOpt.options?.length !== thisSubOpt.options?.length && (newSubOpt.options || thisSubOpt.options))
+                                        ) {
+                                            isDiff = true;
+                                            debugLog(`   [NEW] - ${newOpt ? inspect(newOpt) : null}\n   [OLD] - ${thisOpt ? inspect(thisOpt) : null}`);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -212,9 +232,13 @@ class Deploy extends Command {
         }
     }
 }
-function debugLog(str) {
+function debugLog(...str) {
     if (DEBUG) {
-        console.log(str);
+        if (str.length === 1 && typeof str[0] === "string") {
+            console.log(str[0]);
+        } else {
+            console.log(inspect(...str, {depth: 5}));
+        }
     }
 }
 
