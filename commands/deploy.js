@@ -175,10 +175,12 @@ class Deploy extends Command {
                                 const thisOpt = thisCom.options[ix];
                                 if (!thisOpt) {
                                     debugLog("Missing opt for: newOpt");
+                                    isDiff = true;
                                     break;
                                 }
                                 if (!newOpt) {
                                     debugLog("Missing opt for: newOpt");
+                                    isDiff = true;
                                     break;
                                 }
                                 if ((newOpt.required !== thisOpt.required               && (newOpt.required || thisOpt.required)) ||
