@@ -8,8 +8,7 @@ class MyMods extends Command {
         super(Bot, {
             name: "mymods",
             category: "SWGoH",
-            guildOnly: true,
-            // guildOnly: false,
+            guildOnly: false,
             aliases: ["charactermods", "charmods", "cmods", "cm", "mm"],
             permissions: ["EMBED_LINKS"],
             options: [
