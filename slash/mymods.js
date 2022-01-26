@@ -8,7 +8,8 @@ class MyMods extends Command {
         super(Bot, {
             name: "mymods",
             category: "SWGoH",
-            guildOnly: false,
+            guildOnly: true,
+            // guildOnly: false,
             aliases: ["charactermods", "charmods", "cmods", "cm", "mm"],
             permissions: ["EMBED_LINKS"],
             options: [
@@ -247,48 +248,42 @@ class MyMods extends Command {
                 });
             }
 
-            let updated, stats;
-            if (player && player.roster) {
-                updated = player.updated;
-                stats = player.roster;
+            if (!player?.roster) {
+                // If there's no characters, then there's nothing to show...
+                return super.error(interaction, "Unable to retrieve roster.", {
+                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                    footer: "Please try again in a bit."
+                });
             }
 
-            // Get rid of the ship listings
-            const delArr = [];
-            for (const c in stats) {
-                if (Bot.ships.find(s => s.uniqueName === stats[c].defId)) {
-                    delArr.push(c);
-                }
-            }
-            for (const ix of delArr.reverse()) {
-                stats.splice(ix, 1);
-            }
+            // Grab the player's roster and filter out all the ships
+            const stats = player.roster.filter(unit => unit.combatType !== 2);
 
             stats.forEach(c => {
-                if (c.stats && c.stats.final && !c.stats.final[statToCheck]) {
+                if (!c.stats?.final?.[statToCheck]) {
                     c.stats.final[statToCheck] = 0;
                 }
-                if (c.stats && c.stats.mods && !c.stats.mods[statToCheck]) {
+                if (!c.stats?.mods?.[statToCheck]) {
                     c.stats.mods[statToCheck] = 0;
                 }
             });
 
             let sorted;
-            if (showTotal) {  // If looking for the total stats
+            if (showTotal) {  // If looking for the total stats, sort by that
                 sorted = stats.sort((p, c) => {
-                    if (p.stats && c.stats && p.stats.final[statToCheck] && c.stats.final[statToCheck]) {
+                    if (p.stats?.final?.[statToCheck] && c.stats?.final?.[statToCheck]) {
                         return c.stats.final[statToCheck] - p.stats.final[statToCheck];
-                    } else if (!c.stats || !c.stats.final[statToCheck]) {
+                    } else if (!c.stats?.final?.[statToCheck]) {
                         return -1;
                     } else {
                         return 1;
                     }
                 });
-            } else {  // Or if looking for just the amount added by mods
+            } else {  // Or if looking for just the amount added by mods, sort by the mod's amount
                 sorted = stats.sort((p, c) => {
-                    if (p.stats && c.stats && p.stats.mods  && c.stats.mods && p.stats.mods[statToCheck] && c.stats.mods[statToCheck]) {
+                    if (p.stats?.mods?.[statToCheck] && c.stats?.mods?.[statToCheck]) {
                         return c.stats.mods[statToCheck] - p.stats.mods[statToCheck];
-                    } else if (!c.stats || !c.stats.mods[statToCheck]) {
+                    } else if (!c.stats?.mods?.[statToCheck]) {
                         return -1;
                     } else {
                         return 1;
@@ -302,10 +297,25 @@ class MyMods extends Command {
             }
 
             const out = sorted.map(c => {
-                const finalStat = c.stats && c.stats.final[statToCheck] ? (!c.stats.final[statToCheck] % 1 === 0 ? c.stats.final[statToCheck] : (c.stats.final[statToCheck] * 100).toFixed(2)+"%") : 0;
-                const modStat = c.stats && c.stats.final[statToCheck] ? (!c.stats.final[statToCheck] % 1 === 0 ? `(${parseInt(c.stats.mods[statToCheck], 10)})` : `(${(c.stats.mods[statToCheck] * 100).toFixed(2)}%)`) : "";
+                let finalStat = 0;
+                let modStat = 0;
+                if (c.stats?.final[statToCheck] % 1 === 0) {
+                    // If it's a full number, give that
+                    finalStat = c.stats.final[statToCheck];
+                    if (c.stats?.mods[statToCheck]) {
+                        modStat = c.stats.mods[statToCheck];
+                    }
+                } else {
+                    if (c.stats?.final[statToCheck]) {
+                        finalStat = `${(c.stats.final[statToCheck] * 100).toFixed(2)}%`;
+                    }
+                    if (c.stats?.mods[statToCheck]) {
+                        modStat = `${(c.stats.mods[statToCheck] * 100).toFixed(2)}%`;
+                    }
+                }
+
                 return {
-                    stat: `${finalStat}${modStat.length ? " " + modStat : ""}`,
+                    stat: `${finalStat.toLocaleString()}${modStat.toString().length ? ` (${modStat.toLocaleString()})` : ""}`,
                     name: `: ${c.nameKey}`
                 };
             });
@@ -336,7 +346,7 @@ class MyMods extends Command {
                 description: "==============================\n" + outStr + "==============================",
                 fields: fields,
                 footer: {
-                    text: updated ? interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, interaction)) : ""
+                    text: player.updated ? interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(player.updated, interaction)) : ""
                 }
             }]});
         } else if (subCommand === "bestmods") {
