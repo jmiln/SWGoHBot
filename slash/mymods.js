@@ -1,5 +1,7 @@
 const Command = require("../base/slashCommand");
-require("moment-duration-format");
+const statEnums = require("../data/statEnum.js");
+
+const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
 class MyMods extends Command {
     constructor(Bot) {
@@ -39,19 +41,19 @@ class MyMods extends Command {
                             description: "Which stat you want it to show",
                             type: "STRING",
                             choices: [
-                                { name: "Health", value: "Health" },
-                                { name: "Protection", value: "Protection" },
-                                { name: "Speed", value: "Speed" },
-                                { name: "Potency", value: "Potency" },
+                                { name: "Accuracy",                 value: "Accuracy" },
+                                { name: "Armor",                    value: "Armor" },
+                                { name: "Critical Damage",          value: "Critical Damage" },
+                                { name: "Health",                   value: "Health" },
                                 { name: "Physical Critical Chance", value: "Physical Critical Chance" },
-                                { name: "Physical Damage", value: "Physical Damage" },
-                                { name: "Special Critical Chance", value: "Special Critical Chance" },
-                                { name: "Special Damage", value: "Special Damage" },
-                                { name: "Critical Damage", value: "Critical Damage" },
-                                { name: "Tenacity", value: "Tenacity" },
-                                { name: "Accuracy", value: "Accuracy" },
-                                { name: "Armor", value: "Armor" },
-                                { name: "Resistance", value: "Resistance" }
+                                { name: "Physical Damage",          value: "Physical Damage" },
+                                { name: "Potency",                  value: "Potency" },
+                                { name: "Protection",               value: "Protection" },
+                                { name: "Resistance",               value: "Resistance" },
+                                { name: "Special Critical Chance",  value: "Special Critical Chance" },
+                                { name: "Special Damage",           value: "Special Damage" },
+                                { name: "Speed",                    value: "Speed" },
+                                { name: "Tenacity",                 value: "Tenacity" },
                             ]
                         },
                         {
@@ -63,6 +65,37 @@ class MyMods extends Command {
                             name: "total",
                             type: "BOOLEAN",
                             description: "Show the total stat, instead of just what the mods add on"
+                        }
+                    ]
+                },
+                {
+                    name: "bestmods",
+                    type: "SUB_COMMAND",
+                    description: "Show the characters that have the best of a stat",
+                    options: [
+                        {
+                            name: "stat",
+                            required: true,
+                            description: "Which stat you want it to show",
+                            type: "STRING",
+                            choices: [
+                                { name: "Crit Chance %", value: "Critical Chance" }, // Crit Chance, 53
+                                { name: "Defense",       value: "Defense" },         // Defense, 42
+                                { name: "Health %",      value: "Health %" },        // Health %, 55
+                                { name: "Health",        value: "Health" },          // Health flat value, 1
+                                { name: "Offense %",     value: "Offense %" },       // Offense %, 48
+                                { name: "Offense",       value: "Offense" },         // Offense flat value, 41
+                                { name: "Potency %",     value: "Potency" },         // Potency %, 17
+                                { name: "Protection %",  value: "Protection %" },    // Protection %, 56
+                                { name: "Protection",    value: "Protection" },      // Protection flat value, 28
+                                { name: "Speed",         value: "Speed" },           // Speed, 5
+                                { name: "Tenacity %",    value: "Tenacity" },        // Tenacity %, 18
+                            ]
+                        },
+                        {
+                            name: "allycode",
+                            description: "The ally code for whoever you're wanting to look up",
+                            type: "STRING"
                         }
                     ]
                 }
@@ -160,8 +193,8 @@ class MyMods extends Command {
                     });
                 });
 
+
                 const fields = [];
-                const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
                 Object.keys(slots).forEach(mod => {
                     let typeIcon  = slots[mod].type;
                     let shapeIcon = Bot.toProperCase(modSlots[mod-1]);
@@ -306,6 +339,83 @@ class MyMods extends Command {
                     text: updated ? interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, interaction)) : ""
                 }
             }]});
+        } else if (subCommand === "bestmods") {
+            // Check for best individual mods of a stat
+            const statToCheck = interaction.options.getString("stat");
+            const statIndex = statEnums.stats.indexOf(statToCheck);
+
+            let player;
+            try {
+                player = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                if (Array.isArray(player)) player = player[0];
+            } catch (e) {
+                return super.error(interaction, Bot.codeBlock(e.message), {
+                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                    footer: "Please try again in a bit."
+                });
+            }
+            if (!player?.roster) {
+                // If there's no characters, then there's nothing to show...
+                return super.error(interaction, "Unable to retrieve roster.", {
+                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                    footer: "Please try again in a bit."
+                });
+            }
+
+
+            // Go through the player's roster and get a list of each stat per mod
+            const statMap = [];
+            for (const character of player.roster) {
+                // For each character
+                for (const mod of character.mods) {
+                    // For each mod on the character
+                    for (const stat of mod.secondaryStat) {
+                        // For each stat on the mod
+                        if (stat.unitStat === statIndex) {
+                            // If it's the stat the user wants, go ahead and grab it with the characters defId
+                            statMap.push({
+                                slot:  mod.slot,
+                                value: stat.value,
+                                defId: character.defId
+                            });
+                        }
+                    }
+                }
+            }
+
+            // Sort mods, chop off the top x, then grab matching names for the character they're on
+            const sortedMods = statMap.sort((a, b) => b.value - a.value);
+            const topSorted = sortedMods.slice(0, 20);
+            const namedSorted = topSorted.map(mod => {
+                const charName = Bot.characters.find(char => char.uniqueName === mod.defId);
+                mod.name = charName?.name;
+                return mod;
+            });
+
+            // Grab the longest any mod value will be
+            const maxLen = Math.max(...statMap.map(stat => stat.value.toLocaleString().length));
+
+            // Format everything into the needed string
+            let outStr = "";
+            for (const mod of namedSorted) {
+                const shapeIconString = `${modSlots[mod.slot-1]}Mod`;
+                const value = mod.value % 1 === 0 ? mod.value : mod.value.toFixed(2) + "%";
+                outStr += `**\`${value.toLocaleString().padEnd(maxLen)}\`** ${Bot.emotes[shapeIconString]} | ${mod.name}\n`;
+            }
+
+            const author = {
+                name: `${player.name}'s top ${statToCheck} values`
+            };
+
+            // Send it on back to the user
+            return interaction.editReply({content: null, embeds: [{
+                author: author,
+                description: "==============================\n" + outStr + "==============================",
+                footer: {
+                    text: player.updated ? interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(player.updated, interaction)) : ""
+                }
+            }]});
+
         }
     }
 }
