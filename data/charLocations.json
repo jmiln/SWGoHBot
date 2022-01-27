@@ -136,10 +136,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "5-C"
-            },
-            {
-                "type": "Cantina",
-                "level": "6-A"
             }
         ]
     },
@@ -1500,8 +1496,8 @@
         "name": "Kyle Katarn",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Dark Forces"
+                "type": "Cantina",
+                "level": "6-A"
             }
         ]
     },
@@ -2091,6 +2087,15 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            }
+        ]
+    },
+    {
+        "name": "Second Sister",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Ruthless Efficiency"
             }
         ]
     },

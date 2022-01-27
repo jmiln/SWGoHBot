@@ -340,7 +340,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -409,7 +409,7 @@
             "diamond": "Defense",
             "triangle": "Critical Chance/ Protection",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
         }
     },
@@ -515,7 +515,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Health/ Potency",
             "source": "swgoh.gg"
@@ -1034,7 +1034,7 @@
             "url": "https://swgoh.gg/characters/canderous-ordo/best-mods/",
             "sets": [
                 "Offense x4",
-                "Potency x2"
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -1075,7 +1075,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
         }
@@ -1648,10 +1648,10 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense/ Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -4380,7 +4380,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -4787,7 +4787,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Damage/ Critical Chance",
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
@@ -6042,6 +6042,27 @@
             "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
         }
+    },
+    {
+        "name": "Second Sister",
+        "uniqueName": "SECONDSISTER",
+        "aliases": [
+            "Second Sister"
+        ],
+        "nameVariant": [
+            "Second Sister"
+        ],
+        "url": "http://swgoh.gg/characters/second-sister/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_secondsister.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Empire",
+            "Inquisitorius",
+            "Leader",
+            "Unaligned Force User"
+        ],
+        "mods": {}
     },
     {
         "name": "Shaak Ti",

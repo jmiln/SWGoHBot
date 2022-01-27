@@ -346,12 +346,13 @@ async function getGgChars() {
 
     const charOut = [];
 
+    // As of Jan 27th, 2022, side and defId seem to have been taken out
     $("body > div.container.p-t-md > div.content-container > div.content-container-primary.character-list > ul > li:nth-child(3) > table > tbody > tr")
         .each((i, elem) => {
             let [name, sets, receiver, holo, data, multiplexer] = $(elem).children();
-            const defId = $(name).find("img").attr("data-base-id");
+            // const defId = $(name).find("img").attr("data-base-id");
             const imgUrl =  $(name).find("img").attr("src");
-            const side = $(name).find("div").attr("class").indexOf("light-side") > -1 ? "Light Side" : "Dark Side";
+            // const side = $(name).find("div").attr("class").indexOf("light-side") > -1 ? "Light Side" : "Dark Side";
             const [url, modUrl] = $(name).find("a").toArray().map(link => {
                 return $(link).attr("href").trim();
             });
@@ -365,11 +366,11 @@ async function getGgChars() {
             multiplexer = cleanModType($(multiplexer).text());
             charOut.push({
                 name:     name,
-                defId:    defId,
+                // defId:    defId,
                 charUrl:  "https://swgoh.gg" + url,
                 image:    imgUrl,
-                side:     side,
-                modsUrl:  "https://swgoh.gg" + modUrl,
+                // side:     side,
+                modsUrl:  "https://swgoh.gg" + modUrl, //+ url + "best-mods/",
                 mods: {
                     sets:     sets,
                     square:   "Offense",
@@ -409,7 +410,11 @@ async function updateCharacterMods(currentCharacters, freshMods) {
 
     // Iterate the data from swgoh.gg, put new mods in as needed, and if there's a new character, put them in too
     for (const character of freshMods) {
-        const thisChar = currentCharacters.find(ch => ch.uniqueName === character.defId);
+        const thisChar = currentCharacters.find(ch =>
+            ch.uniqueName === character.defId ||
+            ch.name === character.name ||
+            ch.charUrl === character.url
+        );
         const mods = {
             url:      character.modsUrl,
             sets:     character.mods.sets,
@@ -427,13 +432,13 @@ async function updateCharacterMods(currentCharacters, freshMods) {
         } else {
             // This shouldn't really happen since it should be caught in updateCharacters
             console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})`);
-            const newCharacter = createEmptyChar(character.name, character.url, character.defId);
-
-            newCharacter.mods = mods;
-            newCharacter.avatarURL = character.imgUrl;
-            newCharacter.side = character.side;
-
-            currentCharacters.push(newCharacter);
+            // const newCharacter = createEmptyChar(character.name, character.url, character.defId);
+            //
+            // newCharacter.mods = mods;
+            // newCharacter.avatarURL = character.imgUrl;
+            // newCharacter.side = character.side;
+            //
+            // currentCharacters.push(newCharacter);
         }
     }
 }

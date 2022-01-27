@@ -1,10 +1,8 @@
 [
     {
         "name": "ARC Trooper",
-        "defId": "ARCTROOPER501ST",
         "charUrl": "https://swgoh.gg/characters/arc-trooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperclone_arc.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/arc-trooper/best-mods/",
         "mods": {
             "sets": [
@@ -21,10 +19,8 @@
     },
     {
         "name": "Aayla Secura",
-        "defId": "AAYLASECURA",
         "charUrl": "https://swgoh.gg/characters/aayla-secura/",
         "image": "https://game-assets.swgoh.gg/tex.charui_aaylasecura.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/aayla-secura/best-mods/",
         "mods": {
             "sets": [
@@ -35,17 +31,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance",
+            "triangle": "Crit. Chance",
             "circle": "Protection/ Health",
             "cross": "Potency"
         }
     },
     {
         "name": "Admiral Ackbar",
-        "defId": "ADMIRALACKBAR",
         "charUrl": "https://swgoh.gg/characters/admiral-ackbar/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ackbaradmiral.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/admiral-ackbar/best-mods/",
         "mods": {
             "sets": [
@@ -62,10 +56,8 @@
     },
     {
         "name": "Admiral Piett",
-        "defId": "ADMIRALPIETT",
         "charUrl": "https://swgoh.gg/characters/admiral-piett/",
         "image": "https://game-assets.swgoh.gg/tex.charui_piett.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/admiral-piett/best-mods/",
         "mods": {
             "sets": [
@@ -82,10 +74,8 @@
     },
     {
         "name": "Ahsoka Tano",
-        "defId": "AHSOKATANO",
         "charUrl": "https://swgoh.gg/characters/ahsoka-tano/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ahsoka.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ahsoka-tano/best-mods/",
         "mods": {
             "sets": [
@@ -102,10 +92,8 @@
     },
     {
         "name": "Ahsoka Tano (Fulcrum)",
-        "defId": "FULCRUMAHSOKA",
         "charUrl": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ahsokaadult.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/best-mods/",
         "mods": {
             "sets": [
@@ -116,16 +104,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
     {
         "name": "Amilyn Holdo",
-        "defId": "AMILYNHOLDO",
         "charUrl": "https://swgoh.gg/characters/amilyn-holdo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_holdo.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/amilyn-holdo/best-mods/",
         "mods": {
             "sets": [
@@ -143,10 +129,8 @@
     },
     {
         "name": "Asajj Ventress",
-        "defId": "ASAJVENTRESS",
         "charUrl": "https://swgoh.gg/characters/asajj-ventress/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ventress.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/asajj-ventress/best-mods/",
         "mods": {
             "sets": [
@@ -163,10 +147,8 @@
     },
     {
         "name": "Aurra Sing",
-        "defId": "AURRA_SING",
         "charUrl": "https://swgoh.gg/characters/aurra-sing/",
         "image": "https://game-assets.swgoh.gg/tex.charui_aurrasing.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/aurra-sing/best-mods/",
         "mods": {
             "sets": [
@@ -183,10 +165,8 @@
     },
     {
         "name": "B1 Battle Droid",
-        "defId": "B1BATTLEDROIDV2",
         "charUrl": "https://swgoh.gg/characters/b1-battle-droid/",
         "image": "https://game-assets.swgoh.gg/tex.charui_b1.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/b1-battle-droid/best-mods/",
         "mods": {
             "sets": [
@@ -197,16 +177,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Offense"
         }
     },
     {
         "name": "B2 Super Battle Droid",
-        "defId": "B2SUPERBATTLEDROID",
         "charUrl": "https://swgoh.gg/characters/b2-super-battle-droid/",
         "image": "https://game-assets.swgoh.gg/tex.charui_b2.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/b2-super-battle-droid/best-mods/",
         "mods": {
             "sets": [
@@ -224,10 +202,8 @@
     },
     {
         "name": "BB-8",
-        "defId": "BB8",
         "charUrl": "https://swgoh.gg/characters/bb-8/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bb8.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/bb-8/best-mods/",
         "mods": {
             "sets": [
@@ -237,17 +213,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Protection",
+            "triangle": "Crit. Chance/ Protection",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Protection/ Tenacity"
         }
     },
     {
         "name": "Barriss Offee",
-        "defId": "BARRISSOFFEE",
         "charUrl": "https://swgoh.gg/characters/barriss-offee/",
         "image": "https://game-assets.swgoh.gg/tex.charui_barriss_light.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/barriss-offee/best-mods/",
         "mods": {
             "sets": [
@@ -265,10 +239,8 @@
     },
     {
         "name": "Bastila Shan",
-        "defId": "BASTILASHAN",
         "charUrl": "https://swgoh.gg/characters/bastila-shan/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bastilashan.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/bastila-shan/best-mods/",
         "mods": {
             "sets": [
@@ -285,10 +257,8 @@
     },
     {
         "name": "Bastila Shan (Fallen)",
-        "defId": "BASTILASHANDARK",
         "charUrl": "https://swgoh.gg/characters/bastila-shan-fallen/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bastilashan_dark.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/bastila-shan-fallen/best-mods/",
         "mods": {
             "sets": [
@@ -298,17 +268,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Health/ Potency"
         }
     },
     {
         "name": "Baze Malbus",
-        "defId": "BAZEMALBUS",
         "charUrl": "https://swgoh.gg/characters/baze-malbus/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bazemalbus.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/baze-malbus/best-mods/",
         "mods": {
             "sets": [
@@ -326,10 +294,8 @@
     },
     {
         "name": "Biggs Darklighter",
-        "defId": "BIGGSDARKLIGHTER",
         "charUrl": "https://swgoh.gg/characters/biggs-darklighter/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rebelpilot_biggs.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/biggs-darklighter/best-mods/",
         "mods": {
             "sets": [
@@ -346,10 +312,8 @@
     },
     {
         "name": "Bistan",
-        "defId": "BISTAN",
         "charUrl": "https://swgoh.gg/characters/bistan/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bistan.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/bistan/best-mods/",
         "mods": {
             "sets": [
@@ -367,10 +331,8 @@
     },
     {
         "name": "Bo-Katan Kryze",
-        "defId": "BOKATAN",
         "charUrl": "https://swgoh.gg/characters/bo-katan-kryze/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bokatan.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/bo-katan-kryze/best-mods/",
         "mods": {
             "sets": [
@@ -387,10 +349,8 @@
     },
     {
         "name": "Boba Fett",
-        "defId": "BOBAFETT",
         "charUrl": "https://swgoh.gg/characters/boba-fett/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bobafett.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/boba-fett/best-mods/",
         "mods": {
             "sets": [
@@ -407,10 +367,8 @@
     },
     {
         "name": "Boba Fett, Scion of Jango",
-        "defId": "BOBAFETTSCION",
         "charUrl": "https://swgoh.gg/characters/boba-fett-scion-of-jango/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bobafettold.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/boba-fett-scion-of-jango/best-mods/",
         "mods": {
             "sets": [
@@ -427,10 +385,8 @@
     },
     {
         "name": "Bodhi Rook",
-        "defId": "BODHIROOK",
         "charUrl": "https://swgoh.gg/characters/bodhi-rook/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bodhi.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/bodhi-rook/best-mods/",
         "mods": {
             "sets": [
@@ -447,10 +403,8 @@
     },
     {
         "name": "Bossk",
-        "defId": "BOSSK",
         "charUrl": "https://swgoh.gg/characters/bossk/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bossk.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/bossk/best-mods/",
         "mods": {
             "sets": [
@@ -467,10 +421,8 @@
     },
     {
         "name": "C-3PO",
-        "defId": "C3POLEGENDARY",
         "charUrl": "https://swgoh.gg/characters/c-3po/",
         "image": "https://game-assets.swgoh.gg/tex.charui_c3p0.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/c-3po/best-mods/",
         "mods": {
             "sets": [
@@ -487,10 +439,8 @@
     },
     {
         "name": "CC-2224 \"Cody\"",
-        "defId": "CC2224",
         "charUrl": "https://swgoh.gg/characters/cc-2224-cody/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperclone_cody.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/cc-2224-cody/best-mods/",
         "mods": {
             "sets": [
@@ -500,17 +450,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Critical Chance",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection",
             "cross": "Offense/ Protection"
         }
     },
     {
         "name": "CT-21-0408 \"Echo\"",
-        "defId": "CT210408",
         "charUrl": "https://swgoh.gg/characters/ct-21-0408-echo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperclone_echo.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ct-21-0408-echo/best-mods/",
         "mods": {
             "sets": [
@@ -527,10 +475,8 @@
     },
     {
         "name": "CT-5555 \"Fives\"",
-        "defId": "CT5555",
         "charUrl": "https://swgoh.gg/characters/ct-5555-fives/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperclone_fives.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ct-5555-fives/best-mods/",
         "mods": {
             "sets": [
@@ -542,16 +488,14 @@
             "arrow": "Speed/ Protection",
             "diamond": "Defense",
             "triangle": "Protection/ Health",
-            "circle": "Protection/ Health",
-            "cross": "Protection/ Health"
+            "circle": "Protection",
+            "cross": "Protection"
         }
     },
     {
         "name": "CT-7567 \"Rex\"",
-        "defId": "CT7567",
         "charUrl": "https://swgoh.gg/characters/ct-7567-rex/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperclone_rex.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ct-7567-rex/best-mods/",
         "mods": {
             "sets": [
@@ -568,10 +512,8 @@
     },
     {
         "name": "Cad Bane",
-        "defId": "CADBANE",
         "charUrl": "https://swgoh.gg/characters/cad-bane/",
         "image": "https://game-assets.swgoh.gg/tex.charui_cadbane.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/cad-bane/best-mods/",
         "mods": {
             "sets": [
@@ -588,10 +530,8 @@
     },
     {
         "name": "Canderous Ordo",
-        "defId": "CANDEROUSORDO",
         "charUrl": "https://swgoh.gg/characters/canderous-ordo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_canderous.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/canderous-ordo/best-mods/",
         "mods": {
             "sets": [
@@ -608,10 +548,8 @@
     },
     {
         "name": "Captain Han Solo",
-        "defId": "HOTHHAN",
         "charUrl": "https://swgoh.gg/characters/captain-han-solo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_hoth_han.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/captain-han-solo/best-mods/",
         "mods": {
             "sets": [
@@ -623,16 +561,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Protection/ Health"
         }
     },
     {
         "name": "Captain Phasma",
-        "defId": "PHASMA",
         "charUrl": "https://swgoh.gg/characters/captain-phasma/",
         "image": "https://game-assets.swgoh.gg/tex.charui_phasma.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/captain-phasma/best-mods/",
         "mods": {
             "sets": [
@@ -642,17 +578,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection",
             "cross": "Potency/ Protection"
         }
     },
     {
         "name": "Cara Dune",
-        "defId": "CARADUNE",
         "charUrl": "https://swgoh.gg/characters/cara-dune/",
         "image": "https://game-assets.swgoh.gg/tex.charui_caradune.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/cara-dune/best-mods/",
         "mods": {
             "sets": [
@@ -670,10 +604,8 @@
     },
     {
         "name": "Carth Onasi",
-        "defId": "CARTHONASI",
         "charUrl": "https://swgoh.gg/characters/carth-onasi/",
         "image": "https://game-assets.swgoh.gg/tex.charui_carth.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/carth-onasi/best-mods/",
         "mods": {
             "sets": [
@@ -690,10 +622,8 @@
     },
     {
         "name": "Cassian Andor",
-        "defId": "CASSIANANDOR",
         "charUrl": "https://swgoh.gg/characters/cassian-andor/",
         "image": "https://game-assets.swgoh.gg/tex.charui_cassian.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/cassian-andor/best-mods/",
         "mods": {
             "sets": [
@@ -710,10 +640,8 @@
     },
     {
         "name": "Chewbacca",
-        "defId": "CHEWBACCALEGENDARY",
         "charUrl": "https://swgoh.gg/characters/chewbacca/",
         "image": "https://game-assets.swgoh.gg/tex.charui_chewbacca_ot.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/chewbacca/best-mods/",
         "mods": {
             "sets": [
@@ -731,10 +659,8 @@
     },
     {
         "name": "Chief Chirpa",
-        "defId": "CHIEFCHIRPA",
         "charUrl": "https://swgoh.gg/characters/chief-chirpa/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ewok_chirpa.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/chief-chirpa/best-mods/",
         "mods": {
             "sets": [
@@ -744,17 +670,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection",
             "cross": "Protection/ Defense"
         }
     },
     {
         "name": "Chief Nebit",
-        "defId": "CHIEFNEBIT",
         "charUrl": "https://swgoh.gg/characters/chief-nebit/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jawa_nebit.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/chief-nebit/best-mods/",
         "mods": {
             "sets": [
@@ -772,10 +696,8 @@
     },
     {
         "name": "Chirrut Îmwe",
-        "defId": "CHIRRUTIMWE",
         "charUrl": "https://swgoh.gg/characters/chirrut-imwe/",
         "image": "https://game-assets.swgoh.gg/tex.charui_chirrut.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/chirrut-imwe/best-mods/",
         "mods": {
             "sets": [
@@ -792,10 +714,8 @@
     },
     {
         "name": "Chopper",
-        "defId": "CHOPPERS3",
         "charUrl": "https://swgoh.gg/characters/chopper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_chopper.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/chopper/best-mods/",
         "mods": {
             "sets": [
@@ -812,10 +732,8 @@
     },
     {
         "name": "Clone Sergeant - Phase I",
-        "defId": "CLONESERGEANTPHASEI",
         "charUrl": "https://swgoh.gg/characters/clone-sergeant-phase-i/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperclonegreen.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/clone-sergeant-phase-i/best-mods/",
         "mods": {
             "sets": [
@@ -832,10 +750,8 @@
     },
     {
         "name": "Clone Wars Chewbacca",
-        "defId": "CLONEWARSCHEWBACCA",
         "charUrl": "https://swgoh.gg/characters/clone-wars-chewbacca/",
         "image": "https://game-assets.swgoh.gg/tex.charui_chewbacca.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/clone-wars-chewbacca/best-mods/",
         "mods": {
             "sets": [
@@ -853,10 +769,8 @@
     },
     {
         "name": "Colonel Starck",
-        "defId": "COLONELSTARCK",
         "charUrl": "https://swgoh.gg/characters/colonel-starck/",
         "image": "https://game-assets.swgoh.gg/tex.charui_colonel_stark.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/colonel-starck/best-mods/",
         "mods": {
             "sets": [
@@ -873,10 +787,8 @@
     },
     {
         "name": "Commander Ahsoka Tano",
-        "defId": "COMMANDERAHSOKA",
         "charUrl": "https://swgoh.gg/characters/commander-ahsoka-tano/",
         "image": "https://game-assets.swgoh.gg/tex.charui_commanderahsokatano.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/commander-ahsoka-tano/best-mods/",
         "mods": {
             "sets": [
@@ -893,10 +805,8 @@
     },
     {
         "name": "Commander Luke Skywalker",
-        "defId": "COMMANDERLUKESKYWALKER",
         "charUrl": "https://swgoh.gg/characters/commander-luke-skywalker/",
         "image": "https://game-assets.swgoh.gg/tex.charui_lukebespin.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/commander-luke-skywalker/best-mods/",
         "mods": {
             "sets": [
@@ -913,10 +823,8 @@
     },
     {
         "name": "Coruscant Underworld Police",
-        "defId": "CORUSCANTUNDERWORLDPOLICE",
         "charUrl": "https://swgoh.gg/characters/coruscant-underworld-police/",
         "image": "https://game-assets.swgoh.gg/tex.charui_coruscantpolice.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/coruscant-underworld-police/best-mods/",
         "mods": {
             "sets": [
@@ -933,10 +841,8 @@
     },
     {
         "name": "Count Dooku",
-        "defId": "COUNTDOOKU",
         "charUrl": "https://swgoh.gg/characters/count-dooku/",
         "image": "https://game-assets.swgoh.gg/tex.charui_dooku.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/count-dooku/best-mods/",
         "mods": {
             "sets": [
@@ -953,10 +859,8 @@
     },
     {
         "name": "Dark Trooper",
-        "defId": "DARKTROOPER",
         "charUrl": "https://swgoh.gg/characters/dark-trooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_darktrooper.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/dark-trooper/best-mods/",
         "mods": {
             "sets": [
@@ -964,19 +868,17 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense/ Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
     {
         "name": "Darth Malak",
-        "defId": "DARTHMALAK",
         "charUrl": "https://swgoh.gg/characters/darth-malak/",
         "image": "https://game-assets.swgoh.gg/tex.charui_darthmalak.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-malak/best-mods/",
         "mods": {
             "sets": [
@@ -994,10 +896,8 @@
     },
     {
         "name": "Darth Maul",
-        "defId": "MAUL",
         "charUrl": "https://swgoh.gg/characters/darth-maul/",
         "image": "https://game-assets.swgoh.gg/tex.charui_maul.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-maul/best-mods/",
         "mods": {
             "sets": [
@@ -1014,10 +914,8 @@
     },
     {
         "name": "Darth Nihilus",
-        "defId": "DARTHNIHILUS",
         "charUrl": "https://swgoh.gg/characters/darth-nihilus/",
         "image": "https://game-assets.swgoh.gg/tex.charui_nihilus.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-nihilus/best-mods/",
         "mods": {
             "sets": [
@@ -1034,10 +932,8 @@
     },
     {
         "name": "Darth Revan",
-        "defId": "DARTHREVAN",
         "charUrl": "https://swgoh.gg/characters/darth-revan/",
         "image": "https://game-assets.swgoh.gg/tex.charui_sithrevan.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-revan/best-mods/",
         "mods": {
             "sets": [
@@ -1048,16 +944,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Offense"
         }
     },
     {
         "name": "Darth Sidious",
-        "defId": "DARTHSIDIOUS",
         "charUrl": "https://swgoh.gg/characters/darth-sidious/",
         "image": "https://game-assets.swgoh.gg/tex.charui_sidious.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-sidious/best-mods/",
         "mods": {
             "sets": [
@@ -1074,10 +968,8 @@
     },
     {
         "name": "Darth Sion",
-        "defId": "DARTHSION",
         "charUrl": "https://swgoh.gg/characters/darth-sion/",
         "image": "https://game-assets.swgoh.gg/tex.charui_sion.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-sion/best-mods/",
         "mods": {
             "sets": [
@@ -1094,10 +986,8 @@
     },
     {
         "name": "Darth Talon",
-        "defId": "DARTHTALON",
         "charUrl": "https://swgoh.gg/characters/darth-talon/",
         "image": "https://game-assets.swgoh.gg/tex.charui_darthtalon.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-talon/best-mods/",
         "mods": {
             "sets": [
@@ -1114,10 +1004,8 @@
     },
     {
         "name": "Darth Traya",
-        "defId": "DARTHTRAYA",
         "charUrl": "https://swgoh.gg/characters/darth-traya/",
         "image": "https://game-assets.swgoh.gg/tex.charui_traya.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-traya/best-mods/",
         "mods": {
             "sets": [
@@ -1134,10 +1022,8 @@
     },
     {
         "name": "Darth Vader",
-        "defId": "VADER",
         "charUrl": "https://swgoh.gg/characters/darth-vader/",
         "image": "https://game-assets.swgoh.gg/tex.charui_vader.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/darth-vader/best-mods/",
         "mods": {
             "sets": [
@@ -1154,10 +1040,8 @@
     },
     {
         "name": "Dash Rendar",
-        "defId": "DASHRENDAR",
         "charUrl": "https://swgoh.gg/characters/dash-rendar/",
         "image": "https://game-assets.swgoh.gg/tex.charui_dashrendar.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/dash-rendar/best-mods/",
         "mods": {
             "sets": [
@@ -1167,17 +1051,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Health",
             "cross": "Offense/ Potency"
         }
     },
     {
         "name": "Dathcha",
-        "defId": "DATHCHA",
         "charUrl": "https://swgoh.gg/characters/dathcha/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jawa_dathcha.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/dathcha/best-mods/",
         "mods": {
             "sets": [
@@ -1195,10 +1077,8 @@
     },
     {
         "name": "Death Trooper",
-        "defId": "DEATHTROOPER",
         "charUrl": "https://swgoh.gg/characters/death-trooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperdeath.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/death-trooper/best-mods/",
         "mods": {
             "sets": [
@@ -1215,10 +1095,8 @@
     },
     {
         "name": "Dengar",
-        "defId": "DENGAR",
         "charUrl": "https://swgoh.gg/characters/dengar/",
         "image": "https://game-assets.swgoh.gg/tex.charui_dengar.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/dengar/best-mods/",
         "mods": {
             "sets": [
@@ -1228,17 +1106,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         }
     },
     {
         "name": "Director Krennic",
-        "defId": "DIRECTORKRENNIC",
         "charUrl": "https://swgoh.gg/characters/director-krennic/",
         "image": "https://game-assets.swgoh.gg/tex.charui_krennic.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/director-krennic/best-mods/",
         "mods": {
             "sets": [
@@ -1255,10 +1131,8 @@
     },
     {
         "name": "Droideka",
-        "defId": "DROIDEKA",
         "charUrl": "https://swgoh.gg/characters/droideka/",
         "image": "https://game-assets.swgoh.gg/tex.charui_droideka.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/droideka/best-mods/",
         "mods": {
             "sets": [
@@ -1275,10 +1149,8 @@
     },
     {
         "name": "Echo",
-        "defId": "BADBATCHECHO",
         "charUrl": "https://swgoh.gg/characters/echo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bb_echo.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/echo/best-mods/",
         "mods": {
             "sets": [
@@ -1295,10 +1167,8 @@
     },
     {
         "name": "Eeth Koth",
-        "defId": "EETHKOTH",
         "charUrl": "https://swgoh.gg/characters/eeth-koth/",
         "image": "https://game-assets.swgoh.gg/tex.charui_eethkoth.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/eeth-koth/best-mods/",
         "mods": {
             "sets": [
@@ -1309,17 +1179,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Critical Chance",
+            "triangle": "Crit. Chance/ Protection",
             "circle": "Protection/ Health",
             "cross": "Protection/ Tenacity"
         }
     },
     {
         "name": "Embo",
-        "defId": "EMBO",
         "charUrl": "https://swgoh.gg/characters/embo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_embo.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/embo/best-mods/",
         "mods": {
             "sets": [
@@ -1331,15 +1199,13 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Offense"
+            "cross": "Protection"
         }
     },
     {
         "name": "Emperor Palpatine",
-        "defId": "EMPERORPALPATINE",
         "charUrl": "https://swgoh.gg/characters/emperor-palpatine/",
         "image": "https://game-assets.swgoh.gg/tex.charui_palpatineemperor.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/emperor-palpatine/best-mods/",
         "mods": {
             "sets": [
@@ -1356,10 +1222,8 @@
     },
     {
         "name": "Enfys Nest",
-        "defId": "ENFYSNEST",
         "charUrl": "https://swgoh.gg/characters/enfys-nest/",
         "image": "https://game-assets.swgoh.gg/tex.charui_enfys.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/enfys-nest/best-mods/",
         "mods": {
             "sets": [
@@ -1377,10 +1241,8 @@
     },
     {
         "name": "Ewok Elder",
-        "defId": "EWOKELDER",
         "charUrl": "https://swgoh.gg/characters/ewok-elder/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ewok_chief.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ewok-elder/best-mods/",
         "mods": {
             "sets": [
@@ -1390,17 +1252,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
-            "cross": "Health/ Tenacity"
+            "cross": "Protection/ Health"
         }
     },
     {
         "name": "Ewok Scout",
-        "defId": "EWOKSCOUT",
         "charUrl": "https://swgoh.gg/characters/ewok-scout/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ewok_scout.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ewok-scout/best-mods/",
         "mods": {
             "sets": [
@@ -1417,10 +1277,8 @@
     },
     {
         "name": "Ezra Bridger",
-        "defId": "EZRABRIDGERS3",
         "charUrl": "https://swgoh.gg/characters/ezra-bridger/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ezra_s3.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ezra-bridger/best-mods/",
         "mods": {
             "sets": [
@@ -1437,10 +1295,8 @@
     },
     {
         "name": "Fennec Shand",
-        "defId": "FENNECSHAND",
         "charUrl": "https://swgoh.gg/characters/fennec-shand/",
         "image": "https://game-assets.swgoh.gg/tex.charui_fennec.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/fennec-shand/best-mods/",
         "mods": {
             "sets": [
@@ -1457,10 +1313,8 @@
     },
     {
         "name": "Finn",
-        "defId": "FINN",
         "charUrl": "https://swgoh.gg/characters/finn/",
         "image": "https://game-assets.swgoh.gg/tex.charui_finnjakku.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/finn/best-mods/",
         "mods": {
             "sets": [
@@ -1472,15 +1326,13 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
         "name": "First Order Executioner",
-        "defId": "FIRSTORDEREXECUTIONER",
         "charUrl": "https://swgoh.gg/characters/first-order-executioner/",
         "image": "https://game-assets.swgoh.gg/tex.charui_firstorder_executioner.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/first-order-executioner/best-mods/",
         "mods": {
             "sets": [
@@ -1497,10 +1349,8 @@
     },
     {
         "name": "First Order Officer",
-        "defId": "FIRSTORDEROFFICERMALE",
         "charUrl": "https://swgoh.gg/characters/first-order-officer/",
         "image": "https://game-assets.swgoh.gg/tex.charui_firstorderofficer.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/first-order-officer/best-mods/",
         "mods": {
             "sets": [
@@ -1510,17 +1360,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Critical Chance",
+            "triangle": "Protection/ Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         }
     },
     {
         "name": "First Order SF TIE Pilot",
-        "defId": "FIRSTORDERSPECIALFORCESPILOT",
         "charUrl": "https://swgoh.gg/characters/first-order-sf-tie-pilot/",
         "image": "https://game-assets.swgoh.gg/tex.charui_firstorder_pilot.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/first-order-sf-tie-pilot/best-mods/",
         "mods": {
             "sets": [
@@ -1537,10 +1385,8 @@
     },
     {
         "name": "First Order Stormtrooper",
-        "defId": "FIRSTORDERTROOPER",
         "charUrl": "https://swgoh.gg/characters/first-order-stormtrooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_firstordertrooper.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/first-order-stormtrooper/best-mods/",
         "mods": {
             "sets": [
@@ -1558,10 +1404,8 @@
     },
     {
         "name": "First Order TIE Pilot",
-        "defId": "FIRSTORDERTIEPILOT",
         "charUrl": "https://swgoh.gg/characters/first-order-tie-pilot/",
         "image": "https://game-assets.swgoh.gg/tex.charui_firstordertiepilot.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/first-order-tie-pilot/best-mods/",
         "mods": {
             "sets": [
@@ -1578,10 +1422,8 @@
     },
     {
         "name": "Gamorrean Guard",
-        "defId": "GAMORREANGUARD",
         "charUrl": "https://swgoh.gg/characters/gamorrean-guard/",
         "image": "https://game-assets.swgoh.gg/tex.charui_gamorreanguard.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/gamorrean-guard/best-mods/",
         "mods": {
             "sets": [
@@ -1592,17 +1434,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Protection/ Health",
             "circle": "Protection",
             "cross": "Protection"
         }
     },
     {
         "name": "Gar Saxon",
-        "defId": "GARSAXON",
         "charUrl": "https://swgoh.gg/characters/gar-saxon/",
         "image": "https://game-assets.swgoh.gg/tex.charui_gar_saxon.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/gar-saxon/best-mods/",
         "mods": {
             "sets": [
@@ -1619,16 +1459,13 @@
     },
     {
         "name": "Garazeb \"Zeb\" Orrelios",
-        "defId": "ZEBS3",
         "charUrl": "https://swgoh.gg/characters/garazeb-zeb-orrelios/",
         "image": "https://game-assets.swgoh.gg/tex.charui_zeb_s3.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/garazeb-zeb-orrelios/best-mods/",
         "mods": {
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Critical Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -1640,10 +1477,8 @@
     },
     {
         "name": "General Grievous",
-        "defId": "GRIEVOUS",
         "charUrl": "https://swgoh.gg/characters/general-grievous/",
         "image": "https://game-assets.swgoh.gg/tex.charui_grievous.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/general-grievous/best-mods/",
         "mods": {
             "sets": [
@@ -1661,10 +1496,8 @@
     },
     {
         "name": "General Hux",
-        "defId": "GENERALHUX",
         "charUrl": "https://swgoh.gg/characters/general-hux/",
         "image": "https://game-assets.swgoh.gg/tex.charui_generalhux.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/general-hux/best-mods/",
         "mods": {
             "sets": [
@@ -1681,10 +1514,8 @@
     },
     {
         "name": "General Kenobi",
-        "defId": "GENERALKENOBI",
         "charUrl": "https://swgoh.gg/characters/general-kenobi/",
         "image": "https://game-assets.swgoh.gg/tex.charui_obiwangeneral.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/general-kenobi/best-mods/",
         "mods": {
             "sets": [
@@ -1702,10 +1533,8 @@
     },
     {
         "name": "General Skywalker",
-        "defId": "GENERALSKYWALKER",
         "charUrl": "https://swgoh.gg/characters/general-skywalker/",
         "image": "https://game-assets.swgoh.gg/tex.charui_generalanakin.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/general-skywalker/best-mods/",
         "mods": {
             "sets": [
@@ -1722,10 +1551,8 @@
     },
     {
         "name": "General Veers",
-        "defId": "VEERS",
         "charUrl": "https://swgoh.gg/characters/general-veers/",
         "image": "https://game-assets.swgoh.gg/tex.charui_veers.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/general-veers/best-mods/",
         "mods": {
             "sets": [
@@ -1742,10 +1569,8 @@
     },
     {
         "name": "Geonosian Brood Alpha",
-        "defId": "GEONOSIANBROODALPHA",
         "charUrl": "https://swgoh.gg/characters/geonosian-brood-alpha/",
         "image": "https://game-assets.swgoh.gg/tex.charui_geonosian_broodalpha.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/geonosian-brood-alpha/best-mods/",
         "mods": {
             "sets": [
@@ -1762,10 +1587,8 @@
     },
     {
         "name": "Geonosian Soldier",
-        "defId": "GEONOSIANSOLDIER",
         "charUrl": "https://swgoh.gg/characters/geonosian-soldier/",
         "image": "https://game-assets.swgoh.gg/tex.charui_geonosian_soldier.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/geonosian-soldier/best-mods/",
         "mods": {
             "sets": [
@@ -1775,17 +1598,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         }
     },
     {
         "name": "Geonosian Spy",
-        "defId": "GEONOSIANSPY",
         "charUrl": "https://swgoh.gg/characters/geonosian-spy/",
         "image": "https://game-assets.swgoh.gg/tex.charui_geonosian_spy.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/geonosian-spy/best-mods/",
         "mods": {
             "sets": [
@@ -1802,10 +1623,8 @@
     },
     {
         "name": "Grand Admiral Thrawn",
-        "defId": "GRANDADMIRALTHRAWN",
         "charUrl": "https://swgoh.gg/characters/grand-admiral-thrawn/",
         "image": "https://game-assets.swgoh.gg/tex.charui_thrawn.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/grand-admiral-thrawn/best-mods/",
         "mods": {
             "sets": [
@@ -1822,10 +1641,8 @@
     },
     {
         "name": "Grand Master Yoda",
-        "defId": "GRANDMASTERYODA",
         "charUrl": "https://swgoh.gg/characters/grand-master-yoda/",
         "image": "https://game-assets.swgoh.gg/tex.charui_yodagrandmaster.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/grand-master-yoda/best-mods/",
         "mods": {
             "sets": [
@@ -1842,10 +1659,8 @@
     },
     {
         "name": "Grand Moff Tarkin",
-        "defId": "GRANDMOFFTARKIN",
         "charUrl": "https://swgoh.gg/characters/grand-moff-tarkin/",
         "image": "https://game-assets.swgoh.gg/tex.charui_tarkinadmiral.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/grand-moff-tarkin/best-mods/",
         "mods": {
             "sets": [
@@ -1862,10 +1677,8 @@
     },
     {
         "name": "Greedo",
-        "defId": "GREEDO",
         "charUrl": "https://swgoh.gg/characters/greedo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_greedo.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/greedo/best-mods/",
         "mods": {
             "sets": [
@@ -1875,17 +1688,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection",
             "cross": "Potency/ Offense"
         }
     },
     {
         "name": "Greef Karga",
-        "defId": "GREEFKARGA",
         "charUrl": "https://swgoh.gg/characters/greef-karga/",
         "image": "https://game-assets.swgoh.gg/tex.charui_greefkarga.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/greef-karga/best-mods/",
         "mods": {
             "sets": [
@@ -1895,17 +1706,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Critical Chance",
+            "triangle": "Protection/ Crit. Chance",
             "circle": "Protection",
             "cross": "Protection"
         }
     },
     {
         "name": "HK-47",
-        "defId": "HK47",
         "charUrl": "https://swgoh.gg/characters/hk-47/",
         "image": "https://game-assets.swgoh.gg/tex.charui_hk47.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/hk-47/best-mods/",
         "mods": {
             "sets": [
@@ -1922,10 +1731,8 @@
     },
     {
         "name": "Han Solo",
-        "defId": "HANSOLO",
         "charUrl": "https://swgoh.gg/characters/han-solo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_han.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/han-solo/best-mods/",
         "mods": {
             "sets": [
@@ -1942,10 +1749,8 @@
     },
     {
         "name": "Hera Syndulla",
-        "defId": "HERASYNDULLAS3",
         "charUrl": "https://swgoh.gg/characters/hera-syndulla/",
         "image": "https://game-assets.swgoh.gg/tex.charui_hera_s3.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/hera-syndulla/best-mods/",
         "mods": {
             "sets": [
@@ -1955,17 +1760,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Offense",
+            "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
             "cross": "Protection/ Potency"
         }
     },
     {
         "name": "Hermit Yoda",
-        "defId": "HERMITYODA",
         "charUrl": "https://swgoh.gg/characters/hermit-yoda/",
         "image": "https://game-assets.swgoh.gg/tex.charui_yodahermit.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/hermit-yoda/best-mods/",
         "mods": {
             "sets": [
@@ -1982,10 +1785,8 @@
     },
     {
         "name": "Hoth Rebel Scout",
-        "defId": "HOTHREBELSCOUT",
         "charUrl": "https://swgoh.gg/characters/hoth-rebel-scout/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rebelhothscout.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/hoth-rebel-scout/best-mods/",
         "mods": {
             "sets": [
@@ -1995,17 +1796,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         }
     },
     {
         "name": "Hoth Rebel Soldier",
-        "defId": "HOTHREBELSOLDIER",
         "charUrl": "https://swgoh.gg/characters/hoth-rebel-soldier/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rebelhoth.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/hoth-rebel-soldier/best-mods/",
         "mods": {
             "sets": [
@@ -2016,17 +1815,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Offense",
+            "triangle": "Protection/ Health",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Protection/ Tenacity"
         }
     },
     {
         "name": "Hunter",
-        "defId": "BADBATCHHUNTER",
         "charUrl": "https://swgoh.gg/characters/hunter/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bb_hunter.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/hunter/best-mods/",
         "mods": {
             "sets": [
@@ -2043,10 +1840,8 @@
     },
     {
         "name": "IG-100 MagnaGuard",
-        "defId": "MAGNAGUARD",
         "charUrl": "https://swgoh.gg/characters/ig-100-magnaguard/",
         "image": "https://game-assets.swgoh.gg/tex.charui_magnaguard.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/ig-100-magnaguard/best-mods/",
         "mods": {
             "sets": [
@@ -2064,10 +1859,8 @@
     },
     {
         "name": "IG-11",
-        "defId": "IG11",
         "charUrl": "https://swgoh.gg/characters/ig-11/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ig11_nurse.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ig-11/best-mods/",
         "mods": {
             "sets": [
@@ -2085,10 +1878,8 @@
     },
     {
         "name": "IG-86 Sentinel Droid",
-        "defId": "IG86SENTINELDROID",
         "charUrl": "https://swgoh.gg/characters/ig-86-sentinel-droid/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ig86.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/ig-86-sentinel-droid/best-mods/",
         "mods": {
             "sets": [
@@ -2105,10 +1896,8 @@
     },
     {
         "name": "IG-88",
-        "defId": "IG88",
         "charUrl": "https://swgoh.gg/characters/ig-88/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ig88.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/ig-88/best-mods/",
         "mods": {
             "sets": [
@@ -2125,10 +1914,8 @@
     },
     {
         "name": "Iden Versio",
-        "defId": "IDENVERSIOEMPIRE",
         "charUrl": "https://swgoh.gg/characters/iden-versio/",
         "image": "https://game-assets.swgoh.gg/tex.charui_idenversioempire.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/iden-versio/best-mods/",
         "mods": {
             "sets": [
@@ -2139,16 +1926,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Health/ Protection",
             "cross": "Potency"
         }
     },
     {
         "name": "Ima-Gun Di",
-        "defId": "IMAGUNDI",
         "charUrl": "https://swgoh.gg/characters/ima-gun-di/",
         "image": "https://game-assets.swgoh.gg/tex.charui_imagundi.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ima-gun-di/best-mods/",
         "mods": {
             "sets": [
@@ -2166,10 +1951,8 @@
     },
     {
         "name": "Imperial Probe Droid",
-        "defId": "IMPERIALPROBEDROID",
         "charUrl": "https://swgoh.gg/characters/imperial-probe-droid/",
         "image": "https://game-assets.swgoh.gg/tex.charui_probedroid.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/imperial-probe-droid/best-mods/",
         "mods": {
             "sets": [
@@ -2186,10 +1969,8 @@
     },
     {
         "name": "Imperial Super Commando",
-        "defId": "IMPERIALSUPERCOMMANDO",
         "charUrl": "https://swgoh.gg/characters/imperial-super-commando/",
         "image": "https://game-assets.swgoh.gg/tex.charui_imperial_super_commando.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/imperial-super-commando/best-mods/",
         "mods": {
             "sets": [
@@ -2206,10 +1987,8 @@
     },
     {
         "name": "Jango Fett",
-        "defId": "JANGOFETT",
         "charUrl": "https://swgoh.gg/characters/jango-fett/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jangofett.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/jango-fett/best-mods/",
         "mods": {
             "sets": [
@@ -2226,10 +2005,8 @@
     },
     {
         "name": "Jawa",
-        "defId": "JAWA",
         "charUrl": "https://swgoh.gg/characters/jawa/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jawa_jawa.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jawa/best-mods/",
         "mods": {
             "sets": [
@@ -2247,10 +2024,8 @@
     },
     {
         "name": "Jawa Engineer",
-        "defId": "JAWAENGINEER",
         "charUrl": "https://swgoh.gg/characters/jawa-engineer/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jawa_engineer.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jawa-engineer/best-mods/",
         "mods": {
             "sets": [
@@ -2267,10 +2042,8 @@
     },
     {
         "name": "Jawa Scavenger",
-        "defId": "JAWASCAVENGER",
         "charUrl": "https://swgoh.gg/characters/jawa-scavenger/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jawa_scavenger.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jawa-scavenger/best-mods/",
         "mods": {
             "sets": [
@@ -2288,10 +2061,8 @@
     },
     {
         "name": "Jedi Consular",
-        "defId": "JEDIKNIGHTCONSULAR",
         "charUrl": "https://swgoh.gg/characters/jedi-consular/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jedi_consular_03.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jedi-consular/best-mods/",
         "mods": {
             "sets": [
@@ -2304,15 +2075,13 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
-            "cross": "Health/ Protection"
+            "cross": "Health/ Tenacity"
         }
     },
     {
         "name": "Jedi Knight Anakin",
-        "defId": "ANAKINKNIGHT",
         "charUrl": "https://swgoh.gg/characters/jedi-knight-anakin/",
         "image": "https://game-assets.swgoh.gg/tex.charui_anakinknight.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jedi-knight-anakin/best-mods/",
         "mods": {
             "sets": [
@@ -2329,10 +2098,8 @@
     },
     {
         "name": "Jedi Knight Guardian",
-        "defId": "JEDIKNIGHTGUARDIAN",
         "charUrl": "https://swgoh.gg/characters/jedi-knight-guardian/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jedi_guardian_01.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jedi-knight-guardian/best-mods/",
         "mods": {
             "sets": [
@@ -2350,10 +2117,8 @@
     },
     {
         "name": "Jedi Knight Luke Skywalker",
-        "defId": "JEDIKNIGHTLUKE",
         "charUrl": "https://swgoh.gg/characters/jedi-knight-luke-skywalker/",
         "image": "https://game-assets.swgoh.gg/tex.charui_luke_jediknight.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jedi-knight-luke-skywalker/best-mods/",
         "mods": {
             "sets": [
@@ -2370,10 +2135,8 @@
     },
     {
         "name": "Jedi Knight Revan",
-        "defId": "JEDIKNIGHTREVAN",
         "charUrl": "https://swgoh.gg/characters/jedi-knight-revan/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jedirevan.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jedi-knight-revan/best-mods/",
         "mods": {
             "sets": [
@@ -2390,10 +2153,8 @@
     },
     {
         "name": "Jedi Master Kenobi",
-        "defId": "JEDIMASTERKENOBI",
         "charUrl": "https://swgoh.gg/characters/jedi-master-kenobi/",
         "image": "https://game-assets.swgoh.gg/tex.charui_globiwan.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jedi-master-kenobi/best-mods/",
         "mods": {
             "sets": [
@@ -2410,10 +2171,8 @@
     },
     {
         "name": "Jedi Master Luke Skywalker",
-        "defId": "GRANDMASTERLUKE",
         "charUrl": "https://swgoh.gg/characters/jedi-master-luke-skywalker/",
         "image": "https://game-assets.swgoh.gg/tex.charui_luke_jml.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jedi-master-luke-skywalker/best-mods/",
         "mods": {
             "sets": [
@@ -2430,10 +2189,8 @@
     },
     {
         "name": "Jolee Bindo",
-        "defId": "JOLEEBINDO",
         "charUrl": "https://swgoh.gg/characters/jolee-bindo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_joleebindo.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jolee-bindo/best-mods/",
         "mods": {
             "sets": [
@@ -2451,10 +2208,8 @@
     },
     {
         "name": "Juhani",
-        "defId": "JUHANI",
         "charUrl": "https://swgoh.gg/characters/juhani/",
         "image": "https://game-assets.swgoh.gg/tex.charui_juhani.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/juhani/best-mods/",
         "mods": {
             "sets": [
@@ -2472,10 +2227,8 @@
     },
     {
         "name": "Jyn Erso",
-        "defId": "JYNERSO",
         "charUrl": "https://swgoh.gg/characters/jyn-erso/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jyn.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/jyn-erso/best-mods/",
         "mods": {
             "sets": [
@@ -2485,17 +2238,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         }
     },
     {
         "name": "K-2SO",
-        "defId": "K2SO",
         "charUrl": "https://swgoh.gg/characters/k-2so/",
         "image": "https://game-assets.swgoh.gg/tex.charui_k2so.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/k-2so/best-mods/",
         "mods": {
             "sets": [
@@ -2513,10 +2264,8 @@
     },
     {
         "name": "Kanan Jarrus",
-        "defId": "KANANJARRUSS3",
         "charUrl": "https://swgoh.gg/characters/kanan-jarrus/",
         "image": "https://game-assets.swgoh.gg/tex.charui_kanan_s3.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/kanan-jarrus/best-mods/",
         "mods": {
             "sets": [
@@ -2534,10 +2283,8 @@
     },
     {
         "name": "Ki-Adi-Mundi",
-        "defId": "KIADIMUNDI",
         "charUrl": "https://swgoh.gg/characters/ki-adi-mundi/",
         "image": "https://game-assets.swgoh.gg/tex.charui_kiadimundi.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ki-adi-mundi/best-mods/",
         "mods": {
             "sets": [
@@ -2554,10 +2301,8 @@
     },
     {
         "name": "Kit Fisto",
-        "defId": "KITFISTO",
         "charUrl": "https://swgoh.gg/characters/kit-fisto/",
         "image": "https://game-assets.swgoh.gg/tex.charui_kitfisto.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/kit-fisto/best-mods/",
         "mods": {
             "sets": [
@@ -2574,10 +2319,8 @@
     },
     {
         "name": "Kuiil",
-        "defId": "KUIIL",
         "charUrl": "https://swgoh.gg/characters/kuiil/",
         "image": "https://game-assets.swgoh.gg/tex.charui_kuiil.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/kuiil/best-mods/",
         "mods": {
             "sets": [
@@ -2594,10 +2337,8 @@
     },
     {
         "name": "Kyle Katarn",
-        "defId": "KYLEKATARN",
         "charUrl": "https://swgoh.gg/characters/kyle-katarn/",
         "image": "https://game-assets.swgoh.gg/tex.charui_kylekatarn.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/kyle-katarn/best-mods/",
         "mods": {
             "sets": [
@@ -2608,16 +2349,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
     {
         "name": "Kylo Ren",
-        "defId": "KYLOREN",
         "charUrl": "https://swgoh.gg/characters/kylo-ren/",
         "image": "https://game-assets.swgoh.gg/tex.charui_kyloren.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/kylo-ren/best-mods/",
         "mods": {
             "sets": [
@@ -2634,10 +2373,8 @@
     },
     {
         "name": "Kylo Ren (Unmasked)",
-        "defId": "KYLORENUNMASKED",
         "charUrl": "https://swgoh.gg/characters/kylo-ren-unmasked/",
         "image": "https://game-assets.swgoh.gg/tex.charui_kylo_unmasked.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/kylo-ren-unmasked/best-mods/",
         "mods": {
             "sets": [
@@ -2655,10 +2392,8 @@
     },
     {
         "name": "L3-37",
-        "defId": "L3_37",
         "charUrl": "https://swgoh.gg/characters/l3-37/",
         "image": "https://game-assets.swgoh.gg/tex.charui_l337.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/l3-37/best-mods/",
         "mods": {
             "sets": [
@@ -2676,10 +2411,8 @@
     },
     {
         "name": "Lando Calrissian",
-        "defId": "ADMINISTRATORLANDO",
         "charUrl": "https://swgoh.gg/characters/lando-calrissian/",
         "image": "https://game-assets.swgoh.gg/tex.charui_landobespin.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/lando-calrissian/best-mods/",
         "mods": {
             "sets": [
@@ -2696,10 +2429,8 @@
     },
     {
         "name": "Lobot",
-        "defId": "LOBOT",
         "charUrl": "https://swgoh.gg/characters/lobot/",
         "image": "https://game-assets.swgoh.gg/tex.charui_lobot.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/lobot/best-mods/",
         "mods": {
             "sets": [
@@ -2709,17 +2440,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Health/ Protection",
             "cross": "Tenacity/ Health"
         }
     },
     {
         "name": "Logray",
-        "defId": "LOGRAY",
         "charUrl": "https://swgoh.gg/characters/logray/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ewok_logray.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/logray/best-mods/",
         "mods": {
             "sets": [
@@ -2729,17 +2458,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Protection",
-            "circle": "Protection/ Health",
+            "triangle": "Crit. Chance/ Protection",
+            "circle": "Protection",
             "cross": "Potency"
         }
     },
     {
         "name": "Lord Vader",
-        "defId": "LORDVADER",
         "charUrl": "https://swgoh.gg/characters/lord-vader/",
         "image": "https://game-assets.swgoh.gg/tex.charui_lordvader.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/lord-vader/best-mods/",
         "mods": {
             "sets": [
@@ -2756,10 +2483,8 @@
     },
     {
         "name": "Luke Skywalker (Farmboy)",
-        "defId": "LUKESKYWALKER",
         "charUrl": "https://swgoh.gg/characters/luke-skywalker-farmboy/",
         "image": "https://game-assets.swgoh.gg/tex.charui_luke_ep4.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/luke-skywalker-farmboy/best-mods/",
         "mods": {
             "sets": [
@@ -2769,17 +2494,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Critical Chance",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense/ Protection"
+            "cross": "Offense/ Tenacity"
         }
     },
     {
         "name": "Luminara Unduli",
-        "defId": "LUMINARAUNDULI",
         "charUrl": "https://swgoh.gg/characters/luminara-unduli/",
         "image": "https://game-assets.swgoh.gg/tex.charui_luminara.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/luminara-unduli/best-mods/",
         "mods": {
             "sets": [
@@ -2797,10 +2520,8 @@
     },
     {
         "name": "Mace Windu",
-        "defId": "MACEWINDU",
         "charUrl": "https://swgoh.gg/characters/mace-windu/",
         "image": "https://game-assets.swgoh.gg/tex.charui_macewindu.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/mace-windu/best-mods/",
         "mods": {
             "sets": [
@@ -2818,10 +2539,8 @@
     },
     {
         "name": "Magmatrooper",
-        "defId": "MAGMATROOPER",
         "charUrl": "https://swgoh.gg/characters/magmatrooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperstorm_magma.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/magmatrooper/best-mods/",
         "mods": {
             "sets": [
@@ -2838,10 +2557,8 @@
     },
     {
         "name": "Mara Jade, The Emperor's Hand",
-        "defId": "MARAJADE",
         "charUrl": "https://swgoh.gg/characters/mara-jade-the-emperors-hand/",
         "image": "https://game-assets.swgoh.gg/tex.charui_marajade.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/mara-jade-the-emperors-hand/best-mods/",
         "mods": {
             "sets": [
@@ -2851,17 +2568,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection/ Health",
             "cross": "Potency"
         }
     },
     {
         "name": "Maul",
-        "defId": "MAULS7",
         "charUrl": "https://swgoh.gg/characters/maul/",
         "image": "https://game-assets.swgoh.gg/tex.charui_maul_cyborg.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/maul/best-mods/",
         "mods": {
             "sets": [
@@ -2878,10 +2593,8 @@
     },
     {
         "name": "Mission Vao",
-        "defId": "MISSIONVAO",
         "charUrl": "https://swgoh.gg/characters/mission-vao/",
         "image": "https://game-assets.swgoh.gg/tex.charui_mission.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/mission-vao/best-mods/",
         "mods": {
             "sets": [
@@ -2898,29 +2611,27 @@
     },
     {
         "name": "Mob Enforcer",
-        "defId": "HUMANTHUG",
         "charUrl": "https://swgoh.gg/characters/mob-enforcer/",
         "image": "https://game-assets.swgoh.gg/tex.charui_thug_female_01.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/mob-enforcer/best-mods/",
         "mods": {
             "sets": [
+                "Health x2",
+                "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Critical Chance",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Health/ Protection",
-            "cross": "Potency/ Health"
+            "cross": "Potency/ Offense"
         }
     },
     {
         "name": "Moff Gideon",
-        "defId": "MOFFGIDEONS1",
         "charUrl": "https://swgoh.gg/characters/moff-gideon/",
         "image": "https://game-assets.swgoh.gg/tex.charui_moffgideon.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/moff-gideon/best-mods/",
         "mods": {
             "sets": [
@@ -2937,10 +2648,8 @@
     },
     {
         "name": "Mon Mothma",
-        "defId": "MONMOTHMA",
         "charUrl": "https://swgoh.gg/characters/mon-mothma/",
         "image": "https://game-assets.swgoh.gg/tex.charui_monmothma.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/mon-mothma/best-mods/",
         "mods": {
             "sets": [
@@ -2957,10 +2666,8 @@
     },
     {
         "name": "Mother Talzin",
-        "defId": "MOTHERTALZIN",
         "charUrl": "https://swgoh.gg/characters/mother-talzin/",
         "image": "https://game-assets.swgoh.gg/tex.charui_nightsisters_talzin.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/mother-talzin/best-mods/",
         "mods": {
             "sets": [
@@ -2977,10 +2684,8 @@
     },
     {
         "name": "Nightsister Acolyte",
-        "defId": "NIGHTSISTERACOLYTE",
         "charUrl": "https://swgoh.gg/characters/nightsister-acolyte/",
         "image": "https://game-assets.swgoh.gg/tex.charui_nightsister_acolyte.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/nightsister-acolyte/best-mods/",
         "mods": {
             "sets": [
@@ -2990,17 +2695,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Critical Chance",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
     {
         "name": "Nightsister Initiate",
-        "defId": "NIGHTSISTERINITIATE",
         "charUrl": "https://swgoh.gg/characters/nightsister-initiate/",
         "image": "https://game-assets.swgoh.gg/tex.charui_nightsister_initiate.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/nightsister-initiate/best-mods/",
         "mods": {
             "sets": [
@@ -3011,17 +2714,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance",
+            "triangle": "Crit. Chance",
             "circle": "Protection/ Health",
             "cross": "Offense/ Tenacity"
         }
     },
     {
         "name": "Nightsister Spirit",
-        "defId": "NIGHTSISTERSPIRIT",
         "charUrl": "https://swgoh.gg/characters/nightsister-spirit/",
         "image": "https://game-assets.swgoh.gg/tex.charui_nightsisters_wraith.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/nightsister-spirit/best-mods/",
         "mods": {
             "sets": [
@@ -3038,10 +2739,8 @@
     },
     {
         "name": "Nightsister Zombie",
-        "defId": "NIGHTSISTERZOMBIE",
         "charUrl": "https://swgoh.gg/characters/nightsister-zombie/",
         "image": "https://game-assets.swgoh.gg/tex.charui_nightsisters_zombie.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/nightsister-zombie/best-mods/",
         "mods": {
             "sets": [
@@ -3058,10 +2757,8 @@
     },
     {
         "name": "Nute Gunray",
-        "defId": "NUTEGUNRAY",
         "charUrl": "https://swgoh.gg/characters/nute-gunray/",
         "image": "https://game-assets.swgoh.gg/tex.charui_nutegunray.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/nute-gunray/best-mods/",
         "mods": {
             "sets": [
@@ -3078,10 +2775,8 @@
     },
     {
         "name": "Obi-Wan Kenobi (Old Ben)",
-        "defId": "OLDBENKENOBI",
         "charUrl": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
         "image": "https://game-assets.swgoh.gg/tex.charui_obiwanep4.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/best-mods/",
         "mods": {
             "sets": [
@@ -3098,10 +2793,8 @@
     },
     {
         "name": "Old Daka",
-        "defId": "DAKA",
         "charUrl": "https://swgoh.gg/characters/old-daka/",
         "image": "https://game-assets.swgoh.gg/tex.charui_daka.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/old-daka/best-mods/",
         "mods": {
             "sets": [
@@ -3119,10 +2812,8 @@
     },
     {
         "name": "Omega",
-        "defId": "BADBATCHOMEGA",
         "charUrl": "https://swgoh.gg/characters/omega/",
         "image": "https://game-assets.swgoh.gg/tex.charui_badbatchomega.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/omega/best-mods/",
         "mods": {
             "sets": [
@@ -3139,10 +2830,8 @@
     },
     {
         "name": "Padme Amidala",
-        "defId": "PADMEAMIDALA",
         "charUrl": "https://swgoh.gg/characters/padme-amidala/",
         "image": "https://game-assets.swgoh.gg/tex.charui_padme_geonosis.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/padme-amidala/best-mods/",
         "mods": {
             "sets": [
@@ -3160,10 +2849,8 @@
     },
     {
         "name": "Pao",
-        "defId": "PAO",
         "charUrl": "https://swgoh.gg/characters/pao/",
         "image": "https://game-assets.swgoh.gg/tex.charui_pao.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/pao/best-mods/",
         "mods": {
             "sets": [
@@ -3180,10 +2867,8 @@
     },
     {
         "name": "Paploo",
-        "defId": "PAPLOO",
         "charUrl": "https://swgoh.gg/characters/paploo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ewok_paploo.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/paploo/best-mods/",
         "mods": {
             "sets": [
@@ -3193,17 +2878,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Defense",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
         }
     },
     {
         "name": "Plo Koon",
-        "defId": "PLOKOON",
         "charUrl": "https://swgoh.gg/characters/plo-koon/",
         "image": "https://game-assets.swgoh.gg/tex.charui_plokoon.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/plo-koon/best-mods/",
         "mods": {
             "sets": [
@@ -3221,10 +2904,8 @@
     },
     {
         "name": "Poe Dameron",
-        "defId": "POE",
         "charUrl": "https://swgoh.gg/characters/poe-dameron/",
         "image": "https://game-assets.swgoh.gg/tex.charui_poe.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/poe-dameron/best-mods/",
         "mods": {
             "sets": [
@@ -3241,10 +2922,8 @@
     },
     {
         "name": "Poggle the Lesser",
-        "defId": "POGGLETHELESSER",
         "charUrl": "https://swgoh.gg/characters/poggle-the-lesser/",
         "image": "https://game-assets.swgoh.gg/tex.charui_geonosian_poggle.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/poggle-the-lesser/best-mods/",
         "mods": {
             "sets": [
@@ -3261,10 +2940,8 @@
     },
     {
         "name": "Princess Leia",
-        "defId": "PRINCESSLEIA",
         "charUrl": "https://swgoh.gg/characters/princess-leia/",
         "image": "https://game-assets.swgoh.gg/tex.charui_leia_princess.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/princess-leia/best-mods/",
         "mods": {
             "sets": [
@@ -3281,10 +2958,8 @@
     },
     {
         "name": "Qi'ra",
-        "defId": "QIRA",
         "charUrl": "https://swgoh.gg/characters/qira/",
         "image": "https://game-assets.swgoh.gg/tex.charui_qira.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/qira/best-mods/",
         "mods": {
             "sets": [
@@ -3294,17 +2969,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Critical Chance/ Crit. Damage",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection",
             "cross": "Protection/ Potency"
         }
     },
     {
         "name": "Qui-Gon Jinn",
-        "defId": "QUIGONJINN",
         "charUrl": "https://swgoh.gg/characters/qui-gon-jinn/",
         "image": "https://game-assets.swgoh.gg/tex.charui_quigon.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/qui-gon-jinn/best-mods/",
         "mods": {
             "sets": [
@@ -3321,10 +2994,8 @@
     },
     {
         "name": "R2-D2",
-        "defId": "R2D2_LEGENDARY",
         "charUrl": "https://swgoh.gg/characters/r2-d2/",
         "image": "https://game-assets.swgoh.gg/tex.charui_astromech_r2d2.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/r2-d2/best-mods/",
         "mods": {
             "sets": [
@@ -3334,17 +3005,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Critical Chance",
+            "triangle": "Offense/ Crit. Chance",
             "circle": "Health/ Protection",
             "cross": "Potency/ Offense"
         }
     },
     {
         "name": "Range Trooper",
-        "defId": "RANGETROOPER",
         "charUrl": "https://swgoh.gg/characters/range-trooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperranger.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/range-trooper/best-mods/",
         "mods": {
             "sets": [
@@ -3361,10 +3030,8 @@
     },
     {
         "name": "Rebel Officer Leia Organa",
-        "defId": "HOTHLEIA",
         "charUrl": "https://swgoh.gg/characters/rebel-officer-leia-organa/",
         "image": "https://game-assets.swgoh.gg/tex.charui_leiahoth.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/rebel-officer-leia-organa/best-mods/",
         "mods": {
             "sets": [
@@ -3381,10 +3048,8 @@
     },
     {
         "name": "Resistance Hero Finn",
-        "defId": "EPIXFINN",
         "charUrl": "https://swgoh.gg/characters/resistance-hero-finn/",
         "image": "https://game-assets.swgoh.gg/tex.charui_finn.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/resistance-hero-finn/best-mods/",
         "mods": {
             "sets": [
@@ -3401,10 +3066,8 @@
     },
     {
         "name": "Resistance Hero Poe",
-        "defId": "EPIXPOE",
         "charUrl": "https://swgoh.gg/characters/resistance-hero-poe/",
         "image": "https://game-assets.swgoh.gg/tex.charui_poe_tros.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/resistance-hero-poe/best-mods/",
         "mods": {
             "sets": [
@@ -3421,10 +3084,8 @@
     },
     {
         "name": "Resistance Pilot",
-        "defId": "RESISTANCEPILOT",
         "charUrl": "https://swgoh.gg/characters/resistance-pilot/",
         "image": "https://game-assets.swgoh.gg/tex.charui_resistancepilot.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/resistance-pilot/best-mods/",
         "mods": {
             "sets": [
@@ -3441,10 +3102,8 @@
     },
     {
         "name": "Resistance Trooper",
-        "defId": "RESISTANCETROOPER",
         "charUrl": "https://swgoh.gg/characters/resistance-trooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_resistancetrooper.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/resistance-trooper/best-mods/",
         "mods": {
             "sets": [
@@ -3461,10 +3120,8 @@
     },
     {
         "name": "Rey",
-        "defId": "GLREY",
         "charUrl": "https://swgoh.gg/characters/rey/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rey_tros.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/rey/best-mods/",
         "mods": {
             "sets": [
@@ -3474,17 +3131,15 @@
             "square": "Offense",
             "arrow": "Speed/ Offense",
             "diamond": "Defense",
-            "triangle": "Health/ Offense",
+            "triangle": "Offense/ Health",
             "circle": "Health",
-            "cross": "Health/ Offense"
+            "cross": "Offense/ Health"
         }
     },
     {
         "name": "Rey (Jedi Training)",
-        "defId": "REYJEDITRAINING",
         "charUrl": "https://swgoh.gg/characters/rey-jedi-training/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rey_tlj.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/rey-jedi-training/best-mods/",
         "mods": {
             "sets": [
@@ -3501,10 +3156,8 @@
     },
     {
         "name": "Rey (Scavenger)",
-        "defId": "REY",
         "charUrl": "https://swgoh.gg/characters/rey-scavenger/",
         "image": "https://game-assets.swgoh.gg/tex.charui_reyjakku.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/rey-scavenger/best-mods/",
         "mods": {
             "sets": [
@@ -3521,10 +3174,8 @@
     },
     {
         "name": "Rose Tico",
-        "defId": "ROSETICO",
         "charUrl": "https://swgoh.gg/characters/rose-tico/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rose.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/rose-tico/best-mods/",
         "mods": {
             "sets": [
@@ -3535,17 +3186,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Critical Chance",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense/ Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
         "name": "Royal Guard",
-        "defId": "ROYALGUARD",
         "charUrl": "https://swgoh.gg/characters/royal-guard/",
         "image": "https://game-assets.swgoh.gg/tex.charui_royalguard.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/royal-guard/best-mods/",
         "mods": {
             "sets": [
@@ -3563,10 +3212,8 @@
     },
     {
         "name": "Sabine Wren",
-        "defId": "SABINEWRENS3",
         "charUrl": "https://swgoh.gg/characters/sabine-wren/",
         "image": "https://game-assets.swgoh.gg/tex.charui_sabine_s3.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/sabine-wren/best-mods/",
         "mods": {
             "sets": [
@@ -3583,10 +3230,8 @@
     },
     {
         "name": "Savage Opress",
-        "defId": "SAVAGEOPRESS",
         "charUrl": "https://swgoh.gg/characters/savage-opress/",
         "image": "https://game-assets.swgoh.gg/tex.charui_savageopress.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/savage-opress/best-mods/",
         "mods": {
             "sets": [
@@ -3604,10 +3249,8 @@
     },
     {
         "name": "Scarif Rebel Pathfinder",
-        "defId": "SCARIFREBEL",
         "charUrl": "https://swgoh.gg/characters/scarif-rebel-pathfinder/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rebel_scarif.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/scarif-rebel-pathfinder/best-mods/",
         "mods": {
             "sets": [
@@ -3625,10 +3268,8 @@
     },
     {
         "name": "Shaak Ti",
-        "defId": "SHAAKTI",
         "charUrl": "https://swgoh.gg/characters/shaak-ti/",
         "image": "https://game-assets.swgoh.gg/tex.charui_shaakti.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/shaak-ti/best-mods/",
         "mods": {
             "sets": [
@@ -3645,10 +3286,8 @@
     },
     {
         "name": "Shoretrooper",
-        "defId": "SHORETROOPER",
         "charUrl": "https://swgoh.gg/characters/shoretrooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_troopershore.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/shoretrooper/best-mods/",
         "mods": {
             "sets": [
@@ -3666,10 +3305,8 @@
     },
     {
         "name": "Sith Assassin",
-        "defId": "SITHASSASSIN",
         "charUrl": "https://swgoh.gg/characters/sith-assassin/",
         "image": "https://game-assets.swgoh.gg/tex.charui_sithassassin.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/sith-assassin/best-mods/",
         "mods": {
             "sets": [
@@ -3686,10 +3323,8 @@
     },
     {
         "name": "Sith Empire Trooper",
-        "defId": "SITHTROOPER",
         "charUrl": "https://swgoh.gg/characters/sith-empire-trooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_sithtrooper.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/sith-empire-trooper/best-mods/",
         "mods": {
             "sets": [
@@ -3707,10 +3342,8 @@
     },
     {
         "name": "Sith Eternal Emperor",
-        "defId": "SITHPALPATINE",
         "charUrl": "https://swgoh.gg/characters/sith-eternal-emperor/",
         "image": "https://game-assets.swgoh.gg/tex.charui_espalpatine_pre.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/sith-eternal-emperor/best-mods/",
         "mods": {
             "sets": [
@@ -3728,10 +3361,8 @@
     },
     {
         "name": "Sith Marauder",
-        "defId": "SITHMARAUDER",
         "charUrl": "https://swgoh.gg/characters/sith-marauder/",
         "image": "https://game-assets.swgoh.gg/tex.charui_sithmarauder.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/sith-marauder/best-mods/",
         "mods": {
             "sets": [
@@ -3748,10 +3379,8 @@
     },
     {
         "name": "Sith Trooper",
-        "defId": "FOSITHTROOPER",
         "charUrl": "https://swgoh.gg/characters/sith-trooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_firstorder_sithtrooper.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/sith-trooper/best-mods/",
         "mods": {
             "sets": [
@@ -3768,10 +3397,8 @@
     },
     {
         "name": "Snowtrooper",
-        "defId": "SNOWTROOPER",
         "charUrl": "https://swgoh.gg/characters/snowtrooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_troopersnow.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/snowtrooper/best-mods/",
         "mods": {
             "sets": [
@@ -3788,10 +3415,8 @@
     },
     {
         "name": "Starkiller",
-        "defId": "STARKILLER",
         "charUrl": "https://swgoh.gg/characters/starkiller/",
         "image": "https://game-assets.swgoh.gg/tex.charui_starkiller.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/starkiller/best-mods/",
         "mods": {
             "sets": [
@@ -3808,10 +3433,8 @@
     },
     {
         "name": "Stormtrooper",
-        "defId": "STORMTROOPER",
         "charUrl": "https://swgoh.gg/characters/stormtrooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperstorm.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/stormtrooper/best-mods/",
         "mods": {
             "sets": [
@@ -3829,10 +3452,8 @@
     },
     {
         "name": "Stormtrooper Han",
-        "defId": "STORMTROOPERHAN",
         "charUrl": "https://swgoh.gg/characters/stormtrooper-han/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperstorm_han.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/stormtrooper-han/best-mods/",
         "mods": {
             "sets": [
@@ -3850,10 +3471,8 @@
     },
     {
         "name": "Sun Fac",
-        "defId": "SUNFAC",
         "charUrl": "https://swgoh.gg/characters/sun-fac/",
         "image": "https://game-assets.swgoh.gg/tex.charui_geonosian_sunfac.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/sun-fac/best-mods/",
         "mods": {
             "sets": [
@@ -3871,10 +3490,8 @@
     },
     {
         "name": "Supreme Leader Kylo Ren",
-        "defId": "SUPREMELEADERKYLOREN",
         "charUrl": "https://swgoh.gg/characters/supreme-leader-kylo-ren/",
         "image": "https://game-assets.swgoh.gg/tex.charui_kyloren_tros.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/supreme-leader-kylo-ren/best-mods/",
         "mods": {
             "sets": [
@@ -3891,10 +3508,8 @@
     },
     {
         "name": "T3-M4",
-        "defId": "T3_M4",
         "charUrl": "https://swgoh.gg/characters/t3-m4/",
         "image": "https://game-assets.swgoh.gg/tex.charui_t3m4.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/t3-m4/best-mods/",
         "mods": {
             "sets": [
@@ -3904,17 +3519,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Critical Chance",
+            "triangle": "Protection/ Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         }
     },
     {
         "name": "TIE Fighter Pilot",
-        "defId": "TIEFIGHTERPILOT",
         "charUrl": "https://swgoh.gg/characters/tie-fighter-pilot/",
         "image": "https://game-assets.swgoh.gg/tex.charui_tiepilot.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/tie-fighter-pilot/best-mods/",
         "mods": {
             "sets": [
@@ -3931,10 +3544,8 @@
     },
     {
         "name": "Talia",
-        "defId": "TALIA",
         "charUrl": "https://swgoh.gg/characters/talia/",
         "image": "https://game-assets.swgoh.gg/tex.charui_nightsister_talia.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/talia/best-mods/",
         "mods": {
             "sets": [
@@ -3946,15 +3557,13 @@
             "diamond": "Defense",
             "triangle": "Offense/ Health",
             "circle": "Health",
-            "cross": "Offense/ Health"
+            "cross": "Health/ Offense"
         }
     },
     {
         "name": "Tech",
-        "defId": "BADBATCHTECH",
         "charUrl": "https://swgoh.gg/characters/tech/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bb_tech.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/tech/best-mods/",
         "mods": {
             "sets": [
@@ -3971,10 +3580,8 @@
     },
     {
         "name": "Teebo",
-        "defId": "TEEBO",
         "charUrl": "https://swgoh.gg/characters/teebo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ewok_teebo.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/teebo/best-mods/",
         "mods": {
             "sets": [
@@ -3985,17 +3592,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Critical Chance",
+            "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
             "cross": "Potency"
         }
     },
     {
         "name": "The Armorer",
-        "defId": "ARMORER",
         "charUrl": "https://swgoh.gg/characters/the-armorer/",
         "image": "https://game-assets.swgoh.gg/tex.charui_armorer.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/the-armorer/best-mods/",
         "mods": {
             "sets": [
@@ -4012,10 +3617,8 @@
     },
     {
         "name": "The Mandalorian",
-        "defId": "THEMANDALORIAN",
         "charUrl": "https://swgoh.gg/characters/the-mandalorian/",
         "image": "https://game-assets.swgoh.gg/tex.charui_mandalorian.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/the-mandalorian/best-mods/",
         "mods": {
             "sets": [
@@ -4026,16 +3629,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
     {
         "name": "The Mandalorian (Beskar Armor)",
-        "defId": "THEMANDALORIANBESKARARMOR",
         "charUrl": "https://swgoh.gg/characters/the-mandalorian-beskar-armor/",
         "image": "https://game-assets.swgoh.gg/tex.charui_mandobeskar.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/the-mandalorian-beskar-armor/best-mods/",
         "mods": {
             "sets": [
@@ -4052,10 +3653,8 @@
     },
     {
         "name": "Threepio & Chewie",
-        "defId": "C3POCHEWBACCA",
         "charUrl": "https://swgoh.gg/characters/threepio-chewie/",
         "image": "https://game-assets.swgoh.gg/tex.charui_chewbacca_c3po.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/threepio-chewie/best-mods/",
         "mods": {
             "sets": [
@@ -4066,16 +3665,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Offense"
         }
     },
     {
         "name": "Tusken Raider",
-        "defId": "TUSKENRAIDER",
         "charUrl": "https://swgoh.gg/characters/tusken-raider/",
         "image": "https://game-assets.swgoh.gg/tex.charui_tuskenraider.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/tusken-raider/best-mods/",
         "mods": {
             "sets": [
@@ -4092,10 +3689,8 @@
     },
     {
         "name": "Tusken Shaman",
-        "defId": "TUSKENSHAMAN",
         "charUrl": "https://swgoh.gg/characters/tusken-shaman/",
         "image": "https://game-assets.swgoh.gg/tex.charui_tuskenshaman.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/tusken-shaman/best-mods/",
         "mods": {
             "sets": [
@@ -4105,17 +3700,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Offense/ Crit. Damage",
             "circle": "Protection/ Health",
             "cross": "Potency"
         }
     },
     {
         "name": "URoRRuR'R'R",
-        "defId": "URORRURRR",
         "charUrl": "https://swgoh.gg/characters/urorrurrr/",
         "image": "https://game-assets.swgoh.gg/tex.charui_urorrurrr.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/urorrurrr/best-mods/",
         "mods": {
             "sets": [
@@ -4132,10 +3725,8 @@
     },
     {
         "name": "Ugnaught",
-        "defId": "UGNAUGHT",
         "charUrl": "https://swgoh.gg/characters/ugnaught/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ugnaught.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/ugnaught/best-mods/",
         "mods": {
             "sets": [
@@ -4145,17 +3736,15 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Critical Chance",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Health/ Protection",
             "cross": "Potency"
         }
     },
     {
         "name": "Vandor Chewbacca",
-        "defId": "YOUNGCHEWBACCA",
         "charUrl": "https://swgoh.gg/characters/vandor-chewbacca/",
         "image": "https://game-assets.swgoh.gg/tex.charui_chewbacca_vandor.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/vandor-chewbacca/best-mods/",
         "mods": {
             "sets": [
@@ -4173,10 +3762,8 @@
     },
     {
         "name": "Veteran Smuggler Chewbacca",
-        "defId": "SMUGGLERCHEWBACCA",
         "charUrl": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/",
         "image": "https://game-assets.swgoh.gg/tex.charui_tfa_chewbacca.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/best-mods/",
         "mods": {
             "sets": [
@@ -4193,10 +3780,8 @@
     },
     {
         "name": "Veteran Smuggler Han Solo",
-        "defId": "SMUGGLERHAN",
         "charUrl": "https://swgoh.gg/characters/veteran-smuggler-han-solo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_tfa_han.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/veteran-smuggler-han-solo/best-mods/",
         "mods": {
             "sets": [
@@ -4213,10 +3798,8 @@
     },
     {
         "name": "Visas Marr",
-        "defId": "VISASMARR",
         "charUrl": "https://swgoh.gg/characters/visas-marr/",
         "image": "https://game-assets.swgoh.gg/tex.charui_visas.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/visas-marr/best-mods/",
         "mods": {
             "sets": [
@@ -4234,10 +3817,8 @@
     },
     {
         "name": "Wampa",
-        "defId": "WAMPA",
         "charUrl": "https://swgoh.gg/characters/wampa/",
         "image": "https://game-assets.swgoh.gg/tex.charui_wampa.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/wampa/best-mods/",
         "mods": {
             "sets": [
@@ -4254,10 +3835,8 @@
     },
     {
         "name": "Wat Tambor",
-        "defId": "WATTAMBOR",
         "charUrl": "https://swgoh.gg/characters/wat-tambor/",
         "image": "https://game-assets.swgoh.gg/tex.charui_wattambor.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/wat-tambor/best-mods/",
         "mods": {
             "sets": [
@@ -4274,10 +3853,8 @@
     },
     {
         "name": "Wedge Antilles",
-        "defId": "WEDGEANTILLES",
         "charUrl": "https://swgoh.gg/characters/wedge-antilles/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rebelpilot_wedge.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/wedge-antilles/best-mods/",
         "mods": {
             "sets": [
@@ -4294,10 +3871,8 @@
     },
     {
         "name": "Wicket",
-        "defId": "WICKET",
         "charUrl": "https://swgoh.gg/characters/wicket/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ewok_wicket.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/wicket/best-mods/",
         "mods": {
             "sets": [
@@ -4314,10 +3889,8 @@
     },
     {
         "name": "Wrecker",
-        "defId": "BADBATCHWRECKER",
         "charUrl": "https://swgoh.gg/characters/wrecker/",
         "image": "https://game-assets.swgoh.gg/tex.charui_bb_wrecker.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/wrecker/best-mods/",
         "mods": {
             "sets": [
@@ -4335,10 +3908,8 @@
     },
     {
         "name": "Young Han Solo",
-        "defId": "YOUNGHAN",
         "charUrl": "https://swgoh.gg/characters/young-han-solo/",
         "image": "https://game-assets.swgoh.gg/tex.charui_han_young.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/young-han-solo/best-mods/",
         "mods": {
             "sets": [
@@ -4355,10 +3926,8 @@
     },
     {
         "name": "Young Lando Calrissian",
-        "defId": "YOUNGLANDO",
         "charUrl": "https://swgoh.gg/characters/young-lando-calrissian/",
         "image": "https://game-assets.swgoh.gg/tex.charui_younglando.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/young-lando-calrissian/best-mods/",
         "mods": {
             "sets": [
@@ -4369,16 +3938,14 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
     {
         "name": "Zaalbar",
-        "defId": "ZAALBAR",
         "charUrl": "https://swgoh.gg/characters/zaalbar/",
         "image": "https://game-assets.swgoh.gg/tex.charui_zaalbar.png",
-        "side": "Light Side",
         "modsUrl": "https://swgoh.gg/characters/zaalbar/best-mods/",
         "mods": {
             "sets": [
@@ -4396,10 +3963,8 @@
     },
     {
         "name": "Zam Wesell",
-        "defId": "ZAMWESELL",
         "charUrl": "https://swgoh.gg/characters/zam-wesell/",
         "image": "https://game-assets.swgoh.gg/tex.charui_zamwesell.png",
-        "side": "Dark Side",
         "modsUrl": "https://swgoh.gg/characters/zam-wesell/best-mods/",
         "mods": {
             "sets": [
@@ -4409,7 +3974,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Offense/ Crit. Damage",
             "circle": "Protection",
             "cross": "Potency"
         }

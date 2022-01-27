@@ -341,7 +341,9 @@
             "Heal",
             "Leader: +Speed",
             "Leader: +Tenacity",
-            "Leader: Assist"
+            "Leader: Assist",
+            "Reduce Cooldowns",
+            "Tenacity Up"
         ],
         "role": "Support",
         "ship": "CAPITALMONCALAMARICRUISER",
@@ -31480,6 +31482,182 @@
         "role": "Tank",
         "ship": "UWINGSCARIF",
         "ship_slot": 1,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Second Sister",
+        "base_id": "SECONDSISTER",
+        "pk": 2700,
+        "url": "http://swgoh.gg/characters/second-sister/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_secondsister.png",
+        "power": 35101,
+        "description": "Ruthless Inquisitor Attacker that specializes in eliminating Jedi",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "007",
+                    "007",
+                    "003",
+                    "008",
+                    "011",
+                    "010"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "030",
+                    "014",
+                    "018",
+                    "028",
+                    "032"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "034",
+                    "014",
+                    "028",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "068",
+                    "022",
+                    "037",
+                    "068",
+                    "049",
+                    "082"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "089",
+                    "065",
+                    "070",
+                    "015",
+                    "040",
+                    "088"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "045",
+                    "041",
+                    "041",
+                    "047",
+                    "073",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "068",
+                    "070",
+                    "105",
+                    "083",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "095",
+                    "111",
+                    "117",
+                    "103",
+                    "112",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "071",
+                    "114",
+                    "111",
+                    "173",
+                    "114",
+                    "125"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "117",
+                    "172",
+                    "083",
+                    "114",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "117",
+                    "136",
+                    "146",
+                    "131",
+                    "137",
+                    "144"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "162",
+                    "161",
+                    "168",
+                    "169",
+                    "G12Finisher_SECONDSISTER_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Empire",
+            "Inquisitorius",
+            "Leader",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Counter",
+            "Critical Damage Up",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: Healing",
+            "Remove Turn Meter",
+            "Stun"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
         "activate_shard_count": 25
     },
     {
