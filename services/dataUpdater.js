@@ -413,7 +413,8 @@ async function updateCharacterMods(currentCharacters, freshMods) {
         const thisChar = currentCharacters.find(ch =>
             ch.uniqueName === character.defId ||
             ch.name === character.name ||
-            ch.charUrl === character.url
+            ch.url === character.charUrl ||
+            ch.aliases.includes(character.name)
         );
         const mods = {
             url:      character.modsUrl,
@@ -431,7 +432,7 @@ async function updateCharacterMods(currentCharacters, freshMods) {
             thisChar.mods = mods;
         } else {
             // This shouldn't really happen since it should be caught in updateCharacters
-            console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})`);
+            console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})\n${character}`);
             // const newCharacter = createEmptyChar(character.name, character.url, character.defId);
             //
             // newCharacter.mods = mods;

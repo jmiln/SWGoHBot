@@ -997,9 +997,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Protection",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense/ Protection"
+            "cross": "Offense"
         }
     },
     {
@@ -2568,7 +2568,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection/ Health",
             "cross": "Potency"
         }
@@ -3264,6 +3264,24 @@
             "triangle": "Protection/ Health",
             "circle": "Protection",
             "cross": "Protection/ Tenacity"
+        }
+    },
+    {
+        "name": "Second Sister",
+        "charUrl": "https://swgoh.gg/characters/second-sister/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_secondsister.png",
+        "modsUrl": "https://swgoh.gg/characters/second-sister/best-mods/",
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Critical Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health/ Protection",
+            "cross": "Potency"
         }
     },
     {
