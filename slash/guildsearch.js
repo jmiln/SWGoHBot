@@ -59,7 +59,7 @@ class GuildSearch extends Command {
                     description: "View only the top x in the list (1-50)",
                     type: "INTEGER",
                     min_value: 0,
-                    max_value: 1440,
+                    max_value: 50,
                 },
                 {
                     name: "rarity",
@@ -149,7 +149,7 @@ class GuildSearch extends Command {
         } else if (chars.length > 1) {
             // Too many characters found, give a list of possible matches
             const charSorted = chars
-                .sort((p, c) => p.name > c.name ? 1 : -1)   // Sort the users by name
+                .sort((p, c) => p.name > c.name ? 1 : -1)   // Sort the characters by name
                 .map(c => c.name);                          // Map it to just show the name strings
             return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charSorted.join("\n")));
         } else {
