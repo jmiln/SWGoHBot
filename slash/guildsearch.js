@@ -5,95 +5,154 @@ class GuildSearch extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "guildsearch",
-            guildOnly: false,
             category: "SWGoH",
-            aliases: ["search", "gs"],
             description: "Display stats for a guild's character",
             permissions: ["EMBED_LINKS"],
             options: [
-                // STRING ac, character, sort, stat
                 {
                     name: "character",
-                    description: "The character you want to display",
-                    type: "STRING",
-                    required: true
-                },
-                {
-                    name: "allycode",
-                    description: "An ally code to determine which guild you're wanting to look up",
-                    type: "STRING"
-                },
-                {
-                    name: "sort",
-                    description: "Choose what to sort by",
-                    type: "STRING",
-                    choices: [
-                        { name: "Gear", value: "gear" },
-                        { name: "GP", value: "gp" },
-                        { name: "Name", value: "name" }
+                    description: "Look for your guild's stats on a character.",
+                    type: "SUB_COMMAND",
+                    options: [
+                        {
+                            name: "character",
+                            description: "The character you want to display",
+                            type: "STRING",
+                            required: true
+                        },
+                        {
+                            name: "allycode",
+                            description: "An ally code to determine which guild you're wanting to look up",
+                            type: "STRING"
+                        },
+                        {
+                            name: "sort",
+                            description: "Choose what to sort by",
+                            type: "STRING",
+                            choices: [
+                                { name: "Gear", value: "gear" },
+                                { name: "GP", value: "gp" },
+                                { name: "Name", value: "name" }
+                            ]
+                        },
+                        {
+                            name: "stat",
+                            description: "Which stat you want it to show",
+                            type: "STRING",
+                            choices: [
+                                { name: "Health", value: "Health" },
+                                { name: "Protection", value: "Protection" },
+                                { name: "Speed", value: "Speed" },
+                                { name: "Potency", value: "Potency" },
+                                { name: "Physical Critical Chance", value: "Physical Critical Chance" },
+                                { name: "Physical Damage", value: "Physical Damage" },
+                                { name: "Special Critical Chance", value: "Special Critical Chance" },
+                                { name: "Special Damage", value: "Special Damage" },
+                                { name: "Critical Damage", value: "Critical Damage" },
+                                { name: "Tenacity", value: "Tenacity" },
+                                { name: "Accuracy", value: "Accuracy" },
+                                { name: "Armor", value: "Armor" },
+                                { name: "Resistance", value: "Resistance" }
+                            ]
+                        },
+                        // INTEGER: top, rarity/ stars
+                        {
+                            name: "top",
+                            description: "View only the top x in the list (1-50)",
+                            type: "INTEGER",
+                            min_value: 0,
+                            max_value: 50,
+                        },
+                        {
+                            name: "rarity",
+                            description: "View only X rarity (Star lvl) and above. (1-7)",
+                            type: "INTEGER",
+                            min_value: 0,
+                            max_value: 7,
+                        },
+                        // BOOL: reverse, zetas
+                        {
+                            name: "reverse",
+                            description: "Reverse the sort order",
+                            type: "BOOLEAN"
+                        },
+                        {
+                            name: "zetas",
+                            description: "Show only results that have zeta'd abilities",
+                            type: "BOOLEAN"
+                        },
                     ]
                 },
-                {
-                    name: "stat",
-                    description: "Which stat you want it to show",
-                    type: "STRING",
-                    choices: [
-                        { name: "Health", value: "Health" },
-                        { name: "Protection", value: "Protection" },
-                        { name: "Speed", value: "Speed" },
-                        { name: "Potency", value: "Potency" },
-                        { name: "Physical Critical Chance", value: "Physical Critical Chance" },
-                        { name: "Physical Damage", value: "Physical Damage" },
-                        { name: "Special Critical Chance", value: "Special Critical Chance" },
-                        { name: "Special Damage", value: "Special Damage" },
-                        { name: "Critical Damage", value: "Critical Damage" },
-                        { name: "Tenacity", value: "Tenacity" },
-                        { name: "Accuracy", value: "Accuracy" },
-                        { name: "Armor", value: "Armor" },
-                        { name: "Resistance", value: "Resistance" }
-                    ]
-                },
-                // INTEGER: top, rarity/ stars
-                {
-                    name: "top",
-                    description: "View only the top x in the list (1-50)",
-                    type: "INTEGER",
-                    min_value: 0,
-                    max_value: 50,
-                },
-                {
-                    name: "rarity",
-                    description: "View only X rarity (Star lvl) and above. (1-7)",
-                    type: "INTEGER",
-                    min_value: 0,
-                    max_value: 7,
-                },
-                // BOOL: ship, reverse, zetas
                 {
                     name: "ship",
-                    description: "Force it to look for just ships",
-                    type: "BOOLEAN"
-                },
-                {
-                    name: "reverse",
-                    description: "Reverse the sort order",
-                    type: "BOOLEAN"
-                },
-                {
-                    name: "zetas",
-                    description: "Show only results that have zeta'd abilities",
-                    type: "BOOLEAN"
-                },
+                    description: "Look for your guild's stats on a ship.",
+                    type: "SUB_COMMAND",
+                    options: [
+                        {
+                            name: "ship",
+                            description: "The ship you want to display",
+                            type: "STRING",
+                            required: true
+                        },
+                        {
+                            name: "allycode",
+                            description: "An ally code to determine which guild you're wanting to look up",
+                            type: "STRING"
+                        },
+                        {
+                            name: "sort",
+                            description: "Choose what to sort by",
+                            type: "STRING",
+                            choices: [
+                                { name: "GP", value: "gp" },
+                                { name: "Name", value: "name" },
+                                { name: "Rarity", value: "rarity" },
+                            ]
+                        },
+                        // INTEGER: top, rarity/ stars
+                        {
+                            name: "top",
+                            description: "View only the top x in the list (1-50)",
+                            type: "INTEGER",
+                            min_value: 0,
+                            max_value: 50,
+                        },
+                        {
+                            name: "rarity",
+                            description: "View only X rarity (Star lvl) and above. (1-7)",
+                            type: "INTEGER",
+                            min_value: 0,
+                            max_value: 7,
+                        },
+                        // BOOL: reverse
+                        {
+                            name: "reverse",
+                            description: "Reverse the sort order",
+                            type: "BOOLEAN"
+                        },
+                    ]
+                }
             ]
         });
     }
 
     async run(Bot, interaction, args, options) { // eslint-disable-line no-unused-vars
+        const searchType = interaction.options.getSubcommand();
+
         // Get all the string options
-        const searchChar = interaction.options.getString("character");
         const sort       = interaction.options.getString("sort");
         const stat       = interaction.options.getString("stat");
         let allycode     = interaction.options.getString("allycode");
+
+        const rarityMap = {
+            "ONESTAR":   1,
+            "TWOSTAR":   2,
+            "THREESTAR": 3,
+            "FOURSTAR":  4,
+            "FIVESTAR":  5,
+            "SIXSTAR":   6,
+            "SEVENSTAR": 7
+        };
 
         // If an ally code is supplied, try using it
         // If not, it'll try grabbing the primary registered code of the author
@@ -115,50 +174,40 @@ class GuildSearch extends Command {
         }
 
         // Get the boolean options
-        const isShip    = interaction.options.getBoolean("ship");
         const doReverse = interaction.options.getBoolean("reverse");
         const doZeta    = interaction.options.getBoolean("zetas");
 
-        const rarityMap = {
-            "ONESTAR":   1,
-            "TWOSTAR":   2,
-            "THREESTAR": 3,
-            "FOURSTAR":  4,
-            "FIVESTAR":  5,
-            "SIXSTAR":   6,
-            "SEVENSTAR": 7
-        };
-
-        if (isShip && stat) {
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_SHIP_STATS"));
-        }
-
-        let character = null, chars = null;
-        if (isShip) {
-            chars = Bot.findChar(searchChar, Bot.ships, true);
-        } else {
-            chars = Bot.findChar(searchChar, Bot.characters);
-            if (!chars?.length) {
-                chars = Bot.findChar(searchChar, Bot.ships, true);
-            }
-        }
-
-        if (!chars?.length) {
-            // No character found, so error
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchChar));
-        } else if (chars.length > 1) {
-            // Too many characters found, give a list of possible matches
-            const charSorted = chars
-                .sort((p, c) => p.name > c.name ? 1 : -1)   // Sort the characters by name
-                .map(c => c.name);                          // Map it to just show the name strings
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charSorted.join("\n")));
-        } else {
-            // If there's just one match, use it
-            character = chars[0];
-        }
-
         await interaction.reply({content: interaction.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT")});
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+
+        let unitList = null;
+        let foundUnit = null;
+        let isShip = false;
+        let searchStr = null;
+        if (searchType === "character") {
+            // Get any matches for the character
+            searchStr = interaction.options.getString("character");
+            unitList = Bot.findChar(searchStr, Bot.characters);
+        } else {
+            // Get any matches for the ship
+            searchStr = interaction.options.getString("ship");
+            unitList = Bot.findChar(searchStr, Bot.ships, true);
+            isShip = true;
+        }
+
+        if (!unitList?.length) {
+            // No character found, so error
+            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchStr));
+        } else if (unitList.length > 1) {
+            // Too many characters found, give a list of possible matches
+            const sortedUnits = unitList
+                .sort((p, c) => p.name > c.name ? 1 : -1)   // Sort the characters by name
+                .map(c => c.name);                          // Map it to just show the name strings
+            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", sortedUnits.join("\n")));
+        } else {
+            // If there's just one match, use it
+            foundUnit = unitList[0];
+        }
 
         let guild = null;
         try {
@@ -169,40 +218,46 @@ class GuildSearch extends Command {
             }
             return super.error(interaction, Bot.codeBlock(e) + "Please try again in a bit.", {title: "Something Broke while getting your guild's roster"});
         }
-        if (!guild || !guild.roster || !guild.roster.length) {
+
+        if (!guild?.roster?.length) {
             return interaction.editReply({content: interaction.language.get("BASE_SWGOH_NO_GUILD")});
         } else {
-            interaction.editReply({content: "Found guild `" + guild.name + "`!"});
+            interaction.editReply({content: `Found guild \`${guild.name}\`!`});
 
             const oldLen = guild.roster.length;
             guild.roster = guild.roster.filter(m => m.allyCode !== null);
+
+            if (!guild.roster.length) {
+                return interaction.editReply({content: "I could not get any valid roster for that guild."});
+            }
+
             if (guild.roster.length !== oldLen) {
                 guild.warnings = guild.warnings || [];
                 guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
             }
+        }
+        const guildAllycodes = guild.roster.map(p => p.allyCode);
+
+        let guildChar;
+        try {
+            guildChar = await Bot.swgohAPI.guildStats(guildAllycodes, foundUnit.uniqueName, cooldown);
+        } catch (e) {
+            return super.error(interaction, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
         }
 
         if (stat) {
             // Looking for a stat
             const outArr = [];
 
-            const gAllycodes = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
-
-            if (!gAllycodes.length) {
-                return super.error(interaction, "I can't find any players in the requested guild.", {edit: true});
-            }
-            const gStats = await Bot.swgohAPI.guildStats(gAllycodes, character.uniqueName, cooldown);
-
-            let sortedMembers = gStats.filter(gChar => gChar?.gp).sort((a, b) => {
-                if (!a.stats || !a.stats.final) return -1;
-                if (!b.stats || !b.stats.final) return 1;
+            let sortedMembers = guildChar.filter(gChar => gChar?.gp).sort((a, b) => {
+                if (!a.stats?.final) return -1;
+                if (!b.stats?.final) return 1;
                 if (!a.stats.final[stat]) a.stats.final[stat] = 0;
                 if (!b.stats.final[stat]) b.stats.final[stat] = 0;
                 return a.stats.final[stat] < b.stats.final[stat] ? 1 : -1;
             });
 
             if (top) {
-                // if (!doReverse) sortedMembers = sortedMembers.reverse();
                 const start = doReverse ? sortedMembers.length - top : 0;
                 const end   = doReverse ? sortedMembers.length       : top;
                 sortedMembers = sortedMembers.slice(start, end);
@@ -223,7 +278,7 @@ class GuildSearch extends Command {
                         stats[s] = stats.final[s] ? stats.final[s].toLocaleString() : "N/A";
                     }
                 });
-                stats.player = guild.roster.find(m => m.allyCode === member.allyCode).name;
+                stats.player = member.player;
                 stats.gp     = member.gp ? member.gp.toLocaleString() : 0;
                 stats.gear   = member.gear;
                 if (!stats.Protection) stats.Protection = 0;
@@ -249,7 +304,7 @@ class GuildSearch extends Command {
             const fields = [];
             if (!outArr.length) {
                 fields.push({
-                    name: character.name,
+                    name: foundUnit.name,
                     value: interaction.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER")
                 });
             } else {
@@ -265,7 +320,7 @@ class GuildSearch extends Command {
                 if (outTable.length) {
                     const outMsgArr = Bot.msgArray(outTable, "\n", 700);
                     outMsgArr.forEach((m, ix) => {
-                        const name = (ix === 0) ? interaction.language.get("COMMAND_GUILDSEARCH_SORTED_BY", character.name, stat, doReverse) : interaction.language.get("BASE_CONT_STRING");
+                        const name = (ix === 0) ? interaction.language.get("COMMAND_GUILDSEARCH_SORTED_BY", foundUnit.name, stat, doReverse) : interaction.language.get("BASE_CONT_STRING");
                         fields.push({
                             name: name,
                             value: m
@@ -287,21 +342,18 @@ class GuildSearch extends Command {
                 fields: fields,
                 footer: footer
             }]});
-        }  else {
+        } else {
             // Not looking for stat info
             const sortType = sort ? sort : "name";
-            let guildChar;
-            try {
-                guildChar = await Bot.swgohAPI.guildStats(guild.roster.map(p => p.allyCode), character.uniqueName, cooldown);
-            } catch (e) {
-                return super.error(interaction, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
-            }
 
             for (const ch of guildChar) {
                 ch.zetas = ch.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
             }
 
-            if (!guildChar || guildChar.length === 0 || (starLvl > 0 && !guildChar.filter(c => c.rarity >= starLvl).length) || (doZeta && !guildChar.filter(c => c.zetas.length > 0).length)) {
+            if (!guildChar?.length ||
+                (starLvl > 0 && !guildChar.filter(c => c.rarity >= starLvl).length) ||
+                (doZeta && !guildChar.filter(c => c.zetas.length > 0).length)) {
+
                 let desc = "";
                 if (doZeta && !guildChar.filter(c => c.zetas.length > 0).length) {
                     desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
@@ -315,7 +367,7 @@ class GuildSearch extends Command {
                     desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
                 }
                 return super.error(interaction, desc, {
-                    title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, character.name),
+                    title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
                     footer: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(guild.updated, interaction)),
                     edit: true
                 });
@@ -328,7 +380,7 @@ class GuildSearch extends Command {
             const zetas = [];
             let apiChar;
             try {
-                apiChar = await Bot.swgohAPI.getCharacter(character.uniqueName);
+                apiChar = await Bot.swgohAPI.getCharacter(foundUnit.uniqueName);
             } catch (e) {
                 return super.error(interaction, "Couldn't get the character - " + e);
             }
@@ -461,13 +513,16 @@ class GuildSearch extends Command {
 
             const footer = Bot.updatedFooter(guildChar.updated, interaction, "guild", cooldown);
             try {
-                interaction.editReply({embeds: [{
-                    author: {
-                        name: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, character.name, totalUnlocked)
-                    },
-                    fields: fields,
-                    footer: footer
-                }]});
+                interaction.editReply({
+                    content: null,
+                    embeds: [{
+                        author: {
+                            name: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked)
+                        },
+                        fields: fields,
+                        footer: footer
+                    }]
+                });
             } catch (e) {
                 Bot.logger.error("ERROR", "Error sending message in guildsearch - " + e);
                 Bot.logger.error(fields);
