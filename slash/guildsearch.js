@@ -343,9 +343,20 @@ class GuildSearch extends Command {
             if (sortType === "name") {
                 // Sort by name
                 sortedGuild = guildChar.sort((p, c) => p.player.toLowerCase() > c.player.toLowerCase() ? 1 : -1);
-            } else if (["gp", "gear"].includes(sortType)) {
-                // Sort by whichever it needs to
-                sortedGuild = guildChar.sort((p, c) => p[sortType] > c[sortType] ? 1 : -1);
+            } else if (sortType === "gp") {
+                // Sort by the GP
+                sortedGuild = guildChar.sort((p, c) => p.gp > c.gp ? 1 : -1);
+            } else if (sortType === "gear") {
+                // Sort by the gear
+                sortedGuild = guildChar.sort((p, c) => {
+                    if (p.gear === c.gear) {
+                        // If they're the same gear level, sort it by how many extra pieces they have attached
+                        return p.equipped?.length > c.equipped?.length ? 1 : -1;
+                    } else {
+                        // If they're different gear levels, it's easy
+                        return p.gear > c.gear ? 1 : -1;
+                    }
+                });
             }
 
             if (top) {
