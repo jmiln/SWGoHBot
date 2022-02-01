@@ -76,7 +76,7 @@ class MyArena extends Command {
                 const char = player.arena.char.squad[ix];
                 let thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get the zetas of that character
+                const thisZ = thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
             }
@@ -103,7 +103,7 @@ class MyArena extends Command {
                 const char = player.arena.char.squad[ix];
                 let thisChar = playerStats.roster.find(c => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter(s => s.isZeta && s.tier === s.tiers);    // Get the zetas of that character
+                const thisZ = thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 const cName = `**${"z".repeat(thisZ.length)}${thisChar.nameKey}**`;
                 const speed  = thisChar.stats.final.Speed.toLocaleString();

@@ -832,7 +832,7 @@ class Guilds extends Command {
             let zetaCount = 0;
             for (const member of guildMembers) {
                 const zetaRoster = member.roster
-                    .map(char => char?.skills?.filter(s => s.isZeta && s.tier === s.tiers).length);
+                    .map(char => char?.skills?.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length);
                 zetaCount += zetaRoster.reduce((acc, curr) => acc + curr, 0);
             }
             fields.push({

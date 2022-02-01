@@ -298,7 +298,7 @@ class GuildSearch extends Command {
             }
 
             for (const ch of guildChar) {
-                ch.zetas = ch.skills.filter(s => s.isZeta && s.tier === s.tiers);
+                ch.zetas = ch.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
             }
 
             if (!guildChar || guildChar.length === 0 || (starLvl > 0 && !guildChar.filter(c => c.rarity >= starLvl).length) || (doZeta && !guildChar.filter(c => c.zetas.length > 0).length)) {

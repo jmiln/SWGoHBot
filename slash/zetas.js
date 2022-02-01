@@ -112,7 +112,7 @@ class Zetas extends Command {
                     }
                 }
                 thisChar.skills.forEach(skill => {
-                    if (skill && skill.isZeta && skill.tier === skill.tiers) {
+                    if ((skill.isZeta && skill.tier === skill.tiers) || (skill.isOmicron && skill.tier >= skill.tiers-1)) {
                         count++;
                         // If the character is not already listed, add it
                         if (!zetas[thisChar.nameKey]) {

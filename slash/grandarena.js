@@ -228,8 +228,13 @@ class GrandArena extends Command {
         }
         overview.push({
             check: labels.zetas,
-            user1: user1.roster.reduce((a, b) => a + b.skills.filter(s => s.tier === s.tiers && s.isZeta).length, 0),
-            user2: user2.roster.reduce((a, b) => a + b.skills.filter(s => s.tier === s.tiers && s.isZeta).length, 0)
+            user1: user1.roster.reduce((a, b) => a + b.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length, 0),
+            user2: user2.roster.reduce((a, b) => a + b.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length, 0)
+        });
+        overview.push({
+            check: "Omicrons",
+            user1: user1.roster.reduce((a, b) => a + b.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length, 0),
+            user2: user2.roster.reduce((a, b) => a + b.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length, 0)
         });
         overview = Bot.codeBlock(Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
@@ -541,8 +546,13 @@ class GrandArena extends Command {
 
                 checkArr[cName].push({
                     check: labels.zetas,
-                    user1: user1Char ? user1Char.skills.filter(s => s.tier === s.tiers && s.isZeta).length.toString() : "N/A",
-                    user2: user2Char ? user2Char.skills.filter(s => s.tier === s.tiers && s.isZeta).length.toString() : "N/A"
+                    user1: user1Char ? user1Char.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A",
+                    user2: user2Char ? user2Char.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A"
+                });
+                checkArr[cName].push({
+                    check: "Omicrons",
+                    user1: user1Char ? user1Char.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A",
+                    user2: user2Char ? user2Char.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A"
                 });
                 checkArr[cName].push({
                     check: labels.speed,

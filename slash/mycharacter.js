@@ -147,7 +147,10 @@ class MyCharacter extends Command {
             thisChar.skills.forEach(a => {
                 a.type = Bot.toProperCase(a.id.split("_")[0].replace("skill", ""));
                 if (a.tier === a.tiers) {
-                    if (a.isZeta) {
+                    if (a.isOmicron) {
+                        // Maxed Omicron ability
+                        a.tier = "Max O";
+                    } else if (a.isZeta) {
                         // Maxed Zeta ability
                         a.tier = "Max ✦";
                     } else if (isShip) {
