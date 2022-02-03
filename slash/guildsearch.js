@@ -6,6 +6,7 @@ class GuildSearch extends Command {
         super(Bot, {
             name: "guildsearch",
             category: "SWGoH",
+            guildOnly: false,
             description: "Display stats for a guild's character",
             permissions: ["EMBED_LINKS"],
             options: [
