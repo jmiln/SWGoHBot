@@ -140,7 +140,7 @@ class Deploy extends Command {
                                     // Make sure they both have some number of choices
                                     if (cmd.options[ix]?.choices?.length !== thisCom.options[ix]?.choices?.length) {
                                         // One of em is different than the other, so definitely needs an update
-                                        console.log("ChoiceLen is different");
+                                        debugLog("ChoiceLen is different");
                                         isDiff = true;
                                     } else {
                                         // If they have the same option count, make sure that the choices are the same inside
@@ -148,8 +148,8 @@ class Deploy extends Command {
                                             const thisChoice = thisCom.options[ix].choices[jx];
                                             if (c.name !== thisChoice.name || c.value !== thisChoice.value) {
                                                 // They have a different choice here, needs updating
-                                                console.log("Diff choices");
-                                                console.log(c, thisChoice);
+                                                debugLog("Diff choices");
+                                                debugLog(c, thisChoice);
                                                 isDiff = true;
                                                 return;
                                             }
@@ -159,7 +159,7 @@ class Deploy extends Command {
                                     // One or both have no choices
                                     if (cmd.options[ix]?.choices?.length && thisCom.options[ix]?.choices?.length) {
                                         // At least one of em has an entry, so it needs updating
-                                        console.log("choiceLen2 is diff");
+                                        debugLog("choiceLen2 is diff");
                                         isDiff = true;
                                     } else {
                                         // Neither of em have any, so nothing to do here
