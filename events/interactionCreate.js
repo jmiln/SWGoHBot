@@ -52,7 +52,7 @@ module.exports = async (Bot, client, interaction) => {
         if (ignoreArr.some(str => err.toString().includes(str))) {
             // Don't bother spitting out the whole mess.
             // Log which command broke, and the first line of the error
-            Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \n${err.split("\n")[0]}`);
+            Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \n${err.toString().split("\n")[0]}`);
         } else {
             Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
         }
