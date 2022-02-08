@@ -123,6 +123,9 @@ class Faction extends Command {
                 } catch (e) {
                     return super.error(interaction, e.message);
                 }
+                if (!player?.roster?.length) {
+                    return super.error(interaction, "I couldn't get that player's roster. Please try again later.");
+                }
                 const playerChars = [];
                 for (const c of chars) {
                     let found = player.roster.find(char => char.defId === c);
