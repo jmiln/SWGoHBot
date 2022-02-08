@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const nodeFetch = require("node-fetch");
+const nodeFetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
 const {inspect} = require("util");      // eslint-disable-line no-unused-vars
 
 class MyCharacter extends Command {
@@ -106,7 +106,7 @@ class MyCharacter extends Command {
                 rarity: thisChar.rarity,
                 level: thisChar.level,
                 gear: thisChar.gear,
-                zetas: thisChar.skills.filter(s => s.isZeta && s.tier == s.tiers).length,
+                zetas: thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length,
                 relic: thisChar.relic?.currentTier ? thisChar.relic.currentTier : 0,
                 side: character.side
             };
@@ -117,7 +117,11 @@ class MyCharacter extends Command {
                     body: JSON.stringify(fetchBody),
                     headers: { "Content-Type": "application/json" }
                 })
-                    .then(response => response.buffer())
+                    .then(async response => {
+                        const resBuf = await response.arrayBuffer();
+                        if (!resBuf) return null;
+                        return Buffer.from(resBuf);
+                    })
                     .then(image => {
                         charImg = image;
                     });
