@@ -47,7 +47,8 @@ module.exports = async (Bot, client, interaction) => {
 
         const ignoreArr = [
             "DiscordAPIError: Unknown interaction",
-            "DiscordAPIError: Missing Access"
+            "DiscordAPIError: Missing Access",
+            "HTTPError [AbortError]: The user aborted a request."
         ];
         if (ignoreArr.some(str => err.toString().includes(str))) {
             // Don't bother spitting out the whole mess.
