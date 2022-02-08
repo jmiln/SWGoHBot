@@ -631,8 +631,8 @@
         "name": "Darth Talon",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Hand of the One Sith"
+                "type": "Cantina",
+                "level": "7-G"
             }
         ]
     },
@@ -1345,10 +1345,6 @@
     {
         "name": "Jedi Knight Anakin",
         "locations": [
-            {
-                "type": "Cantina",
-                "level": "7-G"
-            },
             {
                 "type": "Hard Modes (L)",
                 "level": "5-C"
