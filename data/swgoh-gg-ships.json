@@ -42,7 +42,8 @@
             "Buff Immunity",
             "Expose",
             "Healing Immunity",
-            "Offense Up"
+            "Offense Up",
+            "Protection Up"
         ],
         "role": "Attacker",
         "capital_ship": false,
@@ -87,6 +88,7 @@
             "Tank"
         ],
         "ability_classes": [
+            "Protection Up",
             "Taunt"
         ],
         "role": "Tank",
@@ -133,6 +135,7 @@
         "ability_classes": [
             "Counter",
             "Dispel",
+            "Protection Up",
             "Taunt"
         ],
         "role": "Tank",
@@ -211,6 +214,7 @@
         ],
         "ability_classes": [
             "Defense Up",
+            "Protection Up",
             "Taunt"
         ],
         "role": "Tank",
@@ -234,6 +238,7 @@
         "ability_classes": [
             "AoE",
             "Bonus Attack",
+            "Chaff",
             "Dispel",
             "Evasion Down",
             "Foresight",
@@ -260,6 +265,7 @@
         "ability_classes": [
             "Dispel",
             "Offense Up",
+            "Protection Up",
             "Taunt",
             "Tenacity Down"
         ],
@@ -304,9 +310,11 @@
         "ability_classes": [
             "AoE",
             "Assist",
+            "Breach",
             "Dispel",
             "Expose",
             "Foresight",
+            "Protection Up",
             "Stealth",
             "Stun",
             "Taunt",
@@ -332,6 +340,7 @@
         "ability_classes": [
             "Ability Block",
             "AoE",
+            "Defense Penetration Up",
             "Expose",
             "Gain Turn Meter",
             "Offense Up",
@@ -492,6 +501,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Protection Up",
             "Speed Down",
             "Stealth"
         ],
@@ -564,6 +574,7 @@
             "Tank"
         ],
         "ability_classes": [
+            "Breach",
             "Counter",
             "Dispel",
             "Taunt"
@@ -613,6 +624,7 @@
         "ability_classes": [
             "AoE",
             "Bonus Attack",
+            "Breach",
             "Offense Up",
             "Stun"
         ],
@@ -682,7 +694,8 @@
         "ability_classes": [
             "Assist",
             "Defense Up",
-            "Heal"
+            "Heal",
+            "Protection Up"
         ],
         "role": "Support",
         "capital_ship": false,
@@ -706,6 +719,7 @@
             "Dispel",
             "Gain Turn Meter",
             "Healing Immunity",
+            "Protection Up",
             "Remove Turn Meter"
         ],
         "role": "Support",
@@ -728,6 +742,7 @@
         ],
         "ability_classes": [
             "Counter",
+            "Defense Penetration Up",
             "Dispel"
         ],
         "role": "Attacker",
@@ -783,6 +798,7 @@
             "Gain Turn Meter",
             "Offense Down",
             "Offense Up",
+            "Protection Up",
             "Stealth"
         ],
         "role": "Capital Ship",
@@ -832,6 +848,7 @@
         ],
         "ability_classes": [
             "Dispel",
+            "Protection Up",
             "Taunt"
         ],
         "role": "Support",
@@ -884,6 +901,7 @@
             "Foresight",
             "Gain Turn Meter",
             "Healing Immunity",
+            "Protection Up",
             "Tenacity Up"
         ],
         "role": "Capital Ship",
@@ -908,6 +926,7 @@
         "ability_classes": [
             "Ability Block",
             "Assist",
+            "Breach",
             "Buff Immunity",
             "Dispel",
             "Stealth",
@@ -933,6 +952,7 @@
         "ability_classes": [
             "Assist",
             "Dispel",
+            "Protection Up",
             "Taunt"
         ],
         "role": "Tank",
@@ -1068,9 +1088,11 @@
         "ability_classes": [
             "Ability Block",
             "AoE",
+            "Breach",
             "Counter",
             "Dispel",
             "Gain Turn Meter",
+            "Protection Up",
             "Reset Cooldown",
             "Taunt"
         ],
@@ -1176,6 +1198,31 @@
         "activate_shard_count": 10
     },
     {
+        "name": "TIE/IN Interceptor Prototype",
+        "base_id": "TIEINTERCEPTOR",
+        "url": "http://swgoh.gg/ships/tiein-interceptor-prototype/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_tie_interceptor_prototype.png",
+        "power": 87071,
+        "description": "Imperial fast-attack craft that is as nimble as it is deadly. Second Sister's force powers allow her to perform maneuvers many would consider unnatural.",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Empire",
+            "Inquisitorius"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Buff Immunity",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter"
+        ],
+        "role": "Attacker",
+        "capital_ship": false,
+        "activate_shard_count": 145
+    },
+    {
         "name": "Umbaran Starfighter",
         "base_id": "UMBARANSTARFIGHTER",
         "url": "http://swgoh.gg/ships/umbaran-starfighter/",
@@ -1220,6 +1267,7 @@
             "Ability Block",
             "AoE",
             "Assist",
+            "Blind",
             "Buff Immunity",
             "Dispel",
             "Reset Cooldown"
@@ -1269,6 +1317,7 @@
             "AoE",
             "Assist",
             "Bonus Attack",
+            "Breach",
             "Counter",
             "Defense Down"
         ],

@@ -1582,6 +1582,26 @@
         ]
     },
     {
+        "name": "TIE/IN Interceptor Prototype",
+        "uniqueName": "TIEINTERCEPTOR",
+        "aliases": [
+            "TIE/IN Interceptor Prototype"
+        ],
+        "nameVariant": [
+            "TIE/IN Interceptor Prototype"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/tiein-interceptor-prototype/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tie_interceptor_prototype.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Empire",
+            "Inquisitorius"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Tie Advanced x1",
         "uniqueName": "TIEADVANCED",
         "aliases": [
