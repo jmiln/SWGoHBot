@@ -10940,6 +10940,7 @@
             "Speed Down",
             "Stagger",
             "Stun",
+            "Taunt",
             "Tenacity Down"
         ],
         "role": "Support",
@@ -26580,6 +26581,189 @@
             "Revive",
             "Taunt",
             "Tenacity Down"
+        ],
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Ninth Sister",
+        "base_id": "NINTHSISTER",
+        "pk": 2818,
+        "url": "http://swgoh.gg/characters/ninth-sister/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_ninthsister.png",
+        "power": 37507,
+        "description": "A ruthless member of the feared Inquisitorius who will stop at nothing in her hunt for the Jedi",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "002",
+                    "003",
+                    "007",
+                    "004",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "030",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "030",
+                    "048",
+                    "050",
+                    "041",
+                    "030",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "049",
+                    "048",
+                    "048",
+                    "055",
+                    "015",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "048",
+                    "043",
+                    "063",
+                    "060",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "038",
+                    "049",
+                    "034",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "100",
+                    "036",
+                    "099",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "172",
+                    "099",
+                    "108",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "172",
+                    "172",
+                    "105",
+                    "109",
+                    "106",
+                    "117"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "079",
+                    "117",
+                    "120",
+                    "125",
+                    "087",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "116",
+                    "129",
+                    "129",
+                    "134",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "162",
+                    "166",
+                    "168",
+                    "G12Finisher_NINTHSISTER_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire",
+            "Inquisitorius",
+            "Leader",
+            "Tank",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Counter",
+            "Daze",
+            "Defense Down",
+            "Dispel",
+            "DoT",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Potency Down",
+            "Stun",
+            "Taunt"
         ],
         "role": "Tank",
         "ship": "",

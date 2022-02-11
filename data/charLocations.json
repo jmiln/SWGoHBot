@@ -875,10 +875,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "6-B"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "6-D"
             }
         ]
     },
@@ -1648,8 +1644,8 @@
         "name": "Mara Jade",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "By the Emperor's Hand"
+                "type": "Hard Modes (L)",
+                "level": "6-D"
             }
         ]
     },
@@ -1755,6 +1751,15 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "8-D"
+            }
+        ]
+    },
+    {
+        "name": "Ninth Sister",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Ruthless Efficiency II"
             }
         ]
     },
