@@ -88,7 +88,7 @@ class Zetas extends Command {
                         }
                     }
                     char.skills.forEach(skill => {
-                        if (skill && skill.isZeta && skill.tier === skill.tiers) {
+                        if ((skill.isOmicron && skill.isZeta && skill.tier >= skill.tiers-1) || (!skill.isOmicron && skill.isZeta && skill.tier === skill.tiers)) {
                             count++;
                             // If the character is not already listed, add it
                             if (!zetas[char.nameKey]) {
@@ -238,7 +238,7 @@ class Zetas extends Command {
 
             for (const player of guildGG) {
                 for (const char of player.roster) {
-                    char.zetas = char.skills.filter(s => s.isZeta && s.tiers === s.tier);
+                    char.zetas = char.skills.filter(s => (s.isOmicron && s.isZeta && s.tier >= s.tiers-1) || (!s.isOmicron && s.isZeta && s.tier === s.tiers));
                     if (char.zetas.length) {
                         char.zetas.forEach(s => {
                             if (!zetas[char.defId]) {
