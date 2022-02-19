@@ -410,12 +410,14 @@ async function updateCharacterMods(currentCharacters, freshMods) {
 
     // Iterate the data from swgoh.gg, put new mods in as needed, and if there's a new character, put them in too
     for (const character of freshMods) {
-        const thisChar = currentCharacters.find(ch =>
+        let thisChar = currentCharacters.find(ch =>
             ch.uniqueName === character.defId ||
-            ch.name === character.name ||
-            ch.url === character.charUrl ||
-            ch.aliases.includes(character.name)
+            getCleanString(ch.name) === getCleanString(character.name) ||
+            ch.url === character.charUrl
         );
+        if (!thisChar) {
+            thisChar = currentCharacters.find(ch => ch.aliases.includes(character.name));
+        }
         const mods = {
             url:      character.modsUrl,
             sets:     character.mods.sets,
@@ -433,18 +435,12 @@ async function updateCharacterMods(currentCharacters, freshMods) {
         } else {
             // This shouldn't really happen since it should be caught in updateCharacters
             console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})\n${character}`);
-            // const newCharacter = createEmptyChar(character.name, character.url, character.defId);
-            //
-            // newCharacter.mods = mods;
-            // newCharacter.avatarURL = character.imgUrl;
-            // newCharacter.side = character.side;
-            //
-            // currentCharacters.push(newCharacter);
         }
     }
 }
 
 function createEmptyChar(name, url, uniqueName) {
+    console.log(`Creating empty char for: ${name} (${uniqueName})`);
     return {
         "name":        name,
         "uniqueName":  uniqueName,
@@ -459,6 +455,7 @@ function createEmptyChar(name, url, uniqueName) {
 }
 
 function createEmptyShip(name, url, uniqueName) {
+    console.log(`Creating empty ship for: ${name} (${uniqueName})`);
     return {
         "name":        name,
         "uniqueName":  uniqueName,
