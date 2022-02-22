@@ -113,8 +113,8 @@ const init = async () => {
     Bot.cache   = require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = require("./modules/users.js")(Bot);
 
-    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("playerStats").find({}).count();
-    Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").find({}).count();
+    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("playerStats").estimatedDocumentCount();
+    Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").estimatedDocumentCount();
 
     Bot.statCalculator = require("swgoh-stat-calc");
     Bot.statCalculator.setGameData(gameData);
