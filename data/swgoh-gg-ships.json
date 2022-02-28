@@ -777,6 +777,31 @@
         "activate_shard_count": 145
     },
     {
+        "name": "MG-100 StarFortress SF-17",
+        "base_id": "MG100STARFORTRESSSF17",
+        "url": "http://swgoh.gg/ships/mg-100-starfortress-sf-17/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_mg100.png",
+        "power": 97009,
+        "description": "Resilient Resistance Tank that can take punishment and debilitate enemies",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Resistance",
+            "Tank"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Counter",
+            "Dispel",
+            "Foresight",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Tank",
+        "capital_ship": false,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Negotiator",
         "base_id": "CAPITALNEGOTIATOR",
         "url": "http://swgoh.gg/ships/negotiator/",
@@ -1147,6 +1172,31 @@
         "role": "Attacker",
         "capital_ship": false,
         "activate_shard_count": 80
+    },
+    {
+        "name": "TIE Echelon",
+        "base_id": "FIRSTORDERTIEECHELON",
+        "url": "http://swgoh.gg/ships/tie-echelon/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_firstordertieechelon.png",
+        "power": 78288,
+        "description": "First Order Tank that covers its allies by providing them with Stealth",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "First Order",
+            "Tank"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "Assist",
+            "Counter",
+            "Protection Up",
+            "Stealth",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "capital_ship": false,
+        "activate_shard_count": 25
     },
     {
         "name": "TIE Reaper",

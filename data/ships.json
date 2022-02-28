@@ -1089,6 +1089,25 @@
         }
     },
     {
+        "name": "MG-100 StarFortress SF-17",
+        "uniqueName": "MG100STARFORTRESSSF17",
+        "aliases": [
+            "MG-100 StarFortress SF-17"
+        ],
+        "nameVariant": [
+            "MG-100 StarFortress SF-17"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/mg-100-starfortress-sf-17/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mg100.png",
+        "side": "light",
+        "factions": [
+            "Resistance",
+            "Tank"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Malevolence",
         "uniqueName": "CAPITALMALEVOLENCE",
         "aliases": [
@@ -1580,6 +1599,25 @@
             "Sun Fac's Genosian Starfighter",
             "Geonosian Soldier's Starfighter"
         ]
+    },
+    {
+        "name": "TIE Echelon",
+        "uniqueName": "FIRSTORDERTIEECHELON",
+        "aliases": [
+            "TIE Echelon"
+        ],
+        "nameVariant": [
+            "TIE Echelon"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/tie-echelon/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertieechelon.png",
+        "side": "dark",
+        "factions": [
+            "First Order",
+            "Tank"
+        ],
+        "abilities": {}
     },
     {
         "name": "TIE/IN Interceptor Prototype",
