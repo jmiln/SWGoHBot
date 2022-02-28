@@ -121,6 +121,9 @@ module.exports = async (Bot, client, message) => {
 
         // If they're just looking for the help, don't bother going through the command
         try {
+            if (cmd.help.name !== "test" && cmd.help.category !== "Dev") {
+                await message.channel.send(`>>> Non-slash (\`${message.guildSettings.prefix}\`) commands will be disabled at the beginning of April. \n\nhttps://support-dev.discord.com/hc/en-us/articles/4404772028055\n\nPlease move over to slash commands if able.\nPlease report any issues with the slash commands and I'll try to fix it right away.`);
+            }
             await cmd.run(Bot, message, args, {
                 level: level,
                 flags: flagArgs.flags,
