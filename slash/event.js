@@ -187,6 +187,12 @@ class Event extends Command {
     async run(Bot, interaction, options) {
         const level = options.level;
 
+        if (!interaction?.guild) {
+            return super.error(interaction, "Sorry, but this command is not available in DMs.");
+        }
+        if (!interaction?.guild?.id) {
+            return super.error(interaction, "Sorry, but I'm having trouble accessing your guild's info.");
+        }
         const guildConf = await Bot.getGuildConf(interaction.guild.id);
 
         const exampleEvent = {
