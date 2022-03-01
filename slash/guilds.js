@@ -116,6 +116,21 @@ class Guilds extends Command {
                                 }
                             ]
                         },
+                        {
+                            name: "show_side",
+                            description: "Display just light side or dark side GP",
+                            type: "STRING",
+                            choices: [
+                                {
+                                    name: "Light Side",
+                                    value: "light"
+                                },
+                                {
+                                    name: "Dark Side",
+                                    value: "dark"
+                                }
+                            ]
+                        }
                     ]
                 },
                 {
@@ -185,6 +200,7 @@ class Guilds extends Command {
         if (!subCommand) return console.error("[slash/guilds] Somehow missing subCommand");
 
         const allycode   = interaction.options.getString("allycode");
+        const showSide   = interaction.options.getString("show_side");
         const userAC     = await Bot.getAllyCode(interaction, allycode, true);
 
         // If it hasn't found a valid ally code, grumble at the user, since that's required
@@ -239,7 +255,12 @@ class Guilds extends Command {
             case "roster": {
                 // Display the roster with gp etc
                 try {
-                    return await guildRoster();
+                    if (!showSide) {
+                        return await guildRoster();
+                    } else {
+                        return await guildSidedGP();
+                    }
+
                 } catch (err) {
                     return super.error(interaction, err);
                 }
@@ -676,10 +697,96 @@ class Guilds extends Command {
             }]});
         }
 
+        async function guildSidedGP() {
+            const showSide = interaction.options.getString("show_side");
+            if (!showSide) {
+                throw new Error("ERROR: Cannot not have a side chosen.");
+            }
+
+            // Make sure the guild roster exists, and grab all the ally codes
+            let gRoster ;
+            if (!guild || !guild.roster || !guild.roster.length) {
+                throw new Error(interaction.language.get("BASE_SWGOH_NO_GUILD"));
+            } else {
+                interaction.editReply({content: "Found guild `" + guild.name + "`!"});
+                gRoster = guild.roster.map(m => m.allyCode);
+            }
+
+            // Use the ally codes to get all the other info for the guild
+            let guildMembers;
+            try {
+                guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
+            } catch (e) {
+                Bot.logger.error("ERROR(GS) getting guild: " + e);
+                return interaction.editReply({content: null, embeds: [{
+                    title: "Something Broke while getting your guild's characters",
+                    description: Bot.codeBlock(e),
+                    footer: "Please try again in a bit."
+                }]});
+            }
+
+            let charList = [];
+            let shipList = [];
+            const users = [];
+            if (showSide) {
+                charList = Bot.characters.filter(ch => ch.side === showSide);
+                shipList = Bot.ships.filter(ch => ch.side === showSide);
+            }
+
+            guildMembers = guildMembers.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+            for (const member of guildMembers) {
+                // Go through each member's stuff
+                if (!member?.roster) continue;
+
+                let shipTotal = 0;
+                let charTotal = 0;
+                for (const unit of charList) {
+                    const thisChar = member.roster.find(ch => ch.defId === unit.uniqueName);
+                    if (!thisChar) continue;
+                    charTotal += thisChar.gp;
+                }
+                for (const unit of shipList) {
+                    const thisShip = member.roster.find(ch => ch.defId === unit.uniqueName);
+                    if (!thisShip) continue;
+                    shipTotal += thisShip.gp;
+                }
+                if (member.inGuild) {
+                    users.push(`\`[ ${charTotal.shortenNum(2)} | ${shipTotal.shortenNum(2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - **${member.name}**`);
+                } else {
+                    users.push(`\`[ ${charTotal.shortenNum(2)} | ${shipTotal.shortenNum(2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - ${member.name}`);
+                }
+            }
+
+            const fields = [];
+            const header = "**`[ Char  | Ship  | Total ]`**";
+            const msgArr = Bot.msgArray([header, ...users], "\n", 1000);
+            msgArr.forEach((m, ix) => {
+                fields.push({
+                    name: interaction.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArr.length),
+                    value: m
+                });
+            });
+            if (guild.warnings) {
+                fields.push({
+                    name: "Warnings",
+                    value: guild.warnings.join("\n")
+                });
+            }
+            const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
+            return interaction.editReply({content: null, embeds: [{
+                author: {
+                    name: `${Bot.toProperCase(showSide)} side GP`
+                },
+                fields: fields,
+                footer: footer
+            }]});
+        }
+
         async function guildRoster() {
-            const showAC = interaction.options.getBoolean("show_allycode");
+            const showAC  = interaction.options.getBoolean("show_allycode");
             const showReg = interaction.options.getBoolean("registered");
-            const sortBy = interaction.options.getString("sort");
+            const sortBy  = interaction.options.getString("sort");
 
             if (!guild.roster.length) {
                 throw new Error(interaction.language.get("COMMAND_GUILDS_NO_GUILD"));
@@ -691,7 +798,6 @@ class Guilds extends Command {
                 sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
             }
 
-            const users = [];
             let badCount = 0;
             const gRanks = {
                 2: "M",
@@ -735,6 +841,7 @@ class Guilds extends Command {
                 sortedGuild = leader.concat(officers).concat(members);
             }
 
+            const users = [];
             for (const p of sortedGuild) {
                 if (showAC) {
                     if (p.inGuild) {
