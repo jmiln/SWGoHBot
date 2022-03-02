@@ -1,48 +1,51 @@
-const { Client, Collection } = require("discord.js");
-const { readdirSync, readFileSync } = require("fs");
-const { inspect } = require("util");
-const SwgohClientStub = require("swgoh-client-stub");
+import { Client, Collection } from "discord.js";
+import { readdirSync, readFileSync } from "fs";
+import { inspect } from "util";
+import SwgohClientStub from "swgoh-client-stub";
 
 const Bot = {};
 
 // Attach the config to the Bot so we can use it anywhere
-Bot.config = require("./config.js");
+Bot.config = require(__dirname + "/../config.js");
 
 const client = new Client({
     intents: Bot.config.botIntents,
     partials: Bot.config.partials
 });
 
-const Sequelize = require("sequelize");
+import { Sequelize } from "sequelize";
 
+// import Sequelize from "sequelize";
+const dataDir = __dirname + "/data/";
+const moduleDir = __dirname + "/modules/";
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
-Bot.abilityCosts = JSON.parse(readFileSync("data/abilityCosts.json"));
-Bot.acronyms     = JSON.parse(readFileSync("data/acronyms.json"));
-Bot.arenaJumps   = JSON.parse(readFileSync("data/arenaJumps.json"));
-Bot.charLocs     = JSON.parse(readFileSync("data/charLocations.json"));
-Bot.characters   = JSON.parse(readFileSync("data/characters.json"));
-Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
-Bot.missions     = JSON.parse(readFileSync("data/missions.json"));
-Bot.resources    = JSON.parse(readFileSync("data/resources.json"));
-Bot.shipLocs     = JSON.parse(readFileSync("data/shipLocations.json"));
-Bot.ships        = JSON.parse(readFileSync("data/ships.json"));
-Bot.squads       = JSON.parse(readFileSync("data/squads.json"));
+Bot.abilityCosts = JSON.parse(readFileSync(dataDir + "abilityCosts.json").toString());
+Bot.acronyms     = JSON.parse(readFileSync(dataDir + "acronyms.json").toString());
+Bot.arenaJumps   = JSON.parse(readFileSync(dataDir + "arenaJumps.json").toString());
+Bot.charLocs     = JSON.parse(readFileSync(dataDir + "charLocations.json").toString());
+Bot.characters   = JSON.parse(readFileSync(dataDir + "characters.json").toString());
+Bot.factions     = [...new Set(Bot.characters.reduce((a: {factions: string[]}, b: {factions: string[]}) => a.concat(b.factions), []))];
+Bot.missions     = JSON.parse(readFileSync(dataDir + "missions.json").toString());
+Bot.resources    = JSON.parse(readFileSync(dataDir + "resources.json").toString());
+Bot.shipLocs     = JSON.parse(readFileSync(dataDir + "shipLocations.json").toString());
+Bot.ships        = JSON.parse(readFileSync(dataDir + "ships.json").toString());
+Bot.squads       = JSON.parse(readFileSync(dataDir + "squads.json").toString());
 Bot.emotes       = {};
 
-const gameData   = JSON.parse(readFileSync("data/gameData.json"));
+const gameData   = JSON.parse(readFileSync(dataDir + "gameData.json").toString());
 
 // Load in various general functions for the bot
-require("./modules/functions.js")(Bot, client);
+require(moduleDir + "functions.js")(Bot, client);
 
 // Load in stuff for the events command
-require("./modules/eventFuncs.js")(Bot, client);
+require(moduleDir + "eventFuncs.js")(Bot, client);
 
 // Load in stuff for patrons and such
-require("./modules/patreonFuncs.js")(Bot, client);
+require(moduleDir + "patreonFuncs.js")(Bot, client);
 
 // Load up js prototypes
-require("./modules/prototypes.js");
+require(moduleDir + "prototypes.js");
 
 // Languages
 Bot.languages = {};
@@ -101,7 +104,7 @@ Bot.database.authenticate().then(async () => {
                 where: {
                     guildID: guildList[ix]
                 }
-            }).catch((e) =>  Bot.logger.error("Error in init (Models.spread): " + e, true));
+            }).catch((e: unknown) =>  Bot.logger.error("Error in init (Models.spread): " + e, true));
         }
     }).catch((e) => console.error(e));
 });
@@ -141,7 +144,7 @@ const init = async () => {
 
     // Here we load **commands** into memory, as a collection, so they're accessible
     // here and everywhere else.
-    const cmdFiles = readdirSync("./commands/");
+    const cmdFiles = readdirSync(__dirname + "/commands/");
     const cmdError = [];
     cmdFiles.forEach(file => {
         try {
@@ -157,7 +160,7 @@ const init = async () => {
         Bot.logger.warn("cmdLoad: " + cmdError.join("\n"));
     }
 
-    const slashFiles = readdirSync("./slash/");
+    const slashFiles = readdirSync(__dirname + "/slash/");
     const slashError = [];
     slashFiles.forEach(file => {
         try {
@@ -174,16 +177,16 @@ const init = async () => {
     }
 
     // Then we load events, which will include our message and ready event.
-    const evtFiles = readdirSync("./events/");
+    const evtFiles = readdirSync(__dirname + "/events/");
     evtFiles.forEach(file => {
         const eventName = file.split(".")[0];
-        const event = require(`./events/${file}`);
+        const event = require(__dirname + `/events/${file}`);
         if (["ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
             client.on(eventName, event.bind(null, Bot, client));
         } else {
             client.on(eventName, event.bind(null, Bot));
         }
-        delete require.cache[require.resolve(`./events/${file}`)];
+        delete require.cache[require.resolve(__dirname + `/events/${file}`)];
     });
 
     process.on("uncaughtException", (err) => {

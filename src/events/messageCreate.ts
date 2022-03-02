@@ -1,13 +1,14 @@
-const {inspect} = require("util");
+import { inspect } from "util";
+import { Client, Message } from "discord.js";
 
-module.exports = async (Bot, client, message) => {
+module.exports = async (Bot: {}, client: Client, message: Message) => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
     if (message?.author?.bot || message?.user?.bot) return;
 
     // Grab the settings for this server
     // If there is no guild, get default conf (DMs)
-    let guildSettings;
+    let guildSettings: {};
     if (!message.guild) {
         guildSettings = Bot.config.defaultSettings;
     } else {
@@ -28,7 +29,7 @@ module.exports = async (Bot, client, message) => {
 
     // https://discordjs.guide/popular-topics/miscellaneous-examples.html#mention-prefix
     // Used to convert special characters into literal characters by escaping them, so that they don't terminate the pattern within the regex
-    const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(message.guildSettings.prefix)})\\s*`);
     if (!prefixRegex.test(message.content)) return;
     const [, matchedPrefix] = message.content.match(prefixRegex);
@@ -90,7 +91,7 @@ module.exports = async (Bot, client, message) => {
                     // If it can't send messages, don't bother trying
                     if (missingPerms.includes("VIEW_CHANNEL") || missingPerms.includes("SEND_MESSAGES")) return;
                     // Make it more readable
-                    missingPerms.forEach((p, ix) => {missingPerms[ix] = Bot.toProperCase(p.replace("_", " "));});
+                    missingPerms.forEach((p: string, ix: Number) => {missingPerms[ix] = Bot.toProperCase(p.replace("_", " "));});
                     return message.channel.send(`This bot is missing the following permissions to run this command here: \`${missingPerms.join(", ")}\``);
                 }
             }
@@ -149,7 +150,7 @@ module.exports = async (Bot, client, message) => {
 };
 
 // Checks for any args that start with - or -- that match what the command is looking for
-function checkForArgs(key, args) {
+function checkForArgs(key: string, args: string[]): [boolean, string | null] {
     if (args.includes("-"+key)) {
         return [true, "-"+key];
     } else if (args.includes("--"+key)) {
@@ -160,7 +161,7 @@ function checkForArgs(key, args) {
 }
 
 // Get the flags and extra args for the command
-function getFlags(cFlags, cSubArgs, args) {
+function getFlags(cFlags: string[], cSubArgs: string[], args: string[]) {
     const flags = {};
     const subArgs = {};
 

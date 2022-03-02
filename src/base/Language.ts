@@ -1,11 +1,9 @@
-
-
-class Language {
-    constructor(c) {
-        this.Bot = c;
+class LanguageHandler {
+    constructor(bot: {}) {
+        this.Bot = bot;
     }
 
-    get(str, ...args) {
+    get(str: string, ...args: string[]) {
         if (!this.language[str]) {
             const defLang = this.Bot.languages[this.Bot.config.defaultSettings.language];
             let res = "";
@@ -25,4 +23,4 @@ class Language {
     }
 }
 
-module.exports = Language;
+export default LanguageHandler;

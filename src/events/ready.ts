@@ -1,7 +1,7 @@
-/* eslint no-undef: 0 */
-// const {inspect} = require("util");
-const io = require("socket.io-client");
-module.exports = async (Bot, client) => {
+import io from "socket.io-client";
+import { Client } from "discord.js";
+
+module.exports = async (Bot: {}, client: Client) => {
     // Logs that it's up, and some extra info
     client.shard.id = client.shard.ids[0];
 
@@ -29,7 +29,7 @@ module.exports = async (Bot, client) => {
         if (client.shard.id === 0) {
             // Check if there are any events that need to be processed & announced
             setInterval(() => {
-                Bot.socket.emit("checkEvents", (eventsList) => {
+                Bot.socket.emit("checkEvents", (eventsList: []) => {
                     if (eventsList.length) {
                         Bot.manageEvents(eventsList);
                     }
@@ -74,7 +74,7 @@ module.exports = async (Bot, client) => {
     // Sets the status as the current server count and help command
     const playingString =  `${Bot.config.prefix}help ~ swgohbot.com`;
     try {
-        client.user.setPresence({ activity: { name: playingString, type: 0} });
+        client.user.setPresence({ activities: [{ name: playingString, type: 0}] });
     } catch (err) {
         console.log("[READY] Error when setting presence.\n" + err);
     }

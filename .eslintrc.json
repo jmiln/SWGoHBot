@@ -1,61 +1,65 @@
 {
-  "parserOptions": {
-    "ecmaVersion": 2020
-  },
-  "env": {
-    "es6": true,
-    "node": true
-  },
-  "extends": "eslint:recommended",
-  "globals":{
-      "BigInt":true
-  },
-  "rules": {
-    "no-console": "off",
-    "indent": [
-      "error",
-      4,
-      {
-        "SwitchCase": 1
-      }
+    "parserOptions": {
+        "ecmaVersion": 2021,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint"
     ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "semi": [
-      "warn",
-      "always"
-    ],
-    "keyword-spacing": [
-      "error", {
-        "before": true,
-        "after": true
-      }
-    ],
-    "space-before-blocks": [
-      "error", {
-        "functions":"always",
-        "keywords": "always",
-        "classes": "always"
-      }
-    ],
-    "space-before-function-paren": [
-      "error", {
-        "anonymous": "never",
-        "named": "never",
-        "asyncArrow": "always"
-      }
-    ],
-    "prefer-const": [
-      "error", {
-        "destructuring": "all",
-        "ignoreReadBeforeAssign": false
-      }
-    ],
-    "quotes": [
-        "error",
-        "double"
-    ]
-  }
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "globals":{
+        "BigInt":true
+    },
+    "rules": {
+        "no-console": "off",
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "semi": [
+            "warn",
+            "always"
+        ],
+        "keyword-spacing": [
+            "error", {
+                "before": true,
+                "after": true
+            }
+        ],
+        "space-before-blocks": [
+            "error", {
+                "functions":"always",
+                "keywords": "always",
+                "classes": "always"
+            }
+        ],
+        "space-before-function-paren": [
+            "error", {
+                "anonymous": "never",
+                "named": "never",
+                "asyncArrow": "always"
+            }
+        ],
+        "prefer-const": [
+            "error", {
+                "destructuring": "all",
+                "ignoreReadBeforeAssign": false
+            }
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ]
+    }
 }

@@ -1,5 +1,7 @@
-const {inspect} = require("util");
-module.exports = async (Bot, client, err) => {
+import { inspect } from "util";
+import { Client } from "discord.js";
+
+module.exports = async (Bot: {}, client: Client, err: Error) => {
     if (err.error.toString().indexOf("ECONNRESET") > -1) {
         Bot.logger.error("Connection error");
     } else {

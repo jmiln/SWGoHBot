@@ -1,6 +1,7 @@
-class slashCommand {
+import { Interaction } from "discord.js";
 
-    constructor(Bot, {
+class slashCommand {
+    constructor(Bot: {}, {
         name = "null",
         description = "No description provided.",
         options = [],
@@ -15,16 +16,16 @@ class slashCommand {
         this.guildOnly = guildOnly;
     }
 
-    async getUser(message, userID, useAuth=false) {
+    async getUser(interaction: Interaction, userID: string, useAuth=false) {
         let out = null;
         if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
-            userID = message.author.id;
+            userID = interaction.author.id;
         }
         if (userID) {
             // If it got this far, it's got a valid userID (ally code or Discord ID)
             // so regardless of which, grab an ally code
-            const allyCodes = await this.Bot.getAllyCode(message, userID);
+            const allyCodes = await this.Bot.getAllyCode(interaction, userID);
             if (allyCodes && allyCodes.length) {
                 out = allyCodes[0];
             }
@@ -33,7 +34,7 @@ class slashCommand {
         return out;
     }
 
-    async error(interaction, err, options) {
+    async error(interaction: Interaction, err: string, options: {}) {
         if (!interaction || !interaction.channel) throw new Error(`[${this.name}] Missing message`);
         if (!err) throw new Error(`[${this.name}] Missing error message`);
         if (!options) options = {};
@@ -46,7 +47,7 @@ class slashCommand {
         await this.embed(interaction, err, options);
     }
 
-    async success(interaction, out, options) {
+    async success(interaction: Interaction, out: string, options: {}) {
         if (!interaction || !interaction.channel) throw new Error("Missing message");
         if (!out) throw new Error("Missing outgoing success message");
         if (!options) options = {};
@@ -55,7 +56,7 @@ class slashCommand {
         await this.embed(interaction, out, options);
     }
 
-    async embed(interaction, out, options) {
+    async embed(interaction: Interaction, out: string, options: {}) {
         if (!interaction || !interaction.channel) throw new Error("Missing interaction");
         if (!out) throw new Error("Missing outgoing message");
         if (!options) options = {};

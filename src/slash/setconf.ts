@@ -1,6 +1,6 @@
 const moment = require("moment-timezone");
 const Command = require("../base/slashCommand");
-const { typedDefaultSettings } = require("../config.js");
+const { typedDefaultSettings } = require("../../config.js");
 // const { inspect } = require("util");
 
 // Set the base subargs up

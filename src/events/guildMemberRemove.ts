@@ -1,5 +1,7 @@
-const {inspect} = require("util");
-module.exports = async (Bot, client, member) => {
+import { inspect } from "util";
+import { Client, GuildMember } from "discord.js";
+
+module.exports = async (Bot: {}, client: Client, member: GuildMember) => {
     // This executes when a member joins, so let's welcome them!
     const guildConf = await Bot.getGuildConf(member.guild.id);
 
@@ -13,7 +15,7 @@ module.exports = async (Bot, client, member) => {
 
         try {
             await client.announceMsg(member.guild, partMessage, null, guildConf);
-        } catch (e) {
+        } catch (e: unknown) {
             Bot.logger.error(`Error sending partMessage:\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
         }
     }

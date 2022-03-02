@@ -1,8 +1,8 @@
 // At max, each shard can have 2500 servers
-const config = require("./config.js");
+import config from "../config.js";
+import Discord from "discord.js";
 
-const Discord = require("discord.js");
-const Manager = new Discord.ShardingManager("./swgohBot.js",{
+const Manager = new Discord.ShardingManager(__dirname + "/swgohBot.js",{
     totalShards: config.shardCount  // Tell it how many shards we want (Approx. 1100 servers per shard)
 });
 Manager.spawn();

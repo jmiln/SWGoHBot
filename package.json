@@ -5,7 +5,8 @@
     "main": "swgohBot.js",
     "scripts": {
         "lint": "eslint",
-        "start": "node swgohBotShard.js"
+        "build": "tsc",
+        "start": "node dist/swgohBotShard.js"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",
@@ -23,13 +24,15 @@
         "chalk": "^4.1.0",
         "cheerio": "^1.0.0-rc.10",
         "discord.js": "^13.6.0",
+        "i": "^0.3.7",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.34",
         "mongodb": "^4.4.0",
         "node-fetch": "3.2",
+        "npm": "^8.5.2",
         "pg": "^8.7.3",
         "pg-hstore": "^2.3.4",
-        "sequelize": "6.17",
+        "sequelize": "^6.17.0",
         "socket.io": "^4.4.1",
         "socket.io-client": "^4.4.1",
         "swgoh-client-stub": "^2.4.0",
@@ -37,5 +40,9 @@
     },
     "engines": {
         "node": ">=16"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.21",
+        "typescript": "^4.6.2"
     }
 }

@@ -1,5 +1,7 @@
-const {inspect} = require("util");
-module.exports = async (Bot, client, interaction) => {
+import { inspect } from "util";
+import { Client, Interaction } from "discord.js";
+
+module.exports = async (Bot: {}, client: Client, interaction: Interaction) => {
     // If it's not a command, don't bother trying to do anything
     if (!interaction.isCommand()) return;
 

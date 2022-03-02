@@ -1,5 +1,7 @@
-const {inspect} = require("util");
-module.exports = async (Bot, client, member) => {
+import { inspect } from "util";
+import { Client, GuildMember } from "discord.js";
+
+module.exports = async (Bot: {}, client: Client, member: GuildMember) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
     if (!guild) {
@@ -22,8 +24,8 @@ module.exports = async (Bot, client, member) => {
             .replace(/{{prefix}}/gi, guildConf.prefix);
         try {
             client.announceMsg(guild, welcomeMessage, null, guildConf);
-        } catch (e) {
-            Bot.logger.error(`Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${e}`);
+        } catch (err: unknown) {
+            Bot.logger.error(`Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${err}`);
         }
     }
 };

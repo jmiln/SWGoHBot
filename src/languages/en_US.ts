@@ -1,4 +1,4 @@
-const Language = require("../base/Language");
+import Language from "../base/Language";
 const langList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
 const swgohLangList = ["de_DE", "en_US", "es_SP", "ko_KR", "pt_BR"];
 const DAYSOFWEEK = {
@@ -58,17 +58,17 @@ const TIMES = {
     }
 };
 
-function getDay(day, type) {
+function getDay(day: string, type: string) {
     return DAYSOFWEEK[`${day}`][`${type}`];
 }
 
-function getTime(unit, type) {
+function getTime(unit: string, type: string) {
     return TIMES[`${unit}`][`${type}`];
 }
 
 module.exports = class extends Language {
-    constructor(...args) {
-        super(...args);
+    constructor(...args: string[]) {
+        super(args);
 
         this.getDay = getDay;
         this.getTime = getTime;
@@ -78,22 +78,22 @@ module.exports = class extends Language {
 
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: "\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.",
-            BASE_EVENT_STARTING_IN_MSG: (key, timeToGo) => `**${key}**\nStarting in ${timeToGo}`,
+            BASE_EVENT_STARTING_IN_MSG: (key: string, timeToGo: string) => `**${key}**\nStarting in ${timeToGo}`,
             BASE_EVENT_LATE: "Sorry, but this event was triggered later than expected. If it is set to repeat, the next alert should be on time.",
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
-            BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
-            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
+            BASE_SWGOH_NO_ALLY: (prefix: string =";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
+            BASE_SWGOH_NO_USER: (prefix: string) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
+            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix: string =";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
             BASE_SWGOH_NO_GUILD: "I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.",
             BASE_SWGOH_MISSING_CHAR: "You need to enter a character to check for",
-            BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
-            BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
+            BASE_SWGOH_NO_CHAR_FOUND: (character: string) => `I did not find any results for ${character}`,
+            BASE_SWGOH_CHAR_LIST: (chars: string) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: "Something went wrong, please make sure your account is synced correctly.",
-            BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
-            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : "data"}`,
-            BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
-            BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
+            BASE_SWGOH_LAST_UPDATED: (date: string) => `Last updated ${date} ago`,
+            BASE_SWGOH_PLS_WAIT_FETCH: (dType: string) => `Please wait while I get your ${dType ? dType : "data"}`,
+            BASE_SWGOH_NAMECHAR_HEADER: (name: string, char: string) => `${name}'s ${char}`,
+            BASE_SWGOH_NAMECHAR_HEADER_NUM: (name: string, char: string, num: string) => `${name}'s ${char} (${num})`,
             BASE_SWGOH_LOCKED_CHAR: "Sorry, but it looks like you don't have this character unlocked",
             BASE_SWGOH_GUILD_LOCKED_CHAR: "Sorry, but it looks like no one in your guild has this character unlocked",
 

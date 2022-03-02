@@ -5,6 +5,7 @@
 /swgoh
 /swgohAPI
 /testOutput
+/dist
 
 # Specific Files
 config.js
