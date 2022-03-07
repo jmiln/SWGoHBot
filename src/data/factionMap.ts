@@ -1,4 +1,4 @@
-module.exports = [
+const factionMap = [
     { name: "Galactic Legend",      value: "galactic_legend" },
     { name: "Leader",               value: "role_leader" },
     //Ignoring Activated/ Not Activated
@@ -40,3 +40,4 @@ module.exports = [
     { name: "Tusken",               value: "species_tusken" },
     { name: "Unaligned Force User", value: "unaligned_force_user" }
 ];
+export default factionMap;

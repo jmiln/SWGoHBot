@@ -1,4 +1,4 @@
-import * as Language from "../base/Language.js";
+import LanguageHandler from "../base/Language";
 const langList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
 const swgohLangList = ["de_DE", "en_US", "es_SP", "ko_KR", "pt_BR"];
 const DAYSOFWEEK = {

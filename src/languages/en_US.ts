@@ -1,4 +1,4 @@
-import Language from "../base/Language";
+import LanguageHandler from "../base/Language";
 const langList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
 const swgohLangList = ["de_DE", "en_US", "es_SP", "ko_KR", "pt_BR"];
 const DAYSOFWEEK = {
@@ -66,7 +66,7 @@ function getTime(unit: string, type: string) {
     return TIMES[`${unit}`][`${type}`];
 }
 
-module.exports = class extends Language {
+module.exports = class extends LanguageHandler {
     constructor(...args: string[]) {
         super(args);
 

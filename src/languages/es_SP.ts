@@ -1,4 +1,4 @@
-const Language = require("../base/Language");
+import LanguageHandler from "../base/Language";
 const DAYSOFWEEK = {
     SUNDAY: {
         SHORT: "Do",
@@ -64,7 +64,7 @@ function getTime(unit, type) {
     return TIMES[`${unit}`][`${type}`];
 }
 
-module.exports = class extends Language {
+module.exports = class extends LanguageHandler {
     constructor(...args) {
         super(...args);
 
@@ -151,7 +151,7 @@ module.exports = class extends Language {
                 "UNITSTATOFFENSEPERCENTADDITIVE": "Ataque %",
                 "UNITSTATRESISTANCE": "Tenacidad %",
                 "UNITSTATSPEED": "Velocidad"
-            },    
+            },
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}abilities <NombrePersonaje>\``,
@@ -560,7 +560,7 @@ module.exports = class extends Language {
                     }
                 ]
             },
-                
+
             // MyArena Command
             COMMAND_MYARENA_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para ${user}. Por favor asegúrate que esa cuenta esté sincronizada.`,
             COMMAND_MYARENA_NO_CHAR: "Algo ha salido mal, no puedo obtener tus personajes.",
@@ -865,7 +865,7 @@ module.exports = class extends Language {
                     }
                 ]
             },
-                
+
             // Setconf Command
             COMMAND_SETCONF_MISSING_PERMS: "Lo siento, pero o bien no eres un Admin o el líder de tu servidor no ha inicializado las configuraciones.",
             COMMAND_SETCONF_MISSING_OPTION: "Necesitas seleccionar la opción de configuración la cual deseas cambiar.",
@@ -1095,7 +1095,7 @@ module.exports = class extends Language {
                     }
                 ]
             },
-                
+
             // Stats Command
             COMMAND_STATS_OUTPUT: (memUsage, cpuLoad, uptime, users, servers, channels, shardID, botLangs, players, guilds, gohLangs, updated) => [
                 `= STATISTICS (${shardID}) =`,

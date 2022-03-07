@@ -6,6 +6,8 @@ class slashCommand {
         description = "No description provided.",
         options = [],
         defaultPermissions = true,
+        permissions = [],
+        category = "",
         guildOnly = true,// false = global, true = guild.
         enabled = true,
         permLevel = 0,
@@ -34,7 +36,7 @@ class slashCommand {
         return out;
     }
 
-    async error(interaction: Interaction, err: string, options: {}) {
+    async error(interaction: Interaction, err: string, options?: {}) {
         if (!interaction || !interaction.channel) throw new Error(`[${this.name}] Missing message`);
         if (!err) throw new Error(`[${this.name}] Missing error message`);
         if (!options) options = {};
@@ -84,7 +86,7 @@ class slashCommand {
             } catch (e) {
                 console.log("base/slashCommand Error: " + e.message);
                 console.log("base/slashCommand Message: " + interaction.content);
-                return interaction.channel.send({
+                return interaction.reply({
                     content: null,
                     embeds: [{
                         author: {
@@ -119,4 +121,4 @@ class slashCommand {
     }
 }
 
-module.exports = slashCommand;
+export default slashCommand;

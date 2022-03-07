@@ -1,4 +1,4 @@
-module.exports.charChecklist = {
+export const charChecklist = {
     "Galactic Legends": [
         ["GLREY",                   "Rey"],
         ["JEDIMASTERKENOBI",        "JM Kenobi"],
@@ -43,7 +43,7 @@ module.exports.charChecklist = {
     ]
 };
 
-module.exports.shipChecklist = {
+export const shipChecklist = {
     "Capital Ships": [
         ["CAPITALCHIMAERA",           "Chimaera"],
         ["CAPITALJEDICRUISER",        "Endurance"],
@@ -56,3 +56,5 @@ module.exports.shipChecklist = {
         ["CAPITALRADDUS",             "Raddus"]
     ]
 };
+
+

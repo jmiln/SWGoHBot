@@ -1,4 +1,4 @@
-module.exports = {
+const statEnums: {} = {
     enums: [
         "NOUNITSTAT",
         "UNITSTATMAXHEALTH",
@@ -248,3 +248,5 @@ module.exports = {
         true,//"UNIT_STAT_TAUNT"
     ]
 };
+
+export default statEnums;
