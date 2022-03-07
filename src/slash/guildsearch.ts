@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 // const {inspect} = require('util');
 
-class GuildSearch extends Command {
+class GuildSearch extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "guildsearch",

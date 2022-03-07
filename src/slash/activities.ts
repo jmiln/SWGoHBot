@@ -1,7 +1,7 @@
-var moment = require("moment-timezone");
-const Command = require("../base/slashCommand");
+import moment from "moment-timezone";
+import SlashCommand from "../base/slashCommand";
 
-class Activites extends Command {
+class Activites extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "activities",

@@ -1,7 +1,7 @@
 // const util = require('util');
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
-class Ships extends Command {
+class Ships extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "ships",

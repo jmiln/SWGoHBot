@@ -1,6 +1,6 @@
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
-class MyProfile extends Command {
+class MyProfile extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "myprofile",

@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const nodeFetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
-const {inspect} = require("util");      // eslint-disable-line no-unused-vars
+import SlashCommand from "../base/slashCommand";
+import { inspect } from "util";      // eslint-disable-line no-unused-vars
+import fetch from "node-fetch";
 
-class MyCharacter extends Command {
+class MyCharacter extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "mycharacter",

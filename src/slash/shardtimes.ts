@@ -1,9 +1,9 @@
-const momentTZ = require("moment-timezone");
+import * as momentTZ from "moment-timezone";
 require("moment-duration-format");
 // const {inspect} = require('util');
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
-class Shardtimes extends Command {
+class Shardtimes extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "shardtimes",

@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 // const {inspect} = require("util");
 
-class ArenaWatch extends Command {
+class ArenaWatch extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "arenawatch",

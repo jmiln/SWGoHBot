@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const raids = require("../data/raiddmg.json");
+import SlashCommand from "../base/slashCommand";
+import * as raids from "../data/raiddmg.json";
 
-class RaidDamage extends Command {
+class RaidDamage extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "raiddamage",

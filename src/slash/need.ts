@@ -1,5 +1,5 @@
-const Command = require("../base/slashCommand");
-const factionMap = require("../data/factionMap");
+import SlashCommand from "../base/slashCommand";
+import factionMap from "../data/factionMap";
 const shopMap = [
     { name: "Arena Shop",        value: "Arena Shipments" },
     { name: "Cantina Shop",      value: "Cantina Shipments" },
@@ -21,7 +21,7 @@ const battleMap = [
     { name: "Light Side Battles", value: "Hard Modes (L)" }
 ];
 
-class Need extends Command {
+class Need extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "need",

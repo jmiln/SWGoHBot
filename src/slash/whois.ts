@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
-class WhoIs extends Command {
+class WhoIs extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "whois",

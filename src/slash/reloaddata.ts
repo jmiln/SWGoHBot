@@ -1,6 +1,6 @@
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
-class ReloadData extends Command {
+class ReloadData extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "reloaddata",

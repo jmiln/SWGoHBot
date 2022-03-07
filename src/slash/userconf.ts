@@ -1,7 +1,6 @@
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
-
-class UserConf extends Command {
+class UserConf extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "userconf",

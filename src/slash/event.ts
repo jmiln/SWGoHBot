@@ -1,13 +1,13 @@
-const momentTZ = require("moment-timezone");
+import momentTZ from "moment-timezone";
 require("moment-duration-format");
 // const {inspect} = require("util");
 
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
 
-class Event extends Command {
+class Event extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "event",

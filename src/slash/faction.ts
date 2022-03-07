@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const factionMap = require("../data/factionMap");
+import SlashCommand from "../base/slashCommand";
+import factionMap from "../data/factionMap";
 
-class Faction extends Command {
+class Faction extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "faction",

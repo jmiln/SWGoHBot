@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const {inspect} = require("util"); // eslint-disable-line no-unused-vars
+import SlashCommand from "../base/slashCommand";
+import { inspect } from "util"; // eslint-disable-line no-unused-vars
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
-class MyArena extends Command {
+class MyArena extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "myarena",

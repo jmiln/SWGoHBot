@@ -1,10 +1,10 @@
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
 /**
  * The list of acronyms defined in data/acronym.json was transposed from the SWGoH forum. Any update there will need to make it's way into here.
  * //https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh
  */
-class Acronyms extends Command {
+class Acronyms extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "acronyms",

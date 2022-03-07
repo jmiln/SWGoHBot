@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const { version } = require("discord.js");
+import SlashCommand from "../base/slashCommand";
+import { version } from "discord.js";
 
-class Info extends Command {
+class Info extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             aliases: ["invite", "inv"],

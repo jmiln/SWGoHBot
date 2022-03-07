@@ -2,9 +2,9 @@
 // And from community feedback on changes
 // Formula from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/49kbrq/arena_rank_range/d0sr
 
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
-class Arenarank extends Command {
+class Arenarank extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "arenarank",

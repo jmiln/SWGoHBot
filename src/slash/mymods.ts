@@ -1,10 +1,11 @@
-const Command = require("../base/slashCommand");
-const statEnums = require("../data/statEnum.js");
+import Discord from "discord.js";
+import SlashCommand from "../base/slashCommand";
+import statEnums from "../data/statEnum";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
-class MyMods extends Command {
-    constructor(Bot) {
+class MyMods extends SlashCommand {
+    constructor(Bot: {}) {
         super(Bot, {
             name: "mymods",
             category: "SWGoH",
@@ -103,7 +104,7 @@ class MyMods extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: {}, interaction: Discord.Interaction) {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
 
         const subCommand = interaction.options.getSubcommand();
@@ -118,7 +119,7 @@ class MyMods extends Command {
         if (subCommand === "character") {
             const searchChar = interaction.options.getString("character");
 
-            let character;
+            let character: {};
             if (!searchChar) {
                 return interaction.editReply({content: interaction.language.get("BASE_SWGOH_MISSING_CHAR")});
             }
@@ -128,8 +129,8 @@ class MyMods extends Command {
                 return interaction.editReply({content: interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar)});
             } else if (chars.length > 1) {
                 const charL = [];
-                const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
-                charS.forEach(c => {
+                const charS = chars.sort((p: {}, c: {}) => p.name > c.name ? 1 : -1);
+                charS.forEach((c: {}) => {
                     charL.push(c.name);
                 });
                 return super.error(interaction, (interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n"))), {edit: true});
@@ -137,7 +138,7 @@ class MyMods extends Command {
                 character = chars[0];
             }
 
-            let player;
+            let player: {};
             try {
                 player = await Bot.swgohAPI.unitStats(allycode, cooldown);
                 if (Array.isArray(player)) player = player[0];
@@ -152,7 +153,7 @@ class MyMods extends Command {
 
             const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
 
-            let charMods = player.roster.find(c => c.defId === character.uniqueName);
+            let charMods = player.roster.find((c: {}) => c.defId === character.uniqueName);
 
             if (!charMods) {
                 return super.error(interaction, "Looks like you don't have that character activated yet.");
@@ -167,7 +168,7 @@ class MyMods extends Command {
                 const sets = interaction.language.get("BASE_MODSETS_FROM_GAME");
                 const stats = interaction.language.get("BASE_MODS_FROM_GAME");
 
-                charMods.forEach(mod => {
+                charMods.forEach((mod: {}) => {
                     slots[mod.slot] = {
                         stats: [],
                         type: sets[mod.set],
@@ -179,7 +180,7 @@ class MyMods extends Command {
                     slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace("+", "").replace("%", "")}`);
 
                     // Then all the secondaries
-                    mod.secondaryStat.forEach(s => {
+                    mod.secondaryStat.forEach((s: {}) => {
                         let t = stats[s.unitStat];
                         if (t.indexOf("%") > -1) {
                             t = t.replace("%", "").trim();
@@ -195,20 +196,21 @@ class MyMods extends Command {
 
 
                 const fields = [];
-                Object.keys(slots).forEach(mod => {
+                Object.keys(slots).forEach((mod: any) => {  // Mod really should be a string or number here
                     let typeIcon  = slots[mod].type;
                     let shapeIcon = Bot.toProperCase(modSlots[mod-1]);
                     const stats = slots[mod].stats;
                     // If the bot has the right perms to use external emotes, go for it
+                    // TODO Make this work with emotes again...
                     if (!interaction.guild || interaction.channel.permissionsFor(interaction.guild.me).has("USE_EXTERNAL_EMOJIS")) {
                         const shapeIconString = `${modSlots[mod-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
-                        shapeIcon = Bot.emotes[shapeIconString] || shapeIcon;
+                        // shapeIcon = Bot.emotes[shapeIconString] || shapeIcon;
 
                         const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
-                        typeIcon = Bot.emotes[typeIconString] || typeIcon;
+                        // typeIcon = Bot.emotes[typeIconString] || typeIcon;
                     }
                     fields.push({
-                        name: `${shapeIcon} ${typeIcon} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                        name: `<${shapeIcon.identifier}> <${typeIcon.identifier}> (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
                         value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(23)}\``,
                         inline: true
                     });
@@ -236,7 +238,7 @@ class MyMods extends Command {
             const statToCheck = interaction.options.getString("stat");
             const showTotal = interaction.options.getBoolean("total");
 
-            let player;
+            let player: {};
             try {
                 player = await Bot.swgohAPI.unitStats(allycode, cooldown);
                 if (Array.isArray(player)) player = player[0];
@@ -256,9 +258,9 @@ class MyMods extends Command {
             }
 
             // Grab the player's roster and filter out all the ships
-            const stats = player.roster.filter(unit => unit.combatType !== 2);
+            const stats = player.roster.filter((unit: {}) => unit.combatType !== 2);
 
-            stats.forEach(c => {
+            stats.forEach((c: {}) => {
                 if (!c.stats?.final?.[statToCheck]) {
                     c.stats.final[statToCheck] = 0;
                 }
@@ -267,9 +269,9 @@ class MyMods extends Command {
                 }
             });
 
-            let sorted;
+            let sorted: {}[];
             if (showTotal) {  // If looking for the total stats, sort by that
-                sorted = stats.sort((p, c) => {
+                sorted = stats.sort((p: {}, c: {}) => {
                     if (p.stats?.final?.[statToCheck] && c.stats?.final?.[statToCheck]) {
                         return c.stats.final[statToCheck] - p.stats.final[statToCheck];
                     } else if (!c.stats?.final?.[statToCheck]) {
@@ -279,7 +281,7 @@ class MyMods extends Command {
                     }
                 });
             } else {  // Or if looking for just the amount added by mods, sort by the mod's amount
-                sorted = stats.sort((p, c) => {
+                sorted = stats.sort((p: {}, c: {}) => {
                     if (p.stats?.mods?.[statToCheck] && c.stats?.mods?.[statToCheck]) {
                         return c.stats.mods[statToCheck] - p.stats.mods[statToCheck];
                     } else if (!c.stats?.mods?.[statToCheck]) {
@@ -296,8 +298,8 @@ class MyMods extends Command {
             }
 
             const out = sorted.map(c => {
-                let finalStat = 0;
-                let modStat = 0;
+                let finalStat: string | number = 0;
+                let modStat: string | number = 0;
                 if (c.stats?.final[statToCheck] % 1 === 0) {
                     // If it's a full number, give that
                     finalStat = c.stats.final[statToCheck];
@@ -353,7 +355,7 @@ class MyMods extends Command {
             const statToCheck = interaction.options.getString("stat");
             const statIndex = statEnums.stats.indexOf(statToCheck);
 
-            let player;
+            let player: {};
             try {
                 player = await Bot.swgohAPI.unitStats(allycode, cooldown);
                 if (Array.isArray(player)) player = player[0];
@@ -396,7 +398,7 @@ class MyMods extends Command {
             const sortedMods = statMap.sort((a, b) => b.value - a.value);
             const topSorted = sortedMods.slice(0, 20);
             const namedSorted = topSorted.map(mod => {
-                const charName = Bot.characters.find(char => char.uniqueName === mod.defId);
+                const charName = Bot.characters.find((char: {}) => char.uniqueName === mod.defId);
                 mod.name = charName?.name;
                 return mod;
             });

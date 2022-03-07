@@ -1,4 +1,4 @@
-const Command = require("../base/slashCommand");
+import SlashCommand from "../base/slashCommand";
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -16,7 +16,7 @@ const gpMap = {
     0:       { div: 11, fleets: 1, teams5: 3,  topX5: 30,  kyber5: 24000, teams3: 3,  topX3: 18, kyber3: 21500 }
 };
 
-class GrandArena extends Command {
+class GrandArena extends SlashCommand {
     constructor(Bot) {
         super(Bot, {
             name: "grandarena",
