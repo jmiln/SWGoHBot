@@ -2,15 +2,16 @@
     Logger class for easy and aesthetically pleasing console logging
     Based off of https://github.com/AnIdiotsGuide/guidebot-class/blob/master/modules/Logger.js
 */
-const chalk = require("chalk");
-const moment = require("moment-timezone");
+import chalk from "chalk";
+import moment from "moment-timezone";
+import { Client } from "discord.js";
 
 class Logger {
-    constructor(Bot, client) {
+    constructor(Bot: {}, client: Client) {
         this.Bot = Bot;
         this.client = client;
     }
-    log(content, type = "log", webhook = false) {
+    log(content: string, type: string = "log", webhook: boolean = false) {
         const shard = this.client.shard ? ` (${this.client.shard.id})` : "";
         const time = `${moment.tz("US/Pacific").format("M/D/YYYY hh:mma").replace(" 0", "  ")}`;
         const timestamp = `[${time}]${shard}`;
@@ -65,20 +66,20 @@ class Logger {
         return type === "error" ? console.error(out) : console.log(out);
     }
 
-    error(content, webhook=false) {
-        if (content?.includes("Unable to authenticate")) webhook = true;
+    error(content: string, webhook=false) {
+        if (content.toString().includes("Unable to authenticate")) webhook = true;
         return this.log(content, "error", webhook);
     }
 
-    warn(content, webhook=false) {
+    warn(content: string, webhook=false) {
         return this.log(content, "warn", webhook);
     }
 
-    debug(content, webhook=false) {
+    debug(content: string, webhook=false) {
         return this.log(content, "debug", webhook);
     }
 
-    cmd(content, webhook=false) {
+    cmd(content: string, webhook=false) {
         return this.log(content, "cmd", webhook);
     }
 }

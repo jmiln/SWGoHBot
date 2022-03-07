@@ -1,11 +1,12 @@
-const Discord = require("discord.js");
-const moment = require("moment-timezone");
+import Discord from "discord.js";
+import moment from "moment-timezone";
 require("moment-duration-format");
-const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
-const fs = require("fs");
+import { promisify, inspect } from "util";     // eslint-disable-line no-unused-vars
+import fs from "fs";
+import { GuildConf, UnitObj } from "./types";
 const readdir = promisify(require("fs").readdir);
 
-module.exports = (Bot, client) => {
+module.exports = (Bot: {}, client: Discord.Client) => {
     Bot.constants = {
         // The main invite for the support server
         invite: "https://discord.com/invite/FfwGvhr",
@@ -49,7 +50,7 @@ module.exports = (Bot, client) => {
      *  NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
      *  command including the VERY DANGEROUS `eval` and `exec` commands!
      */
-    Bot.permLevel = message => {
+    Bot.permLevel = (message: Discord.Message) => {
         let permlvl = 0;
 
         // Depending on message or interaction, grab the ID of the user
@@ -68,7 +69,7 @@ module.exports = (Bot, client) => {
 
         // Guild Owner gets an extra level, wooh!
         const gOwner = message.guild.fetchOwner();
-        if (message.channel.type === "text" && message.guild && gOwner) {
+        if (message.channel.type === "GUILD_TEXT" && message.guild && gOwner) {
             if (message.author.id === gOwner.id) {
                 return permMap.GUILD_OWNER;
             }
@@ -107,7 +108,7 @@ module.exports = (Bot, client) => {
     };
 
     // This finds any character that matches the search, and returns them in an array
-    Bot.findChar = (searchName, charList, ship=false) => {
+    Bot.findChar = (searchName: string, charList: UnitObj, ship=false) => {
         if (!searchName?.length || typeof searchName !== "string") {
             return [];
         }
@@ -118,24 +119,24 @@ module.exports = (Bot, client) => {
             .toLowerCase();
 
         // Try finding an exact match for the name or aliases
-        let foundChar = charList.filter(char => char.name.toLowerCase() === searchName);
+        let foundChar = charList.filter((char: UnitObj) => char.name.toLowerCase() === searchName);
         if (!foundChar.length) {
-            foundChar = charList.filter(char => char.aliases.some(alias => alias.toLowerCase() === searchName));
+            foundChar = charList.filter((char: UnitObj) => char.aliases.some(alias => alias.toLowerCase() === searchName));
         }
         if (ship && !foundChar.length) {
-            foundChar = charList.filter(ship => ship.crew?.some(crew => crew.toLowerCase() === searchName));
+            foundChar = charList.filter((ship: UnitObj) => ship.crew?.some((crew: string) => crew.toLowerCase() === searchName));
         }
         if (foundChar?.length) {
             return foundChar;
         }
 
         // Then see if the searchName is a part of one of the names or aliases
-        foundChar = charList.filter(char => char.name.toLowerCase().split(" ").includes(searchName));
+        foundChar = charList.filter((char: UnitObj) => char.name.toLowerCase().split(" ").includes(searchName));
         if (!foundChar.length) {
-            foundChar = charList.filter(char => char.aliases.some(alias => alias.toLowerCase().split(" ").includes(searchName)));
+            foundChar = charList.filter((char: UnitObj) => char.aliases.some(alias => alias.toLowerCase().split(" ").includes(searchName)));
         }
         if (ship && !foundChar.length) {
-            foundChar = charList.filter(ship => ship.crew?.some(crew => crew.toLowerCase().split(" ").includes(searchName)));
+            foundChar = charList.filter((ship: UnitObj) => ship.crew?.some((crew: string) => crew.toLowerCase().split(" ").includes(searchName)));
         }
         if (foundChar?.length) {
             return foundChar;
@@ -143,7 +144,7 @@ module.exports = (Bot, client) => {
 
         // Then try to split up the search by spaces, and see if any part of that finds any matches
         const splitName = searchName.split(" ");
-        foundChar = charList.filter(char => splitName.some(name => char.name.toLowerCase().includes(name)));
+        foundChar = charList.filter((char: UnitObj) => splitName.some(name => char.name.toLowerCase().includes(name)));
         if (foundChar?.length) {
             return foundChar;
         }
@@ -153,7 +154,7 @@ module.exports = (Bot, client) => {
     };
 
     // Parse the webhook url, and get the id & token from the end
-    function parseWebhook(url) {
+    function parseWebhook(url: string) {
         const webhookCredentials = url.split("/").slice(-2);
         return {
             id: webhookCredentials[0],
@@ -162,7 +163,7 @@ module.exports = (Bot, client) => {
     }
 
     // Send a message to a webhook url, takes the url & the embed to send
-    Bot.sendWebhook = (hookUrl, embed) => {
+    Bot.sendWebhook = (hookUrl: string, embed: Discord.MessageEmbed): void => {
         const h = parseWebhook(hookUrl);
         const hook = new Discord.WebhookClient({id: h.id, token: h.token});
         hook.send({embeds: [
@@ -173,7 +174,7 @@ module.exports = (Bot, client) => {
     /* ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    client.announceMsg = async (guild, announceMsg, channel="", guildConf={}) => {
+    client.announceMsg = async (guild: Discord.Guild, announceMsg: string, channel: string="", guildConf: GuildConf) => {
         if (!guild?.id) return;
 
         let announceChan = guildConf.announceChan || "";
@@ -193,14 +194,14 @@ module.exports = (Bot, client) => {
             return;
         } else {
             // If everything is ok, go ahead and try sending the message
-            await chan.send(announceMsg).catch((err) => {
+            await chan.send(announceMsg).catch((err: Error) => {
                 // if (err.stack.toString().includes("user aborted a request")) return;
                 console.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );
             });
         }
     };
 
-    client.unloadSlash = commandName => {
+    client.unloadSlash = (commandName: string) => {
         if (client.slashcmds.has(commandName)) {
             const command = client.slashcmds.get(commandName);
             client.slashcmds.delete(command);
@@ -208,7 +209,7 @@ module.exports = (Bot, client) => {
         }
         return;
     };
-    client.loadSlash = commandName => {
+    client.loadSlash = (commandName: string) => {
         try {
             const cmd = new (require(`../slash/${commandName}`))(Bot);
             if (!cmd.commandData.enabled) {
@@ -220,7 +221,7 @@ module.exports = (Bot, client) => {
             return `Unable to load command ${commandName}: ${e}`;
         }
     };
-    client.reloadSlash = async (commandName) => {
+    client.reloadSlash = async (commandName: string) => {
         let response = client.unloadSlash(commandName);
         if (response) {
             return new Error(`Error Unloading: ${response}`);
@@ -234,7 +235,7 @@ module.exports = (Bot, client) => {
     };
 
     // Loads the given command
-    client.loadCommand = (commandName) => {
+    client.loadCommand = (commandName: string) => {
         try {
             const cmd = new (require(`../commands/${commandName}`))(Bot);
             if (cmd.help.category === "SWGoH" && !Bot.swgohAPI) {
@@ -243,7 +244,7 @@ module.exports = (Bot, client) => {
                 return false;
             }
             client.commands.set(cmd.help.name, cmd);
-            cmd.conf.aliases.forEach(alias => {
+            cmd.conf.aliases.forEach((alias: string) => {
                 client.aliases.set(alias, cmd.help.name);
             });
             return false;
@@ -253,18 +254,16 @@ module.exports = (Bot, client) => {
     };
 
     // Unloads the given command
-    client.unloadCommand = (command) => {
-        if (typeof command === "string") {
-            const commandName = command;
-            if (client.commands.has(commandName)) {
-                command = client.commands.get(commandName);
-            } else if (Bot.aliases.has(commandName)) {
-                command = client.commands.get(client.aliases.get(commandName));
-            }
+    client.unloadCommand = (command: string) => {
+        const commandName = command;
+        if (client.commands.has(commandName)) {
+            command = client.commands.get(commandName);
+        } else if (Bot.aliases.has(commandName)) {
+            command = client.commands.get(client.aliases.get(commandName));
         }
 
         client.commands.delete(command);
-        client.aliases.forEach((cmd, alias) => {
+        client.aliases.forEach((cmd: {}, alias: string) => {
             if (cmd === command) client.aliases.delete(alias);
         });
         delete require.cache[require.resolve(`../commands/${command.help.name}.js`)];
@@ -272,8 +271,8 @@ module.exports = (Bot, client) => {
     };
 
     // Combines the last two (load & unload), and reloads a command
-    client.reloadCommand = async (commandName) => {
-        let command;
+    client.reloadCommand = async (commandName: string) => {
+        let command = null;
         if (client.commands.has(commandName)) {
             command = client.commands.get(commandName);
         } else if (client.aliases.has(commandName)) {
@@ -302,22 +301,22 @@ module.exports = (Bot, client) => {
         });
         const cmdFiles = await readdir("./commands/");
         const coms = [], errArr = [];
-        cmdFiles.forEach(async (f) => {
+        cmdFiles.forEach(async (fileName: string) => {
             try {
-                const cmd = f.split(".")[0];
-                if (f.split(".").slice(-1)[0] !== "js") {
-                    errArr.push(f);
+                const cmd = fileName.split(".")[0];
+                if (fileName.split(".").slice(-1)[0] !== "js") {
+                    errArr.push(fileName);
                 } else {
                     const res = client.loadCommand(cmd);
                     if (!res) {
                         coms.push(cmd);
                     } else {
-                        errArr.push(f);
+                        errArr.push(fileName);
                     }
                 }
             } catch (e) {
                 Bot.logger.error("Error: " + e);
-                errArr.push(f);
+                errArr.push(fileName);
             }
         });
         return {
@@ -335,22 +334,22 @@ module.exports = (Bot, client) => {
         });
         const cmdFiles = await readdir("./slash/");
         const coms = [], errArr = [];
-        cmdFiles.forEach(async (f) => {
+        cmdFiles.forEach(async (fileName: string) => {
             try {
-                const cmd = f.split(".")[0];
-                if (f.split(".").slice(-1)[0] !== "js") {
-                    errArr.push(f);
+                const cmd = fileName.split(".")[0];
+                if (fileName.split(".").slice(-1)[0] !== "js") {
+                    errArr.push(fileName);
                 } else {
                     const res = client.loadSlash(cmd);
                     if (!res) {
                         coms.push(cmd);
                     } else {
-                        errArr.push(f);
+                        errArr.push(fileName);
                     }
                 }
             } catch (e) {
                 Bot.logger.error("Error: " + e);
-                errArr.push(f);
+                errArr.push(fileName);
             }
         });
         return {
@@ -364,21 +363,21 @@ module.exports = (Bot, client) => {
         const ev = [], errEv = [];
 
         const evtFiles = await readdir("./events/");
-        evtFiles.forEach(file => {
+        evtFiles.forEach((fileName: string) => {
             try {
-                const eventName = file.split(".")[0];
+                const eventName = fileName.split(".")[0];
                 client.removeAllListeners(eventName);
-                const event = require(`../events/${file}`);
+                const event = require(`../events/${fileName}`);
                 if (["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
                     client.on(eventName, event.bind(null, Bot, client));
                 } else {
                     client.on(eventName, event.bind(null, Bot));
                 }
-                delete require.cache[require.resolve(`../events/${file}`)];
+                delete require.cache[require.resolve(`../events/${fileName}`)];
                 ev.push(eventName);
             } catch (e) {
                 Bot.logger.error("In Event reload: " + e);
-                errEv.push(file);
+                errEv.push(fileName);
             }
         });
         return {
@@ -432,17 +431,17 @@ module.exports = (Bot, client) => {
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async () => {
         try {
-            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json"));
-            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
-            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
-            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json"));
-            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json"));
-            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json"));
-            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json"));
-            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json"));
-            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json"));
-            Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
-            const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json"));
+            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json").toString());
+            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json").toString());
+            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json").toString());
+            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json").toString());
+            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json").toString());
+            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json").toString());
+            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json").toString());
+            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json").toString());
+            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json").toString());
+            Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json").toString());
+            const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json").toString());
             Bot.statCalculator.setGameData(gameData);
         } catch (err) {
             return {err: err.stack};
@@ -456,12 +455,12 @@ module.exports = (Bot, client) => {
             Object.keys(Bot.languages).forEach(lang => {
                 delete Bot.languages[lang];
             });
-            const langFiles = await readdir(`${process.cwd()}/languages/`);
-            langFiles.forEach(file => {
-                const langName = file.split(".")[0];
-                const lang = require(`${process.cwd()}/languages/${file}`);
+            const langFiles = await readdir(`${__dirname}/../languages/`);
+            langFiles.forEach((fileName: string) => {
+                const langName = fileName.split(".")[0];
+                const lang = require(`${__dirname}/../languages/${fileName}`);
                 Bot.languages[langName] = new lang(Bot);
-                delete require.cache[require.resolve(`${process.cwd()}/languages/${file}`)];
+                delete require.cache[require.resolve(`${__dirname}/../languages/${fileName}`)];
             });
         } catch (e) {
             err = e;
@@ -511,7 +510,7 @@ module.exports = (Bot, client) => {
      *  Input an array of strings, and it will put them together so that it
      *  doesn't exceed the given max length.
      */
-    Bot.msgArray = (arr, join="\n", maxLen=1900) => {
+    Bot.msgArray = (arr: string[], join="\n", maxLen=1900) => {
         const messages = [];
         if (!Array.isArray(arr)) arr = arr.toString().split("\n");
         arr.forEach((elem) => {
@@ -538,12 +537,12 @@ module.exports = (Bot, client) => {
     /* CODE BLOCK MAKER
      * Makes a codeblock with the specified lang for highlighting.
      */
-    Bot.codeBlock = (str, lang="") => {
+    Bot.codeBlock = (str: string, lang="") => {
         return `\`\`\`${lang}\n${str}\`\`\``;
     };
 
     // Return a duration string
-    Bot.duration = (time, message=null) => {
+    Bot.duration = (time: string, message=null) => {
         if (!message) return "N/A";
         const lang = message ? message.language : Bot.languages[Bot.config.defaultSettings.language];
         return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
@@ -552,12 +551,12 @@ module.exports = (Bot, client) => {
     /* LAST UPDATED FOOTER
      * Simple one to make the "Last updated ____ " footers
      */
-    Bot.updatedFooter = (updated, message=null, type="player", userCooldown) => {
+    Bot.updatedFooter = (updated: string, message=null, type="player", userCooldown: {}) => {
         const baseCooldown = { player: 2, guild: 6 };
         const minCooldown = { player: 1, guild: 3 };
 
         if (!userCooldown) userCooldown = baseCooldown;
-        let between = Bot.convertMS(new Date() - new Date(updated));
+        let between = Bot.convertMS(new Date().getTime() - new Date(updated).getTime());
 
         if (between.hour >= minCooldown[type] && between.hour < userCooldown[type]) {
             // If the data is between the shorter time they'd get from patreon, and the
@@ -578,8 +577,8 @@ module.exports = (Bot, client) => {
         let users = 0;
         if (client.shard && client.shard.count > 0) {
             await client.shard.fetchClientValues("users.cache.size")
-                .then(results => {
-                    users =  results.reduce((prev, val) => prev + val, 0);
+                .then((results: number[]) => {
+                    users = results.reduce((prev: number, val: number) => prev + val, 0);
                 })
                 .catch(console.error);
             return users;
@@ -593,8 +592,8 @@ module.exports = (Bot, client) => {
         let guilds = 0;
         if (client.shard) {
             await client.shard.fetchClientValues("guilds.cache.size")
-                .then(results => {
-                    guilds =  results.reduce((prev, val) => prev + val, 0);
+                .then((results: number[]) => {
+                    guilds =  results.reduce((prev: number, val: number) => prev + val, 0);
                 })
                 .catch(console.error);
             return guilds;
@@ -606,52 +605,71 @@ module.exports = (Bot, client) => {
     /* Find an emoji by ID
      * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
-    client.findEmoji = (id) => {
-        const temp = client.emojis.cache.get(id);
-        if (!temp) return null;
+    // client.findEmoji = (id: string) => {
+    //     const temp = client.emojis.cache.get(id);
+    //     if (!temp) return null;
+    //
+    //     // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
+    //     const emoji = Object.assign({}, temp);
+    //     // Circular references can't be returned outside of eval, so change it to the id
+    //     if (emoji.guild) {
+    //         emoji["guildId"] = emoji.guild.id;
+    //         delete emoji.guild;
+    //     }
+    //     // A new object will be construted, so simulate raw data by adding this property back
+    //     emoji["require_colons"] = emoji.requiresColons;
+    //
+    //     return emoji;
+    // };
 
-        // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
-        const emoji = Object.assign({}, temp);
-        // Circular references can't be returned outside of eval, so change it to the id
-        if (emoji.guild) emoji.guild = emoji.guild.id;
-        // A new object will be construted, so simulate raw data by adding this property back
-        emoji.require_colons = emoji.requiresColons;
-
+    function findEmoji(c: Discord.Client, { emoteId }) {
+        const emoji = c.emojis.cache.get(emoteId) || c.emojis.cache.find(e => e.name.toLowerCase() === emoteId.toLowerCase());
+        if (!emoji) return null;
         return emoji;
-    };
+    }
+
+    async function getEmoji(id: string) {
+        return client.shard.broadcastEval(findEmoji, { context: { emoteId: id } })
+            .then(emojiArray => {
+                // Locate a non falsy result, which will be the emoji in question
+                const foundEmoji = emojiArray.find(emoji => emoji);
+                if (!foundEmoji) return false;
+                return foundEmoji;
+        });
+    }
 
 
     /* Use the findEmoji() to check all shards if sharded
      * If sharded, also use the example from
      * https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
-    client.getEmoji = (id) => {
-        if (client.shard && client.shard.count > 0) {
-            return client.shard.broadcastEval((client, id) => client.findEmoji(id), {context: id})
-                .then(emojiArray => {
-                    // Locate a non falsy result, which will be the emoji in question
-                    const foundEmoji = emojiArray.find(emoji => emoji);
-                    if (!foundEmoji) return false;
-
-                    return client.api.guilds(foundEmoji.guild).get()
-                        .then(raw => {
-                            const guild = new Discord.Guild(client, raw);
-                            const emoji = new Discord.Emoji(guild, foundEmoji);
-                            return emoji;
-                        });
-                });
-        } else {
-            const emoji = client.findEmoji(id);
-            if (!emoji) return false;
-            return new Discord.Emoji(client.guilds.cache.get(emoji.guild), emoji);
-        }
-    };
+    // async function getEmoji(id: string) {
+    //     if (client.shard && client.shard.count > 0) {
+    //         return client.shard.broadcastEval((client, id) => client.findEmoji(id), {context: id})
+    //             .then(emojiArray => {
+    //                 // Locate a non falsy result, which will be the emoji in question
+    //                 const foundEmoji = emojiArray.find(emoji => emoji);
+    //                 if (!foundEmoji) return false;
+    //
+    //                 return client.api.guilds(foundEmoji.guildId).get()
+    //                     .then(raw => {
+    //                         const guild = new Discord.Guild(client, raw);
+    //                         const emoji = new Discord.Emoji(guild, foundEmoji);
+    //                         return emoji;
+    //                     });
+    //             });
+    //     } else {
+    //         const emoji = client.findEmoji(id);
+    //         if (!emoji) return false;
+    //         return new Discord.Emoji(client.guilds.cache.get(emoji.guild), emoji);
+    //     }
+    // }
 
     // Load all the emotes that may be used for the bot at some point (from data/emoteIDs.js)
     client.loadAllEmotes = async () => {
         const emoteList = require("../data/emoteIDs.js");
         for (const emote of Object.keys(emoteList)) {
-            const e = await client.getEmoji(emoteList[emote]);
+            const e = await getEmoji(emoteList[emote]);
             if (!e) {
                 Bot.logger.error("Couldn't get emote: " + emote);
                 continue;
@@ -664,7 +682,7 @@ module.exports = (Bot, client) => {
     /* isUserID
      * Check if a string of numbers is a valid user.
      */
-    Bot.isUserID = (numStr) => {
+    Bot.isUserID = (numStr: string) => {
         if (!numStr || !numStr.length) return false;
         const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
         return match ? true : false;
@@ -673,7 +691,7 @@ module.exports = (Bot, client) => {
     /* getUserID
      * Get a valid Discord id string from a given string.
      */
-    Bot.getUserID = (numStr) => {
+    Bot.getUserID = (numStr: string) => {
         if (!numStr || !numStr.length) return null;
         const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
         if (match) {
@@ -686,8 +704,8 @@ module.exports = (Bot, client) => {
      * Check if a string of numbers is a valid ally code.
      * Needs to be a string of 9 numbers
      */
-    Bot.isAllyCode = (aCode) => {
-        if (!aCode || !aCode.toString().length) return false;
+    Bot.isAllyCode = (aCode: number) => {
+        if (!aCode?.toString().length) return false;
         const match = aCode.toString().replace(/[^\d]*/g, "").match(/^\d{9}$/);
         return match ? true : false;
     };
@@ -707,11 +725,19 @@ module.exports = (Bot, client) => {
      *  }
      * rows: The data to fill in
      */
-    Bot.makeTable = (headers, rows, options={
+    interface Header {
+        [index: string]: {
+            value: string | null,
+            startWith: string | null,
+            endWith: string | null,
+            align: "left" | "right" | "center"
+        }
+    }
+    Bot.makeTable = (headers: Header[], rows: [], options={
         boldHeader: true,
         useHeader:  true
     }) => {
-        if (!headers || !rows?.length) throw new Error("Need both headers and rows");
+        if (!headers || !rows?.length) throw new Error("You need both headers and rows");
         const max = {};
         Object.keys(headers).forEach(h => {
             // Get the max length needed, then add a bit for padding
@@ -719,7 +745,7 @@ module.exports = (Bot, client) => {
                 // console.log(h, rows);
                 max[h] = Math.max(...[headers[h].value.length].concat(rows.map(v => v[h].toString().length))) + 2;
             } else {
-                max[h] = Math.max(...rows.map(v => {
+                max[h] = Math.max(...rows.map((v: {}) => {
                     if (!v[h]) return 0;
                     return v[h].toString().length;
                 })) + 2;
@@ -756,10 +782,10 @@ module.exports = (Bot, client) => {
         }
         rows.forEach(r => {
             let row = "";
-            Object.keys(headers).forEach((header, ix) => {
+            Object.keys(headers).forEach((header: string, ix: number) => {
                 const rowMax = max[header];
                 const head = headers[header];
-                let value = r[header];
+                let value: string | number = r[header];
                 if (!value) value = 0;
                 const pad = rowMax - value.toString().length;
                 row += head.startWith ? head.startWith : "";
@@ -769,7 +795,7 @@ module.exports = (Bot, client) => {
                     if (padBefore) row += " ".repeat(padBefore);
                     row += value;
                     if (padAfter) row  += " ".repeat(padAfter);
-                } else if (head.align === "left" && ix === 0 && !header.startWith) {
+                } else if (head.align === "left" && ix === 0 && !head.startWith) {
                     row += value + " ".repeat(pad-1);
                 } else if (head.align === "left") {
                     row += " " + value + " ".repeat(pad-1);
@@ -787,23 +813,23 @@ module.exports = (Bot, client) => {
     };
 
     // Small function to search the factions
-    Bot.findFaction = (fact) => {
-        fact = fact.toLowerCase().replace(/\s+/g, "");
-        let found = Bot.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact);
+    Bot.findFaction = (faction: string): string[] | string | boolean => {
+        faction = faction.toLowerCase().replace(/\s+/g, "");
+        let found = Bot.factions.find((fact: string) => fact.toLowerCase().replace(/\s+/g, "") === faction);
         if (found) {
             return found.toLowerCase();
         }
-        found = Bot.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact.substring(0, fact.length-1));
-        if (fact.endsWith("s") && found) {
+        found = Bot.factions.find((fact: string) => fact.toLowerCase().replace(/\s+/g, "") === faction.substring(0, faction.length-1));
+        if (faction.endsWith("s") && found) {
             return found.toLowerCase();
         }
-        found = Bot.factions.find(f => f.toLowerCase().replace(/\s+/g, "") === fact + "s");
-        if (!fact.endsWith("s") && found) {
+        found = Bot.factions.find((fact: string) => fact.toLowerCase().replace(/\s+/g, "") === faction + "s");
+        if (!faction.endsWith("s") && found) {
             return found.toLowerCase();
         }
-        const close = Bot.factions.filter(f => f.toLowerCase().replace(/\s+/g, "").includes(fact.toLowerCase()));
+        const close = Bot.factions.filter((fact: string) => fact.toLowerCase().replace(/\s+/g, "").includes(faction.toLowerCase()));
         if (close.length) {
-            return close.map(f => f.toLowerCase());
+            return close.map((fact: string) => fact.toLowerCase());
         }
 
         return false;
@@ -811,9 +837,9 @@ module.exports = (Bot, client) => {
 
     // Expand multiple spaces to have zero width spaces between them so
     // Discord doesn't collapse em
-    Bot.expandSpaces = (str) => {
+    Bot.expandSpaces = (str: string) => {
         let outStr = "";
-        str.split(/([\s]{2,})/).forEach(e => {
+        str.split(/([\s]{2,})/).forEach((e: string) => {
             if (e.match(/[\s]{2,}/)) {
                 outStr += e.split("").join("\u200B");
             } else {
@@ -824,7 +850,7 @@ module.exports = (Bot, client) => {
     };
 
     // Get the ally code of someone that's registered
-    Bot.getAllyCode = async (message, user, useMessageId=true) => {
+    Bot.getAllyCode = async (message: Discord.Message, user: string, useMessageId=true) => {
         const otherCodeRegex = /^-\d{1,2}$/;
         if (Array.isArray(user)) user = user.join(" ");
         if (user) {
@@ -859,7 +885,7 @@ module.exports = (Bot, client) => {
                 return account ? account.allyCode : null;
             } else {
                 // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
-                const account = userAcct.accounts.find(a => a.primary);
+                const account = userAcct.accounts.find((a: {}) => a.primary);
                 return account ? account.allyCode : null;
             }
         } else {
@@ -868,8 +894,8 @@ module.exports = (Bot, client) => {
     };
 
     // Convert from milliseconds
-    Bot.convertMS = (milliseconds) => {
-        var hour, totalMin, minute, seconds;
+    Bot.convertMS = (milliseconds: number) => {
+        let hour: number, totalMin: number, minute: number, seconds: number;
         seconds = Math.floor(milliseconds / 1000);
         totalMin = Math.floor(seconds / 60);
         seconds = seconds % 60;
@@ -884,14 +910,14 @@ module.exports = (Bot, client) => {
     };
 
     // Return a divider of equals signs
-    Bot.getDivider = (count, divChar="=") => {
+    Bot.getDivider = (count: number, divChar="=") => {
         if (count <= 0) throw new Error("Invalid count value");
         if (typeof divChar !== "string") throw new Error("divChar must be a string!");
         return divChar.repeat(count);
     };
 
     // Clean mentions out of messages and replace them with the text version
-    Bot.cleanMentions = (guild, input) => {
+    Bot.cleanMentions = (guild: Discord.Guild, input: string) => {
         return input
             .replace(/@(here|everyone)/g, `@${Bot.constants.zws}$1`)
             .replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
@@ -899,7 +925,7 @@ module.exports = (Bot, client) => {
                     case "@":
                     case "@!": {
                         const  user = guild.members.cache.get(id);
-                        return user ? `@${user.displayname}` : `<${type}${Bot.constants.zws}${id}>`;
+                        return user ? `@${user.displayName}` : `<${type}${Bot.constants.zws}${id}>`;
                     }
                     case "@&": {
                         const  role = guild.roles.cache.get(id);
@@ -914,19 +940,19 @@ module.exports = (Bot, client) => {
             });
     };
 
-    Bot.isChannelMention = (mention) => {
+    Bot.isChannelMention = (mention: string) => {
         const channelRegex = /^<#\d{17,19}>/;
         return mention.match(channelRegex);
     };
-    Bot.isRoleMention = (mention) => {
+    Bot.isRoleMention = (mention: string) => {
         const roleRegex = /^<@&\d{17,19}>/;
         return mention.match(roleRegex);
     };
-    Bot.isUserMention = (mention) => {
+    Bot.isUserMention = (mention: string) => {
         const userRegex = /^<@!?\d{17,19}>/;
         return mention.match(userRegex);
     };
-    Bot.chunkArray = (inArray, chunkSize) => {
+    Bot.chunkArray = (inArray: string[], chunkSize: number) => {
         var res = [];
         if (!Array.isArray(inArray)) inArray = [inArray];
         for (let ix = 0, len = inArray.length; ix < len; ix += chunkSize) {
@@ -934,21 +960,21 @@ module.exports = (Bot, client) => {
         }
         return res;
     };
-    Bot.getGuildConf = async (guildID) => {
+    Bot.getGuildConf = async (guildID: string) => {
         if (!guildID) return Bot.config.defaultSettings;
         const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}});
         return guildSettings && guildSettings.dataValues ? guildSettings.dataValues : Bot.config.defaultSettings;
     };
-    Bot.hasGuildConf = async (guildID) => {
+    Bot.hasGuildConf = async (guildID: string) => {
         if (!guildID) return false;
         const exists = await Bot.database.models.settings.findOne({where: {guildID: guildID}})
-            .then(token => token !== null)
-            .then(isUnique => isUnique);
+            .then((token: any) => token !== null)
+            .then((isUnique: any) => isUnique);
         return exists ? true : false;
     };
 
     // Returns a gear string (9+4 or 13r5), etc
-    Bot.getGearStr = (charIn, preStr="") => {
+    Bot.getGearStr = (charIn: {}, preStr="") => {
         // If the character is not unlocked
         if (!charIn?.gear) return "N/A";
 
@@ -962,7 +988,7 @@ module.exports = (Bot, client) => {
     };
 
     // Get the overall levels for a guild as a whole (Gear, rarity, relic, etc)
-    Bot.summarizeCharLevels = (guildMembers, type) => {
+    Bot.summarizeCharLevels = (guildMembers: {}[], type: string) => {
         const max = {
             gear: 13,
             relic: 9,
@@ -971,30 +997,30 @@ module.exports = (Bot, client) => {
         if (!Object.keys(max).includes(type)) return new Error(`[summarizeLevels] Invalid type (${type})`);
         if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
 
-        const levels = {};
+        const levels: {[key: string]: number} = {};
         for (let ix = max[type]; ix >= 1; ix--) {
             let lvlCount = 0;
             for (const member of guildMembers) {
                 if (type === "relic") {
-                    lvlCount += member.roster.filter(c => c?.combatType === 1 && c.relic?.currentTier-2 === ix).length;
+                    lvlCount += member.roster.filter((char: {}) => char?.combatType === 1 && char.relic?.currentTier-2 === ix).length;
                 } else {
-                    lvlCount += member.roster.filter(c => c?.combatType === 1 && c[type] === ix).length;
+                    lvlCount += member.roster.filter((char: {}) => char?.combatType === 1 && char[type] === ix).length;
                 }
             }
             if (lvlCount > 0) {
                 levels[ix] = lvlCount;
             }
         }
-        const tieredLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + (levels[curr] * curr), 0);
-        const totalLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + levels[curr], 0);
-        const avgLvls = (tieredLvl / totalLvl).toFixed(2);
+        const tieredLvl = Object.keys(levels).reduce((acc, curr) => acc + (levels[curr] * parseInt(curr, 10)), 0);
+        const totalLvl  = Object.keys(levels).reduce((acc, curr) => acc + levels[curr], 0);
+        const avgLvls   = (tieredLvl / totalLvl).toFixed(2);
 
         return [levels, avgLvls];
     };
 
-    Bot.toProperCase = function(strIn) {
+    Bot.toProperCase = function(strIn: string) {
         return strIn.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
         });
     };
 };

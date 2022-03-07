@@ -1,14 +1,13 @@
-const {inspect} = require("util"); // eslint-disable-line no-unused-vars
-const statEnums = require("../data/statEnum.js");
-const npmAsync = require("async");
-const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
-
+import { inspect } from "util"; // eslint-disable-line no-unused-vars
+import statEnums from "../data/statEnum";
+import npmAsync from "async";
+import fetch from "node-fetch";
 
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
 let omicronList = null;
 
-module.exports = (Bot) => {
+module.exports = (Bot: {}) => {
     const swgoh = Bot.swgoh;
     const cache = Bot.cache;
     const costs = Bot.abilityCosts;
@@ -51,12 +50,12 @@ module.exports = (Bot) => {
             }, {
                 skillId: 1, _id: 0
             });
-            omicronList = omicronList.map(skill => skill.skillId);
+            omicronList = omicronList.map((skill: {}) => skill.skillId);
         }
         return omicronList;
     }
 
-    async function playerByName(name) {
+    async function playerByName(name: string) {
         try {
             if (!name || !name.length) return null;
             if (typeof name !== "string") name = name.toString();
@@ -71,7 +70,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function getPayoutFromAC(allycodes) {
+    async function getPayoutFromAC(allycodes: string | string[]) {
         // Make sure the allycode(s) are in an array
         if (!Array.isArray(allycodes)) {
             if (!allycodes) {
@@ -79,12 +78,11 @@ module.exports = (Bot) => {
             }
             allycodes = [allycodes];
         }
-        allycodes = allycodes.map(a => parseInt(a, 10));
         const players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1});
         return players;
     }
 
-    async function getPlayersArena(allycodes) {
+    async function getPlayersArena(allycodes: string | string[]) {
         const MAX_CONCURRENT = 10;
         if (!Array.isArray(allycodes)) {
             if (!allycodes) {
@@ -96,8 +94,8 @@ module.exports = (Bot) => {
         if (!allycodes.length) throw new Error("No valid ally code(s) entered");
 
         const playersOut = [];
-        await npmAsync.eachLimit(allycodes, MAX_CONCURRENT, async function(ac) {
-            const p = await Bot.swapiStub.getPlayerArenaProfile(ac.toString())
+        await npmAsync.eachLimit(allycodes, MAX_CONCURRENT, async function(ac: string) {
+            const p = await Bot.swapiStub.getPlayerArenaProfile(ac)
                 .catch(() => {});
                 // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
             playersOut.push(p);
@@ -105,8 +103,8 @@ module.exports = (Bot) => {
 
         return playersOut.map(p => {
             if (p) {
-                const charArena = p.pvpProfile.find(t => t.tab === 1);
-                const shipArena = p.pvpProfile.find(t => t.tab === 2);
+                const charArena = p.pvpProfile.find((t: {}) => t.tab === 1);
+                const shipArena = p.pvpProfile.find((t: {}) => t.tab === 2);
                 return {
                     name: p.name,
                     allyCode: parseInt(p.allyCode, 10),
@@ -124,13 +122,13 @@ module.exports = (Bot) => {
         }).filter(p => !!p);
     }
 
-    async function getPlayerUpdates(allycodes) {
+    async function getPlayerUpdates(allycodes: number[]) {
         if (!Array.isArray(allycodes)) {
             allycodes = [allycodes];
         }
 
         let tempBare = null, updatedBare = null;
-        const fetchStart = new Date();
+        const fetchStart: number = new Date().getTime();
         if (allycodes.length > 25) {
             tempBare = await swgoh.fetchPlayer({
                 allycode: allycodes.slice(0, Math.floor(allycodes.length/2))
@@ -148,19 +146,19 @@ module.exports = (Bot) => {
             });
             updatedBare = tempBare.result;
         }
-        const fetchEnd = new Date() - fetchStart;
+        const fetchEnd = new Date().getTime() - fetchStart;
         Bot.logger.debug(`Fetching the new players took ${fetchEnd}ms`);
 
-        const cacheStart = new Date();
+        const cacheStart: number = new Date().getTime();
         const oldMembers = await cache.get(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes}});
-        const cacheEnd = new Date() - cacheStart;
+        const cacheEnd = new Date().getTime() - cacheStart;
         Bot.logger.debug(`Fetching cached players took ${cacheEnd}ms`);
         const guildLog = {};
 
         // For each of the up to 50 players in the guild
-        const processStart = new Date();
+        const processStart: number = new Date().getTime();
         for (const newPlayer of updatedBare) {
-            const oldPlayer = oldMembers.find(p => p.allyCode === newPlayer.allyCode);
+            const oldPlayer = oldMembers.find((p: {}) => p.allyCode === newPlayer.allyCode);
             if (!oldPlayer?.roster) {
                 // If they've not been in there before, stick em into the db
                 await cache.put(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
@@ -183,7 +181,7 @@ module.exports = (Bot) => {
             // Check through each of the 250ish? units in their roster for differences
             let updated = false;
             for (const newUnit of newPlayer.roster) {
-                const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
+                const oldUnit = oldPlayer.roster.find((u: {}) => u.defId === newUnit.defId);
                 if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
                 const locChar = await Bot.swgohAPI.langChar({defId: newUnit.defId, skills: newUnit.skills});
                 if (!oldUnit) {
@@ -199,12 +197,12 @@ module.exports = (Bot) => {
                     playerLog.starred.push(`Starred up ${locChar.nameKey} to ${newUnit.rarity} star!`);
                     updated = true;
                 }
-                for (const skillId of newUnit.skills.map(s => s.id)) {
+                for (const skillId of newUnit.skills.map((s: {}) => s.id)) {
                     // For each of the skills, see if it's changed
-                    const oldSkill = oldUnit.skills.find(s => s.id === skillId);
-                    const newSkill = newUnit.skills.find(s => s.id === skillId);
+                    const oldSkill = oldUnit.skills.find((s: {}) => s.id === skillId);
+                    const newSkill = newUnit.skills.find((s: {}) => s.id === skillId);
                     if (oldSkill?.tier < newSkill?.tier) {
-                        const locSkill = locChar.skills.find(s => s.id == skillId);
+                        const locSkill = locChar.skills.find((s: {}) => s.id == skillId);
 
                         if (newSkill.isZeta && newSkill.tier == newSkill.tiers) {
                             // If the skill's been zeta'd
@@ -233,14 +231,14 @@ module.exports = (Bot) => {
                 await cache.put(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
             }
         }
-        const processEnd = new Date() - processStart;
+        const processEnd = new Date().getTime() - processStart;
         Bot.logger.debug(`Processing ${updatedBare.length}`);
         Bot.logger.debug(`Processing took ${processEnd}ms`);
 
         return guildLog;
     }
 
-    async function unitStats(allycodes, cooldown, options={}) {
+    async function unitStats(allycodes: number[], cooldown: number, options={}) {
         // Make sure the allycode(s) are in an array
         if (!allycodes) return false;
         if (!Array.isArray(allycodes)) {
@@ -272,13 +270,12 @@ module.exports = (Bot) => {
         let playerStats = [];
         try {
             if (allycodes?.length) {
-                allycodes = allycodes.filter(a => !!a).map(a => a.toString()).filter(a => a.length === 9);
+                allycodes = allycodes.filter(a => !!a).map(a => a.toString()).filter(a => a.length === 9).map(a => parseInt(a, 10));
             } else {
                 throw new Error("No valid ally code(s) entered");
             }
-            allycodes = allycodes.map(a => parseInt(a, 10));
 
-            let players;
+            let players: {}[];
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
                 if (options && options.defId) {
@@ -293,11 +290,11 @@ module.exports = (Bot) => {
 
             playerStats = playerStats.concat(updated);
 
-            let warning;
+            let warning: string[];
             if (needUpdating.length) {
-                let updatedBare;
+                let updatedBare: {}[];
                 try {
-                    let tempBare;
+                    let tempBare: {};
                     if (needUpdating.length <= 20) {
                         // If it's not a ton of players at a time
                         tempBare = await swgoh.fetchPlayer({
@@ -362,7 +359,7 @@ module.exports = (Bot) => {
                 if (options && options.defId) {
                     playerStats.forEach(p => {
                         if (!p.roster) return;
-                        p.roster = p.roster.filter(ch => ch.defId === options.defId);
+                        p.roster = p.roster.filter((ch: {}) => ch.defId === options.defId);
                     });
                 }
             }
@@ -373,12 +370,12 @@ module.exports = (Bot) => {
         }
     }
 
-    async function langChar(char, lang) {
+    async function langChar(char: {}, lang: string) {
         lang = lang ? lang.toLowerCase() : "eng_us";
         if (!char) throw new Error("Missing Character");
 
         if (char.defId) {
-            const nameKey = await this.units(char.defId);
+            const nameKey: string = await this.units(char.defId);
             char.nameKey = nameKey ? nameKey.nameKey : null;
         }
 
@@ -386,6 +383,7 @@ module.exports = (Bot) => {
             for (const mod of char.mods) {
                 // If they've got the numbers instead of enums, enum em
                 if (mod.primaryStat.unitStatId) mod.primaryStat.unitStat = mod.primaryStat.unitStatId;
+
                 if (!isNaN(mod.primaryStat.unitStat)) {
                     mod.primaryStat.unitStat = statEnums.enums[mod.primaryStat.unitStat];
                 }
@@ -420,7 +418,7 @@ module.exports = (Bot) => {
         return char;
     }
 
-    async function guildStats( allyCodes, defId, cooldown ) {
+    async function guildStats( allyCodes: number[], defId: string, cooldown: number ) {
         if (cooldown && cooldown.guild) {
             if (cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
             if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
@@ -433,12 +431,12 @@ module.exports = (Bot) => {
         if (!players.length) throw new Error("Couldn't get your stats");
 
         for (const player of players) {
-            let unit;
+            let unit: {};
 
             if (!player.roster) {
                 unit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], relic: {currentTier: 0}, equipped: [], stats: {} };
             } else {
-                unit = player.roster.find(c => c.defId === defId);
+                unit = player.roster.find((c: {}) => c.defId === defId);
                 if (!unit) {
                     unit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], relic: {currentTier: 0}, equipped: [] };
                 }
@@ -451,13 +449,11 @@ module.exports = (Bot) => {
         return outStats;
     }
 
-    async function abilities( skillArray, lang, update=false, opts ) {
+    async function abilities( skillArray: string[], lang: string, update=false, opts: {} | null ) {
         lang = lang || "eng_us";
         if (!opts) opts = {};
-        if (!skillArray) {
+        if (!skillArray?.length) {
             throw new Error("You need to have a list of abilities here");
-        } else if (!Array.isArray(skillArray)) {
-            skillArray = [skillArray];
         }
 
         if (update) {
@@ -496,14 +492,14 @@ module.exports = (Bot) => {
             if (!abilities || !abilities.result) return Bot.logger.error("No abilities for " + lang);
             abilities = abilities.result;
 
-            abilities.forEach(a => {
-                const skill = skillList.find(s => s.abilityReference === a.id);
+            abilities.forEach((a: {}) => {
+                const skill = skillList.find((s: {}) => s.abilityReference === a.id);
                 if (a.tierList && a.tierList.length > 0) {
                     a.descKey = a.tierList[a.tierList.length - 1].descKey;
                     delete a.tierList;
                 }
                 if (!skill) return;
-                const isOmicron = skill.tierList.some(sk => sk.powerOverrideTag?.toLowerCase()?.indexOf("omicron") > -1 || sk.recipeId?.toLowerCase()?.indexOf("omicron") > -1);
+                const isOmicron = skill.tierList.some((sk: {}) => sk.powerOverrideTag?.toLowerCase()?.indexOf("omicron") > -1 || sk.recipeId?.toLowerCase()?.indexOf("omicron") > -1);
                 a.isZeta        = skill.isZeta;
                 a.isOmicron     = isOmicron ? true : false;
                 a.skillId       = skill.id;
@@ -536,7 +532,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function getCharacter(defId, lang) {
+    async function getCharacter(defId: string, lang: string) {
         lang = lang ? lang.toLowerCase() : "eng_us";
         if (!defId) throw new Error("[getCharacter] Missing character ID.");
 
@@ -570,8 +566,8 @@ module.exports = (Bot) => {
 
         for (const tier of char.unitTierList) {
             const eqList = await this.gear(tier.equipmentSetList, lang);
-            tier.equipmentSetList.forEach((e, ix) => {
-                const eq = eqList.find(equipment => equipment.id === e);
+            tier.equipmentSetList.forEach((e: string, ix: number) => {
+                const eq = eqList.find((equipment: {}) => equipment.id === e);
                 if (!eq) {
                     Bot.logger.error("Missing equipment for char " + char.name + ", make sure to update the gear lang stuff" + inspect(e));
                     return;
@@ -583,7 +579,7 @@ module.exports = (Bot) => {
         return char;
     }
 
-    async function character( defId, update=false) {
+    async function character( defId: string, update=false) {
         const factionMap = {
             bountyhunter : "bounty hunter",
             cargoship    : "cargo ship",
@@ -618,7 +614,7 @@ module.exports = (Bot) => {
             for (const char of baseCharacters) {
                 char.factions = [];
                 if (!char.categoryIdList) return Bot.logger.error("Missing baseCharacter abilities");
-                char.categoryIdList.forEach(c => {
+                char.categoryIdList.forEach((c: string) => {
                     if (c.startsWith("alignment_") || c.startsWith("profession_") || c.startsWith("affiliation_") || c.startsWith("role_") || c.startsWith("shipclass_")) {
                         let faction = c.split("_")[1];
                         if (factionMap[faction]) faction = factionMap[faction];
@@ -649,7 +645,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function gear( gearArray, lang, update=false ) {
+    async function gear( gearArray: string[], lang: string, update=false ) {
         lang = lang || "eng_us";
         lang = lang.toLowerCase();
         if (!gearArray) {
@@ -691,7 +687,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function units( defId, lang, update=false ) {
+    async function units( defId: string, lang: string, update=false ): Promise<string> {
         lang = lang || "eng_us";
         lang = lang.toLowerCase();
         if (!defId && !update) {
@@ -699,7 +695,7 @@ module.exports = (Bot) => {
         }
 
         if (update) {
-            let uOut;
+            let uOut: string;
             const unitList = await Bot.swgoh.fetchAPI("/swgoh/data", {
                 collection: "unitsList",
                 language: lang,
@@ -742,7 +738,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function recipes( recArray, lang, update=false ) {
+    async function recipes( recArray: string[], lang: string, update=false ) {
         lang = lang || "eng_us";
         if (!recArray) {
             throw new Error("You need to have a list of gear here");
@@ -788,7 +784,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function getRawGuild(allycode, cooldown) {
+    async function getRawGuild(allycode: number, cooldown: number) {
         const tempGuild = {};
         if (cooldown) {
             cooldown = cooldown.guild;
@@ -797,7 +793,7 @@ module.exports = (Bot) => {
         } else {
             cooldown = guildMaxCooldown;
         }
-        if (allycode) allycode = allycode.toString().replace(/[^\d]/g, "");
+        if (allycode) allycode = parseInt(allycode.toString().replace(/[^\d]/g, ""), 10);
         if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
 
         const player = await Bot.swapiStub.getPlayer(allycode);
@@ -864,7 +860,7 @@ module.exports = (Bot) => {
         return rawGuild;
     }
 
-    async function guild( allycode, lang="ENG_US", cooldown ) {
+    async function guild( allycode: number, lang="ENG_US", cooldown: number ) {
         lang = lang || "ENG_US";
 
         if (cooldown) {
@@ -874,10 +870,8 @@ module.exports = (Bot) => {
         } else {
             cooldown = guildMaxCooldown;
         }
-        let warnings;
-        if (allycode) allycode = allycode.toString();
-        if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
-        allycode = parseInt(allycode, 10);
+        let warnings: {};
+        if ( !allycode || allycode.toString().length !== 9 ) { throw new Error("Please provide a valid allycode"); }
 
         /** Get player from cache */
         let player = await Bot.swgohAPI.unitStats(allycode);
@@ -890,7 +884,7 @@ module.exports = (Bot) => {
         /** Check if existance and expiration */
         if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
             /** If not found or expired, fetch new from API and save to cache */
-            let tempGuild;
+            let tempGuild: {};
             try {
                 tempGuild = await swgoh.fetchGuild({
                     allycode: allycode,
@@ -932,7 +926,7 @@ module.exports = (Bot) => {
         return guild;
     }
 
-    async function guildByName( gName ) {
+    async function guildByName( gName: string ) {
         try {
             const guild  = await cache.get(Bot.config.mongodb.swapidb, "guilds", {name: gName});
 
@@ -985,19 +979,19 @@ module.exports = (Bot) => {
         return events;
     }
 
-    function isExpired( lastUpdated, cooldown={}, guild=false ) {
+    function isExpired( lastUpdated: number, cooldown={}, guild=false ) {
         if (!lastUpdated) return true;
         if (guild) {
             if (!cooldown) {
                 cooldown = guildMaxCooldown;
             }
-            const diff = Bot.convertMS( new Date() - new Date(lastUpdated) );
+            const diff = Bot.convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
             return diff.totalMin >= cooldown;
         } else {
             if (!cooldown) {
                 cooldown = playerMaxCooldown;
             }
-            const diff = Bot.convertMS( new Date() - new Date(lastUpdated) );
+            const diff = Bot.convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
             return diff.totalMin >= cooldown;
         }
     }

@@ -1,14 +1,17 @@
-const momentTZ = require("moment-timezone");
+import { Client } from "discord.js";
+import momentTZ from "moment-timezone";
 require("moment-duration-format");
 
-module.exports = (Bot, client) => {
+import { GuildConf, ScheduledEvent } from "./types"
+
+module.exports = (Bot: {}, client: Client) => {
     // Some base time conversions to milliseconds
     const dayMS  = 86400000;
     const hourMS = 3600000;
     const minMS  = 60000;
 
     // Handle any events that have been found via the checker
-    Bot.manageEvents = async (eventList) => {
+    Bot.manageEvents = async (eventList: []) => {
         for (const event of eventList) {
             if (event.isCD) {
                 // It's a countdown alert, so do that
@@ -21,7 +24,7 @@ module.exports = (Bot, client) => {
     };
 
     // BroadcastEval a message send
-    async function sendMsg(event, guildConf, guildID, announceMessage) {
+    async function sendMsg(event: ScheduledEvent, guildConf: GuildConf, guildID: string, announceMessage: string) {
         if (guildConf.announceChan !== "" || event.eventChan !== "") {
             let chan = "";
             if (event?.eventChan !== "") { // If they've set a channel, use it
@@ -49,40 +52,40 @@ module.exports = (Bot, client) => {
     }
 
     // Re-caclulate a viable eventDT, and return the updated event
-    async function reCalc(ev) {
+    async function reCalc(event: {}) {
         const nowTime = new Date().getTime();
-        if (ev.repeatDays.length > 0) { // repeatDays is an array of days to skip
+        if (event.repeatDays.length > 0) { // repeatDays is an array of days to skip
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
-            while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
-                const days = parseInt(ev.repeatDays.splice(0, 1)[0], 10);
-                ev.eventDT = parseInt(ev.eventDT, 10) + (dayMS * days);
+            while (nowTime > event.eventDT && event.repeatDays.length > 0) {
+                const days = parseInt(event.repeatDays.splice(0, 1)[0], 10);
+                event.eventDT = parseInt(event.eventDT, 10) + (dayMS * days);
             }
-            if (nowTime > ev.eventDT) { // It ran out of days
+            if (nowTime > event.eventDT) { // It ran out of days
                 return null;
             }
-        } else if (ev.repeat.repeatDay || ev.repeat.repeatHour || ev.repeat.repeatMin) { // 0d0h0m
+        } else if (event.repeat.repeatDay || event.repeat.repeatHour || event.repeat.repeatMin) { // 0d0h0m
             // Else it's using basic repeat
-            while (nowTime >= ev.eventDT) {
-                ev.eventDT =
-                    parseInt(ev.eventDT, 10)        +
-                    (ev.repeat.repeatDay  * dayMS)  +
-                    (ev.repeat.repeatHour * hourMS) +
-                    (ev.repeat.repeatMin  * minMS);
+            while (nowTime >= event.eventDT) {
+                event.eventDT =
+                    parseInt(event.eventDT, 10)        +
+                    (event.repeat.repeatDay  * dayMS)  +
+                    (event.repeat.repeatHour * hourMS) +
+                    (event.repeat.repeatMin  * minMS);
             }
         }
-        return ev;
+        return event;
     }
 
     // Delete em here as needed
-    Bot.deleteEvent = async (eventID) => {
+    Bot.deleteEvent = async (eventID: string) => {
         await Bot.database.models.eventDBs.destroy({where: {eventID: eventID}})
-            .catch(error => {
+            .catch((error: Error) => {
                 Bot.logger.error(`Broke deleting an event (${eventID}) ${error}`);
             });
     };
 
     // Send out an alert based on the guild's countdown settings
-    Bot.countdownAnnounce = async (event) => {
+    Bot.countdownAnnounce = async (event: ScheduledEvent) => {
         let eventName = event.eventID.split("-");
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
@@ -96,7 +99,7 @@ module.exports = (Bot, client) => {
     };
 
     // To stick into node-schedule for each full event
-    Bot.eventAnnounce = async (event) => {
+    Bot.eventAnnounce = async (event: ScheduledEvent) => {
         // Parse out the eventName and guildName from the ID
         let eventName = event.eventID.split("-");
         const guildID = eventName.splice(0, 1)[0];
@@ -107,7 +110,7 @@ module.exports = (Bot, client) => {
         // If it's running late, tack a notice onto the end of the message
         const nowTime = new Date().getTime();
         if ((nowTime - event.eventDT) > (2*minMS)) {
-            const minPast = parseInt((nowTime - event.eventDT) / minMS, 10);
+            const minPast: Number = parseInt("" + (nowTime - event.eventDT) / minMS, 10);
             event.eventMessage += "\nThis event is " + minPast + " minutes past time.";
         }
 
@@ -137,12 +140,12 @@ module.exports = (Bot, client) => {
                 .then(() => {
                     // console.log(`Updating repeating event ${event.eventID}.`);
                 })
-                .catch(error => { Bot.logger.error(`Broke trying to replace event: ${error}`); });
+                .catch((error: Error) => { Bot.logger.error(`Broke trying to replace event: ${error}`); });
         } else {
             // Just destroy it
             await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
                 .then(() => { Bot.logger.debug(`Deleting non-repeating event ${event.eventID}`); })
-                .catch(error => { Bot.logger.error(`Broke trying to delete old event ${error}`); });
+                .catch((error: Error) => { Bot.logger.error(`Broke trying to delete old event ${error}`); });
         }
     };
 };
