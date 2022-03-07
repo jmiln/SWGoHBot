@@ -114,7 +114,6 @@ class Poll extends Command {
                 poll.question       = interaction.options.getString("question");
                 poll.anon           = interaction.options.getBoolean("anonymous");
                 poll.options        = optionsString.split("|").map(opt => opt.trim());
-                console.log(poll);
 
                 // Make sure it's a mod or someone with the appropriate perms trying to create it
                 if (options.level < 3) {
