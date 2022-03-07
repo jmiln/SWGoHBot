@@ -49,7 +49,7 @@ class slashCommand {
         await this.embed(interaction, err, options);
     }
 
-    async success(interaction: Interaction, out: string, options: {}) {
+    async success(interaction: Interaction, out: string, options?: {}) {
         if (!interaction || !interaction.channel) throw new Error("Missing message");
         if (!out) throw new Error("Missing outgoing success message");
         if (!options) options = {};

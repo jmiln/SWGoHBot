@@ -1,7 +1,9 @@
 import SlashCommand from "../base/slashCommand";
+import Discord from "discord.js";
+import { Poll } from "../modules/types";
 
-class Poll extends SlashCommand {
-    constructor(Bot) {
+class PollCommand extends SlashCommand {
+    constructor(Bot: {}) {
         super(Bot, {
             name: "poll",
             category: "Misc",
@@ -71,7 +73,7 @@ class Poll extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: {}, interaction: Discord.Interaction, options?: {}) {
         const level = options.level;
 
         const action = interaction.options.getSubcommand();
@@ -113,7 +115,7 @@ class Poll extends SlashCommand {
                 const optionsString = interaction.options.getString("options");
                 poll.question       = interaction.options.getString("question");
                 poll.anon           = interaction.options.getBoolean("anonymous");
-                poll.optionsArr     = optionsString.split("|").map(opt => opt.trim());
+                poll.options        = optionsString.split("|").map((opt: string) => opt.trim());
 
                 // Make sure it's a mod or someone with the appropriate perms trying to create it
                 if (options.level < 3) {
@@ -137,7 +139,7 @@ class Poll extends SlashCommand {
                     id: pollID,
                     poll: poll
                 })
-                    .then((thisPoll) => {
+                    .then((thisPoll: Poll) => {
                         poll.pollID = thisPoll.dataValues.pollId;
                         return interaction.reply({
                             content: interaction.language.get("COMMAND_POLL_CREATED", interaction.user.tag, interaction.guildSettings.prefix),
@@ -150,7 +152,7 @@ class Poll extends SlashCommand {
                             }]
                         });
                     })
-                    .catch((err) => {
+                    .catch((err: Error) => {
                         Bot.logger.error("Broke when creating a poll: \n" + err);
                         return super.error(interaction, "Sorry, but something went wrong when saving that poll. Please try again in a bit");
                     });
@@ -243,10 +245,10 @@ class Poll extends SlashCommand {
             }
         }
 
-        function pollCheck(poll, showRes=false) {
+        function pollCheck(poll: Poll, showRes=false) {
             const voteCount = {};
             const totalVotes = Object.keys(poll.votes).length || 1;
-            poll.options.forEach((opt, ix) => {
+            poll.options.forEach((opt: string, ix: number) => {
                 voteCount[ix] = 0;
             });
             Object.keys(poll.votes).forEach(voter => {
@@ -264,7 +266,7 @@ class Poll extends SlashCommand {
             return outString;
         }
 
-        function getFooter(poll) {
+        function getFooter(poll: Poll) {
             const footer = {};
             if (interaction.guild) {
                 footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER", poll.pollID, interaction.guildSettings.prefix));
@@ -276,4 +278,4 @@ class Poll extends SlashCommand {
     }
 }
 
-module.exports = Poll;
+module.exports = PollCommand;

@@ -36,3 +36,10 @@ export interface UnitObj {
     mods: {},
     crew: string[] | null
 }
+
+export interface Poll {
+    question: string,
+    options: string[],
+    votes: {[key: string]: number},
+    anon: boolean
+}
