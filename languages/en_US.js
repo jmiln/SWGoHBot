@@ -1276,6 +1276,7 @@ module.exports = class extends Language {
             COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
             COMMAND_POLL_TOO_MANY_OPT: "You can only have up to 10 options to vote on.",
             COMMAND_POLL_CREATED: (name, prefix) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n`,
+            COMMAND_POLL_CREATED_SLASH: (name) => `**${name}** has started a new poll:\nVote with \`/poll vote <choice>\`\n`,
             COMMAND_POLL_NO_POLL: "There is no poll in progress",
             COMMAND_POLL_FINAL: (poll) => `Final results for ${poll}`,
             COMMAND_POLL_FINAL_ERROR: (question) => `I couldn't delete **${question}**, please try again.`,

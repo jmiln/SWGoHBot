@@ -113,7 +113,8 @@ class Poll extends Command {
                 const optionsString = interaction.options.getString("options");
                 poll.question       = interaction.options.getString("question");
                 poll.anon           = interaction.options.getBoolean("anonymous");
-                poll.optionsArr     = optionsString.split("|").map(opt => opt.trim());
+                poll.options        = optionsString.split("|").map(opt => opt.trim());
+                console.log(poll);
 
                 // Make sure it's a mod or someone with the appropriate perms trying to create it
                 if (options.level < 3) {
@@ -126,7 +127,7 @@ class Poll extends Command {
                 }
 
                 // Keep the choices limited to between 2 & 10 options
-                if (poll.options.length < 2) {
+                if (poll.options.length <= 2) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_TOO_FEW_OPT"));
                 } else if (poll.options.length > 10) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_TOO_MANY_OPT"));
@@ -140,7 +141,7 @@ class Poll extends Command {
                     .then((thisPoll) => {
                         poll.pollID = thisPoll.dataValues.pollId;
                         return interaction.reply({
-                            content: interaction.language.get("COMMAND_POLL_CREATED", interaction.user.tag, interaction.guildSettings.prefix),
+                            content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag, interaction.guildSettings.prefix),
                             embeds: [{
                                 author: {
                                     name: poll.question

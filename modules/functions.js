@@ -68,8 +68,9 @@ module.exports = (Bot, client) => {
 
         // Guild Owner gets an extra level, wooh!
         const gOwner = message.guild.fetchOwner();
-        if (message.channel.type === "text" && message.guild && gOwner) {
-            if (message.author.id === gOwner.id) {
+        if (message.channel?.type === "GUILD_TEXT" && message.guild && gOwner) {
+            // message.author for text message, message.user for interactions
+            if (message.author?.id === gOwner.id || message.user?.id === gOwner.id) {
                 return permMap.GUILD_OWNER;
             }
         }
