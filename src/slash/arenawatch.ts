@@ -1,8 +1,10 @@
 import SlashCommand from "../base/slashCommand";
+import Discord from "discord.js";
+import { AWPlayer } from "../modules/types";
 // const {inspect} = require("util");
 
 class ArenaWatch extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: {}) {
         super(Bot, {
             name: "arenawatch",
             category: "Patreon",
@@ -378,7 +380,7 @@ class ArenaWatch extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: {}, interaction: Discord.Interaction, options?: {}) {
         let target = interaction.options.getSubcommandGroup(false);
         if (!target) {
             target = interaction.options.getSubcommand();
@@ -459,7 +461,7 @@ class ArenaWatch extends SlashCommand {
             codeCap = Bot.config.arenaWatchConfig.tier3;
         }
 
-        function getAcMention(code) {
+        function getAcMention(code: string): [number, string] {
             let [ac, mention] = code.split(":");
             if (!Bot.isAllyCode(ac)) throw new Error(`Invalid code (${ac})!`);
             ac = ac.replace(/[^\d]/g, "");
@@ -468,14 +470,14 @@ class ArenaWatch extends SlashCommand {
             return [parseInt(ac, 10), mention];
         }
 
-        function checkPlayer(players, code) {
-            if (!players) throw new Error("Missing players in checkPlayer");
-            const player = players.find(p => parseInt(p.allyCode, 10) === parseInt(code.code, 10));
+        function checkPlayer(players: string[], code: {[key: string]: number}) {
+            if (!players?.length) throw new Error("Missing players in checkPlayer");
+            const player = players.find(p => parseInt(p.allyCode, 10) === code.code);
             if (!player) {
                 throw new Error(`Could not find ${code.code}, invalid code`);
             }
-            if (aw.allycodes.find(usercode => parseInt(usercode.allyCode, 10) === parseInt(code.code, 10))) {
-                throw new Error(`${code.code} was already in the list. If you're trying to change something, try using the \`;aw allycode edit\` command`);
+            if (aw.allycodes.find((user: AWPlayer) => user.allyCode === code.code)) {
+                throw new Error(`${code.code} was already in the list. If you're trying to change something, try using the \`/aw allycode edit\` command`);
             }
             if (aw.allycodes.length >= codeCap) {
                 throw new Error(`Could not add ${code.code}, ally code cap reached!`);
@@ -573,7 +575,7 @@ class ArenaWatch extends SlashCommand {
                     const ac = interaction.options.getString("allycode");
                     const mark = interaction.options.getString("mark");
 
-                    const player = aw.allycodes.find(p => p.allyCode.toString() === ac.toString());
+                    const player = aw.allycodes.find((p: AWPlayer) => p.allyCode.toString() === ac.toString());
                     if (!player) {
                         return super.error(interaction, "Sorry, but you can only apply a mark to an already present player/ allycode");
                     }
@@ -582,7 +584,7 @@ class ArenaWatch extends SlashCommand {
                     if (emojiRegex.test(mark)) {
                         cmdOut = "If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from";
                     }
-                    aw.allycodes = aw.allycodes.map(p => {
+                    aw.allycodes = aw.allycodes.map((p: AWPlayer) => {
                         if (p.allyCode.toString() === ac.toString()) {
                             p.mark = mark;
                         }
@@ -614,7 +616,7 @@ class ArenaWatch extends SlashCommand {
                     // List of ally codes to add or remove
                     const codesIn = interaction.options.getString("allycodes")
                         .split(",") // Split em at the commas if there are more than one
-                        .map(a => a.trim());    // Trim off any spaces in case
+                        .map((a: string) => a.trim());    // Trim off any spaces in case
 
                     // The mark to put with the ally code (Optional)
                     const mark = interaction.options.getString("mark");
@@ -629,8 +631,8 @@ class ArenaWatch extends SlashCommand {
                     }
                     const codes = [];
 
-                    codesIn.forEach(code => {
-                        let ac, mention;
+                    codesIn.forEach((code: string) => {
+                        let ac: number, mention: string;
                         try {
                             [ac, mention] = getAcMention(code);
                             if (!Bot.isAllyCode(ac)) {
@@ -643,7 +645,7 @@ class ArenaWatch extends SlashCommand {
                         }
 
                         codes.push({
-                            code: parseInt(ac, 10),
+                            code: ac,
                             mention: mention
                         });
                     });
@@ -660,7 +662,7 @@ class ArenaWatch extends SlashCommand {
                         return super.error(interaction, "Sorry, but it looks like none of the ally code(s) you entered were found with rosters. If you're sure the code(s) were correct, please wait a bit and try again.");
                     }
                     for (const c of codes) {
-                        let player;
+                        let player: {} | null;
                         try {
                             player = checkPlayer(players, c);
                         } catch (e) {
@@ -693,7 +695,7 @@ class ArenaWatch extends SlashCommand {
                         return super.error(interaction, "Sorry, but that was not a valid ally code");
                     }
 
-                    let ac, mention;
+                    let ac: number, mention: string;
                     try {
                         [ac, mention] = getAcMention(newCode);
                     } catch (e) {
@@ -703,9 +705,9 @@ class ArenaWatch extends SlashCommand {
                     // Check if the specified code is available to edit
                     // If not, just add it in fresh
                     // If so, delte it then add it back
-                    const exists = aw.allycodes.find(p => p.allyCode === oldCode);
+                    const exists = aw.allycodes.find((p: AWPlayer) => p.allyCode === oldCode);
                     if (exists) {
-                        aw.allycodes = aw.allycodes.filter(p => parseInt(p.allyCode, 10) !== parseInt(oldCode, 10));
+                        aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== parseInt(oldCode, 10));
                     }
                     let player = null;
                     try {
@@ -728,8 +730,8 @@ class ArenaWatch extends SlashCommand {
                     // List of ally codes to add or remove
                     const codesIn = interaction.options.getString("allycodes")
                         .split(",") // Split em at the commas if there are more than one
-                        .map(a => a.trim())    // Trim off any spaces in case
-                        .filter(a => Bot.isAllyCode(a));
+                        .map((a: string) => a.trim())    // Trim off any spaces in case
+                        .filter((a: string) => Bot.isAllyCode(a));
 
                     // Some checks before getting to the logic
                     if (!codesIn.length) return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
@@ -737,8 +739,8 @@ class ArenaWatch extends SlashCommand {
                     for (let code of codesIn) {
                         code = code.replace(/[^\d]/g, "");
                         code = parseInt(code, 10);
-                        if (aw.allycodes.find(ac => ac.allyCode === code)) {
-                            aw.allycodes = aw.allycodes.filter(ac => ac.allyCode !== code);
+                        if (aw.allycodes.find((ac: {[key: string]: number}) => ac.allyCode === code)) {
+                            aw.allycodes = aw.allycodes.filter((ac: {[key: string]: number}) => ac.allyCode !== code);
                             outLog.push(code + " has been removed");
                         } else {
                             return super.error(interaction, "That ally code was not available to be removed");
@@ -772,7 +774,6 @@ class ArenaWatch extends SlashCommand {
                 let mins  = interaction.options.getInteger("mins");
                 const arena = interaction.options.getString("arena");
 
-
                 if (!Bot.isAllyCode(code)) {
                     return super.error(interaction, `Invalid ally code (${code})`);
                 }
@@ -782,10 +783,10 @@ class ArenaWatch extends SlashCommand {
                     return super.error(interaction, "Invalid minute count. Only values of 1 and above are valid.", {example: "aw warn 123123123 30 both"});
                 }
 
-                const exists = aw.allycodes.find(p => parseInt(p.allyCode, 10) === parseInt(code, 10));
+                const exists = aw.allycodes.find((p: AWPlayer) => p.allyCode === parseInt(code, 10));
                 if (!exists) return super.error(interaction, "That ally code is not in your list.");
 
-                aw.allycodes = aw.allycodes.filter(p => parseInt(p.allyCode, 10) !== parseInt(code, 10));
+                aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== parseInt(code, 10));
 
                 if (typeof exists.allyCode === "string") exists.allyCode = parseInt(exists.allyCode, 10);
                 exists.warn = {
@@ -804,10 +805,10 @@ class ArenaWatch extends SlashCommand {
                     return super.error(interaction, `Invalid ally code (${code})`);
                 }
 
-                const exists = aw.allycodes.find(p => p.allyCode === code);
+                const exists = aw.allycodes.find((p: AWPlayer) => p.allyCode === code);
                 if (!exists) return super.error(interaction, "That ally code is not in your list.");
 
-                aw.allycodes = aw.allycodes.filter(p => p.allyCode !== code);
+                aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== code);
                 exists.result = arena === "none" ? null : arena;
                 aw.allycodes.push(exists);
                 break;
@@ -824,62 +825,38 @@ class ArenaWatch extends SlashCommand {
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
                 const allycode = interaction.options.getString("allycode")?.replace(/[^\d]/g, "");
 
+                async function getChannelId(channelIdToGet: string): Promise<string> {
+                    if (!channelIdToGet) return null;
+                    let foundChannel = interaction.guild?.channels.cache.get(channelIdToGet)?.id;
+                    if (!foundChannel) {
+                        foundChannel = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(channelIdToGet), {context: aw})
+                            .then((chan: Discord.Channel[]) => {
+                                return chan?.[0]?.id;
+                            });
+                    }
+                    return foundChannel ? `<#${foundChannel}>`: "N/A";
+                }
+
                 if (!allycode) {
-                    let charChan, fleetChan, charPayoutChan, fleetPayoutChan;
-                    if (aw.arena.char.channel) {
-                        charChan = interaction.guild ? interaction.guild.channels.cache.get(aw.arena.char.channel) : null;
-                        if (!charChan) {
-                            charChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.arena.char.channel), {context: aw})
-                                .then((thisChan) => {
-                                    thisChan = thisChan.filter(a => !!a)[0];
-                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
-                                });
-                        }
-                    }
-                    if (aw.arena.fleet.channel) {
-                        fleetChan = interaction.guild ? interaction.guild.channels.cache.get(aw.arena.fleet.channel) : null;
-                        if (!fleetChan) {
-                            fleetChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.arena.fleet.channel), {context: aw})
-                                .then((thisChan) => {
-                                    thisChan = thisChan.filter(a => !!a)[0];
-                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
-                                });
-                        }
-                    }
-                    if (aw.payout.char.channel) {
-                        charPayoutChan = interaction.guild ? interaction.guild.channels.cache.get(aw.payout.char.channel) : null;
-                        if (!charPayoutChan) {
-                            charPayoutChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.payout.char.channel), {context: aw})
-                                .then((thisChan) => {
-                                    thisChan = thisChan.filter(a => !!a)[0];
-                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
-                                });
-                        }
-                    }
-                    if (aw.payout.fleet.channel) {
-                        fleetPayoutChan = interaction.guild ? interaction.guild.channels.cache.get(aw.payout.fleet.channel) : null;
-                        if (!fleetPayoutChan) {
-                            fleetPayoutChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.payout.fleet.channel), {context: aw})
-                                .then((thisChan) => {
-                                    thisChan = thisChan.filter(a => !!a)[0];
-                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
-                                });
-                        }
+                    const channels = {
+                        charChan:        await getChannelId(aw.arena.char.channel),
+                        fleetChan:       await getChannelId(aw.arena.fleet.channel),
+                        charPayoutChan:  await getChannelId(aw.payout.char.channel),
+                        fleetPayoutChan: await getChannelId(aw.payout.fleet.channel)
                     }
 
                     // If there's any ally codes in the array, go ahead and format them
                     let ac =  aw.allycodes.length ? aw.allycodes : [];
-                    ac = ac.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-                    // ac = ac.map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`);
-                    ac = ac.map(a => {
+                    ac = ac.sort((a: AWPlayer, b: AWPlayer) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+                    ac = ac.map((a: AWPlayer) => {
                         const isWarn = a.warn && a.warn.min && a.warn.arena ? "W": "";
                         const isRes  = a.result ? "R" : "";
                         const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
                         return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
                     });
 
-                    const fields = [];
                     // Chunk the codes down so they'll fit within the 1024 character limit of a field value
+                    const fields = [];
                     const acChunks = Bot.msgArray(ac, "\n", 1000);
                     for (const [ ix, chunk ] of acChunks.entries()) {
                         if (ix === 0) {
@@ -897,8 +874,8 @@ class ArenaWatch extends SlashCommand {
                     fields.push({
                         name: "**Payout Settings**",
                         value: [
-                            `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
-                            `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
+                            `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${channels.charPayoutChan}`,
+                            `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${channels.fleetPayoutChan}`
                         ].join("\n")
                     });
 
@@ -907,19 +884,19 @@ class ArenaWatch extends SlashCommand {
                         title: "Arena Watch Settings",
                         description: [
                             `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
-                            `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${charChan}`,
-                            `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
+                            `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${channels.charChan}`,
+                            `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${channels.fleetChan}`,
                         ].join("\n"),
                         fields: fields
                     }]});
                 } else {
                     if (!Bot.isAllyCode(allycode)) {
                         return super.error(interaction, `${allycode} is not a valid ally code.`);
-                    } else if (!aw.allycodes.filter(a => parseInt(a.allyCode, 10) === parseInt(allycode, 10)).length) {
+                    } else if (!aw.allycodes.filter((a: AWPlayer) => a.allyCode === parseInt(allycode, 10)).length) {
                         return super.error(interaction, `${allycode} is not listed in your registered ally codes.`);
                     }
 
-                    const player = aw.allycodes.find(p => parseInt(p.allyCode, 10) === parseInt(allycode, 10));
+                    const player = aw.allycodes.find((p: AWPlayer) => p.allyCode === parseInt(allycode, 10));
                     return interaction.reply({embeds: [{
                         title: `Arena Watch Settings (${allycode})`,
                         description: [
