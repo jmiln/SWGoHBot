@@ -19,7 +19,7 @@ class Activites extends Command {
                         value: "day_Sunday",
                     },
                     {
-                        name: "Monay",
+                        name: "Monday",
                         value: "day_Monday",
                     },
                     {
