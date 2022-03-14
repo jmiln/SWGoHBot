@@ -365,10 +365,10 @@ class Event extends Command {
 
                         let eventString = interaction.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
                         eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
-                        if (event.eventChan && event.eventChan !== "") {
+                        if (event.eventChan?.length) {
                             let chanName = "";
                             if (interaction.guild.channels.cache.has(event.eventChan)) {
-                                chanName = interaction.guild.channels.cache.get(event.eventChan).name;
+                                chanName = `<#${interaction.guild.channels.cache.get(event.eventChan).id}>`;
                             } else {
                                 chanName = event.eventChan;
                             }
@@ -421,7 +421,7 @@ class Event extends Command {
                             if (event.eventChan && event.eventChan !== "") {
                                 let chanName = "";
                                 if (interaction.guild.channels.cache.has(event.eventChan)) {
-                                    chanName = interaction.guild.channels.cache.get(event.eventChan).name;
+                                    chanName = `<#${interaction.guild.channels.cache.get(event.eventChan).id}>`;
                                 } else {
                                     chanName = event.eventChan;
                                 }
@@ -531,12 +531,12 @@ class Event extends Command {
 
                 const newEventName = interaction.options.getString("name");
 
-                const newEvDate = interaction.options.getString("day");
-                const newEvTime = interaction.options.getString("time");
-                const newEvMsg = interaction.options.getString("message");
-                const newRepeat = interaction.options.getString("repeat");
+                const newEvDate    = interaction.options.getString("day");
+                const newEvTime    = interaction.options.getString("time");
+                const newEvMsg     = interaction.options.getString("message");
+                const newRepeat    = interaction.options.getString("repeat");
                 const newRepeatDay = interaction.options.getString("repeatday");
-                const newChannel = interaction.options.getChannel("channel");
+                const newChannel   = interaction.options.getChannel("channel");
                 const newCountdown = interaction.options.getBoolean("countdown");
 
                 const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}});
@@ -552,11 +552,11 @@ class Event extends Command {
 
                     // Put any new bits into an event skeleton
                     const newEvent = {
-                        name: newEventName ? newEventName : evName,
-                        day: newEvDate ? newEvDate : oldDate,
-                        time: newEvTime ? newEvTime : oldTime,
-                        message: newEvMsg ? newEvMsg : event.eventMessage,
-                        channelID: newChannel?.id ? newChannel.id : event.channel,
+                        name:      newEventName ? newEventName : evName,
+                        day:       newEvDate ? newEvDate : oldDate,
+                        time:      newEvTime ? newEvTime : oldTime,
+                        message:   newEvMsg ? newEvMsg : event.eventMessage,
+                        channelID: newChannel?.id ? newChannel.id : event.eventChan,
                         countdown: newCountdown ? newCountdown : event.countdown,
                     };
                     if (newRepeat) {
@@ -582,7 +582,7 @@ class Event extends Command {
                             // Find all the fields that were updated
                             const outLog = [];
                             for (let field of Object.keys(validEvent.event)) {
-                                if (validEvent.event[field].toString().length !== event[field].toString().length) {
+                                if (validEvent.event[field].toString() !== event[field].toString()) {
                                     let from = "N/A", to = "N/A";    // Default if there's nothing to show
                                     let code = true;    // Show in inline code blocks
                                     if (field === "eventID") {
@@ -591,7 +591,11 @@ class Event extends Command {
                                         to = newEventName;
                                     } else if (field === "eventChan") {
                                         if (event.eventChan) {
-                                            from = `<#${event.eventChan}>`;
+                                            if (Bot.isChannelId(event.eventChan)) {
+                                                from = `<#${event.eventChan}>`;
+                                            } else {
+                                                from = event.eventChan;
+                                            }
                                         }
                                         if (validEvent.event.eventChan) {
                                             to = `<#${validEvent.event.eventChan}>`;
@@ -735,8 +739,7 @@ class Event extends Command {
                 if (event.channelID) {
                     newEvent.eventChan = event.channelID;
                 } else {
-                    // TODO Make this work with channel ID as well so we can save those and make it more accurate and such
-                    const announceChannel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"]);
+                    const announceChannel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"] || c.id === guildConf["announceChan"]);
                     if (!announceChannel) {
                         err.push(interaction.language.get("COMMAND_EVENT_NEED_CHAN"));
                     }
