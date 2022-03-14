@@ -130,7 +130,7 @@ class Deploy extends Command {
                         if (!cmd.options[ix].autocomplete) cmd.options[ix].autocomplete = undefined;
                         if (!cmd.options[ix].choices)      cmd.options[ix].choices      = undefined;
                         if (!cmd.options[ix].channelTypes) cmd.options[ix].channelTypes = undefined;
-                        if (!cmd.options[ix].options || !cmd.options[ix].options?.length)   cmd.options[ix].options      = undefined;
+                        if (!cmd.options[ix].options || !cmd.options[ix].options?.length)   cmd.options[ix].options = undefined;
 
                         debugLog("> checking " + cmd.options[ix]?.name);
                         for (const op of Object.keys(cmd.options[ix])) {

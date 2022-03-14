@@ -227,7 +227,7 @@ class Guilds extends Command {
             // Stick the formatted bits into the fields
             for (const fieldVal of fieldVals) {
                 fields.push({
-                    name: "-",
+                    name: Bot.constants.zws,
                     value: fieldVal
                 });
             }
@@ -332,7 +332,7 @@ class Guilds extends Command {
             });
 
             fields.push({
-                name: "-",
+                name: Bot.constants.zws,
                 value: message.language.get("COMMAND_GUILDS_FOOTER", message.guildSettings.prefix)
             });
 
@@ -356,7 +356,7 @@ class Guilds extends Command {
                     name: guild.name
                 },
                 description: desc.length ? desc : "",
-                fields: fields.length ? fields : [],
+                fields: fields.length ? fields : null,
                 footer: footer
             }]});
         }
