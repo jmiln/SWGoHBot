@@ -3,9 +3,10 @@
 // Formula from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/49kbrq/arena_rank_range/d0sr
 
 import SlashCommand from "../base/slashCommand";
+import { Interaction } from "discord.js";
 
 class Arenarank extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: {}) {
         super(Bot, {
             name: "arenarank",
             guildOnly: false,
@@ -26,7 +27,7 @@ class Arenarank extends SlashCommand {
         });
     }
 
-    run(Bot, interaction) {
+    run(Bot: {}, interaction: Interaction) {
         const currentRank = interaction.options.getInteger("rank");
         const rankHops = interaction.options.getInteger("hops") || 5;
         if (isNaN(currentRank) || !currentRank) {
@@ -42,7 +43,7 @@ class Arenarank extends SlashCommand {
 
         // Mark em as estimates if needed
         let est = false;
-        if (!Bot.arenaJumps[currentRank.toString()]) est = true;
+        if (!Bot.arenaJumps[currentRank]) est = true;
 
 
         // Loop through findRank up to 5 times, breaking if it returns 1
@@ -56,8 +57,7 @@ class Arenarank extends SlashCommand {
         return interaction.reply({content: interaction.language.get("COMMAND_ARENARANK_RANKLIST", currentRank, arenaBattles.length-1, arenaBattles.length-1 > 1 ? "s" : "", est ? "**(estimate)**" : "", arenaBattles.join(" → "))});
 
 
-        function findNextRank(currentRank) {
-            currentRank = currentRank.toString();
+        function findNextRank(currentRank: number) {
             if (Bot.arenaJumps[currentRank]) {
                 return Bot.arenaJumps[currentRank];
             } else {

@@ -1,5 +1,5 @@
 import SlashCommand from "../base/slashCommand";
-import Discord from "discord.js";
+import { Interaction } from "discord.js";
 import { Poll } from "../modules/types";
 
 class PollCommand extends SlashCommand {
@@ -73,7 +73,7 @@ class PollCommand extends SlashCommand {
         });
     }
 
-    async run(Bot: {}, interaction: Discord.Interaction, options?: {}) {
+    async run(Bot: {}, interaction: Interaction, options?: {}) {
         const level = options.level;
 
         const action = interaction.options.getSubcommand();

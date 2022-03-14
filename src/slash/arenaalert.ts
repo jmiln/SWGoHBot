@@ -1,7 +1,8 @@
 import SlashCommand from "../base/slashCommand";
+import { Interaction } from "discord.js";
 
 class ArenaAlert extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: {}) {
         super(Bot, {
             name: "arenaalert",
             category: "Patreon",
@@ -72,7 +73,7 @@ class ArenaAlert extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction, options={}) {  // eslint-disable-line no-unused-vars
+    async run(Bot: {}, interaction: Interaction, options?:{}) {  // eslint-disable-line no-unused-vars
         const enabledms = interaction.options.getString("enabledms");
         const arena = interaction.options.getString("arena");
         const payoutResult = interaction.options.getString("payout_result");

@@ -6,11 +6,9 @@ class ReloadData extends SlashCommand {
             name: "reloaddata",
             category: "Dev",
             enabled: true,
+            description: "Reload the various data files",
             guildOnly: true,
             aliases: ["rdata", "rd"],
-            subArgs: {
-                lang: { aliases: [] }
-            },
             permLevel: 10,
             options: [
                 {

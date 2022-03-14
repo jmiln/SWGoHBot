@@ -1,14 +1,17 @@
 import momentTZ from "moment-timezone";
-require("moment-duration-format");
+import "moment-duration-format";
+import Discord from "discord.js";
+
 // const {inspect} = require("util");
 
 import SlashCommand from "../base/slashCommand";
+import { SavedEvent, ValidateEvent } from "../modules/types";
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
 
 class Event extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: {}) {
         super(Bot, {
             name: "event",
             guildOnly: false,
@@ -184,7 +187,7 @@ class Event extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: {}, interaction: Discord.Interaction, options?: {}) {
         const level = options.level;
 
         if (!interaction?.guild) {
@@ -206,7 +209,7 @@ class Event extends SlashCommand {
                 "repeatHour": 0,
                 "repeatMin": 0
             },
-            "repeatDays": 0
+            "repeatDays": []
         };
 
         const action = interaction.options.getSubcommand();
@@ -239,18 +242,18 @@ class Event extends SlashCommand {
 
                 // Check if that name/ event already exists
                 const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}})
-                    .then(token => token !== null)
-                    .then(isUnique => isUnique);
+                    .then((token: any) => token !== null)
+                    .then((isUnique: any) => isUnique);
                 if (exists) {
                     return super.error(interaction, interaction.language.get("COMMAND_EVENT_JSON_EXISTS"));
                 }
 
-                const newEv = {
+                const newEv: ValidateEvent = {
                     name: evName,
                     time: evTime,
                     day: evDate,
                     message: evMsg?.length ? evMsg : null,
-                    channel: channel ? channel?.id : null,
+                    channelID: channel ? channel?.id : null,
                     countdown: countdown,
                     repeat: repeat,
                     repeatDay: repeatDay
@@ -264,7 +267,7 @@ class Event extends SlashCommand {
                 if (!validEV?.valid) {
                     return super.error(interaction, validEV.str);
                 }
-                await Bot.socket.emit("addEvents", validEV.event, (res) => {
+                await Bot.socket.emit("addEvents", validEV.event, (res: any[]) => {
                     const ev = res[0];
                     const evName = ev.evID.split("-").slice(1).join("-");
                     if (ev.success) {
@@ -289,7 +292,7 @@ class Event extends SlashCommand {
                     }
 
 
-                    let jsonWhole;
+                    let jsonWhole: any[];
                     try {
                         jsonWhole = JSON.parse(match[2]);
                     } catch (e) {
@@ -313,7 +316,7 @@ class Event extends SlashCommand {
                         return interaction.reply({content: interaction.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(result.map(e => e.str).join("\n\n")))});
                     } else {
                         // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
-                        await Bot.socket.emit("addEvents", result.map(e => e.event), (res) => {
+                        await Bot.socket.emit("addEvents", result.map(e => e.event), (res: any[]) => {
                             const evAddLog = [];
                             const evFailLog = [];
 
@@ -355,16 +358,16 @@ class Event extends SlashCommand {
                     // If they are looking to show a specific event
                     const eventID = `${interaction.guild.id}-${eventName}`;
 
-                    await Bot.socket.emit("getEventsByID", eventID, async function(event) {
+                    await Bot.socket.emit("getEventsByID", eventID, async function(event: SavedEvent) {
                         // If it doesn't find the event, say so
                         if (Array.isArray(event) && !event.length) return interaction.reply({content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
 
                         // From here on, it should have the event found, so process for viewing
                         if (Array.isArray(event)) event = event[0];
-                        const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+                        const eventDate = momentTZ(event.eventDT).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                         let eventString = interaction.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
-                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
                         if (event.eventChan && event.eventChan !== "") {
                             let chanName = "";
                             if (interaction.guild.channels.cache.has(event.eventChan)) {
@@ -386,7 +389,7 @@ class Event extends SlashCommand {
                         return interaction.reply({content: eventString});
                     });
                 } else {
-                    await Bot.socket.emit("getEventsByGuild", interaction.guild.id, async function(eventList) {
+                    await Bot.socket.emit("getEventsByGuild", interaction.guild.id, async function(eventList: SavedEvent[]) {
                         // If it doesn't find any events, say so
                         if (Array.isArray(eventList) && eventList.length === 0) return interaction.reply({content: "I could not find any events for this server"});
 
@@ -411,13 +414,11 @@ class Event extends SlashCommand {
                             }
                         }
                         sortedEvents.forEach(event => {
-                            let thisEventName = event.eventID.split("-");
-                            thisEventName.splice(0, 1);
-                            thisEventName = thisEventName.join("-");
-                            const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+                            let thisEventName = event.eventID.split("-").splice(0, 1).join("-");
+                            const eventDate = momentTZ(event.eventDT).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                             let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
-                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
                             if (event.eventChan && event.eventChan !== "") {
                                 let chanName = "";
                                 if (interaction.guild.channels.cache.has(event.eventChan)) {
@@ -445,7 +446,7 @@ class Event extends SlashCommand {
                                 return interaction.reply({content: interaction.language.get("COMMAND_EVENT_NO_EVENT")});
                             } else {
                                 if (evArray.length > 1) {
-                                    evArray.forEach((evMsg, ix) => {
+                                    evArray.forEach((evMsg: string, ix: number) => {
                                         if (guildConf["useEventPages"]) {
                                             return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg)});
                                             // TODO, {split: true});
@@ -481,7 +482,7 @@ class Event extends SlashCommand {
                 const evName = interaction.options.getString("name");
                 const eventID = `${interaction.guild.id}-${evName}`;
 
-                await Bot.socket.emit("delEvent", eventID, async (result) => {
+                await Bot.socket.emit("delEvent", eventID, async (result: {}) => {
                     if (result.success) {
                         return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
                     } else {
@@ -494,25 +495,25 @@ class Event extends SlashCommand {
                 const eventID = `${interaction.guild.id}-${eventName}`;
 
                 const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}})
-                    .then(token => token !== null)
-                    .then(isUnique => isUnique);
+                    .then((token: any) => token !== null)
+                    .then((isUnique: any) => isUnique);
 
                 // Check if that name/ event already exists
                 if (!exists) {
                     return interaction.reply({content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
                 } else {
                     // As long as it does exist, go ahead and try triggering it
-                    await Bot.socket.emit("getEventsByID", eventID, async function(event) {
+                    await Bot.socket.emit("getEventsByID", eventID, async function(event: SavedEvent) {
                         if (Array.isArray(event)) event = event[0];
                         var channel = "";
                         var announceMessage = `**${eventName}**\n${event.eventMessage}`;
                         if (event["eventChan"] && event.eventChan !== "") {  // If they"ve set a channel, try using it
-                            channel = interaction.guild.channels.cache.get(event.eventChan);
+                            channel = interaction.guild.channels.cache.get(event.eventChan).id;
                             if (!channel) {
-                                channel = interaction.guild.channels.cache.find(c => c.name === event.eventChan);
+                                channel = interaction.guild.channels.cache.find(c => c.name === event.eventChan).id;
                             }
                         } else { // Else, use the default one from their settings
-                            channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"]);
+                            channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"]).id;
                         }
                         if (channel && channel.permissionsFor(interaction.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                             try {
@@ -558,6 +559,8 @@ class Event extends SlashCommand {
                         message: newEvMsg ? newEvMsg : event.eventMessage,
                         channelID: newChannel?.id ? newChannel.id : event.channel,
                         countdown: newCountdown ? newCountdown : event.countdown,
+                        repeat: null,
+                        repeatDay: null
                     };
                     if (newRepeat) {
                         newEvent.repeat = newRepeat;
@@ -569,7 +572,7 @@ class Event extends SlashCommand {
                         newEvent.repeatDay = event.repeatDays.join(",");
                     }
 
-                    const validEvent = validateEvents(newEvent)[0];
+                    const validEvent = validateEvents([newEvent])[0];
                     if (!validEvent.valid) {
                         console.log("Issue validating an event:");
                         console.log(validEvent);
@@ -623,57 +626,57 @@ class Event extends SlashCommand {
             }
         }
 
-        async function updateEvent(id, event) {
+        async function updateEvent(id: string, event: SavedEvent) {
             const out = await Bot.database.models.eventDBs.update(event, {where: {eventID: id}})
                 .then(() => {
                     return { success: true, error: null };
                 })
-                .catch(error => {
+                .catch((error: Error) => {
                     Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \ninteraction: ${interaction.content}\nError: ${error}`);
                     return { success: false, error: error };
                 });
             return out;
         }
 
-        function removeTags(interaction, mess) {
+        function removeTags(interaction: Discord.Interaction, message: string) {
             const userReg = /<@!?(1|\d{17,19})>/g;
             const roleReg = /<@&(1|\d{17,19})>/g;
             const chanReg = /<#(1|\d{17,19})>/g;
 
-            const userResult = mess.match(userReg);
-            const roleResult = mess.match(roleReg);
-            const chanResult = mess.match(chanReg);
+            const userResult = message.match(userReg);
+            const roleResult = message.match(roleReg);
+            const chanResult = message.match(chanReg);
             if (userResult !== null) {
                 userResult.forEach(user => {
                     const userID = user.replace(/\D/g,"");
                     const thisUser = interaction.guild.members.cache.get(userID);
                     const userName = thisUser ? `${thisUser.displayName}` : `${interaction.client.users.cache.get(user) ? interaction.client.users.cache.get(user).username : "Unknown User"}`;
-                    mess = mess.replace(user, userName);
+                    message = message.replace(user, userName);
                 });
             }
             if (roleResult !== null) {
                 roleResult.forEach(role => {
                     const roleID = role.replace(/\D/g,"");
-                    let roleName;
+                    let roleName: string;
                     try {
                         roleName = interaction.guild.roles.cache.get(roleID).name;
                     } catch (e) {
                         roleName = roleID;
                     }
-                    mess = mess.replace(role, `@${roleName}`);
+                    message = message.replace(role, `@${roleName}`);
                 });
             }
             if (chanResult !== null) {
                 chanResult.forEach(chan => {
                     const chanID = chan.replace(/\D/g,"");
                     const chanName = interaction.guild.channels.cache.get(chanID).name;
-                    mess = mess.replace(chan, `#${chanName}`);
+                    message = message.replace(chan, `#${chanName}`);
                 });
             }
-            mess = mess.replace(/`/g, "");
-            return mess;
+            message = message.replace(/`/g, "");
+            return message;
         }
-        function validateEvents(eventArray) {
+        function validateEvents(eventArray: ValidateEvent[]) {
             const MAX_MSG_SIZE = 1000;
             const outEvents = [];
             const nameArr = [];
@@ -683,7 +686,7 @@ class Event extends SlashCommand {
                 const err = [];
                 const newEvent = {
                     eventID: "",
-                    eventDT: "",
+                    eventDT: 0,
                     eventMessage: "",
                     eventChan: "",
                     countdown: false,
@@ -741,13 +744,13 @@ class Event extends SlashCommand {
                         err.push(interaction.language.get("COMMAND_EVENT_NEED_CHAN"));
                     }
                 }
-                if (event.repeat && event.repeatDay) {
+                if (event.repeat && event.repeatDay?.length) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
                 } else {
                     // If the repeat is set, try to parse it
                     const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
                     if (event.repeat?.length) {
-                        let repeat = event.repeat;
+                        let repeat: string = event.repeat.toString();
                         if (repeat.match(timeReg)) {
                             newEvent.repeat.repeatDay = parseInt(repeat.substring(0, repeat.indexOf("d")),  10);
                             repeat = repeat.replace(/^\d{1,2}d/, "");
@@ -761,12 +764,12 @@ class Event extends SlashCommand {
                         const dayReg = /^[0-9,]*$/gi;
                         let jsonRepDay = null;
                         try {
-                            jsonRepDay = JSON.parse(event.repeatDay);
+                            jsonRepDay = JSON.parse(event.repeatDay.toString());
                         } catch (e) {
                             // Don't bother since it's just gonna be a parse error, and it's already null
                         }
                         if (Array.isArray(jsonRepDay)) {
-                            const breaker = jsonRepDay.forEach(r => {
+                            const breaker: any = jsonRepDay.forEach(r => {
                                 if (r <= 0) {
                                     err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
                                     return false;
@@ -776,24 +779,24 @@ class Event extends SlashCommand {
                                 newEvent.repeatDays = jsonRepDay;
                             }
                         } else if (event.repeatDay.toString().match(dayReg)) {
-                            const dayList = event.repeatDay.toString().split(",");
-                            if (dayList.find(d => d <= 0)) {
+                            const dayList = event.repeatDay.toString().split(",").map((rd: string) => parseInt(rd, 10));
+                            if (dayList.find((d) => d <= 0)) {
                                 err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
                             }
-                            newEvent.repeatDays = dayList.map(d => parseInt(d, 10));
+                            newEvent.repeatDays = dayList.map(d => d);
                         } else {
                             err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_FORMAT"));
                         }
                     }
-                    if (!event.countdown || event.countdown === "false" || event.countdown === "no") {
+                    if (!event.countdown) {
                         newEvent.countdown = false;
-                    } else if (event.countdown === true || event.countdown === "true" || event.countdown === "yes") {
+                    } else if (event.countdown === true) {
                         newEvent.countdown = true;
                     } else {
                         err.push(interaction.language.get("COMMAND_EVENT_JSON_COUNTDOWN_BOOL"));
                     }
                 }
-                let outStr;
+                let outStr: string;
                 if (err.length) {
                     outStr = interaction.language.get("COMMAND_EVENT_JSON_ERROR_LIST", (ix+1), err.map(e => `* ${e}`).join("\n"));
                 } else {

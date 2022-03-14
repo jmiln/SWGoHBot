@@ -1,11 +1,12 @@
 import SlashCommand from "../base/slashCommand";
+import { Interaction } from "discord.js";
 
 /**
  * The list of acronyms defined in data/acronym.json was transposed from the SWGoH forum. Any update there will need to make it's way into here.
  * //https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh
  */
 class Acronyms extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: {}) {
         super(Bot, {
             name: "acronyms",
             description: "Spit out what common acronyms mean",
@@ -21,7 +22,7 @@ class Acronyms extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: {}, interaction: Interaction) {
         const acronymsLookup = Bot.acronyms;
         const acronyms = Object.keys(acronymsLookup);
 
@@ -34,7 +35,7 @@ class Acronyms extends SlashCommand {
         }
 
         // Split it up in case they're looking for more than one
-        const lookupList = acronym.split(" ").map(a => a.trim().toLowerCase());
+        const lookupList = acronym.split(" ").map((a: string) => a.trim().toLowerCase());
 
         // Match up as many of the entered ones as possible
         const matchingItems = acronyms.filter(acr => lookupList.includes(acr.toLowerCase()));
@@ -59,7 +60,7 @@ class Acronyms extends SlashCommand {
 
         await interaction.reply({embeds: [
             {
-                description: `**Acronyms for:**\n${lookupList.map(l => `- ${l}`).join("\n")}`,
+                description: `**Acronyms for:**\n${lookupList.map((l: string) => `- ${l}`).join("\n")}`,
                 fields: [
                     {
                         name: "Results",
