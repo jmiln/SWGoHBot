@@ -933,6 +933,10 @@ module.exports = (Bot, client) => {
             });
     };
 
+    Bot.isChannelId = (mention) => {
+        const channelRegex = /^\d{17,19}/;
+        return mention.match(channelRegex);
+    };
     Bot.isChannelMention = (mention) => {
         const channelRegex = /^<#\d{17,19}>/;
         return mention.match(channelRegex);
