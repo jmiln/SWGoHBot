@@ -27,6 +27,10 @@ module.exports = async (Bot: {}, client: Client) => {
         });
 
         if (client.shard.id === 0) {
+            // Deploy all available commands
+            // TODO Make this smarter/ check to see what needs updating
+            await Bot.deploy();
+
             // Check if there are any events that need to be processed & announced
             setInterval(() => {
                 Bot.socket.emit("checkEvents", (eventsList: []) => {
@@ -67,6 +71,7 @@ module.exports = async (Bot: {}, client: Client) => {
         }
     } else {
         await client.loadAllEmotes();
+        await Bot.deploy();
     }
 
     Bot.logger.log(readyString, "ready", true);

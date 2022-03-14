@@ -13,6 +13,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
 
         // Zero width space
         zws: "\u200B",
+        longSpace: "\u3000",
 
         // Some normal color codes
         colors: {
@@ -1023,4 +1024,24 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
         });
     };
+
+    Bot.deploy = async function() {
+        const guildCmds = client.slashcmds.filter((com: {}) => com.guildOnly).map((com: {}) => com.commandData);
+        const globalCmds = client.slashcmds.filter((com: {}) => !com.guildOnly).map((com: {}) => com.commandData);
+
+        // If there's a server configured for development/ that only the owner can use, put the guild commands there
+        if (Bot.config?.dev_server) {
+            await client.guilds.cache.get(Bot.config.dev_server)?.commands.set(guildCmds);
+        }
+        await client.application?.commands.set(globalCmds);
+    }
 };
+
+
+
+
+
+
+
+
+
