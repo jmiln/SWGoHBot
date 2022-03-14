@@ -19,7 +19,7 @@ class Challenges extends SlashCommand {
                         value: "day_Sunday",
                     },
                     {
-                        name: "Monay",
+                        name: "Monday",
                         value: "day_Monday",
                     },
                     {
