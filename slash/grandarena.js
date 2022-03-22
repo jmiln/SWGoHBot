@@ -61,7 +61,7 @@ class GrandArena extends Command {
 
         // Get the first user's ally code if possible
         const user1str = interaction.options.getString("allycode_1");
-        let user1 = await super.getUser(interaction, user1str);
+        let user1 = await Bot.getAllyCode(interaction, user1str);
         if (!user1) {
             if (user1str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED", interaction.guildSettings.prefix));
@@ -72,7 +72,7 @@ class GrandArena extends Command {
 
         // Get the second user's ally code if possible
         const user2str = interaction.options.getString("allycode_2");
-        let user2 = await super.getUser(interaction, user2str);
+        let user2 = await Bot.getAllyCode(interaction, user2str);
         if (!user2) {
             if (user2str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED", interaction.guildSettings.prefix));
