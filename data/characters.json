@@ -27,7 +27,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Health",
+            "circle": "Health/ Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -203,7 +203,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -309,7 +309,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency",
+            "cross": "Potency/ Offense",
             "source": "swgoh.gg"
         }
     },
@@ -340,7 +340,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -618,7 +618,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
         }
@@ -755,7 +755,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Damage",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
         }
@@ -936,7 +936,7 @@
             "square": "Offense",
             "arrow": "Speed/ Protection",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
@@ -1034,7 +1034,7 @@
             "url": "https://swgoh.gg/characters/canderous-ordo/best-mods/",
             "sets": [
                 "Offense x4",
-                "Tenacity x2"
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -1275,7 +1275,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Defense",
+            "cross": "Protection/ Offense",
             "source": "swgoh.gg"
         }
     },
@@ -1343,7 +1343,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Offense",
+            "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
         }
     },
@@ -1480,7 +1480,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
+            "cross": "Offense/ Potency",
             "source": "swgoh.gg"
         }
     },
@@ -1881,7 +1881,7 @@
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Protection",
+            "cross": "Offense",
             "source": "swgoh.gg"
         }
     },
@@ -2015,9 +2015,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Potency",
+            "cross": "Protection",
             "source": "swgoh.gg"
         }
     },
@@ -2353,7 +2353,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
-            "cross": "Tenacity/ Protection",
+            "cross": "Health/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -2449,7 +2449,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Offense/ Crit. Damage",
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
@@ -2712,7 +2712,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Offense",
             "circle": "Protection",
-            "cross": "Protection/ Offense",
+            "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
         }
     },
@@ -3393,7 +3393,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Offense",
+            "triangle": "Protection/ Health",
             "circle": "Protection",
             "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
@@ -3460,7 +3460,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection/ Speed",
+            "arrow": "Protection/ Critical Avoidance",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -3635,7 +3635,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Offense",
             "circle": "Protection/ Health",
-            "cross": "Health/ Protection",
+            "cross": "Protection/ Health",
             "source": "swgoh.gg"
         }
     },
@@ -3771,7 +3771,7 @@
             "diamond": "Defense",
             "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Potency",
+            "cross": "Protection",
             "source": "swgoh.gg"
         }
     },
@@ -3800,7 +3800,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection/ Potency",
             "source": "swgoh.gg"
@@ -3865,9 +3865,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Defense",
+            "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
-            "cross": "Health/ Tenacity",
+            "cross": "Health/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -4315,7 +4315,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health/ Protection",
-            "cross": "Tenacity/ Offense",
+            "cross": "Offense/ Tenacity",
             "source": "swgoh.gg"
         }
     },
@@ -4721,9 +4721,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection",
+            "triangle": "Health",
+            "circle": "Health/ Protection",
+            "cross": "Health/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -4916,7 +4916,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Crit. Damage/ Protection",
             "circle": "Protection/ Health",
             "cross": "Tenacity/ Protection",
             "source": "swgoh.gg"
@@ -4949,7 +4949,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection/ Health",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Tenacity",
             "source": "swgoh.gg"
         }
@@ -5046,7 +5046,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Protection/ Health",
-            "cross": "Offense/ Tenacity",
+            "cross": "Offense/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -5116,8 +5116,7 @@
         "name": "Ninth Sister",
         "uniqueName": "NINTHSISTER",
         "aliases": [
-            "Ninth Sister",
-            "9th Sister"
+            "Ninth Sister"
         ],
         "nameVariant": [
             "Ninth Sister"
@@ -5773,7 +5772,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
+            "cross": "Potency",
             "source": "swgoh.gg"
         }
     },
@@ -6075,7 +6074,7 @@
             "diamond": "Defense",
             "triangle": "Protection/ Defense",
             "circle": "Protection",
-            "cross": "Protection/ Defense",
+            "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
         }
     },
@@ -6083,8 +6082,7 @@
         "name": "Second Sister",
         "uniqueName": "SECONDSISTER",
         "aliases": [
-            "Second Sister",
-            "2nd Sister"
+            "Second Sister"
         ],
         "nameVariant": [
             "Second Sister"
@@ -6111,6 +6109,40 @@
             "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Offense/ Potency",
+            "source": "swgoh.gg"
+        }
+    },
+    {
+        "name": "Seventh Sister",
+        "uniqueName": "SEVENTHSISTER",
+        "aliases": [
+            "Seventh Sister"
+        ],
+        "nameVariant": [
+            "Seventh Sister"
+        ],
+        "url": "http://swgoh.gg/characters/seventh-sister/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_seventhsister.png",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Healer",
+            "Inquisitorius",
+            "Leader",
+            "Unaligned Force User"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/seventh-sister/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health/ Protection",
+            "circle": "Health",
+            "cross": "Tenacity",
             "source": "swgoh.gg"
         }
     },
@@ -6709,7 +6741,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
+            "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
@@ -6777,7 +6809,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Crit. Chance",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -6907,7 +6939,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
         }
@@ -6944,7 +6976,7 @@
             "diamond": "Defense",
             "triangle": "Protection/ Health",
             "circle": "Protection/ Health",
-            "cross": "Health/ Protection",
+            "cross": "Protection/ Health",
             "source": "swgoh.gg"
         }
     },
@@ -7105,7 +7137,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
@@ -7136,7 +7168,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health/ Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -7330,7 +7362,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
