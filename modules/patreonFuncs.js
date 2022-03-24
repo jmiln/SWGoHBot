@@ -109,8 +109,10 @@ module.exports = (Bot, client) => {
                     Bot.logger.log(player);
                     continue;
                 }
-                if (!player.arena?.char?.rank && !player.arena?.ship?.rank) {
-                    console.log("[patreonFuncs/getRanks] No arena ranks");
+                const pCharRank = player?.arena?.char?.rank;
+                const pShipRank = player?.arena?.ship?.rank;
+                if (!pCharRank && pCharRank !== 0 && !pShipRank && pShipRank !== 0) {
+                    Bot.logger.error("[patreonFuncs/getRanks] No arena ranks");
                     console.log(player);
                     continue;
                 }
