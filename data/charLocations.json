@@ -738,6 +738,15 @@
         ]
     },
     {
+        "name": "Eighth Brother",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Ruthless Efficiency IV"
+            }
+        ]
+    },
+    {
         "name": "Embo",
         "locations": [
             {
@@ -2095,8 +2104,16 @@
         "name": "Second Sister",
         "locations": [
             {
+                "type": "Hard Modes (D)"
+            }
+        ]
+    },
+    {
+        "name": "Seventh Sister",
+        "locations": [
+            {
                 "type": "Intro P1 (Marquee)",
-                "name": "Ruthless Efficiency"
+                "name": "Ruthless Efficiency III"
             }
         ]
     },

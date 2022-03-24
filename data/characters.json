@@ -2224,6 +2224,23 @@
         }
     },
     {
+        "name": "Eighth Brother",
+        "uniqueName": "EIGHTHBROTHER",
+        "aliases": [
+            "Eighth Brother"
+        ],
+        "nameVariant": [
+            "Eighth Brother"
+        ],
+        "url": "http://swgoh.gg/characters/eighth-brother/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_eighthbrother.png",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Inquisitorius"
+        ]
+    },
+    {
         "name": "Embo",
         "uniqueName": "EMBO",
         "aliases": [
