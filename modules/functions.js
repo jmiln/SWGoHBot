@@ -21,27 +21,27 @@ module.exports = (Bot, client) => {
             red:    "#FF0000",
             white:  "#FFFFFF",
             yellow: "#FFFF00",
+        },
+        // Permissions mapping
+        permMap: {
+            // Can do anything, access to the dev commands, etc
+            BOT_OWNER: 10,
+
+            // Can help out with the bot as needed, some extra stuff possibly
+            HELPER: 8,
+
+            // Owner of the server a command is being run in
+            GUILD_OWNER: 7,
+
+            // Has ADMIN or MANAGE_GUILD, or has one of the
+            // configured roles from the guild's settings
+            GUILD_ADMIN: 6,
+
+            // Base users, anyone that's not included above
+            BASE_USER: 0
         }
     };
 
-    // Permissions mapping
-    const permMap = {
-        // Can do anything, access to the dev commands, etc
-        BOT_OWNER: 10,
-
-        // Can help out with the bot as needed, some extra stuff possibly
-        HELPER: 8,
-
-        // Owner of the server a command is being run in
-        GUILD_OWNER: 7,
-
-        // Has ADMIN or MANAGE_GUILD, or has one of the
-        // configured roles from the guild's settings
-        GUILD_ADMIN: 6,
-
-        // Base users, anyone that's not included above
-        BASE_USER: 0
-    };
 
     /*  PERMISSION LEVEL FUNCTION
      *  This is a very basic permission system for commands which uses "levels"
@@ -49,11 +49,10 @@ module.exports = (Bot, client) => {
      *  NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
      *  command including the VERY DANGEROUS `eval` and `exec` commands!
      */
-    Bot.permLevel = message => {
-        let permlvl = 0;
-
+    Bot.permLevel = async (interaction) => {
         // Depending on message or interaction, grab the ID of the user
-        const authId = message.author ? message.author.id : message.user.id;
+        const permMap = Bot.constants.permMap;
+        const authId = interaction.author ? interaction.author.id : interaction.user.id;
 
         // If bot owner, return max perm level
         if (authId === Bot.config.ownerid) {
@@ -61,23 +60,23 @@ module.exports = (Bot, client) => {
         }
 
         // If DMs or webhook, return 0 perm level.
-        if (!message.guild || !message.member) {
+        if (!interaction.guild || !interaction.member) {
             return permMap.BASE_USER;
         }
-        const guildConf = message.guildSettings;
+        const guildConf = interaction.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
-        const gOwner = message.guild.fetchOwner();
-        if (message.channel?.type === "GUILD_TEXT" && message.guild && gOwner) {
+        const gOwner = await interaction.guild.fetchOwner();
+        if (interaction.channel?.type === "GUILD_TEXT" && interaction.guild && gOwner) {
             // message.author for text message, message.user for interactions
-            if (message.author?.id === gOwner.id || message.user?.id === gOwner.id) {
+            if (interaction.user?.id === gOwner.id) {
                 return permMap.GUILD_OWNER;
             }
         }
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
-        if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) {
+        if (interaction.member.permissions.has(["ADMINISTRATOR"]) || interaction.member.permissions.has(["MANAGE_GUILD"])) {
             return permMap.GUILD_ADMIN;
         }
 
@@ -87,13 +86,13 @@ module.exports = (Bot, client) => {
             const adminRoles = guildConf.adminRole;
 
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
-                const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix]);
-                if (adminRole && message.member.roles.cache.has(adminRole.id)) {
-                    return permlvl = permMap.GUILD_ADMIN;
+                const adminRole = interaction.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix]);
+                if (adminRole && interaction.member.roles.cache.has(adminRole.id)) {
+                    return permMap.GUILD_ADMIN;
                 }
             }
         } catch (e) {() => {};}
-        return permlvl;
+        return permMap.BASE_USER;
     };
 
     // Check if the bot's account is the main (real) bot

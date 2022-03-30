@@ -72,9 +72,9 @@ class Poll extends Command {
     }
 
     async run(Bot, interaction, options) {
-        const level = options.level;
-
         const action = interaction.options.getSubcommand();
+
+        const restrictedActions = ["cancel", "create", "end"];
 
         let poll = { // ID = guildID-channelID
             "question": "",
@@ -85,7 +85,7 @@ class Poll extends Command {
             "anon": false
         };
 
-        if (!interaction.guild) {
+        if (!interaction.guild || !interaction.channel) {
             // This is not available in DMs
             // TODO Lang this
             return super.error(interaction, "Sorry, but this command is not available in DMs. If you are voting with `/poll vote`, it will only show for you.");
@@ -108,6 +108,11 @@ class Poll extends Command {
             poll = oldPolllDv.poll;
         }
 
+        // Make sure it's a mod or someone with the appropriate perms trying to create it
+        if (restrictedActions.includes(action) && options.level < Bot.constants.GUILD_ADMIN) {
+            return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
+        }
+
         switch (action) {
             case "create": {
                 const optionsString = interaction.options.getString("options");
@@ -115,18 +120,13 @@ class Poll extends Command {
                 poll.anon           = interaction.options.getBoolean("anonymous");
                 poll.options        = optionsString.split("|").map(opt => opt.trim());
 
-                // Make sure it's a mod or someone with the appropriate perms trying to create it
-                if (options.level < 3) {
-                    return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
-                }
-
                 // Make sure the question is kept within a reasonable length (Not sure why I chose 256 at the time)
                 if (poll.question.length >= 256) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_TITLE_TOO_LONG"));
                 }
 
                 // Keep the choices limited to between 2 & 10 options
-                if (poll.options.length <= 2) {
+                if (poll.options.length < 2) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_TOO_FEW_OPT"));
                 } else if (poll.options.length > 10) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_TOO_MANY_OPT"));
@@ -158,9 +158,6 @@ class Poll extends Command {
             }
             case "cancel": {
                 // Cancel the current poll in a channel, need to ask for confirmation, maybe try and use a button here at some point?
-                if (level < 3) {
-                    return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
-                }
                 // Delete the current poll
                 await Bot.database.models.polls.destroy({where: {id: pollID}})
                     .then(() => {
@@ -175,9 +172,6 @@ class Poll extends Command {
             }
             case "end": {
                 // End the current poll in a channel, need to ask for confirmation, maybe try and use a button here at some point?
-                if (level < 3) {
-                    return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
-                }
                 // Delete the current poll
                 await Bot.database.models.polls.destroy({where: {id: pollID}})
                     .then(() => {

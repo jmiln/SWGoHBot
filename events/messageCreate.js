@@ -49,7 +49,7 @@ module.exports = async (Bot, client, message) => {
     if (!command) return;
 
     // Get the user or member's permission level from the elevation
-    const level = Bot.permLevel(message);
+    const level = await Bot.permLevel(message);
 
     // Check whether the command, or alias, exist in the collections defined in swgohbot.js.
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));

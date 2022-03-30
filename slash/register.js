@@ -44,7 +44,7 @@ class Register extends Command {
         }
 
         // First off, make sure they're not trying to do something they shouldn't do...
-        if (user.id !== interaction.user.id && options.level < 3) {
+        if (user.id !== interaction.user.id && options.level < Bot.constants.GUILD_ADMIN) {
             // If they are trying to change someone else and they don't have the right permissions
             return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
         } else if (interaction.guild && !interaction.guild.members.cache.has(user.id)) {
