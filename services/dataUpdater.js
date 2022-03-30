@@ -9,8 +9,8 @@ const GG_CHAR_CACHE          = "../data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE         = "../data/swgoh-gg-ships.json";
 const GG_MOD_CACHE           = "../data/swgoh-gg-mods.json";
 const SWGOH_HELP_SQUAD_CACHE = "../data/squads.json";
-const CHARLOCATIONS          = "../data/charLocations.json";
-const SHIPLOCATIONS          = "../data/shipLocations.json";
+const CHAR_LOCATIONS         = "../data/charLocations.json";
+const SHIP_LOCATIONS         = "../data/shipLocations.json";
 const GAMEDATA               = "../data/gameData.json";
 const UNKNOWN                = "Unknown";
 
@@ -114,21 +114,21 @@ async function updateRemoteData() {
         await updateCharacters(currentCharacters);
     }
 
-    const ggModData = await getGgChars();
-    if (await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
-        log.push("Detected a change in mods from swgoh.gg");
-        await updateCharacterMods(currentCharacters, ggModData);
-    }
+    // const ggModData = await getGgChars();
+    // if (await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
+    //     log.push("Detected a change in mods from swgoh.gg");
+    //     await updateCharacterMods(currentCharacters, ggModData);
+    // }
 
     if (await updateIfChanged({ localCachePath: SWGOH_HELP_SQUAD_CACHE, dataSourceUri: "https://swgoh.help/data/squads.json" })) {
         log.push("Detected a squad change from swgoh.help.");
     }
 
-    if (await updateIfChanged({ localCachePath: CHARLOCATIONS, dataSourceUri: charLocationLink })) {
+    if (await updateIfChanged({ localCachePath: CHAR_LOCATIONS, dataSourceUri: charLocationLink })) {
         log.push("Detected a change in character locations.");
     }
 
-    if (await updateIfChanged({ localCachePath: SHIPLOCATIONS, dataSourceUri: shipLocationLink })) {
+    if (await updateIfChanged({ localCachePath: SHIP_LOCATIONS, dataSourceUri: shipLocationLink })) {
         log.push("Detected a change in ship locations.");
     }
 
