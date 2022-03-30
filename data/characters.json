@@ -873,8 +873,8 @@
         "aliases": [
             "CT-21-0408 \"Echo\"",
             "Clone Trooper Echo",
-            "CTEcho",
-            "Echo"
+            "CT Echo",
+            "CTEcho"
         ],
         "nameVariant": [
             "'CT-21-0408 Echo'",
@@ -2236,9 +2236,13 @@
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_eighthbrother.png",
         "side": "dark",
         "factions": [
+            "Attacker",
             "Empire",
-            "Inquisitorius"
-        ]
+            "Inquisitorius",
+            "Leader",
+            "Unaligned Force User"
+        ],
+        "mods": {}
     },
     {
         "name": "Embo",
