@@ -2242,7 +2242,20 @@
             "Leader",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/eighth-brother/best-mods/",
+            "sets": [
+                "Critical Chance x2",
+                "Critical Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense/ Potency",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Embo",
