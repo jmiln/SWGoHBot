@@ -5,16 +5,19 @@
 import chalk from "chalk";
 import moment from "moment-timezone";
 import { Client } from "discord.js";
+import { BotType } from "./types";
 
-class Logger {
-    constructor(Bot: {}, client: Client) {
+export default class Logger {
+    Bot: BotType;
+    client: Client;
+    constructor(Bot: BotType, client: Client) {
         this.Bot = Bot;
         this.client = client;
     }
-    log(content: string, type: string = "log", webhook: boolean = false) {
-        const shard = this.client.shard ? ` (${this.client.shard.id})` : "";
+    log(content: any, type: string = "log", webhook: boolean = false, shardId: number = null) {
         const time = `${moment.tz("US/Pacific").format("M/D/YYYY hh:mma").replace(" 0", "  ")}`;
-        const timestamp = `[${time}]${shard}`;
+        const shardStr = shardId ? `(${shardId})` : "";
+        const timestamp = `[${time}]${shardStr}`;
         let out = "";
         let color = null;
         switch (type) {
@@ -56,7 +59,7 @@ class Logger {
             // If it's set to, send it to the webhook too
             if (this.Bot.config.logs.logToChannel && this.Bot.config.webhookURL) {
                 this.Bot.sendWebhook(this.Bot.config.webhookURL, {
-                    title: type ? this.Bot.toProperCase(type) + shard : null,
+                    title: type ? this.Bot.toProperCase(type) + shardStr : null,
                     description: content,
                     color: color ? color : null,
                     footer: {text: time}
@@ -66,7 +69,7 @@ class Logger {
         return type === "error" ? console.error(out) : console.log(out);
     }
 
-    error(content: string, webhook=false) {
+    error(content: any, webhook=false) {
         if (content.toString().includes("Unable to authenticate")) webhook = true;
         return this.log(content, "error", webhook);
     }

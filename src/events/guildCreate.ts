@@ -1,6 +1,7 @@
 import { Guild } from "discord.js";
+import { BotType } from "../modules/types";
 
-module.exports = async (Bot: {}, guild: Guild) => {
+module.exports = async (Bot: BotType, guild: Guild) => {
     // Get the default config settings
     const defSet = Bot.config.defaultSettings;
 
@@ -26,7 +27,7 @@ module.exports = async (Bot: {}, guild: Guild) => {
                 // Log that it joined another guild
                 Bot.logger.log(`[GuildCreate] I joined ${guild.name}(${guild.id})`);
             })
-            .catch((error: Error) => { Bot.logger.error(error, guild.id); });
+            .catch((error: Error) => { Bot.logger.error(error + " - " + guild.id); });
     } else {
         // Log that it joined another guild (Again)
         // Bot.log("GuildCreate", `I re-joined ${guild.name}(${guild.id})`, {color: Bot.constants.colors.green});

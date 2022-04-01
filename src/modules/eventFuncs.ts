@@ -2,18 +2,18 @@ import { Client } from "discord.js";
 import momentTZ from "moment-timezone";
 require("moment-duration-format");
 
-import { GuildConf, ScheduledEvent } from "./types"
+import { BotType, GuildConf, SavedEvent, ScheduledEvent } from "./types"
 
-module.exports = (Bot: {}, client: Client) => {
+module.exports = (Bot: BotType, client: Client) => {
     // Some base time conversions to milliseconds
     const dayMS  = 86400000;
     const hourMS = 3600000;
     const minMS  = 60000;
 
     // Handle any events that have been found via the checker
-    Bot.manageEvents = async (eventList: []) => {
+    Bot.manageEvents = async (eventList: SavedEvent[]): Promise<any> => {
         for (const event of eventList) {
-            if (event.isCD) {
+            if (event.countdown) {
                 // It's a countdown alert, so do that
                 await Bot.countdownAnnounce(event);
             } else {
@@ -24,7 +24,7 @@ module.exports = (Bot: {}, client: Client) => {
     };
 
     // BroadcastEval a message send
-    async function sendMsg(event: ScheduledEvent, guildConf: GuildConf, guildID: string, announceMessage: string) {
+    async function sendMsg(event: SavedEvent, guildConf: GuildConf, guildID: string, announceMessage: string) {
         if (guildConf.announceChan !== "" || event.eventChan !== "") {
             let chan = "";
             if (event?.eventChan !== "") { // If they've set a channel, use it
@@ -35,9 +35,9 @@ module.exports = (Bot: {}, client: Client) => {
             if (announceMessage) announceMessage = announceMessage.replace(/`/g, "\\`");
             try {
                 await client.shard.broadcastEval(async (client, {guildID, announceMessage, chan, guildConf}) => {
-                    const targetGuild = await client.guilds.cache.find(g => g.id === guildID);
+                    const targetGuild = client.guilds.cache.find(g => g.id === guildID);
                     if (targetGuild) {
-                        client.announceMsg(targetGuild, announceMessage, chan, guildConf);
+                        Bot.announceMsg(targetGuild, announceMessage, chan, guildConf);
                     }
                 }, {context: {
                     guildID: guildID,
@@ -52,13 +52,13 @@ module.exports = (Bot: {}, client: Client) => {
     }
 
     // Re-caclulate a viable eventDT, and return the updated event
-    async function reCalc(event: {}) {
+    async function reCalc(event: SavedEvent) {
         const nowTime = new Date().getTime();
         if (event.repeatDays.length > 0) { // repeatDays is an array of days to skip
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > event.eventDT && event.repeatDays.length > 0) {
-                const days = parseInt(event.repeatDays.splice(0, 1)[0], 10);
-                event.eventDT = parseInt(event.eventDT, 10) + (dayMS * days);
+                const days = event.repeatDays.splice(0, 1)[0];
+                event.eventDT = event.eventDT + (dayMS * days);
             }
             if (nowTime > event.eventDT) { // It ran out of days
                 return null;
@@ -67,7 +67,7 @@ module.exports = (Bot: {}, client: Client) => {
             // Else it's using basic repeat
             while (nowTime >= event.eventDT) {
                 event.eventDT =
-                    parseInt(event.eventDT, 10)        +
+                    event.eventDT        +
                     (event.repeat.repeatDay  * dayMS)  +
                     (event.repeat.repeatHour * hourMS) +
                     (event.repeat.repeatMin  * minMS);
@@ -85,25 +85,25 @@ module.exports = (Bot: {}, client: Client) => {
     };
 
     // Send out an alert based on the guild's countdown settings
-    Bot.countdownAnnounce = async (event: ScheduledEvent) => {
-        let eventName = event.eventID.split("-");
-        const guildID = eventName.splice(0, 1)[0];
-        eventName = eventName.join("-");
+    Bot.countdownAnnounce = async (event: SavedEvent) => {
+        const splitEventId = event.eventID.split("-");
+        const guildID = splitEventId.splice(0, 1)[0];
+        const eventName = splitEventId.join("-");
 
         const guildConf = await Bot.getGuildConf(guildID);
 
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
+        var timeToGo = momentTZ.utc(momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").asMilliseconds()).format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
         var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
 
         await sendMsg(event, guildConf, guildID, announceMessage);
     };
 
     // To stick into node-schedule for each full event
-    Bot.eventAnnounce = async (event: ScheduledEvent) => {
+    Bot.eventAnnounce = async (event: SavedEvent) => {
         // Parse out the eventName and guildName from the ID
-        let eventName = event.eventID.split("-");
-        const guildID = eventName.splice(0, 1)[0];
-        eventName = eventName.join("-");
+        const splitEventId = event.eventID.split("-");
+        const guildID = splitEventId.splice(0, 1)[0];
+        const eventName = splitEventId.join("-");
 
         const guildConf = await Bot.getGuildConf(guildID);
 

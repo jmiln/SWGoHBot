@@ -1,12 +1,20 @@
-import Discord from "discord.js";
+import Discord, { Emoji, GuildEmoji, GuildMember, Role, TextChannel } from "discord.js";
 import moment from "moment-timezone";
 require("moment-duration-format");
 import { promisify, inspect } from "util";     // eslint-disable-line no-unused-vars
 import fs from "fs";
-import { GuildConf, UnitObj } from "./types";
+import { APIUnitObj, BotInteraction, BotType, GuildConf, Header, PlayerStatsAccount, UnitObj, UserReg, UserRegAccount } from "./types";
 const readdir = promisify(require("fs").readdir);
 
-module.exports = (Bot: {}, client: Discord.Client) => {
+import { REST } from '@discordjs/rest';
+
+import { Routes } from 'discord-api-types/v10';
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { BotClient } from "../swgohBot";
+import slashCommand from "../base/slashCommand";
+
+
+module.exports = (Bot: BotType, client: BotClient) => {
     Bot.constants = {
         // The main invite for the support server
         invite: "https://discord.com/invite/FfwGvhr",
@@ -23,6 +31,19 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             red:    "#FF0000",
             white:  "#FFFFFF",
             yellow: "#FFFF00",
+        },
+        optionType: {
+            SUB_COMMAND: 1,
+            SUB_COMMAND_GROUP: 2,
+            STRING: 3,
+            INTEGER: 4,
+            BOOLEAN: 5,
+            USER: 6,
+            CHANNEL: 7,
+            ROLE: 8,
+            MENTIONABLE: 9,
+            NUMBER: 10,
+            ATTACHMENT: 11
         }
     };
 
@@ -51,11 +72,12 @@ module.exports = (Bot: {}, client: Discord.Client) => {
      *  NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
      *  command including the VERY DANGEROUS `eval` and `exec` commands!
      */
-    Bot.permLevel = (message: Discord.Message) => {
+    Bot.permLevel = async (interaction: BotInteraction): Promise<number> => {
         let permlvl = 0;
+        const member = interaction.member as GuildMember;
 
         // Depending on message or interaction, grab the ID of the user
-        const authId = message.author ? message.author.id : message.user.id;
+        const authId = interaction.user.id;
 
         // If bot owner, return max perm level
         if (authId === Bot.config.ownerid) {
@@ -63,22 +85,22 @@ module.exports = (Bot: {}, client: Discord.Client) => {
         }
 
         // If DMs or webhook, return 0 perm level.
-        if (!message.guild || !message.member) {
+        if (!interaction.guild || !member) {
             return permMap.BASE_USER;
         }
-        const guildConf = message.guildSettings;
+        const guildConf: GuildConf = interaction.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
-        const gOwner = message.guild.fetchOwner();
-        if (message.channel.type === "GUILD_TEXT" && message.guild && gOwner) {
-            if (message.author.id === gOwner.id) {
+        const gOwner = await interaction.guild.fetchOwner();
+        if (interaction.channel.type === "GUILD_TEXT" && interaction.guild && gOwner) {
+            if (interaction.user?.id === gOwner.id) {
                 return permMap.GUILD_OWNER;
             }
         }
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
-        if (message.member.permissions.has(["ADMINISTRATOR"]) || message.member.permissions.has(["MANAGE_GUILD"])) {
+        if (member.permissions.has(["ADMINISTRATOR"]) || member.permissions.has(["MANAGE_GUILD"])) {
             return permMap.GUILD_ADMIN;
         }
 
@@ -88,8 +110,8 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             const adminRoles = guildConf.adminRole;
 
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
-                const adminRole = message.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix]);
-                if (adminRole && message.member.roles.cache.has(adminRole.id)) {
+                const adminRole = interaction.guild.roles.cache.find(r => ( r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix] ) && r.members.has(interaction.user.id));
+                if (adminRole) {
                     return permlvl = permMap.GUILD_ADMIN;
                 }
             }
@@ -109,7 +131,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // This finds any character that matches the search, and returns them in an array
-    Bot.findChar = (searchName: string, charList: UnitObj, ship=false) => {
+    Bot.findChar = (searchName: string, charList: UnitObj[], ship=false): UnitObj[] => {
         if (!searchName?.length || typeof searchName !== "string") {
             return [];
         }
@@ -175,7 +197,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     /* ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    client.announceMsg = async (guild: Discord.Guild, announceMsg: string, channel: string="", guildConf: GuildConf) => {
+    Bot.announceMsg = async (guild: Discord.Guild, announceMsg: string, channel: string="", guildConf: GuildConf) => {
         if (!guild?.id) return;
 
         let announceChan = guildConf.announceChan || "";
@@ -183,11 +205,11 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             announceChan = channel;
         }
         // Try and get it by ID first
-        let chan = guild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
+        let chan = guild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, "")) as TextChannel;
 
         // If  that didn't work, try and get it by name
         if (!chan) {
-            chan = guild.channels.cache.find(c => c.name === announceChan);
+            chan = guild.channels.cache.find(c => c.name === announceChan) as TextChannel;
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
@@ -197,37 +219,44 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             // If everything is ok, go ahead and try sending the message
             await chan.send(announceMsg).catch((err: Error) => {
                 // if (err.stack.toString().includes("user aborted a request")) return;
-                console.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );
+                const outStr = `Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n`;
+                console.error(outStr);
+                return outStr;
             });
+            return null;
         }
     };
 
-    client.unloadSlash = (commandName: string) => {
-        if (client.slashcmds.has(commandName)) {
-            const command = client.slashcmds.get(commandName);
-            client.slashcmds.delete(command);
-            delete require.cache[require.resolve(`../slash/${command.commandData.name}.js`)];
+    Bot.unloadSlash = (commandName: string) => {
+        try {
+            if (client.slashcmds.has(commandName)) {
+                const command = client.slashcmds.get(commandName);
+                client.slashcmds.delete(command.commandData.name);
+                delete require.cache[require.resolve(`../slash/${command.commandData.name}.js`)];
+            }
+            return null;
+        } catch (err) {
+            return `Unable to load command ${commandName}: ${err}`;
         }
-        return;
     };
-    client.loadSlash = (commandName: string) => {
+    Bot.loadSlash = (commandName: string) => {
         try {
             const cmd = new (require(`../slash/${commandName}`))(Bot);
-            if (!cmd.commandData.enabled) {
+            if (!cmd.enabled) {
                 return commandName + " is not enabled";
             }
             client.slashcmds.set(cmd.commandData.name, cmd);
-            return false;
+            return null;
         } catch (e) {
             return `Unable to load command ${commandName}: ${e}`;
         }
     };
-    client.reloadSlash = async (commandName: string) => {
-        let response = client.unloadSlash(commandName);
+    Bot.reloadSlash = async (commandName: string) => {
+        let response = Bot.unloadSlash(commandName);
         if (response) {
             return new Error(`Error Unloading: ${response}`);
         } else {
-            response = client.loadSlash(commandName);
+            response = Bot.loadSlash(commandName);
             if (response) {
                 return new Error(`Error Loading: ${response}`);
             }
@@ -235,113 +264,22 @@ module.exports = (Bot: {}, client: Discord.Client) => {
         return commandName;
     };
 
-    // Loads the given command
-    client.loadCommand = (commandName: string) => {
-        try {
-            const cmd = new (require(`../commands/${commandName}`))(Bot);
-            if (cmd.help.category === "SWGoH" && !Bot.swgohAPI) {
-                return "Unable to load command ${commandName}: no swgohAPI";
-            } else if (!cmd.conf.enabled) {
-                return false;
-            }
-            client.commands.set(cmd.help.name, cmd);
-            cmd.conf.aliases.forEach((alias: string) => {
-                client.aliases.set(alias, cmd.help.name);
-            });
-            return false;
-        } catch (e) {
-            return `Unable to load command ${commandName}: ${e}`;
-        }
-    };
-
-    // Unloads the given command
-    client.unloadCommand = (command: string) => {
-        const commandName = command;
-        if (client.commands.has(commandName)) {
-            command = client.commands.get(commandName);
-        } else if (Bot.aliases.has(commandName)) {
-            command = client.commands.get(client.aliases.get(commandName));
-        }
-
-        client.commands.delete(command);
-        client.aliases.forEach((cmd: {}, alias: string) => {
-            if (cmd === command) client.aliases.delete(alias);
-        });
-        delete require.cache[require.resolve(`../commands/${command.help.name}.js`)];
-        return false;
-    };
-
-    // Combines the last two (load & unload), and reloads a command
-    client.reloadCommand = async (commandName: string) => {
-        let command = null;
-        if (client.commands.has(commandName)) {
-            command = client.commands.get(commandName);
-        } else if (client.aliases.has(commandName)) {
-            command = client.commands.get(client.aliases.get(commandName));
-        }
-        if (!command) return new Error(`The command \`${commandName}\` doesn"t seem to exist, nor is it an alias. Try again!`);
-
-        let response = client.unloadCommand(command);
-        if (response) {
-            return new Error(`Error Unloading: ${response}`);
-        } else {
-            response = client.loadCommand(command.help.name);
-            if (response) {
-                return new Error(`Error Loading: ${response}`);
-            }
-        }
-        return command.help.name;
-    };
-
-    // Reloads all commads (even if they were not loaded before)
-    // Will not remove a command it it's been loaded,
-    // but will load a new command it it's been added
-    client.reloadAllCommands = async () => {
-        [...client.commands.keys()].forEach(c => {
-            client.unloadCommand(c);
-        });
-        const cmdFiles = await readdir("./commands/");
-        const coms = [], errArr = [];
-        cmdFiles.forEach(async (fileName: string) => {
-            try {
-                const cmd = fileName.split(".")[0];
-                if (fileName.split(".").slice(-1)[0] !== "js") {
-                    errArr.push(fileName);
-                } else {
-                    const res = client.loadCommand(cmd);
-                    if (!res) {
-                        coms.push(cmd);
-                    } else {
-                        errArr.push(fileName);
-                    }
-                }
-            } catch (e) {
-                Bot.logger.error("Error: " + e);
-                errArr.push(fileName);
-            }
-        });
-        return {
-            succArr: coms,
-            errArr: errArr
-        };
-    };
-
     // Reloads all slash commads (even if they were not loaded before)
     // Will not remove a command if it's been loaded,
     // but will load a new command if it's been added
-    client.reloadAllSlashCommands = async () => {
+    Bot.reloadAllSlashCommands = async () => {
         [...client.slashcmds.keys()].forEach(c => {
-            client.unloadSlash(c);
+            Bot.unloadSlash(c);
         });
         const cmdFiles = await readdir("./slash/");
-        const coms = [], errArr = [];
+        const coms: string[] = [], errArr: string[] = [];
         cmdFiles.forEach(async (fileName: string) => {
             try {
                 const cmd = fileName.split(".")[0];
                 if (fileName.split(".").slice(-1)[0] !== "js") {
                     errArr.push(fileName);
                 } else {
-                    const res = client.loadSlash(cmd);
+                    const res = Bot.loadSlash(cmd);
                     if (!res) {
                         coms.push(cmd);
                     } else {
@@ -360,8 +298,8 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Reload the events files (message, guildCreate, etc)
-    client.reloadAllEvents = async () => {
-        const ev = [], errEv = [];
+    Bot.reloadAllEvents = async () => {
+        const ev: string[] = [], errEv: string[] = [];
 
         const evtFiles = await readdir("./events/");
         evtFiles.forEach((fileName: string) => {
@@ -388,7 +326,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Reload the functions (this) file
-    client.reloadFunctions = async () => {
+    Bot.reloadFunctions = async () => {
         try {
             delete require.cache[require.resolve("../modules/functions.js")];
             require("../modules/functions.js")(Bot, client);
@@ -406,7 +344,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Reload the swapi file
-    client.reloadSwapi = async () => {
+    Bot.reloadSwapi = async () => {
         let err = null;
         try {
             delete require.cache[require.resolve("../modules/swapi.js")];
@@ -418,7 +356,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Reload the users file
-    client.reloadUserReg = async () => {
+    Bot.reloadUserReg = async () => {
         let err = null;
         try {
             delete require.cache[require.resolve("../modules/users.js")];
@@ -430,7 +368,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Reload the data files (ships, teams, characters)
-    client.reloadDataFiles = async () => {
+    Bot.reloadDataFiles = async () => {
         try {
             Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json").toString());
             Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json").toString());
@@ -450,23 +388,21 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Reload all the language files
-    client.reloadLanguages = async () => {
-        let err = false;
+    const languageDir = __dirname + "/../languages/"
+    Bot.reloadLanguages = async () => {
         try {
             Object.keys(Bot.languages).forEach(lang => {
-                delete Bot.languages[lang];
+                if (Bot.languages[lang]) delete Bot.languages[lang];
             });
-            const langFiles = await readdir(`${__dirname}/../languages/`);
+            const langFiles = await readdir(languageDir);
             langFiles.forEach((fileName: string) => {
                 const langName = fileName.split(".")[0];
-                const lang = require(`${__dirname}/../languages/${fileName}`);
-                Bot.languages[langName] = new lang(Bot);
-                delete require.cache[require.resolve(`${__dirname}/../languages/${fileName}`)];
+                Bot.languages[langName] = require(languageDir + fileName);
+                delete require.cache[require.resolve(languageDir + fileName)];
             });
-        } catch (e) {
-            err = e;
+        } catch (err) {
+            return err;
         }
-        return err;
     };
 
     // String Truncate function
@@ -506,12 +442,14 @@ module.exports = (Bot: {}, client: Discord.Client) => {
 
     // `await wait(1000);` to "pause" for 1 second.
     Bot.wait = promisify(setTimeout);
+    // Bot.wait = (time: number) => new Promise((resolve, reject) => setTimeout(resolve, time))
+
 
     /*  MESSAGE SPLITTER
      *  Input an array of strings, and it will put them together so that it
      *  doesn't exceed the given max length.
      */
-    Bot.msgArray = (arr: string[], join="\n", maxLen=1900) => {
+    Bot.msgArray = (arr: string | string[], join="\n", maxLen=1900) => {
         const messages = [];
         if (!Array.isArray(arr)) arr = arr.toString().split("\n");
         arr.forEach((elem) => {
@@ -543,33 +481,33 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Return a duration string
-    Bot.duration = (time: string, message=null) => {
-        if (!message) return "N/A";
-        const lang = message ? message.language : Bot.languages[Bot.config.defaultSettings.language];
-        return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
+    Bot.duration = (time: number | string, interaction: BotInteraction) => {
+        if (!interaction) return "N/A";
+        time = time.toString();
+        const lang = interaction ? interaction.language : Bot.languages[Bot.config.defaultSettings.language];
+        return moment.utc(
+            moment.duration(Math.abs(moment(time).diff(moment())), "seconds").asMilliseconds()
+        ).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
     };
 
     /* LAST UPDATED FOOTER
      * Simple one to make the "Last updated ____ " footers
      */
-    Bot.updatedFooter = (updated: string, message=null, type="player", userCooldown: {}) => {
+    Bot.updatedFooter = (updated: string, interaction: BotInteraction, type="player", userCooldown: {}) => {
         const baseCooldown = { player: 2, guild: 6 };
         const minCooldown = { player: 1, guild: 3 };
 
         if (!userCooldown) userCooldown = baseCooldown;
-        let between = Bot.convertMS(new Date().getTime() - new Date(updated).getTime());
+        let betweenMS = Bot.convertMS(new Date().getTime() - new Date(updated).getTime());
 
-        if (between.hour >= minCooldown[type] && between.hour < userCooldown[type]) {
+        let betweenStr = "";
+        if (betweenMS.hour >= minCooldown[type] && betweenMS.hour < userCooldown[type]) {
             // If the data is between the shorter time they'd get from patreon, and the
             // time they'd get without, stick the patreon link in the footer
-            between = " | patreon.com/swgohbot";
-        } else {
-            // Otherwise, if it's too new, too old, or they already have the faster
-            // times, don't add it in
-            between = "";
+            betweenStr = " | patreon.com/swgohbot";
         }
         return {
-            text: message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) + between
+            text: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, interaction)) + betweenStr
         };
     };
 
@@ -606,76 +544,78 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     /* Find an emoji by ID
      * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
-    // client.findEmoji = (id: string) => {
-    //     const temp = client.emojis.cache.get(id);
-    //     if (!temp) return null;
-    //
-    //     // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
-    //     const emoji = Object.assign({}, temp);
-    //     // Circular references can't be returned outside of eval, so change it to the id
-    //     if (emoji.guild) {
-    //         emoji["guildId"] = emoji.guild.id;
-    //         delete emoji.guild;
-    //     }
-    //     // A new object will be construted, so simulate raw data by adding this property back
-    //     emoji["require_colons"] = emoji.requiresColons;
-    //
-    //     return emoji;
-    // };
+    Bot.findEmoji = (id: string) => {
+        const temp = client.emojis.cache.get(id);
+        if (!temp) return null;
 
-    function findEmoji(c: Discord.Client, { emoteId }) {
-        const emoji = c.emojis.cache.get(emoteId) || c.emojis.cache.find(e => e.name.toLowerCase() === emoteId.toLowerCase());
-        if (!emoji) return null;
+        // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
+        const emoji = Object.assign({}, temp);
+        // Circular references can't be returned outside of eval, so change it to the id
+        if (emoji.guild) {
+            emoji["guildId"] = emoji.guild.id;
+            delete emoji.guild;
+        }
+        // A new object will be construted, so simulate raw data by adding this property back
+        emoji["require_colons"] = emoji.requiresColons;
+
         return emoji;
-    }
+    };
 
-    async function getEmoji(id: string) {
-        return client.shard.broadcastEval(findEmoji, { context: { emoteId: id } })
-            .then(emojiArray => {
-                // Locate a non falsy result, which will be the emoji in question
-                const foundEmoji = emojiArray.find(emoji => emoji);
-                if (!foundEmoji) return false;
-                return foundEmoji;
-        });
-    }
+    // client.findEmoji = (emoteId: string) => {
+    //     const foundEmoji = client.emojis.cache.get(emoteId) || client.emojis.cache.find(e => e.name.toLowerCase() === emoteId?.toLowerCase());
+    //     if (!foundEmoji) return null;
+    //     return foundEmoji;
+    // }
+
+    // async function getEmoji(id: string) {
+    //     return client.shard.broadcastEval((client, {emoteId}) => client.findEmoji(emoteId), { context: {emoteId: id}})
+    //         .then(emojiArray => {
+    //             // Locate a non falsy result, which will be the emoji in question
+    //             const foundEmoji = emojiArray.find((emoji: Discord.Emoji) => emoji);
+    //             if (!foundEmoji) return false;
+    //             return foundEmoji;
+    //     });
+    // }
 
 
     /* Use the findEmoji() to check all shards if sharded
      * If sharded, also use the example from
      * https://discordjs.guide/#/sharding/extended?id=using-functions-continued
      */
-    // async function getEmoji(id: string) {
-    //     if (client.shard && client.shard.count > 0) {
-    //         return client.shard.broadcastEval((client, id) => client.findEmoji(id), {context: id})
-    //             .then(emojiArray => {
-    //                 // Locate a non falsy result, which will be the emoji in question
-    //                 const foundEmoji = emojiArray.find(emoji => emoji);
-    //                 if (!foundEmoji) return false;
-    //
-    //                 return client.api.guilds(foundEmoji.guildId).get()
-    //                     .then(raw => {
-    //                         const guild = new Discord.Guild(client, raw);
-    //                         const emoji = new Discord.Emoji(guild, foundEmoji);
-    //                         return emoji;
-    //                     });
-    //             });
-    //     } else {
-    //         const emoji = client.findEmoji(id);
-    //         if (!emoji) return false;
-    //         return new Discord.Emoji(client.guilds.cache.get(emoji.guild), emoji);
-    //     }
-    // }
+    async function getEmoji(id: string) {
+        if (client.shard && client.shard.count > 0) {
+            return client.shard.broadcastEval((client, {emoteId, Bot}) => {
+                return Bot.findEmoji(emoteId);
+            }, {context: {emoteId: id, Bot: Bot}})
+                .then(emojiArray => {
+                    // Locate a non falsy result, which will be the emoji in question
+                    const foundEmoji = emojiArray.find(emoji => emoji);
+                    if (!foundEmoji) return false;
+
+                    return client.api.guilds(foundEmoji.guildId).get()
+                        .then((raw: {}) => {
+                            const guild = new Discord.Guild(client, raw);
+                            const emoji = new Discord.Emoji(guild, foundEmoji);
+                            return emoji;
+                        });
+                });
+        } else {
+            const emoji: GuildEmoji = Bot.findEmoji(id);
+            if (!emoji) return false;
+            return new Discord.Emoji(client.guilds.cache.get(emoji.guild.id), emoji);
+        }
+    }
 
     // Load all the emotes that may be used for the bot at some point (from data/emoteIDs.js)
-    client.loadAllEmotes = async () => {
+    Bot.loadAllEmotes = async () => {
         const emoteList = require("../data/emoteIDs.js");
         for (const emote of Object.keys(emoteList)) {
-            const e = await getEmoji(emoteList[emote]);
-            if (!e) {
+            const thisEmote = await getEmoji(emoteList[emote]);
+            if (!thisEmote) {
                 Bot.logger.error("Couldn't get emote: " + emote);
                 continue;
             } else {
-                Bot.emotes[emote] = e;
+                Bot.emotes[emote] = thisEmote;
             }
         }
     };
@@ -726,15 +666,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
      *  }
      * rows: The data to fill in
      */
-    interface Header {
-        [index: string]: {
-            value: string | null,
-            startWith: string | null,
-            endWith: string | null,
-            align: "left" | "right" | "center"
-        }
-    }
-    Bot.makeTable = (headers: Header[], rows: [], options={
+    Bot.makeTable = (headers: Header, rows: [], options={
         boldHeader: true,
         useHeader:  true
     }) => {
@@ -744,7 +676,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             // Get the max length needed, then add a bit for padding
             if (options.useHeader) {
                 // console.log(h, rows);
-                max[h] = Math.max(...[headers[h].value.length].concat(rows.map(v => v[h].toString().length))) + 2;
+                max[h] = Math.max(...[headers[h].value.length].concat(rows.map((v: {}) => v[h].toString().length))) + 2;
             } else {
                 max[h] = Math.max(...rows.map((v: {}) => {
                     if (!v[h]) return 0;
@@ -814,7 +746,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Small function to search the factions
-    Bot.findFaction = (faction: string): string[] | string | boolean => {
+    Bot.findFaction = (faction: string): string[] | string => {
         faction = faction.toLowerCase().replace(/\s+/g, "");
         let found = Bot.factions.find((fact: string) => fact.toLowerCase().replace(/\s+/g, "") === faction);
         if (found) {
@@ -833,7 +765,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             return close.map((fact: string) => fact.toLowerCase());
         }
 
-        return false;
+        return null;
     };
 
     // Expand multiple spaces to have zero width spaces between them so
@@ -851,7 +783,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Get the ally code of someone that's registered
-    Bot.getAllyCode = async (message: Discord.Message, user: string, useMessageId=true) => {
+    Bot.getAllyCode = async (interaction: BotInteraction, user: string | number, useMessageId=true): Promise<number> => {
         const otherCodeRegex = /^-\d{1,2}$/;
         if (Array.isArray(user)) user = user.join(" ");
         if (user) {
@@ -860,22 +792,16 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             user = "";
         }
 
-        let userAcct = null;
+        let userAcct: UserReg = null;
         if (user === "me" || user.match(otherCodeRegex) || (!user && useMessageId)) {
             // Grab the sender's primary code
-            if (message.author) {
-                // Message.author for messages
-                userAcct = await Bot.userReg.getUser(message.author.id);
-            } else {
-                // Message.user for interactions
-                userAcct = await Bot.userReg.getUser(message.user.id);
-            }
+            userAcct = await Bot.userReg.getUser(interaction.user.id);
         } else if (Bot.isUserID(user)) {
             // Try to grab the primary code for the mentioned user
             userAcct = await Bot.userReg.getUser(user.replace(/[^\d]*/g, ""));
         }  else if (Bot.isAllyCode(user)) {
             // Otherwise, just scrap everything but numbers, and send it back
-            return user.replace(/[^\d]*/g, "");
+            return parseInt(user.replace(/[^\d]*/g, ""), 10);
         }
 
         if (userAcct?.accounts?.length) {
@@ -883,11 +809,11 @@ module.exports = (Bot: {}, client: Discord.Client) => {
                 // If it's a -1/ -2 code, try to grab the specified code
                 const index = parseInt(user.replace("-", ""), 10) - 1;
                 const account = userAcct.accounts[index];
-                return account ? account.allyCode : null;
+                return account?.allyCode ? parseInt(account.allyCode, 10) : null;
             } else {
                 // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
-                const account = userAcct.accounts.find((a: {}) => a.primary);
-                return account ? account.allyCode : null;
+                const account = userAcct.accounts.find((a: UserRegAccount) => a.primary);
+                return account?.allyCode ? parseInt(account.allyCode, 10) : null;
             }
         } else {
             return null;
@@ -943,15 +869,15 @@ module.exports = (Bot: {}, client: Discord.Client) => {
 
     Bot.isChannelMention = (mention: string) => {
         const channelRegex = /^<#\d{17,19}>/;
-        return mention.match(channelRegex);
+        return mention.match(channelRegex) ? true : false;
     };
     Bot.isRoleMention = (mention: string) => {
         const roleRegex = /^<@&\d{17,19}>/;
-        return mention.match(roleRegex);
+        return mention.match(roleRegex) ? true : false;
     };
     Bot.isUserMention = (mention: string) => {
         const userRegex = /^<@!?\d{17,19}>/;
-        return mention.match(userRegex);
+        return mention.match(userRegex) ? true : false;
     };
     Bot.chunkArray = (inArray: string[], chunkSize: number) => {
         var res = [];
@@ -961,7 +887,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
         }
         return res;
     };
-    Bot.getGuildConf = async (guildID: string) => {
+    Bot.getGuildConf = async (guildID: string): Promise<GuildConf> => {
         if (!guildID) return Bot.config.defaultSettings;
         const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}});
         return guildSettings && guildSettings.dataValues ? guildSettings.dataValues : Bot.config.defaultSettings;
@@ -975,7 +901,7 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Returns a gear string (9+4 or 13r5), etc
-    Bot.getGearStr = (charIn: {}, preStr="") => {
+    Bot.getGearStr = (charIn: APIUnitObj, preStr="") => {
         // If the character is not unlocked
         if (!charIn?.gear) return "N/A";
 
@@ -989,13 +915,13 @@ module.exports = (Bot: {}, client: Discord.Client) => {
     };
 
     // Get the overall levels for a guild as a whole (Gear, rarity, relic, etc)
-    Bot.summarizeCharLevels = (guildMembers: {}[], type: string) => {
+    Bot.summarizeCharLevels = (guildMembers: PlayerStatsAccount | PlayerStatsAccount[], type: string) => {
         const max = {
             gear: 13,
             relic: 9,
             rarity: 7
         };
-        if (!Object.keys(max).includes(type)) return new Error(`[summarizeLevels] Invalid type (${type})`);
+        if (!Object.keys(max).includes(type)) return [null, `[summarizeLevels] Invalid type (${type})`];
         if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
 
         const levels: {[key: string]: number} = {};
@@ -1003,9 +929,9 @@ module.exports = (Bot: {}, client: Discord.Client) => {
             let lvlCount = 0;
             for (const member of guildMembers) {
                 if (type === "relic") {
-                    lvlCount += member.roster.filter((char: {}) => char?.combatType === 1 && char.relic?.currentTier-2 === ix).length;
+                    lvlCount += member.roster.filter((char: APIUnitObj) => char?.combatType === 1 && char.relic?.currentTier-2 === ix).length;
                 } else {
-                    lvlCount += member.roster.filter((char: {}) => char?.combatType === 1 && char[type] === ix).length;
+                    lvlCount += member.roster.filter((char: APIUnitObj) => char?.combatType === 1 && char[type] === ix).length;
                 }
             }
             if (lvlCount > 0) {
@@ -1025,15 +951,60 @@ module.exports = (Bot: {}, client: Discord.Client) => {
         });
     };
 
+    const rest = new REST({ version: "10" }).setToken(Bot.config.token);
     Bot.deploy = async function() {
-        const guildCmds = client.slashcmds.filter((com: {}) => com.guildOnly).map((com: {}) => com.commandData);
-        const globalCmds = client.slashcmds.filter((com: {}) => !com.guildOnly).map((com: {}) => com.commandData);
+        // const guildCmds  = client.slashcmds.filter((com: {}) => com.guildOnly).map((com: {}) => JSON.stringify(com.commandData));
+        // const globalCmds = client.slashcmds.filter((com: {}) => !com.guildOnly).map((com: {}) => JSON.stringify(com.commandData));
+
+        // const builder = new SlashCommandBuilder();
+        // builder
+        //     .setName("time")
+        //     .setDescription("Timezone command")
+        //     .addStringOption(option => option
+        //         .setName("timezone")
+        //         .setDescription("A valid timezone to view"));
+        //
+        // console.log(builder.toJSON());
+
+        const allCmds  = client.slashcmds.map((com: slashCommand) => com.commandData);
 
         // If there's a server configured for development/ that only the owner can use, put the guild commands there
         if (Bot.config?.dev_server) {
-            await client.guilds.cache.get(Bot.config.dev_server)?.commands.set(guildCmds);
+            // await client.guilds.cache.get(Bot.config.dev_server)?.commands.set(guildCmds);
+            // console.log(allCmds);
+            await rest.put(
+                Routes.applicationGuildCommands(client.user.id, Bot.config.dev_server),
+                { body: allCmds },
+            );
         }
-        await client.application?.commands.set(globalCmds);
+        // await rest.put(
+        //     Routes.applicationCommands(client.user.id),
+        //     { body: globalCmds },
+        // );
+        // await client.application?.commands.set(globalCmds);
+    }
+
+    // Trim down large numbers to be more easily readable
+    Bot.shortenNum = function(number: number, trimTo=2) {
+        const million = 1000000, thousand = 1000;
+
+        if (number >= million) {
+            number = (number / million);
+            return trimFloat(number, trimTo) + "M";
+        } else if (number >= thousand) {
+            number = (number / thousand);
+            return trimFloat(number, trimTo) + "K";
+        }
+    };
+
+    // Helper for shortenNum,
+    // Trims a fload down to either 0 or 1 (by default) decimal points
+    function trimFloat(num: number, dec=1): string {
+        if (num % 1 === 0) {
+            return num.toString();
+        } else {
+            return num.toFixed(dec);
+        }
     }
 };
 

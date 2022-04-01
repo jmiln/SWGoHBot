@@ -1,5 +1,7 @@
+import { BotType, UserReg, UserRegAccount } from "./types";
+
 // const {inspect} = require("util");
-module.exports = (Bot) => {
+module.exports = (Bot: BotType) => {
     const cache = Bot.cache;
 
     return {
@@ -11,7 +13,7 @@ module.exports = (Bot) => {
         removeUser: removeUser
     };
 
-    async function addUser( userId, allyCode ) {
+    async function addUser(userId: string, allyCode: number) {
         try {
             if (!Bot.isUserID(userId)) {
                 throw new Error("Invalid user ID.");
@@ -39,7 +41,7 @@ module.exports = (Bot) => {
         }
     }
 
-    async function getUser(userId) {
+    async function getUser(userId: string): Promise<UserReg> {
         // Get and return the user's info
         let user = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {id: userId});
         if (!user || !user.length) return null;
@@ -47,32 +49,32 @@ module.exports = (Bot) => {
         return user;
     }
 
-    async function getUserFromAlly(allyCode) {
+    async function getUserFromAlly(allyCode: number | string): Promise<UserReg[]> {
         allyCode = allyCode.toString();
         const users = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {"accounts.allyCode": allyCode});
         if (!users || !users.length) return null;
         return users;
     }
 
-    async function updateUser(userId, userObj) {
+    async function updateUser(userId: string, userObj: UserReg): Promise<UserReg> {
         // Get and update a user's info
         let newUser = await cache.put(Bot.config.mongodb.swgohbotdb, "users", {id: userId}, userObj);
         if (Array.isArray(newUser)) newUser = newUser[0];
         return newUser;
     }
 
-    async function removeAllyCode(userId, allyCode) {
+    async function removeAllyCode(userId: string, allyCode: number | string) {
         // Remove one of the ally codes from a user
         let user = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {id: userId});
         if (Array.isArray(user)) user = user[0];
         if (!user) throw new Error("Could not find specified user");
-        const exists = user.accounts.find(a => a.allyCode === allyCode);
+        const exists = user.accounts.find((a: UserRegAccount) => a.allyCode === allyCode);
         if (!exists) throw new Error("Specified ally code not linked to this user");
-        user.accounts = user.accounts.filter(a => a.allyCode !== allyCode);
+        user.accounts = user.accounts.filter((a: UserRegAccount) => a.allyCode !== allyCode);
         return await cache.put(Bot.config.mongodb.swgohbotdb, "users", {id: userId}, user);
     }
 
-    async function removeUser(userId) {
+    async function removeUser(userId: string) {
         // Completely wipe a user?
         const res = await Bot.mongo.db(Bot.config.mongodb.swgohbotdb).collection("users").deleteOne({id: userId})
             .then(() => { return true; })

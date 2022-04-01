@@ -2,18 +2,27 @@ import { Client, Collection } from "discord.js";
 import { readdirSync, readFileSync } from "fs";
 import { inspect } from "util";
 import SwgohClientStub from "swgoh-client-stub";
+import { Sequelize, Op } from "sequelize";
+import { BotType } from "./modules/types";
+import SlashCommand from "./base/slashCommand";
 
-const Bot = {};
+const Bot = {} as BotType;
 
 // Attach the config to the Bot so we can use it anywhere
-Bot.config = require(__dirname + "/../config.js");
+Bot.config = require(__dirname + "/config.js");
 
-const client = new Client({
-    intents: Bot.config.botIntents,
-    partials: Bot.config.partials
-});
+export class BotClient extends Client {
+    public slashcmds: Collection<string, SlashCommand>;
+    constructor(){
+        super({
+            intents:  Bot.config.botIntents,
+            partials: Bot.config.partials
+        });
+        this.slashcmds = new Collection();
+    }
+}
 
-import { Sequelize } from "sequelize";
+const client = new BotClient();
 
 // import Sequelize from "sequelize";
 const dataDir = __dirname + "/data/";
@@ -25,7 +34,7 @@ Bot.acronyms     = JSON.parse(readFileSync(dataDir + "acronyms.json").toString()
 Bot.arenaJumps   = JSON.parse(readFileSync(dataDir + "arenaJumps.json").toString());
 Bot.charLocs     = JSON.parse(readFileSync(dataDir + "charLocations.json").toString());
 Bot.characters   = JSON.parse(readFileSync(dataDir + "characters.json").toString());
-Bot.factions     = [...new Set(Bot.characters.reduce((a: {factions: string[]}, b: {factions: string[]}) => a.concat(b.factions), []))];
+Bot.factions     = [...new Set(Bot.characters.reduce((a: string[], b: {factions: string[]}) => a.concat(b.factions), []))];
 Bot.missions     = JSON.parse(readFileSync(dataDir + "missions.json").toString());
 Bot.resources    = JSON.parse(readFileSync(dataDir + "resources.json").toString());
 Bot.shipLocs     = JSON.parse(readFileSync(dataDir + "shipLocations.json").toString());
@@ -50,16 +59,11 @@ require(moduleDir + "prototypes.js");
 // Languages
 Bot.languages = {};
 Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
-client.reloadLanguages();
+Bot.reloadLanguages();
 
-client.aliases   = new Collection();
 client.slashcmds = new Collection();
 
-Bot.evCountdowns = {};
-
-Bot.talkedRecently = new Set();
-
-Bot.seqOps = Sequelize.Op;
+Bot.seqOps = Op;
 Bot.database = new Sequelize(
     Bot.config.database.data,
     Bot.config.database.user,
@@ -138,7 +142,7 @@ const init = async () => {
         Bot.zetaRec = await Bot.swgohAPI.zetaRec();
     }
 
-    const Logger = require("./modules/Logger.js"); //(Bot, client);
+    const Logger = require("./modules/Logger.js");
     Bot.logger = new Logger(Bot, client);
 
     const slashFiles = readdirSync(__dirname + "/slash/");
@@ -147,8 +151,8 @@ const init = async () => {
         try {
             if (!file.endsWith(".js")) return;
             const commandName = file.split(".")[0];
-            const result = client.loadSlash(commandName);
-            if (result) slashError.push(`Unable to load command: ${commandName}`);
+            const result = Bot.loadSlash(commandName);
+            if (result) slashError.push(`Unable to load command: ${commandName}\n > ${result}`);
         } catch (err) {
             return console.error(err);
         }
@@ -177,7 +181,7 @@ const init = async () => {
         // If it's that error, don't bother showing it again
         try {
             if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
+                Bot.logger.error("```" + inspect(errorMsg) + "```");
             }
         } catch (e) {
             // Don't bother doing anything
@@ -187,7 +191,7 @@ const init = async () => {
         process.exit(1);
     });
 
-    process.on("unhandledRejection", (err) => {
+    process.on("unhandledRejection", (err: Error) => {
         const errorMsg = err.stack.replace(new RegExp(process.cwd(), "g"), ".");
 
         // If it's something I can't do anything about, ignore it
@@ -203,12 +207,5 @@ const init = async () => {
         }
         // console.log(err);
         console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
-        try {
-            if (Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
-            }
-        } catch (e) {
-            // Don't bother doing anything
-        }
     });
 };

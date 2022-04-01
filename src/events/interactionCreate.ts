@@ -1,7 +1,9 @@
 import { inspect } from "util";
-import { Client, Interaction } from "discord.js";
+import { Client } from "discord.js";
+import { BotInteraction, BotType } from "../modules/types";
+import { BotClient } from "../swgohBot";
 
-module.exports = async (Bot: {}, client: Client, interaction: Interaction) => {
+module.exports = async (Bot: BotType, client: BotClient, interaction: BotInteraction) => {
     // If it's not a command, don't bother trying to do anything
     if (!interaction.isCommand()) return;
 
@@ -19,7 +21,7 @@ module.exports = async (Bot: {}, client: Client, interaction: Interaction) => {
     interaction.guildSettings = await Bot.getGuildConf(interaction?.guild?.id);
 
     // Get the user or member's permission level from the elevation
-    const level = Bot.permLevel(interaction);
+    const level = await Bot.permLevel(interaction);
 
     // Make sure the user has the correct perms to run the command
     if (level < cmd.commandData.permLevel) {
@@ -36,7 +38,19 @@ module.exports = async (Bot: {}, client: Client, interaction: Interaction) => {
             interaction.guildSettings.swgohLanguage = user.lang.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
         }
     }
+
     interaction.language = Bot.languages[interaction.guildSettings.language] || Bot.languages[Bot.config.defaultSettings.language];
+    interaction.language.get = (stringId: string, ...args: any[]) => {
+        if (!interaction.language[stringId]) {
+            try {
+                return Bot.languages[Bot.config.defaultSettings.language].getString(stringId, ...args);
+            } catch(err) {
+                return "MISSING STRING: " + stringId;
+            }
+        } else {
+            return Bot.languages[interaction.guildSettings.language].getString(stringId, ...args);
+        }
+    };
     interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
 
     // Run the command

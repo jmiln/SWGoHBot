@@ -1,10 +1,12 @@
-const moment = require("moment-timezone");
+import { Client, Message, MessageEmbed, TextChannel } from "discord.js";
+import moment from "moment-timezone";
+import { APIGuildMemberObj, APIGuildObj, AWPlayer, BotType, GuildPlayerUpdates, PatronUser, PlayerArenaProfile, UserArenaWatch, UserReg } from "./types";
 // const {inspect} = require("util");
 
-module.exports = (Bot, client) => {
+module.exports = (Bot: BotType, client: Client) => {
     const honPat = 500;
     // Check if a given user is a patron, and if so, return their info
-    Bot.getPatronUser = async (userId) => {
+    Bot.getPatronUser = async (userId: string) => {
         if (!userId) return new Error("Missing user ID");
         if (userId === Bot.config.ownerid || (Bot.config.patrons && Bot.config.patrons.indexOf(userId) > -1)) {
             return {discordID: userId, amount_cents: userId === Bot.config.ownerid ? 1500 : honPat};
@@ -20,10 +22,10 @@ module.exports = (Bot, client) => {
     // Get an array of all active patrons
     async function getActivePatrons() {
         let patrons = await Bot.cache.get("swgohbot", "patrons", {});
-        patrons = patrons.filter(p => !p.declined_since);
+        patrons = patrons.filter((p: PatronUser) => !p.declined_since);
         const others = Bot.config.patrons ? Bot.config.patrons.concat([Bot.config.ownerid]) : [Bot.config.ownerid];
         for (const u of others) {
-            const user = patrons.find(p => p.discordID === u);
+            const user = patrons.find((p: PatronUser) => p.discordID === u);
             if (!user) {
                 patrons.push({discordID: u, amount_cents: u === Bot.config.ownerid ? 1500 : honPat});
             }
@@ -32,8 +34,8 @@ module.exports = (Bot, client) => {
     }
 
     // Get the cooldown
-    Bot.getPlayerCooldown = async (authorID) => {
-        const patron = await Bot.getPatronUser(authorID);
+    Bot.getPlayerCooldown = async (authorId: string) => {
+        const patron = await Bot.getPatronUser(authorId);
         if (!patron) {
             return {
                 player: 2*60,
@@ -66,7 +68,7 @@ module.exports = (Bot, client) => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
             if (patron.amount_cents < 100) continue;
-            const user = await Bot.userReg.getUser(patron.discordID);
+            const user: UserReg = await Bot.userReg.getUser(patron.discordID);
             // If they're not registered with anything or don't have any ally codes
             if (!user?.accounts?.length) continue;
 
@@ -80,7 +82,7 @@ module.exports = (Bot, client) => {
                 if (((user.accounts.length > 1 && patron.amount_cents < 500) || user.arenaAlert.enableRankDMs === "primary") && !acc.primary) {
                     continue;
                 }
-                let player;
+                let player: PlayerArenaProfile;
                 try {
                     player = await Bot.swgohAPI.getPlayersArena(acc.allyCode);
                     if (Array.isArray(player)) player = player[0];
@@ -97,7 +99,7 @@ module.exports = (Bot, client) => {
                     acc.lastShipRank = 0;
                     acc.lastShipClimb = 0;
                 }
-                const now = moment();
+                const now = moment().unix();
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
                 if (!player) {
@@ -117,12 +119,12 @@ module.exports = (Bot, client) => {
 
                 if (player.arena?.char?.rank) {
                     if (["both", "char"].includes(user.arenaAlert.arena)) {
-                        let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(6, "h");
-                        if (then.unix() < now.unix()) {
-                            then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(18, "h");
+                        let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(6, "h").unix()
+                        if (then < now) {
+                            then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(18, "h").unix()
                         }
-                        const minTil =  parseInt((then-now)/60/1000, 10);
-                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                        const minTil = (then-now)/60/1000;
+                        const payoutTime = moment.utc(moment.duration(then-now).asMilliseconds()).format("h[h] m[m]") + " until payout.";
 
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
@@ -171,13 +173,13 @@ module.exports = (Bot, client) => {
                 }
                 if (player.arena.ship?.rank) {
                     if (["both", "fleet"].includes(user.arenaAlert.arena)) {
-                        let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(5, "h");
-                        if (then.unix() < now.unix()) {
-                            then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(19, "h");
+                        let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(5, "h").unix();
+                        if (then < now) {
+                            then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(19, "h").unix();
                         }
 
-                        const minTil =  parseInt((then-now)/60/1000, 10);
-                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                        const minTil =  (then-now)/60/1000;
+                        const payoutTime = moment.utc(moment.duration(then-now).asMilliseconds()).format("h[h] m[m]") + " until payout.";
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
                             try {
@@ -263,7 +265,7 @@ module.exports = (Bot, client) => {
             if (aw?.payout?.char && aw.payout.char.enabled && aw.payout.char.channel) {
                 const playerTimes    = getPayoutTimes(players, "char");
                 const formattedEmbed = formatPayouts(playerTimes, "char");
-                const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "char");
+                const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "char") as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout["char"].msgID = sentMessage.id;
                 } else {
@@ -274,7 +276,7 @@ module.exports = (Bot, client) => {
             if (aw.payout?.fleet && aw.payout.fleet.enabled && aw.payout.fleet.channel) {
                 const playerTimes    = getPayoutTimes(players, "fleet");
                 const formattedEmbed = formatPayouts(playerTimes, "fleet");
-                const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "fleet");
+                const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "fleet") as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout["fleet"].msgID = sentMessage.id;
                 } else {
@@ -288,19 +290,31 @@ module.exports = (Bot, client) => {
     };
 
     // Format the output for the payouts embed
-    function formatPayouts(players, arena) {
+    function formatPayouts(players: AWPlayer[], arena: string) {
         const times = {};
         arena = (arena === "fleet") ? "ship" : arena;
         const arenaString = "last" + Bot.toProperCase(arena);
+        interface FormattedPlayer {
+            lastShip?: number,
+            lastChar?: number,
+            outString: string
+        }
 
+        const pOutArr = [];
         for (const player of players) {
             const rankString = player[arenaString].toString().padStart(3);
-            player.outString = Bot.expandSpaces(`**\`${Bot.constants.zws} ${rankString} ${Bot.constants.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
+            const outString = Bot.expandSpaces(`**\`${Bot.constants.zws} ${rankString} ${Bot.constants.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
             if (times[player.timeTil]) {
-                times[player.timeTil].players.push(player);
+                times[player.timeTil].players.push({
+                    [arenaString]: arenaString,
+                    outString: outString
+                });
             } else {
                 times[player.timeTil] = {
-                    players: [player]
+                    players: [{
+                        [arenaString]: arenaString,
+                        outString: outString
+                    }]
                 };
             }
         }
@@ -309,7 +323,7 @@ module.exports = (Bot, client) => {
             const time = times[key];
             fieldOut.push({
                 name: "PO in " + key,
-                value: time.players.sort((a, b) => a[arenaString] - b[arenaString]).map(p => p.outString).join("\n")
+                value: time.players.sort((a: FormattedPlayer, b: FormattedPlayer) => a[arenaString] - b[arenaString]).map((p: FormattedPlayer) => p.outString).join("\n")
             });
         }
         return {
@@ -323,14 +337,14 @@ module.exports = (Bot, client) => {
     }
 
     // Send updated payout times to the given channel
-    async function sendPayoutUpdates(payout, outEmbed, arena) {
+    async function sendPayoutUpdates(payout: {}, outEmbed: {}, arena: string) {
         // Use broadcastEval to check all shards for the channel, and if there's a valid message
         // there, edit it. If not, send a fresh copy of it.
         if (!payout[arena]?.channel) return;
         const messages = await client.shard.broadcastEval(async (client, {msgIdIn, chanIn, outEmbed}) => {
-            const channel = client.channels.cache.find(chan => chan.id === chanIn || chan.name === chanIn);
+            const channel = client.channels.cache.find((chan: TextChannel) => chan.id === chanIn || chan.name === chanIn) as TextChannel;
 
-            let msg, targetMsg;
+            let msg: Message, targetMsg: Message;
             if (channel && channel?.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                 if (!msgIdIn) {
                     targetMsg = await channel.send({embeds: [outEmbed]});
@@ -341,24 +355,31 @@ module.exports = (Bot, client) => {
                         msg = null;
                     }
                     if (msg) {
-                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendPayoutUpdates]", err));
+                        try {
+                            targetMsg = await msg.edit({embeds: [outEmbed]})
+                        } catch(err) {
+                            Bot.logger.error("[sendPayoutUpdates]" + err);
+                        }
                     } else {
-                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendPayoutUpdates]", err));
+                        targetMsg = await channel.send({embeds: [outEmbed]}).catch((err: Error) => Bot.logger.error("[sendPayoutUpdates]" + err)) as Message;
                     }
                 }
             }
             return targetMsg;
-        }, {context: {
-            msgIdIn: payout[arena].msgID,
-            chanIn: payout[arena].channel,
-            outEmbed: outEmbed
-        }});
+        }, {
+                context: {
+                    msgIdIn: payout[arena].msgID,
+                    chanIn: payout[arena].channel,
+                    outEmbed: outEmbed
+                }
+            }
+        );
         const msg = messages.filter(a => !!a);
         return msg.length ? msg[0] : null;
     }
 
     // Go through the given list and return how long til payouts
-    function getPayoutTimes(players, arena) {
+    function getPayoutTimes(players: AWPlayer[], arena: string) {
         const offsets = {
             char: {
                 start: 18,
@@ -369,21 +390,21 @@ module.exports = (Bot, client) => {
                 end: 5
             }
         };
-        const now = moment().utc();
+        const now = moment().utc().unix();
         for (const player of players) {
             if (!player.poOffset && player.poOffset !== 0) continue;
-            let then = moment(now).utcOffset(player.poOffset).endOf("day").subtract(offsets[arena].end, "h");
-            if (then.unix() < now.unix()) {
-                then = moment(now).utcOffset(player.poOffset).endOf("day").add(offsets[arena].start, "h");
+            let then = moment(now).utcOffset(player.poOffset).endOf("day").subtract(offsets[arena].end, "h").unix();
+            if (then < now) {
+                then = moment(now).utcOffset(player.poOffset).endOf("day").add(offsets[arena].start, "h").unix();
             }
             player.duration = then-now;
-            player.timeTil = moment.duration(player.duration).format("h[h] m[m]");
+            player.timeTil = moment.utc(moment.duration(player.duration).asMilliseconds()).format("h[h] m[m]");
         }
         return players.sort((a, b) => a.duration > b.duration ? 1 : -1);
     }
 
     // Go through a given list and get the payout times for both arenas
-    function getAllPayoutTimes(player) {
+    function getAllPayoutTimes(player: AWPlayer): {[key: string]: number} {
         const offsets = {
             char: {
                 start: 18,
@@ -397,15 +418,15 @@ module.exports = (Bot, client) => {
         const payout = {
             poOffset: player.poOffset
         };
-        const now = moment().utc();
+        const now = moment().utc().unix();
         for (const arena of ["fleet", "char"]) {
             if (!payout.poOffset && payout.poOffset !== 0) continue;
-            let then = moment(now).utcOffset(payout.poOffset).endOf("day").subtract(offsets[arena].end, "h");
-            if (then.unix() < now.unix()) {
-                then = moment(now).utcOffset(payout.poOffset).endOf("day").add(offsets[arena].start, "h");
+            let then = moment(now).utcOffset(payout.poOffset).endOf("day").subtract(offsets[arena].end, "h").unix();
+            if (then < now) {
+                then = moment(now).utcOffset(payout.poOffset).endOf("day").add(offsets[arena].start, "h").unix();
             }
             payout[arena + "Duration"] = then-now;
-            payout[arena + "TimeTil"] = moment.duration(payout[arena + "Duration"]).format("h[h] m[m]");
+            payout[arena + "TimeTil"] = moment.utc(moment.duration(payout[arena + "Duration"]).asMilliseconds()).format("h[h] m[m]");
         }
         return payout;
     }
@@ -478,21 +499,19 @@ module.exports = (Bot, client) => {
             else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
             else                                 acctCount = Bot.config.arenaWatchConfig.tier3;
 
-            const accountsToCheck = JSON.parse(JSON.stringify(aw.allycodes.slice(0, acctCount)));
+            const accountsToCheck: AWPlayer[] = JSON.parse(JSON.stringify(aw.allycodes.slice(0, acctCount)));
             const allyCodes = accountsToCheck.map(a => a.allyCode ?  a.allyCode : a);
             if (!allyCodes || !allyCodes.length) continue;
 
-            const newPlayers = await Bot.swgohAPI.getPlayersArena(allyCodes);
+            const newPlayers: PlayerArenaProfile[] = await Bot.swgohAPI.getPlayersArena(allyCodes);
             // if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${newPlayers.length}/${allyCodes.length}`);
 
             // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
             let charOut = [];
             let shipOut = [];
             accountsToCheck.forEach((player, ix) => {
-                let newPlayer = newPlayers.find(p => parseInt(p.allyCode, 10) === parseInt(player.allyCode, 10));
-                if (!newPlayer) {
-                    newPlayer = newPlayers.find(p => parseInt(p.allyCode, 10) === parseInt(player, 10));
-                }
+                const newPlayer = newPlayers.find(p => p.allyCode === player.allyCode);
+
                 if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
                     // Both, since low level players can have just char arena I believe
                     return;
@@ -582,7 +601,7 @@ module.exports = (Bot, client) => {
                     // If they're both set to the same channel, send it all
                     const fields = charFields.concat(shipFields);
                     client.shard.broadcastEval((client, {aw, fields}) => {
-                        const chan = client.channels.cache.get(aw.arena.char.channel);
+                        const chan = client.channels.cache.get(aw.arena.char.channel) as TextChannel;
                         if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                             chan.send(`>>> ${fields.join("\n")}`);
                         }
@@ -591,7 +610,7 @@ module.exports = (Bot, client) => {
                     // Else they each have their own channels, so send em there
                     if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
                         client.shard.broadcastEval((client, {aw, charFields}) => {
-                            const chan = client.channels.cache.get(aw.arena.char.channel);
+                            const chan = client.channels.cache.get(aw.arena.char.channel) as TextChannel;
                             if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                                 chan.send(`>>> ${charFields.join("\n")}`);
                             }
@@ -599,7 +618,7 @@ module.exports = (Bot, client) => {
                     }
                     if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
                         client.shard.broadcastEval((client, {aw, shipFields}) => {
-                            const chan = client.channels.cache.get(aw.arena.fleet.channel);
+                            const chan = client.channels.cache.get(aw.arena.fleet.channel) as TextChannel;
                             if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                                 chan.send(`>>> ${shipFields.join("\n")}`);
                             }
@@ -611,7 +630,7 @@ module.exports = (Bot, client) => {
     };
 
     // Compare ranks to see if we have both sides of the fight or not
-    function checkRanks(inArr, aw) {
+    function checkRanks(inArr: {oldRank: number, newRank: number, allyCode: number, name: string, mark: string}[], aw: UserArenaWatch) {
         const checked = [];
         const outArr = [];
         if (aw.showvs) {
@@ -674,7 +693,7 @@ module.exports = (Bot, client) => {
 
             // Check if the bot is able to send messages into the set channel
             const channels = await client.shard.broadcastEval(async (client, {guChan}) => {
-                const channel = client.channels.cache.get(guChan);
+                const channel = client.channels.cache.get(guChan) as TextChannel;
                 if (channel && channel.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                     return true;
                 }
@@ -686,7 +705,7 @@ module.exports = (Bot, client) => {
             if (!chanAvail) continue;
 
             // Get any updates for the guild
-            let guild = null;
+            let guild: APIGuildObj = null;
             try {
                 guild = await Bot.swgohAPI.guild(gu.allycode);
             } catch (err) {
@@ -697,12 +716,12 @@ module.exports = (Bot, client) => {
             if (!guild?.roster) {
                 return console.log(`[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${guild}`);
             }
-            let guildLog;
+            let guildLog: GuildPlayerUpdates;
             try {
                 if (!guild?.roster?.length) {
                     return console.log("[patreonFuncs/guildsUpdate] Cannot get the roster for " + gu.allycode);
                 }
-                guildLog = await Bot.swgohAPI.getPlayerUpdates(guild.roster.map(m => m.allyCode));
+                guildLog = await Bot.swgohAPI.getPlayerUpdates(guild.roster.map((m: APIGuildMemberObj) => m.allyCode));
             } catch (err) {
                 return console.log(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n` + err);
             }
@@ -738,7 +757,7 @@ module.exports = (Bot, client) => {
 
             for (const fieldChunk of fieldsOut) {
                 await client.shard.broadcastEval(async (client, {guChan, fieldChunk}) => {
-                    const channel = client.channels.cache.get(guChan);
+                    const channel = client.channels.cache.get(guChan) as TextChannel;
                     if (channel && channel.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                         return channel.send({embeds: [{
                             fields: fieldChunk

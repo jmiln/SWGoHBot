@@ -2,12 +2,14 @@ import { inspect } from "util"; // eslint-disable-line no-unused-vars
 import statEnums from "../data/statEnum";
 import npmAsync from "async";
 import fetch from "node-fetch";
+import { APIGuildMemberObj, APIGuildObj, APIPlayerArenaProfile, APIUnitAbility, APIUnitEquipment, APIUnitObj, APIUnitSkill, BotType, PlayerArenaProfile, PlayerCooldown, PlayerStatsAccount, TierSkill } from "./types";
+import { APIGuildMember } from "discord-api-types/v10";
 
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
 let omicronList = null;
 
-module.exports = (Bot: {}) => {
+module.exports = (Bot: BotType) => {
     const swgoh = Bot.swgoh;
     const cache = Bot.cache;
     const costs = Bot.abilityCosts;
@@ -50,15 +52,14 @@ module.exports = (Bot: {}) => {
             }, {
                 skillId: 1, _id: 0
             });
-            omicronList = omicronList.map((skill: {}) => skill.skillId);
+            omicronList = omicronList.map((skill: APIUnitSkill) => skill.skillId);
         }
         return omicronList;
     }
 
-    async function playerByName(name: string) {
+    async function playerByName(name: string): Promise<PlayerStatsAccount[]> {
         try {
             if (!name || !name.length) return null;
-            if (typeof name !== "string") name = name.toString();
 
             /** Try to get player's ally code from cache */
             const player = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {name: new RegExp(name, "i")}, {name: 1, allyCode: 1, _id: 0});
@@ -82,29 +83,29 @@ module.exports = (Bot: {}) => {
         return players;
     }
 
-    async function getPlayersArena(allycodes: string | string[]) {
+    async function getPlayersArena(allycodes: string | string[]): Promise<PlayerArenaProfile[]> {
         const MAX_CONCURRENT = 10;
         if (!Array.isArray(allycodes)) {
             if (!allycodes) {
-                return false;
+                return null;
             }
             allycodes = [allycodes];
         }
         allycodes = allycodes.filter(ac => !!ac).map(ac => ac.toString()).filter(ac => ac.length === 9);
         if (!allycodes.length) throw new Error("No valid ally code(s) entered");
 
-        const playersOut = [];
+        const playersArr: APIPlayerArenaProfile[] = [];
         await npmAsync.eachLimit(allycodes, MAX_CONCURRENT, async function(ac: string) {
             const p = await Bot.swapiStub.getPlayerArenaProfile(ac)
                 .catch(() => {});
                 // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
-            playersOut.push(p);
+            playersArr.push(p);
         });
 
-        return playersOut.map(p => {
+        const playersOut: PlayerArenaProfile[] =  playersArr.map(p => {
             if (p) {
-                const charArena = p.pvpProfile.find((t: {}) => t.tab === 1);
-                const shipArena = p.pvpProfile.find((t: {}) => t.tab === 2);
+                const charArena = p.pvpProfile.find((t) => t.tab === 1);
+                const shipArena = p.pvpProfile.find((t) => t.tab === 2);
                 return {
                     name: p.name,
                     allyCode: parseInt(p.allyCode, 10),
@@ -120,6 +121,7 @@ module.exports = (Bot: {}) => {
                 };
             }
         }).filter(p => !!p);
+        return playersOut;
     }
 
     async function getPlayerUpdates(allycodes: number[]) {
@@ -158,7 +160,7 @@ module.exports = (Bot: {}) => {
         // For each of the up to 50 players in the guild
         const processStart: number = new Date().getTime();
         for (const newPlayer of updatedBare) {
-            const oldPlayer = oldMembers.find((p: {}) => p.allyCode === newPlayer.allyCode);
+            const oldPlayer = oldMembers.find((p: APIGuildMemberObj) => p.allyCode === newPlayer.allyCode);
             if (!oldPlayer?.roster) {
                 // If they've not been in there before, stick em into the db
                 await cache.put(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
@@ -181,7 +183,7 @@ module.exports = (Bot: {}) => {
             // Check through each of the 250ish? units in their roster for differences
             let updated = false;
             for (const newUnit of newPlayer.roster) {
-                const oldUnit = oldPlayer.roster.find((u: {}) => u.defId === newUnit.defId);
+                const oldUnit = oldPlayer.roster.find((u: APIUnitObj) => u.defId === newUnit.defId);
                 if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
                 const locChar = await Bot.swgohAPI.langChar({defId: newUnit.defId, skills: newUnit.skills});
                 if (!oldUnit) {
@@ -197,12 +199,12 @@ module.exports = (Bot: {}) => {
                     playerLog.starred.push(`Starred up ${locChar.nameKey} to ${newUnit.rarity} star!`);
                     updated = true;
                 }
-                for (const skillId of newUnit.skills.map((s: {}) => s.id)) {
+                for (const skillId of newUnit.skills.map((s: APIUnitSkill) => s.id)) {
                     // For each of the skills, see if it's changed
-                    const oldSkill = oldUnit.skills.find((s: {}) => s.id === skillId);
-                    const newSkill = newUnit.skills.find((s: {}) => s.id === skillId);
+                    const oldSkill = oldUnit.skills.find((s: APIUnitSkill) => s.id === skillId);
+                    const newSkill = newUnit.skills.find((s: APIUnitSkill) => s.id === skillId);
                     if (oldSkill?.tier < newSkill?.tier) {
-                        const locSkill = locChar.skills.find((s: {}) => s.id == skillId);
+                        const locSkill = locChar.skills.find((s: APIUnitSkill) => s.id == skillId);
 
                         if (newSkill.isZeta && newSkill.tier == newSkill.tiers) {
                             // If the skill's been zeta'd
@@ -238,9 +240,9 @@ module.exports = (Bot: {}) => {
         return guildLog;
     }
 
-    async function unitStats(allycodes: number[], cooldown: number, options={}) {
+    async function unitStats(allycodes: number[], cooldown: PlayerCooldown, options: {force?: boolean, defId?: string}={}): Promise<PlayerStatsAccount[]> {
         // Make sure the allycode(s) are in an array
-        if (!allycodes) return false;
+        if (!allycodes) return null;
         if (!Array.isArray(allycodes)) {
             allycodes = [allycodes];
         }
@@ -248,23 +250,24 @@ module.exports = (Bot: {}) => {
         const omicronAbilities = await getOmicrons();
 
         // Check the cooldown to see if it should update stuff or not
+        let pCooldown = null;
         if (!options.force) {
             if (allycodes.length > 5) {
                 // If there's more than 5 ally codes, apply the guild cooldown
                 if (cooldown && cooldown.guild) {
-                    cooldown = cooldown.guild;
-                    if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
-                    if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
+                    pCooldown = cooldown.guild;
+                    if (cooldown > guildMaxCooldown) pCooldown = guildMaxCooldown;
+                    if (cooldown < guildMinCooldown) pCooldown = guildMinCooldown;
                 } else {
-                    cooldown = guildMaxCooldown;
+                    pCooldown = guildMaxCooldown;
                 }
             } else if (cooldown && cooldown.player) {
                 // Otherwise, apply the player cooldown
-                cooldown = cooldown.player;
-                if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
-                if (cooldown < playerMinCooldown) cooldown = playerMinCooldown;
+                pCooldown = cooldown.player;
+                if (cooldown > playerMaxCooldown) pCooldown = playerMaxCooldown;
+                if (cooldown < playerMinCooldown) pCooldown = playerMinCooldown;
             } else {
-                cooldown = playerMaxCooldown;
+                pCooldown = playerMaxCooldown;
             }
         }
         let playerStats = [];
@@ -275,7 +278,7 @@ module.exports = (Bot: {}) => {
                 throw new Error("No valid ally code(s) entered");
             }
 
-            let players: {}[];
+            let players: PlayerStatsAccount[];
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
                 if (options && options.defId) {
@@ -284,17 +287,17 @@ module.exports = (Bot: {}) => {
                     players = await cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
                 }
             }
-            const updated = options.force ? [] : players.filter(p => !isExpired(p.updated, cooldown));
-            const updatedAC = updated.map(p => parseInt(p.allyCode, 10));
+            const updated = options.force ? [] : players.filter(p => !isExpired(p.updated, pCooldown));
+            const updatedAC = updated.map(p => p.allyCode);
             const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
 
             playerStats = playerStats.concat(updated);
 
             let warning: string[];
             if (needUpdating.length) {
-                let updatedBare: {}[];
+                let updatedBare: PlayerStatsAccount[];
                 try {
-                    let tempBare: {};
+                    let tempBare: {[key: string]: any};
                     if (needUpdating.length <= 20) {
                         // If it's not a ton of players at a time
                         tempBare = await swgoh.fetchPlayer({
@@ -359,7 +362,7 @@ module.exports = (Bot: {}) => {
                 if (options && options.defId) {
                     playerStats.forEach(p => {
                         if (!p.roster) return;
-                        p.roster = p.roster.filter((ch: {}) => ch.defId === options.defId);
+                        p.roster = p.roster.filter((ch: APIUnitObj) => ch.defId === options.defId);
                     });
                 }
             }
@@ -370,12 +373,12 @@ module.exports = (Bot: {}) => {
         }
     }
 
-    async function langChar(char: {}, lang: string) {
+    async function langChar(char: APIUnitObj, lang: string) {
         lang = lang ? lang.toLowerCase() : "eng_us";
         if (!char) throw new Error("Missing Character");
 
         if (char.defId) {
-            const nameKey: string = await this.units(char.defId);
+            const nameKey: APIUnitObj = await this.units(char.defId);
             char.nameKey = nameKey ? nameKey.nameKey : null;
         }
 
@@ -384,12 +387,12 @@ module.exports = (Bot: {}) => {
                 // If they've got the numbers instead of enums, enum em
                 if (mod.primaryStat.unitStatId) mod.primaryStat.unitStat = mod.primaryStat.unitStatId;
 
-                if (!isNaN(mod.primaryStat.unitStat)) {
+                if (typeof mod.primaryStat.unitStat !== "number") {
                     mod.primaryStat.unitStat = statEnums.enums[mod.primaryStat.unitStat];
                 }
                 for (const stat of mod.secondaryStat) {
                     if (stat.unitStatId) stat.unitStat = stat.unitStatId;
-                    if (!isNaN(stat.unitStat)) {
+                    if (typeof stat.unitStat !== "number") {
                         stat.unitStat = statEnums.enums[stat.unitStat];
                     }
                 }
@@ -418,7 +421,7 @@ module.exports = (Bot: {}) => {
         return char;
     }
 
-    async function guildStats( allyCodes: number[], defId: string, cooldown: number ) {
+    async function guildStats( allyCodes: number[], defId: string, cooldown: PlayerCooldown ) {
         if (cooldown && cooldown.guild) {
             if (cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
             if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
@@ -431,12 +434,12 @@ module.exports = (Bot: {}) => {
         if (!players.length) throw new Error("Couldn't get your stats");
 
         for (const player of players) {
-            let unit: {};
+            let unit: any;
 
             if (!player.roster) {
                 unit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], relic: {currentTier: 0}, equipped: [], stats: {} };
             } else {
-                unit = player.roster.find((c: {}) => c.defId === defId);
+                unit = player.roster.find((c: APIUnitObj) => c.defId === defId);
                 if (!unit) {
                     unit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], relic: {currentTier: 0}, equipped: [] };
                 }
@@ -449,7 +452,7 @@ module.exports = (Bot: {}) => {
         return outStats;
     }
 
-    async function abilities( skillArray: string[], lang: string, update=false, opts: {} | null ) {
+    async function abilities( skillArray: string[], lang: string, update=false, opts: {min?: number} | null ) {
         lang = lang || "eng_us";
         if (!opts) opts = {};
         if (!skillArray?.length) {
@@ -492,14 +495,14 @@ module.exports = (Bot: {}) => {
             if (!abilities || !abilities.result) return Bot.logger.error("No abilities for " + lang);
             abilities = abilities.result;
 
-            abilities.forEach((a: {}) => {
-                const skill = skillList.find((s: {}) => s.abilityReference === a.id);
+            abilities.forEach((a: APIUnitAbility) => {
+                const skill = skillList.find((s: APIUnitAbility) => s.abilityReference === a.id);
                 if (a.tierList && a.tierList.length > 0) {
                     a.descKey = a.tierList[a.tierList.length - 1].descKey;
                     delete a.tierList;
                 }
                 if (!skill) return;
-                const isOmicron = skill.tierList.some((sk: {}) => sk.powerOverrideTag?.toLowerCase()?.indexOf("omicron") > -1 || sk.recipeId?.toLowerCase()?.indexOf("omicron") > -1);
+                const isOmicron = skill.tierList.some((sk: TierSkill) => sk.powerOverrideTag?.toLowerCase()?.indexOf("omicron") > -1 || sk.recipeId?.toLowerCase()?.indexOf("omicron") > -1);
                 a.isZeta        = skill.isZeta;
                 a.isOmicron     = isOmicron ? true : false;
                 a.skillId       = skill.id;
@@ -567,7 +570,7 @@ module.exports = (Bot: {}) => {
         for (const tier of char.unitTierList) {
             const eqList = await this.gear(tier.equipmentSetList, lang);
             tier.equipmentSetList.forEach((e: string, ix: number) => {
-                const eq = eqList.find((equipment: {}) => equipment.id === e);
+                const eq = eqList.find((equipment: APIUnitEquipment) => equipment.id === e);
                 if (!eq) {
                     Bot.logger.error("Missing equipment for char " + char.name + ", make sure to update the gear lang stuff" + inspect(e));
                     return;
@@ -719,7 +722,10 @@ module.exports = (Bot: {}) => {
                 }
             });
 
-            if (!unitList?.result) return Bot.logger.error("No unitList for " + lang);
+            if (!unitList?.result) {
+                Bot.logger.error("No unitList for " + lang);
+                return null;
+            }
 
             for (const unit of unitList.result) {
                 unit.language = lang.toLowerCase();
@@ -784,17 +790,18 @@ module.exports = (Bot: {}) => {
         }
     }
 
-    async function getRawGuild(allycode: number, cooldown: number) {
-        const tempGuild = {};
+    async function getRawGuild(allycode: number, cooldown: PlayerCooldown) {
+        const tempGuild: {roster: {}[]} = {
+            roster: []
+        };
+        let pCooldown = null;
         if (cooldown) {
-            cooldown = cooldown.guild;
-            if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
-            if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
+            pCooldown = cooldown.guild;
+            if (cooldown > guildMaxCooldown) pCooldown = guildMaxCooldown;
+            if (cooldown < guildMinCooldown) pCooldown = guildMinCooldown;
         } else {
-            cooldown = guildMaxCooldown;
+            pCooldown = guildMaxCooldown;
         }
-        if (allycode) allycode = parseInt(allycode.toString().replace(/[^\d]/g, ""), 10);
-        if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
 
         const player = await Bot.swapiStub.getPlayer(allycode);
         if (!player) throw new Error("I cannot find a matching profile for this allycode, please make sure it's typed in correctly");
@@ -802,7 +809,7 @@ module.exports = (Bot: {}) => {
         if (!player.guildId) throw new Error("This player is not in a guild");
 
         let rawGuild  = await cache.get(Bot.config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
-        if ( !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true) ) {
+        if ( !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, pCooldown, true) ) {
             try {
                 rawGuild = await Bot.swapiStub.getGuild(player.guildId, 0, true);
             } catch (err) {
@@ -828,9 +835,7 @@ module.exports = (Bot: {}) => {
             // Only keep the useful parts of this mess
             for (const key of Object.keys(rawGuild)) {
                 if (key === "member") {
-                    tempGuild["roster"] = [];
                     for (const member of rawGuild.member) {
-                        const tempMember = {};
                         const contribution = {};
                         for (const contType of member.memberContribution) {
                             contribution[contType.type] = {
@@ -838,10 +843,12 @@ module.exports = (Bot: {}) => {
                                 lifetimeValue: contType.lifetimeValue
                             };
                         }
-                        tempMember.memberContribution = contribution;
-                        tempMember.playerName = member.playerName;
-                        tempMember.lastActivityTime = member.lastActivityTime;
-                        tempMember.playerId = member.playerId;
+                        const tempMember = {
+                            memberContribution: contribution,
+                            playerName: member.playerName,
+                            lastActivityTime: member.lastActivityTime,
+                            playerId: member.playerId,
+                        };
                         tempGuild.roster.push(tempMember);
                     }
                 } else if (!ignoreArr.includes(key)) {
@@ -860,15 +867,16 @@ module.exports = (Bot: {}) => {
         return rawGuild;
     }
 
-    async function guild( allycode: number, lang="ENG_US", cooldown: number ) {
+    async function guild( allycode: number, lang="ENG_US", cooldown: PlayerCooldown ): Promise<APIGuildObj> {
         lang = lang || "ENG_US";
 
+        let pCooldown = null;
         if (cooldown) {
-            cooldown = cooldown.guild;
-            if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
-            if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
+            pCooldown = cooldown.guild;
+            if (cooldown > guildMaxCooldown) pCooldown = guildMaxCooldown;
+            if (cooldown < guildMinCooldown) pCooldown = guildMinCooldown;
         } else {
-            cooldown = guildMaxCooldown;
+            pCooldown = guildMaxCooldown;
         }
         let warnings: {};
         if ( !allycode || allycode.toString().length !== 9 ) { throw new Error("Please provide a valid allycode"); }
@@ -882,9 +890,9 @@ module.exports = (Bot: {}) => {
         let guild  = await cache.get(Bot.config.mongodb.swapidb, "guilds", {id: player.guildRefId});
 
         /** Check if existance and expiration */
-        if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
+        if ( !guild || !guild[0] || isExpired(guild[0].updated, pCooldown, true) ) {
             /** If not found or expired, fetch new from API and save to cache */
-            let tempGuild: {};
+            let tempGuild: any;
             try {
                 tempGuild = await swgoh.fetchGuild({
                     allycode: allycode,

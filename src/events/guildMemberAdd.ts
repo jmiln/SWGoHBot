@@ -1,7 +1,8 @@
 import { inspect } from "util";
 import { Client, GuildMember } from "discord.js";
+import { BotType } from "../modules/types";
 
-module.exports = async (Bot: {}, client: Client, member: GuildMember) => {
+module.exports = async (Bot: BotType, client: Client, member: GuildMember) => {
     // This executes when a member joins, so let's welcome them!
     const guild = member.guild;
     if (!guild) {
@@ -19,11 +20,11 @@ module.exports = async (Bot: {}, client: Client, member: GuildMember) => {
     if (guildConf.enableWelcome && guildConf.welcomeMessage !== "" && guildConf.announceChan !== "") { // If they have it turned on, and it's not empty
         const welcomeMessage = guildConf.welcomeMessage
             .replace(/{{user}}/gi, member.user.username)
-            .replace(/{{usermention}}/gi, member.user)
+            .replace(/{{usermention}}/gi, `<@${member.user.id}>`)
             .replace(/{{server}}/gi, member.guild.name)
             .replace(/{{prefix}}/gi, guildConf.prefix);
         try {
-            client.announceMsg(guild, welcomeMessage, null, guildConf);
+            Bot.announceMsg(guild, welcomeMessage, null, guildConf);
         } catch (err: unknown) {
             Bot.logger.error(`Error sending welcomeMessage:\n\nGuildConf:\n${inspect(guildConf)}\n\nError:\n${err}`);
         }

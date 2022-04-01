@@ -1,4 +1,4 @@
-module.exports = {
+const emoteIDs = {
     // Ability materials
     abilityMatMK3: "351808811213783040",
     omegaMat:      "351808811356520452",
@@ -45,3 +45,5 @@ module.exports = {
     gwShopCurrency:      "581365988105125899",
     shardShopCurrency:   "581365987987816468"
 };
+
+export default emoteIDs;
