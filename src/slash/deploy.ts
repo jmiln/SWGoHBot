@@ -1,29 +1,30 @@
 import SlashCommand from "../base/slashCommand";
 import { inspect } from "util";
-import Discord, { PartialWebhookMixin } from "discord.js";
+import { PartialWebhookMixin, Interaction, Client, Snowflake, Collection, ApplicationCommand } from "discord.js";
+import { BotInteraction, BotType } from "../modules/types";
+import slashCommand from "../base/slashCommand";
 
 const DEBUG = false;
 // const DEBUG = true;
 
 class Deploy extends SlashCommand {
-    constructor(client: Discord.Client) {
-        super(client, {
+    constructor(Bot: BotType) {
+        super(Bot, {
             name: "deploy",
             description: "This will deploy all slash commands.",
             category: "Dev",
             permLevel: 10,
-            aliases: ["d"],
             enabled: true
         });
     }
 
-    async run(Bot: {}, interaction: Discord.Interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         if (!interaction?.guild) return super.error(interaction, "This command can only be run in a server");
         const outLog = [];
 
         try {
             // Filter the slash commands to find guild only ones.
-            const guildCmds = interaction.client.slashcmds.filter((com: {}) => com.guildOnly).map((com: {}) => com.commandData);
+            const guildCmds = interaction.client.slashcmds.filter((com: slashCommand) => com.guildOnly);
 
             // The currently deployed commands
             const currentGuildCommands = await interaction.client.guilds.cache.get(interaction.guild.id)?.commands.fetch();
@@ -31,7 +32,7 @@ class Deploy extends SlashCommand {
 
 
             // Give the user a notification the commands are deploying.
-            const msg = await interaction.channel.send("Deploying commands!");
+            await interaction.reply("Deploying commands!");
 
             // We'll use set but please keep in mind that `set` is overkill for a singular command.
             // Set the guild commands like this.
@@ -63,7 +64,7 @@ class Deploy extends SlashCommand {
 
             if (Bot.config.enableGlobalCmds) {
                 // Then filter out global commands by inverting the filter
-                const globalCmds = interaction.client.slashcmds.filter((com: {}) => !com.guildOnly).map((com: {}) => com.commandData);
+                const globalCmds = interaction.client.slashcmds.filter((com: slashCommand) => !com.guildOnly);
                 // Get the currently deployed global commands
                 const currentGlobalCommands = await interaction.client.application?.commands?.fetch();
 
@@ -95,7 +96,7 @@ class Deploy extends SlashCommand {
                 });
             }
 
-            return msg.edit({
+            return interaction.editReply({
                 content: null,
                 embeds: [
                     {
@@ -108,12 +109,13 @@ class Deploy extends SlashCommand {
             Bot.logger.error(inspect(err, {depth: 5}));
         }
 
-        function checkCmds(localCmdList: Discord.Collection<Discord.Snowflake, Discord.ApplicationCommand>, currentCmdList: Discord.Collection<Discord.Snowflake, Discord.ApplicationCommand>) {
+        function checkCmds(localCmdList: Collection<string, slashCommand> | Collection<Snowflake, ApplicationCommand>, currentCmdList: Collection<Snowflake, ApplicationCommand>) {
             const changedComs = [];
             const newComs = [];
 
             // Work through all the commands that are already deployed, and see which ones have changed
-            localCmdList.forEach(cmd => {
+            localCmdList.forEach((cmd: any) => {
+                if (cmd.commandData) cmd = cmd.commandData;
                 const thisCom = currentCmdList.find(c => c.name === cmd.name);
                 let isDiff = false;
 
@@ -166,8 +168,8 @@ class Deploy extends SlashCommand {
                                         isDiff = true;
                                     } else {
                                         // If they have the same choice count, make sure that the choices are the same inside
-                                        cmd.options[ix].choices.forEach((choice: {}, jx: number) => {
-                                            const thisChoice = thisCom.options[ix].choices.find((thisChoice: {}) => thisChoice.name === choice.name);
+                                        cmd.options[ix].choices.forEach((choice: {name: string, value: string}, jx: number) => {
+                                            const thisChoice = thisCom.options[ix].choices.find((thisChoice: {name: string}) => thisChoice.name === choice.name);
                                             if (!thisChoice) {
                                                 // Couldn't find a matching choice, so go ahead and update
                                                 debugLog("Diff choices");

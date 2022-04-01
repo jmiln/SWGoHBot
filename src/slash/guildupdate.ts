@@ -1,46 +1,47 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType } from "../modules/types";
 
 class GuildUpdate extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "guildupdate",
             category: "Patreon",
             guildOnly: false,
-            aliases: ["gu"],
             description: "Set up the guild watcher to alert you for changes in guild member's rosters",
             options: [
                 {
                     name: "set",
                     description: "Change the settings",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "enabled",
                             description: "Turn the updates on or off",
-                            type: "BOOLEAN"
+                            type: Bot.constants.optionType.BOOLEAN
                         },
                         {
                             name: "channel",
                             description: "Set which channel to log updates to",
-                            type: "CHANNEL"
+                            type: Bot.constants.optionType.CHANNEL
                         },
                         {
                             name: "allycode",
                             description: "Set what ally code to get the guild's info from",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         }
                     ]
                 },
                 {
                     name: "view",
                     description: "View the settings for your guild updates",
-                    type: "SUB_COMMAND"
+                    type: Bot.constants.optionType.SUB_COMMAND
                 }
             ]
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: {}) { // eslint-disable-line no-unused-vars
         const cmdOut = null;
         const outLog = [];
 

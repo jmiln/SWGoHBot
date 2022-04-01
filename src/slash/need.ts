@@ -1,5 +1,7 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
 import factionMap from "../data/factionMap";
+import { APIUnitObj, BotType, UnitObj } from "../modules/types";
 const shopMap = [
     { name: "Arena Shop",        value: "Arena Shipments" },
     { name: "Cantina Shop",      value: "Cantina Shipments" },
@@ -22,7 +24,7 @@ const battleMap = [
 ];
 
 class Need extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "need",
             description: "Shows your progress towards 7* characters from a faction or shop.",
@@ -35,25 +37,25 @@ class Need extends SlashCommand {
                 {
                     name: "allycode",
                     description: "The ally code for the user you want to look up",
-                    type: "STRING"
+                    type: Bot.constants.optionType.STRING
                 },
                 // put in faction|shop|battle|keyword on their own
                 {
                     name: "battle",
                     description: "Which section of battles you want to check on",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     choices: battleMap
                 },
                 {
                     name: "keyword",
                     description: "Choose all of a section",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     choices: kwMap
                 },
                 {
                     name: "shop",
                     description: "Which shop you want to check the progress on",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     choices: shopMap
                 },
                 // The faction tags listed as in game, but needed to be split up into multiple lists because of
@@ -61,20 +63,20 @@ class Need extends SlashCommand {
                 {
                     name: "faction_group_1",
                     description: "Which faction you want to check the progress on",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     choices: factionMap.slice(0, 20)
                 },
                 {
                     name: "faction_group_2",
                     description: "Which faction you want to check the progress on",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     choices: factionMap.slice(20, 40)
                 },
             ]
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
         let allycode = interaction.options.getString("allycode");
@@ -143,7 +145,7 @@ class Need extends SlashCommand {
         let outShips = [];
         for (const unit of units) {
             // Go through the found characters and check them against the player's roster
-            let u = player.roster.find(c => c.defId === unit.baseId);
+            let u = player.roster.find((c: APIUnitObj) => c.defId === unit.baseId);
             if (!u) {
                 // If Malak (I don't remember why...)
                 if (unit.baseId === "DARTHMALAK") continue;
@@ -155,7 +157,7 @@ class Need extends SlashCommand {
             if (u.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[u.rarity];
             u = await Bot.swgohAPI.langChar(u, interaction.guildSettings.swgohLanguage);
-            if (Bot.characters.find(c => c.uniqueName === unit.baseId)) {
+            if (Bot.characters.find((c: UnitObj) => c.uniqueName === unit.baseId)) {
                 // It's a character
                 outChars.push({
                     rarity: u.rarity,
@@ -179,7 +181,7 @@ class Need extends SlashCommand {
             outChars = outChars.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             outChars = outChars.map(c => `\`${c.rarity}*\` ${c.rarity ? c.name : "~~" + c.name + "~~"}`);
             const msgArr = Bot.msgArray(outChars, "\n", 1000);
-            msgArr.forEach((m, ix) => {
+            msgArr.forEach((m: string, ix: number) => {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix+1})`;
                 fields.push({
@@ -192,7 +194,7 @@ class Need extends SlashCommand {
             outShips = outShips.filter(a => !!a.name).sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
             outShips = outShips.map(s => `\`${s.rarity}*\` ${s.rarity ? s.name : "~~" + s.name + "~~"}`);
             const msgArr = Bot.msgArray(outShips, "\n", 1000);
-            msgArr.forEach((m, ix) => {
+            msgArr.forEach((m: string, ix: number) => {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix+1})`;
                 fields.push({
@@ -236,7 +238,7 @@ class Need extends SlashCommand {
                 fields: fields
             }]});
         }
-        function getHeaderNames(namesIn) {
+        function getHeaderNames(namesIn: string[]) {
             const namesOut = [];
             for (const name of namesIn) {
                 let n = kwMap.find(k => k.value === name)?.name;
@@ -256,7 +258,7 @@ class Need extends SlashCommand {
             return namesOut;
         }
 
-        async function getUnitsExact(searchNames) {
+        async function getUnitsExact(searchNames: string | string[]) {
             // Get unit matches based on the exact name of their locations
             if (!Array.isArray(searchNames)) searchNames = [searchNames];
             let unitsOut = [];
@@ -284,7 +286,7 @@ class Need extends SlashCommand {
             return unitsOut;
         }
 
-        async function getFactionUnits(searchName) {
+        async function getFactionUnits(searchName: string) {
             // Get units based on their faction
             const units = await Bot.cache.get(Bot.config.mongodb.swapidb, "units",
                 {categoryIdList: searchName, language: interaction.guildSettings.swgohLanguage.toLowerCase()},

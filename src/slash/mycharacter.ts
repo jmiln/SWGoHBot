@@ -1,44 +1,45 @@
 import SlashCommand from "../base/slashCommand";
 import { inspect } from "util";      // eslint-disable-line no-unused-vars
 import fetch from "node-fetch";
+import { Interaction } from "discord.js";
+import { APIUnitObj, BotInteraction, BotType } from "../modules/types";
 
 class MyCharacter extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "mycharacter",
             category: "SWGoH",
             description: "Display overall stats & mod info for the selected character",
             guildOnly: false,
             enabled: true,
-            aliases: ["mc", "mychar"],
             permissions: ["EMBED_LINKS", "ATTACH_FILES"],
             permLevel: 0,
             options: [
                 {
                     name: "character",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "The character you want to show the stats of",
                     required: true
                 },
                 {
                     name: "allycode",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "The ally code for who's characters you want to see"
                 },
                 {
                     name: "ship",
-                    type: "BOOLEAN",
+                    type: Bot.constants.optionType.BOOLEAN,
                     description: "Mark that you're looking for a ship specifically"
                 }
             ]
         });
     }
 
-    async run(Bot, interaction) {
-        const searchChar = interaction.options.getString("character");
-        const isShip     = interaction.options.getBoolean("ship");
-        let allycode     = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode);
+    async run(Bot: BotType, interaction: BotInteraction) {
+        const searchChar  = interaction.options.getString("character");
+        const isShip      = interaction.options.getBoolean("ship");
+        const allycodeOpt = interaction.options.getString("allycode");
+        const allycode    = await Bot.getAllyCode(interaction, allycodeOpt);
 
         if (!allycode) {
             return super.error(interaction, "I could not find a valid allycode. Please make sure you're using a valid code.");
@@ -69,7 +70,7 @@ class MyCharacter extends SlashCommand {
         await interaction.reply({content: "Please wait while I look up your profile."});
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
-        let pName;
+        let pName: string;
         let player = null;
         try {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
@@ -90,7 +91,7 @@ class MyCharacter extends SlashCommand {
         }
         const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
 
-        let thisChar = player.roster.filter(c => c.defId === character.uniqueName);
+        let thisChar = player.roster.filter((c: APIUnitObj) => c.defId === character.uniqueName);
         if (thisChar.length && Array.isArray(thisChar)) thisChar = thisChar[0];
 
         if (thisChar && !Array.isArray(thisChar)) {
@@ -99,20 +100,20 @@ class MyCharacter extends SlashCommand {
             const stats = thisChar.stats;
             const isShip = thisChar.combatType === 2 ? true : false;
 
-            let charImg;
+            let charImg: Buffer;
             const fetchBody = {
                 defId: thisChar.defId,
                 charUrl: character.avatarURL,
                 rarity: thisChar.rarity,
                 level: thisChar.level,
                 gear: thisChar.gear,
-                zetas: thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length,
+                zetas: thisChar.skills.filter((s: {}) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length,
                 relic: thisChar.relic?.currentTier ? thisChar.relic.currentTier : 0,
                 side: character.side
             };
 
             try {
-                await nodeFetch(Bot.config.imageServIP_Port + "/char/", {
+                await fetch(Bot.config.imageServIP_Port + "/char/", {
                     method: "post",
                     body: JSON.stringify(fetchBody),
                     headers: { "Content-Type": "application/json" }
@@ -139,16 +140,16 @@ class MyCharacter extends SlashCommand {
                 hardware: []
             };
 
-            let gearStr;
+            let gearStr: string;
             if (!isShip) {
                 gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
-                thisChar.equipped.forEach(e => {
+                thisChar.equipped.forEach((e: {}) => {
                     gearStr = gearStr.replace(e.slot, "X");
                 });
                 gearStr = gearStr.replace(/[0-9]/g, "  ");
                 gearStr = Bot.expandSpaces(gearStr);
             }
-            thisChar.skills.forEach(a => {
+            thisChar.skills.forEach((a: {}) => {
                 a.type = Bot.toProperCase(a.id.split("_")[0].replace("skill", ""));
                 if (a.tier === a.tiers) {
                     if (a.isOmicron) {
@@ -231,7 +232,7 @@ class MyCharacter extends SlashCommand {
 
             let keys = Object.keys(stats.final);
             if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
-            let maxLen;
+            let maxLen: number;
             try {
                 maxLen = keys.reduce((long, str) => Math.max(long, langStr[langMap[str]] ? langStr[langMap[str]].length : 0), 0);
             } catch (e) {
@@ -246,7 +247,7 @@ class MyCharacter extends SlashCommand {
             const statArr = [];
             Object.keys(statNames).forEach(sn => {
                 let statStr = "== " + sn + " ==\n";
-                statNames[sn].forEach(s => {
+                statNames[sn].forEach((s: string) => {
                     if (s.indexOf("Rating") >= 0) s = s.replace("Rating", "Chance");
                     if (!stats.final[s]) stats.final[s] = 0;
                     const rep = maxLen - langStr[langMap[s]].length;
@@ -263,7 +264,7 @@ class MyCharacter extends SlashCommand {
             });
 
             const fields = [];
-            Bot.msgArray(statArr, "\n", 1000).forEach((m, ix) => {
+            Bot.msgArray(statArr, "\n", 1000).forEach((m: string, ix: number) => {
                 fields.push({
                     name: ix === 0 ? "Stats" : "-",
                     value: Bot.codeBlock(m, "asciidoc")

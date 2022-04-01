@@ -1,47 +1,47 @@
 import SlashCommand from "../base/slashCommand";
+import { APIGuildObj, APIUnitObj, APIUnitSkill, BotInteraction, BotType, PlayerStatsAccount, UnitObj } from "../modules/types";
 
 class Zetas extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "zetas",
             category: "SWGoH",
             guildOnly: false,
-            aliases: ["zeta", "z"],
             permissions: ["EMBED_LINKS"],
             options: [
                 // Removing recommendations because they're so outdated
                 {
                     name: "guild",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "See a list of zetas for your whole guild",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true,
                             description: "The ally code of a player in the guild you want to see"
                         },
                         {
                             name: "character",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Just show the zeta'd abilities for a specific character"
                         },
                     ]
                 },
                 {
                     name: "player",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "See a player's zetas",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true,
                             description: "The ally code of the player you want to see."
                         },
                         {
                             name: "character",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Just show the zeta'd abilities for a specific character"
                         },
                     ]
@@ -50,9 +50,9 @@ class Zetas extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) {
-        let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode);
+    async run(Bot: BotType, interaction: BotInteraction) {
+        const allycodeStr = interaction.options.getString("allycode");
+        const allycode = await Bot.getAllyCode(interaction, allycodeStr);
         if (!allycode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
         }
@@ -63,7 +63,7 @@ class Zetas extends SlashCommand {
         const searchChar = interaction.options.getString("character");
         // If a character was entered, see if it can find a match to display later
         if (searchChar) {
-            const chars = Bot.findChar(searchChar, Bot.characters);
+            const chars: UnitObj[] = Bot.findChar(searchChar, Bot.characters);
 
             if (chars.length > 1) {
                 const charL = [];
@@ -82,7 +82,7 @@ class Zetas extends SlashCommand {
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
 
-        let player;
+        let player: PlayerStatsAccount;
         try {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
@@ -103,8 +103,8 @@ class Zetas extends SlashCommand {
             const character = null;
 
             // This will grab the character info for any entered character
-            const getCharInfo = async (thisChar) => {
-                thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+            const getCharInfo = async (thisUnitObj: APIUnitObj) => {
+                const thisChar: APIUnitObj = await Bot.swgohAPI.langChar(thisUnitObj, interaction.guildSettings.swgohLanguage);
                 if (!thisChar.nameKey) {
                     const tmp = Bot.characters.filter(c => c.uniqueName === thisChar.defId);
                     if (tmp.length) {
@@ -126,7 +126,7 @@ class Zetas extends SlashCommand {
 
             await interaction.reply({ content: interaction.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas") });
 
-            const desc = [], author = {}, fields = [];
+            const desc = [], author = {name: null, icon_url: null}, fields = [];
             if (character) {
                 // Grab just the one character from the roster
                 const char = player.roster.find(c => c.defId === character.uniqueName);
@@ -151,7 +151,7 @@ class Zetas extends SlashCommand {
 
                 author.name = interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", player.name, count);
                 desc.push("`------------------------------`");
-                chunked.forEach(chunk => {
+                chunked.forEach((chunk: string[]) => {
                     fields.push({
                         name: "-",
                         value: chunk.join("\n")
@@ -179,8 +179,8 @@ class Zetas extends SlashCommand {
             // Display the zetas for the whole guild (Takes a while)
             await interaction.reply({content: interaction.language.get("COMMAND_ZETA_WAIT_GUILD")});
 
-            let guild = null;
-            let guildGG = null;
+            let guild: APIGuildObj = null;
+            let guildGG: PlayerStatsAccount[] = null;
 
             try {
                 guild = await Bot.swgohAPI.guild(player.allyCode, null, cooldown);
@@ -202,7 +202,7 @@ class Zetas extends SlashCommand {
                 for (const char of player.roster) {
                     char.zetas = char.skills.filter(s => (s.isOmicron && s.isZeta && s.tier >= s.tiers-1) || (!s.isOmicron && s.isZeta && s.tier === s.tiers));
                     if (char.zetas.length) {
-                        char.zetas.forEach(s => {
+                        char.zetas.forEach((s: APIUnitSkill) => {
                             if (!zetas[char.defId]) {
                                 zetas[char.defId] = {};
                             }
@@ -219,7 +219,7 @@ class Zetas extends SlashCommand {
             if (!character) {
                 // They want to see all zetas for the guild
                 for (const char of Object.keys(zetas)) {
-                    const outObj = {};
+                    const outObj = {name :null, abilities: null};
                     outObj.name = "**" + Bot.characters.find(c => c.uniqueName === char).name + "**";
                     outObj.abilities = "";
                     for (const skill of Object.keys(zetas[char])) {
@@ -233,7 +233,7 @@ class Zetas extends SlashCommand {
                     .map(c => c.name + "\n" + c.abilities);
                 const MAX_FIELDS = 5;
                 const msgArr = Bot.msgArray(sortedChars, "", 1000);
-                msgArr.forEach(m => {
+                msgArr.forEach((m: string) => {
                     fields.push({
                         name: "____",
                         value: m,

@@ -1,17 +1,18 @@
 // const util = require('util');
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType, UnitObj } from "../modules/types";
 
 class Ships extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "ships",
             guildOnly: false,
-            aliases: ["s", "ship"],
             category: "Star Wars",
             options: [
                 {
                     name: "ship",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "The ship to look up",
                     required: true
                 }
@@ -19,7 +20,7 @@ class Ships extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const shipList = Bot.ships;
         const searchName = interaction.options.getString("ship");
 
@@ -28,7 +29,7 @@ class Ships extends SlashCommand {
         if (ships.length <= 0) {
             return super.error(interaction, `Sorry, but I cannot find **${searchName}**. Please double check the spelling, and that it's a proper ship/ crew crew member.`);
         } else if (ships.length > 1) {
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", ships.map(s => {
+            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", ships.map((s: UnitObj) => {
                 let outStr = null;
                 if (s.crew?.length) {
                     outStr = `${s.name}${"\n" + s.crew.map(c => "- " + c).join("\n") + "\n"}`;
@@ -48,7 +49,7 @@ class Ships extends SlashCommand {
 
         if (unit.crew.length) {
             const crew = [];
-            unit.crew.forEach(crewMember => {
+            unit.crew.forEach((crewMember: {}) => {
                 const crewName = Bot.characters.find(c => c.uniqueName === crewMember);
                 crew.push(crewName.name);
             });
@@ -74,7 +75,7 @@ class Ships extends SlashCommand {
 
                 const msgArr = Bot.msgArray(Bot.expandSpaces(interaction.language.get("COMMAND_SHIPS_ABILITIES", a)).split(" "), " ", 1000);
 
-                msgArr.forEach((m, ix) => {
+                msgArr.forEach((m: string, ix: number) => {
                     if (ix === 0) {
                         fields.push({
                             "name": ability.name,

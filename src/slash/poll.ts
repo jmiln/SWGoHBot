@@ -1,13 +1,12 @@
 import SlashCommand from "../base/slashCommand";
 import { Interaction } from "discord.js";
-import { Poll } from "../modules/types";
+import { BotInteraction, BotType, CommandOptions, Poll } from "../modules/types";
 
 class PollCommand extends SlashCommand {
-    constructor(Bot: {}) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "poll",
             category: "Misc",
-            aliases: ["vote"],
             permissions: ["EMBED_LINKS"],
             guildOnly: false,
             options: [
@@ -15,55 +14,55 @@ class PollCommand extends SlashCommand {
                 {
                     name: "create",
                     description: "Create a poll",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "question",
                             required: true,
                             description: "The question you want people to vote on",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "options",
                             required: true,
                             description: "Options for the poll, separated by a pipe symbol `|`",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "anonymous",
                             description: "If enabled, current votes will not be shown until the poll is closed. ",
-                            type: "BOOLEAN"
+                            type: Bot.constants.optionType.BOOLEAN
                         }
                     ]
                 },
                 {
                     name: "end",
                     description: "End a poll, and show the final results",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: []
                 },
                 {
                     name: "cancel",
                     description: "Cancel a poll, don't bother with the results",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: []
                 },
                 {
                     name: "view",
                     description: "View the status of a poll with the current results",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [ ]
                 },
                 {
                     name: "vote",
                     description: "Vote on a poll (your vote will be hidden)",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "option",
                             required: true,
                             description: "The poll option you want to vote for",
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                             min_value: 0,
                             max_value: 10,
                         }
@@ -73,18 +72,17 @@ class PollCommand extends SlashCommand {
         });
     }
 
-    async run(Bot: {}, interaction: Interaction, options?: {}) {
-        const level = options.level;
-
+    async run(Bot: BotType, interaction: BotInteraction, options?: CommandOptions) {
         const action = interaction.options.getSubcommand();
 
         let poll = { // ID = guildID-channelID
-            "question": "",
-            "options": [],
-            "votes": {
+            pollID: null,
+            question: "",
+            options: [],
+            votes: {
                 // userID: vote#
             },
-            "anon": false
+            anon: false
         };
 
         if (!interaction.guild) {
@@ -139,7 +137,7 @@ class PollCommand extends SlashCommand {
                     id: pollID,
                     poll: poll
                 })
-                    .then((thisPoll: Poll) => {
+                    .then((thisPoll: any) => {
                         poll.pollID = thisPoll.dataValues.pollId;
                         return interaction.reply({
                             content: interaction.language.get("COMMAND_POLL_CREATED", interaction.user.tag, interaction.guildSettings.prefix),

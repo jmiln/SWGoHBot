@@ -1,18 +1,19 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType, PlayerStatsAccount } from "../modules/types";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 class WhoIs extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "whois",
             category: "Misc",
             guildOnly: false,
-            aliases: ["wi", "who"],
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "name",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "The player that you're looking for",
                     required: true
                 }
@@ -20,11 +21,11 @@ class WhoIs extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction) { // eslint-disable-line no-unused-vars
         const name = interaction.options.getString("name");
         if (name.length > 50) return super.error(interaction, "Invalid name, max length is 50 characters");
 
-        let players = await Bot.swgohAPI.playerByName(name);
+        let players: PlayerStatsAccount[] = await Bot.swgohAPI.playerByName(name);
 
         if (!players.length) {
             return interaction.reply({content: "No results found for that name.\n Probably a wrong name or that person is not registered with the bot."});

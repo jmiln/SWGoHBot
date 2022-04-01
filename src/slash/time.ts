@@ -1,9 +1,11 @@
+import { Interaction } from "discord.js";
 import moment from "moment-timezone";
 
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType } from "../modules/types";
 
 class Time extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "time",
             category: "Misc",
@@ -11,14 +13,14 @@ class Time extends SlashCommand {
             options: [
                 {
                     name: "timezone",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "A valid timezone to view"
                 }
             ]
         });
     }
 
-    run(Bot, interaction) {
+    run(Bot: BotType, interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
         const timezone = interaction.options.getString("timezone");
 

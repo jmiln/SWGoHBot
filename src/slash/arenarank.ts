@@ -4,9 +4,10 @@
 
 import SlashCommand from "../base/slashCommand";
 import { Interaction } from "discord.js";
+import { BotInteraction, BotType } from "../modules/types";
 
 class Arenarank extends SlashCommand {
-    constructor(Bot: {}) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "arenarank",
             guildOnly: false,
@@ -14,20 +15,20 @@ class Arenarank extends SlashCommand {
             options: [
                 {
                     name: "rank",
-                    type: "INTEGER",
+                    type: Bot.constants.optionType.INTEGER,
                     description: "The rank to calculate the drops from",
                     required: true
                 },
                 {
                     name: "hops",
-                    type: "INTEGER",
+                    type: Bot.constants.optionType.INTEGER,
                     description: "How many more ranks to calculate"
                 }
             ]
         });
     }
 
-    run(Bot: {}, interaction: Interaction) {
+    run(Bot: BotType, interaction: BotInteraction) {
         const currentRank = interaction.options.getInteger("rank");
         const rankHops = interaction.options.getInteger("hops") || 5;
         if (isNaN(currentRank) || !currentRank) {

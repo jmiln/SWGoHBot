@@ -1,20 +1,21 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
 import * as raids from "../data/raiddmg.json";
+import { BotInteraction, BotType } from "../modules/types";
 
 class RaidDamage extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "raiddamage",
             category: "SWGoH",
             enabled: true,
             guildOnly: false,
-            aliases: ["raiddmg", "rdmg", "convert", "raidd", "raid"],
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "raid",
                     description: "The raid you want to calculate for",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true,
                     choices: [
                         {
@@ -38,7 +39,7 @@ class RaidDamage extends SlashCommand {
                 {
                     name: "phase",
                     description: "Which of the 4 phases you want to calculate",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true,
                     choices: [
                         {
@@ -62,14 +63,14 @@ class RaidDamage extends SlashCommand {
                 {
                     name: "amount",
                     description: "What amount of the damage you want to calculate, damage number or percentage",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true
                 }
             ]
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const raid = interaction.options.getString("raid");
         const phase = interaction.options.getString("phase");
         let amount = interaction.options.getString("amount");
@@ -90,7 +91,7 @@ class RaidDamage extends SlashCommand {
 
         if (percent) {
             amount = amount + "%";
-            outAmt = parseInt((tmpAmount * thisPhase.dmg) / 100, 10).toLocaleString() + " " + interaction.language.get("COMMAND_RAIDDAMAGE_DMG");
+            outAmt = ((tmpAmount * thisPhase.dmg) / 100, 10).toLocaleString() + " " + interaction.language.get("COMMAND_RAIDDAMAGE_DMG");
         } else {
             outAmt = (100 * (tmpAmount / thisPhase.dmg)).toFixed(2).toLocaleString() + "%";
         }

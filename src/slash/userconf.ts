@@ -1,55 +1,56 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType, UserRegAccount } from "../modules/types";
 
 class UserConf extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "userconf",
             category: "Misc",
             guildOnly: false,
-            aliases: ["uc", "uconf", "userconfig", "uconfig"],
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "allycodes",
                     description: "The ally code of the user you want to see",
-                    type: "SUB_COMMAND_GROUP",
+                    type: Bot.constants.optionType.SUB_COMMAND_GROUP,
                     // Need add, remove, makeprimary
                     options: [
                         {
                             name: "add",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             description: "Add an allycode",
                             options: [
                                 {
                                     name: "allycode",
                                     description: "The ally code of the user you want to see",
-                                    type: "STRING" ,
+                                    type: Bot.constants.optionType.STRING ,
                                     required: true
                                 },
                             ]
                         },
                         {
                             name: "remove",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             description: "Remove an allycode",
                             options: [
                                 {
                                     name: "allycode",
                                     description: "The ally code of the user you want to see",
-                                    type: "STRING" ,
+                                    type: Bot.constants.optionType.STRING ,
                                     required: true
                                 },
                             ]
                         },
                         {
                             name: "make_primary",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             description: "Set this ally code as the primary one",
                             options: [
                                 {
                                     name: "allycode",
                                     description: "The ally code of the user you want to see",
-                                    type: "STRING" ,
+                                    type: Bot.constants.optionType.STRING ,
                                     required: true
                                 },
                             ]
@@ -59,14 +60,14 @@ class UserConf extends SlashCommand {
                 // REMOVING defaults, only being used by one user, and not sure it'd play nice with slash comands
                 {
                     name: "arenaalert",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Set up your arena alerts",
                     options: [
                         // Need enabledms, arena, payoutresult, payoutwarning
                         {
                             name: "enable_dms",
                             description: "Set it to send DMs for various alerts",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 { name: "all",     value: "all"     },
                                 { name: "primary", value: "primary" },
@@ -76,7 +77,7 @@ class UserConf extends SlashCommand {
                         {
                             name: "arena",
                             description: "Choose which arena to watch",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 { name: "char",     value: "char"     },
                                 { name: "fleet",     value: "fleet"     },
@@ -87,12 +88,12 @@ class UserConf extends SlashCommand {
                         {
                             name: "payout_result",
                             description: "Set it to send you the final rank at your payout",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                         },
                         {
                             name: "payout_warning",
                             description: "Set it to warn you before your payout, 1-1440min, 0 to disable",
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                             min_value: 0,
                             max_value: 1440,
                         }
@@ -100,14 +101,14 @@ class UserConf extends SlashCommand {
                 },
                 {
                     name: "lang",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Change your language settings",
                     // Need language & swgohlanguage, with the appropriate choices for each
                     options: [
                         {
                             name: "bot_language",
                             description: "Set the language for the bot's text",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: Object.keys(Bot.languages).map(lang => {
                                 return {
                                     name: lang,
@@ -118,7 +119,7 @@ class UserConf extends SlashCommand {
                         {
                             name: "swgoh_language",
                             description: "Set the language for the game's text",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: Bot.swgohLangList.map(lang => {
                                 return {
                                     name: lang,
@@ -130,14 +131,14 @@ class UserConf extends SlashCommand {
                 },
                 {
                     name: "view",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "View your current settings"
                 },
             ]
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const subCommandGroup = interaction.options.getSubcommandGroup(false);
         const subCommand = interaction.options.getSubcommand();
 
@@ -191,7 +192,7 @@ class UserConf extends SlashCommand {
                                     "COMMAND_REGISTER_SUCCESS_DESC",
                                     player,
                                     player.allyCode.toString().match(/\d{3}/g).join("-"),
-                                    player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                                    player.stats.find((s: {nameKey: string}) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
                                 ), "asciiDoc"), {
                                     title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name)
                                 });
@@ -206,15 +207,15 @@ class UserConf extends SlashCommand {
                     // Remove specified ally code from the list,
                     // - If it was not in the list, let em know
                     // - If the chosen one was the primary, set the 1st
-                    const acc = user.accounts.find(a => a.allyCode === allycode);
+                    const acc = user.accounts.find((a: UserRegAccount) => a.allyCode === allycode);
                     if (!acc) {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
 
                     // Filter out the one(s) that match the specified allycode
-                    user.accounts = user.accounts.filter(a => a.allyCode !== acc.allyCode);
+                    user.accounts = user.accounts.filter((a: UserRegAccount) => a.allyCode !== acc.allyCode);
                     // If none of the remaining accounts are marked as primary, mark the first one as such
-                    if (user.accounts.length && !user.accounts.find(a => a.primary)) {
+                    if (user.accounts.length && !user.accounts.find((a: UserRegAccount) => a.primary)) {
                         user.accounts[0].primary = true;
                     }
                     await Bot.userReg.updateUser(userID, user);
@@ -222,14 +223,14 @@ class UserConf extends SlashCommand {
                 }
                 case "make_primary": {
                     // Set the specified ally code to be the primary one
-                    const acc = user.accounts.find(a => a.allyCode === allycode);
-                    const prim = user.accounts.find(a => a.primary);
+                    const acc = user.accounts.find((a: UserRegAccount) => a.allyCode === allycode);
+                    const prim = user.accounts.find((a: UserRegAccount) => a.primary);
                     if (!acc) {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     } else if (acc.primary) {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY"));
                     }
-                    user.accounts = user.accounts.map(a => {
+                    user.accounts = user.accounts.map((a: UserRegAccount) => {
                         if (a.primary) a.primary = false;
                         if (a.allyCode === allycode) a.primary = true;
                         return a;
@@ -315,7 +316,7 @@ class UserConf extends SlashCommand {
                     const fields = [];
                     fields.push({
                         name: interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_HEADER"),
-                        value: user.accounts.length ? interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + user.accounts.map((a, ix) => `\`[${ix+1}] ${a.allyCode}\`: ` + (a.primary ? `**${a.name}**` : a.name)).join("\n") : interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC")
+                        value: user.accounts.length ? interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + user.accounts.map((a: UserRegAccount, ix: number) => `\`[${ix+1}] ${a.allyCode}\`: ` + (a.primary ? `**${a.name}**` : a.name)).join("\n") : interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC")
                     });
                     fields.push({
                         name: interaction.language.get("COMMAND_USERCONF_VIEW_DEFAULTS_HEADER"),

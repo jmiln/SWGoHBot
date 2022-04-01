@@ -1,8 +1,10 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { APIUnitObj, BotInteraction, BotType, CommandOptions, UnitObj } from "../modules/types";
 // const {inspect} = require('util');
 
 class GuildSearch extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "guildsearch",
             category: "SWGoH",
@@ -13,23 +15,23 @@ class GuildSearch extends SlashCommand {
                 {
                     name: "character",
                     description: "Look for your guild's stats on a character.",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "character",
                             description: "The character you want to display",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true
                         },
                         {
                             name: "allycode",
                             description: "An ally code to determine which guild you're wanting to look up",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "sort",
                             description: "Choose what to sort by",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 { name: "Gear", value: "gear" },
                                 { name: "GP", value: "gp" },
@@ -39,7 +41,7 @@ class GuildSearch extends SlashCommand {
                         {
                             name: "stat",
                             description: "Which stat you want it to show",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 { name: "Health", value: "Health" },
                                 { name: "Protection", value: "Protection" },
@@ -60,14 +62,14 @@ class GuildSearch extends SlashCommand {
                         {
                             name: "top",
                             description: "View only the top x in the list (1-50)",
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                             min_value: 0,
                             max_value: 50,
                         },
                         {
                             name: "rarity",
                             description: "View only X rarity (Star lvl) and above. (1-7)",
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                             min_value: 0,
                             max_value: 7,
                         },
@@ -75,35 +77,35 @@ class GuildSearch extends SlashCommand {
                         {
                             name: "reverse",
                             description: "Reverse the sort order",
-                            type: "BOOLEAN"
+                            type: Bot.constants.optionType.BOOLEAN
                         },
                         {
                             name: "zetas",
                             description: "Show only results that have zeta'd abilities",
-                            type: "BOOLEAN"
+                            type: Bot.constants.optionType.BOOLEAN
                         },
                     ]
                 },
                 {
                     name: "ship",
                     description: "Look for your guild's stats on a ship.",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "ship",
                             description: "The ship you want to display",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true
                         },
                         {
                             name: "allycode",
                             description: "An ally code to determine which guild you're wanting to look up",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "sort",
                             description: "Choose what to sort by",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 { name: "GP", value: "gp" },
                                 { name: "Name", value: "name" },
@@ -114,14 +116,14 @@ class GuildSearch extends SlashCommand {
                         {
                             name: "top",
                             description: "View only the top x in the list (1-50)",
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                             min_value: 0,
                             max_value: 50,
                         },
                         {
                             name: "rarity",
                             description: "View only X rarity (Star lvl) and above. (1-7)",
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                             min_value: 0,
                             max_value: 7,
                         },
@@ -129,7 +131,7 @@ class GuildSearch extends SlashCommand {
                         {
                             name: "reverse",
                             description: "Reverse the sort order",
-                            type: "BOOLEAN"
+                            type: Bot.constants.optionType.BOOLEAN
                         },
                     ]
                 }
@@ -137,7 +139,7 @@ class GuildSearch extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction, args, options) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: CommandOptions) { // eslint-disable-line no-unused-vars
         const searchType = interaction.options.getSubcommand();
 
         // Get all the string options
@@ -181,7 +183,7 @@ class GuildSearch extends SlashCommand {
         await interaction.reply({content: interaction.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT")});
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
 
-        let unitList = null;
+        let unitList: UnitObj[] | null = null;
         let foundUnit = null;
         let isShip = false;
         let searchStr = null;
@@ -226,7 +228,7 @@ class GuildSearch extends SlashCommand {
             interaction.editReply({content: `Found guild \`${guild.name}\`!`});
 
             const oldLen = guild.roster.length;
-            guild.roster = guild.roster.filter(m => m.allyCode !== null);
+            guild.roster = guild.roster.filter((m: {}) => m.allyCode !== null);
 
             if (!guild.roster.length) {
                 return interaction.editReply({content: "I could not get any valid roster for that guild."});
@@ -237,9 +239,9 @@ class GuildSearch extends SlashCommand {
                 guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
             }
         }
-        const guildAllycodes = guild.roster.map(p => p.allyCode);
+        const guildAllycodes = guild.roster.map((p: {}) => p.allyCode);
 
-        let guildChar;
+        let guildChar: {}[];
         try {
             guildChar = await Bot.swgohAPI.guildStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
@@ -250,7 +252,7 @@ class GuildSearch extends SlashCommand {
             // Looking for a stat
             const outArr = [];
 
-            let sortedMembers = guildChar.filter(gChar => gChar?.gp).sort((a, b) => {
+            let sortedMembers = guildChar.filter((gChar: APIUnitObj) => gChar?.gp).sort((a, b) => {
                 if (!a.stats?.final) return -1;
                 if (!b.stats?.final) return 1;
                 if (!a.stats.final[stat]) a.stats.final[stat] = 0;
@@ -320,7 +322,7 @@ class GuildSearch extends SlashCommand {
 
                 if (outTable.length) {
                     const outMsgArr = Bot.msgArray(outTable, "\n", 700);
-                    outMsgArr.forEach((m, ix) => {
+                    outMsgArr.forEach((m: string, ix: number) => {
                         const name = (ix === 0) ? interaction.language.get("COMMAND_GUILDSEARCH_SORTED_BY", foundUnit.name, stat, doReverse) : interaction.language.get("BASE_CONT_STRING");
                         fields.push({
                             name: name,
@@ -348,7 +350,7 @@ class GuildSearch extends SlashCommand {
             const sortType = sort ? sort : "name";
 
             for (const ch of guildChar) {
-                ch.zetas = ch.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
+                ch.zetas = ch.skills.filter((s: {}) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
             }
 
             if (!guildChar?.length ||
@@ -379,7 +381,7 @@ class GuildSearch extends SlashCommand {
             // Can get the order from abilities table => skillReferenceList
             let maxZ = 0;
             const zetas = [];
-            let apiChar;
+            let apiChar: APIUnitObj;
             try {
                 apiChar = await Bot.swgohAPI.getCharacter(foundUnit.uniqueName);
             } catch (e) {
@@ -431,7 +433,7 @@ class GuildSearch extends SlashCommand {
                 const gearStr = Bot.getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
                 let z = " | ";
                 zetas.forEach((zeta, ix) => {
-                    const pZeta = member.zetas.find(pz => pz.id === zeta);
+                    const pZeta = member.zetas.find((pz: {}) => pz.id === zeta);
                     if (!pZeta) {
                         z += " ";
                     } else {
@@ -440,7 +442,7 @@ class GuildSearch extends SlashCommand {
                 });
                 const gpStr = parseInt(member.gp, 10).toLocaleString();
 
-                let uStr;
+                let uStr: string;
                 if (member.rarity > 0) {
                     if (isShip) {
                         uStr = `**\`[Lvl ${member.level} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}`;
@@ -461,22 +463,22 @@ class GuildSearch extends SlashCommand {
             }
 
             const fields = [];
-            let outArr;
+            let outArr: number[];
 
             if (top) {
-                outArr = Object.keys(charOut);
+                outArr = Object.keys(charOut).map(k => parseInt(k, 10));
             } else {
                 if (doReverse) {
-                    outArr = Object.keys(charOut).reverse();
+                    outArr = Object.keys(charOut).map(k => parseInt(k, 10)).reverse();
                 } else {
-                    outArr = Object.keys(charOut);
+                    outArr = Object.keys(charOut).map(k => parseInt(k, 10));
                 }
             }
 
             outArr.forEach(star => {
                 if (star >= starLvl) {
                     const msgArr = Bot.msgArray(charOut[star], "\n", 700);
-                    msgArr.forEach((msg, ix) => {
+                    msgArr.forEach((msg: string, ix: number) => {
                         const name = star === 0 ? interaction.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length) : interaction.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
                         fields.push({
                             name: msgArr.length > 1 ? name + ` (${ix+1}/${msgArr.length})` : name,
@@ -525,8 +527,8 @@ class GuildSearch extends SlashCommand {
                     }]
                 });
             } catch (e) {
-                Bot.logger.error("ERROR", "Error sending message in guildsearch - " + e);
-                Bot.logger.error(fields);
+                Bot.logger.error(`ERROR: Error sending message in guildsearch - ${e}`);
+                Bot.logger.error(fields.join("\n"));
             }
         }
     }

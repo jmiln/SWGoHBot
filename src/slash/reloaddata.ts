@@ -1,20 +1,21 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType } from "../modules/types";
 
 class ReloadData extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "reloaddata",
             category: "Dev",
             enabled: true,
             description: "Reload the various data files",
             guildOnly: true,
-            aliases: ["rdata", "rd"],
             permLevel: 10,
             options: [
                 {
                     name: "target",
                     description: "What to reload",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true,
                     choices: [
                         {name: "Commands", value: "Commands"},
@@ -33,7 +34,7 @@ class ReloadData extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction) { // eslint-disable-line no-unused-vars
         const channelId = interaction.channel.id;
         const action = interaction.options.getString("target").toLowerCase();
 
@@ -180,7 +181,7 @@ class ReloadData extends SlashCommand {
 
                 // Helper funct to log the updates
                 const progressArr = [];
-                const progressOut = (strIn) => {
+                const progressOut = (strIn: string) => {
                     progressArr.push(strIn);
                     if (interaction.replied) {
                         interaction.editReply({content: progressArr.join("\n")});

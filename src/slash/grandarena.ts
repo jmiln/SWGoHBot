@@ -1,4 +1,6 @@
 import SlashCommand from "../base/slashCommand";
+import { Interaction } from "discord.js";
+import { APIUnitModObj, APIUnitObj, APIUnitSkill, BotType, PlayerStatsAccount, UnitObj } from "../modules/types";
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -17,52 +19,46 @@ const gpMap = {
 };
 
 class GrandArena extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "grandarena",
             category: "SWGoH",
             guildOnly: false,
-            aliases: ["ga"],
             permissions: ["EMBED_LINKS"],
-            subArgs: {
-                faction: {
-                    aliases: ["fact", "f"]
-                }
-            },
             options: [
                 {
                     name: "allycode_1",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "Ally code for player 1",
                     required: true
                 },
                 {
                     name: "allycode_2",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "Ally code for player 2",
                     required: true
                 },
                 {
                     name: "characters",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "Characters to compare, comma seperated"
                 },
                 {
                     name: "faction",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "A faction to compare for the two players"
                 }
             ]
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: {}) { // eslint-disable-line no-unused-vars
         const problemArr = [];
 
         // Get the first user's ally code if possible
         const user1str = interaction.options.getString("allycode_1");
-        let user1 = await super.getUser(interaction, user1str);
-        if (!user1) {
+        let user1AC = await Bot.getAllyCode(interaction, user1str);
+        if (!user1AC) {
             if (user1str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED", interaction.guildSettings.prefix));
             } else {
@@ -72,8 +68,8 @@ class GrandArena extends SlashCommand {
 
         // Get the second user's ally code if possible
         const user2str = interaction.options.getString("allycode_2");
-        let user2 = await super.getUser(interaction, user2str);
-        if (!user2) {
+        let user2AC = await Bot.getAllyCode(interaction, user2str);
+        if (!user2AC) {
             if (user2str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED", interaction.guildSettings.prefix));
             } else {
@@ -85,7 +81,7 @@ class GrandArena extends SlashCommand {
         let characters = interaction.options.getString("characters");
         let charOut = [];
         if (characters?.length) {
-            characters = characters.split(",").map(c => c.trim());
+            characters = characters.split(",").map((c: string) => c.trim());
             for (const char of characters) {
                 let chars = Bot.findChar(char, Bot.characters);
                 if (!chars.length) {
@@ -97,7 +93,7 @@ class GrandArena extends SlashCommand {
                     problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_CHAR", char));
                 } else {
                     // It found at least one matching character
-                    chars.forEach(c => {
+                    chars.forEach((c: UnitObj) => {
                         charOut.push(c.uniqueName);
                     });
                 }
@@ -105,21 +101,23 @@ class GrandArena extends SlashCommand {
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        let user1Acct: PlayerStatsAccount = null;
+        let user2Acct: PlayerStatsAccount = null;
         if (!problemArr.length) {
             // If there are no problems, go ahead and pull the users
             try {
-                const users = await Bot.swgohAPI.unitStats([user1, user2], cooldown);
+                const users = await Bot.swgohAPI.unitStats([user1AC, user2AC], cooldown);
                 if (Array.isArray(users)) {
-                    user1 = users[0];
-                    user2 = users[1];
+                    user1Acct = users[0];
+                    user2Acct = users[1];
                 }
             } catch (e) {
                 problemArr.push(e.message);
             }
-            if (!user1?.roster?.length) {
+            if (!user1Acct?.roster?.length) {
                 problemArr.push("Could not get user 1");
             }
-            if (!user2?.roster?.length) {
+            if (!user2Acct?.roster?.length) {
                 problemArr.push("Could not get user 2");
             }
         }
@@ -146,10 +144,10 @@ class GrandArena extends SlashCommand {
             const fact = Bot.findFaction(faction);
             if (Array.isArray(fact)) {
                 fact.forEach(f => {
-                    charOut = charOut.concat(Bot.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === f)).map(c => c.uniqueName));
+                    charOut = charOut.concat(Bot.characters.filter((c: UnitObj) => c.factions.find((ch: string) => ch.toLowerCase() === f)).map((c: UnitObj) => c.uniqueName));
                 });
             } else if (fact) {
-                charOut = charOut.concat(Bot.characters.filter(c => c.factions.find(ch => ch.toLowerCase() === fact)).map(c => c.uniqueName));
+                charOut = charOut.concat(Bot.characters.filter((c: UnitObj) => c.factions.find((ch: string) => ch.toLowerCase() === fact)).map((c: UnitObj) => c.uniqueName));
             } else {
                 return super.error(interaction, "Sorry, but I did not find a match for the faction: `" + options.subArgs.faction + "`");
             }
@@ -162,27 +160,27 @@ class GrandArena extends SlashCommand {
         }
 
         // Filter out just the characters
-        const user1CharRoster = user1.roster.filter(ch => ch.combatType === 1);
-        const user2CharRoster = user2.roster.filter(ch => ch.combatType === 1);
+        const user1CharRoster = user1Acct.roster.filter(ch => ch.combatType === 1);
+        const user2CharRoster = user2Acct.roster.filter(ch => ch.combatType === 1);
 
         // Filter out just the ships
-        const user1ShipRoster = user1.roster.filter(ch => ch.combatType === 2);
-        const user2ShipRoster = user2.roster.filter(ch => ch.combatType === 2);
+        const user1ShipRoster = user1Acct.roster.filter(ch => ch.combatType === 2);
+        const user2ShipRoster = user2Acct.roster.filter(ch => ch.combatType === 2);
 
         // Quick little function to add up all the gp frm a given chunk of roster
-        const sumGP = (rosterIn) => {
-            return rosterIn.reduce((a, b) => a + b.gp, 0);
+        const sumGP = (rosterIn: {}[]) => {
+            return rosterIn.reduce((a: number, b: UnitObj) => a + b.gp, 0);
         };
 
         // Get the top X characters from the roster (Sort then slice)
-        const getTopX = (rosterIn, x) => {
+        const getTopX = (rosterIn: {}[], x: number) => {
             // Sort it so the ones with a higher gp are first
-            const sortedIn = rosterIn.sort((a, b) => a.gp < b.gp ? 1 : -1);
+            const sortedIn = rosterIn.sort((a: UnitObj, b: UnitObj) => a.gp < b.gp ? 1 : -1);
             return sortedIn.slice(0, x);
         };
 
         // Get which division info these users will work with
-        const getDiv = (gpIn) => {
+        const getDiv = (gpIn: number) => {
             const divKeys = Object.keys(gpMap);
             for (const key of divKeys.reverse()) {
                 if (gpIn < parseInt(key, 10)) {
@@ -193,7 +191,7 @@ class GrandArena extends SlashCommand {
             }
         };
 
-        const getGearStr = (charIn) => {
+        const getGearStr = (charIn: APIUnitObj) => {
             // If the character is not unlocked
             if (!charIn?.gear) return "N/A";
 
@@ -210,40 +208,40 @@ class GrandArena extends SlashCommand {
         let overview = [];
 
         // Arena stats
-        if (user1.arena && user2.arena) {
-            if (user1.arena.char && user2.arena.char) {
+        if (user1Acct.arena && user2Acct.arena) {
+            if (user1Acct.arena.char && user2Acct.arena.char) {
                 overview.push({
                     check: labels.cArena,
-                    user1: user1.arena.char.rank,
-                    user2: user2.arena.char.rank,
+                    user1: user1Acct.arena.char.rank,
+                    user2: user2Acct.arena.char.rank,
                 });
             }
-            if (user1.arena.ship && user2.arena.ship) {
+            if (user1Acct.arena.ship && user2Acct.arena.ship) {
                 overview.push({
                     check: labels.sArena,
-                    user1: user1.arena.ship.rank,
-                    user2: user2.arena.ship.rank,
+                    user1: user1Acct.arena.ship.rank,
+                    user2: user2Acct.arena.ship.rank,
                 });
             }
         }
         overview.push({
             check: labels.zetas,
-            user1: user1.roster.reduce((a, b) => a + b.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length, 0),
-            user2: user2.roster.reduce((a, b) => a + b.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length, 0)
+            user1: user1Acct.roster.reduce((a, b) => a + b.skills.filter((s: APIUnitSkill) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length, 0),
+            user2: user2Acct.roster.reduce((a, b) => a + b.skills.filter((s: APIUnitSkill) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length, 0)
         });
         overview.push({
             check: "Omicrons",
-            user1: user1.roster.reduce((a, b) => a + b.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length, 0),
-            user2: user2.roster.reduce((a, b) => a + b.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length, 0)
+            user1: user1Acct.roster.reduce((a, b) => a + b.skills.filter((s: APIUnitSkill) => s.isOmicron && s.tier >= s.tiers).length, 0),
+            user2: user2Acct.roster.reduce((a, b) => a + b.skills.filter((s: APIUnitSkill) => s.isOmicron && s.tier >= s.tiers).length, 0)
         });
-        overview = Bot.codeBlock(Bot.makeTable({
+        const overviewOut = Bot.codeBlock(Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
         }, overview, {useHeader: false}).join("\n"), "asciiDoc");
         fields.push({
             name: "General Overview",
-            value: overview
+            value: overviewOut
         });
 
 
@@ -253,8 +251,8 @@ class GrandArena extends SlashCommand {
         // Overall basic gp stats
         gpStats.push({
             check: "Total GP",
-            user1: sumGP(user1.roster).shortenNum(2),
-            user2: sumGP(user2.roster).shortenNum(2)
+            user1: sumGP(user1Acct.roster).shortenNum(2),
+            user2: sumGP(user2Acct.roster).shortenNum(2)
         });
         gpStats.push({
             check: labels.charGP,
@@ -268,7 +266,7 @@ class GrandArena extends SlashCommand {
         });
 
         // GA Specific stats for the top however many characters' GP
-        const user1GP = sumGP(user1.roster);
+        const user1GP = sumGP(user1Acct.roster);
         const thisDiv = getDiv(user1GP);
 
         const user1TopX5 = getTopX(user1CharRoster, thisDiv.topX5);
@@ -289,7 +287,7 @@ class GrandArena extends SlashCommand {
         });
 
 
-        gpStats = Bot.codeBlock(Bot.makeTable({
+        const gpStatsOut = Bot.codeBlock(Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
@@ -297,15 +295,18 @@ class GrandArena extends SlashCommand {
 
         fields.push({
             name: "GP Stats Overview",
-            value: gpStats
+            value: gpStatsOut
         });
 
 
         // Get the overall gear levels for each user
         let gearOverview = [];
-        const [u1GearLvls, u1AvgGear] =Bot.summarizeCharLevels(user1, "gear");
-        const [u2GearLvls, u2AvgGear] =Bot.summarizeCharLevels(user2, "gear");
-        const maxGear = Math.max(Math.max(...Object.keys(u1GearLvls)), Math.max(...Object.keys(u2GearLvls)));
+        const [u1GearLvls, u1AvgGear] = Bot.summarizeCharLevels(user1Acct, "gear");
+        const [u2GearLvls, u2AvgGear] = Bot.summarizeCharLevels(user2Acct, "gear");
+        const maxGear = Math.max(
+            Math.max(...Object.keys(u1GearLvls).map((gl: string) => parseInt(gl, 10))),
+            Math.max(...Object.keys(u2GearLvls).map((gl: string) => parseInt(gl, 10)))
+        );
         for (let ix = maxGear-3; ix <= maxGear; ix++) {
             gearOverview.push({
                 check: `G${ix}`,
@@ -318,22 +319,25 @@ class GrandArena extends SlashCommand {
             user1: u1AvgGear,
             user2: u2AvgGear
         });
-        gearOverview = Bot.codeBlock(Bot.makeTable({
+        const gearOverviewOut = Bot.codeBlock(Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
         }, gearOverview, {useHeader: false}).join("\n"), "asciiDoc");
         fields.push({
             name: "Character Gear Counts",
-            value: "*How many characters at each gear level*" + gearOverview
+            value: "*How many characters at each gear level*" + gearOverviewOut
         });
 
 
         // Get the overall rarity levels for each user
         let rarityOverview = [];
-        const [u1RarityLvls, u1AvgRarity] =Bot.summarizeCharLevels(user1, "rarity");
-        const [u2RarityLvls, u2AvgRarity] =Bot.summarizeCharLevels(user2, "rarity");
-        const maxRarity = Math.max(Math.max(...Object.keys(u1RarityLvls)), Math.max(...Object.keys(u2RarityLvls)));
+        const [u1RarityLvls, u1AvgRarity] = Bot.summarizeCharLevels(user1Acct, "rarity");
+        const [u2RarityLvls, u2AvgRarity] = Bot.summarizeCharLevels(user2Acct, "rarity");
+        const maxRarity = Math.max(
+            Math.max(...Object.keys(u1RarityLvls).map((gl: string) => parseInt(gl, 10))),
+            Math.max(...Object.keys(u2RarityLvls).map((gl: string) => parseInt(gl, 10)))
+        );
         for (let ix = maxRarity-3; ix <= maxRarity; ix++) {
             rarityOverview.push({
                 check: `${ix}*`,
@@ -346,7 +350,7 @@ class GrandArena extends SlashCommand {
             user1: u1AvgRarity,
             user2: u2AvgRarity
         });
-        rarityOverview = Bot.codeBlock(Bot.makeTable({
+        const rarityOverviewOut = Bot.codeBlock(Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
@@ -354,7 +358,7 @@ class GrandArena extends SlashCommand {
 
         fields.push({
             name: "Character Rarity Counts",
-            value: "*How many characters at each rarity level*" + rarityOverview
+            value: "*How many characters at each rarity level*" + rarityOverviewOut
         });
 
 
@@ -366,31 +370,34 @@ class GrandArena extends SlashCommand {
             ["SITHPALPATINE",           "SE Emperor"],
             ["SUPREMELEADERKYLOREN",    "SL Kylo Ren"]
         ];
-        let glOverview = [];
+        let glOverview: {}[] = [];
         for (const gl of legendMap) {
-            const u1Char = user1.roster.find(c => c.defId === gl[0]);
-            const u2Char = user2.roster.find(c => c.defId === gl[0]);
+            const u1Char = user1Acct.roster.find((c: APIUnitObj) => c.defId === gl[0]);
+            const u2Char = user2Acct.roster.find((c: APIUnitObj) => c.defId === gl[0]);
             glOverview.push({
                 check: gl[1],
                 user1: `${getGearStr(u1Char)}${u1Char?.purchasedAbilityId?.length > 0 ? "U" : ""}`,
                 user2: `${getGearStr(u2Char)}${u2Char?.purchasedAbilityId?.length > 0 ? "U" : ""}`
             });
         }
-        glOverview = Bot.codeBlock(Bot.makeTable({
+        const glOverviewOut = Bot.codeBlock(Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
         }, glOverview, {useHeader: false}).join("\n"), "asciiDoc");
         fields.push({
             name: "Galactic Legend Overview",
-            value:glOverview
+            value: glOverviewOut
         });
 
         // Get the overall relic levels for each user
         let relicOverview = [];
-        const [u1RelicLvls, u1AvgRelic] =Bot.summarizeCharLevels(user1, "relic");
-        const [u2RelicLvls, u2AvgRelic] =Bot.summarizeCharLevels(user2, "relic");
-        const maxRelic = Math.max(Math.max(...Object.keys(u1RelicLvls)), Math.max(...Object.keys(u2RelicLvls)));
+        const [u1RelicLvls, u1AvgRelic] =Bot.summarizeCharLevels(user1Acct, "relic");
+        const [u2RelicLvls, u2AvgRelic] =Bot.summarizeCharLevels(user2Acct, "relic");
+        const maxRelic = Math.max(
+            Math.max(...Object.keys(u1RelicLvls).map((gl: string) => parseInt(gl, 10))),
+            Math.max(...Object.keys(u2RelicLvls).map((gl: string) => parseInt(gl, 10)))
+        );
         for (let ix = 1; ix <= maxRelic; ix++) {
             relicOverview.push({
                 check: `R${ix}`,
@@ -403,14 +410,14 @@ class GrandArena extends SlashCommand {
             user1: u1AvgRelic,
             user2: u2AvgRelic
         });
-        relicOverview = Bot.codeBlock(Bot.makeTable({
+        const relicOverviewOut = Bot.codeBlock(Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
         }, relicOverview, {useHeader: false}).join("\n"), "asciiDoc");
         fields.push({
             name: "Character Relic Counts",
-            value: "*How many characters at each relic level*" + relicOverview
+            value: "*How many characters at each relic level*" + relicOverviewOut
         });
 
 
@@ -428,12 +435,12 @@ class GrandArena extends SlashCommand {
             spd25: 0,
             off100: 0
         };
-        user1.roster.forEach(c => {
+        user1Acct.roster.forEach((c: APIUnitObj) => {
             if (c.mods) {
                 c.mods.forEach(m => {
                     // 5 is the number for speed, 41 is for offense
-                    const spd = m.secondaryStat.find(s => s.unitStat === 5 && s.value >= 15);
-                    const off = m.secondaryStat.find(s => s.unitStat === 41 && s.value >= 100);
+                    const spd = m.secondaryStat.find((s: {}) => s.unitStat === 5 && s.value >= 15);
+                    const off = m.secondaryStat.find((s: {}) => s.unitStat === 41 && s.value >= 100);
                     if (spd) {
                         if (spd.value >= 25) {
                             u1Mods.spd25 += 1;
@@ -447,11 +454,11 @@ class GrandArena extends SlashCommand {
                 });
             }
         });
-        user2.roster.forEach(c => {
+        user2Acct.roster.forEach((c: APIUnitObj) => {
             if (c.mods) {
                 c.mods.forEach(m => {
-                    const spd = m.secondaryStat.find(s => s.unitStat === 5 && s.value >= 15);
-                    const off = m.secondaryStat.find(s => s.unitStat === 41 && s.value >= 100);
+                    const spd = m.secondaryStat.find((s: {}) => s.unitStat === 5 && s.value >= 15);
+                    const off = m.secondaryStat.find((s: {}) => s.unitStat === 41 && s.value >= 100);
                     if (spd) {
                         if (spd.value >= 25) {
                             u2Mods.spd25 += 1;
@@ -469,8 +476,8 @@ class GrandArena extends SlashCommand {
         let modOverview = [];
         modOverview.push({
             check: labels.mods6,
-            user1: user1.roster.reduce((a, b) => a + (b.mods ? b.mods.filter(m => m.pips === 6).length : 0), 0),
-            user2: user2.roster.reduce((a, b) => a + (b.mods ? b.mods.filter(m => m.pips === 6).length : 0), 0)
+            user1: user1Acct.roster.reduce((a: number, b: APIUnitObj) => a + (b?.mods.filter(m => m.pips === 6).length || 0), 0),
+            user2: user2Acct.roster.reduce((a: number, b: APIUnitObj) => a + (b?.mods.filter(m => m.pips === 6).length || 0), 0)
         });
         modOverview.push({
             check: labels.spd15,
@@ -493,7 +500,7 @@ class GrandArena extends SlashCommand {
             user2: u2Mods.off100
         });
 
-        modOverview = Bot.codeBlock(Bot.makeTable({
+        const modOverviewOut = Bot.codeBlock(Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
@@ -501,26 +508,28 @@ class GrandArena extends SlashCommand {
 
         fields.push({
             name: "Mod Stats Overview",
-            value: modOverview
+            value: modOverviewOut
         });
 
 
         for (const char of charArr) {
-            const user1Char = user1.roster.find(c => c.defId === char);
-            const user2Char = user2.roster.find(c => c.defId === char);
-            let cName = Bot.characters.find(c => c.uniqueName === char);
+            const user1Char = user1Acct.roster.find((c: APIUnitObj) => c.defId === char);
+            const user2Char = user2Acct.roster.find((c: APIUnitObj) => c.defId === char);
+            let foundChar = Bot.characters.find((c: UnitObj) => c.uniqueName === char);
             let ship = false;
+            let cName: string = null;
 
-            if (!cName) {
+            if (!foundChar) {
                 // See if you can get it from the ships
-                if (Bot.ships.find(s => s.uniqueName === char)) {
-                    cName = Bot.ships.find(s => s.uniqueName === char).name;
+                const foundShip = Bot.ships.find((s: UnitObj) => s.uniqueName === char);
+                if (foundShip) {
+                    cName = foundShip.name;
                     ship = true;
                 } else {
                     continue;
                 }
             } else {
-                cName = cName.name;
+                cName = foundChar.name;
             }
 
             checkArr[cName] = [];
@@ -546,13 +555,13 @@ class GrandArena extends SlashCommand {
 
                 checkArr[cName].push({
                     check: labels.zetas,
-                    user1: user1Char ? user1Char.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A",
-                    user2: user2Char ? user2Char.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A"
+                    user1: user1Char ? user1Char.skills.filter((s: {}) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A",
+                    user2: user2Char ? user2Char.skills.filter((s: {}) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A"
                 });
                 checkArr[cName].push({
                     check: "Omicrons",
-                    user1: user1Char ? user1Char.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A",
-                    user2: user2Char ? user2Char.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A"
+                    user1: user1Char ? user1Char.skills.filter((s: {}) => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A",
+                    user2: user2Char ? user2Char.skills.filter((s: {}) => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A"
                 });
                 checkArr[cName].push({
                     check: labels.speed,
@@ -567,7 +576,7 @@ class GrandArena extends SlashCommand {
         const checkLen = Object.keys(checkArr).length;
         Object.keys(checkArr).forEach((c, ix) => {
             if (checkLen <= 21 || ix < 21) {
-                let halfLen = parseInt((len - c.length) / 2, 10);
+                let halfLen = (len - c.length) / 2;
                 if (halfLen < 0) halfLen = 0;
                 fields.push({
                     name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
@@ -575,7 +584,7 @@ class GrandArena extends SlashCommand {
                         check: {value: "", align: "left", endWith: "::"},
                         user1: {value: "", align: "right"},
                         user2: {value: "", align: "left"}
-                    }, checkArr[c], {useHeader: false}).map(e => e.replace(" ::", "::")).join("\n"), "asciiDoc"),
+                    }, checkArr[c], {useHeader: false}).map((e: string) => e.replace(" ::", "::")).join("\n"), "asciiDoc"),
                     inline: true
                 });
             } else {
@@ -589,9 +598,9 @@ class GrandArena extends SlashCommand {
             });
         }
 
-        const footer = Bot.updatedFooter(Math.min(user1.updated, user2.updated), interaction, "player", cooldown);
+        const footer = Bot.updatedFooter(Math.min(user1Acct.updated, user2Acct.updated), interaction, "player", cooldown);
         return interaction.reply({embeds: [{
-            author: {name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name)},
+            author: {name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1Acct.name, user2Acct.name)},
             // description: message.language.get("COMMAND_GRANDARENA_OUT_DESC", overview, modOverview),
             fields: fields,
             footer: footer

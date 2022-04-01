@@ -1,8 +1,9 @@
 import SlashCommand from "../base/slashCommand";
 import { Interaction } from "discord.js";
+import { BotInteraction, BotType, CommandOptions } from "../modules/types";
 
 class ArenaAlert extends SlashCommand {
-    constructor(Bot: {}) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "arenaalert",
             category: "Patreon",
@@ -11,7 +12,7 @@ class ArenaAlert extends SlashCommand {
             options: [
                 {
                     name: "enabledms",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "Set if it's going to DM you for jumps",
                     choices: [
                         {
@@ -30,7 +31,7 @@ class ArenaAlert extends SlashCommand {
                 },
                 {
                     name: "arena",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "Set which arena it will watch.",
                     choices: [
                         {
@@ -49,7 +50,7 @@ class ArenaAlert extends SlashCommand {
                 },
                 {
                     name: "payout_result",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "Send you a DM with your final payout result",
                     choices: [
                         {
@@ -64,7 +65,7 @@ class ArenaAlert extends SlashCommand {
                 },
                 {
                     name: "payout_warning",
-                    type: "INTEGER",
+                    type: Bot.constants.optionType.INTEGER,
                     description: "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
                     min_value: 0,
                     max_value: 1440,
@@ -73,7 +74,7 @@ class ArenaAlert extends SlashCommand {
         });
     }
 
-    async run(Bot: {}, interaction: Interaction, options?:{}) {  // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options?: CommandOptions) {
         const enabledms = interaction.options.getString("enabledms");
         const arena = interaction.options.getString("arena");
         const payoutResult = interaction.options.getString("payout_result");
@@ -97,7 +98,7 @@ class ArenaAlert extends SlashCommand {
         }
 
         // Make sure the user is a patreon
-        const pat = Bot.getPatronUser(interaction.user.id);
+        const pat = await Bot.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
@@ -121,6 +122,8 @@ class ArenaAlert extends SlashCommand {
         if (enabledms) {
             if (user.arenaAlert.enableRankDMs !== enabledms) {
                 changeLog.push(`Changed EnableDMs from ${user.arenaAlert.enableRankDMs} to ${enabledms}`);
+            } else {
+                changeLog.push(`EnableDMs was already set to ${enabledms}`);
             }
             user.arenaAlert.enableRankDMs = enabledms;
         }
@@ -129,6 +132,8 @@ class ArenaAlert extends SlashCommand {
         if (arena) {
             if (user.arenaAlert.arena !== arena) {
                 changeLog.push(`Changed arena from ${user.arenaAlert.arena} to ${arena}`);
+            } else {
+                changeLog.push(`Arena was already set to ${arena}`);
             }
             user.arenaAlert.arena = arena;
         }
@@ -137,6 +142,8 @@ class ArenaAlert extends SlashCommand {
         if (payoutResult) {
             if (user.arenaAlert.payoutResult !== payoutResult) {
                 changeLog.push(`Changed Payout Result from ${user.arenaAlert.payoutResult} to ${payoutResult}`);
+            } else {
+                changeLog.push(`Payout Result was already set to ${payoutResult}`);
             }
             user.arenaAlert.payoutResult = payoutResult;
         }
@@ -148,6 +155,8 @@ class ArenaAlert extends SlashCommand {
             } else {
                 if (user.arenaAlert.payoutWarning !== payoutWarning) {
                     changeLog.push(`Changed Payout Warning from ${user.arenaAlert.payoutWarning} to ${payoutWarning}`);
+                } else {
+                    changeLog.push(`Payout Warning was already set to ${payoutWarning}`);
                 }
                 user.arenaAlert.payoutWarning = payoutWarning;
             }

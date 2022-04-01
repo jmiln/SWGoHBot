@@ -1,25 +1,26 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { APIUnitObj, BotInteraction, BotType, PlayerStatsAccount } from "../modules/types";
 
 class MyProfile extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "myprofile",
             category: "SWGoH",
             guildOnly: false,
-            aliases: ["mp", "userprofile", "up"],
             permissions: ["EMBED_LINKS"],    // Starts with ["SEND_MESSAGES", "VIEW_CHANNEL"] so don't need to add them
             options: [
                 {
                     name: "allycode",
                     description: "The ally code for the profile you want view",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true
                 },
             ]
         });
     }
 
-    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction) {
         const allycodeIn = interaction.options.getString("allycode");
         const allycode = await Bot.getAllyCode(interaction, allycodeIn);
         if (!allycode) {
@@ -27,7 +28,7 @@ class MyProfile extends SlashCommand {
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
-        let player;
+        let player: PlayerStatsAccount;
         try {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
@@ -36,13 +37,13 @@ class MyProfile extends SlashCommand {
             return super.error(interaction, "Please make sure you are registered with a valid ally code");
         }
 
-        if (!player || !player.stats) {
+        if (!player.stats) {
             return super.error(interaction, "Sorry, but I could not find that player right now.");
         }
 
-        const gpFull = player.stats.find(s => s.nameKey === "Galactic Power:" || s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;
-        const gpChar = player.stats.find(s => s.nameKey === "Galactic Power (Characters):" || s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME").value;
-        const gpShip = player.stats.find(s => s.nameKey === "Galactic Power (Ships):" || s.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME").value;
+        const gpFull = player.stats.find((s) => s.nameKey === "Galactic Power:" || s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;
+        const gpChar = player.stats.find((s) => s.nameKey === "Galactic Power (Characters):" || s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME").value;
+        const gpShip = player.stats.find((s) => s.nameKey === "Galactic Power (Ships):" || s.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME").value;
 
         const rarityMap = {
             "ONESTAR": 1,
@@ -54,8 +55,8 @@ class MyProfile extends SlashCommand {
             "SEVENSTAR": 7
         };
 
-        player.roster.forEach(c => {
-            if (!parseInt(c.rarity, 10)) {
+        player.roster.forEach((c: APIUnitObj) => {
+            if (!c?.rarity) {
                 c.rarity = rarityMap[c.rarity];
             }
         });
@@ -69,15 +70,15 @@ class MyProfile extends SlashCommand {
             spd20: 0,
             off100: 0
         };
-        player.roster.forEach(c => {
+        player.roster.forEach((c: APIUnitObj) => {
             if (c.mods) {
                 const six = c.mods.filter(p => p.pips === 6);
                 if (six.length) {
                     mods.sixPip += six.length;
                 }
                 c.mods.forEach(m => {
-                    const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 15);
-                    const off = m.secondaryStat.find(o => (o.unitStat === 41 || o.unitStat === "UNITSTATOFFENSE") && o.value >= 100);
+                    const spd = m.secondaryStat.find(s => s.unitStat === 5 && s.value >= 15);
+                    const off = m.secondaryStat.find(o => o.unitStat === 41 && o.value >= 100);
 
                     if (spd) {
                         if (spd.value >= 20) {
@@ -118,8 +119,8 @@ class MyProfile extends SlashCommand {
         // Get the Character stats
         let zetaCount = 0;
         let omicronCount = 0;
-        const charList = player.roster.filter(u => u.combatType === "CHARACTER" || u.combatType === 1);
-        charList.forEach(char => {
+        const charList = player.roster.filter((u: APIUnitObj) => u.combatType === 1);
+        charList.forEach((char: APIUnitObj) => {
             rarityCount[char.rarity].c += 1;
             if (char.relic?.currentTier && char.relic.currentTier > 2) {
                 if (!relicCount[relicTiers[char.relic.currentTier]]) {
@@ -157,8 +158,8 @@ class MyProfile extends SlashCommand {
         });
 
         // Get the ship stats
-        const shipList = player.roster.filter(u => u.combatType === "SHIP" || u.combatType === 2);
-        shipList.forEach(ship => {
+        const shipList = player.roster.filter((u: APIUnitObj) => u.combatType === 2);
+        shipList.forEach((ship: APIUnitObj) => {
             rarityCount[ship.rarity].s += 1;
         });
 
@@ -174,9 +175,9 @@ class MyProfile extends SlashCommand {
 
         //  Show the rarity stats/ averages
         const totalChars    =  Object.keys(rarityCount).map(r => rarityCount[r].c).reduce((a,b) => a + b, 0);
-        const avgCharRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].c).reduce((a,b) => a + b, 0) / totalChars).toFixed(2);
+        const avgCharRarity = (Object.keys(rarityCount).map(r => parseInt(r, 10) * rarityCount[r].c).reduce((a,b) => a + b, 0) / totalChars).toFixed(2);
         const totalShips    =  Object.keys(rarityCount).map(r => rarityCount[r].s).reduce((a,b) => a + b, 0);
-        const avgShipRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].s).reduce((a,b) => a + b, 0) / totalShips).toFixed(2);
+        const avgShipRarity = (Object.keys(rarityCount).map(r => parseInt(r, 10) * rarityCount[r].s).reduce((a,b) => a + b, 0) / totalShips).toFixed(2);
         fields.push({
             name: interaction.language.get("COMMAND_MYPROFILE_RARITY_HEADER"),
             value: ["` * | Char | Ship `",

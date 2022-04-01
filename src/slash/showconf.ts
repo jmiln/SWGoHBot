@@ -1,18 +1,19 @@
 // const util = require("util");
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType } from "../modules/types";
 
 class Showconf extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "showconf",
             guildOnly: false,
-            aliases: ["showconfs", "showconfig", "showconfigs"],
             category: "Admin",
             permLevel: 3
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const guildID = interaction.guild.id;
         let guildName = "";
 

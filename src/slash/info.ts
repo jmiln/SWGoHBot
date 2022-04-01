@@ -1,10 +1,10 @@
 import SlashCommand from "../base/slashCommand";
-import { version } from "discord.js";
+import { Interaction, version } from "discord.js";
+import { BotInteraction, BotType } from "../modules/types";
 
 class Info extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
-            aliases: ["invite", "inv"],
             name: "info",
             guildOnly: false,
             category: "Misc",
@@ -13,11 +13,11 @@ class Info extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         try {
             const guilds = await Bot.guildCount();
             const users = await Bot.userCount();
-            const content = interaction.language.get("COMMAND_INFO_OUTPUT", interaction.client.shard.id);
+            const content = interaction.language.get("COMMAND_INFO_OUTPUT", interaction.client.shard.ids[0]);
             const fields = [];
             let desc = content.statHeader + "\n";
             const statTable = [

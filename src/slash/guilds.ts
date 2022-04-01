@@ -1,30 +1,31 @@
 import SlashCommand from "../base/slashCommand";
 import moment from "moment-timezone";
 import { charChecklist, shipChecklist } from "../data/unitChecklist";
+import { Interaction } from "discord.js";
+import { APIGuildMemberObj, APIGuildObj, APIRawGuildObj, APIUnitObj, BotInteraction, BotType, PlayerStatsAccount, UnitObj } from "../modules/types";
 
 class Guilds extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "guilds",
             guildOnly: false,
             category: "SWGoH",
-            aliases: ["guild", "g"],
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "gear",
                     description: "Show an overview of the guild's gear levels",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "sort",
                             description: "Which gear level you'd like it sorted by (9-13)",
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                             min_value: 9,
                             max_value: 13,
                         }
@@ -33,17 +34,17 @@ class Guilds extends SlashCommand {
                 {
                     name: "mods",
                     description: "Show an overview of the guild's mod stats",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "sort",
                             description: "Choose how you want the results sorted",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 {
                                     name: "name",
@@ -68,39 +69,39 @@ class Guilds extends SlashCommand {
                 {
                     name: "relics",
                     description: "Show an overview of the guild's relic counts",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                     ]
                 },
                 {
                     name: "roster",
                     description: "View the guild's roster, showing ally codes, gp, etc.",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "registered",
                             description: "Show the discord names of anyone registered & on the server next to their name.",
-                            type: "BOOLEAN"
+                            type: Bot.constants.optionType.BOOLEAN
                         },
                         {
                             name: "show_allycode",
                             description: "Show user's ally codes instead of their gp",
-                            type: "BOOLEAN"
+                            type: Bot.constants.optionType.BOOLEAN
                         },
                         {
                             name: "sort",
                             description: "Choose what the list is sorted by.",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 {
                                     name: "name",
@@ -119,7 +120,7 @@ class Guilds extends SlashCommand {
                         {
                             name: "show_side",
                             description: "Display just light side or dark side GP",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 {
                                     name: "Light Side",
@@ -136,17 +137,17 @@ class Guilds extends SlashCommand {
                 {
                     name: "tickets",
                     description: "Show how many event tickets each guild member has aquired for the day",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "sort",
                             description: "Choose what the list is sorted by.",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             choices: [
                                 {
                                     name: "tickets",
@@ -163,29 +164,29 @@ class Guilds extends SlashCommand {
                 {
                     name: "tw_summary",
                     description: "Show an overview of stats for your guild that could be useful for territory wars",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                         {
                             name: "expand",
                             description: "Expand some of the fields to show all options",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                         },
                     ]
                 },
                 {
                     name: "view",
                     description: "Show an overview of the guild's stats",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: Bot.constants.optionType.STRING
                         },
                     ]
                 }
@@ -193,7 +194,7 @@ class Guilds extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         await interaction.reply({content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT")});
 
         const subCommand = interaction.options.getSubcommand();
@@ -215,7 +216,7 @@ class Guilds extends SlashCommand {
             return await guildTickets(userAC);
         }
 
-        let guild = null;
+        let guild: APIGuildObj = null;
         try {
             guild = await Bot.swgohAPI.guild(userAC, null, cooldown);
         } catch (e) {
@@ -287,12 +288,12 @@ class Guilds extends SlashCommand {
             if (sortBy && (sortBy > 13 || sortBy < 1)) {
                 return interaction.editReply({content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(","))});
             }
-            const gRoster = guild.roster.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(m => m.allyCode);
+            const gRoster = guild.roster.sort((a: APIGuildMemberObj, b: APIGuildMemberObj) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map((m: APIGuildMemberObj) => m.allyCode);
 
             if (!gRoster.length) {
                 return interaction.editReply({content: "I can't find any players in the requested guild."});
             }
-            let guildGG;
+            let guildGG: PlayerStatsAccount[];
             try {
                 guildGG = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
@@ -300,9 +301,8 @@ class Guilds extends SlashCommand {
                 // Spit out the gId so I can go check on why it's breaking
                 Bot.logger.error("GuildID: " + guild.id);
                 return interaction.editReply({content: null, embeds: [{
-                    description: Bot.codeBlock(e),
+                    description: Bot.codeBlock(e) +  "\nPlease try again in a bit",
                     title: "Something Broke while getting your guild's characters",
-                    footer: "Please try again in a bit",
                     color: "#FF0000"
                 }]});
             }
@@ -311,7 +311,7 @@ class Guilds extends SlashCommand {
 
             guildGG.forEach(player => {
                 if (!player.roster) return;
-                player.roster.forEach(char => {
+                player.roster.forEach((char: APIUnitObj) => {
                     gearOut[player.name] = gearOut[player.name] || {};
                     if (char.gear < 10) return;
                     if (gearOut[player.name][char.gear]) {
@@ -350,7 +350,7 @@ class Guilds extends SlashCommand {
 
             const outMsgArr = Bot.msgArray(tableOut, "\n", 700);
             const fields = [];
-            outMsgArr.forEach(m => {
+            outMsgArr.forEach((m: string) => {
                 fields.push({
                     name: "-",
                     value: m
@@ -369,16 +369,15 @@ class Guilds extends SlashCommand {
 
         async function guildMods() {
             // Give a general overview of important mods (6*, +15, +20 speed, +100 offense?)
-            let guildGG;
+            let guildGG: PlayerStatsAccount[];
             try {
-                guildGG = await Bot.swgohAPI.unitStats(guild.roster.map(m => m.allyCode), cooldown);
+                guildGG = await Bot.swgohAPI.unitStats(guild.roster.map((m: APIGuildMemberObj) => m.allyCode), cooldown);
             } catch (err) {
                 return interaction.editReply({
                     content: null,
                     embeds: [{
                         title: "Something Broke while getting your guild's characters",
-                        description: " " +Bot.codeBlock(err),
-                        footer: "Please try again in a bit"
+                        description: Bot.codeBlock(err) + "\nPlease try again in a bit"
                     }]
                 });
             }
@@ -393,15 +392,15 @@ class Guilds extends SlashCommand {
                     name: player.name
                 };
 
-                player.roster.forEach(c => {
+                player.roster.forEach((c: APIUnitObj) => {
                     if (c.mods) {
                         const six = c.mods.filter(p => p.pips === 6);
                         if (six.length) {
                             mods.sixPip += six.length;
                         }
                         c.mods.forEach(m => {
-                            const spd = m.secondaryStat.find(s => (s.unitStat === 5  || s.unitStat === "UNITSTATSPEED")  && s.value >= 15);
-                            const off = m.secondaryStat.find(o => (o.unitStat === 41 || o.unitStat === "UNITSTATOFFENSE") && o.value >= 100);
+                            const spd = m.secondaryStat.find(s => s.unitStat === 5  && s.value >= 15);
+                            const off = m.secondaryStat.find(o => o.unitStat === 41 && o.value >= 100);
 
                             if (spd) {
                                 if (spd.value >= 20) {
@@ -441,7 +440,7 @@ class Guilds extends SlashCommand {
             }, output);
             const header = [Bot.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
 
-            const fields = Bot.msgArray(header.concat(table), "\n", 700).map(m => {
+            const fields = Bot.msgArray(header.concat(table), "\n", 700).map((m: string) => {
                 return {name: "-", value: m};
             });
 
@@ -457,24 +456,23 @@ class Guilds extends SlashCommand {
             const members = [];
 
             // Make sure the guild roster exists, and grab all the ally codes
-            let gRoster ;
+            let gRoster: number[];
             if (!guild || !guild.roster || !guild.roster.length) {
                 throw new Error(interaction.language.get("BASE_SWGOH_NO_GUILD"));
             } else {
                 interaction.editReply({content: "Found guild `" + guild.name + "`!"});
-                gRoster = guild.roster.map(m => m.allyCode);
+                gRoster = guild.roster.map((m) => m.allyCode);
             }
 
             // Use the ally codes to get all the other info for the guild
-            let guildMembers;
+            let guildMembers: PlayerStatsAccount[];
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return interaction.editReply({content: null, embeds: [{
                     title: "Something Broke while getting your guild's characters",
-                    description: Bot.codeBlock(e),
-                    footer: "Please try again in a bit."
+                    description: Bot.codeBlock(e) + "Please try again in a bit."
                 }]});
             }
 
@@ -575,13 +573,13 @@ class Guilds extends SlashCommand {
             }]});
         }
 
-        async function guildTickets(userAC) {
+        async function guildTickets(userAC: number) {
             const momentDuration = require("moment-duration-format");
             momentDuration(moment);
 
             const sortBy = interaction.options.getString("sort");
 
-            let rawGuild;
+            let rawGuild: APIRawGuildObj;
             try {
                 rawGuild = await Bot.swgohAPI.getRawGuild(userAC);
             } catch (err) {
@@ -600,15 +598,15 @@ class Guilds extends SlashCommand {
 
             const dayMS = 86400000;
             let timeUntilReset = null;
-            const chaTime = rawGuild.nextChallengesRefresh;
+            const chaTime = parseInt(rawGuild.nextChallengesRefresh, 10);
             const nowTime = moment().unix();
             if (chaTime > nowTime) {
                 // It's in the future
-                timeUntilReset = moment.duration(chaTime - nowTime, "seconds").format("h [hrs], m [min]");
+                timeUntilReset = moment.utc(moment.duration(chaTime - nowTime, "seconds").asMilliseconds()).format("h [hrs], m [min]");
             } else {
                 // It's in the past, so calculate the next time
-                const dur = parseInt(chaTime, 10) + parseInt(dayMS, 10) - parseInt(nowTime, 10);
-                timeUntilReset = moment.duration(dur, "seconds").format("h [hrs], m [min]");
+                const dur = chaTime + dayMS - nowTime;
+                timeUntilReset = moment.utc(moment.duration(dur, "seconds").asMilliseconds()).format("h [hrs], m [min]");
             }
 
             let maxed = 0;
@@ -656,7 +654,7 @@ class Guilds extends SlashCommand {
 
             let guildCharGP = 0;
             let guildShipGP = 0;
-            guild.roster.forEach(m => {
+            guild.roster.forEach((m: APIGuildMemberObj) => {
                 guildCharGP += m.gpChar;
                 guildShipGP += m.gpShip;
             });
@@ -704,24 +702,23 @@ class Guilds extends SlashCommand {
             }
 
             // Make sure the guild roster exists, and grab all the ally codes
-            let gRoster ;
+            let gRoster: number[];
             if (!guild || !guild.roster || !guild.roster.length) {
                 throw new Error(interaction.language.get("BASE_SWGOH_NO_GUILD"));
             } else {
                 interaction.editReply({content: "Found guild `" + guild.name + "`!"});
-                gRoster = guild.roster.map(m => m.allyCode);
+                gRoster = guild.roster.map((m) => m.allyCode);
             }
 
             // Use the ally codes to get all the other info for the guild
-            let guildMembers;
+            let guildMembers: PlayerStatsAccount[];
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return interaction.editReply({content: null, embeds: [{
                     title: "Something Broke while getting your guild's characters",
-                    description: Bot.codeBlock(e),
-                    footer: "Please try again in a bit."
+                    description: Bot.codeBlock(e) + "\nPlease try again in a bit."
                 }]});
             }
 
@@ -729,8 +726,8 @@ class Guilds extends SlashCommand {
             let shipList = [];
             const users = [];
             if (showSide) {
-                charList = Bot.characters.filter(ch => ch.side === showSide);
-                shipList = Bot.ships.filter(ch => ch.side === showSide);
+                charList = Bot.characters.filter((ch: UnitObj) => ch.side === showSide);
+                shipList = Bot.ships.filter((ch: UnitObj) => ch.side === showSide);
             }
 
             guildMembers = guildMembers.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
@@ -742,26 +739,26 @@ class Guilds extends SlashCommand {
                 let shipTotal = 0;
                 let charTotal = 0;
                 for (const unit of charList) {
-                    const thisChar = member.roster.find(ch => ch.defId === unit.uniqueName);
+                    const thisChar = member.roster.find((ch: APIUnitObj) => ch.defId === unit.uniqueName);
                     if (!thisChar) continue;
                     charTotal += thisChar.gp;
                 }
                 for (const unit of shipList) {
-                    const thisShip = member.roster.find(ch => ch.defId === unit.uniqueName);
+                    const thisShip = member.roster.find((ch: APIUnitObj) => ch.defId === unit.uniqueName);
                     if (!thisShip) continue;
                     shipTotal += thisShip.gp;
                 }
-                if (member.inGuild) {
-                    users.push(`\`[ ${charTotal.shortenNum(2)} | ${shipTotal.shortenNum(2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - **${member.name}**`);
+                if (interaction.guild) {
+                    users.push(`\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${Bot.shortenNum((charTotal + shipTotal), 2)} ]\` - **${member.name}**`);
                 } else {
-                    users.push(`\`[ ${charTotal.shortenNum(2)} | ${shipTotal.shortenNum(2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - ${member.name}`);
+                    users.push(`\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${Bot.shortenNum((charTotal + shipTotal), 2)} ]\` - ${member.name}`);
                 }
             }
 
             const fields = [];
             const header = "**`[ Char  | Ship  | Total ]`**";
             const msgArr = Bot.msgArray([header, ...users], "\n", 1000);
-            msgArr.forEach((m, ix) => {
+            msgArr.forEach((m: string, ix: number) => {
                 fields.push({
                     name: interaction.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArr.length),
                     value: m
@@ -791,7 +788,7 @@ class Guilds extends SlashCommand {
             if (!guild.roster.length) {
                 throw new Error(interaction.language.get("COMMAND_GUILDS_NO_GUILD"));
             }
-            let sortedGuild;
+            let sortedGuild: APIGuildMemberObj[];
             if (showAC || (sortBy && ["name", "rank"].includes(sortBy))) {
                 sortedGuild = guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
             } else {
@@ -817,7 +814,7 @@ class Guilds extends SlashCommand {
                         const mem = await interaction.guild?.members.fetch(c.id).catch(() => {});
                         if (interaction.guild && mem) {
                             p.inGuild = true;
-                            p.dID = c.id;
+                            p.discordId = c.id;
                             break;
                         }
                     }
@@ -846,7 +843,7 @@ class Guilds extends SlashCommand {
                 if (showAC) {
                     if (p.inGuild) {
                         if (showReg) {
-                            users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` **${p.name}** (<@!${p.dID}>)`);
+                            users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` **${p.name}** (<@!${p.discordId}>)`);
                         } else {
                             users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` **${p.name}**`);
                         }
@@ -856,7 +853,7 @@ class Guilds extends SlashCommand {
                 } else {
                     if (p.inGuild) {
                         if (showReg) {
-                            users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}** (<@!${p.dID}>)`);
+                            users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}** (<@!${p.discordId}>)`);
                         } else {
                             users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
                         }
@@ -867,7 +864,7 @@ class Guilds extends SlashCommand {
             }
             const fields = [];
             const msgArr = Bot.msgArray(users, "\n", 1000);
-            msgArr.forEach((m, ix) => {
+            msgArr.forEach((m: string, ix: number) => {
                 fields.push({
                     name: interaction.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix+1, msgArr.length),
                     value: m
@@ -900,7 +897,7 @@ class Guilds extends SlashCommand {
         async function twSummary() {
             const fields = [];
             const doExpand = interaction.options.getBoolean("expand");
-            let gRoster ;
+            let gRoster: {}[];
             if (!guild || !guild.roster || !guild.roster.length) {
                 return interaction.editReply({
                     content: null,
@@ -908,45 +905,44 @@ class Guilds extends SlashCommand {
                         {
                             title: "Missing Guild",
                             description: interaction.language.get("BASE_SWGOH_NO_GUILD"),
-                            color: Bot.constants.color.red
+                            color: Bot.constants.colors.red
                         }
                     ]
                 });
             } else {
                 await interaction.editReply({content: `Found guild \`${guild.name}\`!`});
-                gRoster = guild.roster.map(m => m.allyCode);
+                gRoster = guild.roster.map((m) => m.allyCode);
             }
 
-            let guildMembers;
+            let guildMembers: PlayerStatsAccount[];
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return interaction.editReply({content: null, embeds: [{
-                    description: Bot.codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
-                    color: Bot.constants.color.red,
-                    footer: "Please try again in a bit."
+                    color: Bot.constants.colors.red,
+                    description: Bot.codeBlock(e) + "\nPlease try again in a bit."
                 }]});
             }
 
 
             // Get overall stats for the guild
-            const charArenaMembers = guildMembers.filter(m => m?.arena?.char?.rank);
+            const charArenaMembers = guildMembers.filter((m) => m?.arena?.char?.rank);
             const charArenaAVG = (charArenaMembers.reduce((acc, curr) => acc + curr.arena.char.rank, 0) / charArenaMembers.length);
             const shipArenaMembers = guildMembers.filter(m => m?.arena?.ship?.rank);
             const shipArenaAVG = (shipArenaMembers.reduce((acc, curr) => acc + curr.arena.ship.rank, 0) / shipArenaMembers.length);
             let zetaCount = 0;
             for (const member of guildMembers) {
                 const zetaRoster = member.roster
-                    .map(char => char?.skills?.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length);
-                zetaCount += zetaRoster.reduce((acc, curr) => acc + curr, 0);
+                    .map((char: APIUnitObj) => char?.skills?.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length);
+                zetaCount += zetaRoster.reduce((acc: number, curr: number) => acc + curr, 0);
             }
             fields.push({
                 name: "General Stats",
                 value: Bot.codeBlock([
                     `Members:        ${guild.roster.length}`,
-                    `GP:             ${guild.gp.shortenNum()}`,
+                    `GP:             ${Bot.shortenNum(guild.gp)}`,
                     `AVG Char Arena: ${charArenaAVG.toFixed(2)}`,
                     `AVG Ship Arena: ${shipArenaAVG.toFixed(2)}`,
                     `Zetas:          ${zetaCount.toLocaleString()}`
@@ -955,6 +951,10 @@ class Guilds extends SlashCommand {
 
             // Get the overall gear levels for the guild as a whole
             const [gearLvls, avgGear] = Bot.summarizeCharLevels(guildMembers, "gear");
+            if (!gearLvls) {
+                // It's errored, so spit out any message
+                throw new Error(avgGear);
+            }
             fields.push({
                 name: "Character Gear Counts",
                 value: "*How many characters at each gear level*" +
@@ -980,14 +980,14 @@ class Guilds extends SlashCommand {
             for (let ix = MAX_RELIC; ix >= 1; ix--) {
                 let relicCount = 0;
                 for (const member of guildMembers) {
-                    relicCount += member.roster.filter(c => c && c.combatType === 1 && c.relic?.currentTier-2 === ix).length;
+                    relicCount += member.roster.filter((c) => c && c.combatType === 1 && c.relic?.currentTier-2 === ix).length;
                 }
                 if (relicCount > 0) {
                     relicLvls[ix] = relicCount;
                 }
             }
-            const tieredRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + (relicLvls[curr] * curr), 0);
-            const totalRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + relicLvls[curr]);
+            const tieredRelic = Object.keys(relicLvls).reduce((acc: number, curr) => acc + (relicLvls[curr] * parseInt(curr, 10)), 0);
+            const totalRelic = Object.keys(relicLvls).reduce((acc, curr) => acc + relicLvls[curr], 0);
             const avgRelic = (tieredRelic / totalRelic);
             fields.push({
                 name: "Character Relic Counts",
@@ -1014,13 +1014,6 @@ class Guilds extends SlashCommand {
                 };
             }));
 
-            if (guildMembers.warnings) {
-                fields.push({
-                    name: "Warnings",
-                    value: guildMembers.warnings.join("\n")
-                });
-            }
-
             const footer = Bot.updatedFooter(Math.min(...guildMembers.map(m => m.updated)), interaction, "guild", cooldown);
             return interaction.editReply({content: null, embeds: [{
                 author: {
@@ -1034,14 +1027,14 @@ class Guilds extends SlashCommand {
 }
 
 
-function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships=false) {
+function twCategoryFormat(unitObj: {}, gearLvls: {[key: string]: number}, divLen: number, guildMembers: PlayerStatsAccount[], ships=false) {
     const fieldsOut = [];
     const [gear1, gear2] = Object.keys(gearLvls).map(num => parseInt(num, 10)).sort((a, b) => b - a);
 
     for (const category of Object.keys(unitObj)) {
         const unitOut = [];
         const unitListArray = unitObj[category];
-        const longest = unitListArray.reduce((acc, curr) => Math.max(acc, curr[1].length), 0);
+        const longest = unitListArray.reduce((acc: number, curr: {}) => Math.max(acc, curr[1].length), 0);
         const divider = `**\`${"=".repeat(divLen + longest)}\`**`;
         if (ships) {
             unitOut.push(`**\`${"Name" + " ".repeat(longest-4)}Total 7*\`**`);
@@ -1057,8 +1050,8 @@ function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships=false) 
         for (const unit of unitListArray) {
             const defId = unit[0];
             const roster = guildMembers
-                .filter(p => p.roster.find(c => c.defId === defId))
-                .map(p => p.roster.find(c => c.defId === defId));
+                .filter(p => p.roster.find((c: APIUnitObj) => c.defId === defId))
+                .map(p => p.roster.find((c: APIUnitObj) => c.defId === defId));
 
             let total = 0, g1 = 0, g2 = 0, ult = 0, sevenStar = 0;
             if (roster && roster.length) {

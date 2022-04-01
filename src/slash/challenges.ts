@@ -1,17 +1,18 @@
 import SlashCommand from "../base/slashCommand";
 import moment from "moment-timezone";
+import { Interaction } from "discord.js";
+import { BotInteraction, BotType } from "../modules/types";
 
 class Challenges extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "challenges",
             description: "Show daily guild challenges",
             guildOnly: false,
             category: "Star Wars",
-            aliases: ["challenge", "chal"],
             options: [{
                 name: "day",
-                type: "STRING",
+                type: Bot.constants.optionType.STRING,
                 description: "Day of the week",
                 choices: [
                     {
@@ -47,7 +48,7 @@ class Challenges extends SlashCommand {
         });
     }
 
-    run(Bot, interaction) {
+    run(Bot: BotType, interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
 
         const challenges = {
@@ -65,7 +66,7 @@ class Challenges extends SlashCommand {
             [interaction.language.get("COMMAND_CHALLENGES_SHIP_ABILITY")]    : ["Monday", "Thursday",  "Sunday"]
         };
 
-        const dayString = (day) => {
+        const dayString = (day: string) => {
             let dayString = `== Challenges for ${Bot.toProperCase(interaction.language.getDay(day.toUpperCase(), "LONG"))} ==`;
             for (var challenge in challenges) {
                 if (challenges[challenge].includes(day)) {
@@ -101,7 +102,7 @@ class Challenges extends SlashCommand {
             case "day_Saturday":
                 return sendDay("Saturday");
         }
-        function sendDay(day) {
+        function sendDay(day: string) {
             return interaction.reply({content: Bot.codeBlock(dayString(day), "asciidoc")});
         }
     }

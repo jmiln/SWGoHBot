@@ -1,28 +1,28 @@
 import SlashCommand from "../base/slashCommand";
 import { Interaction } from "discord.js";
+import { BotInteraction, BotType } from "../modules/types";
 
 /**
  * The list of acronyms defined in data/acronym.json was transposed from the SWGoH forum. Any update there will need to make it's way into here.
  * //https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh
  */
 class Acronyms extends SlashCommand {
-    constructor(Bot: {}) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "acronyms",
             description: "Spit out what common acronyms mean",
             category: "Misc",
-            aliases: ["acr", "acronym"],
             guildOnly: false,
             options: [{
                 name: "acronym",
-                type: "STRING",
+                type: Bot.constants.optionType.STRING,
                 description: "The acronym to look for",
                 required: true,
             }]
         });
     }
 
-    async run(Bot: {}, interaction: Interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const acronymsLookup = Bot.acronyms;
         const acronyms = Object.keys(acronymsLookup);
 

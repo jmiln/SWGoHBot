@@ -1,30 +1,31 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotType, UserReg } from "../modules/types";
 
 class Register extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "register",
             category: "Misc",
-            aliases: ["reg"],
             guildOnly: false,
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "allycode",
                     description: "The ally code for the user you want to look up",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true
                 },
                 {
                     name: "user",
                     description: "The user you want to link to an ally code. (You must have mod/ admin perms for this)",
-                    type: "USER"
+                    type: Bot.constants.optionType.USER
                 }
             ]
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: {}) { // eslint-disable-line no-unused-vars
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
 
         let user = interaction.options.getUser("user");
@@ -54,7 +55,7 @@ class Register extends SlashCommand {
 
         // Then, if not, move along
         // See if they have an entry in the DB already
-        let userReg = await Bot.userReg.getUser(user.id);
+        let userReg: UserReg = await Bot.userReg.getUser(user.id);
         if (userReg && userReg.accounts.length && userReg.id !== user.id) {
             // If someone else is trying to change the code already registered, error out
             return super.error(interaction, "This account already has an ally code linked to it.");
@@ -64,10 +65,10 @@ class Register extends SlashCommand {
             // If they don't exist in the DB yet, stick em with a default config
             userReg = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
             userReg.id = user.id;
-        } else if (userReg.accounts.find(a => a.allyCode === allycode && a.primary)) {
+        } else if (userReg.accounts.find((a: {}) => a.allyCode === allycode && a.primary)) {
             // This ally code is already registered & primary
             return super.error(interaction, interaction.language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
-        } else if (userReg.accounts.find(a => a.allyCode === allycode && !a.primary)) {
+        } else if (userReg.accounts.find((a: {}) => a.allyCode === allycode && !a.primary)) {
             // This ally code is already registered but not primary, so just swap it over
             userReg.accounts = userReg.accounts.map(a => {
                 if (a.primary) a.primary = false;
@@ -113,12 +114,12 @@ class Register extends SlashCommand {
                                 "COMMAND_REGISTER_SUCCESS_DESC",
                                 player,
                                 player.allyCode.toString().match(/\d{3}/g).join("-"),
-                                player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                                player.stats.find((s: {}) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
                             ), "asciiDoc"), {
                                 title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name)
                             });
                     })
-                    .catch(e => {
+                    .catch((e: Error) => {
                         Bot.logger.error("REGISTER", "Broke while trying to link new user: " + e);
                         return super.error(interaction, Bot.codeBlock(e.message), {
                             title: interaction.lanugage.get("BASE_SOMETHING_BROKE"),

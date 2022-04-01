@@ -1,42 +1,43 @@
 import SlashCommand from "../base/slashCommand";
 import { inspect } from "util"; // eslint-disable-line no-unused-vars
+import { Interaction } from "discord.js";
+import { APIUnitObj, BotInteraction, BotType, PlayerStatsAccount } from "../modules/types";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 class MyArena extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "myarena",
             guildOnly: false,
             category: "SWGoH",
-            aliases: ["ma", "userarena", "ua"],
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "allycode",
                     description: "The ally code of the user you want to see",
-                    type: "STRING"
+                    type: Bot.constants.optionType.STRING
                 },
                 {
                     name: "stats",
-                    type: "BOOLEAN",
+                    type: Bot.constants.optionType.BOOLEAN,
                     description: "Show some general stats for your arena team"
                 }
             ]
         });
     }
 
-    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
-        let allycode = interaction.options.getString("allycode");
+    async run(Bot: BotType, interaction: BotInteraction) { // eslint-disable-line no-unused-vars
+        let allycodeOpt = interaction.options.getString("allycode");
         const showStats    = interaction.options.getBoolean("stats");
 
-        allycode = await Bot.getAllyCode(interaction, allycode);
+        const allycode = await Bot.getAllyCode(interaction, allycodeOpt);
 
         if (!allycode) {
             return super.error(interaction, "Invalid user ID, you need to use either the `me` keyword if you have a registered ally code, an ally code, or mention a Discord user");
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
-        let player;
+        let player: PlayerStatsAccount;
         try {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
@@ -45,7 +46,7 @@ class MyArena extends SlashCommand {
             return super.error(interaction, "Something broke, please try again in a bit");
         }
 
-        if (!player || !player.arena) {
+        if (!player?.arena) {
             return super.error(interaction, "Something broke when getting your info, please try again in a bit.");
         }
 
@@ -57,7 +58,7 @@ class MyArena extends SlashCommand {
             const sArena = [];
             for (let ix = 0; ix < player.arena.ship.squad.length; ix++) {
                 const ship = player.arena.ship.squad[ix];
-                let thisShip = player.roster.find(s => s.defId === ship.defId);
+                let thisShip = player.roster.find((s: APIUnitObj) => s.defId === ship.defId);
                 thisShip = await Bot.swgohAPI.langChar(thisShip, interaction.guildSettings.swgohLanguage);
                 if (thisShip.name && !thisShip.nameKey) thisShip.nameKey = thisShip.name;
                 sArena.push(`\`${sPositions[ix]}\` ${thisShip.nameKey}`);
@@ -74,9 +75,9 @@ class MyArena extends SlashCommand {
             const cArena = [];
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
                 const char = player.arena.char.squad[ix];
-                let thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
+                let thisChar = player.roster.find((c: APIUnitObj) => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
+                const thisZ = thisChar.skills.filter((s: APIUnitObj) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
             }
@@ -101,9 +102,9 @@ class MyArena extends SlashCommand {
             // player.arena.char.squad.forEach((char, ix) => {
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
                 const char = player.arena.char.squad[ix];
-                let thisChar = playerStats.roster.find(c => c.defId === char.defId);        // Get the character
+                let thisChar = playerStats.roster.find((c: APIUnitObj) => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
+                const thisZ = thisChar.skills.filter((s: APIUnitObj) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 const cName = `**${"z".repeat(thisZ.length)}${thisChar.nameKey}**`;
                 const speed  = thisChar.stats.final.Speed.toLocaleString();

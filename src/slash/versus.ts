@@ -1,38 +1,38 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType, PlayerStatsAccount, UnitObj } from "../modules/types";
 
 class Versus extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "versus",
             category: "SWGoH",
             guildOnly: false,
-            enabled: true,
-            aliases: ["vs"],
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "allycode_1",
                     description: "The ally code of the first user you want to compare",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true
                 },
                 {
                     name: "allycode_2",
                     description: "The ally code of the second user you want to compare",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true
                 },
                 {
                     name: "character",
                     description: "A character you want to compare the stats of",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true
                 }
             ]
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const statList = [
             {stat: "Health",                   short: "Health"},
             {stat: "Protection",               short: "Prot"  },
@@ -64,43 +64,45 @@ class Versus extends SlashCommand {
 
         await interaction.reply({content: "Please wait while I process your data."});
 
-        let user1 = await Bot.getAllyCode(interaction, user1str, false);
-        let user2 = await Bot.getAllyCode(interaction, user2str, false);
+        let user1AC = await Bot.getAllyCode(interaction, user1str, false);
+        let user2AC = await Bot.getAllyCode(interaction, user2str, false);
 
-        if (!user1 && !user2) {
+        if (!user1AC && !user2AC) {
             return super.error(interaction, "Both ally codes were invalid");
-        } else if (!user1) {
+        } else if (!user1AC) {
             // Spit out an error because the interaction author is not registered
             return super.error(interaction, "Ally code #1 was invalid");
-        } else if (!user2) {
-            // Something went wrong with user2, let's spit out an error
+        } else if (!user2AC) {
+            // Something went wrong with user2AC, let's spit out an error
             return super.error(interaction, "Ally code #2 was invalid");
         }
 
         // If it got this far, it has 2 users and a character that needs checking.
-        let char = Bot.findChar(character, Bot.characters);
-        if (!char.length) {
-            char = Bot.findChar(character, Bot.ships, true);
+        let charArr: UnitObj[] = Bot.findChar(character, Bot.characters);
+        if (!charArr.length) {
+            charArr = Bot.findChar(character, Bot.ships, true);
         }
-        if (!char.length) {
+        if (!charArr.length) {
             return super.error(interaction, interaction.language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
-        } else if (char.length > 1) {
+        } else if (charArr.length > 1) {
             // If found more than 1 match
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", char.map(c => c.name).join("\n")));
-        } else {
-            // It only found one match
-            if (Array.isArray(char)) char = char[0];
+            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charArr.map(c => c.name).join("\n")));
         }
 
+        // Else it only found one match
+        const char: UnitObj = charArr[0];
+
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        let user1: PlayerStatsAccount = null;
+        let user2: PlayerStatsAccount = null;
         try {
-            user1 = await Bot.swgohAPI.unitStats(user1, cooldown);
+            user1 = await Bot.swgohAPI.unitStats(user1AC, cooldown);
             if (Array.isArray(user1)) user1 = user1[0];
         } catch (e) {
             return super.error(interaction, "Something broke when getting user 1");
         }
         try {
-            user2 = await Bot.swgohAPI.unitStats(user2, cooldown);
+            user2 = await Bot.swgohAPI.unitStats(user2AC, cooldown);
             if (Array.isArray(user2)) user2 = user2[0];
         } catch (e) {
             return super.error(interaction, "Something broke when getting user 2");

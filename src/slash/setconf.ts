@@ -1,69 +1,70 @@
 import moment from "moment-timezone";
 import SlashCommand from "../base/slashCommand";
-import { typedDefaultSettings } from "../../config.js";
+import { typedDefaultSettings } from "../config.js";
+import { Interaction } from "discord.js";
+import { BotInteraction, BotType } from "../modules/types";
 // const { inspect } = require("util");
 
-// Set the base subargs up
-const options = {
-    add: {
-        name: "add",
-        description: "Add a value to one of the array settings",
-        type: "SUB_COMMAND",
-        options: []
-    },
-    remove: {
-        name: "remove",
-        description: "Remove a value from one of the array settings",
-        type: "SUB_COMMAND",
-        options: []
-    },
-    set: {
-        name: "set",
-        type: "SUB_COMMAND",
-        description: "Set the value of one of the options",
-        options: []
-    }
-};
-
-// Check out each option in the config file, and set it up in each subarg as needed
-Object.keys(typedDefaultSettings).forEach(set => {
-    // Fill out the options based on the default settings in the config file
-    const thisSet = typedDefaultSettings[set];
-    const optOut = {
-        name: set.replace(/[A-Z]/g, char => "_" + char.toLowerCase()),
-        type: thisSet.type,
-        description: thisSet.description
-    };
-    if (thisSet?.choices) {
-        optOut["choices"] = thisSet.choices.map(choice => {
-            return {
-                name: choice,
-                value: choice
-            };
-        });
-    }
-    if (thisSet.isArray) {
-        options.add.options.push(optOut);
-        options.remove.options.push(optOut);
-    } else {
-        options.set.options.push(optOut);
-    }
-});
 
 
 class SetConf extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
+        // Set the base subargs up
+        const options = {
+            add: {
+                name: "add",
+                description: "Add a value to one of the array settings",
+                type: Bot.constants.optionType.SUB_COMMAND,
+                options: []
+            },
+            remove: {
+                name: "remove",
+                description: "Remove a value from one of the array settings",
+                type: Bot.constants.optionType.SUB_COMMAND,
+                options: []
+            },
+            set: {
+                name: "set",
+                type: Bot.constants.optionType.SUB_COMMAND,
+                description: "Set the value of one of the options",
+                options: []
+            }
+        };
+
+        // Check out each option in the config file, and set it up in each subarg as needed
+        Object.keys(typedDefaultSettings).forEach(set => {
+            // Fill out the options based on the default settings in the config file
+            const thisSet = typedDefaultSettings[set];
+            const optOut = {
+                name: set.replace(/[A-Z]/g, char => "_" + char.toLowerCase()),
+                type: Bot.constants.optionType[thisSet.type],
+                description: thisSet.description
+            };
+            if (thisSet?.choices) {
+                optOut["choices"] = thisSet.choices.map((choice: string) => {
+                    return {
+                        name: choice,
+                        value: choice
+                    };
+                });
+            }
+            if (thisSet.isArray) {
+                options.add.options.push(optOut);
+                options.remove.options.push(optOut);
+            } else {
+                options.set.options.push(optOut);
+            }
+        });
         super(Bot, {
             guildOnly: false,
             name: "setconf",
-            aliases: ["setconfig"],
             permLevel: 3,
             category: "Admin",
             options: Object.values(options)
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         if (!interaction?.guild?.id) {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
@@ -127,7 +128,7 @@ class SetConf extends SlashCommand {
             }
         }
 
-        function changeSetting(action, key, setting, name) {
+        function changeSetting(action: string, key: string, setting: string, name: string) {
             if (setting === null) return null;
             if (action === "set") {
                 // Just send back the setting
@@ -173,7 +174,7 @@ class SetConf extends SlashCommand {
 
             // Actually change stuff in the db
             await Bot.database.models.settings.update(guildConf, {where: {guildID: interaction.guild.id}});
-            return super.success(interaction, Bot.codeBlock(changeLog.map(c => `* ${c}`)));
+            return super.success(interaction, Bot.codeBlock(changeLog.map(c => `* ${c}`).join("\n")));
         } else {
             return super.error(interaction, "It looks like nothing needed to be updated");
         }

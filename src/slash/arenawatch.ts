@@ -1,36 +1,35 @@
 import SlashCommand from "../base/slashCommand";
-import Discord from "discord.js";
-import { AWPlayer } from "../modules/types";
+import Discord, { TextChannel } from "discord.js";
+import { AWPlayer, BotInteraction, BotType, CommandOptions, PlayerStatsAccount } from "../modules/types";
 // const {inspect} = require("util");
 
 class ArenaWatch extends SlashCommand {
-    constructor(Bot: {}) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "arenawatch",
             category: "Patreon",
-            aliases: ["aw"],
             permissions: ["EMBED_LINKS"],
             guildOnly: false,
             options: [
                 {
                     name: "allycode",
-                    type: "SUB_COMMAND_GROUP",
+                    type: Bot.constants.optionType.SUB_COMMAND_GROUP,
                     description: "Any ally codes you want to put in (9 digit numbers, don't need the dashes)",
                     options: [
                         {
                             name: "add",
                             description: "Add ally codes in",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             options: [
                                 {
                                     name: "allycodes",
                                     description: "AllyCodes or allycode:mention, comma seperated",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.STRING,
                                     required: true
                                 },
                                 {
                                     name: "mark",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.STRING,
                                     description: "The emote or symbol to mark them with. Leaving this empty will remove it if available"
                                 }
                             ]
@@ -38,30 +37,30 @@ class ArenaWatch extends SlashCommand {
                         {
                             name: "remove",
                             description: "Add ally codes in",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             options: [
                                 {
                                     name: "allycodes",
                                     description: "AllyCodes, comma seperated",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.STRING,
                                     required: true
                                 }
                             ]
                         },
                         {
                             name: "edit",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             description: "Use to change an allycode or mention (Ex: '123123123 123123123:mention')",
                             options: [
                                 {
                                     name: "old_allycode",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.STRING,
                                     description: "Ally code of the person you want to modify",
                                     required: true
                                 },
                                 {
                                     name: "new_allycode",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.STRING,
                                     description: "Different ally code, or allycode:mention to change to (Ex: 123123123:@mention)",
                                     required: true
                                 }
@@ -71,18 +70,18 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "arena",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Choose between the arena types",
                     options: [
                         {
                             name: "enabled",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                             description: "Set whether it's enabled or not",
                             required: true,
                         },
                         {
                             name: "arena",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Choose which arena to toggle",
                             required: true,
                             choices: [
@@ -108,18 +107,18 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "channel",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "The channel to put the logs in",
                     options: [
                         {
                             name: "channel",
-                            type: "CHANNEL",
+                            type: Bot.constants.optionType.CHANNEL,
                             required: true,
                             description: "The channel to put the logs in"
                         },
                         {
                             name: "arena",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true,
                             description: "The arena to watch",
                             choices: [
@@ -137,22 +136,22 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "enabled",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Enable/ Disable arenawatch",
                     options: [{
                         name: "toggle",
                         description: "Enable/ Disable arenawatch",
-                        type: "BOOLEAN",
+                        type: Bot.constants.optionType.BOOLEAN,
                         required: true
                     }]
                 },
                 {
                     name: "report",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Choose whether you want it to report on climbs, drops, or both",
                     options: [{
                         name: "arena",
-                        type: "STRING",
+                        type: Bot.constants.optionType.STRING,
                         description: "Choose whether you want it to report on climbs, drops, or both",
                         required: true,
                         choices: [
@@ -164,13 +163,13 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "showvs",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Enable or disable showing when one person hits another",
                     options: [
                         {
                             name: "enable",
                             description: "True/ False",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                             required: true
 
                         }
@@ -178,18 +177,18 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "warn",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Set when to warn who, and about which arena",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: Bot.constants.optionType.INTEGER,
                             description: "The user's ally code",
                             required: true
                         },
                         {
                             name: "mins",
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                             description: "(1-1439) The number of minutes before their payout to warn them",
                             required: true,
                             min_value: 0,
@@ -197,7 +196,7 @@ class ArenaWatch extends SlashCommand {
                         },
                         {
                             name: "arena",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Set which arena it will watch.",
                             required: true,
                             choices: [
@@ -223,23 +222,23 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "payout",
-                    type: "SUB_COMMAND_GROUP",
+                    type: Bot.constants.optionType.SUB_COMMAND_GROUP,
                     description: "Set to spit out the payout result of a user",
                     options: [
                         {
                             name: "enable",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             description: "Choose between the arena types",
                             options: [
                                 {
                                     name: "enabled",
-                                    type: "BOOLEAN",
+                                    type: Bot.constants.optionType.BOOLEAN,
                                     description: "Set whether it's enabled or not",
                                     required: true,
                                 },
                                 {
                                     name: "arena",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.STRING,
                                     description: "Choose which arena to toggle",
                                     required: true,
                                     choices: [
@@ -261,19 +260,19 @@ class ArenaWatch extends SlashCommand {
                         },
                         {
                             name: "channel",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             description: "Set an arena's logs to a specified channel",
                             options: [
                                 {
                                     name: "target_channel",
-                                    type: "CHANNEL",
+                                    type: Bot.constants.optionType.CHANNEL,
                                     description: "The channel to send to",
                                     required: true
                                 },
                                 {
 
                                     name: "arena",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.STRING,
                                     description: "Set which arena it will log to this channel",
                                     required: true,
                                     choices: [
@@ -295,18 +294,18 @@ class ArenaWatch extends SlashCommand {
                         },
                         {
                             name: "mark",
-                            type: "SUB_COMMAND",
+                            type: Bot.constants.optionType.SUB_COMMAND,
                             description: "Set a mark for a player",
                             options: [
                                 {
                                     name: "allycode",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.INTEGER,
                                     description: "The ally code of the player to mark",
                                     required: true
                                 },
                                 {
                                     name: "mark",
-                                    type: "STRING",
+                                    type: Bot.constants.optionType.STRING,
                                     required: true,
                                     description: "The emote or symbol to mark them with. Leaving this empty will remove it if available"
                                 }
@@ -316,18 +315,18 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "result",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Set to spit out the payout result of a user",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: Bot.constants.optionType.INTEGER,
                             description: "The user's ally code",
                             required: true
                         },
                         {
                             name: "arena",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Set which arena it will give the results of.",
                             required: true,
                             choices: [
@@ -353,12 +352,12 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "use_marks_in_log",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Toggle showing players' marks in the arena log",
                     options: [
                         {
                             name: "enable",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                             required: true,
                             description: "Show marks in arena log?",
                         }
@@ -366,12 +365,12 @@ class ArenaWatch extends SlashCommand {
                 },
                 {
                     name: "view",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "View your arenaWatch settings",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: Bot.constants.optionType.INTEGER,
                             description: "An allycode to check the specific settings for"
                         }
                     ]
@@ -380,11 +379,8 @@ class ArenaWatch extends SlashCommand {
         });
     }
 
-    async run(Bot: {}, interaction: Discord.Interaction, options?: {}) {
-        let target = interaction.options.getSubcommandGroup(false);
-        if (!target) {
-            target = interaction.options.getSubcommand();
-        }
+    async run(Bot: BotType, interaction: BotInteraction, options?: CommandOptions) {
+        const target = interaction.options.getSubcommandGroup(false) || interaction.options.getSubcommand();
         let cmdOut = null;
 
         const outLog = [];
@@ -470,9 +466,9 @@ class ArenaWatch extends SlashCommand {
             return [parseInt(ac, 10), mention];
         }
 
-        function checkPlayer(players: string[], code: {[key: string]: number}) {
+        function checkPlayer(players: PlayerStatsAccount[], code: {code: number}) {
             if (!players?.length) throw new Error("Missing players in checkPlayer");
-            const player = players.find(p => parseInt(p.allyCode, 10) === code.code);
+            const player = players.find(p => p.allyCode === code.code);
             if (!player) {
                 throw new Error(`Could not find ${code.code}, invalid code`);
             }
@@ -493,7 +489,7 @@ class ArenaWatch extends SlashCommand {
             }
             case "channel": {
                 // This needs to make sure the person has an adminrole or something so they cannot just spam a chat with it
-                const channel = interaction.options.getChannel("target_channel");
+                const channel = interaction.options.getChannel("target_channel") as TextChannel;
                 const targetArena = interaction.options.getString("arena");
 
                 if (channel.guild.id !== interaction.guild.id) {
@@ -572,10 +568,10 @@ class ArenaWatch extends SlashCommand {
                     // Setting the mark/ emote/ symbol/ whatver to help show people as friendly/ enemy
                     // ;aw payout mark 123123123 :smile:
 
-                    const ac = interaction.options.getString("allycode");
+                    const ac = interaction.options.getInteger("allycode");
                     const mark = interaction.options.getString("mark");
 
-                    const player = aw.allycodes.find((p: AWPlayer) => p.allyCode.toString() === ac.toString());
+                    const player = aw.allycodes.find((p: AWPlayer) => p.allyCode === ac);
                     if (!player) {
                         return super.error(interaction, "Sorry, but you can only apply a mark to an already present player/ allycode");
                     }
@@ -662,7 +658,7 @@ class ArenaWatch extends SlashCommand {
                         return super.error(interaction, "Sorry, but it looks like none of the ally code(s) you entered were found with rosters. If you're sure the code(s) were correct, please wait a bit and try again.");
                     }
                     for (const c of codes) {
-                        let player: {} | null;
+                        let player: PlayerStatsAccount | null;
                         try {
                             player = checkPlayer(players, c);
                         } catch (e) {
@@ -683,21 +679,21 @@ class ArenaWatch extends SlashCommand {
                     }
                 } else if (action === "edit") {
                     // Used to add or remove a mention
-                    let oldCode = interaction.options.getString("old_allycode");
-                    const newCode = interaction.options.getString("new_allycode");
+                    const oldCodeOpt = interaction.options.getString("old_allycode");
+                    const newCodeOpt = interaction.options.getString("new_allycode");
 
-                    if (!Bot.isAllyCode(oldCode)) {
-                        return super.error(interaction, `${oldCode} is not a valid ally code.`);
+                    if (!Bot.isAllyCode(oldCodeOpt)) {
+                        return super.error(interaction, `${oldCodeOpt} is not a valid ally code.`);
                     }
                     // Clean it up, make sure it's correctly formatted
-                    oldCode = Bot.getAllyCode(interaction, oldCode);
+                    const oldCode = await Bot.getAllyCode(interaction, oldCodeOpt);
                     if (!oldCode) {
                         return super.error(interaction, "Sorry, but that was not a valid ally code");
                     }
 
                     let ac: number, mention: string;
                     try {
-                        [ac, mention] = getAcMention(newCode);
+                        [ac, mention] = getAcMention(newCodeOpt);
                     } catch (e) {
                         outLog.push(e);
                     }
@@ -707,7 +703,7 @@ class ArenaWatch extends SlashCommand {
                     // If so, delte it then add it back
                     const exists = aw.allycodes.find((p: AWPlayer) => p.allyCode === oldCode);
                     if (exists) {
-                        aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== parseInt(oldCode, 10));
+                        aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== oldCode);
                     }
                     let player = null;
                     try {
@@ -738,9 +734,8 @@ class ArenaWatch extends SlashCommand {
 
                     for (let code of codesIn) {
                         code = code.replace(/[^\d]/g, "");
-                        code = parseInt(code, 10);
-                        if (aw.allycodes.find((ac: {[key: string]: number}) => ac.allyCode === code)) {
-                            aw.allycodes = aw.allycodes.filter((ac: {[key: string]: number}) => ac.allyCode !== code);
+                        if (aw.allycodes.find((ac: {[key: string]: number}) => ac.allyCode === parseInt(code, 10))) {
+                            aw.allycodes = aw.allycodes.filter((ac: {[key: string]: number}) => ac.allyCode !== parseInt(code, 10));
                             outLog.push(code + " has been removed");
                         } else {
                             return super.error(interaction, "That ally code was not available to be removed");
@@ -770,23 +765,21 @@ class ArenaWatch extends SlashCommand {
             }
             case "warn": {
                 // ;aw warn 123123123 <# of min> <none|both|char|fleet>
-                const code  = interaction.options.getString("allycode");
+                const code  = interaction.options.getInteger("allycode");
                 let mins  = interaction.options.getInteger("mins");
                 const arena = interaction.options.getString("arena");
 
                 if (!Bot.isAllyCode(code)) {
                     return super.error(interaction, `Invalid ally code (${code})`);
                 }
-
-                mins = parseInt(mins, 10);
                 if (!mins || mins <= 0) {
                     return super.error(interaction, "Invalid minute count. Only values of 1 and above are valid.", {example: "aw warn 123123123 30 both"});
                 }
 
-                const exists = aw.allycodes.find((p: AWPlayer) => p.allyCode === parseInt(code, 10));
+                const exists = aw.allycodes.find((p: AWPlayer) => p.allyCode === code);
                 if (!exists) return super.error(interaction, "That ally code is not in your list.");
 
-                aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== parseInt(code, 10));
+                aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== code);
 
                 if (typeof exists.allyCode === "string") exists.allyCode = parseInt(exists.allyCode, 10);
                 exists.warn = {
@@ -805,10 +798,10 @@ class ArenaWatch extends SlashCommand {
                     return super.error(interaction, `Invalid ally code (${code})`);
                 }
 
-                const exists = aw.allycodes.find((p: AWPlayer) => p.allyCode === code);
+                const exists = aw.allycodes.find((p: AWPlayer) => p.allyCode === parseInt(code, 10));
                 if (!exists) return super.error(interaction, "That ally code is not in your list.");
 
-                aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== code);
+                aw.allycodes = aw.allycodes.filter((p: AWPlayer) => p.allyCode !== parseInt(code, 10));
                 exists.result = arena === "none" ? null : arena;
                 aw.allycodes.push(exists);
                 break;
@@ -829,7 +822,7 @@ class ArenaWatch extends SlashCommand {
                     if (!channelIdToGet) return null;
                     let foundChannel = interaction.guild?.channels.cache.get(channelIdToGet)?.id;
                     if (!foundChannel) {
-                        foundChannel = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(channelIdToGet), {context: aw})
+                        foundChannel = await interaction.client.shard.broadcastEval((client: Discord.Client, channelIdToGet) => client.channels.cache.get(channelIdToGet), {context: channelIdToGet})
                             .then((chan: Discord.Channel[]) => {
                                 return chan?.[0]?.id;
                             });

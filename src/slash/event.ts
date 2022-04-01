@@ -1,69 +1,68 @@
 import momentTZ from "moment-timezone";
 import "moment-duration-format";
-import Discord from "discord.js";
+import Discord, { TextChannel } from "discord.js";
 
 // const {inspect} = require("util");
 
 import SlashCommand from "../base/slashCommand";
-import { SavedEvent, ValidateEvent } from "../modules/types";
+import { BotInteraction, BotType, CommandOptions, SavedEvent, ValidateEvent } from "../modules/types";
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
 
 class Event extends SlashCommand {
-    constructor(Bot: {}) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "event",
             guildOnly: false,
             category: "Misc",
-            aliases: ["events", "ev"],
             options: [
                 {
                     name: "create",
                     description: "Make a new event",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "name",
                             description: "The name of the event, no spaces allowed.",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true
                         },
                         {
                             name: "day",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "The date (DD/MM/YYYY) that you want it to go off",
                             required: true
                         },
                         {
                             name: "time",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
                             required: true
                         },
                         {
                             name: "message",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "The message that you want the event to spit back out",
                         },
                         {
                             name: "repeat",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
                         },
                         {
                             name: "repeatday",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
                         },
                         {
                             name: "channel",
-                            type: "CHANNEL",
+                            type: Bot.constants.optionType.CHANNEL,
                             description: "Set which channel the event will announce on",
                         },
                         {
                             name: "countdown",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                             description: "Set to use the countdown or not (Configured in setconf)",
                         },
                     ]
@@ -71,12 +70,12 @@ class Event extends SlashCommand {
                 {
                     name: "createjson",
                     description: "Create new event(s), inputted as a json code block",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "json",
                             description: "The json formatted text.",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true
                         }
                     ]
@@ -84,12 +83,12 @@ class Event extends SlashCommand {
                 {
                     name: "delete",
                     description: "Delete an event",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "name",
                             description: "The unique name of the event you want to delete",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true
                         }
                     ]
@@ -97,52 +96,52 @@ class Event extends SlashCommand {
                 {
                     name: "edit",
                     description: "Create new event(s), inputted as a json code block",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "event_name",
                             description: "The name of the event you want to edit",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true
                         },
                         {
                             name: "name",
                             description: "The new name of the event, no spaces allowed.",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                         },
                         {
                             name: "day",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "The date (DD/MM/YYYY) that you want it to go off",
                         },
                         {
                             name: "time",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
                         },
                         {
                             name: "message",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "The message that you want the event to spit back out",
                         },
                         {
                             name: "repeat",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Lets you set a duration with the format of 00d00h00m. (Not compatible with repeatday)",
                         },
                         {
                             name: "repeatday",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0. (Not compatible with reapeat)",
                         },
                         {
                             name: "channel",
-                            type: "CHANNEL",
+                            type: Bot.constants.optionType.CHANNEL,
                             description: "Set which channel the event will announce on",
                         },
                         {
                             name: "countdown",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                             description: "Set to use the countdown or not (Configured in setconf)",
                         }
                     ]
@@ -151,12 +150,12 @@ class Event extends SlashCommand {
                     // TODO Possibly work this in to have the dropdowns?
                     name: "trigger",
                     description: "Trigger the selected event",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "name",
                             description: "The unique name of the event you want to trigger",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             required: true
                         }
                     ]
@@ -164,22 +163,22 @@ class Event extends SlashCommand {
                 {
                     name: "view",
                     description: "View your event(s)",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     options: [
                         {
                             name: "name",
                             description: "The unique name of the event you want to see.",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                         },
                         {
                             name: "minimal",
                             description: "Show the event(s), but without the message.",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                         },
                         {
                             name: "page_num",
                             description: `Set it to paginate the events, showing ${EVENTS_PER_PAGE} events at a time.`,
-                            type: "INTEGER",
+                            type: Bot.constants.optionType.INTEGER,
                         },
                     ]
                 },
@@ -187,9 +186,7 @@ class Event extends SlashCommand {
         });
     }
 
-    async run(Bot: {}, interaction: Discord.Interaction, options?: {}) {
-        const level = options.level;
-
+    async run(Bot: BotType, interaction: BotInteraction, options?: CommandOptions) {
         if (!interaction?.guild) {
             return super.error(interaction, "Sorry, but this command is not available in DMs.");
         }
@@ -216,7 +213,7 @@ class Event extends SlashCommand {
         const eventName = "";
 
         if (["create", "delete", "trigger"].includes(action)) {
-            if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to use these
+            if (options.level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to use these
                 return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
         }
@@ -367,7 +364,7 @@ class Event extends SlashCommand {
                         const eventDate = momentTZ(event.eventDT).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                         let eventString = interaction.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
-                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.utc(momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").asMilliseconds()).format("d [days], h [hrs], m [min]"));
                         if (event.eventChan && event.eventChan !== "") {
                             let chanName = "";
                             if (interaction.guild.channels.cache.has(event.eventChan)) {
@@ -418,7 +415,7 @@ class Event extends SlashCommand {
                             const eventDate = momentTZ(event.eventDT).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                             let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
-                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.utc(momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").asMilliseconds()).format("d [days], h [hrs], m [min]"));
                             if (event.eventChan && event.eventChan !== "") {
                                 let chanName = "";
                                 if (interaction.guild.channels.cache.has(event.eventChan)) {
@@ -482,7 +479,7 @@ class Event extends SlashCommand {
                 const evName = interaction.options.getString("name");
                 const eventID = `${interaction.guild.id}-${evName}`;
 
-                await Bot.socket.emit("delEvent", eventID, async (result: {}) => {
+                await Bot.socket.emit("delEvent", eventID, async (result: {success: boolean, error: string}) => {
                     if (result.success) {
                         return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
                     } else {
@@ -505,15 +502,15 @@ class Event extends SlashCommand {
                     // As long as it does exist, go ahead and try triggering it
                     await Bot.socket.emit("getEventsByID", eventID, async function(event: SavedEvent) {
                         if (Array.isArray(event)) event = event[0];
-                        var channel = "";
+                        var channel = null;
                         var announceMessage = `**${eventName}**\n${event.eventMessage}`;
                         if (event["eventChan"] && event.eventChan !== "") {  // If they"ve set a channel, try using it
-                            channel = interaction.guild.channels.cache.get(event.eventChan).id;
+                            channel = interaction.guild.channels.cache.get(event.eventChan) as TextChannel;
                             if (!channel) {
-                                channel = interaction.guild.channels.cache.find(c => c.name === event.eventChan).id;
+                                channel = interaction.guild.channels.cache.find(c => c.name === event.eventChan);
                             }
                         } else { // Else, use the default one from their settings
-                            channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"]).id;
+                            channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"]) as TextChannel;
                         }
                         if (channel && channel.permissionsFor(interaction.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                             try {
@@ -632,7 +629,7 @@ class Event extends SlashCommand {
                     return { success: true, error: null };
                 })
                 .catch((error: Error) => {
-                    Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \ninteraction: ${interaction.content}\nError: ${error}`);
+                    Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \ninteraction: ${interaction.options}\nError: ${error}`);
                     return { success: false, error: error };
                 });
             return out;

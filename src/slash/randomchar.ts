@@ -1,10 +1,11 @@
 import SlashCommand from "../base/slashCommand";
+import { APIUnitObj, BotInteraction, BotType } from "../modules/types";
+import { Interaction } from "discord.js";
 
 class Randomchar extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "randomchar",
-            aliases: ["rand", "random"],
             guildOnly: false,
             category: "Star Wars",
             permissions: ["EMBED_LINKS"],
@@ -12,12 +13,12 @@ class Randomchar extends SlashCommand {
                 {
                     name: "allycode",
                     description: "The ally code for the user you want to look up",
-                    type: "STRING"
+                    type: Bot.constants.optionType.STRING
                 },
                 {
                     name: "rarity",
                     description: "Choose a minimum rarity (Star level) to filter by",
-                    type: "INTEGER",
+                    type: Bot.constants.optionType.INTEGER,
                     choices: [
                         { name: "1*", value: 1 },
                         { name: "2*", value: 2 },
@@ -31,7 +32,7 @@ class Randomchar extends SlashCommand {
                 {
                     name: "count",
                     description: "The number of characters to grab",
-                    type: "INTEGER",
+                    type: Bot.constants.optionType.INTEGER,
                     choices: [
                         { name: "1", value: 1 },
                         { name: "2", value: 2 },
@@ -44,7 +45,7 @@ class Randomchar extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         let chars = Bot.characters;
         const MAX_CHARACTERS = 5;
         const charOut = [];
@@ -55,8 +56,8 @@ class Randomchar extends SlashCommand {
         let count = interaction.options.getInteger("count");
         if (!count) count = MAX_CHARACTERS;
 
-        let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode, false);
+        const allycodeOpt = interaction.options.getString("allycode");
+        const allycode = await Bot.getAllyCode(interaction, allycodeOpt, false);
 
         if (allycode) {
             // If there is a valid allycode provided, grab the user's roster
@@ -75,7 +76,7 @@ class Randomchar extends SlashCommand {
 
             // Filter out all the ships from the player's roster, so it only shows characters
             // Replace the default list with this
-            chars = player.roster.filter(c => c.combatType === 1);
+            chars = player.roster.filter((c: APIUnitObj) => c.combatType === 1);
 
             // If they're looking for a certain min star lvl, filter out everything lower
             if (star) {
@@ -89,7 +90,7 @@ class Randomchar extends SlashCommand {
         while (charOut.length < count) {
             const newIndex = Math.floor(Math.random() * chars.length);
             const newChar = chars[newIndex];
-            let name;
+            let name: string;
             if (newChar.name) {
                 name = newChar.name;
             } else if (newChar.defId) {

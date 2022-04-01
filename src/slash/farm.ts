@@ -1,25 +1,26 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType, UnitLocation, UnitObj } from "../modules/types";
 
 class Farm extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "farm",
             guildOnly: false,
             category: "SWGoH",
-            aliases: [],
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "character",
                     description: "The character or ship you want to search for",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     required: true
                 }
             ]
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         // Grab the character they're looking for
         const searchChar = interaction.options.getString("character");
         let isChar = true;
@@ -37,7 +38,7 @@ class Farm extends SlashCommand {
             return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         } else if (chars.length > 1) {
             // Found too many
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", chars.map(c => c.name).join("\n")));
+            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", chars.map((c: UnitObj) => c.name).join("\n")));
         }
 
         // There was only one result, so lets use it
@@ -49,15 +50,15 @@ class Farm extends SlashCommand {
         }
 
         const outList = [];
-        let unitLocs = null;
+        let unitLocs: UnitLocation = null;
         if (!isChar) {
-            unitLocs = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
+            unitLocs = Bot.shipLocs.find((s) => s.name.toLowerCase() === character.name.toLowerCase());
         } else {
-            unitLocs = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
+            unitLocs = Bot.charLocs.find((c) => c.name.toLowerCase() === character.name.toLowerCase());
         }
 
         if (unitLocs) {
-            unitLocs.locations.forEach(loc => {
+            unitLocs.locations.forEach((loc) => {
                 if (loc.cost) {
                     // This will be anything in a store
                     outList.push( `${loc.type} - ${loc.cost.replace("/", " per ")} shards`);

@@ -1,11 +1,12 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotType, UnitObj } from "../modules/types";
 
 class Mods extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "mods",
             guildOnly: false,
-            aliases: ["m", "mod"],
             category: "Star Wars",
             permissions: ["EMBED_LINKS"],
             description: "Display some suggested mod loadouts based on apps.crouchingrancor.com",
@@ -14,16 +15,16 @@ class Mods extends SlashCommand {
                     name: "character",
                     required: true,
                     description: "The character you want to see the mods for",
-                    type: "STRING"
+                    type: Bot.constants.optionType.STRING
                 },
             ]
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const charList = Bot.characters;
 
-        const getLocalizedModString = function(key) {
+        const getLocalizedModString = function(key: string) {
             const localizationKeyMap = {
                 "Critical Chance x2" : "COMMAND_MODS_CRIT_CHANCE_SET",
                 "Critical Damage x4" : "COMMAND_MODS_CRIT_DAMAGE_SET",
@@ -64,7 +65,7 @@ class Mods extends SlashCommand {
             return valueArray.join("/ ");
         };
 
-        const getLocalizedModAdvice = function(modAdvice) {
+        const getLocalizedModAdvice = function(modAdvice: {}) {
             const sets = [];
 
             for (const i in modAdvice.sets) {
@@ -96,8 +97,8 @@ class Mods extends SlashCommand {
             });
         } else if (chars.length > 1) {
             const charL = [];
-            const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
-            charS.forEach(c => {
+            const charS = chars.sort((p: UnitObj, c: UnitObj) => p.name > c.name ? 1 : -1);
+            charS.forEach((c: UnitObj) => {
                 charL.push(c.name);
             });
             return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));

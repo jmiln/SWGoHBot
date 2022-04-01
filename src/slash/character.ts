@@ -1,18 +1,19 @@
+import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { BotInteraction, BotType, UnitObj } from "../modules/types";
 
 class Character extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "character",
             guildOnly: false,
             description: "Show overall info for the given character",
             category: "Star Wars",
-            aliases: ["characters", "char", "ab", "abilities"],
             permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "character",
-                    type: "STRING",
+                    type: Bot.constants.optionType.STRING,
                     description: "The character you want to see the gear of",
                     required: true
                 },
@@ -20,18 +21,16 @@ class Character extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction) {
-        const charList = Bot.characters;
-
+    async run(Bot: BotType, interaction: BotInteraction) {
         const searchName = interaction.options.getString("character");
 
         const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
         const omega         = Bot.emotes["omegaMat"];
         const zeta          = Bot.emotes["zetaMat"];
-        const omicron      = Bot.emotes["omicronMat"];
+        const omicron       = Bot.emotes["omicronMat"];
 
         // Find any characters that match what they're looking for
-        const chars = Bot.findChar(searchName, charList);
+        const chars = Bot.findChar(searchName, Bot.characters);
         if (chars.length <= 0) {
             const err = interaction.language.get("COMMAND_CHARACTER_INVALID_CHARACTER", interaction.guildSettings.prefix);
             if (err.indexOf("\n") > -1) {
@@ -41,8 +40,8 @@ class Character extends SlashCommand {
             return super.error(interaction, err, {example: "abilities Han Solo"});
         } else if (chars.length > 1) {
             const charL = [];
-            const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
-            charS.forEach(c => {
+            const charS = chars.sort((p: UnitObj, c: UnitObj) => p.name > c.name ? 1 : -1);
+            charS.forEach((c: UnitObj) => {
                 charL.push(c.name);
             });
             return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
@@ -57,7 +56,7 @@ class Character extends SlashCommand {
         if (char.factions.length) {
             fields.push({
                 name: "Factions",
-                value: char.factions.map(f => Bot.toProperCase(f)).join(", ")
+                value: char.factions.map((f: string) => Bot.toProperCase(f)).join(", ")
             });
         }
 
@@ -97,7 +96,7 @@ class Character extends SlashCommand {
 
             const msgArr = Bot.msgArray(Bot.expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
 
-            msgArr.forEach((m, ix) => {
+            msgArr.forEach((m: string, ix: number) => {
                 if (ix === 0) {
                     fields.push({
                         "name": ability.name,

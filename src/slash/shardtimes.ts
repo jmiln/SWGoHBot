@@ -1,13 +1,14 @@
-import * as momentTZ from "moment-timezone";
+import { Interaction } from "discord.js";
+import moment from "moment-timezone";
 require("moment-duration-format");
 // const {inspect} = require('util');
 import SlashCommand from "../base/slashCommand";
+import { BotType } from "../modules/types";
 
 class Shardtimes extends SlashCommand {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "shardtimes",
-            aliases: ["shard", "st", "payout", "po"],
             guildOnly: false,
             category: "Misc",
             permissions: ["EMBED_LINKS"],
@@ -18,28 +19,28 @@ class Shardtimes extends SlashCommand {
                 //  - Flag, emote, symbol
                 {
                     name: "add",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Add a new name/ user to be shown",
                     options: [
                         {
                             name: "user",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "A name or mention/ userID",
                             required: true
                         },
                         {
                             name: "timezone",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "A timezone identifyer (Ex: US/Pacific)"
                         },
                         {
                             name: "time_until",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "How long (hh:mm) until the payout"
                         },
                         {
                             name: "flag",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "An emote to show next to the name"
                         }
                     ]
@@ -48,12 +49,12 @@ class Shardtimes extends SlashCommand {
                 //  - UserID, name, etc
                 {
                     name: "remove",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Remove a name/ user from the list",
                     options: [
                         {
                             name: "user",
-                            type: "STRING",
+                            type: Bot.constants.optionType.STRING,
                             description: "A name or mention/ userID",
                             required: true
                         }
@@ -63,12 +64,12 @@ class Shardtimes extends SlashCommand {
                 //  - destinationChannel
                 {
                     name: "copy",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Copy the shard times from this channel to the target channel",
                     options: [
                         {
                             name: "dest_channel",
-                            type: "CHANNEL",
+                            type: Bot.constants.optionType.CHANNEL,
                             description: "The channel you want it to be copied to",
                             required: true
                         }
@@ -78,12 +79,12 @@ class Shardtimes extends SlashCommand {
                 //  - Ships
                 {
                     name: "view",
-                    type: "SUB_COMMAND",
+                    type: Bot.constants.optionType.SUB_COMMAND,
                     description: "Copy the shard times from this channel to the target channel",
                     options: [
                         {
                             name: "ships",
-                            type: "BOOLEAN",
+                            type: Bot.constants.optionType.BOOLEAN,
                             description: "Show the ship arena payout times instead"
                         }
                     ]
@@ -92,7 +93,7 @@ class Shardtimes extends SlashCommand {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: BotType, interaction: BotInteraction, options: {}) {
         const level = options.level;
         // Shard ID will be guild.id-channel.id
         const shardID = `${interaction.guild.id}-${interaction.channel.id}`;
@@ -149,12 +150,12 @@ class Shardtimes extends SlashCommand {
 
 
             if (timezone) {
-                if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
+                if (!moment.tz.zone(timezone)) { // Valid time zone?
                     const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
                     if (match) {
                         // It's a UTC +/- zone
                         zoneType = "utc";
-                        timezone = parseInt(`${match[1]}${parseInt(match[2] * 60, 10) + parseInt(match[3], 10)}`, 10);
+                        timezone = parseInt(`${match[1]}${parseInt(match[2], 10) * 60 + parseInt(match[3], 10)}`, 10);
                     } else {
                         // Grumble that it's an invalid tz
                         return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
@@ -166,7 +167,7 @@ class Shardtimes extends SlashCommand {
                 if (match) {
                     // It's a valid time until payout
                     const [hour, minute] = timeTil.split(":");
-                    const [tempH, tempM] = momentTZ.tz("UTC").add(hour, "h").add(minute, "m").format("HH:mm").split(":").map(t => parseInt(t, 10));
+                    const [tempH, tempM] = moment.tz("UTC").add(hour, "h").add(minute, "m").format("HH:mm").split(":").map((t: string) => parseInt(t, 10));
                     const totalMin = (tempH * 60) + tempM;
                     const rounded = Math.round(totalMin / 15) * 15;
                     timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
@@ -279,13 +280,13 @@ class Shardtimes extends SlashCommand {
                     .then(() => {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
                     })
-                    .catch((err) => {
+                    .catch((err: Error) => {
                         return super.error(interaction, err.message);
                     });
             } else {
                 const destHasTimes = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}})
-                    .then(times => Object.keys(times.dataValues.times).length)
-                    .then(isLen => isLen);
+                    .then((times: {}) => Object.keys(times.dataValues.times).length)
+                    .then((isLen: any) => isLen);
                 if (destHasTimes) {
                     // Of if there is shard info there with listings
                     return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_DEST_FULL"));
@@ -316,7 +317,7 @@ class Shardtimes extends SlashCommand {
                 }
             });
 
-            const sortedShardTimes = Object.keys(shardOut).sort((a, b) => momentTZ(a, "HH:mm").diff(momentTZ(b, "HH:mm")));
+            const sortedShardTimes = Object.keys(shardOut).sort((a, b) => moment(a, "HH:mm").diff(moment(b, "HH:mm")));
 
             const fields = [];
             for (const time of sortedShardTimes) {
@@ -362,32 +363,32 @@ class Shardtimes extends SlashCommand {
             });
         }
 
-        function timeTil(zone, timeToAdd, type) {
-            let targetTime;
+        function timeTil(zone: string, timeToAdd: number, type: string) {
+            let targetTime: any;
             if (type === "zone") {
-                if (momentTZ.tz(zone).unix() < momentTZ.tz(zone).startOf("day").add(timeToAdd, "h").unix()) {
+                if (moment.tz(zone).unix() < moment.tz(zone).startOf("day").add(timeToAdd, "h").unix()) {
                     // If it's later today
-                    targetTime = momentTZ.tz(zone).startOf("day").add(timeToAdd, "h");
+                    targetTime = moment.tz(zone).startOf("day").add(timeToAdd, "h");
                 } else {
                     // If it's already passed for the day
-                    targetTime = momentTZ.tz(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
+                    targetTime = moment.tz(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
                 }
             } else if (type === "hhmm") {
-                if (momentTZ.tz(zone, "HH:mm", "UTC").unix() < momentTZ().unix()) {
+                if (moment.tz(zone, "HH:mm", "UTC").unix() < moment().unix()) {
                     // It's already passed
-                    return momentTZ.duration(momentTZ.tz(zone, "HH:mm", "UTC").add(1, "d").diff(momentTZ())).format("HH:mm", { trim: false });
+                    return moment.duration(moment.tz(zone, "HH:mm", "UTC").add(1, "d").diff(moment())).format("HH:mm", { trim: false });
                 }
-                return momentTZ.duration(momentTZ.tz(zone, "HH:mm", "UTC").diff(momentTZ())).format("HH:mm", { trim: false });
+                return moment.duration(moment.tz(zone, "HH:mm", "UTC").diff(moment())).format("HH:mm", { trim: false });
             } else {
                 // It's utc +/- format
-                if (momentTZ().utcOffset(zone).unix() < momentTZ().utcOffset(zone).startOf("day").add(timeToAdd, "h").unix()) {
-                    targetTime = momentTZ().utcOffset(zone).startOf("day").add(timeToAdd, "h");
+                if (moment().utcOffset(zone).unix() < moment().utcOffset(zone).startOf("day").add(timeToAdd, "h").unix()) {
+                    targetTime = moment().utcOffset(zone).startOf("day").add(timeToAdd, "h");
                 } else {
-                    targetTime = momentTZ().utcOffset(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
+                    targetTime = moment().utcOffset(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
                 }
-                return momentTZ.duration(targetTime.diff(momentTZ().utcOffset(zone))).format("HH:mm", { trim: false });
+                return moment.duration(targetTime.diff(moment().utcOffset(zone))).format("HH:mm", { trim: false });
             }
-            return momentTZ.duration(targetTime.diff(momentTZ.tz(zone))).format("HH:mm", { trim: false });
+            return moment.duration(targetTime.diff(moment.tz(zone))).format("HH:mm", { trim: false });
         }
     }
 }

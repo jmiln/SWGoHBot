@@ -1,18 +1,16 @@
 import moment from "moment-timezone";
 import SlashCommand from "../base/slashCommand";
-import { Interaction } from "discord.js";
+import { BotInteraction, BotType } from "../modules/types";
 
 class Activites extends SlashCommand {
-    constructor(Bot: {}) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "activities",
             description: "Shows daily guild activities",
-            category: "Star Wars",
-            aliases: ["act"],
             guildOnly: false,
             options: [{
                 name: "day",
-                type: "STRING",
+                type: Bot.constants.optionType.STRING,
                 description: "Day of the week",
                 choices: [
                     {
@@ -48,7 +46,7 @@ class Activites extends SlashCommand {
         });
     }
 
-    async run(Bot: {}, interaction: Interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
 
         let day = interaction.options.getString("day");
