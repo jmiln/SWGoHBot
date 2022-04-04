@@ -74,7 +74,6 @@ class Poll extends Command {
     async run(Bot, interaction, options) {
         const action = interaction.options.getSubcommand();
 
-        const restrictedActions = ["cancel", "create", "end"];
 
         let poll = { // ID = guildID-channelID
             "question": "",
@@ -109,7 +108,8 @@ class Poll extends Command {
         }
 
         // Make sure it's a mod or someone with the appropriate perms trying to create it
-        if (restrictedActions.includes(action) && options.level < Bot.constants.GUILD_ADMIN) {
+        const restrictedActions = ["cancel", "create", "end"];
+        if (restrictedActions.includes(action) && options.level < Bot.constants.permMap.GUILD_ADMIN) {
             return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
         }
 
