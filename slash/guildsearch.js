@@ -345,7 +345,7 @@ class GuildSearch extends Command {
             }]});
         } else {
             // Not looking for stat info
-            const sortType = sort ? sort : "name";
+            const sortType = sort ? sort : (top ? "gp" : "name");
 
             for (const ch of guildChar) {
                 ch.zetas = ch.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
