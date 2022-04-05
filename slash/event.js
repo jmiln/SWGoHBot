@@ -185,8 +185,6 @@ class Event extends Command {
     }
 
     async run(Bot, interaction, options) {
-        const level = options.level;
-
         if (!interaction?.guild) {
             return super.error(interaction, "Sorry, but this command is not available in DMs.");
         }
@@ -210,22 +208,22 @@ class Event extends Command {
         };
 
         const action = interaction.options.getSubcommand();
-        const eventName = "";
 
         if (["create", "delete", "trigger"].includes(action)) {
-            if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to use these
+            if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                 return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
         }
+
         switch (action) {
             case "create": {
-                const evName = interaction.options.getString("name");
-                const evDate = interaction.options.getString("day");
-                const evTime = interaction.options.getString("time");
-                const evMsg = interaction.options.getString("message");
-                const repeat = interaction.options.getString("repeat");
+                const evName    = interaction.options.getString("name");
+                const evDate    = interaction.options.getString("day");
+                const evTime    = interaction.options.getString("time");
+                const evMsg     = interaction.options.getString("message");
+                const repeat    = interaction.options.getString("repeat");
                 const repeatDay = interaction.options.getString("repeatday");
-                const channel = interaction.options.getChannel("channel");
+                const channel   = interaction.options.getChannel("channel");
                 const countdown = interaction.options.getBoolean("countdown");
 
                 const guildEvents = await Bot.database.models.eventDBs.findAll({where: {eventID: { [Bot.seqOps.like]: `${interaction.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
@@ -250,14 +248,13 @@ class Event extends Command {
                     time: evTime,
                     day: evDate,
                     message: evMsg?.length ? evMsg : null,
-                    channel: channel ? channel?.id : null,
+                    channelID: channel?.id ? channel.id : null,
                     countdown: countdown,
                     repeat: repeat,
                     repeatDay: repeatDay
                 };
 
-                let validEV = validateEvents([newEv]);
-                if (Array.isArray(validEV)) validEV = validEV[0];
+                const validEV = validateEvents([newEv])[0];
                 if (!validEV) {
                     return super.error(interaction, "Something broke while trying to validate your event.");
                 }
@@ -478,8 +475,8 @@ class Event extends Command {
                 }
                 break;
             } case "delete": {
-                const evName = interaction.options.getString("name");
-                const eventID = `${interaction.guild.id}-${evName}`;
+                const eventName = interaction.options.getString("name");
+                const eventID = `${interaction.guild.id}-${eventName}`;
 
                 await Bot.socket.emit("delEvent", eventID, async (result) => {
                     if (result.success) {
