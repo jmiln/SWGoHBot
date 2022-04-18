@@ -10234,8 +10234,8 @@
             "Stun"
         ],
         "role": "Support",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "OUTRIDER",
+        "ship_slot": 0,
         "activate_shard_count": 25
     },
     {
@@ -21860,11 +21860,18 @@
         "ability_classes": [
             "Advantage",
             "AoE",
+            "Buff Immunity",
+            "Critical Damage Up",
+            "Evasion Up",
             "Expose",
             "Gain Turn Meter",
+            "Heal",
+            "Offense Up",
             "Remove Turn Meter",
             "Revive",
-            "Stun"
+            "Speed Up",
+            "Stun",
+            "Taunt"
         ],
         "role": "Leader",
         "ship": "UWINGROGUEONE",

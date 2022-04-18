@@ -1148,6 +1148,28 @@
         "abilities": {}
     },
     {
+        "name": "Outrider",
+        "uniqueName": "OUTRIDER",
+        "aliases": [
+            "Outrider"
+        ],
+        "nameVariant": [
+            "Outrider"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/outrider/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_outrider.png",
+        "side": "light",
+        "factions": [
+            "Cargo Ship",
+            "Rebel",
+            "Scoundrel",
+            "Smuggler",
+            "Support"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Phantom II",
         "uniqueName": "PHANTOM2",
         "aliases": [
