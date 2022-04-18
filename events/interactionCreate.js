@@ -60,13 +60,13 @@ module.exports = async (Bot, client, interaction) => {
         const replyObj = {content: `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`, ephemeral: true};
         if (interaction.replied) {
             return interaction.followUp(replyObj)
-                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send error message: \n${e}`));
+                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send followUp error message: \n${e}`));
         } else if (interaction.deferred) {
             return interaction.editReply(replyObj)
-                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send error message: \n${e}`));
+                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send editReply error message: \n${e}`));
         } else {
             return interaction.reply(replyObj)
-                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send error message: \n${e}`));
+                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send reply error message: \n${e}`));
         }
     }
 };

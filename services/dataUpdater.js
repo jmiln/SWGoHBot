@@ -100,16 +100,15 @@ async function updateRemoteData() {
     const log = [];
 
     // Disabled for now since glitch shut it down temporarily
-    // if (await updateIfChanged(GAMEDATA, "https://swgoh-stat-calc.glitch.me/gameData.json")) {
     if (await updateIfChanged({localCachePath: GAMEDATA, dataSourceUri: "http://swgoh-api-stat-calc.glitch.me/gameData.json"})) {
         log.push("Detected a change in Crinolo's Game Data.");
     }
-    if (await updateIfChanged({ localCachePath: GG_SHIPS_CACHE, dataSourceUri: "https://swgoh.gg/api/ships/?format=json" })) {
+    if (await updateIfChanged({ localCachePath: GG_CHAR_CACHE, dataSourceUri: "http://api.swgoh.gg/ships/" })) {
         log.push("Detected a change in ships from swgoh.gg");
         await updateShips(currentShips);
     }
 
-    if (await updateIfChanged({ localCachePath: GG_CHAR_CACHE, dataSourceUri: "https://swgoh.gg/api/characters/?format=json" })) {
+    if (await updateIfChanged({ localCachePath: GG_CHAR_CACHE, dataSourceUri: "http://api.swgoh.gg/characters/" })) {
         log.push("Detected a change in characters from swgoh.gg");
         await updateCharacters(currentCharacters);
     }
