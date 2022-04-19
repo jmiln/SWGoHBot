@@ -45,7 +45,7 @@ function saveFile(filePath, jsonData) {
         fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4), "utf8");
     } catch (err) {
         if (err) {
-            console.log(err);
+            console.log("ERROR in dataUpdater/saveFile: " + err);
         }
     }
 }
@@ -103,7 +103,7 @@ async function updateRemoteData() {
     if (await updateIfChanged({localCachePath: GAMEDATA, dataSourceUri: "http://swgoh-api-stat-calc.glitch.me/gameData.json"})) {
         log.push("Detected a change in Crinolo's Game Data.");
     }
-    if (await updateIfChanged({ localCachePath: GG_CHAR_CACHE, dataSourceUri: "http://api.swgoh.gg/ships/" })) {
+    if (await updateIfChanged({ localCachePath: GG_SHIPS_CACHE, dataSourceUri: "http://api.swgoh.gg/ships/" })) {
         log.push("Detected a change in ships from swgoh.gg");
         await updateShips(currentShips);
     }
