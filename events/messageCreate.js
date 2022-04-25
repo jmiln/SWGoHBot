@@ -76,6 +76,12 @@ module.exports = async (Bot, client, message) => {
         return message.channel.send(message.language.get("BASE_COMMAND_UNAVAILABLE"));
     }
 
+    // Reply with a message to use the slash command instead for certain commands that are definitely working
+    const useSlash = ["acronyms", "activities", "challenges", "info", "mods", "modsets", "time", "whois"];
+    if (useSlash.includes(cmd.help.name)) {
+        return message.channel.send({content: `This command has been deprecated, please use the slash command \`/${cmd.help.name}\``});
+    }
+
     // If the command exists, **AND** the user has permission, run it.
     if (cmd && level >= cmd.conf.permLevel) {
         if (message.guild) {
@@ -121,9 +127,9 @@ module.exports = async (Bot, client, message) => {
 
         // If they're just looking for the help, don't bother going through the command
         try {
-            if (cmd.help.name !== "test" && cmd.help.category !== "Dev") {
-                await message.channel.send(`>>> Non-slash (\`${message.guildSettings.prefix}\`) commands will be disabled at the beginning of April. \n\nhttps://support-dev.discord.com/hc/en-us/articles/4404772028055\n\nPlease move over to slash commands if able.\nPlease report any issues with the slash commands and I'll try to fix it right away.`);
-            }
+            // if (cmd.help.name !== "test" && cmd.help.category !== "Dev") {
+            //     await message.channel.send(`>>> Non-slash (\`${message.guildSettings.prefix}\`) commands will be disabled at the beginning of April. \n\nhttps://support-dev.discord.com/hc/en-us/articles/4404772028055\n\nPlease move over to slash commands if able.\nPlease report any issues with the slash commands and I'll try to fix it right away.`);
+            // }
             await cmd.run(Bot, message, args, {
                 level: level,
                 flags: flagArgs.flags,
