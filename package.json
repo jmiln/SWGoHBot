@@ -30,8 +30,8 @@
         "pg": "^8.7.3",
         "pg-hstore": "^2.3.4",
         "sequelize": "6.17",
-        "socket.io": "^4.4.1",
-        "socket.io-client": "^4.4.1",
+        "socket.io": "^4.5.0",
+        "socket.io-client": "^4.5.0",
         "swgoh-client-stub": "^2.4.0",
         "swgoh-stat-calc": "^1.1.2"
     },
