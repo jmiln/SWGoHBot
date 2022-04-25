@@ -62,7 +62,7 @@ async function updateIfChanged({localCachePath, dataSourceUri, dataObject}) {
             const remoteData = await fetch(dataSourceUri).then(res => res.json());
 
             try {
-                localCache = JSON.parse(fs.readFileSync(localCachePath));
+                localCache = JSON.parse(fs.readFileSync(localCachePath, "utf-8"));
             } catch (err) {
                 const reason = err || "unknown error";
                 localCache = {};
@@ -80,8 +80,7 @@ async function updateIfChanged({localCachePath, dataSourceUri, dataObject}) {
         }
     } else {
         // Logic for when there's data itself instead of a url
-        const dataFile = fs.readFileSync(localCachePath);
-        const dataJSON = JSON.parse(dataFile);
+        const dataJSON = JSON.parse(fs.readFileSync(localCachePath, "utf-8"));
 
         if (JSON.stringify(dataJSON) !== JSON.stringify(dataObject)) {
             saveFile(localCachePath, dataObject);
@@ -149,7 +148,7 @@ async function updateRemoteData() {
 }
 
 async function updateShips(currentShips) {
-    const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE));
+    const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE, "utf-8"));
 
     for (var ggShipKey in ggShipList) {
         const ggShip = ggShipList[ggShipKey];
@@ -255,7 +254,7 @@ function isSameCharacter(localChar, remoteChar, nameAttribute) {
 }
 
 async function updateCharacters(currentCharacters) {
-    const ggCharList = JSON.parse(fs.readFileSync(GG_CHAR_CACHE));
+    const ggCharList = JSON.parse(fs.readFileSync(GG_CHAR_CACHE, "utf-8"));
 
     for (var ggChar of ggCharList) {
         let found = false;
