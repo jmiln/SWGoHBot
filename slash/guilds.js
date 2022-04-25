@@ -931,11 +931,15 @@ class Guilds extends Command {
             }
 
 
-            // Get overall stats for the guild
-            const charArenaMembers = guildMembers.filter(m => m?.arena?.char?.rank);
-            const charArenaAVG = (charArenaMembers.reduce((acc, curr) => acc + curr.arena.char.rank, 0) / charArenaMembers.length);
-            const shipArenaMembers = guildMembers.filter(m => m?.arena?.ship?.rank);
-            const shipArenaAVG = (shipArenaMembers.reduce((acc, curr) => acc + curr.arena.ship.rank, 0) / shipArenaMembers.length);
+            // // Get overall stats for the guild
+            // const charArenaMembers = guildMembers.filter(m => m?.arena?.char?.rank);
+            // const charArenaAVG = (charArenaMembers.reduce((acc, curr) => acc + curr.arena.char.rank, 0) / charArenaMembers.length);
+            // const shipArenaMembers = guildMembers.filter(m => m?.arena?.ship?.rank);
+            // const shipArenaAVG = (shipArenaMembers.reduce((acc, curr) => acc + curr.arena.ship.rank, 0) / shipArenaMembers.length);
+
+            const membersGP = guild.roster.filter(m => m?.gp);
+            const avgMemberGP = (membersGP.reduce((acc, curr) => acc + curr.gp, 0) / membersGP.length);
+
             let zetaCount = 0;
             for (const member of guildMembers) {
                 const zetaRoster = member.roster
@@ -946,9 +950,10 @@ class Guilds extends Command {
                 name: "General Stats",
                 value: Bot.codeBlock([
                     `Members:        ${guild.roster.length}`,
-                    `GP:             ${guild.gp.shortenNum()}`,
-                    `AVG Char Arena: ${charArenaAVG.toFixed(2)}`,
-                    `AVG Ship Arena: ${shipArenaAVG.toFixed(2)}`,
+                    `Total GP:       ${guild.gp.shortenNum()}`,
+                    `Average GP:     ${avgMemberGP.shortenNum()}`,
+                    // `AVG Char Arena: ${charArenaAVG.toFixed(2)}`,
+                    // `AVG Ship Arena: ${shipArenaAVG.toFixed(2)}`,
                     `Zetas:          ${zetaCount.toLocaleString()}`
                 ].join("\n"))
             });
