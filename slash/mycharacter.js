@@ -287,24 +287,28 @@ class MyCharacter extends Command {
 
             if (!charImg) {
                 // If it couldn't get an image for the character
-                return interaction.editReply({embeds: [{
-                    author: {
-                        name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
-                        url: character.url,
-                        icon_url: character.avatarURL
-                    },
-                    description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
-                    fields: [
-                        {
-                            name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                            value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
-                        }
-                    ].concat(fields),
-                    footer: footer
-                }]});
+                return interaction.editReply({
+                    content: null,
+                    embeds: [{
+                        author: {
+                            name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
+                            url: character.url,
+                            icon_url: character.avatarURL
+                        },
+                        description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
+                        fields: [
+                            {
+                                name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                                value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
+                            }
+                        ].concat(fields),
+                        footer: footer
+                    }]
+                });
             } else {
                 // But if it could, go ahead and send it
                 return interaction.editReply({
+                    content: null,
                     embeds: [{
                         author: {
                             name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
@@ -329,13 +333,16 @@ class MyCharacter extends Command {
             }
         } else {
             // You don't have the character
-            interaction.editReply({embeds: [{
-                author: {
-                    name: pName + "'s " + character.name
-                },
-                description: interaction.language.get("BASE_SWGOH_LOCKED_CHAR"),
-                footer: footer
-            }]});
+            interaction.editReply({
+                content: null,
+                embeds: [{
+                    author: {
+                        name: pName + "'s " + character.name
+                    },
+                    description: interaction.language.get("BASE_SWGOH_LOCKED_CHAR"),
+                    footer: footer
+                }]
+            });
         }
     }
 }
