@@ -106,8 +106,9 @@ class MyCharacter extends Command {
                 rarity: thisChar.rarity,
                 level: thisChar.level,
                 gear: thisChar.gear,
-                zetas: thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length,
+                zetas: thisChar.skills.filter(s => s.isZeta && (s.tier === s.tiers || (s.isOmicron && s.tier >= s.tiers-1))).length,
                 relic: thisChar.relic?.currentTier ? thisChar.relic.currentTier : 0,
+                omicron: thisChar.skills.filter(s => s.isOmicron && s.tier === s.tiers).length,
                 side: character.side
             };
 
