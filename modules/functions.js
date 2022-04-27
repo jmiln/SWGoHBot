@@ -39,7 +39,25 @@ module.exports = (Bot, client) => {
 
             // Base users, anyone that's not included above
             BASE_USER: 0
-        }
+        },
+        OmicronMode: [
+            "OmicronMode_DEFAULT",
+            "ALLOMICRON",
+            "PVEOMICRON",
+            "PVPOMICRON",
+            "GUILDRAIDOMICRON",
+            "TERRITORYSTRIKEOMICRON",       // Huh?
+            "TERRITORYCOVERTOMICRON",       // Huh?
+            "TERRITORYBATTLEBOTHOMICRON",
+            "TERRITORYWAROMICRON",
+            "TERRITORYTOURNAMENTOMICRON",   // Huh?
+            "WAROMICRON0",                  // Idk
+            "CONQUESTOMICRON1",
+            "GALACTICCHALLENGEOMICRON2",
+            "PVEEVENTOMICRON3",
+            "TERRITORYTOURNAMENT3OMICRON4", // Who knows
+            "TERRITORYTOURNAMENT5OMICRON5"  // Who knows
+        ]
     };
 
 

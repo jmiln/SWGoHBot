@@ -6,7 +6,7 @@ const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch
 
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
-let omicronList = null;
+let specialAbilityList = null;
 
 module.exports = (Bot) => {
     // Set the max cooldowns (In minutes)
@@ -34,21 +34,28 @@ module.exports = (Bot) => {
         guild: guild,
         guildByName: guildByName,
         zetaRec: zetaRec,
-        events: events,
-        getOmicrons: getOmicrons,
+        events: events
     };
 
-    async function getOmicrons() {
-        if (!omicronList) {
-            omicronList = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {
-                isOmicron: true,
-                language: "eng_us"
+    async function getSpecialAbilities() {
+        if (!specialAbilityList) {
+            const abilityList = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {
+                $or: [
+                    {
+                        isOmicron: true,
+                        language: "eng_us"
+                    },
+                    {
+                        isZeta: true,
+                        language: "eng_us"
+                    }
+                ]
             }, {
-                skillId: 1, _id: 0
+                skillId: 1, _id: 0, zetaTier: 1, omicronTier: 1, omicronMode: 1
             });
-            omicronList = omicronList.map(skill => skill.skillId);
+            specialAbilityList = abilityList;
         }
-        return omicronList;
+        return specialAbilityList;
     }
 
     async function playerByName(name) {
@@ -242,7 +249,7 @@ module.exports = (Bot) => {
             allycodes = [allycodes];
         }
 
-        const omicronAbilities = await getOmicrons();
+        const specialAbilities = await getSpecialAbilities();
 
         // Check the cooldown to see if it should update stuff or not
         if (!options.force) {
@@ -343,8 +350,16 @@ module.exports = (Bot) => {
 
                         for (const char of bareP.roster) {
                             for (const ability of char.skills) {
-                                if (omicronAbilities.includes(ability.id)) {
-                                    ability.isOmicron = true;
+                                const thisAbility = specialAbilities.find(abi => abi.skillId == ability.id);
+                                if (thisAbility) {
+                                    if (thisAbility.omicronTier) {
+                                        ability.isOmicron = true;
+                                        ability.omicronTier = thisAbility.omicronTier + 1;
+                                        ability.omicronMode = thisAbility.omicronMode;
+                                    }
+                                    if (thisAbility.zetaTier) {
+                                        ability.zetaTier = thisAbility.zetaTier + 1;
+                                    }
                                 }
                             }
                         }
@@ -465,7 +480,13 @@ module.exports = (Bot) => {
                     "id":1,
                     "abilityReference":1,
                     "isZeta":1,
-                    "tierList": 1
+                    "tierList": {
+                        recipeId: 1,
+                        powerOverrideTag: 1,
+                        isZetaTier: 1,
+                        isOmicronTier: 1
+                    },
+                    omicronMode: 1
                 }
             });
 
