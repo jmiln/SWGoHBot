@@ -2227,7 +2227,8 @@
         "name": "Eighth Brother",
         "uniqueName": "EIGHTHBROTHER",
         "aliases": [
-            "Eighth Brother"
+            "Eighth Brother",
+            "8th Brother"
         ],
         "nameVariant": [
             "Eighth Brother"
@@ -2475,6 +2476,28 @@
             "cross": "Offense",
             "source": "swgoh.gg"
         }
+    },
+    {
+        "name": "Fifth Brother",
+        "uniqueName": "FIFTHBROTHER",
+        "aliases": [
+            "Fifth Brother",
+            "5th Brother"
+        ],
+        "nameVariant": [
+            "Fifth Brother"
+        ],
+        "url": "http://swgoh.gg/characters/fifth-brother/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_fifthbrother.png",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Inquisitorius",
+            "Leader",
+            "Support",
+            "Unaligned Force User"
+        ],
+        "mods": {}
     },
     {
         "name": "Finn",
@@ -5137,7 +5160,8 @@
         "name": "Ninth Sister",
         "uniqueName": "NINTHSISTER",
         "aliases": [
-            "Ninth Sister"
+            "Ninth Sister",
+            "9th Sister"
         ],
         "nameVariant": [
             "Ninth Sister"
@@ -6103,7 +6127,8 @@
         "name": "Second Sister",
         "uniqueName": "SECONDSISTER",
         "aliases": [
-            "Second Sister"
+            "Second Sister",
+            "2nd Sister"
         ],
         "nameVariant": [
             "Second Sister"
@@ -6137,7 +6162,8 @@
         "name": "Seventh Sister",
         "uniqueName": "SEVENTHSISTER",
         "aliases": [
-            "Seventh Sister"
+            "Seventh Sister",
+            "7th Sister"
         ],
         "nameVariant": [
             "Seventh Sister"
