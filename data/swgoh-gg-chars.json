@@ -8648,6 +8648,193 @@
         "activate_shard_count": 145
     },
     {
+        "name": "Darth Malgus",
+        "base_id": "DARTHMALGUS",
+        "pk": 3389,
+        "url": "http://swgoh.gg/characters/darth-malgus/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_darthmalgus.png",
+        "power": 36877,
+        "description": "Legendary Sith Lord who causes doubt among his foes and heralds the return of the Sith Empire",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "002",
+                    "003",
+                    "007",
+                    "004",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "030",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "030",
+                    "048",
+                    "050",
+                    "041",
+                    "030",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "049",
+                    "048",
+                    "048",
+                    "055",
+                    "017",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "048",
+                    "043",
+                    "063",
+                    "060",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "038",
+                    "049",
+                    "034",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "100",
+                    "036",
+                    "099",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "172",
+                    "087",
+                    "108",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "172",
+                    "172",
+                    "105",
+                    "109",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "079",
+                    "117",
+                    "120",
+                    "129",
+                    "087",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "116",
+                    "129",
+                    "129",
+                    "134",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "162",
+                    "166",
+                    "168",
+                    "G12Finisher_DARTHMALGUS_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Leader",
+            "Sith",
+            "Sith Empire",
+            "Tank"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Blind",
+            "Bonus Attack",
+            "Counter",
+            "Critical Chance Up",
+            "Critical Damage Up",
+            "Dispel",
+            "Expose",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Critical",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Protection Up",
+            "Reduce Cooldowns",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Darth Maul",
         "base_id": "MAUL",
         "pk": 82,

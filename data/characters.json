@@ -1689,6 +1689,26 @@
         }
     },
     {
+        "name": "Darth Malgus",
+        "uniqueName": "DARTHMALGUS",
+        "aliases": [
+            "Darth Malgus"
+        ],
+        "nameVariant": [
+            "Darth Malgus"
+        ],
+        "url": "http://swgoh.gg/characters/darth-malgus/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darthmalgus.png",
+        "side": "dark",
+        "factions": [
+            "Leader",
+            "Sith",
+            "Sith Empire",
+            "Tank"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Darth Maul",
         "uniqueName": "MAUL",
         "aliases": [
