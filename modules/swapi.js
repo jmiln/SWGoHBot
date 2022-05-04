@@ -37,6 +37,7 @@ module.exports = (Bot) => {
         events: events
     };
 
+    // Grab the abilities that have Zeta / Omicron levels for future reference
     async function getSpecialAbilities() {
         if (!specialAbilityList) {
             const abilityList = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {
@@ -552,6 +553,7 @@ module.exports = (Bot) => {
         }
     }
 
+    // Grab all of a character's info in the given language (Name, Abilities, Equipment)
     async function getCharacter(defId, lang) {
         lang = lang ? lang.toLowerCase() : "eng_us";
         if (!defId) throw new Error("[getCharacter] Missing character ID.");
@@ -599,6 +601,7 @@ module.exports = (Bot) => {
         return char;
     }
 
+    // Function for updating all the stored character data from the game
     async function character( defId, update=false) {
         const factionMap = {
             bountyhunter : "bounty hunter",
@@ -666,6 +669,7 @@ module.exports = (Bot) => {
         }
     }
 
+    // Get the gear for a given character
     async function gear( gearArray, lang, update=false ) {
         lang = lang || "eng_us";
         lang = lang.toLowerCase();
@@ -708,6 +712,7 @@ module.exports = (Bot) => {
         }
     }
 
+    // Used by farm, randomchar, and reloaddata
     async function units( defId, lang, update=false ) {
         lang = lang || "eng_us";
         lang = lang.toLowerCase();
@@ -759,6 +764,7 @@ module.exports = (Bot) => {
         }
     }
 
+    // Get gear recipes
     async function recipes( recArray, lang, update=false ) {
         lang = lang || "eng_us";
         if (!recArray) {
