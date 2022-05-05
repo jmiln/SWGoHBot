@@ -698,8 +698,6 @@ class Event extends Command {
 
                 if (!event.name || !event.name.length) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
-                } else if (event.name.indexOf(" ") > -1) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_NO_SPACES"));
                 } else {
                     if (nameArr.includes(event.name)) {
                         err.push(interaction.language.get("COMMAND_EVENT_JSON_DUPLICATE"));

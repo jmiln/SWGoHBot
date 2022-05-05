@@ -6,10 +6,8 @@ class Zetas extends Command {
             name: "zetas",
             category: "SWGoH",
             guildOnly: false,
-            aliases: ["zeta", "z"],
             permissions: ["EMBED_LINKS"],
             options: [
-                // Removing recommendations because they're so outdated
                 {
                     name: "guild",
                     type: "SUB_COMMAND",
