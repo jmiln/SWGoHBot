@@ -1,5 +1,25 @@
 [
     {
+        "name": "50R-T",
+        "uniqueName": "50RT",
+        "aliases": [
+            "50R-T"
+        ],
+        "nameVariant": [
+            "50R-T"
+        ],
+        "url": "http://swgoh.gg/characters/50r-t/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_50rt.png",
+        "side": "light",
+        "factions": [
+            "Droid",
+            "Leader",
+            "Old Republic",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "ARC Trooper",
         "uniqueName": "ARCTROOPER501ST",
         "aliases": [
@@ -36,8 +56,7 @@
         "name": "Aayla Secura",
         "uniqueName": "AAYLASECURA",
         "aliases": [
-            "Aayla Secura",
-            "Aayla"
+            "Aayla Secura"
         ],
         "nameVariant": [
             "Aayla Secura"
@@ -72,7 +91,6 @@
         "uniqueName": "ADMIRALACKBAR",
         "aliases": [
             "Admiral Ackbar",
-            "Ackbar",
             "AA"
         ],
         "nameVariant": [
@@ -212,8 +230,7 @@
         "name": "Amilyn Holdo",
         "uniqueName": "AMILYNHOLDO",
         "aliases": [
-            "Amilyn Holdo",
-            "Holdo"
+            "Amilyn Holdo"
         ],
         "nameVariant": [
             "Amilyn Holdo"
@@ -283,8 +300,7 @@
         "name": "Aurra Sing",
         "uniqueName": "AURRA_SING",
         "aliases": [
-            "Aurra Sing",
-            "Aurra"
+            "Aurra Sing"
         ],
         "nameVariant": [
             "Aurra Sing"
@@ -349,9 +365,7 @@
         "name": "B2 Super Battle Droid",
         "uniqueName": "B2SUPERBATTLEDROID",
         "aliases": [
-            "B2 Super Battle Droid",
-            "Battle Droid",
-            "B2"
+            "B2 Super Battle Droid"
         ],
         "nameVariant": [
             "B2 Super Battle Droid"
@@ -525,8 +539,7 @@
         "name": "Baze Malbus",
         "uniqueName": "BAZEMALBUS",
         "aliases": [
-            "Baze Malbus",
-            "Baze"
+            "Baze Malbus"
         ],
         "nameVariant": [
             "Baze Malbus"
@@ -560,8 +573,7 @@
         "name": "Biggs Darklighter",
         "uniqueName": "BIGGSDARKLIGHTER",
         "aliases": [
-            "Biggs Darklighter",
-            "Biggs"
+            "Biggs Darklighter"
         ],
         "nameVariant": [
             "Biggs Darklighter"
@@ -662,9 +674,7 @@
         "name": "Boba Fett",
         "uniqueName": "BOBAFETT",
         "aliases": [
-            "Boba Fett",
-            "Fett",
-            "Boba"
+            "Boba Fett"
         ],
         "nameVariant": [
             "Boba Fett"
@@ -730,8 +740,7 @@
         "name": "Bodhi Rook",
         "uniqueName": "BODHIROOK",
         "aliases": [
-            "Bodhi Rook",
-            "Bodhi"
+            "Bodhi Rook"
         ],
         "nameVariant": [
             "Bodhi Rook"
@@ -836,8 +845,7 @@
         "uniqueName": "CC2224",
         "aliases": [
             "CC-2224 \"Cody\"",
-            "CC-2224 Cody",
-            "Cody"
+            "CC-2224 Cody"
         ],
         "nameVariant": [
             "'CC-2224 Cody'",
@@ -982,8 +990,7 @@
         "name": "Cad Bane",
         "uniqueName": "CADBANE",
         "aliases": [
-            "Cad Bane",
-            "Cad"
+            "Cad Bane"
         ],
         "nameVariant": [
             "Cad Bane"
@@ -1083,8 +1090,7 @@
         "name": "Captain Phasma",
         "uniqueName": "PHASMA",
         "aliases": [
-            "Captain Phasma",
-            "Phasma"
+            "Captain Phasma"
         ],
         "nameVariant": [
             "Captain Phasma"
@@ -1182,8 +1188,7 @@
         "name": "Cassian Andor",
         "uniqueName": "CASSIANANDOR",
         "aliases": [
-            "Cassian Andor",
-            "Cassian"
+            "Cassian Andor"
         ],
         "nameVariant": [
             "Cassian Andor"
@@ -1250,8 +1255,7 @@
         "name": "Chief Chirpa",
         "uniqueName": "CHIEFCHIRPA",
         "aliases": [
-            "Chief Chirpa",
-            "Chirpa"
+            "Chief Chirpa"
         ],
         "nameVariant": [
             "Chief Chirpa"
@@ -2338,8 +2342,7 @@
         "name": "Enfys Nest",
         "uniqueName": "ENFYSNEST",
         "aliases": [
-            "Enfys Nest",
-            "Nest"
+            "Enfys Nest"
         ],
         "nameVariant": [
             "Enfys Nest"
@@ -3090,7 +3093,6 @@
         "uniqueName": "GRANDADMIRALTHRAWN",
         "aliases": [
             "Grand Admiral Thrawn",
-            "Thrawn",
             "GAT"
         ],
         "nameVariant": [
@@ -3126,7 +3128,6 @@
         "aliases": [
             "Grand Master Yoda",
             "Grandmaster Yoda",
-            "Yoda",
             "GMY"
         ],
         "nameVariant": [
@@ -3161,7 +3162,6 @@
         "uniqueName": "GRANDMOFFTARKIN",
         "aliases": [
             "Grand Moff Tarkin",
-            "Tarkin",
             "GMT"
         ],
         "nameVariant": [
@@ -3363,8 +3363,6 @@
         "uniqueName": "HERMITYODA",
         "aliases": [
             "Hermit Yoda",
-            "Hermit",
-            "Yoda",
             "Hoda",
             "hYoda",
             "HY"
@@ -3775,7 +3773,6 @@
         "uniqueName": "JANGOFETT",
         "aliases": [
             "Jango Fett",
-            "Jango",
             "JF"
         ],
         "nameVariant": [
@@ -4009,7 +4006,9 @@
         "name": "Jedi Knight Luke Skywalker",
         "uniqueName": "JEDIKNIGHTLUKE",
         "aliases": [
-            "Jedi Knight Luke Skywalker"
+            "Jedi Knight Luke Skywalker",
+            "JKL",
+            "JKLS"
         ],
         "nameVariant": [
             "Jedi Knight Luke Skywalker"
@@ -4692,7 +4691,6 @@
             "Luke Skywalker (Farmboy)",
             "Farmboy Luke",
             "Farm Boy Luke",
-            "Farmboy",
             "FBL"
         ],
         "nameVariant": [
@@ -5249,8 +5247,7 @@
         "name": "Obi-Wan Kenobi (Old Ben)",
         "uniqueName": "OLDBENKENOBI",
         "aliases": [
-            "Obi-Wan Kenobi (Old Ben)",
-            "Old Ben"
+            "Obi-Wan Kenobi (Old Ben)"
         ],
         "nameVariant": [
             "Obi-Wan Kenobi Old Ben",
@@ -6250,8 +6247,7 @@
         "name": "Shoretrooper",
         "uniqueName": "SHORETROOPER",
         "aliases": [
-            "Shoretrooper",
-            "Shore"
+            "Shoretrooper"
         ],
         "nameVariant": [
             "Shoretrooper"
@@ -6418,9 +6414,9 @@
         "name": "Sith Trooper",
         "uniqueName": "FOSITHTROOPER",
         "aliases": [
+            "Sith Trooper",
             "First Order Sith Trooper",
             "FO Sith Trooper",
-            "Sith Trooper",
             "ST"
         ],
         "nameVariant": [
