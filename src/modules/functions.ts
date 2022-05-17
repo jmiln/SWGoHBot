@@ -1,20 +1,22 @@
-import Discord, { Emoji, GuildEmoji, GuildMember, Role, TextChannel } from "discord.js";
+import Discord, { GuildMember, Role, TextChannel } from "discord.js";
 import moment from "moment-timezone";
 require("moment-duration-format");
 import { promisify, inspect } from "util";     // eslint-disable-line no-unused-vars
 import fs from "fs";
-import { APIUnitObj, BotInteraction, BotType, GuildConf, Header, PlayerStatsAccount, UnitObj, UserReg, UserRegAccount } from "./types";
+import { APIUnitObj, BotInteraction, BotType, GuildConf, Header, PlayerCooldown, PlayerStatsAccount, UnitObj, UserReg, UserRegAccount } from "./types";
 const readdir = promisify(require("fs").readdir);
 
 import { REST } from '@discordjs/rest';
 
 import { Routes } from 'discord-api-types/v10';
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { BotClient } from "../swgohBot";
+import { BotClient } from "../modules/types";
 import slashCommand from "../base/slashCommand";
+import config from "../config";
 
 
 module.exports = (Bot: BotType, client: BotClient) => {
+// export const functions = (Bot: BotType, client: BotClient) => {
     Bot.constants = {
         // The main invite for the support server
         invite: "https://discord.com/invite/FfwGvhr",
@@ -44,26 +46,26 @@ module.exports = (Bot: BotType, client: BotClient) => {
             MENTIONABLE: 9,
             NUMBER: 10,
             ATTACHMENT: 11
+        },
+
+        // Permissions mapping
+        permMap: {
+            // Can do anything, access to the dev commands, etc
+            BOT_OWNER: 10,
+
+            // Can help out with the bot as needed, some extra stuff possibly
+            HELPER: 8,
+
+            // Owner of the server a command is being run in
+            GUILD_OWNER: 7,
+
+            // Has ADMIN or MANAGE_GUILD, or has one of the
+            // configured roles from the guild's settings
+            GUILD_ADMIN: 6,
+
+            // Base users, anyone that's not included above
+            BASE_USER: 0
         }
-    };
-
-    // Permissions mapping
-    const permMap = {
-        // Can do anything, access to the dev commands, etc
-        BOT_OWNER: 10,
-
-        // Can help out with the bot as needed, some extra stuff possibly
-        HELPER: 8,
-
-        // Owner of the server a command is being run in
-        GUILD_OWNER: 7,
-
-        // Has ADMIN or MANAGE_GUILD, or has one of the
-        // configured roles from the guild's settings
-        GUILD_ADMIN: 6,
-
-        // Base users, anyone that's not included above
-        BASE_USER: 0
     };
 
     /*  PERMISSION LEVEL FUNCTION
@@ -80,13 +82,13 @@ module.exports = (Bot: BotType, client: BotClient) => {
         const authId = interaction.user.id;
 
         // If bot owner, return max perm level
-        if (authId === Bot.config.ownerid) {
-            return permMap.BOT_OWNER;
+        if (authId === config.ownerid) {
+            return Bot.constants.permMap.BOT_OWNER;
         }
 
         // If DMs or webhook, return 0 perm level.
         if (!interaction.guild || !member) {
-            return permMap.BASE_USER;
+            return Bot.constants.permMap.BASE_USER;
         }
         const guildConf: GuildConf = interaction.guildSettings;
 
@@ -94,14 +96,14 @@ module.exports = (Bot: BotType, client: BotClient) => {
         const gOwner = await interaction.guild.fetchOwner();
         if (interaction.channel.type === "GUILD_TEXT" && interaction.guild && gOwner) {
             if (interaction.user?.id === gOwner.id) {
-                return permMap.GUILD_OWNER;
+                return Bot.constants.permMap.GUILD_OWNER;
             }
         }
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
         if (member.permissions.has(["ADMINISTRATOR"]) || member.permissions.has(["MANAGE_GUILD"])) {
-            return permMap.GUILD_ADMIN;
+            return Bot.constants.permMap.GUILD_ADMIN;
         }
 
         // The rest of the perms rely on roles. If those roles are not found
@@ -112,7 +114,7 @@ module.exports = (Bot: BotType, client: BotClient) => {
             for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
                 const adminRole = interaction.guild.roles.cache.find(r => ( r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix] ) && r.members.has(interaction.user.id));
                 if (adminRole) {
-                    return permlvl = permMap.GUILD_ADMIN;
+                    return permlvl = Bot.constants.permMap.GUILD_ADMIN;
                 }
             }
         } catch (e) {() => {};}
@@ -197,7 +199,7 @@ module.exports = (Bot: BotType, client: BotClient) => {
     /* ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    Bot.announceMsg = async (guild: Discord.Guild, announceMsg: string, channel: string="", guildConf: GuildConf) => {
+    client.announceMsg = async (guild: Discord.Guild, announceMsg: string, channel: string="", guildConf: GuildConf) => {
         if (!guild?.id) return;
 
         let announceChan = guildConf.announceChan || "";
@@ -227,183 +229,183 @@ module.exports = (Bot: BotType, client: BotClient) => {
         }
     };
 
-    Bot.unloadSlash = (commandName: string) => {
-        try {
-            if (client.slashcmds.has(commandName)) {
-                const command = client.slashcmds.get(commandName);
-                client.slashcmds.delete(command.commandData.name);
-                delete require.cache[require.resolve(`../slash/${command.commandData.name}.js`)];
-            }
-            return null;
-        } catch (err) {
-            return `Unable to load command ${commandName}: ${err}`;
-        }
-    };
-    Bot.loadSlash = (commandName: string) => {
-        try {
-            const cmd = new (require(`../slash/${commandName}`))(Bot);
-            if (!cmd.enabled) {
-                return commandName + " is not enabled";
-            }
-            client.slashcmds.set(cmd.commandData.name, cmd);
-            return null;
-        } catch (e) {
-            return `Unable to load command ${commandName}: ${e}`;
-        }
-    };
-    Bot.reloadSlash = async (commandName: string) => {
-        let response = Bot.unloadSlash(commandName);
-        if (response) {
-            return new Error(`Error Unloading: ${response}`);
-        } else {
-            response = Bot.loadSlash(commandName);
-            if (response) {
-                return new Error(`Error Loading: ${response}`);
-            }
-        }
-        return commandName;
-    };
+    // client.unloadSlash = (commandName: string) => {
+    //     try {
+    //         if (client.slashcmds.has(commandName)) {
+    //             const command = client.slashcmds.get(commandName);
+    //             client.slashcmds.delete(command.commandData.name);
+    //             delete require.cache[require.resolve(`../slash/${command.commandData.name}.js`)];
+    //         }
+    //         return null;
+    //     } catch (err) {
+    //         return `Unable to load command ${commandName}: ${err}`;
+    //     }
+    // };
+    // client.loadSlash = (commandName: string) => {
+    //     try {
+    //         const cmd = new (require(`../slash/${commandName}`))(Bot);
+    //         if (!cmd.enabled) {
+    //             return commandName + " is not enabled";
+    //         }
+    //         client.slashcmds.set(cmd.commandData.name, cmd);
+    //         return null;
+    //     } catch (e) {
+    //         return `Unable to load command ${commandName}: ${e}`;
+    //     }
+    // };
+    // client.reloadSlash = async (commandName: string) => {
+    //     let response = Bot.unloadSlash(commandName);
+    //     if (response) {
+    //         return new Error(`Error Unloading: ${response}`);
+    //     } else {
+    //         response = Bot.loadSlash(commandName);
+    //         if (response) {
+    //             return new Error(`Error Loading: ${response}`);
+    //         }
+    //     }
+    //     return commandName;
+    // };
 
     // Reloads all slash commads (even if they were not loaded before)
     // Will not remove a command if it's been loaded,
     // but will load a new command if it's been added
-    Bot.reloadAllSlashCommands = async () => {
-        [...client.slashcmds.keys()].forEach(c => {
-            Bot.unloadSlash(c);
-        });
-        const cmdFiles = await readdir("./slash/");
-        const coms: string[] = [], errArr: string[] = [];
-        cmdFiles.forEach(async (fileName: string) => {
-            try {
-                const cmd = fileName.split(".")[0];
-                if (fileName.split(".").slice(-1)[0] !== "js") {
-                    errArr.push(fileName);
-                } else {
-                    const res = Bot.loadSlash(cmd);
-                    if (!res) {
-                        coms.push(cmd);
-                    } else {
-                        errArr.push(fileName);
-                    }
-                }
-            } catch (e) {
-                Bot.logger.error("Error: " + e);
-                errArr.push(fileName);
-            }
-        });
-        return {
-            succArr: coms,
-            errArr: errArr
-        };
-    };
-
-    // Reload the events files (message, guildCreate, etc)
-    Bot.reloadAllEvents = async () => {
-        const ev: string[] = [], errEv: string[] = [];
-
-        const evtFiles = await readdir("./events/");
-        evtFiles.forEach((fileName: string) => {
-            try {
-                const eventName = fileName.split(".")[0];
-                client.removeAllListeners(eventName);
-                const event = require(`../events/${fileName}`);
-                if (["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
-                    client.on(eventName, event.bind(null, Bot, client));
-                } else {
-                    client.on(eventName, event.bind(null, Bot));
-                }
-                delete require.cache[require.resolve(`../events/${fileName}`)];
-                ev.push(eventName);
-            } catch (e) {
-                Bot.logger.error("In Event reload: " + e);
-                errEv.push(fileName);
-            }
-        });
-        return {
-            succArr: ev,
-            errArr: errEv
-        };
-    };
-
-    // Reload the functions (this) file
-    Bot.reloadFunctions = async () => {
-        try {
-            delete require.cache[require.resolve("../modules/functions.js")];
-            require("../modules/functions.js")(Bot, client);
-            delete require.cache[require.resolve("../modules/patreonFuncs.js")];
-            require("../modules/patreonFuncs.js")(Bot, client);
-            delete require.cache[require.resolve("../modules/eventFuncs.js")];
-            require("../modules/eventFuncs.js")(Bot, client);
-            delete require.cache[require.resolve("../modules/Logger.js")];
-            delete Bot.logger;
-            const Logger = require("../modules/Logger.js");
-            Bot.logger = new Logger(Bot, client);
-        } catch (err) {
-            return {err: err.stack};
-        }
-    };
-
-    // Reload the swapi file
-    Bot.reloadSwapi = async () => {
-        let err = null;
-        try {
-            delete require.cache[require.resolve("../modules/swapi.js")];
-            Bot.swgohAPI = require("../modules/swapi.js")(Bot);
-        } catch (e) {
-            err = e;
-        }
-        return err;
-    };
-
-    // Reload the users file
-    Bot.reloadUserReg = async () => {
-        let err = null;
-        try {
-            delete require.cache[require.resolve("../modules/users.js")];
-            Bot.userReg = require("../modules/users.js")(Bot);
-        } catch (e) {
-            err = e;
-        }
-        return err;
-    };
+    // client.reloadAllSlashCommands = async () => {
+    //     [...client.slashcmds.keys()].forEach(c => {
+    //         Bot.unloadSlash(c);
+    //     });
+    //     const cmdFiles = await readdir("./slash/");
+    //     const coms: string[] = [], errArr: string[] = [];
+    //     cmdFiles.forEach(async (fileName: string) => {
+    //         try {
+    //             const cmd = fileName.split(".")[0];
+    //             if (fileName.split(".").slice(-1)[0] !== "js") {
+    //                 errArr.push(fileName);
+    //             } else {
+    //                 const res = Bot.loadSlash(cmd);
+    //                 if (!res) {
+    //                     coms.push(cmd);
+    //                 } else {
+    //                     errArr.push(fileName);
+    //                 }
+    //             }
+    //         } catch (e) {
+    //             Bot.logger.error("Error: " + e);
+    //             errArr.push(fileName);
+    //         }
+    //     });
+    //     return {
+    //         succArr: coms,
+    //         errArr: errArr
+    //     };
+    // };
+    //
+    // // Reload the events files (message, guildCreate, etc)
+    // client.reloadAllEvents = async () => {
+    //     const ev: string[] = [], errEv: string[] = [];
+    //
+    //     const evtFiles = await readdir("./events/");
+    //     evtFiles.forEach((fileName: string) => {
+    //         try {
+    //             const eventName = fileName.split(".")[0];
+    //             client.removeAllListeners(eventName);
+    //             const event = require(`../events/${fileName}`);
+    //             if (["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
+    //                 client.on(eventName, event.bind(null, Bot, client));
+    //             } else {
+    //                 client.on(eventName, event.bind(null, Bot));
+    //             }
+    //             delete require.cache[require.resolve(`../events/${fileName}`)];
+    //             ev.push(eventName);
+    //         } catch (e) {
+    //             Bot.logger.error("In Event reload: " + e);
+    //             errEv.push(fileName);
+    //         }
+    //     });
+    //     return {
+    //         succArr: ev,
+    //         errArr: errEv
+    //     };
+    // };
+    //
+    // // Reload the functions (this) file
+    // client.reloadFunctions = async () => {
+    //     try {
+    //         delete require.cache[require.resolve("../modules/functions.js")];
+    //         require("../modules/functions.js")(Bot, client);
+    //         delete require.cache[require.resolve("../modules/patreonFuncs.js")];
+    //         require("../modules/patreonFuncs.js")(Bot, client);
+    //         delete require.cache[require.resolve("../modules/eventFuncs.js")];
+    //         require("../modules/eventFuncs.js")(Bot, client);
+    //         delete require.cache[require.resolve("../modules/Logger.js")];
+    //         delete Bot.logger;
+    //         const Logger = require("../modules/Logger.js");
+    //         Bot.logger = new Logger(Bot, client);
+    //     } catch (err) {
+    //         return {err: err.stack};
+    //     }
+    // };
+    //
+    // // Reload the swapi file
+    // client.reloadSwapi = async () => {
+    //     let err = null;
+    //     try {
+    //         delete require.cache[require.resolve("../modules/swapi.js")];
+    //         Bot.swgohAPI = require("../modules/swapi.js")(Bot);
+    //     } catch (e) {
+    //         err = e;
+    //     }
+    //     return err;
+    // };
+    //
+    // // Reload the users file
+    // client.reloadUserReg = async () => {
+    //     let err = null;
+    //     try {
+    //         delete require.cache[require.resolve("../modules/users.js")];
+    //         Bot.userReg = require("../modules/users.js")(Bot);
+    //     } catch (e) {
+    //         err = e;
+    //     }
+    //     return err;
+    // };
 
     // Reload the data files (ships, teams, characters)
-    Bot.reloadDataFiles = async () => {
-        try {
-            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json").toString());
-            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json").toString());
-            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json").toString());
-            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json").toString());
-            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json").toString());
-            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json").toString());
-            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json").toString());
-            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json").toString());
-            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json").toString());
-            Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json").toString());
-            const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json").toString());
-            Bot.statCalculator.setGameData(gameData);
-        } catch (err) {
-            return {err: err.stack};
-        }
-    };
+    // client.reloadDataFiles = async () => {
+    //     try {
+    //         Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json").toString());
+    //         Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json").toString());
+    //         Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json").toString());
+    //         Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json").toString());
+    //         Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json").toString());
+    //         Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json").toString());
+    //         Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json").toString());
+    //         Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json").toString());
+    //         Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json").toString());
+    //         Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json").toString());
+    //         const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json").toString());
+    //         Bot.statCalculator.setGameData(gameData);
+    //     } catch (err) {
+    //         return {err: err.stack};
+    //     }
+    // };
 
     // Reload all the language files
-    const languageDir = __dirname + "/../languages/"
-    Bot.reloadLanguages = async () => {
-        try {
-            Object.keys(Bot.languages).forEach(lang => {
-                if (Bot.languages[lang]) delete Bot.languages[lang];
-            });
-            const langFiles = await readdir(languageDir);
-            langFiles.forEach((fileName: string) => {
-                const langName = fileName.split(".")[0];
-                Bot.languages[langName] = require(languageDir + fileName);
-                delete require.cache[require.resolve(languageDir + fileName)];
-            });
-        } catch (err) {
-            return err;
-        }
-    };
+    // const languageDir = __dirname + "/../languages/"
+    // Bot.reloadLanguages = async () => {
+    //     try {
+    //         Object.keys(Bot.languages).forEach(lang => {
+    //             if (Bot.languages[lang]) delete Bot.languages[lang];
+    //         });
+    //         const langFiles = await readdir(languageDir);
+    //         langFiles.forEach((fileName: string) => {
+    //             const langName = fileName.split(".")[0];
+    //             Bot.languages[langName] = require(languageDir + fileName)?.language;
+    //             delete require.cache[require.resolve(languageDir + fileName)];
+    //         });
+    //     } catch (err) {
+    //         return err;
+    //     }
+    // };
 
     // String Truncate function
     // Bot.truncate = (string, len, terminator="...") => {
@@ -481,19 +483,33 @@ module.exports = (Bot: BotType, client: BotClient) => {
     };
 
     // Return a duration string
-    Bot.duration = (time: number | string, interaction: BotInteraction) => {
+    Bot.duration = (time: number, interaction: BotInteraction, format?: string) => {
         if (!interaction) return "N/A";
-        time = time.toString();
-        const lang = interaction ? interaction.language : Bot.languages[Bot.config.defaultSettings.language];
-        return moment.utc(
-            moment.duration(Math.abs(moment(time).diff(moment())), "seconds").asMilliseconds()
-        ).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
+        const lang = interaction ? interaction.language : Bot.languages[config.defaultSettings.language];
+
+        const dayNum = 86400000;
+        const hourNum = 360000;
+        const minNum = 60000;
+
+        let timeAgo = new Date().getTime() - time;
+        const days = Math.floor(timeAgo/dayNum);
+        timeAgo -= days * dayNum;
+        const hours = Math.floor(timeAgo/hourNum);
+        timeAgo -= hours * hourNum;
+        const minutes = Math.floor(timeAgo/minNum);
+
+        let outStr = "";
+        if (days >= 1) outStr    += `${days} ${days > 1 ? lang.getTime("DAY", "PLURAL") : lang.getTime("DAY", "SING")}, `;
+        if (hours >= 1) outStr   += `${hours} ${hours > 1 ? lang.getTime("HOUR", "SHORT_PLURAL") : lang.getTime("HOUR", "SHORT_SING")}, `;
+        if (minutes >= 1) outStr += `${minutes} ${minutes > 1 ? lang.getTime("MINUTE", "SHORT_PLURAL") : lang.getTime("MINUTE", "SHORT_SING")}`;
+
+        return outStr;
     };
 
     /* LAST UPDATED FOOTER
      * Simple one to make the "Last updated ____ " footers
      */
-    Bot.updatedFooter = (updated: string, interaction: BotInteraction, type="player", userCooldown: {}) => {
+    Bot.updatedFooter = (updated: string, interaction: BotInteraction, type="player", userCooldown: PlayerCooldown) => {
         const baseCooldown = { player: 2, guild: 6 };
         const minCooldown = { player: 1, guild: 3 };
 
@@ -538,85 +554,6 @@ module.exports = (Bot: BotType, client: BotClient) => {
             return guilds;
         } else {
             return client.guilds.cache.size;
-        }
-    };
-
-    /* Find an emoji by ID
-     * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
-     */
-    Bot.findEmoji = (id: string) => {
-        const temp = client.emojis.cache.get(id);
-        if (!temp) return null;
-
-        // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
-        const emoji = Object.assign({}, temp);
-        // Circular references can't be returned outside of eval, so change it to the id
-        if (emoji.guild) {
-            emoji["guildId"] = emoji.guild.id;
-            delete emoji.guild;
-        }
-        // A new object will be construted, so simulate raw data by adding this property back
-        emoji["require_colons"] = emoji.requiresColons;
-
-        return emoji;
-    };
-
-    // client.findEmoji = (emoteId: string) => {
-    //     const foundEmoji = client.emojis.cache.get(emoteId) || client.emojis.cache.find(e => e.name.toLowerCase() === emoteId?.toLowerCase());
-    //     if (!foundEmoji) return null;
-    //     return foundEmoji;
-    // }
-
-    // async function getEmoji(id: string) {
-    //     return client.shard.broadcastEval((client, {emoteId}) => client.findEmoji(emoteId), { context: {emoteId: id}})
-    //         .then(emojiArray => {
-    //             // Locate a non falsy result, which will be the emoji in question
-    //             const foundEmoji = emojiArray.find((emoji: Discord.Emoji) => emoji);
-    //             if (!foundEmoji) return false;
-    //             return foundEmoji;
-    //     });
-    // }
-
-
-    /* Use the findEmoji() to check all shards if sharded
-     * If sharded, also use the example from
-     * https://discordjs.guide/#/sharding/extended?id=using-functions-continued
-     */
-    async function getEmoji(id: string) {
-        if (client.shard && client.shard.count > 0) {
-            return client.shard.broadcastEval((client, {emoteId, Bot}) => {
-                return Bot.findEmoji(emoteId);
-            }, {context: {emoteId: id, Bot: Bot}})
-                .then(emojiArray => {
-                    // Locate a non falsy result, which will be the emoji in question
-                    const foundEmoji = emojiArray.find(emoji => emoji);
-                    if (!foundEmoji) return false;
-
-                    return client.api.guilds(foundEmoji.guildId).get()
-                        .then((raw: {}) => {
-                            const guild = new Discord.Guild(client, raw);
-                            const emoji = new Discord.Emoji(guild, foundEmoji);
-                            return emoji;
-                        });
-                });
-        } else {
-            const emoji: GuildEmoji = Bot.findEmoji(id);
-            if (!emoji) return false;
-            return new Discord.Emoji(client.guilds.cache.get(emoji.guild.id), emoji);
-        }
-    }
-
-    // Load all the emotes that may be used for the bot at some point (from data/emoteIDs.js)
-    Bot.loadAllEmotes = async () => {
-        const emoteList = require("../data/emoteIDs.js");
-        for (const emote of Object.keys(emoteList)) {
-            const thisEmote = await getEmoji(emoteList[emote]);
-            if (!thisEmote) {
-                Bot.logger.error("Couldn't get emote: " + emote);
-                continue;
-            } else {
-                Bot.emotes[emote] = thisEmote;
-            }
         }
     };
 
@@ -888,9 +825,9 @@ module.exports = (Bot: BotType, client: BotClient) => {
         return res;
     };
     Bot.getGuildConf = async (guildID: string): Promise<GuildConf> => {
-        if (!guildID) return Bot.config.defaultSettings;
+        if (!guildID) return config.defaultSettings;
         const guildSettings = await Bot.database.models.settings.findOne({where: {guildID: guildID}});
-        return guildSettings && guildSettings.dataValues ? guildSettings.dataValues : Bot.config.defaultSettings;
+        return guildSettings && guildSettings.dataValues ? guildSettings.dataValues : config.defaultSettings;
     };
     Bot.hasGuildConf = async (guildID: string) => {
         if (!guildID) return false;
@@ -951,7 +888,7 @@ module.exports = (Bot: BotType, client: BotClient) => {
         });
     };
 
-    const rest = new REST({ version: "10" }).setToken(Bot.config.token);
+    const rest = new REST({ version: "10" }).setToken(config.token);
     Bot.deploy = async function() {
         // const guildCmds  = client.slashcmds.filter((com: {}) => com.guildOnly).map((com: {}) => JSON.stringify(com.commandData));
         // const globalCmds = client.slashcmds.filter((com: {}) => !com.guildOnly).map((com: {}) => JSON.stringify(com.commandData));
@@ -969,13 +906,14 @@ module.exports = (Bot: BotType, client: BotClient) => {
         const allCmds  = client.slashcmds.map((com: slashCommand) => com.commandData);
 
         // If there's a server configured for development/ that only the owner can use, put the guild commands there
-        if (Bot.config?.dev_server) {
-            // await client.guilds.cache.get(Bot.config.dev_server)?.commands.set(guildCmds);
+        if (config?.dev_server) {
+            // await client.guilds.cache.get(config.dev_server)?.commands.set(guildCmds);
             // console.log(allCmds);
             await rest.put(
-                Routes.applicationGuildCommands(client.user.id, Bot.config.dev_server),
+                Routes.applicationGuildCommands(client.user.id, config.dev_server),
                 { body: allCmds },
-            );
+            )
+            // .then(res => console.log(res));
         }
         // await rest.put(
         //     Routes.applicationCommands(client.user.id),
@@ -1006,11 +944,345 @@ module.exports = (Bot: BotType, client: BotClient) => {
             return num.toFixed(dec);
         }
     }
+
+    client.reloadSlash = async (commandName: string) => {
+        let response = await client.unloadSlash(commandName);
+        if (response) {
+            return new Error(`Error Unloading: ${response}`);
+        } else {
+            response = await client.loadSlash(commandName);
+            if (response) {
+                return new Error(`Error Loading: ${response}`);
+            }
+        }
+        return commandName;
+    };
+    client.unloadSlash = async (commandName: string) => {
+        try {
+            if (client.slashcmds.has(commandName)) {
+                const command = client.slashcmds.get(commandName);
+                client.slashcmds.delete(command.commandData.name);
+                delete require.cache[require.resolve(`../slash/${command.commandData.name}.js`)];
+            }
+            return null;
+        } catch (err) {
+            return `Unable to load command ${commandName}: ${err}`;
+        }
+    };
+    client.loadSlash = async (commandName: string) => {
+        try {
+            const cmd = new (require(`../slash/${commandName}`))(Bot);
+            if (!cmd.enabled) {
+                return commandName + " is not enabled";
+            }
+            client.slashcmds.set(cmd.commandData.name, cmd);
+            return null;
+        } catch (e) {
+            return `Unable to load command ${commandName}: ${e}`;
+        }
+    };
+
+    client.reloadAllSlashCommands = async () => {
+        const slashNames = [...client.slashcmds.keys()];
+        slashNames.forEach(async cmdName => {
+            await client.unloadSlash(cmdName);
+        });
+        const coms: string[] = [], errArr: string[] = [];
+        for (const cmdName of slashNames) {
+            try {
+                const res = await client.loadSlash(cmdName)
+                if (!res) {
+                    coms.push(cmdName);
+                } else {
+                    errArr.push(cmdName);
+                }
+            } catch (e) {
+                Bot.logger.error("Error: " + e);
+                errArr.push(cmdName);
+            }
+        }
+
+        return {
+            succArr: coms,
+            errArr: errArr
+        };
+    };
+
+    // Reload the events files (message, guildCreate, etc)
+    client.reloadAllEvents = async () => {
+        const ev: string[] = [], errEv: string[] = [];
+
+        const evtFiles = await readdir(__dirname + "/../events/");
+        evtFiles.forEach((fileName: string) => {
+            try {
+                const eventName = fileName.split(".")[0];
+                client.removeAllListeners(eventName);
+                const event = require(`../events/${fileName}`);
+                if (["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
+                    client.on(eventName, event.bind(null, Bot, client));
+                } else {
+                    client.on(eventName, event.bind(null, Bot));
+                }
+                delete require.cache[require.resolve(`../events/${fileName}`)];
+                ev.push(eventName);
+            } catch (e) {
+                Bot.logger.error("In Event reload: " + e);
+                errEv.push(fileName);
+            }
+        });
+        return {
+            succArr: ev,
+            errArr: errEv
+        };
+    };
+
+    // Reload the functions (this) file
+    client.reloadFunctions = async () => {
+        try {
+            delete require.cache[require.resolve(__dirname + "/../modules/functions.js")];
+            require(__dirname + "/../modules/functions.js")(Bot, client);
+            delete require.cache[require.resolve(__dirname + "/../modules/patreonFuncs.js")];
+            require(__dirname + "/../modules/patreonFuncs.js")(Bot, client);
+            delete require.cache[require.resolve(__dirname + "/../modules/eventFuncs.js")];
+            require(__dirname + "/../modules/eventFuncs.js")(Bot, client);
+            delete require.cache[require.resolve(__dirname + "/../modules/Logger.js")];
+            delete Bot.logger;
+            const Logger = require(__dirname + "/../modules/Logger.js");
+            Bot.logger = new Logger(Bot, client);
+        } catch (err) {
+            return {err: err.stack};
+        }
+    };
+
+    // Reload the swapi file
+    client.reloadSwapi = async () => {
+        try {
+            delete require.cache[require.resolve(__dirname + "/../modules/swapi.js")];
+            Bot.swgohAPI = require("../modules/swapi.js")(Bot);
+        } catch (err) {
+            return err;
+        }
+    };
+
+    // Reload the users file
+    client.reloadUserReg = async () => {
+        try {
+            delete require.cache[require.resolve("../modules/users.js")];
+            Bot.userReg = require("../modules/users.js")(Bot);
+        } catch (err) {
+            return {err: err};
+        }
+    };
+
+    // Reload the data files (ships, teams, characters)
+    client.reloadDataFiles = async () => {
+        try {
+            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json").toString());
+            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json").toString());
+            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json").toString());
+            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json").toString());
+            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json").toString());
+            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json").toString());
+            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json").toString());
+            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json").toString());
+            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json").toString());
+            Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json").toString());
+            const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json").toString());
+            Bot.statCalculator.setGameData(gameData);
+        } catch (err) {
+            return {err: err.stack};
+        }
+    };
+
+    client.reloadLanguages = async () => {
+        const languageDir = __dirname + "/../languages/"
+        try {
+            Object.keys(Bot.languages).forEach(lang => {
+                if (Bot.languages[lang]) delete Bot.languages[lang];
+            });
+            const langFiles = await readdir(languageDir);
+            langFiles.forEach((fileName: string) => {
+                const langName = fileName.split(".")[0];
+                Bot.languages[langName] = require(languageDir + fileName)?.language;
+                delete require.cache[require.resolve(languageDir + fileName)];
+            });
+        } catch (err) {
+            console.log("Errored in reloadLang: " + err);
+            return {err: err};
+        }
+    };
 };
 
 
-
-
+// export async function reloadSlash(client: BotClient, Bot: BotType, commandName: string) {
+//     let response = await unloadSlash(client, commandName);
+//     if (response) {
+//         return new Error(`Error Unloading: ${response}`);
+//     } else {
+//         response = await loadSlash(client, Bot, commandName);
+//         if (response) {
+//             return new Error(`Error Loading: ${response}`);
+//         }
+//     }
+//     return commandName;
+// };
+// export async function unloadSlash(client: BotClient, commandName: string) {
+//     try {
+//         if (client.slashcmds.has(commandName)) {
+//             const command = client.slashcmds.get(commandName);
+//             client.slashcmds.delete(command.commandData.name);
+//             delete require.cache[require.resolve(`./slash/${command.commandData.name}.js`)];
+//         }
+//         return null;
+//     } catch (err) {
+//         return `Unable to load command ${commandName}: ${err}`;
+//     }
+// };
+// export async function loadSlash(client: BotClient, Bot: BotType, commandName: string) {
+//     try {
+//         const cmd = new (require(`./slash/${commandName}`))(Bot);
+//         if (!cmd.enabled) {
+//             return commandName + " is not enabled";
+//         }
+//         client.slashcmds.set(cmd.commandData.name, cmd);
+//         return null;
+//     } catch (e) {
+//         return `Unable to load command ${commandName}: ${e}`;
+//     }
+// };
+// export async function reloadAllSlashCommands(client: BotClient, Bot: BotType) {
+//     [...client.slashcmds.keys()].forEach(async cmdName => {
+//         await unloadSlash(client, cmdName);
+//     });
+//     const cmdFiles = await readdir("./slash/");
+//     const coms: string[] = [], errArr: string[] = [];
+//     cmdFiles.forEach(async (fileName: string) => {
+//         try {
+//             const cmdName = fileName.split(".")[0];
+//             if (fileName.split(".").slice(-1)[0] !== "js") {
+//                 errArr.push(fileName);
+//             } else {
+//                 const res = await loadSlash(client, Bot, cmdName);
+//                 if (!res) {
+//                     coms.push(cmdName);
+//                 } else {
+//                     errArr.push(fileName);
+//                 }
+//             }
+//         } catch (e) {
+//             Bot.logger.error("Error: " + e);
+//             errArr.push(fileName);
+//         }
+//     });
+//     return {
+//         succArr: coms,
+//         errArr: errArr
+//     };
+// };
+//
+// // Reload the events files (message, guildCreate, etc)
+// export async function reloadAllEvents(client: BotClient, Bot: BotType) {
+//     const ev: string[] = [], errEv: string[] = [];
+//
+//     const evtFiles = await readdir("./events/");
+//     evtFiles.forEach((fileName: string) => {
+//         try {
+//             const eventName = fileName.split(".")[0];
+//             client.removeAllListeners(eventName);
+//             const event = require(`../events/${fileName}`);
+//             if (["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
+//                 client.on(eventName, event.bind(null, Bot, client));
+//             } else {
+//                 client.on(eventName, event.bind(null, Bot));
+//             }
+//             delete require.cache[require.resolve(`../events/${fileName}`)];
+//             ev.push(eventName);
+//         } catch (e) {
+//             Bot.logger.error("In Event reload: " + e);
+//             errEv.push(fileName);
+//         }
+//     });
+//     return {
+//         succArr: ev,
+//         errArr: errEv
+//     };
+// };
+//
+// // Reload the functions (this) file
+// export async function reloadFunctions(client: BotClient, Bot: BotType) {
+//     try {
+//         delete require.cache[require.resolve("../modules/functions.js")];
+//         require("../modules/functions.js")(Bot, client);
+//         delete require.cache[require.resolve("../modules/patreonFuncs.js")];
+//         require("../modules/patreonFuncs.js")(Bot, client);
+//         delete require.cache[require.resolve("../modules/eventFuncs.js")];
+//         require("../modules/eventFuncs.js")(Bot, client);
+//         delete require.cache[require.resolve("../modules/Logger.js")];
+//         delete Bot.logger;
+//         const Logger = require("../modules/Logger.js");
+//         Bot.logger = new Logger(Bot, client);
+//     } catch (err) {
+//         return {err: err.stack};
+//     }
+// };
+//
+// // Reload the swapi file
+// export async function reloadSwapi(Bot: BotType) {
+//     try {
+//         delete require.cache[require.resolve("../modules/swapi.js")];
+//         Bot.swgohAPI = require("../modules/swapi.js")(Bot);
+//     } catch (err) {
+//         return err;
+//     }
+// };
+//
+// // Reload the users file
+// export async function reloadUserReg(Bot: BotType) {
+//     try {
+//         delete require.cache[require.resolve("../modules/users.js")];
+//         Bot.userReg = require("../modules/users.js")(Bot);
+//     } catch (err) {
+//         return err;
+//     }
+// };
+//
+// // Reload the data files (ships, teams, characters)
+// export async function reloadDataFiles(Bot: BotType) {
+//     try {
+//         Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json").toString());
+//         Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json").toString());
+//         Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json").toString());
+//         Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json").toString());
+//         Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json").toString());
+//         Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json").toString());
+//         Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json").toString());
+//         Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json").toString());
+//         Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json").toString());
+//         Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json").toString());
+//         const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json").toString());
+//         Bot.statCalculator.setGameData(gameData);
+//     } catch (err) {
+//         return {err: err.stack};
+//     }
+// };
+//
+// export async function reloadLanguages(Bot: BotType) {
+//     const languageDir = __dirname + "/languages/"
+//     try {
+//         Object.keys(Bot.languages).forEach(lang => {
+//             if (Bot.languages[lang]) delete Bot.languages[lang];
+//         });
+//         const langFiles = await readdir(languageDir);
+//         langFiles.forEach((fileName: string) => {
+//             const langName = fileName.split(".")[0];
+//             Bot.languages[langName] = require(languageDir + fileName)?.language;
+//             delete require.cache[require.resolve(languageDir + fileName)];
+//         });
+//     } catch (err) {
+//         console.log("Errored in reloadLang: " + err);
+//         return err;
+//     }
+// };
 
 
 

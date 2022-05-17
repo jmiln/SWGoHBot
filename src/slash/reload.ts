@@ -1,6 +1,6 @@
 import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
-import { BotInteraction, BotType } from "../modules/types";
+import { BotInteraction, BotType, BotClient } from "../modules/types";
 // const {inspect} = require("util");
 
 class Reload extends SlashCommand {
@@ -23,29 +23,17 @@ class Reload extends SlashCommand {
 
     async run(Bot: BotType, interaction: BotInteraction) {
         const commandName = interaction.options.getString("command")?.toLowerCase();
-        const client = interaction.client;
 
-        if (!commandName || !client.slashcmds.has(commandName)) {
+        if (!commandName || !interaction.client.slashcmds.has(commandName)) {
             return super.error(interaction, interaction.language.get("COMMAND_RELOAD_INVALID_CMD", commandName));
         } else {
-            if (interaction.client.shard && interaction.client.shard.count > 0) {
-                await interaction.client.shard.broadcastEval((client, {Bot, commandName}) => Bot.reloadSlash(commandName), {context: {commandName, Bot}})
-                    .then(() => {
-                        interaction.reply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", commandName)});
-                    })
-                    .catch(e => {
-                        super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE", commandName, e.stack)));
-                    });
-            } else {
-                Bot.logger.log("Trying to reload out of shards");
-                Bot.reloadSlash(commandName)
-                    .then(() => {
-                        interaction.reply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", commandName)});
-                    })
-                    .catch((e: Error) => {
-                        super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE", commandName, e.stack)));
-                    });
-            }
+            interaction.client.shard.broadcastEval((client: BotClient, {commandName}) => {return client.reloadSlash(commandName)}, {context: {commandName}})
+                .then(() => {
+                    interaction.reply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", commandName)});
+                })
+                .catch((e: Error) => {
+                    super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE", commandName, e.stack)));
+                });
         }
     }
 }

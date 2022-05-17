@@ -1,13 +1,26 @@
-import { ColorResolvable, CommandInteraction, Guild, GuildEmoji, Intents, Interaction, Message, MessageEmbed, PartialTypes } from "discord.js";
-import LanguageHandler from "../base/Language";
-import { BotClient } from "../swgohBot";
+import { Client, Collection, ColorResolvable, CommandInteraction, Guild, GuildEmoji, Intents, Interaction, Message, MessageEmbed, PartialTypes } from "discord.js";
+import SlashCommand from "../base/slashCommand";
 import Logger from "./Logger";
 
 export interface BotInteraction extends CommandInteraction {
     guildSettings: GuildConf,
-    language: LanguageHandler,
+    language: {[key: string]: any},
     swgohLanguage: string,
     client: BotClient
+}
+export interface BotClient extends Client {
+    slashcmds: Collection<string, SlashCommand>,
+    announceMsg(guild: Guild, announceMsg: string, channel: string, guildConf: GuildConf): void,
+    unloadSlash(commandName: string): Promise<string>,
+    loadSlash(commandName: string): Promise<string>,
+    reloadSlash(commandName: string): void,
+    reloadAllSlashCommands(): Promise<{succArr: string[], errArr: string[]}>,
+    reloadAllEvents(): Promise<{succArr: string[], errArr: string[]}>,
+    reloadFunctions(): Promise<{err: string}>,
+    reloadSwapi()    : Promise<{err: string}>,
+    reloadUserReg()  : Promise<{err: string}>,
+    reloadDataFiles(): Promise<{err: string}>,
+    reloadLanguages(): Promise<{err: string}>,
 }
 
 export interface CommandOptions {
@@ -21,9 +34,8 @@ export interface BotType {
     arenaJumps: {[key: string]: number},
     charLocs: UnitLocation[],
     characters: UnitObj[],
-    emotes: {},
     factions: string[]
-    languages: {},
+    languages: {[key: string]: {[key: string]: any}},
     missions: {[key: string]: {}},
     resources: {[key: string]: {}},
     shipLocs: UnitLocation[],
@@ -91,7 +103,6 @@ export interface BotType {
     swapiStub: any,
     statCalculator: any,
     userReg: any,
-    zetaRec: any,
     seqOps: any,
     socket: any,
 
@@ -101,24 +112,20 @@ export interface BotType {
         zws: string,
         longSpace: string,
         colors: {[key: string]: ColorResolvable},
-        optionType: {[key: string]: number}
+        optionType: {[key: string]: number},
+        permMap: {
+            BOT_OWNER: number,
+            HELPER: number,
+            GUILD_OWNER: number,
+            GUILD_ADMIN: number,
+            BASE_USER: number
+        }
     },
     permLevel(message: Interaction): Promise<number>,
     isMain(): boolean,
     myTime(): string,
     findChar(searchName: string, charList: UnitObj[], ship?: boolean): UnitObj[],
     sendWebhook(hookUrl: string, embed: {}): void,
-    announceMsg(guild: Guild, announceMsg: string, channel: string, guildConf: GuildConf): void,
-    unloadSlash(commandName: string): string,
-    loadSlash(commandName: string): string,
-    // reloadSlash(commandName: string): void,
-    reloadAllSlashCommands(): Promise<{succArr: string[], errArr: string[]}>,
-    reloadAllEvents(): Promise<{succArr: string[], errArr: string[]}>,
-    reloadFunctions(): Promise<{err: string}>,
-    reloadSwapi(): Promise<Error>,
-    reloadUserReg(): Promise<Error>,
-    reloadDataFiles(): Promise<{err: string}>,
-    reloadLanguages(): Promise<Error>,
     wait(time: number): void,
     msgArray(arr: string[], join: string, maxLen?: number): any[],
     codeBlock(str: string, lang?: string): string,
@@ -155,10 +162,6 @@ export interface BotType {
     shardTimes(): void,
     shardRanks(): void,
     guildsUpdate(): void,
-
-    // I have no idea why these two don't like being here, I just get `This expression is not callable.  Type '{}' has no call signatures.` if they are
-    // findEmoji(id: string): GuildEmoji,
-    // loadAllEmotes(): Promise<void>,
 }
 export interface Header {
     [index: string]: {
@@ -414,8 +417,20 @@ export interface UnitObj {
     avatarURL: string,
     side: string,
     factions: string[],
-    mods: {},
-    crew: string[] | null
+    mods?: UnitModObj,
+    crew: string[],
+    isShip?: boolean
+}
+export interface UnitModObj {
+    url: string,
+    sets: string[],
+    square: string,
+    arrow: string,
+    diamond: string,
+    triangle: string,
+    circle: string,
+    cross: string,
+    source: string,
 }
 
 // Character or ship objects, as grabbed from the api/ game
@@ -429,7 +444,9 @@ export interface APIUnitObj {
     rarity: number,
     level: number,
     gear: number,
-    equipped: {}[],
+    equipped: {
+        slot: number
+    }[],
     combatType: number,
     skills: APIUnitSkill[],
     skillReferenceList: APIUnitSkill[],
@@ -438,12 +455,59 @@ export interface APIUnitObj {
     gp: number,
     relic: {currentTier?: number},
     stats?: {
-        final?: {},
-        mods?: {}
+        final?: {
+            Health?: number,
+            Strength?: number,
+            Agility?: number,
+            Intelligence?: number,
+            Speed?: number,
+            "Physical Damage"?: number,
+            "Special Damage"?: number,
+            Armor?: number,
+            Resistance?: number,
+            "Armor Penetration"?: number,
+            "Resistance Penetration"?: number,
+            "Dodge Chance"?: number,
+            "Deflection Chance"?: number,
+            "Physical Critical Chance"?: number,
+            "Special Critical Chance"?: number,
+            "Critical Damage"?: number,
+            Potency?: number,
+            Tenacity?: number,
+            "Health Steal"?: number,
+            Protection?: number,
+            "Physical Accuracy"?: number,
+            "Special Accuracy"?: number,
+            "Physical Critical Avoidance"?: number,
+            "Special Critical Avoidance"?: number,
+            Mastery?: number,
+        },
+        mods?: {
+            Health?: number,
+            Speed?: number,
+            "Physical Damage"?: number,
+            "Special Damage"?: number,
+            Armor?: number,
+            Resistance?: number,
+            Potency?: number,
+            Tenacity?: number,
+            "Physical Critical Chance"?: number,
+            "Special Critical Chance"?: number,
+            Protection?: number,
+        },
+
+        // Some extras for the guildStats function
+        player?: string,
+        gp?: number,
+        gear?: number,
+        Protection?: number
     },
+    updated: number
 
     // Extras tacked on occasionally
     zetas: APIUnitSkill[],
+    player?: string,
+    unit?: any
 }
 export interface APIUnitAbility {
     id: string,
@@ -491,6 +555,8 @@ export interface APIUnitListChar {
     creationRecipeReference: string,
     categoryIdList: string[],
     unitTierList: {
+
+
         tier: number,
         equipmentSetList: []
     },
