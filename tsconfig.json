@@ -4,7 +4,7 @@
         "incremental": true,                              /* Enable incremental compilation */
 
         /* Language and Environment */
-        "target": "es6",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+        "target": "es2020",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
 
         /* Modules */
         "module": "commonjs",                                /* Specify what module code is generated. */
