@@ -1,6 +1,5 @@
 import Discord, { GuildMember, Role, TextChannel } from "discord.js";
 import moment from "moment-timezone";
-require("moment-duration-format");
 import { promisify, inspect } from "util";     // eslint-disable-line no-unused-vars
 import fs from "fs";
 import { APIUnitObj, BotInteraction, BotType, GuildConf, Header, PlayerCooldown, PlayerStatsAccount, UnitObj, UserReg, UserRegAccount } from "./types";
@@ -485,6 +484,7 @@ module.exports = (Bot: BotType, client: BotClient) => {
     // Return a duration string
     Bot.duration = (time: number, interaction: BotInteraction, format?: string) => {
         if (!interaction) return "N/A";
+        console.log(time, format);
         const lang = interaction ? interaction.language : Bot.languages[config.defaultSettings.language];
 
         const dayNum = 86400000;
@@ -498,10 +498,14 @@ module.exports = (Bot: BotType, client: BotClient) => {
         timeAgo -= hours * hourNum;
         const minutes = Math.floor(timeAgo/minNum);
 
+        console.log(timeAgo, days, hours, minutes);
+
         let outStr = "";
         if (days >= 1) outStr    += `${days} ${days > 1 ? lang.getTime("DAY", "PLURAL") : lang.getTime("DAY", "SING")}, `;
         if (hours >= 1) outStr   += `${hours} ${hours > 1 ? lang.getTime("HOUR", "SHORT_PLURAL") : lang.getTime("HOUR", "SHORT_SING")}, `;
         if (minutes >= 1) outStr += `${minutes} ${minutes > 1 ? lang.getTime("MINUTE", "SHORT_PLURAL") : lang.getTime("MINUTE", "SHORT_SING")}`;
+
+        console.log(outStr);
 
         return outStr;
     };
@@ -514,7 +518,8 @@ module.exports = (Bot: BotType, client: BotClient) => {
         const minCooldown = { player: 1, guild: 3 };
 
         if (!userCooldown) userCooldown = baseCooldown;
-        let betweenMS = Bot.convertMS(new Date().getTime() - new Date(updated).getTime());
+        const timeDiff = new Date().getTime() - new Date(updated).getTime();
+        let betweenMS = Bot.convertMS(timeDiff);
 
         let betweenStr = "";
         if (betweenMS.hour >= minCooldown[type] && betweenMS.hour < userCooldown[type]) {
@@ -523,7 +528,7 @@ module.exports = (Bot: BotType, client: BotClient) => {
             betweenStr = " | patreon.com/swgohbot";
         }
         return {
-            text: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, interaction)) + betweenStr
+            text: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(timeDiff, interaction)) + betweenStr
         };
     };
 
