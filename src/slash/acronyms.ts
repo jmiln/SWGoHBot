@@ -42,7 +42,7 @@ class Acronyms extends SlashCommand {
 
         if (!matchingItems.length) {
             // If there were no matches, go ahead and let the user know
-            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_NOT_FOUND"), {example: "acronym cls"});
+            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_NOT_FOUND"));
         }
 
         let acronymMeaningMessage = "";
@@ -60,7 +60,7 @@ class Acronyms extends SlashCommand {
 
         await interaction.reply({embeds: [
             {
-                description: `**Acronyms for:**\n${lookupList.map((l: string) => `- ${l}`).join("\n")}`,
+                description: `**Acronyms for:**\n${lookupList.map((acr: string) => `- ${acr}`).join("\n")}`,
                 fields: [
                     {
                         name: "Results",
