@@ -1,44 +1,57 @@
-import { Interaction } from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { BotInteraction, BotType, CommandOptions } from "../modules/types";
 
-class slashCommand {
-    constructor(Bot: {}, {
+abstract class slashCommand {
+    Bot: BotType;
+    abstract run(Bot: BotType, interaction: BotInteraction, options: CommandOptions): void;
+    commandData: {
+        name: string,
+        description: string,
+        permLevel: number,
+        options?: {}
+    };
+    enabled: boolean;
+    guildOnly: boolean;
+    constructor(Bot: BotType, {
         name = "null",
         description = "No description provided.",
-        options = [],
-        defaultPermissions = true,
+        options = null,
         permissions = [],
         category = "",
         guildOnly = true,// false = global, true = guild.
         enabled = true,
-        permLevel = 0,
-        aliases = []
+        permLevel = 0
     }) {
         this.Bot = Bot;
-        this.commandData = { name, description, options, defaultPermissions, enabled, permLevel, aliases };
+        this.commandData = { name, description, permLevel };
+        if (options) {
+            this.commandData.options = options;
+        }
+        this.enabled = enabled;
         this.guildOnly = guildOnly;
     }
 
-    async getUser(interaction: Interaction, userID: string, useAuth=false) {
+    async getUser(interaction: BotInteraction, userID: string, useAuth=false) {
         let out = null;
         if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
-            userID = interaction.author.id;
+            userID = interaction.user.id;
         }
         if (userID) {
             // If it got this far, it's got a valid userID (ally code or Discord ID)
             // so regardless of which, grab an ally code
-            const allyCodes = await this.Bot.getAllyCode(interaction, userID);
-            if (allyCodes && allyCodes.length) {
-                out = allyCodes[0];
+            const allyCode = await this.Bot.getAllyCode(interaction, userID);
+            if (allyCode) {
+                out = allyCode[0];
             }
         }
 
         return out;
     }
 
-    async error(interaction: Interaction, err: string, options?: {}) {
-        if (!interaction || !interaction.channel) throw new Error(`[${this.name}] Missing message`);
-        if (!err) throw new Error(`[${this.name}] Missing error message`);
+    async error(interaction: BotInteraction, err: string, options?: {[key: string]: any}) {
+        if (!interaction || !interaction.channel) throw new Error(`[${this.commandData.name}] Missing message`);
+        if (!err) throw new Error(`[${this.commandData.name}] Missing error message`);
         if (!options) options = {};
         options.title = options.title || "Error";
         options.color = options.color || "#e01414";
@@ -49,7 +62,7 @@ class slashCommand {
         await this.embed(interaction, err, options);
     }
 
-    async success(interaction: Interaction, out: string, options?: {}) {
+    async success(interaction: BotInteraction, out: string, options?: {[key: string]: any}) {
         if (!interaction || !interaction.channel) throw new Error("Missing message");
         if (!out) throw new Error("Missing outgoing success message");
         if (!options) options = {};
@@ -58,7 +71,7 @@ class slashCommand {
         await this.embed(interaction, out, options);
     }
 
-    async embed(interaction: Interaction, out: string, options: {}) {
+    async embed(interaction: BotInteraction, out: string, options?: {[key: string]: any}) {
         if (!interaction || !interaction.channel) throw new Error("Missing interaction");
         if (!out) throw new Error("Missing outgoing message");
         if (!options) options = {};
@@ -72,20 +85,19 @@ class slashCommand {
                     content: null,
                     embeds: [{
                         author: {
-                            name: title,
+                            name: options.title,
                             icon_url: options.iconURL || null
                         },
-                        description: out.toString().substring(0, 1900) + "...",
+                        description: out.toString().length >= 1900 ? out.toString().substring(0, 1900) + "..." : out.toString(),
                         color: color,
                         footer: {
                             text: footer
                         }
                     }],
-                    ephemeral: ephemeral
                 });
             } catch (e) {
                 console.log("base/slashCommand Error: " + e.message);
-                console.log("base/slashCommand Message: " + interaction.content);
+                console.log("base/slashCommand Message: " + interaction.options);
                 return interaction.reply({
                     content: null,
                     embeds: [{
