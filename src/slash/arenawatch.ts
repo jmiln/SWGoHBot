@@ -499,7 +499,7 @@ class ArenaWatch extends SlashCommand {
 
                 // If it gets this far, it should be a valid code
                 // Need to make sure that the user has the correct permissions to set this up
-                if (options.level < 3) {
+                if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                     return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
                 }
 
@@ -551,7 +551,7 @@ class ArenaWatch extends SlashCommand {
                     const targetArena = interaction.options.getString("arena");
 
                     // Need to make sure that the user has the correct permissions to set this up
-                    if (options.level < 3) {
+                    if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                         return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
                     }
 
@@ -822,7 +822,9 @@ class ArenaWatch extends SlashCommand {
                     if (!channelIdToGet) return null;
                     let foundChannel = interaction.guild?.channels.cache.get(channelIdToGet)?.id;
                     if (!foundChannel) {
-                        foundChannel = await interaction.client.shard.broadcastEval((client: Discord.Client, channelIdToGet) => client.channels.cache.get(channelIdToGet), {context: channelIdToGet})
+                        foundChannel = await interaction.client.shard.broadcastEval((client: Discord.Client, {channelIdToGet}) => {
+                            return client.channels.cache.get(channelIdToGet);
+                        }, {context: {channelIdToGet: channelIdToGet}})
                             .then((chan: Discord.Channel[]) => {
                                 return chan?.[0]?.id;
                             });
@@ -905,10 +907,8 @@ class ArenaWatch extends SlashCommand {
             default:
                 return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_OPTION"));
         }
-        if (target !== "view") {
-            user.arenaWatch = aw;
-            await Bot.userReg.updateUser(userID, user);
-        }
+        user.arenaWatch = aw;
+        await Bot.userReg.updateUser(userID, user);
         return super.error(interaction, outLog.length ? outLog.join("\n") : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? "\n\n#####################\n\n" + cmdOut : ""), {title: " ", color: "#0000FF"});
     }
 }
