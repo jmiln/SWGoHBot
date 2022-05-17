@@ -250,14 +250,13 @@ class Event extends SlashCommand {
                     time: evTime,
                     day: evDate,
                     message: evMsg?.length ? evMsg : null,
-                    channelID: channel ? channel?.id : null,
+                    channelID: channel?.id ? channel.id : null,
                     countdown: countdown,
                     repeat: repeat,
                     repeatDay: repeatDay
                 };
 
-                let validEV = validateEvents([newEv]);
-                if (Array.isArray(validEV)) validEV = validEV[0];
+                let validEV = validateEvents([newEv])[0];
                 if (!validEV) {
                     return super.error(interaction, "Something broke while trying to validate your event.");
                 }
@@ -411,7 +410,7 @@ class Event extends SlashCommand {
                             }
                         }
                         sortedEvents.forEach(event => {
-                            let thisEventName = event.eventID.split("-").splice(0, 1).join("-");
+                            let thisEventName = event.eventID.split("-").slice(0, 1).join("-");
                             const eventDate = momentTZ(event.eventDT).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                             let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
@@ -673,7 +672,7 @@ class Event extends SlashCommand {
             message = message.replace(/`/g, "");
             return message;
         }
-        function validateEvents(eventArray: ValidateEvent[]) {
+        function validateEvents(eventArray: ValidateEvent[]): {event: SavedEvent, str: string, valid: boolean}[] {
             const MAX_MSG_SIZE = 1000;
             const outEvents = [];
             const nameArr = [];
@@ -736,7 +735,7 @@ class Event extends SlashCommand {
                     newEvent.eventChan = event.channelID;
                 } else {
                     // TODO Make this work with channel ID as well so we can save those and make it more accurate and such
-                    const announceChannel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"]);
+                    const announceChannel = interaction.guild.channels.cache.find(c => c.name === guildConf.announceChan || c.id === guildConf.announceChan);
                     if (!announceChannel) {
                         err.push(interaction.language.get("COMMAND_EVENT_NEED_CHAN"));
                     }
