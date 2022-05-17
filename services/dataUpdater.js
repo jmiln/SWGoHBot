@@ -1,17 +1,18 @@
 const fs = require("fs");
-const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
+const fetch = require("node-fetch");
 const cheerio = require("cheerio");
 
-const config = require("../config.js");
+const dataDir = "../dist/";
+const config = require(dataDir + "config.js");
 const MongoClient = require("mongodb").MongoClient;
 
-const GG_CHAR_CACHE          = "../data/swgoh-gg-chars.json";
-const GG_SHIPS_CACHE         = "../data/swgoh-gg-ships.json";
-const GG_MOD_CACHE           = "../data/swgoh-gg-mods.json";
-const SWGOH_HELP_SQUAD_CACHE = "../data/squads.json";
-const CHARLOCATIONS          = "../data/charLocations.json";
-const SHIPLOCATIONS          = "../data/shipLocations.json";
-const GAMEDATA               = "../data/gameData.json";
+const GG_CHAR_CACHE          = dataDir + "data/swgoh-gg-chars.json";
+const GG_SHIPS_CACHE         = dataDir + "data/swgoh-gg-ships.json";
+const GG_MOD_CACHE           = dataDir + "data/swgoh-gg-mods.json";
+const SWGOH_HELP_SQUAD_CACHE = dataDir + "data/squads.json";
+const CHARLOCATIONS          = dataDir + "data/charLocations.json";
+const SHIPLOCATIONS          = dataDir + "data/shipLocations.json";
+const GAMEDATA               = dataDir + "data/gameData.json";
 const UNKNOWN                = "Unknown";
 
 const crinoloLocs = "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=";
@@ -92,9 +93,9 @@ async function updateIfChanged({localCachePath, dataSourceUri, dataObject}) {
 }
 
 async function updateRemoteData() {
-    const currentCharacters   = require("../data/characters.json");
+    const currentCharacters   = require(dataDir + "data/characters.json");
     const currentCharSnapshot = JSON.parse(JSON.stringify(currentCharacters));
-    const currentShips        = require("../data/ships.json");
+    const currentShips        = require(dataDir + "data/ships.json");
     const currentShipSnapshot = JSON.parse(JSON.stringify(currentShips));
     const log = [];
 
@@ -133,11 +134,11 @@ async function updateRemoteData() {
 
     if (JSON.stringify(currentCharSnapshot) !== JSON.stringify(currentCharacters)) {
         log.push("Changes detected in character data, saving updates and reloading");
-        saveFile("../data/characters.json", currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
+        saveFile(dataDir + "data/characters.json", currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
     }
     if (JSON.stringify(currentShipSnapshot) !== JSON.stringify(currentShips)) {
         log.push("Changes detected in ship data, saving updates and reloading");
-        saveFile("../data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
+        saveFile(dataDir + "data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
     }
 
     if (config.patreon) {
@@ -475,7 +476,7 @@ async function updatePatrons() {
         return;
     }
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
-    const cache = require("../modules/cache.js")(mongo);
+    const cache = require(dataDir + "modules/cache.js")(mongo);
     try {
         let response = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns",
             {

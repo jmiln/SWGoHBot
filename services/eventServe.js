@@ -1,4 +1,4 @@
-const config = require("../config");
+const config = require("../dist/config");
 
 const io = require("socket.io")(config.eventServe.port);
 
@@ -19,7 +19,7 @@ async function init() {
     try {
         await database.authenticate()
             .then(async () => {
-                await require("../modules/models")(Sequelize, database);
+                await require("../dist/modules/models")(Sequelize, database);
                 const eventCount = await database.models.eventDBs.count();
                 console.log(`Event Monitor online at port ${config.eventServe.port}.\nMonitoring ${eventCount} events.`);
             });
