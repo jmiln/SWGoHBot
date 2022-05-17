@@ -1,6 +1,6 @@
 import SlashCommand from "../base/slashCommand";
 import { Interaction } from "discord.js";
-import { APIUnitModObj, APIUnitObj, APIUnitSkill, BotType, PlayerStatsAccount, UnitObj } from "../modules/types";
+import { APIUnitModObj, APIUnitObj, APIUnitSkill, BotInteraction, BotType, CommandOptions, PlayerStatsAccount, UnitObj } from "../modules/types";
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -52,7 +52,7 @@ class GrandArena extends SlashCommand {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: {}) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: CommandOptions) { // eslint-disable-line no-unused-vars
         const problemArr = [];
 
         // Get the first user's ally code if possible
@@ -78,11 +78,11 @@ class GrandArena extends SlashCommand {
         }
 
         // If they're looking for specific characters, do what we can to get matches for them
-        let characters = interaction.options.getString("characters");
+        let charactersOpt = interaction.options.getString("characters");
         let charOut = [];
-        if (characters?.length) {
-            characters = characters.split(",").map((c: string) => c.trim());
-            for (const char of characters) {
+        if (charactersOpt?.length) {
+            const charactersList = charactersOpt.split(",").map((c: string) => c.trim());
+            for (const char of charactersList) {
                 let chars = Bot.findChar(char, Bot.characters);
                 if (!chars.length) {
                     // If it didn't find a matching character, try checking the ships
@@ -149,7 +149,7 @@ class GrandArena extends SlashCommand {
             } else if (fact) {
                 charOut = charOut.concat(Bot.characters.filter((c: UnitObj) => c.factions.find((ch: string) => ch.toLowerCase() === fact)).map((c: UnitObj) => c.uniqueName));
             } else {
-                return super.error(interaction, "Sorry, but I did not find a match for the faction: `" + options.subArgs.faction + "`");
+                return super.error(interaction, "Sorry, but I did not find a match for the faction: `" + faction + "`");
             }
         }
 
@@ -168,14 +168,14 @@ class GrandArena extends SlashCommand {
         const user2ShipRoster = user2Acct.roster.filter(ch => ch.combatType === 2);
 
         // Quick little function to add up all the gp frm a given chunk of roster
-        const sumGP = (rosterIn: {}[]) => {
-            return rosterIn.reduce((a: number, b: UnitObj) => a + b.gp, 0);
+        const sumGP = (rosterIn: APIUnitObj[]) => {
+            return rosterIn.reduce((a: number, b: APIUnitObj) => a + b.gp, 0);
         };
 
         // Get the top X characters from the roster (Sort then slice)
-        const getTopX = (rosterIn: {}[], x: number) => {
+        const getTopX = (rosterIn: APIUnitObj[], x: number) => {
             // Sort it so the ones with a higher gp are first
-            const sortedIn = rosterIn.sort((a: UnitObj, b: UnitObj) => a.gp < b.gp ? 1 : -1);
+            const sortedIn = rosterIn.sort((a, b) => a.gp < b.gp ? 1 : -1);
             return sortedIn.slice(0, x);
         };
 
@@ -251,18 +251,18 @@ class GrandArena extends SlashCommand {
         // Overall basic gp stats
         gpStats.push({
             check: "Total GP",
-            user1: sumGP(user1Acct.roster).shortenNum(2),
-            user2: sumGP(user2Acct.roster).shortenNum(2)
+            user1: Bot.shortenNum(sumGP(user1Acct.roster), 2),
+            user2: Bot.shortenNum(sumGP(user2Acct.roster), 2),
         });
         gpStats.push({
             check: labels.charGP,
-            user1: sumGP(user1CharRoster).shortenNum(2),
-            user2: sumGP(user2CharRoster).shortenNum(2)
+            user1: Bot.shortenNum(sumGP(user1CharRoster), 2),
+            user2: Bot.shortenNum(sumGP(user2CharRoster), 2),
         });
         gpStats.push({
             check: labels.shipGP,
-            user1: sumGP(user1ShipRoster).shortenNum(2),
-            user2: sumGP(user2ShipRoster).shortenNum(2)
+            user1: Bot.shortenNum(sumGP(user1ShipRoster), 2),
+            user2: Bot.shortenNum(sumGP(user2ShipRoster), 2),
         });
 
         // GA Specific stats for the top however many characters' GP
@@ -277,13 +277,13 @@ class GrandArena extends SlashCommand {
 
         gpStats.push({
             check: `Top${thisDiv.topX3} 3v3`,
-            user1: sumGP(user1TopX3).shortenNum(2),
-            user2: sumGP(user2TopX3).shortenNum(2),
+            user1: Bot.shortenNum(sumGP(user1TopX3), 2),
+            user2: Bot.shortenNum(sumGP(user2TopX3), 2),
         });
         gpStats.push({
             check: `Top${thisDiv.topX5} 5v5`,
-            user1: sumGP(user1TopX5).shortenNum(2),
-            user2: sumGP(user2TopX5).shortenNum(2),
+            user1: Bot.shortenNum(sumGP(user1TopX5), 2),
+            user2: Bot.shortenNum(sumGP(user2TopX5), 2),
         });
 
 
@@ -439,8 +439,8 @@ class GrandArena extends SlashCommand {
             if (c.mods) {
                 c.mods.forEach(m => {
                     // 5 is the number for speed, 41 is for offense
-                    const spd = m.secondaryStat.find((s: {}) => s.unitStat === 5 && s.value >= 15);
-                    const off = m.secondaryStat.find((s: {}) => s.unitStat === 41 && s.value >= 100);
+                    const spd = m.secondaryStat.find((s) => s.unitStat === 5 && s.value >= 15);
+                    const off = m.secondaryStat.find((s) => s.unitStat === 41 && s.value >= 100);
                     if (spd) {
                         if (spd.value >= 25) {
                             u1Mods.spd25 += 1;
@@ -457,8 +457,8 @@ class GrandArena extends SlashCommand {
         user2Acct.roster.forEach((c: APIUnitObj) => {
             if (c.mods) {
                 c.mods.forEach(m => {
-                    const spd = m.secondaryStat.find((s: {}) => s.unitStat === 5 && s.value >= 15);
-                    const off = m.secondaryStat.find((s: {}) => s.unitStat === 41 && s.value >= 100);
+                    const spd = m.secondaryStat.find((s) => s.unitStat === 5 && s.value >= 15);
+                    const off = m.secondaryStat.find((s) => s.unitStat === 41 && s.value >= 100);
                     if (spd) {
                         if (spd.value >= 25) {
                             u2Mods.spd25 += 1;
@@ -555,13 +555,13 @@ class GrandArena extends SlashCommand {
 
                 checkArr[cName].push({
                     check: labels.zetas,
-                    user1: user1Char ? user1Char.skills.filter((s: {}) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A",
-                    user2: user2Char ? user2Char.skills.filter((s: {}) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A"
+                    user1: user1Char ? user1Char.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A",
+                    user2: user2Char ? user2Char.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length.toString() : "N/A"
                 });
                 checkArr[cName].push({
                     check: "Omicrons",
-                    user1: user1Char ? user1Char.skills.filter((s: {}) => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A",
-                    user2: user2Char ? user2Char.skills.filter((s: {}) => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A"
+                    user1: user1Char ? user1Char.skills.filter((s) => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A",
+                    user2: user2Char ? user2Char.skills.filter((s) => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A"
                 });
                 checkArr[cName].push({
                     check: labels.speed,
