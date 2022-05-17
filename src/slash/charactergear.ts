@@ -21,7 +21,7 @@ class Charactergear extends SlashCommand {
                 },
                 {
                     name: "allycode",
-                    type: Bot.constants.optionType.INTEGER,
+                    type: Bot.constants.optionType.STRING,
                     description: "An ally code to check the character against"
                 },
                 {
@@ -45,14 +45,15 @@ class Charactergear extends SlashCommand {
         const doExpand   = interaction.options.getBoolean("expand");
         const gearLvl    = interaction.options.getInteger("gearlevel") || 0;
         const searchChar = interaction.options.getString("character");
-        let allycode     = interaction.options.getInteger("allycode");
+        let allycodeStr  = interaction.options.getString("allycode");
 
         // The current max possible gear level
         const MAX_GEAR = 13;
 
         // Go through and verify as possible
-        if (allycode) {
-            allycode = await Bot.getAllyCode(interaction, allycode, true);
+        let allycode = null;
+        if (allycodeStr) {
+            allycode = await Bot.getAllyCode(interaction, allycodeStr, true);
         }
         if (gearLvl < 0 || gearLvl > MAX_GEAR) {
             return super.error(interaction, `${gearLvl} is not a valid gear level. It must be between 1 and ${MAX_GEAR}`);
@@ -169,8 +170,12 @@ class Charactergear extends SlashCommand {
                 // They do have the character unlocked.
                 // Need to filter out the gear that they already have assigned to the character, then show them what's left
 
+                if (playerChar.gear === MAX_GEAR) {
+                    return super.error(interaction, "Looks like you already have all the gear equipped for that character.", {title: "You're finished!"});
+                }
+
                 if (gearLvl && gearLvl < playerChar.gear) {
-                    return super.error(interaction, "Looks like you already have all the gear equipped for that level", {title: "Already There"});
+                    return super.error(interaction, "Looks like you already have all the gear equipped for that level.", {title: "Already There"});
                 }
 
                 const gearList = char.unitTierList.filter((t: {tier: number}) => t.tier >= playerChar.gear);
