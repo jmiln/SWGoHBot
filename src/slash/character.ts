@@ -1,5 +1,6 @@
 import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
+import { emoteIDs } from "../data/emoteIDs";
 import { BotInteraction, BotType, UnitObj } from "../modules/types";
 
 class Character extends SlashCommand {
@@ -23,11 +24,10 @@ class Character extends SlashCommand {
 
     async run(Bot: BotType, interaction: BotInteraction) {
         const searchName = interaction.options.getString("character");
-
-        const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
-        const omega         = Bot.emotes["omegaMat"];
-        const zeta          = Bot.emotes["zetaMat"];
-        const omicron       = Bot.emotes["omicronMat"];
+        const abilityMatMK3 = emoteIDs["abilityMatMK3"];
+        const omega         = emoteIDs["omegaMat"];
+        const zeta          = emoteIDs["zetaMat"];
+        const omicron       = emoteIDs["omicronMat"];
 
         // Find any characters that match what they're looking for
         const chars = Bot.findChar(searchName, Bot.characters);
