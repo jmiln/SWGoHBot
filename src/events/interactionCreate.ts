@@ -1,7 +1,7 @@
 import { inspect } from "util";
 import { Client } from "discord.js";
 import { BotInteraction, BotType } from "../modules/types";
-import { BotClient } from "../swgohBot";
+import { BotClient } from "../modules/types";
 
 module.exports = async (Bot: BotType, client: BotClient, interaction: BotInteraction) => {
     // If it's not a command, don't bother trying to do anything
@@ -28,7 +28,7 @@ module.exports = async (Bot: BotType, client: BotClient, interaction: BotInterac
         return interaction.reply({content: "Sorry, but you don't have permission to run that command.", ephemeral: true});
     }
 
-    // // Load the language file for whatever language they have set
+    // Load the language file for whatever language they have set
     const user = await Bot.userReg.getUser(interaction.user.id);
     if (user && user.lang) {
         if (user.lang.language) {
@@ -39,16 +39,21 @@ module.exports = async (Bot: BotType, client: BotClient, interaction: BotInterac
         }
     }
 
-    interaction.language = Bot.languages[interaction.guildSettings.language] || Bot.languages[Bot.config.defaultSettings.language];
-    interaction.language.get = (stringId: string, ...args: any[]) => {
-        if (!interaction.language[stringId]) {
+    // interaction.language = Bot.languages[interaction.guildSettings.language] || Bot.languages[Bot.config.defaultSettings.language];
+    interaction.language = {
+        get(stringId: string, ...args: any[]) {
             try {
-                return Bot.languages[Bot.config.defaultSettings.language].getString(stringId, ...args);
+                return Bot.languages[interaction.guildSettings.language].getString(stringId, ...args);
             } catch(err) {
+                Bot.loggger.error(err);
                 return "MISSING STRING: " + stringId;
             }
-        } else {
-            return Bot.languages[interaction.guildSettings.language].getString(stringId, ...args);
+        },
+        getDay(day: string, type: string) {
+            return Bot.languages[interaction.guildSettings.language].getDay(day, type);
+        },
+        getTime(unit: string, type: string) {
+            return Bot.languages[interaction.guildSettings.language].getTime(unit, type);
         }
     };
     interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;

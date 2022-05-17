@@ -1,7 +1,8 @@
 import io from "socket.io-client";
 import { Client } from "discord.js";
 import { BotType } from "../modules/types";
-import { BotClient } from "../swgohBot";
+import { BotClient } from "../modules/types";
+import { dev_server } from "../config";
 
 module.exports = async (Bot: BotType, client: BotClient) => {
     // Logs that it's up, and some extra info
@@ -14,6 +15,10 @@ module.exports = async (Bot: BotType, client: BotClient) => {
             process.exit();
         }
         return null;
+    }
+    if (!client.shard?.count) {
+        console.error("This bot is meant to be run with shards. Please run the swgohBotShard file, not the swgohBot file.");
+        process.exit();
     }
 
     let readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`;
@@ -66,16 +71,7 @@ module.exports = async (Bot: BotType, client: BotClient) => {
                 }, 1 * 60 * 1000);
             }
         }
-
-        // If it's the last shard being started, load all the emotes in
-        if ((client.shard.ids[0] + 1) === client.shard.count) {
-            Bot.logger.log("Loading up emotes");
-            await client.shard.broadcastEval(async (client, {Bot}) => {
-                await Bot.loadAllEmotes();
-            }, {context: {Bot: Bot}});
-        }
     } else {
-        await Bot.loadAllEmotes();
         await Bot.deploy();
     }
 
@@ -96,3 +92,7 @@ module.exports = async (Bot: BotType, client: BotClient) => {
         Bot.swgohGuildCount  = await dbo.collection("guilds").estimatedDocumentCount();
     }, 5 * 60 * 1000);
 };
+
+
+
+
