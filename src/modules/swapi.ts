@@ -39,7 +39,6 @@ module.exports = (Bot: BotType) => {
         getPlayerUpdates: getPlayerUpdates,
         guild: guild,
         guildByName: guildByName,
-        zetaRec: zetaRec,
         events: events,
         getOmicrons: getOmicrons,
     };
@@ -946,11 +945,6 @@ module.exports = (Bot: BotType) => {
             Bot.logger.error("SWAPI(guild) Broke getting guild: " + e);
             throw e;
         }
-    }
-
-    async function zetaRec( lang="ENG_US" ) {
-        const zetas = await cache.get(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang});
-        return zetas[0].zetas;
     }
 
     async function events( lang="ENG_US" ) {
