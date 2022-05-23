@@ -501,21 +501,23 @@ class Event extends Command {
                     // As long as it does exist, go ahead and try triggering it
                     await Bot.socket.emit("getEventsByID", eventID, async function(event) {
                         if (Array.isArray(event)) event = event[0];
-                        var channel = "";
+                        var channel = null;
                         var announceMessage = `**${eventName}**\n${event.eventMessage}`;
                         if (event["eventChan"] && event.eventChan !== "") {  // If they"ve set a channel, try using it
                             channel = interaction.guild.channels.cache.get(event.eventChan);
                             if (!channel) {
-                                channel = interaction.guild.channels.cache.find(c => c.name === event.eventChan);
+                                channel = interaction.guild.channels.cache.find(c => c.name === event.eventChan || c.id === event.eventChan);
                             }
                         } else { // Else, use the default one from their settings
-                            channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"]);
+                            channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"] || c.id === guildConf.announceChan);
                         }
                         if (channel && channel.permissionsFor(interaction.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                             try {
-                                return channel.send({content: announceMessage});
+                                channel.send({content: announceMessage});
+                                return interaction.reply({content: "Successfully triggered " + eventName, ephemeral: true});
                             } catch (e) {
                                 Bot.logger.error("Event trigger Broke! " + announceMessage);
+                                return interaction.reply({content: `Broke when trying to trigger *${eventName}*.\nIf this continues, please report it.`, ephemeral: true});
                             }
                         }
                     });
