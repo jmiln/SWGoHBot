@@ -574,14 +574,11 @@ class Guilds extends SlashCommand {
         }
 
         async function guildTickets(userAC: number) {
-            const momentDuration = require("moment-duration-format");
-            momentDuration(moment);
-
             const sortBy = interaction.options.getString("sort");
 
             let rawGuild: APIRawGuildObj;
             try {
-                rawGuild = await Bot.swgohAPI.getRawGuild(userAC);
+                rawGuild = await Bot.swgohAPI.getRawGuild(userAC.toString());
             } catch (err) {
                 return interaction.editReply({content: err.toString()});
             }
@@ -602,11 +599,11 @@ class Guilds extends SlashCommand {
             const nowTime = moment().unix();
             if (chaTime > nowTime) {
                 // It's in the future
-                timeUntilReset = moment.utc(moment.duration(chaTime - nowTime, "seconds").asMilliseconds()).format("h [hrs], m [min]");
+                timeUntilReset = Bot.duration(chaTime - nowTime, interaction);
             } else {
                 // It's in the past, so calculate the next time
                 const dur = chaTime + dayMS - nowTime;
-                timeUntilReset = moment.utc(moment.duration(dur, "seconds").asMilliseconds()).format("h [hrs], m [min]");
+                timeUntilReset = Bot.duration(dur, interaction);
             }
 
             let maxed = 0;

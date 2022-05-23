@@ -1,7 +1,7 @@
 import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
 import factionMap from "../data/factionMap";
-import { APIUnitObj, BotType, UnitObj } from "../modules/types";
+import { APIUnitObj, BotInteraction, BotType, UnitObj } from "../modules/types";
 const shopMap = [
     { name: "Arena Shop",        value: "Arena Shipments" },
     { name: "Cantina Shop",      value: "Cantina Shipments" },
@@ -79,8 +79,8 @@ class Need extends SlashCommand {
     async run(Bot: BotType, interaction: BotInteraction) {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
-        let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode, true);
+        const allycodeStr = interaction.options.getString("allycode");
+        const allycode = await Bot.getAllyCode(interaction, allycodeStr, true);
         if (!allycode) {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
         }

@@ -2,8 +2,11 @@ import { Interaction, TextChannel } from "discord.js";
 import SlashCommand from "../base/slashCommand";
 import statEnums from "../data/statEnum";
 import { APIUnitModObj, APIUnitObj, BotInteraction, BotType, PlayerStatsAccount, UnitObj } from "../modules/types";
+import {emoteIDs} from "../data/emoteIDs";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
+const statArr = [ "DEFAULT", "UNITSTATMAXHEALTH", "UNITSTATSTRENGTH", "UNITSTATAGILITY", "UNITSTATINTELLIGENCE", "UNITSTATSPEED", "UNITSTATATTACKDAMAGE", "UNITSTATABILITYPOWER", "UNITSTATARMOR", "UNITSTATSUPPRESSION", "UNITSTATARMORPENETRATION", "UNITSTATSUPPRESSIONPENETRATION", "UNITSTATDODGERATING", "UNITSTATDEFLECTIONRATING", "UNITSTATATTACKCRITICALRATING", "UNITSTATABILITYCRITICALRATING", "UNITSTATCRITICALDAMAGE", "UNITSTATACCURACY", "UNITSTATRESISTANCE", "UNITSTATDODGEPERCENTADDITIVE", "UNITSTATDEFLECTIONPERCENTADDITIVE", "UNITSTATATTACKCRITICALPERCENTADDITIVE", "UNITSTATABILITYCRITICALPERCENTADDITIVE", "UNITSTATARMORPERCENTADDITIVE", "UNITSTATSUPPRESSIONPERCENTADDITIVE", "UNITSTATARMORPENETRATIONPERCENTADDITIVE", "UNITSTATSUPPRESSIONPENETRATIONPERCENTADDITIVE", "UNITSTATHEALTHSTEAL", "UNITSTATMAXSHIELD", "UNITSTATSHIELDPENETRATION", "UNITSTATHEALTHREGEN", "UNITSTATATTACKDAMAGEPERCENTADDITIVE", "UNITSTATABILITYPOWERPERCENTADDITIVE", "UNITSTATDODGENEGATEPERCENTADDITIVE", "UNITSTATDEFLECTIONNEGATEPERCENTADDITIVE", "UNITSTATATTACKCRITICALNEGATEPERCENTADDITIVE", "UNITSTATABILITYCRITICALNEGATEPERCENTADDITIVE", "UNITSTATDODGENEGATERATING", "UNITSTATDEFLECTIONNEGATERATING", "UNITSTATATTACKCRITICALNEGATERATING", "UNITSTATABILITYCRITICALNEGATERATING", "UNITSTATOFFENSE", "UNITSTATDEFENSE", "UNITSTATDEFENSEPENETRATION", "UNITSTATEVASIONRATING", "UNITSTATCRITICALRATING", "UNITSTATEVASIONNEGATERATING", "UNITSTATCRITICALNEGATERATING", "UNITSTATOFFENSEPERCENTADDITIVE", "UNITSTATDEFENSEPERCENTADDITIVE", "UNITSTATDEFENSEPENETRATIONPERCENTADDITIVE", "UNITSTATEVASIONPERCENTADDITIVE", "UNITSTATEVASIONNEGATEPERCENTADDITIVE", "UNITSTATCRITICALCHANCEPERCENTADDITIVE", "UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE", "UNITSTATMAXHEALTHPERCENTADDITIVE", "UNITSTATMAXSHIELDPERCENTADDITIVE", "UNITSTATSPEEDPERCENTADDITIVE", "UNITSTATCOUNTERATTACKRATING", "UNITSTATTAUNT", "UNITSTATDEFENSEPENETRATIONTARGETPERCENTADDITIVE", "UNITSTATMASTERY" ]
+
 
 class MyMods extends SlashCommand {
     constructor(Bot: BotType) {
@@ -177,14 +180,15 @@ class MyMods extends SlashCommand {
                     };
 
                     // Add the primary in
-                    slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace("+", "").replace("%", "")}`);
+                    const primaryStatName = stats[typeof mod.primaryStat.unitStat === "string" ? mod.primaryStat.unitStat : statArr[mod.primaryStat.unitStat]];
+                    slots[mod.slot].stats.push(`${mod.primaryStat.value.toString() + (primaryStatName.includes("%") ? "%" : "")} ${primaryStatName?.replace("+", "").replace("%", "")}`);
 
                     // Then all the secondaries
                     mod.secondaryStat.forEach((s) => {
-                        let t = stats[s.unitStat];
+                        let t = stats[typeof s.unitStat === "string" ? s.unitStat : statArr[s.unitStat]];
                         let statStr = "";
                         if (t.indexOf("%") > -1) {
-                            t = t.replace("%", "").trim();
+                            t = t?.replace("%", "").trim();
                             statStr = s.value.toFixed(2) + "%";
                         } else {
                             statStr = s.value.toString();
@@ -202,20 +206,25 @@ class MyMods extends SlashCommand {
                     let typeIcon  = slots[mod].type;
                     let shapeIcon = Bot.toProperCase(modSlots[mod-1]);
                     const stats = slots[mod].stats;
+
                     // If the bot has the right perms to use external emotes, go for it
                     const outChannel = interaction.channel as TextChannel;
                     if (!interaction.guild || outChannel?.permissionsFor(interaction.guild.me).has("USE_EXTERNAL_EMOJIS")) {
                         const shapeIconString = `${modSlots[mod-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
-                        // shapeIcon = Bot.emotes[shapeIconString] || shapeIcon;
+                        const typeIconString = `modset${slots[mod].type?.replace(/\s*/g, "")}`;
 
-                        const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
-                        // typeIcon = Bot.emotes[typeIconString] || typeIcon;
+                        fields.push({
+                            name: `${emoteIDs[shapeIconString]} ${emoteIDs[typeIconString]} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                            value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(23)}\``,
+                            inline: true
+                        });
+                    } else {
+                        fields.push({
+                            name: `<${shapeIcon}> <${typeIcon}> (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                            value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(23)}\``,
+                            inline: true
+                        });
                     }
-                    fields.push({
-                        name: `<${shapeIcon.identifier}> <${typeIcon.identifier}> (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
-                        value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(23)}\``,
-                        inline: true
-                    });
                 });
 
                 return interaction.editReply({content: null, embeds: [{
@@ -406,7 +415,7 @@ class MyMods extends SlashCommand {
             for (const mod of namedSorted) {
                 const shapeIconString = `${modSlots[mod.slot-1]}Mod`;
                 const value = mod.value % 1 === 0 ? mod.value : mod.value.toFixed(2) + "%";
-                outStr += `**\`${value.toLocaleString().padEnd(maxLen)}\`** ${Bot.emotes[shapeIconString]} | ${mod.name}\n`;
+                outStr += `**\`${value.toLocaleString().padEnd(maxLen)}\`** ${emoteIDs[shapeIconString]} | ${mod.name}\n`;
             }
 
             const author = {

@@ -2,7 +2,7 @@ import SlashCommand from "../base/slashCommand";
 import { inspect } from "util";      // eslint-disable-line no-unused-vars
 import fetch from "node-fetch";
 import { Interaction } from "discord.js";
-import { APIUnitObj, BotInteraction, BotType } from "../modules/types";
+import { APIUnitObj, BotInteraction, BotType, PlayerStatsAccount } from "../modules/types";
 
 class MyCharacter extends SlashCommand {
     constructor(Bot: BotType) {
@@ -71,7 +71,7 @@ class MyCharacter extends SlashCommand {
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
         let pName: string;
-        let player = null;
+        let player: PlayerStatsAccount = null;
         try {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
@@ -91,10 +91,11 @@ class MyCharacter extends SlashCommand {
         }
         const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
 
-        let thisChar = player.roster.filter((c: APIUnitObj) => c.defId === character.uniqueName);
-        if (thisChar.length && Array.isArray(thisChar)) thisChar = thisChar[0];
+        const thisCharArr = player.roster.filter((c) => c.defId === character.uniqueName);
+        let thisChar: APIUnitObj = null;
+        if (thisCharArr.length && Array.isArray(thisCharArr)) thisChar = thisCharArr[0];
 
-        if (thisChar && !Array.isArray(thisChar)) {
+        if (thisChar) {
             thisChar.unit = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
 
             const stats = thisChar.stats;
@@ -107,7 +108,7 @@ class MyCharacter extends SlashCommand {
                 rarity: thisChar.rarity,
                 level: thisChar.level,
                 gear: thisChar.gear,
-                zetas: thisChar.skills.filter((s: {}) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length,
+                zetas: thisChar.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length,
                 relic: thisChar.relic?.currentTier ? thisChar.relic.currentTier : 0,
                 side: character.side
             };
@@ -143,33 +144,34 @@ class MyCharacter extends SlashCommand {
             let gearStr: string;
             if (!isShip) {
                 gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
-                thisChar.equipped.forEach((e: {}) => {
-                    gearStr = gearStr.replace(e.slot, "X");
+                thisChar.equipped.forEach((e) => {
+                    gearStr = gearStr.replace(e.slot.toString(), "X");
                 });
                 gearStr = gearStr.replace(/[0-9]/g, "  ");
                 gearStr = Bot.expandSpaces(gearStr);
             }
-            thisChar.skills.forEach((a: {}) => {
-                a.type = Bot.toProperCase(a.id.split("_")[0].replace("skill", ""));
+            thisChar.skills.forEach((a) => {
+                const typeString = Bot.toProperCase(a.id.split("_")[0].replace("skill", ""));
+                let tierString = "";
                 if (a.tier === a.tiers) {
                     if (a.isOmicron) {
                         // Maxed Omicron ability
-                        a.tier = "Max O";
+                        tierString = "Max O";
                     } else if (a.isZeta) {
                         // Maxed Zeta ability
-                        a.tier = "Max ✦";
+                        tierString = "Max ✦";
                     } else if (isShip) {
-                        a.tier = "Max";
+                        tierString = "Max";
                     } else {
                         // Maxed Omega ability
-                        a.tier = "Max ⭓";
+                        tierString = "Max ⭓";
                     }
                 } else {
                     // Unmaxed ability
-                    a.tier = "Lvl " + a.tier;
+                    tierString = "Lvl " + a.tier;
                 }
                 try {
-                    abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`);
+                    abilities[`${typeString ? typeString.toLowerCase() : thisChar.defId.toLowerCase()}`].push(`\`${tierString} [${typeString ? typeString.charAt(0) : thisChar.defId.charAt(0)}]\` ${a.nameKey}`);
                 } catch (e) {
                     Bot.logger.error("ERROR[MC]: bad ability type: " + inspect(a));
                 }
@@ -288,24 +290,30 @@ class MyCharacter extends SlashCommand {
 
             if (!charImg) {
                 // If it couldn't get an image for the character
-                return interaction.editReply({embeds: [{
-                    author: {
-                        name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
-                        url: character.url,
-                        icon_url: character.avatarURL
-                    },
-                    description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
-                    fields: [
+                return interaction.editReply({
+                    content: null,
+                    embeds: [
                         {
-                            name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                            value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
+                            author: {
+                                name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
+                                url: character.url,
+                                icon_url: character.avatarURL
+                            },
+                            description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${thisChar.gp} gp\`${gearOut}`,
+                            fields: [
+                                {
+                                    name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                                    value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
+                                }
+                            ].concat(fields),
+                            footer: footer
                         }
-                    ].concat(fields),
-                    footer: footer
-                }]});
+                    ]
+                });
             } else {
                 // But if it could, go ahead and send it
                 return interaction.editReply({
+                    content: null,
                     embeds: [{
                         author: {
                             name: (thisChar.player ? thisChar.player : player.name) + "'s " + character.name,
@@ -313,7 +321,7 @@ class MyCharacter extends SlashCommand {
                             icon_url: character.avatarURL
                         },
                         thumbnail: { url: "attachment://image.png" },
-                        description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${parseInt(thisChar.gp, 10)} gp\`${gearOut}`,
+                        description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisChar.level} | ${thisChar.rarity}* | ${thisChar.gp} gp\`${gearOut}`,
                         fields: [
                             {
                                 name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
@@ -330,13 +338,16 @@ class MyCharacter extends SlashCommand {
             }
         } else {
             // You don't have the character
-            interaction.editReply({embeds: [{
-                author: {
-                    name: pName + "'s " + character.name
-                },
-                description: interaction.language.get("BASE_SWGOH_LOCKED_CHAR"),
-                footer: footer
-            }]});
+            interaction.editReply({
+                content: null,
+                embeds: [{
+                    author: {
+                        name: pName + "'s " + character.name
+                    },
+                    description: interaction.language.get("BASE_SWGOH_LOCKED_CHAR"),
+                    footer: footer
+                }]
+            });
         }
     }
 }

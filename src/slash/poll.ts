@@ -116,7 +116,7 @@ class PollCommand extends SlashCommand {
                 poll.options        = optionsString.split("|").map((opt: string) => opt.trim());
 
                 // Make sure it's a mod or someone with the appropriate perms trying to create it
-                if (options.level < 3) {
+                if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                     return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
                 }
 
@@ -158,7 +158,7 @@ class PollCommand extends SlashCommand {
             }
             case "cancel": {
                 // Cancel the current poll in a channel, need to ask for confirmation, maybe try and use a button here at some point?
-                if (level < 3) {
+                if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                     return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
                 }
                 // Delete the current poll
@@ -175,7 +175,7 @@ class PollCommand extends SlashCommand {
             }
             case "end": {
                 // End the current poll in a channel, need to ask for confirmation, maybe try and use a button here at some point?
-                if (level < 3) {
+                if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                     return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
                 }
                 // Delete the current poll
@@ -265,7 +265,7 @@ class PollCommand extends SlashCommand {
         }
 
         function getFooter(poll: Poll) {
-            const footer = {};
+            const footer = {text: null};
             if (interaction.guild) {
                 footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER", poll.pollID, interaction.guildSettings.prefix));
             } else {

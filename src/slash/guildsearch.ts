@@ -1,6 +1,6 @@
 import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
-import { APIUnitObj, BotInteraction, BotType, CommandOptions, UnitObj } from "../modules/types";
+import { APIGuildObj, APIUnitListChar, APIUnitObj, BotInteraction, BotType, CommandOptions, PlayerStatsAccount, UnitObj } from "../modules/types";
 // const {inspect} = require('util');
 
 class GuildSearch extends SlashCommand {
@@ -143,9 +143,9 @@ class GuildSearch extends SlashCommand {
         const searchType = interaction.options.getSubcommand();
 
         // Get all the string options
-        const sort       = interaction.options.getString("sort");
-        const stat       = interaction.options.getString("stat");
-        let allycode     = interaction.options.getString("allycode");
+        const sort  = interaction.options.getString("sort");
+        const stat  = interaction.options.getString("stat");
+        const acStr = interaction.options.getString("allycode");
 
         const rarityMap = {
             "ONESTAR":   1,
@@ -159,7 +159,7 @@ class GuildSearch extends SlashCommand {
 
         // If an ally code is supplied, try using it
         // If not, it'll try grabbing the primary registered code of the author
-        allycode = await Bot.getAllyCode(interaction, allycode, true);
+        const allycode = await Bot.getAllyCode(interaction, acStr, true);
 
         if (!allycode) {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
@@ -212,7 +212,7 @@ class GuildSearch extends SlashCommand {
             foundUnit = unitList[0];
         }
 
-        let guild = null;
+        let guild: APIGuildObj = null;
         try {
             guild = await Bot.swgohAPI.guild(allycode, null, cooldown);
         } catch (e) {
@@ -228,7 +228,7 @@ class GuildSearch extends SlashCommand {
             interaction.editReply({content: `Found guild \`${guild.name}\`!`});
 
             const oldLen = guild.roster.length;
-            guild.roster = guild.roster.filter((m: {}) => m.allyCode !== null);
+            guild.roster = guild.roster.filter((m) => m.allyCode !== null);
 
             if (!guild.roster.length) {
                 return interaction.editReply({content: "I could not get any valid roster for that guild."});
@@ -239,9 +239,9 @@ class GuildSearch extends SlashCommand {
                 guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
             }
         }
-        const guildAllycodes = guild.roster.map((p: {}) => p.allyCode);
+        const guildAllycodes = guild.roster.map((p) => p.allyCode);
 
-        let guildChar: {}[];
+        let guildChar: APIUnitObj[];
         try {
             guildChar = await Bot.swgohAPI.guildStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
@@ -252,7 +252,7 @@ class GuildSearch extends SlashCommand {
             // Looking for a stat
             const outArr = [];
 
-            let sortedMembers = guildChar.filter((gChar: APIUnitObj) => gChar?.gp).sort((a, b) => {
+            let sortedMembers = guildChar.filter((gChar) => gChar?.gp).sort((a, b) => {
                 if (!a.stats?.final) return -1;
                 if (!b.stats?.final) return 1;
                 if (!a.stats.final[stat]) a.stats.final[stat] = 0;
@@ -269,8 +269,8 @@ class GuildSearch extends SlashCommand {
                 }
             }
 
-            sortedMembers.forEach( member => {
-                const stats = member.stats;
+            sortedMembers.forEach( memberChar => {
+                const stats = memberChar.stats;
                 if (!stats?.final) {
                     return;
                 }
@@ -281,10 +281,10 @@ class GuildSearch extends SlashCommand {
                         stats[s] = stats.final[s] ? stats.final[s].toLocaleString() : "N/A";
                     }
                 });
-                stats.player = member.player;
-                stats.gp     = member.gp ? member.gp.toLocaleString() : 0;
-                stats.gear   = member.gear;
-                if (!stats.Protection) stats.Protection = 0;
+                stats.player = memberChar.player;
+                stats.gp     = memberChar.gp ? memberChar.gp : 0;
+                stats.gear   = memberChar.gear;
+                if (!stats?.Protection) stats.Protection = 0;
                 outArr.push(stats);
             });
 
@@ -316,7 +316,7 @@ class GuildSearch extends SlashCommand {
                     gp: {value: "GP", endWith: "|", align: "right"}
                 };
                 header[stat] = {value: checkableStats[stat].short, endWith: "]`", align: "right"};
-                header.player = {value:"", align: "left"};
+                header["player"] = {value:"", align: "left"};
 
                 const outTable = Bot.makeTable(header, outArr);
 
@@ -350,7 +350,7 @@ class GuildSearch extends SlashCommand {
             const sortType = sort ? sort : "name";
 
             for (const ch of guildChar) {
-                ch.zetas = ch.skills.filter((s: {}) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
+                ch.zetas = ch.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
             }
 
             if (!guildChar?.length ||
@@ -381,7 +381,7 @@ class GuildSearch extends SlashCommand {
             // Can get the order from abilities table => skillReferenceList
             let maxZ = 0;
             const zetas = [];
-            let apiChar: APIUnitObj;
+            let apiChar: APIUnitListChar;
             try {
                 apiChar = await Bot.swgohAPI.getCharacter(foundUnit.uniqueName);
             } catch (e) {
@@ -433,7 +433,7 @@ class GuildSearch extends SlashCommand {
                 const gearStr = Bot.getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
                 let z = " | ";
                 zetas.forEach((zeta, ix) => {
-                    const pZeta = member.zetas.find((pz: {}) => pz.id === zeta);
+                    const pZeta = member.zetas.find((pz: {id: string}) => pz.id === zeta);
                     if (!pZeta) {
                         z += " ";
                     } else {
@@ -497,24 +497,14 @@ class GuildSearch extends SlashCommand {
                     value: warn
                 });
             }
-            if (guildChar.warnings) {
-                let warn = guildChar.warnings.join("\n");
-                if (warn.length < 1024) {
-                    warn = warn.slice(0,1000) + "...";
-                }
-                fields.push({
-                    name: "Guild Character Warnings",
-                    value: warn
-                });
-            }
-
             fields.forEach(f => {
                 if (f.value.length > 1000) {
                     f.value = f.value.slice(0,1000) +  "...";
                 }
             });
 
-            const footer = Bot.updatedFooter(guildChar.updated, interaction, "guild", cooldown);
+            const updatedTime = Math.max(...guildChar.map(ch => ch.updated));
+            const footer = Bot.updatedFooter(updatedTime, interaction, "guild", cooldown);
             try {
                 interaction.editReply({
                     content: null,

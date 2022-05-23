@@ -106,14 +106,17 @@ class SetConf extends SlashCommand {
                 }
             } else if (keyType === "BOOLEAN") {
                 settingStr = interaction.options.getBoolean(optionKey);
-                if (!settingStr) continue;
+                if (settingStr !== false && !settingStr) continue;
             } else if (keyType === "CHANNEL") {
                 const channel = interaction.options.getChannel(optionKey);
                 if (!channel) continue;
                 nameStr = "#" + channel.name;
                 settingStr = channel.id;
             } else if (keyType === "ROLE") {
-                settingStr = interaction.options.getRole(optionKey);
+                const role = interaction.options.getRole(optionKey);
+                if (!role) continue;
+                nameStr = role.name;
+                settingStr = role.id;
                 if (!settingStr) continue;
             } else {
                 errors.push(`[Setconf] Invalid keyType: ${keyType}`);
@@ -138,8 +141,8 @@ class SetConf extends SlashCommand {
                 // Stick it into the old one
                 const newArr = [...guildConf[key]];
                 if (key === "adminRole") {
-                    newArr.push(setting.id);
-                    changeLog.push(`Added ${setting?.name} to AdminRoles`);
+                    newArr.push(setting);
+                    changeLog.push(`Added ${name} to AdminRoles`);
                 } else {
                     newArr.push(setting);
                     changeLog.push(`Added ${setting} to ${key}`);
@@ -150,8 +153,8 @@ class SetConf extends SlashCommand {
                 // Take out a setting from an array
                 let newArr = [...guildConf[key]];
                 if (key === "adminRole") {
-                    newArr = newArr.filter(s => s !== setting.id && s !== setting.name);
-                    changeLog.push(`Removed ${setting.id} from ${key}`);
+                    newArr = newArr.filter(s => s !== setting && s !== name);
+                    changeLog.push(`Removed ${name}(${setting}) from ${key}`);
                 } else {
                     newArr = newArr.filter(s => s !== setting);
                     changeLog.push(`Removed ${setting} from ${key}`);

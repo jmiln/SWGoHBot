@@ -1,6 +1,6 @@
 import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
-import { BotInteraction, BotType } from "../modules/types";
+import { BotInteraction, BotType, CommandOptions } from "../modules/types";
 
 class GuildUpdate extends SlashCommand {
     constructor(Bot: BotType) {
@@ -41,7 +41,7 @@ class GuildUpdate extends SlashCommand {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: {}) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: CommandOptions) { // eslint-disable-line no-unused-vars
         const cmdOut = null;
         const outLog = [];
 
@@ -74,7 +74,7 @@ class GuildUpdate extends SlashCommand {
             const updatedArr = [];
             const isEnabled = interaction.options.getBoolean("enabled");
             const channel = interaction.options.getChannel("channel");
-            let allycode = interaction.options.getString("allycode");
+            const allycodeStr = interaction.options.getString("allycode");
 
             if (isEnabled !== null) {
                 gu.enabled = isEnabled;
@@ -88,12 +88,12 @@ class GuildUpdate extends SlashCommand {
                 gu.channel = channel.id;
                 updatedArr.push(`Channel: <#${channel.id}>`);
             }
-            if (allycode) {
+            if (allycodeStr) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!Bot.isAllyCode(allycode))  return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!Bot.isAllyCode(allycodeStr))  return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allycode
-                allycode = Bot.getAllyCode(interaction, allycode);
+                const allycode = await Bot.getAllyCode(interaction, allycodeStr);
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
                 const player = await Bot.swgohAPI.unitStats(allycode);
@@ -101,7 +101,7 @@ class GuildUpdate extends SlashCommand {
                     // Invalid code
                     return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");
                 }
-                gu.allycode = parseInt(allycode, 10);
+                gu.allycode = allycode;
                 updatedArr.push(`Ally Code: **${allycode}**`);
             }
 
@@ -116,7 +116,7 @@ class GuildUpdate extends SlashCommand {
         } else if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
             return interaction.reply({embeds: [{
-                title: `Guild update settings for ${interaction.user.name}`,
+                title: `Guild update settings for ${interaction.user.username}`,
                 description: [
                     `Enabled:  **${gu.enabled ? "ON" : "OFF"}**`,
                     `Channel:  **${gu.channel ? "<#" + gu.channel + ">" : "N/A"}**`,

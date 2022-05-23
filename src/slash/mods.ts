@@ -1,6 +1,6 @@
 import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
-import { BotType, UnitObj } from "../modules/types";
+import { BotInteraction, BotType, UnitModObj, UnitObj } from "../modules/types";
 
 class Mods extends SlashCommand {
     constructor(Bot: BotType) {
@@ -65,7 +65,7 @@ class Mods extends SlashCommand {
             return valueArray.join("/ ");
         };
 
-        const getLocalizedModAdvice = function(modAdvice: {}) {
+        const getLocalizedModAdvice = function(modAdvice: UnitModObj) {
             const sets = [];
 
             for (const i in modAdvice.sets) {

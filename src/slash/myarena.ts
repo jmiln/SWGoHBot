@@ -77,7 +77,7 @@ class MyArena extends SlashCommand {
                 const char = player.arena.char.squad[ix];
                 let thisChar = player.roster.find((c: APIUnitObj) => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter((s: APIUnitObj) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
+                const thisZ = thisChar.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
             }
@@ -87,7 +87,7 @@ class MyArena extends SlashCommand {
                 inline: true
             });
         } else {
-            let playerStats = null;
+            let playerStats: PlayerStatsAccount = null;
             try {
                 playerStats = await Bot.swgohAPI.unitStats(allycode, cooldown);
                 if (Array.isArray(playerStats)) playerStats = playerStats[0];
@@ -102,9 +102,9 @@ class MyArena extends SlashCommand {
             // player.arena.char.squad.forEach((char, ix) => {
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
                 const char = player.arena.char.squad[ix];
-                let thisChar = playerStats.roster.find((c: APIUnitObj) => c.defId === char.defId);        // Get the character
+                let thisChar = playerStats.roster.find((c) => c.defId === char.defId);        // Get the character
                 thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter((s: APIUnitObj) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
+                const thisZ = thisChar.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
                 if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
                 const cName = `**${"z".repeat(thisZ.length)}${thisChar.nameKey}**`;
                 const speed  = thisChar.stats.final.Speed.toLocaleString();

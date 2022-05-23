@@ -1,6 +1,6 @@
 import { Interaction } from "discord.js";
 import SlashCommand from "../base/slashCommand";
-import { BotType, UserReg } from "../modules/types";
+import { BotInteraction, BotType, CommandOptions, PlayerStatsAccount, UserReg } from "../modules/types";
 
 class Register extends SlashCommand {
     constructor(Bot: BotType) {
@@ -25,7 +25,7 @@ class Register extends SlashCommand {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: {}) { // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: CommandOptions) {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
 
         let user = interaction.options.getUser("user");
@@ -65,10 +65,10 @@ class Register extends SlashCommand {
             // If they don't exist in the DB yet, stick em with a default config
             userReg = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
             userReg.id = user.id;
-        } else if (userReg.accounts.find((a: {}) => a.allyCode === allycode && a.primary)) {
+        } else if (userReg.accounts.find((a) => a.allyCode === allycode && a.primary)) {
             // This ally code is already registered & primary
             return super.error(interaction, interaction.language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
-        } else if (userReg.accounts.find((a: {}) => a.allyCode === allycode && !a.primary)) {
+        } else if (userReg.accounts.find((a) => a.allyCode === allycode && !a.primary)) {
             // This ally code is already registered but not primary, so just swap it over
             userReg.accounts = userReg.accounts.map(a => {
                 if (a.primary) a.primary = false;
@@ -97,7 +97,7 @@ class Register extends SlashCommand {
         await interaction.reply({content: interaction.language.get("COMMAND_REGISTER_PLEASE_WAIT")});
 
         try {
-            let player = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            let player: PlayerStatsAccount = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
             if (!player) {
                 return super.error(interaction, (interaction.language.get("COMMAND_REGISTER_FAILURE") + allycode));
@@ -114,15 +114,15 @@ class Register extends SlashCommand {
                                 "COMMAND_REGISTER_SUCCESS_DESC",
                                 player,
                                 player.allyCode.toString().match(/\d{3}/g).join("-"),
-                                player.stats.find((s: {}) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                                player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
                             ), "asciiDoc"), {
                                 title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name)
                             });
                     })
                     .catch((e: Error) => {
-                        Bot.logger.error("REGISTER", "Broke while trying to link new user: " + e);
+                        Bot.logger.error("REGISTER: Broke while trying to link new user: " + e);
                         return super.error(interaction, Bot.codeBlock(e.message), {
-                            title: interaction.lanugage.get("BASE_SOMETHING_BROKE"),
+                            title: interaction.language.get("BASE_SOMETHING_BROKE"),
                             footer: "Please try again in a bit.",
                             edit: true
                         });

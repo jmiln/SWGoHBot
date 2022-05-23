@@ -1,5 +1,5 @@
 import SlashCommand from "../base/slashCommand";
-import { APIUnitObj, BotInteraction, BotType } from "../modules/types";
+import { APIUnitObj, BotInteraction, BotType, UnitObj } from "../modules/types";
 import { Interaction } from "discord.js";
 
 class Randomchar extends SlashCommand {
@@ -46,7 +46,7 @@ class Randomchar extends SlashCommand {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        let chars = Bot.characters;
+        let chars: UnitObj[] | APIUnitObj[] = [];
         const MAX_CHARACTERS = 5;
         const charOut = [];
 
@@ -56,10 +56,11 @@ class Randomchar extends SlashCommand {
         let count = interaction.options.getInteger("count");
         if (!count) count = MAX_CHARACTERS;
 
-        const allycodeOpt = interaction.options.getString("allycode");
-        const allycode = await Bot.getAllyCode(interaction, allycodeOpt, false);
+        const allycodeStr = interaction.options.getString("allycode");
+        const allycode = await Bot.getAllyCode(interaction, allycodeStr, false);
 
         if (allycode) {
+            console.log("HAS AC!");
             // If there is a valid allycode provided, grab the user's roster
             const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
             let player = null;
@@ -74,17 +75,25 @@ class Randomchar extends SlashCommand {
                 });
             }
 
-            // Filter out all the ships from the player's roster, so it only shows characters
+            // Filter out all the ships from the player's roster, so it only shows characters (And filters by the star level if specified )
             // Replace the default list with this
-            chars = player.roster.filter((c: APIUnitObj) => c.combatType === 1);
-
-            // If they're looking for a certain min star lvl, filter out everything lower
-            if (star) {
-                chars = chars.filter(c => c.rarity >= star);
-            }
+            chars = player.roster.filter((c: APIUnitObj) => {
+                if (c.combatType === 1) {
+                    if (!star) {
+                        return true
+                    }
+                    if (c.rarity >= star) {
+                        return true;
+                    }
+                }
+                return false;
+            });
 
             // In case a new player tries using it before they get enough characters?
             if (chars.length < MAX_CHARACTERS) count = chars.length;
+        } else {
+            console.log("NO AC!");
+            chars = Bot.characters;
         }
 
         while (charOut.length < count) {
@@ -93,7 +102,7 @@ class Randomchar extends SlashCommand {
             let name: string;
             if (newChar.name) {
                 name = newChar.name;
-            } else if (newChar.defId) {
+            } else if ("defId" in newChar && newChar?.defId) {
                 const playerChar = await Bot.swgohAPI.units(newChar.defId);
                 name = playerChar.nameKey;
             }
