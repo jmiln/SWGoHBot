@@ -593,19 +593,17 @@ module.exports = (Bot, client) => {
         const minCooldown = { player: 1, guild: 3 };
 
         if (!userCooldown) userCooldown = baseCooldown;
-        let between = Bot.convertMS(new Date() - new Date(updated));
+        const timeDiff = new Date().getTime() - new Date(updated).getTime();
+        const betweenMS = Bot.convertMS(timeDiff);
 
-        if (between.hour >= minCooldown[type] && between.hour < userCooldown[type]) {
+        let betweenStr = "";
+        if (betweenMS.hour >= minCooldown[type] && betweenMS.hour < userCooldown[type]) {
             // If the data is between the shorter time they'd get from patreon, and the
             // time they'd get without, stick the patreon link in the footer
-            between = " | patreon.com/swgohbot";
-        } else {
-            // Otherwise, if it's too new, too old, or they already have the faster
-            // times, don't add it in
-            between = "";
+            betweenStr = " | patreon.com/swgohbot";
         }
         return {
-            text: message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) + between
+            text: message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) + betweenStr
         };
     };
 
@@ -888,16 +886,16 @@ module.exports = (Bot, client) => {
         }
 
         if (userAcct?.accounts?.length) {
+            let account = null;
             if (user?.match(otherCodeRegex)) {
                 // If it's a -1/ -2 code, try to grab the specified code
                 const index = parseInt(user.replace("-", ""), 10) - 1;
-                const account = userAcct.accounts[index];
-                return account ? account.allyCode : null;
+                account = userAcct.accounts[index];
             } else {
                 // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
-                const account = userAcct.accounts.find(a => a.primary);
-                return account ? account.allyCode : null;
+                account = userAcct.accounts.find(a => a.primary);
             }
+            return account ? account.allyCode : null;
         } else {
             return null;
         }
