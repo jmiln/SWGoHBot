@@ -6,7 +6,10 @@
     "scripts": {
         "lint": "eslint",
         "build": "tsc",
-        "start": "node dist/swgohBotShard.js"
+        "start": "node dist/swgohBotShard.js",
+        "build-swc": "npx swc src/**/**/* -d prod --ignore node_modules --copy-files",
+        "start-swc": "node prod/swgohBotShard.js",
+        "start-trace": "node --trace-warnings dist/swgohBotShard.js"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",
@@ -27,26 +30,23 @@
         "cheerio": "^1.0.0-rc.10",
         "discord-api-types": "^0.33.0",
         "discord.js": "^13.7.0",
-        "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.34",
-        "node-fetch": "2.6",
         "mongodb": "^4.6.0",
+        "node-fetch": "2.6",
         "pg": "^8.7.3",
         "pg-hstore": "^2.3.4",
-        "sequelize": "^6.19.0",
-        "socket.io": "^4.5.0",
-        "socket.io-client": "^4.5.0",
+        "sequelize": "^6.20.0",
+        "socket.io": "^4.5.1",
+        "socket.io-client": "^4.5.1",
         "swgoh-client-stub": "^2.4.0",
         "swgoh-stat-calc": "^1.1.2"
     },
     "engines": {
-        "node": ">=16"
+        "node": ">=16.9"
     },
     "devDependencies": {
-        "@swc/cli": "^0.1.57",
-        "@swc/core": "^1.2.185",
         "@types/moment-duration-format": "^2.2.3",
-        "@types/node": "^17.0.34",
+        "@types/node": "^17.0.35",
         "typescript": "^4.6.4"
     }
 }
