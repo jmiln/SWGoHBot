@@ -5,7 +5,6 @@ class Register extends Command {
         super(Bot, {
             name: "register",
             category: "Misc",
-            aliases: ["reg"],
             guildOnly: false,
             permissions: ["EMBED_LINKS"],
             options: [
@@ -27,8 +26,8 @@ class Register extends Command {
     async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
 
-        let user = interaction.options.getUser("user");
         let allycode = interaction.options.getString("allycode");
+        let user = interaction.options.getUser("user");
 
         if (!Bot.isAllyCode(allycode)) {
             return super.error(interaction, `**${allycode}** is __NOT__ a valid ally code, please try again. Ally codes must have 9 numbers.`);
@@ -55,7 +54,7 @@ class Register extends Command {
         // Then, if not, move along
         // See if they have an entry in the DB already
         let userReg = await Bot.userReg.getUser(user.id);
-        if (userReg && userReg.accounts.length && userReg.id !== user.id) {
+        if (userReg?.accounts?.length && userReg?.id !== user.id) {
             // If someone else is trying to change the code already registered, error out
             return super.error(interaction, "This account already has an ally code linked to it.");
         }

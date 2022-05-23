@@ -72,7 +72,7 @@ class ReloadData extends Command {
                         })
                         .catch(err => console.log("[ReloadData slash com]\n" + err));
                 } else {
-                    interaction.client.reloadAllCommands(channelId);
+                    interaction.client.reloadAllCommands();
                 }
                 break;
             case "debug":
