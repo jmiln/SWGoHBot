@@ -140,9 +140,20 @@ module.exports = async (Bot, client, message) => {
             // Ignore specific annoying errors that I can't do anything about
             if (err.stack.toString().includes("Internal Server Error")) return;
             if (cmd.help.name === "test") {
-                console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+                return console.log(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err)}`, true);
+            }
+            const ignoreArr = [
+                "DiscordAPIError: Unknown interaction",
+                "DiscordAPIError: Unknown Message",
+                "DiscordAPIError: Missing Access",
+                "HTTPError [AbortError]: The user aborted a request."
+            ];
+            if (ignoreArr.some(str => err.toString().includes(str))) {
+                // Don't bother spitting out the whole mess.
+                // Log which command broke, and the first line of the error
+                Bot.logger.error(`ERROR(msgCreate) I broke with ${cmd.help.name}: \nContent: ${message.content}\n${err.toString().split("\n")[0]}`);
             } else {
-                Bot.logger.error(`ERROR(msg) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err, {depth: 5})}`, true);
+                Bot.logger.error(`ERROR(msgCreate) I broke with ${cmd.help.name}: \nContent: ${message.content} \n${inspect(err, {depth: 5})}`, true);
             }
         }
         if (Bot.config.logs.logComs) {

@@ -12028,6 +12028,7 @@
             "Leader: +Max Health",
             "Leader: Foresight",
             "Potency Up",
+            "Purge",
             "Speed Down",
             "Stealth",
             "Taunt",
@@ -13436,6 +13437,7 @@
             "Leader: +Speed",
             "Potency Up",
             "Protection Up",
+            "Purge",
             "Remove Turn Meter",
             "Stun",
             "Tenacity Down",
@@ -27533,6 +27535,7 @@
             "Leader: +Speed",
             "Leader: +Tenacity",
             "Potency Down",
+            "Purge",
             "Stun",
             "Taunt"
         ],
@@ -32616,6 +32619,7 @@
             "Dispel",
             "Gain Turn Meter",
             "Leader: Healing",
+            "Purge",
             "Remove Turn Meter",
             "Stealth",
             "Stun"
@@ -32803,6 +32807,7 @@
             "Leader: Foresight",
             "Offense Down",
             "Offense Up",
+            "Purge",
             "Remove Turn Meter",
             "Speed Down"
         ],

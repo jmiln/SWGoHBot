@@ -27,15 +27,6 @@ module.exports = async (Bot, client) => {
         });
 
         if (client.shard.id === 0) {
-            // Check if there are any events that need to be processed & announced
-            setInterval(() => {
-                Bot.socket.emit("checkEvents", (eventsList) => {
-                    if (eventsList.length) {
-                        Bot.manageEvents(eventsList);
-                    }
-                });
-            }, 1 * 60 * 1000);
-
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
                 setInterval(async () => {
@@ -64,6 +55,14 @@ module.exports = async (Bot, client) => {
         if ((client.shard.id + 1) === client.shard.count) {
             Bot.logger.log("Loading up emotes");
             await client.shard.broadcastEval(client => client.loadAllEmotes());
+
+            setInterval(() => {
+                Bot.socket.emit("checkEvents", (eventsList) => {
+                    if (eventsList.length) {
+                        Bot.manageEvents(eventsList);
+                    }
+                });
+            }, 1 * 60 * 1000);
         }
     } else {
         await client.loadAllEmotes();
