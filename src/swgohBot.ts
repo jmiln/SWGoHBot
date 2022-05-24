@@ -3,26 +3,15 @@ import { readdirSync, readFileSync } from "fs";
 import { inspect } from "util";
 import SwgohClientStub from "swgoh-client-stub";
 import { Sequelize, Op } from "sequelize";
-import { BotType } from "./modules/types";
+import { BotClient, BotType } from "./modules/types";
 import SlashCommand from "./base/slashCommand";
+import { readdir } from "fs/promises";
+import fs from "fs"
 
 const Bot = {} as BotType;
 
 // Attach the config to the Bot so we can use it anywhere
 Bot.config = require(__dirname + "/config.js");
-
-export class BotClient extends Client {
-    public slashcmds: Collection<string, SlashCommand>;
-    constructor(){
-        super({
-            intents:  Bot.config.botIntents,
-            partials: Bot.config.partials
-        });
-        this.slashcmds = new Collection();
-    }
-}
-
-const client = new BotClient();
 
 // import Sequelize from "sequelize";
 const dataDir = __dirname + "/data/";
@@ -40,9 +29,11 @@ Bot.resources    = JSON.parse(readFileSync(dataDir + "resources.json").toString(
 Bot.shipLocs     = JSON.parse(readFileSync(dataDir + "shipLocations.json").toString());
 Bot.ships        = JSON.parse(readFileSync(dataDir + "ships.json").toString());
 Bot.squads       = JSON.parse(readFileSync(dataDir + "squads.json").toString());
-Bot.emotes       = {};
 
 const gameData   = JSON.parse(readFileSync(dataDir + "gameData.json").toString());
+
+const clientOpts = { intents:  Bot.config.botIntents, partials: Bot.config.partials };
+const client = new Client(clientOpts) as BotClient;
 
 // Load in various general functions for the bot
 require(moduleDir + "functions.js")(Bot, client);
@@ -53,13 +44,9 @@ require(moduleDir + "eventFuncs.js")(Bot, client);
 // Load in stuff for patrons and such
 require(moduleDir + "patreonFuncs.js")(Bot, client);
 
-// Load up js prototypes
-require(moduleDir + "prototypes.js");
-
 // Languages
 Bot.languages = {};
 Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
-Bot.reloadLanguages();
 
 client.slashcmds = new Collection();
 
@@ -125,6 +112,8 @@ const init = async () => {
     Bot.statCalculator = require("swgoh-stat-calc");
     Bot.statCalculator.setGameData(gameData);
 
+    await client.reloadLanguages();
+
     if (Bot.config.swapiConfig) {
         // Load up the api connector/ helpers
         const ApiSwgohHelp = require("api-swgoh-help");
@@ -137,9 +126,6 @@ const init = async () => {
             // Do stuff
             Bot.swapiStub = new SwgohClientStub(Bot.config.fakeSwapiConfig.clientStub);
         }
-
-        // Load up the zeta recommendations
-        Bot.zetaRec = await Bot.swgohAPI.zetaRec();
     }
 
     const Logger = require("./modules/Logger.js");
@@ -147,11 +133,11 @@ const init = async () => {
 
     const slashFiles = readdirSync(__dirname + "/slash/");
     const slashError = [];
-    slashFiles.forEach(file => {
+    slashFiles.forEach(async file => {
         try {
             if (!file.endsWith(".js")) return;
             const commandName = file.split(".")[0];
-            const result = Bot.loadSlash(commandName);
+            const result = await client.loadSlash(commandName);
             if (result) slashError.push(`Unable to load command: ${commandName}\n > ${result}`);
         } catch (err) {
             return console.error(err);
