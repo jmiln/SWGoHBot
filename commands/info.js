@@ -12,6 +12,9 @@ class Info extends Command {
     }
 
     async run(Bot, message) {
+        const dbo = await Bot.mongo.db(Bot.config.mongodb.swapidb);
+        const swgohPlayerCount = await dbo.collection("playerStats").estimatedDocumentCount();
+        const swgohGuildCount  = await dbo.collection("guilds").estimatedDocumentCount();
         try {
             const guilds = await Bot.guildCount();
             const users = await Bot.userCount();
@@ -32,8 +35,8 @@ class Info extends Command {
 
             desc += `\n\n${content.swgohHeader}\n`;
             const swgohTable = [
-                { title: content.players, content: Bot.swgohPlayerCount },
-                { title: content.guilds, content: Bot.swgohGuildCount },
+                { title: content.players, content: swgohPlayerCount },
+                { title: content.guilds, content: swgohGuildCount },
                 { title: content.lang, content: Bot.swgohLangList.length }
             ];
             desc += Bot.makeTable({
