@@ -725,6 +725,197 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Admiral Raddus",
+        "base_id": "ADMIRALRADDUS",
+        "pk": 3434,
+        "url": "http://swgoh.gg/characters/admiral-raddus/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_admiralraddus.png",
+        "power": 37297,
+        "description": "A brilliant Rebel tactician who supports his allies by buying time for them to carry out their mission",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "007",
+                    "002",
+                    "003",
+                    "004",
+                    "003",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "021",
+                    "015",
+                    "028",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "028",
+                    "065",
+                    "065",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "038",
+                    "030",
+                    "038",
+                    "073",
+                    "060",
+                    "067"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "038",
+                    "038",
+                    "070",
+                    "038",
+                    "028",
+                    "070"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "073",
+                    "070",
+                    "070",
+                    "072",
+                    "040",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "071",
+                    "079",
+                    "106",
+                    "071",
+                    "100",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "072",
+                    "117",
+                    "105",
+                    "072",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "071",
+                    "096",
+                    "095",
+                    "173",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "173",
+                    "173",
+                    "125",
+                    "173",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "124",
+                    "142",
+                    "132",
+                    "131",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "162",
+                    "162",
+                    "161",
+                    "168",
+                    "168",
+                    "G12Finisher_ADMIRALRADDUS_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Leader",
+            "Rebel",
+            "Rogue One",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Critical Chance Up",
+            "Critical Damage Up",
+            "Daze",
+            "Defense Up",
+            "Dispel",
+            "Expose",
+            "Gain Turn Meter",
+            "Heal",
+            "Healing Immunity",
+            "Leader: +Critical",
+            "Leader: +Defense",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Leader: Protection Up",
+            "Offense Up",
+            "Potency Up",
+            "Protection Up",
+            "Reduce Cooldowns",
+            "Revive",
+            "Taunt"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Ahsoka Tano",
         "base_id": "AHSOKATANO",
         "pk": 64,
@@ -13616,7 +13807,12 @@
             "Expose",
             "Gain Turn Meter",
             "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: Protection Up",
+            "Protection Up",
             "Reduce Cooldowns",
+            "Revive",
             "Stun",
             "Taunt"
         ],
@@ -16603,6 +16799,200 @@
         "ship": "CAPITALCHIMAERA",
         "ship_slot": 0,
         "activate_shard_count": 145
+    },
+    {
+        "name": "Grand Inquisitor",
+        "base_id": "GRANDINQUISITOR",
+        "pk": 3435,
+        "url": "http://swgoh.gg/characters/grand-inquisitor/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_grandinquisitor.png",
+        "power": 40278,
+        "description": "The calculating and relentless master of the Inquisitorius who specializes in dealing with Jedi",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "002",
+                    "003",
+                    "004",
+                    "004",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "028",
+                    "028",
+                    "025"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "043",
+                    "060",
+                    "050",
+                    "041",
+                    "047",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "058",
+                    "024",
+                    "055",
+                    "060",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "093",
+                    "043",
+                    "086",
+                    "051",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "055",
+                    "092",
+                    "092",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "089",
+                    "079",
+                    "106",
+                    "172",
+                    "100",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "117",
+                    "099",
+                    "112",
+                    "111",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "172",
+                    "102",
+                    "079",
+                    "117",
+                    "106",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "172",
+                    "129",
+                    "173",
+                    "129",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "109",
+                    "129",
+                    "146",
+                    "134",
+                    "144",
+                    "153"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "160",
+                    "160",
+                    "166",
+                    "168",
+                    "G12Finisher_GRANDINQUISITOR_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Empire",
+            "Inquisitorius",
+            "Leader",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Advantage",
+            "AoE",
+            "Bonus Attack",
+            "Buff Immunity",
+            "Counter",
+            "Critical Damage Up",
+            "Defense Penetration Up",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: Foresight",
+            "Offense Up",
+            "Protection Up",
+            "Purge",
+            "Remove Turn Meter",
+            "Reset Cooldown",
+            "Revive",
+            "Speed Up",
+            "Taunt",
+            "Tenacity Up",
+            "Vulnerable"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Grand Master Yoda",
@@ -22251,8 +22641,10 @@
         ],
         "ability_classes": [
             "AoE",
+            "Assist",
             "Counter",
             "Dispel",
+            "Gain Turn Meter",
             "Health Steal Up",
             "Offense Up",
             "Stagger",

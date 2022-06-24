@@ -155,6 +155,26 @@
         }
     },
     {
+        "name": "Admiral Raddus",
+        "uniqueName": "ADMIRALRADDUS",
+        "aliases": [
+            "Admiral Raddus"
+        ],
+        "nameVariant": [
+            "Admiral Raddus"
+        ],
+        "url": "http://swgoh.gg/characters/admiral-raddus/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_admiralraddus.png",
+        "side": "light",
+        "factions": [
+            "Leader",
+            "Rebel",
+            "Rogue One",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Ahsoka Tano",
         "uniqueName": "AHSOKATANO",
         "aliases": [
@@ -3121,6 +3141,27 @@
             "cross": "Protection",
             "source": "swgoh.gg"
         }
+    },
+    {
+        "name": "Grand Inquisitor",
+        "uniqueName": "GRANDINQUISITOR",
+        "aliases": [
+            "Grand Inquisitor"
+        ],
+        "nameVariant": [
+            "Grand Inquisitor"
+        ],
+        "url": "http://swgoh.gg/characters/grand-inquisitor/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_grandinquisitor.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Empire",
+            "Inquisitorius",
+            "Leader",
+            "Unaligned Force User"
+        ],
+        "mods": {}
     },
     {
         "name": "Grand Master Yoda",
