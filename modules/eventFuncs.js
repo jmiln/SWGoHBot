@@ -55,7 +55,7 @@ module.exports = (Bot, client) => {
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
                 const days = parseInt(ev.repeatDays.splice(0, 1)[0], 10);
-                ev.eventDT = parseInt(ev.eventDT, 10) + (dayMS * days);
+                ev.eventDT = parseInt(ev.eventDT, 10) + parseInt(dayMS * days, 10);
             }
             if (nowTime > ev.eventDT) { // It ran out of days
                 return null;

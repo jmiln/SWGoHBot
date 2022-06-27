@@ -991,4 +991,27 @@ module.exports = (Bot, client) => {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
     };
+
+    // Trim down large numbers to be more easily readable
+    Bot.shortenNum = function(number, trimTo=2) {
+        const million = 1000000, thousand = 1000;
+
+        if (number >= million) {
+            number = (number / million);
+            return trimFloat(number, trimTo) + "M";
+        } else if (number >= thousand) {
+            number = (number / thousand);
+            return trimFloat(number, trimTo) + "K";
+        }
+    };
+
+    // Helper for shortenNum,
+    // Trims a fload down to either 0 or 1 (by default) decimal points
+    function trimFloat(num, dec=1) {
+        if (num % 1 === 0) {
+            return num.toString();
+        } else {
+            return num.toFixed(dec);
+        }
+    }
 };

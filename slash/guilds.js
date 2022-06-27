@@ -752,9 +752,9 @@ class Guilds extends Command {
                     shipTotal += thisShip.gp;
                 }
                 if (member.inGuild) {
-                    users.push(`\`[ ${charTotal.shortenNum(2)} | ${shipTotal.shortenNum(2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - **${member.name}**`);
+                    users.push(`\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - **${member.name}**`);
                 } else {
-                    users.push(`\`[ ${charTotal.shortenNum(2)} | ${shipTotal.shortenNum(2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - ${member.name}`);
+                    users.push(`\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - ${member.name}`);
                 }
             }
 
@@ -950,8 +950,8 @@ class Guilds extends Command {
                 name: "General Stats",
                 value: Bot.codeBlock([
                     `Members:        ${guild.roster.length}`,
-                    `Total GP:       ${guild.gp.shortenNum()}`,
-                    `Average GP:     ${avgMemberGP.shortenNum()}`,
+                    `Total GP:       ${Bot.shortenNum(guild.gp)}`,
+                    `Average GP:     ${Bot.shortenNum(avgMemberGP)}`,
                     // `AVG Char Arena: ${charArenaAVG.toFixed(2)}`,
                     // `AVG Ship Arena: ${shipArenaAVG.toFixed(2)}`,
                     `Zetas:          ${zetaCount.toLocaleString()}`

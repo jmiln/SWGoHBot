@@ -235,18 +235,18 @@ class GrandArena extends Command {
         // Overall basic gp stats
         gpStats.push({
             check: "Total GP",
-            user1: sumGP(user1.roster).shortenNum(2),
-            user2: sumGP(user2.roster).shortenNum(2)
+            user1: Bot.shortenNum(sumGP(user1.roster)),
+            user2: Bot.shortenNum(sumGP(user2.roster))
         });
         gpStats.push({
             check: labels.charGP,
-            user1: sumGP(user1CharRoster).shortenNum(2),
-            user2: sumGP(user2CharRoster).shortenNum(2)
+            user1: Bot.shortenNum(sumGP(user1CharRoster), 2),
+            user2: Bot.shortenNum(sumGP(user2CharRoster), 2)
         });
         gpStats.push({
             check: labels.shipGP,
-            user1: sumGP(user1ShipRoster).shortenNum(2),
-            user2: sumGP(user2ShipRoster).shortenNum(2)
+            user1: Bot.shortenNum(sumGP(user1ShipRoster), 2),
+            user2: Bot.shortenNum(sumGP(user2ShipRoster), 2)
         });
 
         // GA Specific stats for the top however many characters' GP
@@ -261,13 +261,13 @@ class GrandArena extends Command {
 
         gpStats.push({
             check: `Top${thisDiv.topX3} 3v3`,
-            user1: sumGP(user1TopX3).shortenNum(2),
-            user2: sumGP(user2TopX3).shortenNum(2),
+            user1: Bot.shortenNum(sumGP(user1TopX3), 2),
+            user2: Bot.shortenNum(sumGP(user2TopX3), 2),
         });
         gpStats.push({
             check: `Top${thisDiv.topX5} 5v5`,
-            user1: sumGP(user1TopX5).shortenNum(2),
-            user2: sumGP(user2TopX5).shortenNum(2),
+            user1: Bot.shortenNum(sumGP(user1TopX5), 2),
+            user2: Bot.shortenNum(sumGP(user2TopX5), 2),
         });
 
 

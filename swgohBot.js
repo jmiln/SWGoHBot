@@ -40,9 +40,6 @@ require("./modules/eventFuncs.js")(Bot, client);
 // Load in stuff for patrons and such
 require("./modules/patreonFuncs.js")(Bot, client);
 
-// Load up js prototypes
-require("./modules/prototypes.js");
-
 // Languages
 Bot.languages = {};
 Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];

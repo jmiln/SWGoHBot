@@ -526,7 +526,7 @@ class Guilds extends Command {
                 name: "General Stats",
                 value: Bot.codeBlock([
                     `Members:        ${guild.roster.length}`,
-                    `GP:             ${guild.gp.shortenNum()}`,
+                    `GP:             ${Bot.shortenNum(guild.gp)}`,
                     `AVG Char Arena: ${charArenaAVG.toFixed(2)}`,
                     `AVG Ship Arena: ${shipArenaAVG.toFixed(2)}`,
                     `Zetas:          ${zetaCount.toLocaleString()}`,
