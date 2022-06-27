@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 // const {inspect} = require("util");
-const io = require("socket.io-client");
+const {default: io} = require("socket.io-client");
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
     client.shard.id = client.shard.ids[0];
@@ -53,8 +53,8 @@ module.exports = async (Bot, client) => {
 
         // If it's the last shard being started, load all the emotes in
         if ((client.shard.id + 1) === client.shard.count) {
-            Bot.logger.log("Loading up emotes");
-            await client.shard.broadcastEval(client => client.loadAllEmotes());
+            // Bot.logger.log("Loading up emotes");
+            // await client.shard.broadcastEval(client => client.loadAllEmotes());
 
             setInterval(() => {
                 Bot.socket.emit("checkEvents", (eventsList) => {
@@ -65,7 +65,7 @@ module.exports = async (Bot, client) => {
             }, 1 * 60 * 1000);
         }
     } else {
-        await client.loadAllEmotes();
+        // await client.loadAllEmotes();
     }
 
     Bot.logger.log(readyString, "ready", true);
@@ -77,11 +77,4 @@ module.exports = async (Bot, client) => {
     } catch (err) {
         console.log("[READY] Error when setting presence.\n" + err);
     }
-
-    // Update the player/ guild count every 5 min
-    setInterval(async () => {
-        const dbo = await Bot.mongo.db(Bot.config.mongodb.swapidb);
-        Bot.swgohPlayerCount = await dbo.collection("playerStats").estimatedDocumentCount();
-        Bot.swgohGuildCount  = await dbo.collection("guilds").estimatedDocumentCount();
-    }, 5 * 60 * 1000);
 };
