@@ -13,9 +13,9 @@ module.exports = async (Bot, client) => {
         return null;
     }
 
-    let readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`;
+    let readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers.`;
     if (client.shard) {
-        readyString = `${client.user.username} is ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers. Shard #${client.shard.id}`;
+        readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers. Shard #${client.shard.id}`;
 
         // Connect the sockets and such
         Bot.socket = io(`ws://localhost:${Bot.config.eventServe.port}`);
@@ -51,11 +51,8 @@ module.exports = async (Bot, client) => {
             }
         }
 
-        // If it's the last shard being started, load all the emotes in
+        // If it's the last shard being started, load all the events in
         if ((client.shard.id + 1) === client.shard.count) {
-            // Bot.logger.log("Loading up emotes");
-            // await client.shard.broadcastEval(client => client.loadAllEmotes());
-
             setInterval(() => {
                 Bot.socket.emit("checkEvents", (eventsList) => {
                     if (eventsList.length) {
@@ -64,8 +61,6 @@ module.exports = async (Bot, client) => {
                 });
             }, 1 * 60 * 1000);
         }
-    } else {
-        // await client.loadAllEmotes();
     }
 
     Bot.logger.log(readyString, "ready", true);
