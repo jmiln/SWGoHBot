@@ -129,14 +129,21 @@ module.exports = (Bot, client) => {
         if (!searchName?.length || typeof searchName !== "string") {
             return [];
         }
+        searchName = searchName.toLowerCase();
 
+        // Try for an actual exact match first
+        let foundChar = charList.filter(char => char.name.toLowerCase() === searchName);
+        if (foundChar?.length) {
+            return foundChar;
+        }
+
+        // Clean out extra spaces and improper apostrophes
         searchName = searchName
             .replace(/’/g, "'")
-            .trim()
-            .toLowerCase();
+            .trim();
 
         // Try finding an exact match for the name or aliases
-        let foundChar = charList.filter(char => char.name.toLowerCase() === searchName);
+        foundChar = charList.filter(char => char.name.toLowerCase() === searchName);
         if (!foundChar.length) {
             foundChar = charList.filter(char => char.aliases.some(alias => alias.toLowerCase() === searchName));
         }
@@ -194,11 +201,15 @@ module.exports = (Bot, client) => {
     client.announceMsg = async (guild, announceMsg, channel="", guildConf={}) => {
         if (!guild?.id) return;
 
+        // Use the guildConf announcement channel
         let announceChan = guildConf.announceChan || "";
+
+        // But if there's a channel specified for this, use that instead
         if (channel && channel !== "") {
             announceChan = channel;
         }
-        // Try and get it by ID first
+
+        // Try and get the channel by ID first
         let chan = guild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
 
         // If  that didn't work, try and get it by name
@@ -208,12 +219,13 @@ module.exports = (Bot, client) => {
 
         // If that still didn't work, or if it doesn't have the base required perms, return
         if (!chan || !chan.send || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+            // TODO Should probably log this / tell users about the issue somehow?
             return;
         } else {
             // If everything is ok, go ahead and try sending the message
             await chan.send(announceMsg).catch((err) => {
                 // if (err.stack.toString().includes("user aborted a request")) return;
-                console.error(`Broke sending announceMsg: ${err.stack} \n${guild.id} - ${channel}\n${announceMsg}\n` );
+                console.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${channel || guildConf?.announceChan}\nMsg: ${announceMsg}\n` );
             });
         }
     };
@@ -450,17 +462,17 @@ module.exports = (Bot, client) => {
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async () => {
         try {
-            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json"));
-            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json"));
-            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json"));
-            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json"));
-            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json"));
-            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json"));
-            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json"));
-            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json"));
-            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json"));
-            Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json"));
-            const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json"));
+            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json", "utf-8"));
+            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json", "utf-8"));
+            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json", "utf-8"));
+            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json", "utf-8"));
+            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json", "utf-8"));
+            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json", "utf-8"));
+            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json", "utf-8"));
+            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json", "utf-8"));
+            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
+            Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json", "utf-8"));
+            const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json", "utf-8"));
             Bot.statCalculator.setGameData(gameData);
         } catch (err) {
             return {err: err.stack};
@@ -592,6 +604,8 @@ module.exports = (Bot, client) => {
         const baseCooldown = { player: 2, guild: 6 };
         const minCooldown = { player: 1, guild: 3 };
 
+        const lang = message?.language || Bot.languages["eng_us"];
+
         if (!userCooldown) userCooldown = baseCooldown;
         const timeDiff = new Date().getTime() - new Date(updated).getTime();
         const betweenMS = Bot.convertMS(timeDiff);
@@ -603,7 +617,7 @@ module.exports = (Bot, client) => {
             betweenStr = " | patreon.com/swgohbot";
         }
         return {
-            text: message.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) + betweenStr
+            text: lang.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) + betweenStr
         };
     };
 
@@ -634,64 +648,6 @@ module.exports = (Bot, client) => {
             return guilds;
         } else {
             return client.guilds.cache.size;
-        }
-    };
-
-    /* Find an emoji by ID
-     * Via https://discordjs.guide/#/sharding/extended?id=using-functions-continued
-     */
-    client.findEmoji = (id) => {
-        const temp = client.emojis.cache.get(id);
-        if (!temp) return null;
-
-        // Clone the object because it is modified right after, so as to not affect the cache in client.emojis
-        const emoji = Object.assign({}, temp);
-        // Circular references can't be returned outside of eval, so change it to the id
-        if (emoji.guild) emoji.guild = emoji.guild.id;
-        // A new object will be construted, so simulate raw data by adding this property back
-        emoji.require_colons = emoji.requiresColons;
-
-        return emoji;
-    };
-
-
-    /* Use the findEmoji() to check all shards if sharded
-     * If sharded, also use the example from
-     * https://discordjs.guide/#/sharding/extended?id=using-functions-continued
-     */
-    client.getEmoji = (id) => {
-        if (client.shard && client.shard.count > 0) {
-            return client.shard.broadcastEval((client, id) => client.findEmoji(id), {context: id})
-                .then(emojiArray => {
-                    // Locate a non falsy result, which will be the emoji in question
-                    const foundEmoji = emojiArray.find(emoji => emoji);
-                    if (!foundEmoji) return false;
-
-                    return client.api.guilds(foundEmoji.guild).get()
-                        .then(raw => {
-                            const guild = new Discord.Guild(client, raw);
-                            const emoji = new Discord.Emoji(guild, foundEmoji);
-                            return emoji;
-                        });
-                });
-        } else {
-            const emoji = client.findEmoji(id);
-            if (!emoji) return false;
-            return new Discord.Emoji(client.guilds.cache.get(emoji.guild), emoji);
-        }
-    };
-
-    // Load all the emotes that may be used for the bot at some point (from data/emoteIDs.js)
-    client.loadAllEmotes = async () => {
-        const emoteList = require("../data/emoteIDs.js");
-        for (const emote of Object.keys(emoteList)) {
-            const e = await client.getEmoji(emoteList[emote]);
-            if (!e) {
-                Bot.logger.error("Couldn't get emote: " + emote);
-                continue;
-            } else {
-                Bot.emotes[emote] = e;
-            }
         }
     };
 
@@ -803,7 +759,7 @@ module.exports = (Bot, client) => {
                     if (padBefore) row += " ".repeat(padBefore);
                     row += value;
                     if (padAfter) row  += " ".repeat(padAfter);
-                } else if (head.align === "left" && ix === 0 && !header.startWith) {
+                } else if (head.align === "left" && ix === 0 && !head.startWith) {
                     row += value + " ".repeat(pad-1);
                 } else if (head.align === "left") {
                     row += " " + value + " ".repeat(pad-1);
@@ -1023,8 +979,8 @@ module.exports = (Bot, client) => {
                 levels[ix] = lvlCount;
             }
         }
-        const tieredLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + (levels[curr] * curr), 0);
-        const totalLvl = Object.keys(levels).reduce((acc, curr) => parseInt(acc, 10) + levels[curr], 0);
+        const tieredLvl = Object.keys(levels).reduce((acc, curr) => acc + (levels[curr] * parseInt(curr, 10)), 0);
+        const totalLvl = Object.keys(levels).reduce((acc, curr) => acc + levels[curr], 0);
         const avgLvls = (tieredLvl / totalLvl).toFixed(2);
 
         return [levels, avgLvls];

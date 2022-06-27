@@ -733,6 +733,9 @@ class Event extends Command {
                         newEvent.eventMessage = event.message;
                     }
                 }
+                if (event.channel && !event.channelID) {
+                    event.channelID = event.channel;
+                }
                 if (event.channelID) {
                     newEvent.eventChan = event.channelID;
                 } else {

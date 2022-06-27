@@ -1,5 +1,6 @@
 const Command = require("../base/Command");
 const {inspect} = require("util");
+const emoteStrings = require("../data/emoteStrings.js");
 
 class Character extends Command {
     constructor(Bot) {
@@ -18,10 +19,10 @@ class Character extends Command {
         const searchName = String(args.join(" ")).toLowerCase().replace(/[^\w\s]/gi, "");
 
 
-        const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
-        const omega         = Bot.emotes["omegaMat"];
-        const zeta          = Bot.emotes["zetaMat"];
-        const omicron       = Bot.emotes["omicronMat"];
+        const abilityMatMK3 = emoteStrings["abilityMatMK3"];
+        const omega         = emoteStrings["omegaMat"];
+        const zeta          = emoteStrings["zetaMat"];
+        const omicron       = emoteStrings["omicronMat"];
 
         // Make sure they gave a character to find
         if (searchName === "") {

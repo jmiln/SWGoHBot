@@ -494,7 +494,7 @@ class ArenaWatch extends Command {
                 const channel = interaction.options.getChannel("target_channel");
                 const targetArena = interaction.options.getString("arena");
 
-                if (channel.guild.id !== interaction.guild.id) {
+                if (channel.guild?.id !== interaction?.guild?.id) {
                     // They chose a channel in a different server
                     return super.error(interaction, "Invalid channel, please choose one in this server");
                 }

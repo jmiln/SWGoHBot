@@ -1,5 +1,6 @@
 const Command = require("../base/slashCommand");
 const statEnums = require("../data/statEnum.js");
+const emoteStrings = require("../data/emoteStrings.js");
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
@@ -202,10 +203,10 @@ class MyMods extends Command {
                     // If the bot has the right perms to use external emotes, go for it
                     if (!interaction.guild || interaction.channel.permissionsFor(interaction.guild.me).has("USE_EXTERNAL_EMOJIS")) {
                         const shapeIconString = `${modSlots[mod-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
-                        shapeIcon = Bot.emotes[shapeIconString] || shapeIcon;
+                        shapeIcon = emoteStrings[shapeIconString] || shapeIcon;
 
                         const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
-                        typeIcon = Bot.emotes[typeIconString] || typeIcon;
+                        typeIcon = emoteStrings[typeIconString] || typeIcon;
                     }
                     fields.push({
                         name: `${shapeIcon} ${typeIcon} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
@@ -409,7 +410,7 @@ class MyMods extends Command {
             for (const mod of namedSorted) {
                 const shapeIconString = `${modSlots[mod.slot-1]}Mod`;
                 const value = mod.value % 1 === 0 ? mod.value : mod.value.toFixed(2) + "%";
-                outStr += `**\`${value.toLocaleString().padEnd(maxLen)}\`** ${Bot.emotes[shapeIconString]} | ${mod.name}\n`;
+                outStr += `**\`${value.toLocaleString().padEnd(maxLen)}\`** ${emoteStrings[shapeIconString]} | ${mod.name}\n`;
             }
 
             const author = {

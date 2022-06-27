@@ -17,20 +17,19 @@ const Sequelize = require("sequelize");
 
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
-Bot.abilityCosts = JSON.parse(readFileSync("data/abilityCosts.json"));
-Bot.acronyms     = JSON.parse(readFileSync("data/acronyms.json"));
-Bot.arenaJumps   = JSON.parse(readFileSync("data/arenaJumps.json"));
-Bot.charLocs     = JSON.parse(readFileSync("data/charLocations.json"));
-Bot.characters   = JSON.parse(readFileSync("data/characters.json"));
+Bot.abilityCosts = JSON.parse(readFileSync("data/abilityCosts.json", "utf-8"));
+Bot.acronyms     = JSON.parse(readFileSync("data/acronyms.json", "utf-8"));
+Bot.arenaJumps   = JSON.parse(readFileSync("data/arenaJumps.json", "utf-8"));
+Bot.charLocs     = JSON.parse(readFileSync("data/charLocations.json", "utf-8"));
+Bot.characters   = JSON.parse(readFileSync("data/characters.json", "utf-8"));
 Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
-Bot.missions     = JSON.parse(readFileSync("data/missions.json"));
-Bot.resources    = JSON.parse(readFileSync("data/resources.json"));
-Bot.shipLocs     = JSON.parse(readFileSync("data/shipLocations.json"));
-Bot.ships        = JSON.parse(readFileSync("data/ships.json"));
-Bot.squads       = JSON.parse(readFileSync("data/squads.json"));
-Bot.emotes       = {};
+Bot.missions     = JSON.parse(readFileSync("data/missions.json", "utf-8"));
+Bot.resources    = JSON.parse(readFileSync("data/resources.json", "utf-8"));
+Bot.shipLocs     = JSON.parse(readFileSync("data/shipLocations.json", "utf-8"));
+Bot.ships        = JSON.parse(readFileSync("data/ships.json", "utf-8"));
+Bot.squads       = JSON.parse(readFileSync("data/squads.json", "utf-8"));
 
-const gameData   = JSON.parse(readFileSync("data/gameData.json"));
+const gameData   = JSON.parse(readFileSync("data/gameData.json", "utf-8"));
 
 // Load in various general functions for the bot
 require("./modules/functions.js")(Bot, client);
@@ -80,7 +79,7 @@ Bot.database.authenticate().then(async () => {
     for (let ix = 0; ix < rawNames.length; ix++) {
         // Try getting each column
         await Bot.database.models.settings.findAll({limit: 1, attributes: [rawNames[ix]]})
-        // If it doesn't exist, it'll throw an error, then it will add them
+            // If it doesn't exist, it'll throw an error, then it will add them
             .catch(async () => {
                 Bot.logger.log("Adding column " + rawNames[ix] + " to settings.");
                 await Bot.database.queryInterface.addColumn("settings",
@@ -112,9 +111,6 @@ const init = async () => {
     // Set up the caching
     Bot.cache   = require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = require("./modules/users.js")(Bot);
-
-    Bot.swgohPlayerCount = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("playerStats").estimatedDocumentCount();
-    Bot.swgohGuildCount  = await Bot.mongo.db(Bot.config.mongodb.swapidb).collection("guilds").estimatedDocumentCount();
 
     Bot.statCalculator = require("swgoh-stat-calc");
     Bot.statCalculator.setGameData(gameData);
@@ -209,10 +205,14 @@ const init = async () => {
         // If it's something I can't do anything about, ignore it
         const ignoreArr = [
             "Internal Server Error",                // Something on Discord's end
+            "The user aborted a request",           // Pretty sure this is also on Discord's end
             "Cannot send messages to this user",    // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
             "Unknown Message"                       // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
         ];
-        if (ignoreArr.some(elem => errorMsg.includes(elem))) return;
+        const errStr = ignoreArr.find(elem => errorMsg.includes(elem));
+        if (errStr) {
+            return console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errStr}`);
+        }
 
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
             Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");

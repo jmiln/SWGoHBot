@@ -1,4 +1,5 @@
 const Command = require("../base/Command");
+const emoteStrings = require("../data/emoteStrings.js");
 
 class MyMods extends Command {
     constructor(Bot) {
@@ -117,15 +118,15 @@ class MyMods extends Command {
                 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
                 Object.keys(slots).forEach(mod => {
                     let typeIcon  = slots[mod].type;
-                    let shapeIcon = Bot.toProperCase(modSlots[mod-1]);
+                    let shapeIcon = Bot.toProperCase(modSlots[parseInt(mod, 10) - 1]);
                     const stats = slots[mod].stats;
                     // If the bot has the right perms to use external emotes, go for it
                     if (!message.guild || message.channel.permissionsFor(message.guild.me).has("USE_EXTERNAL_EMOJIS")) {
-                        const shapeIconString = `${modSlots[mod-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
-                        shapeIcon = Bot.emotes[shapeIconString] || shapeIcon;
+                        const shapeIconString = `${modSlots[parseInt(mod, 10) - 1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
+                        shapeIcon = emoteStrings[shapeIconString] || shapeIcon;
 
                         const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
-                        typeIcon = Bot.emotes[typeIconString] || typeIcon;
+                        typeIcon = emoteStrings[typeIconString] || typeIcon;
                     }
                     fields.push({
                         name: `${shapeIcon} ${typeIcon} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,

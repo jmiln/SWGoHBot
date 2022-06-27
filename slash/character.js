@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const emoteStrings = require("../data/emoteStrings.js");
 
 class Character extends Command {
     constructor(Bot) {
@@ -25,14 +26,14 @@ class Character extends Command {
 
         const searchName = interaction.options.getString("character");
 
-        const abilityMatMK3 = Bot.emotes["abilityMatMK3"];
-        const omega         = Bot.emotes["omegaMat"];
-        const zeta          = Bot.emotes["zetaMat"];
-        const omicron      = Bot.emotes["omicronMat"];
+        const abilityMatMK3 = emoteStrings["abilityMatMK3"];
+        const omega         = emoteStrings["omegaMat"];
+        const zeta          = emoteStrings["zetaMat"];
+        const omicron       = emoteStrings["omicronMat"];
 
         // Find any characters that match what they're looking for
         const chars = Bot.findChar(searchName, charList);
-        if (chars.length <= 0) {
+        if (!chars?.length) {
             const err = interaction.language.get("COMMAND_CHARACTER_INVALID_CHARACTER", interaction.guildSettings.prefix);
             if (err.indexOf("\n") > -1) {
                 const [title, usage] = err.split("\n");
