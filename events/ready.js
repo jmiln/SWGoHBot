@@ -29,25 +29,27 @@ module.exports = async (Bot, client) => {
         if (client.shard.id === 0) {
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
-                setInterval(async () => {
-                    // Check all the personal ranks   (To send to DMs)
-                    await Bot.getRanks();
+                setTimeout(() => {
+                    setInterval(async () => {
+                        // Check all the personal ranks   (To send to DMs)
+                        await Bot.getRanks();
 
-                    // Check all the ranks for shards (To send to channels)
-                    await Bot.shardRanks();
+                        // Check all the ranks for shards (To send to channels)
+                        await Bot.shardRanks();
 
-                    // Only run the shard payout thing every 5min (on :5, :10, :15, etc)
-                    const min = new Date().getMinutes();
-                    if (min % 5 === 0) {
-                        // Update the shard payout monitors
-                        await Bot.shardTimes();
-                    }
+                        // Only run the shard payout thing every 5min (on :5, :10, :15, etc)
+                        const min = new Date().getMinutes();
+                        if (min % 5 === 0) {
+                            // Update the shard payout monitors
+                            await Bot.shardTimes();
+                        }
 
-                    if (min % 60 === 0) {
-                        // Run the checker for guild member's roster changes
-                        await Bot.guildsUpdate();
-                    }
-                }, 1 * 60 * 1000);
+                        if (min % 60 === 0) {
+                            // Run the checker for guild member's roster changes
+                            await Bot.guildsUpdate();
+                        }
+                    }, 1 * 60 * 1000);
+                }, 2 * 60 * 1000);
             }
         }
 
