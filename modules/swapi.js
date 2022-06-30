@@ -440,6 +440,7 @@ module.exports = (Bot) => {
         }
 
         const outStats = [];
+        const blankUnit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], omicrons: [], relic: {currentTier: 0}, equipped: [], stats: {} };
         const players = await Bot.swgohAPI.unitStats(allyCodes, cooldown, {defId: defId});
         if (!players.length) throw new Error("Couldn't get your stats");
 
@@ -447,13 +448,15 @@ module.exports = (Bot) => {
             let unit;
 
             if (!player.roster) {
-                unit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], relic: {currentTier: 0}, equipped: [], stats: {} };
+                unit = blankUnit;
             } else {
                 unit = player.roster.find(c => c.defId === defId);
                 if (!unit) {
-                    unit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], relic: {currentTier: 0}, equipped: [] };
+                    unit = blankUnit;
                 }
             }
+            unit.zetas = unit.skills.filter(s => s.isZeta && s.tier >= s.zetaTier);
+            unit.omicrons = unit.skills.filter(s => s.isOmicron && s.tier >= s.omicronTier);
             unit.player = player.name;
             unit.allyCode = player.allyCode;
             unit.updated = player.updated;
@@ -574,6 +577,8 @@ module.exports = (Bot) => {
             if (!skill) {
                 throw new Error("Missing character ability");
             }
+            s.isZeta = skill.isZeta;
+            s.isOmicron = skill.isOmicron;
             s.name = skill.nameKey
                 .replace(/\\n/g, " ")
                 .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");

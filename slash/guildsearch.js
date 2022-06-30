@@ -78,6 +78,11 @@ class GuildSearch extends Command {
                             type: "BOOLEAN"
                         },
                         {
+                            name: "omicrons",
+                            description: "Show only results that have omicron'd abilities",
+                            type: "BOOLEAN"
+                        },
+                        {
                             name: "zetas",
                             description: "Show only results that have zeta'd abilities",
                             type: "BOOLEAN"
@@ -177,6 +182,7 @@ class GuildSearch extends Command {
         // Get the boolean options
         const doReverse = interaction.options.getBoolean("reverse");
         const doZeta    = interaction.options.getBoolean("zetas");
+        const doOmicron    = interaction.options.getBoolean("omicrons");
 
         await interaction.reply({content: interaction.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT")});
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
@@ -378,7 +384,9 @@ class GuildSearch extends Command {
 
             // Can get the order from abilities table => skillReferenceList
             let maxZ = 0;
+            let maxO = 0;
             const zetas = [];
+            const omicrons = [];
             let apiChar;
             try {
                 apiChar = await Bot.swgohAPI.getCharacter(foundUnit.uniqueName);
@@ -386,9 +394,13 @@ class GuildSearch extends Command {
                 return super.error(interaction, "Couldn't get the character - " + e);
             }
             for (const ab of apiChar.skillReferenceList) {
-                if (ab.cost && ab.cost.AbilityMatZeta > 0) {
+                if (ab.isZeta) {
                     maxZ = maxZ + 1;
                     zetas.push(ab.skillId);
+                }
+                if (ab.isOmicron) {
+                    maxO = maxO +  1;
+                    omicrons.push(ab.skillId);
                 }
             }
 
@@ -424,18 +436,28 @@ class GuildSearch extends Command {
             const charOut = {};
             const hasRelic = sortedGuild.filter(mem => mem?.relic?.currentTier > 2).length;
             for (const member of sortedGuild) {
-                if (doZeta && !member.zetas.length) continue;
+                if (doZeta && doOmicron && !member.zetas?.length && !member.omicrons?.length) continue;
+                if (doZeta && !doOmicron && !member.zetas?.length) continue;
+                if (doOmicron && !doZeta && !member.omicrons?.length) continue;
 
                 if (isNaN(parseInt(member.rarity, 10))) member.rarity = rarityMap[member.rarity];
 
                 const gearStr = Bot.getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
-                let z = " | ";
+                let unitStr = " | ";
                 zetas.forEach((zeta, ix) => {
                     const pZeta = member.zetas.find(pz => pz.id === zeta);
                     if (!pZeta) {
-                        z += " ";
+                        unitStr += " ";
                     } else {
-                        z += (ix + 1).toString();
+                        unitStr += (ix + 1).toString();
+                    }
+                });
+                omicrons.forEach((omicron, ix) => {
+                    const pOmicron = member.omicrons.find(po => po.id === omicron);
+                    if (!pOmicron) {
+                        unitStr += " ";
+                    } else {
+                        unitStr += (ix + 1).toString();
                     }
                 });
                 const gpStr = parseInt(member.gp, 10).toLocaleString();
@@ -443,9 +465,9 @@ class GuildSearch extends Command {
                 let uStr;
                 if (member.rarity > 0) {
                     if (isShip) {
-                        uStr = `**\`[Lvl ${member.level} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}`;
+                        uStr = `**\`[Lvl ${member.level} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? unitStr : ""}]\`** ${member.player}`;
                     } else {
-                        uStr = `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? z : ""}]\`** ${member.player}`;
+                        uStr = `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? unitStr : ""}]\`** ${member.player}`;
                     }
                 } else {
                     uStr = member.player;
@@ -477,7 +499,7 @@ class GuildSearch extends Command {
                 if (star >= starLvl) {
                     const msgArr = Bot.msgArray(charOut[star], "\n", 700);
                     msgArr.forEach((msg, ix) => {
-                        const name = star === 0 ? interaction.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length) : interaction.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
+                        const name = parseInt(star, 10) === 0 ? interaction.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length) : interaction.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
                         fields.push({
                             name: msgArr.length > 1 ? name + ` (${ix+1}/${msgArr.length})` : name,
                             value: msgArr[ix]
@@ -513,6 +535,16 @@ class GuildSearch extends Command {
             });
 
             const footer = Bot.updatedFooter(guildChar.updated, interaction, "guild", cooldown);
+            let description = null;
+            if (doZeta || doOmicron) {
+                if (doZeta && doOmicron) {
+                    description = "Showing characters with both Zeta(s) & Omicron(s)";
+                } else if (doZeta) {
+                    description = "Showing characters with Zeta(s)";
+                } else {
+                    description = "Showing characters with Omicron(s)";
+                }
+            }
             try {
                 interaction.editReply({
                     content: null,
@@ -520,6 +552,7 @@ class GuildSearch extends Command {
                         author: {
                             name: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked)
                         },
+                        description: description,
                         fields: fields,
                         footer: footer
                     }]
