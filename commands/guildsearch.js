@@ -578,13 +578,13 @@ class GuildSearch extends Command {
                 const sortBy = options.subArgs.sort.toLowerCase();
                 if (sortBy === "offense") {
                     // Sort by # of good offense mods
-                    output = output.sort((m, n) => parseInt(m.off100, 10) - parseInt(n.off100, 10));
+                    output = output.sort((m, n) => m.off100 - n.off100);
                 } else if (sortBy === "speed") {
                     // Sort by # of good speed mods
-                    output = output.sort((m, n) => parseInt(m.spd20, 10) - parseInt(n.spd20, 10));
+                    output = output.sort((m, n) => m.spd20  - n.spd20);
                 } else if (sortBy === "6") {
                     // Sort by # of 6* mods
-                    output = output.sort((m, n) => parseInt(m.sixPip, 10) - parseInt(n.sixPip, 10));
+                    output = output.sort((m, n) => m.sixPip - n.sixPip);
                 }
             }
 
@@ -757,10 +757,10 @@ class GuildSearch extends Command {
             }
 
             outArr.forEach(star => {
-                if (star >= starLvl) {
+                if (parseInt(star, 10) >= starLvl) {
                     const msgArr = Bot.msgArray(charOut[star], "\n", 700);
                     msgArr.forEach((msg, ix) => {
-                        const name = star === 0 ? message.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length) : message.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
+                        const name = parseInt(star, 10) === 0 ? message.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length) : message.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
                         fields.push({
                             name: msgArr.length > 1 ? name + ` (${ix+1}/${msgArr.length})` : name,
                             value: msgArr[ix]
