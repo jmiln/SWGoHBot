@@ -409,6 +409,15 @@
         ]
     },
     {
+        "name": "Outrider",
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "30C"
+            }
+        ]
+    },
+    {
         "name": "Phantom II",
         "locations": [
             {

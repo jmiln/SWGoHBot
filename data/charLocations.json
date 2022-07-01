@@ -1,5 +1,14 @@
 [
     {
+        "name": "50R-T",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Playing the Odds"
+            }
+        ]
+    },
+    {
         "name": "Aayla Secura",
         "locations": [
             {
@@ -35,6 +44,15 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "6-B"
+            }
+        ]
+    },
+    {
+        "name": "Admiral Raddus",
+        "locations": [
+            {
+                "type": "Intro P1 (Marquee)",
+                "name": "Spark of Rebellion"
             }
         ]
     },
@@ -575,6 +593,14 @@
         ]
     },
     {
+        "name": "Darth Malgus",
+        "locations": [
+            {
+                "type": "Galactic Battle: Conquest"
+            }
+        ]
+    },
+    {
         "name": "Darth Maul",
         "locations": [
             {
@@ -741,8 +767,8 @@
         "name": "Eighth Brother",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Ruthless Efficiency IV"
+                "type": "Hard Modes (L)",
+                "level": "6-E"
             }
         ]
     },
@@ -818,6 +844,15 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "6-C"
+            }
+        ]
+    },
+    {
+        "name": "Fifth Brother",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "4-A"
             }
         ]
     },
@@ -1044,6 +1079,14 @@
         ]
     },
     {
+        "name": "Grand Inquisitor",
+        "locations": [
+            {
+                "type": "Assault Battle"
+            }
+        ]
+    },
+    {
         "name": "Grand Master Yoda",
         "locations": [
             {
@@ -1182,8 +1225,8 @@
         "name": "Iden Versio",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Embers of the Empire"
+                "type": "Hard Modes (L)",
+                "level": "4-D"
             }
         ]
     },
@@ -1623,10 +1666,6 @@
                 "cost": "400/10"
             },
             {
-                "type": "Cantina",
-                "level": "4-A"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/10"
             },
@@ -1767,8 +1806,8 @@
         "name": "Ninth Sister",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Ruthless Efficiency II"
+                "type": "Hard Modes (L)",
+                "level": "3-D"
             }
         ]
     },
@@ -1887,10 +1926,6 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "4-E"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "6-E"
             }
         ]
     },
@@ -2112,8 +2147,8 @@
         "name": "Seventh Sister",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Ruthless Efficiency III"
+                "type": "Hard Modes (D)",
+                "level": "4-E"
             }
         ]
     },
@@ -2209,7 +2244,7 @@
         "name": "Starkiller",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
+                "type": "Legacy Event",
                 "name": "The Force Unleashed"
             }
         ]
@@ -2547,10 +2582,6 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "5-D"
-            },
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "3-C"
             }
         ]
     },
