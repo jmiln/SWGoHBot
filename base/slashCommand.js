@@ -1,11 +1,11 @@
 class slashCommand {
 
     constructor(Bot, {
-        name = "null",
+        name = "",
         description = "No description provided.",
         options = [],
         defaultPermissions = true,
-        guildOnly = true,// false = global, true = guild.
+        guildOnly = true,  // false = global, true = guild.
         enabled = true,
         permLevel = 0,
         aliases = []

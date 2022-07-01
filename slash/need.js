@@ -26,10 +26,8 @@ class Need extends Command {
         super(Bot, {
             name: "need",
             description: "Shows your progress towards 7* characters from a faction or shop.",
-            category: "SWGoH",
             enabled: true,
             guildOnly: false,
-            permissions: ["EMBED_LINKS"],
             options: [
                 // Allycode (Of course)
                 {
@@ -37,7 +35,7 @@ class Need extends Command {
                     description: "The ally code for the user you want to look up",
                     type: "STRING"
                 },
-                // put in faction|shop|battle|keyword on their own
+                // Put in faction|shop|battle|keyword on their own
                 {
                     name: "battle",
                     description: "Which section of battles you want to check on",
@@ -103,7 +101,7 @@ class Need extends Command {
             return super.error(interaction, "I couldn't find your roster.");
         }
 
-        const units = [];
+        let units = [];
         let namesToSearch = [];
         if (battle) {
             namesToSearch.push(battle);
@@ -132,9 +130,16 @@ class Need extends Command {
             }
         }
         namesToSearch = [...new Set(namesToSearch)];
-        const matchingChars = await getUnitsExact(namesToSearch);
-        if (matchingChars.length) {
-            units.push(...matchingChars);
+        if (namesToSearch.includes("*")) {
+            // Just stick everything in there
+            units = [...Bot.characters, ...Bot.ships].map(u => {
+                return {...u, baseId: u.uniqueName};
+            });
+        } else {
+            const matchingChars = await getUnitsExact(namesToSearch);
+            if (matchingChars.length) {
+                units.push(...matchingChars);
+            }
         }
 
         const totalShards = units.length * shardsLeftAtStar[0];
