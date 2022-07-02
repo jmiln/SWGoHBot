@@ -2,7 +2,7 @@ const config = require("../config");
 
 const io = require("socket.io")(config.eventServe.port);
 
-const Sequelize = require("sequelize");
+const { Sequelize } = require("sequelize");
 const seqOps = Sequelize.Op;
 
 const database = new Sequelize(
@@ -34,8 +34,7 @@ async function init() {
         socket.on("checkEvents", async (callback) => {
             // Check all the events, and send back any that should be sent
             const nowTime = new Date().getTime();
-            let events = await database.models.eventDBs.findAll();
-            events = events.map(e => e.dataValues);
+            const events = await database.models.eventDBs.findAll({raw: true});
 
             // Check on countdowns as well for each
             //  - This means for each event (With countdown enabled), we need to grab the guild's conf, and check their countdown settings
@@ -50,17 +49,16 @@ async function init() {
             const futureCoutdownEvents = events.filter(e => (parseInt(e.eventDT, 10) > nowTime && e.countdown));
             for (const ev of futureCoutdownEvents) {
                 const guildID = ev.eventID.split("-")[0];
-                const guildConf = await database.models.settings.findOne({where: {guildID: guildID}});
+                const guildConf = await database.models.settings.findOne({raw: true, where: {guildID: guildID}});
 
                 if (!guildConf) continue;
-                const guildConfDV = guildConf.dataValues;
 
                 // Use the guild's eventCCountdown to calculate if it needs to send an event
-                if (guildConfDV?.eventCountdown?.length) {
-                    const timesToCountdown = guildConfDV.eventCountdown;
+                if (guildConf?.eventCountdown?.length) {
+                    const timesToCountdown = guildConf.eventCountdown;
                     const nowTime = new Date().getTime();
                     const timeTil = ev.eventDT - nowTime;
-                    const minTil  = parseInt(timeTil / (1000 * 60), 10);
+                    const minTil  = timeTil / (1000 * 60);
                     let cdMin = null;
 
                     timesToCountdown.forEach(time => {
@@ -145,16 +143,30 @@ async function init() {
         socket.on("getEventsByID", async (eventIDs, callback) => { // eslint-disable-line no-unused-vars
             if (!Array.isArray(eventIDs)) eventIDs = [eventIDs];
             // Get and return a specific event (For view or trigger)
-            const events = await database.models.eventDBs.findAll({where: {eventID: {[seqOps.in]: eventIDs}}});
-            const eventDVs = events.map(e => e.dataValues);
-            return callback(eventDVs);
+            const events = await database.models.eventDBs.findAll({raw: true, where: {eventID: {[seqOps.in]: eventIDs}}});
+            return callback(events);
+        });
+
+        // Grab any events that match a filter
+        socket.on("getEventsByFilter", async (guildID, filterArr, callback) => { // eslint-disable-line no-unused-vars
+            // Get and return all matching events for a server/ guild
+            // select * from "eventDBs" WHERE string_to_array(LOWER("eventMessage"), ' ') || string_to_array(LOWER("eventID"), '-') @> '{"@everyone","301814154136649729"}';
+            if (!filterArr) return [];
+            if (!Array.isArray(filterArr)) filterArr = [filterArr];
+            const events = await database.query(
+                "select * from \"eventDBs\" WHERE string_to_array(LOWER(\"eventMessage\"),  ' ') || string_to_array(LOWER(\"eventID\"), '-') @> $filter",
+                {
+                    bind: {filter: `{"${filterArr.join("\",\"")}"}`},
+                    type: Sequelize.QueryTypes.SELECT
+                }
+            );
+            return callback(events);
         });
 
         socket.on("getEventsByGuild", async (guildID, callback) => { // eslint-disable-line no-unused-vars
             // Get and return all events for a server/ guild (For full view)
-            const events = await database.models.eventDBs.findAll({where: {eventID: { [seqOps.like]: `${guildID}-%`}}});
-            const eventDVs = events.map(e => e.dataValues);
-            return callback(eventDVs);
+            const events = await database.models.eventDBs.findAll({raw: true, where: {eventID: { [seqOps.like]: `${guildID}-%`}}});
+            return callback(events);
         });
     });
 }

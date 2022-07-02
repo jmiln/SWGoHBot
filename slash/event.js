@@ -178,6 +178,11 @@ class Event extends Command {
                             description: `Set it to paginate the events, showing ${EVENTS_PER_PAGE} events at a time.`,
                             type: "INTEGER",
                         },
+                        {
+                            name: "filter",
+                            description: "Show only events that match the filter",
+                            type: "STRING"
+                        }
                     ]
                 },
             ]
@@ -347,6 +352,11 @@ class Event extends Command {
                 const eventName = interaction.options.getString("name");
                 const minimal = interaction.options.getBoolean("minimal");
                 const page = interaction.options.getInteger("page_num");
+                const evFilter = interaction.options.getString("filter");
+
+                if (eventName && evFilter) {
+                    return super.error(interaction, "Sorry, but you cannot use both name and filter. Please try again with just one of those options.");
+                }
 
                 if (eventName) {
                     // If they are looking to show a specific event
@@ -381,6 +391,99 @@ class Event extends Command {
                             eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, event.eventMessage));
                         }
                         return interaction.reply({content: eventString});
+                    });
+                } else if (evFilter?.length) {
+                    const filterArr = evFilter.split(" ");
+                    await Bot.socket.emit("getEventsByFilter", interaction.guild.id, filterArr, async function(eventList) {
+                        // If it doesn't find any events, say so
+                        if (Array.isArray(eventList) && !eventList.length) {
+                            return interaction.reply({ephemeral: true, content: "I could not find any events that match your filter of `" + evFilter + "`"});
+                        }
+
+                        // Otherwise, process the events for viewing, and display em
+
+                        // Sort the events by the time/ day
+                        let sortedEvents = eventList.sort((p, c) => p.eventDT - c.eventDT);
+
+                        // Grab the total # of events for later use
+                        const eventCount = sortedEvents.length;
+
+                        let PAGE_SELECTED = 1;
+                        const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
+                        if (guildConf["useEventPages"]) {
+                            PAGE_SELECTED = page || 0;
+                            if (PAGE_SELECTED < 1) PAGE_SELECTED = 1;
+                            if (PAGE_SELECTED > PAGES_NEEDED) PAGE_SELECTED = PAGES_NEEDED;
+
+                            // If they have pages enabled, remove everything that isn"t within the selected page
+                            if (PAGES_NEEDED > 1) {
+                                sortedEvents = sortedEvents.slice(EVENTS_PER_PAGE * (PAGE_SELECTED-1), EVENTS_PER_PAGE * PAGE_SELECTED);
+                            }
+                        }
+                        sortedEvents.forEach(event => {
+                            let thisEventName = event.eventID.split("-");
+                            thisEventName.splice(0, 1);
+                            thisEventName = thisEventName.join("-");
+                            const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+
+                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
+                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                            if (event.eventChan && event.eventChan !== "") {
+                                let chanName = "";
+                                if (interaction.guild.channels.cache.has(event.eventChan)) {
+                                    chanName = `<#${interaction.guild.channels.cache.get(event.eventChan).id}>`;
+                                } else {
+                                    chanName = event.eventChan;
+                                }
+                                eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
+                            }
+                            if (event["repeatDays"].length > 0) {
+                                eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", event.repeatDays.join(", "));
+                            } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
+                                eventString += interaction.language.get("COMMAND_EVENT_REPEAT", event.repeat["repeatDay"], event.repeat["repeatHour"], event.repeat["repeatMin"]);
+                            }
+                            if (!minimal && event.eventMessage != "") {
+                                // If they want to show all available events with the eventMessage showing
+                                const msg = removeTags(interaction, event.eventMessage);
+                                eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", msg);
+                            }
+                            array.push(eventString);
+                        });
+                        const evArray = Bot.msgArray(array, "\n\n");
+                        try {
+                            if (evArray.length === 0) {
+                                return interaction.reply({content: interaction.language.get("COMMAND_EVENT_NO_EVENT")});
+                            } else {
+                                if (evArray.length > 1) {
+                                    evArray.forEach((evMsg, ix) => {
+                                        if (guildConf["useEventPages"]) {
+                                            return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg)});
+                                            // TODO, {split: true});
+                                        } else {
+                                            if (ix === 0) {
+                                                return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg)});
+                                                // TODO , {split: true});
+                                            } else {
+                                                return interaction.reply({content: evMsg});
+                                                // TODO, {split: true});
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    if (guildConf["useEventPages"]) {
+                                        // TODO Figure out the split
+                                        return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW_PAGED",eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0])});
+                                        //, {split: true});
+                                    } else {
+                                        // TODO Figure out the split
+                                        return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW",eventCount, evArray[0])});
+                                        //, {split: true});
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            Bot.logger.error("Event View Broke! " + evArray);
+                        }
                     });
                 } else {
                     await Bot.socket.emit("getEventsByGuild", interaction.guild.id, async function(eventList) {
@@ -538,14 +641,12 @@ class Event extends Command {
                 const newChannel   = interaction.options.getChannel("channel");
                 const newCountdown = interaction.options.getBoolean("countdown");
 
-                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}});
+                const event = await Bot.database.models.eventDBs.findOne({raw: true, where: {eventID: eventID}});
 
                 // Check if that name/ event already exists
-                if (!exists) {
+                if (!event) {
                     return interaction.reply({content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", evName)});
                 } else {
-                    const event = exists.dataValues;
-
                     const oldDate = momentTZ.tz(parseInt(event.eventDT, 10), interaction.guildSettings.timezone).format("DD/MM/YYYY");
                     const oldTime = momentTZ.tz(parseInt(event.eventDT, 10), interaction.guildSettings.timezone).format("HH:mm");
 
