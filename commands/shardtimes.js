@@ -41,8 +41,8 @@ class Shardtimes extends Command {
                 times: shardTimes
             });
         } else {
-            const tempT = await Bot.database.models.shardtimes.findOne({where: {id: shardID}});
-            shardTimes = tempT.dataValues.times;
+            const tempT = await Bot.database.models.shardtimes.findOne({raw: true, where: {id: shardID}});
+            shardTimes = tempT.times;
         }
 
         let timeToAdd = 18;
@@ -207,8 +207,8 @@ class Shardtimes extends Command {
                         return super.error(message, err.message);
                     });
             } else {
-                const destHasTimes = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}})
-                    .then(times => Object.keys(times.dataValues.times).length)
+                const destHasTimes = await Bot.database.models.shardtimes.findOne({raw: true, where: {id: destShardID}})
+                    .then(times => Object.keys(times.times).length)
                     .then(isLen => isLen);
                 if (destHasTimes) {
                     // Of if there is shard info there with listings

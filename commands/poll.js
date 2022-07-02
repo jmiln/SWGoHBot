@@ -49,8 +49,7 @@ class Poll extends Command {
                 .then(isUnique => isUnique);
 
             if (exists) {
-                const tempP = await Bot.database.models.polls.findOne({where: {pollId: options.subArgs.pollID}, attributes: ["id", "poll", "pollId"]});
-                const thisPoll = tempP.dataValues;
+                const thisPoll = await Bot.database.models.polls.findOne({raw: true, where: {pollId: options.subArgs.pollID}, attributes: ["id", "poll", "pollId"]});
                 poll = thisPoll.poll;
                 poll.pollID = thisPoll.pollId;
                 pollID = thisPoll.id;
@@ -87,9 +86,9 @@ class Poll extends Command {
                 .then(isUnique => isUnique);
 
             if (exists) {
-                const tempP = await Bot.database.models.polls.findOne({where: {id: pollID}});
-                poll = tempP.dataValues.poll;
-                poll.pollID = tempP.dataValues.pollId;
+                const tempP = await Bot.database.models.polls.findOne({raw: true, where: {id: pollID}});
+                poll = tempP.poll;
+                poll.pollID = tempP.pollId;
             }
         }
         switch (action) {

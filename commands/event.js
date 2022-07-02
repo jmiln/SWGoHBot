@@ -392,8 +392,7 @@ class Event extends Command {
                 if (!exists) {
                     return message.channel.send({content: message.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
                 } else {
-                    const events = await Bot.database.models.eventDBs.findOne({where: {eventID: `${message.guild.id}-${eventName}`}});
-                    const event = events.dataValues;
+                    const event = await Bot.database.models.eventDBs.findOne({raw: true, where: {eventID: `${message.guild.id}-${eventName}`}});
 
                     const [target, ...changeTo] = args;
 

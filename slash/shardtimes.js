@@ -96,16 +96,15 @@ class Shardtimes extends Command {
         // Shard ID will be guild.id-channel.id
         const shardID = `${interaction.guild.id}-${interaction.channel.id}`;
 
-        let exists = await Bot.database.models.shardtimes.findOne({where: {id: shardID}});
+        const exists = await Bot.database.models.shardtimes.findOne({raw: true, where: {id: shardID}});
 
         let shardTimes = {};
-        if (!exists?.dataValues) {
+        if (!exists) {
             await Bot.database.models.shardtimes.create({
                 id: shardID,
                 times: shardTimes
             });
         } else {
-            exists = exists.dataValues;
             shardTimes = exists.times;
         }
 
@@ -270,9 +269,9 @@ class Shardtimes extends Command {
 
             const destShardID = `${interaction.guild.id}-${destChannel.id}`;
 
-            const destExists = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}});
+            const destExists = await Bot.database.models.shardtimes.findOne({raw: true, where: {id: destShardID}});
 
-            if (!destExists?.dataValues) {
+            if (!destExists) {
                 // If there's no shard info in the destination channel
                 await Bot.database.models.shardtimes.create({ id: destShardID, times: shardTimes })
                     .then(() => {
@@ -282,8 +281,8 @@ class Shardtimes extends Command {
                         return super.error(interaction, err.message);
                     });
             } else {
-                const destHasTimes = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}})
-                    .then(times => Object.keys(times.dataValues.times).length)
+                const destHasTimes = await Bot.database.models.shardtimes.findOne({raw: true, where: {id: destShardID}})
+                    .then(times => Object.keys(times.times).length)
                     .then(isLen => isLen);
                 if (destHasTimes) {
                     // Of if there is shard info there with listings

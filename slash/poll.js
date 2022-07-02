@@ -92,8 +92,8 @@ class Poll extends Command {
         const pollID = `${interaction.guild.id}-${interaction.channel.id}`;
 
         // If they're just voting on the channel's poll
-        const oldPoll = await Bot.database.models.polls.findOne({where: {id: pollID}});
-        const oldPolllDv = oldPoll?.dataValues;
+        const oldPoll = await Bot.database.models.polls.findOne({raw: true, where: {id: pollID}});
+        const oldPolllDv = oldPoll;
 
         if (oldPolllDv && action === "create") {
             // If they're trying to create a new poll when one exists, tell em
