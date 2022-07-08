@@ -154,9 +154,12 @@ async function init() {
             if (!filterArr) return [];
             if (!Array.isArray(filterArr)) filterArr = [filterArr];
             const events = await database.query(
-                "select * from \"eventDBs\" WHERE string_to_array(LOWER(\"eventMessage\"),  ' ') || string_to_array(LOWER(\"eventID\"), '-') @> $filter",
+                "select * from \"eventDBs\" WHERE \"eventID\" LIKE $guildid AND \"eventMessage\" || ' ' || \"eventID\" LIKE ALL($filter)",
                 {
-                    bind: {filter: `{"${filterArr.join("\",\"")}"}`},
+                    bind: {
+                        guildid: guildID + "-%",
+                        filter: `{"${filterArr.map(f => `%${f}%`).join("\",\"")}"}`
+                    },
                     type: Sequelize.QueryTypes.SELECT
                 }
             );
