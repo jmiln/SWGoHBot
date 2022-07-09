@@ -3,8 +3,8 @@
         "name": "50R-T",
         "locations": [
             {
-                "type": "Intro P1 (Marquee)",
-                "name": "Playing the Odds"
+                "type": "Hard Modes (D)",
+                "level": "3-E"
             }
         ]
     },
@@ -1394,8 +1394,8 @@
         "name": "Jedi Knight Anakin",
         "locations": [
             {
-                "type": "Hard Modes (L)",
-                "level": "5-C"
+                "type": "Hard Modes (D)",
+                "level": "1-B"
             }
         ]
     },

@@ -1780,8 +1780,10 @@
             "Dispel",
             "Dispel - All Enemies",
             "Gain Turn Meter",
+            "Healing Immunity",
             "Leader: +Speed",
             "Remove Turn Meter",
+            "Reset Cooldown",
             "Stun"
         ],
         "role": "Support",
@@ -23889,8 +23891,8 @@
             "Speed Up"
         ],
         "role": "Attacker",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "RAVENSCLAW",
+        "ship_slot": 0,
         "activate_shard_count": 25
     },
     {

@@ -964,6 +964,37 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Raven's Claw",
+        "base_id": "RAVENSCLAW",
+        "url": "http://swgoh.gg/ships/ravens-claw/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_ravensclaw.png",
+        "power": 85307,
+        "description": "A Rebel ship crewed by Kyle Katarn that is able to dictate the flow of battle",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Jedi",
+            "Rebel",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Bonus Attack",
+            "Daze",
+            "Defense Down",
+            "Defense Up",
+            "Dispel",
+            "Foresight",
+            "Remove Turn Meter",
+            "Stealth",
+            "Vulnerable"
+        ],
+        "role": "Support",
+        "capital_ship": false,
+        "activate_shard_count": 80
+    },
+    {
         "name": "Razor Crest",
         "base_id": "RAZORCREST",
         "url": "http://swgoh.gg/ships/razor-crest/",

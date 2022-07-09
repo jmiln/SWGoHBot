@@ -1319,6 +1319,26 @@
         "abilities": {}
     },
     {
+        "name": "Raven's Claw",
+        "uniqueName": "RAVENSCLAW",
+        "aliases": [
+            "Raven's Claw"
+        ],
+        "nameVariant": [
+            "Raven's Claw"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/ravens-claw/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ravensclaw.png",
+        "side": "light",
+        "factions": [
+            "Jedi",
+            "Rebel",
+            "Support"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Razor Crest",
         "uniqueName": "RAZORCREST",
         "aliases": [
