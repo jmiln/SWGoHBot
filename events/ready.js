@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 // const {inspect} = require("util");
-const {default: io} = require("socket.io-client");
+const io = require("socket.io-client");
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
     client.shard.id = client.shard.ids[0];
