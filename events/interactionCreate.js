@@ -46,8 +46,9 @@ module.exports = async (Bot, client, interaction) => {
         }
 
         const ignoreArr = [
-            "DiscordAPIError: Unknown interaction",
             "DiscordAPIError: Missing Access",
+            "DiscordAPIError: Unknown Interaction",
+            "DiscordAPIError: Unknown Message",
             "HTTPError [AbortError]: The user aborted a request."
         ];
         if (ignoreArr.some(str => err.toString().includes(str))) {
@@ -57,6 +58,7 @@ module.exports = async (Bot, client, interaction) => {
         } else {
             Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
         }
+
         const replyObj = {content: `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`, ephemeral: true};
         if (interaction.replied) {
             return interaction.followUp(replyObj)

@@ -12,8 +12,6 @@ class Event extends Command {
         super(Bot, {
             name: "event",
             guildOnly: false,
-            category: "Misc",
-            aliases: ["events", "ev"],
             options: [
                 {
                     name: "create",
@@ -671,8 +669,8 @@ class Event extends Command {
 
                     const validEvent = validateEvents(newEvent)[0];
                     if (!validEvent.valid) {
-                        console.log("Issue validating an event:");
-                        console.log(validEvent);
+                        // console.log("Issue validating an event:");
+                        // console.log(validEvent);
                         return super.error(interaction, "There was an issue with that: " + validEvent.str);
                     }
 
@@ -870,13 +868,13 @@ class Event extends Command {
                             // Don't bother since it's just gonna be a parse error, and it's already null
                         }
                         if (Array.isArray(jsonRepDay)) {
-                            const breaker = jsonRepDay.forEach(r => {
+                            jsonRepDay.forEach(r => {
                                 if (r <= 0) {
                                     err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
                                     return false;
                                 }
                             });
-                            if (!breaker) {
+                            if (!err?.length) {
                                 newEvent.repeatDays = jsonRepDay;
                             }
                         } else if (event.repeatDay.toString().match(dayReg)) {
