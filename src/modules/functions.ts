@@ -481,31 +481,48 @@ module.exports = (Bot: BotType, client: BotClient) => {
         return `\`\`\`${lang}\n${str}\`\`\``;
     };
 
-    // Return a duration string
-    Bot.duration = (time: number, interaction: BotInteraction, format?: string) => {
+    /**
+     * Duration
+     * Convert a millisecond count into a formatted duration string
+     */
+    Bot.duration = ({time, interaction, type}: {time: number, interaction?: BotInteraction, type: "timestamp" | "diff"}) => {
+        // moment.duration(
+        //     Math.abs(
+        //         moment(time).diff(moment())
+        //     )
+        // ).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
+
+
         if (!interaction) return "N/A";
-        console.log(time, format);
+        console.log("TimeIn: " + time);
         const lang = interaction ? interaction.language : Bot.languages[config.defaultSettings.language];
 
-        const dayNum = 86400000;
-        const hourNum = 360000;
-        const minNum = 60000;
+        const dayNum  = 86400000;
+        const hourNum = 3600000;
+        const minNum  = 60000;
+        let timeAgo = time;
+        if (type === "timestamp") {
+            timeAgo = moment(time).diff(moment());
+        }
 
-        let timeAgo = new Date().getTime() - time;
+        // let timeAgo = type === "timestamp" ? Math.abs(moment(time).diff(moment())) : time;
+        // let timeAgo = Math.abs(Math.floor(new Date().getTime() / 1000) - time);
+        console.log(`TimeAgo: ${timeAgo}`);
         const days = Math.floor(timeAgo/dayNum);
+        console.log(`TimeAgo: ${timeAgo}, Days: ${days}`);
         timeAgo -= days * dayNum;
         const hours = Math.floor(timeAgo/hourNum);
+        console.log(`TimeAgo: ${timeAgo}, Days: ${days}, Hours: ${hours}`);
         timeAgo -= hours * hourNum;
         const minutes = Math.floor(timeAgo/minNum);
-
-        console.log(timeAgo, days, hours, minutes);
+        console.log(`TimeAgo: ${timeAgo}, Days: ${days}, Hours: ${hours}, Minutes: ${minutes}`);
 
         let outStr = "";
-        if (days >= 1) outStr    += `${days} ${days > 1 ? lang.getTime("DAY", "PLURAL") : lang.getTime("DAY", "SING")}, `;
-        if (hours >= 1) outStr   += `${hours} ${hours > 1 ? lang.getTime("HOUR", "SHORT_PLURAL") : lang.getTime("HOUR", "SHORT_SING")}, `;
-        if (minutes >= 1) outStr += `${minutes} ${minutes > 1 ? lang.getTime("MINUTE", "SHORT_PLURAL") : lang.getTime("MINUTE", "SHORT_SING")}`;
+        if (days != 0) outStr    += `${days} ${days > 1 ? lang.getTime("DAY", "PLURAL") : lang.getTime("DAY", "SING")}, `;
+        if (hours != 0) outStr   += `${hours} ${hours > 1 ? lang.getTime("HOUR", "SHORT_PLURAL") : lang.getTime("HOUR", "SHORT_SING")}, `;
+        if (minutes != 0) outStr += `${minutes} ${minutes > 1 ? lang.getTime("MINUTE", "SHORT_PLURAL") : lang.getTime("MINUTE", "SHORT_SING")}`;
 
-        console.log(outStr);
+        console.log("OutStr: " + outStr);
 
         return outStr;
     };
@@ -528,7 +545,7 @@ module.exports = (Bot: BotType, client: BotClient) => {
             betweenStr = " | patreon.com/swgohbot";
         }
         return {
-            text: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(timeDiff, interaction)) + betweenStr
+            text: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration({time: updated, interaction: interaction, type: "timestamp"})) + betweenStr
         };
     };
 
@@ -897,34 +914,31 @@ module.exports = (Bot: BotType, client: BotClient) => {
     Bot.deploy = async function() {
         // const guildCmds  = client.slashcmds.filter((com: {}) => com.guildOnly).map((com: {}) => JSON.stringify(com.commandData));
         // const globalCmds = client.slashcmds.filter((com: {}) => !com.guildOnly).map((com: {}) => JSON.stringify(com.commandData));
-
-        // const builder = new SlashCommandBuilder();
-        // builder
-        //     .setName("time")
-        //     .setDescription("Timezone command")
-        //     .addStringOption(option => option
-        //         .setName("timezone")
-        //         .setDescription("A valid timezone to view"));
-        //
-        // console.log(builder.toJSON());
-
         const allCmds  = client.slashcmds.map((com: slashCommand) => com.commandData);
 
         // If there's a server configured for development/ that only the owner can use, put the guild commands there
         if (config?.dev_server) {
-            // await client.guilds.cache.get(config.dev_server)?.commands.set(guildCmds);
             // console.log(allCmds);
             await rest.put(
                 Routes.applicationGuildCommands(client.user.id, config.dev_server),
                 { body: allCmds },
             )
             // .then(res => console.log(res));
+        } else {
+            // try {
+            //     await rest.put(
+            //         Routes.applicationGuildCommands(client.user.id, config.dev_server),
+            //         { body: guildCmds },
+            //     );
+            //     await rest.put(
+            //         Routes.applicationCommands(client.user.id),
+            //         { body: globalCmds },
+            //     );
+            // } catch (err) {
+            //     console.log("[ERROR] Broke while trying to deploy commands:");
+            //     console.log(err);
+            // }
         }
-        // await rest.put(
-        //     Routes.applicationCommands(client.user.id),
-        //     { body: globalCmds },
-        // );
-        // await client.application?.commands.set(globalCmds);
     }
 
     // Trim down large numbers to be more easily readable
@@ -979,6 +993,8 @@ module.exports = (Bot: BotType, client: BotClient) => {
             const cmd = new (require(`../slash/${commandName}`))(Bot);
             if (!cmd.enabled) {
                 return commandName + " is not enabled";
+            } else if (!cmd) {
+                return commandName + " is not working?";
             }
             client.slashcmds.set(cmd.commandData.name, cmd);
             return null;
@@ -1117,179 +1133,5 @@ module.exports = (Bot: BotType, client: BotClient) => {
         }
     };
 };
-
-
-// export async function reloadSlash(client: BotClient, Bot: BotType, commandName: string) {
-//     let response = await unloadSlash(client, commandName);
-//     if (response) {
-//         return new Error(`Error Unloading: ${response}`);
-//     } else {
-//         response = await loadSlash(client, Bot, commandName);
-//         if (response) {
-//             return new Error(`Error Loading: ${response}`);
-//         }
-//     }
-//     return commandName;
-// };
-// export async function unloadSlash(client: BotClient, commandName: string) {
-//     try {
-//         if (client.slashcmds.has(commandName)) {
-//             const command = client.slashcmds.get(commandName);
-//             client.slashcmds.delete(command.commandData.name);
-//             delete require.cache[require.resolve(`./slash/${command.commandData.name}.js`)];
-//         }
-//         return null;
-//     } catch (err) {
-//         return `Unable to load command ${commandName}: ${err}`;
-//     }
-// };
-// export async function loadSlash(client: BotClient, Bot: BotType, commandName: string) {
-//     try {
-//         const cmd = new (require(`./slash/${commandName}`))(Bot);
-//         if (!cmd.enabled) {
-//             return commandName + " is not enabled";
-//         }
-//         client.slashcmds.set(cmd.commandData.name, cmd);
-//         return null;
-//     } catch (e) {
-//         return `Unable to load command ${commandName}: ${e}`;
-//     }
-// };
-// export async function reloadAllSlashCommands(client: BotClient, Bot: BotType) {
-//     [...client.slashcmds.keys()].forEach(async cmdName => {
-//         await unloadSlash(client, cmdName);
-//     });
-//     const cmdFiles = await readdir("./slash/");
-//     const coms: string[] = [], errArr: string[] = [];
-//     cmdFiles.forEach(async (fileName: string) => {
-//         try {
-//             const cmdName = fileName.split(".")[0];
-//             if (fileName.split(".").slice(-1)[0] !== "js") {
-//                 errArr.push(fileName);
-//             } else {
-//                 const res = await loadSlash(client, Bot, cmdName);
-//                 if (!res) {
-//                     coms.push(cmdName);
-//                 } else {
-//                     errArr.push(fileName);
-//                 }
-//             }
-//         } catch (e) {
-//             Bot.logger.error("Error: " + e);
-//             errArr.push(fileName);
-//         }
-//     });
-//     return {
-//         succArr: coms,
-//         errArr: errArr
-//     };
-// };
-//
-// // Reload the events files (message, guildCreate, etc)
-// export async function reloadAllEvents(client: BotClient, Bot: BotType) {
-//     const ev: string[] = [], errEv: string[] = [];
-//
-//     const evtFiles = await readdir("./events/");
-//     evtFiles.forEach((fileName: string) => {
-//         try {
-//             const eventName = fileName.split(".")[0];
-//             client.removeAllListeners(eventName);
-//             const event = require(`../events/${fileName}`);
-//             if (["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
-//                 client.on(eventName, event.bind(null, Bot, client));
-//             } else {
-//                 client.on(eventName, event.bind(null, Bot));
-//             }
-//             delete require.cache[require.resolve(`../events/${fileName}`)];
-//             ev.push(eventName);
-//         } catch (e) {
-//             Bot.logger.error("In Event reload: " + e);
-//             errEv.push(fileName);
-//         }
-//     });
-//     return {
-//         succArr: ev,
-//         errArr: errEv
-//     };
-// };
-//
-// // Reload the functions (this) file
-// export async function reloadFunctions(client: BotClient, Bot: BotType) {
-//     try {
-//         delete require.cache[require.resolve("../modules/functions.js")];
-//         require("../modules/functions.js")(Bot, client);
-//         delete require.cache[require.resolve("../modules/patreonFuncs.js")];
-//         require("../modules/patreonFuncs.js")(Bot, client);
-//         delete require.cache[require.resolve("../modules/eventFuncs.js")];
-//         require("../modules/eventFuncs.js")(Bot, client);
-//         delete require.cache[require.resolve("../modules/Logger.js")];
-//         delete Bot.logger;
-//         const Logger = require("../modules/Logger.js");
-//         Bot.logger = new Logger(Bot, client);
-//     } catch (err) {
-//         return {err: err.stack};
-//     }
-// };
-//
-// // Reload the swapi file
-// export async function reloadSwapi(Bot: BotType) {
-//     try {
-//         delete require.cache[require.resolve("../modules/swapi.js")];
-//         Bot.swgohAPI = require("../modules/swapi.js")(Bot);
-//     } catch (err) {
-//         return err;
-//     }
-// };
-//
-// // Reload the users file
-// export async function reloadUserReg(Bot: BotType) {
-//     try {
-//         delete require.cache[require.resolve("../modules/users.js")];
-//         Bot.userReg = require("../modules/users.js")(Bot);
-//     } catch (err) {
-//         return err;
-//     }
-// };
-//
-// // Reload the data files (ships, teams, characters)
-// export async function reloadDataFiles(Bot: BotType) {
-//     try {
-//         Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json").toString());
-//         Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json").toString());
-//         Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json").toString());
-//         Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json").toString());
-//         Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json").toString());
-//         Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json").toString());
-//         Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json").toString());
-//         Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json").toString());
-//         Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json").toString());
-//         Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json").toString());
-//         const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json").toString());
-//         Bot.statCalculator.setGameData(gameData);
-//     } catch (err) {
-//         return {err: err.stack};
-//     }
-// };
-//
-// export async function reloadLanguages(Bot: BotType) {
-//     const languageDir = __dirname + "/languages/"
-//     try {
-//         Object.keys(Bot.languages).forEach(lang => {
-//             if (Bot.languages[lang]) delete Bot.languages[lang];
-//         });
-//         const langFiles = await readdir(languageDir);
-//         langFiles.forEach((fileName: string) => {
-//             const langName = fileName.split(".")[0];
-//             Bot.languages[langName] = require(languageDir + fileName)?.language;
-//             delete require.cache[require.resolve(languageDir + fileName)];
-//         });
-//     } catch (err) {
-//         console.log("Errored in reloadLang: " + err);
-//         return err;
-//     }
-// };
-
-
-
 
 

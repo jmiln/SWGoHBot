@@ -371,7 +371,7 @@ class GuildSearch extends SlashCommand {
                 }
                 return super.error(interaction, desc, {
                     title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
-                    footer: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(guild.updated, interaction)),
+                    footer: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration({time: guild.updated, interaction: interaction, type: "timestamp"})),
                     edit: true
                 });
             }

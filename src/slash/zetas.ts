@@ -9,7 +9,6 @@ class Zetas extends SlashCommand {
             guildOnly: false,
             permissions: ["EMBED_LINKS"],
             options: [
-                // Removing recommendations because they're so outdated
                 {
                     name: "guild",
                     type: Bot.constants.optionType.SUB_COMMAND,

@@ -1,5 +1,4 @@
 import momentTZ from "moment-timezone";
-import "moment-duration-format";
 import Discord, { TextChannel } from "discord.js";
 
 // const {inspect} = require("util");
@@ -363,7 +362,7 @@ class Event extends SlashCommand {
                         const eventDate = momentTZ(event.eventDT).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                         let eventString = interaction.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
-                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.utc(momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").asMilliseconds()).format("d [days], h [hrs], m [min]"));
+                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.duration({time: momentTZ(event.eventDT).diff(momentTZ()), type: "timestamp"}));
                         if (event.eventChan && event.eventChan !== "") {
                             let chanName = "";
                             if (interaction.guild.channels.cache.has(event.eventChan)) {
@@ -386,6 +385,7 @@ class Event extends SlashCommand {
                     });
                 } else {
                     await Bot.socket.emit("getEventsByGuild", interaction.guild.id, async function(eventList: SavedEvent[]) {
+                        console.log(eventList);
                         // If it doesn't find any events, say so
                         if (Array.isArray(eventList) && eventList.length === 0) return interaction.reply({content: "I could not find any events for this server"});
 
@@ -410,11 +410,11 @@ class Event extends SlashCommand {
                             }
                         }
                         sortedEvents.forEach(event => {
-                            let thisEventName = event.eventID.split("-").slice(0, 1).join("-");
+                            let thisEventName = event.eventID.split("-").splice(1).join("-");
                             const eventDate = momentTZ(event.eventDT).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
 
                             let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
-                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.utc(momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").asMilliseconds()).format("d [days], h [hrs], m [min]"));
+                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.duration({time: momentTZ().diff(momentTZ(event.eventDT)), type: "timestamp"}));
                             if (event.eventChan && event.eventChan !== "") {
                                 let chanName = "";
                                 if (interaction.guild.channels.cache.has(event.eventChan)) {

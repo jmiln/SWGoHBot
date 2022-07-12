@@ -129,7 +129,7 @@ export interface BotType {
     wait(time: number): void,
     msgArray(arr: string[], join: string, maxLen?: number): any[],
     codeBlock(str: string, lang?: string): string,
-    duration(time: number | string, message: Interaction): string,
+    duration({time, interaction, type}: {time: number | string, interaction?: Interaction, type: "timestamp" | "diff" | "momentDur"}): string,
     updatedFooter(updated: string | number, message: Interaction, type: string, userCooldown: PlayerCooldown): {},
     userCount(): Promise<number>,
     guildCount(): Promise<number>,

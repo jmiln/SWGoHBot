@@ -599,11 +599,11 @@ class Guilds extends SlashCommand {
             const nowTime = moment().unix();
             if (chaTime > nowTime) {
                 // It's in the future
-                timeUntilReset = Bot.duration(chaTime - nowTime, interaction);
+                timeUntilReset = Bot.duration({time: chaTime - nowTime, interaction: interaction, type: "diff"});
             } else {
                 // It's in the past, so calculate the next time
                 const dur = chaTime + dayMS - nowTime;
-                timeUntilReset = Bot.duration(dur, interaction);
+                timeUntilReset = Bot.duration({time: dur, interaction: interaction, type: "diff"});
             }
 
             let maxed = 0;

@@ -1,6 +1,5 @@
 import { Client } from "discord.js";
 import momentTZ from "moment-timezone";
-require("moment-duration-format");
 
 import { BotType, GuildConf, SavedEvent, ScheduledEvent } from "./types"
 
@@ -92,7 +91,8 @@ module.exports = (Bot: BotType, client: Client) => {
 
         const guildConf = await Bot.getGuildConf(guildID);
 
-        var timeToGo = momentTZ.utc(momentTZ.duration(momentTZ().diff(momentTZ(event.eventDT), "minutes") * -1, "minutes").asMilliseconds()).format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
+        const timeToGo = momentTZ().diff(momentTZ(event.eventDT));
+        const timeToGoStr = Bot.duration({ time: timeToGo, type: "timestamp" });
         var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
 
         await sendMsg(event, guildConf, guildID, announceMessage);

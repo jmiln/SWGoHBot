@@ -346,13 +346,12 @@ class MyMods extends SlashCommand {
             }
 
             const fields = [];
+            const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
             return interaction.editReply({content: null, embeds: [{
                 author: author,
                 description: "==============================\n" + outStr + "==============================",
                 fields: fields,
-                footer: {
-                    text: player.updated ? interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(player.updated, interaction)) : ""
-                }
+                footer: footer
             }]});
         } else if (subCommand === "bestmods") {
             // Check for best individual mods of a stat
@@ -423,12 +422,11 @@ class MyMods extends SlashCommand {
             };
 
             // Send it on back to the user
+            const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
             return interaction.editReply({content: null, embeds: [{
                 author: author,
                 description: "==============================\n" + outStr + "==============================",
-                footer: {
-                    text: player.updated ? interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(player.updated, interaction)) : ""
-                }
+                footer: footer
             }]});
 
         }
