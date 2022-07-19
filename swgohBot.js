@@ -126,7 +126,7 @@ const init = async () => {
         }
 
         // Load up the zeta recommendations
-        Bot.zetaRec = await Bot.swgohAPI.zetaRec();
+        // Bot.zetaRec = await Bot.swgohAPI.zetaRec();
     }
 
     const Logger = require("./modules/Logger.js"); //(Bot, client);

@@ -47,7 +47,7 @@ module.exports = async (Bot, client, interaction) => {
 
         const ignoreArr = [
             "DiscordAPIError: Missing Access",
-            "DiscordAPIError: Unknown Interaction",
+            "DiscordAPIError: Unknown interaction",
             "DiscordAPIError: Unknown Message",
             "HTTPError [AbortError]: The user aborted a request."
         ];
