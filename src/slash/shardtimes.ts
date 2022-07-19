@@ -1,9 +1,7 @@
-import { Interaction } from "discord.js";
+import { Interaction, TextChannel } from "discord.js";
 import moment from "moment-timezone";
-require("moment-duration-format");
-// const {inspect} = require('util');
 import SlashCommand from "../base/slashCommand";
-import { BotType } from "../modules/types";
+import { BotInteraction, BotType, CommandOptions } from "../modules/types";
 
 class Shardtimes extends SlashCommand {
     constructor(Bot: BotType) {
@@ -93,7 +91,7 @@ class Shardtimes extends SlashCommand {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: {}) {
+    async run(Bot: BotType, interaction: BotInteraction, options: CommandOptions) {
         const level = options.level;
         // Shard ID will be guild.id-channel.id
         const shardID = `${interaction.guild.id}-${interaction.channel.id}`;
@@ -155,7 +153,7 @@ class Shardtimes extends SlashCommand {
                     if (match) {
                         // It's a UTC +/- zone
                         zoneType = "utc";
-                        timezone = parseInt(`${match[1]}${parseInt(match[2], 10) * 60 + parseInt(match[3], 10)}`, 10);
+                        timezone = (parseInt(`${match[1]}${parseInt(match[2], 10) * 60 + parseInt(match[3], 10)}`, 10)).toString();
                     } else {
                         // Grumble that it's an invalid tz
                         return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
@@ -248,7 +246,7 @@ class Shardtimes extends SlashCommand {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING"));
             }
         } else if (action === "copy") {  // ;shardtimes copy destChannel
-            const destChannel = interaction.options.getChannel("dest_channel");
+            const destChannel = interaction.options.getChannel("dest_channel") as TextChannel;
 
             // Make sure the person has the correct perms to copy it (admin/ mod)
             if (level < 3) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
@@ -285,7 +283,7 @@ class Shardtimes extends SlashCommand {
                     });
             } else {
                 const destHasTimes = await Bot.database.models.shardtimes.findOne({where: {id: destShardID}})
-                    .then((times: {}) => Object.keys(times.dataValues.times).length)
+                    .then((times: {dataValues: any}) => Object.keys(times.dataValues.times).length)
                     .then((isLen: any) => isLen);
                 if (destHasTimes) {
                     // Of if there is shard info there with listings
@@ -376,9 +374,11 @@ class Shardtimes extends SlashCommand {
             } else if (type === "hhmm") {
                 if (moment.tz(zone, "HH:mm", "UTC").unix() < moment().unix()) {
                     // It's already passed
-                    return moment.duration(moment.tz(zone, "HH:mm", "UTC").add(1, "d").diff(moment())).format("HH:mm", { trim: false });
+                    console.log("hhmm-2: " + moment.tz(zone, "HH:mm", "UTC").add(1, "d").unix(), moment().unix());
+                    return Bot.duration({time: moment.tz(zone, "HH:mm", "UTC").add(1, "d").unix() - moment().unix(), interaction: interaction, type: "diff"});
                 }
-                return moment.duration(moment.tz(zone, "HH:mm", "UTC").diff(moment())).format("HH:mm", { trim: false });
+                console.log("hhmm: " + moment.tz(zone, "HH:mm", "UTC").unix(), moment().unix());
+                return Bot.duration({time: moment.tz(zone, "HH:mm", "UTC").unix() - moment().unix(), interaction: interaction, type: "diff"});
             } else {
                 // It's utc +/- format
                 if (moment().utcOffset(zone).unix() < moment().utcOffset(zone).startOf("day").add(timeToAdd, "h").unix()) {
@@ -386,9 +386,11 @@ class Shardtimes extends SlashCommand {
                 } else {
                     targetTime = moment().utcOffset(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
                 }
-                return moment.duration(targetTime.diff(moment().utcOffset(zone))).format("HH:mm", { trim: false });
+                console.log("UTC: " + targetTime.unix(), moment().unix());
+                return Bot.duration({time: targetTime.unix() - moment().unix(), interaction: interaction, type: "diff"});
             }
-            return moment.duration(targetTime.diff(moment.tz(zone))).format("HH:mm", { trim: false });
+            console.log("Zone:" + targetTime.unix(), moment().unix());
+            return Bot.duration({time: targetTime.unix() - moment().unix(), interaction: interaction, type: "diff"});
         }
     }
 }

@@ -11,6 +11,7 @@
 config.js
 config.json
 settings.json
+tsconfig.tsbuildinfo
 
 # Commands
 /commands/boom.js
