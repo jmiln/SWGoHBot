@@ -68,7 +68,7 @@ class SetConf extends Command {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
 
-        const guildConf = await Bot.getGuildConf(interaction.guild.id);
+        const guildConf = await Bot.getGuildSettings(interaction.guild.id);
         if (!guildConf) {
             return super.error(interaction, "I cannot find a config for your guild. Please report this to the folks over at this bot's server, check `;info` or `/info` for the invite code");
         }
@@ -105,7 +105,6 @@ class SetConf extends Command {
                 }
             } else if (keyType === "BOOLEAN") {
                 settingStr = interaction.options.getBoolean(optionKey);
-                if (!settingStr) continue;
             } else if (keyType === "CHANNEL") {
                 const channel = interaction.options.getChannel(optionKey);
                 if (!channel) continue;
@@ -172,7 +171,7 @@ class SetConf extends Command {
             }
 
             // Actually change stuff in the db
-            await Bot.database.models.settings.update(guildConf, {where: {guildID: interaction.guild.id}});
+            await Bot.setGuildSettings(interaction.guild.id, guildConf);
             return super.success(interaction, Bot.codeBlock(changeLog.map(c => `* ${c}`)));
         } else {
             return super.error(interaction, "It looks like nothing needed to be updated");

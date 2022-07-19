@@ -87,7 +87,7 @@ module.exports = (Bot, client) => {
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
 
-        const guildConf = await Bot.getGuildConf(guildID);
+        const guildConf = await Bot.getGuildSettings(guildID);
 
         var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
         var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
@@ -102,7 +102,7 @@ module.exports = (Bot, client) => {
         const guildID = eventName.splice(0, 1)[0];
         eventName = eventName.join("-");
 
-        const guildConf = await Bot.getGuildConf(guildID);
+        const guildConf = await Bot.getGuildSettings(guildID);
 
         // If it's running late, tack a notice onto the end of the message
         const nowTime = new Date().getTime();

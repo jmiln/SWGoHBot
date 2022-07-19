@@ -7,12 +7,7 @@ module.exports = async (Bot, client, message) => {
 
     // Grab the settings for this server
     // If there is no guild, get default conf (DMs)
-    let guildSettings;
-    if (!message.guild) {
-        guildSettings = Bot.config.defaultSettings;
-    } else {
-        guildSettings = await Bot.getGuildConf(message.guild.id);
-    }
+    const guildSettings = await Bot.getGuildSettings(message?.guild?.id);
 
     // If we don't have permission to respond, don't bother
     if (message.guild && message.channel.permissionsFor(message.guild.me) && !message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
@@ -55,6 +50,13 @@ module.exports = async (Bot, client, message) => {
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
     if (!cmd || !cmd.conf.enabled) return;
+    if (cmd && cmd.help.name !== "test") {
+        // Disable all non-slash commands, and spit out a message telling em so
+        if (["help"].includes(cmd.help.name)) {
+            return message.channel.send({content: "This bot no longer supports non-slash commands. Please try with `/` then choose this bot's commands."});
+        }
+        return message.channel.send({content: `This command has been deprecated, please use the slash command \`/${cmd.help.name}\``});
+    }
 
     const user = await Bot.userReg.getUser(message.author.id);
 
@@ -127,9 +129,6 @@ module.exports = async (Bot, client, message) => {
 
         // If they're just looking for the help, don't bother going through the command
         try {
-            // if (cmd.help.name !== "test" && cmd.help.category !== "Dev") {
-            //     await message.channel.send(`>>> Non-slash (\`${message.guildSettings.prefix}\`) commands will be disabled at the beginning of April. \n\nhttps://support-dev.discord.com/hc/en-us/articles/4404772028055\n\nPlease move over to slash commands if able.\nPlease report any issues with the slash commands and I'll try to fix it right away.`);
-            // }
             await cmd.run(Bot, message, args, {
                 level: level,
                 flags: flagArgs.flags,

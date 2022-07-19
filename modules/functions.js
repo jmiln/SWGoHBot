@@ -928,18 +928,6 @@ module.exports = (Bot, client) => {
         }
         return res;
     };
-    Bot.getGuildConf = async (guildID) => {
-        if (!guildID) return Bot.config.defaultSettings;
-        const guildSettings = await Bot.database.models.settings.findOne({raw: true, where: {guildID: guildID}});
-        return guildSettings && guildSettings ? guildSettings : Bot.config.defaultSettings;
-    };
-    Bot.hasGuildConf = async (guildID) => {
-        if (!guildID) return false;
-        const exists = await Bot.database.models.settings.findOne({where: {guildID: guildID}})
-            .then(token => token !== null)
-            .then(isUnique => isUnique);
-        return exists ? true : false;
-    };
 
     // Returns a gear string (9+4 or 13r5), etc
     Bot.getGearStr = (charIn, preStr="") => {
@@ -1014,4 +1002,63 @@ module.exports = (Bot, client) => {
             return num.toFixed(dec);
         }
     }
+
+    // Get the guildsettings from the mongo db
+    Bot.getGuildSettings = async (guildId) => {
+        if (!guildId) {
+            return Bot.config.defaultSettings;
+        }
+        let guildSettings = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildSettings", {guildId: guildId});
+        if (Array.isArray(guildSettings)) guildSettings = guildSettings[0];
+        return {...Bot.config.defaultSettings, ...guildSettings};
+    };
+    // Set any guildSettings that do not match the defaultSettings in the bot's config
+    Bot.setGuildSettings = async (guildId, settings) => {
+        // Filter out any settings that are the same as the defaults
+        const diffObj = {
+            guildId: guildId
+        };
+
+        for (const key of Object.keys(Bot.config.defaultSettings)) {
+            const configVal = Bot.config.defaultSettings[key];
+            if (Array.isArray(configVal)) {
+                if (!arrayEquals(configVal, settings[key])) {
+                    diffObj[key] = settings[key];
+                }
+            } else if (Bot.config.defaultSettings[key] !== settings[key]) {
+                diffObj[key] = settings[key];
+            }
+        }
+        if (Object.keys(diffObj).length > 1) {
+            // In this case, there's nothing different than the default, so go ahead and remove it
+            return await Bot.deleteGuildSettings(guildId);
+        }
+        const res = await Bot.cache.replace(Bot.config.mongodb.swgohbotdb, "guildSettings", {guildId: guildId}, diffObj, false);
+        return res;
+    };
+    // Check if there are settings for the guild
+    Bot.hasGuildSettings = async (guildId) => {
+        const guildSettings = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildSettings", {guildId: guildId});
+        if (guildSettings) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    // Remove any settings for the given guild
+    Bot.deleteGuildSettings = async (guildId) => {
+        const res = await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "guildSettings", {guildId: guildId});
+        return res;
+    };
 };
+
+
+
+
+function arrayEquals(a, b) {
+    if (!a?.length || !b?.length) return false;
+    return Array.isArray(a) &&
+        Array.isArray(b) &&
+        a.length === b.length &&
+        a.every((val, index) => val === b[index]);
+}

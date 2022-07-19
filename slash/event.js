@@ -194,7 +194,7 @@ class Event extends Command {
         if (!interaction?.guild?.id) {
             return super.error(interaction, "Sorry, but I'm having trouble accessing your guild's info.");
         }
-        const guildConf = await Bot.getGuildConf(interaction.guild.id);
+        const guildConf = await Bot.getGuildSettings(interaction.guild.id);
 
         const exampleEvent = {
             "eventID": "guildID-eventName",

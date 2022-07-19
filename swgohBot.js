@@ -68,38 +68,8 @@ Bot.database = new Sequelize(
 Bot.database.authenticate().then(async () => {
     require("./modules/models")(Sequelize, Bot.database);
 
-    // Get all the models
-    const rawAttr = Bot.database.models.settings.rawAttributes;
-    const rawNames = Object.keys(rawAttr);
-
-    // Got through them all
-    for (let ix = 0; ix < rawNames.length; ix++) {
-        // Try getting each column
-        await Bot.database.models.settings.findAll({limit: 1, attributes: [rawNames[ix]]})
-            // If it doesn't exist, it'll throw an error, then it will add them
-            .catch(async () => {
-                Bot.logger.log("Adding column " + rawNames[ix] + " to settings.");
-                await Bot.database.queryInterface.addColumn("settings",
-                    rawAttr[rawNames[ix]].fieldName,
-                    {
-                        type: rawAttr[rawNames[ix]].type,
-                        defaultValue: rawAttr[rawNames[ix]].defaultValue !== null ? rawAttr[rawNames[ix]].defaultValue : null
-                    }
-                );
-            });
-    }
-
     init();
-    client.login(Bot.config.token).then(() => {
-        const guildList = [...client.guilds.cache.keys()];
-        for (let ix = 0; ix < guildList.length; ix++) {
-            Bot.database.models.settings.findOrCreate({
-                where: {
-                    guildID: guildList[ix]
-                }
-            }).catch((e) =>  Bot.logger.error("Error in init (Models.spread): " + e, true));
-        }
-    }).catch((e) => console.error(e));
+    client.login(Bot.config.token);
 });
 
 const init = async () => {
@@ -124,9 +94,6 @@ const init = async () => {
             // Do stuff
             Bot.swapiStub = new SwgohClientStub(Bot.config.fakeSwapiConfig.clientStub);
         }
-
-        // Load up the zeta recommendations
-        // Bot.zetaRec = await Bot.swgohAPI.zetaRec();
     }
 
     const Logger = require("./modules/Logger.js"); //(Bot, client);

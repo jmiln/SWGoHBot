@@ -1,7 +1,7 @@
 const {inspect} = require("util");
 module.exports = async (Bot, client, member) => {
     // This executes when a member joins, so let's welcome them!
-    const guildConf = await Bot.getGuildConf(member.guild.id);
+    const guildConf = await Bot.getGuildSettings(member.guild.id);
 
     // Our message has a bit of a placeholder, let's fix
     if (guildConf.enablePart && !guildConf.partMessage?.length && guildConf.announceChan?.length) { // If they have it turned on, and it's not empty

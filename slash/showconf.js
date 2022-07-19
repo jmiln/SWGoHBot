@@ -45,7 +45,7 @@ class Showconf extends Command {
         guildName = interaction.guild.name;
         // }
 
-        const guildConf = await Bot.getGuildConf(guildID);
+        const guildConf = await Bot.getGuildSettings(guildID);
 
         var outArr = [];
         if (guildConf) {

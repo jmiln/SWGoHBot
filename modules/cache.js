@@ -4,7 +4,9 @@ module.exports = clientMongo => {
 
     return {
         put:put,
-        get:get
+        get:get,
+        remove:remove,
+        replace:replace
     };
 
     async function put( database, collection, matchCondition, saveObject, autoUpdate=true ) {
@@ -44,5 +46,41 @@ module.exports = clientMongo => {
         matchCondition = matchCondition || {};
         projection = projection || {};
         return await dbo.collection(collection).find(matchCondition).project(projection).toArray();
+    }
+
+    async function remove( database, collection, matchCondition ) {
+        if ( !database ) { throw new Error("No database specified to get"); }
+        if ( !collection ) { throw new Error("No collection specified to get"); }
+
+        const dbo = await mongo.db( database );
+
+        matchCondition = matchCondition || {};
+        const res = await dbo.collection(collection).deleteOne(matchCondition);
+        return res;
+    }
+
+    async function replace( database, collection, matchCondition, saveObject, autoUpdate=true ) {
+        if ( !database )        throw new Error("No database specified to replace");
+        if ( !collection )      throw new Error("No collection specified to replace");
+        if ( !saveObject )      throw new Error("No object provided to replace");
+        if ( !matchCondition )  throw new Error("No match condition specified to replace");
+
+        const dbo = await mongo.db( database );
+
+        if (!saveObject.updated && autoUpdate) {
+            // Set updated time to now
+            saveObject.updated = new Date();
+            saveObject.updated = saveObject.updated.getTime();
+        }
+
+        // Use a format that works with mongo's auto-cleaning
+        if (!saveObject.updatedAt && autoUpdate) {
+            saveObject.updatedAt = new Date();
+        }
+
+        // Delete the old one then replace it with the new version
+        await dbo.collection(collection).replaceOne(matchCondition, saveObject);
+
+        return saveObject;
     }
 };

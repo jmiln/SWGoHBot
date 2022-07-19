@@ -14,7 +14,7 @@ module.exports = async (Bot, client, interaction) => {
 
     // Grab the settings for this server, and if there's no guild, just give it the defaults
     // Attach the guildsettings to the interaction to make it easier to grab later
-    interaction.guildSettings = await Bot.getGuildConf(interaction?.guild?.id);
+    interaction.guildSettings = await Bot.getGuildSettings(interaction?.guild?.id);
 
     // Get the user or member's permission level from the elevation
     const level = await Bot.permLevel(interaction);

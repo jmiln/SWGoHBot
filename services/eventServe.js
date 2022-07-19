@@ -15,7 +15,13 @@ const database = new Sequelize(
     }
 );
 
+
+
 async function init() {
+    const MongoClient = require("mongodb").MongoClient;
+    const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
+    const cache   = require("../modules/cache.js")(mongo);
+
     try {
         await database.authenticate()
             .then(async () => {
@@ -49,7 +55,7 @@ async function init() {
             const futureCoutdownEvents = events.filter(e => (parseInt(e.eventDT, 10) > nowTime && e.countdown));
             for (const ev of futureCoutdownEvents) {
                 const guildID = ev.eventID.split("-")[0];
-                const guildConf = await database.models.settings.findOne({raw: true, where: {guildID: guildID}});
+                const guildConf = await cache.get(config.mongodb.swgohbotdb, "guildSettings", {guildId: guildID});
 
                 if (!guildConf) continue;
 
