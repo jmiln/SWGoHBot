@@ -362,6 +362,7 @@ class GuildSearch extends Command {
                 (doZeta && !guildChar.filter(c => c.zetas.length > 0).length)) {
 
                 let desc = "";
+                // Go through, and if there's an error, spit it out
                 if (doZeta && !guildChar.filter(c => c.zetas.length > 0).length) {
                     desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
                 } else if (isShip && starLvl > 0) {
@@ -436,6 +437,7 @@ class GuildSearch extends Command {
             const charOut = {};
             const hasRelic = sortedGuild.filter(mem => mem?.relic?.currentTier > 2).length;
             for (const member of sortedGuild) {
+                // If we want just zeta, just omicron, or both, and the player doesn't have a viable character, move along
                 if (doZeta && doOmicron && !member.zetas?.length && !member.omicrons?.length) continue;
                 if (doZeta && !doOmicron && !member.zetas?.length) continue;
                 if (doOmicron && !doZeta && !member.omicrons?.length) continue;

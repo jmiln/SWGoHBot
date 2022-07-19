@@ -34,6 +34,11 @@ module.exports = clientMongo => {
             saveObject.updated = saveObject.updated.getTime();
         }
 
+        // Use a format that works with mongo's auto-cleaning
+        if (!saveObject.updatedAt && autoUpdate) {
+            saveObject.updatedAt = new Date();
+        }
+
         //Try update or insert
         matchCondition = matchCondition || {};
         await dbo.collection(collection).updateOne(matchCondition,

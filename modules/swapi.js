@@ -133,7 +133,6 @@ module.exports = (Bot) => {
         }
 
         let tempBare = null, updatedBare = null;
-        const fetchStart = new Date();
         if (allycodes.length > 25) {
             tempBare = await Bot.swgoh.fetchPlayer({
                 allycode: allycodes.slice(0, Math.floor(allycodes.length/2))
@@ -151,13 +150,8 @@ module.exports = (Bot) => {
             });
             updatedBare = tempBare.result;
         }
-        const fetchEnd = new Date() - fetchStart;
-        Bot.logger.debug(`Fetching the new players took ${fetchEnd}ms`);
 
-        const cacheStart = new Date();
         const oldMembers = await Bot.cache.get(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes}});
-        const cacheEnd = new Date() - cacheStart;
-        Bot.logger.debug(`Fetching cached players took ${cacheEnd}ms`);
         const guildLog = {};
 
         // For each of the up to 50 players in the guild
@@ -448,11 +442,11 @@ module.exports = (Bot) => {
             let unit;
 
             if (!player.roster) {
-                unit = blankUnit;
+                unit = JSON.parse(JSON.stringify(blankUnit));
             } else {
                 unit = player.roster.find(c => c.defId === defId);
                 if (!unit) {
-                    unit = blankUnit;
+                    unit = JSON.parse(JSON.stringify(blankUnit));
                 }
             }
             unit.zetas = unit.skills.filter(s => s.isZeta && s.tier >= s.zetaTier);
