@@ -92,7 +92,15 @@ class Poll extends Command {
         const pollID = `${interaction.guild.id}-${interaction.channel.id}`;
 
         // If they're just voting on the channel's poll
-        const oldPoll = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID});
+        const oldPollRes = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID});
+        let oldPoll = null;
+        if (Array.isArray(oldPollRes)) {
+            if (oldPollRes.length) {
+                oldPoll = oldPollRes[0];
+            }
+        }
+        console.log(oldPollRes);
+        console.log(oldPoll);
         if (oldPoll && action === "create") {
             // If they're trying to create a new poll when one exists, tell em
             return super.error(interaction, interaction.language.get("COMMAND_POLL_ALREADY_RUNNING"));
@@ -135,8 +143,7 @@ class Poll extends Command {
                     id: pollID,
                     poll: poll
                 })
-                    .then((thisPoll) => {
-                        poll.pollID = thisPoll.dataValues.pollId;
+                    .then(() => {
                         return interaction.reply({
                             content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag, interaction.guildSettings.prefix),
                             embeds: [{
@@ -191,6 +198,7 @@ class Poll extends Command {
             }
             case "view": {
                 // View the current poll in a channel
+                console.log(poll);
                 return interaction.reply({
                     embeds: [{
                         author: {
@@ -218,7 +226,7 @@ class Poll extends Command {
                     poll.votes[interaction.user.id] = opt;
                     await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID}, {poll: poll})
                         .then(() => {
-                            if (voted !== null) {
+                            if (voted !== null && voted !== undefined) {
                                 return interaction.reply({
                                     content: interaction.language.get("COMMAND_POLL_CHANGED_OPT", poll.options[voted], poll.options[opt]),
                                     ephemeral: true
