@@ -96,11 +96,11 @@ class Shardtimes extends Command {
         // Shard ID will be guild.id-channel.id
         const shardID = `${interaction.guild.id}-${interaction.channel.id}`;
 
-        const exists = await Bot.database.models.shardtimes.findOne({raw: true, where: {id: shardID}});
+        const exists = await Bot.cache.exists(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID});
 
         let shardTimes = {};
         if (!exists) {
-            await Bot.database.models.shardtimes.create({
+            await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {
                 id: shardID,
                 times: shardTimes
             });
@@ -206,7 +206,7 @@ class Shardtimes extends Command {
                 "timezone": timezone,
                 "flag": flag
             };
-            await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
+            await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID}, {times: shardTimes})
                 .then(() => {
                     if (tempUser) {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone)});
@@ -234,7 +234,7 @@ class Shardtimes extends Command {
 
             if (shardTimes[userID]) {
                 delete shardTimes[userID];
-                await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: shardID}})
+                await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID}, {times: shardTimes})
                     .then(() => {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_REM_SUCCESS")});
                     })
@@ -269,11 +269,11 @@ class Shardtimes extends Command {
 
             const destShardID = `${interaction.guild.id}-${destChannel.id}`;
 
-            const destExists = await Bot.database.models.shardtimes.findOne({raw: true, where: {id: destShardID}});
+            const destExists = await Bot.cache.exists(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: destShardID});
 
             if (!destExists) {
                 // If there's no shard info in the destination channel
-                await Bot.database.models.shardtimes.create({ id: destShardID, times: shardTimes })
+                await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID, times: shardTimes})
                     .then(() => {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
                     })
@@ -281,7 +281,7 @@ class Shardtimes extends Command {
                         return super.error(interaction, err.message);
                     });
             } else {
-                const destHasTimes = await Bot.database.models.shardtimes.findOne({raw: true, where: {id: destShardID}})
+                const destHasTimes = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: destShardID})
                     .then(times => Object.keys(times.times).length)
                     .then(isLen => isLen);
                 if (destHasTimes) {
@@ -289,7 +289,7 @@ class Shardtimes extends Command {
                     return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_DEST_FULL"));
                 } else {
                     // Or if there is shard info there, but no listings
-                    await Bot.database.models.shardtimes.update({times: shardTimes}, {where: {id: destShardID}})
+                    await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: destShardID}, {times: shardTimes})
                         .then(() => {
                             return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
                         })

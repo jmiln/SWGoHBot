@@ -75,7 +75,7 @@ module.exports = (Bot, client) => {
 
     // Delete em here as needed
     Bot.deleteEvent = async (eventID) => {
-        await Bot.database.models.eventDBs.destroy({where: {eventID: eventID}})
+        await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID})
             .catch(error => {
                 Bot.logger.error(`Broke deleting an event (${eventID}) ${error}`);
             });
@@ -133,14 +133,14 @@ module.exports = (Bot, client) => {
 
         if (doRepeat) {
             // If it's been updated,
-            await Bot.database.models.eventDBs.update({eventDT: event.eventDT, repeatDays: event.repeatDays, repeat: event.repeat}, {where: {eventID: event.eventID}})
+            await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: event.eventID}, {eventDT: event.eventDT, repeatDays: event.repeatDays, repeat: event.repeat})
                 .then(() => {
                     // console.log(`Updating repeating event ${event.eventID}.`);
                 })
                 .catch(error => { Bot.logger.error(`Broke trying to replace event: ${error}`); });
         } else {
             // Just destroy it
-            await Bot.database.models.eventDBs.destroy({where: {eventID: event.eventID}})
+            await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: event.eventID})
                 .then(() => { Bot.logger.debug(`Deleting non-repeating event ${event.eventID}`); })
                 .catch(error => { Bot.logger.error(`Broke trying to delete old event ${error}`); });
         }

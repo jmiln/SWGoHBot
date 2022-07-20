@@ -50,7 +50,7 @@ module.exports = async (Bot, client, message) => {
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
     if (!cmd || !cmd.conf.enabled) return;
-    if (cmd && cmd.help.name !== "test") {
+    if (cmd && !["test", "reloaddata", "reload"].includes(cmd.help.name)) {
         // Disable all non-slash commands, and spit out a message telling em so
         if (["help"].includes(cmd.help.name)) {
             return message.channel.send({content: "This bot no longer supports non-slash commands. Please try with `/` then choose this bot's commands."});

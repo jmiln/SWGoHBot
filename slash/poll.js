@@ -92,19 +92,17 @@ class Poll extends Command {
         const pollID = `${interaction.guild.id}-${interaction.channel.id}`;
 
         // If they're just voting on the channel's poll
-        const oldPoll = await Bot.database.models.polls.findOne({raw: true, where: {id: pollID}});
-        const oldPolllDv = oldPoll;
-
-        if (oldPolllDv && action === "create") {
+        const oldPoll = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID});
+        if (oldPoll && action === "create") {
             // If they're trying to create a new poll when one exists, tell em
             return super.error(interaction, interaction.language.get("COMMAND_POLL_ALREADY_RUNNING"));
-        } else if (!oldPolllDv && action !== "create") {
+        } else if (!oldPoll && action !== "create") {
             // If they're tyring to use a poll that doesn't exist, let them know
             return super.error(interaction, "Sorry, but there is no poll active in this channel.");
         }
 
-        if (oldPolllDv) {
-            poll = oldPolllDv.poll;
+        if (oldPoll) {
+            poll = oldPoll.poll;
         }
 
         // Make sure it's a mod or someone with the appropriate perms trying to create it
@@ -133,7 +131,7 @@ class Poll extends Command {
                 }
 
                 // Create a poll (lvl 3+)
-                await Bot.database.models.polls.create({
+                await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID}, {
                     id: pollID,
                     poll: poll
                 })
@@ -159,7 +157,7 @@ class Poll extends Command {
             case "cancel": {
                 // Cancel the current poll in a channel, need to ask for confirmation, maybe try and use a button here at some point?
                 // Delete the current poll
-                await Bot.database.models.polls.destroy({where: {id: pollID}})
+                await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID})
                     .then(() => {
                         // Then send a message confirming the deletion
                         return super.success(interaction, "> Poll deleted.");
@@ -173,7 +171,7 @@ class Poll extends Command {
             case "end": {
                 // End the current poll in a channel, need to ask for confirmation, maybe try and use a button here at some point?
                 // Delete the current poll
-                await Bot.database.models.polls.destroy({where: {id: pollID}})
+                await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID})
                     .then(() => {
                         // Then send a message showing the final results
                         return interaction.reply({
@@ -218,7 +216,7 @@ class Poll extends Command {
                         voted = poll.votes[interaction.user.id];
                     }
                     poll.votes[interaction.user.id] = opt;
-                    await Bot.database.models.polls.update({poll: poll}, {where: {id: pollID}})
+                    await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID}, {poll: poll})
                         .then(() => {
                             if (voted !== null) {
                                 return interaction.reply({

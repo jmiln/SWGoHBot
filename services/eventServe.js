@@ -2,37 +2,10 @@ const config = require("../config");
 
 const io = require("socket.io")(config.eventServe.port);
 
-const { Sequelize } = require("sequelize");
-const seqOps = Sequelize.Op;
-
-const database = new Sequelize(
-    config.database.data,
-    config.database.user,
-    config.database.pass, {
-        host: config.database.host,
-        dialect: "postgres",
-        logging: false
-    }
-);
-
-
-
 async function init() {
     const MongoClient = require("mongodb").MongoClient;
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
     const cache   = require("../modules/cache.js")(mongo);
-
-    try {
-        await database.authenticate()
-            .then(async () => {
-                await require("../modules/models")(Sequelize, database);
-                const eventCount = await database.models.eventDBs.count();
-                console.log(`Event Monitor online at port ${config.eventServe.port}.\nMonitoring ${eventCount} events.`);
-            });
-    } catch (err) {
-        console.log("[ERROR] Cannot start event db");
-        return console.error(err);
-    }
 
     io.on("connection", async socket => {
         console.log("Socket connected");
@@ -40,7 +13,7 @@ async function init() {
         socket.on("checkEvents", async (callback) => {
             // Check all the events, and send back any that should be sent
             const nowTime = new Date().getTime();
-            const events = await database.models.eventDBs.findAll({raw: true});
+            const events = await cache.get(config.mongodb.swgohbotdb, "eventDBs");
 
             // Check on countdowns as well for each
             //  - This means for each event (With countdown enabled), we need to grab the guild's conf, and check their countdown settings
@@ -96,7 +69,7 @@ async function init() {
             for (const event of events) { // eslint-disable-line no-unused-vars
                 // Check for the existence of any events that match the ID, and if not, add it in
                 const evRes = {evID: event.eventID, eventDT: event.eventDT, success: true, error: null};
-                const exists = await database.models.eventDBs.findOne({where: {eventID: event.eventID}});
+                const exists = await cache.exists(config.mongodb.swgohbotdb, "eventDBs", {eventID: event.eventID});
                 if (exists) { // If the event is already here, don't
                     evRes.success = false;
                     evRes.error = "Event already exists";
@@ -105,7 +78,7 @@ async function init() {
                 }
                 if (event.countdown === "true") event.countdown = true;
                 if (event.countdown === "false") event.countdown = false;
-                await database.models.eventDBs.create(event)
+                await cache.put(config.mongodb.swgohbotdb, "eventDBs", {eventID: event.eventID}, event)
                     .then(() => {
                         // Push to the completed ones or whatever
                         res.push(evRes);
@@ -126,14 +99,15 @@ async function init() {
         socket.on("delEvent", async (eventID, callback) => {
             // Remove specified event if it exists
             const res = {evID: eventID, success: true, error: null};
-            const exists = await database.models.eventDBs.findOne({where: {eventID: eventID}});
+            const exists = await cache.exists(config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
             if (!exists) {
                 // Send back an error or something, and return
                 res.success = false;
                 res.error   = "Invalid event. Does not exist";
                 return callback(res);
             }
-            await database.models.eventDBs.destroy({where: {eventID: eventID}})
+
+            await cache.remove(config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID})
                 .then(() => {
                     // Log it here, nothing needs to update
                 })
@@ -149,7 +123,7 @@ async function init() {
         socket.on("getEventsByID", async (eventIDs, callback) => { // eslint-disable-line no-unused-vars
             if (!Array.isArray(eventIDs)) eventIDs = [eventIDs];
             // Get and return a specific event (For view or trigger)
-            const events = await database.models.eventDBs.findAll({raw: true, where: {eventID: {[seqOps.in]: eventIDs}}});
+            const events = await cache.get(config.mongodb.swgohbotdb, "eventDBs", {eventID: {$in: eventIDs}});
             return callback(events);
         });
 
@@ -159,22 +133,28 @@ async function init() {
             // select * from "eventDBs" WHERE string_to_array(LOWER("eventMessage"), ' ') || string_to_array(LOWER("eventID"), '-') @> '{"@everyone","301814154136649729"}';
             if (!filterArr) return [];
             if (!Array.isArray(filterArr)) filterArr = [filterArr];
-            const events = await database.query(
-                "select * from \"eventDBs\" WHERE \"eventID\" LIKE $guildid AND \"eventMessage\" || ' ' || \"eventID\" LIKE ALL($filter)",
-                {
-                    bind: {
-                        guildid: guildID + "-%",
-                        filter: `{"${filterArr.map(f => `%${f}%`).join("\",\"")}"}`
-                    },
-                    type: Sequelize.QueryTypes.SELECT
-                }
-            );
-            return callback(events);
+            const events = await cache.get(config.mongodb.swgohbotdb, "eventDBs", {
+                eventID: new RegExp(`^${guildID}-`)
+            });
+            const filteredEvents = events.filter(ev => {
+                return filterArr.every(e => `${ev.message} ${ev.eventID}`.includes(e));
+            });
+            // const events = await database.query(
+            //     "select * from \"eventDBs\" WHERE \"eventID\" LIKE $guildid AND \"eventMessage\" || ' ' || \"eventID\" LIKE ALL($filter)",
+            //     {
+            //         bind: {
+            //             guildid: guildID + "-%",
+            //             filter: `{"${filterArr.map(f => `%${f}%`).join("\",\"")}"}`
+            //         },
+            //         type: Sequelize.QueryTypes.SELECT
+            //     }
+            // );
+            return callback(filteredEvents);
         });
 
         socket.on("getEventsByGuild", async (guildID, callback) => { // eslint-disable-line no-unused-vars
             // Get and return all events for a server/ guild (For full view)
-            const events = await database.models.eventDBs.findAll({raw: true, where: {eventID: { [seqOps.like]: `${guildID}-%`}}});
+            const events = await cache.get(config.mongodb.swgohbotdb, "eventDBs", {eventID: new RegExp(`^${guildID}-`)});
             return callback(events);
         });
     });

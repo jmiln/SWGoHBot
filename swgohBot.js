@@ -13,9 +13,6 @@ const client = new Client({
     partials: Bot.config.partials
 });
 
-const Sequelize = require("sequelize");
-
-
 // Attach the character and team files to the Bot so I don't have to reopen em each time
 Bot.abilityCosts = JSON.parse(readFileSync("data/abilityCosts.json", "utf-8"));
 Bot.acronyms     = JSON.parse(readFileSync("data/acronyms.json", "utf-8"));
@@ -53,27 +50,9 @@ Bot.evCountdowns = {};
 
 Bot.talkedRecently = new Set();
 
-Bot.seqOps = Sequelize.Op;
-Bot.database = new Sequelize(
-    Bot.config.database.data,
-    Bot.config.database.user,
-    Bot.config.database.pass, {
-        host: Bot.config.database.host,
-        dialect: "postgres",
-        logging: false
-    }
-);
-
-
-Bot.database.authenticate().then(async () => {
-    require("./modules/models")(Sequelize, Bot.database);
-
-    init();
-    client.login(Bot.config.token);
-});
 
 const init = async () => {
-    const MongoClient = require("mongodb").MongoClient;
+    const { MongoClient } = require("mongodb");
     Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
     // Set up the caching
     Bot.cache   = require("./modules/cache.js")(Bot.mongo);
@@ -96,7 +75,7 @@ const init = async () => {
         }
     }
 
-    const Logger = require("./modules/Logger.js"); //(Bot, client);
+    const Logger = require("./modules/Logger.js");
     Bot.logger = new Logger(Bot, client);
 
     // Here we load **commands** into memory, as a collection, so they're accessible
@@ -192,3 +171,6 @@ const init = async () => {
         }
     });
 };
+
+init();
+client.login(Bot.config.token);

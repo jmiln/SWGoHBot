@@ -3,11 +3,25 @@ module.exports = clientMongo => {
     const mongo = clientMongo;
 
     return {
-        put:put,
-        get:get,
-        remove:remove,
-        replace:replace
+        wipe:    wipe,
+        put:     put,
+        get:     get,
+        remove:  remove,
+        replace: replace,
+        exists:  exists,
     };
+
+    async function wipe( database, collection ) {
+        if ( !database ) { throw new Error("No database specified to put"); }
+        if ( !collection ) { throw new Error("No collection specified to put"); }
+
+        const dbo = await mongo.db( database );
+
+        //Try update or insert
+        await dbo.collection(collection).deleteMany({});
+
+        return;
+    }
 
     async function put( database, collection, matchCondition, saveObject, autoUpdate=true ) {
         if ( !database ) { throw new Error("No database specified to put"); }
@@ -82,5 +96,16 @@ module.exports = clientMongo => {
         await dbo.collection(collection).replaceOne(matchCondition, saveObject);
 
         return saveObject;
+    }
+
+    async function exists(database, collection, matchCondition) {
+        if ( !database )        throw new Error("No database specified to replace");
+        if ( !collection )      throw new Error("No collection specified to replace");
+        if ( !matchCondition )  throw new Error("No match condition specified to replace");
+
+        const dbo = await mongo.db( database );
+
+        const exists = await dbo.collection(collection).findOne(matchCondition);
+        return exists ? true : false;
     }
 };

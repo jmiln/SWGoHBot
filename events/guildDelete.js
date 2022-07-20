@@ -7,9 +7,7 @@ module.exports = async (Bot, guild) => {
     await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "guildSettings", {guildId: guild.id});
 
     // Also kill off any events that were set up for that guild
-    await Bot.database.models.eventDBs.destroy({where: {eventID: { [Bot.seqOps.like]: `${guild.id}-%`}}})
-        .then(() => {})
-        .catch(error => { Bot.log("ERROR",`Broke in guildDelete(eventDBs) ${error}`); });
+    await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: new RegExp("^" + guild.id + "-")});
 
     // Log that the bot left
     Bot.logger.log(`[GuildDelete] I left ${guild.name}(${guild.id})`);

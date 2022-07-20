@@ -196,19 +196,19 @@ class Event extends Command {
         }
         const guildConf = await Bot.getGuildSettings(interaction.guild.id);
 
-        const exampleEvent = {
-            "eventID": "guildID-eventName",
-            "eventDT": 1545299520000,
-            "eventMessage": "eventMsg",
-            "eventChan": "",
-            "countdown": false,
-            "repeat": {
-                "repeatDay": 0,
-                "repeatHour": 0,
-                "repeatMin": 0
-            },
-            "repeatDays": 0
-        };
+        // const exampleEvent = {
+        //     "eventID": "guildID-eventName",
+        //     "eventDT": 1545299520000,
+        //     "eventMessage": "eventMsg",
+        //     "eventChan": "",
+        //     "countdown": false,
+        //     "repeat": {
+        //         "repeatDay": 0,
+        //         "repeatHour": 0,
+        //         "repeatMin": 0
+        //     },
+        //     "repeatDays": 0
+        // };
 
         const action = interaction.options.getSubcommand();
 
@@ -229,7 +229,7 @@ class Event extends Command {
                 const channel   = interaction.options.getChannel("channel");
                 const countdown = interaction.options.getBoolean("countdown");
 
-                const guildEvents = await Bot.database.models.eventDBs.findAll({where: {eventID: { [Bot.seqOps.like]: `${interaction.guild.id}-%`}}}, {attributes: [Object.keys(exampleEvent)]});
+                const guildEvents = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: new RegExp("^" + interaction.guild.id + "-")}, {attributes: 1});
                 const evCount = guildEvents.length;
                 // If they have too many events, stop here
                 if (evCount >= 50) {
@@ -239,9 +239,7 @@ class Event extends Command {
                 const eventID = `${interaction.guild.id}-${evName}`;
 
                 // Check if that name/ event already exists
-                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}})
-                    .then(token => token !== null)
-                    .then(isUnique => isUnique);
+                const exists = await Bot.cache.exists(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
                 if (exists) {
                     return super.error(interaction, interaction.language.get("COMMAND_EVENT_JSON_EXISTS"));
                 }
@@ -591,9 +589,7 @@ class Event extends Command {
                 const eventName = interaction.options.getString("name");
                 const eventID = `${interaction.guild.id}-${eventName}`;
 
-                const exists = await Bot.database.models.eventDBs.findOne({where: {eventID: eventID}})
-                    .then(token => token !== null)
-                    .then(isUnique => isUnique);
+                const exists = await Bot.cache.exists(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
 
                 // Check if that name/ event already exists
                 if (!exists) {
@@ -639,7 +635,7 @@ class Event extends Command {
                 const newChannel   = interaction.options.getChannel("channel");
                 const newCountdown = interaction.options.getBoolean("countdown");
 
-                const event = await Bot.database.models.eventDBs.findOne({raw: true, where: {eventID: eventID}});
+                const event = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
 
                 // Check if that name/ event already exists
                 if (!event) {
@@ -726,7 +722,7 @@ class Event extends Command {
         }
 
         async function updateEvent(id, event) {
-            const out = await Bot.database.models.eventDBs.update(event, {where: {eventID: id}})
+            const out = await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: id}, event)
                 .then(() => {
                     return { success: true, error: null };
                 })
