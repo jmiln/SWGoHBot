@@ -99,8 +99,6 @@ class Poll extends Command {
                 oldPoll = oldPollRes[0];
             }
         }
-        console.log(oldPollRes);
-        console.log(oldPoll);
         if (oldPoll && action === "create") {
             // If they're trying to create a new poll when one exists, tell em
             return super.error(interaction, interaction.language.get("COMMAND_POLL_ALREADY_RUNNING"));
@@ -198,7 +196,6 @@ class Poll extends Command {
             }
             case "view": {
                 // View the current poll in a channel
-                console.log(poll);
                 return interaction.reply({
                     embeds: [{
                         author: {
