@@ -3,9 +3,22 @@ module.exports = clientMongo => {
     const mongo = clientMongo;
 
     return {
+        wipe:wipe,
         put:put,
         get:get
     };
+
+    async function wipe( database, collection ) {
+        if ( !database ) { throw new Error("No database specified to put"); }
+        if ( !collection ) { throw new Error("No collection specified to put"); }
+
+        const dbo = await mongo.db( database );
+
+        //Try update or insert
+        await dbo.collection(collection).deleteMany({});
+
+        return;
+    }
 
     async function put( database, collection, matchCondition, saveObject, autoUpdate=true ) {
         if ( !database ) { throw new Error("No database specified to put"); }
