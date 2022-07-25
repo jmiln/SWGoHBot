@@ -24,8 +24,8 @@ module.exports = async (Bot, client, message) => {
     // https://discordjs.guide/popular-topics/miscellaneous-examples.html#mention-prefix
     // Used to convert special characters into literal characters by escaping them, so that they don't terminate the pattern within the regex
     const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(message.guildSettings.prefix)})\\s*`);
-    if (!prefixRegex.test(message.content)) return;
+    const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(message.guildSettings.prefix || ";")})\\s*`);
+    if (message?.content && !prefixRegex.test(message.content)) return;
     const [, matchedPrefix] = message.content.match(prefixRegex);
 
     // Also good practice to ignore any message that does not start with our prefix, which is set in the configuration file.
