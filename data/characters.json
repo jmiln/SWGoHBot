@@ -4424,6 +4424,27 @@
         }
     },
     {
+        "name": "Krrsantan",
+        "uniqueName": "KRRSANTAN",
+        "aliases": [
+            "Krrsantan"
+        ],
+        "nameVariant": [
+            "Krrsantan"
+        ],
+        "url": "http://swgoh.gg/characters/krrsantan/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_krrsantan.png",
+        "side": "dark",
+        "factions": [
+            "Bounty Hunter",
+            "Hutt Cartel",
+            "Leader",
+            "Scoundrel",
+            "Tank"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Kuiil",
         "uniqueName": "KUIIL",
         "aliases": [

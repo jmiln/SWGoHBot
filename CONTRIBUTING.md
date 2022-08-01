@@ -73,7 +73,6 @@ While I'd recommend just using the one that I host, you can run a copy yourself,
 ## Requirements
 - `git` command line ([Windows](https://git-scm.com/download/win)|[Linux](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)|[MacOS](https://git-scm.com/download/mac)) installed
 - `Node` [Version 12.x or higher](https://nodejs.org)
-- `Postgres` [I use version 12.4 currently](https://www.postgresql.org/download/)
 - `MongoDB` [I use version 4.4.0 currently](https://www.mongodb.com/download-center/community)
 - `A machine` to host it on. Want it to be online 24/7? Get a VPS.
   - My copy of the bot is hosted on a machine from [Hyperexpert](p.hyper.expert/aff.php?aff=127). (Affiliate link)
@@ -90,7 +89,7 @@ In a command prompt in your projects folder (wherever that may be) run the follo
 Once finished:
 - In the folder from where you ran the git command, run `cd SWGoHBot` and then run `npm install`
 - Rename `config_example.json` to `config.json`
-- Edit `config.json` and enter your bot's token and other details as indicated. (The database part is for the postgresql db)
+- Edit `config.json` and enter your bot's token and other details as indicated.
 
 
 ## Starting the bot

@@ -5,9 +5,6 @@ class ArenaWatch extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "arenawatch",
-            category: "Patreon",
-            aliases: ["aw"],
-            permissions: ["EMBED_LINKS"],
             guildOnly: false,
             options: [
                 {
@@ -110,7 +107,7 @@ class ArenaWatch extends Command {
                     description: "The channel to put the logs in",
                     options: [
                         {
-                            name: "channel",
+                            name: "target_channel",
                             type: "CHANNEL",
                             required: true,
                             description: "The channel to put the logs in"
@@ -494,7 +491,12 @@ class ArenaWatch extends Command {
                 const channel = interaction.options.getChannel("target_channel");
                 const targetArena = interaction.options.getString("arena");
 
-                if (channel.guild?.id !== interaction?.guild?.id) {
+                if (!channel?.guild) {
+                    // They choose an invalid channel/ one that doesn't exist?
+                    return super.error(interaction, "Invalid channel, please make sure you're choosing a channel in this server, and are mentioning it.");
+                }
+
+                if (channel?.guild?.id !== interaction?.guild?.id) {
                     // They chose a channel in a different server
                     return super.error(interaction, "Invalid channel, please choose one in this server");
                 }
@@ -509,18 +511,18 @@ class ArenaWatch extends Command {
                 switch (targetArena) {
                     case "both": {
                         // Set the channel for both the char and fleet arenas
-                        aw.arena.char.channel  = channel;
-                        aw.arena.fleet.channel = channel;
+                        aw.arena.char.channel  = channel.id;
+                        aw.arena.fleet.channel = channel.id;
                         break;
                     }
                     case "char": {
                         // Set just the char arena channel
-                        aw.arena.char.channel  = channel;
+                        aw.arena.char.channel  = channel.id;
                         break;
                     }
                     case "fleet": {
                         // Set just the fleet arena channel
-                        aw.arena.fleet.channel  = channel;
+                        aw.arena.fleet.channel = channel.id;
                         break;
                     }
                 }
@@ -549,7 +551,7 @@ class ArenaWatch extends Command {
                     }
                 } else if (setting === "channel") {
                     // Set the channel for one of the options (Char/ fleet)
-                    const channel = interaction.options.getChannel("channel");
+                    const channel = interaction.options.getChannel("target_channel");
                     const targetArena = interaction.options.getString("arena");
 
                     // Need to make sure that the user has the correct permissions to set this up
@@ -559,12 +561,12 @@ class ArenaWatch extends Command {
 
                     // They got throught all that, go ahead and set it
                     if (targetArena === "char") {
-                        aw.payout.char.channel = channel;
+                        aw.payout.char.channel = channel.id;
                     } else if (targetArena === "fleet") {
-                        aw.payout.fleet.channel = channel;
+                        aw.payout.fleet.channel = channel.id;
                     } else {
-                        aw.payout.char.channel = channel;
-                        aw.payout.fleet.channel = channel;
+                        aw.payout.char.channel = channel.id;
+                        aw.payout.fleet.channel = channel.id;
                     }
                 } else if (setting === "mark") {
                     // Setting the mark/ emote/ symbol/ whatver to help show people as friendly/ enemy

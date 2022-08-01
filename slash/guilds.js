@@ -7,9 +7,7 @@ class Guilds extends Command {
         super(Bot, {
             name: "guilds",
             guildOnly: false,
-            category: "SWGoH",
             aliases: ["guild", "g"],
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "gear",
@@ -130,6 +128,11 @@ class Guilds extends Command {
                                     value: "dark"
                                 }
                             ]
+                        },
+                        {
+                            name: "split_types",
+                            description: "Display chacters and ships as different columns",
+                            type: "BOOLEAN"
                         }
                     ]
                 },
@@ -752,9 +755,9 @@ class Guilds extends Command {
                     shipTotal += thisShip.gp;
                 }
                 if (member.inGuild) {
-                    users.push(`\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - **${member.name}**`);
+                    users.push(`\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${Bot.shortenNum(charTotal + shipTotal)} ]\` - **${member.name}**`);
                 } else {
-                    users.push(`\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${(charTotal + shipTotal).shortenNum(2)} ]\` - ${member.name}`);
+                    users.push(`\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${Bot.shortenNum(charTotal + shipTotal)} ]\` - ${member.name}`);
                 }
             }
 

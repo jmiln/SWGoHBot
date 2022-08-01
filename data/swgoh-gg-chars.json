@@ -1259,6 +1259,7 @@
             "Foresight",
             "Gain Turn Meter",
             "Protection Up",
+            "Revive",
             "Taunt"
         ],
         "role": "Attacker",
@@ -3895,6 +3896,7 @@
         "categories": [
             "Attacker",
             "Bounty Hunter",
+            "Hutt Cartel",
             "Leader",
             "Scoundrel"
         ],
@@ -4795,6 +4797,7 @@
         "alignment": "Dark Side",
         "categories": [
             "Bounty Hunter",
+            "Hutt Cartel",
             "Leader",
             "Scoundrel",
             "Support"
@@ -12390,6 +12393,7 @@
         "categories": [
             "Attacker",
             "Bounty Hunter",
+            "Hutt Cartel",
             "Leader",
             "Scoundrel"
         ],
@@ -14842,6 +14846,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Hutt Cartel",
             "Scoundrel",
             "Tank"
         ],
@@ -17516,6 +17521,7 @@
         "categories": [
             "Attacker",
             "Bounty Hunter",
+            "Hutt Cartel",
             "Leader",
             "Scoundrel"
         ],
@@ -23545,6 +23551,193 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Krrsantan",
+        "base_id": "KRRSANTAN",
+        "pk": 3436,
+        "url": "http://swgoh.gg/characters/krrsantan/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_krrsantan.png",
+        "power": 36096,
+        "description": "Infamous Bounty Hunter Tank with an intimidating presence and unstoppable raw strength",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "002",
+                    "003",
+                    "007",
+                    "004",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "030",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "030",
+                    "048",
+                    "050",
+                    "041",
+                    "030",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "049",
+                    "048",
+                    "048",
+                    "047",
+                    "017",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "048",
+                    "048",
+                    "063",
+                    "060",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "045",
+                    "049",
+                    "034",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "100",
+                    "037",
+                    "099",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "099",
+                    "172",
+                    "108",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "172",
+                    "105",
+                    "172",
+                    "109",
+                    "106",
+                    "117"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "079",
+                    "117",
+                    "120",
+                    "125",
+                    "087",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "116",
+                    "129",
+                    "129",
+                    "134",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "162",
+                    "166",
+                    "168",
+                    "G12Finisher_KRRSANTAN_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Bounty Hunter",
+            "Hutt Cartel",
+            "Leader",
+            "Scoundrel",
+            "Tank"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Counter",
+            "Critical Damage Down",
+            "Damage Immunity",
+            "Defense Up",
+            "Dispel",
+            "DoT",
+            "Evasion Down",
+            "Leader: +Max Health",
+            "Offense Down",
+            "Potency Down",
+            "Protection Up",
+            "Reduce Cooldowns",
+            "Reset Cooldown",
+            "Revive",
+            "Speed Up",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Kuiil",
         "base_id": "KUIIL",
         "pk": 609,
@@ -26527,6 +26720,7 @@
         ],
         "alignment": "Dark Side",
         "categories": [
+            "Hutt Cartel",
             "Scoundrel",
             "Tank"
         ],

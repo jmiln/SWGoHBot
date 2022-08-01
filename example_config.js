@@ -35,13 +35,6 @@ const config = {
         ship: ""
     },
 
-    // The postgres DB for the server configs and such
-    database: {
-        host: "localhost",
-        user: "postgres",
-        pass: "test",
-        data: "swgohDB"
-    },
     // Mongo DB, url for login & db name in mongo
     mongodb: {
         url: "",
@@ -58,11 +51,6 @@ const config = {
         //
         // Will remove the prefix once it's all converted/ forced to be useless
         //
-        prefix: {
-            value: ";",
-            type: "STRING",
-            description: "Change the non-slash command prefix for the server."
-        },
         adminRole: {
             value: ["Administrator"],
             type: "ROLE",
