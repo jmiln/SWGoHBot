@@ -180,13 +180,13 @@ const init = async () => {
     });
 
     process.on("uncaughtException", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(`${process.cwd()}`, "g"), ".");
+        const errorMsg = err.stack?.replace(new RegExp(`${process.cwd()}`, "g"), ".");
         console.error(`[${Bot.myTime()}] Uncaught Exception: ${errorMsg}`);
 
         // If it's that error, don't bother showing it again
         try {
-            if (!errorMsg.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel).send("```inspect(errorMsg)```",{split: true});
+            if (!errorMsg?.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
+                client.channels.cache.get(Bot.config.logs.channel)?.send("```inspect(errorMsg)```",{split: true});
             }
         } catch (e) {
             // Don't bother doing anything
@@ -218,7 +218,7 @@ const init = async () => {
         console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
         try {
             if (Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel).send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
+                client.channels.cache.get(Bot.config.logs.channel)?.send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
             }
         } catch (e) {
             // Don't bother doing anything
