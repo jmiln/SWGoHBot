@@ -3214,6 +3214,189 @@
         "activate_shard_count": 145
     },
     {
+        "name": "Ben Solo",
+        "base_id": "BENSOLO",
+        "pk": 3437,
+        "url": "http://swgoh.gg/characters/ben-solo/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_bensolo.png",
+        "power": 39493,
+        "description": "A powerful Force user whose internal struggles have long placed him on the edge of light and dark",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "002",
+                    "003",
+                    "003",
+                    "004",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "014",
+                    "015",
+                    "028",
+                    "028",
+                    "032"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "069",
+                    "014",
+                    "054",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "068",
+                    "033",
+                    "071",
+                    "028",
+                    "054",
+                    "077"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "049",
+                    "041",
+                    "072",
+                    "070",
+                    "070",
+                    "080"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "070",
+                    "085",
+                    "072",
+                    "069",
+                    "068",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "108",
+                    "038",
+                    "105",
+                    "113",
+                    "100",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "095",
+                    "114",
+                    "111",
+                    "114",
+                    "111",
+                    "125"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "174",
+                    "174",
+                    "105",
+                    "100",
+                    "098",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "174",
+                    "121",
+                    "132",
+                    "111",
+                    "140",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "109",
+                    "132",
+                    "137",
+                    "124",
+                    "144",
+                    "137"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "161",
+                    "163",
+                    "169",
+                    "168",
+                    "G12Finisher_BENSOLO_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Armor Shred",
+            "Blind",
+            "Counter",
+            "Defense Down",
+            "Dispel",
+            "Dispel - All Enemies",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Offense Down",
+            "Offense Up",
+            "Potency Down",
+            "Reduce Cooldowns",
+            "Remove Turn Meter",
+            "Revive",
+            "Speed Down",
+            "Taunt"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Biggs Darklighter",
         "base_id": "BIGGSDARKLIGHTER",
         "pk": 152,
