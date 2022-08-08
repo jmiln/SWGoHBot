@@ -590,6 +590,24 @@
         }
     },
     {
+        "name": "Ben Solo",
+        "uniqueName": "BENSOLO",
+        "aliases": [
+            "Ben Solo"
+        ],
+        "nameVariant": [
+            "Ben Solo"
+        ],
+        "url": "http://swgoh.gg/characters/ben-solo/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bensolo.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Unaligned Force User"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Biggs Darklighter",
         "uniqueName": "BIGGSDARKLIGHTER",
         "aliases": [
