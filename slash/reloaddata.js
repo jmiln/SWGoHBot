@@ -4,13 +4,8 @@ class ReloadData extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "reloaddata",
-            category: "Dev",
             enabled: true,
             guildOnly: true,
-            aliases: ["rdata", "rd"],
-            subArgs: {
-                lang: { aliases: [] }
-            },
             permLevel: 10,
             options: [
                 {

@@ -4,11 +4,8 @@ class Versus extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "versus",
-            category: "SWGoH",
             guildOnly: false,
             enabled: true,
-            aliases: ["vs"],
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "allycode_1",

@@ -7,10 +7,7 @@ class Shardtimes extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "shardtimes",
-            aliases: ["shard", "st", "payout", "po"],
             guildOnly: false,
-            category: "Misc",
-            permissions: ["EMBED_LINKS"],
             options: [
                 // Add
                 //  - UserID, name, me
@@ -152,7 +149,7 @@ class Shardtimes extends Command {
                     if (match) {
                         // It's a UTC +/- zone
                         zoneType = "utc";
-                        timezone = parseInt(`${match[1]}${parseInt(match[2] * 60, 10) + parseInt(match[3], 10)}`, 10);
+                        timezone = parseInt(`${match[1]}${(match[2] * 60) + parseInt(match[3], 10)}`, 10);
                     } else {
                         // Grumble that it's an invalid tz
                         return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));

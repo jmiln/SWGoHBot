@@ -5,10 +5,7 @@ class WhoIs extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "whois",
-            category: "Misc",
             guildOnly: false,
-            aliases: ["wi", "who"],
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "name",

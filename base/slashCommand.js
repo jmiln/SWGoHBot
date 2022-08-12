@@ -34,8 +34,8 @@ class slashCommand {
     }
 
     async error(interaction, err, options) {
-        if (!interaction || !interaction.channel) throw new Error(`[${this.name}] Missing message`);
-        if (!err) throw new Error(`[${this.name}] Missing error message`);
+        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/error:${this.name}] Missing message`);
+        if (!err) throw new Error(`[baseSlash/error:${this.name}] Missing error message`);
         if (!options) options = {
             ephemeral: true
         };

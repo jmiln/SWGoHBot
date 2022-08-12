@@ -5,10 +5,7 @@ class GuildSearch extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "guildsearch",
-            category: "SWGoH",
             guildOnly: false,
-            description: "Display stats for a guild's character",
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "character",

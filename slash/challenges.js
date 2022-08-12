@@ -7,8 +7,6 @@ class Challenges extends Command {
             name: "challenges",
             description: "Show daily guild challenges",
             guildOnly: false,
-            category: "Star Wars",
-            aliases: ["challenge", "chal"],
             options: [{
                 name: "day",
                 type: "STRING",

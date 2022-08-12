@@ -56,9 +56,7 @@ class SetConf extends Command {
         super(Bot, {
             guildOnly: false,
             name: "setconf",
-            aliases: ["setconfig"],
             permLevel: 3,
-            category: "Admin",
             options: Object.values(options)
         });
     }

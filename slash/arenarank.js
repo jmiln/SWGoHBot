@@ -9,7 +9,6 @@ class Arenarank extends Command {
         super(Bot, {
             name: "arenarank",
             guildOnly: false,
-            category: "Star Wars",
             options: [
                 {
                     name: "rank",

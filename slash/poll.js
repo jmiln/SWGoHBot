@@ -4,9 +4,6 @@ class Poll extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "poll",
-            category: "Misc",
-            aliases: ["vote"],
-            permissions: ["EMBED_LINKS"],
             guildOnly: false,
             options: [
                 // Subcommands for create, view, end, cancel, vote

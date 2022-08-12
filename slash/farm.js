@@ -5,9 +5,6 @@ class Farm extends Command {
         super(Bot, {
             name: "farm",
             guildOnly: false,
-            category: "SWGoH",
-            aliases: [],
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "character",

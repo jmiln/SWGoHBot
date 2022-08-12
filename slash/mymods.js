@@ -8,10 +8,8 @@ class MyMods extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "mymods",
-            category: "SWGoH",
             guildOnly: false,
-            aliases: ["charactermods", "charmods", "cmods", "cm", "mm"],
-            permissions: ["EMBED_LINKS"],
+            description: "Show the current mods for a given character",
             options: [
                 {
                     name: "character",

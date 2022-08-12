@@ -6,8 +6,6 @@ class Activites extends Command {
         super(Bot, {
             name: "activities",
             description: "Shows daily guild activities",
-            category: "Star Wars",
-            aliases: ["act"],
             guildOnly: false,
             options: [{
                 name: "day",

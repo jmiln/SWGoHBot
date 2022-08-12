@@ -6,8 +6,6 @@ class Ships extends Command {
         super(Bot, {
             name: "ships",
             guildOnly: false,
-            aliases: ["s", "ship"],
-            category: "Star Wars",
             options: [
                 {
                     name: "ship",

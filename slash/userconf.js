@@ -5,10 +5,7 @@ class UserConf extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "userconf",
-            category: "Misc",
             guildOnly: false,
-            aliases: ["uc", "uconf", "userconfig", "uconfig"],
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "allycodes",

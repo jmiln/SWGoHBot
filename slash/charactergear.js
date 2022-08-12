@@ -5,10 +5,7 @@ class Charactergear extends Command {
         super(Bot, {
             name: "charactergear",
             description: "Show the gear required for a specified character",
-            category: "Star Wars",
             guildOnly: false,
-            aliases: ["chargear", "gear"],
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "character",
