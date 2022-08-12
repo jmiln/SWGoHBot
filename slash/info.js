@@ -4,11 +4,8 @@ const { version } = require("discord.js");
 class Info extends Command {
     constructor(Bot) {
         super(Bot, {
-            aliases: ["invite", "inv"],
             name: "info",
             guildOnly: false,
-            category: "Misc",
-            permissions: ["EMBED_LINKS"],
             description: "Displays general stats & info about the bot"
         });
     }

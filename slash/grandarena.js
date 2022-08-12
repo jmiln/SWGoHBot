@@ -20,10 +20,7 @@ class GrandArena extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "grandarena",
-            category: "SWGoH",
             guildOnly: false,
-            aliases: ["ga"],
-            permissions: ["EMBED_LINKS"],
             subArgs: {
                 faction: {
                     aliases: ["fact", "f"]

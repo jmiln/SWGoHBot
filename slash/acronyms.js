@@ -9,8 +9,6 @@ class Acronyms extends Command {
         super(Bot, {
             name: "acronyms",
             description: "Spit out what common acronyms mean",
-            category: "Misc",
-            aliases: ["acr", "acronym"],
             guildOnly: false,
             options: [{
                 name: "acronym",
@@ -59,7 +57,7 @@ class Acronyms extends Command {
 
         await interaction.reply({embeds: [
             {
-                description: `**Acronyms for:**\n${lookupList.map(l => `- ${l}`).join("\n")}`,
+                description: `**Acronyms for:**\n${lookupList.map((l) => `- ${l}`).join("\n")}`,
                 fields: [
                     {
                         name: "Results",

@@ -6,13 +6,9 @@ class MyCharacter extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "mycharacter",
-            category: "SWGoH",
             description: "Display overall stats & mod info for the selected character",
             guildOnly: false,
             enabled: true,
-            aliases: ["mc", "mychar"],
-            permissions: ["EMBED_LINKS", "ATTACH_FILES"],
-            permLevel: 0,
             options: [
                 {
                     name: "character",

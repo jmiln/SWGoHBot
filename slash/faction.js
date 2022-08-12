@@ -5,10 +5,7 @@ class Faction extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "faction",
-            aliases: ["factions"],
             guildOnly: false,
-            category: "Star Wars",
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "faction_group_1",

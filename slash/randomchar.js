@@ -4,10 +4,7 @@ class Randomchar extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "randomchar",
-            aliases: ["rand", "random"],
             guildOnly: false,
-            category: "Star Wars",
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "allycode",

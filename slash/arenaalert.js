@@ -4,7 +4,6 @@ class ArenaAlert extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "arenaalert",
-            category: "Patreon",
             description: "Change settings for your arena alerts",
             guildOnly: false,
             options: [
@@ -72,7 +71,7 @@ class ArenaAlert extends Command {
         });
     }
 
-    async run(Bot, interaction, options={}) {  // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) {  // eslint-disable-line no-unused-vars
         const enabledms = interaction.options.getString("enabledms");
         const arena = interaction.options.getString("arena");
         const payoutResult = interaction.options.getString("payout_result");

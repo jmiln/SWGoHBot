@@ -5,9 +5,6 @@ class Mods extends Command {
         super(Bot, {
             name: "mods",
             guildOnly: false,
-            aliases: ["m", "mod"],
-            category: "Star Wars",
-            permissions: ["EMBED_LINKS"],
             description: "Display some suggested mod loadouts based on apps.crouchingrancor.com",
             options: [
                 {

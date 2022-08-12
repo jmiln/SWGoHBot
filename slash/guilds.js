@@ -7,7 +7,6 @@ class Guilds extends Command {
         super(Bot, {
             name: "guilds",
             guildOnly: false,
-            aliases: ["guild", "g"],
             options: [
                 {
                     name: "gear",

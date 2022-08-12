@@ -6,8 +6,7 @@ class MyProfile extends Command {
             name: "myprofile",
             category: "SWGoH",
             guildOnly: false,
-            aliases: ["mp", "userprofile", "up"],
-            permissions: ["EMBED_LINKS"],    // Starts with ["SEND_MESSAGES", "VIEW_CHANNEL"] so don't need to add them
+            description: "Show some general stats about your game profile",
             options: [
                 {
                     name: "allycode",

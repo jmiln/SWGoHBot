@@ -7,9 +7,7 @@ class MyArena extends Command {
         super(Bot, {
             name: "myarena",
             guildOnly: false,
-            category: "SWGoH",
-            aliases: ["ma", "userarena", "ua"],
-            permissions: ["EMBED_LINKS"],
+            description: "Show your current ranking in the character & fleet arenas",
             options: [
                 {
                     name: "allycode",

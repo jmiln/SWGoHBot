@@ -6,8 +6,6 @@ class Showconf extends Command {
         super(Bot, {
             name: "showconf",
             guildOnly: false,
-            aliases: ["showconfs", "showconfig", "showconfigs"],
-            category: "Admin",
             permLevel: 3
         });
     }

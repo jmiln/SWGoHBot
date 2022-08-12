@@ -4,9 +4,7 @@ class Register extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "register",
-            category: "Misc",
             guildOnly: false,
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "allycode",

@@ -7,9 +7,6 @@ class Character extends Command {
             name: "character",
             guildOnly: false,
             description: "Show overall info for the given character",
-            category: "Star Wars",
-            aliases: ["characters", "char", "ab", "abilities"],
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "character",

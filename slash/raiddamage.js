@@ -5,11 +5,8 @@ class RaidDamage extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "raiddamage",
-            category: "SWGoH",
             enabled: true,
             guildOnly: false,
-            aliases: ["raiddmg", "rdmg", "convert", "raidd", "raid"],
-            permissions: ["EMBED_LINKS"],
             options: [
                 {
                     name: "raid",

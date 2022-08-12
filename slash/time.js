@@ -6,7 +6,6 @@ class Time extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "time",
-            category: "Misc",
             guildOnly: false,
             options: [
                 {
