@@ -50,12 +50,9 @@ module.exports = async (Bot, client, message) => {
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
     if (!cmd || !cmd.conf.enabled) return;
-    if (cmd && !["test", "reloaddata", "reload"].includes(cmd.help.name)) {
+    if (cmd) {
         // Disable all non-slash commands, and spit out a message telling em so
-        if (["help"].includes(cmd.help.name)) {
-            return message.channel.send({content: "This bot no longer supports non-slash commands. Please try with `/` then choose this bot's commands."});
-        }
-        return message.channel.send({content: `This command has been deprecated, please use the slash command \`/${cmd.help.name}\``});
+        return message.channel.send({content: "This bot no longer supports non-slash commands. Please try with `/` then choose this bot's commands."});
     }
 
     const user = await Bot.userReg.getUser(message.author.id);
