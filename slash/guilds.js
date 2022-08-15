@@ -425,13 +425,13 @@ class Guilds extends Command {
             const sortBy = interaction.options.getString("sort");
             if (sortBy === "offense") {
                 // Sort by # of good offense mods
-                output = output.sort((m, n) => parseInt(m.off100, 10) - parseInt(n.off100, 10));
+                output = output.sort((m, n) => m.off100 - n.off100);
             } else if (sortBy === "speed") {
                 // Sort by # of good speed mods
-                output = output.sort((m, n) => parseInt(m.spd20, 10) - parseInt(n.spd20, 10));
+                output = output.sort((m, n) => m.spd20  - n.spd20);
             } else if (sortBy === "6") {
                 // Sort by # of 6* mods
-                output = output.sort((m, n) => parseInt(m.sixPip, 10) - parseInt(n.sixPip, 10));
+                output = output.sort((m, n) => m.sixPip - n.sixPip);
             }
 
             const table = Bot.makeTable({
@@ -521,7 +521,7 @@ class Guilds extends Command {
             }
 
             // Set up the formats for the table maker
-            const viableTiers = tierKeys.slice(parseInt(firstViableTier, 10), parseInt(firstViableTier, 10)+4).reverse();
+            const viableTiers = tierKeys.slice(parseInt(firstViableTier || "0", 10), parseInt(firstViableTier || "0", 10)+4).reverse();
             const tierFormat = {
                 [viableTiers[0]]: {value: viableTiers[0], startWith: "`[", endWith: "|",  align: "right"},
                 [viableTiers[1]]: {value: viableTiers[1],                  endWith: "|",  align: "right"},
@@ -609,7 +609,7 @@ class Guilds extends Command {
                 timeUntilReset = moment.duration(chaTime - nowTime, "seconds").format("h [hrs], m [min]");
             } else {
                 // It's in the past, so calculate the next time
-                const dur = parseInt(chaTime, 10) + parseInt(dayMS, 10) - parseInt(nowTime, 10);
+                const dur = parseInt(chaTime, 10) + dayMS - nowTime;
                 timeUntilReset = moment.duration(dur, "seconds").format("h [hrs], m [min]");
             }
 
@@ -993,8 +993,8 @@ class Guilds extends Command {
                     relicLvls[ix] = relicCount;
                 }
             }
-            const tieredRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + (relicLvls[curr] * curr), 0);
-            const totalRelic = Object.keys(relicLvls).reduce((acc, curr) => parseInt(acc, 10) + relicLvls[curr]);
+            const tieredRelic = Object.keys(relicLvls).reduce((acc, curr) => acc + (relicLvls[curr] * parseInt(curr, 10)), 0);
+            const totalRelic = Object.keys(relicLvls).reduce((acc, curr) =>  acc + relicLvls[curr], 0);
             const avgRelic = (tieredRelic / totalRelic);
             fields.push({
                 name: "Character Relic Counts",
