@@ -26,7 +26,7 @@
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.34",
         "mongodb": "^4.8.1",
-        "node-fetch": "3.2",
+        "node-fetch": "^3.2.10",
         "pg": "^8.7.3",
         "pg-hstore": "^2.3.4",
         "sequelize": "6.21",

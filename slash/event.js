@@ -379,7 +379,7 @@ class Event extends Command {
                             }
                             eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
                         }
-                        if (event["repeatDays"].length > 0) {
+                        if (event.repeatDays.length > 0) {
                             eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", event.repeatDays.join(", "));
                         } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
                             eventString += interaction.language.get("COMMAND_EVENT_REPEAT", event.repeat["repeatDay"], event.repeat["repeatHour"], event.repeat["repeatMin"]);
@@ -785,7 +785,7 @@ class Event extends Command {
                 const err = [];
                 const newEvent = {
                     eventID: "",
-                    eventDT: "",
+                    eventDT: 0,
                     eventMessage: "",
                     eventChan: "",
                     countdown: false,

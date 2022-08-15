@@ -1,5 +1,6 @@
 const Command = require("../base/slashCommand");
-const raids = require("../data/raiddmg.json");
+const fs = require("fs");
+const raids = JSON.parse(fs.readFileSync("../data/raiddmg.json", {encoding: "utf-8"}));
 
 class RaidDamage extends Command {
     constructor(Bot) {
@@ -87,7 +88,7 @@ class RaidDamage extends Command {
 
         if (percent) {
             amount = amount + "%";
-            outAmt = parseInt((tmpAmount * thisPhase.dmg) / 100, 10).toLocaleString() + " " + interaction.language.get("COMMAND_RAIDDAMAGE_DMG");
+            outAmt = ((tmpAmount * thisPhase.dmg) / 100).toLocaleString() + " " + interaction.language.get("COMMAND_RAIDDAMAGE_DMG");
         } else {
             outAmt = (100 * (tmpAmount / thisPhase.dmg)).toFixed(2).toLocaleString() + "%";
         }

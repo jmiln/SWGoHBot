@@ -21,11 +21,6 @@ class GrandArena extends Command {
         super(Bot, {
             name: "grandarena",
             guildOnly: false,
-            subArgs: {
-                faction: {
-                    aliases: ["fact", "f"]
-                }
-            },
             options: [
                 {
                     name: "allycode_1",
@@ -300,8 +295,8 @@ class GrandArena extends Command {
 
         // Get the overall gear levels for each user
         let gearOverview = [];
-        const [u1GearLvls, u1AvgGear] =Bot.summarizeCharLevels(user1, "gear");
-        const [u2GearLvls, u2AvgGear] =Bot.summarizeCharLevels(user2, "gear");
+        const [u1GearLvls, u1AvgGear] = Bot.summarizeCharLevels(user1, "gear");
+        const [u2GearLvls, u2AvgGear] = Bot.summarizeCharLevels(user2, "gear");
         const maxGear = Math.max(Math.max(...Object.keys(u1GearLvls)), Math.max(...Object.keys(u2GearLvls)));
         for (let ix = maxGear-3; ix <= maxGear; ix++) {
             gearOverview.push({
@@ -564,7 +559,7 @@ class GrandArena extends Command {
         const checkLen = Object.keys(checkArr).length;
         Object.keys(checkArr).forEach((c, ix) => {
             if (checkLen <= 21 || ix < 21) {
-                let halfLen = parseInt((len - c.length) / 2, 10);
+                let halfLen = (len - c.length) / 2;
                 if (halfLen < 0) halfLen = 0;
                 fields.push({
                     name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
