@@ -1,6 +1,5 @@
 const Command = require("../base/slashCommand");
-const fs = require("fs");
-const raids = JSON.parse(fs.readFileSync("../data/raiddmg.json", {encoding: "utf-8"}));
+const raids = require("../data/raiddmg");
 
 class RaidDamage extends Command {
     constructor(Bot) {
