@@ -6526,6 +6526,26 @@
         }
     },
     {
+        "name": "Skiff Guard (Lando Calrissian)",
+        "uniqueName": "UNDERCOVERLANDO",
+        "aliases": [
+            "Skiff Guard (Lando Calrissian)"
+        ],
+        "nameVariant": [
+            "Skiff Guard (Lando Calrissian)"
+        ],
+        "url": "http://swgoh.gg/characters/skiff-guard-lando-calrissian/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_undercoverlando.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Hutt Cartel",
+            "Scoundrel",
+            "Smuggler"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Snowtrooper",
         "uniqueName": "SNOWTROOPER",
         "aliases": [

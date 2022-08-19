@@ -1,5 +1,5 @@
 const Command = require("../base/Command");
-const raids = require("../data/raiddmg.json");
+const raids = require("../data/raiddmg.js");
 
 class RaidDamage extends Command {
     constructor(Bot) {

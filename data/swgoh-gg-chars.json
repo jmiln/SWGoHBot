@@ -31299,6 +31299,7 @@
             "Counter",
             "Dispel",
             "Gain Turn Meter",
+            "Inspired",
             "Taunt"
         ],
         "role": "Attacker",
@@ -31470,6 +31471,7 @@
             "Daze",
             "Dispel",
             "DoT",
+            "Inspired",
             "Stagger",
             "Stun",
             "Vulnerable"
@@ -31986,6 +31988,7 @@
             "Damage Immunity",
             "Dispel",
             "Gain Turn Meter",
+            "Inspired",
             "Leader: +Max Health",
             "Leader: +Speed",
             "Revive",
@@ -34809,6 +34812,184 @@
             "Dispel",
             "Reset Cooldown",
             "Stun"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Skiff Guard (Lando Calrissian)",
+        "base_id": "UNDERCOVERLANDO",
+        "pk": 3438,
+        "url": "http://swgoh.gg/characters/skiff-guard-lando-calrissian/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_undercoverlando.png",
+        "power": 34317,
+        "description": "Cunning Scoundrel Attacker who assists his allies and gains ramping damage the longer he stays undercover",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "002",
+                    "003",
+                    "005",
+                    "005",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "028",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "062",
+                    "076",
+                    "050",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "058",
+                    "024",
+                    "055",
+                    "060",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "093",
+                    "043",
+                    "086",
+                    "051",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "055",
+                    "092",
+                    "092",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "037",
+                    "079",
+                    "106",
+                    "021",
+                    "100",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "042",
+                    "099",
+                    "112",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "104",
+                    "172",
+                    "104",
+                    "101",
+                    "106",
+                    "125"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "121",
+                    "116",
+                    "172",
+                    "125",
+                    "116",
+                    "172"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "120",
+                    "120",
+                    "100",
+                    "134",
+                    "144",
+                    "134"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "159",
+                    "160",
+                    "166",
+                    "166",
+                    "G12Finisher_UNDERCOVERLANDO_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Hutt Cartel",
+            "Scoundrel",
+            "Smuggler"
+        ],
+        "ability_classes": [
+            "Armor Shred",
+            "Assist",
+            "Bonus Attack",
+            "Counter",
+            "Defense Up",
+            "Dispel",
+            "DoT",
+            "Potency Up",
+            "Speed Up",
+            "Stealth"
         ],
         "role": "Attacker",
         "ship": "",
