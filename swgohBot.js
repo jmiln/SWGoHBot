@@ -53,7 +53,7 @@ Bot.talkedRecently = new Set();
 
 const init = async () => {
     const { MongoClient } = require("mongodb");
-    Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
+    Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url);
     // Set up the caching
     Bot.cache   = require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = require("./modules/users.js")(Bot);
