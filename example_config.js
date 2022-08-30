@@ -131,9 +131,7 @@ const config = {
         eventCountdown: [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5],
         language: "en_US",
         swgohLanguage: "ENG_US",
-        shardtimeVertical: false,
-        useActivityLog: false,
-        changelogWebhook: ""
+        shardtimeVertical: false
     },
 
     // Default config for users (Leave these blank)
