@@ -61,10 +61,6 @@ module.exports = (Sequelize, database) => {
             type: Sequelize.BOOLEAN,
             defaultValue: false
         },
-        useActivityLog: {// Use the activity logs or not
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
-        },
         changelogWebhook: {     // Webhook to send changelogs to
             type: Sequelize.TEXT,
             defaultValue: ""

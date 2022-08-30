@@ -1597,12 +1597,6 @@ module.exports = class extends Language {
                         args: {}
                     },
                     {
-                        action: "useActivityLog",
-                        actionDesc: "Turns on keeping track of when users were last active. This needs to be on in order to use the ;checkactivity command.",
-                        usage: ";setconf useActivityLog <true|false>",
-                        args: {}
-                    },
-                    {
                         action: "changelogWebhook",
                         actionDesc: "Set up a webhook for the bot to send changelogs to. Use with no link to remove the configured link",
                         usage: ";setconf changelogWebhook [link]",
