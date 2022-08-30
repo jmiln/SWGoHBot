@@ -21,7 +21,6 @@
         "api-swgoh-help": "^3.3.0",
         "async": "^3.2.4",
         "chalk": "^4.1.0",
-        "cheerio": "^1.0.0-rc.10",
         "discord.js": "^13.9.2",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.37",
