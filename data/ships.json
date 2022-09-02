@@ -1298,6 +1298,25 @@
         }
     },
     {
+        "name": "Profundity",
+        "uniqueName": "CAPITALPROFUNDITY",
+        "aliases": [
+            "Profundity"
+        ],
+        "nameVariant": [
+            "Profundity"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/profundity/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_profundity.png",
+        "side": "light",
+        "factions": [
+            "Capital Ship",
+            "Rebel"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Raddus",
         "uniqueName": "CAPITALRADDUS",
         "aliases": [

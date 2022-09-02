@@ -880,6 +880,7 @@
         ],
         "alignment": "Light Side",
         "categories": [
+            "Fleet Commander",
             "Leader",
             "Rebel",
             "Rogue One",
@@ -911,8 +912,8 @@
             "Taunt"
         ],
         "role": "Support",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "CAPITALPROFUNDITY",
+        "ship_slot": 0,
         "activate_shard_count": 25
     },
     {
@@ -33035,6 +33036,7 @@
             "Sith"
         ],
         "ability_classes": [
+            "Counter",
             "Critical Chance Up",
             "Critical Damage Up",
             "Defense Up",
@@ -33043,7 +33045,9 @@
             "Leader: +Defense",
             "Leader: +Tenacity",
             "Offense Down",
-            "Offense Up"
+            "Offense Up",
+            "Taunt",
+            "Vulnerable"
         ],
         "role": "Leader",
         "ship": "",
