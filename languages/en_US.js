@@ -1501,12 +1501,12 @@ module.exports = class extends Language {
                         usage: ";setconf <key> <value>",
                         args: {}
                     },
-                    {
-                        action: "prefix",
-                        actionDesc: "Set the bot's prefix for your server.",
-                        usage: ";setconf prefix <prefix>",
-                        args: {}
-                    },
+                    // {
+                    //     action: "prefix",
+                    //     actionDesc: "Set the bot's prefix for your server.",
+                    //     usage: ";setconf prefix <prefix>",
+                    //     args: {}
+                    // },
                     {
                         action: "adminRole",
                         actionDesc: "The role that you want to be able to modify bot settings or set up events",
