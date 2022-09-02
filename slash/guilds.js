@@ -1,5 +1,7 @@
 const Command = require("../base/slashCommand");
 const moment = require("moment-timezone");
+const momentDuration = require("moment-duration-format");
+momentDuration(moment);
 const {charChecklist, shipChecklist} = require("../data/unitChecklist");
 
 class Guilds extends Command {
@@ -578,9 +580,6 @@ class Guilds extends Command {
         }
 
         async function guildTickets(userAC) {
-            const momentDuration = require("moment-duration-format");
-            momentDuration(moment);
-
             const sortBy = interaction.options.getString("sort");
 
             let rawGuild;

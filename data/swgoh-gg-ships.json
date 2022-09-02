@@ -935,6 +935,44 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Profundity",
+        "base_id": "CAPITALPROFUNDITY",
+        "url": "http://swgoh.gg/ships/profundity/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_profundity.png",
+        "power": 89816,
+        "description": "Rebel Capital Ship that uses tactical synergy to acquire stolen plans",
+        "combat_type": 2,
+        "alignment": "Light Side",
+        "categories": [
+            "Capital Ship",
+            "Rebel"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Advantage",
+            "AoE",
+            "Assist",
+            "Breach",
+            "Buff Immunity",
+            "Counter",
+            "Damage Immunity",
+            "Daze",
+            "Dispel",
+            "Offense Up",
+            "Protection Up",
+            "Speed Down",
+            "Stealth",
+            "Stun",
+            "Taunt",
+            "Tenacity Down",
+            "Tenacity Up",
+            "Vulnerable"
+        ],
+        "role": "Capital Ship",
+        "capital_ship": true,
+        "activate_shard_count": 80
+    },
+    {
         "name": "Raddus",
         "base_id": "CAPITALRADDUS",
         "url": "http://swgoh.gg/ships/raddus/",

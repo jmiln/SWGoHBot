@@ -53,6 +53,7 @@ module.exports.shipChecklist = {
         ["CAPITALMONCALAMARICRUISER", "Home One"],
         ["CAPITALMALEVOLENCE",        "Malevolence"],
         ["CAPITALNEGOTIATOR",         "Negotiator"],
+        ["CAPITALPROFUNDITY",         "Profundity"],
         ["CAPITALRADDUS",             "Raddus"]
     ]
 };
