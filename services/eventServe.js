@@ -139,16 +139,6 @@ async function init() {
             const filteredEvents = events.filter(ev => {
                 return filterArr.every(e => `${ev.message} ${ev.eventID}`.includes(e));
             });
-            // const events = await database.query(
-            //     "select * from \"eventDBs\" WHERE \"eventID\" LIKE $guildid AND \"eventMessage\" || ' ' || \"eventID\" LIKE ALL($filter)",
-            //     {
-            //         bind: {
-            //             guildid: guildID + "-%",
-            //             filter: `{"${filterArr.map(f => `%${f}%`).join("\",\"")}"}`
-            //         },
-            //         type: Sequelize.QueryTypes.SELECT
-            //     }
-            // );
             return callback(filteredEvents);
         });
 
