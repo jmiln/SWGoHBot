@@ -4645,6 +4645,189 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Boushh (Leia Organa)",
+        "base_id": "BOUSHH",
+        "pk": 3439,
+        "url": "http://swgoh.gg/characters/boushh-leia-organa/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_boushh.png",
+        "power": 35886,
+        "description": "A princess in disguise, fooling Jabba's court with strong Thermal Detonator synergy",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "011",
+                    "003",
+                    "004",
+                    "003",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "014",
+                    "015",
+                    "028",
+                    "025",
+                    "012"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "027",
+                    "049",
+                    "069",
+                    "010",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "038",
+                    "030",
+                    "072",
+                    "073",
+                    "069",
+                    "082"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "068",
+                    "038",
+                    "068",
+                    "089",
+                    "049",
+                    "070"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "073",
+                    "070",
+                    "089",
+                    "072",
+                    "068",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "113",
+                    "109",
+                    "102",
+                    "089",
+                    "102",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "125",
+                    "096",
+                    "111",
+                    "117",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "135",
+                    "117",
+                    "096",
+                    "117",
+                    "111",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "132",
+                    "132",
+                    "125",
+                    "125",
+                    "174",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "149",
+                    "141",
+                    "173",
+                    "125",
+                    "144",
+                    "174"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "158",
+                    "158",
+                    "169",
+                    "169",
+                    "G12Finisher_BOUSHH_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Bounty Hunter",
+            "Hutt Cartel",
+            "Leader",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Bonus Attack",
+            "Counter",
+            "Defense Down",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Max Health",
+            "Leader: +Tenacity",
+            "Reset Cooldown",
+            "Revive",
+            "Stun",
+            "Thermal Detonator"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "C-3PO",
         "base_id": "C3POLEGENDARY",
         "pk": 312,
@@ -26753,9 +26936,9 @@
         "base_id": "HUMANTHUG",
         "pk": 2,
         "url": "http://swgoh.gg/characters/mob-enforcer/",
-        "image": "https://game-assets.swgoh.gg/tex.charui_thug_female_01.png",
+        "image": "https://game-assets.swgoh.gg/tex.charui_mob_enforcer.png",
         "power": 31546,
-        "description": "Scoundrel Tank with enemy debuff ability and a thermal detonator.",
+        "description": "Scoundrel Support with enemy debuff ability and a thermal detonator.",
         "combat_type": 1,
         "gear_levels": [
             {
@@ -26906,15 +27089,18 @@
         "categories": [
             "Hutt Cartel",
             "Scoundrel",
-            "Tank"
+            "Support"
         ],
         "ability_classes": [
+            "Counter",
+            "Daze",
             "Defense Down",
-            "Gain Turn Meter",
+            "Expose",
             "Offense Up",
-            "Thermal Detonator"
+            "Thermal Detonator",
+            "Vulnerable"
         ],
-        "role": "Tank",
+        "role": "Support",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
