@@ -676,7 +676,7 @@ class Guilds extends Command {
 
             fields.push({
                 name: "-",
-                value: interaction.language.get("COMMAND_GUILDS_FOOTER", interaction.guildSettings.prefix)
+                value: interaction.language.get("COMMAND_GUILDS_FOOTER")
             });
 
             if (guild.warnings) {

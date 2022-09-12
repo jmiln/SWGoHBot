@@ -842,6 +842,27 @@
         }
     },
     {
+        "name": "Boushh (Leia Organa)",
+        "uniqueName": "BOUSHH",
+        "aliases": [
+            "Boushh (Leia Organa)"
+        ],
+        "nameVariant": [
+            "Boushh (Leia Organa)"
+        ],
+        "url": "http://swgoh.gg/characters/boushh-leia-organa/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_boushh.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Hutt Cartel",
+            "Leader",
+            "Scoundrel"
+        ],
+        "mods": {}
+    },
+    {
         "name": "C-3PO",
         "uniqueName": "C3POLEGENDARY",
         "aliases": [
@@ -5008,11 +5029,12 @@
             "Mob Enforcer"
         ],
         "url": "http://swgoh.gg/characters/mob-enforcer/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_thug_female_01.png",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mob_enforcer.png",
         "side": "dark",
         "factions": [
+            "Hutt Cartel",
             "Scoundrel",
-            "Tank"
+            "Support"
         ],
         "mods": {
             "url": "https://swgoh.gg/characters/mob-enforcer/best-mods/",
@@ -5327,7 +5349,8 @@
         "name": "Obi-Wan Kenobi (Old Ben)",
         "uniqueName": "OLDBENKENOBI",
         "aliases": [
-            "Obi-Wan Kenobi (Old Ben)"
+            "Obi-Wan Kenobi (Old Ben)",
+            "Old Ben"
         ],
         "nameVariant": [
             "Obi-Wan Kenobi Old Ben",

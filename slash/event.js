@@ -382,7 +382,7 @@ class Event extends Command {
                         } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
                             eventString += interaction.language.get("COMMAND_EVENT_REPEAT", event.repeat["repeatDay"], event.repeat["repeatHour"], event.repeat["repeatMin"]);
                         }
-                        if (!minimal && event.eventMessage != "") {
+                        if (!minimal && event.eventMessage?.length) {
                             // If they want to show all available events without the eventMessage showing
                             eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, event.eventMessage));
                         }

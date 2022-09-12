@@ -76,7 +76,7 @@ class Faction extends Command {
         chars = chars.filter(c => charList.find(char => char.uniqueName === c.baseId));
 
         if (!chars.length) {
-            return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE", interaction.guildSettings.prefix), {title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
+            return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE"), {title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
         } else if (chars.length > 40) {
             return super.error(interaction, "Your query came up with too many results, please try and be more specific");
         } else {
@@ -171,7 +171,7 @@ class Faction extends Command {
                     footer: footer
                 }]});
             } else {
-                return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE", interaction.guildSettings.prefix), {title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
+                return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE"), {title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
             }
         } else {
             return interaction.reply({embeds: [{

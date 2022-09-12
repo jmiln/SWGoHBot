@@ -88,7 +88,7 @@ class Mods extends Command {
         // Find any characters that match that
         const chars = Bot.findChar(searchName, charList);
         if (!chars || chars.length <= 0) {
-            return super.error(interaction, interaction.language.get("COMMAND_MODS_USAGE", interaction.guildSettings.prefix), {
+            return super.error(interaction, interaction.language.get("COMMAND_MODS_USAGE"), {
                 title: interaction.language.get("COMMAND_MODS_INVALID_CHARACTER_HEADER"),
             });
         } else if (chars.length > 1) {

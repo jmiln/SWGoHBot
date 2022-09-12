@@ -68,7 +68,7 @@ module.exports = async (Bot, client) => {
     Bot.logger.log(readyString, "ready", true);
 
     // Sets the status as the current server count and help command
-    const playingString =  `${Bot.config.prefix}help ~ swgohbot.com`;
+    const playingString =  "swgohbot.com";
     try {
         client.user.setPresence({ activity: { name: playingString, type: 0} });
     } catch (err) {

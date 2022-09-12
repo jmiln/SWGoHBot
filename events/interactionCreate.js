@@ -1,4 +1,12 @@
 const {inspect} = require("util");
+const ignoreArr = [
+    "DiscordAPIError: Missing Access",
+    "DiscordAPIError: Unknown interaction",
+    "DiscordAPIError: Unknown Message",
+    "HTTPError [AbortError]: The user aborted a request."
+];
+
+
 module.exports = async (Bot, client, interaction) => {
     // If it's not a command, don't bother trying to do anything
     if (!interaction.isCommand()) return;
@@ -40,35 +48,35 @@ module.exports = async (Bot, client, interaction) => {
     // Run the command
     try {
         await cmd.run(Bot, interaction, { level: level });
+        // console.log(`[interCreate] Trying to run: ${cmd.commandData.name}\n - Options: ${inspect(interaction.options, {depth: 5})}`);
     } catch (err) {
         if (cmd.commandData.name === "test") {
             return console.log(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
         }
 
-        const ignoreArr = [
-            "DiscordAPIError: Missing Access",
-            "DiscordAPIError: Unknown interaction",
-            "DiscordAPIError: Unknown Message",
-            "HTTPError [AbortError]: The user aborted a request."
-        ];
         if (ignoreArr.some(str => err.toString().includes(str))) {
             // Don't bother spitting out the whole mess.
             // Log which command broke, and the first line of the error
-            Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \n${err.toString().split("\n")[0]}`);
+            logErr(Bot, `ERROR(inter) I broke with ${cmd.commandData.name}: \n${err.toString().split("\n")[0]}`);
         } else {
-            Bot.logger.error(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
+            logErr(Bot, `ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
         }
 
         const replyObj = {content: `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`, ephemeral: true};
         if (interaction.replied) {
             return interaction.followUp(replyObj)
-                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send followUp error message: \n${e}`));
+                .catch(e => logErr(Bot, `[cmd:${cmd.commandData.name}] Error trying to send followUp error message: \n${e}`));
         } else if (interaction.deferred) {
             return interaction.editReply(replyObj)
-                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send editReply error message: \n${e}`));
+                .catch(e => logErr(Bot, `[cmd:${cmd.commandData.name}] Error trying to send editReply error message: \n${e}`));
         } else {
             return interaction.reply(replyObj)
-                .catch(e => console.error(`[cmd:${cmd.commandData.name}] Error trying to send reply error message: \n${e}`));
+                .catch(e => logErr(Bot, `[cmd:${cmd.commandData.name}] Error trying to send reply error message: \n${e}`));
         }
     }
 };
+
+function logErr(Bot, errStr, useWebhook=false) {
+    if (ignoreArr.some(str => errStr.toString().includes(str))) return;
+    Bot.logger.error(errStr, useWebhook);
+}

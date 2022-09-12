@@ -8,8 +8,7 @@ module.exports = async (Bot, client, member) => {
         const partMessage = guildConf.partMessage
             .replace(/{{user}}/gi,        member.displayName)
             .replace(/{{usermention}}/gi, member.user)
-            .replace(/{{server}}/gi,      member.guild.name)
-            .replace(/{{prefix}}/gi,      guildConf.prefix);
+            .replace(/{{server}}/gi,      member.guild.name);
 
         try {
             await client.announceMsg(member.guild, partMessage, null, guildConf);

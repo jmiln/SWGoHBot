@@ -21,7 +21,6 @@ class Info extends Command {
             const fields = [];
             let desc = content.statHeader + "\n";
             const statTable = [
-                { title: content.prefix, content: interaction.guildSettings.prefix },
                 { title: content.users, content: users },
                 { title: content.servers, content: guilds },
                 { title: content.nodeVer, content: process.version },
