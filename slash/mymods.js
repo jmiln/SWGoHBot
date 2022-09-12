@@ -175,13 +175,13 @@ class MyMods extends Command {
                     };
 
                     // Add the primary in
-                    slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace("+", "").replace("%", "")}`);
+                    slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace(/\+/g, "").replace(/%/g, "")}`);
 
                     // Then all the secondaries
                     mod.secondaryStat.forEach(s => {
                         let t = stats[s.unitStat];
                         if (t.indexOf("%") > -1) {
-                            t = t.replace("%", "").trim();
+                            t = t.replace(/%/g, "").trim();
                             s.value = s.value.toFixed(2) + "%";
                         }
 
