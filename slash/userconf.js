@@ -308,7 +308,7 @@ class UserConf extends Command {
                 case "view": {
                     // Just display all the valid info here
                     if (!user) {
-                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_VIEW_NO_CONFIG", interaction.guildSettings.prefix));
+                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_VIEW_NO_CONFIG"));
                     }
                     const fields = [];
                     fields.push({

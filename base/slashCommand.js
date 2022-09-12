@@ -42,8 +42,7 @@ class slashCommand {
         options.title = options.title || "Error";
         options.color = options.color || "#e01414";
         if (options.example) {
-            const prefix = interaction.guildSettings ? interaction.guildSettings.prefix : ";";
-            err += `\n\n**Example:**${this.Bot.codeBlock(prefix + options.example)}`;
+            err += `\n\n**Example:**${this.Bot.codeBlock(options.example)}`;
         }
         await this.embed(interaction, err, options);
     }

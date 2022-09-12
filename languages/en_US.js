@@ -82,9 +82,6 @@ module.exports = class extends Language {
             BASE_EVENT_LATE: "Sorry, but this event was triggered later than expected. If it is set to repeat, the next alert should be on time.",
 
             // Base swgohAPI
-            BASE_SWGOH_NO_ALLY: (prefix=";") => `Sorry, but that user is not registered. Please go register with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
-            BASE_SWGOH_NO_USER: (prefix) => `Sorry, but I don't have that user listed anywhere. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
-            BASE_SWGOH_NO_GUILD_FOR_USER: (prefix=";") => `I cannot find a guild for that user. Please make sure they are registered with \`${prefix}userconf allycode add <allycode>\` or the \`/userconf allycodes add\` command`,
             BASE_SWGOH_NO_GUILD: "I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.",
             BASE_SWGOH_MISSING_CHAR: "You need to enter a character to check for",
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
@@ -198,8 +195,8 @@ module.exports = class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
 
             // Abilities Command
-            COMMAND_CHARACTER_NEED_CHARACTER: (prefix) => `Missing character. \nUsage is \`${prefix}character <characterName>\` or the \`/character\` command`,
-            COMMAND_CHARACTER_INVALID_CHARACTER: (prefix) => `Invalid character. \nUsage is \`${prefix}character <characterName>\``,
+            COMMAND_CHARACTER_NEED_CHARACTER: "Missing character. \nUsage is `/character character: <characterName>`",
+            COMMAND_CHARACTER_INVALID_CHARACTER: "Invalid character. \nUsage is `/character character: <characterName>`",
             COMMAND_CHARACTER_COOLDOWN: (aCooldown) => `**Ability Cooldown:** ${aCooldown}\n`,
             COMMAND_CHARACTER_ABILITY: (aType, mat, cdString, aDesc) => `**Ability Type:** ${aType}\n**Ability mats needed:     ${mat}**\n${cdString}${aDesc}`,
             COMMAND_CHARACTER_HELP: {
@@ -237,7 +234,6 @@ module.exports = class extends Language {
             COMMAND_ACTIVITIES_THURSDAY:  "== Before Reset == \nSpend Normal Energy on Hard Mode Battles \nSave Challenges\n\n== After Reset == \nComplete Challenges \nSave Normal Energy",
             COMMAND_ACTIVITIES_FRIDAY:    "== Before Reset == \nComplete Challenges \nSave Normal Energy\n\n== After Reset == \nSpend Normal Energy on Dark Side Battles",
             COMMAND_ACTIVITIES_SATURDAY:  "== Before Reset == \nSpend Normal Energy on Dark Side Battles \nSave Arena Battles \nSave Cantina Energy\n\n== After Reset == \nComplete Arena Battles \nSave Cantina Energy",
-            COMMAND_ACTIVITIES_ERROR: (prefix, usage) => `Invalid day, usage is \`${prefix}${usage}\``,
             COMMAND_ACTIVITIES_HELP: {
                 description: "Shows the daily guild activites.",
                 actions: [
@@ -397,7 +393,6 @@ module.exports = class extends Language {
             COMMAND_CHALLENGES_SHIP_BUILDING   : "Ship Building Materials",
             COMMAND_CHALLENGES_SHIP_ABILITY    : "Ship Ability Materials",
             COMMAND_CHALLENGES_MISSING_DAY: "You need to specify a day",
-            COMMAND_CHALLENGES_DEFAULT: (prefix, usage) => `Invalid date, usage is \`${prefix}${usage}\``,
             COMMAND_CHALLENGES_HELP: {
                 description: "Shows the daily guild challenges.",
                 actions: [
@@ -426,8 +421,6 @@ module.exports = class extends Language {
             },
 
             // Character gear Command
-            COMMAND_CHARACTERGEAR_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
-            COMMAND_CHARACTERGEAR_INVALID_CHARACTER: (prefix) => `Invalid character. Usage is \`${prefix}charactergear <character> [gearLvl]\``,
             COMMAND_CHARACTERGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are between 1 & 12.",
             COMMAND_CHARACTERGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
             COMMAND_CHARACTERGEAR_GEAR_NA: "This gear has not been entered yet",
@@ -675,7 +668,7 @@ module.exports = class extends Language {
             COMMAND_FACTION_MISSING_FACTION: "Missing faction",
             COMMAND_FACTION_INVALID_FACTION: "Invalid faction",
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
-            COMMAND_FACTION_USAGE: (prefix) => `Usage is \`${prefix}faction <faction>\``,
+            COMMAND_FACTION_USAGE: "Usage is `/faction faction: <faction>`",
             COMMAND_FACTION_HELP: {
                 description: "Shows the list of characters in the specified faction.",
                 actions: [
@@ -704,7 +697,6 @@ module.exports = class extends Language {
             },
 
             // Farm Command
-            COMMAND_FARM_USAGE: (prefix) => `Usage is \`${prefix}farm <character>\``,
             COMMAND_FARM_LOCATIONS: " farm locations",
             COMMAND_FARM_MISSING_CHARACTER: "Missing character",
             COMMAND_FARM_HARD: "Hard ",
@@ -749,7 +741,7 @@ module.exports = class extends Language {
 
             // Grand Arena Command
             COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Invalid user ${userNum}`,
-            COMMAND_GRANDARENA_UNREGISTERED: (prefix) => `In order to use the \`me\` keyword, you need to have an allycode registered with the bot.\nUse **${prefix}help register** for help`,
+            COMMAND_GRANDARENA_UNREGISTERED: "In order to use the `me` keyword, you need to have an allycode registered with the bot.\nCheck out `/register` or `/userconf`",
             COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Could not find a match for "${char}"`,
             COMMAND_GRANDARENA_COMP_NAMES: {
                 charGP: "Char GP",
@@ -821,7 +813,7 @@ module.exports = class extends Language {
                 `Est. ship gp: ${shipGP}`,
                 `Total GP:     ${gp}`
             ].join("\n"),
-            COMMAND_GUILDS_FOOTER: (prefix) => `\`${prefix}guild -roster\` for a list of your guild members and their gp.\n\`${prefix}guild -roster -allycode\` for a list with their ally codes instead.`,
+            COMMAND_GUILDS_FOOTER: "`/guilds roster` for a list of your guild members and their gp.\n`/guilds roster show_allycode: true` for a list with their ally codes instead.",
             COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName}'s Territory War Summary`,
             COMMAND_GUILDS_HELP: {
                 description: "Shows everyone that's in your guild/ some basic stats.",
@@ -959,29 +951,28 @@ module.exports = class extends Language {
                 ]
             },
 
-            // Help Command
-            COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
-            COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
-            COMMAND_HELP_HELP: {
-                description: "Displays info about available commands.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: "",
-                        usage: ";help [command]",
-                        args: {
-                            "command": "The command you want to look up info on."
-                        }
-                    }
-                ]
-            },
+            // Help Command (Disabled/ not converted to slash command)
+            // COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
+            // COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
+            // COMMAND_HELP_HELP: {
+            //     description: "Displays info about available commands.",
+            //     actions: [
+            //         {
+            //             action: "",
+            //             actionDesc: "",
+            //             usage: ";help [command]",
+            //             args: {
+            //                 "command": "The command you want to look up info on."
+            //             }
+            //         }
+            //     ]
+            // },
 
             // Info Command
             COMMAND_INFO_OUTPUT: (shardID) => ({
                 "header"      : "== Bot Information ==",
                 "shardHeader"      : `== Bot Information [${shardID}] ==`,
                 "statHeader"  : "== Bot Stats ==",
-                "prefix"      : "Prefix",
                 "users"       : "Users",
                 "servers"     : "Servers",
                 "discordVer"  : "Discord.js",
@@ -1031,9 +1022,9 @@ module.exports = class extends Language {
             COMMAND_MODS_UNKNOWN: "Unknown",
 
             // Mods Command
-            COMMAND_MODS_NEED_CHARACTER: (prefix) => `Need a character. Usage is \`${prefix}mods <characterName>\``,
+            COMMAND_MODS_NEED_CHARACTER: "Need a character. Usage is `/mods character: <characterName>`",
             COMMAND_MODS_INVALID_CHARACTER_HEADER: "Invalid character",
-            COMMAND_MODS_USAGE: (prefix) => `Usage is \`${prefix}mods <characterName>\``,
+            COMMAND_MODS_USAGE: "Usage is `/mods character: <characterName>`",
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) => `\`Square:   ${square}\`\n\`Arrow:    ${arrow}\`\n\`Diamond:  ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Triangle: ${triangle}\`\n\`Circle:   ${circle}\`\n\`Cross:    ${cross}\`\n`,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaries ###**\n${modPrimaryString}`,
@@ -1275,7 +1266,7 @@ module.exports = class extends Language {
             COMMAND_POLL_MISSING_QUESTION: "You need to specify something to vote on.",
             COMMAND_POLL_TOO_FEW_OPT: "You need to have at least 2 options to vote on.",
             COMMAND_POLL_TOO_MANY_OPT: "You can only have up to 10 options to vote on.",
-            COMMAND_POLL_CREATED: (name, prefix) => `**${name}** has started a new poll:\nVote with \`${prefix}poll <choice>\`\n`,
+            COMMAND_POLL_CREATED: (name) => `**${name}** has started a new poll:\nVote with \`/poll vote: <choice>\`\n`,
             COMMAND_POLL_CREATED_SLASH: (name) => `**${name}** has started a new poll:\nVote with \`/poll vote <choice>\`\n`,
             COMMAND_POLL_NO_POLL: "There is no poll in progress",
             COMMAND_POLL_FINAL: (poll) => `Final results for ${poll}`,
@@ -1286,14 +1277,6 @@ module.exports = class extends Language {
             COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? "" : "s"}**\n`,
             COMMAND_POLL_FOOTER: (id) => `Poll id: ${id}  -  \`/poll vote <choice>\` to vote`,
-            // Remote poll strings
-            COMMAND_POLL_INVALID_ID: "A poll with this ID does not exist.",
-            COMMAND_POLL_NO_ACCESS: "Sorry, but you don't have access to that poll.",
-            COMMAND_POLL_REMOTE_OPTS: "Only actions available for remote polls are voting on or checking a poll.",
-            // COMMAND_POLL_DM_USE: "Sorry, but if you want to use this command in a DM, you need to provide a poll ID with `/poll -poll <pollID>`",
-            COMMAND_POLL_DM_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <choice> -poll ${id}\`  to vote`,
-            COMMAND_POLL_ME1: (pollID, poll) => `Here are the options for poll ${pollID}\n${poll}\nCopy the message below and change \`<choice>\` to the option you want`,
-            COMMAND_POLL_ME2: (prefix, pollID) => `${prefix}poll -poll ${pollID} <choice>`,
             COMMAND_POLL_HELP: {
                 description: "Lets you start a poll with multiple options.",
                 actions: [
@@ -1477,14 +1460,13 @@ module.exports = class extends Language {
             COMMAND_SETCONF_ARRAY_MISSING_OPT: "You must use `add` or `remove`.",
             COMMAND_SETCONF_ARRAY_NOT_IN_CONFIG: (key, value) => `Sorry, but \`${value}\` is not set in \`${key}\`.`,
             COMMAND_SETCONF_ARRAY_SUCCESS: (key, value, action) => `\`${value}\` has been ${action} your \`${key}\`.`,
-            COMMAND_SETCONF_NO_KEY: (prefix) => `This key is not in the configuration. Look in "${prefix}showconf", or "${prefix}setconf help" for a list`,
+            COMMAND_SETCONF_NO_KEY: "This key is not in the configuration. Look in '/showconf'",
             COMMAND_SETCONF_UPDATE_SUCCESS: (key, value) => `Guild configuration item ${key} has been changed to:\n\`${value}\``,
             COMMAND_SETCONF_NO_SETTINGS: "No guild settings found.",
 
             COMMAND_SETCONF_ADMINROLE_NEED_ROLE: (opt) => `You must specify a role to ${opt}.`,
             COMMAND_SETCONF_ADMINROLE_MISSING_ROLE: (roleName) => `Sorry, but I cannot find the role ${roleName}. Please try again.`,
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Sorry, but ${roleName} is already there.`,
-            COMMAND_SETCONF_PREFIX_TOO_LONG: "Sorry, but you cannot have spaces in your prefix",
             COMMAND_SETCONF_WELCOME_NEED_CHAN: "Sorry, but but your announcement channel either isn't set or is no longer valid.\nGo set `announceChan` to a valid channel and try again.`",
             COMMAND_SETCONF_TIMEZONE_NEED_ZONE: "Invalid timezone, look here https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nand find the one that you need, then enter what it says in the TZ column",
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Sorry, but I cannot find the channel ${chanName}. Please try again.`,
@@ -1501,12 +1483,6 @@ module.exports = class extends Language {
                         usage: ";setconf <key> <value>",
                         args: {}
                     },
-                    // {
-                    //     action: "prefix",
-                    //     actionDesc: "Set the bot's prefix for your server.",
-                    //     usage: ";setconf prefix <prefix>",
-                    //     args: {}
-                    // },
                     {
                         action: "adminRole",
                         actionDesc: "The role that you want to be able to modify bot settings or set up events",
@@ -1675,8 +1651,8 @@ module.exports = class extends Language {
             },
 
             // Ships Command
-            COMMAND_SHIPS_NEED_CHARACTER: (prefix) => `Need a character or ship. Usage is \`${prefix}ship <ship|pilot>\``,
-            COMMAND_SHIPS_INVALID_CHARACTER: (prefix) => `Invalid character or ship. Usage is \`${prefix}ship <ship|pilot>\``,
+            COMMAND_SHIPS_NEED_CHARACTER: "Need a character or ship. Usage is `/ships ship: <ship|pilot>`",
+            COMMAND_SHIPS_INVALID_CHARACTER:  "Invalid character or ship. Usage is `/ship ship: <ship|pilot>`",
             COMMAND_SHIPS_TOO_MANY: "I found more than one result from that search. Please try to be more specific.",
             COMMAND_SHIPS_CREW: "Crew",
             COMMAND_SHIPS_FACTIONS: "Factions",
@@ -1797,7 +1773,7 @@ module.exports = class extends Language {
             COMMAND_USERCONF_DEFAULTS_SET_DEFAULTS: (name, flags) => `Set the default flags for ${name} to \`${flags}\``,
             COMMAND_USERCONF_DEFAULTS_NO_DEFAULTS: (name) => `You do not have any defaults set for ${name}.`,
             COMMAND_USERCONF_DEFAULTS_CLEARED: (name) => `Cleared the default flags for ${name}.`,
-            COMMAND_USERCONF_VIEW_NO_CONFIG: (prefix) => `You've not set up a config yet, try \`${prefix}help userconf\` to get started.`,
+            COMMAND_USERCONF_VIEW_NO_CONFIG: "Looks like you've not set up any personal config settings yet. Check out the options for `/userconf`",
             COMMAND_USERCONF_VIEW_ALLYCODES_HEADER: "Ally Codes",
             COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY: "__Primary is **BOLD**__\n",
             COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "No linked ally codes.",

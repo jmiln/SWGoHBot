@@ -132,24 +132,8 @@ const init = async () => {
     const Logger = require("./modules/Logger.js"); //(Bot, client);
     Bot.logger = new Logger(Bot, client);
 
-    // Here we load **commands** into memory, as a collection, so they're accessible
+    // Here we load Slash Commands into memory, as a collection, so they're accessible
     // here and everywhere else.
-    const cmdFiles = readdirSync("./commands/");
-    const cmdError = [];
-    cmdFiles.forEach(file => {
-        try {
-            if (!file.endsWith(".js")) return;
-            const commandName = file.split(".")[0];
-            const result = client.loadCommand(commandName);
-            if (result) cmdError.push(`Unable to load command: ${commandName}`);
-        } catch (e) {
-            Bot.logger.warn(`[INIT] Unable to load command ${file}: ${e}`);
-        }
-    });
-    if (cmdError.length) {
-        Bot.logger.warn("cmdLoad: " + cmdError.join("\n"));
-    }
-
     const slashFiles = readdirSync("./slash/");
     const slashError = [];
     slashFiles.forEach(file => {

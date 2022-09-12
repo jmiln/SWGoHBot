@@ -31,7 +31,7 @@ class Character extends Command {
         // Find any characters that match what they're looking for
         const chars = Bot.findChar(searchName, charList);
         if (!chars?.length) {
-            const err = interaction.language.get("COMMAND_CHARACTER_INVALID_CHARACTER", interaction.guildSettings.prefix);
+            const err = interaction.language.get("COMMAND_CHARACTER_INVALID_CHARACTER");
             if (err.indexOf("\n") > -1) {
                 const [title, usage] = err.split("\n");
                 return super.error(interaction, usage, {title: title, example: "abilities Han Solo"});

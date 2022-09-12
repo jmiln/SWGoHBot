@@ -84,11 +84,7 @@ class SetConf extends Command {
             if (keyType === "STRING") {
                 settingStr = interaction.options.getString(optionKey);
                 if (!settingStr) continue;
-                if (key === "prefix" && (settingStr.indexOf(" ") > -1 || settingStr.length > 3)) {
-                    // Tell em it cannot have spaces & it has to be shorter than 3 characters
-                    errors.push("Prefixes are limited to 3 characters & cannot include spaces");
-                    continue;
-                } else if (key === "timezone" && !moment.tz.zone(settingStr)) {
+                if (key === "timezone" && !moment.tz.zone(settingStr)) {
                     // If it's not a valid timezone, let em know
                     errors.push(interaction.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
                     continue;

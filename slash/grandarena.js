@@ -56,7 +56,7 @@ class GrandArena extends Command {
         let user1 = await Bot.getAllyCode(interaction, user1str);
         if (!user1) {
             if (user1str === "me") {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED", interaction.guildSettings.prefix));
+                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
             } else {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
             }
@@ -67,7 +67,7 @@ class GrandArena extends Command {
         let user2 = await Bot.getAllyCode(interaction, user2str);
         if (!user2) {
             if (user2str === "me") {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED", interaction.guildSettings.prefix));
+                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
             } else {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
             }

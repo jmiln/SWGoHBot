@@ -18,8 +18,7 @@ module.exports = async (Bot, client, member) => {
         const welcomeMessage = guildConf.welcomeMessage
             .replace(/{{user}}/gi, member.user.username)
             .replace(/{{usermention}}/gi, member.user)
-            .replace(/{{server}}/gi, member.guild.name)
-            .replace(/{{prefix}}/gi, guildConf.prefix);
+            .replace(/{{server}}/gi, member.guild.name);
         try {
             client.announceMsg(guild, welcomeMessage, null, guildConf);
         } catch (e) {

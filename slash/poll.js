@@ -137,7 +137,7 @@ class Poll extends Command {
                     .then((thisPoll) => {
                         poll.pollID = thisPoll.dataValues.pollId;
                         return interaction.reply({
-                            content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag, interaction.guildSettings.prefix),
+                            content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag),
                             embeds: [{
                                 author: {
                                     name: poll.question
@@ -258,9 +258,9 @@ class Poll extends Command {
         function getFooter(poll) {
             const footer = {};
             if (interaction.guild) {
-                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER", poll.pollID, interaction.guildSettings.prefix));
+                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER", poll.pollID));
             } else {
-                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER", poll.pollID, interaction.guildSettings.prefix));
+                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER", poll.pollID));
             }
             return footer;
         }
