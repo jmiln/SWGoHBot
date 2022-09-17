@@ -1,5 +1,4 @@
 class slashCommand {
-
     constructor(Bot, {
         name = "",
         description = "No description provided.",
@@ -33,37 +32,37 @@ class slashCommand {
         return out;
     }
 
-    async error(interaction, err, options) {
-        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/error:${this.name}] Missing message`);
-        if (!err) throw new Error(`[baseSlash/error:${this.name}] Missing error message`);
+    async error(interaction, errMsg, options) {
+        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/error:${this.name}] Missing interaction`);
+        if (!errMsg) throw new Error(`[baseSlash/error:${this.name}] Missing error message`);
         if (!options) options = {
             ephemeral: true
         };
         options.title = options.title || "Error";
         options.color = options.color || "#e01414";
         if (options.example) {
-            err += `\n\n**Example:**${this.Bot.codeBlock(options.example)}`;
+            errMsg += `\n\n**Example:**${this.Bot.codeBlock(options.example)}`;
         }
-        await this.embed(interaction, err, options);
+        await this.embed(interaction, errMsg, options);
     }
 
-    async success(interaction, out, options) {
-        if (!interaction || !interaction.channel) throw new Error("Missing message");
-        if (!out) throw new Error("Missing outgoing success message");
-        if (!options) options = {};
+    async success(interaction, msgOut, options={}) {
+        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/success:${this.name}] Missing interaction`);
+        if (!msgOut) throw new Error(`[baseSlash/success:${this.name}] Missing outgoing success message`);
         options.title = options.title || "Success!";
         options.color = options.color || "#00ff00";
-        await this.embed(interaction, out, options);
+        await this.embed(interaction, msgOut, options);
     }
 
-    async embed(interaction, out, options) {
-        if (!interaction || !interaction.channel) throw new Error("Missing interaction");
-        if (!out) throw new Error("Missing outgoing message");
-        if (!options) options = {};
-        const title = options.title || "TITLE HERE";
-        const footer = options.footer || "";
-        const color = options.color;
+    async embed(interaction, msgOut, options={}) {
+        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/embed:${this.name}] Missing interaction`);
+        if (!msgOut) throw new Error(`[baseSlash/embed:${this.name}] Missing outgoing message`);
+        const title     = options.title || "TITLE HERE";
+        const footer    = options.footer || "";
+        const color     = options.color;
         const ephemeral = options.ephemeral || false;
+
+        // If the interaction has been replied to or deferred, edit the reply
         if (interaction.replied || interaction.deferred) {
             try {
                 return interaction.editReply({
@@ -73,7 +72,7 @@ class slashCommand {
                             name: title,
                             icon_url: options.iconURL || null
                         },
-                        description: out.toString().substring(0, 1900) + "...",
+                        description: msgOut.toString().substring(0, 1900) + "...",
                         color: color,
                         footer: {
                             text: footer
@@ -82,8 +81,9 @@ class slashCommand {
                     ephemeral: ephemeral
                 });
             } catch (e) {
-                console.log("base/slashCommand Error: " + e.message);
-                console.log("base/slashCommand Message: " + interaction.content);
+                // If something breaks with the editReply, log it, then just send a message to that channel
+                console.log(`[base/slashCommand Error: ${this.name}] ` + e.message);
+                console.log(`[base/slashCommand Message: ${this.name}] ` + interaction.content);
                 return interaction.channel.send({
                     content: null,
                     embeds: [{
@@ -91,7 +91,7 @@ class slashCommand {
                             name: title,
                             icon_url: options.iconURL || null
                         },
-                        description: out,
+                        description: msgOut,
                         color: color,
                         footer: {
                             text: footer
@@ -100,22 +100,23 @@ class slashCommand {
                     ephemeral: ephemeral
                 });
             }
-        } else {
-            return interaction.reply({
-                embeds: [{
-                    author: {
-                        name: title,
-                        icon_url: options.iconURL || null
-                    },
-                    description: out,
-                    color: color,
-                    footer: {
-                        text: footer
-                    }
-                }],
-                ephemeral: ephemeral
-            });
         }
+
+        // Otherwise, just reply
+        return interaction.reply({
+            embeds: [{
+                author: {
+                    name: title,
+                    icon_url: options.iconURL || null
+                },
+                description: msgOut,
+                color: color,
+                footer: {
+                    text: footer
+                }
+            }],
+            ephemeral: ephemeral
+        });
     }
 }
 
