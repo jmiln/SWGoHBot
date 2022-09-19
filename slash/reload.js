@@ -24,12 +24,12 @@ class Reload extends Command {
         const commandName = interaction.options.getString("command");
         const client = interaction.client;
         if (client.slashcmds.has(commandName)) {
-            command = client.commands.get(commandName);
+            command = client.slashcmds.get(commandName);
         }
         if (!command) {
             return super.error(interaction, interaction.language.get("COMMAND_RELOAD_INVALID_CMD", commandName));
         } else {
-            command = command.help.name;
+            command = command.commandData.name;
             if (interaction.client.shard && interaction.client.shard.count > 0) {
                 await interaction.client.shard.broadcastEval((client, command) => client.reloadSlash(command), {context: command})
                     .then(() => {
