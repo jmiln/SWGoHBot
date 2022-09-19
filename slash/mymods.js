@@ -219,6 +219,7 @@ class MyMods extends Command {
                         name: `${player.name}'s ${character.name}`,
                         icon_url: character.avatarURL
                     },
+                    color: Bot.getSideColor(character.side),
                     fields: fields,
                     footer: footer
                 }]});
