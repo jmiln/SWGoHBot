@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Randomchar extends Command {
     constructor(Bot) {
@@ -9,12 +10,12 @@ class Randomchar extends Command {
                 {
                     name: "allycode",
                     description: "The ally code for the user you want to look up",
-                    type: "STRING"
+                    type: ApplicationCommandOptionType.String
                 },
                 {
                     name: "rarity",
                     description: "Choose a minimum rarity (Star level) to filter by",
-                    type: "INTEGER",
+                    type: ApplicationCommandOptionType.Integer,
                     choices: [
                         { name: "1*", value: 1 },
                         { name: "2*", value: 2 },
@@ -28,7 +29,7 @@ class Randomchar extends Command {
                 {
                     name: "count",
                     description: "The number of characters to grab",
-                    type: "INTEGER",
+                    type: ApplicationCommandOptionType.Integer,
                     choices: [
                         { name: "1", value: 1 },
                         { name: "2", value: 2 },

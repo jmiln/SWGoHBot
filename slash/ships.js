@@ -1,5 +1,6 @@
 // const util = require('util');
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Ships extends Command {
     constructor(Bot) {
@@ -9,7 +10,7 @@ class Ships extends Command {
             options: [
                 {
                     name: "ship",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "The ship to look up",
                     required: true
                 }

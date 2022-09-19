@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 
 class UserConf extends Command {
@@ -15,39 +16,39 @@ class UserConf extends Command {
                     options: [
                         {
                             name: "add",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             description: "Add an allycode",
                             options: [
                                 {
                                     name: "allycode",
                                     description: "The ally code of the user you want to see",
-                                    type: "STRING" ,
+                                    type: ApplicationCommandOptionType.String ,
                                     required: true
                                 },
                             ]
                         },
                         {
                             name: "remove",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             description: "Remove an allycode",
                             options: [
                                 {
                                     name: "allycode",
                                     description: "The ally code of the user you want to see",
-                                    type: "STRING" ,
+                                    type: ApplicationCommandOptionType.String ,
                                     required: true
                                 },
                             ]
                         },
                         {
                             name: "make_primary",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             description: "Set this ally code as the primary one",
                             options: [
                                 {
                                     name: "allycode",
                                     description: "The ally code of the user you want to see",
-                                    type: "STRING" ,
+                                    type: ApplicationCommandOptionType.String ,
                                     required: true
                                 },
                             ]
@@ -57,14 +58,14 @@ class UserConf extends Command {
                 // REMOVING defaults, only being used by one user, and not sure it'd play nice with slash comands
                 {
                     name: "arenaalert",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Set up your arena alerts",
                     options: [
                         // Need enabledms, arena, payoutresult, payoutwarning
                         {
                             name: "enable_dms",
                             description: "Set it to send DMs for various alerts",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 { name: "all",     value: "all"     },
                                 { name: "primary", value: "primary" },
@@ -74,7 +75,7 @@ class UserConf extends Command {
                         {
                             name: "arena",
                             description: "Choose which arena to watch",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 { name: "char",     value: "char"     },
                                 { name: "fleet",     value: "fleet"     },
@@ -85,12 +86,12 @@ class UserConf extends Command {
                         {
                             name: "payout_result",
                             description: "Set it to send you the final rank at your payout",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                         },
                         {
                             name: "payout_warning",
                             description: "Set it to warn you before your payout, 1-1440min, 0 to disable",
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                             min_value: 0,
                             max_value: 1440,
                         }
@@ -98,14 +99,14 @@ class UserConf extends Command {
                 },
                 {
                     name: "lang",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Change your language settings",
                     // Need language & swgohlanguage, with the appropriate choices for each
                     options: [
                         {
                             name: "bot_language",
                             description: "Set the language for the bot's text",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: Object.keys(Bot.languages).map(lang => {
                                 return {
                                     name: lang,
@@ -116,7 +117,7 @@ class UserConf extends Command {
                         {
                             name: "swgoh_language",
                             description: "Set the language for the game's text",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: Bot.swgohLangList.map(lang => {
                                 return {
                                     name: lang,
@@ -128,7 +129,7 @@ class UserConf extends Command {
                 },
                 {
                     name: "view",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "View your current settings"
                 },
             ]

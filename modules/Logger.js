@@ -11,7 +11,7 @@ class Logger {
         this.client = client;
     }
     log(content, type = "log", webhook = false) {
-        const shard = this.client.shard ? ` (${this.client.shard.id})` : "";
+        const shard = this.client?.shard?.id ? ` (${this.client.shard.id})` : "";
         const time = `${moment.tz("US/Pacific").format("M/D/YYYY hh:mma").replace(" 0", "  ")}`;
         const timestamp = `[${time}]${shard}`;
         let out = "";

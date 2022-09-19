@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Poll extends Command {
     constructor(Bot) {
@@ -10,55 +11,55 @@ class Poll extends Command {
                 {
                     name: "create",
                     description: "Create a poll",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "question",
                             required: true,
                             description: "The question you want people to vote on",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "options",
                             required: true,
                             description: "Options for the poll, separated by a pipe symbol `|`",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "anonymous",
                             description: "If enabled, current votes will not be shown until the poll is closed. ",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         }
                     ]
                 },
                 {
                     name: "end",
                     description: "End a poll, and show the final results",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: []
                 },
                 {
                     name: "cancel",
                     description: "Cancel a poll, don't bother with the results",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: []
                 },
                 {
                     name: "view",
                     description: "View the status of a poll with the current results",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [ ]
                 },
                 {
                     name: "vote",
                     description: "Vote on a poll (your vote will be hidden)",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "option",
                             required: true,
                             description: "The poll option you want to vote for",
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                             min_value: 0,
                             max_value: 10,
                         }

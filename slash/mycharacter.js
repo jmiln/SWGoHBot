@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 const nodeFetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
 const {inspect} = require("util");      // eslint-disable-line no-unused-vars
 
@@ -12,18 +13,18 @@ class MyCharacter extends Command {
             options: [
                 {
                     name: "character",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "The character you want to show the stats of",
                     required: true
                 },
                 {
                     name: "allycode",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "The ally code for who's characters you want to see"
                 },
                 {
                     name: "ship",
-                    type: "BOOLEAN",
+                    type: ApplicationCommandOptionType.Boolean,
                     description: "Mark that you're looking for a ship specifically"
                 }
             ]

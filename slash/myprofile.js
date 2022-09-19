@@ -1,17 +1,17 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class MyProfile extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "myprofile",
-            category: "SWGoH",
             guildOnly: false,
             description: "Show some general stats about your game profile",
             options: [
                 {
                     name: "allycode",
                     description: "The ally code for the profile you want view",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
             ]
@@ -173,9 +173,9 @@ class MyProfile extends Command {
 
         //  Show the rarity stats/ averages
         const totalChars    =  Object.keys(rarityCount).map(r => rarityCount[r].c).reduce((a,b) => a + b, 0);
-        const avgCharRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].c).reduce((a,b) => a + b, 0) / totalChars).toFixed(2);
+        const avgCharRarity = (Object.keys(rarityCount).map(r => Number(r) * rarityCount[r].c).reduce((a,b) => a + b, 0) / totalChars).toFixed(2);
         const totalShips    =  Object.keys(rarityCount).map(r => rarityCount[r].s).reduce((a,b) => a + b, 0);
-        const avgShipRarity = (Object.keys(rarityCount).map(r => r * rarityCount[r].s).reduce((a,b) => a + b, 0) / totalShips).toFixed(2);
+        const avgShipRarity = (Object.keys(rarityCount).map(r => Number(r) * rarityCount[r].s).reduce((a,b) => a + b, 0) / totalShips).toFixed(2);
         fields.push({
             name: interaction.language.get("COMMAND_MYPROFILE_RARITY_HEADER"),
             value: ["` * | Char | Ship `",

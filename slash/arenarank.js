@@ -2,6 +2,7 @@
 // And from community feedback on changes
 // Formula from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/49kbrq/arena_rank_range/d0sr
 
+const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 
 class Arenarank extends Command {
@@ -12,13 +13,13 @@ class Arenarank extends Command {
             options: [
                 {
                     name: "rank",
-                    type: "INTEGER",
+                    type: ApplicationCommandOptionType.Integer,
                     description: "The rank to calculate the drops from",
                     required: true
                 },
                 {
                     name: "hops",
-                    type: "INTEGER",
+                    type: ApplicationCommandOptionType.Integer,
                     description: "How many more ranks to calculate"
                 }
             ]

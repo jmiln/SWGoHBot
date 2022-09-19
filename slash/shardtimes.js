@@ -2,6 +2,7 @@ const momentTZ = require("moment-timezone");
 require("moment-duration-format");
 // const {inspect} = require('util');
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Shardtimes extends Command {
     constructor(Bot) {
@@ -15,28 +16,28 @@ class Shardtimes extends Command {
                 //  - Flag, emote, symbol
                 {
                     name: "add",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Add a new name/ user to be shown",
                     options: [
                         {
                             name: "user",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "A name or mention/ userID",
                             required: true
                         },
                         {
                             name: "timezone",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "A timezone identifyer (Ex: US/Pacific)"
                         },
                         {
                             name: "time_until",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "How long (hh:mm) until the payout"
                         },
                         {
                             name: "flag",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "An emote to show next to the name"
                         }
                     ]
@@ -45,12 +46,12 @@ class Shardtimes extends Command {
                 //  - UserID, name, etc
                 {
                     name: "remove",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Remove a name/ user from the list",
                     options: [
                         {
                             name: "user",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "A name or mention/ userID",
                             required: true
                         }
@@ -60,12 +61,12 @@ class Shardtimes extends Command {
                 //  - destinationChannel
                 {
                     name: "copy",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Copy the shard times from this channel to the target channel",
                     options: [
                         {
                             name: "dest_channel",
-                            type: "CHANNEL",
+                            type: ApplicationCommandOptionType.Channel,
                             description: "The channel you want it to be copied to",
                             required: true
                         }
@@ -75,12 +76,12 @@ class Shardtimes extends Command {
                 //  - Ships
                 {
                     name: "view",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Copy the shard times from this channel to the target channel",
                     options: [
                         {
                             name: "ships",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                             description: "Show the ship arena payout times instead"
                         }
                     ]

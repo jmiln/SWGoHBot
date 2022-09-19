@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { WebhookClient } = require("discord.js");
 const moment = require("moment-timezone");
 require("moment-duration-format");
 const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
@@ -189,7 +189,7 @@ module.exports = (Bot, client) => {
     // Send a message to a webhook url, takes the url & the embed to send
     Bot.sendWebhook = (hookUrl, embed) => {
         const h = parseWebhook(hookUrl);
-        const hook = new Discord.WebhookClient({id: h.id, token: h.token});
+        const hook = new WebhookClient({id: h.id, token: h.token});
         hook.send({embeds: [
             embed
         ]}).catch(() => {});

@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 /**
  * The list of acronyms defined in data/acronym.json was transposed from the SWGoH forum. Any update there will need to make it's way into here.
@@ -12,7 +13,7 @@ class Acronyms extends Command {
             guildOnly: false,
             options: [{
                 name: "acronym",
-                type: "STRING",
+                type: ApplicationCommandOptionType.String,
                 description: "The acronym to look for",
                 required: true,
             }]

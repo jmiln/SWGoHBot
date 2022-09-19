@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 class WhoIs extends Command {
@@ -9,7 +10,7 @@ class WhoIs extends Command {
             options: [
                 {
                     name: "name",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "The player that you're looking for",
                     required: true
                 }

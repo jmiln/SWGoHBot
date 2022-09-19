@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class ReloadData extends Command {
     constructor(Bot) {
@@ -11,7 +12,7 @@ class ReloadData extends Command {
                 {
                     name: "target",
                     description: "What to reload",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
                         {name: "Commands", value: "Commands"},

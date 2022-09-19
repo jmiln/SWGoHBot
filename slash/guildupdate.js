@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class GuildUpdate extends Command {
     constructor(Bot) {
@@ -12,29 +13,29 @@ class GuildUpdate extends Command {
                 {
                     name: "set",
                     description: "Change the settings",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "enabled",
                             description: "Turn the updates on or off",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         },
                         {
                             name: "channel",
                             description: "Set which channel to log updates to",
-                            type: "CHANNEL"
+                            type: ApplicationCommandOptionType.Channel
                         },
                         {
                             name: "allycode",
                             description: "Set what ally code to get the guild's info from",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         }
                     ]
                 },
                 {
                     name: "view",
                     description: "View the settings for your guild updates",
-                    type: "SUB_COMMAND"
+                    type: ApplicationCommandOptionType.Subcommand
                 }
             ]
         });

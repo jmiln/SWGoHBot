@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 const statEnums = require("../data/statEnum.js");
 const emoteStrings = require("../data/emoteStrings.js");
 
@@ -14,31 +15,31 @@ class MyMods extends Command {
                 {
                     name: "character",
                     description: "Show the mod stat for the specified character",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "character",
                             required: true,
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The character you want to check"
                         },
                         {
                             name: "allycode",
                             description: "The ally code for whoever you're wanting to look up",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                     ]
                 },
                 {
                     name: "best",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Show the characters that have the best of a stat",
                     options: [
                         {
                             name: "stat",
                             required: true,
                             description: "Which stat you want it to show",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 { name: "Accuracy",                 value: "Accuracy" },
                                 { name: "Armor",                    value: "Armor" },
@@ -58,25 +59,25 @@ class MyMods extends Command {
                         {
                             name: "allycode",
                             description: "The ally code for whoever you're wanting to look up",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "total",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                             description: "Show the total stat, instead of just what the mods add on"
                         }
                     ]
                 },
                 {
                     name: "bestmods",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Show the characters that have the best of a stat",
                     options: [
                         {
                             name: "stat",
                             required: true,
                             description: "Which stat you want it to show",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 { name: "Crit Chance %", value: "Critical Chance" }, // Crit Chance, 53
                                 { name: "Defense",       value: "Defense" },         // Defense, 42
@@ -94,7 +95,7 @@ class MyMods extends Command {
                         {
                             name: "allycode",
                             description: "The ally code for whoever you're wanting to look up",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         }
                     ]
                 }

@@ -1,4 +1,5 @@
 var moment = require("moment-timezone");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 const Command = require("../base/slashCommand");
 
@@ -10,7 +11,7 @@ class Time extends Command {
             options: [
                 {
                     name: "timezone",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "A valid timezone to view"
                 }
             ]

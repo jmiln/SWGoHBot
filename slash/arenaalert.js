@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class ArenaAlert extends Command {
     constructor(Bot) {
@@ -9,7 +10,7 @@ class ArenaAlert extends Command {
             options: [
                 {
                     name: "enabledms",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "Set if it's going to DM you for jumps",
                     choices: [
                         {
@@ -28,7 +29,7 @@ class ArenaAlert extends Command {
                 },
                 {
                     name: "arena",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "Set which arena it will watch.",
                     choices: [
                         {
@@ -47,7 +48,7 @@ class ArenaAlert extends Command {
                 },
                 {
                     name: "payout_result",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "Send you a DM with your final payout result",
                     choices: [
                         {
@@ -62,7 +63,7 @@ class ArenaAlert extends Command {
                 },
                 {
                     name: "payout_warning",
-                    type: "INTEGER",
+                    type: ApplicationCommandOptionType.Integer,
                     description: "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
                     min_value: 0,
                     max_value: 1440,

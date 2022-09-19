@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 const moment = require("moment-timezone");
 const momentDuration = require("moment-duration-format");
 momentDuration(moment);
@@ -13,17 +14,17 @@ class Guilds extends Command {
                 {
                     name: "gear",
                     description: "Show an overview of the guild's gear levels",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "sort",
                             description: "Which gear level you'd like it sorted by (9-13)",
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                             min_value: 9,
                             max_value: 13,
                         }
@@ -32,17 +33,17 @@ class Guilds extends Command {
                 {
                     name: "mods",
                     description: "Show an overview of the guild's mod stats",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "sort",
                             description: "Choose how you want the results sorted",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 {
                                     name: "name",
@@ -67,39 +68,39 @@ class Guilds extends Command {
                 {
                     name: "relics",
                     description: "Show an overview of the guild's relic counts",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                     ]
                 },
                 {
                     name: "roster",
                     description: "View the guild's roster, showing ally codes, gp, etc.",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "registered",
                             description: "Show the discord names of anyone registered & on the server next to their name.",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         },
                         {
                             name: "show_allycode",
                             description: "Show user's ally codes instead of their gp",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         },
                         {
                             name: "sort",
                             description: "Choose what the list is sorted by.",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 {
                                     name: "name",
@@ -118,7 +119,7 @@ class Guilds extends Command {
                         {
                             name: "show_side",
                             description: "Display just light side or dark side GP",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 {
                                     name: "Light Side",
@@ -133,24 +134,24 @@ class Guilds extends Command {
                         {
                             name: "split_types",
                             description: "Display chacters and ships as different columns",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         }
                     ]
                 },
                 {
                     name: "tickets",
                     description: "Show how many event tickets each guild member has aquired for the day",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "sort",
                             description: "Choose what the list is sorted by.",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 {
                                     name: "tickets",
@@ -167,29 +168,29 @@ class Guilds extends Command {
                 {
                     name: "tw_summary",
                     description: "Show an overview of stats for your guild that could be useful for territory wars",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "expand",
                             description: "Expand some of the fields to show all options",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                         },
                     ]
                 },
                 {
                     name: "view",
                     description: "Show an overview of the guild's stats",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "allycode",
                             description: "The ally code of the guild you want to check.",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                     ]
                 }

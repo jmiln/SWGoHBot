@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 // const {inspect} = require("util");
 
 class Reload extends Command {
@@ -10,7 +11,7 @@ class Reload extends Command {
             options: [
                 {
                     name: "command",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "The command to reload",
                     required: true
                 }

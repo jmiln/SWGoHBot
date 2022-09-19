@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 const emoteStrings = require("../data/emoteStrings.js");
 
 class Character extends Command {
@@ -10,7 +11,7 @@ class Character extends Command {
             options: [
                 {
                     name: "character",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "The character you want to see the gear of",
                     required: true
                 },

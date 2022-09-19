@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Register extends Command {
     constructor(Bot) {
@@ -9,13 +10,13 @@ class Register extends Command {
                 {
                     name: "allycode",
                     description: "The ally code for the user you want to look up",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "user",
                     description: "The user you want to link to an ally code. (You must have mod/ admin perms for this)",
-                    type: "USER"
+                    type: ApplicationCommandOptionType.User
                 }
             ]
         });

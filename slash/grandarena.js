@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -24,24 +25,24 @@ class GrandArena extends Command {
             options: [
                 {
                     name: "allycode_1",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "Ally code for player 1",
                     required: true
                 },
                 {
                     name: "allycode_2",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "Ally code for player 2",
                     required: true
                 },
                 {
                     name: "characters",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "Characters to compare, comma seperated"
                 },
                 {
                     name: "faction",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "A faction to compare for the two players"
                 }
             ]

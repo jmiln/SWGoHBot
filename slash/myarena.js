@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 const {inspect} = require("util"); // eslint-disable-line no-unused-vars
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
@@ -12,11 +13,11 @@ class MyArena extends Command {
                 {
                     name: "allycode",
                     description: "The ally code of the user you want to see",
-                    type: "STRING"
+                    type: ApplicationCommandOptionType.String
                 },
                 {
                     name: "stats",
-                    type: "BOOLEAN",
+                    type: ApplicationCommandOptionType.Boolean,
                     description: "Show some general stats for your arena team"
                 }
             ]

@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Zetas extends Command {
     constructor(Bot) {
@@ -8,36 +9,36 @@ class Zetas extends Command {
             options: [
                 {
                     name: "guild",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "See a list of zetas for your whole guild",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true,
                             description: "The ally code of a player in the guild you want to see"
                         },
                         {
                             name: "character",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Just show the zeta'd abilities for a specific character"
                         },
                     ]
                 },
                 {
                     name: "player",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "See a player's zetas",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true,
                             description: "The ally code of the player you want to see."
                         },
                         {
                             name: "character",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Just show the zeta'd abilities for a specific character"
                         },
                     ]

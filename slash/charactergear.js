@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Charactergear extends Command {
     constructor(Bot) {
@@ -9,23 +10,23 @@ class Charactergear extends Command {
             options: [
                 {
                     name: "character",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "The character you want to see the gear of",
                     required: true
                 },
                 {
                     name: "allycode",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     description: "An ally code to check the character against"
                 },
                 {
                     name: "expand",
-                    type: "BOOLEAN",
+                    type: ApplicationCommandOptionType.Boolean,
                     description: "Expand the gear pieces to show their parts instead of the whole"
                 },
                 {
                     name: "gearlevel",
-                    type: "INTEGER",
+                    type: ApplicationCommandOptionType.Integer,
                     description: "The gear level you want to see the requirements for",
                     min_value: 1,
                     max_value: 13,

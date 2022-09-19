@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 const factionMap = require("../data/factionMap");
 
 class Faction extends Command {
@@ -10,29 +11,29 @@ class Faction extends Command {
                 {
                     name: "faction_group_1",
                     description: "The faction you want to look up",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: factionMap.slice(0, 20)
                 },
                 {
                     name: "faction_group_2",
                     description: "The faction you want to look up",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: factionMap.slice(20, 40)
                 },
                 {
                     name: "allycode",
                     description: "Ally code to look up the info for.",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                 },
                 {
                     name: "leader",
                     description: "Limit results to characters with the leader tag.",
-                    type: "BOOLEAN"
+                    type: ApplicationCommandOptionType.Boolean
                 },
                 {
                     name: "zeta",
                     description: "Limit results to characters with abilities that can be zeta'd.",
-                    type: "BOOLEAN"
+                    type: ApplicationCommandOptionType.Boolean
                 }
             ]
         });

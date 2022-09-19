@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 const raids = require("../data/raiddmg");
 
 class RaidDamage extends Command {
@@ -11,7 +12,7 @@ class RaidDamage extends Command {
                 {
                     name: "raid",
                     description: "The raid you want to calculate for",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
                         {
@@ -35,7 +36,7 @@ class RaidDamage extends Command {
                 {
                     name: "phase",
                     description: "Which of the 4 phases you want to calculate",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
                         {
@@ -59,7 +60,7 @@ class RaidDamage extends Command {
                 {
                     name: "amount",
                     description: "What amount of the damage you want to calculate, damage number or percentage",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 }
             ]

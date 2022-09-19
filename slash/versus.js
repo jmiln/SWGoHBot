@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Versus extends Command {
     constructor(Bot) {
@@ -10,19 +11,19 @@ class Versus extends Command {
                 {
                     name: "allycode_1",
                     description: "The ally code of the first user you want to compare",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "allycode_2",
                     description: "The ally code of the second user you want to compare",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "character",
                     description: "A character you want to compare the stats of",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 }
             ]

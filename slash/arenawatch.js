@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 // const {inspect} = require("util");
 
 class ArenaWatch extends Command {
@@ -9,23 +10,23 @@ class ArenaWatch extends Command {
             options: [
                 {
                     name: "allycode",
-                    type: "SUB_COMMAND_GROUP",
+                    type: ApplicationCommandOptionType.SubcommandGroup,
                     description: "Any ally codes you want to put in (9 digit numbers, don't need the dashes)",
                     options: [
                         {
                             name: "add",
                             description: "Add ally codes in",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             options: [
                                 {
                                     name: "allycodes",
                                     description: "AllyCodes or allycode:mention, comma seperated",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     required: true
                                 },
                                 {
                                     name: "mark",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     description: "The emote or symbol to mark them with. Leaving this empty will remove it if available"
                                 }
                             ]
@@ -33,30 +34,30 @@ class ArenaWatch extends Command {
                         {
                             name: "remove",
                             description: "Add ally codes in",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             options: [
                                 {
                                     name: "allycodes",
                                     description: "AllyCodes, comma seperated",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     required: true
                                 }
                             ]
                         },
                         {
                             name: "edit",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             description: "Use to change an allycode or mention (Ex: '123123123 123123123:mention')",
                             options: [
                                 {
                                     name: "old_allycode",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     description: "Ally code of the person you want to modify",
                                     required: true
                                 },
                                 {
                                     name: "new_allycode",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     description: "Different ally code, or allycode:mention to change to (Ex: 123123123:@mention)",
                                     required: true
                                 }
@@ -66,18 +67,18 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "arena",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Choose between the arena types",
                     options: [
                         {
                             name: "enabled",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                             description: "Set whether it's enabled or not",
                             required: true,
                         },
                         {
                             name: "arena",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Choose which arena to toggle",
                             required: true,
                             choices: [
@@ -103,18 +104,18 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "channel",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "The channel to put the logs in",
                     options: [
                         {
                             name: "target_channel",
-                            type: "CHANNEL",
+                            type: ApplicationCommandOptionType.Channel,
                             required: true,
                             description: "The channel to put the logs in"
                         },
                         {
                             name: "arena",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true,
                             description: "The arena to watch",
                             choices: [
@@ -132,7 +133,7 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "enabled",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Enable/ Disable arenawatch",
                     options: [{
                         name: "toggle",
@@ -143,11 +144,11 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "report",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Choose whether you want it to report on climbs, drops, or both",
                     options: [{
                         name: "arena",
-                        type: "STRING",
+                        type: ApplicationCommandOptionType.String,
                         description: "Choose whether you want it to report on climbs, drops, or both",
                         required: true,
                         choices: [
@@ -159,13 +160,13 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "showvs",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Enable or disable showing when one person hits another",
                     options: [
                         {
                             name: "enable",
                             description: "True/ False",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                             required: true
 
                         }
@@ -173,18 +174,18 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "warn",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Set when to warn who, and about which arena",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The user's ally code",
                             required: true
                         },
                         {
                             name: "mins",
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                             description: "(1-1439) The number of minutes before their payout to warn them",
                             required: true,
                             min_value: 0,
@@ -192,7 +193,7 @@ class ArenaWatch extends Command {
                         },
                         {
                             name: "arena",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Set which arena it will watch.",
                             required: true,
                             choices: [
@@ -218,23 +219,23 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "payout",
-                    type: "SUB_COMMAND_GROUP",
+                    type: ApplicationCommandOptionType.SubcommandGroup,
                     description: "Set to spit out the payout result of a user",
                     options: [
                         {
                             name: "enable",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             description: "Choose between the arena types",
                             options: [
                                 {
                                     name: "enabled",
-                                    type: "BOOLEAN",
+                                    type: ApplicationCommandOptionType.Boolean,
                                     description: "Set whether it's enabled or not",
                                     required: true,
                                 },
                                 {
                                     name: "arena",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     description: "Choose which arena to toggle",
                                     required: true,
                                     choices: [
@@ -256,19 +257,19 @@ class ArenaWatch extends Command {
                         },
                         {
                             name: "channel",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             description: "Set an arena's logs to a specified channel",
                             options: [
                                 {
                                     name: "target_channel",
-                                    type: "CHANNEL",
+                                    type: ApplicationCommandOptionType.Channel,
                                     description: "The channel to send to",
                                     required: true
                                 },
                                 {
 
                                     name: "arena",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     description: "Set which arena it will log to this channel",
                                     required: true,
                                     choices: [
@@ -290,18 +291,18 @@ class ArenaWatch extends Command {
                         },
                         {
                             name: "mark",
-                            type: "SUB_COMMAND",
+                            type: ApplicationCommandOptionType.Subcommand,
                             description: "Set a mark for a player",
                             options: [
                                 {
                                     name: "allycode",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     description: "The ally code of the player to mark",
                                     required: true
                                 },
                                 {
                                     name: "mark",
-                                    type: "STRING",
+                                    type: ApplicationCommandOptionType.String,
                                     required: true,
                                     description: "The emote or symbol to mark them with. Leaving this empty will remove it if available"
                                 }
@@ -311,18 +312,18 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "result",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Set to spit out the payout result of a user",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The user's ally code",
                             required: true
                         },
                         {
                             name: "arena",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Set which arena it will give the results of.",
                             required: true,
                             choices: [
@@ -348,12 +349,12 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "use_marks_in_log",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "Toggle showing players' marks in the arena log",
                     options: [
                         {
                             name: "enable",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                             required: true,
                             description: "Show marks in arena log?",
                         }
@@ -361,12 +362,12 @@ class ArenaWatch extends Command {
                 },
                 {
                     name: "view",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     description: "View your arenaWatch settings",
                     options: [
                         {
                             name: "allycode",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "An allycode to check the specific settings for"
                         }
                     ]

@@ -1,4 +1,5 @@
 const moment = require("moment-timezone");
+const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const { typedDefaultSettings } = require("../config.js");
 // const { inspect } = require("util");
@@ -8,18 +9,18 @@ const options = {
     add: {
         name: "add",
         description: "Add a value to one of the array settings",
-        type: "SUB_COMMAND",
+        type: ApplicationCommandOptionType.Subcommand,
         options: []
     },
     remove: {
         name: "remove",
         description: "Remove a value from one of the array settings",
-        type: "SUB_COMMAND",
+        type: ApplicationCommandOptionType.Subcommand,
         options: []
     },
     set: {
         name: "set",
-        type: "SUB_COMMAND",
+        type: ApplicationCommandOptionType.Subcommand,
         description: "Set the value of one of the options",
         options: []
     }

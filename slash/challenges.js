@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 var moment = require("moment-timezone");
 
 class Challenges extends Command {
@@ -9,7 +10,7 @@ class Challenges extends Command {
             guildOnly: false,
             options: [{
                 name: "day",
-                type: "STRING",
+                type: ApplicationCommandOptionType.String,
                 description: "Day of the week",
                 choices: [
                     {

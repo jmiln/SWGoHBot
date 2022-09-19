@@ -1,4 +1,5 @@
 const momentTZ = require("moment-timezone");
+const { ApplicationCommandOptionType } = require("discord.js");
 require("moment-duration-format");
 // const {inspect} = require("util");
 
@@ -16,49 +17,49 @@ class Event extends Command {
                 {
                     name: "create",
                     description: "Make a new event",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "name",
                             description: "The name of the event, no spaces allowed.",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true
                         },
                         {
                             name: "day",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The date (DD/MM/YYYY) that you want it to go off",
                             required: true
                         },
                         {
                             name: "time",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
                             required: true
                         },
                         {
                             name: "message",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The message that you want the event to spit back out",
                         },
                         {
                             name: "repeat",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
                         },
                         {
                             name: "repeatday",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
                         },
                         {
                             name: "channel",
-                            type: "CHANNEL",
+                            type: ApplicationCommandOptionType.Channel,
                             description: "Set which channel the event will announce on",
                         },
                         {
                             name: "countdown",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                             description: "Set to use the countdown or not (Configured in setconf)",
                         },
                     ]
@@ -66,12 +67,12 @@ class Event extends Command {
                 {
                     name: "createjson",
                     description: "Create new event(s), inputted as a json code block",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "json",
                             description: "The json formatted text.",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true
                         }
                     ]
@@ -79,12 +80,12 @@ class Event extends Command {
                 {
                     name: "delete",
                     description: "Delete an event",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "name",
                             description: "The unique name of the event you want to delete",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true
                         }
                     ]
@@ -92,52 +93,52 @@ class Event extends Command {
                 {
                     name: "edit",
                     description: "Create new event(s), inputted as a json code block",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "event_name",
                             description: "The name of the event you want to edit",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true
                         },
                         {
                             name: "name",
                             description: "The new name of the event, no spaces allowed.",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                         },
                         {
                             name: "day",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The date (DD/MM/YYYY) that you want it to go off",
                         },
                         {
                             name: "time",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
                         },
                         {
                             name: "message",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "The message that you want the event to spit back out",
                         },
                         {
                             name: "repeat",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Lets you set a duration with the format of 00d00h00m. (Not compatible with repeatday)",
                         },
                         {
                             name: "repeatday",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0. (Not compatible with reapeat)",
                         },
                         {
                             name: "channel",
-                            type: "CHANNEL",
+                            type: ApplicationCommandOptionType.Channel,
                             description: "Set which channel the event will announce on",
                         },
                         {
                             name: "countdown",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                             description: "Set to use the countdown or not (Configured in setconf)",
                         }
                     ]
@@ -146,12 +147,12 @@ class Event extends Command {
                     // TODO Possibly work this in to have the dropdowns?
                     name: "trigger",
                     description: "Trigger the selected event",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "name",
                             description: "The unique name of the event you want to trigger",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true
                         }
                     ]
@@ -159,27 +160,27 @@ class Event extends Command {
                 {
                     name: "view",
                     description: "View your event(s)",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "name",
                             description: "The unique name of the event you want to see.",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                         },
                         {
                             name: "minimal",
                             description: "Show the event(s), but without the message.",
-                            type: "BOOLEAN",
+                            type: ApplicationCommandOptionType.Boolean,
                         },
                         {
                             name: "page_num",
                             description: `Set it to paginate the events, showing ${EVENTS_PER_PAGE} events at a time.`,
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                         },
                         {
                             name: "filter",
                             description: "Show only events that match the filter",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         }
                     ]
                 },

@@ -1,4 +1,5 @@
 const Command = require("../base/slashCommand");
+const { ApplicationCommandOptionType } = require("discord.js");
 // const {inspect} = require('util');
 
 class GuildSearch extends Command {
@@ -10,23 +11,23 @@ class GuildSearch extends Command {
                 {
                     name: "character",
                     description: "Look for your guild's stats on a character.",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "character",
                             description: "The character you want to display",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true
                         },
                         {
                             name: "allycode",
                             description: "An ally code to determine which guild you're wanting to look up",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "sort",
                             description: "Choose what to sort by",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 { name: "Gear", value: "gear" },
                                 { name: "GP", value: "gp" },
@@ -36,7 +37,7 @@ class GuildSearch extends Command {
                         {
                             name: "stat",
                             description: "Which stat you want it to show",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 { name: "Health", value: "Health" },
                                 { name: "Protection", value: "Protection" },
@@ -57,14 +58,14 @@ class GuildSearch extends Command {
                         {
                             name: "top",
                             description: "View only the top x in the list (1-50)",
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                             min_value: 0,
                             max_value: 50,
                         },
                         {
                             name: "rarity",
                             description: "View only X rarity (Star lvl) and above. (1-7)",
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                             min_value: 0,
                             max_value: 7,
                         },
@@ -72,40 +73,40 @@ class GuildSearch extends Command {
                         {
                             name: "reverse",
                             description: "Reverse the sort order",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         },
                         {
                             name: "omicrons",
                             description: "Show only results that have omicron'd abilities",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         },
                         {
                             name: "zetas",
                             description: "Show only results that have zeta'd abilities",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         },
                     ]
                 },
                 {
                     name: "ship",
                     description: "Look for your guild's stats on a ship.",
-                    type: "SUB_COMMAND",
+                    type: ApplicationCommandOptionType.Subcommand,
                     options: [
                         {
                             name: "ship",
                             description: "The ship you want to display",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             required: true
                         },
                         {
                             name: "allycode",
                             description: "An ally code to determine which guild you're wanting to look up",
-                            type: "STRING"
+                            type: ApplicationCommandOptionType.String
                         },
                         {
                             name: "sort",
                             description: "Choose what to sort by",
-                            type: "STRING",
+                            type: ApplicationCommandOptionType.String,
                             choices: [
                                 { name: "GP", value: "gp" },
                                 { name: "Name", value: "name" },
@@ -116,14 +117,14 @@ class GuildSearch extends Command {
                         {
                             name: "top",
                             description: "View only the top x in the list (1-50)",
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                             min_value: 0,
                             max_value: 50,
                         },
                         {
                             name: "rarity",
                             description: "View only X rarity (Star lvl) and above. (1-7)",
-                            type: "INTEGER",
+                            type: ApplicationCommandOptionType.Integer,
                             min_value: 0,
                             max_value: 7,
                         },
@@ -131,7 +132,7 @@ class GuildSearch extends Command {
                         {
                             name: "reverse",
                             description: "Reverse the sort order",
-                            type: "BOOLEAN"
+                            type: ApplicationCommandOptionType.Boolean
                         },
                     ]
                 }

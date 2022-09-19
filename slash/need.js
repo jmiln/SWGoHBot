@@ -1,3 +1,4 @@
+const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const factionMap = require("../data/factionMap");
 const shopMap = [
@@ -33,25 +34,25 @@ class Need extends Command {
                 {
                     name: "allycode",
                     description: "The ally code for the user you want to look up",
-                    type: "STRING"
+                    type: ApplicationCommandOptionType.String
                 },
                 // Put in faction|shop|battle|keyword on their own
                 {
                     name: "battle",
                     description: "Which section of battles you want to check on",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: battleMap
                 },
                 {
                     name: "keyword",
                     description: "Choose all of a section",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: kwMap
                 },
                 {
                     name: "shop",
                     description: "Which shop you want to check the progress on",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: shopMap
                 },
                 // The faction tags listed as in game, but needed to be split up into multiple lists because of
@@ -59,13 +60,13 @@ class Need extends Command {
                 {
                     name: "faction_group_1",
                     description: "Which faction you want to check the progress on",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: factionMap.slice(0, 20)
                 },
                 {
                     name: "faction_group_2",
                     description: "Which faction you want to check the progress on",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: factionMap.slice(20, 40)
                 },
             ]
