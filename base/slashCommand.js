@@ -33,8 +33,8 @@ class slashCommand {
     }
 
     async error(interaction, errMsg, options) {
-        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/error:${this.name}] Missing interaction`);
-        if (!errMsg) throw new Error(`[baseSlash/error:${this.name}] Missing error message`);
+        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/error:${this.commandData.name}] Missing interaction`);
+        if (!errMsg?.length) throw new Error(`[baseSlash/error:${this.commandData.name}] Missing error message`);
         if (!options) options = {
             ephemeral: true
         };
@@ -47,16 +47,16 @@ class slashCommand {
     }
 
     async success(interaction, msgOut, options={}) {
-        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/success:${this.name}] Missing interaction`);
-        if (!msgOut) throw new Error(`[baseSlash/success:${this.name}] Missing outgoing success message`);
+        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
+        if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
         options.title = options.title || "Success!";
         options.color = options.color || "#00ff00";
         await this.embed(interaction, msgOut, options);
     }
 
     async embed(interaction, msgOut, options={}) {
-        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/embed:${this.name}] Missing interaction`);
-        if (!msgOut) throw new Error(`[baseSlash/embed:${this.name}] Missing outgoing message`);
+        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
+        if (!msgOut) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing outgoing message`);
         const title     = options.title || "TITLE HERE";
         const footer    = options.footer || "";
         const color     = options.color;
@@ -82,8 +82,8 @@ class slashCommand {
                 });
             } catch (e) {
                 // If something breaks with the editReply, log it, then just send a message to that channel
-                console.log(`[base/slashCommand Error: ${this.name}] ` + e.message);
-                console.log(`[base/slashCommand Message: ${this.name}] ` + interaction.content);
+                console.log(`[base/slashCommand Error: ${this.commandData.name}] ` + e.message);
+                console.log(`[base/slashCommand Message: ${this.commandData.name}] ` + interaction.content);
                 return interaction.channel.send({
                     content: null,
                     embeds: [{

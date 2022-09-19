@@ -1,4 +1,5 @@
 module.exports.charChecklist = {
+//     Their ID name                Shortened name to fit nicely
     "Galactic Legends": [
         ["GLREY",                   "Rey"],
         ["JEDIMASTERKENOBI",        "JM Kenobi"],
