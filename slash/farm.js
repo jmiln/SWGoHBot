@@ -84,7 +84,7 @@ class Farm extends Command {
             author: {
                 name: character.name + interaction.language.get("COMMAND_FARM_LOCATIONS")
             },
-            color: character.side === "light" ? "#0055ff" : "#e01414",
+            color: Bot.getSideColor(character.side),
             description: `**${outList.map(f => "* " + f).join("\n")}**`
         }]});
     }

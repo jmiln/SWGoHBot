@@ -90,19 +90,19 @@ class Ships extends Command {
         }
         if (!fields.length) {
             fields.push({
-                "name": "Error",
-                "value": "Sorry, but this ship has not been fully updated yet."
+                name: "Error",
+                value: "Sorry, but this ship has not been fully updated yet."
             });
         }
         return interaction.reply({
             embeds: [{
-                "color": `${ship.side === "light" ? "#5114e0" : "#e01414"}`,
-                "author": {
-                    "name": Bot.toProperCase(ship.name),
-                    "url": ship.url,
-                    "icon_url": ship.avatarURL
+                color: Bot.getSideColor(ship.side),
+                author: {
+                    name: Bot.toProperCase(ship.name),
+                    url: ship.url,
+                    icon_url: ship.avatarURL
                 },
-                "fields": fields
+                fields: fields
             }]
         });
     }

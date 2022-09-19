@@ -142,7 +142,7 @@ class Charactergear extends Command {
                 }
                 return interaction.reply({
                     embeds: [{
-                        "color": `${character.side === "light" ? "#5114e0" : "#e01414"}`,
+                        color: Bot.getSideColor(character.side),
                         "author": {
                             "name": character.name,
                             "url": character.url,

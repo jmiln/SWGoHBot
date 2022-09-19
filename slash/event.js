@@ -1,5 +1,5 @@
 const momentTZ = require("moment-timezone");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js");
 require("moment-duration-format");
 // const {inspect} = require("util");
 
@@ -609,7 +609,7 @@ class Event extends Command {
                         } else { // Else, use the default one from their settings
                             channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"] || c.id === guildConf.announceChan);
                         }
-                        if (channel && channel.permissionsFor(interaction.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+                        if (channel && channel.permissionsFor(interaction.guild.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                             try {
                                 channel.send({content: announceMessage});
                                 return interaction.reply({content: "Successfully triggered " + eventName, ephemeral: true});
@@ -710,7 +710,7 @@ class Event extends Command {
                             return super.error(interaction,
                                 "**__UPDATED:__**\n" + outLog.map(e => `- ${e}`).join("\n"),
                                 // `Updated event from ${Bot.codeBlock(JSON.stringify(event, null, 2))}to ${Bot.codeBlock(JSON.stringify(validEvent.event, null, 2))}`,
-                                {title: "Success", color: "#00ff00"}
+                                {title: "Success", color: Bot.constants.colors.green}
                             );
                         } else {
                             return super.error(interaction, interaction.language.get("COMMAND_EVENT_EDIT_BROKE") + "\n" + res.error);

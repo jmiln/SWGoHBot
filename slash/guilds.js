@@ -308,7 +308,7 @@ class Guilds extends Command {
                     description: Bot.codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit",
-                    color: "#FF0000"
+                    color: Bot.constants.colors.red
                 }]});
             }
 
@@ -910,7 +910,7 @@ class Guilds extends Command {
                         {
                             title: "Missing Guild",
                             description: interaction.language.get("BASE_SWGOH_NO_GUILD"),
-                            color: Bot.constants.color.red
+                            color: Bot.constants.colors.brightred
                         }
                     ]
                 });
@@ -927,7 +927,7 @@ class Guilds extends Command {
                 return interaction.editReply({content: null, embeds: [{
                     description: Bot.codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
-                    color: Bot.constants.color.red,
+                    color: Bot.constants.colors.brightred,
                     footer: "Please try again in a bit."
                 }]});
             }

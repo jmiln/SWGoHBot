@@ -1,4 +1,5 @@
-const { WebhookClient } = require("discord.js");
+const { WebhookClient, ChannelType } = require("discord.js");
+const { PermissionsBitField  } = require("discord.js");
 const moment = require("moment-timezone");
 require("moment-duration-format");
 const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
@@ -15,12 +16,14 @@ module.exports = (Bot, client) => {
 
         // Some normal color codes
         colors: {
-            black:  "#000000",
-            blue:   "#0000FF",
-            green:  "#00FF00",
-            red:    "#FF0000",
-            white:  "#FFFFFF",
-            yellow: "#FFFF00",
+            black:     0,
+            blue:      255,
+            lightblue: 5313760,
+            green:     65280,
+            red:       16711680,
+            brightred: 14685204,
+            white:     16777215,
+            yellow:    16776960,
         },
         // Permissions mapping
         permMap: {
@@ -60,6 +63,13 @@ module.exports = (Bot, client) => {
         ]
     };
 
+    // Get a color for embed edges
+    Bot.getSideColor = (side) => {
+        if (!side) return Error("[func/getSideColor] Missing side.");
+        if (!["light", "dark"].includes(side.toLowerCase())) return Error("[func/getSideColor] Missing side.");
+        return side === "light" ? Bot.constants.colors.lightblue : Bot.constants.colors.brightred;
+    };
+
 
     /*  PERMISSION LEVEL FUNCTION
      *  This is a very basic permission system for commands which uses "levels"
@@ -85,7 +95,7 @@ module.exports = (Bot, client) => {
 
         // Guild Owner gets an extra level, wooh!
         const gOwner = await interaction.guild.fetchOwner();
-        if (interaction.channel?.type === "GUILD_TEXT" && interaction.guild && gOwner) {
+        if (interaction.channel?.type === ChannelType.GuildText && interaction.guild && gOwner) {
             // message.author for text message, message.user for interactions
             if (interaction.user?.id === gOwner.id) {
                 return permMap.GUILD_OWNER;
@@ -94,7 +104,7 @@ module.exports = (Bot, client) => {
 
         // Also giving them the permissions if they have the manage server role,
         // since they can change anything else in the server, so no reason not to
-        if (interaction.member.permissions.has(["ADMINISTRATOR"]) || interaction.member.permissions.has(["MANAGE_GUILD"])) {
+        if (interaction.member.permissions.has([PermissionsBitField.Flags.Administrator]) || interaction.member.permissions.has([PermissionsBitField.Flags.ManageGuild])) {
             return permMap.GUILD_ADMIN;
         }
 
@@ -218,7 +228,7 @@ module.exports = (Bot, client) => {
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
-        if (!chan || !chan.send || !chan.permissionsFor(guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+        if (!chan || !chan.send || !chan.permissionsFor(guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
             // TODO Should probably log this / tell users about the issue somehow?
             return;
         } else {
@@ -261,99 +271,6 @@ module.exports = (Bot, client) => {
             }
         }
         return commandName;
-    };
-
-    // Loads the given command
-    client.loadCommand = (commandName) => {
-        try {
-            const cmd = new (require(`../commands/${commandName}`))(Bot);
-            if (cmd.help.category === "SWGoH" && !Bot.swgohAPI) {
-                return "Unable to load command ${commandName}: no swgohAPI";
-            } else if (!cmd.conf.enabled) {
-                return false;
-            }
-            client.commands.set(cmd.help.name, cmd);
-            cmd.conf.aliases.forEach(alias => {
-                client.aliases.set(alias, cmd.help.name);
-            });
-            return false;
-        } catch (e) {
-            return `Unable to load command ${commandName}: ${e}`;
-        }
-    };
-
-    // Unloads the given command
-    client.unloadCommand = (command) => {
-        if (typeof command === "string") {
-            const commandName = command;
-            if (client.commands.has(commandName)) {
-                command = client.commands.get(commandName);
-            } else if (Bot.aliases.has(commandName)) {
-                command = client.commands.get(client.aliases.get(commandName));
-            }
-        }
-
-        client.commands.delete(command);
-        client.aliases.forEach((cmd, alias) => {
-            if (cmd === command) client.aliases.delete(alias);
-        });
-        delete require.cache[require.resolve(`../commands/${command.help.name}.js`)];
-        return false;
-    };
-
-    // Combines the last two (load & unload), and reloads a command
-    client.reloadCommand = async (commandName) => {
-        let command;
-        if (client.commands.has(commandName)) {
-            command = client.commands.get(commandName);
-        } else if (client.aliases.has(commandName)) {
-            command = client.commands.get(client.aliases.get(commandName));
-        }
-        if (!command) return new Error(`The command \`${commandName}\` doesn"t seem to exist, nor is it an alias. Try again!`);
-
-        let response = client.unloadCommand(command);
-        if (response) {
-            return new Error(`Error Unloading: ${response}`);
-        } else {
-            response = client.loadCommand(command.help.name);
-            if (response) {
-                return new Error(`Error Loading: ${response}`);
-            }
-        }
-        return command.help.name;
-    };
-
-    // Reloads all commads (even if they were not loaded before)
-    // Will not remove a command it it's been loaded,
-    // but will load a new command it it's been added
-    client.reloadAllCommands = async () => {
-        [...client.commands.keys()].forEach(c => {
-            client.unloadCommand(c);
-        });
-        const cmdFiles = await readdir("./commands/");
-        const coms = [], errArr = [];
-        cmdFiles.forEach(async (f) => {
-            try {
-                const cmd = f.split(".")[0];
-                if (f.split(".").slice(-1)[0] !== "js") {
-                    errArr.push(f);
-                } else {
-                    const res = client.loadCommand(cmd);
-                    if (!res) {
-                        coms.push(cmd);
-                    } else {
-                        errArr.push(f);
-                    }
-                }
-            } catch (e) {
-                Bot.logger.error("Error: " + e);
-                errArr.push(f);
-            }
-        });
-        return {
-            succArr: coms,
-            errArr: errArr
-        };
     };
 
     // Reloads all slash commads (even if they were not loaded before)

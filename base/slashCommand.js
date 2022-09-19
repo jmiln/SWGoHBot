@@ -39,7 +39,7 @@ class slashCommand {
             ephemeral: true
         };
         options.title = options.title || "Error";
-        options.color = options.color || "#e01414";
+        options.color = options.color || this.Bot.constants.colors.red;
         if (options.example) {
             errMsg += `\n\n**Example:**${this.Bot.codeBlock(options.example)}`;
         }
@@ -50,7 +50,7 @@ class slashCommand {
         if (!interaction || !interaction.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
         options.title = options.title || "Success!";
-        options.color = options.color || "#00ff00";
+        options.color = options.color || this.Bot.constants.colors.green;
         await this.embed(interaction, msgOut, options);
     }
 

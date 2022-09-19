@@ -115,7 +115,7 @@ class Mods extends Command {
         }
         return interaction.reply({
             embeds: [{
-                color: character.side === "light" ? "#0055FF" : "#E01414",
+                color: Bot.getSideColor(character.side),
                 author: {
                     name: character.name,
                     url: character.mods.url,

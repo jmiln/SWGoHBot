@@ -1,3 +1,4 @@
+const { PermissionsBitField } = require("discord.js");
 const moment = require("moment-timezone");
 // const {inspect} = require("util");
 
@@ -134,7 +135,7 @@ module.exports = (Bot, client) => {
                                         pUser.send({embeds: [{
                                             author: {name: "Arena Payout Alert"},
                                             description: `${player.name}'s character arena payout is in **${minTil}** minutes!\nYour current rank is ${player.arena.char.rank}`,
-                                            color: "#00FF00"
+                                            color: Bot.constants.colors.green,
                                         }]})
                                             .catch(() => {});
                                         // .catch(err => console.log("[patFunc getRanks]", err));
@@ -144,7 +145,7 @@ module.exports = (Bot, client) => {
                                     pUser.send({embeds: [{
                                         author: {name: "Character arena"},
                                         description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
-                                        color: "#00FF00"
+                                        color: Bot.constants.colors.green,
                                     }]})
                                         .catch(() => {});
                                     // .catch(err => console.log("[patFunc getRanks]", err));
@@ -155,7 +156,7 @@ module.exports = (Bot, client) => {
                                     pUser.send({embeds: [{
                                         author: {name: "Character Arena"},
                                         description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${player.arena.char.rank}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
-                                        color: "#ff0000",
+                                        color: Bot.constants.colors.red,
                                         footer: {
                                             text: payoutTime
                                         }
@@ -188,7 +189,7 @@ module.exports = (Bot, client) => {
                                         pUser.send({embeds: [{
                                             author: {name: "Arena Payout Alert"},
                                             description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
-                                            color: "#00FF00"
+                                            color: Bot.constants.colors.green,
                                         }]})
                                             .catch(() => {});
                                         // .catch(err => console.log("[patFunc getRanks]", err));
@@ -199,7 +200,7 @@ module.exports = (Bot, client) => {
                                     pUser.send({embeds: [{
                                         author: {name: "Fleet arena"},
                                         description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
-                                        color: "#00FF00"
+                                        color: Bot.constants.colors.green,
                                     }]})
                                         .catch(() => {});
                                     // .catch(err => console.log("[patFunc getRanks]", err));
@@ -209,7 +210,7 @@ module.exports = (Bot, client) => {
                                     pUser.send({embeds: [{
                                         author: {name: "Fleet Arena"},
                                         description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${player.arena.ship.rank}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
-                                        color: "#ff0000",
+                                        color: Bot.constants.colors.red,
                                         footer: {
                                             text: payoutTime
                                         }
@@ -333,7 +334,7 @@ module.exports = (Bot, client) => {
             const channel = client.channels.cache.find(chan => chan.id === chanIn || chan.name === chanIn);
 
             let msg, targetMsg;
-            if (channel && channel?.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+            if (channel && channel?.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                 if (!msgIdIn) {
                     targetMsg = await channel.send({embeds: [outEmbed]});
                 } else {
@@ -585,7 +586,7 @@ module.exports = (Bot, client) => {
                     const fields = charFields.concat(shipFields);
                     client.shard.broadcastEval((client, {aw, fields}) => {
                         const chan = client.channels.cache.get(aw.arena.char.channel);
-                        if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                        if (chan && chan.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                             chan.send(`>>> ${fields.join("\n")}`);
                         }
                     }, {context: {aw: aw, fields: fields}});
@@ -594,7 +595,7 @@ module.exports = (Bot, client) => {
                     if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
                         client.shard.broadcastEval((client, {aw, charFields}) => {
                             const chan = client.channels.cache.get(aw.arena.char.channel);
-                            if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                            if (chan && chan.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                                 chan.send(`>>> ${charFields.join("\n")}`);
                             }
                         }, {context: {aw: aw, charFields: charFields}});
@@ -602,7 +603,7 @@ module.exports = (Bot, client) => {
                     if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
                         client.shard.broadcastEval((client, {aw, shipFields}) => {
                             const chan = client.channels.cache.get(aw.arena.fleet.channel);
-                            if (chan && chan.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                            if (chan && chan.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                                 chan.send(`>>> ${shipFields.join("\n")}`);
                             }
                         }, {context: {aw: aw, shipFields: shipFields}});
@@ -677,7 +678,7 @@ module.exports = (Bot, client) => {
             // Check if the bot is able to send messages into the set channel
             const channels = await client.shard.broadcastEval(async (client, {guChan}) => {
                 const channel = client.channels.cache.get(guChan);
-                if (channel && channel.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                if (channel && channel.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                     return true;
                 }
                 return false;
@@ -741,7 +742,7 @@ module.exports = (Bot, client) => {
             for (const fieldChunk of fieldsOut) {
                 await client.shard.broadcastEval(async (client, {guChan, fieldChunk}) => {
                     const channel = client.channels.cache.get(guChan);
-                    if (channel && channel.permissionsFor(client.user.id).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                    if (channel && channel.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                         return channel.send({embeds: [{
                             fields: fieldChunk
                         }]});

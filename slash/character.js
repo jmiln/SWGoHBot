@@ -113,13 +113,13 @@ class Character extends Command {
 
         return interaction.reply({
             embeds: [{
-                "color": `${character.side === "light" ? "#5114e0" : "#e01414"}`,
-                "author": {
-                    "name": character.name,
-                    "url": character.url,
-                    "icon_url": character.avatarURL
+                color: Bot.getSideColor(character.side),
+                author: {
+                    name: character.name,
+                    url: character.url,
+                    icon_url: character.avatarURL
                 },
-                "fields": fields
+                fields: fields
             }]
         });
     }

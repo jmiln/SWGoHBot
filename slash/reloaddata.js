@@ -15,7 +15,6 @@ class ReloadData extends Command {
                     type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
-                        {name: "Commands", value: "Commands"},
                         {name: "Data", value: "Data"},
                         {name: "Debug", value: "Debug"},
                         {name: "Events", value: "Events"},
@@ -37,23 +36,6 @@ class ReloadData extends Command {
 
         switch (action) {
             case "com":
-            case "commands": // Reloads all the commands,
-                if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    await interaction.client.shard.broadcastEval(async client =>  await client.reloadAllCommands())
-                        .then(res => {
-                            let errors = [];
-                            res.forEach(r => {
-                                if (r.errArr?.length) errors.push(...r.errArr);
-                            });
-                            errors = [...new Set(errors)];
-                            const resOut = res.map(r => `${r.succArr.length.toString().padStart(4)} | ${r.errArr.length}`);
-                            return interaction.reply({content: Bot.codeBlock(`Succ | Err\n${resOut.join("\n")}${errors.length ? "\n\nErrors in files:\n" + errors.join("\n") : ""}`)});
-                        })
-                        .catch(err => console.log("[ReloadData com]\n" + err));
-                } else {
-                    interaction.client.reloadAllCommands(channelId);
-                }
-                break;
             case "slashcommands": // Reloads all the commands,
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
                     await interaction.client.shard.broadcastEval(async client =>  await client.reloadAllSlashCommands())

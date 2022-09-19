@@ -2,7 +2,7 @@ const momentTZ = require("moment-timezone");
 require("moment-duration-format");
 // const {inspect} = require('util');
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js");
 
 class Shardtimes extends Command {
     constructor(Bot) {
@@ -257,7 +257,7 @@ class Shardtimes extends Command {
             }
 
             // Check and make sure the bot has permissions to see/ send in the specified channel
-            if (!destChannel.permissionsFor(interaction.guild.me).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+            if (!destChannel.permissionsFor(interaction.guild.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
             }
 
