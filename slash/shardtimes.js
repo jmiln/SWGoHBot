@@ -257,7 +257,7 @@ class Shardtimes extends Command {
             }
 
             // Check and make sure the bot has permissions to see/ send in the specified channel
-            if (!destChannel.permissionsFor(interaction.guild.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+            if (!destChannel.permissionsFor(interaction.guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
             }
 
