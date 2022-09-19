@@ -17,7 +17,20 @@
             "Old Republic",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/50r-t/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection / Crit. Chance",
+            "circle": "Health / Protection",
+            "cross": "Potency / Protection",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "ARC Trooper",
@@ -172,7 +185,20 @@
             "Rogue One",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/admiral-raddus/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection / Health",
+            "circle": "Health / Protection",
+            "cross": "Protection / Health",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Ahsoka Tano",
@@ -860,7 +886,20 @@
             "Leader",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/boushh-leia-organa/best-mods/",
+            "sets": [
+                "Potency x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage / Offense",
+            "circle": "Protection / Health",
+            "cross": "Potency",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "C-3PO",
@@ -1769,7 +1808,21 @@
             "Sith Empire",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/darth-malgus/best-mods/",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Darth Maul",
@@ -2326,7 +2379,20 @@
             "Leader",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/eighth-brother/best-mods/",
+            "sets": [
+                "Crit. Chance x2",
+                "Crit. Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health / Protection",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Embo",
@@ -2579,7 +2645,20 @@
             "Support",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/fifth-brother/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection / Health",
+            "circle": "Protection",
+            "cross": "Potency / Protection",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Finn",
@@ -3200,7 +3279,20 @@
             "Leader",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/grand-inquisitor/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Protection",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Grand Master Yoda",
@@ -4481,7 +4573,21 @@
             "Scoundrel",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/krrsantan/best-mods/",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Defense x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health / Protection",
+            "circle": "Health/ Protection",
+            "cross": "Health / Protection",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Kuiil",
@@ -6566,7 +6672,20 @@
             "Scoundrel",
             "Smuggler"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/skiff-guard-lando-calrissian/best-mods/",
+            "sets": [
+                "Offense x4",
+                "Critical Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Snowtrooper",
