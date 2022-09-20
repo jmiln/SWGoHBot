@@ -18,7 +18,7 @@ module.exports = (Bot, client) => {
         colors: {
             black:     0,
             blue:      255,
-            lightblue: 5313760,
+            lightblue: 22015,
             green:     65280,
             red:       16711680,
             brightred: 14685204,
