@@ -9,7 +9,7 @@ const ignoreArr = [
 
 module.exports = async (Bot, client, interaction) => {
     // If it's not a command, don't bother trying to do anything
-    if (!interaction.isCommand()) return;
+    if (!interaction?.isCommand()) return;
 
     // If it's a bot trying to use it, don't bother
     if (interaction.user.bot) return;

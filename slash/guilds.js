@@ -464,7 +464,7 @@ class Guilds extends Command {
             // Make sure the guild roster exists, and grab all the ally codes
             let gRoster ;
             if (!guild || !guild.roster || !guild.roster.length) {
-                throw new Error(interaction.language.get("BASE_SWGOH_NO_GUILD"));
+                throw new Error("I cannot find any players in that guild.\n Please make sure you have the name or ally code correct and try again.");
             } else {
                 interaction.editReply({content: "Found guild `" + guild.name + "`!"});
                 gRoster = guild.roster.map(m => m.allyCode);
@@ -702,13 +702,13 @@ class Guilds extends Command {
         async function guildSidedGP() {
             const showSide = interaction.options.getString("show_side");
             if (!showSide) {
-                throw new Error("ERROR: Cannot not have a side chosen.");
+                throw new Error("You must have a side chosen.");
             }
 
             // Make sure the guild roster exists, and grab all the ally codes
             let gRoster ;
             if (!guild || !guild.roster || !guild.roster.length) {
-                throw new Error(interaction.language.get("BASE_SWGOH_NO_GUILD"));
+                throw new Error("I cannot find any players in that guild.\n Please make sure you have the name or ally code correct and try again.");
             } else {
                 interaction.editReply({content: "Found guild `" + guild.name + "`!"});
                 gRoster = guild.roster.map(m => m.allyCode);
@@ -791,7 +791,7 @@ class Guilds extends Command {
             const sortBy  = interaction.options.getString("sort");
 
             if (!guild.roster.length) {
-                throw new Error(interaction.language.get("COMMAND_GUILDS_NO_GUILD"));
+                throw new Error("I cannot find that guild. \nPlease make sure the name or ally code is correct.");
             }
             let sortedGuild;
             if (showAC || (sortBy && ["name", "rank"].includes(sortBy))) {

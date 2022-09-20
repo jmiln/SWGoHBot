@@ -36,7 +36,7 @@ class ReloadData extends Command {
 
         switch (action) {
             case "com":
-            case "slashcommands": // Reloads all the commands,
+            case "slashcommands": // Reloads all the slash commands,
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
                     await interaction.client.shard.broadcastEval(async client =>  await client.reloadAllSlashCommands())
                         .then(res => {
@@ -50,7 +50,7 @@ class ReloadData extends Command {
                         })
                         .catch(err => console.log("[ReloadData slash com]\n" + err));
                 } else {
-                    interaction.client.reloadAllCommands();
+                    interaction.client.reloadAllSlashCommands();
                 }
                 break;
             case "debug":
@@ -212,7 +212,7 @@ class ReloadData extends Command {
                 }
                 break;
             default:
-                return super.error(interaction, "You can only choose `api, commands, events, functions, languages, swlang, users, or data.`");
+                return super.error(interaction, "You can only choose `swapi, events, functions, languages, swlang, users, or data.`");
         }
     }
 }
