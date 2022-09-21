@@ -82,7 +82,7 @@ class SetConf extends Command {
             const keyType = typedDefaultSettings[key]?.type;
             let settingStr = null;
             let nameStr = null;
-            if (keyType === "STRING") {
+            if (keyType === ApplicationCommandOptionType.String) {
                 settingStr = interaction.options.getString(optionKey);
                 if (!settingStr) continue;
                 if (key === "timezone" && !moment.tz.zone(settingStr)) {
@@ -90,7 +90,7 @@ class SetConf extends Command {
                     errors.push(interaction.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
                     continue;
                 }
-            } else if (keyType === "INTEGER") {
+            } else if (keyType === ApplicationCommandOptionType.Integer) {
                 settingStr = interaction.options.getInteger(optionKey);
                 if (!settingStr) continue;
                 if (key === "eventCountdown" && settingStr < 0) {
@@ -98,14 +98,14 @@ class SetConf extends Command {
                     errors.push(`${settingStr} is not a valid entry, it __must__ be above 0`);
                     continue;
                 }
-            } else if (keyType === "BOOLEAN") {
+            } else if (keyType === ApplicationCommandOptionType.Boolean) {
                 settingStr = interaction.options.getBoolean(optionKey);
-            } else if (keyType === "CHANNEL") {
+            } else if (keyType === ApplicationCommandOptionType.Channel) {
                 const channel = interaction.options.getChannel(optionKey);
                 if (!channel) continue;
                 nameStr = "#" + channel.name;
                 settingStr = channel.id;
-            } else if (keyType === "ROLE") {
+            } else if (keyType === ApplicationCommandOptionType.Role) {
                 settingStr = interaction.options.getRole(optionKey);
                 if (!settingStr) continue;
             } else {
