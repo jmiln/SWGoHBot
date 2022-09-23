@@ -3,9 +3,12 @@ const ignoreArr = [
     "DiscordAPIError: Missing Access",
     "DiscordAPIError: Unknown interaction",
     "DiscordAPIError: Unknown Message",
-    "HTTPError [AbortError]: The user aborted a request."
+    "HTTPError [AbortError]: The user aborted a request.",
+    "Internal Server Error",                // Something on Discord's end
+    "The user aborted a request",           // Pretty sure this is also on Discord's end
+    "Cannot send messages to this user",    // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
+    "Unknown interaction"                   // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
 ];
-
 
 module.exports = async (Bot, client, interaction) => {
     // If it's not a command, don't bother trying to do anything

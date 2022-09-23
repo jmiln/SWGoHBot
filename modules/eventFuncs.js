@@ -29,7 +29,8 @@ module.exports = (Bot, client) => {
             } else {
                 chan = guildConf.announceChan;
             }
-            if (announceMessage) announceMessage = announceMessage.replace(/\\`/g, "\\`");
+            // Not sure what this replacement was suppsoed to be?
+            // if (announceMessage) announceMessage = announceMessage.replace(/\\`/g, "\\`");
             try {
                 await client.shard.broadcastEval(async (client, {guildID, announceMessage, chan, guildConf}) => {
                     const targetGuild = await client.guilds.cache.find(g => g.id === guildID);

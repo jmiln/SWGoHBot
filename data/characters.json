@@ -3941,6 +3941,28 @@
         }
     },
     {
+        "name": "Jabba the Hutt",
+        "uniqueName": "JABBATHEHUTT",
+        "aliases": [
+            "Jabba the Hutt"
+        ],
+        "nameVariant": [
+            "Jabba the Hutt"
+        ],
+        "url": "http://swgoh.gg/characters/jabba-the-hutt/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jabbathehutt.png",
+        "side": "dark",
+        "factions": [
+            "Bounty Hunter",
+            "Galactic Legend",
+            "Hutt Cartel",
+            "Leader",
+            "Smuggler",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Jango Fett",
         "uniqueName": "JANGOFETT",
         "aliases": [

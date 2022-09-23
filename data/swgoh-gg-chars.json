@@ -15063,7 +15063,7 @@
         "pk": 207,
         "url": "http://swgoh.gg/characters/gamorrean-guard/",
         "image": "https://game-assets.swgoh.gg/tex.charui_gamorreanguard.png",
-        "power": 31546,
+        "power": 34527,
         "description": "Aggressive tank that Taunts and Counters with multiple Damage Over Time effects",
         "combat_type": 1,
         "gear_levels": [
@@ -15218,10 +15218,17 @@
             "Tank"
         ],
         "ability_classes": [
+            "Assist",
             "Counter",
+            "Damage Immunity",
+            "Defense Up",
+            "Dispel",
             "DoT",
             "Expose",
-            "Taunt"
+            "Protection Up",
+            "Remove Turn Meter",
+            "Taunt",
+            "Thermal Detonator"
         ],
         "role": "Tank",
         "ship": "",
@@ -20721,6 +20728,201 @@
         "ship": "GAUNTLETSTARFIGHTER",
         "ship_slot": 1,
         "activate_shard_count": 25
+    },
+    {
+        "name": "Jabba the Hutt",
+        "base_id": "JABBATHEHUTT",
+        "pk": 3440,
+        "url": "http://swgoh.gg/characters/jabba-the-hutt/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_jabbathehutt.png",
+        "power": 44095,
+        "description": "A ruthless crime boss who exerts his influence on others to control the flow of battle to support his criminal underworld and Hutt Cartel enforcers",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "009",
+                    "009",
+                    "004",
+                    "003",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "027",
+                    "034",
+                    "034",
+                    "027",
+                    "031",
+                    "014"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "052",
+                    "054",
+                    "031",
+                    "048",
+                    "027",
+                    "050"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "077",
+                    "072",
+                    "068",
+                    "063",
+                    "027",
+                    "011"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "088",
+                    "083",
+                    "085",
+                    "077",
+                    "068",
+                    "054"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "098",
+                    "088",
+                    "083",
+                    "083",
+                    "072",
+                    "036"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "109",
+                    "098",
+                    "095",
+                    "088",
+                    "072"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "111",
+                    "117",
+                    "114",
+                    "174",
+                    "118",
+                    "125"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "174",
+                    "111",
+                    "117",
+                    "174",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "143",
+                    "173",
+                    "117",
+                    "132",
+                    "132",
+                    "174"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "174",
+                    "150",
+                    "143",
+                    "144",
+                    "137",
+                    "117"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "163",
+                    "163",
+                    "158",
+                    "168",
+                    "169",
+                    "G12Finisher_JABBATHEHUTT_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Bounty Hunter",
+            "Galactic Legend",
+            "Hutt Cartel",
+            "Leader",
+            "Smuggler",
+            "Support"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "AoE",
+            "Assist",
+            "Blind",
+            "Buff Immunity",
+            "Counter",
+            "Critical Damage Up",
+            "Damage Immunity",
+            "Daze",
+            "Defense Penetration Up",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Offense Up",
+            "Protection Up",
+            "Reset Cooldown",
+            "Revive",
+            "Speed Down",
+            "Speed Up",
+            "Stealth",
+            "Stun",
+            "Taunt",
+            "Thermal Detonator"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Jango Fett",
