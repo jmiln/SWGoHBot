@@ -28,7 +28,7 @@
         "node-fetch": "^3.2.10",
         "socket.io": "^4.5.2",
         "socket.io-client": "^4.5.2",
-        "swgoh-client-stub": "^2.4.0",
+        "swgoh-client-stub": "^2.4.1",
         "swgoh-stat-calc": "^1.1.2"
     },
     "engines": {
