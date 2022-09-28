@@ -56,11 +56,9 @@ class MyArena extends Command {
         if (!showStats) {
             // Grab the arena info
             const shipArena = await getArenaStrings(player, "ship");
-            console.log(shipArena);
             if (shipArena) fields.push(shipArena);
 
             const charArena = await getArenaStrings(player, "char");
-            console.log(charArena);
             if (charArena) fields.push(charArena);
         } else {
             // If it's set to show stats, grab all the stats for each unit in the character arena team
@@ -138,7 +136,6 @@ class MyArena extends Command {
         }
 
         async function getUnitName(player, defId) {
-            console.log(defId);
             const thisChar = player.roster.find(c => c.defId === defId);
             const thisLangChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
             const thisZ = thisLangChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
