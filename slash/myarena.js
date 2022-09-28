@@ -52,76 +52,54 @@ class MyArena extends Command {
         const positions = [ "L|", "2|", "3|", "4|", "5|" ];
         const sPositions = [ "L|", "2|", "3|", "4|", "B|", "B|", "B|", "B|" ];
 
-        if (!showStats && player.arena.ship.squad && player.arena.ship.squad.length) {
-            const sArena = [];
-            for (let ix = 0; ix < player.arena.ship.squad.length; ix++) {
-                const ship = player.arena.ship.squad[ix];
-                let thisShip = player.roster.find(s => s.defId === ship.defId);
-                thisShip = await Bot.swgohAPI.langChar(thisShip, interaction.guildSettings.swgohLanguage);
-                if (thisShip.name && !thisShip.nameKey) thisShip.nameKey = thisShip.name;
-                sArena.push(`\`${sPositions[ix]}\` ${thisShip.nameKey}`);
-            }
-            fields.push({
-                name: interaction.language.get("COMMAND_MYARENA_FLEET", player.arena.ship.rank),
-                value: sArena.join("\n") + "\n`------------------------------`",
-                inline: true
-            });
-        }
-
         let desc = "";
         if (!showStats) {
-            const cArena = [];
-            for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
-                const char = player.arena.char.squad[ix];
-                let thisChar = player.roster.find(c => c.defId === char.defId);        // Get the character
-                thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
-                if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
-                cArena.push(`\`${positions[ix]}\` ${"z".repeat(thisZ.length)}${thisChar.nameKey}`);
-            }
-            fields.push({
-                name: interaction.language.get("COMMAND_MYARENA_ARENA", player.arena.char.rank),
-                value: cArena.join("\n") + "\n`------------------------------`",
-                inline: true
-            });
+            // Grab the arena info
+            const shipArena = await getArenaStrings(player, "ship");
+            console.log(shipArena);
+            if (shipArena) fields.push(shipArena);
+
+            const charArena = await getArenaStrings(player, "char");
+            console.log(charArena);
+            if (charArena) fields.push(charArena);
         } else {
+            // If it's set to show stats, grab all the stats for each unit in the character arena team
             let playerStats = null;
             try {
                 playerStats = await Bot.swgohAPI.unitStats(allycode, cooldown);
                 if (Array.isArray(playerStats)) playerStats = playerStats[0];
             } catch (e) {
+                console.log("[ERROR MyArena]");
                 console.error(e);
                 return super.error(interaction, Bot.codeBlock(e.interaction), {
                     title: interaction.language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit."
                 });
             }
+
             const chars = [];
-            // player.arena.char.squad.forEach((char, ix) => {
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
-                const char = player.arena.char.squad[ix];
-                let thisChar = playerStats.roster.find(c => c.defId === char.defId);        // Get the character
-                thisChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-                const thisZ = thisChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
-                if (thisChar.name && !thisChar.nameKey) thisChar.nameKey = thisChar.name;
-                const cName = `**${"z".repeat(thisZ.length)}${thisChar.nameKey}**`;
-                const speed  = thisChar.stats.final.Speed.toLocaleString();
-                const health = thisChar.stats.final.Health.toLocaleString();
-                const prot   = thisChar.stats.final.Protection.toLocaleString();
+                const charId = player.arena.char.squad[ix].defId;
+                const unitName = await getUnitName(player, charId);
+
+                const thisChar = playerStats.roster.find(c => c.defId === charId);
+                const speed    = thisChar.stats.final.Speed.toLocaleString();
+                const health   = thisChar.stats.final.Health.toLocaleString();
+                const prot     = thisChar.stats.final.Protection.toLocaleString();
                 chars.push({
                     pos: positions[ix],
                     speed: speed,
                     health: health,
                     prot: prot,
-                    name: cName
+                    name: unitName
                 });
             }
             desc = Bot.makeTable({
-                pos: {value: "", startWith: "`"},
-                speed:{value:  "Spd", startWith: "[", endWith: "|"},
-                health: {value: "HP", endWith: "|"},
-                prot: {value: "Prot", endWith: "]`"},
-                name: {value: "", align: "left"}
+                pos:    {value: "",    startWith: "`"},
+                speed:  {value: "Spd", startWith: "[",  endWith: "|"},
+                health: {value: "HP",                    endWith: "|"},
+                prot:   {value: "Prot",                  endWith: "]`"},
+                name:   {value: "",    align: "left"}
             }, chars).join("\n");
         }
 
@@ -143,6 +121,30 @@ class MyArena extends Command {
                 footer: footer
             }]
         });
+
+        async function getArenaStrings(player, type="char") {
+            if (!player.arena?.[type]?.squad?.length) return null;
+            const arenaArr = [];
+            for (let ix = 0; ix < player.arena[type].squad.length; ix++) {
+                const unitId = player.arena[type].squad[ix].defId;
+                const unitName = await getUnitName(player, unitId);
+                arenaArr.push(`\`${type === "char" ? positions[ix] : sPositions[ix]}\` ${unitName}`);
+            }
+            return {
+                name: interaction.language.get(`COMMAND_MYARENA_${type === "char" ? "ARENA": "FLEET"}`, player.arena[type].rank),
+                value: arenaArr.join("\n") + "\n`------------------------------`",
+                inline: true
+            };
+        }
+
+        async function getUnitName(player, defId) {
+            console.log(defId);
+            const thisChar = player.roster.find(c => c.defId === defId);
+            const thisLangChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+            const thisZ = thisLangChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
+            if (thisLangChar.name && !thisLangChar.nameKey) thisLangChar.nameKey = thisLangChar.name;
+            return `${"z".repeat(thisZ.length)}${thisLangChar.nameKey}`;
+        }
     }
 }
 
