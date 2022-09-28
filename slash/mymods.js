@@ -71,7 +71,7 @@ class MyMods extends Command {
                 {
                     name: "bestmods",
                     type: ApplicationCommandOptionType.Subcommand,
-                    description: "Show the characters that have the best of a stat",
+                    description: "Show the mods that have the best of a stat",
                     options: [
                         {
                             name: "stat",
@@ -115,6 +115,25 @@ class MyMods extends Command {
         }
         await interaction.reply({content: interaction.language.get("COMMAND_MYMODS_WAIT")});
 
+        let player;
+        try {
+            player = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            if (Array.isArray(player)) player = player[0];
+        } catch (e) {
+            return super.error(interaction, Bot.codeBlock(e.message), {
+                title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                footer: "Please try again in a bit."
+            });
+        }
+        if (!player?.roster) {
+            // If there's no characters, then there's nothing to show...
+            return super.error(interaction, "Unable to retrieve roster.", {
+                title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                footer: "Please try again in a bit."
+            });
+        }
+        const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown) || "";
+
         if (subCommand === "character") {
             const searchChar = interaction.options.getString("character");
 
@@ -127,104 +146,19 @@ class MyMods extends Command {
             if (chars.length === 0) {
                 return interaction.editReply({content: interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar)});
             } else if (chars.length > 1) {
-                const charL = [];
-                const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
-                charS.forEach(c => {
-                    charL.push(c.name);
-                });
-                return super.error(interaction, (interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n"))), {edit: true});
+                const charList = chars.sort((p, c) => p.name > c.name ? 1 : -1).map(c => c.name);
+                return super.error(interaction, (interaction.language.get("BASE_SWGOH_CHAR_LIST", charList.join("\n"))), {edit: true});
             } else {
                 character = chars[0];
             }
 
-            let player;
-            try {
-                player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                if (Array.isArray(player)) player = player[0];
-            } catch (e) {
-                Bot.logger.error(e);
-            }
-
-            if (!player) {
-                // TODO Lang this
-                return super.error(interaction, ("Sorry, but I could not load your profile at this time."), {edit: true});
-            }
-
-            const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
-
-            let charMods = player.roster.find(c => c.defId === character.uniqueName);
-
-            if (!charMods) {
+            const thisChar = player.roster.find(c => c.defId === character.uniqueName);
+            if (!thisChar) {
                 return super.error(interaction, "Looks like you don't have that character activated yet.");
             }
 
-            charMods = await Bot.swgohAPI.langChar(charMods, interaction.guildSettings.swgohLanguage);
-
-            if (charMods) {
-                charMods = charMods.mods;
-                const slots = {};
-
-                const sets = interaction.language.get("BASE_MODSETS_FROM_GAME");
-                const stats = interaction.language.get("BASE_MODS_FROM_GAME");
-
-                charMods.forEach(mod => {
-                    slots[mod.slot] = {
-                        stats: [],
-                        type: sets[mod.set],
-                        lvl: mod.level,
-                        pip: mod.pips
-                    };
-
-                    // Add the primary in
-                    slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace(/\+/g, "").replace(/%/g, "")}`);
-
-                    // Then all the secondaries
-                    mod.secondaryStat.forEach(s => {
-                        let t = stats[s.unitStat];
-                        if (t.indexOf("%") > -1) {
-                            t = t.replace(/%/g, "").trim();
-                            s.value = s.value.toFixed(2) + "%";
-                        }
-
-                        let statStr = s.value;
-                        if (s.roll > 0) statStr = `(${s.roll}) ${statStr}`;
-                        statStr +=  " " + t;
-                        slots[mod.slot].stats.push(statStr);
-                    });
-                });
-
-
-                const fields = [];
-                Object.keys(slots).forEach(mod => {
-                    let typeIcon  = slots[mod].type;
-                    let shapeIcon = Bot.toProperCase(modSlots[mod-1]);
-                    const stats = slots[mod].stats;
-                    // If the bot has the right perms to use external emotes, go for it
-                    if (!interaction.guild || interaction.channel.permissionsFor(interaction.guild.members.me).has([PermissionsBitField.Flags.UseExternalEmojis])) {
-                        const shapeIconString = `${modSlots[mod-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
-                        shapeIcon = emoteStrings[shapeIconString] || shapeIcon;
-
-                        const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
-                        typeIcon = emoteStrings[typeIconString] || typeIcon;
-                    }
-                    fields.push({
-                        name: `${shapeIcon} ${typeIcon} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
-                        value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(23)}\``,
-                        inline: true
-                    });
-                });
-
-                return interaction.editReply({content: null, embeds: [{
-                    author: {
-                        name: `${player.name}'s ${character.name}`,
-                        icon_url: character.avatarURL
-                    },
-                    color: Bot.getSideColor(character.side),
-                    fields: fields,
-                    footer: footer
-                }]});
-            } else {
-                // They don't have the character
+            const langChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+            if (!langChar) {
                 return interaction.editReply({content: null, embeds: [{
                     author: {
                         name: player.name + "'s " + character.name
@@ -233,33 +167,78 @@ class MyMods extends Command {
                     footer: footer
                 }]});
             }
+
+            const charMods = langChar.mods;
+            const slots = {};
+
+            const sets = interaction.language.get("BASE_MODSETS_FROM_GAME");
+            const stats = interaction.language.get("BASE_MODS_FROM_GAME");
+
+            charMods.forEach(mod => {
+                slots[mod.slot] = {
+                    stats: [],
+                    type: sets[mod.set],
+                    lvl: mod.level,
+                    pip: mod.pips
+                };
+
+                // Add the primary in
+                slots[mod.slot].stats.push(`${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace(/\+/g, "").replace(/%/g, "")}`);
+
+                // Then all the secondaries
+                mod.secondaryStat.forEach(s => {
+                    let t = stats[s.unitStat];
+                    if (t.indexOf("%") > -1) {
+                        t = t.replace(/%/g, "").trim();
+                        s.value = s.value.toFixed(2) + "%";
+                    }
+
+                    let statStr = s.value;
+                    if (s.roll > 0) statStr = `(${s.roll}) ${statStr}`;
+                    statStr +=  " " + t;
+                    slots[mod.slot].stats.push(statStr);
+                });
+            });
+
+            const fields = [];
+            Object.keys(slots).forEach(mod => {
+                // Set some default strings in case we don't have perms to use external emotes
+                let typeIcon  = slots[mod].type;
+                let shapeIcon = Bot.toProperCase(modSlots[parseInt(mod, 10)-1]);
+
+                const stats = slots[mod].stats;
+                // If the bot has the right perms to use external emotes, go ahead and set it to use them
+                if (!interaction.guild || interaction.channel.permissionsFor(interaction.guild.members.me).has([PermissionsBitField.Flags.UseExternalEmojis])) {
+                    const shapeIconString = `${modSlots[parseInt(mod, 10)-1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
+                    shapeIcon = emoteStrings[shapeIconString] || shapeIcon;
+
+                    const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
+                    typeIcon = emoteStrings[typeIconString] || typeIcon;
+                }
+
+                fields.push({
+                    name: `${shapeIcon} ${typeIcon} (${slots[mod].pip}* Lvl: ${slots[mod].lvl})`,
+                    value: `**${stats.shift()}**\n${stats.join("\n")}\n\`${"-".repeat(23)}\``,
+                    inline: true
+                });
+            });
+
+            return interaction.editReply({content: null, embeds: [{
+                author: {
+                    name: `${player.name}'s ${character.name}`,
+                    icon_url: character.avatarURL
+                },
+                color: Bot.getSideColor(character.side),
+                fields: fields,
+                footer: footer
+            }]});
         } else if (subCommand === "best") {
             const statToCheck = interaction.options.getString("stat");
             const showTotal = interaction.options.getBoolean("total");
 
-            let player;
-            try {
-                player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                if (Array.isArray(player)) player = player[0];
-            } catch (e) {
-                return super.error(interaction, Bot.codeBlock(e.message), {
-                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
-                    footer: "Please try again in a bit."
-                });
-            }
-
-            if (!player?.roster) {
-                // If there's no characters, then there's nothing to show...
-                return super.error(interaction, "Unable to retrieve roster.", {
-                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
-                    footer: "Please try again in a bit."
-                });
-            }
-
-            // Grab the player's roster and filter out all the ships
-            const stats = player.roster.filter(unit => unit.combatType !== 2);
-
-            stats.forEach(c => {
+            // Filter the player's roster so it's just characters
+            const charList = player.roster.filter(unit => unit.combatType !== 2);
+            charList.forEach(c => {
                 if (!c.stats?.final?.[statToCheck]) {
                     c.stats.final[statToCheck] = 0;
                 }
@@ -268,9 +247,9 @@ class MyMods extends Command {
                 }
             });
 
-            let sorted;
+            let sortedCharList;
             if (showTotal) {  // If looking for the total stats, sort by that
-                sorted = stats.sort((p, c) => {
+                sortedCharList = charList.sort((p, c) => {
                     if (p.stats?.final?.[statToCheck] && c.stats?.final?.[statToCheck]) {
                         return c.stats.final[statToCheck] - p.stats.final[statToCheck];
                     } else if (!c.stats?.final?.[statToCheck]) {
@@ -280,7 +259,7 @@ class MyMods extends Command {
                     }
                 });
             } else {  // Or if looking for just the amount added by mods, sort by the mod's amount
-                sorted = stats.sort((p, c) => {
+                sortedCharList = charList.sort((p, c) => {
                     if (p.stats?.mods?.[statToCheck] && c.stats?.mods?.[statToCheck]) {
                         return c.stats.mods[statToCheck] - p.stats.mods[statToCheck];
                     } else if (!c.stats?.mods?.[statToCheck]) {
@@ -291,31 +270,30 @@ class MyMods extends Command {
                 });
             }
 
-
-            for (const c in sorted) {
-                sorted[c] = await Bot.swgohAPI.langChar(sorted[c], interaction.guildSettings.swgohLanguage);
+            for (const charIx in sortedCharList) {
+                sortedCharList[charIx] = await Bot.swgohAPI.langChar(sortedCharList[charIx], interaction.guildSettings.swgohLanguage);
             }
 
-            const out = sorted.map(c => {
-                let finalStat = 0;
-                let modStat = 0;
+            const out = sortedCharList.map(c => {
+                let finalStat = "0";
+                let modStat = null;
                 if (c.stats?.final[statToCheck] % 1 === 0) {
                     // If it's a full number, give that
-                    finalStat = c.stats.final[statToCheck];
+                    finalStat = c.stats.final[statToCheck].toLocaleString();
                     if (c.stats?.mods[statToCheck]) {
-                        modStat = c.stats.mods[statToCheck];
+                        modStat = c.stats.mods[statToCheck].toLocaleString();
                     }
                 } else {
                     if (c.stats?.final[statToCheck]) {
-                        finalStat = `${(c.stats.final[statToCheck] * 100).toFixed(2)}%`;
+                        finalStat = `${(c.stats.final[statToCheck] * 100).toFixed(2)}%`.toLocaleString();
                     }
                     if (c.stats?.mods[statToCheck]) {
-                        modStat = `${(c.stats.mods[statToCheck] * 100).toFixed(2)}%`;
+                        modStat = `${(c.stats.mods[statToCheck] * 100).toFixed(2)}%`.toLocaleString();
                     }
                 }
 
                 return {
-                    stat: `${finalStat.toLocaleString()}${modStat.toString().length ? ` (${modStat.toLocaleString()})` : ""}`,
+                    stat: `${finalStat}${modStat.toString().length ? ` (${modStat})` : ""}`,
                     name: `: ${c.nameKey}`
                 };
             });
@@ -324,54 +302,27 @@ class MyMods extends Command {
             for (let ix = 0; ix < 20; ix++) {
                 outStr += "`" + out[ix].stat + ` ${Bot.constants.zws}`.repeat(longest-out[ix].stat.length) + "`**" + out[ix].name + "**\n";
             }
-            const author = {};
-            if (showTotal) {
-                // ${playerName}'s Highest ${stat} Characters
-                author.name = interaction.language.get("COMMAND_MYMODS_HEADER_TOTAL", player.name, statToCheck);
-            } else {
-                // ${playerName}'s Best ${stat} From Mods
-                author.name = interaction.language.get("COMMAND_MYMODS_HEADER_MODS", player.name, statToCheck);
-            }
 
             const fields = [];
-            if (stats.warnings) {
+            if (charList.warnings) {
                 fields.push({
                     name: "Warnings",
-                    value: stats.warnings.join("\n")
+                    value: charList.warnings.join("\n")
                 });
             }
 
             return interaction.editReply({content: null, embeds: [{
-                author: author,
+                author: {
+                    name: interaction.language.get(`COMMAND_MYMODS_HEADER_${showTotal ? "TOTAL" : "MODS"}`, player.name, statToCheck)
+                },
                 description: "==============================\n" + outStr + "==============================",
                 fields: fields,
-                footer: {
-                    text: player.updated ? interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(player.updated, interaction)) : ""
-                }
+                footer: footer
             }]});
         } else if (subCommand === "bestmods") {
             // Check for best individual mods of a stat
             const statToCheck = interaction.options.getString("stat");
             const statIndex = statEnums.stats.indexOf(statToCheck);
-
-            let player;
-            try {
-                player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                if (Array.isArray(player)) player = player[0];
-            } catch (e) {
-                return super.error(interaction, Bot.codeBlock(e.message), {
-                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
-                    footer: "Please try again in a bit."
-                });
-            }
-            if (!player?.roster) {
-                // If there's no characters, then there's nothing to show...
-                return super.error(interaction, "Unable to retrieve roster.", {
-                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
-                    footer: "Please try again in a bit."
-                });
-            }
-
 
             // Go through the player's roster and get a list of each stat per mod
             const statMap = [];
@@ -413,19 +364,14 @@ class MyMods extends Command {
                 outStr += `**\`${value.toLocaleString().padEnd(maxLen)}\`** ${emoteStrings[shapeIconString]} | ${mod.name}\n`;
             }
 
-            const author = {
-                name: `${player.name}'s top ${statToCheck} values`
-            };
-
             // Send it on back to the user
             return interaction.editReply({content: null, embeds: [{
-                author: author,
+                author: {
+                    name: `${player.name}'s top ${statToCheck} values`
+                },
                 description: "==============================\n" + outStr + "==============================",
-                footer: {
-                    text: player.updated ? interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(player.updated, interaction)) : ""
-                }
+                footer: footer
             }]});
-
         }
     }
 }
