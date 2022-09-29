@@ -293,7 +293,7 @@ class MyMods extends Command {
                 }
 
                 return {
-                    stat: `${finalStat}${modStat.toString().length ? ` (${modStat})` : ""}`,
+                    stat: `${finalStat}${modStat?.toString().length ? ` (${modStat})` : ""}`,
                     name: `: ${c.nameKey}`
                 };
             });
