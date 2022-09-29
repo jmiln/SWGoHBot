@@ -427,7 +427,7 @@ class ArenaWatch extends Command {
         if (!aw.payout) aw.payout = defPayout;
         if (!aw.useMarksInLog) aw.useMarksInLog = false;
         if (!aw.report) aw.report = "both";
-        if (!aw.showvs) aw.showvs = true;
+        if (aw.showvs !== true && aw.showvs !== false) aw.showvs = true;
         if (aw.channel && (!aw.arena.fleet || !aw.arena.char)) {
             const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
             const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
