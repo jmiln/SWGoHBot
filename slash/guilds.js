@@ -684,7 +684,7 @@ class Guilds extends Command {
                 value: interaction.language.get("COMMAND_GUILDS_FOOTER")
             });
 
-            if (guild.warnings) {
+            if (guild.warnings?.length) {
                 fields.push({
                     name: "Warnings",
                     value: guild.warnings.join("\n")

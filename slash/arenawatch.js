@@ -378,19 +378,14 @@ class ArenaWatch extends Command {
 
     async run(Bot, interaction, options) {
         let target = interaction.options.getSubcommandGroup(false);
-        if (!target) {
-            target = interaction.options.getSubcommand();
-        }
-        let cmdOut = null;
+        if (!target) target = interaction.options.getSubcommand();
 
+        let cmdOut = null;
         const outLog = [];
 
-        const userID = interaction.user.id;
+        const user = await Bot.userReg.getUser(interaction.user.id);
+        if (!user) return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
 
-        const user = await Bot.userReg.getUser(userID);
-        if (!user) {
-            return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
-        }
         let aw = user.arenaWatch;
         const defPayout = {
             char: {
@@ -442,7 +437,6 @@ class ArenaWatch extends Command {
             };
         }
 
-        // ArenaWatch -> activate/ deactivate
         const pat = await Bot.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
@@ -482,6 +476,7 @@ class ArenaWatch extends Command {
         }
 
         switch (target) {
+            // ArenaWatch -> activate/ deactivate
             case "enabled": {
                 const isEnabled = interaction.options.getBoolean("enabled");
                 aw.enabled = isEnabled;
@@ -828,75 +823,31 @@ class ArenaWatch extends Command {
                 const allycode = interaction.options.getString("allycode")?.replace(/[^\d]/g, "");
 
                 if (!allycode) {
-                    let charChan, fleetChan, charPayoutChan, fleetPayoutChan;
-                    if (aw.arena.char.channel) {
-                        charChan = interaction.guild ? interaction.guild.channels.cache.get(aw.arena.char.channel) : null;
-                        if (!charChan) {
-                            charChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.arena.char.channel), {context: aw})
-                                .then((thisChan) => {
-                                    thisChan = thisChan.filter(a => !!a)[0];
-                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
-                                });
-                        }
-                    }
-                    if (aw.arena.fleet.channel) {
-                        fleetChan = interaction.guild ? interaction.guild.channels.cache.get(aw.arena.fleet.channel) : null;
-                        if (!fleetChan) {
-                            fleetChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.arena.fleet.channel), {context: aw})
-                                .then((thisChan) => {
-                                    thisChan = thisChan.filter(a => !!a)[0];
-                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
-                                });
-                        }
-                    }
-                    if (aw.payout.char.channel) {
-                        charPayoutChan = interaction.guild ? interaction.guild.channels.cache.get(aw.payout.char.channel) : null;
-                        if (!charPayoutChan) {
-                            charPayoutChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.payout.char.channel), {context: aw})
-                                .then((thisChan) => {
-                                    thisChan = thisChan.filter(a => !!a)[0];
-                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
-                                });
-                        }
-                    }
-                    if (aw.payout.fleet.channel) {
-                        fleetPayoutChan = interaction.guild ? interaction.guild.channels.cache.get(aw.payout.fleet.channel) : null;
-                        if (!fleetPayoutChan) {
-                            fleetPayoutChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw.payout.fleet.channel), {context: aw})
-                                .then((thisChan) => {
-                                    thisChan = thisChan.filter(a => !!a)[0];
-                                    return thisChan ? `<#${thisChan.id}>` : "N/A";
-                                });
-                        }
-                    }
-
                     // If there's any ally codes in the array, go ahead and format them
                     let ac =  aw.allycodes.length ? aw.allycodes : [];
-                    ac = ac.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-                    // ac = ac.map(a => `\`${a.allyCode}\` **${a.mention ? `<@${a.mention}>` : a.name}**`);
-                    ac = ac.map(a => {
-                        const isWarn = a.warn && a.warn.min && a.warn.arena ? "W": "";
-                        const isRes  = a.result ? "R" : "";
-                        const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
-                        return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
-                    });
+                    ac = ac
+                        // Sort by name
+                        .sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
+                        // Then format the output strings
+                        .map(a => {
+                            const isWarn = a?.warn?.min && a.warn?.arena ? "W": "";
+                            const isRes  = a.result ? "R" : "";
+                            const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
+                            return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
+                        });
 
                     const fields = [];
                     // Chunk the codes down so they'll fit within the 1024 character limit of a field value
                     const acChunks = Bot.msgArray(ac, "\n", 1000);
                     for (const [ ix, chunk ] of acChunks.entries()) {
-                        if (ix === 0) {
-                            fields.push({
-                                name: `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
-                                value: chunk
-                            });
-                        } else {
-                            fields.push({
-                                name: "-",
-                                value: chunk
-                            });
-                        }
+                        fields.push({
+                            name: ix > 0 ? "-" : `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
+                            value: chunk
+                        });
                     }
+
+                    const charPayoutChan  = await getChannelStr("payout", "char");
+                    const fleetPayoutChan = await getChannelStr("payout", "fleet");
                     fields.push({
                         name: "**Payout Settings**",
                         value: [
@@ -905,7 +856,8 @@ class ArenaWatch extends Command {
                         ].join("\n")
                     });
 
-
+                    const charChan        = await getChannelStr("arena",  "char");
+                    const fleetChan       = await getChannelStr("arena",  "fleet");
                     return interaction.reply({embeds: [{
                         title: "Arena Watch Settings",
                         description: [
@@ -940,9 +892,29 @@ class ArenaWatch extends Command {
         }
         if (target !== "view") {
             user.arenaWatch = aw;
-            await Bot.userReg.updateUser(userID, user);
+            await Bot.userReg.updateUser(interaction.user.id, user);
         }
         return super.error(interaction, outLog.length ? outLog.join("\n") : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? "\n\n#####################\n\n" + cmdOut : ""), {title: " ", color: Bot.constants.colors.blue});
+
+        async function getChannelStr(alertType, arenaType) {
+            if (!["char", "fleet"].includes(arenaType)) {
+                console.error("Invalid arenaType");
+                return null;
+            }
+            if (!["arena", "payout"].includes(alertType)) {
+                console.error("Invalid alertType");
+                return null;
+            }
+            let thisChan = interaction.guild ? interaction.guild.channels.cache.get(aw[alertType]?.[arenaType]?.channel) : null;
+            if (!thisChan) {
+                thisChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw[alertType]?.[arenaType]?.channel), {context: aw})
+                    .then((thisChan) => {
+                        thisChan = thisChan.filter(a => !!a)[0];
+                        return thisChan ? `<#${thisChan.id}>` : "N/A";
+                    });
+            }
+            return thisChan || "N/A";
+        }
     }
 }
 
