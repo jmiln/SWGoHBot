@@ -1,4 +1,4 @@
-# Contributing to the repository
+# Contributing to this repository
 
 First, you will need to create a **[GitHub Account](https://github.com/join)**
 
@@ -99,3 +99,7 @@ To start the bot, in the command prompt, run the following command:
 
 If you are using PM2 to keep the bot running, you can start it with colored logs with
 `FORCE_COLOR=1 pm2 start swgohBotShard.js`
+
+
+# Contributing to the website (swgohbot.com)
+Head on over to the site's repo [HERE](https://github.com/jmiln/SWGoHBotSite)
