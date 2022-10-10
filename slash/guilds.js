@@ -261,7 +261,11 @@ class Guilds extends Command {
                 // Display the roster with gp etc
                 try {
                     if (!showSide) {
-                        return await guildRoster();
+                        try {
+                            return await guildRoster();
+                        } catch (err) {
+                            return super.error(interaction, err);
+                        }
                     } else {
                         return await guildSidedGP();
                     }
@@ -795,78 +799,64 @@ class Guilds extends Command {
             }
             let sortedGuild;
             if (showAC || (sortBy && ["name", "rank"].includes(sortBy))) {
+                // Sort em by name
                 sortedGuild = guild.roster.sort((p, c) => p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1);
+                if (sortBy == "rank") {
+                    // Sort em by rank
+                    sortedGuild = sortedGuild.sort((p, c) => p.guildMemberLevel > c.guildMemberLevel ? -1 : 1);
+                }
             } else {
+                // Sort em by GP
                 sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
             }
 
             let badCount = 0;
             const gRanks = {
-                2: "M",
-                3: "O",
-                4: "L"
+                2: "M",     // Member
+                3: "O",     // Officer
+                4: "L"      // Leader
             };
             for (const p of sortedGuild) {
-                // Check if the player is registered, then bold the name if so
+                // If there's a missing ally code, add to the count and move along
                 if (!p.allyCode) {
                     badCount += 1;
                     continue;
                 }
+
+                // Add in a letter for their rank in the guild ([M]ember, [O]fficer, [L]eader)
+                p.memberLvl = p.guildMemberLevel ?  gRanks[p.guildMemberLevel] : null;
+
+                // Check if the player is registered, then bold the name if so
                 const codes = await Bot.userReg.getUserFromAlly(p.allyCode);
-                if (codes && codes.length) {
-                    for (const c of codes) {
-                        // Make sure they're in the same server
-                        const mem = await interaction.guild?.members.fetch(c.id).catch(() => {});
-                        if (interaction.guild && mem) {
-                            p.inGuild = true;
-                            p.dID = c.id;
-                            break;
-                        }
+                if (!codes?.length) continue;
+                for (const c of codes) {
+                    // Make sure they're in the same server
+                    const mem = await interaction.guild?.members.fetch(c.id).catch(() => {});
+                    if (interaction.guild && mem) {
+                        p.inGuild = true;
+                        p.dID = c.id;
+                        break;
                     }
                 }
-                p.memberLvl = p.guildMemberLevel ?  gRanks[p.guildMemberLevel] : null;
-            }
-
-            if (sortBy && sortBy === "rank") {
-                const members = [];
-                const officers = [];
-                const leader = [];
-                sortedGuild.forEach(p => {
-                    if (p.memberLvl === "L") {
-                        leader.push(p);
-                    } else if (p.memberLvl === "O") {
-                        officers.push(p);
-                    } else {
-                        members.push(p);
-                    }
-                });
-                sortedGuild = leader.concat(officers).concat(members);
             }
 
             const users = [];
+            // Format the strings for each member
             for (const p of sortedGuild) {
-                if (showAC) {
-                    if (p.inGuild) {
-                        if (showReg) {
-                            users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` **${p.name}** (<@!${p.dID}>)`);
-                        } else {
-                            users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` **${p.name}**`);
-                        }
-                    } else {
-                        users.push(`\`[${p.allyCode}]\` - \`[${p.memberLvl}]\` ${p.name}`);
-                    }
-                } else {
-                    if (p.inGuild) {
-                        if (showReg) {
-                            users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}** (<@!${p.dID}>)`);
-                        } else {
-                            users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - **${p.name}**`);
-                        }
-                    } else {
-                        users.push(`\`[${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP]\` - ${p.name}`);
-                    }
-                }
+
+                // The name, bold if they're in the server with the bot
+                const nameStr = p.inGuild ? `**${p.name}**` : p.name;
+
+                // A mention for the user if they're in the guild, blank if not
+                const regStr  = showReg && p.dID ? `(<@!${p.dID}>)` : "";
+
+                // The ally code or the GP string
+                const numStr = showAC ? p.allyCode : `${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP`;
+
+                // Finally, the output string with everything together
+                users.push(`\`[${numStr}]\` - \`[${p.memberLvl}]\` ${nameStr} ${regStr}`);
             }
+
             const fields = [];
             const msgArr = Bot.msgArray(users, "\n", 1000);
             msgArr.forEach((m, ix) => {
