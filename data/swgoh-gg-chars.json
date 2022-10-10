@@ -18805,6 +18805,185 @@
         "activate_shard_count": 80
     },
     {
+        "name": "Hondo Ohnaka",
+        "base_id": "HONDO",
+        "pk": 3441,
+        "url": "http://swgoh.gg/characters/hondo-ohnaka/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_hondoohnaka.png",
+        "power": 37507,
+        "description": "The unparalleled Scoundrel willing to play all angles for his own gains",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "002",
+                    "003",
+                    "004",
+                    "004",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "027",
+                    "021",
+                    "015",
+                    "028",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "062",
+                    "076",
+                    "050",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "058",
+                    "024",
+                    "055",
+                    "070",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "093",
+                    "043",
+                    "086",
+                    "051",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "055",
+                    "092",
+                    "092",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "106",
+                    "102",
+                    "100",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "117",
+                    "098",
+                    "072",
+                    "111",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "117",
+                    "174",
+                    "174",
+                    "098",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "174",
+                    "122",
+                    "132",
+                    "125",
+                    "123",
+                    "143"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "109",
+                    "130",
+                    "135",
+                    "143",
+                    "124",
+                    "137"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "161",
+                    "163",
+                    "168",
+                    "169",
+                    "G12Finisher_HONDO_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Neutral",
+        "categories": [
+            "Scoundrel",
+            "Smuggler",
+            "Support"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Counter",
+            "Defense Up",
+            "Dispel",
+            "Expose",
+            "Foresight",
+            "Gain Turn Meter",
+            "Protection Up",
+            "Remove Turn Meter"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Hoth Rebel Scout",
         "base_id": "HOTHREBELSCOUT",
         "pk": 157,

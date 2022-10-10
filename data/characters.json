@@ -3565,6 +3565,25 @@
         }
     },
     {
+        "name": "Hondo Ohnaka",
+        "uniqueName": "HONDO",
+        "aliases": [
+            "Hondo Ohnaka"
+        ],
+        "nameVariant": [
+            "Hondo Ohnaka"
+        ],
+        "url": "http://swgoh.gg/characters/hondo-ohnaka/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hondoohnaka.png",
+        "side": "dark",
+        "factions": [
+            "Scoundrel",
+            "Smuggler",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Hoth Rebel Scout",
         "uniqueName": "HOTHREBELSCOUT",
         "aliases": [

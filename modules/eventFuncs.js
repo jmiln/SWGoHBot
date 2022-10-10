@@ -96,7 +96,6 @@ module.exports = (Bot, client) => {
         await sendMsg(event, guildConf, guildID, announceMessage);
     };
 
-    // To stick into node-schedule for each full event
     Bot.eventAnnounce = async (event) => {
         // Parse out the eventName and guildName from the ID
         let eventName = event.eventID.split("-");
