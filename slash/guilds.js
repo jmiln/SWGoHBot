@@ -222,7 +222,11 @@ class Guilds extends Command {
 
         let guild = null;
         try {
+            // Grab the guild's info from the DB
             guild = await Bot.swgohAPI.guild(userAC, null, cooldown);
+
+            // Filter out any members that aren't in the guild
+            guild.roster = guild.roster.filter(mem => mem.guildMemberLevel > 1);
         } catch (e) {
             return super.error(interaction, Bot.codeBlock(e));
         }
@@ -797,6 +801,7 @@ class Guilds extends Command {
             if (!guild.roster.length) {
                 throw new Error("I cannot find that guild. \nPlease make sure the name or ally code is correct.");
             }
+
             let sortedGuild;
             if (showAC || (sortBy && ["name", "rank"].includes(sortBy))) {
                 // Sort em by name
