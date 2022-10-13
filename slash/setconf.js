@@ -132,7 +132,7 @@ class SetConf extends Command {
                 const newArr = [...guildConf[key]];
                 if (key === "adminRole") {
                     newArr.push(setting.id);
-                    changeLog.push(`Added ${setting?.name} to AdminRoles`);
+                    changeLog.push(`Added ${setting?.name} to AdminRole`);
                 } else {
                     newArr.push(setting);
                     changeLog.push(`Added ${setting} to ${key}`);

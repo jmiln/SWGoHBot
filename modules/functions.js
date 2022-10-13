@@ -946,13 +946,14 @@ module.exports = (Bot, client) => {
                 diffObj[key] = settings[key];
             }
         }
-        if (Object.keys(diffObj).length > 1) {
+
+        if (Object.keys(diffObj).length === 1) {
             // In this case, there's nothing different than the default, so go ahead and remove it
             return await Bot.deleteGuildSettings(guildId);
         }
-        const res = await Bot.cache.replace(Bot.config.mongodb.swgohbotdb, "guildSettings", {guildId: guildId}, diffObj, false);
-        return res;
+        return await Bot.cache.replace(Bot.config.mongodb.swgohbotdb, "guildSettings", {guildId: guildId}, diffObj, false);
     };
+
     // Check if there are settings for the guild
     Bot.hasGuildSettings = async (guildId) => {
         const guildSettings = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildSettings", {guildId: guildId});

@@ -93,7 +93,7 @@ module.exports = clientMongo => {
         }
 
         // Delete the old one then replace it with the new version
-        await dbo.collection(collection).replaceOne(matchCondition, saveObject);
+        await dbo.collection(collection).replaceOne(matchCondition, saveObject, {upsert: true});
 
         return saveObject;
     }
