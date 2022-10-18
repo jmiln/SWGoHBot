@@ -158,7 +158,7 @@ class UserConf extends Command {
             if (Bot.isAllyCode(allycode)) {
                 allycode = allycode.replace(/[^\d]*/g, "");
             } else {
-                super.error(interaction, `${allycode} is not a valid ally code, please double check your digits.`);
+                return super.error(interaction, `${allycode} is not a valid ally code, please double check your digits.`);
             }
 
             switch (subCommand) {
